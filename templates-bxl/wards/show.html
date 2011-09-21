@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}}{% endblock %}
+{% block content %}
+	<div id="fullwidth">
+	<h3>{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}} (Ward {{ward.number}})</h3>
+	<p>{% trans "Reports filed between" %} {{date_range_start|date:"N jS, Y"}} {% trans "and" %} {{date_range_end|date:"N jS, Y"}}. 
+		{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
+		<div id='leftcol'>
+			<ol>
+				{% if not reports %}
+					<p>{% trans "No problems have been reported." %}</p>
+				
+				{% endif %}
+				{% for report in reports %}					
+					{% ifchanged report.status %}  	
+					 <p/><h2>{% trans report.status %}</h2>
+					{% endifchanged %}
+                    <li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
+                {% endfor %}
+             </ol>
+             <br/><br/>
+             {% if reports %}
+             <div class="fix-disclaimer">
+             	<p>{% trans "Note: fixmystreet.ca relies on users to report problems as fixed." %}</p>
+             </div>
+             {% endif %}
+ 		</div>
+		<div id='rightcol'>
+		{% if google %}
+    		<div id="{{ google.dom_id }}"></div>
+    	{% endif %}
+    	{% include "wards/_info_box.html" %}   	
+
+		</div>
+	</div>
+	<br/ style="clear:both;">
+{% endblock %}
