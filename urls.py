@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     (r'^password_reset/done/$', 'django.contrib.auth.views.password_reset_done'),
     (r'^reset/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)/$', 'django.contrib.auth.views.password_reset_confirm'),
     (r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete'),
-    (r'^admin/(.*)', admin.site.root,{'SSL':SSL_ON}),
+    (r'^admin/(.*)', admin.site.urls,{'SSL':SSL_ON}),
     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
     (r'^i18n/', include('django.conf.urls.i18n')),
 )
@@ -91,7 +91,11 @@ urlpatterns += patterns('mainapp.views.ajax',
     (r'^ajax/categories/(\d+)', 'category_desc'),
 )
 
-if settings.DEBUG and 'TESTVIEW' in settings.get_all_members():
+urlpatterns += patterns('mainapp.views.api',
+    (r'^api/locate/$', 'locate'),
+)
+
+if settings.DEBUG and 'TESTVIEW' in settings.__dir__():
     urlpatterns += patterns ('',
     (r'^testview',include('django_testview.urls')))
 

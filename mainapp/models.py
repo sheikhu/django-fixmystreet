@@ -415,8 +415,12 @@ class ReportUpdate(models.Model):
                     { 'confirm_url': confirm_url, 'update': self })
             subject = render_to_string("emails/confirm/subject.txt", 
                     {  'update': self })
-            send_mail(subject, message, 
-                   settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
+            try:
+                send_mail(subject, message, 
+                          settings.EMAIL_FROM_USER,[self.email], fail_silently=False)   
+            except :
+                pass
+
             
         super(ReportUpdate, self).save()
     

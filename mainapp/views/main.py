@@ -25,11 +25,13 @@ def home(request, location = None, error_msg =None):
 
     if request.GET.has_key('q'):
         location = request.GET["q"]
-                    
+    
+    wards = Ward.objects.all().order_by('name')
     return render_to_response("home.html",
                 {"report_counts": ReportCountQuery('1 year'),
                  "cities": City.objects.all(),
                  'search_error': error_msg,
+                 'wards': wards,
                  'location':location,
                  'GOOGLE_KEY': settings.GMAP_KEY },
                 context_instance=RequestContext(request))    

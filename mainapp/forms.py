@@ -2,7 +2,7 @@ from django import forms
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from fixmystreet import settings
-from mainapp.models import Ward, Report, ReportUpdate, ReportCategoryClass,ReportCategory,ReportSubscriber,DictToPoint
+from mainapp.models import Ward, City, Report, ReportUpdate, ReportCategoryClass,ReportCategory,ReportSubscriber,DictToPoint
 from django.utils.translation import ugettext_lazy
 from django.contrib.gis.geos import fromstr
 from django.forms.util import ErrorDict
@@ -46,11 +46,13 @@ class CategoryChoiceField(forms.fields.ChoiceField):
         # assemble the opt groups.
         choices = []
         choices.append( ('', ugettext_lazy("Select a Category")) )
-        if ward:
-            categories = ward.city.get_categories()
-            categories = categories.order_by('category_class')
-        else:
-            categories = []
+        city = City.objects.get(id=1)
+        categories = city.get_categories().all()
+        #if ward:
+        #    categories = ward.city.get_categories()
+        #    categories = categories.order_by('category_class')
+        #else:
+        #    categories = []
             
         groups = {}
         for category in categories:
@@ -60,7 +62,7 @@ class CategoryChoiceField(forms.fields.ChoiceField):
             groups[catclass].append((category.pk, category.name ))
         for catclass, values in groups.items():
             choices.append((catclass,values))
-        super(CategoryChoiceField,self).__init__(choices,required,widget,label,initial,help_text,args,kwargs)
+        super(CategoryChoiceField,self).__init__(choices,required,widget,label,initial,help_text)#,args,kwargs)
 
     def clean(self, value):
         super(CategoryChoiceField,self).clean(value)
@@ -152,4 +154,4 @@ class ReportForm(forms.ModelForm):
             
         return( errors )
 
-
+   
