@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 def locate(request): 
     conn = httplib.HTTPConnection('gislb.irisnetlab.be')
-    conn.request("GET", "/WSGeoloc/Rest/Localize/getxycoord", request.raw_post_data)
+    conn.request("POST", "/WSGeoloc/Rest/Localize/getxycoord", request.raw_post_data)
     response = conn.getresponse()
     data = response.read()
     conn.close()
@@ -16,7 +16,7 @@ def locate(request):
 # http://192.168.15.58:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json
 def wards(request): 
     conn = httplib.HTTPConnection('http://192.168.15.58:8080')
-    conn.request("GET", "geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json", request.raw_post_data)
+    conn.request("GET", "geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json")
     response = conn.getresponse()
     data = response.read()
     conn.close()
