@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     (r'^password_reset/done/$', 'django.contrib.auth.views.password_reset_done'),
     (r'^reset/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)/$', 'django.contrib.auth.views.password_reset_confirm'),
     (r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete'),
-    (r'^admin/(.*)', admin.site.urls,{'SSL':SSL_ON}),
+    (r'^admin/', admin.site.urls,{'SSL':SSL_ON}),
     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
     (r'^i18n/', include('django.conf.urls.i18n')),
 )
@@ -48,6 +48,7 @@ urlpatterns += patterns('mainapp.views.promotion',
 )
 
 urlpatterns += patterns('mainapp.views.wards',
+    (r'^wards/$', cities.show, {"city_id":1}, 'bxl_wards_url_name'), 
     (r'^wards/(\d+)', 'show'),       
     (r'^cities/(\d+)/wards/(\d+)', 'show_by_number'),       
     
@@ -93,6 +94,7 @@ urlpatterns += patterns('mainapp.views.ajax',
 
 urlpatterns += patterns('mainapp.views.api',
     (r'^api/locate/$', 'locate'),
+    (r'^api/wards/$', 'wards'),
 )
 
 if settings.DEBUG and 'TESTVIEW' in settings.__dir__():

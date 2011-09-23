@@ -27,22 +27,19 @@
   <div id="front-page">
 	<div id="intro_text">
 	  <h1>{% trans "report/view/discuss" %}</h1>
-	  <p><span>{% trans "graffiti." %}</span>
-		<span class='alt'>{% trans "potholes." %}</span>
-		<span>{% trans "excessive" %}</span>
-		<span class='alt'>garbage.</span>
-		<span>{% trans "street" %}</span>
-		 <span class='alt'>lighting.</span></p>
+	  <p>{% trans "<span>graffiti.</span> <span class='alt'>potholes.</span> <span>excessive</span> <span class='alt'>garbage.</span> <span>street</span> <span class='alt'>lighting.</span>" %}</p>
 	</div>
 
 	<div id='start_box'>
 	<form id='search_form'><!-- onsubmit="return do_search()" -->
-		<!-- <select id="search_ward">
+		{% comment %}
+		<select id="search_ward">
 			<oprtion>choose</choose>
 		{% for ward in wards %}
 			<option value={{ward.number}}>{{ward.name}} ({{ward.number}})</option>
 		{% endfor %}
-		</select> -->
+		</select>
+		{% endcomment %}
 		<p>{% trans "Enter a nearby postal code, or street name and city:" %}</p>
 		<input id='search_box' type="text" name="q" {% if location %}value="{{location}}"{% endif %}>
 		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans "Search" %}">

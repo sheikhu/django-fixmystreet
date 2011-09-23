@@ -1,28 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+	<link rel="stylesheet" type="text/css" href="/media/css/global.css" />
+	<link rel="stylesheet" type="text/css" href="/media/css/typography.css" />
+	<link rel="stylesheet" type="text/css" href="/media/css/layout-8.css" />
+	<link rel="stylesheet" type="text/css" href="/media/css/colors.css" />
+	<link rel="Shortcut Icon" type="image/x-icon" href="/media/favicon.ico" />
 <style>
+body{background-color:#004990;}
 #page_container {padding-left:1em;padding-right:1em;}
-#header_left {margin-top:2em;text-align:left;}
+#header_left {margin-top:4em;text-align:left;}
 .border {border:2px solid red;}
-#top_menu_links {clear:both;}
-#top_menu_links ul{text-align: right;}
-#top_menu_links li {display:inline-block;}
-#top_menu_links a {color:#303030;text-decoration:none;margin-left:0.5em;margin-right:0.5em;}
-#top_menu_links a:hover {color:#7e090c; border-bottom:1px solid #7e090c;padding-bottom:0.2em;}
-#top_menu_links a.active {color:#7e090c !important;font-weight:bold;border-bottom:1px solid #7e090c;padding-bottom:0.2em;}
-#content_middle {background-color:#222222;width:100%;}
-#content_third, #middle_container {width:960px; display:block;margin: 0 auto;}
+#logo {position:absolute; left:-140px;}
+#content_middle {background-color:#517EB5;width:100%;position:relative;}
+#content_third, #middle_container {width:960px; display:block; margin: 0 auto; padding:1em; box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;}
+#middle_container {background-color:white;}
+#content_third {color:white;}
 </style>
 	{% load i18n %}
 	{% load googleanalytics_tags %}
 	{% get_available_languages as LANGUAGES %}
 
 	<title>{% trans "FixMyStreet.ca" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
-	<link rel="stylesheet" type="text/css" href="/media/css/global.css" />
-	<link rel="stylesheet" type="text/css" href="/media/css/typography.css" />
-	<link rel="stylesheet" type="text/css" href="/media/css/layout-8.css" />
-	<link rel="stylesheet" type="text/css" href="/media/css/colors.css" />
 	{% block css %}{% endblock %}
 	{% block script %}{% endblock %}
 	{% if google  %}
@@ -35,9 +34,10 @@
 		<div id="content_container">
 			<div id="page_container" class="container_12">
 				<div id="header" class='grid_12'>
+					<img id="logo" src="/media/logo.png"/>
 					<div id="header_left">
 						<!--<a href='/'><img src="/media/images/fms-canada-logo.gif"></a>-->
-						<h2>Fix My Street Bruxelles</h2>
+						<h1 id="banner-title">Fix My Street Bruxelles</h1>
 					</div>
 					<div id="header_right">
 						<div id="language">
@@ -56,13 +56,11 @@
 						{% url about_url_name as about %}
 						{% url cities_url_name as cities_link %}
 
-						<div id="top_menu_links"><div>
-						<ul>
-							<li><a class="{% fmsmenu_active request 'submit' %}" href="/" >{% trans "Submit a Report" %}</a></li>
-							<li><a class="{% fmsmenu_active request 'view' %}" href="{{cities_link}}">{% trans "View Reports" %}</a></li>
-							<li><a class="{% fmsmenu_active request about %}" href="{{about}}">{% trans "About" %}</a></li>
-							<li><a class="{% fmsmenu_active request contact %}" href="{{contact}}">{% trans "Contact Us" %}</a></li>
-						</ul>
+						<div id="top_menu_links">
+						<a class="{% fmsmenu_active request 'submit' %}" href="/" >{% trans "Submit a Report" %}</a>
+						<a class="{% fmsmenu_active request 'view' %}" href="{% url bxl_wards_url_name %}">{% trans "View Reports" %}</a>
+						<a class="{% fmsmenu_active request about %}" href="{{about}}">{% trans "About" %}</a>
+						<a class="{% fmsmenu_active request contact %}" href="{{contact}}">{% trans "Contact Us" %}</a>
 						</div>
 					</div>
 				</div>

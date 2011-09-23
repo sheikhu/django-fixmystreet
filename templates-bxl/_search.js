@@ -53,7 +53,6 @@ function html_for_no_results()
     var html = "<div id='error-msg'>";
     html += '<p>{% trans "Sorry, we couldn\\\'t find the address you entered. Please try again with another intersection, address or postal code, or add the name of the city to the end of the search."%}</p>';
     html += '</div>';
-    console.log(html);
     jQuery("#search-error").html(html).fadeIn();
 }
 
@@ -103,10 +102,10 @@ function do_search(search_term, ward)
 	contentType:'json',
 	data:JSON.stringify(query),
 	success:function(response){
-	    console.log('success',response);
+	    console.log(response);
 	},
 	error:function(){
-	    console.log('error',arguments);
+	    console.log(arguments);
 	}
     });
     */

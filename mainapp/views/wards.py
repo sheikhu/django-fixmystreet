@@ -4,6 +4,8 @@ from django.template import Context, RequestContext
 from django.db import connection
 from django.utils.translation import ugettext_lazy, ugettext as _
 import datetime
+from django.db.models import  Count
+from mainapp.models import City, Report, CityTotals, CityWardsTotals, AllCityTotals, CityMap
 
 def show_by_number( request, city_id, ward_no ):
     city= get_object_or_404(City, id=city_id)
@@ -13,8 +15,8 @@ def show_by_number( request, city_id, ward_no ):
                 {"ward": wards[0],
                  "google": google,
                  "reports": [] },
-                context_instance=RequestContext(request))    
-    
+                context_instance=RequestContext(request))
+
 def show( request, ward_id ):
     ward = get_object_or_404(Ward, id=ward_id)
     
