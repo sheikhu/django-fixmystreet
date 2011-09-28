@@ -1,48 +1,166 @@
 {% load i18n %}
-
-<script type="text/javascript" src="http://www.google.com/jsapi?key={{GOOGLE_KEY}}"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-google.load("maps", "2.167");
-jQuery.noConflict();
+(function(){
+    var map = null,
+	urbisURL = "http://192.168.15.58:8080/geoserver/",
+	markerSize = 34,
+	markersLayer = null,
+	draggableLayer = null,
+	markerStyle = {
+	    pointRadius:markerSize,
+	    externalGraphic:"/media/marker.png",
+	    graphicXOffset:-markerSize/2,
+	    graphicYOffset:-markerSize,
+	    graphicHeight:markerSize,
+	    graphicWidth:markerSize
+	    
+	},
+	fixedMarkerStyle = $.extend({},markerStyle,{
+	    externalGraphic:"/media/marker-fixed.png"
+	}),
+	pendingMarkerStyle = $.extend({},markerStyle,{
+	    externalGraphic:"/media/marker-pending.png",
+	}),
+	areaStyle = {
+		strokeColor: "#004990",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		fillColor: "#517EB5",
+		fillOpacity: 0.6
+	};
 
-function url_for_geodata(geodata)
-{
-   var address = geodata.address;
-   address = address.replace(/,.*/,'')
-   var uri = "/reports/new?lat=" + geodata.Point.coordinates[1] + "&lon=" + geodata.Point.coordinates[0] + "&address=" + address
-   return(  encodeURI(uri) ); 
-}
+    /**
+     * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
+     * the whole map is displayed. Must be called before each other function.
+     * @param x float define the center of the map (in Lambert72 coordinate system)
+     * @param y float define the center of the map (in Lambert72 coordinate system)
+     */
+    window.openMap = function(x,y)
+    {
+	map = new OpenLayers.Map("map-bxl",{
+	    maxExtent: new OpenLayers.Bounds(133736.38890635, 160293.01359269, 167103.47196451, 182838.33998333),
+	    maxResolution:46,
+	    units: 'm',
+	    projection: "EPSG:31370"
+	});
+	var wms = new OpenLayers.Layer.WMS(
+	    "Bruxelles",
+	    urbisURL + "wms?",
+	    {
+		layers: 'urbisFR' // urbisFRshp,urbisFR
+	    }
+	);
+	map.addLayer(wms);
+	if(x && y)
+	{
+	    map.zoomTo(6);
+	    map.setCenter(new OpenLayers.LonLat(x,y));
+	}
+	else
+	{
+	    map.zoomToMaxExtent();
+	}
+    }
+
+
+    /**
+     * Add a draggable marker to the current map. Send a "markermoved" event to
+     * the map element when the marker move.
+     * @param x float define the position of the marker (in Lambert72 coordinate system)
+     * @param y float define the position of the marker (in Lambert72 coordinate system)
+     */
+    window.addDraggableMarker = function(x,y)
+    {
+	if(!draggableLayer)
+	{
+	    draggableLayer = new OpenLayers.Layer.Vector( "Vector Layer" );
+	    map.addLayer(draggableLayer);
+
+	    var dragControl = new OpenLayers.Control.DragFeature(draggableLayer,{
+		onComplete:function(feature,pixel){
+		    var p = feature.geometry.components[0];
+		    $("#map-bxl").trigger('markermoved',p,marker);
+		    // reverse_geocode(point);
+		}
+	    });
+	    map.addControl(dragControl);
+	    dragControl.activate();
+	}
+	var marker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
+	
+	draggableLayer.addFeatures([new OpenLayers.Feature.Vector(marker, null, markerStyle)]);
+    }
+
+
+    /**
+     * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
+     * @param x float define the position of the marker (in Lambert72 coordinate system)
+     * @param y float define the position of the marker (in Lambert72 coordinate system)
+     * @param fixed string define the style of the marker
+     */
+    window.addMarker = function(x,y,fixed)
+    {
+	if(!markersLayer)
+	{
+	    markersLayer = new OpenLayers.Layer.Vector( "Vector Layer" );
+	    map.addLayer(markersLayer);
+	}
+	
+	var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
+	
+	markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, null, fixed ? fixedMarkerStyle : pendingMarkerStyle)]);
+    }
+
+    /**
+     * Add a shape to the current map.
+     * @param geometry a standart shape json object.
+     */
+    window.highlightArea = function(geometry)
+    {
+    	var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer");
+	map.addLayer(vectorLayer);
+
+	if(geometry.type == 'Polygon'){
+		addPolygon(geometry.coordinates,vectorLayer);
+	}
+	else if(geometry.type == 'MultiPolygon')
+	{
+		for(var i in geometry.coordinates){
+			addPolygon(geometry.coordinates[i],vectorLayer);
+		}
+	}
+
+    }
     
-function html_for_no_results()
-{
-   	var html =	"<div id='error-msg'>";
-   	html += '<p>{% trans "Sorry, we couldn\\\'t find the address you entered. Please try again with another intersection, address or postal code, or add the name of the city to the end of the search."%}</p>';
-    html += '</div>'
-    jQuery("#error").html(html).fadeIn(1000);
-}        
-     
-function handle_google_geocode_response(geodata)
-{
-    if ((geodata.Status.code == 200) && (geodata.Placemark.length > 0 ))
-    {
-		var url = url_for_geodata(geodata.Placemark[0]);
-		document.location = url;
+    /**
+     * Private function, add a polygon to the current map
+     */
+    function addPolygon(polygon,layer){
+	    for(var j in polygon){
+		    var area = polygon[j];
+		    var points = [];
+		    for(var i in area){
+			    var p = area[i];
+			    points.push(new OpenLayers.Geometry.Point(p[0],p[1]));
+		    }
+	    
+		    var ring = new OpenLayers.Geometry.LinearRing(points);
+		    var polygon = new OpenLayers.Feature.Vector(ring,null,areaStyle);
+		    layer.addFeatures(polygon);
+	    }
     }
-    else
+    /*
+    function reverse_geocode(point)
     {
-	   	html_for_no_results();
+	var geocoder = new  GClientGeocoder();
+	geocoder.getLocations(point, handle_google_geocode_response);    
+	return true;
     }
-}
-     
-function reverse_geocode( point )
-{
-    var geocoder = new  GClientGeocoder();
-    geocoder.getLocations(point, handle_google_geocode_response);    
-    return true;
-}
+    */
+}());
+
 //]]>
 </script>
 

@@ -1,4 +1,4 @@
-from fixmystreet.mainapp.models import UserProfile,EmailRule,Ward,ReportCategory,City, ReportCategoryClass, FaqEntry, Councillor,ReportCategorySet
+from fixmystreet.mainapp.models import UserProfile,EmailRule,Ward,ReportCategory,Report,City, ReportCategoryClass, FaqEntry, Councillor,ReportCategorySet
 from django.contrib import admin
 from contrib.transmeta import canonical_fieldname
 from django import forms
@@ -54,7 +54,7 @@ class WardAdmin(admin.ModelAdmin):
     list_display = ('city','number','name',)
     list_display_links = ('name',)
     ordering       = ['city', 'number']
-    exclude = ['geom']
+    # exclude = ['geom']
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if not request.user.is_superuser:
@@ -73,6 +73,33 @@ class WardAdmin(admin.ModelAdmin):
         return(qs)
     
 admin.site.register(Ward,WardAdmin)
+
+
+class ReportAdmin(admin.ModelAdmin):
+    ''' only show wards from cities this user has access to '''
+
+    list_display = ('ward','title','point',)
+    list_display_links = ('title',)
+    ordering       = ['ward', 'point']
+    # exclude = ['geom']
+    
+    #def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        #if not request.user.is_superuser:
+            #profile = request.user.get_profile()
+            #if db_field.name == "councillor":
+                #kwargs["queryset"] = Councillor.objects.filter(city__in=profile.cities.all())
+            #if db_field.name == "city":
+                #kwargs["queryset"] = profile.cities.all()
+        #return super(WardAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        
+    #def queryset(self,request):
+        #if request.user.is_superuser:
+            #return( super(WardAdmin,self).queryset(request) )
+        #profile = request.user.get_profile()
+        #qs = self.model._default_manager.filter(city__in=profile.cities.all())
+        #return(qs)
+    
+admin.site.register(Report,ReportAdmin)
 
 class EmailRuleAdmin(admin.ModelAdmin):
     ''' only show email rules from cities this user has access to '''

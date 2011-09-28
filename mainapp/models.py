@@ -138,7 +138,7 @@ class Ward(models.Model):
     number = models.IntegerField()
     councillor = models.ForeignKey(Councillor,null=True,blank=True)
     city = models.ForeignKey(City)
-    geom = models.MultiPolygonField( null=True)
+    # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
     
     # this email addr. is the destination for reports
@@ -169,12 +169,10 @@ class Ward(models.Model):
                    cc_emails.append(rule_email)
         return( to_emails,cc_emails )
 
-    
     def get_rule_descriptions(self):
         rules = EmailRule.objects.filter(city=self.city)
         describer = emailrules.EmailRulesDesciber(rules,self.city, self)
         return( describer.values() )
-            
 
     class Meta:
         db_table = u'wards'
@@ -282,7 +280,7 @@ class Report(models.Model):
     # last time a reminder was sent to the person that filed the report.
     reminded_at = models.DateTimeField(auto_now_add=True)
     
-    point = models.PointField(null=True)
+    point = models.PointField(null=True, srid=31370)
     photo = StdImageField(upload_to="photos", blank=True, verbose_name =  ugettext_lazy("* Photo"), size=(400, 400), thumbnail_size=(133,100))
     desc = models.TextField(blank=True, null=True, verbose_name = ugettext_lazy("Details"))
     author = models.CharField(max_length=255,verbose_name = ugettext_lazy("Name"))
@@ -485,57 +483,57 @@ class ReportMarker(GMarker):
         return mark_safe('GMarker(%s)' % ( self.js_params))
 
     
-class FixMyStreetMap(GoogleMap):  
-    """
-        Overrides the GoogleMap class that comes with GeoDjango.  Optionally,
-        show nearby reports.
-    """
-    def __init__(self,pnt,draggable=False,nearby_reports = [] ):  
-#        self.icons = []
-        markers = []
-        marker = GMarker(geom=(pnt.x,pnt.y), draggable=draggable)
-        if draggable:
-            event = GEvent('dragend',
-                           'function() { reverse_geocode (geodjango.map_canvas_marker1.getPoint()); }')        
-            marker.add_event(event)
-        markers.append(marker)
+#class FixMyStreetMap(GoogleMap):  
+    #"""
+        #Overrides the GoogleMap class that comes with GeoDjango.  Optionally,
+        #show nearby reports.
+    #"""
+    #def __init__(self,pnt,draggable=False,nearby_reports = [] ):  
+##        self.icons = []
+        #markers = []
+        #marker = GMarker(geom=(pnt.x,pnt.y), draggable=draggable)
+        #if draggable:
+            #event = GEvent('dragend',
+                           #'function() { reverse_geocode (geodjango.map_canvas_marker1.getPoint()); }')        
+            #marker.add_event(event)
+        #markers.append(marker)
         
-        for i in range( len( nearby_reports ) ):
-            nearby_marker = ReportMarker(nearby_reports[i], str(i+1) )
-            markers.append(nearby_marker)
+        #for i in range( len( nearby_reports ) ):
+            #nearby_marker = ReportMarker(nearby_reports[i], str(i+1) )
+            #markers.append(nearby_marker)
 
-        GoogleMap.__init__(self,center=(pnt.x,pnt.y),zoom=17,key=settings.GMAP_KEY, markers=markers, dom_id='map_canvas')
+        #GoogleMap.__init__(self,center=(pnt.x,pnt.y),zoom=17,key=settings.GMAP_KEY, markers=markers, dom_id='map_canvas')
 
-class WardMap(GoogleMap):
-    """ 
-        Show a single ward as a gmap overlay.  Optionally, show reports in the
-        ward.
-    """
-    def __init__(self,ward, reports = []):
-        polygons = []
-        for poly in ward.geom:
-                polygons.append( GPolygon( poly ) )
-        markers = []
-        for i in range( len( reports ) ):
-            marker = ReportMarker(reports[i], str(i+1) )
-            markers.append(marker)
+#class WardMap(GoogleMap):
+    #""" 
+        #Show a single ward as a gmap overlay.  Optionally, show reports in the
+        #ward.
+    #"""
+    #def __init__(self,ward, reports = []):
+        #polygons = []
+        #for poly in ward.geom:
+                #polygons.append( GPolygon( poly ) )
+        #markers = []
+        #for i in range( len( reports ) ):
+            #marker = ReportMarker(reports[i], str(i+1) )
+            #markers.append(marker)
 
-        GoogleMap.__init__(self,zoom=13,markers=markers,key=settings.GMAP_KEY, polygons=polygons, dom_id='map_canvas')
+        #GoogleMap.__init__(self,zoom=13,markers=markers,key=settings.GMAP_KEY, polygons=polygons, dom_id='map_canvas')
 
            
 
-class CityMap(GoogleMap):
-    """
-        Show all wards in a city as overlays.  Used when debugging maps for new cities.
-    """
+#class CityMap(GoogleMap):
+    #"""
+        #Show all wards in a city as overlays.  Used when debugging maps for new cities.
+    #"""
     
-    def __init__(self,city):
-        polygons = []
-        ward = Ward.objects.filter(city=city)[:1][0]
-        for ward in Ward.objects.filter(city=city):
-            for poly in ward.geom:
-                polygons.append( GPolygon( poly ) )
-        GoogleMap.__init__(self,center=ward.geom.centroid,zoom=13,key=settings.GMAP_KEY, polygons=polygons,dom_id='map_canvas')
+    #def __init__(self,city):
+        #polygons = []
+        #ward = Ward.objects.filter(city=city)[:1][0]
+        #for ward in Ward.objects.filter(city=city):
+            #for poly in ward.geom:
+                #polygons.append( GPolygon( poly ) )
+        #GoogleMap.__init__(self,center=ward.geom.centroid,zoom=13,key=settings.GMAP_KEY, polygons=polygons,dom_id='map_canvas')
     
 
 
@@ -719,17 +717,20 @@ class DictToPoint():
         self.lat = dict.get('lat',None)
         self.lon = dict.get('lon',None)
         self._pnt = None
+        self.srid = 31370
         
     def __unicode__(self):
         return ("POINT(" + self.lon + " " + self.lat + ")" )
     
     def pnt(self, srid = None ):
+        if srid:
+            self.srid = srid
         if self._pnt:
             return self._pnt
         if not self.lat or not self.lon:
             return None
         pntstr = self.__unicode__()
-        self._pnt = fromstr( pntstr, srid=4326) 
+        self._pnt = fromstr(pntstr, srid=self.srid)#, srid = self.srid) 
         return self._pnt
     
     def ward(self):

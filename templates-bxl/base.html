@@ -16,21 +16,21 @@ body{background-color:#004990;}
 #content_third, #middle_container {width:960px; display:block; margin: 0 auto; padding:1em; box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;}
 #middle_container {background-color:white;}
 #content_third {color:white;}
+#content_third a {color:white;}
+#footer {color:white;}
+#footer a {color:white;}
 </style>
 	{% load i18n %}
 	{% load googleanalytics_tags %}
 	{% get_available_languages as LANGUAGES %}
 
-	<title>{% trans "FixMyStreet.ca" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
+	<title>{% trans "FixMyStreet Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
 	{% block css %}{% endblock %}
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	{% block script %}{% endblock %}
-	{% if google  %}
-	   {{ google.style }}
-	   {{ google.scripts }}
- 	{% endif %}
 </head>
 
-	<body {% if google %}{{ google.onload }} {{ google.onunload }}{% endif %}>
+	<body>
 		<div id="content_container">
 			<div id="page_container" class="container_12">
 				<div id="header" class='grid_12'>

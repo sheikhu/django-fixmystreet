@@ -20,9 +20,15 @@
 }
 
 #report-subscribers {
-   background: #222222; 
-   border: solid 2px #b4b4b4;
+   background: #517EB5; 
+   border: solid 2px #004990;
+   border-radius:5px;
+   color:white;
 }
+#content_middle #report-subscribers a {
+   color:black;
+}
+
 .is_fixed p {
     color: #222222;
     text-align: left;

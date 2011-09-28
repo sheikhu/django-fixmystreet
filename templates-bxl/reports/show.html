@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 {% load i18n %}
-
 {% block title %}{{report.ward.city.name}}: {{report.title}}{% endblock %}
-{% block script %}<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a620b09451f9502"></script>
+{% block script %}
+<!-- TODO change key and put it in settings ! -->
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a620b09451f9502"></script>
+{% include '_fixmystreetmap.js' %}
+<script>
+$(function(){
+	openMap({{ report.point.x }}, {{ report.point.y }});
+	addMarker({{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
+});
+</script>
 {% endblock %}
 {% block css %}
-	<style type="text/css" media="screen">
+<style type="text/css" media="screen">
     #update-header {
         float: left;
         width: 100%;
@@ -22,7 +30,7 @@
         text-align: right;
         margin-top: 4px;
     }
-	</style>
+</style>
 {% endblock %}
 {% block content %}
 <div id="page_content_container">
@@ -48,6 +56,14 @@
 			<!-- AddThis Button END -->
 			{% endif %}
 			<div id='report-header'>
+				{% if report.is_confirmed %}
+				<div id='report-subscribers'>
+					{% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
+					{% if not report.is_fixed %}
+					<a href="/reports/{{report.id}}/subscribers/">{% trans "Subscribe" %}</a>
+					{% endif %}
+				</div>
+				{% endif %}
 				<div id='report-status'>
 				<table>				
 				<tr><th>{% trans "Category:" %}</th><td><b>{{report.category.name}}</b></td></tr>
@@ -63,14 +79,6 @@
 				</table>
 				<br/>
 				</div>
-				{% if report.is_confirmed %}
-				<div id='report-subscribers'>
-				{% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
-				{% if not report.is_fixed %}
-				<a href="/reports/{{report.id}}/subscribers/">{% trans "Subscribe" %}</a>
-				{% endif %}
-				</div>
-				{% endif %}
 			</div>
 			<div id='report-body'>
 			<p>{{report.desc|linebreaks}}</p>
@@ -104,12 +112,12 @@
 				<tr><td></td><td><input type ="submit" value= "{% trans "Submit" %}" class='big_button'></td></td>
 				</table>
 				</form>
-				{% endif %}	
+				{% endif %}
 		{% endif %}
 		</div>
 	</div>
 	<div id="rightcol">
-     	<div id="{{ google.dom_id }}" ></div>
+     	<div id="map-bxl" ></div>
     	{% include "wards/_info_box.html" %}   	
     </div>
 </div>

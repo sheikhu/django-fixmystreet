@@ -33,7 +33,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('mainapp.views.main',
     (r'^$', 'home', {}, 'home_url_name'),
-    (r'^search', 'search_address'),
+    #(r'^search', 'search_address'),
     (r'about/$', 'about',{}, 'about_url_name'),
     (r'posters/$', 'posters',{}, 'posters'),
 )

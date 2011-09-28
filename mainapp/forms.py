@@ -96,16 +96,18 @@ class ReportForm(forms.ModelForm):
 #    category = CategoryChoiceField()
     lat = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     lon = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 #    address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 
     def __init__(self,data=None,files=None,initial=None):
         if data:
             d2p = DictToPoint(data,exceptclass=None)
+            self.ward = Ward.objects.get(number=data['postalcode'])
         else:
             d2p = DictToPoint(initial,exceptclass=None)
+            self.ward = Ward.objects.get(number=initial['postalcode'])
         
         self.pnt = d2p.pnt()
-        self.ward = d2p.ward()    
         self.update_form = ReportUpdateForm(data)
         super(ReportForm,self).__init__(data,files, initial=initial)
         self.fields['category'] = CategoryChoiceField(self.ward)

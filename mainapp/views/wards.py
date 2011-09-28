@@ -1,19 +1,19 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from mainapp.models import City, Ward, WardMap, Report
+from mainapp.models import City, Ward, Report
 from django.template import Context, RequestContext
 from django.db import connection
 from django.utils.translation import ugettext_lazy, ugettext as _
 import datetime
 from django.db.models import  Count
-from mainapp.models import City, Report, CityTotals, CityWardsTotals, AllCityTotals, CityMap
+from mainapp.models import City, Report, CityTotals, CityWardsTotals, AllCityTotals
 
 def show_by_number( request, city_id, ward_no ):
     city= get_object_or_404(City, id=city_id)
     wards = Ward.objects.filter( city=city, number=ward_no)
-    google = WardMap(wards[0],[])
+    #google = WardMap(wards[0],[])
     return render_to_response("wards/show.html",
                 {"ward": wards[0],
-                 "google": google,
+                 #"google": google,
                  "reports": [] },
                 context_instance=RequestContext(request))
 
@@ -53,11 +53,11 @@ def show( request, ward_id ):
         ELSE 4
         END """ }, order_by = ['status_int'] ) 
     
-    google = WardMap(ward,reports)
+    #google = WardMap(ward,reports)
         
     return render_to_response("wards/show.html",
                 {"ward": ward,
-                 "google": google,
+                 #"google": google,
                  "reports": reports,
                  "date_range_start": date_range_start,
                  "date_range_end": date_range_end,

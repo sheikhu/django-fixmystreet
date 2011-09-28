@@ -145,8 +145,17 @@ border-left:5px solid silver;
 margin-bottom:0.8em;
 }
 #content_middle {color:black;}
-#content_middle table{color:white;}
-#content_middle table a{color:white;}
+#content_middle table#top-reports,
+#content_middle table#reports{
+	color:white;
+}
+#content_middle table#top-reports a,
+#content_middle table#reports a{
+	color:white;
+}
+#content_middle .table_heading{
+	color:#004990;
+}
 #content_middle label {text-transform:uppercase;}
 #instructable {color:#b4b4b4;}
 #report-body p { margin-bottom: .5em;}
