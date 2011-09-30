@@ -94,7 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.gis',
     'contrib.google_analytics',
-    'contrib.transmeta',
+    'transmeta',
     'mainapp',
 )
 

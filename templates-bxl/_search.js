@@ -1,64 +1,66 @@
 {% load i18n %}
-<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
 
 <script type="text/javascript">
 //<![CDATA[
-(function(){	
-    function do_search(search_term, ward)
-    {
+$(function(){
+
+    var $searchTerm = $('#search_box');
+    var $searchWard = $('#search_ward');
+    var $searchForm = $('#search_form');
+    var $searchButton = $('#search_button');
+    
+
+    $searchForm.submit(function(event){
+	event.preventDefault();
 	
-	var query = {
-	    "language": "fr",
-	    "address": {
-		"street": {
-		    "name": search_term,
-		    "postcode": ward
-		},
-		"number": "1"
-	    }
-	};
+	$searchForm.addClass('loading');
+	$searchButton.prop('disabled',true);
+	
 	$.ajax({
 	    url:'/api/locate/',
 	    type:'POST',
 	    contentType:'json',
 	    dataType:'json',
-	    data:JSON.stringify(query),
+	    data:JSON.stringify({
+		"language": "fr",
+		"address": {
+		    "street": {
+			"name": $searchTerm.val(),
+			"postcode":""// $searchWard.val()
+		    },
+		    "number": ""
+		}
+	    }),
 	    success:function(response){
+		$searchForm.removeClass('loading');
+		$searchButton.prop('disabled',false);
+		
 		if(response.status == 'success')
 		{
 		    document.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y + '&address=' + search_term + '&postalcode=' + ward);
 		    // openMap(response.result.point);
 		}
+		else
+		{
+		    $searchForm.prepend('<p class="error-msg">' + response.status + '</p>');
+		}
 	    },
 	    error:function(){
+		$searchForm.removeClass('loading');
+		$searchButton.prop('disabled',false);
+
+		$searchForm.prepend('<p class="error-msg">Unexpected error.</p>');
 		console.log(arguments);
 	    }
 	});
-    }
+    });
     
     
-    $(document).ready(function($) 
-    {
-    
-	$("#search_form").submit(function(event){
-	    event.preventDefault();
-	    var search_term = $('#search_box').val();
-	    var search_ward = $('#search_ward').val();
-	    do_search(search_term,search_ward);
-	});
     
     {% if location %}
-       
-	function find_nearby_reports()
-	{
-	    var query = "{{location|escapejs}}";
-	    do_search(query);
-	}
-    
-	find_nearby_reports();
+       $searchForm.submit();
     {% endif %}
-    
-    });
-}());
+
+});
 //]]>
 </script>

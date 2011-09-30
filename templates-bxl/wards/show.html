@@ -37,34 +37,11 @@ $(function(){
 	};
 	
 	openMap();
+	highlightArea(wardsCoords.features[coresp['{{ ward.number }}'] || 0].geometry);
 	{% for report in reports %}
 	addMarker({{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
 	{% endfor %}
-	highlightArea(wardsCoords.features[coresp['{{ ward.number }}'] || 0].geometry);
 });
-
-function addPolygon(polygon,layer){
-	for(var j in polygon){
-		var area = polygon[j];
-		var points = [];
-		//console.log(j,areas,area);
-		for(var i in area){
-			var p = area[i];
-			//console.log('-'+i,p);
-			points.push(new OpenLayers.Geometry.Point(p[0],p[1]));
-		}
-	
-		var ring = new OpenLayers.Geometry.LinearRing(points);
-		var poly = new OpenLayers.Feature.Vector(ring,null,{
-			strokeColor: "#004990",
-			strokeOpacity: 1,
-			strokeWidth: 2,
-			fillColor: "#517EB5",
-			fillOpacity: 0.6
-		});
-		layer.addFeatures(poly);
-	}
-}
 
 </script>
 {% endblock %}

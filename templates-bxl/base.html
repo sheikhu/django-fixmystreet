@@ -21,12 +21,11 @@ body{background-color:#004990;}
 #footer a {color:white;}
 </style>
 	{% load i18n %}
-	{% load googleanalytics_tags %}
 	{% get_available_languages as LANGUAGES %}
 
-	<title>{% trans "FixMyStreet Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
+	<title>{% trans "Fix My Street Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
 	{% block css %}{% endblock %}
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 	{% block script %}{% endblock %}
 </head>
 
@@ -37,7 +36,7 @@ body{background-color:#004990;}
 					<img id="logo" src="/media/logo.png"/>
 					<div id="header_left">
 						<!--<a href='/'><img src="/media/images/fms-canada-logo.gif"></a>-->
-						<h1 id="banner-title">Fix My Street Bruxelles</h1>
+						<h1 id="banner-title">{% trans "Fix My Street Brussels" %}</h1>
 					</div>
 					<div id="header_right">
 						<div id="language">
@@ -93,7 +92,5 @@ body{background-color:#004990;}
 				</div>
 
 		{% block endbody %}{% endblock %}
-
-		{% googleanalytics %}
 	</body>
 </html>

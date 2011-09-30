@@ -28,13 +28,14 @@ def home(request, location = None, error_msg =None):
     
     wards = Ward.objects.all().order_by('name')
     return render_to_response("home.html",
-                {"report_counts": ReportCountQuery('1 year'),
-                 "cities": City.objects.all(),
-                 'search_error': error_msg,
-                 'wards': wards,
-                 'location':location,
-                 'GOOGLE_KEY': settings.GMAP_KEY },
-                context_instance=RequestContext(request))    
+            {
+                "report_counts": ReportCountQuery('1 year'),
+                "cities": City.objects.all(),
+                'search_error': error_msg,
+                'wards': wards,
+                'location':location
+            },
+            context_instance=RequestContext(request))    
 
 def _search_url(request,years_ago):
     return('/search?lat=%s;lon=%s;years_ago=%s' % ( request.GET['lat'], request.GET['lon'], years_ago ))

@@ -4,17 +4,18 @@
 //<![CDATA[
 (function(){
     var map = null,
-	urbisURL = "http://192.168.15.58:8080/geoserver/",
-	markerSize = 34,
+	urbisURL = "http://geoserver.gis.irisnet.be/geoserver/",
+	markerWidth = 18,
+	markerHeight = 34,
 	markersLayer = null,
 	draggableLayer = null,
 	markerStyle = {
-	    pointRadius:markerSize,
+	    pointRadius:markerHeight,
 	    externalGraphic:"/media/marker.png",
-	    graphicXOffset:-markerSize/2,
-	    graphicYOffset:-markerSize,
-	    graphicHeight:markerSize,
-	    graphicWidth:markerSize
+	    graphicXOffset:-markerWidth/2,
+	    graphicYOffset:-markerHeight,
+	    graphicHeight:markerHeight,
+	    graphicWidth:markerWidth
 	    
 	},
 	fixedMarkerStyle = $.extend({},markerStyle,{
