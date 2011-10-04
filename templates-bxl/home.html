@@ -31,15 +31,15 @@
 	
 		<div id='start_box'>
 			<form id='search_form'>
-				<!--select id="search_ward" name="ward">
-					<option>Choose...</option>
-				{% for ward in wards %}
-					<option value={{ward.number}}>{{ward.name}} ({{ward.number}})</option>
-				{% endfor %}
-				</select-->
 				<p>{% trans "Enter a nearby postal code, or street name and city:" %}</p>
 				<input id='search_box' type="text" name="q" {% if location %}value="{{location}}"{% endif %}>
 				<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans "Search" %}">
+				<select id="search_ward" name="ward">
+					<option value="">{% trans "Choose a ward..." %}</option>
+					{% for ward in wards %}
+					<option value={{ward.number}}>{{ward.name}} ({{ward.number}})</option>
+					{% endfor %}
+				</select>{% trans "or leave empty for global search" %}
 			</form>
 		</div>
 		<!-- <div id="map-bxl"></div> -->

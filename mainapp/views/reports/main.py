@@ -8,10 +8,9 @@ from fixmystreet import settings
 from django.utils.translation import ugettext as _
 import datetime
 from django.contrib.gis.measure import D 
-
+from mainapp.views.main import _search_url
 
 def new( request ):
-    
     d2p = DictToPoint( request.REQUEST )
     pnt = d2p.pnt()
 
@@ -24,10 +23,11 @@ def new( request ):
             if report:
                 return( HttpResponseRedirect( report.get_absolute_url() ))
     else:
-        report_form = ReportForm(initial={ 'lat': request.GET['lat'],
-                                           'lon': request.GET['lon'],
-                                           'postalcode': request.GET['postalcode'],
-                                           'address': request.GET.get('address',None) } )
+        report_form = ReportForm(initial={ 'lat': request.GET.get('lat',request.POST.get('lat')),
+                                           'lon': request.GET.get('lon',request.POST.get('lon')),
+                                           #'postalcode': request.GET['postalcode'],
+                                           #'address': request.GET.get('address',None)
+                                           } )
 
 
     # calculate date range for which to return reports
@@ -41,10 +41,10 @@ def new( request ):
     date_range_start = date_range_end - datetime.timedelta(days =365)
     
     # do we want to show older reports?
-    if Report.objects.filter(ward=report_form.ward,created_at__lte=date_range_start).count() > 1:
-        older_reports_link = _search_url(request, years_ago - 1)
-    else:
-        older_reports_link = None
+    #if Report.objects.filter(ward=report_form.ward,created_at__lte=date_range_start).count() > 1:
+    older_reports_link = _search_url(request, years_ago - 1)
+    #else:
+    #    older_reports_link = None
 
     reports = Report.objects.filter(created_at__gte = date_range_start, created_at__lte = date_range_end, is_confirmed = True,point__distance_lte=(pnt,D(km=2))).distance(pnt).order_by('-created_at')
     
@@ -52,7 +52,7 @@ def new( request ):
                 {
                     "report_form": report_form,
                     "update_form": report_form.update_form,
-                    "ward": report_form.ward,
+                    #"ward": report_form.ward,
                     "pnt":pnt,
                     "reports":reports,
                     "date_range_start": date_range_start,
@@ -76,5 +76,4 @@ def show( request, report_id ):
                 #"google":  FixMyStreetMap((report.point))
             },
             context_instance=RequestContext(request))
-
 

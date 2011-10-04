@@ -1,13 +1,18 @@
 from django import template
+import re
+
 register = template.Library()
 
-MENU_DEFS = { 'submit' : { 'exact': [ '/','/reports/new', '/search' ], 
+MENU_DEFS = { 'submit' : { 'exact': [ '/','/reports/new', '/reports/' ], 
+                           'match' : [],
                            'startswith':[],  
                            'exclude' : []
                          },
               'view' : { 'exact': [],
-                         'startswith' : [ '/cities','/wards', '/reports' ],
-                         'exclude':[ '/reports/new' ] }
+                         'match' : ['/wards/\d+', '/reports/\d+' ],
+                         'startswith' : ['/cities','/wards'],
+                         'exclude':[] 
+                        }
             }
 
 def is_match( path, pattern ):
@@ -17,7 +22,10 @@ def is_match( path, pattern ):
             return True
         for match in menudef['startswith']:
             if path.startswith(match) and not path in menudef['exclude']:
-                   return True
+                return True
+        for match in menudef['match']:
+            if re.match(match,path):
+                return True
         return False 
     if path.startswith(pattern):
         return True

@@ -2,9 +2,11 @@
 {% load i18n %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
-{% include '_fixmystreetmap.js' %}
+<script type="text/javascript" src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
+<script type="text/javascript" src="http://proj4js.org/lib/proj4js.js"></script>
+<script src="/media/js/fixmystreetmap.js"></script>
 <script>
- $(document).ready(function() {
+$(document).ready(function() {
 	$('#id_category').change(function(evt) {
 		// updates entry notes
 		var el_id = $('#id_category').val();
@@ -22,8 +24,48 @@
 	$('#map-bxl').bind('markermoved',function(evt,point){
 		$('#id_lon').val(point.x);
 		$('#id_lat').val(point.y);
+		console.log(point);
+		reverse_geocode({x:point.x,y:point.y});
 	});
-	
+
+	function reverse_geocode(point)
+	{
+		$form = $('form');
+		$.ajax({
+			url:'/api/address/',
+			type:'POST',
+			contentType:'json',
+			dataType:'json',
+			data:JSON.stringify({
+				"language": "fr",
+				"point": point
+			}),
+			success:function(response)
+			{
+			    $form.removeClass('loading');
+			    //$searchButton.prop('disabled',false);
+			    
+			    if(response.status == 'success')
+			    {
+					$('#id_postalcode').val(response.result.address.street.postCode);
+					$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
+			    }
+			    else
+			    {
+					$form.prepend('<p class="error-msg">' + response.status + '</p>');
+			    }
+			},
+			error:function(){
+			    $form.removeClass('loading');
+			    $searchButton.prop('disabled',false);
+	    
+			    $form.prepend('<p class="error-msg">Unexpected error.</p>');
+			    console.log(arguments);
+			}
+		});
+	}
+
+
 	//Wath is it for ????
 	if($('input[name=is_hate]:checked').val() == 'yes') {
 		$('.ishate').show();
@@ -49,6 +91,9 @@
 	{% for report in reports %}
 	addMarker({{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
 	{% endfor %}
+	reverse_geocode({x:{{ pnt.x }}, y:{{ pnt.y }} });
+	
+	
 });
 </script>
 {% endblock %}

@@ -11,48 +11,54 @@ $(function(){
     
 
     $searchForm.submit(function(event){
-	event.preventDefault();
-	
-	$searchForm.addClass('loading');
-	$searchButton.prop('disabled',true);
-	
-	$.ajax({
-	    url:'/api/locate/',
-	    type:'POST',
-	    contentType:'json',
-	    dataType:'json',
-	    data:JSON.stringify({
-		"language": "fr",
-		"address": {
-		    "street": {
-			"name": $searchTerm.val(),
-			"postcode":""// $searchWard.val()
-		    },
-		    "number": ""
-		}
-	    }),
-	    success:function(response){
-		$searchForm.removeClass('loading');
-		$searchButton.prop('disabled',false);
+		event.preventDefault();
 		
-		if(response.status == 'success')
-		{
-		    document.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y + '&address=' + search_term + '&postalcode=' + ward);
-		    // openMap(response.result.point);
-		}
-		else
-		{
-		    $searchForm.prepend('<p class="error-msg">' + response.status + '</p>');
-		}
-	    },
-	    error:function(){
-		$searchForm.removeClass('loading');
-		$searchButton.prop('disabled',false);
-
-		$searchForm.prepend('<p class="error-msg">Unexpected error.</p>');
-		console.log(arguments);
-	    }
-	});
+		$searchForm.addClass('loading');
+		$searchButton.prop('disabled',true);
+		
+		$.ajax({
+			url:'/api/locate/',
+			type:'POST',
+			contentType:'json',
+			dataType:'json',
+			data:JSON.stringify({
+			"language": "fr",
+			"address": {
+				"street": {
+				"name": $searchTerm.val(),
+				"postcode": $searchWard.val()
+				},
+				"number": ""
+			}
+			}),
+			success:function(response){
+				if(response.status == 'success')
+				{
+					document.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);// + '&address=' + $searchTerm.val());
+					// openMap(response.result.point);
+				}
+				else
+				{
+					$searchForm.removeClass('loading');
+					$searchButton.prop('disabled',false);
+					if(response.status == "noresults")
+					{
+						$searchForm.prepend('<p class="error-msg">No corresponding address has been found</p>');
+					}
+					else
+					{
+						$searchForm.prepend('<p class="error-msg">' + response.status + '</p>');
+					}
+				}
+			},
+			error:function(){
+				$searchForm.removeClass('loading');
+				$searchButton.prop('disabled',false);
+		
+				$searchForm.prepend('<p class="error-msg">Unexpected error.</p>');
+				console.log(arguments);
+			}
+		});
     });
     
     

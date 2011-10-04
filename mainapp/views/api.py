@@ -4,8 +4,20 @@ from django.http import HttpResponse
 
 
 def locate(request): 
-    conn = httplib.HTTPConnection('gislb.irisnetlab.be')
+#    conn = httplib.HTTPConnection('gislb.irisnetlab.be')
+    conn = httplib.HTTPConnection('192.168.13.42')
+
     conn.request("POST", "/WSGeoloc/Rest/Localize/getxycoord", request.raw_post_data)
+    response = conn.getresponse()
+    data = response.read()
+    conn.close()
+    return HttpResponse(data)
+
+def address(request): 
+#    conn = httplib.HTTPConnection('gislb.irisnetlab.be')
+    conn = httplib.HTTPConnection('192.168.13.42')
+
+    conn.request("POST", "/WSGeoloc/Rest/Localize/getaddressfromcoord", request.raw_post_data)
     response = conn.getresponse()
     data = response.read()
     conn.close()

@@ -38,7 +38,7 @@ def home(request, location = None, error_msg =None):
             context_instance=RequestContext(request))    
 
 def _search_url(request,years_ago):
-    return('/search?lat=%s;lon=%s;years_ago=%s' % ( request.GET['lat'], request.GET['lon'], years_ago ))
+    return('/reports/new?lat=%s;lon=%s;years_ago=%s' % ( request.GET.get('lat',request.POST.get('lat')), request.GET.get('lon',request.POST.get('lon')), years_ago ))
            
 #def search_address(request):
     #if request.method == 'POST':

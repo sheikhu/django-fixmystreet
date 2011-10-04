@@ -78,6 +78,11 @@ urlpatterns += patterns( 'mainapp.views.reports.flags',
     (r'^reports/(\d+)/flags', 'new'),
 )
 
+urlpatterns += patterns('mainapp.views.reports.mobile',
+    (r'^reports/mobile/(\d+)$', 'show'),       
+    (r'^reports/mobile/', 'new'),
+)
+
 urlpatterns += patterns('mainapp.views.reports.main',
     (r'^reports/(\d+)$', 'show'),       
     (r'^reports/', 'new'),
@@ -94,6 +99,7 @@ urlpatterns += patterns('mainapp.views.ajax',
 
 urlpatterns += patterns('mainapp.views.api',
     (r'^api/locate/$', 'locate'),
+    (r'^api/address/$', 'address'),
     (r'^api/wards/$', 'wards'),
 )
 

@@ -105,12 +105,12 @@ class ReportForm(forms.ModelForm):
             self.ward = Ward.objects.get(number=data['postalcode'])
         else:
             d2p = DictToPoint(initial,exceptclass=None)
-            self.ward = Ward.objects.get(number=initial['postalcode'])
+            #self.ward = Ward.objects.get(number=initial['postalcode'])
         
         self.pnt = d2p.pnt()
         self.update_form = ReportUpdateForm(data)
         super(ReportForm,self).__init__(data,files, initial=initial)
-        self.fields['category'] = CategoryChoiceField(self.ward)
+        self.fields['category'] = CategoryChoiceField()#self.ward
     
     def clean(self):
         if not self.ward:
