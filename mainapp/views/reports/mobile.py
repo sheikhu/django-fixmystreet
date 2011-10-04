@@ -1,0 +1,55 @@
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect,Http404
+from mainapp.models import DictToPoint,Report, ReportUpdate, Ward, ReportCategory
+from mainapp.forms import ReportForm,ReportUpdateForm
+from django.template import Context, RequestContext
+from django.contrib.gis.geos import *
+from fixmystreet import settings
+from django.utils.translation import ugettext as _
+import datetime
+from django.contrib.gis.measure import D 
+from mainapp.views.main import _search_url
+
+        
+def show( request, report_id ):
+    report = get_object_or_404(Report, id=report_id)
+    subscribers = report.reportsubscriber_set.count() + 1
+    return render_to_response("reports/show.html",
+            {
+                "report": report,
+                "subscribers": subscribers,
+                "ward":report.ward,
+                "updates": ReportUpdate.objects.filter(report=report, is_confirmed=True).order_by("created_at")[1:], 
+                "update_form": ReportUpdateForm(), 
+                "pnt":report.point
+                #"google":  FixMyStreetMap((report.point))
+            },
+            context_instance=RequestContext(request))
+
+
+
+def new( request ):
+    d2p = DictToPoint( request.REQUEST )
+    pnt = d2p.pnt()
+
+    if request.method == "POST":
+        report_form = ReportForm( request.POST, request.FILES )
+        # this checks update is_valid too
+        if report_form.is_valid():
+            # this saves the update as part of the report.
+            report = report_form.save()
+            if report:
+                return( HttpResponseRedirect( report.get_absolute_url() ))
+    else:
+        report_form = ReportForm(initial={ 'lat': request.GET['lat'],
+                                           'lon': request.GET['lon'],
+                                           #'postalcode': request.GET['postalcode'],
+                                           'address': request.GET.get('address',None) } )
+
+    return render_to_response("reports/new-mobile.html",
+                {
+                    "report_form": report_form,
+                    "update_form": report_form.update_form,
+                    "pnt":pnt
+                },
+                context_instance=RequestContext(request))
