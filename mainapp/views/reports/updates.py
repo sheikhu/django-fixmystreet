@@ -21,7 +21,7 @@ def new( request, report_id ):
         
     return render_to_response("reports/show.html",
                 {   "report": report,
-                    "google":  FixMyStreetMap(report.point),
+                    "pnt":  report.point,
                     "update_form": update_form,
                  },
                 context_instance=RequestContext(request))    

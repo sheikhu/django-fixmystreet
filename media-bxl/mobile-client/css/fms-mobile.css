@@ -3,16 +3,21 @@
 }
 .container {
 	background:url("/media/logo.png") center center no-repeat fixed;
+}
+
+#container {
 	margin: 0px auto;
 	/*width: 520px;
 	height: 400px;*/
-	border:2px solid #717171;
-
 	position: absolute;
 	top: 45px;
 	bottom: 0;
 	right: 0;
 	left: 0;
+}
+
+#jqt ul.errorlist li{
+	color:red;
 }
 
 #map-bxl{

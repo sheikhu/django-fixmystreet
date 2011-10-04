@@ -3,30 +3,24 @@
 
 {% block title %}{% trans "Reports for" %} {{city.name}}{% endblock %}
 {% block content %}
-<div id="page_content_container">
-	<div id="fullwidth">
-	<h2>{% trans "Reports for" %} {{city.name}}</h2>
-	<div id='city-header'>
 	<div id='city-stat-group'>
-		<p><strong>{{city.name}}</strong> {% trans "Stats" %}</p>
 		<div class='stat'>
-			<span class='number'>{{city_totals.recent_new}}</span><br/>
-			<span class='text'>{% trans "Reports Filed" %}<br/></span>
+			<p class='number'>{{city_totals.recent_new}}</p>
+			<p class='text'>{% trans "Reports Filed" %}</p>
 		</div>
 		<div class='stat'>
-			<span  class='number'>{{city_totals.recent_fixed}}</span><br/>
-			<span class='text'>{% trans "Reports Fixed" %}*<br/></span>
+			<p  class='number'>{{city_totals.recent_fixed}}</p>
+			<p class='text'>{% trans "Reports Fixed" %}*</p>
 		</div>
 		<div class='stat'>
-			<span class='number'>{{city_totals.recent_updated}}</span><br/>
-			<span class='text'>{% trans "Reports Updated" %}</span><br/>
+			<p class='number'>{{city_totals.recent_updated}}</p>
+			<p class='text'>{% trans "Reports Updated" %}</p>
 		</div>
-	</div>	
-	{% if top_problems %}
-	<div id="city-top-problems">
-		<p><b>{% trans "Top Problems" %}</b></p>
+
+		{% if top_problems %}
+		<h3>{% trans "Top Problems" %}</h3>
 		<table id="top-reports">
-			<tr>
+			<tr class ='table_heading'>
 				<th class='table-intro'>{% trans "Rank" %}</th>
 				<th class='row-text' >{% trans "Problem" %}</th>
 				<th class='table-stat'>{% trans "Number of Subscribers" %}</th>
@@ -39,17 +33,12 @@
 			</tr>
 			{% endfor %}
 		</table>
-		<br/>
+		{% endif %}
 	</div>
-	{% endif %}
-	</div>
-	<br/ style="clear:both">
-	<div id="city_all_problems">
-		<p><b>{% trans "Reports by Ward" %}</b></p>
+	<h1>{% trans "Reports for" %} {{city.name}}</h1>
+
+	<div id="city_all_problems" style="clear:both">
+		<h3>{% trans "Reports by Ward" %}</h3>
 		{% include "cities/_report_count_table.html" %}		
 	</div>
-	</div>
-	<br/ style="clear:both;">
-</div>
-
 {% endblock %}

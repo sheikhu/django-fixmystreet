@@ -9,7 +9,7 @@
 	draggableLayer = null,
 	markerStyle = {
 	    pointRadius:markerHeight,
-	    externalGraphic:"/media/marker.png",
+	    externalGraphic:"/media/images/marker.png",
 	    graphicXOffset:-markerWidth/2,
 	    graphicYOffset:-markerHeight,
 	    graphicHeight:markerHeight,
@@ -17,10 +17,10 @@
 	    
 	},
 	fixedMarkerStyle = $.extend({},markerStyle,{
-	    externalGraphic:"/media/marker-fixed.png"
+	    externalGraphic:"/media/images/marker-fixed.png"
 	}),
 	pendingMarkerStyle = $.extend({},markerStyle,{
-	    externalGraphic:"/media/marker-pending.png",
+	    externalGraphic:"/media/images/marker-pending.png",
 	}),
 	areaStyle = {
 		strokeColor: "#004990",

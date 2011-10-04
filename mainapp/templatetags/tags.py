@@ -27,7 +27,7 @@ def is_match( path, pattern ):
             if re.match(match,path):
                 return True
         return False 
-    if path.startswith(pattern):
+    if pattern in path:
         return True
     return False
     

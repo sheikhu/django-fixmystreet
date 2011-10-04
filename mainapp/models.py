@@ -163,10 +163,10 @@ class Ward(models.Model):
         for rule in rules:
             rule_email = rule.get_email(report)
             if rule_email:
-               if not rule.is_cc: 
-                   to_emails.append(rule_email)
-               else:
-                   cc_emails.append(rule_email)
+                if not rule.is_cc: 
+                    to_emails.append(rule_email)
+                else:
+                    cc_emails.append(rule_email)
         return( to_emails,cc_emails )
 
     def get_rule_descriptions(self):

@@ -35,84 +35,86 @@ $(function(){
 {% block content %}
 <div id="page_content_container">
 	<div id="leftcol">    
-			{% if report.is_fixed %}
-			<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
-			{% endif %}
-				
-			{% if not report.is_confirmed %}
-				   <div class='is_fixed'>{% trans "<p>Please check your email for a message from fixmystreet.ca, which will include a confirmation link.  Complete your submission by clicking on it.</p><p>Your report will not be sent to city officials or be visible to other visitors until you have done so.</p>" %}</div>
-			{% endif %}
-			<h3>{{report.title}}</h3>
-			{% if not report.is_fixed and report.is_confirmed %}
-			<!-- AddThis Button BEGIN -->
-			<div class="addthis_toolbox addthis_default_style">
+		{% if report.is_fixed %}
+		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
+		{% endif %}
+			
+		{% if not report.is_confirmed %}
+		<div class='is_fixed'>{% trans "<p>Please check your email for a message from fixmystreet.ca, which will include a confirmation link.  Complete your submission by clicking on it.</p><p>Your report will not be sent to city officials or be visible to other visitors until you have done so.</p>" %}</div>
+		{% endif %}
+		
+		<h2>{{report.title}}</h2>
+		{% if not report.is_fixed and report.is_confirmed %}
+		<!-- AddThis Button BEGIN -->
+		<div class="addthis_toolbox addthis_default_style">
 			<a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
-				<span class="addthis_separator">|</span>
-				<a class="addthis_button_facebook"></a>
-				<a class="addthis_button_myspace"></a>
-				<a class="addthis_button_google"></a>
-				<a class="addthis_button_twitter"></a>
+			<span class="addthis_separator">|</span>
+			<a class="addthis_button_facebook"></a>
+			<a class="addthis_button_myspace"></a>
+			<a class="addthis_button_google"></a>
+			<a class="addthis_button_twitter"></a>
+		</div>
+		<!-- AddThis Button END -->
+		{% endif %}
+
+		<div id='report-header'>
+			{% if report.is_confirmed %}
+			<div id='report-subscribers'>
+				{% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
+				{% if not report.is_fixed %}
+				<a href="/reports/{{report.id}}/subscribers/">{% trans "Subscribe" %}</a>
+				{% endif %}
 			</div>
-			<!-- AddThis Button END -->
 			{% endif %}
-			<div id='report-header'>
-				{% if report.is_confirmed %}
-				<div id='report-subscribers'>
-					{% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
-					{% if not report.is_fixed %}
-					<a href="/reports/{{report.id}}/subscribers/">{% trans "Subscribe" %}</a>
+			<div id='report-status'>
+				<table>
+					<tr><th>{% trans "Category:" %}</th><td><b>{{report.category.name}}</b></td></tr>
+					{% if report.address %}				
+					<tr><th>{% trans "Location:" %}</th><td>{{report.address}}</td></tr>
 					{% endif %}
-				</div>
-				{% endif %}
-				<div id='report-status'>
-				<table>				
-				<tr><th>{% trans "Category:" %}</th><td><b>{{report.category.name}}</b></td></tr>
-				{% if report.address %}				
-				<tr><th>{% trans "Location:" %}</th><td>{{report.address}}</td></tr>
-				{% endif %}
-				<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
-				
-				{% if report.sent_at %}
+					<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
+					
+					{% if report.sent_at %}
 					<tr><th>{% trans "Sent to" %}:</th><td>{{report.email_sent_to}}</td></tr>
 					<tr><th>{% trans "On" %}:</th><td>{{report.sent_at|date}}</td></tr>
-				{% endif %}
+					{% endif %}
 				</table>
-				<br/>
-				</div>
 			</div>
-			<div id='report-body'>
+		</div>
+		<div id='report-body'>
 			<p>{{report.desc|linebreaks}}</p>
 			{% if report.photo  %}
-                   <img align=center' src='/media/{{report.photo}}'>
+			<img align='center' src='/media/{{report.photo}}'/>
 		    {% endif %}
+
 		    {% if report.is_confirmed %}
-				<div id="more-actions">
-					<p><a href='/reports/{{report.id}}/flags'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-				</div>
-			
-				{% if updates %}
-					<h3>{% trans "Updates" %}</h3>		
-					{% for update in updates %}
-						<hr/>
-						<p><em>{% trans "Posted by" %} {{update.author}}, {{update.created_at|date}}</em>
-						</p>
-						{{update.desc}}
-					{% endfor %}
-				{% endif %}
-				{% if not report.is_fixed %}
-				<hr/>
-				<div id="update-header">
-					<div id="update-title"><h3>{% trans "Provide an update" %} </h3></div>
-				</div>				
-				<p>{% trans "Please note that updates are not sent to city officials." %}</p>
-				<form action="/reports/{{report.id}}/updates/" method="post">
-				<table class="form">
+			<div id="more-actions">
+				<p><a href='/reports/{{report.id}}/flags'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+			</div>
+		
+			{% if updates %}
+			<h3>{% trans "Updates" %}</h3>
+			<hr/>
+			{% for update in updates %}
+			<p>
+				<em>{% trans "Posted by" %} {{update.author}}, {{update.created_at|date}}</em>
+			</p>
+			<p>{{update.desc}}</p>
+			<hr/>
+			{% endfor %}
+			{% endif %}
+
+			{% if not report.is_fixed %}
+			<h2>{% trans "Provide an update" %} </h2>
+			<p>{% trans "Please note that updates are not sent to city officials." %}</p>
+			<form action="/reports/{{report.id}}/updates/" method="post">
+				<table id="report_form" class="form">
 					{{update_form.as_table}}					
-				<tr><td></td><td><input type="checkbox" id="is_fixed" name="is_fixed" value="1">{% trans "This problem has been fixed." %}</td></tr>
-				<tr><td></td><td><input type ="submit" value= "{% trans "Submit" %}" class='big_button'></td></td>
+					<tr><td></td><td><input type="checkbox" id="is_fixed" name="is_fixed" value="1">{% trans "This problem has been fixed." %}</td></tr>
+					<tr><td></td><td><input type ="submit" value= "{% trans "Submit" %}" class='big_button'></td></td>
 				</table>
-				</form>
-				{% endif %}
+			</form>
+			{% endif %}
 		{% endif %}
 		</div>
 	</div>

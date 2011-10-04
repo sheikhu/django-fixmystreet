@@ -7,6 +7,7 @@
 <script src="/media/js/fixmystreetmap.js"></script>
 <script>
 $(document).ready(function() {
+	var $form = $('#report_form');
 	$('#id_category').change(function(evt) {
 		// updates entry notes
 		var el_id = $('#id_category').val();
@@ -24,13 +25,18 @@ $(document).ready(function() {
 	$('#map-bxl').bind('markermoved',function(evt,point){
 		$('#id_lon').val(point.x);
 		$('#id_lat').val(point.y);
-		console.log(point);
+		if($form.is(':hidden')){
+			$form.show();
+			$('#localize-report').hide();
+			document.location.assign('#report');
+		}
+		
 		reverse_geocode({x:point.x,y:point.y});
 	});
 
 	function reverse_geocode(point)
 	{
-		$form = $('form');
+		$('#id_address').addClass('loading');
 		$.ajax({
 			url:'/api/address/',
 			type:'POST',
@@ -42,8 +48,8 @@ $(document).ready(function() {
 			}),
 			success:function(response)
 			{
-			    $form.removeClass('loading');
 			    //$searchButton.prop('disabled',false);
+				$('#id_address').removeClass('loading');
 			    
 			    if(response.status == 'success')
 			    {
@@ -56,7 +62,7 @@ $(document).ready(function() {
 			    }
 			},
 			error:function(){
-			    $form.removeClass('loading');
+			    $('#id_address').removeClass('loading');
 			    $searchButton.prop('disabled',false);
 	    
 			    $form.prepend('<p class="error-msg">Unexpected error.</p>');
@@ -97,20 +103,52 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block content %}
 
-<style>
-#leftcol ul {
-list-style-type:disc !important;
-margin-left:1.5em;
-}
-/*.ishate {display:none;}*/
-</style>
+{% block content %}
 <div id="page_content_container">
 	<div id="leftcol">
-		<h3>{% trans "Submitting a report" %}</h3>
+		<h2>{% trans "Submitting a report" %}</h2>
+		<div id="localize-report">
+			<div id="instructable">
+				<img src="/media/images/marker.png" class='left'>
+				<img src="/media/images/arrow-right.png" class="right" style="float:right;">
+				<h3>{% trans "To Report a New Problem" %}</h3>
+				<p>
+					{% trans "Drag the indicated marker to the correct location on the map." %}
+				</p>
+			</div>
+			<div id='report-destination'>
+				<h3>
+					{% trans "Nearby reports filed between" %} 
+					{{date_range_start|date:"N jS, Y"}} {% trans "and" %} {{date_range_end|date:"N jS, Y"}}
+				</h3>
+				
+				{% if reports %}
+					<ol id='search_results'>
+					{% for report in reports %}
+						<li><a href="{{report.get_absolute_url}}"> {{report.title}} ({{report.distance.km|floatformat:2}} km)</a>
+						{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+						</li>
+					{% endfor %}
+					</ol>
+					<p>{% trans "Zoom out to see more reports nearby." %}</p>
+				{% else %}
+					<p>{% trans "No problems have been reported in this area." %}</p>
+				{% endif %}
+				</ol>
+				{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}
+				<!--
+				<b>{% trans "Where will my report be sent?" %}</b>
+				<ul>
+					{% for rule in ward.get_rule_descriptions %}
+					<li>{{rule}}</li>
+					{% endfor %}
+				</ul>
+				-->
+			</div>
+		</div>
 	
-		<form enctype="multipart/form-data" method="post" action="/reports/" id='report_form'>
+		<form enctype="multipart/form-data" method="post" action="/reports/" id='report_form' style="display:none;">
 			<table class='form'>
 				{{ report_form.as_table }}
 				<tr>
@@ -146,35 +184,6 @@ margin-left:1.5em;
 	</div>
 	<div id="rightcol">
 		<div id="map-bxl" style="width:520px;height:400px;"></div>
-		<div id='report-destination'>
-			<b>{% trans "Where will my report be sent?" %}</b>
-			<ul>
-				{% for rule in ward.get_rule_descriptions %}
-				<li>{{rule}}</li>
-				{% endfor %}
-			</ul>
-			<p>
-				<strong>
-					{% trans "Nearby reports filed between" %} 
-					{{date_range_start|date:"N jS, Y"}} {% trans "and" %} {{date_range_end|date:"N jS, Y"}}
-					{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}:
-				</strong>
-			</p>
-			
-			{% if reports %}
-				<ol id='search_results'>
-				{% for report in reports %}
-					<li><a href="{{report.get_absolute_url}}"> {{report.title}} ({{report.distance.km|floatformat:2}} km)</a>
-					{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
-					</li>
-				{% endfor %}
-				</ol>
-				<p>{% trans "Zoom out to see more reports nearby." %}</p>
-			{% else %}
-				<p>{% trans "No problems have been reported in this area." %}</p>
-			{% endif %}
-			</ol>
-		</div>
 	</div>
 </div>
 {% endblock %}

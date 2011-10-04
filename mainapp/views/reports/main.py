@@ -41,10 +41,11 @@ def new( request ):
     date_range_start = date_range_end - datetime.timedelta(days =365)
     
     # do we want to show older reports?
+    if Report.objects.filter(created_at__lte = date_range_start, is_confirmed = True, point__distance_lte=(pnt,D(km=2))).count() > 1:
     #if Report.objects.filter(ward=report_form.ward,created_at__lte=date_range_start).count() > 1:
-    older_reports_link = _search_url(request, years_ago - 1)
-    #else:
-    #    older_reports_link = None
+        older_reports_link = _search_url(request, years_ago - 1)
+    else:
+        older_reports_link = None
 
     reports = Report.objects.filter(created_at__gte = date_range_start, created_at__lte = date_range_end, is_confirmed = True,point__distance_lte=(pnt,D(km=2))).distance(pnt).order_by('-created_at')
     

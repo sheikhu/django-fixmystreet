@@ -93,11 +93,12 @@ class ReportForm(forms.ModelForm):
         model = Report
         fields = ('lat','lon','title', 'address', 'category','photo')
 
-#    category = CategoryChoiceField()
+    # category = CategoryChoiceField()
     lat = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     lon = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-#    address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    photo = forms.fields.ImageField(widget=forms.widgets.ClearableFileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 
     def __init__(self,data=None,files=None,initial=None):
         if data:

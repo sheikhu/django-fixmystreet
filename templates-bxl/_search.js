@@ -13,7 +13,8 @@ $(function(){
     $searchForm.submit(function(event){
 		event.preventDefault();
 		
-		$searchForm.addClass('loading');
+		$searchForm.find('.error-msg').remove();
+		$searchTerm.addClass('loading');
 		$searchButton.prop('disabled',true);
 		
 		$.ajax({
@@ -39,9 +40,9 @@ $(function(){
 				}
 				else
 				{
-					$searchForm.removeClass('loading');
+					$searchTerm.removeClass('loading');
 					$searchButton.prop('disabled',false);
-					if(response.status == "noresults")
+					if(response.status == "noresult")
 					{
 						$searchForm.prepend('<p class="error-msg">No corresponding address has been found</p>');
 					}
@@ -52,7 +53,7 @@ $(function(){
 				}
 			},
 			error:function(){
-				$searchForm.removeClass('loading');
+				$searchTerm.removeClass('loading');
 				$searchButton.prop('disabled',false);
 		
 				$searchForm.prepend('<p class="error-msg">Unexpected error.</p>');

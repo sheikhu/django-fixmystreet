@@ -102,7 +102,7 @@
 								
 								if(response.status == 'success')
 								{
-									$('#id_postalcode').val(response.result.address.street.postalcode);
+									$('#id_postalcode').val(response.result.address.street.postCode);
 									$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
 								}
 								else
