@@ -1,0 +1,26 @@
+{% load i18n %}
+<div id="new_report" class="panel">
+	<div class="toolbar">
+		<h1>{% trans "New report" %}</h1>
+		<a class="back" href="#">{% trans "Location" %}</a>
+	</div>
+
+	<form enctype="multipart/form-data" method="post" action="/mobile/reports/" id='report_form'>
+		{{ report_form.as_p }}
+		<p id="photo_note">{% trans "* Optional" %} (Test : <input type="file" accept="image/*;capture=camera" id="capture"/>)</p>
+		<p id='secondary_container'></p>
+		{{ update_form.as_p }}
+		<div class='note'>
+			<p><strong>{% trans "Please Note" %} :</strong></p>
+			<ul>
+				<li>{% trans "Please be polite, concise and to the point." %}</li>
+				<li>{% trans "Please do not be abusive - abusing the service devalues the service for all users." %}</li>
+				<li>{% trans "Writing your message entirely in block capitals makes it hard to read, as does a lack of punctuation." %}</li>
+				<li>{% trans "Remember that FixMyStreet is primarily for reporting physical problems that can be fixed. If your problem is not appropriate for submission via this site please contact city officials directly." %}</li>
+			</ul>
+		</div>
+		<p>
+			<input type="submit" class='big_button' value="{% trans "Submit" %}"/>
+		</p>
+	</form>
+</div>

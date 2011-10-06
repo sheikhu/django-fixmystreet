@@ -2,12 +2,29 @@
 {% load i18n %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
-<script type="text/javascript" src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
-<script type="text/javascript" src="http://proj4js.org/lib/proj4js.js"></script>
+<script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="https://raw.github.com/cowboy/jquery-hashchange/v1.3/jquery.ba-hashchange.min.js"></script>
 <script src="/media/js/fixmystreetmap.js"></script>
 <script>
 $(document).ready(function() {
 	var $form = $('#report_form');
+
+	
+	$(window).hashchange(function(){
+		if(document.location.hash == '#form' || document.location.href.indexOf('new') < 0){
+			$form.show();
+			$('#localize-report').hide();
+			reverse_geocode();
+		}
+		else
+		{
+			$form.hide();
+			$('#localize-report').show();
+		}
+	});
+	$(window).hashchange();
+
 	$('#id_category').change(function(evt) {
 		// updates entry notes
 		var el_id = $('#id_category').val();
@@ -25,52 +42,52 @@ $(document).ready(function() {
 	$('#map-bxl').bind('markermoved',function(evt,point){
 		$('#id_lon').val(point.x);
 		$('#id_lat').val(point.y);
-		if($form.is(':hidden')){
-			$form.show();
-			$('#localize-report').hide();
-			document.location.assign('#report');
-		}
 		
-		reverse_geocode({x:point.x,y:point.y});
+		document.location.assign('#form');
+		reverse_geocode();
 	});
 
-	function reverse_geocode(point)
+	$('#map-bxl').fmsMap({ 
+		origin:{
+			x:{{ pnt.x }},
+			y:{{ pnt.y }} 
+		}
+	});
+	$('#map-bxl').fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
+	{% for report in reports %}
+	$('#map-bxl').fmsMap('addMarker',{{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
+	{% endfor %}
+
+	function reverse_geocode()
 	{
+		$form.find('.error-msg').remove();
+		$form.find(':submit').prop('disabled',true);
 		$('#id_address').addClass('loading');
-		$.ajax({
-			url:'/api/address/',
-			type:'POST',
-			contentType:'json',
-			dataType:'json',
-			data:JSON.stringify({
-				"language": "fr",
-				"point": point
-			}),
-			success:function(response)
+
+		$('#map-bxl').fmsMap('getSelectedAddress',function(response)
+		{
+			$form.find(':submit').prop('disabled',false);
+			$('#id_address').removeClass('loading');
+			
+			if(response.status == 'success')
 			{
-			    //$searchButton.prop('disabled',false);
+				$('#id_postalcode').val(response.result.address.street.postCode);
+				$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
+			}
+			else if(response.status == 'error')
+			{
 				$('#id_address').removeClass('loading');
-			    
-			    if(response.status == 'success')
-			    {
-					$('#id_postalcode').val(response.result.address.street.postCode);
-					$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
-			    }
-			    else
-			    {
-					$form.prepend('<p class="error-msg">' + response.status + '</p>');
-			    }
-			},
-			error:function(){
-			    $('#id_address').removeClass('loading');
-			    $searchButton.prop('disabled',false);
-	    
-			    $form.prepend('<p class="error-msg">Unexpected error.</p>');
-			    console.log(arguments);
+				$form.find(':submit').prop('disabled',false);
+				$('#id_address').before('<p class="error-msg">Unable to locate this adress</p>');
+			}
+			else
+			{
+				$('#id_address').removeClass('loading');
+				$form.find(':submit').prop('disabled',false);
+				$('#id_address').before('<p class="error-msg">' + response.status + '</p>');
 			}
 		});
 	}
-
 
 	//Wath is it for ????
 	if($('input[name=is_hate]:checked').val() == 'yes') {
@@ -90,16 +107,7 @@ $(document).ready(function() {
 			$('.hideonhate').show();
 			$('#submit_report_button').enabled = true;
 		}
-	});
-	
-	openMap({{ pnt.x }}, {{ pnt.y }});
-	addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
-	{% for report in reports %}
-	addMarker({{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
-	{% endfor %}
-	reverse_geocode({x:{{ pnt.x }}, y:{{ pnt.y }} });
-	
-	
+	});	
 });
 </script>
 {% endblock %}
@@ -110,8 +118,8 @@ $(document).ready(function() {
 		<h2>{% trans "Submitting a report" %}</h2>
 		<div id="localize-report">
 			<div id="instructable">
-				<img src="/media/images/marker.png" class='left'>
-				<img src="/media/images/arrow-right.png" class="right" style="float:right;">
+				<img src="/media/images/marker.png" class="left">
+				<img src="/media/images/arrow-right.png" class="right">
 				<h3>{% trans "To Report a New Problem" %}</h3>
 				<p>
 					{% trans "Drag the indicated marker to the correct location on the map." %}

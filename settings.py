@@ -72,8 +72,9 @@ MIDDLEWARE_CLASSES = (
 
 
 LANGUAGES = (
-  ('en','English'),
+  ('en', 'English'),
   ('fr', 'French'),
+  ('nl', 'Dutch'),
 )
 
 
@@ -147,3 +148,5 @@ except ImportError:
 
 if DEBUG and globals().has_key('TESTVIEW'):
     INSTALLED_APPS += ('django_testview',)
+
+TEMPLATE_DEBUG = True

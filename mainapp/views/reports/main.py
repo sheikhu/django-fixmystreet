@@ -50,19 +50,19 @@ def new( request ):
     reports = Report.objects.filter(created_at__gte = date_range_start, created_at__lte = date_range_end, is_confirmed = True,point__distance_lte=(pnt,D(km=2))).distance(pnt).order_by('-created_at')
     
     return render_to_response("reports/new.html",
-                {
-                    "report_form": report_form,
-                    "update_form": report_form.update_form,
-                    #"ward": report_form.ward,
-                    "pnt":pnt,
-                    "reports":reports,
-                    "date_range_start": date_range_start,
-                    "date_range_end": date_range_end,
-                    "older_reports_link": older_reports_link 
-                },
-                context_instance=RequestContext(request))
-    
-        
+            {
+                "report_form": report_form,
+                "update_form": report_form.update_form,
+                #"ward": report_form.ward,
+                "pnt":pnt,
+                "reports":reports,
+                "date_range_start": date_range_start,
+                "date_range_end": date_range_end,
+                "older_reports_link": older_reports_link 
+            },
+            context_instance=RequestContext(request))
+
+
 def show( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     subscribers = report.reportsubscriber_set.count() + 1

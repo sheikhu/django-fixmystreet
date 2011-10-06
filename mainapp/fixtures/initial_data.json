@@ -80,33 +80,153 @@
         }
     }, 
     {
-        "pk": 19, 
+        "pk": 1, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 1, 
-            "name": "Saint-Josse ten Noode", 
-            "councillor": 6, 
-            "number": 1210
+            "name": "Anderlecht", 
+            "councillor": 3, 
+            "number": 0
         }
-    }, 
+    },
     {
-        "pk": 18, 
+        "pk": 2, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 1, 
-            "name": "Woluwe St Lambert", 
+            "name": "Auderghem", 
             "councillor": 6, 
-            "number": 1200
+            "number": 1
+        }
+    },
+    {
+        "pk": 3, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Berchem Ste Agathe", 
+            "councillor": 1, 
+            "number": 2
+        }
+    },
+    {
+        "pk": 4, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1,
+            "name": "Bruxelles", 
+            "councillor": 6, 
+            "number": 3
         }
     }, 
     {
-        "pk": 17, 
+        "pk": 5, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Etterbeek", 
+            "councillor": 1, 
+            "number": 4
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Evere", 
+            "councillor": 1, 
+            "number": 5
+        }
+    }, 
+    {
+        "pk": 7, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 1, 
             "name": "Forest", 
             "councillor": 6, 
-            "number": 1190
+            "number": 6
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Ganshoren", 
+            "councillor": 1, 
+            "number": 7
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Ixelles", 
+            "councillor": 1, 
+            "number": 8
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Jette", 
+            "councillor": 5, 
+            "number": 9
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Koekelberg", 
+            "councillor": 1, 
+            "number": 10
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Molenbeek St Jean", 
+            "councillor": 1, 
+            "number": 11
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Saint-Gilles", 
+            "councillor": 4, 
+            "number": 12
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Saint-Josse ten Noode", 
+            "councillor": 6, 
+            "number": 13
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "mainapp.ward", 
+        "fields": {
+            "city": 1, 
+            "name": "Schaerbeek", 
+            "councillor": 2, 
+            "number": 14
         }
     }, 
     {
@@ -116,159 +236,215 @@
             "city": 1, 
             "name": "Uccle", 
             "councillor": 6, 
-            "number": 1180
+            "number": 15
         }
     }, 
     {
-        "pk": 15, 
+        "pk": 17, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 1, 
             "name": "Watermael-Boisfort", 
             "councillor": 6, 
-            "number": 1170
+            "number": 16
         }
     }, 
     {
-        "pk": 14, 
+        "pk": 18, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 1, 
-            "name": "Auderghem", 
+            "name": "Woluwe St Lambert", 
             "councillor": 6, 
-            "number": 1160
+            "number": 17
         }
     }, 
     {
-        "pk": 13, 
+        "pk": 19, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 1, 
             "name": "Woluwe St Pierre", 
             "councillor":1, 
-            "number": 1150
+            "number": 18
         }
-    }, 
+    },
     {
-        "pk": 12, 
-        "model": "mainapp.ward", 
+        "pk": 1, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Evere", 
-            "councillor": 1, 
-            "number": 1140
+            "ward": 1, 
+            "code": 1070
         }
-    }, 
+    },
     {
-        "pk": 11, 
-        "model": "mainapp.ward", 
+        "pk": 2, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Ganshoren", 
-            "councillor": 1, 
-            "number": 1083
+            "ward": 2, 
+            "code": 1160
         }
-    }, 
+    },
     {
-        "pk": 10, 
-        "model": "mainapp.ward", 
+        "pk": 3, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Berchem Ste Agathe", 
-            "councillor": 1, 
-            "number": 1082
+            "ward": 3, 
+            "code": 1082
         }
-    }, 
+    },
     {
-        "pk": 9, 
-        "model": "mainapp.ward", 
+        "pk": 4, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Koekelberg", 
-            "councillor": 1, 
-            "number": 1081
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "mainapp.ward", 
-        "fields": {
-            "city": 1, 
-            "name": "Molenbeek St Jean", 
-            "councillor": 1, 
-            "number": 1080
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "mainapp.ward", 
-        "fields": {
-            "city": 1, 
-            "name": "Ixelles", 
-            "councillor": 1, 
-            "number": 1050
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "mainapp.ward", 
-        "fields": {
-            "city": 1,
-            "name": "Bruxelles", 
-            "councillor": 6, 
-            "number": 1000
+            "ward": 4,
+            "code": 1000
         }
     }, 
     {
         "pk": 5, 
-        "model": "mainapp.ward", 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Jette", 
-            "councillor": 5, 
-            "number": 1090
+            "ward": 5, 
+            "code": 1040
         }
     }, 
     {
-        "pk": 4, 
-        "model": "mainapp.ward", 
+        "pk": 6, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "St-Gilles", 
-            "councillor": 4, 
-            "number": 1060
+            "ward": 6, 
+            "code": 1140
         }
     }, 
     {
-        "pk": 3, 
-        "model": "mainapp.ward", 
+        "pk": 7, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Anderlecht", 
-            "councillor": 3, 
-            "number": 1070
+            "ward": 7, 
+            "code": 1190
         }
     }, 
     {
-        "pk": 2, 
-        "model": "mainapp.ward", 
+        "pk": 8, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Schaerbeek", 
-            "councillor": 2, 
-            "number": 1030
+            "ward": 8,
+            "code": 1083
         }
     }, 
     {
-        "pk": 1, 
-        "model": "mainapp.ward", 
+        "pk": 9, 
+        "model": "mainapp.zipcode", 
         "fields": {
-            "city": 1, 
-            "name": "Etterbeek", 
-            "councillor": 1, 
-            "number": 1040
+            "ward": 9, 
+            "code": 1050
         }
     }, 
+    {
+        "pk": 10, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 10, 
+            "code": 1090
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 11, 
+            "code": 1081
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 12, 
+            "code": 1080
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 13, 
+            "code": 1060
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 14, 
+            "code": 1210
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 15, 
+            "code": 1030
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 16, 
+            "code": 1180
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 17, 
+            "code": 1170
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 18, 
+            "code": 1200
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 19,
+            "code": 1150
+        }
+    },
+    {
+        "pk": 20, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1020
+        }
+    },
+    {
+        "pk": 21, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1120
+        }
+    },
+    {
+        "pk": 22, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1130
+        }
+    },
     {
         "pk": 1, 
         "model": "mainapp.reportcategoryclass", 

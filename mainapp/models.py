@@ -133,14 +133,13 @@ class Councillor(models.Model):
 
         
 class Ward(models.Model):
-    
     name = models.CharField(max_length=100)
     number = models.IntegerField()
     councillor = models.ForeignKey(Councillor,null=True,blank=True)
     city = models.ForeignKey(City)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
-    
+
     # this email addr. is the destination for reports
     # if the 'Ward' email rule is enabled
     email = models.EmailField(blank=True, null=True)
@@ -177,7 +176,9 @@ class Ward(models.Model):
     class Meta:
         db_table = u'wards'
 
-    
+class ZipCode(models.Model):
+    ward = models.ForeignKey(Ward)
+    code = models.CharField(max_length=4)
             
 # Override where to send a report for a given city.        
 #
@@ -309,6 +310,8 @@ class Report(models.Model):
 
     def get_absolute_url(self):
         return  "/reports/" + str(self.id)
+    def get_mobile_absolute_url(self):
+        return  "/mobile/reports/" + str(self.id)
             
     class Meta:
         db_table = u'reports'

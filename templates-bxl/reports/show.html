@@ -3,12 +3,19 @@
 {% block title %}{{report.ward.city.name}}: {{report.title}}{% endblock %}
 {% block script %}
 <!-- TODO change key and put it in settings ! -->
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a620b09451f9502"></script>
-{% include '_fixmystreetmap.js' %}
+<script src="http://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a620b09451f9502"></script>
+<script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="/media/js/fixmystreetmap.js"></script>
 <script>
 $(function(){
-	openMap({{ report.point.x }}, {{ report.point.y }});
-	addMarker({{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
+	$('#map-bxl').fmsMap({ 
+		origin:{
+			x:{{ report.point.x }},
+			y:{{ report.point.y }} 
+		}
+	});
+	$('#map-bxl').fmsMap('addMarker',{{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
 });
 </script>
 {% endblock %}
@@ -94,14 +101,17 @@ $(function(){
 		
 			{% if updates %}
 			<h3>{% trans "Updates" %}</h3>
-			<hr/>
-			{% for update in updates %}
-			<p>
-				<em>{% trans "Posted by" %} {{update.author}}, {{update.created_at|date}}</em>
-			</p>
-			<p>{{update.desc}}</p>
-			<hr/>
-			{% endfor %}
+			<div id="report_updates">
+				{% for update in updates %}
+				<div class="report_update">
+					<p>
+						<em>{% trans "Posted by" %} {{update.author}}, {{update.created_at|date}}</em>
+					</p>
+					<p>{{update.desc}}</p>
+					{% if update.is_fixed %}<strong>{% trans "Fixed" %}</strong>{% endif %}
+				</div>
+				{% endfor %}
+			</div>
 			{% endif %}
 
 			{% if not report.is_fixed %}

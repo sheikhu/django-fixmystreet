@@ -1,8 +1,8 @@
 #home{
 	position:relative;
 }
-.container {
-	background:url("/media/logo.png") center center no-repeat fixed;
+.panel {
+	background:url("/media/images/logo.png") center center no-repeat fixed;
 }
 
 #container {

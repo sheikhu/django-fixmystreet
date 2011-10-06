@@ -16,7 +16,7 @@ def new( request, report_id ):
         # send email flagging this report as being potentially offensive.
         message = render_to_string("emails/flag_report/message.txt", 
                     { 'report': report })
-        send_mail('FixMyStreet.ca Report Flagged as Offensive', message, 
+        send_mail('FixMyStreet Report Flagged as Offensive', message, 
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
         return HttpResponseRedirect(report.get_absolute_url() + '/flags/thanks')
 

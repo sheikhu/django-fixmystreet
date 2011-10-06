@@ -79,8 +79,8 @@ urlpatterns += patterns( 'mainapp.views.reports.flags',
 )
 
 urlpatterns += patterns('mainapp.views.reports.mobile',
-    (r'^reports/mobile/(\d+)$', 'show'),       
-    (r'^reports/mobile/', 'new'),
+    (r'^mobile/reports/(\d+)$', 'show'),       
+    (r'^mobile/reports/', 'new'),
 )
 
 urlpatterns += patterns('mainapp.views.reports.main',

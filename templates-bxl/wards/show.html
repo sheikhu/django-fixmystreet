@@ -10,36 +10,30 @@
 </style>
 {% endblock %}
 {% block script %}
-<script type="text/javascript" src="/media/wards.json"></script>
-{% include '_fixmystreetmap.js' %}
+<!--<script type="text/javascript" src="/media/wards.json"></script>-->
+<script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="/media/js/fixmystreetmap.js"></script>
 <script>
 $(function(){
-	var coresp = {
-		'1070':0,
-		'1160':1,
-		'1082':2,
-		'1000':3,
-		'1040':4,
-		'1140':5,
-		'1190':6,
-		'1083':7,
-		'1050':8,
-		'1090':9,
-		'1081':10,
-		'1080':11,
-		'1060':12,
-		'1210':13,
-		'1030':14,
-		'1180':15,
-		'1170':16,
-		'1200':17,
-		'1150':18
-	};
+
 	
-	openMap();
-	highlightArea(wardsCoords.features[coresp['{{ ward.number }}'] || 0].geometry);
+	$('#map-bxl').fmsMap();
+	$.ajax({
+		url:'/api/wards/',
+		type:'GET',
+		dataType:'json',
+		success:function(response)
+		{
+			$('#map-bxl').fmsMap('highlightArea',response.features[{{ ward.number }}].geometry);
+		},
+		error:function()
+		{
+			$form.prepend('<p class="error-msg">Unexpected error.</p>');
+		}
+	});
 	{% for report in reports %}
-	addMarker({{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
+	$('#map-bxl').fmsMap('addMarker', {{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
 	{% endfor %}
 });
 
@@ -51,14 +45,13 @@ $(function(){
 	<p>{% trans "Reports filed between" %} {{date_range_start|date:"N jS, Y"}} {% trans "and" %} {{date_range_end|date:"N jS, Y"}}. 
 		{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
 		<div id='leftcol'>
+			{% if not reports %}
+			<p>{% trans "No problems have been reported." %}</p>
+			{% endif %}
 			<ol>
-				{% if not reports %}
-					<p>{% trans "No problems have been reported." %}</p>
-				
-				{% endif %}
 				{% for report in reports %}					
 					{% ifchanged report.status %}  	
-					 <p/><h2>{% trans report.status %}</h2>
+					<h2>{% trans report.status %}</h2>
 					{% endifchanged %}
                     <li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
                 {% endfor %}
@@ -71,12 +64,8 @@ $(function(){
              {% endif %}
  		</div>
 		<div id='rightcol'>
-		<!--{% if google %}
-    			<div id="{{ google.dom_id }}"></div>
-    		{% endif %}-->
-		<div id="map-bxl"> </div>
-    		{% include "wards/_info_box.html" %}   	
-
+			<div id="map-bxl"> </div>
+    		{% include "wards/_info_box.html" %}
 		</div>
 	</div>
 	<br/ style="clear:both;">

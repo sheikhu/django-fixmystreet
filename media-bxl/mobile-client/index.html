@@ -10,11 +10,13 @@
         <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>-->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="jQTouch/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
-        <script type="text/javascript" src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
-        <script src="http://proj4js.org/lib/proj4js-combined.js"></script>
-  
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
+		<script src="http://proj4js.org/lib/proj4js-combined.js"></script>
+
         <script src="../js/fixmystreetmap.js"></script>
         <script>
+
             var jQT = $.jQTouch({
                 icon: 'icon.png',
                 startupScreen: 'startup.png'
@@ -24,17 +26,20 @@
             $(document).bind('ready',function(){
 				var point = {x:0, y:0};
 
-                $(document.body).bind('turn',function(){
+                /*
+				$(document.body).bind('turn',function(){
                     var $container = $('#container');
                     var $toolbar = $container.prev();
                     //$map.css({top:$toolbar.offset().top + $toolbar.height()});
                     $container.css({top:45});
                 });
                 $('body').trigger('turn');
+				*/
 
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(function(position){
-                        Proj4js.defs["EPSG:31370"]="+proj=lcc +lat_1=51.16666723333334 +lat_2=49.83333389999999 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-99.1,53.3,-112.5,0.419,-0.83,1.885,-1.0 +units=m +no_defs";
+                if(navigator.geolocation)
+				{
+                    navigator.geolocation.getCurrentPosition(function(position)
+					{
     
                         var source = new Proj4js.Proj("EPSG:4326");
                         var dest   = new Proj4js.Proj("EPSG:31370");
@@ -43,15 +48,17 @@
                         Proj4js.transform(source, dest, p);
 						
 						point = p;
-						$('#create-report').attr('href','/reports/mobile/new?lon='+p.x+'&lat='+p.y+'&address=arts');
+						$('#create-report').attr('href','/mobile/reports/new?lon='+p.x+'&lat='+p.y+'&address=arts');
 
-                        openMap(p.x,p.y);
-						addDraggableMarker(p.x, p.y);
+                        $('#map-bxl').fmsMap({
+							origin:{x:p.x,y:p.y}
+						});
+						$('#map-bxl').fmsMap('addDraggableMarker', p.x, p.y);
                     });
                 }
 				$('#map-bxl').bind('markermoved',function(evt,p){
-					point = {x:p.x,y:p.y};
-					$('#create-report').attr('href','/reports/mobile/new?lon='+p.x+'&lat='+p.y+'&address=arts');
+					//point = {x:p.x,y:p.y};
+					$('#create-report').attr('href','/mobile/reports/new?lon='+p.x+'&lat='+p.y+'&address=arts');
 				});
 
                 $('#show-search').tap(function(evt){
@@ -81,41 +88,29 @@
 				});
 
 				$('#jqt').delegate('#new_report', 'pageAnimationEnd', function(event, info){
-					if (info.direction == 'in'){
+					if (info.direction == 'in')
+					{
+						var $form = $(this).find('form');
+						
 						$('#id_category').change();// initialize notes
 						
-						
-						$form = $(this).find('form');
-						$.ajax({
-							url:'/api/address/',
-							type:'POST',
-							contentType:'json',
-							dataType:'json',
-							data:JSON.stringify({
-								"language": "fr",
-								"point": point
-							}),
-							success:function(response){
-					
+						$form.find('.error-msg').remove();
+						$form.find(':submit').attr('disabled','disabled');
+						$('#id_address').addClass('loading');
+
+						$('#map-bxl').fmsMap('getSelectedAddress', function(response){					
+							$form.removeClass('loading');
+							$form.find(':submit').removeAttr('disabled');
+							
+							if(response.status == 'success')
+							{
+								$('#id_postalcode').val(response.result.address.street.postCode);
+								$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
+							}
+							else
+							{
 								$form.removeClass('loading');
-								//$searchButton.prop('disabled',false);
-								
-								if(response.status == 'success')
-								{
-									$('#id_postalcode').val(response.result.address.street.postCode);
-									$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
-								}
-								else
-								{
-									$form.prepend('<p class="error-msg">' + response.status + '</p>');
-								}
-							},
-							error:function(){
-								$form.removeClass('loading');
-								$searchButton.prop('disabled',false);
-						
-								$form.prepend('<p class="error-msg">Unexpected error.</p>');
-								console.log(arguments);
+								$('#id_address').before('<p class="error-msg">' + response.status + '</p>');
 							}
 						});
 						
@@ -125,15 +120,18 @@
 					}
 				});
             });
+
+			/* proj4js config */
+            Proj4js.defs["EPSG:31370"]="+proj=lcc +lat_1=51.16666723333334 +lat_2=49.83333389999999 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-99.1,53.3,-112.5,0.419,-0.83,1.885,-1.0 +units=m +no_defs";
         </script>
     </head>
     <body>
         <div id="jqt">
-            <div id="home" selected="true" class="edgetoedge form">
+            <div id="home" selected="true" class="panel">
                 <div class="toolbar">
                     <h1>Fix My Street</h1>
                 </div>
-                <div id="container" class="container">
+                <div id="container">
                     <div id="map-bxl"> </div>
 					<form id="search-form">
 	                    <input id="search" type="search"></input>

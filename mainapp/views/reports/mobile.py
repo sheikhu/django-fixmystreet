@@ -10,11 +10,38 @@ import datetime
 from django.contrib.gis.measure import D 
 from mainapp.views.main import _search_url
 
+def new( request ):
+    d2p = DictToPoint( request.REQUEST )
+    pnt = d2p.pnt()
+
+    if request.method == "POST":
+        report_form = ReportForm( request.POST, request.FILES )
+        # this checks update is_valid too
+        if report_form.is_valid():
+            # this saves the update as part of the report.
+            report = report_form.save()
+            if report:
+                return( HttpResponseRedirect( report.get_mobile_absolute_url() ))
+    else:
+        report_form = ReportForm(initial={ 'lat': request.GET.get('lat',request.POST.get('lat')),
+                                           'lon': request.GET.get('lon',request.POST.get('lon')),
+                                           #'postalcode': request.GET['postalcode'],
+                                           #'address': request.GET.get('address',None)
+                                })
+
+    return render_to_response("reports/mobile/new.html",
+                {
+                    "report_form": report_form,
+                    "update_form": report_form.update_form,
+                    "pnt":pnt
+                },
+                context_instance=RequestContext(request))
+
         
 def show( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     subscribers = report.reportsubscriber_set.count() + 1
-    return render_to_response("reports/show.html",
+    return render_to_response("reports/mobile/show.html",
             {
                 "report": report,
                 "subscribers": subscribers,
@@ -27,29 +54,3 @@ def show( request, report_id ):
             context_instance=RequestContext(request))
 
 
-
-def new( request ):
-    d2p = DictToPoint( request.REQUEST )
-    pnt = d2p.pnt()
-
-    if request.method == "POST":
-        report_form = ReportForm( request.POST, request.FILES )
-        # this checks update is_valid too
-        if report_form.is_valid():
-            # this saves the update as part of the report.
-            report = report_form.save()
-            if report:
-                return( HttpResponseRedirect( report.get_absolute_url() ))
-    else:
-        report_form = ReportForm(initial={ 'lat': request.GET['lat'],
-                                           'lon': request.GET['lon'],
-                                           #'postalcode': request.GET['postalcode'],
-                                           'address': request.GET.get('address',None) } )
-
-    return render_to_response("reports/new-mobile.html",
-                {
-                    "report_form": report_form,
-                    "update_form": report_form.update_form,
-                    "pnt":pnt
-                },
-                context_instance=RequestContext(request))

@@ -28,7 +28,15 @@ def address(request):
 # http://geoserver.gis.irisnet.be/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json
 def wards(request): 
     conn = httplib.HTTPConnection('geoserver.gis.irisnet.be')
-    conn.request("GET", "geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json")
+    conn.request("GET", "/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json")
+    #conn.request("GET", "geoserver/ows",{
+        #"service":"WFS",
+        #"version":"1.0.0",
+        #"request":"GetFeature",
+        #"typeName":"urbis:MU_VIEW_FR",
+        #"maxFeatures:":"50",
+        #"outputFormat":"json"
+    #})
     response = conn.getresponse()
     data = response.read()
     conn.close()

@@ -19,7 +19,7 @@ class ContactForm(forms.Form):
     
     def save(self, fail_silently=False):
         message = render_to_string("emails/contact/message.txt", self.cleaned_data )
-        send_mail('FixMyStreet.ca User Message from %s' % self.cleaned_data['email'], message, 
+        send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message, 
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
 
@@ -97,16 +97,15 @@ class ReportForm(forms.ModelForm):
     lat = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     lon = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    photo = forms.fields.ImageField(widget=forms.widgets.ClearableFileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    photo = forms.fields.ImageField(required=False,widget=forms.widgets.ClearableFileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 
     def __init__(self,data=None,files=None,initial=None):
         if data:
+            self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
             d2p = DictToPoint(data,exceptclass=None)
-            self.ward = Ward.objects.get(number=data['postalcode'])
         else:
             d2p = DictToPoint(initial,exceptclass=None)
-            #self.ward = Ward.objects.get(number=initial['postalcode'])
         
         self.pnt = d2p.pnt()
         self.update_form = ReportUpdateForm(data)

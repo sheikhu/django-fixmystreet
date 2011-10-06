@@ -6,7 +6,7 @@ from mainapp.models import Report, ReportUpdate, City, Ward
 class LatestReports(Feed):
     title = "All FixMyStreet Reports"
     link = "/reports/"
-    description = "All FixMyStreet.ca Reports"
+    description = "All FixMyStreet Reports"
 
     def items(self):
         return Report.objects.filter(is_confirmed=True).order_by('-created_at')[:30]
@@ -21,7 +21,7 @@ class LatestReportsByCity(Feed):
         return City.objects.get(id=bits[0])
 
     def title(self, obj):
-        return "FixMyStreet.ca: Reports for %s" % obj.name
+        return "FixMyStreet: Reports for %s" % obj.name
 
     def link(self, obj):
         if not obj:
@@ -45,7 +45,7 @@ class LatestReportsByWard(Feed):
         return Ward.objects.get(id=bits[0])
 
     def title(self, obj):
-        return "FixMyStreet.ca: Reports for %s, %s" % (obj.name, obj.city.name)
+        return "FixMyStreet: Reports for %s, %s" % (obj.name, obj.city.name)
 
     def link(self, obj):
         if not obj:
@@ -70,7 +70,7 @@ class LatestUpdatesByReport(Feed):
         return Report.objects.get(id=bits[0])
 
     def title(self, obj):
-        return "FixMyStreet.ca: Updates for Report %s" % obj.title
+        return "FixMyStreet: Updates for Report %s" % obj.title
 
     def link(self, obj):
         if not obj:
