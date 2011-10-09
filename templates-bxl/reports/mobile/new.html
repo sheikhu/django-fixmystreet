@@ -1,17 +1,18 @@
 {% load i18n %}
-<div id="new_report" class="panel">
+<div class="panel new_report">
 	<div class="toolbar">
 		<h1>{% trans "New report" %}</h1>
 		<a class="back" href="#">{% trans "Location" %}</a>
 	</div>
 
-	<form enctype="multipart/form-data" method="post" action="/mobile/reports/" id='report_form'>
+	<form enctype="multipart/form-data" method="post" action="http://192.168.103.27:8000/mobile/reports/" id="report_form" class="form">
+		<img id='photo_preview' style="display:none;"/>
 		{{ report_form.as_p }}
-		<p id="photo_note">{% trans "* Optional" %} (Test : <input type="file" accept="image/*;capture=camera" id="capture"/>)</p>
+		<!--<p id="photo_note">{% trans "* Optional" %}</p>-->
 		<p id='secondary_container'></p>
 		{{ update_form.as_p }}
-		<div class='note'>
-			<p><strong>{% trans "Please Note" %} :</strong></p>
+		<div>
+			<h2>{% trans "Please Note" %} :</h2>
 			<ul>
 				<li>{% trans "Please be polite, concise and to the point." %}</li>
 				<li>{% trans "Please do not be abusive - abusing the service devalues the service for all users." %}</li>
@@ -20,7 +21,7 @@
 			</ul>
 		</div>
 		<p>
-			<input type="submit" class='big_button' value="{% trans "Submit" %}"/>
+			<a href="#" class="submit whiteButton">{% trans "Submit" %}</a>
 		</p>
 	</form>
 </div>

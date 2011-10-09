@@ -1,0 +1,156 @@
+#home{
+	position:relative;
+}
+.panel {
+	background:url("/media/images/logo.png") center center no-repeat fixed;
+}
+
+#container {
+	margin: 0px auto;
+	/*width: 520px;
+	height: 400px;*/
+	position: absolute;
+	top: 45px;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+#jqt ul.errorlist li{
+	color:red;
+}
+
+#map-bxl{
+	height:100%;
+	width:100%;
+}
+
+#show-search{
+	z-index: 1000;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+#create-report{
+	z-index: 1000;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+#search-form{
+	z-index: 1000;
+	display: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	left: 50px;
+}
+#search{
+	width:100%;
+	font-size: 1.5em;
+	padding: 0.4em 0.5em;
+	color:#222;
+	border:black solid 1px;
+	border-radius:5px;
+	box-sizing:border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+#search_box.loading{
+	background:url("/media/images/ajax-loader.gif") no-repeat 98% center transparent;
+}
+
+p{
+	margin: 10px 10px 12px 10px;
+}
+
+label{
+	display:block;
+}
+
+input[type=text], select, textarea{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width:100%;
+	padding: 6px 4px;
+	font-size:1em;
+	border:1px solid black;
+	border-radius:5px;
+}
+
+#id_photo{
+	display:none;
+}
+
+#photo_preview{
+	float:right;
+}
+
+.error-msg {
+	color:red;
+}
+
+.note {
+	font-weight:bold;
+	font-size:9pt;
+	background-color:#bee4be;
+	border-radius:5px;
+	border:1px solid green;
+	padding:1.2em;
+	color:#333;
+	font-weight:normal;
+}
+
+.note strong {
+	font-size:10pt;
+	color:green;
+}
+
+
+#report-header {
+	padding:10px;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+.is_fixed {
+    padding: 5px;
+    margin-bottom: 1em;
+    text-align: center;
+    position: relative;
+    background-color: #b5d29c;
+    border: solid 2px #009900;
+    color: #222222;
+}
+
+.is_fixed p {
+    color: #222222;
+    text-align: left;
+    margin: 1em;
+}
+
+#report-header { 
+	width: 100%;
+}
+
+#report-header th { 
+	padding-right: 5px; 
+}
+
+#more-actions {/* "offensive?..." */
+	font-size: 80%;
+	text-align: right;
+}
+
+#report-subscribers {
+	padding:10px;
+	float:right;
+	text-align: center;
+	background: #517EB5; 
+	border: solid 2px #004990;
+	border-radius:5px;
+	color:white;
+}

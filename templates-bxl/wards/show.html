@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load tags %}
 {% block title %}{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}}{% endblock %}
 {% block css %}
 <style>
@@ -9,11 +10,9 @@
 }
 </style>
 {% endblock %}
+
 {% block script %}
-<!--<script type="text/javascript" src="/media/wards.json"></script>-->
-<script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script src="/media/js/fixmystreetmap.js"></script>
+{% map_scripts %}
 <script>
 $(function(){
 
@@ -33,8 +32,13 @@ $(function(){
 		}
 	});
 	{% for report in reports %}
-	$('#map-bxl').fmsMap('addMarker', {{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
+	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %});
 	{% endfor %}
+	
+	$('#map-bxl').bind('reportselected',function(evt, point, report){
+		window.location.assign('/reports/' + report.id);
+	});
+
 });
 
 </script>
@@ -42,7 +46,7 @@ $(function(){
 {% block content %}
 	<div id="fullwidth">
 	<h3>{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}} (Ward {{ward.number}})</h3>
-	<p>{% trans "Reports filed between" %} {{date_range_start|date:"N jS, Y"}} {% trans "and" %} {{date_range_end|date:"N jS, Y"}}. 
+	<p>{% trans "Reports filed between" %} {{date_range_start|date:"j N Y"}} {% trans "and" %} {{date_range_end|date:"j N Y"}}. 
 		{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
 		<div id='leftcol'>
 			{% if not reports %}

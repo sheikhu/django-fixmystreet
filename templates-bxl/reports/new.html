@@ -1,21 +1,43 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
-<script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script src="https://raw.github.com/cowboy/jquery-hashchange/v1.3/jquery.ba-hashchange.min.js"></script>
-<script src="/media/js/fixmystreetmap.js"></script>
+<script src="/media/hashchange/jquery.ba-hashchange.min.js"></script>
+
+{% map_scripts %}
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="/media/OpenLayers-2.11/OpenLayers.js"></script>
+<script src="/media/js/fixmystreetmap.js"></script>-->
 <script>
+
 $(document).ready(function() {
 	var $form = $('#report_form');
+	var $map = $('#map-bxl');
+	
+	$map.fmsMap({ 
+		origin:{
+			x:{{ pnt.x }},
+			y:{{ pnt.y }} 
+		}
+	});
+	{% for report in reports %}
+	$map.fmsMap('addReport', {% report_to_json report %});
+	{% endfor %}
+	$map.fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
 
 	
 	$(window).hashchange(function(){
-		if(document.location.hash == '#form' || document.location.href.indexOf('new') < 0){
+		if(window.location.hash == '#form')
+		{
 			$form.show();
 			$('#localize-report').hide();
-			reverse_geocode();
+			retrieveAddress();
+		}
+		else if(window.location.href.indexOf('new') < 0)
+		{
+			$form.show();
+			$('#localize-report').hide();
 		}
 		else
 		{
@@ -30,7 +52,7 @@ $(document).ready(function() {
 		var el_id = $('#id_category').val();
 		if(el_id)
 		{
-			$("#secondary_container").load("/ajax/categories/"+el_id);
+			$("#secondary_container").load("/ajax/categories/" + el_id);
 		}
 		else
 		{
@@ -39,32 +61,30 @@ $(document).ready(function() {
 	});
 	$('#id_category').change();// initialize notes
 	
-	$('#map-bxl').bind('markermoved',function(evt,point){
+	$map.bind('markermoved',function(evt,point){
 		$('#id_lon').val(point.x);
 		$('#id_lat').val(point.y);
 		
-		document.location.assign('#form');
-		reverse_geocode();
-	});
-
-	$('#map-bxl').fmsMap({ 
-		origin:{
-			x:{{ pnt.x }},
-			y:{{ pnt.y }} 
+		if(window.location.hash != '#form')
+		{
+			window.location.assign('#form');
+			return; // address is retrieved when form is shown
 		}
+		
+		retrieveAddress();
 	});
-	$('#map-bxl').fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
-	{% for report in reports %}
-	$('#map-bxl').fmsMap('addMarker',{{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
-	{% endfor %}
 
-	function reverse_geocode()
+	$map.bind('reportselected',function(evt, point, report){
+		window.location.assign('/reports/' + report.id);
+	});
+
+	function retrieveAddress()
 	{
 		$form.find('.error-msg').remove();
 		$form.find(':submit').prop('disabled',true);
 		$('#id_address').addClass('loading');
 
-		$('#map-bxl').fmsMap('getSelectedAddress',function(response)
+		$map.fmsMap('getSelectedAddress',function(response)
 		{
 			$form.find(':submit').prop('disabled',false);
 			$('#id_address').removeClass('loading');
@@ -74,17 +94,16 @@ $(document).ready(function() {
 				$('#id_postalcode').val(response.result.address.street.postCode);
 				$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
 			}
-			else if(response.status == 'error')
-			{
-				$('#id_address').removeClass('loading');
-				$form.find(':submit').prop('disabled',false);
-				$('#id_address').before('<p class="error-msg">Unable to locate this adress</p>');
-			}
 			else
 			{
+				var msg = 'Error: ' + response.status;
+				if(response.status == 'error')
+				{
+					msg = 'Unable to locate this address';
+				}
 				$('#id_address').removeClass('loading');
 				$form.find(':submit').prop('disabled',false);
-				$('#id_address').before('<p class="error-msg">' + response.status + '</p>');
+				$('#id_address').after('<p class="error-msg">' + msg + '</p>');
 			}
 		});
 	}
@@ -128,7 +147,7 @@ $(document).ready(function() {
 			<div id='report-destination'>
 				<h3>
 					{% trans "Nearby reports filed between" %} 
-					{{date_range_start|date:"N jS, Y"}} {% trans "and" %} {{date_range_end|date:"N jS, Y"}}
+					{{date_range_start|date:"j N Y"}} {% trans "and" %} {{date_range_end|date:"j N Y"}}
 				</h3>
 				
 				{% if reports %}

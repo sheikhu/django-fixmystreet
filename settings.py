@@ -46,7 +46,7 @@ ADMIN_MEDIA_PREFIX = '/admin_media/'
 # http://docs.djangoproject.com/en/dev/ref/settings/#file-upload-permissions
 
 FILE_UPLOAD_PERMISSIONS = 0644
-DATE_FORMAT = "l, F jS, Y"
+DATE_FORMAT = "l, j F Y"
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -101,6 +101,8 @@ INSTALLED_APPS = (
 
 AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
 
+
+ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
 
 #################################################################################
 # These variables Should be defined in the local settings file

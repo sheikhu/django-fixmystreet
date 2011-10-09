@@ -353,7 +353,7 @@ class ReportUpdate(models.Model):
     def notify_on_new(self):
         # send to the city immediately.           
         subject = render_to_string("emails/send_report_to_city/subject.txt", {'update': self })
-        message = render_to_string("emails/send_report_to_city/message.txt", { 'update': self, 'SITE_URL':settings.SITE_URL })
+        message = render_to_string("emails/send_report_to_city/message.txt", { 'update': self})#, 'SITE_URL':request.META['HTTP_HOST'] })#settings.SITE_URL
         
         to_email_addrs,cc_email_addrs = self.report.ward.get_emails(self.report)
         email_msg = CCEmailMessage(subject,message,settings.EMAIL_FROM_USER, 

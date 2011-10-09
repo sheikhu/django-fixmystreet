@@ -98,9 +98,10 @@ urlpatterns += patterns('mainapp.views.ajax',
 )
 
 urlpatterns += patterns('mainapp.views.api',
+    (r'^api/search/$', 'search'),
     (r'^api/locate/$', 'locate'),
-    (r'^api/address/$', 'address'),
     (r'^api/wards/$', 'wards'),
+    (r'^api/reports/$', 'reports'),
 )
 
 if settings.DEBUG and 'TESTVIEW' in settings.__dir__():

@@ -9,11 +9,12 @@ from django.utils.translation import ugettext as _
 import datetime
 from django.contrib.gis.measure import D 
 from mainapp.views.main import _search_url
+from django.contrib.sites.models import Site
 
 def new( request ):
     d2p = DictToPoint( request.REQUEST )
     pnt = d2p.pnt()
-
+    current_site = Site.objects.get_current()
     if request.method == "POST":
         report_form = ReportForm( request.POST, request.FILES )
         # this checks update is_valid too

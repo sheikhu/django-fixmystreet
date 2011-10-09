@@ -5,16 +5,6 @@
 {% endblock %}
 
 {% block content %}
-	{% if search_error %}
-	<div id='search-error'>
-		<div id='error-msg'>{{search_error}}</div>
-	</div>
-	{% endif %}
-	
-	{% if not search_error %}
-	<div id='search-error' style="display:none;"></div>
-	{% endif %}
-
 	<div id="intro">
 		<h1>{% trans "report/view/discuss" %}</h1>
 		<p>{% trans "<span>graffiti.</span> <span class='alt'>potholes.</span> <span>excessive</span> <span class='alt'>garbage.</span> <span>street</span> <span class='alt'>lighting.</span>" %}</p>
@@ -22,17 +12,21 @@
 
 	<form id='search_form'>
 		<p>{% trans "Enter a nearby street name:" %}</p>
-		<input id='search_box' type="text" name="q" {% if location %}value="{{location}}"{% endif %}>
-		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans "Search" %}">
+		<input id='search_box' type="search" name="q" {% if location %}value="{{location}}"{% endif %}/>
+
 		<div id="ward_select">
 			<select id="search_ward" name="ward">
 				<option value="">{% trans "Choose a ward..." %}</option>
 				{% for ward in wards %}
-				<option value={{ward.number}}>{{ward.name}} ({{ward.number}})</option>
+				<option value={{ward.number}}>{{ward.name}} ({% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %},{% endif %}{% endfor %})</option>
 				{% endfor %}
 			</select>
 			<p>{% trans "or leave empty for a global search" %}</p>
 		</div>
+
+		<div id='proposal'> </div>
+		
+		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans "Search" %}">
 	</form>
 
 {% endblock %}
