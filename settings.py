@@ -78,7 +78,7 @@ LANGUAGES = (
 )
 
 
-ROOT_URLCONF = 'fixmystreet.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -94,7 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.gis',
-    'contrib.google_analytics',
+    #'contrib.google_analytics',
     'transmeta',
     'mainapp',
 )
@@ -119,7 +119,7 @@ AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
 #EMAIL_HOST_PASSWORD =
 #EMAIL_PORT =
 #EMAIL_FROM_USER =
-#DEBUG =
+DEBUG = False
 #LOCAL_DEV =
 #SITE_URL = http://localhost:8000
 #SECRET_KEY=

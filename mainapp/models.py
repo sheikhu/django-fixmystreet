@@ -3,7 +3,7 @@ from django.db import models, connection
 from django.contrib.gis.db import models
 from django.contrib.gis.maps.google import GoogleMap, GMarker, GEvent, GPolygon, GIcon
 from django.template.loader import render_to_string
-from fixmystreet import settings
+import settings
 from django import forms
 from django.core.mail import send_mail, EmailMessage
 import md5
