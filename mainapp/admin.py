@@ -1,10 +1,10 @@
-from fixmystreet.mainapp.models import UserProfile,EmailRule,Ward,ReportCategory,Report,City, ReportCategoryClass, FaqEntry, Councillor,ReportCategorySet
+from fixmystreet.mainapp.models import EmailRule, Ward, ReportCategory, Report, City, ReportCategoryClass, FaqEntry, Councillor
 from django.contrib import admin
 from transmeta import canonical_fieldname
 from django import forms
 
-admin.site.register(City)
-admin.site.register(UserProfile)
+#admin.site.register(City)
+#admin.site.register(UserProfile)
 
 class ReportCategoryClassAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -12,14 +12,14 @@ class ReportCategoryClassAdmin(admin.ModelAdmin):
 admin.site.register(ReportCategoryClass,ReportCategoryClassAdmin)
 
 class ReportCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'hint')
+    list_display = ('name', 'hint',)
 
 admin.site.register(ReportCategory, ReportCategoryAdmin)
 
-class ReportCategorySetAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+#class ReportCategorySetAdmin(admin.ModelAdmin):
+    #list_display = ('name',)
 
-admin.site.register(ReportCategorySet, ReportCategorySetAdmin)
+#admin.site.register(ReportCategorySet, ReportCategorySetAdmin)
 
 class FaqEntryAdmin(admin.ModelAdmin):
     list_display = ('q', 'order')
@@ -29,6 +29,7 @@ admin.site.register(FaqEntry, FaqEntryAdmin)
 class CouncillorAdmin(admin.ModelAdmin):
     ''' only show councillors from cities this user has access to '''
     list_display = ('last_name', 'first_name', 'email')
+    fields = ('last_name', 'first_name', 'email')
     
     def queryset(self,request):
         if request.user.is_superuser:
@@ -51,10 +52,10 @@ admin.site.register(Councillor,CouncillorAdmin)
 class WardAdmin(admin.ModelAdmin):
     ''' only show wards from cities this user has access to '''
 
-    list_display = ('city','number','name',)
+    list_display = ('city','number','name','councillor')
     list_display_links = ('name',)
     ordering       = ['city', 'number']
-    # exclude = ['geom']
+    exclude = ['number']
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if not request.user.is_superuser:

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load tags %}
+
 {% block title %}{{report.ward.city.name}}: {{report.title}}{% endblock %}
+
 {% block script %}
-<!-- TODO change key and put it in settings ! -->
-<script src="http://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a620b09451f9502"></script>
-<script src="http://openlayers.org/api/2.11/OpenLayers.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script src="/media/js/fixmystreetmap.js"></script>
+{% addthis_scripts %}
+{% map_scripts %}
 <script>
 $(function(){
 	$('#map-bxl').fmsMap({ 
@@ -15,7 +15,7 @@ $(function(){
 			y:{{ report.point.y }} 
 		}
 	});
-	$('#map-bxl').fmsMap('addMarker',{{ report.point.x }}, {{ report.point.y }}, {% if report.is_fixed %}true{% else %}false{% endif %});
+	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 });
 </script>
 {% endblock %}
@@ -77,7 +77,7 @@ $(function(){
 				<table>
 					<tr><th>{% trans "Category:" %}</th><td><b>{{report.category.name}}</b></td></tr>
 					{% if report.address %}				
-					<tr><th>{% trans "Location:" %}</th><td>{{report.address}}</td></tr>
+					<tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
 					{% endif %}
 					<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
 					

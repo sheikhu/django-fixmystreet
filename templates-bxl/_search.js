@@ -8,47 +8,63 @@ $(function(){
     var $searchWard = $('#search_ward');
     var $searchForm = $('#search_form');
     var $searchButton = $('#search_button');
-    
+	var $proposal = $('#proposal');
+
 
     $searchForm.submit(function(event){
 		event.preventDefault();
 		
-		$searchForm.find('.error-msg').remove();
+		$proposal.slideUp();
 		$searchTerm.addClass('loading');
 		$searchButton.prop('disabled',true);
 		
 		$.ajax({
-			url:'/api/locate/',
+			url:'/api/search/',
 			type:'POST',
-			contentType:'json',
+			contentType:'text/json',
 			dataType:'json',
 			data:JSON.stringify({
-			"language": "fr",
-			"address": {
-				"street": {
-				"name": $searchTerm.val(),
-				"postcode": $searchWard.val()
-				},
-				"number": ""
-			}
+				"language": "fr",
+				"address": {
+					"street": {
+						"name": $searchTerm.val(),
+						"postcode": $searchWard.val()
+					},
+					"number": ""
+				}
 			}),
 			success:function(response){
-				if(response.status == 'success')
+				if(response.status == 'success' && response.result.length > 0)
 				{
-					document.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);// + '&address=' + $searchTerm.val());
-					// openMap(response.result.point);
+					if(response.result.length == 1)
+					{
+						window.location.assign(resToHref(response.result[0]));
+					}
+					else
+					{
+						$searchTerm.removeClass('loading');
+						$searchButton.prop('disabled',false);
+						$proposal.empty();
+						for(var i in response.result)
+						{
+							var street = response.result[i].address.street;
+							$proposal.append('<p><a href="' + resToHref(response.result[i]) + '">' + street.name + ' (' + street.postCode + ')</a></p>');
+						}
+						$proposal.slideDown();
+					}
+					// window.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);
 				}
 				else
 				{
 					$searchTerm.removeClass('loading');
 					$searchButton.prop('disabled',false);
-					if(response.status == "noresult")
+					if(response.status == "noresult" || response.status == "success")
 					{
-						$searchForm.prepend('<p class="error-msg">No corresponding address has been found</p>');
+						$proposal.html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
 					}
 					else
 					{
-						$searchForm.prepend('<p class="error-msg">' + response.status + '</p>');
+						$proposal.html('<p class="error-msg">' + response.status + '</p>').slideDown();
 					}
 				}
 			},
@@ -56,16 +72,18 @@ $(function(){
 				$searchTerm.removeClass('loading');
 				$searchButton.prop('disabled',false);
 		
-				$searchForm.prepend('<p class="error-msg">Unexpected error.</p>');
-				console.log(arguments);
+				$proposal.html('<p class="error-msg">Unexpected error.</p>');
 			}
 		});
     });
     
-    
-    
+	function resToHref(res)
+	{
+		return '/reports/new?lon=' + res.point.x + '&lat=' + res.point.y;
+	}
+
     {% if location %}
-       $searchForm.submit();
+	$searchForm.submit();
     {% endif %}
 
 });

@@ -146,7 +146,7 @@ a {
 	margin-left:1em;
 	display:inline-block; 
 	vertical-align:top;
-	width: 542px;
+	width: 540px;
 }
 
 #body_content h1 {
@@ -292,13 +292,14 @@ th {
 #search_box {
 	width:100%;
 	font-size: 1.5em;
-	padding: 0.4em 0.5em;
+	padding: .4em 0 .4em .5em;
 	color:#222;
 	border:black solid 1px;
 	border-radius:5px;
 	box-sizing:border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	-webkit-appearance:none;
 }
 
 #search_box.loading{
@@ -312,8 +313,8 @@ th {
 }
 
 input.big_button {
+	background-color:#517EB5;
 	background:-moz-linear-gradient(bottom, #517EB5 27%, #004990 64%);
-	/*background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#000)); */
 	background: -webkit-gradient(linear, center bottom, center top, from(#517EB5), to(#004990));
 	padding:0.3em 0.4em;
 	border:2px solid #517EB5;
@@ -366,13 +367,24 @@ input.big_button:hover {
 #report-header th { 
 	padding-right: 5px; 
 }
+/*
 #report-status { 
 	padding-top:10px;
 }
+*/
 #report-subscribers {
 	padding:10px;
 	float:right;
 	text-align: center;
+	background: #517EB5; 
+	border: solid 2px #004990;
+	border-radius:5px;
+	color:white;
+}
+
+#more-actions {/* "offensive?" */
+	font-size: 80%;
+	text-align: right;
 }
 
 #id_address.loading {
@@ -392,6 +404,7 @@ input.big_button:hover {
 	padding-bottom: 2px;
 	color: #6396b0;
 }
+
 .note {
 	font-weight:bold;
 	font-size:9pt;
@@ -475,6 +488,19 @@ input.big_button:hover {
 	color:white;
 }
 
+#reports th.feeds{
+	width:30px;
+}
+
+#reports .feeds{
+	font-size: 0;
+	padding: 3px;
+}
+
+#reports td{
+	vertical-align:middle;
+}
+
 #top-reports{
 	width:360px;
 }
@@ -488,7 +514,8 @@ input.big_button:hover {
 }
 
 .table-stat { 
-	width: 100px;
+	width: 90px;
+	padding:5px;
 }
 
 .table_heading{
@@ -578,10 +605,6 @@ padding: 4px;
 }
 
 
-#more-actions {
-	font-size: 80%;
-	text-align: right;
-}
 
 .error {
 	background-color: #fce7e7;
@@ -699,12 +722,7 @@ blockquote {
 #faq p { margin-bottom: 1em;}
 #faq ul { margin-bottom: 1em;}
 
-#report-subscribers {
-   background: #517EB5; 
-   border: solid 2px #004990;
-   border-radius:5px;
-   color:white;
-}
+
 
 
 .row-highlight {
