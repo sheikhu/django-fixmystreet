@@ -20,8 +20,7 @@
         "model": "mainapp.city", 
         "fields": {
             "name": "Bruxelles",
-            "province": 1,
-            "email": "jsanchezpando@cirb.irisnet.be"
+            "province": 1
         }
     }, 
         {
@@ -39,34 +38,34 @@
         "fields": {
             "first_name": "Bob", 
             "last_name": "Barley", 
-            "email": "jsanchezpando@cirb.irisnet.be"
+            "email": "jsanchezpandoB@cirb.irisnet.be"
         }
     }, 
     {
-        "pk": 3, 
-        "model": "mainapp.councillor", 
+        "pk": 3,
+        "model": "mainapp.councillor",
         "fields": {
-            "first_name": "Carol ", 
-            "last_name": "Cumberland", 
-            "email": "jsanchezpando@cirb.irisnet.be"
+            "first_name": "Carol",
+            "last_name": "Cumberland",
+            "email": "jsanchezpandoC@cirb.irisnet.be"
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "mainapp.councillor", 
+        "pk": 4,
+        "model": "mainapp.councillor",
         "fields": {
-            "first_name": "David ", 
-            "last_name": "Dodds", 
-            "email": "jsanchezpando@cirb.irisnet.be"
+            "first_name": "David ",
+            "last_name": "Dodds",
+            "email": "jsanchezpandoD@cirb.irisnet.be"
         }
-    }, 
+    },
     {
-        "pk": 5, 
-        "model": "mainapp.councillor", 
+        "pk": 5,
+        "model": "mainapp.councillor",
         "fields": {
-            "first_name": "Edward", 
+            "first_name": "Edward",
             "last_name": " Eldridge", 
-            "email": "jsanchezpando@cirb.irisnet.be"
+            "email": "jsanchezpandoE@cirb.irisnet.be"
         }
     }, 
  
@@ -76,7 +75,7 @@
         "fields": {
             "first_name": "Fred ", 
             "last_name": "Flanahan", 
-            "email": "jsanchezpando@cirb.irisnet.be"
+            "email": "jsanchezpandoF@cirb.irisnet.be"
         }
     }, 
     {
@@ -750,36 +749,6 @@
             "category_class": 2
         }
     },
-        {
-        "pk": 1, 
-        "model": "mainapp.reportcategoryset", 
-        "fields": {
-            "name": "Default", 
-            "categories": [
-                20, 
-                19, 
-                18, 
-                17, 
-                16, 
-                15, 
-                13, 
-                11, 
-                9, 
-                7, 
-                5, 
-                1, 
-                3, 
-                14, 
-                12, 
-                10, 
-                8, 
-                6, 
-                4, 
-                2
-            ]
-        }
-    }, 
-     
     {
         "pk": 5, 
         "model": "mainapp.faqentry", 

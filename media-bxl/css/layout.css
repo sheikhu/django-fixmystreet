@@ -292,13 +292,14 @@ th {
 #search_box {
 	width:100%;
 	font-size: 1.5em;
-	padding: 0.4em 0.5em;
+	padding: .4em 0 .4em .5em;
 	color:#222;
 	border:black solid 1px;
 	border-radius:5px;
 	box-sizing:border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	-webkit-appearance:none;
 }
 
 #search_box.loading{

@@ -18,7 +18,9 @@
 			<select id="search_ward" name="ward">
 				<option value="">{% trans "Choose a ward..." %}</option>
 				{% for ward in wards %}
-				<option value={{ward.number}}>{{ward.name}} ({% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %},{% endif %}{% endfor %})</option>
+					{% for zip in ward.zipcode_set.all %}
+						<option value={{zip.code}}>{{zip.code}} {{ward.name}}</option>
+					{% endfor %}
 				{% endfor %}
 			</select>
 			<p>{% trans "or leave empty for a global search" %}</p>

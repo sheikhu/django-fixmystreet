@@ -1,15 +1,26 @@
 from django.utils.translation import ugettext as _
 
 class EmailRuleBehaviour(object):
-    def get_email(self,report,email_rule):
-        return(None)
+    def __init__(self,email_rule,report):
+        self.email_rule = email_rule
+        self.report = report
+
+    def add_email(self,email):
+        if self.email_rule.is_cc: 
+            self.report.cc_emails.append(email)
+        else:
+            self.report.to_emails.append(email)
     
+    def remove_email(self,email):
+        self.report.cc_emails.remove(email)
+        self.report.to_emails.remove(email)
+
     def describe(self, email_rule):
         return("")
-            
+
 class ToCouncillor(EmailRuleBehaviour):
-    def get_email(self, report, email_rule):
-        return( report.ward.councillor.email )
+    def resolve_email(self):
+        self.add_email(self.email_rule.councillor.email)
 
     def describe(self, email_rule ):
         return("Send Reports to Councillor's Email Address")
@@ -18,34 +29,15 @@ class ToCouncillor(EmailRuleBehaviour):
         return(_("All reports"))
     
     def value_for_ward(self, email_rule, ward):
-        return( ward.councillor.email )
+        return( self.ward.councillor.email )
 
     def value_for_city(self,email_rule):
         return(_("the councillor's email address"))
-    
-class ToWard(EmailRuleBehaviour):
 
-    def get_email(self, report, email_rule):
-        return( report.ward.email )
-
-    def describe(self, email_rule ):
-        return("Send Reports to Email Address for Ward")
-
-    def report_group(self, email_rule):
-        return(_("All reports"))
-    
-    def value_for_ward(self, email_rule, ward):
-        return( ward.email )
-
-    def value_for_city(self,email_rule):
-        return(_("the 311 email address for that neighborhood"))
-    
 class MatchingCategoryClass(EmailRuleBehaviour):
-    def get_email(self,report, email_rule):
-        if report.category.category_class == email_rule.category_class:
-            return( email_rule.email )
-        else:
-            return( None )
+    def resolve_email(self):
+        if self.report.category.category_class == self.email_rule.category_class:
+            self.add_email(self.email_rule.councillor.email)
 
     def describe(self,email_rule):
         return('Send All Reports Matching Category Type %s To %s' % (email_rule.category_class.name_en, email_rule.email))
@@ -60,11 +52,9 @@ class MatchingCategoryClass(EmailRuleBehaviour):
         return(email_rule.email)
     
 class NotMatchingCategoryClass(EmailRuleBehaviour):
-    def get_email(self,report, email_rule):
-        if report.category.category_class != email_rule.category_class:
-            return( email_rule.email )
-        else:
-            return( None )
+    def resolve_email(self):
+        if self.report.category.category_class != self.email_rule.category_class:
+            self.remove_email(self.email_rule.councillor.email)
 
     def describe(self,email_rule):
         return('Send All Reports Not Matching Category Type %s To %s' % (email_rule.category_class.name_en, email_rule.email))

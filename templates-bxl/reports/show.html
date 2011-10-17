@@ -77,7 +77,7 @@ $(function(){
 				<table>
 					<tr><th>{% trans "Category:" %}</th><td><b>{{report.category.name}}</b></td></tr>
 					{% if report.address %}				
-					<tr><th>{% trans "Location:" %}</th><td>{{report.address}}</td></tr>
+					<tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
 					{% endif %}
 					<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
 					
