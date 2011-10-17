@@ -45,10 +45,12 @@ $(function(){
 {% endblock %}
 {% block content %}
 	<div id="fullwidth">
-	<h3>{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}} (Ward {{ward.number}})</h3>
-	<p>{% trans "Reports filed between" %} {{date_range_start|date:"j N Y"}} {% trans "and" %} {{date_range_end|date:"j N Y"}}. 
-		{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
 		<div id='leftcol'>
+			<h1>{% trans "Reports for" %} {{ward.name}}</h1>
+			<p>{% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+			<p>{% trans "Reports filed between" %} {{date_range_start|date:"j N Y"}} {% trans "and" %} {{date_range_end|date:"j N Y"}}. 
+			{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
+
 			{% if not reports %}
 			<p>{% trans "No problems have been reported." %}</p>
 			{% endif %}

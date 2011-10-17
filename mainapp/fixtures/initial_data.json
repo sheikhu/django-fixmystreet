@@ -445,6 +445,38 @@
         }
     },
     {
+        "pk": 23, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1031
+        }
+    },
+    {
+        "pk": 24, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1171
+        }
+    },
+    {
+        "pk": 25, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1151
+        }
+    },
+    {
+        "pk": 26, 
+        "model": "mainapp.zipcode", 
+        "fields": {
+            "ward": 4,
+            "code": 1141
+        }
+    },
+    {
         "pk": 1, 
         "model": "mainapp.reportcategoryclass", 
         "fields": {

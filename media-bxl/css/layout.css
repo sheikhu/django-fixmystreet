@@ -76,9 +76,10 @@ body {
 
 
 #menu a {
-	font-size: 1rem;
+	font-size: 18px;
+	font-size: 1.125rem;
 	display:inline-block;
-	padding:.8em .4em .2em;
+	padding:.6em .6em .2em;
 	color:black;
 	text-decoration:none;
 }

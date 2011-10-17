@@ -52,7 +52,7 @@ def show( request, ward_id ):
         WHEN age( clock_timestamp(), fixed_at ) > interval '1 month' AND is_fixed = true THEN 3
         ELSE 4
         END """ }, order_by = ['status_int'] ) 
-    
+    print reports,date_range_start,date_range_end,ward
     #google = WardMap(ward,reports)
         
     return render_to_response("wards/show.html",
