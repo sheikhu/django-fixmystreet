@@ -94,7 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.gis',
-    'contrib.google_analytics',
+    #'contrib.google_analytics',
     'transmeta',
     'mainapp',
 )
@@ -121,7 +121,7 @@ ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
 #EMAIL_HOST_PASSWORD =
 #EMAIL_PORT =
 #EMAIL_FROM_USER =
-#DEBUG =
+DEBUG = False
 #LOCAL_DEV =
 #SITE_URL = http://localhost:8000
 #SECRET_KEY=
