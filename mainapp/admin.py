@@ -1,4 +1,4 @@
-from fixmystreet.mainapp.models import EmailRule, Ward, ReportCategory, Report, City, ReportCategoryClass, FaqEntry, Councillor
+from mainapp.models import EmailRule, Ward, ReportCategory, Report, City, ReportCategoryClass, FaqEntry, Councillor
 from django.contrib import admin
 from transmeta import canonical_fieldname
 from django import forms

@@ -70,7 +70,6 @@
 								externalGraphic: rootUrl + "/media/images/marker-pending.png"
 							}
 						});
-						$map.fmsMap('addDraggableMarker', p.x, p.y);
 						
 						$.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
 							if(response.status != 'success')
@@ -85,6 +84,7 @@
 								var report = response.results[i];
 								$map.fmsMap('addReport',report);
 							}
+							$map.fmsMap('addDraggableMarker', p.x, p.y);
 						});
                     },
 					function(){

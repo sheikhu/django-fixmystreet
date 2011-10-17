@@ -3,7 +3,7 @@ from django.db import models, connection
 from django.contrib.gis.db import models
 from django.contrib.gis.maps.google import GoogleMap, GMarker, GEvent, GPolygon, GIcon
 from django.template.loader import render_to_string
-from fixmystreet import settings
+import settings
 from django import forms
 from django.core.mail import send_mail, EmailMessage
 import md5
@@ -235,12 +235,7 @@ class EmailRule(models.Model):
         rule_behavior.resolve_email()
     
     def __str__(self):
-        #rule_behavior = EmailRule.RuleBehavior[ self.rule ](self, report)
-        if self.is_cc:
-            prefix = "CC"
-        else:
-            prefix = "TO"
-        return( "%s: %s %s - %s (%s)" % (prefix, self.councillor.first_name, self.councillor.last_name, self.RuleChoices[self.rule][1], self.ward.name) )
+        return( "%s: %s %s - %s %s (%s)" % ("CC" if self.is_cc else "TO", self.councillor.first_name, self.councillor.last_name, self.RuleChoices[self.rule][1], (self.category_class.name if self.category_class else ''), self.ward.name) )
         
 
 class Report(models.Model):

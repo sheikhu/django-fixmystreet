@@ -12,8 +12,8 @@ import datetime
 from datetime import datetime as dt
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
-from fixmystreet.mainapp.models import Ward,Report
-from fixmystreet import settings
+from mainapp.models import Ward,Report
+import settings
 
 
 reminder_email_count = 0

@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 from mainapp.models import DictToPoint, Report
 from django.contrib.gis.measure import D
-from fixmystreet.mainapp.templatetags.tags import report_to_array
+from mainapp.templatetags.tags import report_to_array
 
 
 
