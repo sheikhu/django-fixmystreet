@@ -4,7 +4,7 @@ from mainapp.models import DictToPoint,Report, ReportUpdate, Ward, ReportCategor
 from mainapp.forms import ReportForm,ReportUpdateForm
 from django.template import Context, RequestContext
 from django.contrib.gis.geos import *
-from fixmystreet import settings
+import settings
 from django.utils.translation import ugettext as _
 import datetime
 from django.contrib.gis.measure import D 
