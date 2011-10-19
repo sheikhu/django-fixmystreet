@@ -262,7 +262,7 @@ class Report(models.Model):
     reminded_at = models.DateTimeField(auto_now_add=True)
     
     point = models.PointField(null=True, srid=31370)
-    photo = StdImageField(upload_to="photos", blank=True, verbose_name =  ugettext_lazy("* Photo"), size=(400, 400), thumbnail_size=(133,100))
+    photo = StdImageField(upload_to="photos", blank=True, verbose_name =  ugettext_lazy("* Photo"), size=(380, 380), thumbnail_size=(66,50))
     desc = models.TextField(blank=True, null=True, verbose_name = ugettext_lazy("Details"))
     author = models.CharField(max_length=255,verbose_name = ugettext_lazy("Name"))
     address = models.CharField(max_length=255,verbose_name = ugettext_lazy("Location"))
@@ -399,13 +399,13 @@ class ReportUpdate(models.Model):
     def save(self):
         # does this update require confirmation?
         if not self.is_confirmed:
-            self.get_confirmation()
+            self.request_confirmation()
         else:
             self.notify()
         super(ReportUpdate,self).save()
             
             
-    def get_confirmation(self):
+    def request_confirmation(self):
         """ Send a confirmation email to the user. """        
         if not self.confirm_token or self.confirm_token == "":
             m = md5.new()
@@ -419,6 +419,7 @@ class ReportUpdate(models.Model):
                     {  'update': self })
             send_mail(subject, message, 
                       settings.EMAIL_FROM_USER,[self.email], fail_silently=False)   
+            print subject, message, settings.EMAIL_FROM_USER, [self.email]
 
             
         super(ReportUpdate, self).save()
@@ -430,8 +431,8 @@ class ReportUpdate(models.Model):
             return "Reported Fixed"
         return("Update")
         
-    class Meta:
-        db_table = u'report_updates'
+    #class Meta:
+        #db_table = u'report_updates'
 
 class ReportSubscriber(models.Model):
     """ 
@@ -443,8 +444,8 @@ class ReportSubscriber(models.Model):
     is_confirmed = models.BooleanField(default=False)    
     email = models.EmailField()
 
-    class Meta:
-        db_table = u'report_subscribers'
+    #class Meta:
+        #db_table = u'report_subscribers'
 
     
     def save(self):

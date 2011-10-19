@@ -19,12 +19,13 @@ $(function(){
 		$searchButton.prop('disabled',true);
 		
 		$.ajax({
+
 			url:'/api/search/',
 			type:'POST',
 			contentType:'text/json',
 			dataType:'json',
 			data:JSON.stringify({
-				"language": "fr",
+				"language": "{{ request.LANGUAGE_CODE }}",
 				"address": {
 					"street": {
 						"name": $searchTerm.val(),

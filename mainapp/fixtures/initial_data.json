@@ -38,7 +38,7 @@
         "fields": {
             "first_name": "Bob", 
             "last_name": "Barley", 
-            "email": "jsanchezpandoB@cirb.irisnet.be"
+            "email": "jsanchezpando@cirb.irisnet.be"
         }
     }, 
     {
@@ -47,7 +47,7 @@
         "fields": {
             "first_name": "Carol",
             "last_name": "Cumberland",
-            "email": "jsanchezpandoC@cirb.irisnet.be"
+            "email": "jsanchezpando@cirb.irisnet.be"
         }
     },
     {
@@ -56,7 +56,7 @@
         "fields": {
             "first_name": "David ",
             "last_name": "Dodds",
-            "email": "jsanchezpandoD@cirb.irisnet.be"
+            "email": "jsanchezpando@cirb.irisnet.be"
         }
     },
     {
@@ -65,7 +65,7 @@
         "fields": {
             "first_name": "Edward",
             "last_name": " Eldridge", 
-            "email": "jsanchezpandoE@cirb.irisnet.be"
+            "email": "jsanchezpando@cirb.irisnet.be"
         }
     }, 
  
@@ -75,7 +75,7 @@
         "fields": {
             "first_name": "Fred ", 
             "last_name": "Flanahan", 
-            "email": "jsanchezpandoF@cirb.irisnet.be"
+            "email": "jsanchezpando@cirb.irisnet.be"
         }
     }, 
     {
@@ -457,7 +457,7 @@
         "model": "mainapp.zipcode", 
         "fields": {
             "ward": 4,
-            "code": 1171
+            "code": 1071
         }
     },
     {
@@ -465,7 +465,7 @@
         "model": "mainapp.zipcode", 
         "fields": {
             "ward": 4,
-            "code": 1151
+            "code": 1051
         }
     },
     {
@@ -473,7 +473,7 @@
         "model": "mainapp.zipcode", 
         "fields": {
             "ward": 4,
-            "code": 1141
+            "code": 1041
         }
     },
     {

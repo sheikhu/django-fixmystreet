@@ -15,14 +15,15 @@ $(document).ready(function() {
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 	
-	$map.fmsMap({ 
+	$map.fmsMap({
+		apiLang:'{{ request.LANGUAGE_CODE }}',
 		origin:{
 			x:{{ pnt.x }},
 			y:{{ pnt.y }} 
 		}
 	});
 	{% for report in reports %}
-	$map.fmsMap('addReport', {% report_to_json report %});
+	$map.fmsMap('addReport', {% report_to_json report %},{{forloop.counter}});
 	{% endfor %}
 	$map.fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
 
@@ -31,18 +32,21 @@ $(document).ready(function() {
 		if(window.location.hash == '#form')
 		{
 			$form.show();
-			$('#localize-report').hide();
+			$('#nearby-reports,#instructable').hide();
+			$('#back').show();
 			retrieveAddress();
 		}
 		else if(window.location.href.indexOf('new') < 0)
 		{
 			$form.show();
-			$('#localize-report').hide();
+			$('#nearby-reports,#instructable,#back').hide();
+			$('#back').show();
 		}
 		else
 		{
 			$form.hide();
-			$('#localize-report').show();
+			$('#nearby-reports').show();
+			$('#back').hide();
 		}
 	});
 	$(window).hashchange();
@@ -61,6 +65,10 @@ $(document).ready(function() {
 	});
 	$('#id_category').change();// initialize notes
 	
+	$map.bind('markerdrag click movestart zoomend',function(evt,point){
+		$('#instructable').hide();	
+	});
+
 	$map.bind('markermoved',function(evt,point){
 		$('#id_lon').val(point.x);
 		$('#id_lat').val(point.y);
@@ -134,44 +142,31 @@ $(document).ready(function() {
 {% block content %}
 <div id="page_content_container">
 	<div id="leftcol">
-		<h2>{% trans "Submitting a report" %}</h2>
-		<div id="localize-report">
-			<div id="instructable">
-				<img src="/media/images/marker.png" class="left">
-				<img src="/media/images/arrow-right.png" class="right">
-				<h3>{% trans "To Report a New Problem" %}</h3>
-				<p>
-					{% trans "Drag the indicated marker to the correct location on the map." %}
-				</p>
-			</div>
+		<h1>{% trans "Submitting a report" %}</h1>
+		<div id="nearby-reports">
 			<div id='report-destination'>
-				<h3>
-					{% trans "Nearby reports filed between" %} 
-					{{date_range_start|date:"j N Y"}} {% trans "and" %} {{date_range_end|date:"j N Y"}}
-				</h3>
+				<h2>
+					{% trans "Nearby reports" %} 
+				</h2>
 				
 				{% if reports %}
-					<ol id='search_results'>
+					<div id='search_results'>
 					{% for report in reports %}
-						<li><a href="{{report.get_absolute_url}}"> {{report.title}} ({{report.distance.km|floatformat:2}} km)</a>
-						{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
-						</li>
+						<a href="{{report.get_absolute_url}}" class="report">
+							<img src="/media/images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
+							{% if report.photo %}
+							<img src="/media/photos/photo_{{ report.id }}.thumbnail.jpeg" class="report-preview"/>
+							{% endif %}
+							<h3 class="report-title"> {{report.title}} ({{report.distance.km|floatformat:2}} km)</h3>
+							<p class="report-address">{{report.address}}</p>
+							{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+						</a>
 					{% endfor %}
-					</ol>
-					<p>{% trans "Zoom out to see more reports nearby." %}</p>
+					</div>
 				{% else %}
 					<p>{% trans "No problems have been reported in this area." %}</p>
 				{% endif %}
 				</ol>
-				{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}
-				<!--
-				<b>{% trans "Where will my report be sent?" %}</b>
-				<ul>
-					{% for rule in ward.get_rule_descriptions %}
-					<li>{{rule}}</li>
-					{% endfor %}
-				</ul>
-				-->
 			</div>
 		</div>
 	
@@ -210,7 +205,16 @@ $(document).ready(function() {
 		</form>
 	</div>
 	<div id="rightcol">
-		<div id="map-bxl" style="width:520px;height:400px;"></div>
+		<div id="map-bxl">
+			<div id="instructable">
+				<h3>{% trans "To fill a new report" %}</h3>
+				<p>
+					{% trans "Drag me to the correct location on the map." %}
+				</p>
+			</div>
+		</div>
+		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
+		<a id="back" href="#">Review reports</a>
 	</div>
 </div>
 {% endblock %}

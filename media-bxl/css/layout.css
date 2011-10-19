@@ -223,6 +223,7 @@ th {
 }
 
 #map-bxl {
+	position:relative;
 	margin: 0px auto;
 	width: 520px;
 	height: 400px;
@@ -344,7 +345,16 @@ input.big_button:hover {
 
 /* first step: instruction */
 #instructable {
-	color:#b4b4b4;
+	position:absolute;
+	bottom:230px;
+	left:270px;
+	right:10px;
+	z-index:1000;
+	background-color:white;
+	padding:4px 14px;
+	border:1px solid black;
+	border-radius:12px;
+	border-bottom-left-radius:0;
 }
 
 #instructable img.left {
@@ -359,6 +369,37 @@ input.big_button:hover {
 
 #search_results { 
 	margin: 1em 0px; 
+}
+
+#search_results .report{
+	display:block;
+	position:relative;
+	min-height:50px;
+	color:black;
+	text-decoration:none;
+	padding: 2px 4px;
+	margin:3px;
+	border:1px solid #ccc;
+	border-radius:4px;
+}
+
+#search_results .report:hover{
+	border:1px solid black;
+}
+
+#search_results .report-counter{
+	position:absolute;
+	top: 7px;
+	left: 7px;
+}
+#search_results .report-title{
+	margin-left:30px;
+}
+#search_results .report-address{
+	margin-left:30px;
+}
+#search_results .report-preview{
+	float:right;
 }
 
 /* second step: form */

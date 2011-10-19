@@ -24,6 +24,7 @@
 	$.widget("ui.fmsMap", {
 		options:{
 			apiRootUrl:"/api/",
+			apiLang:"fr",
 			markerStyle: $.extend({},defaultMarkerStyle,{
 				externalGraphic: "/media/images/marker.png",
 				graphicXOffset:-32/2,
@@ -46,7 +47,7 @@
 		 */
 		_init: function()
 		{
-			var x = null, y = null;
+			var x = null, y = null, self = this;
 			if(this.options.origin)
 			{
 				x = this.options.origin.x;
@@ -58,6 +59,16 @@
 				units: 'm',
 				projection: "EPSG:31370"
 			});
+
+			this.map.events.on({
+				movestart:function(){
+					self.element.trigger('movestart');
+				},
+				zoomend:function(){
+					self.element.trigger('zoomend');
+				}
+			});
+
 			var wms = new OpenLayers.Layer.WMS(
 				"Bruxelles",
 				urbisURL + "wms?",
@@ -116,6 +127,9 @@
 				this.map.addLayer(this.draggableLayer);
 		
 				var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
+					onStart:function(){
+						self.element.trigger('markerdrag');
+					},
 					onComplete:function(feature,pixel){
 						var p = feature.geometry.components[0];
 						self.selectedLocation = {x:p.x,y:p.y};
@@ -146,7 +160,7 @@
 				contentType:'text/json',
 				dataType:'json',
 				data:'{\
-					"language": "fr",\
+					"language": "' + this.options.apiLang + '",\
 					"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
 				}',
 				success:function(response)
@@ -170,7 +184,7 @@
 		 * @param y float define the position of the marker (in Lambert72 coordinate system)
 		 * @param fixed string define the style of the marker
 		 */
-		addReport: function(report)
+		addReport: function(report,index)
 		{
 			var self = this;
 			if(!this.markersLayer)
@@ -219,7 +233,14 @@
 			
 			var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
 			
-			this.markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {'report':report}, report.is_fixed ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle)]);
+			var markerConf = report.is_fixed ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
+			if(index){
+				//make a copy
+				markerConf = $.extend({},markerConf,{
+					externalGraphic:'/media/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
+				});
+			}
+			this.markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf)]);
 
 			/*
 			console.log(newMarker);

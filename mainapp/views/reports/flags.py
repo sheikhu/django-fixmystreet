@@ -18,6 +18,8 @@ def new( request, report_id ):
                     { 'report': report })
         send_mail('FixMyStreet Report Flagged as Offensive', message, 
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
+        send_mail('Hello', 'world','django@cirb.irisnet.be ',['jsanchezpando@cirb.irisnset.be'], fail_silently=False)
+        print 'FixMyStreet Report Flagged as Offensive','\n-----\n', message,'\n-----\n', settings.EMAIL_FROM_USER,'\n-----\n',[settings.ADMIN_EMAIL],'\n-----\n'
         return HttpResponseRedirect(report.get_absolute_url() + '/flags/thanks')
 
 def thanks( request, report_id ):

@@ -29,37 +29,18 @@ def new( request ):
                                            #'postalcode': request.GET['postalcode'],
                                            #'address': request.GET.get('address',None)
                                            } )
-
-
-    # calculate date range for which to return reports
-    if request.GET.has_key('years_ago'):
-        years_ago = int(request.GET['years_ago'])
-    else:
-        years_ago = 0
-    yearoffset = datetime.timedelta(days = 365 * years_ago )
     
-    date_range_end = datetime.datetime.now() - yearoffset
-    date_range_start = date_range_end - datetime.timedelta(days =365)
-    
-    # do we want to show older reports?
-    if Report.objects.filter(created_at__lte = date_range_start, is_confirmed = True, point__distance_lte=(pnt,D(km=2))).count() > 1:
-    #if Report.objects.filter(ward=report_form.ward,created_at__lte=date_range_start).count() > 1:
-        older_reports_link = _search_url(request, years_ago - 1)
-    else:
-        older_reports_link = None
 
-    reports = Report.objects.filter(created_at__gte = date_range_start, created_at__lte = date_range_end, is_confirmed = True,point__distance_lte=(pnt,D(km=2))).distance(pnt).order_by('-created_at')
+    #reports = Report.objects.filter(created_at__gte = date_range_start, created_at__lte = date_range_end, is_confirmed = True,point__distance_lte=(pnt,D(km=2))).distance(pnt).order_by('-created_at')
+    reports = Report.objects.filter(is_confirmed = True,is_fixed = False).distance(pnt).order_by('distance')[0:10]
+    from django.db import connection
     
     return render_to_response("reports/new.html",
             {
                 "report_form": report_form,
                 "update_form": report_form.update_form,
-                #"ward": report_form.ward,
                 "pnt":pnt,
-                "reports":reports,
-                "date_range_start": date_range_start,
-                "date_range_end": date_range_end,
-                "older_reports_link": older_reports_link 
+                "reports":reports
             },
             context_instance=RequestContext(request))
 

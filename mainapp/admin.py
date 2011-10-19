@@ -82,7 +82,7 @@ class ReportAdmin(admin.ModelAdmin):
     list_display = ('ward','title','point',)
     list_display_links = ('title',)
     ordering       = ['ward', 'point']
-    # exclude = ['geom']
+    exclude = ['photo']
     
     #def formfield_for_foreignkey(self, db_field, request, **kwargs):
         #if not request.user.is_superuser:
