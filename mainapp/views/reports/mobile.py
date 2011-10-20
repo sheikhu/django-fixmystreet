@@ -8,7 +8,6 @@ import settings
 from django.utils.translation import ugettext as _
 import datetime
 from django.contrib.gis.measure import D 
-from mainapp.views.main import _search_url
 
 def new( request ):
     d2p = DictToPoint( request.REQUEST )

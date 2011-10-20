@@ -305,7 +305,7 @@ th {
 }
 
 #search_box.loading{
-	background:url("/media/images/ajax-loader.gif") no-repeat 98% center transparent;
+	background:url("../images/ajax-loader.gif") no-repeat 98% center transparent;
 }
 
 #ward_select{
@@ -334,7 +334,7 @@ input.big_button:hover {
 }
 
 #search_form.loading{
-	background:url("/media/images/loader.gif") no-repeat center center transparent;
+	background:url("../images/loader.gif") no-repeat center center transparent;
 }
 #search_form.loading *{
 	opacity:.3;
@@ -430,7 +430,7 @@ input.big_button:hover {
 }
 
 #id_address.loading {
-	background:url("/media/images/ajax-loader-16.gif") no-repeat 99% center transparent;
+	background:url("../images/ajax-loader-16.gif") no-repeat 99% center transparent;
 }
 
 #report-body { 

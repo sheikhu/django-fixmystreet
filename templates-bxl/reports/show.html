@@ -3,8 +3,9 @@
 {% load tags %}
 
 {% block title %}{{report.ward.city.name}}: {{report.title}}{% endblock %}
-
 {% block script %}
+<meta property="og:title" content="{{ report.title }}" />
+<meta property="og:description" content="{{ report.desc }}" />
 {% addthis_scripts %}
 {% map_scripts %}
 <script>
@@ -91,7 +92,7 @@ $(function(){
 		<div id='report-body'>
 			<p>{{report.desc|linebreaks}}</p>
 			{% if report.photo  %}
-			<img align='center' src='/media/{{report.photo}}'/>
+			<img align='center' src='{{ MEDIA_URL }}{{ report.photo }}'/>
 		    {% endif %}
 
 		    {% if report.is_confirmed %}

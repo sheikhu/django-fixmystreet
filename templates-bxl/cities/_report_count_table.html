@@ -14,7 +14,7 @@
 		<tr ><td colspan=7 class='section' >{{report_counts.province}}</td></tr>
 	{% endif %}
 	<tr class="{% cycle 'row-odd' 'row-even' %}">
-	<td class="feeds"><a href='/feeds{{report_counts.get_absolute_url}}'><img src="/media/images/rss-small.png" /></a></td>
+	<td class="feeds"><a href='/feeds{{report_counts.get_absolute_url}}'><img src="{{ MEDIA_URL }}images/rss-small.png" /></a></td>
 	<!--<td>{{report_counts.number}}</td>-->
 	<td><a href='{{report_counts.get_absolute_url}}'>{{report_counts.name}}</a></td>
 	<td>{{report_counts.recent_new}}</td>
@@ -25,4 +25,4 @@
 	</tr>
 {% endfor %}
 </table>
-<div class="fix-disclaimer"><p>*{% trans "As reported by fixmystreet users." %}</p></div>
+<div class="fix-disclaimer"><p>*{% trans "As reported by Fix My Street users." %}</p></div>

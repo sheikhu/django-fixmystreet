@@ -382,11 +382,12 @@ class ReportUpdate(models.Model):
         
         # tell our subscribers there was an update.
         for subscriber in self.report.reportsubscriber_set.all():
-            unsubscribe_url = settings.SITE_URL + "/reports/subscribers/unsubscribe/" + subscriber.confirm_token
-            message = render_to_string("emails/report_update/message.txt", 
-               { 'update': self, 'unsubscribe_url': unsubscribe_url })
-            send_mail(subject, message, 
-               settings.EMAIL_FROM_USER,[subscriber.email], fail_silently=False)
+            if subscriber.is_confirmed:
+                unsubscribe_url = settings.SITE_URL + "/reports/subscribers/unsubscribe/" + subscriber.confirm_token
+                message = render_to_string("emails/report_update/message.txt", 
+                   { 'update': self, 'unsubscribe_url': unsubscribe_url })
+                send_mail(subject, message, 
+                   settings.EMAIL_FROM_USER,[subscriber.email], fail_silently=False)
 
         # tell the original problem reporter there was an update
         message = render_to_string("emails/report_update/message.txt", 
@@ -418,132 +419,48 @@ class ReportUpdate(models.Model):
             subject = render_to_string("emails/confirm/subject.txt", 
                     {  'update': self })
             send_mail(subject, message, 
-                      settings.EMAIL_FROM_USER,[self.email], fail_silently=False)   
-            print subject, message, settings.EMAIL_FROM_USER, [self.email]
+                      settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
 
-            
-        super(ReportUpdate, self).save()
-    
     def title(self):
         if self.first_update :
             return self.report.title
         if self.is_fixed:
             return "Reported Fixed"
         return("Update")
-        
-    #class Meta:
-        #db_table = u'report_updates'
 
 class ReportSubscriber(models.Model):
     """ 
-        Report Subscribers are notified when there's an update to an existing report.
+    Report Subscribers are notified when there's an update to an existing report.
     """
-    
     report = models.ForeignKey(Report)    
     confirm_token = models.CharField(max_length=255, null=True)
     is_confirmed = models.BooleanField(default=False)    
     email = models.EmailField()
 
-    #class Meta:
-        #db_table = u'report_subscribers'
-
-    
     def save(self):
+        if not self.is_confirmed:
+            self.request_confirmation()
+        super(ReportSubscriber, self).save()
+
+    def request_confirmation(self):
+        """ Send a confirmation email to the user. """        
         if not self.confirm_token or self.confirm_token == "":
             m = md5.new()
             m.update(self.email)
             m.update(str(time.time()))
             self.confirm_token = m.hexdigest()
+
             confirm_url = settings.SITE_URL + "/reports/subscribers/confirm/" + self.confirm_token
             message = render_to_string("emails/subscribe/message.txt", 
                     { 'confirm_url': confirm_url, 'subscriber': self })
-            send_mail('Subscribe to FixMyStreet.ca Report Updates', message, 
+            send_mail('Subscribe to Fix My Street Report Updates', message, 
                    settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
-        super(ReportSubscriber, self).save()
-
- 
-class ReportMarker(GMarker):
-    """
-        A marker for an existing report.  Override the GMarker class to 
-        add a numbered, coloured marker.
-        
-        If the report is fixed, show a green marker, otherwise red.
-    """
-    def __init__(self, report, icon_number ):
-        if report.is_fixed:
-            color = 'green'
-        else:
-            color = 'red'
-        icon_number = icon_number
-        img = "/media/images/marker/%s/marker%s.png" %( color, icon_number )
-        name = 'letteredIcon%s' %( icon_number )      
-        icon = GIcon(name,image=img,iconsize=(20,34))
-        GMarker.__init__(self,geom=(report.point.x,report.point.y), title=report.title.replace('"',"'"), icon=icon)
-
-    def __unicode__(self):
-        "The string representation is the JavaScript API call."
-        return mark_safe('GMarker(%s)' % ( self.js_params))
-
-    
-#class FixMyStreetMap(GoogleMap):  
-    #"""
-        #Overrides the GoogleMap class that comes with GeoDjango.  Optionally,
-        #show nearby reports.
-    #"""
-    #def __init__(self,pnt,draggable=False,nearby_reports = [] ):  
-##        self.icons = []
-        #markers = []
-        #marker = GMarker(geom=(pnt.x,pnt.y), draggable=draggable)
-        #if draggable:
-            #event = GEvent('dragend',
-                           #'function() { reverse_geocode (geodjango.map_canvas_marker1.getPoint()); }')        
-            #marker.add_event(event)
-        #markers.append(marker)
-        
-        #for i in range( len( nearby_reports ) ):
-            #nearby_marker = ReportMarker(nearby_reports[i], str(i+1) )
-            #markers.append(nearby_marker)
-
-        #GoogleMap.__init__(self,center=(pnt.x,pnt.y),zoom=17,key=settings.GMAP_KEY, markers=markers, dom_id='map_canvas')
-
-#class WardMap(GoogleMap):
-    #""" 
-        #Show a single ward as a gmap overlay.  Optionally, show reports in the
-        #ward.
-    #"""
-    #def __init__(self,ward, reports = []):
-        #polygons = []
-        #for poly in ward.geom:
-                #polygons.append( GPolygon( poly ) )
-        #markers = []
-        #for i in range( len( reports ) ):
-            #marker = ReportMarker(reports[i], str(i+1) )
-            #markers.append(marker)
-
-        #GoogleMap.__init__(self,zoom=13,markers=markers,key=settings.GMAP_KEY, polygons=polygons, dom_id='map_canvas')
-
-           
-
-#class CityMap(GoogleMap):
-    #"""
-        #Show all wards in a city as overlays.  Used when debugging maps for new cities.
-    #"""
-    
-    #def __init__(self,city):
-        #polygons = []
-        #ward = Ward.objects.filter(city=city)[:1][0]
-        #for ward in Ward.objects.filter(city=city):
-            #for poly in ward.geom:
-                #polygons.append( GPolygon( poly ) )
-        #GoogleMap.__init__(self,center=ward.geom.centroid,zoom=13,key=settings.GMAP_KEY, polygons=polygons,dom_id='map_canvas')
-    
 
 
-    
 class SqlQuery(object):
     """
-        This is a workaround: django doesn't support our optimized 
-        direct SQL queries very well.
+    This is a workaround: django doesn't support our optimized 
+    direct SQL queries very well.
     """
         
     def __init__(self):

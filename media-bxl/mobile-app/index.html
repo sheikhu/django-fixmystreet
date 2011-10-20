@@ -29,7 +29,8 @@
 
             $(document).bind('ready',function(){
 				var $map = $('#map-bxl');
-				var rootUrl = "http://192.168.103.27:8000";
+				var rootUrl = 'http://192.168.103.27:8000';
+				var mediaUrl = rootUrl + '/media/';
 
                 /*
 				$(document.body).bind('turn',function(){
@@ -64,10 +65,10 @@
 								graphicWidth:32
 							},
 							fixedMarkerStyle:{
-								externalGraphic: rootUrl + "/media/images/marker-fixed.png"
+								externalGraphic: mediaUrl + "images/marker-fixed.png"
 							},
 							pendingMarkerStyle:{
-								externalGraphic: rootUrl + "/media/images/marker-pending.png"
+								externalGraphic: mediaUrl + "images/marker-pending.png"
 							}
 						});
 						

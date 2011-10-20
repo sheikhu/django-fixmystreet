@@ -1,14 +1,13 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect,Http404
-from mainapp.models import DictToPoint,Report, ReportUpdate, Ward, ReportCategory
+from mainapp.models import DictToPoint,Report, ReportUpdate, ReportSubscriber, Ward, ReportCategory
 from mainapp.forms import ReportForm,ReportUpdateForm
 from django.template import Context, RequestContext
 from django.contrib.gis.geos import *
 import settings
 from django.utils.translation import ugettext as _
 import datetime
-from django.contrib.gis.measure import D 
-from mainapp.views.main import _search_url
+from django.contrib.gis.measure import D
 from django.contrib.sites.models import Site
 
 def new( request ):
@@ -47,7 +46,7 @@ def new( request ):
 
 def show( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
-    subscribers = report.reportsubscriber_set.count() + 1
+    subscribers = ReportSubscriber.objects.filter(is_confirmed=True, report=report).count() + 1 # .count() + 1
     return render_to_response("reports/show.html",
             {
                 "report": report,

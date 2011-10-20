@@ -1,6 +1,7 @@
 from django import template
 import re
 import json
+import settings
 from django.conf import settings
 
 
@@ -44,9 +45,9 @@ def fmsmenu_active(request, pattern ):
 def map_scripts():
     return '''
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-    <script src="/media/OpenLayers-2.11/OpenLayers.js"></script>
-    <script src="/media/js/fixmystreetmap.js"></script>
-    '''
+    <script src="%(media)sOpenLayers-2.11/OpenLayers.js"></script>
+    <script src="%(media)sjs/fixmystreetmap.js"></script>
+    ''' % {'media':settings.MEDIA_URL}
 
 @register.simple_tag
 def addthis_scripts():
@@ -55,18 +56,6 @@ def addthis_scripts():
 @register.simple_tag
 def report_to_json(report):
     return json.dumps(report_to_array(report))
-    #'''{
-        #"id": %d,
-        #"point": {
-                #"x": %d,
-                #"y": %d,
-        #},
-        #"is_fixed":%s
-    #}''' % (
-           #report.id, 
-           #report.point.x, 
-           #report.point.y, 'true' if report.is_fixed else 'false'
-    #)
 
 def report_to_array(report):
     return {

@@ -2,7 +2,7 @@
 	position:relative;
 }
 .panel {
-	background:url("/media/images/logo.png") center center no-repeat fixed;
+	background:url("../images/logo.png") center center no-repeat fixed;
 }
 
 #container {
@@ -16,7 +16,7 @@
 	left: 0;
 }
 
-#jqt ul.errorlist li{
+#jqt ul.errorlist li {
 	color:red;
 }
 
@@ -60,7 +60,7 @@
 }
 
 #search_box.loading{
-	background:url("/media/images/ajax-loader.gif") no-repeat 98% center transparent;
+	background:url("../images/ajax-loader.gif") no-repeat 98% center transparent;
 }
 
 p{

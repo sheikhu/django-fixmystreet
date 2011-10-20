@@ -3,12 +3,9 @@
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
-<script src="/media/hashchange/jquery.ba-hashchange.min.js"></script>
+<script src="{{MEDIA_URL}}hashchange/jquery.ba-hashchange.min.js"></script>
 
 {% map_scripts %}
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script src="/media/OpenLayers-2.11/OpenLayers.js"></script>
-<script src="/media/js/fixmystreetmap.js"></script>-->
 <script>
 
 $(document).ready(function() {
@@ -116,11 +113,12 @@ $(document).ready(function() {
 		});
 	}
 
-	//Wath is it for ????
+	/*
+	// in the case of grafity category, we ask Is it Hate Graffiti.
+	// it is disabled see templates-bxl/ajax/category_description.html
 	if($('input[name=is_hate]:checked').val() == 'yes') {
 		$('.ishate').show();
 	}
-
 
 	$('.radiohate').live('click', function(event) {
 		if($(this)[0].value =='yes') {
@@ -134,7 +132,9 @@ $(document).ready(function() {
 			$('.hideonhate').show();
 			$('#submit_report_button').enabled = true;
 		}
-	});	
+	});
+	*/
+
 });
 </script>
 {% endblock %}
@@ -153,9 +153,9 @@ $(document).ready(function() {
 					<div id='search_results'>
 					{% for report in reports %}
 						<a href="{{report.get_absolute_url}}" class="report">
-							<img src="/media/images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
+							<img src="{{MEDIA_URL}}images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
 							{% if report.photo %}
-							<img src="/media/photos/photo_{{ report.id }}.thumbnail.jpeg" class="report-preview"/>
+							<img src="{{MEDIA_URL}}photos/photo_{{ report.id }}.thumbnail.jpeg" class="report-preview"/>
 							{% endif %}
 							<h3 class="report-title"> {{report.title}} ({{report.distance.km|floatformat:2}} km)</h3>
 							<p class="report-address">{{report.address}}</p>
@@ -214,7 +214,7 @@ $(document).ready(function() {
 			</div>
 		</div>
 		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
-		<a id="back" href="#">Review reports</a>
+		<a id="back" href="#">{% trans "Review reports" %}</a>
 	</div>
 </div>
 {% endblock %}

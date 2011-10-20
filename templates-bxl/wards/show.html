@@ -48,13 +48,14 @@ $(function(){
 		<div id='leftcol'>
 			<h1>{% trans "Reports for" %} {{ward.name}}</h1>
 			<p>{% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-			<p>{% trans "Reports filed between" %} {{date_range_start|date:"j N Y"}} {% trans "and" %} {{date_range_end|date:"j N Y"}}. 
+			<p>{% blocktrans with start=date_range_start|date:"j N Y" end=date_range_end|date:"j N Y" %}Reports filed between {{ start }} and {{ end }}.{% endblocktrans %} 
 			{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
 
 			{% if not reports %}
 			<p>{% trans "No problems have been reported." %}</p>
 			{% endif %}
 			<ol>
+				<!-- values of status can be: {% trans "New Problems" %}, {% trans "Older Unresolved Problems" %}, {% trans "Recently Fixed" %}, {% trans "Old Fixed" %}-->
 				{% for report in reports %}					
 					{% ifchanged report.status %}  	
 					<h2>{% trans report.status %}</h2>
@@ -65,7 +66,7 @@ $(function(){
              <br/><br/>
              {% if reports %}
              <div class="fix-disclaimer">
-             	<p>{% trans "Note: fixmystreet.ca relies on users to report problems as fixed." %}</p>
+             	<p>{% trans "Note: Fix My Street relies on users to report problems as fixed." %}</p>
              </div>
              {% endif %}
  		</div>

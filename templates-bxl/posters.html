@@ -14,7 +14,7 @@ or hang a poster at a university or neighbourhood coffee shop.
 {% endblocktrans %}
 <ul>
 {% for lang in languages %}
-	<li><a href='/media/posters/FMSPoster_{{lang.0}}.pdf'> {% trans "Poster" %} - {{lang.1}}</a></li>
+	<li><a href='{{MEDIA_URL}}posters/FMSPoster_{{lang.0}}.pdf'> {% trans "Poster" %} - {{lang.1}}</a></li>
 {% endfor %}
 </ul>
 </div>
