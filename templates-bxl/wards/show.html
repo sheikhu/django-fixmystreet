@@ -28,7 +28,7 @@ $(function(){
 		},
 		error:function()
 		{
-			$form.prepend('<p class="error-msg">Unexpected error.</p>');
+			$('#map-bxl').before('<p class="error-msg">Unexpected error.</p>');
 		}
 	});
 	{% for report in reports %}
