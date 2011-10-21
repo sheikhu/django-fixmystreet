@@ -31,5 +31,9 @@ DEBUG = True
 SITE_ID = 1
 LOCAL_DEV = "http://localhost:8000"
 SITE_URL = "http://192.168.103.27:8000"
+
+GEOSERVER = "geoserver.gis.irisnetlab.be"
+LOCAL_API = "192.168.13.42" # gislb.irisnetlab.be
+
 #SECRET_KEY=
 #GMAP_KEY=
