@@ -29,7 +29,7 @@
 					<form action="/i18n/setlang/" method="post">
 						<select id="select-language" name="language">
 							{% for lang in LANGUAGES %}
-							<option value="{{ lang.0 }}"{% if lang.0 == request.LANGUAGE_CODE %} selected="selected"{% endif %}>{{ lang.1 }}</option>
+							<option value="{{ lang.0 }}"{% if lang.0 == LANGUAGE_CODE %} selected="selected"{% endif %}>{{ lang.1 }}</option>
 							{% endfor %}
 						</select>
 					</form>
@@ -37,10 +37,10 @@
 
 				{% load tags %}
 				<div id="menu">
-					<a class="{% fmsmenu_active request 'submit' %}"   href="/" >                          {% trans "Submit a Report" %}</a>
-					<a class="{% fmsmenu_active request 'view' %}"     href="{% url bxl_wards_url_name %}">{% trans "View Reports" %}</a>
-					<a class="{% fmsmenu_active request 'about' %}"    href="{% url about_url_name %}">    {% trans "About" %}</a>
-					<a class="{% fmsmenu_active request 'contact' %}"  href="{% url contact_url_name %}">  {% trans "Contact Us" %}</a>
+					<a class="{% fmsmenu_active request 'submit' %}"   href="{% url home %}">     {% trans "Submit a Report" %}</a>
+					<a class="{% fmsmenu_active request 'view' %}"     href="{% url bxl_wards %}">{% trans "View Reports" %}</a>
+					<a class="{% fmsmenu_active request 'about' %}"    href="{% url about %}">    {% trans "About" %}</a>
+					<a class="{% fmsmenu_active request 'contact' %}"  href="{% url contact %}">  {% trans "Contact Us" %}</a>
 				</div>
 			</div>
 		</div>

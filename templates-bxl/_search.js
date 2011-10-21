@@ -25,7 +25,7 @@ $(function(){
 			contentType:'text/json',
 			dataType:'json',
 			data:JSON.stringify({
-				"language": "{{ request.LANGUAGE_CODE }}",
+				"language": "{{ LANGUAGE_CODE }}",
 				"address": {
 					"street": {
 						"name": $searchTerm.val(),

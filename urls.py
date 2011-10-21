@@ -32,9 +32,9 @@ urlpatterns = patterns('',
 
 
 urlpatterns += patterns('mainapp.views.main',
-    (r'^$', 'home', {}, 'home_url_name'),
+    (r'^$', 'home', {}, 'home'),
     #(r'^search', 'search_address'),
-    (r'about/$', 'about',{}, 'about_url_name'),
+    (r'about/$', 'about',{}, 'about'),
     (r'posters/$', 'posters',{}, 'posters'),
 )
 
@@ -48,16 +48,16 @@ urlpatterns += patterns('mainapp.views.promotion',
 )
 
 urlpatterns += patterns('mainapp.views.wards',
-    (r'^wards/$', cities.show, {"city_id":1}, 'bxl_wards_url_name'), 
+    (r'^wards/$', cities.show, {"city_id":1}, 'bxl_wards'), 
     (r'^wards/(\d+)', 'show'),       
-    (r'^cities/(\d+)/wards/(\d+)', 'show_by_number'),       
+    #(r'^cities/(\d+)/wards/(\d+)', 'show_by_number'),       
     
 )
 
-urlpatterns += patterns('',
-    (r'^cities/(\d+)$', cities.show ),       
-    (r'^cities', cities.index, {}, 'cities_url_name'),
-)
+#urlpatterns += patterns('',
+    #(r'^cities/(\d+)$', cities.show ),       
+    #(r'^cities', cities.index, {}, 'cities_url_name'),
+#)
 
 urlpatterns += patterns( 'mainapp.views.reports.updates',
     (r'^reports/updates/confirm/(\S+)', 'confirm'), 
@@ -90,7 +90,7 @@ urlpatterns += patterns('mainapp.views.reports.main',
 
 urlpatterns += patterns('mainapp.views.contact',
     (r'^contact/thanks', 'thanks'),
-    (r'^contact', 'new', {}, 'contact_url_name'),
+    (r'^contact', 'new', {}, 'contact'),
 )
 
 urlpatterns += patterns('mainapp.views.ajax',

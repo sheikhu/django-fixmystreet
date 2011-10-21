@@ -52,12 +52,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.core.context_processors.request',
   'django.core.context_processors.auth',
   'django.core.context_processors.media',
+  'django.core.context_processors.i18n',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'mainapp.middleware.subdomains.SubdomainMiddleware',
     'mainapp.middleware.SSLMiddleware.SSLRedirect',
@@ -65,7 +66,7 @@ MIDDLEWARE_CLASSES = (
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'en-us'
+LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.

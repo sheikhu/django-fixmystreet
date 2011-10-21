@@ -13,7 +13,7 @@ $(document).ready(function() {
 	var $map = $('#map-bxl');
 	
 	$map.fmsMap({
-		apiLang:'{{ request.LANGUAGE_CODE }}',
+		apiLang:'{{ LANGUAGE_CODE }}',
 		origin:{
 			x:{{ pnt.x }},
 			y:{{ pnt.y }} 
