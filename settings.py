@@ -3,7 +3,7 @@ import os
 import logging
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-TEST_RUNNER='django.contrib.gis.tests.run_tests'
+TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE = 'template_postgis'
 
 logging.basicConfig(
@@ -93,6 +93,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.contenttypes',
+    'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.gis',

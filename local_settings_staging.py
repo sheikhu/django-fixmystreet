@@ -29,7 +29,7 @@ DEFAULT_FROM_EMAIL = "django@cirb.irisnset.be"
 
 DEBUG = True
 SITE_ID = 1
-LOCAL_DEV = "http://localhost:8000"
+LOCAL_DEV = True
 SITE_URL = "http://192.168.103.27:8000"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"

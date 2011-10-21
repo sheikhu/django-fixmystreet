@@ -113,6 +113,13 @@ if settings.DEBUG and 'TESTVIEW' in settings.__dir__():
 if settings.LOCAL_DEV:
     baseurlregex = r'^media/(?P<path>.*)$'
     urlpatterns += patterns('',
-        (baseurlregex, 'django.views.static.serve',
-        {'document_root':  settings.MEDIA_ROOT}),
+        (
+            baseurlregex, 
+            'django.views.static.serve',
+            {'document_root':  settings.MEDIA_ROOT}
+        ),(
+            r'^admin_media/(.*)', 
+            'django.views.static.serve', 
+            {'document_root' : 'django/contrib/admin/media/', 'show_indexes' : True}
+        ),
     )
