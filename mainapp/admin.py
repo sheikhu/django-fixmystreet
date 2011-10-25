@@ -28,8 +28,8 @@ admin.site.register(FaqEntry, FaqEntryAdmin)
     
 class CouncillorAdmin(admin.ModelAdmin):
     ''' only show councillors from cities this user has access to '''
-    list_display = ('last_name', 'first_name', 'email')
-    fields = ('last_name', 'first_name', 'email')
+    list_display = ('first_name', 'last_name', 'email')
+    fields = ('first_name', 'last_name', 'email')
     
     def queryset(self,request):
         if request.user.is_superuser:

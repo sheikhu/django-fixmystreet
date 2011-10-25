@@ -117,9 +117,5 @@ if settings.LOCAL_DEV:
             baseurlregex, 
             'django.views.static.serve',
             {'document_root':  settings.MEDIA_ROOT}
-        ),(
-            r'^admin_media/(.*)', 
-            'django.views.static.serve', 
-            {'document_root' : 'django/contrib/admin/media/', 'show_indexes' : True}
         ),
     )

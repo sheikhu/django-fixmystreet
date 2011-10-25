@@ -45,6 +45,9 @@ class CCEmailMessage(EmailMessage):
 
 class ReportCategoryClass(models.Model):
     __metaclass__ = TransMeta
+    help_text = """
+    Manage the category container list (see the report form). Allow to group the categories.
+    """
 
     name = models.CharField(max_length=100)
 
@@ -52,20 +55,26 @@ class ReportCategoryClass(models.Model):
         return self.name
 
     class Meta:
-        #db_table = u'report_category_classes'
+        verbose_name = "category groupe"
+        verbose_name_plural = "category groupes"
         translate = ('name', )
     
 class ReportCategory(models.Model):
     __metaclass__ = TransMeta
+    help_text = """
+    Manage the report categories list (see the report form).
+    When a category is selected in the website form, the hint field is loaded in ajax and displayed  in the form.
+    """
 
-    name = models.CharField(_('Name'),max_length=100)
-    hint = models.TextField(_('Hint'),blank=True, null=True)
-    category_class = models.ForeignKey(ReportCategoryClass)
+    name = models.CharField(verbose_name=_('Name'),max_length=100)
+    hint = models.TextField(verbose_name=_('Hint'),blank=True, null=True)
+    category_class = models.ForeignKey(ReportCategoryClass,verbose_name=_('Category group'), help_text="The category group container")
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
  
     class Meta:
-        #db_table = u'report_categories'
+        verbose_name = "category"
+        verbose_name_plural = "categories"
         translate = ('name', 'hint', )
 
 #class ReportCategorySet(models.Model):
@@ -110,11 +119,16 @@ class City(models.Model):
         describer = emailrules.EmailRulesDesciber(rules,self)
         return( describer.values() )
 
-    #class Meta:
-        #db_table = u'cities'
+    class Meta:
+        verbose_name_plural = "cities"
 
 class Councillor(models.Model):
-
+    help_text = """
+    Represent a public authority that can resolve a problem from a fix my street report. 
+    When a report if filled in the website, a notification mail will be sent to the corresponding 
+    councillors that is able to resolve it.
+    """
+    
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     
@@ -125,10 +139,6 @@ class Councillor(models.Model):
 
     def __unicode__(self):      
         return self.first_name + " " + self.last_name
-
-    #class Meta:
-        #db_table = u'councillors'
-
 
         
 class Ward(models.Model):
@@ -171,16 +181,18 @@ class ZipCode(models.Model):
 # want councillors CC'd)
 
 class EmailRule(models.Model):
-    
+    help_text = """
+    Declare that an extra Councillors has authority for resolving a problem and need to recieve notifiaction.
+    """
     TO_COUNCILLOR = 0
     MATCHING_CATEGORY_CLASS = 1
     NOT_MATCHING_CATEGORY_CLASS = 2
     #TO_WARD = 3
     
     RuleChoices = [   
-        (TO_COUNCILLOR, 'Add councillor to recipients'),
-        (MATCHING_CATEGORY_CLASS, 'Councillor for category group'),
-        (NOT_MATCHING_CATEGORY_CLASS, 'Councillor excluded from category group'), 
+        (TO_COUNCILLOR, 'All the time'),
+        (MATCHING_CATEGORY_CLASS, 'Category group is selected'),
+        (NOT_MATCHING_CATEGORY_CLASS, 'Category group is not selected'), 
         #(TO_WARD, 'Send Reports to Ward Email Address'),
     ]
     
@@ -191,33 +203,34 @@ class EmailRule(models.Model):
         #TO_WARD: emailrules.ToWard 
     }
     
-    rule = models.IntegerField(choices=RuleChoices)
-    
-    # is this a 'to' email or a 'cc' email
-    is_cc = models.BooleanField(default=False,
-            help_text="Set to true to include address in 'cc' list"
-            )
+    rule = models.IntegerField(
+        choices=RuleChoices,
+        verbose_name='Send a notification when',
+        help_text="Depending to the report's category and this selected category."
+    )
 
     # the city this rule applies to 
-    ward = models.ForeignKey(Ward)
+    ward = models.ForeignKey(
+        Ward,
+        help_text="The ward where the rule apply."
+    )
     
     # filled in if this is a category class rule
-    category_class = models.ForeignKey(ReportCategoryClass,null=True, blank=True,
-                          verbose_name = 'Category Group',
-                          help_text="Only set for 'Category Group' rule types."
-                          )
+    category_class = models.ForeignKey(
+        ReportCategoryClass,null=True, blank=True,
+        verbose_name='Category Group',
+        help_text="Only set for 'Category Group' rule types."
+    )
     
-    # filled in if this is a category rule
-    #category = models.ForeignKey(ReportCategory,null=True, blank=True,
-    #                    help_text="Set to send all "
-    #                     )
-    
+       
     # filled in if an additional email address is required for the rule type
     councillor = models.ForeignKey(Councillor)
 
-    #email = models.EmailField(blank=True, null=True,
-                        #help_text="Only set for 'Category Group' rule types."
-                        #)
+    # is this a 'to' email or a 'cc' email
+    is_cc = models.BooleanField(default=False,
+        help_text="Send notifications in copy"
+    )
+
 
     def label(self):
         rule_behavior = EmailRule.RuleBehavior[ self.rule ]()
@@ -443,7 +456,7 @@ class ReportSubscriber(models.Model):
         super(ReportSubscriber, self).save()
 
     def request_confirmation(self):
-        """ Send a confirmation email to the user. """        
+        """ Send a confirmation email to the user. """
         if not self.confirm_token or self.confirm_token == "":
             m = md5.new()
             m.update(self.email)
@@ -572,7 +585,7 @@ class FaqEntry(models.Model):
             super(FaqEntry, self).save()
     
     class Meta:
-        #db_table = u'faq_entries'
+        verbose_name_plural = 'faq entries'
         translate = ('q', 'a', )
        
 
