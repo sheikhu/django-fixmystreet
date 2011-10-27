@@ -668,6 +668,5 @@ class HtmlTemplateMail(EmailMultiAlternatives):
         super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
         if html:
             self.attach_alternative(html, "text/html")
-        import pdb; pdb.set_trace()
 
 
