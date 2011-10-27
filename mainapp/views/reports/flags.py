@@ -13,13 +13,7 @@ def new( request, report_id ):
                 { "report": report },
                 context_instance=RequestContext(request))
     else:
-        # send email flagging this report as being potentially offensive.
-        message = render_to_string("emails/flag_report/message.txt", 
-                    { 'report': report },
-                    context_instance=RequestContext(request))
-        print message
-        send_mail('FixMyStreet Report Flagged as Offensive', message, 
-                   settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
+        report.flagAsOffensive()
         return HttpResponseRedirect(report.get_absolute_url() + '/flags/thanks')
 
 def thanks( request, report_id ):

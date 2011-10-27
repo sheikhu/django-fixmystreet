@@ -32,7 +32,7 @@ $(function(){
 		}
 	});
 	{% for report in reports %}
-	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %});
+	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %}, {{ forloop.counter }});
 	{% endfor %}
 	
 	$('#map-bxl').bind('reportselected',function(evt, point, report){
@@ -47,23 +47,23 @@ $(function(){
 	<div id="fullwidth">
 		<div id='leftcol'>
 			<h1>{% trans "Reports for" %} {{ward.name}}</h1>
+			<!--
 			<p>{% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 			<p>{% blocktrans with start=date_range_start|date:"j N Y" end=date_range_end|date:"j N Y" %}Reports filed between {{ start }} and {{ end }}.{% endblocktrans %} 
 			{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
+			-->
 
 			{% if not reports %}
 			<p>{% trans "No problems have been reported." %}</p>
 			{% endif %}
-			<ol>
-				<!-- values of status can be: {% trans "New Problems" %}, {% trans "Older Unresolved Problems" %}, {% trans "Recently Fixed" %}, {% trans "Old Fixed" %}-->
+			<div id="search_results">
 				{% for report in reports %}					
 					{% ifchanged report.status %}  	
 					<h2>{% trans report.status %}</h2>
 					{% endifchanged %}
-                    <li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
+                    {% include "reports/_navigation.html" %}
                 {% endfor %}
-             </ol>
-             <br/><br/>
+             </div>
              {% if reports %}
              <div class="fix-disclaimer">
              	<p>{% trans "Note: Fix My Street relies on users to report problems as fixed." %}</p>

@@ -7,39 +7,21 @@ from django.conf import settings
 
 register = template.Library()
 
-MENU_DEFS = { 'submit' : { 'exact': [ '/','/reports/new', '/reports/' ], 
-                           'match' : [],
-                           'startswith':[],  
-                           'exclude' : []
-                         },
-              'view' : { 'exact': [],
-                         'match' : ['/wards/\d+', '/reports/\d+' ],
-                         'startswith' : ['/cities','/wards'],
-                         'exclude':[] 
-                        }
-            }
+MENU_DEFS = [ 
+    ('submit', ['^/$','^/reports/new']),
+    ('view', ['^/reports/.*', '^/cities/.*', '^/wards/.*']),
+    ('about',  ['^/about/']),
+    ('contact', ['^/contact/'])
+]
 
-def is_match( path, pattern ):
-    if MENU_DEFS.has_key(pattern):
-        menudef = MENU_DEFS[pattern]
-        if path in menudef[ 'exact' ]:
-            return True
-        for match in menudef['startswith']:
-            if path.startswith(match) and not path in menudef['exclude']:
-                return True
-        for match in menudef['match']:
-            if re.match(match,path):
-                return True
-        return False 
-    if pattern in path:
-        return True
-    return False
-    
-@register.simple_tag
-def fmsmenu_active(request, pattern ):
-    if is_match(request.path, pattern ):
-        return 'active'
-    return ''
+@register.simple_tag(takes_context=True)
+def get_active_menu(context):
+    for menu,defs in MENU_DEFS:
+        for match in defs:
+            if re.match(match,context['request'].path):
+                context['menu'] = menu
+                return ''
+    return
 
 @register.simple_tag
 def map_scripts():

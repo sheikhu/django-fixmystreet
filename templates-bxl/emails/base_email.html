@@ -1,0 +1,11 @@
+<html>
+    <body>{% load i18n %}
+        <p style="margin-bottom:30px;">{% block hello %}{% blocktrans with name=update.author %}Hello {{ name }},{% endblocktrans %}{% endblock %}</p>
+
+        {% block content %}{% endblock %}
+        {% block thanks %}
+        <p style="margin-top:20px;">{% trans 'Thank you,' %}</p>
+        <p style="text-align:right;">{% trans 'The Fix My Street Team' %}</p>
+        {% endblock %}
+    </body>
+</html>

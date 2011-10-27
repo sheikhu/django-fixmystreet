@@ -4,6 +4,7 @@ from mainapp.models import Report, ReportSubscriber
 from mainapp.forms import ReportSubscriberForm
 from django.template import Context, RequestContext
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
@@ -12,13 +13,13 @@ def new( request, report_id ):
     if request.method == 'POST':    
         form = ReportSubscriberForm( request.POST )
         if form.is_valid():
-           subscriber = form.save( commit = False )
-           subscriber.report = report;
-           if report.is_subscribed(subscriber.email):
-               error_msg = _("You are already subscribed to this report.")
-           else:
-               subscriber.save()
-               return( HttpResponseRedirect( '/reports/subscribers/create/' ) ) 
+            subscriber = form.save( commit = False )
+            subscriber.report = report;
+            if report.is_subscribed(subscriber.email):
+                error_msg = _("You are already subscribed to this report.")
+            else:
+                subscriber.save()
+                return HttpResponseRedirect(reverse('subscribe_create' ))
     else:
         form = ReportSubscriberForm()
         

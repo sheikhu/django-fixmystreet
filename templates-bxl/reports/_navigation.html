@@ -1,0 +1,10 @@
+{% load i18n %}
+<a href="{{report.get_absolute_url}}" class="report">
+	<img src="{{MEDIA_URL}}images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
+	{% if report.photo %}
+	<img src="{{MEDIA_URL}}photos/photo_{{ report.id }}.thumbnail.jpeg" class="report-preview"/>
+	{% endif %}
+	<h3 class="report-title"> {{report.title}} {% if report.distance  %}({{report.distance.km|floatformat:2}} km){% endif %}</h3>
+	<p class="report-address">{{report.address}}</p>
+	{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+</a>

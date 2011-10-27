@@ -1,1 +1,1 @@
-FixMyStreet.ca: '{{update.report.title|safe}}' {% if update.is_fixed %} Fixed {% else %} Updated {% endif %}
+{% load i18n %}{% trans 'Fix My Street:' %} {{update.report.title|safe}}{% if update.is_fixed %} {% trans 'Fixed' %}{% else %} {% trans 'Updated' %}{% endif %}

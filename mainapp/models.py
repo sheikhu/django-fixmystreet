@@ -2,10 +2,10 @@
 from django.db import models, connection
 from django.contrib.gis.db import models
 from django.contrib.gis.maps.google import GoogleMap, GMarker, GEvent, GPolygon, GIcon
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, TemplateDoesNotExist
 import settings
 from django import forms
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 import md5
 import urllib
 import time
@@ -19,34 +19,14 @@ from django.utils.encoding import iri_to_uri
 from django.contrib.gis.geos import fromstr
 from django.http import Http404
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
       
-# from here: http://www.djangosnippets.org/snippets/630/        
-class CCEmailMessage(EmailMessage):
-    def __init__(self, subject='', body='', from_email=None, to=None, cc=None,
-                 bcc=None, connection=None, attachments=None, headers=None):
-        super(CCEmailMessage, self).__init__(subject, body, from_email, to,
-                                           bcc, connection, attachments, headers)
-        if cc:
-            self.cc = list(cc)
-        else:
-            self.cc = []
-
-    def recipients(self):
-        """
-        Returns a list of all recipients of the email
-        """
-        return super(CCEmailMessage, self).recipients() + self.cc 
-
-    def message(self):
-        msg = super(CCEmailMessage, self).message()
-        if self.cc:
-            msg['Cc'] = ', '.join(self.cc)
-        return msg
 
 class ReportCategoryClass(models.Model):
     __metaclass__ = TransMeta
     help_text = """
-    Manage the category container list (see the report form). Allow to group the categories.
+    Manage the category container list (see the report form). Allow to group categories.
     """
 
     name = models.CharField(max_length=100)
@@ -55,8 +35,8 @@ class ReportCategoryClass(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "category groupe"
-        verbose_name_plural = "category groupes"
+        verbose_name = "category group"
+        verbose_name_plural = "category groups"
         translate = ('name', )
     
 class ReportCategory(models.Model):
@@ -89,8 +69,6 @@ class Province(models.Model):
     name = models.CharField(max_length=100)
     abbrev = models.CharField(max_length=3)
 
-    #class Meta:
-        #db_table = u'province'
     
 class City(models.Model):
     province = models.ForeignKey(Province)
@@ -163,9 +141,6 @@ class Ward(models.Model):
         rules = EmailRule.objects.filter(city=self.city)
         describer = emailrules.EmailRulesDesciber(rules,self.city, self)
         return( describer.values() )
-
-    #class Meta:
-        #db_table = u'wards'
 
 class ZipCode(models.Model):
     ward = models.ForeignKey(Ward)
@@ -303,9 +278,10 @@ class Report(models.Model):
         return( ReportUpdate.objects.get(report=self,first_update=True))
 
     def get_absolute_url(self):
-        return  "/reports/" + str(self.id)
+        return reverse("report_show", args=[self.id])
+
     def get_mobile_absolute_url(self):
-        return  "/mobile/reports/" + str(self.id)
+        return reverse("mobile_report_show", args=[self.id])
 
     # return a list of email addresses to send new problems in this ward to.
     def get_emails(self):
@@ -317,18 +293,19 @@ class Report(models.Model):
         # check for rules for this city.
         rules = EmailRule.objects.filter(ward=self.ward)
         for rule in rules:
-            rule_email = rule.resolve_email(self)
-            #if rule_email:
-                #if not rule.is_cc: 
-                    #to_emails.append(rule_email)
-                #else:
-                    #cc_emails.append(rule_email)
+            rule.resolve_email(self)
         
-        print self.to_emails
-        print self.cc_emails
+        #print self.to_emails
+        #print self.cc_emails
         return( self.to_emails,self.cc_emails )
-    #class Meta:
-        #db_table = u'reports'
+
+    def flagAsOffensive(self):
+        report_url= 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url()), 
+
+        msg = HtmlTemplateMail('flag_report', { 'report_url': report_url, 'report': self }, [settings.EMAIL_ADMIN])
+        msg.send()
+        
+
 
 class ReportCount(object):        
     def __init__(self, interval):
@@ -364,18 +341,13 @@ class ReportUpdate(models.Model):
         else:
             self.notify_on_update()
             
-    def notify_on_new(self):
-        # send to the city immediately.           
-        subject = render_to_string("emails/send_report_to_city/subject.txt", {'update': self })
-        message = render_to_string("emails/send_report_to_city/message.txt", { 'update': self})#, 'SITE_URL':request.META['HTTP_HOST'] })#settings.SITE_URL
-        
-        to_email_addrs,cc_email_addrs = self.report.get_emails()
-        email_msg = CCEmailMessage(subject,message,settings.EMAIL_FROM_USER, 
-                        to_email_addrs, cc_email_addrs,headers = {'Reply-To': self.email })
+    def notify_on_new(self):        
+        to_addrs,cc_addrs = self.report.get_emails()
+
+        msg = HtmlTemplateMail('send_report_to_city', {'update': self }, to_addrs, cc=cc_addrs, headers={'Reply-To': self.email })
         if self.report.photo:
-            email_msg.attach_file( self.report.photo.file.name )
-        
-        email_msg.send()
+            msg.attach_file( self.report.photo.file.name )
+        msg.send()
 
         # update report to show time sent to city.
         self.report.sent_at=dt.now()
@@ -387,16 +359,15 @@ class ReportUpdate(models.Model):
             
         self.report.email_sent_to = email_addr_str
         self.report.save()
-        
-    
+
     def notify_on_update(self):
         subject = render_to_string("emails/report_update/subject.txt", 
                     { 'update': self })
-        
+
         # tell our subscribers there was an update.
         for subscriber in self.report.reportsubscriber_set.all():
             if subscriber.is_confirmed:
-                unsubscribe_url = settings.SITE_URL + "/reports/subscribers/unsubscribe/" + subscriber.confirm_token
+                unsubscribe_url = settings.SITE_URL + reverse("unsubscribe",args=[subscriber.confirm_token])
                 message = render_to_string("emails/report_update/message.txt", 
                    { 'update': self, 'unsubscribe_url': unsubscribe_url })
                 send_mail(subject, message, 
@@ -426,13 +397,12 @@ class ReportUpdate(models.Model):
             m.update(self.email)
             m.update(str(time.time()))
             self.confirm_token = m.hexdigest()
-            confirm_url = settings.SITE_URL + "/reports/updates/confirm/" + self.confirm_token
-            message = render_to_string("emails/confirm/message.txt", 
-                    { 'confirm_url': confirm_url, 'update': self })
-            subject = render_to_string("emails/confirm/subject.txt", 
-                    {  'update': self })
-            send_mail(subject, message, 
-                      settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
+            
+            self.report
+            confirm_url = 'http://%s%s' % (Site.objects.get_current().domain, reverse('confirm', args=[self.confirm_token]))
+            tmpl_dir = 'confirm_report' if self.first_update else 'confirm_update'
+            msg = HtmlTemplateMail(tmpl_dir,{'confirm_url': confirm_url, 'update': self},[self.email])
+            msg.send()
 
     def title(self):
         if self.first_update :
@@ -463,11 +433,13 @@ class ReportSubscriber(models.Model):
             m.update(str(time.time()))
             self.confirm_token = m.hexdigest()
 
-            confirm_url = settings.SITE_URL + "/reports/subscribers/confirm/" + self.confirm_token
-            message = render_to_string("emails/subscribe/message.txt", 
-                    { 'confirm_url': confirm_url, 'subscriber': self })
-            send_mail('Subscribe to Fix My Street Report Updates', message, 
-                   settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
+            confirm_url = 'http://%s%s' % (Site.objects.get_current().domain, reverse('subscribe_confirm', args=[self.confirm_token]))
+            #message = render_to_string("emails/subscribe/message.txt", 
+                    #{ 'confirm_url': confirm_url, 'subscriber': self })
+            #send_mail('Subscribe to Fix My Street Report Updates', message, 
+                   #settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
+            
+            msg = HtmlTemplateMail('subscribe',{ 'confirm_url': confirm_url, 'subscriber': self },[self.email])
 
 
 class SqlQuery(object):
@@ -543,7 +515,10 @@ class CityWardsTotals(ReportCountQuery):
         self.sql += " group by  wards.name, wards.id, wards.number order by wards.number" 
     
     def number(self):
-         return(self.get_results()[self.index][7])
+        return(self.get_results()[self.index][7])
+
+    def id(self):
+        return(self.get_results()[self.index][6])
         
     def get_absolute_url(self):
         return( self.url_prefix + str(self.get_results()[self.index][6]))
@@ -675,5 +650,24 @@ class DictToPoint():
         else:
             return(None)
 
-    
-    
+class HtmlTemplateMail(EmailMultiAlternatives):
+    def __init__(self, template_dir, data, recipients, **kargs):
+        subject, html, text = '', '', ''
+        try:
+            subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
+        except TemplateDoesNotExist:
+            pass
+        try:
+            text    = render_to_string('emails/' + template_dir + "/message.txt", data)
+        except TemplateDoesNotExist:
+            pass
+        try:
+            html    = render_to_string('emails/' + template_dir + "/message.html", data)
+        except TemplateDoesNotExist:
+            pass
+        super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
+        if html:
+            self.attach_alternative(html, "text/html")
+        import pdb; pdb.set_trace()
+
+

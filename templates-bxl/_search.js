@@ -20,7 +20,7 @@ $(function(){
 		
 		$.ajax({
 
-			url:'/api/search/',
+			url:'{% url api_search %}',
 			type:'POST',
 			contentType:'text/json',
 			dataType:'json',
@@ -49,7 +49,8 @@ $(function(){
 						for(var i in response.result)
 						{
 							var street = response.result[i].address.street;
-							$proposal.append('<p><a href="' + resToHref(response.result[i]) + '">' + street.name + ' (' + street.postCode + ')</a></p>');
+							var pos = response.result[i].point;
+							$proposal.append('<p><a href="{% url report_new %}?lon=' + pos.x + '&lat=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a></p>');
 						}
 						$proposal.slideDown();
 					}
@@ -77,11 +78,6 @@ $(function(){
 			}
 		});
     });
-    
-	function resToHref(res)
-	{
-		return '/reports/new?lon=' + res.point.x + '&lat=' + res.point.y;
-	}
 
     {% if location %}
 	$searchForm.submit();

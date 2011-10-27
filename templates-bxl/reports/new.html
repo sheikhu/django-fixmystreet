@@ -152,15 +152,7 @@ $(document).ready(function() {
 				{% if reports %}
 					<div id='search_results'>
 					{% for report in reports %}
-						<a href="{{report.get_absolute_url}}" class="report">
-							<img src="{{MEDIA_URL}}images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
-							{% if report.photo %}
-							<img src="{{MEDIA_URL}}photos/photo_{{ report.id }}.thumbnail.jpeg" class="report-preview"/>
-							{% endif %}
-							<h3 class="report-title"> {{report.title}} ({{report.distance.km|floatformat:2}} km)</h3>
-							<p class="report-address">{{report.address}}</p>
-							{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
-						</a>
+					{% include "reports/_navigation.html" %}
 					{% endfor %}
 					</div>
 				{% else %}
@@ -170,7 +162,7 @@ $(document).ready(function() {
 			</div>
 		</div>
 	
-		<form enctype="multipart/form-data" method="post" action="/reports/" id='report_form' style="display:none;">
+		<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
 			<table class='form'>
 				{{ report_form.as_table }}
 				<tr>

@@ -6,6 +6,7 @@
 {% block script %}
 <meta property="og:title" content="{{ report.title }}" />
 <meta property="og:description" content="{{ report.desc }}" />
+<meta property="og:image" content="{{ MEDIA_URL }}{{ report.photo }}" />
 {% addthis_scripts %}
 {% map_scripts %}
 <script>
@@ -70,7 +71,7 @@ $(function(){
 			<div id='report-subscribers'>
 				{% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
 				{% if not report.is_fixed %}
-				<a href="/reports/{{report.id}}/subscribers/">{% trans "Subscribe" %}</a>
+				<a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
 				{% endif %}
 			</div>
 			{% endif %}
@@ -81,11 +82,7 @@ $(function(){
 					<tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
 					{% endif %}
 					<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
-					
-					{% if report.sent_at %}
-					<tr><th>{% trans "Sent to" %}:</th><td>{{report.email_sent_to}}</td></tr>
-					<tr><th>{% trans "On" %}:</th><td>{{report.sent_at|date}}</td></tr>
-					{% endif %}
+					<tr><th>{% trans "Filed on:" %}:</th><td>{{report.sent_at|date}}</td></tr>
 				</table>
 			</div>
 		</div>

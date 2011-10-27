@@ -1,1 +1,1 @@
-FixMyStreet.ca: {{update.report.title|safe}}
+Fix My Street: {{update.report.title|safe}}

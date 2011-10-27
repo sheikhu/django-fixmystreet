@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+{% block content %}
+{% blocktrans with title=update.report.title %}
+<p>Thank you for submitting the report <strong>{{ title }}</strong> to <strong>Fix My Street</strong>.</p>
+
+<p>To confirm your submission, please click on the following URL:</p>
+{% endblocktrans %}
+<p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+{% endblock %}

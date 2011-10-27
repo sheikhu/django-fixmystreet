@@ -13,7 +13,6 @@ from django.contrib.sites.models import Site
 def new( request ):
     d2p = DictToPoint( request.REQUEST )
     pnt = d2p.pnt()
-    current_site = Site.objects.get_current()
     if request.method == "POST":
         report_form = ReportForm( request.POST, request.FILES )
         # this checks update is_valid too
@@ -30,7 +29,6 @@ def new( request ):
                                            } )
     
 
-    #reports = Report.objects.filter(created_at__gte = date_range_start, created_at__lte = date_range_end, is_confirmed = True,point__distance_lte=(pnt,D(km=2))).distance(pnt).order_by('-created_at')
     reports = Report.objects.filter(is_confirmed = True,is_fixed = False).distance(pnt).order_by('distance')[0:10]
     from django.db import connection
     

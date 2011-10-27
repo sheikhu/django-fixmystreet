@@ -28,7 +28,7 @@ EMAIL_FROM_USER = "fms@cirb.irisnet.be"
 DEFAULT_FROM_EMAIL = "fms@cirb.irisnset.be"
 
 DEBUG = True
-SITE_ID = 1
+SITE_ID = 2
 LOCAL_DEV = False
 SITE_URL = "http://192.168.103.27:8000"
 

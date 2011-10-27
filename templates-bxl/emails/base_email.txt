@@ -1,0 +1,7 @@
+{% load i18n %}
+{% block hello %}{% blocktrans with name=update.author %}Hello {{ name }},{% endblocktrans %}{% endblock %}
+{% block content %}{% endblock %}
+{% block thanks %}
+{% trans 'Thank you,' %}
+{% trans 'The Fix My Street Team' %}
+{% endblock %}

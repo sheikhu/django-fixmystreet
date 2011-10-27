@@ -32,10 +32,9 @@ urlpatterns = patterns('',
 
 
 urlpatterns += patterns('mainapp.views.main',
-    (r'^$', 'home', {}, 'home'),
-    #(r'^search', 'search_address'),
-    (r'about/$', 'about',{}, 'about'),
-    (r'posters/$', 'posters',{}, 'posters'),
+    url(r'^$', 'home',name='home'),
+    url(r'about/$', 'about',name='about'),
+    url(r'posters/$', 'posters',name='posters'),
 )
 
 urlpatterns += patterns('mainapp.views.faq',
@@ -49,43 +48,42 @@ urlpatterns += patterns('mainapp.views.promotion',
 
 urlpatterns += patterns('mainapp.views.wards',
     (r'^wards/$', cities.show, {"city_id":1}, 'bxl_wards'), 
-    (r'^wards/(\d+)', 'show'),       
-    #(r'^cities/(\d+)/wards/(\d+)', 'show_by_number'),       
-    
+    url(r'^wards/(\d+)', 'show',name='ward'),       
+    #(r'^cities/(\d+)/wards/(\d+)', 'show_by_number'),
 )
 
 #urlpatterns += patterns('',
-    #(r'^cities/(\d+)$', cities.show ),       
+    #(r'^cities/(\d+)$', cities.show ),
     #(r'^cities', cities.index, {}, 'cities_url_name'),
 #)
 
 urlpatterns += patterns( 'mainapp.views.reports.updates',
-    (r'^reports/updates/confirm/(\S+)', 'confirm'), 
-    (r'^reports/updates/create/', 'create'), 
-    (r'^reports/(\d+)/updates/', 'new'),
+    url(r'^reports/updates/confirm/(\S+)', 'confirm', name='confirm'), 
+    url(r'^reports/updates/create/', 'create', name='update_created'), 
+    url(r'^reports/(\d+)/updates/', 'new', name='update_new'),
 )
 
 
 urlpatterns += patterns( 'mainapp.views.reports.subscribers',
-    (r'^reports/subscribers/confirm/(\S+)', 'confirm'), 
-    (r'^reports/subscribers/unsubscribe/(\S+)', 'unsubscribe'),
-    (r'^reports/subscribers/create/', 'create'),
-    (r'^reports/(\d+)/subscribers', 'new'),
+    url(r'^reports/subscribers/confirm/(\S+)', 'confirm',name='subscribe_confirm'), 
+    url(r'^reports/subscribers/unsubscribe/(\S+)', 'unsubscribe',name='unsubscribe'),
+    url(r'^reports/subscribers/create/', 'create', name='subscribe_create'),
+    url(r'^reports/(\d+)/subscribers', 'new', name='subscribe'),
 )
 
 urlpatterns += patterns( 'mainapp.views.reports.flags',
-    (r'^reports/(\d+)/flags/thanks', 'thanks'),
-    (r'^reports/(\d+)/flags', 'new'),
-)
-
-urlpatterns += patterns('mainapp.views.reports.mobile',
-    (r'^mobile/reports/(\d+)$', 'show'),       
-    (r'^mobile/reports/', 'new'),
+    url(r'^reports/(\d+)/flags/thanks', 'thanks',name='flag_success'),
+    url(r'^reports/(\d+)/flags', 'new',name='flag'),
 )
 
 urlpatterns += patterns('mainapp.views.reports.main',
-    (r'^reports/(\d+)$', 'show'),       
-    (r'^reports/', 'new'),
+    url(r'^reports/(\d+)$', 'show',name='report_show'),       
+    url(r'^reports/new', 'new',name='report_new'),
+)
+
+urlpatterns += patterns('mainapp.views.reports.mobile',
+    url(r'^mobile/reports/(\d+)$', 'show',name='mobile_report_show'),       
+    url(r'^mobile/reports/new', 'new',name='mobile_report_new'),
 )
 
 urlpatterns += patterns('mainapp.views.contact',
@@ -98,10 +96,10 @@ urlpatterns += patterns('mainapp.views.ajax',
 )
 
 urlpatterns += patterns('mainapp.views.api',
-    (r'^api/search/$', 'search'),
-    (r'^api/locate/$', 'locate'),
-    (r'^api/wards/$', 'wards'),
-    (r'^api/reports/$', 'reports'),
+    url(r'^api/search/$', 'search',name='api_search'),
+    url(r'^api/locate/$', 'locate',name='api_locate'),
+    url(r'^api/wards/$', 'wards',name='api_wards'),
+    url(r'^api/reports/$', 'reports',name='api_reports'),
 )
 
 if settings.DEBUG and 'TESTVIEW' in settings.__dir__():

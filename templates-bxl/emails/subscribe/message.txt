@@ -1,8 +1,10 @@
-Please click on the following URL:
-{{confirm_url}}
+{% extends 'emails/base_email.txt' %}
+{% load i18n %}
+{% block content %}
+{% blocktrans with title=update.report.title %}
+Thank you for following the report '{{ title }}'.
 
-To confirm your subscription to updates on the report:
-{{subscriber.report.title|safe}}
-
-Thank you,
-The FixMyStreet.ca Team
+To confirm your subscription, please click on the following URL:
+{% endblocktrans %}
+{{ confirm_url }}
+{% endblock %}
