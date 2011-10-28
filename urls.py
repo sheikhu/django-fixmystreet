@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     (r'^reset/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)/$', 'django.contrib.auth.views.password_reset_confirm'),
     (r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete'),
     (r'^admin/', admin.site.urls,{'SSL':SSL_ON}),
-    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
+    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds},'feeds'),
     (r'^i18n/', include('django.conf.urls.i18n')),
 )
 
@@ -88,7 +88,7 @@ urlpatterns += patterns('mainapp.views.reports.mobile',
 
 urlpatterns += patterns('mainapp.views.contact',
     (r'^contact/thanks', 'thanks'),
-    (r'^contact', 'new', {}, 'contact'),
+    (r'^contact/', 'new', {}, 'contact'),
 )
 
 urlpatterns += patterns('mainapp.views.ajax',
