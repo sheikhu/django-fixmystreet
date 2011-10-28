@@ -1,0 +1,27 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+{% block hello %}{% endblock %}
+{% block content %}
+{% blocktrans with title=update.report.title|safe author=update.author|safe date=update.created_at|date %}
+<p>The Fix My Street Report: <strong>{{title}}</strong></p>
+<p>was updated by {{author}} on {{date}}:</p>
+{% endblocktrans %}
+{% if update.is_fixed %}<p>{% trans "This issue has been fixed." %}</p>{% endif %}
+<div style="padding:10px; margin:10px; border:1px solid black;">
+{{update.desc|safe}}
+</div>
+{% blocktrans with url=update.report.get_absolute_url %}
+<p>For more information, see the full report at:</p>
+{% endblocktrans %}
+<p><a href="{{ url }}">{{ url }}</a></p>
+{% endblock %}
+{% block signature %}
+{% if unsubscribe_url %}
+{% blocktrans %}
+<p>You are receiving this email because you subscribed to updates for this report
+on Fix My Street.  To unsubscribe from updates to this report, click the 
+following link:</p>
+<p><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></p>
+{% endblocktrans %}
+{% endif %}
+{% endblock %}

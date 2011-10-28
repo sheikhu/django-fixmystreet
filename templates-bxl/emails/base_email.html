@@ -1,11 +1,14 @@
-<html>
-    <body>{% load i18n %}
-        <p style="margin-bottom:30px;">{% block hello %}{% blocktrans with name=update.author %}Hello {{ name }},{% endblocktrans %}{% endblock %}</p>
+{% load i18n %}<html>
+    <body style="margin: 0; padding: 20px 50px; background-color: #004990; color: white; font-family: Helvetica, Arial, sans-serif;">
+		<div style="background-color: #517EB5; padding: 15px 8px;">
+			<p style="margin-bottom:30px;">{% block hello %}{% blocktrans with name=update.author %}Hello {{ name }},{% endblocktrans %}{% endblock %}</p>
 
-        {% block content %}{% endblock %}
-        {% block thanks %}
-        <p style="margin-top:20px;">{% trans 'Thank you,' %}</p>
-        <p style="text-align:right;">{% trans 'The Fix My Street Team' %}</p>
-        {% endblock %}
-    </body>
+			{% block content %}{% endblock %}
+			{% block thanks %}
+			<p style="margin-top:25px;">{% trans 'Thank you,' %}</p>
+			<p style="text-align:right;">{% trans 'The Fix My Street Team' %}</p>
+			{% endblock %}
+			{% block signature %}{% endblock %}
+		</div>
+	</body>
 </html>

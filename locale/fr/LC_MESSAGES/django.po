@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-27 12:37+0200\n"
+"POT-Creation-Date: 2011-10-28 11:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,12 @@ msgstr "Francais"
 msgid "Dutch"
 msgstr "Néerlandais"
 
-#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:260
-#: mainapp/models.py:334
+#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:255
+#: mainapp/models.py:329
 msgid "Name"
 msgstr "Nom"
 
-#: mainapp/forms.py:16 mainapp/models.py:333
+#: mainapp/forms.py:16 mainapp/models.py:328
 msgid "Email"
 msgstr "Email"
 
@@ -54,36 +54,36 @@ msgstr "Astuce"
 msgid "Category group"
 msgstr "Groupe catégorie:"
 
-#: mainapp/models.py:235
+#: mainapp/models.py:230
 msgid "Subject"
 msgstr "Sujet"
 
-#: mainapp/models.py:258
+#: mainapp/models.py:253
 msgid "* Photo"
 msgstr "* Photo"
 
-#: mainapp/models.py:259 mainapp/models.py:328
+#: mainapp/models.py:254 mainapp/models.py:323
 msgid "Details"
 msgstr "Détails"
 
-#: mainapp/models.py:261 templates-bxl/reports/mobile/new.html:5
+#: mainapp/models.py:256 templates-bxl/reports/mobile/new.html:5
 #: templates-bxl/reports/mobile/show.html:6
 msgid "Location"
 msgstr "Adresse"
 
-#: mainapp/models.py:262
+#: mainapp/models.py:257
 msgid "Postal Code"
 msgstr "Code postal"
 
-#: mainapp/models.py:335
+#: mainapp/models.py:330
 msgid "Phone"
 msgstr "Téléphone"
 
-#: mainapp/models.py:556
+#: mainapp/models.py:546
 msgid "Question"
 msgstr "Question"
 
-#: mainapp/models.py:557
+#: mainapp/models.py:547
 msgid "Answere"
 msgstr "Réponse"
 
@@ -304,7 +304,7 @@ msgstr "Tous les Rapports"
 msgid "Reports by City"
 msgstr "Rapports par Ville"
 
-#: templates-bxl/cities/show.html:4 templates-bxl/cities/show.html.py:38
+#: templates-bxl/cities/show.html:4 templates-bxl/cities/show.html.py:37
 #: templates-bxl/wards/show.html:4 templates-bxl/wards/show.html.py:49
 msgid "Reports for"
 msgstr "Rapports pour"
@@ -324,10 +324,6 @@ msgstr "Rapport"
 #: templates-bxl/cities/show.html:26
 msgid "Number of Subscribers"
 msgstr "Nombre d'Abonnés"
-
-#: templates-bxl/cities/show.html:41
-msgid "Reports by Ward"
-msgstr "Rapports par Commune"
 
 #: templates-bxl/contact/new.html:9
 msgid ""
@@ -372,18 +368,18 @@ msgstr ""
 "<p>Merci pour nous avoir envoyer vos commentaires.</p>\n"
 "<a href=\"/\">Retournez à Fix My Street</a>\n"
 
-#: templates-bxl/emails/base_email.html:3
+#: templates-bxl/emails/base_email.html:4
 #: templates-bxl/emails/base_email.txt:2
 #, python-format
 msgid "Hello %(name)s,"
 msgstr "Bonjour %(name)s,"
 
-#: templates-bxl/emails/base_email.html:7
+#: templates-bxl/emails/base_email.html:8
 #: templates-bxl/emails/base_email.txt:5
 msgid "Thank you,"
 msgstr "Merci,"
 
-#: templates-bxl/emails/base_email.html:8
+#: templates-bxl/emails/base_email.html:9
 #: templates-bxl/emails/base_email.txt:6
 msgid "The Fix My Street Team"
 msgstr "L'équipe Fix My Street"
@@ -411,14 +407,15 @@ msgid ""
 "\n"
 "To confirm your submission, please click on the following URL:\n"
 msgstr ""
+"\n"
 "Merci d'avoir signalé '%(title)s' à Fix My Street.\n"
 "\n"
 "Pour confirmer votre rapport, veuillez cliquer le lien suivant:\n"
 
 #: templates-bxl/emails/confirm_report/subject.txt:1
 #, python-format
-msgid "Fix My Street: Please Confirm Report: %(title|safe)s"
-msgstr "Fix My Street: Veuillez Confirmer votre rapport: %(title|safe)s"
+msgid "Fix My Street: Please Confirm Report: %(title)s"
+msgstr "Fix My Street: Veuillez Confirmer votre rapport: %(title)s"
 
 #: templates-bxl/emails/confirm_update/message.html:4
 #, python-format
@@ -444,18 +441,79 @@ msgid ""
 "\n"
 "To confirm your submission, please click on the following URL:\n"
 msgstr ""
+"\n"
 "Merci d'avoir mis à jour '%(title)s' à Fix My Street.\n"
 "\n"
 "Pour confirmer votre mise à jour, veuillez cliquer le lien suivant:\n"
 
 #: templates-bxl/emails/confirm_update/subject.txt:1
 #, python-format
-msgid "Fix My Street: Please Confirm Update For: %(title|safe)s"
-msgstr "Fix My Street: Veuillez Confirmer votre mise à jour: %(title|safe)s"
+msgid "Fix My Street: Please Confirm Update For: %(title)s"
+msgstr "Fix My Street: Veuillez Confirmer votre mise à jour: %(title)s"
 
 #: templates-bxl/emails/flag_report/subject.txt:1
 msgid "FixMyStreet Report Flagged as Offensive"
 msgstr "FixMyStreet rapport signallé offensif"
+
+#: templates-bxl/emails/report_update/message.html:5
+#, python-format
+msgid ""
+"\n"
+"<p>The Fix My Street Report: <strong>%(title)s</strong></p>\n"
+"<p>was updated by %(author)s on %(date)s:</p>\n"
+msgstr ""
+
+#: templates-bxl/emails/report_update/message.html:9
+#: templates-bxl/emails/report_update/message.txt:5
+#, fuzzy
+msgid "This issue has been fixed."
+msgstr "Ce problème a été résolu."
+
+#: templates-bxl/emails/report_update/message.html:13
+msgid ""
+"\n"
+"<p>For more information, see the full report at:</p>\n"
+msgstr ""
+
+#: templates-bxl/emails/report_update/message.html:20
+#, python-format
+msgid ""
+"\n"
+"<p>You are receiving this email because you subscribed to updates for this "
+"report\n"
+"on Fix My Street.  To unsubscribe from updates to this report, click the \n"
+"following link:</p>\n"
+"<p><a href=\"%(unsubscribe_url)s\">%(unsubscribe_url)s</a></p>\n"
+msgstr ""
+
+#: templates-bxl/emails/report_update/message.txt:1
+#, python-format
+msgid ""
+"\n"
+"The Fix My Street Report: '%(title)s' \n"
+"was updated by %(author)s on %(date)s:\n"
+msgstr ""
+
+#: templates-bxl/emails/report_update/message.txt:11
+#, python-format
+msgid ""
+"\n"
+"For more information, see the full report at:\n"
+"%(url)s\n"
+"\n"
+"Thank you for supporting Fix My Street,\n"
+"The Fix My Street Team\n"
+msgstr ""
+
+#: templates-bxl/emails/report_update/message.txt:19
+#, python-format
+msgid ""
+"\n"
+"You are receiving this email because you subscribed to updates for this "
+"report\n"
+"on Fix My Street.  To unsubscribe from updates to this report, click the \n"
+"following link: %(unsubscribe_url)s\n"
+msgstr ""
 
 #: templates-bxl/emails/report_update/subject.txt:1
 msgid "Fix My Street:"
@@ -470,6 +528,19 @@ msgstr "résolus"
 msgid "Updated"
 msgstr "Mis à Jour"
 
+#: templates-bxl/emails/subscribe/message.html:4
+#, fuzzy, python-format
+msgid ""
+"\n"
+"<p>Thank you for following the report <strong>%(title)s</strong>.</p>\n"
+"\n"
+"<p>To confirm your subscription, please click on the following URL:</p>\n"
+msgstr ""
+"\n"
+"Merci de suivre '%(title)s'.\n"
+"\n"
+"Pour confirmer, veuillez cliquer le lien suivant:\n"
+
 #: templates-bxl/emails/subscribe/message.txt:4
 #, python-format
 msgid ""
@@ -478,6 +549,7 @@ msgid ""
 "\n"
 "To confirm your subscription, please click on the following URL:\n"
 msgstr ""
+"\n"
 "Merci de suivre '%(title)s'.\n"
 "\n"
 "Pour confirmer, veuillez cliquer le lien suivant:\n"
@@ -799,3 +871,6 @@ msgid "Note: Fix My Street relies on users to report problems as fixed."
 msgstr ""
 "Note: Fix My Street s'appuie sur les utilisateurs pour signaler les "
 "problèmes comme étant résolus."
+
+#~ msgid "Reports by Ward"
+#~ msgstr "Rapports par Commune"

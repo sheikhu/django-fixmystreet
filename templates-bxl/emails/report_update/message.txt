@@ -1,20 +1,24 @@
-The Fix My Street Report: '{{update.report.title|safe}}' 
-was updated by {{update.author|safe}} on {{update.created_at|date}}:
-
-{% if update.is_fixed %}This issue has been fixed. {% endif %}
+{% load i18n %}{% blocktrans with title=update.report.title|safe author=update.author|safe date=update.created_at|date %}
+The Fix My Street Report: '{{title}}' 
+was updated by {{author}} on {{date}}:
+{% endblocktrans %}
+{% if update.is_fixed %}{% trans "This issue has been fixed." %}{% endif %}
 -----------------------------------------------------------------------------
 
 {{update.desc|safe}}
 
 -----------------------------------------------------------------------------
-
+{% blocktrans with url=update.report.get_absolute_url %}
 For more information, see the full report at:
-{{update.report.get_absolute_url}}
+{{ url }}
 
-Thank you for supporting FixMyStreet.ca,
-The FixMyStreet.ca Team
-
-
+Thank you for supporting Fix My Street,
+The Fix My Street Team
+{% endblocktrans %}
+{% if unsubscribe_url %}
+{% blocktrans %}
 You are receiving this email because you subscribed to updates for this report
 on Fix My Street.  To unsubscribe from updates to this report, click the 
 following link: {{unsubscribe_url}}
+{% endblocktrans %}
+{% endif %}

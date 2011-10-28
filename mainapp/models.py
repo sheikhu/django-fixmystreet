@@ -278,7 +278,7 @@ class Report(models.Model):
         return( ReportUpdate.objects.get(report=self,first_update=True))
 
     def get_absolute_url(self):
-        return reverse("report_show", args=[self.id])
+        return 'http://%s%s' % (Site.objects.get_current().domain, reverse("report_show", args=[self.id]))
 
     def get_mobile_absolute_url(self):
         return reverse("mobile_report_show", args=[self.id])
@@ -300,7 +300,7 @@ class Report(models.Model):
         return( self.to_emails,self.cc_emails )
 
     def flagAsOffensive(self):
-        report_url= 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url()), 
+        report_url= self.get_absolute_url(), 
 
         msg = HtmlTemplateMail('flag_report', { 'report_url': report_url, 'report': self }, [settings.EMAIL_ADMIN])
         msg.send()
@@ -344,19 +344,19 @@ class ReportUpdate(models.Model):
     def notify_on_new(self):        
         to_addrs,cc_addrs = self.report.get_emails()
 
-        msg = HtmlTemplateMail('send_report_to_city', {'update': self }, to_addrs, cc=cc_addrs, headers={'Reply-To': self.email })
+        msg = HtmlTemplateMail('send_report_to_city', {'update': self }, to_addrs, cc=cc_addrs)
         if self.report.photo:
             msg.attach_file( self.report.photo.file.name )
         msg.send()
 
+        email_addr_str = ','.join(to_addrs)
+        #for email in to_addrs:
+            #if email_addr_str != "":
+                #email_addr_str += ", "
+            #email_addr_str += email
+		
         # update report to show time sent to city.
         self.report.sent_at=dt.now()
-        email_addr_str = ""
-        for email in to_email_addrs:
-            if email_addr_str != "":
-                email_addr_str += ", "
-            email_addr_str += email
-            
         self.report.email_sent_to = email_addr_str
         self.report.save()
 
@@ -368,17 +368,12 @@ class ReportUpdate(models.Model):
         for subscriber in self.report.reportsubscriber_set.all():
             if subscriber.is_confirmed:
                 unsubscribe_url = settings.SITE_URL + reverse("unsubscribe",args=[subscriber.confirm_token])
-                message = render_to_string("emails/report_update/message.txt", 
-                   { 'update': self, 'unsubscribe_url': unsubscribe_url })
-                send_mail(subject, message, 
-                   settings.EMAIL_FROM_USER,[subscriber.email], fail_silently=False)
+                msg = HtmlTemplateMail('report_update', {'update': self, 'unsubscribe_url': unsubscribe_url}, [subscriber.email])
+                msg.send()
 
         # tell the original problem reporter there was an update
-        message = render_to_string("emails/report_update/message.txt", 
-                    { 'update': self })
-        send_mail(subject, message, 
-              settings.EMAIL_FROM_USER,
-              [self.report.first_update().email],  fail_silently=False)
+		msg = HtmlTemplateMail('report_update', {'update': self}, [self.report.first_update().email])
+		msg.send()
 
             
     def save(self):
@@ -398,7 +393,6 @@ class ReportUpdate(models.Model):
             m.update(str(time.time()))
             self.confirm_token = m.hexdigest()
             
-            self.report
             confirm_url = 'http://%s%s' % (Site.objects.get_current().domain, reverse('confirm', args=[self.confirm_token]))
             tmpl_dir = 'confirm_report' if self.first_update else 'confirm_update'
             msg = HtmlTemplateMail(tmpl_dir,{'confirm_url': confirm_url, 'update': self},[self.email])
@@ -434,12 +428,13 @@ class ReportSubscriber(models.Model):
             self.confirm_token = m.hexdigest()
 
             confirm_url = 'http://%s%s' % (Site.objects.get_current().domain, reverse('subscribe_confirm', args=[self.confirm_token]))
-            #message = render_to_string("emails/subscribe/message.txt", 
+            #message = render_to_string("emails/subscribe/message.txt",
                     #{ 'confirm_url': confirm_url, 'subscriber': self })
-            #send_mail('Subscribe to Fix My Street Report Updates', message, 
+            #send_mail('Subscribe to Fix My Street Report Updates', message,
                    #settings.EMAIL_FROM_USER,[self.email], fail_silently=False)
             
             msg = HtmlTemplateMail('subscribe',{ 'confirm_url': confirm_url, 'subscriber': self },[self.email])
+            msg.send()
 
 
 class SqlQuery(object):
@@ -665,6 +660,8 @@ class HtmlTemplateMail(EmailMultiAlternatives):
             html    = render_to_string('emails/' + template_dir + "/message.html", data)
         except TemplateDoesNotExist:
             pass
+        
+        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
         super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
         if html:
             self.attach_alternative(html, "text/html")
