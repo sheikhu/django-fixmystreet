@@ -29,7 +29,7 @@
 
             $(document).bind('ready',function(){
 				var $map = $('#map-bxl');
-				var rootUrl = 'http://192.168.103.27:8000';
+				var rootUrl = 'http://fixmystreet.irisnetlab.be';
 				var mediaUrl = rootUrl + '/media/';
 
                 /*
@@ -58,7 +58,7 @@
 							apiRootUrl: rootUrl + "/api/",
 							origin:{x:p.x,y:p.y},
 							markerStyle:{
-								externalGraphic: "images/marker.png",
+								externalGraphic: mediaUrl + "images/marker.png",
 								graphicXOffset:-32/2,
 								graphicYOffset:-32,
 								graphicHeight:32,
@@ -93,7 +93,7 @@
                         $map.fmsMap({
 							apiRootUrl: rootUrl + "/api/",
 							markerStyle:{
-								externalGraphic: "images/marker.png",
+								externalGraphic: mediaUrl + "images/marker.png",
 								graphicXOffset:-32/2,
 								graphicYOffset:-32,
 								graphicHeight:32,
