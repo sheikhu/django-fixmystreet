@@ -43,6 +43,8 @@ Usefull
 To generate po file run the following command:
 $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/* --ignore=templates-bxl/admin/* --ignore=templates-bxl/posters.html --ignore=templates-bxl/promotions/*
 
-
-
+for 
+python manage.py loaddata sample.json
+python manage.py testserver sample.json
+python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
 

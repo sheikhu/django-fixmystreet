@@ -70,26 +70,26 @@ class TestStatGroup1(StatColGroup):
     def __init__(self):
         super(TestStatGroup1,self).__init__(stats = [ PercentFixedInDays(0,3),PercentFixedInDays(3,18), PercentUnfixed() ])
         
-
-class CategoryTestCase(StatTestCase):
-    
-    def test(self):
-        cat_group = CategoryStatRows(TestStatGroup1)
-        self.assertEquals(cat_group.labels(),  ['Category','Fixed in 0-3 Days','Fixed in 3-18 Days', 'Percent Unfixed'] )
-        self.check_result(cat_group, [[ 'All',.25, .25, .5 ], [u'Graffiti On City Property',0,.5,.5],[u'Broken or Damaged Equipment/Play Structures',.5, 0, .5]])
-
-        
-class CategoryGroupTestCase(StatTestCase):
-    
-    def test(self):
-        cat_group = CategoryGroupStatRows(TestStatGroup1)
-        self.assertEquals(cat_group.labels(),  ['Category Group','Fixed in 0-3 Days','Fixed in 3-18 Days', 'Percent Unfixed'] )
-        self.check_result(cat_group, [[ 'All',.25, .25, .5 ], [u'Grafitti',0,.5,.5],[u'Parks',.5, 0, .5]])
-
-
-class CityTestCase(StatTestCase):
-
-    def test(self):
-        cat_group = CityStatRows(TestStatGroup1)
-        self.assertEquals(cat_group.labels(),  ['City','Fixed in 0-3 Days','Fixed in 3-18 Days', 'Percent Unfixed'] )
-        self.check_result(cat_group, [[ 'All',.25, .25, .5 ], [u'Oglo',.25,.25,.5]])
+#
+#class CategoryTestCase(StatTestCase):
+    #
+    #def test(self):
+        #cat_group = CategoryStatRows(TestStatGroup1)
+        #self.assertEquals(cat_group.labels(),  ['Category','Fixed in 0-3 Days','Fixed in 3-18 Days', 'Percent Unfixed'] )
+        #self.check_result(cat_group, [[ 'All',.25, .25, .5 ], [u'Graffiti On City Property',0,.5,.5],[u'Broken or Damaged Equipment/Play Structures',.5, 0, .5]])
+#
+        #
+#class CategoryGroupTestCase(StatTestCase):
+    #
+    #def test(self):
+        #cat_group = CategoryGroupStatRows(TestStatGroup1)
+        #self.assertEquals(cat_group.labels(),  ['Category Group','Fixed in 0-3 Days','Fixed in 3-18 Days', 'Percent Unfixed'] )
+        #self.check_result(cat_group, [[ 'All',.25, .25, .5 ], [u'Grafitti',0,.5,.5],[u'Parks',.5, 0, .5]])
+#
+#
+#class CityTestCase(StatTestCase):
+#
+    #def test(self):
+        #cat_group = CityStatRows(TestStatGroup1)
+        #self.assertEquals(cat_group.labels(),  ['City','Fixed in 0-3 Days','Fixed in 3-18 Days', 'Percent Unfixed'] )
+        #self.check_result(cat_group, [[ 'All',.25, .25, .5 ], [u'Oglo',.25,.25,.5]])

@@ -1,24 +1,5 @@
 [
      {
-        "pk": 2, 
-        "model": "mainapp.city", 
-        "fields": {
-            "name": "TestCityWithoutEmail",
-            "province": 1,
-            "email": ""
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "mainapp.city", 
-        "fields": {
-            "name": "TestCityWithEmail",
-            "province": 1,
-            "email": "311email@city.com"
-        }
-    }, 
-
-     {
         "pk": 7, 
         "model": "mainapp.councillor", 
         "fields": {
@@ -28,11 +9,38 @@
         }
     }, 
     {
+        "pk": 8, 
+        "model": "mainapp.councillor", 
+        "fields": {
+            "first_name": "Park", 
+            "last_name": "Park", 
+            "email": "park@testward1.com"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "mainapp.councillor", 
+        "fields": {
+            "first_name": "Non", 
+            "last_name": "Park", 
+            "email": "non-park@testward1.com"
+        }
+    },
+    {
+        "pk": 10, 
+        "model": "mainapp.councillor", 
+        "fields": {
+            "first_name": "Void", 
+            "last_name": "Council", 
+            "email": "void@testward1.com"
+        }
+    },
+    {
         "pk": 1, 
         "model": "mainapp.ward", 
         "fields": {
             "city": 2, 
-            "name": "WardInCityWithNo311Email", 
+            "name": "Ward1", 
             "councillor": 7, 
             "number": 1
         }
@@ -42,8 +50,8 @@
         "model": "mainapp.ward", 
         "fields": {
             "city": 3, 
-            "name": "WardInCityWith311Email", 
-            "councillor": 7, 
+            "name": "Ward2", 
+            "councillor": 10, 
             "number": 1
         }
     }

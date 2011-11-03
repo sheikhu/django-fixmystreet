@@ -29,13 +29,13 @@ class CouncillorAdmin(admin.ModelAdmin):
 admin.site.register(Councillor,CouncillorAdmin)
 
 
-#class ReportAdmin(admin.ModelAdmin):
-    #list_display = ('ward','title','point',)
-    #list_display_links = ('title',)
-    #ordering = ['ward', 'point']
-    #exclude = ['photo']
-#
-#admin.site.register(Report,ReportAdmin)
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('ward','title','is_fixed','is_confirmed','created_at','updated_at','category')
+    list_display_links = ('title',)
+    ordering = ['created_at']
+    exclude = ['photo']
+
+admin.site.register(Report,ReportAdmin)
 
 
 class EmailRuleAdmin(admin.ModelAdmin):

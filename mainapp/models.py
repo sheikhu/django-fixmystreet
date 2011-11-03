@@ -223,7 +223,7 @@ class EmailRule(models.Model):
         rule_behavior.resolve_email()
     
     def __str__(self):
-        return( "%s: %s %s - %s %s (%s)" % ("CC" if self.is_cc else "TO", self.councillor.first_name, self.councillor.last_name, self.RuleChoices[self.rule][1], (self.category_class.name if self.category_class else ''), self.ward.name) )
+        return( "%s: %s %s - %s %s (%s)" % ("CC" if self.is_cc else "TO", self.councillor.first_name, self.councillor.last_name, (self.category_class.name if self.category_class else ''), self.RuleChoices[self.rule][1], self.ward.name) )
         
 
 class Report(models.Model):
@@ -236,7 +236,7 @@ class Report(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     
     # time report was marked as 'fixed'
-    fixed_at = models.DateTimeField(null=True)
+    fixed_at = models.DateTimeField(null=True,blank=True)
     is_fixed = models.BooleanField(default=False)
     is_hate = models.BooleanField(default=False)
     
@@ -287,6 +287,7 @@ class Report(models.Model):
     def get_emails(self):
         self.to_emails = []
         self.cc_emails = []
+        self.excluded = []
         if self.ward.councillor:
             self.to_emails.append(self.ward.councillor.email)
         
@@ -367,13 +368,13 @@ class ReportUpdate(models.Model):
         # tell our subscribers there was an update.
         for subscriber in self.report.reportsubscriber_set.all():
             if subscriber.is_confirmed:
-                unsubscribe_url = settings.SITE_URL + reverse("unsubscribe",args=[subscriber.confirm_token])
+                unsubscribe_url = 'http://%s%s' % (Site.objects.get_current().domain, reverse("unsubscribe",args=[subscriber.confirm_token]))
                 msg = HtmlTemplateMail('report_update', {'update': self, 'unsubscribe_url': unsubscribe_url}, [subscriber.email])
                 msg.send()
 
         # tell the original problem reporter there was an update
-		msg = HtmlTemplateMail('report_update', {'update': self}, [self.report.first_update().email])
-		msg.send()
+        msg = HtmlTemplateMail('report_update', {'update': self}, [self.report.first_update().email])
+        msg.send()
 
             
     def save(self):
@@ -596,18 +597,18 @@ class PollingStation(models.Model):
         #db_table = u'polling_stations'
  
  
-class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
-    
-    # if user is a 'city admin' (is_staff=True),
-    # this field lists all cities the user 
-    # can edit through the admin 
-    # panel.  
-    
-    cities = models.ManyToManyField(City, null=True)
-    
-    def __unicode__(self):
-        return self.user.username
+#class UserProfile(models.Model):
+    #user = models.ForeignKey(User, unique=True)
+    #
+     #if user is a 'city admin' (is_staff=True),
+     #this field lists all cities the user 
+     #can edit through the admin 
+     #panel.  
+    #
+    #cities = models.ManyToManyField(City, null=True)
+    #
+    #def __unicode__(self):
+        #return self.user.username
     
     
 class DictToPoint():

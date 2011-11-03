@@ -36,7 +36,7 @@ def show( request, ward_id ):
         WHEN age( clock_timestamp(), fixed_at ) < interval '1 month' AND is_fixed = true THEN 2
         WHEN age( clock_timestamp(), fixed_at ) > interval '1 month' AND is_fixed = true THEN 3
         ELSE 4
-        END """ }, order_by = ['-created_at'] )[:10])
+        END """ }, order_by = ['-created_at'] )[:40])
     reports.sort(key=attrgetter('status_int'))
     
     # translated for po file

@@ -3,6 +3,7 @@ import os
 import logging
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+#TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner' 
 TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE = 'template_postgis'
 

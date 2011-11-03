@@ -9,7 +9,7 @@
 <p>{% trans "Enter your email address to subscribe to updates for this report:" %}</p>
 <form action="/reports/{{report.id}}/subscribers/" method="POST">
 {{subscriber_form.as_table}}
-<input type="submit" value="{% trans "Subscribe" %}">
+<input type="submit" value="{% trans 'Subscribe' %}"/>
 </form>
 </div>
 </div>
