@@ -1,24 +1,23 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8" />
         <title>Fix My Street</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="jquery/jquery.mobile-1.0rc2.css"></link>
-        <link rel="stylesheet" type="text/css" media="screen" href="css/fms-mobile.css"></link>
+        <link rel="stylesheet" type="text/css" media="screen" href="/media/mobile-app/jquery/jquery.mobile-1.0rc2.css"></link>
+        <link rel="stylesheet" type="text/css" media="screen" href="/media/mobile-app/css/fms-mobile.css"></link>
 
-        <script src="jquery/jquery-1.7.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-		<script src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
-        <script src="OpenLayers-2.11/OpenLayers.js"></script>
-		<script src="proj4js/lib/proj4js-combined.js"></script>
+        <script src="/media/mobile-app/jquery/jquery-1.7.js"></script>
+
+		<script src="/media/mobile-app/jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script src="/media/mobile-app/OpenLayers-2.11/OpenLayers.js"></script>
+		<script src="/media/mobile-app/proj4js/lib/proj4js-combined.js"></script>
 
 		<script src="phonegap-1.1.0.js"></script>
         <script src="fixmystreetmap.js"></script>
         <script src="mobile-app.js"></script>
 
-
-        <script src="jquery/jquery.mobile-1.0rc2.js"></script>
-
+        <script src="/media/mobile-app/jquery/jquery.mobile-1.0rc2.js"></script>
     </head>
     <body>
         <div id="home" class="panel home" data-role="page">
@@ -27,9 +26,9 @@
             </div>
             <div data-role="content" id="container">
                 <div id="map-bxl"> </div>
-                <form id="search-form">
+                <form id="search-form" data-ajax="false">
                     <input id="search" type="search"></input>
-                    <ul id="proposal" style="display:none;"> </ul>
+                    <ul id="proposal" style="display:none;" data-role="listview" data-inset="true"> </ul>
                 </form>
                 <a id="show-search" data-role="button">Search</a>
                 <!--<button id="confirm">Confirm</button>-->

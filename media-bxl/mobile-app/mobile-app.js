@@ -2,8 +2,8 @@
 
 $(document).bind("ready", function(){
     var $map = $('#map-bxl');
-    //var rootUrl = 'http://localhost:8000';
-    var rootUrl = 'http://fixmystreet.irisnetlab.be';
+    var rootUrl = 'http://localhost:8000';
+    //var rootUrl = 'http://fixmystreet.irisnetlab.be';
     var mediaUrl = rootUrl + '/media/';
 
 
@@ -72,16 +72,8 @@ $(document).bind("ready", function(){
         $('#create-report').attr('href',rootUrl + '/mobile/reports/new?lon='+p.x+'&lat='+p.y+'&address=arts');
     });
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     $map.bind('reportselected',function(evt, point, report){
-        $.get(rootUrl + '/mobile/reports/' + report.id,function(response){
-            var $panel = $(response);
-            var id = $panel[0].id;
-            $('#jqt').append($panel);
-            console.log($panel);
-            $panel.hide();
-            jQT.goTo('#' + id);//, 'slide');
-        });
+        $.mobile.changePage(rootUrl + '/mobile/reports/' + report.id);
     });
 
     $(document.body).delegate('#id_category', 'change', function(event){
@@ -187,7 +179,11 @@ $(document).bind("ready", function(){
                 {
                     if(response.result.length == 1)
                     {
-                        window.location.assign(resToHref(response.result[0]));
+                        var loc = response.result[i];
+                        $map.fmsMap('setCenter',loc.point.x, loc.point.y);
+                        
+                        $searchForm.hide();
+                        $('#show-search').show();
                     }
                     else
                     {
@@ -197,7 +193,7 @@ $(document).bind("ready", function(){
                         {
                             var loc = response.result[i];
                             var street = loc.address.street;
-                            $street = $('<li>' + street.name + ' (' + street.postCode + ')</li>')
+                            $street = $('<li><a href="#">' + street.name + ' (' + street.postCode + ')</a></li>')
                                 .data('loc',loc)
                                 .click(function()
                                 {
@@ -209,7 +205,7 @@ $(document).bind("ready", function(){
                                 });
                             $proposal.append($street);
                         }
-                        $proposal.slideDown();
+                        $proposal.slideDown().listview('refresh');
                     }
                     // window.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);
                 }
@@ -218,11 +214,11 @@ $(document).bind("ready", function(){
                     $searchTerm.removeClass('loading');
                     if(response.status == "noresult" || response.status == "success")
                     {
-                        $proposal.html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
+                        $proposal.html('<li class="error-msg">No corresponding address has been found</li>').slideDown().listview('refresh');
                     }
                     else
                     {
-                        $proposal.html('<p class="error-msg">' + response.status + '</p>').slideDown();
+                        $proposal.html('<li class="error-msg">' + response.status + '</li>').slideDown().listview('refresh');
                     }
                 }
             },

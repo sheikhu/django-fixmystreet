@@ -46,6 +46,14 @@ ul.errorlist li {
 	right: 10px;
 	left: 50px;
 }
+
+#proposal{
+    margin:1em 0 0 0;
+}
+#proposal .ui-icon-arrow-r{
+    display:none;
+}
+/*
 #search{
 	width:100%;
 	font-size: 1.5em;
@@ -56,7 +64,7 @@ ul.errorlist li {
 	box-sizing:border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
-}
+}*/
 
 #search_box.loading{
 	background:url("../images/ajax-loader.gif") no-repeat 98% center transparent;
