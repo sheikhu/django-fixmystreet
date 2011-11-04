@@ -1,22 +1,21 @@
-#home{
-	position:relative;
-}
+
 .panel {
-	background:url("../images/logo.png") center center no-repeat fixed;
+	background:url("../../images/logo.png") center center no-repeat fixed;
 }
 
 #container {
-	margin: 0px auto;
+	margin: 0 auto;
+    padding:0;
 	/*width: 520px;
 	height: 400px;*/
 	position: absolute;
-	top: 45px;
+	top: 42px;
 	bottom: 0;
 	right: 0;
 	left: 0;
 }
 
-#jqt ul.errorlist li {
+ul.errorlist li {
 	color:red;
 }
 
@@ -80,11 +79,11 @@ input[type=text], select, textarea{
 	border:1px solid black;
 	border-radius:5px;
 }
-
+/*
 #id_photo{
 	display:none;
 }
-
+*/
 #photo_preview{
 	float:right;
 }

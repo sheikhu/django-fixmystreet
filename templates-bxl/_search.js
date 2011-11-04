@@ -24,16 +24,16 @@ $(function(){
 			type:'POST',
 			contentType:'text/json',
 			dataType:'json',
-			data:JSON.stringify({
-				"language": "{{ LANGUAGE_CODE }}",
-				"address": {
-					"street": {
-						"name": $searchTerm.val(),
-						"postcode": $searchWard.val()
-					},
-					"number": ""
-				}
-			}),
+			data:'{\
+				"language": "{{ LANGUAGE_CODE }}",\
+				"address": {\
+					"street": {\
+						"name": "' + $searchTerm.val() + '",\
+						"postcode": "' + $searchWard.val() + '"\
+					},\
+                    "number": ""\
+				}\
+			}',
 			success:function(response){
 				if(response.status == 'success' && response.result.length > 0)
 				{
