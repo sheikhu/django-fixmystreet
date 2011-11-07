@@ -1,13 +1,15 @@
-{% load i18n %}
-<!doctype html>
+{% load i18n %}<!doctype html>
 <html>
     <head>
         <title>{% trans "New report" %}</title>
+<!--
         <link rel="stylesheet" type="text/css" media="screen" href="/media/mobile-app/jquery/jquery.mobile-1.0rc2.css"></link>
         <link rel="stylesheet" type="text/css" media="screen" href="/media/mobile-app/css/fms-mobile.css"></link>
+-->
 
         <meta name="viewport" content="width=device-width, initial-scale=1"/> 
 
+<!--
         <script src="/media/mobile-app/jquery/jquery-1.7.js"></script>
 
 		<script src="/media/mobile-app/jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -18,10 +20,11 @@
         <script src="fixmystreetmap.js"></script>
         <script src="mobile-app.js"></script>
 
-        <script src="jquery/jquery.mobile-1.0rc2.js"></script>
+        <script src="/media/mobile-app/jquery/jquery.mobile-1.0rc2.js"></script>
+-->
     </head>
     <body>
-        <div data-role="page" class="panel new_report">
+        <div data-role="page" id="new_report" class="panel">
             <div data-role="header">
                 <h1>{% trans "New report" %}</h1>
                 <a data-rel="back">{% trans "Location" %}</a>
