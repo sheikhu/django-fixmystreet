@@ -1,13 +1,14 @@
 
 $(document).bind("mobileinit", function(){
     $.mobile.allowCrossDomainPages = true;
+    $.mobile.page.prototype.options.addBackBtn = true;
 });
 
 
 // var rootUrl = 'http://localhost:8000';
 // var rootUrl = 'http://fixmystreet.irisnet.be';
-//var rootUrl = 'http://fixmystreet.irisnetlab.be';
-var rootUrl = 'http://192.168.103.27:8000';
+var rootUrl = 'http://fixmystreet.irisnetlab.be';
+// var rootUrl = 'http://192.168.103.27:8000';
 
 var mediaUrl = rootUrl + '/media/';
 
@@ -163,7 +164,7 @@ $(document).delegate('#home', "pageinit", function(){
                     }
                     else
                     {
-                        $proposal.html('<li class="error-msg">' + response.status + '</li>').slideDown().listview('refresh');
+                        $proposal.html('<li class="error-msg">' + response.status + ' ' + response.msg + '</li>').slideDown().listview('refresh');
                     }
                 }
             },

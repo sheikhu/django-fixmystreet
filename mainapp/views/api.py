@@ -10,10 +10,11 @@ import settings
 
 def search(request): 
     conn = httplib.HTTPConnection(settings.LOCAL_API)
-
     conn.request("POST", "/WSGeoloc/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8').encode('iso-8859-15'))
     response = conn.getresponse()
     data = response.read()
+
+    #import pdb;pdb.set_trace()
     conn.close()
     try:
         return HttpResponse(data.decode('iso-8859-15'))

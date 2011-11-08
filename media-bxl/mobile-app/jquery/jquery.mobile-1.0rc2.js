@@ -3514,7 +3514,7 @@ $.widget( "mobile.page", $.mobile.widget, {
 					self.nextHashChangePrevented( false );
 
 					// change the page based on the hash
-					$.mobile._handleHashChange( poppedState.hash );
+					$.mobile._handleHashChange( poppedState.initialHref );
 				}, 100);
 			}
 		},
