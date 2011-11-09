@@ -6,15 +6,56 @@ $(document).bind("mobileinit", function(){
 
 
 // var rootUrl = 'http://localhost:8000';
-// var rootUrl = 'http://fixmystreet.irisnet.be';
-var rootUrl = 'http://fixmystreet.irisnetlab.be';
 // var rootUrl = 'http://192.168.103.27:8000';
+var rootUrl = 'http://fixmystreet.irisnetlab.be';
+// var rootUrl = 'http://fixmystreet.irisnet.be';
 
 var mediaUrl = rootUrl + '/media/';
 
 $(document).delegate('#home', "pageinit", function(){
     var $map = $('#map-bxl');
     
+    function initMap(p){
+        $map.fmsMap({
+            apiRootUrl: rootUrl + "/api/",
+            origin:{x:p.x,y:p.y},
+            markerStyle:{
+                externalGraphic: mediaUrl + "images/marker.png",
+                graphicXOffset:-32/2,
+                graphicYOffset:-32,
+                graphicHeight:32,
+                graphicWidth:32
+            },
+            fixedMarkerStyle:{
+                externalGraphic: mediaUrl + "images/marker-fixed.png"
+            },
+            pendingMarkerStyle:{
+                externalGraphic: mediaUrl + "images/marker-pending.png"
+            }
+        });
+        $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
+            if(response.status != 'success')
+            {
+                // do something
+                console.log('error');
+                return ;
+            }
+
+            for(var i in response.results)
+            {
+                var report = response.results[i];
+                $map.fmsMap('addReport',report);
+            }
+            $map.fmsMap('addDraggableMarker', p.x, p.y);
+            $('#create-report').prop('href', rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts').removeClass('ui-disabled');
+        });
+    }
+
+    function noGeoLoc(){
+        var defaultLoc = {x:148853.101438753, y:170695.57753253728};
+        alert('Your device do not support geo localisation..');
+        initMap(defaultLoc);
+    }
 
     if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
     {
@@ -25,56 +66,12 @@ $(document).delegate('#home', "pageinit", function(){
             var p      = new Proj4js.Point(position.coords.longitude, position.coords.latitude);
             
             Proj4js.transform(source, dest, p);
-            
-
-            $map.fmsMap({
-                apiRootUrl: rootUrl + "/api/",
-                origin:{x:p.x,y:p.y},
-                markerStyle:{
-                    externalGraphic: mediaUrl + "images/marker.png",
-                    graphicXOffset:-32/2,
-                    graphicYOffset:-32,
-                    graphicHeight:32,
-                    graphicWidth:32
-                },
-                fixedMarkerStyle:{
-                    externalGraphic: mediaUrl + "images/marker-fixed.png"
-                },
-                pendingMarkerStyle:{
-                    externalGraphic: mediaUrl + "images/marker-pending.png"
-                }
-            });
-
-            $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
-                if(response.status != 'success')
-                {
-                    // do something
-                    console.log('error');
-                    return ;
-                }
-
-                for(var i in response.results)
-                {
-                    var report = response.results[i];
-                    $map.fmsMap('addReport',report);
-                }
-                $map.fmsMap('addDraggableMarker', p.x, p.y);
-                $('#create-report').prop('href', rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts').removeClass('ui-disabled');
-            });
-        },
-        function(){
-            alert('Your device do not support geo localisation..');
-            $map.fmsMap({
-                apiRootUrl: rootUrl + "/api/",
-                markerStyle:{
-                    externalGraphic: mediaUrl + "images/marker.png",
-                    graphicXOffset:-32/2,
-                    graphicYOffset:-32,
-                    graphicHeight:32,
-                    graphicWidth:32
-                }
-            });
-        });
+            initMap(p);
+        }, noGeoLoc);
+    }
+    else
+    {
+            noGeoLoc();
     }
 
     $map.bind('markermoved',function(evt,p){
@@ -227,13 +224,16 @@ $(document).delegate("#new_report", "pageinit", function(){
     if(navigator.camera && navigator.camera.getPicture)
     {
         //alert('Open the camera...');
-        navigator.camera.getPicture(setPhotoPath, function(message)
-        {
-            alert('Failed to take photo... ' + message);
-        },{ 
-            quality: 50, 
-            destinationType: Camera.DestinationType.FILE_URI
-        }); 
+        $('#photo').click(function(evt){
+            evt.preventDefault();
+            navigator.camera.getPicture(setPhotoPath, function(message)
+            {
+                alert('Failed to take photo... ' + message);
+            },{ 
+                quality: 50, 
+                destinationType: Camera.DestinationType.FILE_URI
+            });
+        });
     }
     else
     {
