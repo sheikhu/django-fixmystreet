@@ -1,4 +1,8 @@
 
+.ui-loader{
+    z-index:2000;
+}
+
 .panel {
 	background:url("../../images/logo.png") center center no-repeat fixed;
 }
@@ -70,6 +74,13 @@ ul.errorlist li {
 	background:url("../images/ajax-loader.gif") no-repeat 98% center transparent;
 }
 
+#photo_preview{
+	float:right;
+    height:100px;
+    width:100px;
+}
+
+/*
 p{
 	margin: 10px 10px 12px 10px;
 }
@@ -87,14 +98,7 @@ input[type=text], select, textarea{
 	border:1px solid black;
 	border-radius:5px;
 }
-/*
-#id_photo{
-	display:none;
-}
-*/
-#photo_preview{
-	float:right;
-}
+
 
 .error-msg {
 	color:red;
@@ -147,7 +151,7 @@ input[type=text], select, textarea{
 	padding-right: 5px; 
 }
 
-#more-actions {/* "offensive?..." */
+#more-actions {/ * "offensive?..." * /
 	font-size: 80%;
 	text-align: right;
 }
@@ -161,3 +165,4 @@ input[type=text], select, textarea{
 	border-radius:5px;
 	color:white;
 }
+*/

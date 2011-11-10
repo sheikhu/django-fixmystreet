@@ -1,7 +1,8 @@
 
 $(document).bind("mobileinit", function(){
-    $.mobile.allowCrossDomainPages = true;
-    $.mobile.page.prototype.options.addBackBtn = true;
+    //$.mobile.allowCrossDomainPages = true;
+    //$.mobile.page.prototype.options.addBackBtn = true;
+    $.mobile.ajaxEnabled = false;
 });
 
 
@@ -12,8 +13,73 @@ var rootUrl = 'http://fixmystreet.irisnetlab.be';
 
 var mediaUrl = rootUrl + '/media/';
 
+
+
+$(document).delegate(".back", "click", function(evt){
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    var $current = $.mobile.activePage;
+	var $page = $current.prev().first();
+
+    console.log('back',$page);
+    $page.one('pageshow', function(evt,data){
+        console.log('rem',data.prevPage);
+        data.prevPage.remove();
+    });
+	$.mobile.changePage($page,{reverse:true});
+});
+
+function loadFmsPage(url){
+    $.mobile.showPageLoadingMsg();
+    
+	$.get(url,
+        function(content){
+			var $page = $(content);
+            $.mobile.activePage.after($page);
+            $page.page();
+            
+            $.mobile.hidePageLoadingMsg();
+            $.mobile.changePage($page);
+
+            $page.data('url',url);
+		}
+	);
+}
+
+$(document).delegate("form", "submit", function(evt){
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    $.mobile.showPageLoadingMsg();
+
+    var $form = $(this);
+    var $current = $form.closest('[data-role=page]');
+    var url = $form.attr('action') || $current.data('url');
+
+	$.post(url,
+        $form.serialize(),
+        function(content){
+			var $page = $(content).page();
+
+            $current.find('[data-role=content]').remove();
+            var newContent = $page.find('[data-role=content]');
+            newContent.addClass('ui-content');
+            $current.append(newContent);
+            $current.trigger( "create" );
+            $(document.body).animate({scrollTop:0}, 'fast');
+            
+            
+            $.mobile.hidePageLoadingMsg();
+
+            $current.data('url',url);
+		}
+	);
+});
+
 $(document).delegate('#home', "pageinit", function(){
-    var $map = $('#map-bxl');
+    $page = $(this);
+    var $map = $page.find('#map-bxl');
     
     function initMap(p){
         $map.fmsMap({
@@ -47,7 +113,8 @@ $(document).delegate('#home', "pageinit", function(){
                 $map.fmsMap('addReport',report);
             }
             $map.fmsMap('addDraggableMarker', p.x, p.y);
-            $('#create-report').prop('href', rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts').removeClass('ui-disabled');
+            //$('#create-report').prop('href', rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts').removeClass('ui-disabled');
+            $('#create-report').removeClass('ui-disabled').data('position',p);
         });
     }
 
@@ -76,20 +143,30 @@ $(document).delegate('#home', "pageinit", function(){
 
     $map.bind('markermoved',function(evt,p){
         $('#create-report').attr('href',rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts');
+        $('#create-report').data('position',p);
     });
 
     $map.bind('reportselected',function(evt, point, report){
         $.mobile.changePage(rootUrl + '/mobile/reports/' + report.id);
     });
+    
+    $page.find('#create-report').click(function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        var p = $(this).data('position');
+        if(!p){return;}
+        loadFmsPage(rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y);
+    });
 
 
 
-    var $searchTerm = $('#search');
-    var $searchWard = $('#search-ward');
-    var $searchForm = $('#search-form');
-    var $proposal = $('#proposal');
+    var $searchTerm = $page.find('#search');
+    var $searchWard = $page.find('#search-ward');
+    var $searchForm = $page.find('#search-form');
+    var $proposal   = $page.find('#proposal');
 
-    $('#show-search').click(function(evt){
+    $page.find('#show-search').click(function(evt){
         evt.preventDefault();
         $(this).hide();
         $searchForm.show();
@@ -98,6 +175,7 @@ $(document).delegate('#home', "pageinit", function(){
     $searchForm.submit(function(event)
     {
         event.preventDefault();
+        event.stopPropagation();
         
         $proposal.slideUp();
         $searchTerm.addClass('loading');
@@ -235,10 +313,10 @@ $(document).delegate("#new_report", "pageinit", function(){
             });
         });
     }
-    else
+    /*else
     {
         alert('navigator.camera.getPicture not available');
-    }
+    }*/
 });
 
 
