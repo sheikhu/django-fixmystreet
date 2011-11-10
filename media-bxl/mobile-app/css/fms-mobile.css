@@ -4,8 +4,12 @@
 }
 
 .panel {
-	background:url("../../images/logo.png") center center no-repeat fixed;
+	background-image:url("../../images/logo.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
 }
+
 
 #container {
 	margin: 0 auto;
@@ -76,8 +80,14 @@ ul.errorlist li {
 
 #photo_preview{
 	float:right;
-    height:100px;
-    width:100px;
+    max-width:100px;
+}
+
+#id_photo{
+	display:none;
+}
+.error-msg {
+	color:red;
 }
 
 /*
@@ -100,9 +110,6 @@ input[type=text], select, textarea{
 }
 
 
-.error-msg {
-	color:red;
-}
 
 .note {
 	font-weight:bold;

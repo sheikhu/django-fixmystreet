@@ -12,9 +12,13 @@
 
     <div data-role="content">
         <form enctype="multipart/form-data" method="post" action="" id="report_form">
-            <img id='photo_preview' style="display:none;"/>
             {{ report_form.as_p }}
             <!--<p id="photo_note">{% trans "* Optional" %}</p>-->
+            <img id='photo_preview' style="display:none;"/>
+            <p>
+                <a id="take_photo" class="select_photo" data-role="button">Take a photo</a>
+                <a id="open_library" class="select_photo" data-role="button">Select from library</a>
+            </p>
             <p id='secondary_container'></p>
             {{ update_form.as_p }}
             <div>

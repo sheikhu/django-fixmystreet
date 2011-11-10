@@ -7,8 +7,8 @@ $(document).bind("mobileinit", function(){
 
 
 // var rootUrl = 'http://localhost:8000';
-// var rootUrl = 'http://192.168.103.27:8000';
-var rootUrl = 'http://fixmystreet.irisnetlab.be';
+var rootUrl = 'http://192.168.103.27:8000';
+//var rootUrl = 'http://fixmystreet.irisnetlab.be';
 // var rootUrl = 'http://fixmystreet.irisnet.be';
 
 var mediaUrl = rootUrl + '/media/';
@@ -288,29 +288,29 @@ $(document).delegate("#new_report", "pageinit", function(){
     
     function setPhotoPath(fileURI)
     {
-        alert(fileURI);
         $form.find('#id_photo').val(fileURI);
         $form.find('#photo_preview').attr('src',fileURI).fadeIn();
     }
     
     if(navigator.camera && navigator.camera.getPicture)
     {
-        //alert('Open the camera...');
-        $('#id_photo').click(function(evt){
+        $('.select_photo').click(function(evt){
             evt.preventDefault();
+            
             navigator.camera.getPicture(setPhotoPath, function(message)
             {
                 alert('Failed to take photo... ' + message);
             },{ 
                 quality: 50, 
-                destinationType: Camera.DestinationType.FILE_URI
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: (this.id=="take_photo"?Camera.sourceType.PHOTOLIBRARY:Camera.sourceType.PHOTOLIBRARY)
             });
         });
     }
-    /*else
+    else
     {
-        alert('navigator.camera.getPicture not available');
-    }*/
+        $('.select_photo').addClass('ui-disabled');
+    }
 });
 
 
