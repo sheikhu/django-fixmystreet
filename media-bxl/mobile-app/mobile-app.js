@@ -22,9 +22,7 @@ $(document).delegate(".back", "click", function(evt){
     var $current = $.mobile.activePage;
 	var $page = $current.prev().first();
 
-    console.log('back',$page);
     $page.one('pageshow', function(evt,data){
-        console.log('rem',data.prevPage);
         data.prevPage.remove();
     });
 	$.mobile.changePage($page,{reverse:true});
@@ -113,7 +111,6 @@ $(document).delegate('#home', "pageinit", function(){
                 $map.fmsMap('addReport',report);
             }
             $map.fmsMap('addDraggableMarker', p.x, p.y);
-            //$('#create-report').prop('href', rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts').removeClass('ui-disabled');
             $('#create-report').removeClass('ui-disabled').data('position',p);
         });
     }
@@ -147,7 +144,7 @@ $(document).delegate('#home', "pageinit", function(){
     });
 
     $map.bind('reportselected',function(evt, point, report){
-        $.mobile.changePage(rootUrl + '/mobile/reports/' + report.id);
+        loadFmsPage(rootUrl + '/mobile/reports/' + report.id);
     });
     
     $page.find('#create-report').click(function(evt){
@@ -228,7 +225,6 @@ $(document).delegate('#home', "pageinit", function(){
                         }
                         $proposal.slideDown().listview('refresh');
                     }
-                    // window.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);
                 }
                 else
                 {
@@ -290,8 +286,6 @@ $(document).delegate("#new_report", "pageinit", function(){
         }
     });
     
-    //$form.find('#id_photo').closest('p').hide();
-    
     function setPhotoPath(fileURI)
     {
         alert(fileURI);
@@ -302,7 +296,7 @@ $(document).delegate("#new_report", "pageinit", function(){
     if(navigator.camera && navigator.camera.getPicture)
     {
         //alert('Open the camera...');
-        $('#photo').click(function(evt){
+        $('#id_photo').click(function(evt){
             evt.preventDefault();
             navigator.camera.getPicture(setPhotoPath, function(message)
             {
