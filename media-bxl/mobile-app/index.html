@@ -9,6 +9,7 @@
 
 		<script src="phonegap-1.1.0.js"></script>
         <script src="jquery/jquery-1.7.js"></script>
+        <script src="jquery/jquery.form.js"></script>
 
 		<script src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
         <script src="OpenLayers-2.11/OpenLayers.js"></script>
@@ -25,13 +26,34 @@
                 <h1>Fix My Street</h1>
             </div>
             <div data-role="content" id="container">
-                <div id="map-bxl"> </div>
+                <div id="map-bxl">
+                    <div id="instructable">
+                        <h3>To fill a new report</h3>
+                        <p>Drag me to the correct location on the map.</p>
+                    </div>
+                </div>
                 <form id="search-form" data-ajax="false">
                     <input id="search" type="search"></input>
                     <ul id="proposal" style="display:none;" data-role="listview" data-inset="true"> </ul>
                 </form>
-                <a id="show-search" data-role="button">Search</a>
-                <a id="create-report" data-role="button" class="ui-disabled">Confirm</a>
+                <div id="control-options" data-role="controlgroup" data-type="horizontal">
+                    <a id="locate" data-role="button" data-icon="locate" data-iconpos="notext">Localize me</a>
+                    <a href="#help" data-role="button" data-icon="help" data-iconpos="notext">Help</a>
+                </div>
+                <div id="control-zoom" data-role="controlgroup" data-type="horizontal">
+                    <a id="zoom-in" data-role="button">+</a>
+                    <a id="zoom-out" data-role="button">-</a>
+                </div>
+                <a id="create-report" data-role="button" data-icon="arrow-r" data-iconpos="right" class="ui-disabled">Next</a>
+            </div>
+        </div>
+        <div id="help" class="panel help" data-role="page" data-add-back-btn="true">
+            <div class="toolbar" data-role="header">
+                <h1>Fix My Street Help</h1>
+            </div>
+            <div data-role="content">
+                <h1>Help</h1>
+                <p>This is the fix my street help panel</p>
             </div>
         </div>
     </body>

@@ -25,6 +25,7 @@
 		options:{
 			apiRootUrl:"/api/",
 			apiLang:"fr",
+            showControl:true,
 			markerStyle: $.extend({},defaultMarkerStyle,{
 				externalGraphic: "/media/images/marker.png",
 				graphicXOffset:-32/2,
@@ -87,7 +88,7 @@
 				this.map.zoomToMaxExtent();
 			}
 			
-			this.map.addControl(new OpenLayers.Control.LayerSwitcher());
+			// this.map.addControl(new OpenLayers.Control.LayerSwitcher());
 			/*
 			this.superLayer = new OpenLayers.Layer.Vector( "Super Layer" );
 			this.map.addLayer(this.superLayer);
@@ -109,6 +110,21 @@
 				this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
 				this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, this.options.markerStyle)]);
 			}
+		},
+
+		center: function()
+		{
+			this.map.centerLayerContainer(new OpenLayers.LonLat(this.selectedLocation.x, this.selectedLocation.y));
+		},
+
+		zoomIn: function()
+		{
+			this.map.zoomIn();
+		},
+
+		zoomOut: function()
+		{
+			this.map.zoomOut();
 		},
 	
 		/**
