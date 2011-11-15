@@ -14,6 +14,7 @@ from mainapp.views.cities import home as city_home
 import logging
 import os
 import urllib
+from django.http import HttpResponse
 
 
 def home(request, location = None, error_msg =None): 
@@ -46,3 +47,11 @@ def posters(request):
             {'languages': settings.LANGUAGES },
             context_instance=RequestContext(request))
       
+def robot(request): 
+    return HTTPResponse(""" 
+    User-Agent: *
+    Disallow: /
+    """)
+
+def googleCheck(request): 
+    return HTTPResponse("google-site-verification: google8f518780d83abb68.html")
