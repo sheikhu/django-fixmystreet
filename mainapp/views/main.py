@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from mainapp.models import DictToPoint, Report, ReportUpdate, Ward, ReportCountQuery, City, FaqEntry
 from mainapp import search
 from django.template import Context, RequestContext
@@ -14,7 +14,6 @@ from mainapp.views.cities import home as city_home
 import logging
 import os
 import urllib
-from django.http import HttpResponse
 
 
 def home(request, location = None, error_msg =None): 
@@ -48,10 +47,9 @@ def posters(request):
             context_instance=RequestContext(request))
       
 def robot(request): 
-    return HTTPResponse(""" 
-    User-Agent: *
-    Disallow: /
-    """)
+    return HttpResponse("""User-Agent: *
+Disallow: /
+""",mimetype="text/plain")
 
 def googleCheck(request): 
-    return HTTPResponse("google-site-verification: google8f518780d83abb68.html")
+    return HttpResponse("google-site-verification: google8f518780d83abb68.html")
