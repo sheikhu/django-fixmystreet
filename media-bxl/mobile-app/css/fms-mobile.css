@@ -4,7 +4,7 @@
 }
 
 .panel {
-	background-image:url("../../images/logo.png");
+	background-image:url("../images/logo.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
@@ -18,6 +18,22 @@
 	height: 400px;*/
 	position: absolute;
 	top: 42px;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+#content-disabled {
+	z-index:10000;
+	opacity:.5;
+	background-color: #CCC;
+	background-repeat: no-repeat;
+    background-image:url("../images/loader.gif");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+	position: absolute;
+	top: 0;
 	bottom: 0;
 	right: 0;
 	left: 0;
@@ -56,6 +72,7 @@ ul.errorlist li {
 	position: absolute;
 	top: 10px;
 	right: 10px;
+    margin:0;
 }
 
 .olControlPanZoom{
@@ -67,6 +84,7 @@ ul.errorlist li {
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
+    margin:0;
 }
 
 #create-report{
@@ -78,13 +96,14 @@ ul.errorlist li {
 
 #search-form{
 	z-index: 1000;
-/*
-	display: none;
-*/
 	position: absolute;
 	top: 10px;
-	right: 70px;
+	right: 10px;
 	left: 10px;
+}
+
+#search-box{
+    margin-right: 80px;
 }
 
 #search.loading + .ui-input-clear .ui-icon{
@@ -97,18 +116,6 @@ ul.errorlist li {
 #proposal .ui-icon-arrow-r{
     display:none;
 }
-/*
-#search{
-	width:100%;
-	font-size: 1.5em;
-	padding: 0.4em 0.5em;
-	color:#222;
-	border:black solid 1px;
-	border-radius:5px;
-	box-sizing:border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}*/
 
 .ui-icon.ui-icon-locate{
 	background-image:url("../images/locate.png");
@@ -118,10 +125,13 @@ ul.errorlist li {
 	background-image:url("../images/help.png");
 }
 
-#control-zoom .ui-btn-inner{
-    padding-top: 0;
-    padding-bottom: 0;
-    font-size: 1.8em;
+.ui-btn-icon-notext{
+    width: 34px;
+    height: 34px;
+}
+
+.ui-btn-icon-notext .ui-btn-inner {
+    padding: 7px 7px 7px 7px;
 }
 
 #photo_preview{

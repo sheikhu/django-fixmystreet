@@ -33,7 +33,8 @@ LOCAL_DEV = False
 SITE_URL = "http://192.168.103.27:8000"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
-LOCAL_API = "192.168.13.42" # gislb.irisnetlab.be
+#LOCAL_API = "192.168.13.42" # gislb.irisnetlab.be
+LOCAL_API = "service.gis.irisnetlab.be"
 
 #SECRET_KEY=
 #GMAP_KEY=

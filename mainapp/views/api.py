@@ -10,29 +10,30 @@ import settings
 
 def search(request): 
     conn = httplib.HTTPConnection(settings.LOCAL_API)
-    conn.request("POST", "/WSGeoloc/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8').encode('iso-8859-15'))
+    #conn.request("POST", "/WSGeoloc/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8').encode('iso-8859-15'))
+    conn.request("POST", "/urbis/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8'))
     response = conn.getresponse()
     data = response.read()
 
-    #import pdb;pdb.set_trace()
     conn.close()
-    try:
-        return HttpResponse(data.decode('iso-8859-15'))
-    except UnicodeError:
-        return HttpResponse(data)
+    #try:
+        #return HttpResponse(data.decode('iso-8859-15'))
+    #except UnicodeError:
+    return HttpResponse(data)
 
 
 def locate(request): 
     conn = httplib.HTTPConnection(settings.LOCAL_API)
 
-    conn.request("POST", "/WSGeoloc/Rest/Localize/getaddressfromcoord", request.raw_post_data)
+    #conn.request("POST", "/WSGeoloc/Rest/Localize/getaddressfromcoord", request.raw_post_data)
+    conn.request("POST", "/urbis/Rest/Localize/getaddressfromcoord", request.raw_post_data)
     response = conn.getresponse()
     data = response.read()
     conn.close()
-    try:
-        return HttpResponse(data.decode('iso-8859-15'))
-    except UnicodeError:
-        return HttpResponse(data)
+    #try:
+        #return HttpResponse(data.decode('iso-8859-15'))
+    #except UnicodeError:
+    return HttpResponse(data)
 
 def wards(request): 
     conn = httplib.HTTPConnection(settings.GEOSERVER)
@@ -41,7 +42,7 @@ def wards(request):
     response = conn.getresponse()
     data = response.read()
     conn.close()
-    return HttpResponse(data)
+    return HttpResponse(data,mimetype="text/json")
 
 def reports(request): 
     d2p = DictToPoint(request.REQUEST)

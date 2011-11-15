@@ -26,6 +26,7 @@
                 <h1>Fix My Street</h1>
             </div>
             <div data-role="content" id="container">
+            	<div id="content-disabled"> </div>
                 <div id="map-bxl">
                     <div id="instructable">
                         <h3>To fill a new report</h3>
@@ -33,7 +34,9 @@
                     </div>
                 </div>
                 <form id="search-form" data-ajax="false">
-                    <input id="search" type="search"></input>
+                    <div id="search-box">
+                        <input id="search" type="search"></input>
+                    </div>
                     <ul id="proposal" style="display:none;" data-role="listview" data-inset="true"> </ul>
                 </form>
                 <div id="control-options" data-role="controlgroup" data-type="horizontal">
@@ -41,8 +44,8 @@
                     <a href="#help" data-role="button" data-icon="help" data-iconpos="notext">Help</a>
                 </div>
                 <div id="control-zoom" data-role="controlgroup" data-type="horizontal">
-                    <a id="zoom-in" data-role="button">+</a>
-                    <a id="zoom-out" data-role="button">-</a>
+                    <a id="zoom-in" data-role="button" data-icon="plus" data-iconpos="notext">Zoom in</a>
+                    <a id="zoom-out" data-role="button" data-icon="minus" data-iconpos="notext">Zoom out</a>
                 </div>
                 <a id="create-report" data-role="button" data-icon="arrow-r" data-iconpos="right" class="ui-disabled">Next</a>
             </div>

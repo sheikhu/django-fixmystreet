@@ -19,64 +19,60 @@ $(function(){
 		$searchButton.prop('disabled',true);
 		
 		$.ajax({
-
-			url:'{% url api_search %}',
-			type:'POST',
-			contentType:'text/json',
-			dataType:'json',
-			data:'{\
-				"language": "{{ LANGUAGE_CODE }}",\
-				"address": {\
-					"street": {\
-						"name": "' + $searchTerm.val() + '",\
-						"postcode": "' + $searchWard.val() + '"\
-					},\
-                    "number": ""\
-				}\
-			}',
-			success:function(response){
-				if(response.status == 'success' && response.result.length > 0)
-				{
-					if(response.result.length == 1)
-					{
-						window.location.assign(resToHref(response.result[0]));
-					}
-					else
-					{
-						$searchTerm.removeClass('loading');
-						$searchButton.prop('disabled',false);
-						$proposal.empty();
-						for(var i in response.result)
-						{
-							var street = response.result[i].address.street;
-							var pos = response.result[i].point;
-							$proposal.append('<p><a href="{% url report_new %}?lon=' + pos.x + '&lat=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a></p>');
-						}
-						$proposal.slideDown();
-					}
-					// window.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);
-				}
-				else
-				{
-					$searchTerm.removeClass('loading');
-					$searchButton.prop('disabled',false);
-					if(response.status == "noresult" || response.status == "success")
-					{
-						$proposal.html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
-					}
-					else
-					{
-						$proposal.html('<p class="error-msg">' + response.status + '</p>').slideDown();
-					}
-				}
-			},
-			error:function(){
-				$searchTerm.removeClass('loading');
-				$searchButton.prop('disabled',false);
-		
-				$proposal.html('<p class="error-msg">Unexpected error.</p>');
-			}
-		});
+            url:'{% url api_search %}',
+            type:'POST',
+            dataType:'json',
+            contentType:'text/json',
+			data:'{"language": "{{ LANGUAGE_CODE }}",' +
+				'"address": {' +
+					'"street": {' +
+						'"name": "' + $searchTerm.val().replace("\"","\\\"") + '",' +
+						'"postcode": "' + $searchWard.val().replace("\"","\\\"") + '"' +
+					'},"number": ""' +
+				'}}'
+        }).success(function(response){
+            if(response.status == 'success' && response.result.length > 0)
+            {
+                if(response.result.length == 1)
+                {
+                    window.location.assign(resToHref(response.result[0]));
+                }
+                else
+                {
+                    $searchTerm.removeClass('loading');
+                    $searchButton.prop('disabled',false);
+                    $proposal.empty();
+                    for(var i in response.result)
+                    {
+                        var street = response.result[i].address.street;
+                        var pos = response.result[i].point;
+                        $proposal.append('<p><a href="{% url report_new %}?lon=' + pos.x + '&lat=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a></p>');
+                    }
+                    $proposal.slideDown();
+                }
+                // window.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);
+            }
+            else
+            {
+                $searchTerm.removeClass('loading');
+                $searchButton.prop('disabled',false);
+                if(response.status == "noresult" || response.status == "success")
+                {
+                    $proposal.html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
+                }
+                else
+                {
+                    $proposal.html('<p class="error-msg">' + response.status + '</p>').slideDown();
+                }
+            }
+        }).error(function(xhr,msg,error){
+            console.log(arguments);
+            console.log(error.message);
+            $searchTerm.removeClass('loading');
+            $searchButton.prop('disabled',false);
+    
+            $proposal.html('<p class="error-msg">Unexpected error.</p>').slideDown();
+        });
     });
 
     {% if location %}

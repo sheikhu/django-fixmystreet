@@ -8,8 +8,8 @@
 
     var rootUrl = 'http://fixmystreet.irisnet.be';
     var rootUrl = 'http://fixmystreet.irisnetlab.be';
-    var rootUrl = 'http://192.168.103.27:8000';
-    // var rootUrl = 'http://localhost:8000';
+    //var rootUrl = 'http://192.168.103.27:8000';
+    //var rootUrl = 'http://localhost:8000';
 
     var mediaUrl = rootUrl + '/media/';
 
@@ -21,10 +21,13 @@
         var $current = $.mobile.activePage;
         var $page = $current.prev().first();
 
-        /*$page.one('pageshow', function(evt,data){
-            data.prevPage.remove();
-        });*/
+		if($current.data('ajaxLoaded')){
+	        $page.one('pageshow', function(evt,data){
+	            data.prevPage.remove();
+	        });
+        }
         $.mobile.changePage($page,{reverse:true});
+        $.mobile.activePage = $page;
     };
     
     $(document).bind("backbutton", goBackPage);
@@ -34,18 +37,17 @@
     function loadFmsPage(url){
         $.mobile.showPageLoadingMsg();
         
-        $.get(url,
-            function(content){
-                var $page = $(content);
-                $.mobile.activePage.after($page);
-                $page.page();
-                
-                $.mobile.hidePageLoadingMsg();
-                $.mobile.changePage($page);
+        $.get(url, function(content){
+            var $page = $(content);
+            $.mobile.activePage.after($page);
+            $page.page();
+            
+            $.mobile.hidePageLoadingMsg();
+            $.mobile.changePage($page);
 
-                $page.data('url',url);
-            }
-        );
+            $page.data('url',url);
+            $page.data('ajaxLoaded',true);
+        }).error(connectionErrorCallback);
     }
 
     $(document).delegate("form", "submit", function(evt){
@@ -62,27 +64,28 @@
             $form.attr('action', url);
         }
         
-        $form.ajaxSubmit(
-        //$.post(url,$form.serialize(),
-            function(content){
-                var $page = $(content).page();
+        $form.ajaxSubmit(function(content){
+            var $page = $(content).page();
 
-                $current.find('[data-role=content]').remove();
-                var newContent = $page.find('[data-role=content]');
-                newContent.addClass('ui-content');
-                $current.append(newContent);
-                $current.trigger( "create" );
-                $(document.body).animate({scrollTop:0}, 'fast');
-                
-                
-                $.mobile.hidePageLoadingMsg();
+            $current.find('[data-role=content]').remove();
+            var newContent = $page.find('[data-role=content]');
+            newContent.addClass('ui-content');
+            $current.append(newContent);
+            $current.trigger( "create" );
+            $(document.body).animate({scrollTop:0}, 'fast');
+            
+            
+            $.mobile.hidePageLoadingMsg();
 
-                $current.data('url',url);
-                $current.trigger( "pageinit" );
-            }
-        );
+            $current.data('url',url);
+            $current.trigger( "pageinit" );
+        }).error(connectionErrorCallback);
     });
-
+    
+    function connectionErrorCallback(){
+        alert('Connection problem, please check your internet connection and relanch this app.');
+        navigator.app.exitApp();
+    }
 
     $(document).delegate('#home', "pageinit", function(){
         $page = $(this);
@@ -124,7 +127,8 @@
                 }
                 $map.fmsMap('addDraggableMarker', p.x, p.y);
                 $('#create-report').removeClass('ui-disabled').data('position',p);
-            });
+                $('#content-disabled').remove();
+            }).error(connectionErrorCallback);
             
             
             $map.one('markerdrag click movestart zoomend',function(evt,point){
@@ -201,6 +205,13 @@
             //$searchForm.show();
         //});
 
+
+		$searchTerm.change(function(){
+			if(!$searchTerm.val()){
+				$proposal.slideUp();
+			}
+		});
+		
         $searchForm.submit(function(event)
         {
             event.preventDefault();
@@ -232,8 +243,9 @@
                             var loc = response.result[i];
                             $map.fmsMap('setCenter',loc.point.x, loc.point.y);
                             
-                            $searchForm.hide();
-                            $('#show-search').show();
+                            //$searchForm.hide();
+                            //$('#show-search').show();
+                            $proposal.slideUp();
                         }
                         else
                         {
@@ -250,8 +262,9 @@
                                         var loc = $(this).data('loc');
                                         $map.fmsMap('setCenter',loc.point.x, loc.point.y);
                                         
-                                        $searchForm.hide();
-                                        $('#show-search').show();
+                                        //$searchForm.hide();
+                                        //$('#show-search').show();
+                                        $proposal.slideUp();
                                     });
                                 $proposal.append($street);
                             }
