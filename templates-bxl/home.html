@@ -19,7 +19,9 @@
 				<option value="">{% trans "Choose a ward..." %}</option>
 				{% for ward in wards %}
 					{% for zip in ward.zipcode_set.all %}
-						<option value={{zip.code}}>{{zip.code}} {{ward.name}}</option>
+                        {% if not zip.hide %}
+                            <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                        {% endif %}
 					{% endfor %}
 				{% endfor %}
 			</select>

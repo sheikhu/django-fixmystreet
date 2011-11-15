@@ -143,9 +143,16 @@ class Ward(models.Model):
         return( describer.values() )
 
 class ZipCode(models.Model):
+    __metaclass__ = TransMeta
+    
     ward = models.ForeignKey(Ward)
     code = models.CharField(max_length=4)
-            
+    name = models.CharField(max_length=100)
+    hide = models.BooleanField()
+
+    class Meta:
+        translate = ('name', )
+
 # Override where to send a report for a given city.        
 #
 # If no rule exists, the email destination is the 311 email address 
