@@ -35,6 +35,7 @@ urlpatterns += patterns('mainapp.views.main',
     url(r'^$', 'home',name='home'),
     url(r'about/$', 'about',name='about'),
     url(r'posters/$', 'posters',name='posters'),
+    url(r'term_of_use/$', 'termOfUse',name='term_of_use'),
     url(r'robots.txt$', 'robot'),
     url(r'google8f518780d83abb68.html$', 'googleCheck'),
 )

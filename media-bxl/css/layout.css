@@ -38,13 +38,21 @@ body {
 	min-height: 400px; 
 }
 
+#term_of_use {
+    float:right;
+}
+
+#legal_notice{
+    padding-top:15px;
+}
 
 /********* HEADER LAYOUT ********/
 
 #header h1 {
 	color:white;
-	font-size: 3em;
-	text-shadow:1px 1px 0.5px #000;
+	font-size: 4em;
+    font-weight: normal;
+	text-shadow:3px 3px 5px black;
 	display: inline-block;
 	vertical-align: top;
 }
@@ -181,7 +189,7 @@ th {
 
 /* stats info box */
 .stat {
-	color: black;
+	color:#222;
 	background: #517EB5;
 	display:inline-block;
 	vertical-align: top;
@@ -191,11 +199,6 @@ th {
 	vertical-align: top;
 	border: 2px solid #004990;
 	border-radius:8px;
-}
-
-.stat {
-	color:#222;
-	font-family: "League Gothic";
 	font-size: 1.4em;
 	line-height:1.0;
 	padding-top:0.5em;
@@ -268,7 +271,6 @@ th {
 }
 
 #intro h1 {
-	font-family: "League Gothic";
 	font-size: 3em;
 	margin-bottom: 20px;
 	color:black !important;
@@ -281,7 +283,6 @@ th {
 
 #intro span {
 	color:#FFCE1C;
-	font-family: "League Gothic";
 	font-size:2em; 
 	text-shadow:0px 1px 0px #bebebe;
 }
@@ -321,7 +322,6 @@ input.big_button {
 	padding:0.3em 0.4em;
 	border:2px solid #517EB5;
 	border-radius:7px;
-	font-family:Helvetica,"Lucida Sans","Trebuchet MS",Helvetica,Arial,sans-serif;
 	font-size: 1.2em;
 	color:#ffffff;
 	font-weight: bold; 
@@ -511,7 +511,6 @@ input.big_button:hover {
 #city-stat-group .stat {
 	padding: .4em .2em;
 	margin: .4em .2em;
-	font-family:Helvetica,"Lucida Sans","Trebuchet MS",Helvetica,Arial,sans-serif;
 	width: 100px;
 }
 
@@ -605,7 +604,23 @@ input.big_button:hover {
 	margin-bottom: .5em;
 }
 
+/********* FLAG REPORT ************/
+#flag_comment {
+    height:100px;
+    width:96%;
+    margin:2% 20px;
+    box-sizing:border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
 
+blockquote {
+	margin-left:3em;
+	padding-left:1em;
+	border:1px solid silver;
+	border-left:5px solid silver;
+	margin-bottom:0.8em;
+}
 
 
 
@@ -752,13 +767,6 @@ ul.info_links li a:hover {
 	color:silver;
 }
 
-blockquote {
-	margin-left:3em;
-	padding-left:1em;
-	border:1px solid silver;
-	border-left:5px solid silver;
-	margin-bottom:0.8em;
-}
 
 #report-body p { margin-bottom: .5em;}
 #faq p { margin-bottom: 1em;}

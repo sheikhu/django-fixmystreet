@@ -10,10 +10,10 @@
 <div style="padding:10px; margin:10px; border:1px solid black;">
 {{update.desc|safe}}
 </div>
-{% blocktrans with url=update.report.get_absolute_url %}
-<p>For more information, see the full report at:</p>
+
+<p>{% trans "For more information, see the full report at:" %}</p>
 {% endblocktrans %}
-<p><a href="{{ url }}">{{ url }}</a></p>
+<p><a href="{{ update.report.get_absolute_url }}">{{ update.report.get_absolute_url }}</a></p>
 {% endblock %}
 {% block signature %}
 {% if unsubscribe_url %}

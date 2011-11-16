@@ -45,6 +45,10 @@ def posters(request):
     return render_to_response("posters.html",
             {'languages': settings.LANGUAGES },
             context_instance=RequestContext(request))
+
+def termOfUse(request): 
+    return render_to_response("term_of_use.html",
+            context_instance=RequestContext(request))
       
 def robot(request): 
     return HttpResponse("""User-Agent: *

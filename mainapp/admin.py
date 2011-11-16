@@ -38,7 +38,16 @@ class ReportAdmin(admin.ModelAdmin):
 admin.site.register(Report,ReportAdmin)
 
 
+
+class WardAdmin(admin.ModelAdmin):
+    fields = ('name','councillor')#,'emailrule_set')
+    #raw_id_fields = ('emailrule_set',)
+    readonly_fields = ('name',)
+
+admin.site.register(Ward,WardAdmin)
+
+
 class EmailRuleAdmin(admin.ModelAdmin):
 	pass
- 
+
 admin.site.register(EmailRule,EmailRuleAdmin)

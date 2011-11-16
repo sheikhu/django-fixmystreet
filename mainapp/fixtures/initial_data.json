@@ -302,7 +302,7 @@
         "fields": {
             "ward": 2, 
             "name_fr": "Auderghem", 
-            "name_nl": "Auderghem", 
+            "name_nl": "Oudergem", 
             "name_en": "Auderghem", 
             "hide": false,
             "code": 1160
@@ -314,7 +314,7 @@
         "fields": {
             "ward": 3, 
             "name_fr": "Berchem Ste Agathe", 
-            "name_nl": "Berchem Ste Agathe", 
+            "name_nl": "Sint-Agatha-Berchem", 
             "name_en": "Berchem Ste Agathe", 
             "hide": false,
             "code": 1082
@@ -326,7 +326,7 @@
         "fields": {
             "ward": 4,
             "name_fr": "Bruxelles", 
-            "name_nl": "Brussels", 
+            "name_nl": "Brussel", 
             "name_en": "Brussels", 
             "hide": false,
             "code": 1000
@@ -362,7 +362,7 @@
         "fields": {
             "ward": 7, 
             "name_fr": "Forest", 
-            "name_nl": "Forest", 
+            "name_nl": "Vorst", 
             "name_en": "Forest", 
             "hide": false,
             "code": 1190
@@ -386,7 +386,7 @@
         "fields": {
             "ward": 9, 
             "name_fr": "Ixelles", 
-            "name_nl": "Ixelles", 
+            "name_nl": "Elsene", 
             "name_en": "Ixelles", 
             "hide": false,
             "code": 1050
@@ -422,7 +422,7 @@
         "fields": {
             "ward": 12, 
             "name_fr": "Molenbeek St Jean", 
-            "name_nl": "Molenbeek St Jean", 
+            "name_nl": "Sint-Jans-Molenbeek", 
             "name_en": "Molenbeek St Jean", 
             "hide": false,
             "code": 1080
@@ -434,7 +434,7 @@
         "fields": {
             "ward": 13, 
             "name_fr": "Saint-Gilles", 
-            "name_nl": "Saint-Gilles", 
+            "name_nl": "Sint-Gillis", 
             "name_en": "Saint-Gilles", 
             "hide": false,
             "code": 1060
@@ -446,7 +446,7 @@
         "fields": {
             "ward": 14, 
             "name_fr": "Saint-Josse ten Noode", 
-            "name_nl": "Saint-Josse ten Noode", 
+            "name_nl": "Sint-Joost-ten-Node", 
             "name_en": "Saint-Josse ten Noode", 
             "hide": false,
             "code": 1210
@@ -458,7 +458,7 @@
         "fields": {
             "ward": 15, 
             "name_fr": "Schaerbeek", 
-            "name_nl": "Schaerbeek", 
+            "name_nl": "Schaarbeek", 
             "name_en": "Schaerbeek", 
             "hide": false,
             "code": 1030
@@ -470,7 +470,7 @@
         "fields": {
             "ward": 16, 
             "name_fr": "Uccle", 
-            "name_nl": "Uccle", 
+            "name_nl": "Ukkel", 
             "name_en": "Uccle", 
             "hide": false,
             "code": 1180
@@ -482,7 +482,7 @@
         "fields": {
             "ward": 17, 
             "name_fr": "Watermael-Boisfort", 
-            "name_nl": "Watermael-Boisfort", 
+            "name_nl": "Watermaal-Bosvoorde", 
             "name_en": "Watermael-Boisfort", 
             "hide": false,
             "code": 1170
@@ -494,7 +494,7 @@
         "fields": {
             "ward": 18, 
             "name_fr": "Woluwe St Lambert", 
-            "name_nl": "Woluwe St Lambert", 
+            "name_nl": "Sint-Lambrechts-Woluwe", 
             "name_en": "Woluwe St Lambert", 
             "hide": false,
             "code": 1200
@@ -506,7 +506,7 @@
         "fields": {
             "ward": 19,
             "name_fr": "Woluwe St Pierre", 
-            "name_nl": "Woluwe St Pierre", 
+            "name_nl": "Sint-Pieters-Woluwe", 
             "name_en": "Woluwe St Pierre", 
             "hide": false,
             "code": 1150
@@ -606,12 +606,12 @@
         }
     }, 
     {
-        "pk": 5, 
+        "pk": 2, 
         "model": "mainapp.reportcategoryclass", 
         "fields": {
-            "name_en": "Trees", 
-            "name_nl": "Trees", 
-            "name_fr": "Arbres"
+            "name_en": "Parks", 
+            "name_nl": "Parks", 
+            "name_fr": "Espaces verts"
         }
     }, 
     {
@@ -620,16 +620,7 @@
         "fields": {
             "name_en": "Roads/Sidewalks/Pathways", 
             "name_nl": "Roads/Sidewalks/Pathways", 
-            "name_fr": "Rues/Troittoirs"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "mainapp.reportcategoryclass", 
-        "fields": {
-            "name_en": "Parks", 
-            "name_nl": "Parks", 
-            "name_fr": "Parcs"
+            "name_fr": "Voie public"
         }
     }, 
     {
@@ -638,96 +629,144 @@
         "fields": {
             "name_en": "Traffic Signals", 
             "name_nl": "Traffic Signals", 
-            "name_fr": "Signalement de Trafic"
+            "name_fr": "Feux de circulation"
         }
     }, 
     {
-        "pk": 20, 
-        "model": "mainapp.reportcategory", 
+        "pk": 5, 
+        "model": "mainapp.reportcategoryclass", 
         "fields": {
-            "name_en": "Branches Blocking Signs or Intersection", 
-            "name_fr": "Branches Bloquant des Enseignes ou une Intersection", 
-            "name_nl": "Branches Blocking Signs or Intersection", 
-            "hint_en": "If possible, please specify whether the tree causing the problem is on private property or city property.", 
-            "hint_fr": "Si possible, s'il vous pla\u00eet indiquer si l'arbre qui est \u00e0 l'origine du probl\u00e8me est sur une propri\u00e9t\u00e9 priv\u00e9e ou une propri\u00e9t\u00e9 appartenant \u00e0 la ville. ", 
-            "hint_nl": "If possible, please specify whether the tree causing the problem is on private property or city property.", 
-            "category_class": 5
+            "name_en": "Trees", 
+            "name_nl": "Trees", 
+            "name_fr": "Nature en ville"
         }
     }, 
     {
-        "pk": 19, 
+        "pk": 1, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Bent/Damaged/Missing Street Signs", 
-            "name_fr": "Enseignes Endommag\u00e9es / Manquantes ", 
-            "name_nl": "Bent/Damaged/Missing Street Signs", 
-            "hint_en": "Please try to be as detailed as possible in describing the location of the problem.", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. ", 
-            "hint_nl": "Please try to be as detailed as possible in describing the location of the problem.", 
-            "category_class": 4
+            "name_en": "Broken or Damaged Equipment/Play Structures", 
+            "name_fr": "D\u00e9terioration de structures public", 
+            "name_nl": "Broken or Damaged Equipment/Play Structures", 
+            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
+            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "category_class": 2
         }
     }, 
     {
-        "pk": 18, 
+        "pk": 2, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Faded/Damaged/Missing Pavement Markings", 
-            "name_fr": "Marques sur la Chauss\u00e9e D\u00e9lav\u00e9es / Endommag\u00e9es / Manquantes", 
-            "name_nl": "Faded/Damaged/Missing Pavement Markings", 
-            "hint_en": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the yellow sign with black bars across it; the solid yellow line on the pavement\".", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. Par exemple, \"le panneau jaune avec des barres noires en travers; la ligne jaune sur la chauss\u00e9e\"", 
-            "hint_nl": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the yellow sign with black bars across it; the solid yellow line on the pavement\".", 
-            "category_class": 4
+            "name_en": "Full or Overflowing Garbage Cans", 
+            "name_fr": "Poubelles débordantes", 
+            "name_nl": "Full or Overflowing Garbage Cans", 
+            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
+            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "category_class": 2
+        }
+    },
+    {
+        "pk": 3, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Lights Malfunctioning in Park", 
+            "name_fr": "Eclairage public d\u00e9fectueux", 
+            "name_nl": "Lights Malfunctioning in Park", 
+            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
+            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "category_class": 2
         }
     }, 
     {
-        "pk": 17, 
+        "pk": 4, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Street Lights Out or Malfunctioning", 
-            "name_fr": "Feux de Circulation \u00c9teintes ou D\u00e9fectueuses ", 
-            "name_nl": "Street Lights Out or Malfunctioning",
-            "hint_en": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the 4th street light along Trail Side Circle, east of Valin Street\".", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement du probl\u00e8me. Par exemple, \"la 4\u00e8me lumi\u00e8re sur la rue Garnier \u00e0 l'est de la rue Champlain. ", 
-            "hint_nl": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the 4th street light along Trail Side Circle, east of Valin Street\".", 
-            "category_class": 4
+            "name_en": "Debris or Litter in Park", 
+            "name_fr": "Ordure, débris et décheterie sauvage", 
+            "name_nl": "Debris or Litter in Park", 
+            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
+            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
+            "category_class": 2
         }
     }, 
     {
-        "pk": 16, 
+        "pk": 5, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Debris/Litter in Bus Shelter", 
-            "name_fr": "D\u00e9bris / D\u00e9chets dans les Abris d'Autobus ", 
-            "name_nl": "Debris/Litter in Bus Shelter", 
+            "name_en": "Graffiti On City Property", 
+            "name_fr": "Graffiti sur batiments publique", 
+            "name_nl": "Graffiti On City Property", 
+            "hint_en": "Please note as much information regarding the location and type of graffiti as you can. ", 
+            "hint_fr": "S'il vous pla\u00eet noter le plus d'informations concernant l'emplacement et le type de graffiti. Si elle se trouve sur un boitier, qu'elle est la couleur de \r\nla bo\u00eete? (verte, brune, rouge, etc ..), et de quel c\u00f4t\u00e9 de la rue se trouve ce boitier. \r\n", 
+            "hint_nl": "Please note as much information regarding the location and type of graffiti as you can. ", 
+            "category_class": 1
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Graffiti on Private Property", 
+            "name_fr": "Graffiti sur les propri\u00e9t\u00e9s priv\u00e9es", 
+            "name_nl": "Graffiti on Private Property", 
+            "hint_en": "Please note as much information regarding the location and type of graffiti as you can. For example, if it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
+            "hint_fr": "S'il vous pla\u00eet noter le plus d'informations concernant l'emplacement et le type de graffiti. Par exemple, si elle se trouve sur un boitier, \r\nquelle couleur est la bo\u00eete? (verte, brune, rouge, etc ..), et de\r\nde quel c\u00f4t\u00e9 de la rue ce trouve ce boitier.", 
+            "hint_nl": "Please note as much information regarding the location and type of graffiti as you can. For example, if it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
+            "category_class": 1
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Graffiti  on Utility Boxes/Transformers/Mailboxes, etc..", 
+            "name_fr": "Graffiti sur les structures urbaines", 
+            "name_nl": "Graffiti  on Utility Boxes/Transformers/Mailboxes, etc..", 
+            "hint_en": "Please note as much information regarding the location and type of graffiti as you can. If it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
+            "hint_fr": "S'il vous pla\u00eet noter le plus d'informations concernant l'emplacement et le type de graffiti. Si elle se trouve sur un boitier de services publiques, qu'elle est la couleur de \r\nla bo\u00eete? (verte, brune, rouge, etc ..), qu'elle est le propri\u00e9taire de la bo\u00eete? (Rogers, Bell, Postes Canada, Hydro), et de quel c\u00f4t\u00e9 de la rue se trouve ce boitier. ", 
+            "hint_nl": "Please note as much information regarding the location and type of graffiti as you can. If it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
+            "category_class": 1
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Blocked or damaged Catch basin / Manhole", 
+            "name_fr": "Bouches d'\u00e9gout obstru\u00e9s ou endommag\u00e9s", 
+            "name_nl": "Blocked or damaged Catch basin / Manhole", 
+            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). Indicating the shape of the catch basin or manhole cover will be very helpful.", 
+            "hint_fr": "S'il vous pla\u00eet \u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement de la \r\nprobl\u00e8me. Par exemple, le 3\u00e8me bassin de long, avenue Laurier Ouest, \u00e0 l'est \r\nde la rue Elgin; le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). Indication de la \r\nforme du bassin ou couvercle sera tr\u00e8s utile. \r\n", 
+            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). Indicating the shape of the catch basin or manhole cover will be very helpful.", 
+            "category_class": 3
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Pothole", 
+            "name_fr": "Nid-de-poule", 
+            "name_nl": "Pothole", 
             "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. Par exemple,  le trottoir en face du 110, avenue Laurier ouest, au c\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes. ", 
+            "hint_fr": "S'il vous pla\u00eet \u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement de la \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au  \r\nc\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). \r\n", 
             "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
             "category_class": 3
         }
     }, 
     {
-        "pk": 15, 
+        "pk": 10, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Bus Shelter Damaged", 
-            "name_fr": "Abribus endommag\u00e9 ", 
-            "name_nl": "Bus Shelter Damaged", 
-            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). ", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au c\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). ", 
-            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). ", 
-            "category_class": 3
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Damaged Guardrails", 
-            "name_fr": "Garde-Fous Endommag\u00e9s ", 
-            "name_nl": "Damaged Guardrails", 
+            "name_en": "Damaged Curb", 
+            "name_fr": "Bord de trottoir endommag\u00e9", 
+            "name_nl": "Damaged Curb", 
             "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). ", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. Par exemple, le 3\u00e8me bassin de long, avenue Laurier Ouest, \u00e0 l'est \r\nde la rue Elgin; le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). \r\n", 
             "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
             "category_class": 3
         }
@@ -737,88 +776,10 @@
         "model": "mainapp.reportcategory", 
         "fields": {
             "name_en": "Debris or Litter on Road/Sidewalk/Pathway", 
-            "name_fr": "D\u00e9bris ou de la liti\u00e8re sur la route / trottoir / Pathway ", 
+            "name_fr": "D\u00e9bris ou excr\u00e9ment sur la voie public", 
             "name_nl": "Debris or Litter on Road/Sidewalk/Pathway", 
             "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
             "hint_fr": "S'il vous pla\u00eet \u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement de la \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au c\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). ", 
-            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "category_class": 3
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Pothole", 
-            "name_fr": "Nid-de-poule ", 
-            "name_nl": "Pothole", 
-            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "hint_fr": "S'il vous pla\u00eet \u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement de la \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au  \r\nc\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). \r\n", 
-            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "category_class": 3
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Graffiti  on Utility Boxes/Transformers/Mailboxes, etc..", 
-            "name_fr": "Graffiti sur Boitiers Municipales ou des Services Publiques / Transformateurs / Bo\u00eetes aux Lettres, ", 
-            "name_nl": "Graffiti  on Utility Boxes/Transformers/Mailboxes, etc..", 
-            "hint_en": "Please note as much information regarding the location and type of graffiti as you can. If it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
-            "hint_fr": "S'il vous pla\u00eet noter le plus d'informations concernant l'emplacement et le type de graffiti. Si elle se trouve sur un boitier de services publiques, qu'elle est la couleur de \r\nla bo\u00eete? (verte, brune, rouge, etc ..), qu'elle est le propri\u00e9taire de la bo\u00eete? (Rogers, Bell, Postes Canada, Hydro), et de quel c\u00f4t\u00e9 de la rue se trouve ce boitier. ", 
-            "hint_nl": "Please note as much information regarding the location and type of graffiti as you can. If it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
-            "category_class": 1
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Graffiti On City Property", 
-            "name_fr": "Le Graffiti sur la Propri\u00e9t\u00e9 de la Ville", 
-            "name_nl": "Graffiti On City Property", 
-            "hint_en": "Please note as much information regarding the location and type of graffiti as you can. ", 
-            "hint_fr": "S'il vous pla\u00eet noter le plus d'informations concernant l'emplacement et le type de graffiti. Si elle se trouve sur un boitier, qu'elle est la couleur de \r\nla bo\u00eete? (verte, brune, rouge, etc ..), et de quel c\u00f4t\u00e9 de la rue se trouve ce boitier. \r\n", 
-            "hint_nl": "Please note as much information regarding the location and type of graffiti as you can. ", 
-            "category_class": 1
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Broken or Damaged Equipment/Play Structures", 
-            "name_fr": "\u00c9quipements ou Structures de Jeux Cass\u00e9s ou Endommag\u00e9s ", 
-            "name_nl": "Broken or Damaged Equipment/Play Structures", 
-            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
-            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "category_class": 2
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Lights Malfunctioning in Park", 
-            "name_fr": "Lumi\u00e8res D\u00e9fectueuses dans un Parc ", 
-            "name_nl": "Lights Malfunctioning in Park", 
-            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
-            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "category_class": 2
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Full or Overflowing Garbage Cans", 
-            "name_fr": "Poubelles Remplies ou qui D\u00e9bordent ", 
-            "name_nl": "Full or Overflowing Garbage Cans", 
-            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au\r\nc\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). ", 
             "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
             "category_class": 3
         }
@@ -828,7 +789,7 @@
         "model": "mainapp.reportcategory", 
         "fields": {
             "name_en": "Blocked or Damaged Culvert", 
-            "name_fr": "Caniveau Bloqu\u00e9s ou Endommag\u00e9s ", 
+            "name_fr": "Caniveau bloqu\u00e9s ou endommag\u00e9s", 
             "name_nl": "Blocked or Damaged Culvert", 
             "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). ", 
             "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du\r\nprobl\u00e8me. Par exemple, le 3\u00e8me bassin de long, avenue Laurier Ouest, \u00e0 l'est \r\nde la rue Elgin; le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). ", 
@@ -837,70 +798,109 @@
         }
     }, 
     {
-        "pk": 10, 
+        "pk": 13, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Damaged Curb", 
-            "name_fr": "Bord de Trottoir Endommag\u00e9 ", 
-            "name_nl": "Damaged Curb", 
+            "name_en": "Damaged Guardrails", 
+            "name_fr": "Garde-corps endommag\u00e9s", 
+            "name_nl": "Damaged Guardrails", 
             "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
-            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. Par exemple, le 3\u00e8me bassin de long, avenue Laurier Ouest, \u00e0 l'est \r\nde la rue Elgin; le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). \r\n", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). ", 
             "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
             "category_class": 3
         }
     }, 
     {
-        "pk": 8, 
+        "pk": 14, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Blocked or damaged Catch basin / Manhole", 
-            "name_fr": "Collecteurs d'Eaux Pluviales ou Bouche d'\u00c9gout Obstru\u00e9s ou Endommag\u00e9s ", 
-            "name_nl": "Blocked or damaged Catch basin / Manhole", 
-            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). Indicating the shape of the catch basin or manhole cover will be very helpful.", 
-            "hint_fr": "S'il vous pla\u00eet \u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement de la \r\nprobl\u00e8me. Par exemple, le 3\u00e8me bassin de long, avenue Laurier Ouest, \u00e0 l'est \r\nde la rue Elgin; le trottoir en face du 110, avenue Laurier ouest, au nord \r\nc\u00f4t\u00e9 de la route; abribus 1234 sur le chemin Innes). Indication de la \r\nforme du bassin ou couvercle sera tr\u00e8s utile. \r\n", 
-            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). Indicating the shape of the catch basin or manhole cover will be very helpful.", 
+            "name_en": "Full or Overflowing Garbage Cans", 
+            "name_fr": "Poubelles d\u00e9bordentes", 
+            "name_nl": "Full or Overflowing Garbage Cans", 
+            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au\r\nc\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). ", 
+            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
             "category_class": 3
         }
     }, 
     {
-        "pk": 6, 
+        "pk": 15, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Graffiti on Private Property", 
-            "name_fr": "Graffiti sur les Propri\u00e9t\u00e9s Priv\u00e9es", 
-            "name_nl": "Graffiti on Private Property", 
-            "hint_en": "Please note as much information regarding the location and type of graffiti as you can. For example, if it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
-            "hint_fr": "S'il vous pla\u00eet noter le plus d'informations concernant l'emplacement et le type de graffiti. Par exemple, si elle se trouve sur un boitier, \r\nquelle couleur est la bo\u00eete? (verte, brune, rouge, etc ..), et de\r\nde quel c\u00f4t\u00e9 de la rue ce trouve ce boitier.", 
-            "hint_nl": "Please note as much information regarding the location and type of graffiti as you can. For example, if it is found on a utility box, what colour is the box? (green, brown, red, etc...), does it indicate the company that owns it? (Rogers, Bell, Canada Post, Hydro), and which side of the street is it on.", 
-            "category_class": 1
+            "name_en": "Bus Shelter Damaged", 
+            "name_fr": "Abribus endommag\u00e9", 
+            "name_nl": "Bus Shelter Damaged", 
+            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). ", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du \r\nprobl\u00e8me. Par exemple, le trottoir en face du 110, avenue Laurier ouest, au c\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes). ", 
+            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road). ", 
+            "category_class": 3
         }
     }, 
     {
-        "pk": 4, 
+        "pk": 16, 
         "model": "mainapp.reportcategory", 
         "fields": {
-            "name_en": "Debris or Litter in Park", 
-            "name_fr": "D\u00e9bris ou Ordures dans les Parcs ", 
-            "name_nl": "Debris or Litter in Park", 
-            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
-            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "category_class": 2
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "mainapp.reportcategory", 
-        "fields": {
-            "name_en": "Full or Overflowing Garbage Cans ", 
-            "name_fr": "Poubelles Remplies ou qui D\u00e9bordent", 
-            "name_nl": "Full or Overflowing Garbage Cans ", 
-            "hint_en": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "hint_fr": "S'il vous pla\u00eet fournir une description de l'emplacement du probl\u00e8me par exemple, pr\u00e8s de la structure de jeux, le long de la voie qui passe de l'extr\u00e9mit\u00e9 sud du parc \u00e0 l'\u00e9cole voisine, \u00e0 c\u00f4t\u00e9 de la \r\nfontaine d'eau au cot\u00e9 est du terrain de stationnement). S'il vous pla\u00eet nous fournir le nom ou \r\nl'adresse du parc si possible. ", 
-            "hint_nl": "Please provide the location within the park where the problem is located (e.g. near the play structure; along the pathway that runs from the south end of the park to the neighbouring school; beside the water fountain near the east parking lot). Please provide the name or address of the park if possible.", 
-            "category_class": 2
+            "name_en": "Debris/Litter in Bus Shelter", 
+            "name_fr": "D\u00e9bris / d\u00e9chets dans les abris bus", 
+            "name_nl": "Debris/Litter in Bus Shelter", 
+            "hint_en": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. Par exemple,  le trottoir en face du 110, avenue Laurier ouest, au c\u00f4t\u00e9 nord de la route; abribus 1234 sur le chemin Innes. ", 
+            "hint_nl": "Please be as detailed as possible in describing the location of the problem. For example, the 3rd catch basin along Laurier Avenue W, east of Elgin Street; the curb in front of 110 Laurier Ave W on the north side of the road; bus shelter 1234 on Innes Road).", 
+            "category_class": 3
         }
     },
+    {
+        "pk": 17, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Street Lights Out or Malfunctioning", 
+            "name_fr": "Feux de circulation d\u00e9fectueux", 
+            "name_nl": "Street Lights Out or Malfunctioning",
+            "hint_en": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the 4th street light along Trail Side Circle, east of Valin Street\".", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9es que possible dans la description de l'emplacement du probl\u00e8me. Par exemple, \"la 4\u00e8me lumi\u00e8re sur la rue Garnier \u00e0 l'est de la rue Champlain. ", 
+            "hint_nl": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the 4th street light along Trail Side Circle, east of Valin Street\".", 
+            "category_class": 4
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Faded/Damaged/Missing Pavement Markings", 
+            "name_fr": "Marques au sol non visible", 
+            "name_nl": "Faded/Damaged/Missing Pavement Markings", 
+            "hint_en": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the yellow sign with black bars across it; the solid yellow line on the pavement\".", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. Par exemple, \"le panneau jaune avec des barres noires en travers; la ligne jaune sur la chauss\u00e9e\"", 
+            "hint_nl": "Please try to be as detailed as possible in describing the location of the problem. For example, \"the yellow sign with black bars across it; the solid yellow line on the pavement\".", 
+            "category_class": 4
+        }
+    },
+    {
+        "pk": 19, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Bent/Damaged/Missing Street Signs", 
+            "name_fr": "panneaux de circulation endomag\u00e9s", 
+            "name_nl": "Bent/Damaged/Missing Street Signs", 
+            "hint_en": "Please try to be as detailed as possible in describing the location of the problem.", 
+            "hint_fr": "S'il vous pla\u00eet essayer d'\u00eatre aussi d\u00e9taill\u00e9 que possible dans la description de l'emplacement du probl\u00e8me. ", 
+            "hint_nl": "Please try to be as detailed as possible in describing the location of the problem.", 
+            "category_class": 4
+        }
+    },
+    {
+        "pk": 20, 
+        "model": "mainapp.reportcategory", 
+        "fields": {
+            "name_en": "Branches Blocking Signs or Intersection", 
+            "name_fr": "Obstrue les panneaux de circulation", 
+            "name_nl": "Branches Blocking Signs or Intersection", 
+            "hint_en": "If possible, please specify whether the tree causing the problem is on private property or city property.", 
+            "hint_fr": "Si possible, s'il vous pla\u00eet indiquer si l'arbre qui est \u00e0 l'origine du probl\u00e8me est sur une propri\u00e9t\u00e9 priv\u00e9e ou une propri\u00e9t\u00e9 appartenant \u00e0 la ville. ", 
+            "hint_nl": "If possible, please specify whether the tree causing the problem is on private property or city property.", 
+            "category_class": 5
+        }
+    }, 
     {
         "pk": 5, 
         "model": "mainapp.faqentry", 

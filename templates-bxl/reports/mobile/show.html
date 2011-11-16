@@ -49,11 +49,7 @@
                     <tr><th>{% trans "Location:" %}</th><td>{{report.address}}</td></tr>
                     {% endif %}
                     <tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
-                    
-                    {% if report.sent_at %}
-                    <tr><th>{% trans "Sent to" %}:</th><td>{{report.email_sent_to}}</td></tr>
-                    <tr><th>{% trans "On" %}:</th><td>{{report.sent_at|date}}</td></tr>
-                    {% endif %}
+					<tr><th>{% trans "Filed on:" %}</th><td>{{report.created_at|date}}</td></tr>
                 </table>
             </div>
         </div>
@@ -82,7 +78,7 @@
     
             {% if not report.is_fixed %}
             <h2>{% trans "Provide an update" %} </h2>
-            <p>{% trans "Please note that updates are not sent to city officials." %}</p>
+            <p>{% trans "The status of this report has changed? Thank you let us know by filling this form." %}</p>
             <form method="post" action="/mobile/reports/{{report.id}}/updates/" id="report_form" class="form">
                 {{ update_form.as_p }}
                 <p>

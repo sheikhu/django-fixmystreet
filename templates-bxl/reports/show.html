@@ -82,7 +82,7 @@ $(function(){
 					<tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
 					{% endif %}
 					<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
-					<tr><th>{% trans "Filed on:" %}</th><td>{{report.sent_at|date}}</td></tr>
+					<tr><th>{% trans "Filed on:" %}</th><td>{{report.created_at|date}}</td></tr>
 				</table>
 			</div>
 		</div>
@@ -114,7 +114,7 @@ $(function(){
 
 			{% if not report.is_fixed %}
 			<h2>{% trans "Provide an update" %} </h2>
-			<p>{% trans "Please note that updates are not sent to city officials." %}</p>
+			<p>{% trans "The status of this report has changed? Thank you let us know by filling this form." %}</p>
 			<form action="/reports/{{report.id}}/updates/" method="post">
 				<table id="report_form" class="form">
 					{{update_form.as_table}}					
@@ -128,7 +128,7 @@ $(function(){
 	</div>
 	<div id="rightcol">
      	<div id="map-bxl" ></div>
-    	{% include "wards/_info_box.html" %}   	
+    	<!--{% include "wards/_info_box.html" %}-->
     </div>
 </div>
 	

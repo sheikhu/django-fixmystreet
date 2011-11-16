@@ -13,6 +13,7 @@ def new( request, report_id ):
                 { "report": report },
                 context_instance=RequestContext(request))
     else:
+        report.flagComment = request.POST['comment']
         report.flagAsOffensive()
         return HttpResponseRedirect(report.get_absolute_url() + '/flags/thanks')
 

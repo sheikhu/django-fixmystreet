@@ -28,8 +28,9 @@
 				<div id="language">
 					<form action="/i18n/setlang/" method="post">
 						<select id="select-language" name="language">
-							{% for lang in LANGUAGES %}
-							<option value="{{ lang.0 }}"{% if lang.0 == LANGUAGE_CODE %} selected="selected"{% endif %}>{{ lang.1 }}</option>
+							{% for l in LANGUAGES %}
+                                {% get_language_info for l.0 as lang %}
+                                <option value="{{ lang.code }}"{% if lang.code == LANGUAGE_CODE %} selected="selected"{% endif %}>{{ lang.name_local }}</option>
 							{% endfor %}
 						</select>
 					</form>
@@ -60,9 +61,10 @@
 		<div id="footer">
 			<div id="footer_content">
 				{% block content_third %}{% endblock %}
-				<p>
-					<a href="http://www.cirb.irisnet.be">CIRB</a> | <a href="http://visiblegovernment.ca">VisibleGovernment.ca</a>
-				</p>
+                <p id="legal_notice">
+                    <a id="term_of_use" href="{% url term_of_use %}">{% trans "Terms of Use" %}</a>
+                    Copyright 2011, <a href="http://www.cirb.irisnet.be">CIRB</a> - <a href="http://www.cibg.irisnet.be">CIBG</a>
+                </p>
 			</div>
 		</div>
 

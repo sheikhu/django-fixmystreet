@@ -10,7 +10,7 @@ register = template.Library()
 MENU_DEFS = [ 
     ('submit', ['^/$','^/reports/new']),
     ('view', ['^/reports/.*', '^/cities/.*', '^/wards/.*']),
-    ('about',  ['^/about/']),
+    ('about',  ['^/about/', '^/term_of_use/']),
     ('contact', ['^/contact/'])
 ]
 
@@ -21,7 +21,7 @@ def get_active_menu(context):
             if re.match(match,context['request'].path):
                 context['menu'] = menu
                 return ''
-    return
+    return ''
 
 @register.simple_tag
 def map_scripts():
