@@ -6,8 +6,8 @@
 		<th class='row-text' ></th>
 		<th class='table-stat'>{% trans "New <small>(less than 1 month)</small>" %}</th>
 		<th class='table-stat'>{% trans "Older Unresolved <small>(more than 1 month)</small>" %}</th>
-		<th class='table-stat'>{% trans "Recently Fixed <small>(fixed less than 1 month ago)</small>" %}*</th>
-		<th class='table-stat'>{% trans "Old Fixed <small>(fixed more than 1 month ago)</small>" %}*</th>
+		<th class='table-stat'>{% trans "Recently Fixed* <small>(fixed less than 1 month ago)</small>" %}</th>
+		<th class='table-stat'>{% trans "Old Fixed* <small>(fixed more than 1 month ago)</small>" %}</th>
 	</tr>
 {% for entry in report_counts.get_results %}
 	{% if report_counts.province_changed %}

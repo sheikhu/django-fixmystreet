@@ -522,6 +522,7 @@ input.big_button:hover {
 	padding: .4em .2em;
 	margin: .4em .2em;
 	width: 100px;
+    min-height: 50px;
 }
 
 #city-stat-group .number {

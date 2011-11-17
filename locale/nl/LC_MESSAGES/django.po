@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-17 10:44+0100\n"
+"POT-Creation-Date: 2011-11-17 11:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -184,7 +184,7 @@ msgstr ""
 msgid "Contact Us"
 msgstr ""
 
-#: templates-bxl/base.html:65
+#: templates-bxl/base.html:65 templates-bxl/term_of_use.html:4
 msgid "Terms of Use"
 msgstr ""
 
@@ -260,10 +260,6 @@ msgstr ""
 msgid "Recent Reports"
 msgstr ""
 
-#: templates-bxl/term_of_use.html:4
-msgid "Term of Use"
-msgstr ""
-
 #: templates-bxl/ajax/category_description.html:2
 #: templates-bxl/reports/new.html:181 templates-bxl/reports/mobile/new.html:27
 msgid "Please Note"
@@ -288,11 +284,11 @@ msgid "Older Unresolved <small>(more than 1 month)</small>"
 msgstr ""
 
 #: templates-bxl/cities/_report_count_table.html:9
-msgid "Recently Fixed <small>(fixed less than 1 month ago)</small>"
+msgid "Recently Fixed* <small>(fixed less than 1 month ago)</small>"
 msgstr ""
 
 #: templates-bxl/cities/_report_count_table.html:10
-msgid "Old Fixed <small>(fixed more than 1 month ago)</small>"
+msgid "Old Fixed* <small>(fixed more than 1 month ago)</small>"
 msgstr ""
 
 #: templates-bxl/cities/index.html:3 templates-bxl/cities/index.html.py:23

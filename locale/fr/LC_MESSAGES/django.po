@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-17 10:44+0100\n"
+"POT-Creation-Date: 2011-11-17 11:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -191,9 +191,9 @@ msgstr "Voir les rapports"
 msgid "Contact Us"
 msgstr "Contact"
 
-#: templates-bxl/base.html:65
+#: templates-bxl/base.html:65 templates-bxl/term_of_use.html:4
 msgid "Terms of Use"
-msgstr "Conditions d'utilistationa"
+msgstr "Conditions d'utilistation"
 
 #: templates-bxl/home.html:9
 msgid "report/view/discuss"
@@ -260,7 +260,7 @@ msgstr "Rapports résolus"
 
 #: templates-bxl/home.html:62 templates-bxl/cities/show.html:17
 msgid "Reports Updated"
-msgstr "Rapports mis à jour"
+msgstr "Rapports <span style='display:inline-block;'>mis à jour</span>"
 
 #: templates-bxl/home.html:67 templates-bxl/cities/_report_count_table.html:28
 msgid "As reported by Fix My Street users."
@@ -269,10 +269,6 @@ msgstr "Comme indiqué par les utilisateurs de Fix My Street."
 #: templates-bxl/home.html:71
 msgid "Recent Reports"
 msgstr "Derniers Rapports"
-
-#: templates-bxl/term_of_use.html:4
-msgid "Term of Use"
-msgstr ""
 
 #: templates-bxl/ajax/category_description.html:2
 #: templates-bxl/reports/new.html:181 templates-bxl/reports/mobile/new.html:27
@@ -300,12 +296,12 @@ msgid "Older Unresolved <small>(more than 1 month)</small>"
 msgstr "Non résolu <small>(plus d'un mois)</small>"
 
 #: templates-bxl/cities/_report_count_table.html:9
-msgid "Recently Fixed <small>(fixed less than 1 month ago)</small>"
-msgstr "Résolu récemment <small>(il y a moins d'un mois)</small>"
+msgid "Recently Fixed* <small>(fixed less than 1 month ago)</small>"
+msgstr "Résolu* récemment <small>(il y a moins d'un mois)</small>"
 
 #: templates-bxl/cities/_report_count_table.html:10
-msgid "Old Fixed <small>(fixed more than 1 month ago)</small>"
-msgstr "Résolu <small>(il y a plus d'un mois)</small>"
+msgid "Old Fixed* <small>(fixed more than 1 month ago)</small>"
+msgstr "Résolu* <small>(il y a plus d'un mois)</small>"
 
 #: templates-bxl/cities/index.html:3 templates-bxl/cities/index.html.py:23
 #: templates-bxl/cities/show.html:4
@@ -823,6 +819,7 @@ msgstr ""
 "<p>Afin de finaliser la procédure d'abonnement, veillez consulter votre "
 "boîte email et cliquer sur le lien d'activation.</p>\n"
 "    "
+
 #: templates-bxl/reports/subscribers/new.html:3
 #: templates-bxl/reports/subscribers/new.html:6
 msgid "Subscribe to Updates to a Report"
