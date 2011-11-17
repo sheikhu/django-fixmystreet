@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-17 11:24+0100\n"
+"POT-Creation-Date: 2011-11-17 12:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,52 +115,31 @@ msgstr ""
 msgid "You have unsubscribed from updates to:"
 msgstr ""
 
-#: templates-bxl/about.html:4 templates-bxl/about.html.py:9
-#: templates-bxl/base.html:44 templates-bxl/faq/show.html:3
-#: templates-bxl/faq/show.html.py:7
+#: templates-bxl/about.html:4 templates-bxl/base.html:44
+#: templates-bxl/faq/show.html:3 templates-bxl/faq/show.html.py:7
 msgid "About"
 msgstr ""
 
-#: templates-bxl/about.html:16
+#: templates-bxl/about.html:8
+msgid "About FixMyStreet Brussels"
+msgstr ""
+
+#: templates-bxl/about.html:15
 msgid "Credits"
 msgstr ""
 
-#: templates-bxl/about.html:17
+#: templates-bxl/about.html:16
 msgid "Thanks to:"
 msgstr ""
 
-#: templates-bxl/about.html:19
+#: templates-bxl/about.html:18
 msgid "for the original concept."
 msgstr ""
 
-#: templates-bxl/about.html:20
+#: templates-bxl/about.html:19
 msgid ""
-"Chris Taggart, of <a href='http://www.openottawa.org/'>OpenOttawa</a>, for "
-"adapting the source code to Canada."
-msgstr ""
-
-#: templates-bxl/about.html:21
-msgid ""
-"Brad Elliott, of <a href='http://www.dyad.ca'>dyad infoSys</a>, for the "
-"domain name."
-msgstr ""
-
-#: templates-bxl/about.html:22
-msgid "The City of Ottawa, for being open to new ideas."
-msgstr ""
-
-#: templates-bxl/about.html:23
-msgid "The Rae Family of Montreal, for hosting and IT support."
-msgstr ""
-
-#: templates-bxl/about.html:26
-msgid "In addition, Chris Taggart would like to thank:"
-msgstr ""
-
-#: templates-bxl/about.html:29
-msgid ""
-"Pierre Lewis, for his MTM conversion script. The script enabled conversion "
-"from Ottawa's MTM projection to the Google-friendly WGS-84 format."
+"<a href='visiblegovernment.ca'>visiblegovernment.ca</a> for the original "
+"open source project <a href='fixmystreet.ca'>fixmystreet.ca</a>."
 msgstr ""
 
 #: templates-bxl/base.html:10 templates-bxl/base.html.py:26

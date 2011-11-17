@@ -902,58 +902,58 @@
         }
     }, 
     {
-        "pk": 5, 
+        "pk": 1, 
         "model": "mainapp.faqentry", 
         "fields": {
-            "q_fr": "Allez-vous envoyer du spam \u00e0 mon adresse courriel?", 
-            "q_en": "Will you send spam to my email address?", 
-            "order": 6, 
-            "a_fr": "<p>Jamais. Nous vous envoyerons un courriel si quelqu'un quitte une mise \u00e0 jour sur un probl\u00e8me que vous avez signal\u00e9, ou auxquel vous vous \u00eates souscrit. Nous allons aussi vous envoyer un questionnaire par courriel quatre semaines apr\u00e8s que vous avez soumis un probl\u00e8me our que vous avez demander l'\u00e9tat du probl\u00e8me.</p> \r\n<p>Nous vous envoyerons des courriels seulements pour les probl\u00e8mes que vous avez signal\u00e9 ou auxquels vous vous \u00eates souscrits.</p>\r\n", 
-            "a_en": "<p>Never. We will email you if someone leaves an update on a problem you\u2019ve reported, or subscribed to.  We will also send you a questionnaire email four weeks after you submit a problem, asking for a status update.</p> \r\n<p>We\u2019ll only ever send you emails in relation to problems you have reported or subscribed to.</p>\r\n"
+            "q_fr": "Qui g\u00e8re ce site ?",
+            "q_en": "Who Runs This Site?",
+            "order": 2,
+            "a_fr": "<p>FixMyStreet Bruxelles est maintenu par le CIRB : Centre d’Informatique pour la R\u00e9gion Bruxelloise (<a href='http://www.cirb.irisnet.be'>www.cirb.irisnet.be</a>).</p><p>L'id\u00e9e originale a \u00e9t\u00e9 inspir\u00e9 par <a href='http://mysociety.com'>MySociety's </a> <a href='http://fixmystreet.org'>FixMyStreet</a>, et adapt\u00e9e pour Bruxelles par le CIRB.</p><p>Le projet a \u00e9t\u00e9 r\u00e9alis\u00e9 \u00e0 partir du code open source du projet <a href='fixmystreet.ca'>fixmystreet.ca</a> de <a href='visiblegovernment.ca'>visiblegovernment.ca</a>.</p>", 
+            "a_en": "<p>Fix My Street Brussels is maintained by CIBG (<a href='http://www.cirb.irisnet.be'>www.cirb.irisnet.be</a>).</p><p>The original concept was inspired by <a href='http://mysociety.com'>MySociety's</a> <a href='http://fixmystreet.org'>example</a>, which was adapted for Brussels by CIRB</p><p>the project was forked from the open source project fixmystreet.ca by visiblegovernment.ca.</p>"
         }
-    }, 
+    },
     {
         "pk": 2, 
         "model": "mainapp.faqentry", 
         "fields": {
-            "q_fr": "Pourquoi Ma Municipalit\u00e9 n'Est-Elle Pas Inscrite?", 
-            "q_en": "Why Isn't My Municipality Listed?", 
+            "q_fr": "Pourquoi ma commune n'est-elle pas reprise ?", 
+            "q_en": "Why Isn't My Collective Listed?", 
             "order": 3, 
-            "a_fr": "<p>Pour inscrire une municipalit\u00e9, nous avons besoin de:</p>\r\n\t<ul>\r\n\t\t<li>fichiers graphiques d\u00e9crivant les fronti\u00e8res de ses quartiers de la ville.</li>\r\n\t\t<li>une liste d'adresses courriels de contact pour chaque quartier de la ville.</li> \r\n\t</ul>\r\n\r\n\t<p>Si vous souhaitez voir votre municipalit\u00e9 sur notre site, s'il vous pla\u00eet demander \u00e0 un repr\u00e9sentant de votre municipalit\u00e9 de nous contacter \r\n\t\tjennifer@visiblegovernment.ca.</a>\r\n\t</p>\r\n\r\n", 
-            "a_en": "<p>To support a municipality, we require:</p>\r\n\t<ul>\r\n\t\t<li>shape files of city ward boundary maps.</li>\r\n\t\t<li>a list of contact email addresses for each city ward.</li> \r\n\t</ul>\r\n\r\n\t<p>If you would like to see your municipality included on our site, please have your municipality representative contact \r\n\t\tjennifer@visiblegovernment.ca.</a>\r\n\t</p>\r\n\r\n"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "mainapp.faqentry", 
-        "fields": {
-            "q_fr": "Qui G\u00e8re Ce Site", 
-            "q_en": "Who Runs This Site?", 
-            "order": 2, 
-            "a_fr": "<p>\r\n\t\tFixMyStreet Canada est maintenu par l'organisation \u00e0 but non lucratif\r\n\t\t<a href='http://visiblegovernment.ca'>VisibleGovernment.ca</a>.\r\n\t</p>\r\n\t<p>\r\n\t\tLe site a \u00e9t\u00e9 inspir\u00e9 par <a href='http://mysociety.com'>MySociety's </a> <a href='http://fixmystreet.org'>FixMyStreet</a>, et adapt\u00e9e pour le Canada par Chris Taggart de \r\n\t\t<a href=\"http://www.openottawa.org/\">OpenOttawa</a>.\r\n\t</p>\r\n", 
-            "a_en": "\t<p>\r\n\t\tFixMyStreet Canada is maintained by the non-profit \r\n\t\t<a href='http://visiblegovernment.ca'>VisibleGovernment.ca</a>.\r\n\t</p>\r\n\t<p>\r\n\t\tThe site was inspired by <a href='http://mysociety.com'>MySociety's</a> <a href='http://fixmystreet.org'>example</a>, which was adapted for Canada by Chris Taggart of \r\n\t\t<a href=\"http://www.openottawa.org/\">OpenOttawa</a>.\r\n\t</p>\r\n\r\n"
+            "a_fr": "<p>FixMyStreet Bruxelles couvre toutes les communes de la R\u00e9gion de Bruxelles-Capitale et toutes les communes de la R\u00e9gion y sont reprises.</p>", 
+            "a_en": "<p>FixMyStreet Brussels support only collectives from Brussels, all of them are represented on the site.</p>"
         }
     }, 
     {
         "pk": 3, 
         "model": "mainapp.faqentry", 
         "fields": {
-            "q_fr": "Supprimer-vous le contenu ill\u00e9gal ou stupide?", 
+            "q_fr": "Supprimer-vous le contenu ill\u00e9gal ou stupide ?", 
             "q_en": "Do you remove silly or illegal content?", 
             "order": 4, 
-            "a_fr": "<p>FixMyStreet Canada n'est pas responsable pour le contenu et la pr\u00e9cision des documents soumis par les utilisateurs. Tous les rapports sont accept\u00e9s avec l'assomption qu'ils ne contiennent pas de contenu ill\u00e9gal, et nous nous r\u00e9servons le droit de supprimer toutles probl\u00e8mes ou les mises \u00e0 jour que nous consid\u00e9rons comme \u00e9tant inappropri\u00e9s une fois averti par un utilisateur du site.</p>\r\n\r\n", 
-            "a_en": "<p>FixMyStreet Canada is not responsible for the content and accuracy of material submitted by its users. All reports are accepted on the basis that they contain no illegal content, and we reserve the right to remove any problems or updates which we consider to be inappropriate upon being informed by a user of the site.</p>\r\n\r\n"
+            "a_fr": "<p>FixMyStreet Bruxelles n'est pas responsable pour le contenu et la pr\u00e9cision des documents soumis par les utilisateurs. Tous les rapports sont accept\u00e9s avec l'assomption qu'ils ne contiennent pas de contenu ill\u00e9gal, et nous nous r\u00e9servons le droit de supprimer tout les rapports ou les mises \u00e0 jour que nous consid\u00e9rons comme \u00e9tant inappropri\u00e9s une fois averti par un utilisateur du site.", 
+            "a_en": "<p>FixMyStreet Brussels is not responsible for the content and accuracy of material submitted by its users. All reports are accepted on the basis that they contain no illegal content, and we reserve the right to remove any problems or updates which we consider to be inappropriate upon being informed by a user of the site.</p>\r\n\r\n"
         }
     }, 
     {
         "pk": 4, 
         "model": "mainapp.faqentry", 
         "fields": {
-            "q_fr": "Qui peut voir mon adresse courriel?", 
+            "q_fr": "Qui peut voir mon adresse email ?", 
             "q_en": "Who gets to see my email address?", 
             "order": 5, 
-            "a_fr": "<p>Si vous soumettez un probl\u00e8me, nous transmettons vos coordonn\u00e9es et les d\u00e9tails du probl\u00e8me au contact municipal responsable de la r\u00e9gion o\u00f9 vous avez localis\u00e9 le probl\u00e8me. Lorsque vous envoyez un rapport ou une mise \u00e0 jour, votre nom est affich\u00e9 sur le site, mais pas votre adresse courriel.</p>\r\n<p>Jamais nous ne donnerons ou venderons votre adresse courriel \u00e0 quiconque, \u00e0 moins que nous sommes oblig\u00e9 par la loi.</p>\r\n\r\n", 
+            "a_fr": "<p>Si vous soumettez un rapport, nous transmettons vos coordonn\u00e9es et les d\u00e9tails du probl\u00e8me au contact responsable (communal, r\u00e9gional ou autre) de l’endroit où vous avez localis\u00e9 le probl\u00e8me. Lorsque vous envoyez un rapport ou une mise \u00e0 jour, votre nom est affich\u00e9 sur le site, mais pas votre adresse email.</p><p>Jamais nous ne communiquerons votre adresse email \u00e0 quiconque, \u00e0 moins que nous y soyons oblig\u00e9 par la loi.</p>", 
             "a_en": "<p>If you submit a problem, we pass on your contact details, and details of the problem, to the municipality contact responsible for the area where you located the problem.  When you submit a report or update, your name is displayed upon the site, but not your email address.</p>\r\n<p>We will never give or sell your email address to anyone else, unless we are obliged to by law.</p>\r\n\r\n"
+        }
+    },
+    {
+        "pk": 5, 
+        "model": "mainapp.faqentry", 
+        "fields": {
+            "q_fr": "Allez-vous envoyer du spam \u00e0 mon adresse email ?", 
+            "q_en": "Will you send spam to my email address?", 
+            "order": 6, 
+            "a_fr": "<p>Jamais. Nous vous enverrons un email si quelqu'un signale  une mise \u00e0 jour sur un probl\u00e8me que vous avez signal\u00e9, ou auquel vous avez souscrit un abonnement.</p>", 
+            "a_en": "<p>Never. We will email you if someone leaves an update on a problem you\u2019ve reported, or subscribed to.  We will also send you a questionnaire email four weeks after you submit a problem, asking for a status update.</p> \r\n<p>We\u2019ll only ever send you emails in relation to problems you have reported or subscribed to.</p>\r\n"
         }
     }
 ]
