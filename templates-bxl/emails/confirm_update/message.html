@@ -2,7 +2,10 @@
 {% load i18n %}
 {% block content %}
 {% blocktrans with title=update.report.title %}
-<p>Thank you for submitting an update on the report <strong>{{ title }}</strong> to <strong>Fix My Street</strong>.</p>
+<p>Thank you for submitting an update to <strong>Fix My Street</strong>.</p>
+
+<h2>{{ title }}</h2>
+<div>{{ details }}</div>
 
 <p>To confirm your submission, please click on the following URL:</p>
 {% endblocktrans %}

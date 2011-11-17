@@ -8,17 +8,14 @@ was updated by {{author}} on {{date}}:
 {{update.desc|safe}}
 
 -----------------------------------------------------------------------------
-{% blocktrans with url=update.report.get_absolute_url %}
-For more information, see the full report at:
+{% trans "For more information, see the full report at:" %}
 {{ url }}
 
-Thank you for supporting Fix My Street,
-The Fix My Street Team
-{% endblocktrans %}
 {% if unsubscribe_url %}
 {% blocktrans %}
 You are receiving this email because you subscribed to updates for this report
 on Fix My Street.  To unsubscribe from updates to this report, click the 
-following link: {{unsubscribe_url}}
+following link:
 {% endblocktrans %}
+{{unsubscribe_url}}
 {% endif %}

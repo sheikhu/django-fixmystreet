@@ -53,12 +53,16 @@ body {
 	font-size: 4em;
     font-weight: normal;
 	text-shadow:3px 3px 5px black;
-	display: inline-block;
 	vertical-align: top;
 }
 
+#header a {
+    text-decoration: initial;
+}
+
 #logo {
-	position:absolute; left:-140px;
+	position:absolute;
+    left:-140px;
 }
 
 
@@ -148,14 +152,14 @@ a {
 #leftcol {
 	display:inline-block; 
 	vertical-align:top;
-	width: 380px;
+	width: 390px;
 }
 
 #rightcol {
 	margin-left:1em;
 	display:inline-block; 
 	vertical-align:top;
-	width: 540px;
+	width: 530px;
 }
 
 #body_content h1 {
@@ -496,10 +500,16 @@ input.big_button:hover {
 	border-top:1px solid silver;
 }
 
-.report_update{
+.report_update {
 	border-bottom:1px solid silver;
 	padding-top: .5em;
 }
+
+.report_update .fixed_msg {
+    color:green;
+    font-size:1.4em;
+}
+
 
 /********* REPORT TABLE LAYOUT ********/
 
@@ -533,6 +543,10 @@ input.big_button:hover {
 	width:30px;
 }
 
+#reports .feeds img{
+	height:21px;
+}
+
 #reports .feeds{
 	font-size: 0;
 	padding: 3px;
@@ -558,6 +572,9 @@ input.big_button:hover {
 	width: 90px;
 	padding:5px;
 }
+.table-stat small {
+    display: inline-block;
+}
 
 .table_heading{
 	color:#004990;
@@ -574,15 +591,7 @@ input.big_button:hover {
 
 
 /********* SUBSCRIBE LAYOUT ********/
-
-#subscribe-form-bg {
-	text-align: center;
-}
-
-#subscribe-form {
-	width: 600px;
-	margin-left: auto;
-	margin-right: auto;
+#subscribe-form h2{
 	text-align: center;
 }
 

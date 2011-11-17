@@ -24,9 +24,6 @@ EMAIL_ADMIN = "jsanchezpando@cirb.irisnset.be"
 ADMIN_EMAIL = "jsanchezpando@cirb.irisnset.be"
 ADMIN = ["Jonathan"]
 
-EMAIL_FROM_USER = "fms@cirb.irisnet.be"
-DEFAULT_FROM_EMAIL = "fms@cirb.irisnset.be"
-
 DEBUG = True
 SITE_ID = 2
 LOCAL_DEV = False

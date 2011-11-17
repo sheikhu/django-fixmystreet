@@ -1,12 +1,13 @@
 {% load i18n %}<html>
-    <body style="margin: 0; padding: 20px 50px; background-color: #004990; color: white; font-family: Helvetica, Arial, sans-serif;">
-		<div style="background-color: #517EB5; padding: 15px 8px;">
+    <body style="margin: 0; padding: 20px 50px;">
+		<div style=" padding: 15px 8px;">
 			<p style="margin-bottom:30px;">{% block hello %}{% blocktrans with name=update.author %}Hello {{ name }},{% endblocktrans %}{% endblock %}</p>
 
 			{% block content %}{% endblock %}
 			{% block thanks %}
 			<p style="margin-top:25px;">{% trans 'Thank you,' %}</p>
 			<p>{% trans 'The Fix My Street Team' %}</p>
+            <img src="http://fixmystreet.irisnetlab.be/media/images/logo.png"/>
 			{% endblock %}
 			{% block signature %}{% endblock %}
 		</div>

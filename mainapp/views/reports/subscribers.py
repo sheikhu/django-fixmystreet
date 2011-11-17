@@ -19,14 +19,19 @@ def new( request, report_id ):
                 error_msg = _("You are already subscribed to this report.")
             else:
                 subscriber.save()
-                return HttpResponseRedirect(reverse('subscribe_create' ))
+                return render_to_response("reports/subscribers/create.html",
+                            {'subscriber':subscriber },
+                            context_instance=RequestContext(request))
+                #return HttpResponseRedirect(reverse('subscribe_create' ))
     else:
         form = ReportSubscriberForm()
         
     return render_to_response("reports/subscribers/new.html",
-                {   "subscriber_form": form,
+                {
+                   "subscriber_form": form,
                     "report":  report,
-                    "error_msg": error_msg, },
+                    "error_msg": error_msg
+                },
                 context_instance=RequestContext(request))
 
 def create( request ):
@@ -36,11 +41,14 @@ def create( request ):
             
 def confirm( request, confirm_token ):
     subscriber = get_object_or_404(ReportSubscriber, confirm_token = confirm_token )
-    subscriber.is_confirmed = True
-    subscriber.save()
-    
+    error_msg = None
+    if not subscriber.is_confirmed:
+        subscriber.is_confirmed = True
+        subscriber.save()
+    else:
+        error_msg= _('Your subscriber has already been confirmed')
     return render_to_response("reports/subscribers/confirm.html",
-                {   "subscriber": subscriber, },
+                {   "subscriber": subscriber, "error_msg":error_msg },
                 context_instance=RequestContext(request))
     
 def unsubscribe(request, confirm_token ):

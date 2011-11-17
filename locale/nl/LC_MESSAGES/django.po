@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-16 14:51+0100\n"
+"POT-Creation-Date: 2011-11-17 10:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,7 +107,11 @@ msgstr ""
 msgid "You are already subscribed to this report."
 msgstr ""
 
-#: mainapp/views/reports/subscribers.py:51
+#: mainapp/views/reports/subscribers.py:49
+msgid "Your subscriber has already been confirmed"
+msgstr ""
+
+#: mainapp/views/reports/subscribers.py:59
 msgid "You have unsubscribed from updates to:"
 msgstr ""
 
@@ -292,16 +296,12 @@ msgid "Old Fixed <small>(fixed more than 1 month ago)</small>"
 msgstr ""
 
 #: templates-bxl/cities/index.html:3 templates-bxl/cities/index.html.py:23
+#: templates-bxl/cities/show.html:4
 msgid "All Reports"
 msgstr ""
 
 #: templates-bxl/cities/index.html:24
 msgid "Reports by City"
-msgstr ""
-
-#: templates-bxl/cities/show.html:4 templates-bxl/cities/show.html.py:37
-#: templates-bxl/wards/show.html:4 templates-bxl/wards/show.html.py:49
-msgid "Reports for"
 msgstr ""
 
 #: templates-bxl/cities/show.html:21
@@ -318,6 +318,11 @@ msgstr ""
 
 #: templates-bxl/cities/show.html:26
 msgid "Number of Subscribers"
+msgstr ""
+
+#: templates-bxl/cities/show.html:37 templates-bxl/wards/show.html:4
+#: templates-bxl/wards/show.html.py:49
+msgid "Reports for"
 msgstr ""
 
 #: templates-bxl/contact/new.html:9
@@ -396,8 +401,11 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"<p>Thank you for submitting an update on the report <strong>%(title)s</"
-"strong> to <strong>Fix My Street</strong>.</p>\n"
+"<p>Thank you for submitting an update to <strong>Fix My Street</strong>.</"
+"p>\n"
+"\n"
+"<h2>%(title)s</h2>\n"
+"<div>%(details)s</div>\n"
 "\n"
 "<p>To confirm your submission, please click on the following URL:</p>\n"
 msgstr ""
@@ -435,18 +443,17 @@ msgid "This issue has been fixed."
 msgstr ""
 
 #: templates-bxl/emails/report_update/message.html:14
+#: templates-bxl/emails/report_update/message.txt:11
 msgid "For more information, see the full report at:"
 msgstr ""
 
-#: templates-bxl/emails/report_update/message.html:20
-#, python-format
+#: templates-bxl/emails/report_update/message.html:19
 msgid ""
 "\n"
 "<p>You are receiving this email because you subscribed to updates for this "
 "report\n"
-"on Fix My Street.  To unsubscribe from updates to this report, click the \n"
+"on Fix My Street. To unsubscribe from updates to this report, click the \n"
 "following link:</p>\n"
-"<p><a href=\"%(unsubscribe_url)s\">%(unsubscribe_url)s</a></p>\n"
 msgstr ""
 
 #: templates-bxl/emails/report_update/message.txt:1
@@ -457,25 +464,13 @@ msgid ""
 "was updated by %(author)s on %(date)s:\n"
 msgstr ""
 
-#: templates-bxl/emails/report_update/message.txt:11
-#, python-format
-msgid ""
-"\n"
-"For more information, see the full report at:\n"
-"%(url)s\n"
-"\n"
-"Thank you for supporting Fix My Street,\n"
-"The Fix My Street Team\n"
-msgstr ""
-
-#: templates-bxl/emails/report_update/message.txt:19
-#, python-format
+#: templates-bxl/emails/report_update/message.txt:15
 msgid ""
 "\n"
 "You are receiving this email because you subscribed to updates for this "
 "report\n"
 "on Fix My Street.  To unsubscribe from updates to this report, click the \n"
-"following link: %(unsubscribe_url)s\n"
+"following link:\n"
 msgstr ""
 
 #: templates-bxl/emails/report_update/subject.txt:1
@@ -510,7 +505,7 @@ msgid ""
 msgstr ""
 
 #: templates-bxl/emails/subscribe/subject.txt:1
-msgid "Subscribe to Fix My Street Report Updates"
+msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
 msgstr ""
 
 #: templates-bxl/reports/_navigation.html:9
@@ -562,7 +557,7 @@ msgstr ""
 
 #: templates-bxl/reports/new.html:194 templates-bxl/reports/show.html:122
 #: templates-bxl/reports/mobile/new.html:36
-#: templates-bxl/reports/mobile/show.html:88
+#: templates-bxl/reports/mobile/show.html:94
 msgid "Submit"
 msgstr ""
 
@@ -583,13 +578,13 @@ msgid "Review reports"
 msgstr ""
 
 #: templates-bxl/reports/show.html:48 templates-bxl/reports/show.html:121
-#: templates-bxl/reports/mobile/show.html:15
-#: templates-bxl/reports/mobile/show.html:85
+#: templates-bxl/reports/mobile/show.html:17
+#: templates-bxl/reports/mobile/show.html:91
 msgid "This problem has been fixed."
 msgstr ""
 
 #: templates-bxl/reports/show.html:52
-#: templates-bxl/reports/mobile/show.html:19
+#: templates-bxl/reports/mobile/show.html:21
 msgid ""
 "<p>Please check your email for a message from fixmystreet.ca, which will "
 "include a confirmation link.  Complete your submission by clicking on it.</"
@@ -598,58 +593,58 @@ msgid ""
 msgstr ""
 
 #: templates-bxl/reports/show.html:72
-#: templates-bxl/reports/mobile/show.html:39
+#: templates-bxl/reports/mobile/show.html:41
 msgid "Subscribers:"
 msgstr ""
 
 #: templates-bxl/reports/show.html:74
-#: templates-bxl/reports/mobile/show.html:41
-#: templates-bxl/reports/subscribers/new.html:12
+#: templates-bxl/reports/mobile/show.html:44
+#: templates-bxl/reports/subscribers/new.html:10
 msgid "Subscribe"
 msgstr ""
 
 #: templates-bxl/reports/show.html:80
-#: templates-bxl/reports/mobile/show.html:47
+#: templates-bxl/reports/mobile/show.html:51
 msgid "Category:"
 msgstr ""
 
 #: templates-bxl/reports/show.html:82
-#: templates-bxl/reports/mobile/show.html:49
+#: templates-bxl/reports/mobile/show.html:53
 msgid "Location:"
 msgstr ""
 
 #: templates-bxl/reports/show.html:84
-#: templates-bxl/reports/mobile/show.html:51
+#: templates-bxl/reports/mobile/show.html:55
 msgid "Filed by:"
 msgstr ""
 
 #: templates-bxl/reports/show.html:85
-#: templates-bxl/reports/mobile/show.html:52
+#: templates-bxl/reports/mobile/show.html:56
 msgid "Filed on:"
 msgstr ""
 
 #: templates-bxl/reports/show.html:97
-#: templates-bxl/reports/mobile/show.html:64
+#: templates-bxl/reports/mobile/show.html:69
 msgid "Offensive? Unsuitable? Tell us"
 msgstr ""
 
 #: templates-bxl/reports/show.html:101
-#: templates-bxl/reports/mobile/show.html:68
+#: templates-bxl/reports/mobile/show.html:74
 msgid "Updates"
 msgstr ""
 
 #: templates-bxl/reports/show.html:106
-#: templates-bxl/reports/mobile/show.html:72
+#: templates-bxl/reports/mobile/show.html:78
 msgid "Posted by"
 msgstr ""
 
 #: templates-bxl/reports/show.html:116
-#: templates-bxl/reports/mobile/show.html:80
+#: templates-bxl/reports/mobile/show.html:86
 msgid "Provide an update"
 msgstr ""
 
 #: templates-bxl/reports/show.html:117
-#: templates-bxl/reports/mobile/show.html:81
+#: templates-bxl/reports/mobile/show.html:87
 msgid ""
 "The status of this report has changed? Thank you let us know by filling this "
 "form."
@@ -690,63 +685,59 @@ msgid "Subscribe Complete"
 msgstr ""
 
 #: templates-bxl/reports/subscribers/confirm.html:5
-msgid "You have subscribed to updates to"
+#, python-format
+msgid ""
+"\n"
+"Your subscription to follow the updated report <a href=\"%(url)s\">"
+"%(title)s</a>\n"
+"is enabled. You will start receiving the developments of this report by "
+"mail\n"
 msgstr ""
 
-#: templates-bxl/reports/subscribers/confirm.html:8
+#: templates-bxl/reports/subscribers/confirm.html:11
 msgid "Return to Fix My Street"
 msgstr ""
 
-#: templates-bxl/reports/subscribers/create.html:5
-msgid ""
-"\n"
-"<h2>Nearly Done! Now check your email...</h2>\n"
-"\n"
-"<p>The confirmation email may take a few minutes to arrive — please be "
-"patient.</p>\n"
-"\n"
-"<p>If you use web-based email or have 'junk mail' filters, you may wish to "
-"check your bulk/spam mail folders: sometimes, our messages are marked that "
-"way.\n"
-"You must now click the link in the email we've just sent you — if you do "
-"not, your alert will not be activated.</p>\n"
-"\n"
-"<p>(Don't worry — we'll hang on to your alert while you're checking your "
-"email.)</p>\n"
-msgstr ""
-
-#: templates-bxl/reports/subscribers/new.html:3
-msgid "Subscribe to a Report"
-msgstr ""
-
-#: templates-bxl/reports/subscribers/new.html:8
-msgid "Subscribe to Updates to Report"
-msgstr ""
-
-#: templates-bxl/reports/subscribers/new.html:9
-msgid "Enter your email address to subscribe to updates for this report:"
-msgstr ""
-
+#: templates-bxl/reports/subscribers/create.html:4
 #: templates-bxl/reports/updates/create.html:4
 msgid "Update Created"
 msgstr ""
 
-#: templates-bxl/reports/updates/create.html:7
+#: templates-bxl/reports/subscribers/create.html:7
+#, python-format
 msgid ""
 "\n"
-"<h2>Nearly Done! Now check your email...</h2>\n"
+"    <h2>Subscribe Created</h2>\n"
 "\n"
-"<p>The confirmation email may take a few minutes to arrive — please be "
-"patient.</p>\n"
+"    <p>Your subscription for the report <strong>%(title)s</strong> was "
+"created and a confirmation email was sent to %(email)s</p>\n"
 "\n"
-"<p>If you use web-based email or have 'junk mail' filters, you may wish to "
-"check your bulk/spam mail folders: sometimes, our messages are marked that "
-"way.\n"
-"You must now click the link in the email we've just sent you — if you do "
-"not, your update will not be activated.</p>\n"
+"    <p>To complete the subscription process, please consult your email and "
+"click the activation link.</p>\n"
+"    "
+msgstr ""
+
+#: templates-bxl/reports/subscribers/new.html:3
+#: templates-bxl/reports/subscribers/new.html:6
+msgid "Subscribe to Updates to a Report"
+msgstr ""
+
+#: templates-bxl/reports/subscribers/new.html:7
+msgid "Enter your email address to subscribe to updates for this report:"
+msgstr ""
+
+#: templates-bxl/reports/updates/create.html:7
+#, python-format
+msgid ""
 "\n"
-"<p>(Don't worry — we'll hang on to your update while you're checking your "
-"email.)</p>\n"
+"    <h2>Update Created</h2>\n"
+"\n"
+"    <p>Your update for the report <strong>%(title)s</strong> was created and "
+"a confirmation email was sent to %(email)s</p>\n"
+"\n"
+"    <p>To complete the update process, please consult your email and click "
+"the activation link.</p>\n"
+"    "
 msgstr ""
 
 #: templates-bxl/wards/_info_box.html:7

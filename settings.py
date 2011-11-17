@@ -103,10 +103,13 @@ INSTALLED_APPS = (
     'mainapp',
 )
 
-AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
+#AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
 
 
 ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
+
+EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
+DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
 
 #################################################################################
 # These variables Should be defined in the local settings file

@@ -19,7 +19,7 @@ def search(request):
     #try:
         #return HttpResponse(data.decode('iso-8859-15'))
     #except UnicodeError:
-    return HttpResponse(data)
+    return HttpResponse(data,mimetype="text/json")
 
 
 def locate(request): 
@@ -33,7 +33,7 @@ def locate(request):
     #try:
         #return HttpResponse(data.decode('iso-8859-15'))
     #except UnicodeError:
-    return HttpResponse(data)
+    return HttpResponse(data,mimetype="text/json")
 
 def wards(request): 
     conn = httplib.HTTPConnection(settings.GEOSERVER)
@@ -56,4 +56,4 @@ def reports(request):
     return HttpResponse(json.dumps({
         'status':'success',
         'results':result
-    }))
+    }),mimetype="text/json")

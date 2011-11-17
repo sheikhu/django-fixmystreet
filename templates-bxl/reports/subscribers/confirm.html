@@ -2,8 +2,11 @@
 {% load i18n %}
 {% block content %}
 <h2>{% trans "Subscribe Complete" %}</h2>
-   <p>{% trans "You have subscribed to updates to" %}:</p> 
-   <p><a href='{{subscriber.report.get_absolute_url}}'>{{subscriber.report.title}}</a>
-	<br/><br/>
-	<a href="/">{% trans "Return to Fix My Street" %}</a>
+<p>{% blocktrans with title=subscriber.report.title url=subscriber.report.get_absolute_url %}
+Your subscription to follow the updated report <a href="{{ url }}">{{ title }}</a>
+is enabled. You will start receiving the developments of this report by mail
+{% endblocktrans %}</p>
+
+<br/><br/>
+<a href="/">{% trans "Return to Fix My Street" %}</a>
 {% endblock %}

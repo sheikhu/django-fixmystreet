@@ -12,16 +12,15 @@
 </div>
 
 <p>{% trans "For more information, see the full report at:" %}</p>
-{% endblocktrans %}
 <p><a href="{{ update.report.get_absolute_url }}">{{ update.report.get_absolute_url }}</a></p>
 {% endblock %}
 {% block signature %}
 {% if unsubscribe_url %}
 {% blocktrans %}
 <p>You are receiving this email because you subscribed to updates for this report
-on Fix My Street.  To unsubscribe from updates to this report, click the 
+on Fix My Street. To unsubscribe from updates to this report, click the 
 following link:</p>
-<p><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></p>
 {% endblocktrans %}
+<p><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></p>
 {% endif %}
 {% endblock %}

@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{{report.ward.name}}{% trans "Subscribe to a Report" %}{% endblock %}
+{% block title %}{{report.ward.name}}{% trans "Subscribe to Updates to a Report" %}{% endblock %}
 {% block content %}
-<div id="subscribe-form-bg">
 <div id="subscribe-form">
+    <h2>{% trans "Subscribe to Updates to a Report" %}</h2>
+    <p style="margin-top:20px;">{% trans "Enter your email address to subscribe to updates for this report:" %}</p>
+    <form action="/reports/{{report.id}}/subscribers/" method="POST">
+        {{subscriber_form.as_table}}
+        <input type="submit" value="{% trans 'Subscribe' %}"/>
+    </form>
+    <h3>{{report.title}}</h3>
+    {% if report.photo %}
+    <img src="{{ MEDIA_URL }}{{ report.photo }}" style="float:left; margin:0 10px 5px 10px;"/>
+    {% endif %}
+    <p>{{ report.desc }}</p>
+    <br style="clear:both;" />
+</div>
 
-<h2>{% trans "Subscribe to Updates to Report" %}: {{report.title}}</h2>
-<p>{% trans "Enter your email address to subscribe to updates for this report:" %}</p>
-<form action="/reports/{{report.id}}/subscribers/" method="POST">
-{{subscriber_form.as_table}}
-<input type="submit" value="{% trans 'Subscribe' %}"/>
-</form>
-</div>
-</div>
 
 {% endblock %}

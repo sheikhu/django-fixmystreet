@@ -106,7 +106,7 @@ $(function(){
 						<em>{% trans "Posted by" %} {{update.author}}, {{update.created_at|date}}</em>
 					</p>
 					<p>{{update.desc}}</p>
-					{% if update.is_fixed %}<strong>{% trans "Fixed" %}</strong>{% endif %}
+					{% if update.is_fixed %}<strong class="fixed_msg">{% trans "Fixed" %}</strong>{% endif %}
 				</div>
 				{% endfor %}
 			</div>
@@ -119,11 +119,11 @@ $(function(){
 				<table id="report_form" class="form">
 					{{update_form.as_table}}					
 					<tr><td></td><td><input type="checkbox" id="is_fixed" name="is_fixed" value="1">{% trans "This problem has been fixed." %}</td></tr>
-					<tr><td></td><td><input type ="submit" value= "{% trans "Submit" %}" class='big_button'></td></td>
+					<tr><td></td><td><input type ="submit" value= "{% trans 'Submit' %}" class='big_button'></td></td>
 				</table>
 			</form>
 			{% endif %}
-		{% endif %}
+            {% endif %}
 		</div>
 	</div>
 	<div id="rightcol">

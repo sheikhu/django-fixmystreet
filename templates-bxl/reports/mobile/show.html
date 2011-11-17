@@ -3,12 +3,14 @@
     <!--<script src="http://s7.addthis.com/js/250/addthis_widget.js?pub=broken"></script>-->
     <div data-role="header" class="toolbar">
         <h1>{{report.title}}</h1>
+<!--
         <a href="#" class="back ui-btn-left ui-btn ui-btn-icon-left ui-btn-corner-all ui-shadow ui-btn-down-a ui-btn-up-a">
             <span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true">
                 <span class="ui-btn-text">Back</span>
                 <span class="ui-icon ui-icon-arrow-l ui-icon-shadow"></span>
             </span>
         </a>
+-->
     </div>
     <div data-role="content">
         {% if report.is_fixed %}
@@ -38,7 +40,9 @@
             <div id='report-subscribers'>
                 {% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
                 {% if not report.is_fixed %}
+<!--
                 <a href="/reports/{{report.id}}/subscribers/">{% trans "Subscribe" %}</a>
+-->
                 {% endif %}
             </div>
             {% endif %}
@@ -60,9 +64,11 @@
             {% endif %}
     
             {% if report.is_confirmed %}
+<!--
             <div id="more-actions">
                 <p><a href='/reports/{{report.id}}/flags'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
             </div>
+-->
         
             {% if updates %}
             <h3>{% trans "Updates" %}</h3>
@@ -89,7 +95,7 @@
                 </p>
             </form>
             {% endif %}
-        {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>
