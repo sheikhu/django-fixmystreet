@@ -4,7 +4,9 @@
 }
 
 .panel {
+/*
 	background-image:url("../images/logo.png");
+*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
@@ -25,7 +27,7 @@
 
 #content-disabled {
 	z-index:10000;
-    background-image:url("../images/fixmystreet.png");
+    background-image:url("../images/homescreen.jpg");
     background-size: auto 100%;
     background-color: black;
     background-repeat: no-repeat;
