@@ -257,7 +257,8 @@ class Report(models.Model):
     reminded_at = models.DateTimeField(auto_now_add=True)
     
     point = models.PointField(null=True, srid=31370)
-    photo = StdImageField(upload_to="photos", blank=True, verbose_name =  ugettext_lazy("* Photo"), size=(380, 380), thumbnail_size=(66,50))
+
+    photo = StdImageField(upload_to="photos", blank=True, verbose_name = ugettext_lazy("* Photo"), size=(380, 380), thumbnail_size=(66,50))
     desc = models.TextField(blank=True, null=True, verbose_name = ugettext_lazy("Details"))
     author = models.CharField(max_length=255,verbose_name = ugettext_lazy("Name"))
     address = models.CharField(max_length=255,verbose_name = ugettext_lazy("Location"))
@@ -289,6 +290,9 @@ class Report(models.Model):
 
     def get_mobile_absolute_url(self):
         return reverse("mobile_report_show", args=[self.id])
+
+    def thumbnail_photo(self):
+        return self.photo.url.replace(".jpeg", ".thumbnail.jpeg")
 
     # return a list of email addresses to send new problems in this ward to.
     def get_emails(self):

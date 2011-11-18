@@ -62,9 +62,14 @@ body {
 
 #logo {
 	position:absolute;
-    left:-140px;
+    left: 15px;
 }
 
+#logo-rbc {
+	position:absolute;
+    right: 80px;
+    top: 23px;
+}
 
 #language {
 	position:absolute;

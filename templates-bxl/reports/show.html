@@ -89,7 +89,7 @@ $(function(){
 		<div id='report-body'>
 			<p>{{report.desc|linebreaks}}</p>
 			{% if report.photo  %}
-			<img align='center' src='{{ MEDIA_URL }}{{ report.photo }}'/>
+			<center><img src='{{ report.photo.url }}'/></center>
 		    {% endif %}
 
 		    {% if report.is_confirmed %}

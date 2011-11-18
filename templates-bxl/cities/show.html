@@ -34,7 +34,7 @@
 		{% endfor %}
 	</table>
 	{% endif %}
-	<h1><a href='{% url feeds "cities/1" %}'><img src="{{ MEDIA_URL }}images/rss-big.png" /></a> {% trans "Reports for" %} {{city.name}}</h1>
+	<h1><a href='{% url feeds "cities/1" %}'><img src="{{ MEDIA_URL }}images/rss-big.png" /></a> {% trans "All Reports" %}</h1>
 
 	<div id="city_all_problems" style="clear:both">
 		{% include "cities/_report_count_table.html" %}		

@@ -28,14 +28,14 @@
         "model": "mainapp.province", 
         "fields": {
             "abbrev": "BXL", 
-            "name": "Region de Bruxelles-Capitale"
+            "name": "Brabant"
         }
     }, 
     {
         "pk": 1, 
         "model": "mainapp.city", 
         "fields": {
-            "name": "Bruxelles",
+            "name": "La Region de Bruxelles-Capitale",
             "province": 1
         }
     }, 

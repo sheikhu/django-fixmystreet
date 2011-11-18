@@ -23,8 +23,9 @@
 	<body>
 		<div id="header">
 			<div id="header_content">
-				<a href="/"><img id="logo" src="{{ MEDIA_URL }}images/logo.png" alt="{% trans "Fix My Street Brussels" %}"/></a>
-				<a href="/"><h1 id="banner-title">{% trans "Fix My Street Brussels" %}</h1></a>
+				<a href="/"><img id="logo" src="{{ MEDIA_URL }}images/logo-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Fix My Street Brussels" %}"/></a>
+				<!--<a href="/"><h1 id="banner-title">{% trans "Fix My Street Brussels" %}</h1></a>-->
+                <a href="/"><img id="logo-rbc" src="{{ MEDIA_URL }}images/logo-rbc-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Region de Brussel Capital" %}"/></a>
 				<div id="language">
 					<form action="/i18n/setlang/" method="post">
 						<select id="select-language" name="language">
