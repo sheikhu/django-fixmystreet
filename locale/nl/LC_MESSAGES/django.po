@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-18 10:13+0100\n"
+"POT-Creation-Date: 2011-11-18 16:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgstr ""
 msgid "Dutch"
 msgstr ""
 
-#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:262
-#: mainapp/models.py:337
+#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:263
+#: mainapp/models.py:341
 msgid "Name"
 msgstr ""
 
-#: mainapp/forms.py:16 mainapp/models.py:336
+#: mainapp/forms.py:16 mainapp/models.py:340
 msgid "Email"
 msgstr ""
 
@@ -45,6 +45,10 @@ msgstr ""
 
 #: mainapp/forms.py:48
 msgid "Select a Category"
+msgstr ""
+
+#: mainapp/forms.py:101 mainapp/models.py:261
+msgid "* Photo"
 msgstr ""
 
 #: mainapp/models.py:50
@@ -59,31 +63,27 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: mainapp/models.py:260
-msgid "* Photo"
-msgstr ""
-
-#: mainapp/models.py:261 mainapp/models.py:331
+#: mainapp/models.py:262 mainapp/models.py:335
 msgid "Details"
 msgstr ""
 
-#: mainapp/models.py:263
+#: mainapp/models.py:264
 msgid "Location"
 msgstr ""
 
-#: mainapp/models.py:264
+#: mainapp/models.py:265
 msgid "Postal Code"
 msgstr ""
 
-#: mainapp/models.py:338
+#: mainapp/models.py:342
 msgid "Phone"
 msgstr ""
 
-#: mainapp/models.py:554
+#: mainapp/models.py:558
 msgid "Question"
 msgstr ""
 
-#: mainapp/models.py:555
+#: mainapp/models.py:559
 msgid "Answere"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgstr ""
 msgid "You have unsubscribed from updates to:"
 msgstr ""
 
-#: templates-bxl/about.html:4 templates-bxl/base.html:44
+#: templates-bxl/about.html:4 templates-bxl/base.html:45
 #: templates-bxl/faq/show.html:3 templates-bxl/faq/show.html.py:7
 msgid "About"
 msgstr ""
@@ -192,19 +192,23 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: templates-bxl/base.html:42
-msgid "Submit a Report"
+#: templates-bxl/base.html:28
+msgid "Brussels-Capital Region"
 msgstr ""
 
 #: templates-bxl/base.html:43
+msgid "Submit a Report"
+msgstr ""
+
+#: templates-bxl/base.html:44
 msgid "View Reports"
 msgstr ""
 
-#: templates-bxl/base.html:45 templates-bxl/contact/new.html:8
+#: templates-bxl/base.html:46 templates-bxl/contact/new.html:8
 msgid "Contact Us"
 msgstr ""
 
-#: templates-bxl/base.html:65 templates-bxl/term_of_use.html:4
+#: templates-bxl/base.html:66 templates-bxl/term_of_use.html:4
 msgid "Terms of Use"
 msgstr ""
 
@@ -312,7 +316,7 @@ msgid "Old Fixed* <small>(fixed more than 1 month ago)</small>"
 msgstr ""
 
 #: templates-bxl/cities/index.html:3 templates-bxl/cities/index.html.py:23
-#: templates-bxl/cities/show.html:4
+#: templates-bxl/cities/show.html:4 templates-bxl/cities/show.html.py:37
 msgid "All Reports"
 msgstr ""
 
@@ -334,11 +338,6 @@ msgstr ""
 
 #: templates-bxl/cities/show.html:26
 msgid "Number of Subscribers"
-msgstr ""
-
-#: templates-bxl/cities/show.html:37 templates-bxl/wards/show.html:4
-#: templates-bxl/wards/show.html.py:49
-msgid "Reports for"
 msgstr ""
 
 #: templates-bxl/contact/new.html:9
@@ -764,19 +763,23 @@ msgstr ""
 msgid "Ward"
 msgstr ""
 
-#: templates-bxl/wards/show.html:52
+#: templates-bxl/wards/show.html:4 templates-bxl/wards/show.html.py:50
+msgid "Reports for"
+msgstr ""
+
+#: templates-bxl/wards/show.html:53
 #, python-format
 msgid "Reports filed between %(start)s and %(end)s."
 msgstr ""
 
-#: templates-bxl/wards/show.html:53
+#: templates-bxl/wards/show.html:54
 msgid "See older reports"
 msgstr ""
 
-#: templates-bxl/wards/show.html:57
+#: templates-bxl/wards/show.html:58
 msgid "No problems have been reported."
 msgstr ""
 
-#: templates-bxl/wards/show.html:69
+#: templates-bxl/wards/show.html:70
 msgid "Note: Fix My Street relies on users to report problems as fixed."
 msgstr ""
