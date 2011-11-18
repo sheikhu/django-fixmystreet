@@ -25,6 +25,21 @@
 
 #content-disabled {
 	z-index:10000;
+    background-image:url("../images/fixmystreet.png");
+    background-size: auto 100%;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+/*
+#content-disabled {
+	z-index:10000;
 	opacity:.5;
 	background-color: #CCC;
 	background-repeat: no-repeat;
@@ -38,6 +53,7 @@
 	right: 0;
 	left: 0;
 }
+*/
 
 ul.errorlist li {
 	color:red;
@@ -125,12 +141,14 @@ ul.errorlist li {
 	background-image:url("../images/help.png");
 }
 
-.ui-btn-icon-notext{
+#control-zoom .ui-btn-icon-notext,
+#control-options .ui-btn-icon-notext{
     width: 34px;
     height: 34px;
 }
 
-.ui-btn-icon-notext .ui-btn-inner {
+#control-zoom .ui-btn-icon-notext .ui-btn-inner,
+#control-options .ui-btn-icon-notext .ui-btn-inner {
     padding: 7px 7px 7px 7px;
 }
 

@@ -12,12 +12,49 @@
         <p>{{faq.a|safe}}</p>
         {% endfor %}
 
-        <h4>{% trans "Credits" %}</h4>
-        <p>{% trans "Thanks to:" %}</p>
+        {% blocktrans %}
+        <h4>Contact</h4>
+        <p>
+        CIRB<br/>
+        21, avenue des Arts<br/>
+        1000 Bruxelles
+        </p>
+        <p>Tel : +32 (0)2 XXX XX XX<br/>
+        E-mail: <a href="mailto:fixmystreet@cirb.irisnet.be">fixmystreet@cirb.irisnet.be</a></p>
+ 
+ 
+        <h4>Requirements</h4>
+        <p>www.fixmystreet.irisnetlab.be is optimised for Microsoft Windows, 
+        Apple Mac OS and Linux with software :</p>
         <ul>
-            <li><a href='http://mysociety.org'>MySociety</a>, {% trans "for the original concept." %}</li>
-            <li>{% trans "<a href='visiblegovernment.ca'>visiblegovernment.ca</a> for the original open source project <a href='fixmystreet.ca'>fixmystreet.ca</a>." %}</li>
+            <li>Microsoft Internet Explorer 8 or better</li>
+            <li>Mozilla FireFox 3.0 or better</li>
+            <li>Google Chrome</li>
+            <li>Safari</li>
         </ul>
+
+        <h4>Update your computer</h4>
+        <p>If you want to install lastest versions of this free software, click on links below.</p>
+        <ul>
+            <li><a href="http://www.microsoft.com/france/windows/downloads/ie/getitnow.mspx">Microsoft Internet explorer</a></li>
+            <li><a href="http://www.mozilla-europe.org/fr/products/firefox/">Mozilla FireFox</a></li>
+            <li><a href="http://www.adobe.com/products/acrobat/readstep2.html">Adobe Acrobat Reader</a></li>
+        </ul>
+
+        <h4>Mobile application</h4>
+        <p>A mobile application is available for</p>
+        <ul>
+            <li><img src="{{ MEDIA_URL }}images/appstore.gif"/> iPhone / iPad</li>
+            <li><img src="{{ MEDIA_URL }}images/android-market.png"/> Android</li>
+        </ul>
+        
+        <h4>Credits</h4>
+        <p>Thanks to:</p>
+        <ul>
+            <li><a href='http://mysociety.org'>MySociety</a>, for the original concept.</li>
+            <li><a href='visiblegovernment.ca'>visiblegovernment.ca</a> for the original open source project <a href='fixmystreet.ca'>fixmystreet.ca</a>.</li>
+        </ul>
+        {% endblocktrans %}
     </div>
 </div>
 {% endblock %}

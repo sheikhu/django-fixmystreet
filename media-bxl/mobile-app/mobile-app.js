@@ -8,8 +8,8 @@
 
     var rootUrl = 'http://fixmystreet.irisnet.be';
     var rootUrl = 'http://fixmystreet.irisnetlab.be';
-    //var rootUrl = 'http://192.168.103.27:8000';
-    //var rootUrl = 'http://localhost:8000';
+    // var rootUrl = 'http://192.168.103.27:8000';
+    // var rootUrl = 'http://localhost:8000';
 
     var mediaUrl = rootUrl + '/media/';
 
@@ -111,7 +111,18 @@
                 }
             });
             
+            loadReports(p,function(){
+                $map.fmsMap('addDraggableMarker', p.x, p.y);
+                $('#create-report').removeClass('ui-disabled').data('position',p);
+                $('#content-disabled').remove();
+            });
             
+            $map.one('markerdrag click movestart zoomend',function(evt,point){
+                $('#instructable').fadeOut();
+            });
+        }
+        
+        function loadReports(p,callback){
             $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
                 if(response.status != 'success')
                 {
@@ -125,15 +136,10 @@
                     var report = response.results[i];
                     $map.fmsMap('addReport',report);
                 }
-                $map.fmsMap('addDraggableMarker', p.x, p.y);
-                $('#create-report').removeClass('ui-disabled').data('position',p);
-                $('#content-disabled').remove();
+                if(callback){
+                    callback();
+                }
             }).error(connectionErrorCallback);
-            
-            
-            $map.one('markerdrag click movestart zoomend',function(evt,point){
-                $('#instructable').fadeOut();
-            });
         }
 
         function noGeoLoc(){
@@ -260,8 +266,14 @@
                                     .click(function()
                                     {
                                         var loc = $(this).data('loc');
+                                        //console.log(loc);
                                         $map.fmsMap('setCenter',loc.point.x, loc.point.y);
+                                        $('#create-report').addClass('ui-disabled').data('position',loc.point);
                                         
+                                        loadReports(loc.point,function(){
+                                            $('#create-report').removeClass('ui-disabled');
+                                        });
+
                                         //$searchForm.hide();
                                         //$('#show-search').show();
                                         $proposal.slideUp();

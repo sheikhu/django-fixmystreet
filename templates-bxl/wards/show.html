@@ -19,7 +19,8 @@ $(function(){
 	
 	$('#map-bxl').fmsMap();
 	$.ajax({
-		url:'/api/wards/',
+		//url:'/api/wards/',
+        url:'{{MEDIA_URL}}wards.json',
 		type:'GET',
 		dataType:'json',
 		success:function(response)

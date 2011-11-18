@@ -88,7 +88,7 @@
 				this.map.zoomToMaxExtent();
 			}
 			
-			// this.map.addControl(new OpenLayers.Control.LayerSwitcher());
+			//this.map.addControl(new OpenLayers.Control.LayerSwitcher());
 			/*
 			this.superLayer = new OpenLayers.Layer.Vector( "Super Layer" );
 			this.map.addLayer(this.superLayer);
@@ -218,6 +218,7 @@
 				
 				var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
 					onSelect:function(feature,pixel){
+                        console.log('hey');
 						var p = feature.geometry.components[0];
 						var point = {x:p.x,y:p.y};
 						//console.log(point,feature.attributes.report);
