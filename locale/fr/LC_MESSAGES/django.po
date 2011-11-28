@@ -776,7 +776,7 @@ msgstr "Signalé le:"
 #: templates-bxl/reports/show.html:97
 #: templates-bxl/reports/mobile/show.html:69
 msgid "Offensive? Unsuitable? Tell us"
-msgstr "Offensif ? Inapproprié ? Avertissez-nous."
+msgstr "Abus ? Inapproprié ? Avertissez-nous."
 
 #: templates-bxl/reports/show.html:101
 #: templates-bxl/reports/mobile/show.html:74
