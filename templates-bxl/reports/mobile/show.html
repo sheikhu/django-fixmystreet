@@ -60,7 +60,7 @@
         <div id='report-body'>
             <p>{{report.desc|linebreaks}}</p>
             {% if report.photo  %}
-            <img align='center' src='{{MEDIA_URL}}{{report.photo}}'/>
+            <img align='center' src='{{ SITE_URL }}{{ report.photo.url }}'/>
             {% endif %}
     
             {% if report.is_confirmed %}

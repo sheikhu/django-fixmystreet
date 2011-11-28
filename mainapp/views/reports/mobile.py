@@ -49,8 +49,8 @@ def upload_image(request, report_id):
     #f = open(url, 'w')
     #f.write(request.raw_post_data)
     #f.close()
+    print request.raw_post_data
     report.photo.open('w')
-    report.photo.save(content=request.raw_post_data)
     report.photo.close()
     report.save()
     return(HttpResponseRedirect(report.get_mobile_absolute_url()))

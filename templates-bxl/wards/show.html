@@ -15,8 +15,6 @@
 {% map_scripts %}
 <script>
 $(function(){
-
-	
 	$('#map-bxl').fmsMap();
 	$.ajax({
 		//url:'/api/wards/',
@@ -25,7 +23,7 @@ $(function(){
 		dataType:'json',
 		success:function(response)
 		{
-			$('#map-bxl').fmsMap('highlightArea',response.features[{{ ward.number }}].geometry);
+			$('#map-bxl').fmsMap('highlightArea', '{{ ward.feature_id }}');
 		},
 		error:function()
 		{

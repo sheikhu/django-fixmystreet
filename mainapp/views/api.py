@@ -35,14 +35,14 @@ def locate(request):
     #except UnicodeError:
     return HttpResponse(data,mimetype="text/json")
 
-def wards(request): 
-    conn = httplib.HTTPConnection(settings.GEOSERVER)
-    
-    conn.request("GET", "/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json")
-    response = conn.getresponse()
-    data = response.read()
-    conn.close()
-    return HttpResponse(data,mimetype="text/json")
+#def wards(request): 
+    #conn = httplib.HTTPConnection(settings.GEOSERVER)
+    #
+    #conn.request("GET", "/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:MU_VIEW_FR&maxFeatures=50&outputFormat=json")
+    #response = conn.getresponse()
+    #data = response.read()
+    #conn.close()
+    #return HttpResponse(data,mimetype="text/json")
 
 def reports(request): 
     d2p = DictToPoint(request.REQUEST)

@@ -121,11 +121,12 @@ class Councillor(models.Model):
         
 class Ward(models.Model):
     name = models.CharField(max_length=100)
-    number = models.IntegerField()
     councillor = models.ForeignKey(Councillor,null=True,blank=True)
     city = models.ForeignKey(City)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
+    feature_id = models.CharField(max_length=24)
+
 
     # this email addr. is the destination for reports
     # if the 'Ward' email rule is enabled
@@ -265,7 +266,7 @@ class Report(models.Model):
     
     point = models.PointField(null=True, srid=31370)
 
-    photo = StdImageField(upload_to="photos", blank=True, verbose_name = ugettext_lazy("* Photo"), size=(380, 380), thumbnail_size=(66,50))
+    photo = StdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66,50))
     desc = models.TextField(blank=True, null=True, verbose_name = ugettext_lazy("Details"))
     author = models.CharField(max_length=255,verbose_name = ugettext_lazy("Name"))
     address = models.CharField(max_length=255,verbose_name = ugettext_lazy("Location"))
@@ -522,15 +523,12 @@ class CityWardsTotals(ReportCountQuery):
         ReportCountQuery.__init__(self,"1 month")
         self.sql = self.base_query 
         self.url_prefix = "/wards/"            
-        self.sql +=  ", wards.name, wards.id, wards.number from mainapp_ward as wards "
+        self.sql +=  ", wards.name, wards.id from mainapp_ward as wards "
         self.sql += """left join mainapp_report reports on wards.id = reports.ward_id join mainapp_city as cities on wards.city_id = cities.id join mainapp_province as province on cities.province_id = province.id
         """
         self.sql += "and cities.id = " + str(city.id)
-        self.sql += " group by  wards.name, wards.id, wards.number order by wards.number" 
+        self.sql += " group by  wards.name, wards.id order by wards.name" 
     
-    def number(self):
-        return(self.get_results()[self.index][7])
-
     def id(self):
         return(self.get_results()[self.index][6])
         

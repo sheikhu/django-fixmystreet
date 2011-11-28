@@ -100,8 +100,8 @@
         "fields": {
             "city": 1, 
             "name": "Anderlecht", 
-            "councillor": 3, 
-            "number": 0
+            "councillor": 3,
+            "feature_id": "URB_A_MU.7100"
         }
     },
     {
@@ -110,8 +110,8 @@
         "fields": {
             "city": 1, 
             "name": "Auderghem", 
-            "councillor": 6, 
-            "number": 1
+            "councillor": 6,
+            "feature_id": "URB_A_MU.7200"
         }
     },
     {
@@ -120,8 +120,8 @@
         "fields": {
             "city": 1, 
             "name": "Berchem Ste Agathe", 
-            "councillor": 1, 
-            "number": 2
+            "councillor": 1,
+            "feature_id": "URB_A_MU.7300"
         }
     },
     {
@@ -130,8 +130,8 @@
         "fields": {
             "city": 1,
             "name": "Bruxelles", 
-            "councillor": 6, 
-            "number": 3
+            "councillor": 6,
+            "feature_id": "URB_A_MU.7400"
         }
     }, 
     {
@@ -140,8 +140,8 @@
         "fields": {
             "city": 1, 
             "name": "Etterbeek", 
-            "councillor": 1, 
-            "number": 4
+            "councillor": 1,
+            "feature_id": "URB_A_MU.7500"
         }
     }, 
     {
@@ -151,7 +151,7 @@
             "city": 1, 
             "name": "Evere", 
             "councillor": 1, 
-            "number": 5
+            "feature_id": "URB_A_MU.7600"
         }
     }, 
     {
@@ -161,7 +161,7 @@
             "city": 1, 
             "name": "Forest", 
             "councillor": 6, 
-            "number": 6
+            "feature_id": "URB_A_MU.7700"
         }
     }, 
     {
@@ -171,7 +171,7 @@
             "city": 1, 
             "name": "Ganshoren", 
             "councillor": 1, 
-            "number": 7
+            "feature_id": "URB_A_MU.7800"
         }
     }, 
     {
@@ -181,7 +181,7 @@
             "city": 1, 
             "name": "Ixelles", 
             "councillor": 1, 
-            "number": 8
+            "feature_id": "URB_A_MU.7900"
         }
     }, 
     {
@@ -191,9 +191,9 @@
             "city": 1, 
             "name": "Jette", 
             "councillor": 5, 
-            "number": 9
+            "feature_id": "URB_A_MU.8000"
         }
-    }, 
+    },
     {
         "pk": 11, 
         "model": "mainapp.ward", 
@@ -201,7 +201,7 @@
             "city": 1, 
             "name": "Koekelberg", 
             "councillor": 1, 
-            "number": 10
+            "feature_id": "URB_A_MU.8100"
         }
     }, 
     {
@@ -211,7 +211,7 @@
             "city": 1, 
             "name": "Molenbeek St Jean", 
             "councillor": 1, 
-            "number": 11
+            "feature_id": "URB_A_MU.8200"
         }
     }, 
     {
@@ -221,7 +221,7 @@
             "city": 1, 
             "name": "Saint-Gilles", 
             "councillor": 4, 
-            "number": 12
+            "feature_id": "URB_A_MU.8300"
         }
     }, 
     {
@@ -231,7 +231,7 @@
             "city": 1, 
             "name": "Saint-Josse ten Noode", 
             "councillor": 6, 
-            "number": 13
+            "feature_id": "URB_A_MU.8400"
         }
     }, 
     {
@@ -241,9 +241,9 @@
             "city": 1, 
             "name": "Schaerbeek", 
             "councillor": 2, 
-            "number": 14
+            "feature_id": "URB_A_MU.8500"
         }
-    }, 
+    },
     {
         "pk": 16, 
         "model": "mainapp.ward", 
@@ -251,7 +251,7 @@
             "city": 1, 
             "name": "Uccle", 
             "councillor": 6, 
-            "number": 15
+            "feature_id": "URB_A_MU.8600"
         }
     }, 
     {
@@ -261,7 +261,7 @@
             "city": 1, 
             "name": "Watermael-Boisfort", 
             "councillor": 6, 
-            "number": 16
+            "feature_id": "URB_A_MU.8700"
         }
     }, 
     {
@@ -271,7 +271,7 @@
             "city": 1, 
             "name": "Woluwe St Lambert", 
             "councillor": 6, 
-            "number": 17
+            "feature_id": "URB_A_MU.8800"
         }
     }, 
     {
@@ -281,7 +281,7 @@
             "city": 1, 
             "name": "Woluwe St Pierre", 
             "councillor":1, 
-            "number": 18
+            "feature_id": "URB_A_MU.8900"
         }
     },
     {
