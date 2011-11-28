@@ -74,6 +74,7 @@ class CategoryChoiceField(forms.fields.ChoiceField):
 
 
 class ReportUpdateForm(forms.ModelForm):
+    required_css_class = 'required'
     class Meta:
         model = ReportUpdate
         fields = ( 'desc','author','email','phone')
@@ -93,12 +94,13 @@ class ReportForm(forms.ModelForm):
         model = Report
         fields = ('lat','lon','title', 'address', 'category','postalcode','photo')
 
+    required_css_class = 'required'
     # category = CategoryChoiceField()
     lat = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     lon = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     
-    photo = forms.fields.ImageField(label=ugettext_lazy("* Photo"),required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 
     def __init__(self,data=None,files=None,initial=None):

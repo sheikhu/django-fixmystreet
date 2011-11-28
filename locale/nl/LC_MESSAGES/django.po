@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-18 16:25+0100\n"
+"POT-Creation-Date: 2011-11-28 12:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgstr ""
 msgid "Dutch"
 msgstr ""
 
-#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:263
-#: mainapp/models.py:341
+#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:270
+#: mainapp/models.py:348
 msgid "Name"
 msgstr ""
 
-#: mainapp/forms.py:16 mainapp/models.py:340
+#: mainapp/forms.py:16 mainapp/models.py:347
 msgid "Email"
 msgstr ""
 
@@ -47,10 +47,6 @@ msgstr ""
 msgid "Select a Category"
 msgstr ""
 
-#: mainapp/forms.py:101 mainapp/models.py:261
-msgid "* Photo"
-msgstr ""
-
 #: mainapp/models.py:50
 msgid "Hint"
 msgstr ""
@@ -59,31 +55,35 @@ msgstr ""
 msgid "Category group"
 msgstr ""
 
-#: mainapp/models.py:237
+#: mainapp/models.py:244
 msgid "Subject"
 msgstr ""
 
-#: mainapp/models.py:262 mainapp/models.py:335
+#: mainapp/models.py:268
+msgid "* Photo"
+msgstr ""
+
+#: mainapp/models.py:269 mainapp/models.py:342
 msgid "Details"
 msgstr ""
 
-#: mainapp/models.py:264
+#: mainapp/models.py:271
 msgid "Location"
 msgstr ""
 
-#: mainapp/models.py:265
+#: mainapp/models.py:272
 msgid "Postal Code"
 msgstr ""
 
-#: mainapp/models.py:342
+#: mainapp/models.py:349
 msgid "Phone"
 msgstr ""
 
-#: mainapp/models.py:558
+#: mainapp/models.py:565
 msgid "Question"
 msgstr ""
 
-#: mainapp/models.py:559
+#: mainapp/models.py:566
 msgid "Answere"
 msgstr ""
 
@@ -285,7 +285,7 @@ msgid "Recent Reports"
 msgstr ""
 
 #: templates-bxl/ajax/category_description.html:2
-#: templates-bxl/reports/new.html:181 templates-bxl/reports/mobile/new.html:27
+#: templates-bxl/reports/new.html:196 templates-bxl/reports/mobile/new.html:27
 msgid "Please Note"
 msgstr ""
 
@@ -543,53 +543,53 @@ msgstr ""
 msgid "No problems have been reported in this area."
 msgstr ""
 
-#: templates-bxl/reports/new.html:170 templates-bxl/reports/mobile/new.html:18
-msgid "* Optional"
+#: templates-bxl/reports/new.html:175
+msgid "* This fields are required"
 msgstr ""
 
-#: templates-bxl/reports/new.html:183 templates-bxl/reports/mobile/new.html:29
-msgid "Please be polite, concise and to the point."
-msgstr ""
-
-#: templates-bxl/reports/new.html:184 templates-bxl/reports/mobile/new.html:30
-msgid ""
-"Please do not be abusive - abusing the service devalues the service for all "
-"users."
-msgstr ""
-
-#: templates-bxl/reports/new.html:185 templates-bxl/reports/mobile/new.html:31
-msgid ""
-"Writing your message entirely in block capitals makes it hard to read, as "
-"does a lack of punctuation."
-msgstr ""
-
-#: templates-bxl/reports/new.html:186 templates-bxl/reports/mobile/new.html:32
-msgid ""
-"Remember that FixMyStreet is primarily for reporting physical problems that "
-"can be fixed. If your problem is not appropriate for submission via this "
-"site please contact city officials directly."
-msgstr ""
-
-#: templates-bxl/reports/new.html:194 templates-bxl/reports/show.html:122
+#: templates-bxl/reports/new.html:179 templates-bxl/reports/show.html:122
 #: templates-bxl/reports/mobile/new.html:36
 #: templates-bxl/reports/mobile/show.html:94
 msgid "Submit"
 msgstr ""
 
-#: templates-bxl/reports/new.html:202
+#: templates-bxl/reports/new.html:187
 msgid "To fill a new report"
 msgstr ""
 
-#: templates-bxl/reports/new.html:204
+#: templates-bxl/reports/new.html:189
 msgid "Drag me to the correct location on the map."
 msgstr ""
 
-#: templates-bxl/reports/new.html:208
+#: templates-bxl/reports/new.html:193
+msgid "Review reports"
+msgstr ""
+
+#: templates-bxl/reports/new.html:194
 msgid "Zoom out to see more reports nearby."
 msgstr ""
 
-#: templates-bxl/reports/new.html:209
-msgid "Review reports"
+#: templates-bxl/reports/new.html:198 templates-bxl/reports/mobile/new.html:29
+msgid "Please be polite, concise and to the point."
+msgstr ""
+
+#: templates-bxl/reports/new.html:199 templates-bxl/reports/mobile/new.html:30
+msgid ""
+"Please do not be abusive - abusing the service devalues the service for all "
+"users."
+msgstr ""
+
+#: templates-bxl/reports/new.html:200 templates-bxl/reports/mobile/new.html:31
+msgid ""
+"Writing your message entirely in block capitals makes it hard to read, as "
+"does a lack of punctuation."
+msgstr ""
+
+#: templates-bxl/reports/new.html:201 templates-bxl/reports/mobile/new.html:32
+msgid ""
+"Remember that FixMyStreet is primarily for reporting physical problems that "
+"can be fixed. If your problem is not appropriate for submission via this "
+"site please contact city officials directly."
 msgstr ""
 
 #: templates-bxl/reports/show.html:48 templates-bxl/reports/show.html:121
@@ -693,6 +693,10 @@ msgstr ""
 
 #: templates-bxl/reports/mobile/new.html:12
 msgid "New report"
+msgstr ""
+
+#: templates-bxl/reports/mobile/new.html:18
+msgid "* Optional"
 msgstr ""
 
 #: templates-bxl/reports/subscribers/confirm.html:4
