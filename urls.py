@@ -87,6 +87,7 @@ urlpatterns += patterns('mainapp.views.reports.main',
 urlpatterns += patterns('mainapp.views.reports.mobile',
     url(r'^mobile/reports/(\d+)$', 'show',name='mobile_report_show'),       
     url(r'^mobile/reports/new', 'new',name='mobile_report_new'),
+    url(r'^mobile/reports/(\d+)/upload', 'upload_image',name='mobile_report_upload'),
 )
 
 urlpatterns += patterns('mainapp.views.contact',

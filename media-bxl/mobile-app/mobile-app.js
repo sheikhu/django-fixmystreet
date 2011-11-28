@@ -64,7 +64,7 @@
             $form.attr('action', url);
         }
         
-        $form.ajaxSubmit(function(content){
+        var success = function(content){
             var $page = $(content).page();
 
             $current.find('[data-role=content]').remove();
@@ -74,12 +74,31 @@
             $current.trigger( "create" );
             $(document.body).animate({scrollTop:0}, 'fast');
             
-            
             $.mobile.hidePageLoadingMsg();
 
             $current.data('url',url);
             $current.trigger( "pageinit" );
-        }).error(connectionErrorCallback);
+        }
+        
+        if($form.find('input[type=file]')) {
+            var imageURI = $form.find('input[type=file]').val();
+            var options = new FileUploadOptions()
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpg";
+
+            //var params = new Object();
+            //params.value1 = "value1";
+            //params.value2 = "value2";
+
+            options.params = $form.serialize();
+
+            var ft = new FileTransfer()
+            ft.upload(imageURI, url, success, connectionErrorCallback, options);
+        } else {
+            $.post(url,$form.serialize(),success)
+                    .error(connectionErrorCallback);
+        }
     });
     
     function connectionErrorCallback(){
@@ -349,6 +368,22 @@
             $form.find('#photo_preview').attr('src',fileURI).fadeIn();
             $('.select_photo').css({'margin-right':'105px'});
         }
+        
+        $form.bind('submit-success',function(){
+            var options = new FileUploadOptions()
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpg";
+
+            var params = new Object();
+            params.value1 = "value1";
+            params.value2 = "value2";
+
+            options.params = params;
+
+            var ft = new FileTransfer()
+            ft.upload(imageURI, "", win, fail, options);
+        });
         
         $form.find('#id_photo').change(function(){
             var file = this.files[0];

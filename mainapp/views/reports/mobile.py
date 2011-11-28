@@ -1,13 +1,16 @@
+import datetime
+
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect,Http404
-from mainapp.models import DictToPoint,Report, ReportUpdate, Ward, ReportCategory
-from mainapp.forms import ReportForm,ReportUpdateForm
+from django.http import HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.template import Context, RequestContext
 from django.contrib.gis.geos import *
-import settings
 from django.utils.translation import ugettext as _
-import datetime
 from django.contrib.gis.measure import D 
+
+from mainapp.models import DictToPoint,Report, ReportUpdate, Ward, ReportCategory
+from mainapp.forms import ReportForm,ReportUpdateForm
+import settings
+
 
 def new( request ):
     d2p = DictToPoint( request.REQUEST )
@@ -36,8 +39,24 @@ def new( request ):
                 },
                 context_instance=RequestContext(request))
 
-        
-def show( request, report_id ):
+
+
+def upload_image(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    if report.is_confirmed:
+        return HttpResponseForbidden()
+    #url = '/tmp/fms-photos/' + report_id + '.jpg'
+    #f = open(url, 'w')
+    #f.write(request.raw_post_data)
+    #f.close()
+    report.photo.open('w')
+    report.photo.save(content=request.raw_post_data)
+    report.photo.close()
+    report.save()
+    return(HttpResponseRedirect(report.get_mobile_absolute_url()))
+
+
+def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     subscribers = report.reportsubscriber_set.count() + 1
     return render_to_response("reports/mobile/show.html",

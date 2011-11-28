@@ -230,7 +230,14 @@ class EmailRule(models.Model):
         rule_behavior.resolve_email()
     
     def __str__(self):
-        return( "%s: %s %s - %s %s (%s)" % ("CC" if self.is_cc else "TO", self.councillor.first_name, self.councillor.last_name, (self.category_class.name if self.category_class else ''), self.RuleChoices[self.rule][1], self.ward.name) )
+        return( "%s: %s %s - %s %s (%s)" % (
+                "CC" if self.is_cc else "TO", 
+                self.councillor.first_name, 
+                self.councillor.last_name, 
+                (self.category_class.name if self.category_class else ''), 
+                self.RuleChoices[self.rule][1], self.ward.name
+            ) 
+        )
         
 
 class Report(models.Model):

@@ -176,21 +176,6 @@ $(document).ready(function() {
 				{{ update_form.as_table }}
 				<tr>
 					<td></td>
-					<td>
-						<div class='note'>
-							<p><strong>{% trans "Please Note" %} :</strong></p>
-							<ul>
-								<li>{% trans "Please be polite, concise and to the point." %}</li>
-								<li>{% trans "Please do not be abusive - abusing the service devalues the service for all users." %}</li>
-								<li>{% trans "Writing your message entirely in block capitals makes it hard to read, as does a lack of punctuation." %}</li>
-								<li>{% trans "Remember that FixMyStreet is primarily for reporting physical problems that can be fixed. If your problem is not appropriate for submission via this site please contact city officials directly." %}</li>
-							</ul>
-							<p/>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
 					<td align="right"><input type="submit" class='big_button' value="{% trans 'Submit' %}" /></td>
 				</tr>
 			</table>
@@ -205,8 +190,18 @@ $(document).ready(function() {
 				</p>
 			</div>
 		</div>
-		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
 		<a id="back" href="#reports">{% trans "Review reports" %}</a>
+		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
+        <div class='note'>
+            <p><strong>{% trans "Please Note" %} :</strong></p>
+            <ul>
+                <li>{% trans "Please be polite, concise and to the point." %}</li>
+                <li>{% trans "Please do not be abusive - abusing the service devalues the service for all users." %}</li>
+                <li>{% trans "Writing your message entirely in block capitals makes it hard to read, as does a lack of punctuation." %}</li>
+                <li>{% trans "Remember that FixMyStreet is primarily for reporting physical problems that can be fixed. If your problem is not appropriate for submission via this site please contact city officials directly." %}</li>
+            </ul>
+            <p/>
+        </div>
 	</div>
 </div>
 {% endblock %}
