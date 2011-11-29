@@ -125,7 +125,7 @@ class Ward(models.Model):
     city = models.ForeignKey(City)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
-    feature_id = models.CharField(max_length=24)
+    feature_id = models.CharField(max_length=25)
 
 
     # this email addr. is the destination for reports

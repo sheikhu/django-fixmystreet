@@ -40,22 +40,6 @@ def new( request ):
                 context_instance=RequestContext(request))
 
 
-
-def upload_image(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
-    if report.is_confirmed:
-        return HttpResponseForbidden()
-    #url = '/tmp/fms-photos/' + report_id + '.jpg'
-    #f = open(url, 'w')
-    #f.write(request.raw_post_data)
-    #f.close()
-    print request.raw_post_data
-    report.photo.open('w')
-    report.photo.close()
-    report.save()
-    return(HttpResponseRedirect(report.get_mobile_absolute_url()))
-
-
 def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     subscribers = report.reportsubscriber_set.count() + 1
