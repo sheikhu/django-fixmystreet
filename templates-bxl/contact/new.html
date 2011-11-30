@@ -1,33 +1,59 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load tags %}
+{% block title %}{% trans "Contact Us" %}{% endblock %}
 
+{% block script %}
+
+{% map_scripts %}
+<script>
+
+$(document).ready(function() {
+    pnt = {x:150040.75,y:170633.15625};
+	$('#map-bxl').fmsMap({
+		apiLang:'{{ LANGUAGE_CODE }}',
+		origin:pnt
+	});
+    $('#map-bxl').fmsMap('addIndicator',pnt);
+});
+
+</script>
+{% endblock %}
 {% block content %}
-
 <div id="page_content_container">
-<div id='contact_us_form'>
-<h2>{% trans "Contact Us" %}</h2>
-{% blocktrans %}
-<p>
-	Please <strong>DO NOT</strong> report problems through this form.
-	Messages go to the team behind FixMyStreet, not to city councillors.
-</p>
-<p>
-	To report a problem, please follow the instructions <a href="/">here</a>.
-</p>
-<p>We'd love to get your feedback on this site:</p> 
-{% endblocktrans %}
-<form action="/contact" method="POST">
-<table class='form'>
-{{contact_form}}
-<tr>
-	<td></td>
-	<td>
-		<input type="submit" name="Submit" class='big_button' value="{% trans "Send" %}">
-	</td>
-</tr>
-</table>
-</form>
-</div>
+    <h1>{% trans "Contact Us" %}</h1>
+    <div id="leftcol" class="contact_us_form">
+        <div id="contact_us_indications">
+            {% blocktrans %}
+            <p>
+                Please <strong>do not</strong> report problems through this form.
+                Messages go to the team behind FixMyStreet, not to city councillors.
+            </p>
+            <p>
+                To report a problem, please follow the instructions <a href="/">here</a>.
+            </p>
+            {% endblocktrans %}
+        </div>
+        <h2>{% trans "We'd love to get your feedback" %}</h2> 
+        <form action="" method="POST">
+            <table class='form'>
+                {{ contact_form }}
+				<tr>
+					<th></th>
+					<td id="required_note">{% trans "* This fields are required" %}</td>
+				</tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" name="Submit" class='big_button' value="{% trans 'Send' %}">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="rightcol">
+		<div id="map-bxl"> </div>
+    </div>
 </div>
 
 {% endblock %}

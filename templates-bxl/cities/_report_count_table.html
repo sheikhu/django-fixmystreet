@@ -17,10 +17,10 @@
 	<td class="feeds"><a href='/feeds{{ report_counts.get_absolute_url }}'><img src="{{ MEDIA_URL }}images/rss-small.png" /></a></td>
 	<!--<td>{{report_counts.number}}</td>-->
 	<td><a href='{{report_counts.get_absolute_url}}'>{{report_counts.name}}</a></td>
-	<td>{{report_counts.recent_new}}</td>
-	<td>{{report_counts.old_unfixed}}</td>
-	<td>{{report_counts.recent_fixed}}</td>
-	<td>{{report_counts.old_fixed}}</td>
+	<td class="number">{{report_counts.recent_new}}</td>
+	<td class="number">{{report_counts.old_unfixed}}</td>
+	<td class="number">{{report_counts.recent_fixed}}</td>
+	<td class="number">{{report_counts.old_fixed}}</td>
 	{% if report_counts.next %}{% endif %}
 	</tr>
 {% endfor %}

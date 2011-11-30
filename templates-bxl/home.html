@@ -6,8 +6,8 @@
 
 {% block content %}
 	<div id="intro">
-		<h1>{% trans "report/view/discuss" %}</h1>
-		<p>{% trans "<span>graffiti.</span> <span class='alt'>potholes.</span> <span>excessive</span> <span class='alt'>garbage.</span> <span>street</span> <span class='alt'>lighting.</span>" %}</p>
+		<!--<h1>{% trans "report/view/discuss" %}</h1>
+		<p>{% trans "<span>graffiti.</span> <span class='alt'>potholes.</span> <span>excessive</span> <span class='alt'>garbage.</span> <span>street</span> <span class='alt'>lighting.</span>" %}</p>-->
 	</div>
 
 	<form id='search_form'>
@@ -28,53 +28,54 @@
 			<p>{% trans "or leave empty for a global search" %}</p>
 		</div>
 
-		<div id='proposal'> </div>
+		<ul id='proposal'> </ul>
 		
-		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans "Search" %}">
+		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans 'Search' %}">
 	</form>
+    <div id="indications">
+        <div id="leftcol">
+            <h4>{% trans "How to fill a report" %}</h4>
+            <ol>
+                <li>{% trans "Enter a nearby street name" %}</li>
+                <li>{% trans "Locate the problem on a map of the area" %}</li>
+                <li>{% trans "Enter details of the problem" %}</li>
+                <li>{% trans "We send it to the city on your behalf" %}</li>
+            </ol>
+        </div>
+        <div id="rightcol">
+            <div id='stat-group'>
+                <div class='stat'>
+                    <span class='number'>{{report_counts.recent_new}}</span><br/>
+                    <span class='text'>{% trans "Reports Filed" %}<br/></span>
+                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
+                </div>
+                <div class='stat'>
+                    <span  class='number'>{{report_counts.recent_fixed}}</span><br/>
+                    <span class='text'>{% trans "Reports Fixed" %}*<br/></span>
+                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
+                </div>
+                <div class='stat'>
+                    <span class='number'>{{report_counts.recent_updated}}</span><br/>
+                    <span class='text'>{% trans "Reports Updated" %}</span><br/>
+                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
+                </div>
+            </div>
+            <div class="fix-disclaimer">
+                <p>*{% trans "As reported by Fix My Street users." %}</p>
+            </div>
 
+            <!--
+            <div class='block'>
+                <h4>{% trans "Recent Reports" %}</h4>
+                <ul>
+                {% for report in recent_reports %}
+                    <li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+            -->
+        </div>
+    </div>
 {% endblock %}
 	
-{% block content_third %}
-	<div id="leftcol">
-		<h4>{% trans "How to fill a report" %}</h4>
-		<ol>
-			<li>{% trans "Enter a nearby street name" %}</li>
-			<li>{% trans "Locate the problem on a map of the area" %}</li>
-			<li>{% trans "Enter details of the problem" %}</li>
-			<li>{% trans "We send it to the city on your behalf" %}</li>
-		</ol>
-	</div>
-	<div id="rightcol">
-		<div id='stat-group'>
-			<div class='stat'>
-				<span class='number'>{{report_counts.recent_new}}</span><br/>
-				<span class='text'>{% trans "Reports Filed" %}<br/></span>
-				<span class='qualifier'>{% trans "In the Last Year" %}</span>
-			</div>
-			<div class='stat'>
-				<span  class='number'>{{report_counts.recent_fixed}}</span><br/>
-				<span class='text'>{% trans "Reports Fixed" %}*<br/></span>
-				<span class='qualifier'>{% trans "In the Last Year" %}</span>
-			</div>
-			<div class='stat'>
-				<span class='number'>{{report_counts.recent_updated}}</span><br/>
-				<span class='text'>{% trans "Reports Updated" %}</span><br/>
-				<span class='qualifier'>{% trans "In the Last Year" %}</span>
-			</div>
-		</div>
-		<div class="fix-disclaimer">
-			<p>*{% trans "As reported by Fix My Street users." %}</p>
-		</div>
-		<!--
-		<div class='block'>
-			<h4>{% trans "Recent Reports" %}</h4>
-			<ul>
-			{% for report in recent_reports %}
-				<li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
-			{% endfor %}
-			</ul>
-		</div>
-		-->
-	</div>
-{% endblock %}
+{% block content_third %}{% endblock %}

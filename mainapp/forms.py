@@ -7,7 +7,11 @@ from django.utils.translation import ugettext_lazy
 from django.contrib.gis.geos import fromstr
 from django.forms.util import ErrorDict
 
+#from pyexif import ExifEditor
+
 class ContactForm(forms.Form):
+    required_css_class = 'required'
+
     name = forms.CharField(max_length=100,
                            widget=forms.TextInput(attrs={ 'class': 'required' }),
                            label=ugettext_lazy('Name'))
@@ -103,7 +107,7 @@ class ReportForm(forms.ModelForm):
     photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 
-    def __init__(self,data=None,files=None,initial=None):
+    def __init__(self,data=None, files=None, initial=None):
         if data:
             self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
             d2p = DictToPoint(data,exceptclass=None)
@@ -112,10 +116,20 @@ class ReportForm(forms.ModelForm):
         
         self.pnt = d2p.pnt()
         self.update_form = ReportUpdateForm(data)
-        super(ReportForm,self).__init__(data,files, initial=initial)
+        super(ReportForm,self).__init__(data, files, initial=initial)
         self.fields['category'] = CategoryChoiceField()#self.ward
     
+    #def clean_photo(self):
+        #print "clean photo"
+        #exif = ExifEditor(photo)
+        #print exif.getOrientation()
+        #return photo
+        
     def clean(self):
+        #print "clean"
+        super(ReportForm, self).clean()
+        #exif = ExifEditor(request.FILES['photo'])
+        #print exif.getOrientation()
         if not self.ward:
             raise forms.ValidationError("lat/lon not supported")
 
@@ -128,8 +142,8 @@ class ReportForm(forms.ModelForm):
         return( update_valid and report_valid )
     
     def save(self, is_confirmed = False):
-        report = super(ReportForm,self).save( commit = False )
-        update = self.update_form.save(commit=False)
+        report = super(ReportForm,self).save(commit = False)
+        update = self.update_form.save(commit = False)
         
         #these are in the form for 'update'
         report.desc = update.desc

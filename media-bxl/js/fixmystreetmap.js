@@ -292,7 +292,26 @@
                 //}
             //}
 		},
-	
+
+		/**
+		 * Add a simple indiocator to the current map.
+		 * @param pnt object define the x, y position of the marker (in Lambert72 coordinate system)
+		 */
+		addIndicator: function(pnt)
+		{
+			var self = this;
+			if(!this.indicatorsLayer)
+			{
+				this.indicatorsLayer = new OpenLayers.Layer.Vector( "Indicators Layer" );
+				this.map.addLayer(this.indicatorsLayer);
+			}
+			
+			var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(pnt.x, pnt.y)]);
+			
+			var markerConf = this.options.markerStyle;
+			this.indicatorsLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {}, markerConf)]);
+		},
+
 		/**
 		 * Add a shape to the current map.
 		 * @param geometry a standart shape json object.

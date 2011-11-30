@@ -3,6 +3,9 @@
 
 {% block title %}{% trans "All Reports" %}{% endblock %}
 {% block content %}
+	<h1>{% trans "All Reports" %} <a href='{% url feeds "cities/1" %}'><img src="{{ MEDIA_URL }}images/rss-big.png" /></a></h1>
+	{% if top_problems %}
+	<h2>{% trans "Top Reports" %}</h2>
 	<div id='city-stat-group'>
 		<div class='stat'>
 			<p class='number'>{{city_totals.recent_new}}</p>
@@ -17,25 +20,24 @@
 			<p class='text'>{% trans "Reports Updated" %}</p>
 		</div>
 	</div>
-	{% if top_problems %}
-	<h3>{% trans "Top Reports" %}</h3>
 	<table id="top-reports">
 		<tr class ='table_heading'>
-			<th class='table-intro'>{% trans "Rank" %}</th>
-			<th class='row-text' >{% trans "Report" %}</th>
+
+			<th class='table-intro'><!--{% trans "Rank" %}--></th>
+			<th class='row-text' ><!--{% trans "Report" %}--></th>
 			<th class='table-stat'>{% trans "Number of Subscribers" %}</th>
 		</tr>
 		{% for top_problem in top_problems %}
 		<tr class="{% cycle 'row-odd' 'row-even' %}">
-			<td>{{forloop.counter}}</td>
+			<td class="number">{{forloop.counter}}</td>
 			<td><a href='{{top_problem.get_absolute_url}}'>{{top_problem.title}}</a></td>
-			<td width="30px;">{{top_problem.subscriber_count|add:"1"}}</td>
+			<td class="number">{{top_problem.subscriber_count|add:"1"}}</td>
 		</tr>
 		{% endfor %}
 	</table>
 	{% endif %}
-	<h1><a href='{% url feeds "cities/1" %}'><img src="{{ MEDIA_URL }}images/rss-big.png" /></a> {% trans "All Reports" %}</h1>
 
+	<h2>{% trans "Reports by wards" %}</h2>
 	<div id="city_all_problems" style="clear:both">
 		{% include "cities/_report_count_table.html" %}		
 	</div>
