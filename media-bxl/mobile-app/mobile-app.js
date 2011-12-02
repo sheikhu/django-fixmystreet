@@ -3,6 +3,8 @@
         //$.mobile.allowCrossDomainPages = true;
         //$.mobile.page.prototype.options.addBackBtn = true;
         $.mobile.ajaxEnabled = false;
+        //$.mobile.pushStateEnable = false;
+        console.log('init app');
     });
 
 
@@ -13,6 +15,7 @@
 
     var mediaUrl = rootUrl + '/media/';
 
+    var $map;
 
     function goBackPage(evt){
         evt.preventDefault();
@@ -31,7 +34,15 @@
     };
     
     $(document).bind("backbutton", goBackPage);
-    
+
+    $(document).bind("resume", function(){
+        console.log('resume');
+    });
+ 
+    $(document).bind("pause", function(){
+        console.log('pause');
+    });
+
     $(document).delegate("[data-rel=back]", "click", goBackPage);
 
     function loadFmsPage(url){
@@ -80,92 +91,96 @@
             $current.trigger( "pageinit" );
         }
         
-        if($form.find('input[type=file]')) {
-            var imageURI = $form.find('input[type=file]').val();
-            var options = new FileUploadOptions()
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpg";
+        $file = $form.find('input[type=file]');
+        if($file.length && $file.data('uri')) {
+            var imageURI = $file.data('uri');
+            var options = new FileUploadOptions();
+            options.fileKey = $file.attr('name');
+            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
 
-            //var params = new Object();
-            //params.value1 = "value1";
-            //params.value2 = "value2";
+            var params = {};
+            var array = $form.serializeArray();
+            for(i in array){
+                params[array[i].name] = array[i].value;
+            }
+            options.params = params;
 
-            options.params = $form.serialize();
+            var ft = new FileTransfer();
 
-            var ft = new FileTransfer()
-            ft.upload(imageURI, url, success, connectionErrorCallback, options);
+            ft.upload(imageURI, url, function(r){success(r.response);}, connectionErrorCallback, options);
         } else {
             $.post(url,$form.serialize(),success)
                     .error(connectionErrorCallback);
         }
     });
-    
-    function connectionErrorCallback(){
+
+
+    function initMap(p){
+        $map.fmsMap({
+            apiRootUrl: rootUrl + "/api/",
+            origin:{x:p.x,y:p.y},
+            showControl:false,
+            markerStyle:{
+                externalGraphic: "images/marker.png",
+                graphicXOffset:-32/2,
+                graphicYOffset:-32,
+                graphicHeight:32,
+                graphicWidth:32
+            },
+            fixedMarkerStyle:{
+                externalGraphic: "images/marker-fixed.png"
+            },
+            pendingMarkerStyle:{
+                externalGraphic: "images/marker-pending.png"
+            }
+        });
+ 
+        loadReports(p,function(){
+            $map.fmsMap('addDraggableMarker', p.x, p.y);
+            $('#create-report').removeClass('ui-disabled').data('position',p);
+            $('#content-disabled').remove();
+        });
+ 
+        $map.one('markerdrag click movestart zoomend',function(evt,point){
+            $('#instructable').fadeOut();
+        });
+    }
+ 
+    function loadReports(p,callback){
+        $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
+            if(response.status != 'success')
+            {
+                // do something
+                console.log('error');
+                return ;
+            }
+           
+            for(var i in response.results)
+            {
+                var report = response.results[i];
+                $map.fmsMap('addReport',report);
+            }
+            if(callback){
+                callback();
+            }
+        }).error(connectionErrorCallback);
+    }
+     
+     function noGeoLoc(){
+         var defaultLoc = {x:148853.101438753, y:170695.57753253728};
+         alert('Your device do not support geo localisation..');
+         initMap(defaultLoc);
+     }
+ 
+
+    function connectionErrorCallback(jqXHR, textStatus, errorThrown){
         alert('Connection problem, please check your internet connection and relanch this app.');
-        navigator.app.exitApp();
     }
 
     $(document).delegate('#home', "pageinit", function(){
         $page = $(this);
-        var $map = $page.find('#map-bxl');
-
-        function initMap(p){
-            $map.fmsMap({
-                apiRootUrl: rootUrl + "/api/",
-                origin:{x:p.x,y:p.y},
-                showControl:false,
-                markerStyle:{
-                    externalGraphic: "images/marker.png",
-                    graphicXOffset:-32/2,
-                    graphicYOffset:-32,
-                    graphicHeight:32,
-                    graphicWidth:32
-                },
-                fixedMarkerStyle:{
-                    externalGraphic: "images/marker-fixed.png"
-                },
-                pendingMarkerStyle:{
-                    externalGraphic: "images/marker-pending.png"
-                }
-            });
-            
-            loadReports(p,function(){
-                $map.fmsMap('addDraggableMarker', p.x, p.y);
-                $('#create-report').removeClass('ui-disabled').data('position',p);
-                $('#content-disabled').remove();
-            });
-            
-            $map.one('markerdrag click movestart zoomend',function(evt,point){
-                $('#instructable').fadeOut();
-            });
-        }
-        
-        function loadReports(p,callback){
-            $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
-                if(response.status != 'success')
-                {
-                    // do something
-                    console.log('error');
-                    return ;
-                }
-
-                for(var i in response.results)
-                {
-                    var report = response.results[i];
-                    $map.fmsMap('addReport',report);
-                }
-                if(callback){
-                    callback();
-                }
-            }).error(connectionErrorCallback);
-        }
-
-        function noGeoLoc(){
-            var defaultLoc = {x:148853.101438753, y:170695.57753253728};
-            alert('Your device do not support geo localisation..');
-            initMap(defaultLoc);
-        }
+        $map = $page.find('#map-bxl');
 
 
         if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
@@ -364,26 +379,12 @@
         
         function setPhotoPath(fileURI)
         {
+            $form.find('#id_photo').data('uri',fileURI);
             $form.find('#id_photo').val(fileURI);
             $form.find('#photo_preview').attr('src',fileURI).fadeIn();
-            $('.select_photo').css({'margin-right':'105px'});
+            $('.select_photo').css({'margin-right':'110px'});
+            $.mobile.hidePageLoadingMsg();
         }
-        
-        $form.bind('submit-success',function(){
-            var options = new FileUploadOptions()
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpg";
-
-            var params = new Object();
-            params.value1 = "value1";
-            params.value2 = "value2";
-
-            options.params = params;
-
-            var ft = new FileTransfer()
-            ft.upload(imageURI, "", win, fail, options);
-        });
         
         $form.find('#id_photo').change(function(){
             var file = this.files[0];
@@ -406,6 +407,7 @@
         {
             $('.select_photo').click(function(evt){
                 evt.preventDefault();
+                $.mobile.showPageLoadingMsg();
                 
                 navigator.camera.getPicture(setPhotoPath, function(message)
                 {

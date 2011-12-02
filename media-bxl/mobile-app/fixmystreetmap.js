@@ -2,7 +2,7 @@
 //			  -http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js
 
 (function(){
-	var urbisURL = "http://geoserver.gis.irisnet.be/geoserver/",
+	var urbisURL = "http://geoserver.gis.irisnetlab.be/geoserver/wms",
 		markerWidth = 18,
 		markerHeight = 34,
 		defaultMarkerStyle = {
@@ -72,7 +72,7 @@
 
 			var wms = new OpenLayers.Layer.WMS(
 				"Bruxelles",
-				urbisURL + "wms?",
+				urbisURL,
 				{ layers: 'urbisFR' } // urbisFRshp,urbisFR
 				
 			);
@@ -88,7 +88,7 @@
 				this.map.zoomToMaxExtent();
 			}
 			
-			//this.map.addControl(new OpenLayers.Control.LayerSwitcher());
+			// this.map.addControl(new OpenLayers.Control.LayerSwitcher());
 			/*
 			this.superLayer = new OpenLayers.Layer.Vector( "Super Layer" );
 			this.map.addLayer(this.superLayer);
@@ -218,7 +218,6 @@
 				
 				var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
 					onSelect:function(feature,pixel){
-                        console.log('hey');
 						var p = feature.geometry.components[0];
 						var point = {x:p.x,y:p.y};
 						//console.log(point,feature.attributes.report);
@@ -298,21 +297,16 @@
 		 * Add a shape to the current map.
 		 * @param geometry a standart shape json object.
 		 */
-		highlightArea: function(geometry)
+		highlightArea: function(featureId)
 		{
-			var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer");
-			this.map.addLayer(vectorLayer);
-			this.map.setLayerIndex(vectorLayer,0);
-
-			if(geometry.type == 'Polygon'){
-				this._addPolygon(geometry.coordinates,vectorLayer);
-			}
-			else if(geometry.type == 'MultiPolygon')
-			{
-				for(var i in geometry.coordinates){
-					this._addPolygon(geometry.coordinates[i],vectorLayer);
-				}
-			}
+            //municipalities layer
+            var municipalities = new OpenLayers.Layer.WMS(
+                "Municipalities",
+                urbisURL,
+                {layers: 'urbis:URB_A_MU', styles: 'fixms_municipalities', transparent: 'true', featureId: featureId},
+                {singleTile: true, ratio: 1.25, isBaseLayer: false}
+            );
+            this.map.addLayer(municipalities);
 		},
 		
 		/**
