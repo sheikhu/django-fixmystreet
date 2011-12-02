@@ -4,7 +4,6 @@
         //$.mobile.page.prototype.options.addBackBtn = true;
         $.mobile.ajaxEnabled = false;
         //$.mobile.pushStateEnable = false;
-        console.log('init app');
     });
 
 
@@ -14,8 +13,13 @@
     // var rootUrl = 'http://localhost:8000';
 
     var mediaUrl = rootUrl + '/media/';
+ 
+    window.alert = function(message){
+        return Notification.prototype.alert.apply(this, [message, function(){}, 'Fix My Street Brussels', 'OK']);
+    }
 
-    var $map;
+
+    var $map, initialized;
 
     function goBackPage(evt){
         evt.preventDefault();
@@ -35,10 +39,37 @@
     
     $(document).bind("backbutton", goBackPage);
 
-    $(document).bind("resume", function(){
-        console.log('resume');
-    });
+    window.initReports = function() {
+        //if phonegap, need to toggle these
+//        if (typeof navigator.device == "undefined"){
+//            setTimeout("initReports();", 100);
+//            return;
+//        }
+
+        //Method used to initialize Javascript Page Components
+        $.mobile.showPageLoadingMsg();
+        if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
+        {
+            navigator.geolocation.getCurrentPosition(function(position)
+            {
+                $.mobile.hidePageLoadingMsg();
+                var source = new Proj4js.Proj("EPSG:4326");
+                var dest   = new Proj4js.Proj("EPSG:31370");
+                var p      = new Proj4js.Point(position.coords.longitude, position.coords.latitude);
+                  
+                Proj4js.transform(source, dest, p);
+                initMap(p);
+            },noGeoLoc);
+         }
+         else
+         {
+            noGeoLoc();
+         }
+    }
  
+    $(document).bind("resume",initReports);
+    $(document).bind("deviceready",initReports);
+    
     $(document).bind("pause", function(){
         console.log('pause');
     });
@@ -117,38 +148,49 @@
 
 
     function initMap(p){
-        $map.fmsMap({
-            apiRootUrl: rootUrl + "/api/",
-            origin:{x:p.x,y:p.y},
-            showControl:false,
-            markerStyle:{
-                externalGraphic: "images/marker.png",
-                graphicXOffset:-32/2,
-                graphicYOffset:-32,
-                graphicHeight:32,
-                graphicWidth:32
-            },
-            fixedMarkerStyle:{
-                externalGraphic: "images/marker-fixed.png"
-            },
-            pendingMarkerStyle:{
-                externalGraphic: "images/marker-pending.png"
-            }
-        });
- 
+        console.log('step 0');
+        if(initialized){
+            console.log('step 2');
+            $map.fmsMap('reset');
+        }else{
+            initialized = true;
+            console.log('step 3');
+            $map = $('#map-bxl');
+            console.log('step 4');
+            $map.fmsMap({
+                apiRootUrl: rootUrl + "/api/",
+                origin:{x:p.x,y:p.y},
+                showControl:false,
+                markerStyle:{
+                    externalGraphic: "images/marker.png",
+                    graphicXOffset:-32/2,
+                    graphicYOffset:-32,
+                    graphicHeight:32,
+                    graphicWidth:32
+                },
+                fixedMarkerStyle:{
+                    externalGraphic: "images/marker-fixed.png"
+                },
+                pendingMarkerStyle:{
+                    externalGraphic: "images/marker-pending.png"
+                }
+            });
+        }
+
         loadReports(p,function(){
             $map.fmsMap('addDraggableMarker', p.x, p.y);
             $('#create-report').removeClass('ui-disabled').data('position',p);
             $('#content-disabled').remove();
         });
- 
+        
+        $('#instructable').fadeIn();
         $map.one('markerdrag click movestart zoomend',function(evt,point){
             $('#instructable').fadeOut();
         });
     }
  
     function loadReports(p,callback){
-        $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
+        $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y, timestamp:(new Date()).toString()},function(response){
             if(response.status != 'success')
             {
                 // do something
@@ -167,10 +209,12 @@
         }).error(connectionErrorCallback);
     }
      
-     function noGeoLoc(){
-         var defaultLoc = {x:148853.101438753, y:170695.57753253728};
-         alert('Your device do not support geo localisation..');
-         initMap(defaultLoc);
+     function noGeoLoc(error){
+        var defaultLoc = {x:148853.101438753, y:170695.57753253728};
+        alert('Your device do not support geo localisation.');
+        $.mobile.hidePageLoadingMsg();
+        initMap(defaultLoc);
+        console.log(error);
      }
  
 
@@ -181,24 +225,6 @@
     $(document).delegate('#home', "pageinit", function(){
         $page = $(this);
         $map = $page.find('#map-bxl');
-
-
-        if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
-        {
-            navigator.geolocation.getCurrentPosition(function(position)
-            {
-                var source = new Proj4js.Proj("EPSG:4326");
-                var dest   = new Proj4js.Proj("EPSG:31370");
-                var p      = new Proj4js.Point(position.coords.longitude, position.coords.latitude);
-                
-                Proj4js.transform(source, dest, p);
-                initMap(p);
-            }, noGeoLoc);
-        }
-        else
-        {
-            noGeoLoc();
-        }
 
         $map.bind('markermoved',function(evt,p){
             $('#create-report').attr('href',rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts');
@@ -382,6 +408,8 @@
             $form.find('#id_photo').data('uri',fileURI);
             $form.find('#id_photo').val(fileURI);
             $form.find('#photo_preview').attr('src',fileURI).fadeIn();
+            console.log($form.find('#photo_preview').exifPretty());
+                         
             $('.select_photo').css({'margin-right':'110px'});
             $.mobile.hidePageLoadingMsg();
         }
