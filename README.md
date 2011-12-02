@@ -43,17 +43,21 @@ Usefull
 -------
 To generate po file run the following command:
     $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/* --ignore=templates-bxl/admin/* --ignore=templates-bxl/posters.html --ignore=templates-bxl/promotions/*
+    $ django-admin.py compilemessages
 
 for sample data set loading
     $ python manage.py loaddata sample.json
+    $ cp -R media-bxl/photos-sample/ media-bxl/photos/
+
     $ python manage.py testserver sample.json
+
     $ python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
 
 
 To build a mobile app:
 * build a new project with phone gap
-* drop content of media/mobile-app/ into www phongap folder
-* copy media/js/fixmystreetmap.js into www phongap folder
+* drop content of media-bxl/mobile-app/ into www phongap folder
+* copy media-bxl/js/fixmystreetmap.js into www phongap folder
 * for ios: put geoserver.gis.irisnet.be and fixmystreet.irisnet(lab).be into the externalHost in the phonegap.plist file
 
 

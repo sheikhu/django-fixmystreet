@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-28 12:56+0100\n"
+"POT-Creation-Date: 2011-11-30 15:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,32 +18,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: settings.py:78
+#: settings.py:79
 msgid "English"
 msgstr ""
 
-#: settings.py:79
+#: settings.py:80
 msgid "French"
 msgstr ""
 
-#: settings.py:80
+#: settings.py:81
 msgid "Dutch"
 msgstr ""
 
-#: mainapp/forms.py:13 mainapp/models.py:49 mainapp/models.py:270
-#: mainapp/models.py:348
+#: mainapp/forms.py:17 mainapp/models.py:49 mainapp/models.py:271
+#: mainapp/models.py:349
 msgid "Name"
 msgstr ""
 
-#: mainapp/forms.py:16 mainapp/models.py:347
+#: mainapp/forms.py:20 mainapp/models.py:348
 msgid "Email"
 msgstr ""
 
-#: mainapp/forms.py:18
+#: mainapp/forms.py:22
 msgid "Message"
 msgstr ""
 
-#: mainapp/forms.py:48
+#: mainapp/forms.py:52
 msgid "Select a Category"
 msgstr ""
 
@@ -55,35 +55,31 @@ msgstr ""
 msgid "Category group"
 msgstr ""
 
-#: mainapp/models.py:244
+#: mainapp/models.py:245
 msgid "Subject"
 msgstr ""
 
-#: mainapp/models.py:268
-msgid "* Photo"
-msgstr ""
-
-#: mainapp/models.py:269 mainapp/models.py:342
+#: mainapp/models.py:270 mainapp/models.py:343
 msgid "Details"
 msgstr ""
 
-#: mainapp/models.py:271
+#: mainapp/models.py:272
 msgid "Location"
 msgstr ""
 
-#: mainapp/models.py:272
+#: mainapp/models.py:273
 msgid "Postal Code"
 msgstr ""
 
-#: mainapp/models.py:349
+#: mainapp/models.py:350
 msgid "Phone"
 msgstr ""
 
-#: mainapp/models.py:565
+#: mainapp/models.py:563
 msgid "Question"
 msgstr ""
 
-#: mainapp/models.py:566
+#: mainapp/models.py:564
 msgid "Answere"
 msgstr ""
 
@@ -128,18 +124,20 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"        <h4>Contact</h4>\n"
+"        <h2>Contact</h2>\n"
+"        <a href='http://www.cirb.irisnet.be' style='float:left;'><img src='/"
+"media/images/CIRB-CIBG.gif'/></a>\n"
 "        <p>\n"
 "        CIRB<br/>\n"
 "        21, avenue des Arts<br/>\n"
 "        1000 Bruxelles\n"
 "        </p>\n"
-"        <p>Tel : +32 (0)2 XXX XX XX<br/>\n"
-"        E-mail: <a href=\"mailto:fixmystreet@cirb.irisnet.be"
+"        <p style=\"clear:both;\">Tel : +32 (0)2 XXX XX XX<br/>\n"
+"        E-mail : <a href=\"mailto:fixmystreet@cirb.irisnet.be"
 "\">fixmystreet@cirb.irisnet.be</a></p>\n"
 " \n"
 " \n"
-"        <h4>Requirements</h4>\n"
+"        <h2>Requirements</h2>\n"
 "        <p>www.fixmystreet.irisnetlab.be is optimised for Microsoft "
 "Windows, \n"
 "        Apple Mac OS and Linux with software :</p>\n"
@@ -150,7 +148,7 @@ msgid ""
 "            <li>Safari</li>\n"
 "        </ul>\n"
 "\n"
-"        <h4>Update your computer</h4>\n"
+"        <h2>Update your computer</h2>\n"
 "        <p>If you want to install lastest versions of this free software, "
 "click on links below.</p>\n"
 "        <ul>\n"
@@ -162,7 +160,7 @@ msgid ""
 "html\">Adobe Acrobat Reader</a></li>\n"
 "        </ul>\n"
 "\n"
-"        <h4>Mobile application</h4>\n"
+"        <h2>Mobile application</h2>\n"
 "        <p>A mobile application is available for</p>\n"
 "        <ul>\n"
 "            <li><img src=\"%(MEDIA_URL)simages/appstore.gif\"/> iPhone / "
@@ -171,7 +169,7 @@ msgid ""
 "Android</li>\n"
 "        </ul>\n"
 "        \n"
-"        <h4>Credits</h4>\n"
+"        <h2>Credits</h2>\n"
 "        <p>Thanks to:</p>\n"
 "        <ul>\n"
 "            <li><a href='http://mysociety.org'>MySociety</a>, for the "
@@ -204,7 +202,7 @@ msgstr ""
 msgid "View Reports"
 msgstr ""
 
-#: templates-bxl/base.html:46 templates-bxl/contact/new.html:8
+#: templates-bxl/base.html:46 templates-bxl/contact/new.html:7
 msgid "Contact Us"
 msgstr ""
 
@@ -239,53 +237,53 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: templates-bxl/home.html:40
+#: templates-bxl/home.html:37
 msgid "How to fill a report"
 msgstr ""
 
-#: templates-bxl/home.html:42
+#: templates-bxl/home.html:39
 msgid "Enter a nearby street name"
 msgstr ""
 
-#: templates-bxl/home.html:43
+#: templates-bxl/home.html:40
 msgid "Locate the problem on a map of the area"
 msgstr ""
 
-#: templates-bxl/home.html:44
+#: templates-bxl/home.html:41
 msgid "Enter details of the problem"
 msgstr ""
 
-#: templates-bxl/home.html:45
+#: templates-bxl/home.html:42
 msgid "We send it to the city on your behalf"
 msgstr ""
 
-#: templates-bxl/home.html:52 templates-bxl/cities/show.html:9
+#: templates-bxl/home.html:49 templates-bxl/cities/show.html:12
 msgid "Reports Filed"
 msgstr ""
 
-#: templates-bxl/home.html:53 templates-bxl/home.html.py:58
-#: templates-bxl/home.html:63
+#: templates-bxl/home.html:50 templates-bxl/home.html.py:55
+#: templates-bxl/home.html:60
 msgid "In the Last Year"
 msgstr ""
 
-#: templates-bxl/home.html:57 templates-bxl/cities/show.html:13
+#: templates-bxl/home.html:54 templates-bxl/cities/show.html:16
 msgid "Reports Fixed"
 msgstr ""
 
-#: templates-bxl/home.html:62 templates-bxl/cities/show.html:17
+#: templates-bxl/home.html:59 templates-bxl/cities/show.html:20
 msgid "Reports Updated"
 msgstr ""
 
-#: templates-bxl/home.html:67 templates-bxl/cities/_report_count_table.html:28
+#: templates-bxl/home.html:64 templates-bxl/cities/_report_count_table.html:28
 msgid "As reported by Fix My Street users."
 msgstr ""
 
-#: templates-bxl/home.html:71
+#: templates-bxl/home.html:69
 msgid "Recent Reports"
 msgstr ""
 
 #: templates-bxl/ajax/category_description.html:2
-#: templates-bxl/reports/new.html:196 templates-bxl/reports/mobile/new.html:27
+#: templates-bxl/reports/new.html:197 templates-bxl/reports/mobile/new.html:27
 msgid "Please Note"
 msgstr ""
 
@@ -316,7 +314,7 @@ msgid "Old Fixed* <small>(fixed more than 1 month ago)</small>"
 msgstr ""
 
 #: templates-bxl/cities/index.html:3 templates-bxl/cities/index.html.py:23
-#: templates-bxl/cities/show.html:4 templates-bxl/cities/show.html.py:37
+#: templates-bxl/cities/show.html:4 templates-bxl/cities/show.html.py:6
 msgid "All Reports"
 msgstr ""
 
@@ -324,37 +322,51 @@ msgstr ""
 msgid "Reports by City"
 msgstr ""
 
-#: templates-bxl/cities/show.html:21
+#: templates-bxl/cities/show.html:8
 msgid "Top Reports"
 msgstr ""
 
-#: templates-bxl/cities/show.html:24
+#: templates-bxl/cities/show.html:26
 msgid "Rank"
 msgstr ""
 
-#: templates-bxl/cities/show.html:25
+#: templates-bxl/cities/show.html:27
 msgid "Report"
 msgstr ""
 
-#: templates-bxl/cities/show.html:26
+#: templates-bxl/cities/show.html:28
 msgid "Number of Subscribers"
 msgstr ""
 
-#: templates-bxl/contact/new.html:9
-msgid ""
-"\n"
-"<p>\n"
-"\tPlease <strong>DO NOT</strong> report problems through this form.\n"
-"\tMessages go to the team behind FixMyStreet, not to city councillors.\n"
-"</p>\n"
-"<p>\n"
-"\tTo report a problem, please follow the instructions <a href=\"/\">here</"
-"a>.\n"
-"</p>\n"
-"<p>We'd love to get your feedback on this site:</p> \n"
+#: templates-bxl/cities/show.html:40
+msgid "Reports by wards"
 msgstr ""
 
-#: templates-bxl/contact/new.html:25
+#: templates-bxl/contact/new.html:10
+msgid ""
+"\n"
+"            <p>\n"
+"                Please <strong>do not</strong> report problems through this "
+"form.\n"
+"                Messages go to the team behind FixMyStreet, not to city "
+"councillors.\n"
+"            </p>\n"
+"            <p>\n"
+"                To report a problem, please follow the instructions <a href="
+"\"/\">here</a>.\n"
+"            </p>\n"
+"            "
+msgstr ""
+
+#: templates-bxl/contact/new.html:20
+msgid "We'd love to get your feedback"
+msgstr ""
+
+#: templates-bxl/contact/new.html:26 templates-bxl/reports/new.html:176
+msgid "* This fields are required"
+msgstr ""
+
+#: templates-bxl/contact/new.html:31
 msgid "Send"
 msgstr ""
 
@@ -493,7 +505,6 @@ msgid "Fix My Street:"
 msgstr ""
 
 #: templates-bxl/emails/report_update/subject.txt:1
-#: templates-bxl/reports/show.html:109
 msgid "Fixed"
 msgstr ""
 
@@ -543,62 +554,63 @@ msgstr ""
 msgid "No problems have been reported in this area."
 msgstr ""
 
-#: templates-bxl/reports/new.html:175
-msgid "* This fields are required"
+#: templates-bxl/reports/new.html:165
+msgid "Fill the report"
 msgstr ""
 
-#: templates-bxl/reports/new.html:179 templates-bxl/reports/show.html:122
+#: templates-bxl/reports/new.html:180 templates-bxl/reports/show.html:121
 #: templates-bxl/reports/mobile/new.html:36
 #: templates-bxl/reports/mobile/show.html:94
 msgid "Submit"
 msgstr ""
 
-#: templates-bxl/reports/new.html:187
-msgid "To fill a new report"
-msgstr ""
-
-#: templates-bxl/reports/new.html:189
-msgid "Drag me to the correct location on the map."
-msgstr ""
-
-#: templates-bxl/reports/new.html:193
+#: templates-bxl/reports/new.html:186
 msgid "Review reports"
 msgstr ""
 
-#: templates-bxl/reports/new.html:194
+#: templates-bxl/reports/new.html:189
+msgid "To fill a new report"
+msgstr ""
+
+#: templates-bxl/reports/new.html:191
+msgid "Drag me to the correct location on the map."
+msgstr ""
+
+#: templates-bxl/reports/new.html:195
 msgid "Zoom out to see more reports nearby."
 msgstr ""
 
-#: templates-bxl/reports/new.html:198 templates-bxl/reports/mobile/new.html:29
+#: templates-bxl/reports/new.html:199 templates-bxl/reports/mobile/new.html:29
 msgid "Please be polite, concise and to the point."
 msgstr ""
 
-#: templates-bxl/reports/new.html:199 templates-bxl/reports/mobile/new.html:30
+#: templates-bxl/reports/new.html:200 templates-bxl/reports/mobile/new.html:30
 msgid ""
 "Please do not be abusive - abusing the service devalues the service for all "
 "users."
 msgstr ""
 
-#: templates-bxl/reports/new.html:200 templates-bxl/reports/mobile/new.html:31
+#: templates-bxl/reports/new.html:201 templates-bxl/reports/mobile/new.html:31
 msgid ""
 "Writing your message entirely in block capitals makes it hard to read, as "
 "does a lack of punctuation."
 msgstr ""
 
-#: templates-bxl/reports/new.html:201 templates-bxl/reports/mobile/new.html:32
+#: templates-bxl/reports/new.html:202 templates-bxl/reports/mobile/new.html:32
 msgid ""
 "Remember that FixMyStreet is primarily for reporting physical problems that "
 "can be fixed. If your problem is not appropriate for submission via this "
 "site please contact city officials directly."
 msgstr ""
 
-#: templates-bxl/reports/show.html:48 templates-bxl/reports/show.html:121
+#: templates-bxl/reports/show.html:62 templates-bxl/reports/show.html:107
+#: templates-bxl/reports/show.html:120
 #: templates-bxl/reports/mobile/show.html:17
 #: templates-bxl/reports/mobile/show.html:91
 msgid "This problem has been fixed."
 msgstr ""
 
-#: templates-bxl/reports/show.html:52
+#: templates-bxl/reports/show.html:66
 #: templates-bxl/reports/mobile/show.html:21
 msgid ""
 "<p>Please check your email for a message from fixmystreet.ca, which will "
@@ -618,47 +630,37 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: templates-bxl/reports/show.html:80
-#: templates-bxl/reports/mobile/show.html:51
-msgid "Category:"
+#: templates-bxl/reports/show.html:85 templates-bxl/reports/show.html:108
+#, python-format
+msgid "Posted by <strong>%(by)s</strong> on <strong>%(on)s</strong>"
 msgstr ""
 
-#: templates-bxl/reports/show.html:82
+#: templates-bxl/reports/show.html:90
 #: templates-bxl/reports/mobile/show.html:53
 msgid "Location:"
 msgstr ""
 
-#: templates-bxl/reports/show.html:84
-#: templates-bxl/reports/mobile/show.html:55
-msgid "Filed by:"
+#: templates-bxl/reports/show.html:92
+#: templates-bxl/reports/mobile/show.html:51
+msgid "Category:"
 msgstr ""
 
-#: templates-bxl/reports/show.html:85
-#: templates-bxl/reports/mobile/show.html:56
-msgid "Filed on:"
-msgstr ""
-
-#: templates-bxl/reports/show.html:97
+#: templates-bxl/reports/show.html:98
 #: templates-bxl/reports/mobile/show.html:69
 msgid "Offensive? Unsuitable? Tell us"
 msgstr ""
 
-#: templates-bxl/reports/show.html:101
+#: templates-bxl/reports/show.html:102
 #: templates-bxl/reports/mobile/show.html:74
 msgid "Updates"
 msgstr ""
 
-#: templates-bxl/reports/show.html:106
-#: templates-bxl/reports/mobile/show.html:78
-msgid "Posted by"
-msgstr ""
-
-#: templates-bxl/reports/show.html:116
+#: templates-bxl/reports/show.html:115
 #: templates-bxl/reports/mobile/show.html:86
 msgid "Provide an update"
 msgstr ""
 
-#: templates-bxl/reports/show.html:117
+#: templates-bxl/reports/show.html:116
 #: templates-bxl/reports/mobile/show.html:87
 msgid ""
 "The status of this report has changed? Thank you let us know by filling this "
@@ -697,6 +699,18 @@ msgstr ""
 
 #: templates-bxl/reports/mobile/new.html:18
 msgid "* Optional"
+msgstr ""
+
+#: templates-bxl/reports/mobile/show.html:55
+msgid "Filed by:"
+msgstr ""
+
+#: templates-bxl/reports/mobile/show.html:56
+msgid "Filed on:"
+msgstr ""
+
+#: templates-bxl/reports/mobile/show.html:78
+msgid "Posted by"
 msgstr ""
 
 #: templates-bxl/reports/subscribers/confirm.html:4
@@ -767,23 +781,23 @@ msgstr ""
 msgid "Ward"
 msgstr ""
 
-#: templates-bxl/wards/show.html:4 templates-bxl/wards/show.html.py:50
+#: templates-bxl/wards/show.html:4 templates-bxl/wards/show.html.py:36
 msgid "Reports for"
 msgstr ""
 
-#: templates-bxl/wards/show.html:53
+#: templates-bxl/wards/show.html:39
 #, python-format
 msgid "Reports filed between %(start)s and %(end)s."
 msgstr ""
 
-#: templates-bxl/wards/show.html:54
+#: templates-bxl/wards/show.html:40
 msgid "See older reports"
 msgstr ""
 
-#: templates-bxl/wards/show.html:58
+#: templates-bxl/wards/show.html:44
 msgid "No problems have been reported."
 msgstr ""
 
-#: templates-bxl/wards/show.html:70
+#: templates-bxl/wards/show.html:56
 msgid "Note: Fix My Street relies on users to report problems as fixed."
 msgstr ""

@@ -46,7 +46,7 @@ $(function(){
                     {
                         var street = response.result[i].address.street;
                         var pos = response.result[i].point;
-                        $proposal.append('<p><a href="{% url report_new %}?lon=' + pos.x + '&lat=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a></p>');
+                        $proposal.append('<li><a href="{% url report_new %}?lon=' + pos.x + '&lat=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a></li>');
                     }
                     $proposal.slideDown();
                 }

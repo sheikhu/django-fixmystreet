@@ -16,20 +16,8 @@
 <script>
 $(function(){
 	$('#map-bxl').fmsMap();
-	$.ajax({
-		//url:'/api/wards/',
-        url:'{{MEDIA_URL}}wards.json',
-		type:'GET',
-		dataType:'json',
-		success:function(response)
-		{
-			$('#map-bxl').fmsMap('highlightArea', '{{ ward.feature_id }}');
-		},
-		error:function()
-		{
-			$('#map-bxl').before('<p class="error-msg">Unexpected error.</p>');
-		}
-	});
+    $('#map-bxl').fmsMap('highlightArea', '{{ ward.feature_id }}');
+
 	{% for report in reports %}
 	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %}, {{ forloop.counter }});
 	{% endfor %}

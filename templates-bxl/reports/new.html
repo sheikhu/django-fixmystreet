@@ -30,20 +30,25 @@ $(document).ready(function() {
 		{
 			$form.show();
 			$('#nearby-reports,#instructable').hide();
-			$('#back').show();
+			$('#back').css({visibility: 'visible'});
 			retrieveAddress();
 		}
 		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports')
 		{
 			$form.hide();
 			$('#nearby-reports').show();
-			$('#back').hide();
+			$('#back').css({visibility: 'hidden'});
+
+            $('#instructable').fadeIn();
+            $map.one('markerdrag click movestart zoomend',function(evt,point){
+                $('#instructable').fadeOut();	
+            });
 		}
 		else
 		{
 			$form.show();
-			$('#nearby-reports,#instructable,#back').hide();
-			$('#back').show();
+			$('#nearby-reports,#instructable').hide();
+			$('#back').css({visibility: 'visible'});
 		}
 	});
 	$(window).hashchange();
@@ -61,10 +66,6 @@ $(document).ready(function() {
 		}
 	});
 	$('#id_category').change();// initialize notes
-	
-	$map.one('markerdrag click movestart zoomend',function(evt,point){
-		$('#instructable').fadeOut();	
-	});
 
 	$map.bind('markermoved',function(evt,point){
 		$('#id_lon').val(point.x);
@@ -141,28 +142,28 @@ $(document).ready(function() {
 
 {% block content %}
 <div id="page_content_container">
+    <h1>{% trans "Submitting a report" %}</h1>
 	<div id="leftcol">
-		<h1>{% trans "Submitting a report" %}</h1>
 		<div id="nearby-reports">
-			<div id='report-destination'>
-				<h2>
-					{% trans "Nearby reports" %} 
-				</h2>
-				
-				{% if reports %}
-					<div id='search_results'>
-					{% for report in reports %}
-					{% include "reports/_navigation.html" %}
-					{% endfor %}
-					</div>
-				{% else %}
-					<p>{% trans "No problems have been reported in this area." %}</p>
-				{% endif %}
-				</ol>
-			</div>
+            <h2>
+                {% trans "Nearby reports" %} 
+            </h2>
+            
+            {% if reports %}
+                <div id='search_results'>
+                {% for report in reports %}
+                {% include "reports/_navigation.html" %}
+                {% endfor %}
+                </div>
+            {% else %}
+                <p>{% trans "No problems have been reported in this area." %}</p>
+            {% endif %}
 		</div>
 	
 		<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
+            <h2>
+                {% trans "Fill the report" %} 
+            </h2>
 			<table class='form'>
 				{{ report_form.as_table }}
 				<tr>
@@ -182,6 +183,7 @@ $(document).ready(function() {
 		</form>
 	</div>
 	<div id="rightcol">
+		<a id="back" href="#reports">{% trans "Review reports" %}</a>
 		<div id="map-bxl">
 			<div id="instructable">
 				<h3>{% trans "To fill a new report" %}</h3>
@@ -190,7 +192,6 @@ $(document).ready(function() {
 				</p>
 			</div>
 		</div>
-		<a id="back" href="#reports">{% trans "Review reports" %}</a>
 		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
         <div class='note'>
             <p><strong>{% trans "Please Note" %} :</strong></p>

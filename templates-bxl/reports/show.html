@@ -43,6 +43,20 @@ $(function(){
 {% endblock %}
 {% block content %}
 <div id="page_content_container">
+    {% if not report.is_fixed and report.is_confirmed %}
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style">
+        <a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
+        <span class="addthis_separator">|</span>
+        <a class="addthis_button_facebook"></a>
+        <a class="addthis_button_myspace"></a>
+        <a class="addthis_button_google"></a>
+        <a class="addthis_button_twitter"></a>
+    </div>
+	<!-- AddThis Button END -->
+    {% endif %}
+
+    <h1>{{report.title}}</h1>
 	<div id="leftcol">    
 		{% if report.is_fixed %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
@@ -51,46 +65,33 @@ $(function(){
 		{% if not report.is_confirmed %}
 		<div class='is_fixed'>{% trans "<p>Please check your email for a message from fixmystreet.ca, which will include a confirmation link.  Complete your submission by clicking on it.</p><p>Your report will not be sent to city officials or be visible to other visitors until you have done so.</p>" %}</div>
 		{% endif %}
-		
-		<h2>{{report.title}}</h2>
-		{% if not report.is_fixed and report.is_confirmed %}
-		<!-- AddThis Button BEGIN -->
-		<div class="addthis_toolbox addthis_default_style">
-			<a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
-			<span class="addthis_separator">|</span>
-			<a class="addthis_button_facebook"></a>
-			<a class="addthis_button_myspace"></a>
-			<a class="addthis_button_google"></a>
-			<a class="addthis_button_twitter"></a>
-		</div>
-		<!-- AddThis Button END -->
-		{% endif %}
 
-		<div id='report-header'>
-			{% if report.is_confirmed %}
-			<div id='report-subscribers'>
-				{% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
-				{% if not report.is_fixed %}
-				<a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
-				{% endif %}
-			</div>
-			{% endif %}
-			<div id='report-status'>
-				<table>
-					<tr><th>{% trans "Category:" %}</th><td><b>{{report.category.name}}</b></td></tr>
-					{% if report.address %}				
-					<tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
-					{% endif %}
-					<tr><th>{% trans "Filed by:" %}</th><td>{{report.author}}</td></tr>				
-					<tr><th>{% trans "Filed on:" %}</th><td>{{report.created_at|date}}</td></tr>
-				</table>
-			</div>
-		</div>
 		<div id='report-body'>
+            {% if report.is_confirmed %}
+            <div id='report-subscribers'>
+                {% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
+                {% if not report.is_fixed %}
+                <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
+                {% endif %}
+            </div>
+            {% endif %}
+
 			<p>{{report.desc|linebreaks}}</p>
+
 			{% if report.photo  %}
 			<center><img src='{{ report.photo.url }}'/></center>
 		    {% endif %}
+
+			<p class="author-sign">{% blocktrans with by=report.author on=report.created_at|date %}Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>{% endblocktrans %}</p>
+
+
+            <table id='report-status'>
+                {% if report.address %}				
+                <tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
+                {% endif %}
+                <tr><th>{% trans "Category:" %}</th><td>{{report.category.name}}</td></tr>
+            </table>
+
 
 		    {% if report.is_confirmed %}
 			<div id="more-actions">
@@ -102,11 +103,9 @@ $(function(){
 			<div id="report_updates">
 				{% for update in updates %}
 				<div class="report_update">
-					<p>
-						<em>{% trans "Posted by" %} {{update.author}}, {{update.created_at|date}}</em>
-					</p>
 					<p>{{update.desc}}</p>
-					{% if update.is_fixed %}<strong class="fixed_msg">{% trans "Fixed" %}</strong>{% endif %}
+					{% if update.is_fixed %}<strong class="fixed_msg">{% trans "This problem has been fixed." %}</strong>{% endif %}
+					<p class="author-sign">{% blocktrans with by=report.author on=report.created_at|date %}Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>{% endblocktrans %}</p>
 				</div>
 				{% endfor %}
 			</div>
