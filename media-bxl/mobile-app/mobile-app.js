@@ -3,6 +3,7 @@
         //$.mobile.allowCrossDomainPages = true;
         //$.mobile.page.prototype.options.addBackBtn = true;
         $.mobile.ajaxEnabled = false;
+        //$.mobile.pushStateEnable = false;
     });
 
 
@@ -12,7 +13,13 @@
     // var rootUrl = 'http://localhost:8000';
 
     var mediaUrl = rootUrl + '/media/';
+ 
+    window.alert = function(message){
+        return Notification.prototype.alert.apply(this, [message, function(){}, 'Fix My Street Brussels', 'OK']);
+    }
 
+
+    var $map, initialized;
 
     function goBackPage(evt){
         evt.preventDefault();
@@ -31,7 +38,42 @@
     };
     
     $(document).bind("backbutton", goBackPage);
+
+    window.initReports = function() {
+        //if phonegap, need to toggle these
+//        if (typeof navigator.device == "undefined"){
+//            setTimeout("initReports();", 100);
+//            return;
+//        }
+
+        //Method used to initialize Javascript Page Components
+        $.mobile.showPageLoadingMsg();
+        if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
+        {
+            navigator.geolocation.getCurrentPosition(function(position)
+            {
+                $.mobile.hidePageLoadingMsg();
+                var source = new Proj4js.Proj("EPSG:4326");
+                var dest   = new Proj4js.Proj("EPSG:31370");
+                var p      = new Proj4js.Point(position.coords.longitude, position.coords.latitude);
+                  
+                Proj4js.transform(source, dest, p);
+                initMap(p);
+            },noGeoLoc);
+         }
+         else
+         {
+            noGeoLoc();
+         }
+    }
+ 
+    $(document).bind("resume",initReports);
+    $(document).bind("deviceready",initReports);
     
+    $(document).bind("pause", function(){
+        console.log('pause');
+    });
+
     $(document).delegate("[data-rel=back]", "click", goBackPage);
 
     function loadFmsPage(url){
@@ -80,37 +122,41 @@
             $current.trigger( "pageinit" );
         }
         
-        if($form.find('input[type=file]')) {
-            var imageURI = $form.find('input[type=file]').val();
-            var options = new FileUploadOptions()
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpg";
+        $file = $form.find('input[type=file]');
+        if($file.length && $file.data('uri')) {
+            var imageURI = $file.data('uri');
+            var options = new FileUploadOptions();
+            options.fileKey = $file.attr('name');
+            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
 
-            //var params = new Object();
-            //params.value1 = "value1";
-            //params.value2 = "value2";
+            var params = {};
+            var array = $form.serializeArray();
+            for(i in array){
+                params[array[i].name] = array[i].value;
+            }
+            options.params = params;
 
-            options.params = $form.serialize();
+            var ft = new FileTransfer();
 
-            var ft = new FileTransfer()
-            ft.upload(imageURI, url, success, connectionErrorCallback, options);
+            ft.upload(imageURI, url, function(r){success(r.response);}, connectionErrorCallback, options);
         } else {
             $.post(url,$form.serialize(),success)
                     .error(connectionErrorCallback);
         }
     });
-    
-    function connectionErrorCallback(){
-        alert('Connection problem, please check your internet connection and relanch this app.');
-        navigator.app.exitApp();
-    }
 
-    $(document).delegate('#home', "pageinit", function(){
-        $page = $(this);
-        var $map = $page.find('#map-bxl');
 
-        function initMap(p){
+    function initMap(p){
+        console.log('step 0');
+        if(initialized){
+            console.log('step 2');
+            $map.fmsMap('reset');
+        }else{
+            initialized = true;
+            console.log('step 3');
+            $map = $('#map-bxl');
+            console.log('step 4');
             $map.fmsMap({
                 apiRootUrl: rootUrl + "/api/",
                 origin:{x:p.x,y:p.y},
@@ -129,61 +175,56 @@
                     externalGraphic: "images/marker-pending.png"
                 }
             });
-            
-            loadReports(p,function(){
-                $map.fmsMap('addDraggableMarker', p.x, p.y);
-                $('#create-report').removeClass('ui-disabled').data('position',p);
-                $('#content-disabled').remove();
-            });
-            
-            $map.one('markerdrag click movestart zoomend',function(evt,point){
-                $('#instructable').fadeOut();
-            });
         }
+
+        loadReports(p,function(){
+            $map.fmsMap('addDraggableMarker', p.x, p.y);
+            $('#create-report').removeClass('ui-disabled').data('position',p);
+            $('#content-disabled').remove();
+        });
         
-        function loadReports(p,callback){
-            $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y},function(response){
-                if(response.status != 'success')
-                {
-                    // do something
-                    console.log('error');
-                    return ;
-                }
-
-                for(var i in response.results)
-                {
-                    var report = response.results[i];
-                    $map.fmsMap('addReport',report);
-                }
-                if(callback){
-                    callback();
-                }
-            }).error(connectionErrorCallback);
-        }
-
-        function noGeoLoc(){
-            var defaultLoc = {x:148853.101438753, y:170695.57753253728};
-            alert('Your device do not support geo localisation..');
-            initMap(defaultLoc);
-        }
-
-
-        if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
-        {
-            navigator.geolocation.getCurrentPosition(function(position)
+        $('#instructable').fadeIn();
+        $map.one('markerdrag click movestart zoomend',function(evt,point){
+            $('#instructable').fadeOut();
+        });
+    }
+ 
+    function loadReports(p,callback){
+        $.getJSON(rootUrl + '/api/reports/',{lon:p.x,lat:p.y, timestamp:(new Date()).toString()},function(response){
+            if(response.status != 'success')
             {
-                var source = new Proj4js.Proj("EPSG:4326");
-                var dest   = new Proj4js.Proj("EPSG:31370");
-                var p      = new Proj4js.Point(position.coords.longitude, position.coords.latitude);
-                
-                Proj4js.transform(source, dest, p);
-                initMap(p);
-            }, noGeoLoc);
-        }
-        else
-        {
-            noGeoLoc();
-        }
+                // do something
+                console.log('error');
+                return ;
+            }
+           
+            for(var i in response.results)
+            {
+                var report = response.results[i];
+                $map.fmsMap('addReport',report);
+            }
+            if(callback){
+                callback();
+            }
+        }).error(connectionErrorCallback);
+    }
+     
+     function noGeoLoc(error){
+        var defaultLoc = {x:148853.101438753, y:170695.57753253728};
+        alert('Your device do not support geo localisation.');
+        $.mobile.hidePageLoadingMsg();
+        initMap(defaultLoc);
+        console.log(error);
+     }
+ 
+
+    function connectionErrorCallback(jqXHR, textStatus, errorThrown){
+        alert('Connection problem, please check your internet connection and relanch this app.');
+    }
+
+    $(document).delegate('#home', "pageinit", function(){
+        $page = $(this);
+        $map = $page.find('#map-bxl');
 
         $map.bind('markermoved',function(evt,p){
             $('#create-report').attr('href',rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts');
@@ -364,26 +405,14 @@
         
         function setPhotoPath(fileURI)
         {
+            $form.find('#id_photo').data('uri',fileURI);
             $form.find('#id_photo').val(fileURI);
             $form.find('#photo_preview').attr('src',fileURI).fadeIn();
-            $('.select_photo').css({'margin-right':'105px'});
+            console.log($form.find('#photo_preview').exifPretty());
+                         
+            $('.select_photo').css({'margin-right':'110px'});
+            $.mobile.hidePageLoadingMsg();
         }
-        
-        $form.bind('submit-success',function(){
-            var options = new FileUploadOptions()
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpg";
-
-            var params = new Object();
-            params.value1 = "value1";
-            params.value2 = "value2";
-
-            options.params = params;
-
-            var ft = new FileTransfer()
-            ft.upload(imageURI, "", win, fail, options);
-        });
         
         $form.find('#id_photo').change(function(){
             var file = this.files[0];
@@ -406,6 +435,7 @@
         {
             $('.select_photo').click(function(evt){
                 evt.preventDefault();
+                $.mobile.showPageLoadingMsg();
                 
                 navigator.camera.getPicture(setPhotoPath, function(message)
                 {
