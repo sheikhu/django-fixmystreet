@@ -1,9 +1,10 @@
 (function(){
-    $(document).bind("mobileinit", function(){
-        //$.mobile.allowCrossDomainPages = true;
+    $( document ).bind( "mobileinit", function() {
+        $.support.cors = true;
+        $.mobile.allowCrossDomainPages = true;
         //$.mobile.page.prototype.options.addBackBtn = true;
-        $.mobile.ajaxEnabled = false;
-        //$.mobile.pushStateEnable = false;
+        //$.mobile.ajaxEnabled = true;
+        $.mobile.pushStateEnabled = false;
     });
 
 
@@ -20,6 +21,8 @@
 
 
     var $map, initialized;
+/*
+    $(document).delegate("[data-rel=back]", "click", goBackPage);
 
     function goBackPage(evt){
         evt.preventDefault();
@@ -36,8 +39,78 @@
         $.mobile.changePage($page,{reverse:true});
         $.mobile.activePage = $page;
     };
-    
-    $(document).bind("backbutton", goBackPage);
+ 
+    function loadFmsPage(url){
+        $.mobile.showPageLoadingMsg();
+     
+        $.get(url, function(content){
+            var $page = $(content);
+            $.mobile.activePage.after($page);
+            $page.page();
+           
+            $.mobile.hidePageLoadingMsg();
+            $.mobile.changePage($page);
+           
+            $page.data('url',url);
+            $page.data('ajaxLoaded',true);
+        }).error(connectionErrorCallback);
+    }*/
+ 
+    $(document).delegate("form", "submit", function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+          
+        $.mobile.showPageLoadingMsg();
+          
+        var $form = $(this);
+        var $current = $form.closest('[data-role=page]');
+          
+        var url = $form.attr('action') || $current.data('url');
+        if(!$form.attr('action')){
+            $form.attr('action', url);
+        }
+          
+        var success = function(content){
+            var $page = $(content).page();
+              
+            $current.find('[data-role=content]').remove();
+            var newContent = $page.find('[data-role=content]');
+            newContent.addClass('ui-content');
+            $current.append(newContent);
+            $current.trigger( "create" );
+            $(document.body).animate({scrollTop:0}, 'fast');
+              
+            $.mobile.hidePageLoadingMsg();
+              
+            $current.data('url',url);
+            $current.trigger( "pageinit" );
+        }
+              
+        $file = $form.find('input[type=file]');
+        if($file.length && $file.data('uri')) 
+        {
+            var imageURI = $file.data('uri');
+            var options = new FileUploadOptions();
+            options.fileKey = $file.attr('name');
+            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+            var params = {};
+            var array = $form.serializeArray();
+            for(i in array){
+                params[array[i].name] = array[i].value;
+            }
+            options.params = params;
+            
+            var ft = new FileTransfer();
+              
+            ft.upload(imageURI, url, function(r){success(r.response);}, connectionErrorCallback, options);
+        } else {
+            $.post(url,$form.serialize(),success)
+                    .error(connectionErrorCallback);
+        }
+    });
+ 
+    $(document).bind("backbutton", history.back);
 
     window.initReports = function() {
         //if phonegap, need to toggle these
@@ -74,78 +147,6 @@
         console.log('pause');
     });
 
-    $(document).delegate("[data-rel=back]", "click", goBackPage);
-
-    function loadFmsPage(url){
-        $.mobile.showPageLoadingMsg();
-        
-        $.get(url, function(content){
-            var $page = $(content);
-            $.mobile.activePage.after($page);
-            $page.page();
-            
-            $.mobile.hidePageLoadingMsg();
-            $.mobile.changePage($page);
-
-            $page.data('url',url);
-            $page.data('ajaxLoaded',true);
-        }).error(connectionErrorCallback);
-    }
-
-    $(document).delegate("form", "submit", function(evt){
-        evt.preventDefault();
-        evt.stopPropagation();
-
-        $.mobile.showPageLoadingMsg();
-
-        var $form = $(this);
-        var $current = $form.closest('[data-role=page]');
-
-        var url = $form.attr('action') || $current.data('url');
-        if(!$form.attr('action')){
-            $form.attr('action', url);
-        }
-        
-        var success = function(content){
-            var $page = $(content).page();
-
-            $current.find('[data-role=content]').remove();
-            var newContent = $page.find('[data-role=content]');
-            newContent.addClass('ui-content');
-            $current.append(newContent);
-            $current.trigger( "create" );
-            $(document.body).animate({scrollTop:0}, 'fast');
-            
-            $.mobile.hidePageLoadingMsg();
-
-            $current.data('url',url);
-            $current.trigger( "pageinit" );
-        }
-        
-        $file = $form.find('input[type=file]');
-        if($file.length && $file.data('uri')) {
-            var imageURI = $file.data('uri');
-            var options = new FileUploadOptions();
-            options.fileKey = $file.attr('name');
-            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-            options.mimeType = "image/jpeg";
-
-            var params = {};
-            var array = $form.serializeArray();
-            for(i in array){
-                params[array[i].name] = array[i].value;
-            }
-            options.params = params;
-
-            var ft = new FileTransfer();
-
-            ft.upload(imageURI, url, function(r){success(r.response);}, connectionErrorCallback, options);
-        } else {
-            $.post(url,$form.serialize(),success)
-                    .error(connectionErrorCallback);
-        }
-    });
-
 
     function initMap(p){
         console.log('step 0');
@@ -157,22 +158,23 @@
             console.log('step 3');
             $map = $('#map-bxl');
             console.log('step 4');
+            localRootFolder = window.location.href.substr(0,window.location.href.lastIndexOf('/') + 1);
             $map.fmsMap({
                 apiRootUrl: rootUrl + "/api/",
                 origin:{x:p.x,y:p.y},
                 showControl:false,
                 markerStyle:{
-                    externalGraphic: "images/marker.png",
+                    externalGraphic: localRootFolder + "images/marker.png",
                     graphicXOffset:-32/2,
                     graphicYOffset:-32,
                     graphicHeight:32,
                     graphicWidth:32
                 },
                 fixedMarkerStyle:{
-                    externalGraphic: "images/marker-fixed.png"
+                    externalGraphic: localRootFolder + "images/marker-fixed.png"
                 },
                 pendingMarkerStyle:{
-                    externalGraphic: "images/marker-pending.png"
+                    externalGraphic: localRootFolder + "images/marker-pending.png"
                 }
             });
         }
@@ -232,7 +234,7 @@
         });
 
         $map.bind('reportselected',function(evt, point, report){
-            loadFmsPage(rootUrl + '/mobile/reports/' + report.id);
+            $.mobile.changePage(rootUrl + '/mobile/reports/' + report.id);
         });
         
         $page.find('#create-report').click(function(evt){
@@ -241,7 +243,7 @@
 
             var p = $(this).data('position');
             if(!p){return;}
-            loadFmsPage(rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y);
+            $.mobile.changePage(rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y);
         });
 
         $page.find('#zoom-in,#zoom-out').click(function(evt){
@@ -408,7 +410,6 @@
             $form.find('#id_photo').data('uri',fileURI);
             $form.find('#id_photo').val(fileURI);
             $form.find('#photo_preview').attr('src',fileURI).fadeIn();
-            console.log($form.find('#photo_preview').exifPretty());
                          
             $('.select_photo').css({'margin-right':'110px'});
             $.mobile.hidePageLoadingMsg();
