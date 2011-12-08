@@ -61,3 +61,38 @@ To build a mobile app:
 * for ios: put geoserver.gis.irisnet.be and fixmystreet.irisnet(lab).be into the externalHost in the phonegap.plist file
 
 
+
+
+To fix ios and android picture exif header orientation browser unsuported, normalize the orientation of the photo before the resize.
+
+in stdimage/fields.py
+def get_exifs(img):
+    from PIL import Image
+    from PIL.ExifTags import TAGS
+
+    ret = {}
+    info = img._getexif()
+    if(not info):
+        return ret
+    #import pdb;pdb.set_trace()
+    for tag, value in info.items():
+        decoded = TAGS.get(tag, tag)
+        ret[decoded] = value
+    return ret
+
+
+in stdimage/fields.py function _resize_image
+    exifs = get_exifs(img)
+    orientation = 1
+    if('Orientation' in exifs):
+        orientation = exifs['Orientation']
+
+    if(orientation == 3 or orientation == 4):
+        img = img.rotate(180)
+    elif(orientation == 5 or orientation == 6):
+        img = img.rotate(-90)
+    elif(orientation == 7 or orientation == 8):
+        img = img.rotate(90)
+    
+    if(orientation == 2 or orientation == 4 or orientation == 5 or orientation == 7):
+        img = ImageOps.mirror(img)

@@ -506,6 +506,8 @@ input.big_button:hover {
 	padding:1.2em;
 	color:#333;
 	font-weight:normal;
+    border: 1px solid black;
+    border-radius: 5px;
 }
 
 .note strong {
