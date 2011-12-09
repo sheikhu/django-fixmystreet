@@ -98,6 +98,13 @@
 			this.superControl.activate();
 			*/
 		},
+
+        reset: function(){
+            this.map.removeLayer(this.draggableLayer);
+            delete this.draggableLayer;
+            this.map.removeLayer(this.markersLayer);
+            delete this.markersLayer;
+        },
 	
 		setCenter: function(x,y)
 		{
