@@ -15,13 +15,30 @@ Installation instructions are available here:
 
 
 (to check)
-requirements: transmeta, stdimage, GeoDjango
+requirements: transmeta, stdimage, GeoDjango, PIL
 
+    $ easy_install django
     $ easy_install django-transmeta
     $ easy_install django-stdimage
 
+may be requied:
+
+    $ easy_install psycopg2==2.4.1
+
+
+install http://www.pythonware.com/products/pil/ V-1.1.7
+pip install PIL
+
+
 for GeoDjango installation:
+
 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
+
+may be incompatibility between postgis and psycopg2 on python2.6
+if message is like "invalid byte sequence for encoding UTF8: 0x00"
+need to apply this patch:
+
+https://code.djangoproject.com/ticket/16778
 
 
 this project has been developped and tested with PostgreSql
@@ -37,6 +54,11 @@ to install GeoDjango for PostgreSql:
 after install, create the database:
     $ createdb -U postgres -T template_postgis fixmystreet
     $ python manage.py syncdb
+
+
+finally:
+
+    $ cp local_settings_staging.py local_settings.py
 
 
 Usefull

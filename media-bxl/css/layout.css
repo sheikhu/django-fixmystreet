@@ -128,6 +128,20 @@ body {
 	border-top-right-radius: 15px;
 }
 
+a.button
+{
+    color: black;
+    border: 1px solid #517EB5;
+    border-radius: 5px;
+    background-color: #D5E5F6;
+    padding: 2px 8px;
+    text-decoration: none;
+}
+
+a.button:hover
+{
+    border: 1px solid black;
+}
 
 /********* FOOTER LAYOUT ********/
 
@@ -312,7 +326,7 @@ li img {
 }
 
 .form .required label::before {
-    content: "* ";
+    content: "*";
 }
 
 #required_note {
@@ -380,16 +394,20 @@ li img {
     padding: 3px 0;
     list-style-type: none;
 }
-
+/*
 #proposal a {
     color: black;
-    border: 1px solid #004990;
+    border: 1px solid #517EB5;
     border-radius: 5px;
     background-color: #D5E5F6;
     padding: 2px 8px;
     text-decoration: none;
 }
 
+#proposal a:hover {
+    border: 1px solid black;
+}
+*/
 #search_box.loading {
 	background:url("../images/ajax-loader.gif") no-repeat 98% center transparent;
 }
@@ -449,12 +467,6 @@ input.big_button:hover {
     margin-bottom: 15px;
     visibility: hidden;
     display: inline-block;
-    color: black;
-    border: 1px solid #004990;
-    border-radius: 5px;
-    background-color: #D5E5F6;
-    padding: 2px 8px;
-    text-decoration: none;
 }
 
 #search_results .report{
