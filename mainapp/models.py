@@ -630,7 +630,7 @@ class PollingStation(models.Model):
 class DictToPoint():
     
     def __init__(self, dict):
-        if exceptclass and not dict.has_key('lat') or not dict.has_key('lon'):
+        if not dict.has_key('lat') or not dict.has_key('lon'):
             raise HttpResponseNotFound('<h1>Location not found</h1>')
         
         self.lat = dict.get('lat',None)
