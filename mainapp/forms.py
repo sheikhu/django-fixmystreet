@@ -110,9 +110,9 @@ class ReportForm(forms.ModelForm):
     def __init__(self,data=None, files=None, initial=None):
         if data:
             self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
-            d2p = DictToPoint(data,exceptclass=None)
+            d2p = DictToPoint(data)
         else:
-            d2p = DictToPoint(initial,exceptclass=None)
+            d2p = DictToPoint(initial)
         
         self.pnt = d2p.pnt()
         self.update_form = ReportUpdateForm(data)
