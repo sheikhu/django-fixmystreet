@@ -3,7 +3,7 @@
         $.support.cors = true;
         $.mobile.allowCrossDomainPages = true;
         //$.mobile.page.prototype.options.addBackBtn = true;
-        //$.mobile.ajaxEnabled = true;
+        $.mobile.ajaxEnabled = true;
         $.mobile.pushStateEnabled = false;
     });
 
@@ -21,15 +21,26 @@
 
 
     var $map, initialized;
-/*
+
+    $(document).bind("backbutton", goBackPage); // or history.back
     $(document).delegate("[data-rel=back]", "click", goBackPage);
 
     function goBackPage(evt){
         evt.preventDefault();
         evt.stopImmediatePropagation();
 
+        if(!$.mobile.activePage && navigator.app && navigator.app.exitApp) {
+        	navigator.app.exitApp();
+        	return;
+        }
+
         var $current = $.mobile.activePage;
         var $page = $current.prev().first();
+
+        if(!$page.length && navigator.app && navigator.app.exitApp) {
+        	navigator.app.exitApp();
+        	return;
+        }
 
 		if($current.data('ajaxLoaded')){
 	        $page.one('pageshow', function(evt,data){
@@ -39,8 +50,8 @@
         $.mobile.changePage($page,{reverse:true});
         $.mobile.activePage = $page;
     };
- 
-    function loadFmsPage(url){
+
+    function fmsChangePage(url){
         $.mobile.showPageLoadingMsg();
      
         $.get(url, function(content){
@@ -54,7 +65,7 @@
             $page.data('url',url);
             $page.data('ajaxLoaded',true);
         }).error(connectionErrorCallback);
-    }*/
+    }
  
     $(document).delegate("form", "submit", function(evt){
         evt.preventDefault();
@@ -110,17 +121,18 @@
         }
     });
  
-    $(document).bind("backbutton", history.back);
 
     window.initReports = function() {
         //if phonegap, need to toggle these
-//        if (typeof navigator.device == "undefined"){
-//            setTimeout("initReports();", 100);
-//            return;
-//        }
+        if (typeof navigator.device == "undefined"){
+        	console.log('device not ready, waiting...');
+            setTimeout("initReports();", 100);
+            return;
+        }
 
         //Method used to initialize Javascript Page Components
         $.mobile.showPageLoadingMsg();
+        console.log('atempt to locate');
         if(navigator.geolocation && navigator.geolocation.getCurrentPosition)
         {
             navigator.geolocation.getCurrentPosition(function(position)
@@ -141,7 +153,7 @@
     }
  
     $(document).bind("resume",initReports);
-    $(document).bind("deviceready",initReports);
+    //$(document).bind("deviceready",initReports);
     
     $(document).bind("pause", function(){
         console.log('pause');
@@ -222,6 +234,7 @@
 
     function connectionErrorCallback(jqXHR, textStatus, errorThrown){
         alert('Connection problem, please check your internet connection and relanch this app.');
+        $.mobile.hidePageLoadingMsg();
     }
 
     $(document).delegate('#home', "pageinit", function(){
@@ -234,7 +247,7 @@
         });
 
         $map.bind('reportselected',function(evt, point, report){
-            $.mobile.changePage(rootUrl + '/mobile/reports/' + report.id);
+            fmsChangePage(rootUrl + '/mobile/reports/' + report.id);
         });
         
         $page.find('#create-report').click(function(evt){
@@ -243,7 +256,7 @@
 
             var p = $(this).data('position');
             if(!p){return;}
-            $.mobile.changePage(rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y);
+            fmsChangePage(rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y);
         });
 
         $page.find('#zoom-in,#zoom-out').click(function(evt){
@@ -442,9 +455,10 @@
                 {
                     alert('Failed to take photo... ' + message);
                 },{ 
-                    quality: 50, 
                     destinationType: Camera.DestinationType.FILE_URI,
-                    sourceType: (this.id=="take_photo"?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.PHOTOLIBRARY)
+                    sourceType: (this.id=="take_photo"?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.PHOTOLIBRARY),
+                    targetWidth: 300,
+                    targetHeight: 300
                 });
             });
         }

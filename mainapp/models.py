@@ -629,9 +629,9 @@ class PollingStation(models.Model):
     
 class DictToPoint():
     
-    def __init__(self, dict, exceptclass = Http404 ):
+    def __init__(self, dict):
         if exceptclass and not dict.has_key('lat') or not dict.has_key('lon'):
-            raise exceptclass
+            raise HttpResponseNotFound('<h1>Location not found</h1>')
         
         self.lat = dict.get('lat',None)
         self.lon = dict.get('lon',None)
