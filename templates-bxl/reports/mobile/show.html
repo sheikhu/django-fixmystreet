@@ -62,7 +62,7 @@
             {% if report.photo  %}
             <img align='center' src='{{ SITE_URL }}{{ report.photo.url }}'/>
             {% endif %}
-            <button data-rel="back">Back</button>
+            <button data-rel="back">{% trans "Fill a new report" %}</button>
             {% if report.is_confirmed %}
 <!--
             <div id="more-actions">
