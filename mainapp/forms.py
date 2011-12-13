@@ -102,7 +102,7 @@ class ReportForm(forms.ModelForm):
     # category = CategoryChoiceField()
     lat = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     lon = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')
     
     photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)

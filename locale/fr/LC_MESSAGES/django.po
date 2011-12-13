@@ -746,7 +746,7 @@ msgstr "Ce problème a été résolu."
 #: templates-bxl/reports/show.html:66
 #: templates-bxl/reports/mobile/show.html:21
 msgid ""
-"<p>Please check your email for a message from fixmystreet.ca, which will "
+"<p>Please check your email for a message from FixMyStreet, which will "
 "include a confirmation link.  Complete your submission by clicking on it.</"
 "p><p>Your report will not be sent to city officials or be visible to other "
 "visitors until you have done so.</p>"
