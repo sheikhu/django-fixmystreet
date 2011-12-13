@@ -714,7 +714,7 @@ msgid ""
 "Please do not be abusive - abusing the service devalues the service for all "
 "users."
 msgstr ""
-"Veillez ne pas être abusif, ceci dévalue le service pour tous les "
+"Veillez à ne pas être abusif, ceci dévalue le service pour tous les "
 "utilisateurs"
 
 #: templates-bxl/reports/new.html:201 templates-bxl/reports/mobile/new.html:31
