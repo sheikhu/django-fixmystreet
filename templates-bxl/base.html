@@ -36,7 +36,6 @@
 						</select>
 					</form>
 				</div>
-
 				{% load tags %}
 				<div id="menu">
 					{% get_active_menu %}
@@ -50,6 +49,7 @@
 
 		<div id="main_container">
 			<div id='body_content'>
+                <a href="{% url socialauth_begin 'facebook' %}">connect with FB</a>
 				{% if error_msg %}
 				<div class="error-msg">
 					<p>{{error_msg}}</p>

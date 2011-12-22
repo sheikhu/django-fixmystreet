@@ -3,16 +3,6 @@
     z-index:2000;
 }
 
-.panel {
-/*
-	background-image:url("../images/logo.png");
-*/
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center center;
-}
-
-
 #container {
 	margin: 0 auto;
     padding:0;
@@ -25,37 +15,39 @@
 	left: 0;
 }
 
-#content-disabled {
-	z-index:10000;
-    background-image:url("../images/homescreen.jpg");
-    background-size: auto 100%;
-    background-color: black;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
+.required label {
+    font-weight:bold;
 }
 
-/*
-#content-disabled {
-	z-index:10000;
-	opacity:.5;
-	background-color: #CCC;
-	background-repeat: no-repeat;
-    background-image:url("../images/loader.gif");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center center;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
+.required label:before {
+    content:"*";
 }
-*/
+
+.required .mandatory {
+    border:1px solid red !important;
+}
+
+#report_form p {
+    position: relative;
+    min-height: 65px;
+}
+
+#id_address {
+    vertical-align: top;
+    display: inline-block;
+    position: absolute;
+    right: 50px;
+    left: 0;
+    width:auto;
+}
+
+#locate {
+    vertical-align: top;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+}
+
 
 ul.errorlist li {
 	color:red;
@@ -73,7 +65,7 @@ ul.errorlist li {
 	right:5px;
 	font-size:.8em;
 	z-index:1000;
-    margin:0 0 31px 10px;
+    margin:0 0 70px 22px;
 	background-color:white;
 	padding:4px 14px;
 	border:1px solid black;
@@ -121,7 +113,7 @@ ul.errorlist li {
 }
 
 #search-box{
-    margin-right: 80px;
+    margin-right: 50px;
 }
 
 #search.loading + .ui-input-clear .ui-icon{
@@ -143,15 +135,30 @@ ul.errorlist li {
 	background-image:url("../images/help.png");
 }
 
-#control-zoom .ui-btn-icon-notext,
-#control-options .ui-btn-icon-notext{
+.ui-btn-icon-notext {
     width: 34px;
     height: 34px;
+    margin: 0.3em 5px;
+    position: relative;
+    
+}
+.ui-btn-icon-notext.ui-btn-corner-all {
+    border-radius: 9px;
+    
 }
 
-#control-zoom .ui-btn-icon-notext .ui-btn-inner,
-#control-options .ui-btn-icon-notext .ui-btn-inner {
-    padding: 7px 7px 7px 7px;
+.ui-btn-icon-notext .ui-btn-inner {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    bottom: 7px;
+    left: 8px;
+    padding: 0;
+}
+
+.ui-btn-icon-notext .ui-icon {
+    height:100%;
+    width:100%;
 }
 
 #photo_preview{

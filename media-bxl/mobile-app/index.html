@@ -14,13 +14,100 @@
         <script src="OpenLayers-2.11/OpenLayers.js"></script>
 		<script src="proj4js/lib/proj4js-combined.js"></script>
 
-        <script src="fixmystreetmap.js"></script>
-        <script src="mobile-app.js"></script>
+        <script src="js/fixmystreetmap.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/report_form.js"></script>
 
         <script src="jquery.mobile-1.0/jquery.mobile-1.0.js"></script>
+        <script type="text/javascript" charset="utf-8">
+	        function onBodyLoad() {    
+	        	//if phonegap, need to toggle these
+	             if (typeof navigator.device == "undefined"){
+	            	 console.log('LOADING...');
+	            	 setTimeout("onBodyLoad()", 100);         
+	             } else {
+	            	 console.log('LOADED');
+	            	 init(); //First call.
+	            	 document.addEventListener("resume", init, false);
+	             }
+	
+	        }	        
+	    </script>
+        
     </head>
-    <body onload="initReports();">
-        <div id="home" class="panel home" data-role="page">
+    <body onload="onBodyLoad()">
+        <div data-role="page" id="new_report" class="panel" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>New report</h1>
+            </div>
+
+            <div data-role="content">
+                <form enctype="multipart/form-data" method="post" action="/mobile/reports/new" id="report_form">
+                    <p class="required">
+                        <label for="id_address">Location:</label> 
+                        <input id="id_address" type="text" name="address" maxlength="255" />
+                        <a id="locate" data-role="button" data-icon="locate" data-iconpos="notext">Select a location</a>
+                    </p>
+                    <p class="required"><label for="id_category">Category:</label> 
+                        <select name="category" id="id_category">
+                            <option value="" selected="selected">Select a Category</option>
+                            <optgroup label="Parks">
+                                <option value="3">Lights Malfunctioning in Park</option>
+                                <option value="4">Debris or Litter in Park</option>
+                                <option value="1">Broken or Damaged Equipment/Play Structures</option>
+                                <option value="2">Full or Overflowing Garbage Cans</option>
+                            </optgroup>
+                            <optgroup label="Grafitti">
+                                <option value="5">Graffiti On City Property</option>
+                                <option value="6">Graffiti on Private Property</option>
+                                <option value="7">Graffiti  on Utility Boxes/Transformers/Mailboxes, etc..</option>
+                            </optgroup>
+                            <optgroup label="Roads/Sidewalks/Pathways">
+                                <option value="13">Damaged Guardrails</option>
+                                <option value="15">Bus Shelter Damaged</option>
+                                <option value="16">Debris/Litter in Bus Shelter</option>
+                                <option value="8">Blocked or damaged Catch basin / Manhole</option>
+                                <option value="9">Pothole</option>
+                                <option value="10">Damaged Curb</option>
+                                <option value="14">Full or Overflowing Garbage Cans</option>
+                                <option value="11">Debris or Litter on Road/Sidewalk/Pathway</option>
+                                <option value="12">Blocked or Damaged Culvert</option>
+                            </optgroup>
+                            <optgroup label="Trees">
+                                <option value="20">Branches Blocking Signs or Intersection</option>
+                            </optgroup>
+                            <optgroup label="Traffic Signals">
+                                <option value="17">Street Lights Out or Malfunctioning</option>
+                                <option value="18">Faded/Damaged/Missing Pavement Markings</option>
+                                <option value="19">Bent/Damaged/Missing Street Signs</option>
+                            </optgroup>
+                        </select>
+                    </p>
+                    <div>
+                        <img id='photo_preview' style="display:none;"/>
+                        <label for="id_photo">Photo:</label>
+                        <input capture="camera" type="file" name="photo" accept="image/*;capture=camera" id="id_photo" />
+                        <input type="hidden" name="lat" value="1" id="id_lat" /><input type="hidden" name="lon" value="1" id="id_lon" />
+                        <input type="hidden" name="postalcode" value="1000" id="id_postalcode" />
+                        <div data-role="controlgroup" data-type="horizontal">
+                            <a id="take_photo" class="select_photo" data-role="button">Camera</a>
+                            <a id="open_library" class="select_photo" data-role="button">Library</a>
+                        </div>
+                    </div>
+                    <p class="required"><label for="id_title">Subject:</label> <input id="id_title" type="text" name="title" maxlength="100" /></p>
+                    <p><label for="id_desc">Details:</label> <textarea id="id_desc" rows="10" cols="40" name="desc"></textarea></p>
+                    <p class="required"><label for="id_author">Name:</label> <input id="id_author" type="text" name="author" maxlength="255" /></p>
+                    <p class="required"><label for="id_email">Email:</label> <input id="id_email" type="text" name="email" maxlength="255" /></p>
+                    <p><label for="id_phone">Phone:</label> <input id="id_phone" type="text" name="phone" maxlength="255" /></p>
+                    <p id="required_note">* This fields are required</p>
+                    <p>
+                        <input type="submit" value='Submit'/>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div id="map" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Fix My Street</h1>
             </div>
@@ -38,10 +125,7 @@
                     </div>
                     <ul id="proposal" style="display:none;" data-role="listview" data-inset="true"> </ul>
                 </form>
-                <div id="control-options" data-role="controlgroup" data-type="horizontal">
-                    <a id="locate" data-role="button" data-icon="locate" data-iconpos="notext">Localize me</a>
-                    <a href="#help" data-role="button" data-icon="help" data-iconpos="notext">Help</a>
-                </div>
+                <a id="control-options" href="#help" data-role="button" data-icon="help" data-iconpos="notext">Help</a>
                 <div id="control-zoom" data-role="controlgroup" data-type="horizontal">
                     <a id="zoom-in" data-role="button" data-icon="plus" data-iconpos="notext">Zoom in</a>
                     <a id="zoom-out" data-role="button" data-icon="minus" data-iconpos="notext">Zoom out</a>

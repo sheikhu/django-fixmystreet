@@ -55,6 +55,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.media',
     'django.core.context_processors.i18n',
+    'social_auth.context_processors.social_auth_by_type_backends',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,6 +63,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'mainapp.middleware.subdomains.SubdomainMiddleware',
     'mainapp.middleware.SSLMiddleware.SSLRedirect',
 )
@@ -99,12 +101,44 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.gis',
-    #'contrib.google_analytics',
+    
     'transmeta',
     'mainapp',
+    'social_auth'
 )
 
 #AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuthBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.google.GoogleBackend',
+    'social_auth.backends.yahoo.YahooBackend',
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.contrib.livejournal.LiveJournalBackend',
+    'social_auth.backends.contrib.orkut.OrkutBackend',
+    'social_auth.backends.contrib.foursquare.FoursquareBackend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_IMPORT_BACKENDS = (
+    'myproy.social_auth_extra_services',
+)
+SOCIAL_AUTH_ENABLED_BACKENDS = ('google', 'facebook')
+
+FACEBOOK_APP_ID              = '263584440367959'
+FACEBOOK_API_SECRET          = 'f3e357971926c2da235ef577ddf6c5ef'
+
+GOOGLE_CONSUMER_KEY          = ''
+GOOGLE_CONSUMER_SECRET       = ''
+
+#LOGIN_URL          = '/login-form/'
+#LOGIN_REDIRECT_URL = '/logged-in/'
+#LOGIN_ERROR_URL    = '/login-error/'
+
 
 
 ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
