@@ -55,7 +55,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.media',
     'django.core.context_processors.i18n',
-    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_by_name_backends',
+    "django.contrib.auth.context_processors.auth"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,8 +104,8 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     
     'transmeta',
+    'social_auth',
     'mainapp',
-    'social_auth'
 )
 
 #AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
@@ -135,9 +136,9 @@ FACEBOOK_API_SECRET          = 'f3e357971926c2da235ef577ddf6c5ef'
 GOOGLE_CONSUMER_KEY          = ''
 GOOGLE_CONSUMER_SECRET       = ''
 
+LOGIN_REDIRECT_URL = '/'
 #LOGIN_URL          = '/login-form/'
-#LOGIN_REDIRECT_URL = '/logged-in/'
-#LOGIN_ERROR_URL    = '/login-error/'
+LOGIN_ERROR_URL    = '/'
 
 
 

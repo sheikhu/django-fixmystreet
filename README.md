@@ -118,3 +118,6 @@ in stdimage/fields.py function _resize_image
     
     if(orientation == 2 or orientation == 4 or orientation == 5 or orientation == 7):
         img = ImageOps.mirror(img)
+
+social_auth fix:
+https://github.com/vosi/django-social-auth/commit/1999d22abaefbcb820a1add7b1606126779532a3

@@ -49,12 +49,21 @@
 
 		<div id="main_container">
 			<div id='body_content'>
-                <a href="{% url socialauth_begin 'facebook' %}">connect with FB</a>
-				{% if error_msg %}
-				<div class="error-msg">
-					<p>{{error_msg}}</p>
-				</div>
-				{% endif %}
+                {% if user.is_authenticated %}
+                    <p>Welcome {{ user.firstname }} {{ user.lastname }}. (<a href="{% url auth_logout  %}">logout</a>)</p>
+                {% else %}
+                    <p id="login-bar">
+                        <a id="fb-login" class="login-btn" href="{% url socialauth_begin 'facebook' %}"><span>Login</span></a>
+                        <a id="gg-login" class="login-btn" href="{% url socialauth_begin 'google' %}"><span>Login</span></a>
+                    </p>
+                {% endif %}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
 				{% block content %}{% endblock %}
 			</div>
 		</div>

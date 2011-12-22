@@ -2,6 +2,8 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+
 from mainapp.feeds import LatestReports, LatestReportsByCity, LatestReportsByWard, LatestUpdatesByReport
 from mainapp.models import City
 import mainapp.views.cities as cities
@@ -31,7 +33,11 @@ urlpatterns = patterns('',
 
 
 urlpatterns += patterns('',
-    url(r'', include('social_auth.urls')),
+    url(r'^', include('social_auth.urls')),
+    url(r'^logout/$',
+                           auth_views.logout_then_login,
+                           {'login_url':'/'},
+                           name='auth_logout'),
 )
 
 urlpatterns += patterns('mainapp.views.main',
