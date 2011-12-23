@@ -128,13 +128,13 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_IMPORT_BACKENDS = (
     'myproy.social_auth_extra_services',
 )
-SOCIAL_AUTH_ENABLED_BACKENDS = ('google', 'facebook')
+SOCIAL_AUTH_ENABLED_BACKENDS = ('google-oauth2', 'facebook')
 
-FACEBOOK_APP_ID              = '263584440367959'
-FACEBOOK_API_SECRET          = 'f3e357971926c2da235ef577ddf6c5ef'
+FACEBOOK_APP_ID             = '263584440367959'
+FACEBOOK_API_SECRET         = 'f3e357971926c2da235ef577ddf6c5ef'
 
-GOOGLE_CONSUMER_KEY          = ''
-GOOGLE_CONSUMER_SECRET       = ''
+GOOGLE_OAUTH2_CLIENT_ID     = '985105651100.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'rTxGVKsX9FZou00L6dQ_ewV4'
 
 LOGIN_REDIRECT_URL = '/'
 #LOGIN_URL          = '/login-form/'

@@ -54,7 +54,7 @@
                 {% else %}
                     <p id="login-bar">
                         <a id="fb-login" class="login-btn" href="{% url socialauth_begin 'facebook' %}"><span>Login</span></a>
-                        <a id="gg-login" class="login-btn" href="{% url socialauth_begin 'google' %}"><span>Login</span></a>
+                        <a id="gg-login" class="login-btn" href="{% url socialauth_begin 'google-oauth2' %}"><span>Login</span></a>
                     </p>
                 {% endif %}
                 {% if messages %}
