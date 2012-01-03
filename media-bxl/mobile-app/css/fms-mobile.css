@@ -26,12 +26,7 @@
     border-radius: 30px;
     text-align:center;
     vertical-align:middle;
-}
-
-.block-info .ui-btn,.block-info .ui-select{
-    margin: 0;
-    height: 100%;
-    width: 100%;
+    background-size: contain;
 }
 
 #home .submit{
@@ -50,8 +45,21 @@
     bottom:90px;
 }
 
+#category{
+    background: url(../images/categ.png) no-repeat center center;
+}
 
+#map{
+    background: url(../images/map.png) no-repeat center center;
+}
 
+#description{
+    background: url(../images/description.png) no-repeat center center;
+}
+
+#photo{
+    background: url(../images/photo.png) no-repeat center center;
+}
 
 
 
@@ -67,7 +75,7 @@
 	height: 400px;*/
 	position: absolute;
 	top: 42px;
-	bottom: 0;
+	bottom: 40px;
 	right: 0;
 	left: 0;
 }

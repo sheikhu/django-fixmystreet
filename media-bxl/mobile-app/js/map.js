@@ -1,14 +1,12 @@
 (function(){
     var $map, initialized;
 
-    $(document).delegate('#map', "pagereload", function() {
-        //Method used to initialize Javascript Page Components
-        window.fms.getCurrentPosition(initMap)
-    });
     
     $(document).delegate('#map', "pageinit", function(){
         $page = $(this);
         $map = $page.find('#map-bxl');
+
+        window.fms.getCurrentPosition(initMap)
 
         $map.bind('markermoved',function(evt,p){
             $('#create-report').attr('href', window.fms.rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts');
