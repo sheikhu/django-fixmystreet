@@ -17,12 +17,8 @@
 		<div id="ward_select">
 			<select id="search_ward" name="ward">
 				<option value="">{% trans "Choose a ward..." %}</option>
-				{% for ward in wards %}
-					{% for zip in ward.zipcode_set.all %}
-                        {% if not zip.hide %}
-                            <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                        {% endif %}
-					{% endfor %}
+				{% for zip in zipcodes %}
+                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
 				{% endfor %}
 			</select>
 			<p>{% trans "or leave empty for a global search" %}</p>

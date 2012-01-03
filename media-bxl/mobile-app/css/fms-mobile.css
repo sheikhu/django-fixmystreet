@@ -1,4 +1,61 @@
 
+.quarter{
+    position: absolute;
+    top:0;
+    left:0;
+    height: 50%;
+    width: 50%;
+}
+.quarter:nth-child(2), .quarter:nth-child(4){
+    left:50%;
+}
+.quarter:nth-child(3), .quarter:nth-child(4){
+    top:50%;
+}
+
+.block-info.filled{
+    background-color:green;
+}
+
+.block-info{
+    position: absolute;
+    top:10px;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    border-radius: 30px;
+    text-align:center;
+    vertical-align:middle;
+}
+
+.block-info .ui-btn,.block-info .ui-select{
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#home .submit{
+    margin:0;
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    right: 10px;
+}
+
+.container{
+    left: 0;
+    right: 0;
+    position: absolute;
+    top:42px;
+    bottom:90px;
+}
+
+
+
+
+
+
+
 .ui-loader{
     z-index:2000;
 }

@@ -123,18 +123,18 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.github.GithubBackend',
     'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'mainapp.googlebackend.GoogleProfileBackend',
 )
 
 SOCIAL_AUTH_IMPORT_BACKENDS = (
-    'myproy.social_auth_extra_services',
+    'mainapp',
 )
-SOCIAL_AUTH_ENABLED_BACKENDS = ('google-oauth2', 'facebook')
+SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
 
+#for client secret see local settings
 FACEBOOK_APP_ID             = '263584440367959'
-FACEBOOK_API_SECRET         = 'f3e357971926c2da235ef577ddf6c5ef'
-
 GOOGLE_OAUTH2_CLIENT_ID     = '985105651100.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = 'rTxGVKsX9FZou00L6dQ_ewV4'
+
 
 LOGIN_REDIRECT_URL = '/'
 #LOGIN_URL          = '/login-form/'

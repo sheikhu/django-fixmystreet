@@ -50,11 +50,11 @@
 		<div id="main_container">
 			<div id='body_content'>
                 {% if user.is_authenticated %}
-                    <p>Welcome {{ user.firstname }} {{ user.lastname }}. (<a href="{% url auth_logout  %}">logout</a>)</p>
+                    <p>Welcome {{ user.get_full_name }}. (<a href="{% url auth_logout  %}">logout</a>)</p>
                 {% else %}
                     <p id="login-bar">
                         <a id="fb-login" class="login-btn" href="{% url socialauth_begin 'facebook' %}"><span>Login</span></a>
-                        <a id="gg-login" class="login-btn" href="{% url socialauth_begin 'google-oauth2' %}"><span>Login</span></a>
+                        <a id="gg-login" class="login-btn" href="{% url socialauth_begin 'google-profile' %}"><span>Login</span></a>
                     </p>
                 {% endif %}
                 {% if messages %}

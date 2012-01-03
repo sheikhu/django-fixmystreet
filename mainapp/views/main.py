@@ -1,19 +1,20 @@
-from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, Http404, HttpResponse
-from mainapp.models import DictToPoint, Report, ReportUpdate, Ward, ReportCountQuery, City, FaqEntry
-from mainapp import search
-from django.template import Context, RequestContext
-from django.contrib.gis.measure import D 
-from django.contrib.gis.geos import *
-import settings
-import datetime
-from django.utils.translation import ugettext as _
-from django.utils.http import urlquote
-from django.utils.encoding import iri_to_uri
-from mainapp.views.cities import home as city_home
 import logging
 import os
 import urllib
+import datetime
+
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.template import Context, RequestContext
+from django.contrib.gis.measure import D 
+from django.contrib.gis.geos import *
+from django.utils.translation import ugettext as _
+from django.utils.http import urlquote
+from django.utils.encoding import iri_to_uri
+from django.utils.translation import get_language
+
+import settings
+from mainapp.models import DictToPoint, Report, ReportUpdate, ZipCode, ReportCountQuery, City, FaqEntry
 
 
 def home(request, location = None, error_msg =None): 
@@ -26,13 +27,14 @@ def home(request, location = None, error_msg =None):
     if request.GET.has_key('q'):
         location = request.GET["q"]
     
-    wards = Ward.objects.all().order_by('name')
+    #wards = Ward.objects.all().order_by('name')
+    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
     return render_to_response("home.html",
             {
                 "report_counts": ReportCountQuery('1 year'),
                 "cities": City.objects.all(),
                 'search_error': error_msg,
-                'wards': wards,
+                'zipcodes': zipcodes,
                 'location':location
             },
             context_instance=RequestContext(request))
