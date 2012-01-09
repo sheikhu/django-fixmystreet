@@ -82,7 +82,7 @@ $(function(){
 		    {% endif %}
 
 			<p class="author-sign">
-                {% blocktrans with by=report.author on=report.created_at|date %}
+                {% blocktrans with by=report.author.get_full_name on=report.created_at|date %}
                 Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 {% endblocktrans %}
             </p>

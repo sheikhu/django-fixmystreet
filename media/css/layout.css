@@ -338,6 +338,14 @@ li img {
     text-align: right;
 }
 
+.logged-bar {
+    text-align: right;
+}
+
+.logged-bar .username {
+    font-weight: bold;
+}
+
 .login-btn {
     color: black;
     text-decoration: none;
