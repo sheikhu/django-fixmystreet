@@ -3,8 +3,12 @@ import os
 import logging
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-#TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner' 
-TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
+
+TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+MEDIA_URL = '/media/'
+
+#TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE = 'template_postgis'
 
 logging.basicConfig(
@@ -20,15 +24,6 @@ logging.basicConfig(
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'America/Chicago'
-
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -50,13 +45,12 @@ TEMPLATE_LOADERS = (
 
 # include request object in template to determine active page
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'mainapp.utils.domain_context_processor',
     'django.core.context_processors.request',
     'django.core.context_processors.auth',
     'django.core.context_processors.media',
     'django.core.context_processors.i18n',
     'social_auth.context_processors.social_auth_by_name_backends',
-    "django.contrib.auth.context_processors.auth"
+    'fixmystreet.utils.domain_context_processor'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,9 +58,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'mainapp.middleware.subdomains.SubdomainMiddleware',
-    'mainapp.middleware.SSLMiddleware.SSLRedirect',
+    'django.contrib.messages.middleware.MessageMiddleware'
 )
 
 # Language code for this installation. All choices can be found here:
@@ -84,15 +76,7 @@ LANGUAGES = (
   ('nl', gettext('Dutch')),
 )
 
-
 ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, 'templates')
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -105,10 +89,9 @@ INSTALLED_APPS = (
     
     'transmeta',
     'social_auth',
-    'mainapp',
+    'fixmystreet',
 )
 
-#AUTH_PROFILE_MODULE = 'mainapp.UserProfile'
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
@@ -123,11 +106,11 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.github.GithubBackend',
     'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'mainapp.googlebackend.GoogleProfileBackend',
+    'fixmystreet.googlebackend.GoogleProfileBackend',
 )
 
 SOCIAL_AUTH_IMPORT_BACKENDS = (
-    'mainapp',
+    'fixmystreet',
 )
 SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
 
@@ -137,7 +120,6 @@ GOOGLE_OAUTH2_CLIENT_ID     = '985105651100.apps.googleusercontent.com'
 
 
 LOGIN_REDIRECT_URL = '/'
-#LOGIN_URL          = '/login-form/'
 LOGIN_ERROR_URL    = '/'
 
 
@@ -147,24 +129,29 @@ ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
 EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
 DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
 
+DEBUG = False
+
 #################################################################################
 # These variables Should be defined in the local settings file
 #################################################################################
 #
-#DATABASE_ENGINE =            # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-#DATABASE_NAME =              # Or path to database file if using sqlite3.
-#DATABASE_USER =              # Not used with sqlite3.
-#DATABASE_PASSWORD =          # Not used with sqlite3.
-#DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-#DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
-#
+#DATABASES = {
+#   'default': {
+#       'ENGINE': 'django.db.backends.postgresql',
+#       'NAME': 'fixmystreet',
+#       'USER': 'postgres',
+#       'PASSWORD': 'xxx',
+#       'HOST': 'localhost',
+#       'PORT': 5432
+#   }
+#}
 #EMAIL_USE_TLS =
 #EMAIL_HOST =
 #EMAIL_HOST_USER =
 #EMAIL_HOST_PASSWORD =
 #EMAIL_PORT =
 #EMAIL_FROM_USER =
-DEBUG = False
+
 #LOCAL_DEV =
 #SITE_URL = http://localhost:8000
 #SECRET_KEY=
@@ -186,12 +173,5 @@ except ImportError:
     except ImportError:
         import sys
         sys.stderr.write( "local_settings.py not set; using default settings\n" )
-
-
-# Using django_testview from here (add 'TESTVIEW' to your local settings): 
-# https://github.com/visiblegovernment/django_testview
-
-if DEBUG and globals().has_key('TESTVIEW'):
-    INSTALLED_APPS += ('django_testview',)
 
 TEMPLATE_DEBUG = True

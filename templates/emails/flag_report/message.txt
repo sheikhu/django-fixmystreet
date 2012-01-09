@@ -1,4 +1,0 @@
-
-Report '{{report.title}}' has been flagged as offensive:
-
-{{report.get_absolute_url}}

@@ -1,0 +1,121 @@
+from django import forms
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+import settings
+from fixmystreet.models import Ward, City, Report, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint
+from django.utils.translation import ugettext_lazy
+from django.contrib.gis.geos import fromstr
+from django.forms.util import ErrorDict
+
+#from pyexif import ExifEditor
+
+
+class ReportForm(forms.ModelForm):
+    """Report form"""
+    class Meta:
+        model = Report
+        fields = ('x','y','title', 'address', 'category','postalcode','photo','desc')
+
+    required_css_class = 'required'
+    # category = CategoryChoiceField()
+    x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
+    
+    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+
+    def __init__(self,data=None, files=None, initial=None):
+        if data:
+            self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
+            self.point = dictToPoint(data)
+        
+        super(ReportForm,self).__init__(data, files, initial=initial)
+        self.fields['category'] = CategoryChoiceField()#self.ward
+
+    def clean(self):
+        if not self.ward:
+            raise forms.ValidationError("Location not supported")
+        return super(ReportForm, self).clean()
+
+    def save(self, user, commit=True):
+        report = super(ReportForm, self).save(commit=False)
+        report.ward = self.ward
+        report.author = user
+        report.point = self.point
+        if commit:
+            report.save()
+        ReportSubscription(report=report,subscriber=user).save()
+        return report
+
+
+class ReportUpdateForm(forms.ModelForm):
+    class Meta:
+        model = ReportUpdate
+        fields = ('desc',)
+
+    def save(self, user, report, commit=True):
+        update = super(ReportUpdateForm, self).save(commit=False)
+        update.author = user
+        update.report = report
+        if commit:
+            update.save()
+        return update
+
+
+class ContactForm(forms.Form):
+    required_css_class = 'required'
+
+    name = forms.CharField(max_length=100,
+                           widget=forms.TextInput(attrs={ 'class': 'required' }),
+                           label=ugettext_lazy('Name'))
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict({ 'class': 'required' },
+                                                               maxlength=200)),
+                             label=ugettext_lazy('Email'))
+    body = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'required' }),
+                              label=ugettext_lazy('Message'))
+    
+    def save(self, fail_silently=False):
+        message = render_to_string("emails/contact/message.txt", self.cleaned_data )
+        send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message, 
+                   settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
+
+
+"""
+    Do some pre-processing to
+    render opt-groups (silently supported, but undocumented
+    http://code.djangoproject.com/ticket/4412 )
+"""
+class CategoryChoiceField(forms.fields.ChoiceField):
+    
+    def __init__(self, ward=None,required=True, widget=None, label=None,
+                 initial=None, help_text=None, *args, **kwargs):
+        # assemble the opt groups.
+        choices = []
+        choices.append( ('', ugettext_lazy("Select a Category")) )
+        #city = City.objects.get(id=1)
+        categories = ReportCategory.objects.all()
+        #if ward:
+        #    categories = ward.city.get_categories()
+        #    categories = categories.order_by('category_class')
+        #else:
+        #    categories = []
+            
+        groups = {}
+        for category in categories:
+            catclass = str(category.category_class)
+            if not groups.has_key(catclass):
+                groups[catclass] = []
+            groups[catclass].append((category.pk, category.name ))
+        for catclass, values in groups.items():
+            choices.append((catclass,values))
+        super(CategoryChoiceField,self).__init__(choices,required,widget,label,initial,help_text)#,args,kwargs)
+
+    def clean(self, value):
+        super(CategoryChoiceField,self).clean(value)
+        try:
+            model = ReportCategory.objects.get(pk=value)
+        except ReportCategory.DoesNotExist:
+            raise ValidationError(self.error_messages['invalid_choice'])
+        return model
+

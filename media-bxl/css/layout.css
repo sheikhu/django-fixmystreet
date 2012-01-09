@@ -118,12 +118,12 @@ body {
 	background-image: linear-gradient(top, #E0E0E0 50%, #FFFFFF 100%);
 }
 
-#menu a:first-child{
+#menu a:first-child {
 	padding-left: 1em;
 	border-top-left-radius: 15px;
 }
 
-#menu a:last-child{
+#menu a:last-child {
 	padding-right: 1em;
 	border-top-right-radius: 15px;
 }
@@ -364,6 +364,7 @@ li img {
 }
 #fb-login span {
     background: url(https://s-static.ak.fbcdn.net/images/connect_sprite.png) repeat scroll 0 0 #5F78AB;
+    border-top: 1px solid #879AC0;
 }
 
 #gg-login {

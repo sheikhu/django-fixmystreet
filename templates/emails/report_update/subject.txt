@@ -1,1 +1,0 @@
-FixMyStreet.ca: '{{update.report.title|safe}}' {% if update.is_fixed %} Fixed {% else %} Updated {% endif %}

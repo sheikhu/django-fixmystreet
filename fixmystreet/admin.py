@@ -1,0 +1,53 @@
+from fixmystreet.models import NotificationRule, Ward, ReportCategory, Report, City, ReportCategoryClass, FaqEntry, Councillor
+from django.contrib import admin
+from transmeta import canonical_fieldname
+from django import forms
+
+
+class ReportCategoryClassAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    
+admin.site.register(ReportCategoryClass,ReportCategoryClassAdmin)
+
+
+class ReportCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'hint',)
+
+admin.site.register(ReportCategory, ReportCategoryAdmin)
+
+
+class FaqEntryAdmin(admin.ModelAdmin):
+    list_display = ('q', 'order')
+
+admin.site.register(FaqEntry, FaqEntryAdmin)
+
+
+class CouncillorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email')
+    fields = ('name', 'email')
+
+admin.site.register(Councillor,CouncillorAdmin)
+
+
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('ward','title','is_fixed','created_at','updated_at','category')
+    list_display_links = ('title',)
+    ordering = ['created_at']
+    exclude = ['photo']
+
+admin.site.register(Report,ReportAdmin)
+
+
+
+class WardAdmin(admin.ModelAdmin):
+    fields = ('name','councillor')#,'emailrule_set')
+    #raw_id_fields = ('emailrule_set',)
+    readonly_fields = ('name',)
+
+admin.site.register(Ward,WardAdmin)
+
+
+class NotificationRuleAdmin(admin.ModelAdmin):
+	pass
+
+admin.site.register(NotificationRule,NotificationRuleAdmin)

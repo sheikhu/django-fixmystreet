@@ -61,20 +61,19 @@ $(function(){
 		{% if report.is_fixed %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
-			
-		{% if not report.is_confirmed %}
-		<div class='is_fixed'>{% trans "<p>Please check your email for a message from fixmystreet.ca, which will include a confirmation link.  Complete your submission by clicking on it.</p><p>Your report will not be sent to city officials or be visible to other visitors until you have done so.</p>" %}</div>
-		{% endif %}
 
 		<div id='report-body'>
-            {% if report.is_confirmed %}
             <div id='report-subscribers'>
-                {% trans "Subscribers:" %} <b>{{subscribers}}</b><br/>					
+                {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
                 {% if not report.is_fixed %}
-                <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
+                    {% if not subscribed %}
+                    <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
+                    {% else %}
+                    <p><small>{% trans "You've subscribed for updates" %}</small></p>
+                    <a href="{% url unsubscribe report.id %}">{% trans "Unsubscribe" %}</a>
+                    {% endif %}
                 {% endif %}
             </div>
-            {% endif %}
 
 			<p>{{report.desc|linebreaks}}</p>
 
@@ -82,30 +81,37 @@ $(function(){
 			<center><img src='{{ report.photo.url }}'/></center>
 		    {% endif %}
 
-			<p class="author-sign">{% blocktrans with by=report.author on=report.created_at|date %}Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>{% endblocktrans %}</p>
+			<p class="author-sign">
+                {% blocktrans with by=report.author on=report.created_at|date %}
+                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                {% endblocktrans %}
+            </p>
 
 
-            <table id='report-status'>
-                {% if report.address %}				
-                <tr><th>{% trans "Location:" %}</th><td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td></tr>
-                {% endif %}
-                <tr><th>{% trans "Category:" %}</th><td>{{report.category.name}}</td></tr>
+            <table id='report-status'>			
+                <tr>
+                    <th>{% trans "Location:" %}</th>
+                    <td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td>
+                </tr>
+                <tr>
+                    <th>{% trans "Category:" %}</th>
+                    <td>{{report.category.name}}</td>
+                </tr>
             </table>
 
 
-		    {% if report.is_confirmed %}
 			<div id="more-actions">
-				<p><a href='/reports/{{report.id}}/flags'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+				<p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
 			</div>
 		
-			{% if updates %}
+			{% if report.reportupdate_set.all %}
 			<h3>{% trans "Updates" %}</h3>
 			<div id="report_updates">
-				{% for update in updates %}
+				{% for update in report.reportupdate_set.all %}
 				<div class="report_update">
 					<p>{{update.desc}}</p>
 					{% if update.is_fixed %}<strong class="fixed_msg">{% trans "This problem has been fixed." %}</strong>{% endif %}
-					<p class="author-sign">{% blocktrans with by=report.author on=report.created_at|date %}Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>{% endblocktrans %}</p>
+					<p class="author-sign">{% blocktrans with by=update.author.get_full_name on=update.created_at|date %}Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>{% endblocktrans %}</p>
 				</div>
 				{% endfor %}
 			</div>
@@ -114,7 +120,7 @@ $(function(){
 			{% if not report.is_fixed %}
 			<h2>{% trans "Provide an update" %} </h2>
 			<p>{% trans "The status of this report has changed? Thank you let us know by filling this form." %}</p>
-			<form action="/reports/{{report.id}}/updates/" method="post">
+			<form action="{% url report_update report.id %}" method="post">
 				<table id="report_form" class="form">
 					{{update_form.as_table}}					
 					<tr><td></td><td><input type="checkbox" id="is_fixed" name="is_fixed" value="1">{% trans "This problem has been fixed." %}</td></tr>
@@ -122,12 +128,10 @@ $(function(){
 				</table>
 			</form>
 			{% endif %}
-            {% endif %}
 		</div>
 	</div>
 	<div id="rightcol">
      	<div id="map-bxl" ></div>
-    	<!--{% include "wards/_info_box.html" %}-->
     </div>
 </div>
 	

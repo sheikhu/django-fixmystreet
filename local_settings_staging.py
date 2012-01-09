@@ -1,18 +1,17 @@
 import os
+import settings
 
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+DATABASES = {
+   'default': {
+       'ENGINE': 'postgresql_psycopg2',
+       'NAME': 'fixmystreet',
+       'USER': '###',
+       'PASSWORD': '###',
+       'HOST': 'localhost',
+       'PORT': 5432
+   }
+}
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates-bxl'))
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media-bxl')
-
-#GEOS_LIBRARY_PATH = '/usr/local/lib/libgeos_c.so'
-
-DATABASE_ENGINE = "postgresql_psycopg2"
-DATABASE_NAME = "fixmystreet"
-DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "password"
-DATABASE_HOST = 'localhost'
-DATABASE_PORT = '5432'
 
 
 #EMAIL_USE_TLS =
@@ -20,18 +19,22 @@ EMAIL_HOST = "relay.irisnet.be"
 #EMAIL_HOST_USER =
 #EMAIL_HOST_PASSWORD =
 #EMAIL_PORT =
-EMAIL_ADMIN = "jsanchezpando@cirb.irisnset.be"
-ADMIN_EMAIL = "jsanchezpando@cirb.irisnset.be"
+EMAIL_ADMIN = "###@cirb.irisnet.be"
+ADMIN_EMAIL = "###@cirb.irisnet.be"
 ADMIN = ["Jonathan"]
 
 DEBUG = True
 SITE_ID = 2
 LOCAL_DEV = False
-SITE_URL = "http://192.168.103.27:8000"
+SITE_URL = "###"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
-#LOCAL_API = "192.168.13.42" # gislb.irisnetlab.be
 LOCAL_API = "service.gis.irisnetlab.be"
 
-#SECRET_KEY=
-#GMAP_KEY=
+
+FACEBOOK_API_SECRET         = '###'
+
+GOOGLE_OAUTH2_CLIENT_ID     = '###'
+GOOGLE_OAUTH2_CLIENT_SECRET = '###'
+
+
