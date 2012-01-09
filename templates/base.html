@@ -12,11 +12,32 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 		{% block script %}{% endblock %}
 		<script>
+        var loginWin = null;
 		$(document).ready(function(){
 			$('#select-language').change(function(){
 				$(this).closest('form').submit();
 			});
+            $('.login-btn').click(function(evt){
+                evt.preventDefault();
+                var loginHref = $(this).prop('href');
+                var title = $(this).prop('title');
+                if(loginWin == null || loginWin.closed) {
+                    loginWin = window.open(loginHref,title, "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=780,height=410");
+                } else {
+                    loginWin.focus();
+                }
+                if(loginWin == null) {
+                    // popup has been blocked...
+                    window.location.assign(loginHref);
+                }
+                return false;
+            });
 		});
+        window.connectionCallback = function(username){
+            $(document).trigger('connected',[username]);
+            $('.login-bar').hide();
+            $('.logged-bar').show().find('.username').html(username);
+        }
 		</script>
 	</head>
 
@@ -49,14 +70,12 @@
 
 		<div id="main_container">
 			<div id='body_content'>
-                {% if user.is_authenticated %}
-                    <p>Welcome {{ user.get_full_name }}. (<a href="{% url auth_logout  %}">logout</a>)</p>
-                {% else %}
-                    <p id="login-bar">
-                        <a id="fb-login" class="login-btn" href="{% url socialauth_begin 'facebook' %}"><span>Login</span></a>
-                        <a id="gg-login" class="login-btn" href="{% url socialauth_begin 'google-profile' %}"><span>Login</span></a>
-                    </p>
-                {% endif %}
+                <p class="logged-bar"{% if not user.is_authenticated %} style="display:none;"{% endif %}>Welcome <span class="username">{{ user.get_full_name }}</span>. (<a href="{% url auth_logout  %}">logout</a>)</p>
+                
+                <p class="login-bar"{% if user.is_authenticated %} style="display:none;"{% endif %}>
+                    <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
+                    <a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
+                </p>
                 {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
@@ -72,7 +91,7 @@
 			<div id="footer_content">
 				{% block content_third %}{% endblock %}
                 <p id="legal_notice">
-                    <a id="term_of_use" href="{% url term_of_use %}">{% trans "Terms of Use" %}</a>
+                    <a id="term_of_use" href="{% url terms_of_use %}">{% trans "Terms of Use" %}</a>
                     Copyright 2011, <a href="http://www.cirb.irisnet.be">CIRB</a> <a href="http://www.cirb.irisnet.be"><img src="/media/images/CIRB-CIBG-inverse.gif"/></a>
                 </p>
 			</div>

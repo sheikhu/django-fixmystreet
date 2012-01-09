@@ -334,7 +334,7 @@ li img {
     font-size: .8em;
 }
 
-#login-bar {
+.login-bar {
     text-align: right;
 }
 
@@ -355,19 +355,19 @@ li img {
     display: inline-block;
 }
 
-#fb-login {
+.fb-login {
     background: url(https://s-static.ak.fbcdn.net/images/connect_sprite.png) no-repeat scroll left -188px #29447E;
     line-height: 14px;
     outline: medium none;
     padding: 0 0 0 1px;
     color:white;
 }
-#fb-login span {
+.fb-login span {
     background: url(https://s-static.ak.fbcdn.net/images/connect_sprite.png) repeat scroll 0 0 #5F78AB;
     border-top: 1px solid #879AC0;
 }
 
-#gg-login {
+.gg-login {
     background: url(../images/google.png) no-repeat scroll;
     display: inline-block;
     border: 1px solid black;
@@ -476,6 +476,12 @@ input.big_button {
 
 input.big_button:hover {
 	border:2px solid #004990;
+}
+
+input.big_button:disabled {
+	background:#EEE;
+	border:2px solid #AAA;
+	color:#AAA;
 }
 
 #search_form.loading {

@@ -1,26 +1,27 @@
-from django import template
 import re
 import json
 import settings
-from django.conf import settings
 
+from django import template
+from django.conf import settings
+from django.core.urlresolvers import resolve
 
 register = template.Library()
 
 MENU_DEFS = [ 
-    ('submit', ['^/$','^/reports/new']),
-    ('view', ['^/reports/.*', '^/cities/.*', '^/wards/.*']),
-    ('about',  ['^/about/', '^/term_of_use/']),
-    ('contact', ['^/contact/'])
+    ('submit', ['home','report_new']),
+    ('view', ['report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report', 'bxl_wards', 'ward_show']),
+    ('about',  ['about', 'terms_of_use']),
+    ('contact', ['contact'])
 ]
 
 @register.simple_tag(takes_context=True)
 def get_active_menu(context):
+    page = resolve(context['request'].path)
     for menu,defs in MENU_DEFS:
-        for match in defs:
-            if re.match(match,context['request'].path):
-                context['menu'] = menu
-                return ''
+        if page.url_name in defs:
+            context['menu'] = menu
+            return ''
     return ''
 
 @register.simple_tag

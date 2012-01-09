@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block hello %}{% endblock %}
 {% block content %}
-{% blocktrans with title=update.report.title|safe author=update.author|safe date=update.created_at|date %}
+{% blocktrans with title=update.report.title|safe author=update.author.get_full_name|safe date=update.created_at|date %}
 <p>The Fix My Street Report: <strong>{{title}}</strong></p>
 <p>was updated by {{author}} on {{date}}:</p>
 {% endblocktrans %}
@@ -12,9 +12,7 @@
 </div>
 
 <p>{% trans "For more information, see the full report at:" %}</p>
-<p><a href="{{ update.report.get_absolute_url }}">{{ update.report.get_absolute_url }}</a></p>
-{% endblock %}
-{% block signature %}
+<p><a href="http://{{ SITE_URL }}{{ update.report.get_absolute_url }}">http://{{ SITE_URL }}{{ update.report.get_absolute_url }}</a></p>
 {% if unsubscribe_url %}
 {% blocktrans %}
 <p>You are receiving this email because you subscribed to updates for this report

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.generic.simple import direct_to_template
 
 from fixmystreet.feeds import LatestReports, LatestReportsByCity, LatestReportsByWard, LatestUpdatesByReport
 from fixmystreet.models import City
@@ -31,13 +32,14 @@ urlpatterns = patterns('',
             {'login_url':'/'},
             name='auth_logout'
     ),
+    url(r'^login-callback/$', direct_to_template, {'template': 'login-callback.html'}),
 )
 
 urlpatterns += patterns('fixmystreet.views.main',
     url(r'^$', 'home',name='home'),
     url(r'^about/$', 'about',name='about'),
     url(r'^posters/$', 'posters',name='posters'),
-    url(r'^term_of_use/$', 'termOfUse',name='term_of_use'),
+    url(r'^terms_of_use/$', 'terms_of_use',name='terms_of_use'),
     url(r'^robots.txt$', 'robot'),
 )
 

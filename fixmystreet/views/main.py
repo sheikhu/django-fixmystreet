@@ -42,7 +42,7 @@ def posters(request):
             {'languages': settings.LANGUAGES },
             context_instance=RequestContext(request))
 
-def termOfUse(request): 
+def terms_of_use(request): 
     return render_to_response("term_of_use.html",
             context_instance=RequestContext(request))
       
@@ -51,5 +51,3 @@ def robot(request):
 Disallow: /
 """,mimetype="text/plain")
 
-def googleCheck(request): 
-    return HttpResponse("google-site-verification: google8f518780d83abb68.html")

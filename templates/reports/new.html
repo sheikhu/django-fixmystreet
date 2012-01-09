@@ -11,6 +11,8 @@
 $(document).ready(function() {
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
+    var connected = true;
+
 	
 	$map.fmsMap({
 		apiLang:'{{ LANGUAGE_CODE }}',
@@ -92,13 +94,15 @@ $(document).ready(function() {
 
 		$map.fmsMap('getSelectedAddress',function(response)
 		{
-			$form.find(':submit').prop('disabled',false);
 			$('#id_address').removeClass('loading');
 			
 			if(response.status == 'success')
 			{
 				$('#id_postalcode').val(response.result.address.street.postCode);
 				$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
+                if(connected) {
+                    $form.find(':submit').prop('disabled',false);
+                }
 			}
 			else
 			{
@@ -108,11 +112,32 @@ $(document).ready(function() {
 					msg = 'Unable to locate this address';
 				}
 				$('#id_address').removeClass('loading');
-				$form.find(':submit').prop('disabled',false);
 				$('#id_address').after('<p class="error-msg">' + msg + '</p>');
 			}
 		});
 	}
+    
+    $('form').submit(function(){
+        if(!connected){
+            evt.preventDefault();
+        }
+    });
+    $(document).bind('connected',function(){
+        connected = true;
+        $('.login-bar').hide();
+        $('form :submit').prop('disabled',false);
+    });
+    $(document).bind('disconnected',function(){
+        connected = false;
+        $('.login-bar').show();
+        $('form :submit').prop('disabled',true);
+    });
+
+    {% if user.is_authenticated %}
+        $(document).trigger('connected');
+    {% else %}
+        $(document).trigger('disconnected');
+    {% endif %}
 
 	/*
 	// in the case of grafity category, we ask Is it Hate Graffiti.
@@ -165,6 +190,10 @@ $(document).ready(function() {
                 {% trans "Fill the report" %} 
             </h2>
 			<table class='form'>
+				<tr>
+					<th></th>
+					<td id="required_note">{% trans "* This fields are required" %}</td>
+				</tr>
 				{{ report_form.as_table }}
 				<tr>
 					<td></td>
@@ -172,12 +201,19 @@ $(document).ready(function() {
 				</tr>
 				{{ update_form.as_table }}
 				<tr>
-					<th></th>
-					<td id="required_note">{% trans "* This fields are required" %}</td>
-				</tr>
-				<tr>
 					<td></td>
-					<td align="right"><input type="submit" class='big_button' value="{% trans 'Submit' %}" /></td>
+					<td align="right">
+                        <p>
+                            <input type="submit" class='big_button' value="{% trans 'Submit' %}" /
+                        </p>
+                        <p class="login-bar">
+                            {% trans 'You are not connected, please login to submit your report' %}
+                        </p>
+                        <p class="login-bar">
+                            <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
+                            <a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
+                        </p>
+                    </td>
 				</tr>
 			</table>
 		</form>

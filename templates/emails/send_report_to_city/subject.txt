@@ -1,1 +1,1 @@
-Fix My Street: {{update.report.title|safe}}
+Fix My Street: {{report.title|safe}}

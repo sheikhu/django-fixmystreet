@@ -1,13 +1,13 @@
-Title:        {{update.report.title|safe}}
-Category:     {{update.report.category.name}}
-Submitted By: {{update.author|safe}}	
-Phone:        {{update.phone}}
-Email:        {{update.email}}
-FMS ID:       {{update.report.id}}
-{% if update.report.address %}Location:     {{update.report.address}}{% endif %}
-{% if update.report.photo %}Image URL:    http://{{request.get_host}}{{MEDIA_URL}}{{update.report.photo}}{% endif %}
+Title:        {{report.title|safe}}
+Category:     {{report.category.name}}
+Submitted By: {{report.author|safe}}	
+Phone:        {{report.author.phone}}
+Email:        {{report.author.email}}
+FMS ID:       {{report.id}}
+{% if report.address %}Location:     {{report.address}}{% endif %}
+{% if report.photo %}Image URL:    {{SITE_URL}}{{MEDIA_URL}}{{report.photo}}{% endif %}
 
-{{update.desc|safe}}
+{{report.desc|safe}}
 
-Submitted via Fix My Street on {{update.report.created_at|date}}.
-{{update.report.get_absolute_url}}
+Submitted via Fix My Street on {{report.created_at|date}}.
+{{SITE_URL}}{{report.get_absolute_url}}

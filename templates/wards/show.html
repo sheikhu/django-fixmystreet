@@ -32,8 +32,8 @@ $(function(){
 {% endblock %}
 {% block content %}
 	<div id="fullwidth">
+        <h1>{% trans "Reports for" %} {{ward.name}}</h1>
 		<div id='leftcol'>
-			<h1>{% trans "Reports for" %} {{ward.name}}</h1>
 			<!--
 			<p>{% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 			<p>{% blocktrans with start=date_range_start|date:"j N Y" end=date_range_end|date:"j N Y" %}Reports filed between {{ start }} and {{ end }}.{% endblocktrans %} 
@@ -59,7 +59,6 @@ $(function(){
  		</div>
 		<div id='rightcol'>
 			<div id="map-bxl"> </div>
-    		<!--{% include "wards/_info_box.html" %}-->
 		</div>
 	</div>
 	<br/ style="clear:both;">

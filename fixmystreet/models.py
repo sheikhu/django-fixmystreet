@@ -128,21 +128,13 @@ def update_report(sender, instance, **kwargs):
     instance.report.is_fixed = instance.is_fixed
     instance.report.save()
 
-#notify
-#@receiver(pre_save,sender=ReportUpdate)
+#notify subscribers that report has been updated
+@receiver(pre_save,sender=ReportUpdate)
 def notify(sender, instance, **kwargs):
-    subject = render_to_string("emails/report_update/subject.txt", 
-                { 'update': instance })
-
-    # tell our subscribers there was an update.
     for subscribe in instance.report.reportsubscription_set.all():
-        unsubscribe_url = 'http://%s%s' % (Site.objects.get_current().domain, reverse("unsubscribe",args=[subscribe.confirm_token]))
+        unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe",args=[instance.report.id]))
         msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
         msg.send()
-
-    # tell the original problem reporter there was an update
-    msg = HtmlTemplateMail('report_update', {'update': instance}, [instance.report.first_update().email])
-    msg.send()
 
 
 class ReportSubscription(models.Model):
@@ -267,7 +259,7 @@ class ReportNotification(models.Model):
     #status error/success ?
 
     def send(self):
-        msg = HtmlTemplateMail('send_report_to_city', {'update': self.report}, (self.to_councillor.email,))
+        msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
         if self.report.photo:
             msg.attach_file(self.report.photo.file.name)
         msg.send()
@@ -537,6 +529,8 @@ def dictToPoint(dict):
 
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):
+        site = Site.objects.get_current()
+        data['SITE_URL'] = 'http://{0}'.format(site.domain)
         subject, html, text = '', '', ''
         try:
             subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
