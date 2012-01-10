@@ -184,6 +184,16 @@ a {
     font-size: .8em;
 }
 
+.messages .msg {
+    font-size: 1.5em;
+}
+.messages .success {
+    color:green;
+}
+.messages .error {
+    color:green;
+}
+
 #leftcol {
 	display:inline-block; 
 	vertical-align:top;
