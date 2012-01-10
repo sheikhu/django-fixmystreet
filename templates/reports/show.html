@@ -89,7 +89,7 @@ $(function(){
 		<div id='report-body'>
             <div id='report-subscribers'>
                 {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                {% if not report.is_fixed %}
+                {% if not report.is_fixed and user.is_authenticated %}
                     {% if not subscribed %}
                     <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
                     {% else %}
@@ -155,11 +155,11 @@ $(function(){
                                 <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
                             </p>
                             <p class="login-bar">
-                                {% trans 'You are not connected, please login to submit your report' %}
-                            </p>
-                            <p class="login-bar">
                                 <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
                                 <a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
+                            </p>
+                            <p class="login-bar">
+                                {% trans 'You are not connected, please login to submit your report' %}
                             </p>
                         </td>
                     </tr>

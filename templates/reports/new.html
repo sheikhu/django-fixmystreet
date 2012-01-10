@@ -206,11 +206,11 @@ $(document).ready(function() {
                             <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
                         </p>
                         <p class="login-bar">
-                            {% trans 'You are not connected, please login to submit your report' %}
-                        </p>
-                        <p class="login-bar">
                             <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
                             <a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
+                        </p>
+                        <p class="login-bar">
+                            {% trans 'You are not connected, please login to submit your report' %}
                         </p>
                     </td>
 				</tr>
