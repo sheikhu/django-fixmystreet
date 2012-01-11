@@ -55,6 +55,11 @@ after install, create the database:
     $ createdb -U postgres -T template_postgis fixmystreet
     $ python manage.py syncdb
 
+if running tests failed with:
+    psycopg2.ProgrammingError: autocommit cannot be used inside a transaction
+then
+    easy_install psycopg2==2.4.1
+
 
 finally:
 

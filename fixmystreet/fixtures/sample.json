@@ -68,7 +68,6 @@
     "fields": {
       "category": 8,
       "is_hate": false,
-      "sent_at": "2011-11-18 05:46:15",
       "title": "Bouche d'\u00e9gout obstru\u00e9e",
       "photo": "photos/photo_1.jpeg",
       "created_at": "2011-11-18 05:45:47",
@@ -90,7 +89,6 @@
     "fields": {
       "category": 3,
       "is_hate": false,
-      "sent_at": "2011-11-18 03:44:24",
       "title": "Ampoule du lampadaire brul\u00e9",
       "photo": "",
       "created_at": "2011-11-18 03:43:48",
@@ -112,7 +110,6 @@
     "fields": {
       "category": 10,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:16:58",
       "title": "Nids-de-poule et fissures sur les pistes cyclables",
       "photo": "photos/photo_3.jpeg",
       "created_at": "2011-11-18 04:09:40",
@@ -134,7 +131,6 @@
     "fields": {
       "category": 11,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:17:07",
       "title": "V\u00e9lo abandonn\u00e9s",
       "photo": "",
       "created_at": "2011-11-18 04:16:46",
@@ -156,7 +152,6 @@
     "fields": {
       "category": 11,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:28:36",
       "title": "Bouteilles de bi\u00e8re cass\u00e9es",
       "photo": "",
       "created_at": "2011-11-18 04:22:46",
@@ -178,7 +173,6 @@
     "fields": {
       "category": 20,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:28:42",
       "title": "Arbustes envahi le trottoir",
       "photo": "",
       "created_at": "2011-11-18 04:24:59",
@@ -200,7 +194,6 @@
     "fields": {
       "category": 20,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:30:09",
       "title": "Arbre tomb\u00e9 \u00e0 travers le trotoire et la piste cyclable",
       "photo": "",
       "created_at": "2011-11-18 04:29:57",
@@ -222,7 +215,6 @@
     "fields": {
       "category": 11,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:56:29",
       "title": "Poubelle pleine renvers\u00e9e",
       "photo": "",
       "created_at": "2011-11-18 04:35:41",
@@ -244,7 +236,6 @@
     "fields": {
       "category": 20,
       "is_hate": false,
-      "sent_at": "2011-11-18 04:56:36",
       "title": "arbre dangereux",
       "photo": "photos/photo_9.jpeg",
       "created_at": "2011-11-18 04:54:16",
@@ -266,7 +257,6 @@
     "fields": {
       "category": 10,
       "is_hate": false,
-      "sent_at": "2011-11-18 05:13:04",
       "title": "poteaux disparus",
       "photo": "",
       "created_at": "2011-11-18 05:02:03",
@@ -288,7 +278,6 @@
     "fields": {
       "category": 10,
       "is_hate": false,
-      "sent_at": "2011-11-18 05:13:10",
       "title": "plaque de rue cass\u00e9e",
       "photo": "",
       "created_at": "2011-11-18 05:07:50",
@@ -310,7 +299,6 @@
     "fields": {
       "category": 20,
       "is_hate": false,
-      "sent_at": "2011-11-18 05:31:55",
       "title": "arbres \u00e9cim\u00e9s",
       "photo": "",
       "created_at": "2011-11-18 05:19:10",
@@ -332,7 +320,6 @@
     "fields": {
       "category": 11,
       "is_hate": false,
-      "sent_at": "2011-11-18 05:31:58",
       "title": "Ford Mondeo abandonn\u00e9e",
       "photo": "photos/photo_13.jpeg",
       "created_at": "2011-11-18 05:24:29",
@@ -354,7 +341,6 @@
     "fields": {
       "category": 11,
       "is_hate": false,
-      "sent_at": "2011-11-18 05:32:00",
       "title": "Toyota grise accident\u00e9e",
       "photo": "",
       "created_at": "2011-11-18 05:31:20",
