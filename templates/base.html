@@ -70,7 +70,7 @@
 
 		<div id="main_container">
 			<div id='body_content'>
-                <p class="logged-bar"{% if not user.is_authenticated %} style="display:none;"{% endif %}>Welcome <span class="username">{{ user.get_full_name }}</span>. (<a href="{% url auth_logout  %}">logout</a>)</p>
+                <p class="logged-bar"{% if not user.is_authenticated %} style="display:none;"{% endif %}>{% trans "Welcome" %} <span class="username">{{ user.get_full_name }}</span>. (<a href="{% url auth_logout  %}">logout</a>)</p>
                 
                 <p class="login-bar"{% if user.is_authenticated %} style="display:none;"{% endif %}>
                     <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>

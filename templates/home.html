@@ -5,11 +5,6 @@
 {% endblock %}
 
 {% block content %}
-	<div id="intro">
-		<!--<h1>{% trans "report/view/discuss" %}</h1>
-		<p>{% trans "<span>graffiti.</span> <span class='alt'>potholes.</span> <span>excessive</span> <span class='alt'>garbage.</span> <span>street</span> <span class='alt'>lighting.</span>" %}</p>-->
-	</div>
-
 	<form id='search_form'>
 		<p>{% trans "Enter a nearby street name:" %}</p>
 		<input id='search_box' type="search" name="q" {% if location %}value="{{location}}"{% endif %}/>

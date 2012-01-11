@@ -69,7 +69,7 @@ finally:
 Usefull
 -------
 To generate po file run the following command:
-    $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/* --ignore=templates-bxl/admin/* --ignore=templates-bxl/posters.html --ignore=templates-bxl/promotions/*
+    $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/admin/* --ignore=templates/posters.html --ignore=templates/promotions/*
     $ django-admin.py compilemessages
 
 for sample data set loading

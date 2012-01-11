@@ -8,8 +8,8 @@
     <h1>{% trans "About FixMyStreet Brussels" %}</h1>
     <div id="faq">
         {% for faq in faq_entries %}
-        <h2>{{faq.q}}</h2>
-        <div>{{faq.a|safe}}</div>
+            <h2>{{faq.q}}</h2>
+            <div>{{faq.a|safe|urlize}}</div>
         {% endfor %}
 
         {% blocktrans %}
@@ -53,7 +53,7 @@
         <p>Thanks to:</p>
         <ul>
             <li><a href='http://mysociety.org'>MySociety</a>, for the original concept.</li>
-            <li><a href='visiblegovernment.ca'>visiblegovernment.ca</a> for the original open source project <a href='fixmystreet.ca'>fixmystreet.ca</a>.</li>
+            <li><a href='http://visiblegovernment.ca'>visiblegovernment.ca</a> for the original open source project <a href='http://fixmystreet.ca'>fixmystreet.ca</a>.</li>
         </ul>
         {% endblocktrans %}
     </div>

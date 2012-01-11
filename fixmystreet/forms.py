@@ -7,7 +7,38 @@ from django.utils.translation import ugettext_lazy
 from django.contrib.gis.geos import fromstr
 from django.forms.util import ErrorDict
 
-#from pyexif import ExifEditor
+
+
+
+class CategoryChoiceField(forms.fields.ChoiceField):
+    """
+    Do some pre-processing to
+    render opt-groups (silently supported, but undocumented
+    http://code.djangoproject.com/ticket/4412 )
+    """
+    def __init__(self,  *args, **kwargs):
+        # assemble the opt groups.
+        choices = []
+        choices.append(('', ugettext_lazy("Select a Category")))
+        categories = ReportCategory.objects.all()
+
+        groups = {}
+        for category in categories:
+            catclass = str(category.category_class)
+            if not groups.has_key(catclass):
+                groups[catclass] = []
+            groups[catclass].append((category.pk, category.name))
+        for catclass, values in groups.items():
+            choices.append((catclass,values))
+        super(CategoryChoiceField,self).__init__(choices,*args,**kwargs)
+
+    def clean(self, value):
+        super(CategoryChoiceField,self).clean(value)
+        try:
+            model = ReportCategory.objects.get(pk=value)
+        except ReportCategory.DoesNotExist:
+            raise ValidationError(self.error_messages['invalid_choice'])
+        return model
 
 
 class ReportForm(forms.ModelForm):
@@ -17,7 +48,7 @@ class ReportForm(forms.ModelForm):
         fields = ('x','y','title', 'address', 'category','postalcode','photo','desc')
 
     required_css_class = 'required'
-    # category = CategoryChoiceField()
+    category = CategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
@@ -31,7 +62,7 @@ class ReportForm(forms.ModelForm):
             self.point = dictToPoint(data)
         
         super(ReportForm,self).__init__(data, files, initial=initial)
-        self.fields['category'] = CategoryChoiceField()#self.ward
+        #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
 
     def clean(self):
         if not self.ward:
@@ -80,42 +111,4 @@ class ContactForm(forms.Form):
         send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message, 
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
-
-"""
-    Do some pre-processing to
-    render opt-groups (silently supported, but undocumented
-    http://code.djangoproject.com/ticket/4412 )
-"""
-class CategoryChoiceField(forms.fields.ChoiceField):
-    
-    def __init__(self, ward=None,required=True, widget=None, label=None,
-                 initial=None, help_text=None, *args, **kwargs):
-        # assemble the opt groups.
-        choices = []
-        choices.append( ('', ugettext_lazy("Select a Category")) )
-        #city = City.objects.get(id=1)
-        categories = ReportCategory.objects.all()
-        #if ward:
-        #    categories = ward.city.get_categories()
-        #    categories = categories.order_by('category_class')
-        #else:
-        #    categories = []
-            
-        groups = {}
-        for category in categories:
-            catclass = str(category.category_class)
-            if not groups.has_key(catclass):
-                groups[catclass] = []
-            groups[catclass].append((category.pk, category.name ))
-        for catclass, values in groups.items():
-            choices.append((catclass,values))
-        super(CategoryChoiceField,self).__init__(choices,required,widget,label,initial,help_text)#,args,kwargs)
-
-    def clean(self, value):
-        super(CategoryChoiceField,self).clean(value)
-        try:
-            model = ReportCategory.objects.get(pk=value)
-        except ReportCategory.DoesNotExist:
-            raise ValidationError(self.error_messages['invalid_choice'])
-        return model
 
