@@ -3,6 +3,8 @@
     "pk": 1,
     "model": "auth.user",
     "fields": {
+      "first_name": "John",
+      "last_name": "Lawrence",
       "username": "Lawrence John"
     }
   },
@@ -10,6 +12,8 @@
     "pk": 2,
     "model": "auth.user",
     "fields": {
+      "first_name": "Jean-Philippe",
+      "last_name": "Bertrand",
       "username": "JP"
     }
   },
@@ -17,6 +21,8 @@
     "pk": 3,
     "model": "auth.user",
     "fields": {
+      "first_name": "Amber",
+      "last_name": "Westfall",
       "username": "Amber Westfall"
     }
   },
@@ -24,6 +30,8 @@
     "pk": 4,
     "model": "auth.user",
     "fields": {
+      "first_name": "Pierre",
+      "last_name": "Lewis",
       "username": "Pierre Lewis"
     }
   },
@@ -31,6 +39,8 @@
     "pk": 5,
     "model": "auth.user",
     "fields": {
+      "first_name": "Richard",
+      "last_name": "Moore",
       "username": "Richard Moore"
     }
   },
@@ -38,6 +48,8 @@
     "pk": 6,
     "model": "auth.user",
     "fields": {
+      "first_name": "Brad",
+      "last_name": "Elliott",
       "username": "Brad Elliott"
     }
   },
@@ -45,6 +57,8 @@
     "pk": 7,
     "model": "auth.user",
     "fields": {
+      "first_name": "Aylesbury",
+      "last_name": "Vale",
       "username": "Aylesbury Vale"
     }
   },
@@ -52,6 +66,8 @@
     "pk": 8,
     "model": "auth.user",
     "fields": {
+      "first_name": "Chris",
+      "last_name": "Taggart",
       "username": "Chris Taggart"
     }
   },
@@ -59,6 +75,8 @@
     "pk": 9,
     "model": "auth.user",
     "fields": {
+      "first_name": "Tom",
+      "last_name": "Wright",
       "username": "Tom Wright"
     }
   },
@@ -70,9 +88,9 @@
       "is_hate": false,
       "title": "Bouche d'\u00e9gout obstru\u00e9e",
       "photo": "photos/photo_1.jpeg",
-      "created_at": "2011-11-18 05:45:47",
+      "created_at": "2012-01-01 05:45:47",
       "point": "POINT (148360.0312500000000000 171177.3125000000000000)",
-      "updated_at": "2011-11-18 05:45:47",
+      "updated_at": "2012-01-01 05:45:47",
       "author": 9,
       "fixed_at": null,
       "reminded_at": "2011-11-18 05:45:47",
@@ -324,7 +342,7 @@
       "photo": "photos/photo_13.jpeg",
       "created_at": "2011-11-18 05:24:29",
       "point": "POINT (148779.7812500000000000 169984.9062500000000000)",
-      "updated_at": "2011-11-18 09:02:39",
+      "updated_at": "2011-11-18 18:05:39",
       "author": 7,
       "fixed_at": "2011-11-18 09:02:39",
       "reminded_at": "2011-11-18 05:24:29",
@@ -361,7 +379,7 @@
     "model": "fixmystreet.reportupdate",
     "fields": {
       "author": 1,
-      "created_at": "2011-11-18 09:02:39",
+      "created_at": "2011-11-18 18:05:39",
       "report": 13,
       "is_fixed": true,
       "desc": "La voiture a \u00e9t\u00e9 remorqu\u00e9. Meci."
