@@ -1,5 +1,5 @@
 (function(){
-    var $map, initialized;
+    var $map, initialized, newPoint;
 
     
     $(document).delegate('#map', "pageinit", function(){
@@ -9,21 +9,22 @@
         window.fms.getCurrentPosition(initMap)
 
         $map.bind('markermoved',function(evt,p){
-            $('#create-report').attr('href', window.fms.rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y + '&address=arts');
-            $('#create-report').data('position',p);
+            newPoint = p;
         });
 
         $map.bind('reportselected',function(evt, point, report){
             $.mobile.changePage(window.fms.rootUrl + '/mobile/reports/' + report.id);
         });
         
-        $page.find('#create-report').click(function(evt){
+        $page.find('.confirm').click(function(evt){
             evt.preventDefault();
             evt.stopPropagation();
 
-            var p = $(this).data('position');
-            if(!p){return;}
-            $.mobile.changePage(window.fms.rootUrl + '/mobile/reports/new?lon=' + p.x + '&lat=' + p.y);
+            if(newPoint){
+                /* set location */
+                loadAddress(newPoint);
+            }
+            history.back();
         });
 
         $page.find('#zoom-in,#zoom-out').click(function(evt){
@@ -184,7 +185,7 @@
     }
 
     function loadReports(p,callback){
-        $.getJSON(window.fms.rootUrl + '/api/reports/',{lon:p.x,lat:p.y, timestamp:(new Date()).toString()},function(response){
+        $.getJSON(window.fms.rootUrl + '/api/reports/',{x:p.x,y:p.y},function(response){//, timestamp:(new Date()).toString() to disable cache
             if(response.status != 'success')
             {
                 // do something

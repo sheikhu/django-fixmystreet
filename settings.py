@@ -117,6 +117,8 @@ SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login-callback/'
 
+FACEBOOK_EXTENDED_PERMISSIONS = ('email',)
+
 #for client secret see local settings
 FACEBOOK_APP_ID             = '263584440367959'
 GOOGLE_OAUTH2_CLIENT_ID     = '985105651100.apps.googleusercontent.com'

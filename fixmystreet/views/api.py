@@ -38,7 +38,7 @@ def locate(request):
 
 def reports(request):
     pnt = dictToPoint(request.REQUEST)
-    reports = Report.objects.filter(is_confirmed = True,is_fixed = False).distance(pnt).order_by('distance')[:20]
+    reports = Report.objects.filter(is_fixed = False).distance(pnt).order_by('distance')[:20]
     
     result = []
     for i,report in enumerate(reports):

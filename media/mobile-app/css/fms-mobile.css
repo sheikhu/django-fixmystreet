@@ -1,23 +1,37 @@
 
-.quarter{
+.menu-quarter {
     position: absolute;
     top:0;
     left:0;
     height: 50%;
     width: 50%;
 }
-.quarter:nth-child(2), .quarter:nth-child(4){
+.menu-quarter:nth-child(2), .menu-quarter:nth-child(4) {
     left:50%;
 }
-.quarter:nth-child(3), .quarter:nth-child(4){
+.menu-quarter:nth-child(3), .menu-quarter:nth-child(4) {
     top:50%;
 }
 
-.block-info.filled{
-    background-color:green;
+
+
+#home .submit {
+    margin:0;
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    right: 10px;
 }
 
-.block-info{
+.container {
+    left: 0;
+    right: 0;
+    position: absolute;
+    top:42px;
+    bottom:90px;
+}
+
+.menu-button {
     position: absolute;
     top:10px;
     left:10px;
@@ -27,44 +41,39 @@
     text-align:center;
     vertical-align:middle;
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding: 10px;
 }
 
-#home .submit{
-    margin:0;
+#menu-category {
+    background-image: url(../images/category.png);
+}
+
+#menu-address {
+    background-image: url(../images/map.png);
+}
+
+#menu-description {
+    background-image: url(../images/description.png);
+}
+
+#menu-photo {
+    background-image: url(../images/photo.png);
+}
+
+
+.menu-button .ui-btn-inner {
+    white-space: initial;
+    overflow: visible;
+    padding: 0;
     position: absolute;
-    bottom: 40px;
-    left: 10px;
-    right: 10px;
-}
-
-.container{
-    left: 0;
-    right: 0;
-    position: absolute;
-    top:42px;
-    bottom:90px;
-}
-
-#category{
-    background: url(../images/category.png) no-repeat center center;
-}
-
-#map{
-    background: url(../images/map.png) no-repeat center center;
-}
-
-#description{
-    background: url(../images/description.png) no-repeat center center;
-}
-
-#photo{
-    background: url(../images/photo.png) no-repeat center center;
+    bottom: 10px;
+    border:none;
 }
 
 
-
-
-.ui-loader{
+.ui-loader {
     z-index:2000;
 }
 
@@ -162,7 +171,7 @@ ul.errorlist li {
     margin:0;
 }
 
-#create-report{
+#map .confirm{
 	z-index: 1000;
 	position: absolute;
 	bottom: 10px;

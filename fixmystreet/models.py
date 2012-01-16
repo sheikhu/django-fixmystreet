@@ -1,18 +1,12 @@
-import md5
-import urllib
-import time
 from datetime import datetime as dt
 
 from django.db import models, connection
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string, TemplateDoesNotExist
-from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
-from django.utils.encoding import iri_to_uri
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.http import Http404
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
@@ -26,9 +20,9 @@ import settings
 
 
 class Report(models.Model):
-    title = models.CharField(max_length=100, verbose_name = ugettext_lazy("Subject"))
-    category = models.ForeignKey('ReportCategory',null=True, verbose_name = ugettext_lazy("Category"))
-    ward = models.ForeignKey('Ward',null=True)
+    title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
+    category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
+    ward = models.ForeignKey('Ward', null=True)
 
     author = models.ForeignKey(User, null=False)
 
@@ -40,7 +34,7 @@ class Report(models.Model):
     
     is_fixed = models.BooleanField(default=False)
     # time report was marked as 'fixed'
-    fixed_at = models.DateTimeField(null=True,blank=True)
+    fixed_at = models.DateTimeField(null=True, blank=True)
 
     # email where the report was sent
     email_sent_to = models.EmailField(null=True)
@@ -50,39 +44,21 @@ class Report(models.Model):
     
     point = models.PointField(null=True, srid=31370)
 
-    photo = StdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66,50))
-    desc = models.TextField(blank=True, null=True, verbose_name = ugettext_lazy("Details"))
-    address = models.CharField(max_length=255,verbose_name = ugettext_lazy("Location"))
-    postalcode = models.CharField(max_length=4,verbose_name = ugettext_lazy("Postal Code"))
+    photo = StdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
+    address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
+    postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
 
     objects = models.GeoManager()
     
-    def is_subscribed(self, email):
-        if len(self.reportsubscriber_set.filter(email=email)) != 0:
-            return( True )
-        return( self.first_update().email == email )
-    
     def sent_at_diff(self):
         if not self.sent_at:
-            return( None )
+            return None
         else:
-            return(  self.sent_at - self.created_at )
+            return self.sent_at - self.created_at 
 
     def get_absolute_url(self):
         return reverse("report_show", args=[self.id])
-
-    # return a list of email addresses to send new problems in this ward to.
-    def get_councillors(self):
-        self.to_councillors = []
-        self.cc_councillors = []
-        self.excluded = []
-        if self.ward.councillor:
-            self.reportnotification_set.append(ReportNotification(to_councillor=self.ward.councillor,is_cc=False))
-        
-        # check for rules for this city.
-        rules = EmailRule.objects.filter(ward=self.ward)
-        for rule in rules:
-            rule.resolve_email(self)
 
     def flagAsOffensive(self):
         msg = HtmlTemplateMail('flag_report', {
@@ -105,34 +81,27 @@ def report_notify(sender, instance, **kwargs):
 class ReportUpdate(models.Model):
     """A new version of the status of a report"""
     report = models.ForeignKey(Report)
-    desc = models.TextField(blank=True, null=True, verbose_name = ugettext_lazy("Details"))
+    desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
     created_at = models.DateTimeField(auto_now_add=True)
     is_fixed = models.BooleanField(default=False)
     author = models.ForeignKey(User, null=False)
 
-    def title(self):
-        if self.first_update :
-            return self.report.title
-        if self.is_fixed:
-            return "Reported Fixed"
-        return "Update"
-    
     class Meta:
         ordering = ['created_at']
         #order_with_respect_to = 'report'
 
 #update the report, set updated_at and is_fixed correctly
-@receiver(pre_save,sender=ReportUpdate)
+@receiver(pre_save, sender=ReportUpdate)
 def update_report(sender, instance, **kwargs):
     instance.report.updated_at = instance.created_at
     instance.report.is_fixed = instance.is_fixed
     instance.report.save()
 
 #notify subscribers that report has been updated
-@receiver(pre_save,sender=ReportUpdate)
+@receiver(pre_save, sender=ReportUpdate)
 def notify(sender, instance, **kwargs):
     for subscribe in instance.report.reportsubscription_set.all():
-        unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe",args=[instance.report.id]))
+        unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
         msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
         msg.send()
 
@@ -171,9 +140,9 @@ class ReportCategory(models.Model):
     When a category is selected in the website form, the hint field is loaded in ajax and displayed  in the form.
     """
 
-    name = models.CharField(verbose_name=_('Name'),max_length=100)
-    hint = models.TextField(verbose_name=_('Hint'),blank=True, null=True)
-    category_class = models.ForeignKey(ReportCategoryClass,verbose_name=_('Category group'), help_text="The category group container")
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    hint = models.TextField(verbose_name=_('Hint'), blank=True, null=True)
+    category_class = models.ForeignKey(ReportCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
  
@@ -197,8 +166,8 @@ class Councillor(models.Model):
     email = models.EmailField(blank=True, null=True)
     # city = models.ForeignKey(City,null=True)
 
-    def __unicode__(self):      
-        return self.first_name + " " + self.last_name
+    def __unicode__(self):
+        return self.name
 
 
 # Override where to send a report for a given city.        
@@ -321,8 +290,8 @@ class City(models.Model):
 
     def get_rule_descriptions(self):
         rules = EmailRule.objects.filter(city=self)
-        describer = emailrules.EmailRulesDesciber(rules,self)
-        return( describer.values() )
+        describer = emailrules.EmailRulesDesciber(rules, self)
+        return describer.values()
 
     class Meta:
         verbose_name_plural = "cities"
@@ -330,7 +299,7 @@ class City(models.Model):
 
 class Ward(models.Model):
     name = models.CharField(max_length=100)
-    councillor = models.ForeignKey(Councillor,null=True,blank=True)
+    councillor = models.ForeignKey(Councillor,null=True, blank=True)
     city = models.ForeignKey(City)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
@@ -349,8 +318,8 @@ class Ward(models.Model):
 
     def get_rule_descriptions(self):
         rules = EmailRule.objects.filter(city=self.city)
-        describer = emailrules.EmailRulesDesciber(rules,self.city, self)
-        return( describer.values() )
+        describer = emailrules.EmailRulesDesciber(rules, self.city, self)
+        return describer.values()
 
 
 class ZipCode(models.Model):
@@ -368,8 +337,8 @@ class ZipCode(models.Model):
 class FaqEntry(models.Model):
     __metaclass__ = TransMeta
 
-    q = models.CharField(_('Question'),max_length=100)
-    a = models.TextField(_('Answere'),blank=True, null=True)
+    q = models.CharField(_('Question'), max_length=100)
+    a = models.TextField(_('Answere'), blank=True, null=True)
     slug = models.SlugField(null=True, blank=True)
     order = models.IntegerField(null=True, blank=True)
     
@@ -381,16 +350,16 @@ class FaqEntry(models.Model):
     
     class Meta:
         verbose_name_plural = 'faq entries'
-        translate = ('q', 'a', )
+        translate = ('q', 'a')
 
 
 class FaqMgr(object):
         
-    def incr_order(self, faq_entry ):
+    def incr_order(self, faq_entry):
         if faq_entry.order == 1:
             return
         other = FaqEntry.objects.get(order=faq_entry.order-1)
-        swap_order(other[0],faq_entry)
+        swap_order(other[0], faq_entry)
     
     def decr_order(self, faq_entry): 
         other = FaqEntry.objects.filter(order=faq_entry.order+1)
@@ -398,7 +367,7 @@ class FaqMgr(object):
             return
         swap_order(other[0],faq_entry)
         
-    def swap_order(self, entry1, entry2 ):
+    def swap_order(self, entry1, entry2):
         entry1.order = entry2.order
         entry2.order = entry1.order
         entry1.save()

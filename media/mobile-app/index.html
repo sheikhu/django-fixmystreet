@@ -7,8 +7,8 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-		<script src="phonegap-1.2.0.js"></script>
         <script src="jquery/jquery-1.7.js"></script>
+		<script src="phonegap-1.2.0.js"></script>
 
 		<script src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
         <script src="OpenLayers-2.11/OpenLayers.js"></script>
@@ -17,13 +17,11 @@
         <script src="js/fixmystreetmap.js"></script>
         <script src="js/main.js"></script>
         <script src="js/map.js"></script>
-        <script src="js/report_form.js"></script>
+        <script src="js/home.js"></script>
 
         <script src="jquery.mobile-1.0/jquery.mobile-1.0.js"></script>
         <script type="text/javascript" charset="utf-8">
-	        function onBodyLoad() { 
-                init();
-                return;
+	        function onBodyLoad() {
 	        	//if phonegap, need to toggle these
 	             if (typeof navigator.device == "undefined"){
 	            	 console.log('LOADING...');
@@ -41,51 +39,14 @@
         <div id="home" class="panel" data-role="page">
             <div data-role="header">
                 <h1>Home</h1>
-                <a href="#home" class="ui-btn-right">Clear</a>
             </div>
 
             <div data-role="content">
                 <div class="container">
-                    <div class="quarter">
-                        <div id="category" class="block-info" data-role="button">
-                            <!--<select>
-                               <option value="" selected="selected">Select a Category</option>
-                                <optgroup label="Parks">
-                                    <option value="3">Lights Malfunctioning in Park</option>
-                                    <option value="4">Debris or Litter in Park</option>
-                                    <option value="1">Broken or Damaged Equipment/Play Structures</option>
-                                    <option value="2">Full or Overflowing Garbage Cans</option>
-                                </optgroup>
-                                <optgroup label="Grafitti">
-                                    <option value="5">Graffiti On City Property</option>
-                                    <option value="6">Graffiti on Private Property</option>
-                                    <option value="7">Graffiti  on Utility Boxes/Transformers/Mailboxes, etc..</option>
-                                </optgroup>
-                                <optgroup label="Roads/Sidewalks/Pathways">
-                                    <option value="13">Damaged Guardrails</option>
-                                    <option value="15">Bus Shelter Damaged</option>
-                                    <option value="16">Debris/Litter in Bus Shelter</option>
-                                    <option value="8">Blocked or damaged Catch basin / Manhole</option>
-                                    <option value="9">Pothole</option>
-                                    <option value="10">Damaged Curb</option>
-                                    <option value="14">Full or Overflowing Garbage Cans</option>
-                                    <option value="11">Debris or Litter on Road/Sidewalk/Pathway</option>
-                                    <option value="12">Blocked or Damaged Culvert</option>
-                                </optgroup>
-                                <optgroup label="Trees">
-                                    <option value="20">Branches Blocking Signs or Intersection</option>
-                                </optgroup>
-                                <optgroup label="Traffic Signals">
-                                    <option value="17">Street Lights Out or Malfunctioning</option>
-                                    <option value="18">Faded/Damaged/Missing Pavement Markings</option>
-                                    <option value="19">Bent/Damaged/Missing Street Signs</option>
-                                </optgroup>
-                            </select>-->
-                        </div>
-                    </div>
-                    <div class="quarter"><a id="map" class="block-info" data-role="button" href="#map">Avenue des arts 21</a></div>
-                    <div class="quarter"><div id="photo" class="block-info" data-role="button"></div></div>
-                    <div class="quarter"><a id="description" class="block-info" data-role="button" href="#desc_form"></a></div>
+                    <div class="menu-quarter"><a id="menu-category" class="menu-button" data-role="button" href="#category"></a></div>
+                    <div class="menu-quarter"><a id="menu-address" class="menu-button" data-role="button" href="#map"></a></div>
+                    <div class="menu-quarter"><div id="menu-photo" class="menu-button" data-role="button"></div></div>
+                    <div class="menu-quarter"><a id="menu-description" class="menu-button" data-role="button" href="#description"></a></div>
                 </div>
                 <p class="submit"><button>Submit</button></p>
             </div>
@@ -99,24 +60,20 @@
                 </div><!-- /navbar -->
             </div><!-- /footer -->
         </div>
-        <div id="desc_form" class="panel" data-role="page" data-add-back-btn="true">
+        <div id="description" class="panel" data-role="page" data-add-back-btn="true">
             <div data-role="header">
-                <h1>Fill more info</h1>
+                <h1>Fill a description</h1>
+                <a class="ui-btn-right confirm">Confirm</a>
             </div>
 
             <div data-role="content">
-                <form enctype="multipart/form-data" method="post" action="/mobile/reports/new" id="desc_form">
+                <form id="desc_form">
                     <p>
-                        <label for="id_title">Subject:</label>
-                        <input id="id_title" type="text" name="title" maxlength="100" />
+                        <textarea id="id_desc" name="desc"></textarea>
                     </p>
-                    <p>
-                        <label for="id_desc">Details:</label>
-                        <textarea id="id_desc" rows="10" cols="40" name="desc"></textarea>
-                    </p>
-                    <p>
-                        <input type="submit" value='Confirm'/>
-                    </p>
+                    <!--<p>
+                        <input type="submit" data-value='Confirm'/>
+                    </p>-->
                 </form>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
@@ -132,6 +89,7 @@
         <div id="map" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Map</h1>
+                <a class="ui-btn-right confirm">Confirm</a>
             </div>
             <div data-role="content" id="container">
             	<!--<div id="content-disabled"> </div>-->
@@ -150,8 +108,64 @@
                     <a id="zoom-in" data-role="button" data-icon="plus" data-iconpos="notext">Zoom in</a>
                     <a id="zoom-out" data-role="button" data-icon="minus" data-iconpos="notext">Zoom out</a>
                 </div>
-                <a id="create-report" data-role="button" data-iconpos="right">Confirm</a>
+                <a class="confirm" data-role="button" data-iconpos="right">Confirm</a>
             </div>
+            <div data-id="footer" data-role="footer" data-position="fixed">		
+                <div data-role="navbar">
+                    <ul>
+                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
+                        <li><a data-transition="fade" href="#help">Help</a></li>
+                        <li><a data-transition="fade" href="#config">Config</a></li>
+                    </ul>
+                </div><!-- /navbar -->
+            </div><!-- /footer -->
+        </div>
+        <div id="category" class="panel" data-role="page">
+            <div class="toolbar" data-role="header">
+                <h1>Choose a category</h1>
+                <a class="ui-btn-right confirm">Confirm</a>
+            </div>
+            <div data-role="content">
+                <fieldset data-role="controlgroup">
+                    <legend>Parks</legend>
+                    <input type="radio" name="category" id="cat-3" value="3" /><label for="cat-3">Lights Malfunctioning in Park</label>
+                    <input type="radio" name="category" id="cat-4" value="4" /><label for="cat-4">Debris or Litter in Park</label>
+                    <input type="radio" name="category" id="cat-1" value="1" /><label for="cat-1">Broken or Damaged Equipment/Play Structures</label>
+                    <input type="radio" name="category" id="cat-2" value="2" /><label for="cat-2">Full or Overflowing Garbage Cans</label>
+                </fieldset>
+
+                <fieldset data-role="controlgroup">
+                    <legend>Grafitti</legend>
+                    <input type="radio" name="category" id="cat-5" value="5" /><label for="cat-5">Graffiti On City Property</label>
+                    <input type="radio" name="category" id="cat-6" value="6" /><label for="cat-6">Graffiti on Private Property</label>
+                    <input type="radio" name="category" id="cat-7" value="7" /><label for="cat-7">Graffiti  on Utility Transformers Mailboxes, etc..</label>
+                </fieldset>
+
+                <fieldset data-role="controlgroup">
+                    <legend>Roads/Sidewalks/Pathways</legend>
+                    <input type="radio" name="category" id="cat-13" value="13" /><label for="cat-13">Damaged Guardrails</label>
+                    <input type="radio" name="category" id="cat-15" value="15" /><label for="cat-15">Bus Shelter Damaged</label>
+                    <input type="radio" name="category" id="cat-16" value="16" /><label for="cat-16">Debris/Litter in Bus Shelter</label>
+                    <input type="radio" name="category" id="cat-8" value="8" /><label for="cat-8">Blocked or damaged Catch basin / Manhole</label>
+                    <input type="radio" name="category" id="cat-9" value="9" /><label for="cat-9">Pothole</label>
+                    <input type="radio" name="category" id="cat-10" value="10" /><label for="cat-10">Damaged Curb</label>
+                    <input type="radio" name="category" id="cat-14" value="14" /><label for="cat-14">Full or Overflowing Garbage Cans</label>
+                    <input type="radio" name="category" id="cat-11" value="11" /><label for="cat-11">Debris or Litter on Road/Sidewalk/Pathway</label>
+                    <input type="radio" name="category" id="cat-12" value="12" /><label for="cat-12">Blocked or Damaged Culvert</label>
+                </fieldset>
+
+                <fieldset data-role="controlgroup">
+                    <legend>Trees</legend>
+                    <input type="radio" name="category" id="cat-20" value="20" /><label for="cat-20">Branches Blocking Signs or Intersection</label>
+                </fieldset>
+
+                <fieldset data-role="controlgroup">
+                    <legend>Traffic Signals</legend>
+                    <input type="radio" name="category" id="cat-17" class="custom" value="17" /><label for="cat-17">Street Lights Out or Malfunctioning</label>
+                    <input type="radio" name="category" id="cat-18" class="custom" value="18" /><label for="cat-18">Faded/Damaged/Missing Pavement Markings</label>
+                    <input type="radio" name="category" id="cat-19" class="custom" value="19" /><label for="cat-19">Bent/Damaged/Missing Street Signs</label>
+                </fieldset>
+           </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
                     <ul>
