@@ -13,8 +13,9 @@
 
     window.fms.rootUrl = 'http://fixmystreet.irisnet.be';
     window.fms.rootUrl = 'http://fixmystreet.irisnetlab.be';
-    // window.fms.rootUrl = 'http://192.168.103.27:8000';
-    window.fms.rootUrl = 'http://localhost:8000';
+    if(window.location.protocol == 'http:'){
+        window.fms.rootUrl = window.location.protocol + '//' + window.location.host;
+    }
 
     window.fms.mediaUrl = window.fms.rootUrl + '/media/';
     
