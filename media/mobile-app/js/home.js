@@ -95,6 +95,8 @@ $(document).delegate('#category .confirm', "click", function(){
 
 $(document).delegate('#category :radio', "change", function(){
     $(this).closest('.panel').find('.confirm').fadeIn();
+    $(this).closest('form').find(':checked').next().addClass('ui-btn-active');
+    $(this).closest('form').find(':radio:not(:checked)').next().addClass('ui-radio-off').removeClass('ui-radio-on ui-btn-active').find('.ui-icon').addClass('ui-icon-radio-off').removeClass('ui-icon-radio-on');
 });
 
 
