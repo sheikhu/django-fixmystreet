@@ -84,7 +84,7 @@ $(document).delegate('.toolbar .next', "click", function(){
     console.log(target);
     if(!target.length){
         $.mobile.changePage('#home');
-        $('#home').find('button').prop('disabled',false);
+        $('#home button').button('enable');	
     }else{
         $.mobile.changePage(target.attr('href'));
     }
