@@ -20,6 +20,7 @@ requirements: transmeta, stdimage, GeoDjango, PIL
     $ easy_install django
     $ easy_install django-transmeta
     $ easy_install django-stdimage
+    $ easy_install django-social-auth
 
 may be requied:
 
