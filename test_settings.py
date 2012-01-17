@@ -5,7 +5,7 @@ import settings
 DATABASES = {
    'default': {
        'ENGINE': 'postgresql_psycopg2',
-       'NAME': 'fixmystreet-test',
+       'NAME': 'fixmystreet-dev',
        'USER': 'postgres',
        'PASSWORD': 'password',
        'HOST': 'localhost',
