@@ -1,5 +1,6 @@
-Django==1.3.1
 psycopg2==2.4.1
+Django==1.3.1
+south
 django-jenkins
 django-transmeta
 django-stdimage
