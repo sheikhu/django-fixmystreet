@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     
     'transmeta',
     'social_auth',
+    'south',
     'fixmystreet',
 )
 
