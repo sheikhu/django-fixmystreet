@@ -63,6 +63,7 @@ function loadAddress(p){
 
 
 
+
 $(document).delegate('#description', "pageinit", function(){
     $(this).find('form').submit(function(evt){
         evt.preventDefault();
@@ -79,6 +80,7 @@ $(document).delegate('#description .confirm', "click", function(){
     //save
     history.back();
 });
+
 
 
 
