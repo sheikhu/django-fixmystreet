@@ -46,6 +46,24 @@
     padding: 10px;
 }
 
+.menu-icon {
+    position: absolute;
+    top:10px;
+    left:10px;
+    right:10px;
+    bottom:10px;
+}
+
+.menu-icon img {
+    opacity:.5;
+    width:100%;
+    height:100%;
+}
+
+.filled .menu-icon img {
+    opacity:1;
+}
+/*
 #menu-category {
     background-image: url(../images/category.png);
 }
@@ -61,15 +79,13 @@
 #menu-photo {
     background-image: url(../images/photo.png);
 }
+*/
 
-
-.menu-button .ui-btn-inner {
-    white-space: initial;
-    overflow: visible;
-    padding: 0;
+.menu-button .value {
     position: absolute;
     bottom: 10px;
-    border:none;
+    left:10px;
+    right:10px;
 }
 
 

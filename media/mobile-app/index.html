@@ -43,12 +43,32 @@
 
             <div data-role="content">
                 <div class="container">
-                    <div class="menu-quarter"><a id="menu-category" class="menu-button" data-role="button" href="#category"></a></div>
-                    <div class="menu-quarter"><a id="menu-address" class="menu-button" data-role="button" href="#map"></a></div>
-                    <div class="menu-quarter"><div id="menu-photo" class="menu-button" data-role="button"></div></div>
-                    <div class="menu-quarter"><a id="menu-description" class="menu-button" data-role="button" href="#description"></a></div>
+                    <div class="menu-quarter">
+                        <a id="menu-category" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#category">
+                            <div class="menu-icon"><img src="images/category.png"/></div>
+                            <span class="value"/>
+                        </a>
+                    </div>
+                    <div class="menu-quarter">
+                        <a id="menu-address" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#map">
+                            <div class="menu-icon"><img src="images/map.png"/></div>
+                            <span class="value"/>
+                        </a>
+                    </div>
+                    <div class="menu-quarter">
+                        <a id="menu-photo" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#photo">
+                            <div class="menu-icon"><img src="images/photo.png"/></div>
+                            <span class="value"/>
+                        </a>
+                    </div>
+                    <div class="menu-quarter">
+                        <a id="menu-description" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#description">
+                            <div class="menu-icon"><img src="images/description.png"/></div>
+                            <span class="value"/>
+                        </a>
+                    </div>
                 </div>
-                <p class="submit"><button>Submit</button></p>
+                <p class="submit"><button disabled="disabled">Submit</button></p>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
@@ -61,11 +81,10 @@
             </div><!-- /footer -->
         </div>
         <div id="description" class="panel" data-role="page" data-add-back-btn="true">
-            <div data-role="header">
+            <div class="toolbar" data-role="header">
                 <h1>Fill a description</h1>
-                <a class="ui-btn-right confirm">Confirm</a>
+                <a class="ui-btn-right next">Next</a>
             </div>
-
             <div data-role="content">
                 <form id="desc_form">
                     <p>
@@ -76,20 +95,22 @@
                     </p>-->
                 </form>
             </div>
-            <div data-id="footer" data-role="footer" data-position="fixed">		
-                <div data-role="navbar">
-                    <ul>
-                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help">Help</a></li>
-                        <li><a data-transition="fade" href="#config">Config</a></li>
-                    </ul>
-                </div><!-- /navbar -->
-            </div><!-- /footer -->
+        </div>
+        <div id="photo" class="panel" data-role="page" data-add-back-btn="true">
+            <div class="toolbar" data-role="header">
+                <h1>Take a photo</h1>
+                <a class="ui-btn-right next">Next</a>
+            </div>
+
+            <div data-role="content">
+                <form id="photo_form">
+                </form>
+            </div>
         </div>
         <div id="map" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Map</h1>
-                <a class="ui-btn-right confirm">Confirm</a>
+                <a class="ui-btn-right next">Next</a>
             </div>
             <div data-role="content" id="container">
             	<!--<div id="content-disabled"> </div>-->
@@ -110,20 +131,11 @@
                 </div>
                 <a class="confirm" data-role="button" data-iconpos="right">Confirm</a>
             </div>
-            <div data-id="footer" data-role="footer" data-position="fixed">		
-                <div data-role="navbar">
-                    <ul>
-                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help">Help</a></li>
-                        <li><a data-transition="fade" href="#config">Config</a></li>
-                    </ul>
-                </div><!-- /navbar -->
-            </div><!-- /footer -->
         </div>
-        <div id="category" class="panel" data-role="page">
+        <div id="category" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Choose a category</h1>
-                <a class="ui-btn-right confirm">Confirm</a>
+                <a class="ui-btn-right next">Next</a>
             </div>
             <div data-role="content">
                 <form>
@@ -168,15 +180,6 @@
                     </fieldset>
                 </form>
            </div>
-            <div data-id="footer" data-role="footer" data-position="fixed">		
-                <div data-role="navbar">
-                    <ul>
-                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help">Help</a></li>
-                        <li><a data-transition="fade" href="#config">Config</a></li>
-                    </ul>
-                </div><!-- /navbar -->
-            </div><!-- /footer -->
         </div>
         <div id="help" class="panel" data-role="page">
             <div class="toolbar" data-role="header">

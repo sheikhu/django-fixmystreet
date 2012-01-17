@@ -1,20 +1,10 @@
-import logging
-import os
-import urllib
-import datetime
 
-from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.template import Context, RequestContext
-from django.contrib.gis.measure import D 
-from django.contrib.gis.geos import *
-from django.utils.translation import ugettext as _
+from django.shortcuts import render_to_response
+from django.http import HttpResponse
+from django.template import RequestContext
 from django.utils.http import urlquote
-from django.utils.encoding import iri_to_uri
-from django.utils.translation import get_language
-
 import settings
-from fixmystreet.models import dictToPoint, Report, ReportUpdate, ZipCode, ReportCountQuery, City, FaqEntry
+from fixmystreet.models import ZipCode, ReportCountQuery, City, FaqEntry
 
 
 def home(request, location = None, error_msg =None): 
@@ -34,7 +24,7 @@ def home(request, location = None, error_msg =None):
             context_instance=RequestContext(request))
 
 def about(request):
-    return render_to_response("about.html",{'faq_entries' : FaqEntry.objects.all().order_by('order')},
+    return render_to_response("about.html", {'faq_entries' : FaqEntry.objects.all().order_by('order')},
             context_instance=RequestContext(request)) 
    
 def posters(request): 
@@ -49,5 +39,5 @@ def terms_of_use(request):
 def robot(request): 
     return HttpResponse("""User-Agent: *
 Disallow: /
-""",mimetype="text/plain")
+""", mimetype="text/plain")
 

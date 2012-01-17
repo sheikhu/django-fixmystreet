@@ -1,34 +1,7 @@
 
 $(document).delegate('#home', "pageinit", function(){
     
-    if(navigator.camera && navigator.camera.getPicture)
-    {
-        $('#menu-photo').click(function(evt) {
-            var $this = $(this);
-            evt.preventDefault();
-            $.mobile.showPageLoadingMsg();
-            
-            navigator.camera.getPicture(function(fileURI) {
-                console.log(fileURI);
-                $this.css({
-                    'background-image': 'url('+fileURI+')',
-                    'background-size': 'cover'
-                });
-                console.log($this);
-                
-                $.mobile.hidePageLoadingMsg();
-            },
-            function(message) {
-                alert('Failed to take photo... ' + message);
-            }, { 
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: (this.id=="take_photo"?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.PHOTOLIBRARY),
-                targetWidth: 300,
-                targetHeight: 300
-            });
-        });
-    }
-    else
+    if(!navigator.camera || !navigator.camera.getPicture)
     {
         $('#menu-photo').addClass('ui-disabled');
     }
@@ -36,6 +9,31 @@ $(document).delegate('#home', "pageinit", function(){
         loadAddress(p);
     });
 });
+
+$(document).delegate('#photo', "pageinit", function(evt){
+    $.mobile.showPageLoadingMsg();
+    panel = $(this);
+    
+    navigator.camera.getPicture(function(fileURI) {
+        $('#menu-photo').addClass('filled').empty();
+        $('#menu-photo').css({
+            'background-image': 'url('+fileURI+')',
+            'background-size': 'cover'
+        });
+        panel.find('form').append('<img src="'+fileURI+'"/>');
+        
+        $.mobile.hidePageLoadingMsg();
+    },
+    function(message) {
+        alert('Failed to take photo... ' + message);
+    }, { 
+        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: (this.id=="take_photo"?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.PHOTOLIBRARY),
+        targetWidth: 300,
+        targetHeight: 300
+    });
+});
+
 
 function loadAddress(p){
     $.post(
@@ -51,7 +49,7 @@ function loadAddress(p){
                 var address = response.result.address.street.name + ', ' + response.result.address.number;
                 console.log(response.result.address.street.postCode);
                 console.log(address);
-                $('#menu-address').html(address).buttonMarkup();
+                $('#menu-address').addClass('filled').find('.value').html(address);
             }
             else
             {
@@ -76,16 +74,27 @@ $(document).delegate('#description', "pageshow", function(){
     $(this).find('#id_desc').focus();
 });
 
-$(document).delegate('#description .confirm', "click", function(){
+$(document).delegate('.toolbar .next', "click", function(){
     //save
-    history.back();
+    var itemId = $(this).closest('.panel').attr('id');
+    var item = $('#home #menu-'+itemId);
+    item.addClass('filled');
+    var menu = $('#home .menu-button');
+    var target = menu.filter(':gt('+menu.index(item)+'):not(.filled)').first();
+    console.log(target);
+    if(!target.length){
+        $.mobile.changePage('#home');
+        $('#home').find('button').prop('disabled',false);
+    }else{
+        $.mobile.changePage(target.attr('href'));
+    }
 });
 
 
 
 
 $(document).delegate('#category', "pageinit", function(){
-    $(this).find('.confirm').hide();
+    //$(this).find('.confirm').hide();
 });
 
 $(document).delegate('#category .confirm', "click", function(){

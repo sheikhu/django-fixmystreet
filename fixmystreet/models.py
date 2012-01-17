@@ -50,12 +50,6 @@ class Report(models.Model):
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
 
     objects = models.GeoManager()
-    
-    def sent_at_diff(self):
-        if not self.sent_at:
-            return None
-        else:
-            return self.sent_at - self.created_at 
 
     def get_absolute_url(self):
         return reverse("report_show", args=[self.id])
@@ -210,7 +204,7 @@ class NotificationRule(models.Model):
         help_text="Only set for 'Category Group' rule types."
     )
     # filled in if an additional email address is required for the rule type
-    councillor = models.ForeignKey(Councillor,null=False)
+    councillor = models.ForeignKey(Councillor, null=False)
 
     def __str__(self):
         return "%s - %s %s (%s)" % ( 
@@ -232,15 +226,15 @@ class ReportNotification(models.Model):
         if self.report.photo:
             msg.attach_file(self.report.photo.file.name)
         msg.send()
-        self.sent_at=dt.now()
+        self.sent_at = dt.now()
 
 
 class NotificationResolver(object):
-    def __init__(self,report):
+    def __init__(self, report):
         self.report = report
         self.rules = NotificationRule.objects.filter(ward=self.report.ward)
 
-    def send(self,councillor):
+    def send(self, councillor):
         notification = ReportNotification(report=self.report, to_councillor=councillor)
         notification.send()
         notification.save()
@@ -249,14 +243,14 @@ class NotificationResolver(object):
         if self.report.ward.councillor:
             self.send(self.report.ward.councillor)
         for rule in self.rules:
-            if rule.rule==NotificationRule.TO_COUNCILLOR:
+            if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)
 
-            if rule.rule==NotificationRule.MATCHING_CATEGORY_CLASS:
+            if rule.rule == NotificationRule.MATCHING_CATEGORY_CLASS:
                 if self.report.category.category_class == rule.category_class:
                     self.send(rule.councillor)
 
-            if rule.rule==NotificationRule.NOT_MATCHING_CATEGORY_CLASS:
+            if rule.rule == NotificationRule.NOT_MATCHING_CATEGORY_CLASS:
                 if self.report.category.category_class != rule.category_class:
                     self.send(rule.councillor)
 
@@ -299,7 +293,7 @@ class City(models.Model):
 
 class Ward(models.Model):
     name = models.CharField(max_length=100)
-    councillor = models.ForeignKey(Councillor,null=True, blank=True)
+    councillor = models.ForeignKey(Councillor, null=True, blank=True)
     city = models.ForeignKey(City)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
@@ -315,11 +309,6 @@ class Ward(models.Model):
 
     def __unicode__(self):      
         return self.city.name + " " + self.name
-
-    def get_rule_descriptions(self):
-        rules = EmailRule.objects.filter(city=self.city)
-        describer = emailrules.EmailRulesDesciber(rules, self.city, self)
-        return describer.values()
 
 
 class ZipCode(models.Model):
@@ -341,17 +330,16 @@ class FaqEntry(models.Model):
     a = models.TextField(_('Answere'), blank=True, null=True)
     slug = models.SlugField(null=True, blank=True)
     order = models.IntegerField(null=True, blank=True)
-    
-    def save(self):
-        super(FaqEntry, self).save()
-        if self.order == None: 
-            self.order = self.id + 1
-            super(FaqEntry, self).save()
-    
+
     class Meta:
         verbose_name_plural = 'faq entries'
         translate = ('q', 'a')
 
+@receiver(pre_save,sender=FaqEntry)
+def save(sender, instance, **kwargs):
+    if instance.order == None: 
+        instance.order = instance.id + 1
+    
 
 class FaqMgr(object):
         
@@ -487,13 +475,13 @@ class AllCityTotals(ReportCountQuery):
         return( self.get_results()[self.index][7] != self.get_results()[self.index-1][7] )
 
 
-def dictToPoint(dict):
-        if not dict.has_key('x') or not dict.has_key('y'):
-            raise HttpResponseNotFound('<h1>Location not found</h1>')
-        x = dict.get('x')
-        y = dict.get('y')
+def dictToPoint(data):
+    if not data.has_key('x') or not data.has_key('y'):
+        raise HttpResponseNotFound('<h1>Location not found</h1>')
+    px = data.get('x')
+    py = data.get('y')
 
-        return fromstr("POINT(" + x + " " + y + ")", srid=31370)
+    return fromstr("POINT(" + px + " " + py + ")", srid=31370)
 
 
 class HtmlTemplateMail(EmailMultiAlternatives):
