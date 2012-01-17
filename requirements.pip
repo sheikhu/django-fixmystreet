@@ -3,3 +3,4 @@ django-jenkins
 django-transmeta
 django-stdimage
 psycopg2==2.4.1
+social_auth
