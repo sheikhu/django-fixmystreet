@@ -140,6 +140,10 @@
             locationErrorCallback();
         }
     }
+    
+    window.connectionCallback = function(username) {
+        $(document).trigger('connected',[username]);
+    }
 }());
 
 

@@ -5,7 +5,9 @@
     <script>
         if(window.opener)
         {
-            window.opener.connectionCallback('{{ user.get_full_name }}');
+            if(window.opener.connectionCallback) {
+                window.opener.connectionCallback('{{ user.get_full_name }}');
+            }
             window.close();
         }
         else

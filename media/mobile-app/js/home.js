@@ -61,23 +61,17 @@ function loadAddress(p){
 
 
 
-
-$(document).delegate('#description', "pageinit", function(){
-    $(this).find('form').submit(function(evt){
-        evt.preventDefault();
-        //save
-        history.back();
-    });
-});
-
-$(document).delegate('#description', "pageshow", function(){
-    $(this).find('#id_desc').focus();
+$(this).find('form').submit(function(evt){
+    evt.preventDefault();
+    var panel = $(this).closest('.panel');
+    panel.trigger('save');
 });
 
 $(document).delegate('.toolbar .next', "click", function(){
-    //save
-    var itemId = $(this).closest('.panel').attr('id');
-    var item = $('#home #menu-'+itemId);
+    var panel = $(this).closest('.panel');
+    panel.trigger('save');
+    
+    var item = $('#home #menu-'+panel.attr('id'));
     item.addClass('filled');
     var menu = $('#home .menu-button');
     var target = menu.filter(':gt('+menu.index(item)+'):not(.filled)').first();
@@ -93,21 +87,29 @@ $(document).delegate('.toolbar .next', "click", function(){
 
 
 
-$(document).delegate('#category', "pageinit", function(){
-    //$(this).find('.confirm').hide();
+
+$(document).delegate('#description', "pageshow", function(){
+    $(this).find('#id_desc').focus();
 });
 
-$(document).delegate('#category .confirm', "click", function(){
+$(document).delegate('#description', "save", function(){
+    console.log($(this).find('#id_desc').val());
+    $('#menu-description .value').html($(this).find('#id_desc').val().substr(0,20));
+});
+
+$(document).delegate('#category', "save", function(){
     var selected = $(this).closest('.panel').find(':radio:checked');
-    $('#menu-category').html(selected.next().text()).buttonMarkup();
-    //save
-    history.back();
+    $('#menu-category .value').html(selected.next().text());
 });
 
 $(document).delegate('#category :radio', "change", function(){
-    $(this).closest('.panel').find('.confirm').fadeIn();
     $(this).closest('form').find(':checked').next().addClass('ui-btn-active');
-    $(this).closest('form').find(':radio:not(:checked)').next().addClass('ui-radio-off').removeClass('ui-radio-on ui-btn-active').find('.ui-icon').addClass('ui-icon-radio-off').removeClass('ui-icon-radio-on');
+    $(this).closest('form').find(':radio:not(:checked)').next()
+            .addClass('ui-radio-off')
+            .removeClass('ui-radio-on ui-btn-active')
+            .find('.ui-icon')
+            .addClass('ui-icon-radio-off')
+            .removeClass('ui-icon-radio-on');
 });
 
 
