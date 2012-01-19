@@ -40,7 +40,7 @@
 	$(document).bind('initapp', function() {
 		FB.init({ 
 				appId: "263584440367959", 
-				nativeInterface: PG.FB,
+				/*nativeInterface: PG.FB,*/
 				oauth: true
 		});
 		FB.getLoginStatus(function(response) {
