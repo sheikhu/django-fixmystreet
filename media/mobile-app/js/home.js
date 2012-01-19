@@ -1,5 +1,5 @@
 
-$(document).delegate('#home', "pageinit", function(){
+$(document).bind('initapp', function() {
     
     if(!navigator.camera || !navigator.camera.getPicture)
     {

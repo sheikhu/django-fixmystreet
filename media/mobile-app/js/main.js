@@ -21,10 +21,6 @@
     
     var DEBUG = true;
 
-    window.init = function() {
-        $.mobile.activePage.trigger('pagereload');
-    }
-
     window.alert = function(message){
         return Notification.prototype.alert.apply(this, [message, function(){}, 'Fix My Street Brussels', 'OK']);
     }
@@ -39,6 +35,50 @@
     $(document).bind("backbutton", function(){ history.back(); });
     $(document).delegate("[data-rel=back]", "click", function(){ history.back(); });
 
+
+
+	$(document).bind('initapp', function() {
+		FB.init({ 
+				appId: "263584440367959", 
+				nativeInterface: PG.FB,
+				oauth: true
+		});
+		FB.getLoginStatus(function(response) {
+        	console.log('init '+JSON.stringify(response));
+			if (response.status === 'connected') {
+				loggedIn(response.authResponse.accessToken);
+			}
+		});
+	});
+
+	$(document).delegate('#login-fb', 'click', function() {
+		FB.login(function(response) {
+            console.log(JSON.stringify(response));
+            if (response.session) {
+                loggedIn(response.session.access_token);
+            }
+        }, { perms: "email" });
+	});
+	
+ 	function loggedIn(token){
+		alert('logged in');
+		FB.getLoginStatus(function(response) {
+            console.log(JSON.stringify(response));
+            if (response.session) {
+                loggedIn(response.session.access_token);
+            }
+        }, { perms: "email" });
+
+        $.get(
+	        window.fms.rootUrl + '/complete/facebook/', 
+        	{'code':token},
+            function(response){
+            	//console.log(response);
+            }
+        ).error(function(response){
+            //console.log(response);
+    	});
+	}
 
     $(document).delegate("form", "submit", function(evt){
         evt.preventDefault();

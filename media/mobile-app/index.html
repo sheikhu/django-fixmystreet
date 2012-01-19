@@ -9,6 +9,8 @@
 
         <script src="jquery/jquery-1.7.js"></script>
 		<script src="phonegap-1.2.0.js"></script>
+		<script src="pg-plugin-fb-connect.js"></script>
+		<script src="facebook_js_sdk.js"></script>
 
 		<script src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
         <script src="OpenLayers-2.11/OpenLayers.js"></script>
@@ -24,15 +26,17 @@
 	        function onBodyLoad() {
 	        	//if phonegap, need to toggle these
 	             if (typeof navigator.device == "undefined"){
-	            	 console.log('LOADING...');
-	            	 setTimeout("onBodyLoad()", 100);         
+	            	console.log('LOADING...');
+	            	setTimeout("onBodyLoad()", 100);         
 	             } else {
-	            	 console.log('LOADED');
-	            	 init(); //First call.
-	            	 document.addEventListener("resume", init, false);
+	            	console.log('LOADED');
+			        $(document).trigger('initapp');
+	            	document.addEventListener("resume", function(){
+				        $(document).trigger('initapp');
+	            	}, false);
 	             }
 	        }
-	    </script>
+        </script>
         
     </head>
     <body onload="onBodyLoad()">
@@ -186,8 +190,8 @@
                 <h1>Help for Fix My Street Brussels</h1>
             </div>
             <div data-role="content">
-                <p>Fix My Street Brussels is maintained by CIBG (<a href='http://www.cirb.irisnet.be'>www.cirb.irisnet.be</a>).</p>
-                <p>The original concept was inspired by <a href='http://mysociety.com'>MySociety's</a> <a href='http://fixmystreet.org'>example</a>, 
+                <p>Fix My Street Brussels is maintained by CIBG (<a href="http://www.cirb.irisnet.be">www.cirb.irisnet.be</a>).</p>
+                <p>The original concept was inspired by <a href="http://mysociety.com">MySociety's</a> <a href="http://fixmystreet.org">example</a>, 
                 which was adapted for Brussels by CIRB</p>
                 <p>the project was forked from the open source project fixmystreet.ca by visiblegovernment.ca.</p>
                 <p>FixMyStreet Brussels support only collectives from Brussels, all of them are represented on the site.</p>
@@ -212,7 +216,7 @@
             </div>
             <div data-role="content">
                 <p>You need to bee connected</p>
-                <p><a onclick="window.open('http://dev.fixmystreet.irisnetlab.be/login/facebook/')">Facebook</a></p>
+                <p><button id="login-fb">Facebook</button></p>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
