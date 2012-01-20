@@ -27,18 +27,23 @@
 	        	//if phonegap, need to toggle these
 	             if (typeof navigator.device == "undefined"){
 	            	console.log('LOADING...');
-	            	setTimeout("onBodyLoad()", 100);         
+	            	setTimeout("onBodyLoad()", 100);
 	             } else {
-	            	console.log('LOADED');
-			        $(document).trigger('initapp');
+	            	console.log('PHONEGAP LOADED');
+                    var evt = document.createEvent('Event');
+                    evt.initEvent('initapp', true, true);
+                    document.dispatchEvent(evt);
+
 	            	document.addEventListener("resume", function(){
-				        $(document).trigger('initapp');
+                        var evt = document.createEvent('Event');
+                        evt.initEvent('initapp', true, true);
+                        document.dispatchEvent(evt);
 	            	}, false);
 	             }
 	        }
         </script>
-        
     </head>
+
     <body onload="onBodyLoad()">
         <div id="home" class="panel" data-role="page">
             <div data-role="header">
@@ -46,33 +51,7 @@
             </div>
 
             <div data-role="content">
-                <div class="container">
-                    <div class="menu-quarter">
-                        <a id="menu-category" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#category">
-                            <div class="menu-icon"><img src="images/category.png"/></div>
-                            <span class="value"/>
-                        </a>
-                    </div>
-                    <div class="menu-quarter">
-                        <a id="menu-address" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#map">
-                            <div class="menu-icon"><img src="images/map.png"/></div>
-                            <span class="value"/>
-                        </a>
-                    </div>
-                    <div class="menu-quarter">
-                        <a id="menu-photo" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#photo">
-                            <div class="menu-icon"><img src="images/photo.png"/></div>
-                            <span class="value"/>
-                        </a>
-                    </div>
-                    <div class="menu-quarter">
-                        <a id="menu-description" class="menu-button ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" href="#description">
-                            <div class="menu-icon"><img src="images/description.png"/></div>
-                            <span class="value"/>
-                        </a>
-                    </div>
-                </div>
-                <p class="submit"><button disabled="disabled">Submit</button></p>
+                <p><button id="start">Create a report</button></p>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
@@ -84,22 +63,43 @@
                 </div><!-- /navbar -->
             </div><!-- /footer -->
         </div>
-        <div id="description" class="panel" data-role="page" data-add-back-btn="true">
+
+        <div id="category" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
-                <h1>Fill a description</h1>
+                <h1>Choose a category</h1>
                 <a class="ui-btn-right next" data-theme="b">Next</a>
             </div>
             <div data-role="content">
-                <form id="desc_form">
-                    <p>
-                        <textarea id="id_desc" name="desc"></textarea>
-                    </p>
-                    <!--<p>
-                        <input type="submit" data-value='Confirm'/>
-                    </p>-->
-                </form>
-            </div>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Parks</li>
+                    <li id="cat-3" data-value="3"><a>Lights Malfunctioning in Park</a></li>
+                    <li id="cat-4" data-value="4"><a>Debris or Litter in Park</a></li>
+                    <li id="cat-1" data-value="1"><a>Broken or Damaged Equipment/Play Structures</a></li>
+                    <li id="cat-2" data-value="2"><a>Full or Overflowing Garbage Cans</a></li>
+                    <li data-role="list-divider">Grafitti</li>
+                    <li id="cat-5" data-value="5"><a>Graffiti On City Property</a></li>
+                    <li id="cat-6" data-value="6"><a>Graffiti on Private Property</a></li>
+                    <li id="cat-7" data-value="7"><a>Graffiti  on Utility Transformers Mailboxes, etc..</a></li>
+                    <li data-role="list-divider">Roads/Sidewalks/Pathways</li>
+                    <li id="cat-13" data-value="13"><a>Damaged Guardrails</a></li>
+                    <li id="cat-15" data-value="15"><a>Bus Shelter Damaged</a></li>
+                    <li id="cat-16" data-value="16"><a>Debris/Litter in Bus Shelter</a></li>
+                    <li id="cat-8" data-value="8"><a>Blocked or damaged Catch basin / Manhole</a></li>
+                    <li id="cat-9" data-value="9"><a>Pothole</a></li>
+                    <li id="cat-10" data-value="10"><a>Damaged Curb</a></li>
+                    <li id="cat-14" data-value="14"><a>Full or Overflowing Garbage Cans</a></li>
+                    <li id="cat-11" data-value="11"><a>Debris or Litter on Road/Sidewalk/Pathway</a></li>
+                    <li id="cat-12" data-value="12"><a>Blocked or Damaged Culvert</a></li>
+                    <li data-role="list-divider">Trees</li>
+                    <li id="cat-20" data-value="20"><a>Branches Blocking Signs or Intersection</a></li>
+                    <li data-role="list-divider">Traffic Signals</li>
+                    <li id="cat-17" data-value="17"><a>Street Lights Out or Malfunctioning</a></li>
+                    <li id="cat-18" data-value="18"><a>Faded/Damaged/Missing Pavement Markings</a></li>
+                    <li id="cat-19" data-value="19"><a>Bent/Damaged/Missing Street Signs</a></li>
+                </ul>
+           </div>
         </div>
+
         <div id="photo" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Take a photo</h1>
@@ -111,10 +111,26 @@
                 </form>
             </div>
         </div>
-        <div id="map" class="panel" data-role="page" data-add-back-btn="true">
+
+        <div id="address" class="panel" data-role="page" data-add-back-btn="true">
+            <div class="toolbar" data-role="header">
+                <h1>Location</h1>
+                <a class="ui-btn-right next" data-theme="b">Next</a>
+            </div>
+            <div data-role="content">
+                <div>
+                    <p>The problem is located here:</p>
+                    <strong class="address-validate"></strong>
+                    <p><button class="address-confirm" data-theme="b">Ok</button></p>
+                    <p><button class="address-invalidate" data-theme="e">Wrong, locate it on map</button></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="map" class="panel" data-role="page"><!-- data-add-back-btn="true">-->
             <div class="toolbar" data-role="header">
                 <h1>Map</h1>
-                <a class="ui-btn-right next" data-theme="b">Next</a>
+                <!--<a class="ui-btn-right next" data-theme="b">Next</a>-->
             </div>
             <div data-role="content" id="container">
             	<!--<div id="content-disabled"> </div>-->
@@ -133,58 +149,66 @@
                     <a id="zoom-in" data-role="button" data-icon="plus" data-iconpos="notext">Zoom in</a>
                     <a id="zoom-out" data-role="button" data-icon="minus" data-iconpos="notext">Zoom out</a>
                 </div>
-                <a class="confirm" data-role="button" data-iconpos="right">Confirm</a>
+                <a class="confirm" data-role="button" data-theme="b">Confirm</a>
             </div>
         </div>
-        <div id="category" class="panel" data-role="page" data-add-back-btn="true">
+
+        <div id="description" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
-                <h1>Choose a category</h1>
+                <h1>Fill a description</h1>
                 <a class="ui-btn-right next" data-theme="b">Next</a>
             </div>
             <div data-role="content">
-                <form>
-                    <fieldset data-role="controlgroup">
-                        <legend>Parks</legend>
-                        <input type="radio" name="category" id="cat-3" value="3" /><label for="cat-3">Lights Malfunctioning in Park</label>
-                        <input type="radio" name="category" id="cat-4" value="4" /><label for="cat-4">Debris or Litter in Park</label>
-                        <input type="radio" name="category" id="cat-1" value="1" /><label for="cat-1">Broken or Damaged Equipment/Play Structures</label>
-                        <input type="radio" name="category" id="cat-2" value="2" /><label for="cat-2">Full or Overflowing Garbage Cans</label>
-                    </fieldset>
-
-                    <fieldset data-role="controlgroup">
-                        <legend>Grafitti</legend>
-                        <input type="radio" name="category" id="cat-5" value="5" /><label for="cat-5">Graffiti On City Property</label>
-                        <input type="radio" name="category" id="cat-6" value="6" /><label for="cat-6">Graffiti on Private Property</label>
-                        <input type="radio" name="category" id="cat-7" value="7" /><label for="cat-7">Graffiti  on Utility Transformers Mailboxes, etc..</label>
-                    </fieldset>
-
-                    <fieldset data-role="controlgroup">
-                        <legend>Roads/Sidewalks/Pathways</legend>
-                        <input type="radio" name="category" id="cat-13" value="13" /><label for="cat-13">Damaged Guardrails</label>
-                        <input type="radio" name="category" id="cat-15" value="15" /><label for="cat-15">Bus Shelter Damaged</label>
-                        <input type="radio" name="category" id="cat-16" value="16" /><label for="cat-16">Debris/Litter in Bus Shelter</label>
-                        <input type="radio" name="category" id="cat-8" value="8" /><label for="cat-8">Blocked or damaged Catch basin / Manhole</label>
-                        <input type="radio" name="category" id="cat-9" value="9" /><label for="cat-9">Pothole</label>
-                        <input type="radio" name="category" id="cat-10" value="10" /><label for="cat-10">Damaged Curb</label>
-                        <input type="radio" name="category" id="cat-14" value="14" /><label for="cat-14">Full or Overflowing Garbage Cans</label>
-                        <input type="radio" name="category" id="cat-11" value="11" /><label for="cat-11">Debris or Litter on Road/Sidewalk/Pathway</label>
-                        <input type="radio" name="category" id="cat-12" value="12" /><label for="cat-12">Blocked or Damaged Culvert</label>
-                    </fieldset>
-
-                    <fieldset data-role="controlgroup">
-                        <legend>Trees</legend>
-                        <input type="radio" name="category" id="cat-20" value="20" /><label for="cat-20">Branches Blocking Signs or Intersection</label>
-                    </fieldset>
-
-                    <fieldset data-role="controlgroup">
-                        <legend>Traffic Signals</legend>
-                        <input type="radio" name="category" id="cat-17" class="custom" value="17" /><label for="cat-17">Street Lights Out or Malfunctioning</label>
-                        <input type="radio" name="category" id="cat-18" class="custom" value="18" /><label for="cat-18">Faded/Damaged/Missing Pavement Markings</label>
-                        <input type="radio" name="category" id="cat-19" class="custom" value="19" /><label for="cat-19">Bent/Damaged/Missing Street Signs</label>
-                    </fieldset>
+                <form id="desc_form">
+                    <p>
+                        <textarea id="id_desc" name="desc"></textarea>
+                    </p>
                 </form>
-           </div>
+            </div>
         </div>
+
+        <div id="resume" class="panel" data-role="page">
+            <div data-role="header">
+                <h1>Check and submit</h1>
+            </div>
+
+            <div data-role="content">
+                <ul data-role="listview" data-inset="true">
+                    <li>
+                        <a id="menu-category" class="menuitem" data-step="0">
+                            <img src="images/category.png" class="ui-li-icon"/>
+                            <span class="value"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="menu-address" class="menuitem" data-step="1">
+                            <img src="images/map.png" class="ui-li-icon"/>
+                            <span class="value"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="menu-description" class="menuitem" data-step="3">
+                            <img src="images/description.png" class="ui-li-icon"/>
+                            <span class="value"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="menu-photo" class="menuitem" data-step="2"> </a>
+                    </li>
+                </ul>
+                <p class="submit"><button>Submit</button></p>
+            </div>
+            <div data-id="footer" data-role="footer" data-position="fixed">		
+                <div data-role="navbar">
+                    <ul>
+                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
+                        <li><a data-transition="fade" href="#help">Help</a></li>
+                        <li><a data-transition="fade" href="#config">Config</a></li>
+                    </ul>
+                </div><!-- /navbar -->
+            </div><!-- /footer -->
+        </div>
+
         <div id="help" class="panel" data-role="page">
             <div class="toolbar" data-role="header">
                 <h1>Help for Fix My Street Brussels</h1>
@@ -210,6 +234,7 @@
                 </div><!-- /navbar -->
             </div><!-- /footer -->
         </div>
+
         <div id="config" class="panel" data-role="page">
             <div class="toolbar" data-role="header">
                 <h1>Configuration</h1>

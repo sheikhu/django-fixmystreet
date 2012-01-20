@@ -74,6 +74,9 @@
     	});
 	}
 
+
+
+/*
     $(document).delegate("form", "submit", function(evt){
         evt.preventDefault();
         evt.stopPropagation();
@@ -141,7 +144,7 @@
                     .error(connectionErrorCallback);
         }
     });
-
+*/
 
     window.fms.getCurrentPosition = function(callback)
     {
@@ -173,10 +176,6 @@
         {
             locationErrorCallback();
         }
-    }
-    
-    window.connectionCallback = function(username) {
-        $(document).trigger('connected',[username]);
     }
 }());
 

@@ -1,115 +1,187 @@
 
-$(document).bind('initapp', function() {
-    
-    if(!navigator.camera || !navigator.camera.getPicture)
-    {
-        $('#menu-photo').addClass('ui-disabled');
-    }
-    window.fms.getCurrentPosition(function(p){
-        loadAddress(p);
-    });
-});
-
-$(document).delegate('#photo', "pageinit", function(evt){
-    $.mobile.showPageLoadingMsg();
-    panel = $(this);
-    
-    navigator.camera.getPicture(function(fileURI) {
-        $('#menu-photo').addClass('filled').empty();
-        $('#menu-photo').css({
-            'background-image': 'url('+fileURI+')',
-            'background-size': 'cover'
-        });
-        panel.find('form').append('<img src="'+fileURI+'"/>');
+(function() {
+    $(document).bind('initapp', function() {
         
-        $.mobile.hidePageLoadingMsg();
-    },
-    function(message) {
-        alert('Failed to take photo... ' + message);
-    }, { 
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: (this.id=="take_photo"?Camera.PictureSourceType.CAMERA:Camera.PictureSourceType.PHOTOLIBRARY),
-        targetWidth: 300,
-        targetHeight: 300
-    });
-});
-
-
-function loadAddress(p){
-    $.post(
-        window.fms.rootUrl + '/api/locate/',
-        '{\
-            "language": "en",\
-            "point":{x:' + p.x + ',y:' + p.y + '}\
-        }',
-        function(response)
+        if(!navigator.camera || !navigator.camera.getPicture)
         {
-            if(response.status == 'success')
-            {
-                var address = response.result.address.street.name + ', ' + response.result.address.number;
-                console.log(response.result.address.street.postCode);
-                console.log(address);
-                $('#menu-address').addClass('filled').find('.value').html(address);
+            $('#menu-photo').addClass('ui-disabled');
+        }
+        /*
+        window.fms.getCurrentPosition(function(p){
+            loadAddress(p);
+        });
+        */
+    });
+    
+    var reportData = {};
+    
+    var wizard = [
+        {
+            label: 'Category',
+            load: function(){
+                $.mobile.changePage('#category');
+            },
+            save: function($page){
             }
-            else
-            {
-                console.log('<p class="error-msg">' + response.status + '</p>');
+        },
+        {
+            label: 'Address',
+            load: function(){
+                $.mobile.changePage('#address');
+            },
+            save: function($page) {
+                var address = $page.find('.address-validate').text();
+                $('#menu-address .value').html(address);
+            }
+        },
+        {
+            label: 'Photo',
+            load: function(){
+                $.mobile.changePage('#photo');
+            },
+            save: function($page) {
+                
+            }
+        },
+        {
+            label: 'Description',
+            load: function(){
+                $.mobile.changePage('#description');
+            },
+            save: function($page) {
+                $('#menu-description .value').html($page.find('#id_desc').val());
             }
         }
-    ).error(window.fms.connectionErrorCallback);
-}
+    ]
 
 
+    var index = 0;
+    var current = null;
+    function nextStep(step) {
+        if(current) {
+            current.save($.mobile.activePage);
+            current.filled = true;
+        }
 
-$(this).find('form').submit(function(evt){
-    evt.preventDefault();
-    var panel = $(this).closest('.panel');
-    panel.trigger('save');
-});
 
-$(document).delegate('.toolbar .next', "click", function(){
-    var panel = $(this).closest('.panel');
-    panel.trigger('save');
-    
-    var item = $('#home #menu-'+panel.attr('id'));
-    item.addClass('filled');
-    var menu = $('#home .menu-button');
-    var target = menu.filter(':gt('+menu.index(item)+'):not(.filled)').first();
-    console.log(target);
-    if(!target.length){
-        $.mobile.changePage('#home');
-        $('#home button').button('enable');	
-    }else{
-        $.mobile.changePage(target.attr('href'));
+        if(step != null) {
+            index = step;
+        }
+
+        
+        current = wizard[index];
+        if(current) {
+            if(current.filled && step == null) {
+                current = null;
+                $.mobile.changePage('#resume');
+                return;
+            }
+            current.load();
+        } else {
+            current = null;
+            $.mobile.changePage('#resume');
+            return;
+        }
+
+        index++;
     }
-});
+
+    $(document).delegate("[data-rel=back]", "click", function(){
+        index--;
+        current.filled = false;
+        current = wizard[index-1];
+    });
+
+    $(document).delegate('#start', "click", function(){nextStep()});
+    $(document).delegate('.toolbar .next', "click", function(){nextStep()});
+    $(document).delegate('#resume .menuitem', "click", function(){
+        nextStep($(this).data('step'));
+    });
+
+
+    $(document).delegate('#photo', "pageinit", function(evt){
+        $.mobile.showPageLoadingMsg();
+        panel = $(this);
+        
+        navigator.camera.getPicture(function(fileURI) {
+            reportData['photo'] = fileURI;
+            var img = $('<img src="'+fileURI+'"/>').height('140px');
+            $('#menu-photo').append(img);
+            /*.css({
+                'background-image': 'url('+fileURI+')',
+                'background-size': 'cover'
+            });*/
+            panel.find('form').append('<img src="'+fileURI+'"/>');
+            
+            $.mobile.hidePageLoadingMsg();
+        },
+        function(message) {
+            alert('Failed to take photo... ' + message);
+        }, { 
+            destinationType: Camera.DestinationType.FILE_URI,
+            sourceType: (Camera.PictureSourceType.CAMERA),
+            targetWidth: 300,
+            targetHeight: 300
+        });
+    });
+
+    $(document).delegate('#address', "pageinit", function(evt){
+        window.fms.getCurrentPosition(function(p){
+            var address = $('.address-validate').text();
+            if(!address) {
+                loadAddress(p,function(address){
+                    $('.address-validate').text(address);
+                });
+            }
+        });
+    });
+
+    $(document).delegate('#address .address-confirm', "click", function(evt){
+        nextStep();
+    });
+
+    $(document).delegate('#address .address-invalidate', "click", function(evt){
+        $.mobile.changePage('#map',{transition:'flip'});
+    });
+    $(document).delegate('#map .confirm', "click", function(evt){
+        $.mobile.changePage('#address',{transition:'flip'});
+    });
+
+    $(document).delegate('#category li', "click", function(){
+        //save
+        $(this).addClass('ui-btn-active').siblings().removeClass('ui-btn-active');
+        var category = $(this).text();
+        reportData['category'] = category;
+        $('#menu-category .value').text(category);
+        nextStep();
+    });
+
+    $(document).delegate('#description', "pageshow", function(){
+        $(this).find('#id_desc').focus();
+    });
+
+    function loadAddress(p,cb){
+        $.post(
+            window.fms.rootUrl + '/api/locate/',
+            '{\
+                "language": "en",\
+                "point":{x:' + p.x + ',y:' + p.y + '}\
+            }',
+            function(response)
+            {
+                if(response.status == 'success')
+                {
+                    var address = response.result.address.street.name + ', ' + response.result.address.number;
+                    cb(address);
+                }
+                else
+                {
+                    console.log('<p class="error-msg">' + response.status + '</p>');
+                }
+            }
+        ).error(window.fms.connectionErrorCallback);
+    }
 
 
 
-
-
-$(document).delegate('#description', "pageshow", function(){
-    $(this).find('#id_desc').focus();
-});
-
-$(document).delegate('#description', "save", function(){
-    console.log($(this).find('#id_desc').val());
-    $('#menu-description .value').html($(this).find('#id_desc').val().substr(0,20));
-});
-
-$(document).delegate('#category', "save", function(){
-    var selected = $(this).closest('.panel').find(':radio:checked');
-    $('#menu-category .value').html(selected.next().text());
-});
-
-$(document).delegate('#category :radio', "change", function(){
-    $(this).closest('form').find(':checked').next().addClass('ui-btn-active');
-    $(this).closest('form').find(':radio:not(:checked)').next()
-            .addClass('ui-radio-off')
-            .removeClass('ui-radio-on ui-btn-active')
-            .find('.ui-icon')
-            .addClass('ui-icon-radio-off')
-            .removeClass('ui-icon-radio-on');
-});
-
-
+}());
