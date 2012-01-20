@@ -9,7 +9,6 @@
 
         <script src="jquery/jquery-1.7.js"></script>
 		<script src="phonegap-1.2.0.js"></script>
-		<script src="//connect.facebook.net/en_US/all.js"></script><!-- just for test TODO-FIXME remove it for device -->
 		<script src="pg-plugin-fb-connect.js"></script>
 		<script src="facebook_js_sdk.js"></script>
 
@@ -26,13 +25,13 @@
         <script type="text/javascript" charset="utf-8">
 	        function onBodyLoad() {
 	        	//if phonegap, need to toggle these
-	             if (typeof navigator.device == "undefined") {
+	             if (typeof navigator.device == "undefined"){
 	            	console.log('LOADING...');
-	            	setTimeout("onBodyLoad()", 100);
+	            	setTimeout("onBodyLoad()", 100);         
 	             } else {
 	            	console.log('LOADED');
 			        $(document).trigger('initapp');
-	            	document.addEventListener("resume", function() {
+	            	document.addEventListener("resume", function(){
 				        $(document).trigger('initapp');
 	            	}, false);
 	             }
@@ -215,7 +214,7 @@
             <div class="toolbar" data-role="header">
                 <h1>Configuration</h1>
             </div>
-            <div data-role="content">
+            <div data-role="content" class="content">
                 <p>You need to bee connected</p>
                 <p><button id="login-fb">Facebook</button></p>
             </div>

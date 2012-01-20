@@ -12,7 +12,7 @@
     }
 
     window.fms.rootUrl = 'http://fixmystreet.irisnet.be';
-    window.fms.rootUrl = 'http://fixmystreet.irisnetlab.be';
+    window.fms.rootUrl = 'http://dev.fixmystreet.irisnetlab.be';
     if(window.location.protocol == 'http:'){
         window.fms.rootUrl = window.location.protocol + '//' + window.location.host;
     }
@@ -40,20 +40,19 @@
 	$(document).bind('initapp', function() {
 		FB.init({ 
 				appId: "263584440367959", 
-				/*nativeInterface: PG.FB,*/
+				nativeInterface: PG.FB,
 				oauth: true
 		});
-		FB.getLoginStatus(function(response) {
-        	console.log('init '+JSON.stringify(response));
-			if (response.status === 'connected') {
-				loggedIn(response.authResponse.accessToken);
-			}
+		FB.getSession(function(response) {
+            console.log(JSON.stringify(response))
+            if (response.session) {
+                loggedIn(response.session.access_token);
+            }
 		});
 	});
 
 	$(document).delegate('#login-fb', 'click', function() {
 		FB.login(function(response) {
-            console.log(JSON.stringify(response));
             if (response.session) {
                 loggedIn(response.session.access_token);
             }
@@ -61,22 +60,17 @@
 	});
 	
  	function loggedIn(token){
-		alert('logged in');
-		FB.getLoginStatus(function(response) {
-            console.log(JSON.stringify(response));
-            if (response.session) {
-                loggedIn(response.session.access_token);
-            }
-        }, { perms: "email" });
-
+		//alert('logged in');
+        console.log('login success with token ' + token);
         $.get(
-	        window.fms.rootUrl + '/complete/facebook/', 
-        	{'code':token},
+	        window.fms.rootUrl + '/api/report/create/', 
+        	{'access_token':token,'backend':'facebook'},
             function(response){
-            	//console.log(response);
+            	console.log(response.user);
+              $('#config .content').append(response.user);
             }
         ).error(function(response){
-            //console.log(response);
+            console.log(response);
     	});
 	}
 
