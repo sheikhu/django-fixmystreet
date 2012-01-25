@@ -22,7 +22,8 @@
 
             if(newPoint){
                 /* set location */
-                loadAddress(newPoint);
+                //loadAddress(newPoint);
+                $(document).trigger('locationchange',[newPoint]);
             }
             history.back();
         });

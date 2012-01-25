@@ -21,8 +21,10 @@
     
     var DEBUG = true;
 
-    window.alert = function(message){
-        return Notification.prototype.alert.apply(this, [message, function(){}, 'Fix My Street Brussels', 'OK']);
+    if(window.Notification) {
+        window.alert = function(message) {
+            return Notification.prototype.alert.apply(this, [message, function(){}, 'Fix My Street Brussels', 'OK']);
+        }
     }
 
     if(!window.console) {
@@ -35,20 +37,16 @@
     $(document).bind("backbutton", function(){ history.back(); });
     $(document).delegate("[data-rel=back]", "click", function(){ history.back(); });
 
-
-
 	$(document).bind('initapp', function() {
-		FB.init({ 
-				appId: "263584440367959", 
-				nativeInterface: PG.FB,
-				oauth: true
-		});
-		FB.getSession(function(response) {
-            console.log(JSON.stringify(response))
-            if (response.session) {
-                loggedIn(response.session.access_token);
-            }
-		});
+        if(window.PG) {
+            FB.init({ 
+                    appId: "263584440367959", 
+                    nativeInterface: PG.FB,
+                    oauth: true
+            });
+        } else {
+            console.log('fail to init fb sdk with native interface');
+        }
 	});
 
 	$(document).delegate('#login-fb', 'click', function() {
@@ -58,20 +56,47 @@
             }
         }, { perms: "email" });
 	});
+    
+    if(!window.FB){
+        console.log('load sdk from Facebook server, it would not append with append with a device');
+        (function(d){
+            var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+            js = d.createElement('script'); js.id = id; js.async = true;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            d.getElementsByTagName('head')[0].appendChild(js);
+        }(document));
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '263584440367959',
+            });
+        }
+   }
 	
  	function loggedIn(token){
 		//alert('logged in');
         console.log('login success with token ' + token);
-        $.get(
-	        window.fms.rootUrl + '/api/report/create/', 
-        	{'access_token':token,'backend':'facebook'},
-            function(response){
-            	console.log(response.user);
-              $('#config .content').append(response.user);
+        //$.get(
+	        //window.fms.rootUrl + '/api/report/create/', 
+        	//{'access_token':token,'backend':'facebook'},
+            //function(response){
+            	//console.log(response.user);
+              //$('#config .content').append(response.user);
+            //}
+        //).error(function(response){
+            //console.log(response);
+    	//});
+	}
+ 	window.fms.getToken = function(cb){
+        FB.getSession(function(response) {
+            console.log(JSON.stringify(response))
+            if (response.session) {
+                loggedIn(response.session.access_token);
+                cb(response.session.access_token);
+            } else {
+                cb();
             }
-        ).error(function(response){
-            console.log(response);
-    	});
+        });
 	}
 
 
@@ -146,16 +171,24 @@
     });
 */
 
+    window.fms.locationErrorCallback = function(error)
+    {
+        console.log('localisation error: ' + error);
+        alert('Your device do not support geo localisation or the localisation has failed.');
+        var defaultLoc = {x:148853.101438753, y:170695.57753253728};
+        callback(defaultLoc);
+        $.mobile.hidePageLoadingMsg();
+    }
+
+    window.fms.connectionErrorCallback = function(error)
+    {
+        console.log('connection error: ' + error);
+        alert('Connection failed.');
+        $.mobile.hidePageLoadingMsg();
+    }
+
     window.fms.getCurrentPosition = function(callback)
     {
-        var locationErrorCallback = function(error)
-        {
-            console.log('localisation error: ' + error);
-            alert('Your device do not support geo localisation or the localisation has failed.');
-            var defaultLoc = {x:148853.101438753, y:170695.57753253728};
-            callback(defaultLoc);
-            $.mobile.hidePageLoadingMsg();
-        }
 
         $.mobile.showPageLoadingMsg();
         console.log('atempt to locate');
@@ -170,11 +203,11 @@
                 Proj4js.transform(source, dest, p);
                 callback(p);
                 $.mobile.hidePageLoadingMsg();
-            },locationErrorCallback);
+            },window.fms.locationErrorCallback);
         }
         else
         {
-            locationErrorCallback();
+            window.fms.locationErrorCallback();
         }
     }
 }());

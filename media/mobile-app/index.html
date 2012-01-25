@@ -5,8 +5,8 @@
         <link rel="stylesheet" type="text/css" media="screen" href="jquery.mobile-1.0/jquery.mobile-1.0.css"></link>
         <link rel="stylesheet" type="text/css" media="screen" href="css/fms-mobile.css"></link>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+        <meta id="viewPortId" name="viewport" content="width=device-width, initial-scale=1" />
+        
         <script src="jquery/jquery-1.7.js"></script>
 		<script src="phonegap-1.2.0.js"></script>
 		<script src="pg-plugin-fb-connect.js"></script>
@@ -30,6 +30,39 @@
 	            	setTimeout("onBodyLoad()", 100);
 	             } else {
 	            	console.log('PHONEGAP LOADED');
+                    console.log("PLATFORM="+device.platform);            
+                    console.log("SCREEN WIDTH="+screen.width);
+                    console.log("SCREEN HEIGHT="+screen.height);
+                    /*
+                    var dpi = window.devicePixelRatio * 160;
+                    console.log("SCREEN WIDTH=" + screen.width/dpi + 'inch');
+                    console.log("SCREEN HEIGHT=" + screen.height/dpi + 'inch');
+                    console.log("SCREEN WIDTH=" + screen.width/dpi*2.54 + 'cm');
+                    console.log("SCREEN HEIGHT=" + screen.height/dpi*2.54 + 'cm');
+                    J'ai lu que la valeur de 1dp (Density-independent pixel) vaut 1px à une densité de 160dpi (medium-dpi), donc si  le même ratio est utilisé pour devicePixelRatio (hypothèse), alors la valeur de dpi peut-être calculé.
+                    Mais la valeur de ce ratio à l'aire d'être une aproximation (0.75, 1, 1.5 ou 2 mais pas de valeur intermédiare...) donc la longueur serta aussi une aproximation mais ça permettra peut-être de savoir si on se trouve sur une tablette :)
+                    */
+                    
+                    //tdesany: Scale screen based on pixel ratio
+                    //The window.devicePixelRatio DOM property. The value of this property specifies the default 
+                    //scaling factor used for the current device. For example, if the value of window.devicePixelRatio is "1.0",
+                    //then the device is considered a medium density (mdpi) device and default scaling is not applied to the web page; 
+                    //if the value is "1.5", then the device is considered a high density device (hdpi) and the page content is scaled 1.5x; 
+                    //if the value is "0.75", then the device is considered a low density device (ldpi) and the content is scaled 0.75x. 
+                    //However, if you specify the "target-densitydpi" meta property (discussed below), then you can stop this default scaling behavior.
+                    if (window.devicePixelRatio && window.devicePixelRatio >= 1.5) {
+                        console.log("HIGH DENSITY SCREEN");
+                        //$.mobile.metaViewportContent = "width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=medium-dpi";
+                        $('#viewPortId').attr('content','width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=medium-dpi');
+                    } else if (window.devicePixelRatio && window.devicePixelRatio > 0.75) {
+                        console.log("MEDIUM DENSITY SCREEN");
+                        $.mobile.metaViewportContent = "width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=low-dpi";
+                    } else {
+                        console.log("LOW DENSITY SCREEN");
+                        $.mobile.metaViewportContent = "width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=device-dpi";
+                    }
+           
+
                     var evt = document.createEvent('Event');
                     evt.initEvent('initapp', true, true);
                     document.dispatchEvent(evt);
@@ -51,14 +84,54 @@
             </div>
 
             <div data-role="content">
-                <p><button id="start">Create a report</button></p>
+                <div id="welcome">
+                    <p><button id="start">Create a report</button></p>
+                </div>
+                <div id="resume" style="display:none;">
+                    <ul data-role="listview" data-inset="true">
+                        <li>
+                            <a id="menu-category" class="menuitem" data-step="0">
+                                <img src="images/category.png" class="ui-li-icon"/>
+                                <span class="value"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="menu-address" class="menuitem" data-step="1">
+                                <img src="images/map.png" class="ui-li-icon"/>
+                                <span class="value"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="menu-description" class="menuitem" data-step="3">
+                                <img src="images/description.png" class="ui-li-icon"/>
+                                <span class="value"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="menu-photo" class="menuitem" data-step="2"> </a>
+                        </li>
+                    </ul>
+                    <p class="submit"><button>Submit</button></p>
+                </div>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
                     <ul>
-                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help">Help</a></li>
-                        <li><a data-transition="fade" href="#config">Config</a></li>
+                        <li>
+                            <a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">
+                                <img src="images/write.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-transition="fade" href="#help">
+                                <img src="images/info.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-transition="fade" href="#config">
+                                <img src="images/profile.png"/>
+                            </a>
+                        </li>
                     </ul>
                 </div><!-- /navbar -->
             </div><!-- /footer -->
@@ -67,7 +140,7 @@
         <div id="category" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Choose a category</h1>
-                <a class="ui-btn-right next" data-theme="b">Next</a>
+                <a class="ui-btn-right help" data-theme="b">Help</a>
             </div>
             <div data-role="content">
                 <ul data-role="listview">
@@ -103,19 +176,21 @@
         <div id="photo" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Take a photo</h1>
-                <a class="ui-btn-right next" data-theme="b">Next</a>
+                <a class="ui-btn-right help" data-theme="b">Help</a>
             </div>
 
             <div data-role="content">
-                <form id="photo_form">
-                </form>
+                <div id="preview"></div>
+                <p><button id="capture" data-theme="b">Take a photo</button></p>
+                <p><button id="select" data-theme="c">Select in library</button></p>
+                <p><button id="skip" data-theme="e">No photo</button></p>
             </div>
         </div>
 
         <div id="address" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Location</h1>
-                <a class="ui-btn-right next" data-theme="b">Next</a>
+                <a class="ui-btn-right help" data-theme="b">Help</a>
             </div>
             <div data-role="content">
                 <div>
@@ -132,7 +207,7 @@
                 <h1>Map</h1>
                 <!--<a class="ui-btn-right next" data-theme="b">Next</a>-->
             </div>
-            <div data-role="content" id="container">
+            <div data-role="content" class="content">
             	<!--<div id="content-disabled"> </div>-->
                 <div id="map-bxl">
                     <div id="instructable">
@@ -156,57 +231,14 @@
         <div id="description" class="panel" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Fill a description</h1>
-                <a class="ui-btn-right next" data-theme="b">Next</a>
+                <a class="ui-btn-right help" data-theme="b">Help</a>
             </div>
             <div data-role="content">
-                <form id="desc_form">
-                    <p>
-                        <textarea id="id_desc" name="desc"></textarea>
-                    </p>
-                </form>
+                <p>
+                    <textarea id="id_desc" name="desc"></textarea>
+                </p>
+                <p class="buttons"><button data-theme="c" data-inline="true">Ok</button></p>
             </div>
-        </div>
-
-        <div id="resume" class="panel" data-role="page">
-            <div data-role="header">
-                <h1>Check and submit</h1>
-            </div>
-
-            <div data-role="content">
-                <ul data-role="listview" data-inset="true">
-                    <li>
-                        <a id="menu-category" class="menuitem" data-step="0">
-                            <img src="images/category.png" class="ui-li-icon"/>
-                            <span class="value"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="menu-address" class="menuitem" data-step="1">
-                            <img src="images/map.png" class="ui-li-icon"/>
-                            <span class="value"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="menu-description" class="menuitem" data-step="3">
-                            <img src="images/description.png" class="ui-li-icon"/>
-                            <span class="value"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="menu-photo" class="menuitem" data-step="2"> </a>
-                    </li>
-                </ul>
-                <p class="submit"><button>Submit</button></p>
-            </div>
-            <div data-id="footer" data-role="footer" data-position="fixed">		
-                <div data-role="navbar">
-                    <ul>
-                        <li><a data-transition="fade" href="#home" class="ui-btn-active ui-state-persist">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help">Help</a></li>
-                        <li><a data-transition="fade" href="#config">Config</a></li>
-                    </ul>
-                </div><!-- /navbar -->
-            </div><!-- /footer -->
         </div>
 
         <div id="help" class="panel" data-role="page">
@@ -227,9 +259,21 @@
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
                     <ul>
-                        <li><a data-transition="fade" href="#home">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help" class="ui-btn-active ui-state-persist">Help</a></li>
-                        <li><a data-transition="fade" href="#config">Config</a></li>
+                        <li>
+                            <a data-transition="fade" href="#home">
+                                <img src="images/write.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-transition="fade" href="#help" class="ui-btn-active ui-state-persist">
+                                <img src="images/info.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-transition="fade" href="#config">
+                                <img src="images/profile.png"/>
+                            </a>
+                        </li>
                     </ul>
                 </div><!-- /navbar -->
             </div><!-- /footer -->
@@ -246,9 +290,21 @@
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
                     <ul>
-                        <li><a data-transition="fade" href="#home">Fill reports</a></li>
-                        <li><a data-transition="fade" href="#help">Help</a></li>
-                        <li><a data-transition="fade" href="#config" class="ui-btn-active ui-state-persist">Config</a></li>
+                        <li>
+                            <a data-transition="fade" href="#home">
+                                <img src="images/write.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-transition="fade" href="#help">
+                                <img src="images/info.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-transition="fade" href="#config" class="ui-btn-active ui-state-persist">
+                                <img src="images/profile.png"/>
+                            </a>
+                        </li>
                     </ul>
                 </div><!-- /navbar -->
             </div><!-- /footer -->
