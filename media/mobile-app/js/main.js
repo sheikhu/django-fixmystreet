@@ -46,36 +46,25 @@
             });
         } else {
             console.log('fail to init fb sdk with native interface');
+            FB.init({ 
+                    appId: "263584440367959"
+            });
         }
 	});
 
 	$(document).delegate('#login-fb', 'click', function() {
 		FB.login(function(response) {
             if (response.session) {
-                loggedIn(response.session.access_token);
+                window.fms.login(response.session.access_token, response.session.expires);
             }
         }, { perms: "email" });
 	});
-    
-    if(!window.FB){
-        console.log('load sdk from Facebook server, it would not append with append with a device');
-        (function(d){
-            var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-            js = d.createElement('script'); js.id = id; js.async = true;
-            js.src = "//connect.facebook.net/en_US/all.js";
-            d.getElementsByTagName('head')[0].appendChild(js);
-        }(document));
-
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId: '263584440367959',
-            });
-        }
-   }
 	
- 	function loggedIn(token){
+ 	window.fms.login = function(token, expires) {
 		//alert('logged in');
         console.log('login success with token ' + token);
+        window.localStorage.setItem('fms_fb_access_token', token);
+        window.localStorage.setItem('fms_fb_access_token_expires', expires);
         //$.get(
 	        //window.fms.rootUrl + '/api/report/create/', 
         	//{'access_token':token,'backend':'facebook'},
@@ -87,16 +76,21 @@
             //console.log(response);
     	//});
 	}
+    
  	window.fms.getToken = function(cb){
-        FB.getSession(function(response) {
-            console.log(JSON.stringify(response))
-            if (response.session) {
-                loggedIn(response.session.access_token);
-                cb(response.session.access_token);
-            } else {
-                cb();
-            }
-        });
+        console.log('try to get token');
+        var token = window.localStorage.getItem('fms_fb_access_token');
+        var expires = Date.parse(window.localStorage.getItem('fms_fb_access_token_expires'));
+        console.log('token',token,expires);
+        if (token && expires > new Date()) {
+            console.log('token retrived');
+            cb(token,'facebook');
+        } else {
+            console.log('token not found or expired');
+            cb();
+            window.localStorage.removeItem('fms_fb_access_token');
+            window.localStorage.removeItem('fms_fb_access_token_expires');
+        }
 	}
 
 
@@ -173,7 +167,7 @@
 
     window.fms.locationErrorCallback = function(error)
     {
-        console.log('localisation error: ' + error);
+        console.log('localisation error: ' + JSON.stringify(error));
         alert('Your device do not support geo localisation or the localisation has failed.');
         var defaultLoc = {x:148853.101438753, y:170695.57753253728};
         callback(defaultLoc);
@@ -182,7 +176,7 @@
 
     window.fms.connectionErrorCallback = function(error)
     {
-        console.log('connection error: ' + error);
+        console.log('connection error: ' +  + JSON.stringify(error));
         alert('Connection failed.');
         $.mobile.hidePageLoadingMsg();
     }

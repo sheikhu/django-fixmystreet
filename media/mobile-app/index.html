@@ -56,10 +56,10 @@
                         $('#viewPortId').attr('content','width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=medium-dpi');
                     } else if (window.devicePixelRatio && window.devicePixelRatio > 0.75) {
                         console.log("MEDIUM DENSITY SCREEN");
-                        $.mobile.metaViewportContent = "width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=low-dpi";
+                        $('#viewPortId').attr('content',"width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=low-dpi");
                     } else {
                         console.log("LOW DENSITY SCREEN");
-                        $.mobile.metaViewportContent = "width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=device-dpi";
+                        $('#viewPortId').attr('content',"width=device-width, initial-scale=1, minimum-scale=1, target-densitydpi=device-dpi");
                     }
            
 
@@ -85,6 +85,7 @@
 
             <div data-role="content">
                 <div id="welcome">
+                    <p><strong class="msg"></strong></p>
                     <p><button id="start">Create a report</button></p>
                 </div>
                 <div id="resume" style="display:none;">

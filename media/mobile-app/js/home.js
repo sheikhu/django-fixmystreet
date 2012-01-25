@@ -110,7 +110,7 @@
     $(document).delegate('#photo #skip', "click", function(evt){
         reportData['photo'] = null;
         $('#photo #preview').empty();
-        $('#menu-photo').remove('img');
+        $('#menu-photo').find('img').remove();
         nextStep();
     });
     function getPhoto(source){
@@ -202,27 +202,33 @@
     //$(document).delegate('#description #id_desc', "blur", saveDescription);
 
     $(document).delegate('#resume .submit', "click", function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
         submitReport();
     });
     function submitReport() {
         console.log(reportData);
-        evt.preventDefault();
-        evt.stopPropagation();
 
         $.mobile.showPageLoadingMsg();
-          
-          
+
         var url = window.fms.rootUrl + '/api/report/new/';
 
         var success = function(content){
             $.mobile.hidePageLoadingMsg();
-            $('#welcome').show();
-            $('#resume').hide();
-            $.mobile.changePage('#home');
+            $('#welcome').find('.msg').show().html('Your report has been sent successfully');
+            $('#resume').slideUp();
+            $('#welcome').slideDown();
+            //$.mobile.changePage('#home');
+            setTimeout(function(){
+                $('#welcome').find('.msg').slideUp();
+            },3000);
         }
         
-        window.fms.getToken(function(token){
+        window.fms.getToken(function(token,backend){
             if(token) {
+                console.log('sending ' + JSON.stringify(reportData))
+                reportData.token = token;
+                reportData.backend = backend;
                 if(reportData.photo) 
                 {
                     var imageURI = reportData.photo;
@@ -240,10 +246,10 @@
                     $.post(url,reportData,success).error(window.fms.connectionErrorCallback);
                 }
             } else {
-                $.mobile.changePage('#config');
+                $.mobile.changePage('#config',{transition:'fade'});
             }
         });
-    });
+    };
 
     function loadAddress(p,cb){
         $.post(

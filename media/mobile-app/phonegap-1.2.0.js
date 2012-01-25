@@ -11,7 +11,10 @@
     }
 
     if(!navigator.device){
-        navigator.device = {};
+        navigator.device = {plateform:'emulator'};
+    }
+    if(!window.device){
+        window.device = navigator.device;
     }
     if(!navigator.camera){
         navigator.camera = {};

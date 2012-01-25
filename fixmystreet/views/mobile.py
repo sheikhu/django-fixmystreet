@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.conf import settings
 from django.http import HttpResponseRedirect
+import settings as fms_settings
 
 
 def ssl_required(view_func):
@@ -30,13 +31,13 @@ def oauthtoken_to_user(backend_name,token,request,*args, **kwargs):
 
 @ssl_required
 def create_report(request):
-    user = oauthtoken_to_user(request.GET.get('backend'),request.GET.get('access_token'),request)
-    if(!user) {
+    user = oauthtoken_to_user(request.REQUEST.get('backend'),request.REQUEST.get('access_token'),request)
+    if not user:
         return HttpResponse(json.dumps({
             'status':'error',
             'user':user.get_full_name()
         }),mimetype="application/json")
-    }
+    
     return HttpResponse(json.dumps({
         'status':'success',
         'user':user.get_full_name()
