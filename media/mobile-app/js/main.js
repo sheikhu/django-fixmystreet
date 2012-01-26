@@ -52,36 +52,30 @@
         }
 	});
 
+    window.fms.parseIsoDate = function(dateTimeStr) {
+        var p = (/(\d{4})-(\d{2})-(\d{2})(?: |T)(\d{2}):(\d{2}):(\d{2}) \+(\d{4})/).exec(dateTimeStr);
+        return new Date(p[1], p[2]-1, p[3], p[4], p[5], p[6]);
+    }
+ 
 	$(document).delegate('#login-fb', 'click', function() {
 		FB.login(function(response) {
             if (response.session) {
-                window.fms.login(response.session.access_token, response.session.expires);
+                window.fms.login(response.session.access_token, window.fms. parseIsoDate(response.session.expires));
             }
         }, { perms: "email" });
 	});
 	
  	window.fms.login = function(token, expires) {
-		//alert('logged in');
-        console.log('login success with token ' + token);
+        console.log('login success with token ' + token + ' expire ' + expires);
         window.localStorage.setItem('fms_fb_access_token', token);
         window.localStorage.setItem('fms_fb_access_token_expires', expires);
-        //$.get(
-	        //window.fms.rootUrl + '/api/report/create/', 
-        	//{'access_token':token,'backend':'facebook'},
-            //function(response){
-            	//console.log(response.user);
-              //$('#config .content').append(response.user);
-            //}
-        //).error(function(response){
-            //console.log(response);
-    	//});
 	}
     
  	window.fms.getToken = function(cb){
         console.log('try to get token');
         var token = window.localStorage.getItem('fms_fb_access_token');
-        var expires = Date.parse(window.localStorage.getItem('fms_fb_access_token_expires'));
-        console.log('token',token,expires);
+        var expires = new Date(window.localStorage.getItem('fms_fb_access_token_expires'));
+        console.log('token ' + token + ' expire on ' + expires);
         if (token && expires > new Date()) {
             console.log('token retrived');
             cb(token,'facebook');
@@ -174,9 +168,9 @@
         $.mobile.hidePageLoadingMsg();
     }
 
-    window.fms.connectionErrorCallback = function(error)
+    window.fms.connectionErrorCallback = function(xhr, textStatus, errorThrown)
     {
-        console.log('connection error: ' +  + JSON.stringify(error));
+        console.log('connection error: ' + textStatus + ' ' + errorThrown + ' ' + xhr.responseText);
         alert('Connection failed.');
         $.mobile.hidePageLoadingMsg();
     }

@@ -226,9 +226,9 @@
         
         window.fms.getToken(function(token,backend){
             if(token) {
-                console.log('sending ' + JSON.stringify(reportData))
                 reportData.token = token;
                 reportData.backend = backend;
+                console.log('sending ' + JSON.stringify(reportData));
                 if(reportData.photo) 
                 {
                     var imageURI = reportData.photo;
