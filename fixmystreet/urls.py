@@ -98,6 +98,6 @@ urlpatterns += patterns('fixmystreet.views.api',
 )
 
 urlpatterns += patterns('fixmystreet.views.mobile',
-    url(r'^api/report/new/$', 'create_report',name='api_create_report'),
+    url(r'^api/report/new/$', 'create_report',name='api_report_new'),
 )
 

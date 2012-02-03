@@ -1,10 +1,13 @@
 import json
+from urllib2 import HTTPError
 
 from social_auth.backends import get_backend
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.utils import simplejson
+
 import settings as fms_settings
 
 
