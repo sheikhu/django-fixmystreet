@@ -31,8 +31,11 @@ def oauthtoken_to_user(backend_name,token,request,*args, **kwargs):
 
 @ssl_required
 def create_report(request):
+    user = None
+    if request.user.is_authenticated():
+        user = request.user
     try:
-        user = request.user or oauthtoken_to_user(request.REQUEST.get('backend'),request.REQUEST.get('access_token'),request)
+        user = user or oauthtoken_to_user(request.REQUEST.get('backend'),request.REQUEST.get('access_token'),request)
     except HTTPError, e:
         return HttpResponse(json.dumps({
             'status': 'error',
