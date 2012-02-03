@@ -147,6 +147,7 @@
 
         loadAddress(p,function(address){
             reportData['address'] = address;
+            reportData['location'] = p;
             caption.html(address).removeClass('loader');
             btn.button('enable');
         });
@@ -162,6 +163,8 @@
             window.fms.getCurrentPosition(function(p){
                 loadAddress(p,function(address){
                     reportData['address'] = address;
+                    reportData['location'] = p;
+
                     caption.html(address).removeClass('loader');
                     btn.button('enable');
                 });
@@ -214,6 +217,7 @@
         var url = window.fms.rootUrl + '/api/report/new/';
 
         var success = function(content){
+            console.log('ajax success');
             $.mobile.hidePageLoadingMsg();
             $('#welcome').find('.msg').show().html('Your report has been sent successfully');
             $('#resume').slideUp();
@@ -243,7 +247,7 @@
                     
                     ft.upload(imageURI, url, function(r){success(r.response);}, window.fms.connectionErrorCallback, options);
                 } else {
-                    $.post(url,reportData,success).error(window.fms.connectionErrorCallback);
+                    $.post(url,reportData,success,'json').error(window.fms.connectionErrorCallback);
                 }
             } else {
                 $.mobile.changePage('#config',{transition:'fade'});
