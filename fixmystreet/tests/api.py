@@ -45,13 +45,15 @@ class ApiTest(TestCase):
         try:
             response = simplejson.loads(urlopen(url).read())
             for user in response['data']:
-                if user['id'] in self.users:
-                    self.users[user['id']]['access_token'] = user['access_token']
+                if user['id'] not in self.users:
+                    self.users[user['id']] = {}
+                self.users[user['id']]['access_token'] = user['access_token']
+            print self.users
         except HTTPError, e:
             print e.code
             print simplejson.loads(e.read())['error']['message']
             raise e
-        pass
+        
         
     def testCreateReport(self):
         # check if Facebook can authenticate steven

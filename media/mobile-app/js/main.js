@@ -1,9 +1,6 @@
 (function(){
     $(document).bind("mobileinit", function() {
-        $.support.cors = true;
-        $.mobile.allowCrossDomainPages = true;
         //$.mobile.page.prototype.options.addBackBtn = true;
-        $.mobile.ajaxEnabled = false;
         $.mobile.pushStateEnable = false;
     });
 
@@ -38,7 +35,6 @@
     $(document).delegate("[data-rel=back]", "click", function(){ history.back(); });
 
     $(document).delegate(".ui-page", "pageinit", function(){
-        console.log(this, $(this).has('.ui-footer'));
         if($(this).find('.ui-footer').length){
             $(this).find('.ui-content').addClass('ui-content-footered');
         }
@@ -47,18 +43,18 @@
 	$(document).bind('initapp', function() {
         if(window.PG) {
             FB.init({ 
-                    appId: "263584440367959", 
-                    nativeInterface: PG.FB,
-                    oauth: true
+                appId: "263584440367959",
+                nativeInterface: PG.FB,
+                oauth: true
             });
         } else {
             console.log('fail to init fb sdk with native interface');
             FB.init({ 
-                    appId: "263584440367959"
+                appId: "263584440367959"
             });
         }
-        var expires = new Date(window.localStorage.getItem('fms_fb_access_token_expires'));
-        if (expires > new Date()) {
+        var expires = window.localStorage.getItem('fms_fb_access_token_expires');
+        if (expires && new Date(expires) > new Date()) {
             $(function(){
                 $(document).trigger('connected');
             });
@@ -78,15 +74,25 @@
         }, { perms: "email" });
 	});
     $(document).delegate('#disconnect', 'click', function() {
-        FB.logout(function(response) {
-            window.localStorage.removeItem('fms_fb_access_token');
-            window.localStorage.removeItem('fms_fb_access_token_expires');
-        });
+        window.localStorage.removeItem('fms_fb_access_token');
+        window.localStorage.removeItem('fms_fb_access_token_expires');
+        FB.logout();
+
+        $('#login-status').html('You need to be connected');
+        $('#login-fb').parent().show();
+        $('#disconnect').parent().hide();
     });
     $(document).bind('connected',function(){
-        $('#login-status').html('You are connected');
-        $('#login-fb').parent().hide();
-        $('#disconnect').parent().show();
+        FB.api('/me', function(response) {
+            console.log(response);
+            if(!response.error) {
+                $('#login-status').html('You are connected as');
+                $('#login-status').append('<p><strong>' + response.name + '</strong></p>');
+                $('#login-status').append('<p><strong>' + response.email + '</strong></p>');
+                $('#login-fb').parent().hide();
+                $('#disconnect').parent().show();
+            }
+        });
     });
  
  	window.fms.login = function(token, expires) {
@@ -116,87 +122,6 @@
         }
 	}
 
-
-
-/*
-    $(document).delegate("form", "submit", function(evt){
-        evt.preventDefault();
-        evt.stopPropagation();
-
-        var $form = $(this);
-        var valid = true;
-        
-        $('.required input, .required select').each(function(ind,input){
-            if(!$(input).val()){
-                valid = false;
-                $(input).addClass('mandatory');
-            }else{
-                $(input).removeClass('mandatory');
-            }
-        });
-        
-        if(!valid){
-            $form.find('.mandatory').first().focus();
-            
-            return;
-        }
-        
-        $.mobile.showPageLoadingMsg();
-          
-        var $current = $form.closest('[data-role=page]');
-          
-        var url = window.fms.rootUrl + $form.attr('action');
-
-        var success = function(content){
-            var $page = $(content).page();
-            
-            // TODO: do not change content, change panel instead
-            $current.find('[data-role=content]').remove();
-            var newContent = $page.find('[data-role=content]');
-            newContent.addClass('ui-content');
-            $current.append(newContent);
-            $current.trigger( "create" );
-            $(document.body).animate({scrollTop:0}, 'fast');
-              
-            $.mobile.hidePageLoadingMsg();
-
-            $current.trigger( "pageinit" );
-        }
-              
-        $file = $form.find('input[type=file]');
-        if($file.length && $file.data('uri')) 
-        {
-            var imageURI = $file.data('uri');
-            var options = new FileUploadOptions();
-            options.fileKey = $file.attr('name');
-            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-            options.mimeType = "image/jpeg";
-            var params = {};
-            var array = $form.serializeArray();
-            for(i in array){
-                params[array[i].name] = array[i].value;
-            }
-            options.params = params;
-            
-            var ft = new FileTransfer();
-              
-            ft.upload(imageURI, url, function(r){success(r.response);}, connectionErrorCallback, options);
-        } else {
-            $.post(url,$form.serialize(),success)
-                    .error(connectionErrorCallback);
-        }
-    });
-*/
-
-    window.fms.locationErrorCallback = function(error)
-    {
-        console.log('localisation error: ' + JSON.stringify(error));
-        alert('Your device do not support geo localisation or the localisation has failed.');
-        var defaultLoc = {x:148853.101438753, y:170695.57753253728};
-        callback(defaultLoc);
-        $.mobile.hidePageLoadingMsg();
-    }
-
     window.fms.connectionErrorCallback = function(xhr, textStatus, errorThrown)
     {
         console.log('connection error: ' + textStatus + ' ' + errorThrown + ' ' + xhr.responseText);
@@ -206,6 +131,14 @@
 
     window.fms.getCurrentPosition = function(callback)
     {
+        function locationErrorCallback(error)
+        {
+            console.log('localisation error: ' + JSON.stringify(error));
+            alert('Your device do not support geo localisation or the localisation has failed.');
+            var defaultLoc = {x:148853.101438753, y:170695.57753253728};
+            callback(defaultLoc);
+            $.mobile.hidePageLoadingMsg();
+        }
 
         $.mobile.showPageLoadingMsg();
         console.log('atempt to locate');
@@ -220,11 +153,11 @@
                 Proj4js.transform(source, dest, p);
                 callback(p);
                 $.mobile.hidePageLoadingMsg();
-            },window.fms.locationErrorCallback);
+            },locationErrorCallback);
         }
         else
         {
-            window.fms.locationErrorCallback();
+            locationErrorCallback();
         }
     }
 }());

@@ -2,6 +2,9 @@
     var $map, initialized, newPoint;
 
     
+    $(document).delegate('#map', "pageshow", function(){
+        $('#instructable').fadeIn();
+    });
     $(document).delegate('#map', "pageinit", function(){
         $page = $(this);
         $map = $page.find('#map-bxl');
@@ -179,7 +182,6 @@
             $('#content-disabled').remove();
         });
         
-        $('#instructable').fadeIn();
         $map.one('markerdrag click movestart zoomend',function(evt,point){
             $('#instructable').fadeOut();
         });
