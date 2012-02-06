@@ -1,7 +1,41 @@
 
+
+body {
+    overflow: hidden;
+}
+
 .ui-loader {
     z-index:2000;
 }
+
+.ui-header {
+    position: fixed !important;
+    top:0 !important;
+}
+
+.ui-footer {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+}
+
+.ui-content {
+    position:fixed;
+    top: 42px !important;
+    bottom: 0 !important;
+    overflow-y: auto;
+    right:0;
+    left:0;
+}
+
+.ui-content.ui-content-footered {
+    bottom: 51px !important;
+}
+
+.ui-mobile .ui-page {
+    overflow:hidden !important;
+}
+
 
 #resume .ui-listview .ui-li-icon {
     height: 32px;

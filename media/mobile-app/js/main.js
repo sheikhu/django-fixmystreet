@@ -37,6 +37,13 @@
     $(document).bind("backbutton", function(){ history.back(); });
     $(document).delegate("[data-rel=back]", "click", function(){ history.back(); });
 
+    $(document).delegate(".ui-page", "pageinit", function(){
+        console.log(this, $(this).has('.ui-footer'));
+        if($(this).find('.ui-footer').length){
+            $(this).find('.ui-content').addClass('ui-content-footered');
+        }
+    });
+
 	$(document).bind('initapp', function() {
         if(window.PG) {
             FB.init({ 
