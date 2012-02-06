@@ -38,6 +38,40 @@
             $('.login-bar').hide();
             $('.logged-bar').show().find('.username').html(username);
         }
+        
+        /*
+        .required.mandatory input, .required.mandatory select {
+            border:1px solid red !important;
+        }
+        form.required-invalid .required-msg {
+            color:red;
+        }
+        
+        $(document).delegate("form", "submit", function(evt) {
+            var $form = $(this);
+            var valid = true;
+            
+            $('.required input, .required select').each(function(ind,input) {
+                var $input = $(input);
+                if(!$input.val()) {
+                    valid = false;
+                    $input.closest('.required').addClass('mandatory');
+                } else {
+                    $input.closest('.required').removeClass('mandatory');
+                }
+            });
+            
+            if(!valid) {
+                evt.preventDefault();
+
+                $form.find('.mandatory input, .mandatory select').first().focus();
+                $form.find('.required-error-msg').fadeIn();
+                $form.addClass('required-invalid');
+                
+                return false;
+            }
+        });
+        */
 		</script>
 	</head>
 
