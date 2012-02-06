@@ -86,7 +86,7 @@
             <div data-role="content">
                 <div id="welcome">
                     <p><strong class="msg"></strong></p>
-                    <p><button id="start">Create a report</button></p>
+                    <p><button id="start" data-theme="b">Create a report</button></p>
                 </div>
                 <div id="resume" style="display:none;">
                     <ul data-role="listview" data-inset="true">
@@ -145,16 +145,16 @@
             </div>
             <div data-role="content">
                 <ul data-role="listview">
-                    <li data-role="list-divider">Parks</li>
+                    <li data-role="list-divider" data-theme="c">Parks</li>
                     <li id="cat-3" data-value="3"><a>Lights Malfunctioning in Park</a></li>
                     <li id="cat-4" data-value="4"><a>Debris or Litter in Park</a></li>
                     <li id="cat-1" data-value="1"><a>Broken or Damaged Equipment/Play Structures</a></li>
                     <li id="cat-2" data-value="2"><a>Full or Overflowing Garbage Cans</a></li>
-                    <li data-role="list-divider">Grafitti</li>
+                    <li data-role="list-divider" data-theme="c">Grafitti</li>
                     <li id="cat-5" data-value="5"><a>Graffiti On City Property</a></li>
                     <li id="cat-6" data-value="6"><a>Graffiti on Private Property</a></li>
                     <li id="cat-7" data-value="7"><a>Graffiti  on Utility Transformers Mailboxes, etc..</a></li>
-                    <li data-role="list-divider">Roads/Sidewalks/Pathways</li>
+                    <li data-role="list-divider" data-theme="c">Roads/Sidewalks/Pathways</li>
                     <li id="cat-13" data-value="13"><a>Damaged Guardrails</a></li>
                     <li id="cat-15" data-value="15"><a>Bus Shelter Damaged</a></li>
                     <li id="cat-16" data-value="16"><a>Debris/Litter in Bus Shelter</a></li>
@@ -164,9 +164,9 @@
                     <li id="cat-14" data-value="14"><a>Full or Overflowing Garbage Cans</a></li>
                     <li id="cat-11" data-value="11"><a>Debris or Litter on Road/Sidewalk/Pathway</a></li>
                     <li id="cat-12" data-value="12"><a>Blocked or Damaged Culvert</a></li>
-                    <li data-role="list-divider">Trees</li>
+                    <li data-role="list-divider" data-theme="c">Trees</li>
                     <li id="cat-20" data-value="20"><a>Branches Blocking Signs or Intersection</a></li>
-                    <li data-role="list-divider">Traffic Signals</li>
+                    <li data-role="list-divider" data-theme="c">Traffic Signals</li>
                     <li id="cat-17" data-value="17"><a>Street Lights Out or Malfunctioning</a></li>
                     <li id="cat-18" data-value="18"><a>Faded/Damaged/Missing Pavement Markings</a></li>
                     <li id="cat-19" data-value="19"><a>Bent/Damaged/Missing Street Signs</a></li>
@@ -285,8 +285,9 @@
                 <h1>Configuration</h1>
             </div>
             <div data-role="content" class="content">
-                <p>You need to bee connected</p>
+                <p id="login-status">You need to bee connected</p>
                 <p><button id="login-fb">Facebook</button></p>
+                <p style="display:none;"><button id="disconnect">Disconnect</button></p>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">

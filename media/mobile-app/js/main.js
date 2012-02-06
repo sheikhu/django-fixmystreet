@@ -57,6 +57,12 @@
                     appId: "263584440367959"
             });
         }
+        var expires = new Date(window.localStorage.getItem('fms_fb_access_token_expires'));
+        if (expires > new Date()) {
+            $(function(){
+                $(document).trigger('connected');
+            });
+        }
 	});
 
     window.fms.parseIsoDate = function(dateTimeStr) {
@@ -67,15 +73,27 @@
 	$(document).delegate('#login-fb', 'click', function() {
 		FB.login(function(response) {
             if (response.session) {
-                window.fms.login(response.session.access_token, window.fms. parseIsoDate(response.session.expires));
+                window.fms.login(response.session.access_token, window.fms.parseIsoDate(response.session.expires));
             }
         }, { perms: "email" });
 	});
-	
+    $(document).delegate('#disconnect', 'click', function() {
+        FB.logout(function(response) {
+            window.localStorage.removeItem('fms_fb_access_token');
+            window.localStorage.removeItem('fms_fb_access_token_expires');
+        });
+    });
+    $(document).bind('connected',function(){
+        $('#login-status').html('You are connected');
+        $('#login-fb').parent().hide();
+        $('#disconnect').parent().show();
+    });
+ 
  	window.fms.login = function(token, expires) {
         console.log('login success with token ' + token + ' expire ' + expires);
         window.localStorage.setItem('fms_fb_access_token', token);
         window.localStorage.setItem('fms_fb_access_token_expires', expires);
+        $(document).trigger('connected');
 	}
     
  	window.fms.getToken = function(cb){
@@ -86,8 +104,12 @@
         if (token && expires > new Date()) {
             console.log('token retrived');
             cb(token,'facebook');
-        } else {
-            console.log('token not found or expired');
+         } else {
+            if(!token) {
+                console.log('token not found');
+            } else {
+                console.log('token expired');
+            }
             cb();
             window.localStorage.removeItem('fms_fb_access_token');
             window.localStorage.removeItem('fms_fb_access_token_expires');
