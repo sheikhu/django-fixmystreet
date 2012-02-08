@@ -229,7 +229,10 @@
                     </div>
                     <ul id="proposal" style="display:none;" data-role="listview" data-inset="true"> </ul>
                 </form>
-                <div id="control-zoom" data-role="controlgroup" data-type="horizontal">
+                <div id="control-options" class="map-control">
+                    <a id="locate" data-role="button" data-icon="locate" data-iconpos="notext"></a>
+                </div>
+                <div id="control-zoom" data-role="controlgroup" data-type="horizontal" class="map-control">
                     <a id="zoom-in" data-role="button" data-icon="plus" data-iconpos="notext">Zoom in</a>
                     <a id="zoom-out" data-role="button" data-icon="minus" data-iconpos="notext">Zoom out</a>
                 </div>
@@ -239,11 +242,12 @@
 
         <div id="description" class="page-step" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
-                <h1>Fill a description</h1>
+                <h1>Description</h1>
                 <a class="ui-btn-right help" data-theme="b"><img src="images/info.png"/></a>
             </div>
             <div data-role="content">
                 <p class="tips">If you have some additional comments on the location for instance, you can write it here.</p>
+                <p>Write a description of the problem</p>
                 <p>
                     <textarea id="id_desc" name="desc"></textarea>
                 </p>

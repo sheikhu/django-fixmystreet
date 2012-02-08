@@ -234,7 +234,7 @@ ul.errorlist li {
 }
 
 /* MAP CSS */
-#map .content {
+#map .ui-content {
 	margin: 0 auto;
     padding:0;
 	position: absolute;
@@ -275,12 +275,16 @@ ul.errorlist li {
 	margin: .5em 0;
 }
 
-#control-options{
+#control-options {
 	z-index: 1000;
 	position: absolute;
 	top: 10px;
 	right: 10px;
     margin:0;
+}
+
+#locate {
+    margin: 0;
 }
 
 .olControlPanZoom {
@@ -333,19 +337,18 @@ ul.errorlist li {
 	background-image:url("../images/help.png");
 }
 
-.ui-btn-icon-notext {
+.map-control .ui-btn-icon-notext {
     width: 34px;
     height: 34px;
-    margin: 0.3em 5px;
     position: relative;
     
 }
-.ui-btn-icon-notext.ui-btn-corner-all {
+.map-control .ui-btn-icon-notext.ui-btn-corner-all {
     border-radius: 9px;
     
 }
 
-.ui-btn-icon-notext .ui-btn-inner {
+.map-control .ui-btn-icon-notext .ui-btn-inner {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -354,7 +357,7 @@ ul.errorlist li {
     padding: 0;
 }
 
-.ui-btn-icon-notext .ui-icon {
+.map-control .ui-btn-icon-notext .ui-icon {
     height:100%;
     width:100%;
 }
