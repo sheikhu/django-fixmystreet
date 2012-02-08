@@ -63,7 +63,11 @@
 
     window.fms.parseIsoDate = function(dateTimeStr) {
         var p = (/(\d{4})-(\d{2})-(\d{2})(?: |T)(\d{2}):(\d{2}):(\d{2}) \+(\d{4})/).exec(dateTimeStr);
-        return new Date(p[1], p[2]-1, p[3], p[4], p[5], p[6]);
+		if(p && p.length > 6){
+	        return new Date(p[1], p[2]-1, p[3], p[4], p[5], p[6]);
+		} else {
+	        return new Date(dateTimeStr);
+		}
     }
  
 	$(document).delegate('#login-fb', 'click', function() {
@@ -78,10 +82,12 @@
         window.localStorage.removeItem('fms_fb_access_token_expires');
         FB.logout();
 
-        $('#login-status').html('You need to be connected');
-        $('#login-fb').parent().show();
-        $('#disconnect').parent().hide();
+        $('#login-status').html('To create a report you have to login');
+        $('#login-fb').closest('p').show();
+        $('#disconnect').closest('p').hide();
+        $('#back-report').closest('p').hide();
     });
+    
     $(document).bind('connected',function(){
         FB.api('/me', function(response) {
             console.log(response);
@@ -89,8 +95,9 @@
                 $('#login-status').html('You are connected as');
                 $('#login-status').append('<p><strong>' + response.name + '</strong></p>');
                 $('#login-status').append('<p><strong>' + response.email + '</strong></p>');
-                $('#login-fb').parent().hide();
-                $('#disconnect').parent().show();
+                $('#login-fb').closest('p').hide();
+                $('#disconnect').closest('p').show();
+                $('#back-report').closest('p').show();
             }
         });
     });

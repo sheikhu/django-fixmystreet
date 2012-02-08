@@ -18,59 +18,42 @@
     
     var wizard = [
         {
+            label: 'Photo',
+            id: 'photo',
+            icon:'photo.png'
+        },
+        {
             label: 'Category',
             id:'category',
-            load: function(){
-                $.mobile.changePage('#category');
-            }
-            /*save: function($page){
-            }*/
+            icon:'category.png'
         },
         {
             label: 'Address',
             id:'address',
-            load: function(){
-                $.mobile.changePage('#address');
-            }
-            /*save: function($page) {
-                var address = $page.find('.address-validate').text();
-                $('#menu-address .value').html(address);
-            }*/
-        },
-        {
-            label: 'Photo',
-            id: 'photo',
-            load: function(){
-                $.mobile.changePage('#photo');
-            }
-            /*save: function($page) {
-                
-            }*/
+            icon:'map.png'
         },
         {
             label: 'Description',
             id:'description',
-            load: function(){
-                $.mobile.changePage('#description');
-            }/*,
-            save: function($page) {
-                $('#menu-description .value').html($page.find('#id_desc').val());
-            }*/
+            icon:'description.png'
         }
     ];
     var wizardHtml = $('<div id="wizard"></div>');
     for(i in wizard) {
-        wizardHtml.append('<span id="step-' + wizard[i].id + '" data-role="button" data-inline="true">' + wizard[i].label + '</span>');
+        wizardHtml.append('<span id="step-' + wizard[i].id + '" data-role="button" data-inline="true"><img src="images/' + wizard[i].icon + '"/></span>');
     }
 
     var index = -1;
     var current = null;
     function nextStep(step, reverse) {
         wizardHtml.children().eq(index).removeClass('current');
-        if(current && current.filled) {
-            wizardHtml.children().eq(index).addClass('filled');
-        } else if(current) {
-            wizardHtml.children().eq(index).removeClass('filled');
+        //if(current && current.filled) {
+            //wizardHtml.children().eq(index).addClass('filled');
+        //}
+        if(current && current.valid) {
+            wizardHtml.children().eq(index).addClass('valid');
+        } else {
+            wizardHtml.children().eq(index).removeClass('valid');
         }
         
 
@@ -88,8 +71,9 @@
             }
         }
         if(current) {
-            //wizardHtml.children().eq(index).removeClass('filled');
+            // wizardHtml.children().eq(index).removeClass('filled');
             wizardHtml.children().eq(index).addClass('current');
+            wizardHtml.children().eq(index).addClass('filled');
             $.mobile.changePage('#'+current.id, {reverse:reverse});
             // current.load();
         } else {
@@ -97,7 +81,6 @@
             $('#welcome').hide();
             $('#resume').show();
             $.mobile.changePage('#home');
-            return;
         }
     }
 
@@ -105,7 +88,7 @@
         $(this).find('.ui-content').prepend(wizardHtml);
     });
 
-    wizardHtml.delegate('.filled', "click", function(){
+    wizardHtml.delegate('.filled:not(.current)', "click", function(){
         var target = $(this).parent().children().index(this);
         nextStep(target, target < index);
     });
@@ -142,9 +125,11 @@
     });
     $(document).delegate('#photo #skip', "click", function(evt){
         reportData['photo'] = null;
-        $('#photo #preview').empty();
-        $('#menu-photo').find('img').remove();
-        current.filled = false;
+        $('#menu-photo').find('img.preview,.error-msg').remove();
+        $('#menu-photo').find('img.ui-li-icon').show();
+        $('#menu-photo').append('<span class="error-msg">Empty</span>');
+        current.filled = true;
+        current.valid = false;
         nextStep();
     });
     function getPhoto(source){
@@ -153,9 +138,10 @@
         navigator.camera.getPicture(function(fileURI) {
             reportData['photo'] = fileURI;
             $('#photo #preview').html('<img src="'+fileURI+'"/>');
-            $('#menu-photo').find('img').remove();
-            $('#menu-photo').append('<img src="'+fileURI+'"/>');
-
+            $('#menu-photo').find('img.preview,.error-msg').remove();
+            //$('#menu-photo').find('img.ui-li-icon').hide();
+            //$('#menu-photo').append('<img src="'+fileURI+'" class="preview"/>');
+            $('#menu-photo').find('img.ui-li-icon').prop('src',fileURI);
             /*var img = $('<img src="'+fileURI+'"/>').height('140px');*/
             /*.css({
                 'background-image': 'url('+fileURI+')',
@@ -164,6 +150,7 @@
             
             $.mobile.hidePageLoadingMsg();
             current.filled = true;
+            current.valid = true;
             nextStep();
         },
         function(message) {
@@ -217,6 +204,7 @@
         reportData['location'] = location;
         
         current.filled = true;
+        current.valid = true;
         nextStep();
     });
 
@@ -235,6 +223,7 @@
         $('#menu-category .value').text(category);
         
         current.filled = true;
+        current.valid = true;
         nextStep();
     });
 
@@ -245,9 +234,13 @@
     function saveDescription(){
         var description = $('#id_desc').val();
         $('#menu-description .value').html(description);
+        if(!description.length) {
+            $('#menu-description .value').html('<span class="error-msg">Empty</span>');
+        }
         reportData['description'] = description;
 
-        current.filled = description.length;
+        current.filled = true;
+        current.valid = description.length;
         nextStep();
     }
 
@@ -258,6 +251,19 @@
         evt.preventDefault();
         evt.stopPropagation();
         submitReport();
+    });
+    
+    $(document).delegate('.help', "click", function(){
+        var $this = $(this),
+            tips = $this.closest('.ui-page').find('.tips');
+        console.log(tips)
+        if($this.data('fms-tips')) {
+            $this.data('fms-tips',false);
+            tips.slideUp();
+        } else {
+            $this.data('fms-tips',true);
+            tips.slideDown();
+        }
     });
 
     function submitReport() {
@@ -270,7 +276,7 @@
         var success = function(content){
             console.log('ajax success');
             $.mobile.hidePageLoadingMsg();
-            $('#welcome').find('.msg').show().html('Your report has been sent successfully');
+            $('#welcome').find('.msg').show().html('Your report has been saved successfully. See you soon for a new report !');
             $('#resume').slideUp();
             $('#welcome').slideDown();
             for(var i in wizard) {

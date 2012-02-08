@@ -28,6 +28,16 @@ body {
     left:0;
 }
 
+#home .ui-content {
+    background-color:#004990;
+/*
+    background-image:url(../images/logo.png);
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center center; 
+*/
+}
+
 .ui-content.ui-content-footered {
     bottom: 51px !important;
 }
@@ -59,39 +69,86 @@ body {
     display:block;
 }
 
+#welcome .msg {
+    Color:green;
+}
+
 #wizard {
+    cursor: pointer;
     border: 1px solid grey;
     border-radius: 14px;
     overflow: hidden;
 }
+
 #wizard span {
-    display:inline-block;
-    width:25%;
+    display: inline-block;
+    width: 25%;
     text-align: center;
-    padding: 10px 0;
-    border-right: 1px solid grey;
-    box-sizing:border-box;
-    color:grey;
+    padding: 2px;
+    box-sizing: border-box;
+    color: grey;
+    position: relative;
 }
-#wizard span + span {
-    border-left: none;
+
+#wizard img {
+    width: 30px;
+    font-size:0;
 }
-/*#wizard span + span::before {
-    content:'>';
+
+#wizard span:first-child {
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+}
+
+#wizard span:last-child {
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+#wizard span:not(:last-child)::after {
+    content:' ';
+    position:absolute;
+    display:block;
+    height:40px;
+    width:14px;
+    top:0;
+    right:-14px;
+    background-image:url(../images/arrow_grey.png);
     float:left;
-}*/
+    z-index:1;
+}
+
+#wizard .filled:not(:last-child)::after {
+    background-image:url(../images/arrow_red.png);
+}
+#wizard .filled.valid:not(:last-child)::after {
+    background-image:url(../images/arrow_green.png);
+}
+#wizard .filled.current:not(:last-child)::after {
+    background-image:url(../images/arrow_blue.png);
+}
 
 #wizard .filled {
     color:black;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#fdfdfd),to(#eee));
-    background-image: -webkit-linear-gradient(#fdfdfd,#eee);
-    background-image: -moz-linear-gradient(#fdfdfd,#eee);
-    background-image: -ms-linear-gradient(#fdfdfd,#eee);
-    background-image: -o-linear-gradient(#fdfdfd,#eee);
-    background-image: linear-gradient(#fdfdfd,#eee);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(orange),to(#eee));
+    background-image: -webkit-linear-gradient(orange,#eee);
+    background-image: -moz-linear-gradient(orange,#eee);
+    background-image: -ms-linear-gradient(orange,#eee);
+    background-image: -o-linear-gradient(orange,#eee);
+    background-image: linear-gradient(orange,#eee);
 }
 
-#wizard .current {
+#wizard .filled.valid {
+    color:black;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(green),to(#eee));
+    background-image: -webkit-linear-gradient(green,#eee);
+    background-image: -moz-linear-gradient(green,#eee);
+    background-image: -ms-linear-gradient(green,#eee);
+    background-image: -o-linear-gradient(green,#eee);
+    background-image: linear-gradient(green,#eee);
+}
+
+#wizard .filled.current {
     color:white;
     background-color: #5f9cc5;
     background-image: -webkit-gradient(linear, left top, left bottom, from( #85bae4 /*{global-active-background-start}*/), to( #5393c5 /*{global-active-background-end}*/));
@@ -100,6 +157,34 @@ body {
     background-image: -ms-linear-gradient(#85bae4 /*{global-active-background-start}*/, #5393c5 /*{global-active-background-end}*/);
     background-image: -o-linear-gradient(#85bae4 /*{global-active-background-start}*/, #5393c5 /*{global-active-background-end}*/);
     background-image: linear-gradient(#85bae4 /*{global-active-background-start}*/, #5393c5 /*{global-active-background-end}*/);
+}
+
+.tips {
+    display: none;
+    position:relative;
+    padding: 8px 40px 8px 12px;
+    color: #396b9e;
+    border: solid 1px #396b9e;
+    border-radius: 18px;
+}
+
+.tips::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    top:7px;
+    right: 8px;
+    border-radius: 15px;
+    background-image: url(../images/info.png);
+    background-color: #396b9e;
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#preview {
+    padding-top:10px;
 }
 
 .required label {

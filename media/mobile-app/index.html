@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" media="screen" href="css/fms-mobile.css"></link>
 
         <meta id="viewPortId" name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         
         <script src="jquery/jquery-1.7.js"></script>
 		<script src="phonegap-1.2.0.js"></script>
@@ -85,19 +86,27 @@
 
             <div data-role="content">
                 <div id="welcome">
-                    <p><strong class="msg"></strong></p>
+                    <center><img src="images/logo.png"/></center>
                     <p><button id="start" data-theme="b">Create a report</button></p>
+<!--
+                    <p><strong class="msg">Welcome to Fix My Street Brussel !</strong></p>
+-->
                 </div>
                 <div id="resume" style="display:none;">
                     <ul data-role="listview" data-inset="true">
                         <li>
-                            <a id="menu-category" class="menuitem" data-step="0">
+                            <a id="menu-photo" class="menuitem" data-step="0">
+                                <img src="images/photo.png" class="ui-li-icon"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="menu-category" class="menuitem" data-step="1">
                                 <img src="images/category.png" class="ui-li-icon"/>
                                 <span class="value"/>
                             </a>
                         </li>
                         <li>
-                            <a id="menu-address" class="menuitem" data-step="1">
+                            <a id="menu-address" class="menuitem" data-step="2">
                                 <img src="images/map.png" class="ui-li-icon"/>
                                 <span class="value"/>
                             </a>
@@ -107,9 +116,6 @@
                                 <img src="images/description.png" class="ui-li-icon"/>
                                 <span class="value"/>
                             </a>
-                        </li>
-                        <li>
-                            <a id="menu-photo" class="menuitem" data-step="2"> </a>
                         </li>
                     </ul>
                     <p class="submit"><button data-theme="b">Submit</button></p>
@@ -140,36 +146,33 @@
 
         <div id="category" class="page-step" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
-                <h1>Choose a category</h1>
-                <a class="ui-btn-right help" data-theme="b">Help</a>
+                <h1>Category</h1>
+                <a class="ui-btn-right help" data-theme="b"><img src="images/info.png"/></a>
             </div>
             <div data-role="content">
+                <p>Choose a category for your report</p>
+                <p class="tips">The category of the problem will be use to send your report to the correct service, choose it carefully.</p>
                 <ul data-role="listview" data-theme="d" data-divider-theme="e" data-inset="true">
-                    <li data-role="list-divider">Parks</li>
-                    <li id="cat-3" data-value="3"><a>Lights Malfunctioning in Park</a></li>
-                    <li id="cat-4" data-value="4"><a>Debris or Litter in Park</a></li>
-                    <li id="cat-1" data-value="1"><a>Broken or Damaged Equipment/Play Structures</a></li>
-                    <li id="cat-2" data-value="2"><a>Full or Overflowing Garbage Cans</a></li>
-                    <li data-role="list-divider">Grafitti</li>
-                    <li id="cat-5" data-value="5"><a>Graffiti On City Property</a></li>
-                    <li id="cat-6" data-value="6"><a>Graffiti on Private Property</a></li>
-                    <li id="cat-7" data-value="7"><a>Graffiti  on Utility Transformers Mailboxes, etc..</a></li>
-                    <li data-role="list-divider">Roads/Sidewalks/Pathways</li>
-                    <li id="cat-13" data-value="13"><a>Damaged Guardrails</a></li>
-                    <li id="cat-15" data-value="15"><a>Bus Shelter Damaged</a></li>
-                    <li id="cat-16" data-value="16"><a>Debris/Litter in Bus Shelter</a></li>
-                    <li id="cat-8" data-value="8"><a>Blocked or damaged Catch basin / Manhole</a></li>
-                    <li id="cat-9" data-value="9"><a>Pothole</a></li>
-                    <li id="cat-10" data-value="10"><a>Damaged Curb</a></li>
-                    <li id="cat-14" data-value="14"><a>Full or Overflowing Garbage Cans</a></li>
-                    <li id="cat-11" data-value="11"><a>Debris or Litter on Road/Sidewalk/Pathway</a></li>
-                    <li id="cat-12" data-value="12"><a>Blocked or Damaged Culvert</a></li>
-                    <li data-role="list-divider">Trees</li>
-                    <li id="cat-20" data-value="20"><a>Branches Blocking Signs or Intersection</a></li>
-                    <li data-role="list-divider">Traffic Signals</li>
-                    <li id="cat-17" data-value="17"><a>Street Lights Out or Malfunctioning</a></li>
-                    <li id="cat-18" data-value="18"><a>Faded/Damaged/Missing Pavement Markings</a></li>
-                    <li id="cat-19" data-value="19"><a>Bent/Damaged/Missing Street Signs</a></li>
+                    <li data-role="list-divider">Propriétée public</li>
+                    <li id="cat-3" data-value="3"><a>Déterioration de batiment</a></li>
+                    <li id="cat-4" data-value="4"><a>Bac à fleurs, cloture et abribus</a></li>
+                    <li id="cat-1" data-value="1"><a>Graffitis</a></li>
+                    <li data-role="list-divider">Voie public</li>
+                    <li id="cat-5" data-value="5"><a>Route et trottoir</a></li>
+                    <li id="cat-6" data-value="6"><a>Avaloirs</a></li>
+                    <li id="cat-7" data-value="7"><a>Eclairage public</a></li>
+                    <li id="cat-7" data-value="7"><a>Plaque de rue</a></li>
+                    <li id="cat-7" data-value="7"><a>Véhicules abandonnée, débrits et ordures</a></li>
+                    <li data-role="list-divider">Signalisation</li>
+                    <li id="cat-13" data-value="13"><a>Ralentisseur de traffic</a></li>
+                    <li id="cat-15" data-value="15"><a>Passage piétons</a></li>
+                    <li id="cat-16" data-value="16"><a>Feu de signalisation</a></li>
+                    <li id="cat-8" data-value="8"><a>Panneau de signalisation</a></li>
+                    <li id="cat-8" data-value="8"><a>Marque au sol</a></li>
+                    <li data-role="list-divider">Zone verte et parcs</li>
+                    <li id="cat-17" data-value="17"><a>Végétation sauvage</a></li>
+                    <li id="cat-18" data-value="18"><a>Débrits et ordures</a></li>
+                    <li id="cat-19" data-value="19"><a>Arbre malade ou dangereux</a></li>
                 </ul>
            </div>
         </div>
@@ -177,10 +180,11 @@
         <div id="photo" class="page-step" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Take a photo</h1>
-                <a class="ui-btn-right help" data-theme="b">Help</a>
+                <a class="ui-btn-right help" data-theme="b"><img src="images/info.png"/></a>
             </div>
 
             <div data-role="content">
+                <p class="tips">A photo is not required to fill a report but one picture is stronger than words, it is hightly recommended.</p>
                 <div id="preview"></div>
                 <p><button id="capture" data-theme="b">Take a photo</button></p>
                 <p><button id="select" data-theme="c">Select in library</button></p>
@@ -191,14 +195,18 @@
         <div id="address" class="page-step" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Location</h1>
-                <a class="ui-btn-right help" data-theme="b">Help</a>
+                <a class="ui-btn-right help" data-theme="b"><img src="images/info.png"/></a>
             </div>
             <div data-role="content">
                 <div>
+                    <p class="tips">This is the address retrieved from where you are, 
+                    if it is not the location of the report please locate it on the map.</p>
                     <p>The problem is located here:</p>
                     <strong class="address-validate"></strong>
                     <p><button class="address-confirm" data-theme="b">Ok</button></p>
                     <p><button class="address-invalidate" data-theme="e">Wrong, locate it on map</button></p>
+                    <p class="tips">The map is only available if you are connected, 
+                    if you are on mobile connection, it is not recommented.</p>
                 </div>
             </div>
         </div>
@@ -232,9 +240,10 @@
         <div id="description" class="page-step" data-role="page" data-add-back-btn="true">
             <div class="toolbar" data-role="header">
                 <h1>Fill a description</h1>
-                <a class="ui-btn-right help" data-theme="b">Help</a>
+                <a class="ui-btn-right help" data-theme="b"><img src="images/info.png"/></a>
             </div>
             <div data-role="content">
+                <p class="tips">If you have some additional comments on the location for instance, you can write it here.</p>
                 <p>
                     <textarea id="id_desc" name="desc"></textarea>
                 </p>
@@ -244,13 +253,13 @@
 
         <div id="help" class="panel" data-role="page">
             <div class="toolbar" data-role="header">
-                <h1>Help for Fix My Street Brussels</h1>
+                <h1>About Fix My Street Brussels</h1>
             </div>
             <div data-role="content">
                 <p>Fix My Street Brussels is maintained by CIBG (<a href="http://www.cirb.irisnet.be">www.cirb.irisnet.be</a>).</p>
-                <p>The original concept was inspired by <a href="http://mysociety.com">MySociety's</a> <a href="http://fixmystreet.org">example</a>, 
+                <p>The original concept was inspired by <a href="http://mysociety.org">MySociety's</a> <a href="http://fixmystreet.org">example</a>, 
                 which was adapted for Brussels by CIRB</p>
-                <p>the project was forked from the open source project fixmystreet.ca by visiblegovernment.ca.</p>
+                <p>the project was forked from the open source project fixmystreet.ca by <a href="http://visiblegovernment.ca">visiblegovernment.ca</a>.</p>
                 <p>FixMyStreet Brussels support only collectives from Brussels, all of them are represented on the site.</p>
                 <p>FixMyStreet Brussels is not responsible for the content and accuracy of material submitted by its users. 
                 All reports are accepted on the basis that they contain no illegal content, 
@@ -284,10 +293,11 @@
             <div class="toolbar" data-role="header">
                 <h1>Configuration</h1>
             </div>
-            <div data-role="content" class="content">
-                <p id="login-status">You need to bee connected</p>
+            <div data-role="content">
+                <p id="login-status">To create a report you have to login</p>
                 <p><button id="login-fb">Facebook</button></p>
-                <p style="display:none;"><button id="disconnect">Disconnect</button></p>
+                <p style="display:none;"><button id="disconnect" data-theme="e">Disconnect</button></p>
+                <p style="display:none;"><a id="back-report" data-role="button" data-transition="fade" href="#home" data-theme="b">Back to my report</a></p>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
