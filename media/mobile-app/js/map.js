@@ -5,7 +5,16 @@
     $(document).delegate('#map', "pageshow", function(){
         $('#instructable').fadeIn();
     });
-    $(document).delegate('#map', "pageinit", function(){
+    
+    $(document).bind("online", initMapPage);
+    $(document).delegate('#map', "pageinit", initMapPage);
+    function initMapPage(){
+        if(initialized || !window.fms.isOnline()) {
+            if(!window.fms.isOnline()) {
+            }
+            return;
+        }
+
         $page = $(this);
         $map = $page.find('#map-bxl');
 
@@ -155,7 +164,7 @@
                 }
             });
         }
-    });
+    }
 
 
     function initMap(p){

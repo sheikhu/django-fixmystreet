@@ -125,9 +125,8 @@
     });
     $(document).delegate('#photo #skip', "click", function(evt){
         reportData['photo'] = null;
-        $('#menu-photo').find('img.preview,.error-msg').remove();
-        $('#menu-photo').find('img.ui-li-icon').show();
-        $('#menu-photo').append('<span class="error-msg">Empty</span>');
+        $('#menu-photo').find('img.ui-li-icon').prop('src','images/photo.png');
+        $('#menu-photo .value').html('Empty').addClass('error-msg');
         current.filled = true;
         current.valid = false;
         nextStep();
@@ -138,15 +137,8 @@
         navigator.camera.getPicture(function(fileURI) {
             reportData['photo'] = fileURI;
             $('#photo #preview').html('<img src="'+fileURI+'"/>');
-            $('#menu-photo').find('img.preview,.error-msg').remove();
-            //$('#menu-photo').find('img.ui-li-icon').hide();
-            //$('#menu-photo').append('<img src="'+fileURI+'" class="preview"/>');
-            $('#menu-photo').find('img.ui-li-icon').prop('src',fileURI);
-            /*var img = $('<img src="'+fileURI+'"/>').height('140px');*/
-            /*.css({
-                'background-image': 'url('+fileURI+')',
-                'background-size': 'cover'
-            });*/
+            $('#menu-photo value').html('').removeClass('error-msg');
+            $('#menu-photo img.ui-li-icon').prop('src',fileURI);
             
             $.mobile.hidePageLoadingMsg();
             current.filled = true;
@@ -177,15 +169,15 @@
         });
     });
 
-    $(document).delegate('#address', "pageshow", function(evt){
+    function initAddressPage(evt){
         var address = reportData['address'];
         
-        if(!address) {
+        if(!address && window.fms.isOnline()) {
             var btn = $(this).find('.address-confirm, .address-invalidate').button('disable');
-            var caption = $('.address-validate').addClass('loader');
+            var caption = $('.address-validate').addClass('loader').removeClass('error-msg');
 
             window.fms.getCurrentPosition(function(p){
-                loadAddress(p,function(address){
+                loadAddress(p, function(address) {
                     reportData['address'] = address;
                     reportData['location'] = p;
 
@@ -193,8 +185,15 @@
                     btn.button('enable');
                 });
             });
+        } else {
+            if(!window.fms.isOnline()) {
+                $('.address-validate').html('Your are offline').addClass('error-msg');
+                $(this).find('.address-confirm, .address-invalidate').button('disable');
+            }
         }
-    });
+    }
+    $(document).delegate('#address', "pageshow", initAddressPage);
+    $(document).bind("online", initAddressPage);
 
     $(document).delegate('#address .address-confirm', "click", function(evt){
         var address = $(this).closest('.ui-content').find('.address-validate').text();
@@ -231,7 +230,9 @@
         $(this).find('#id_desc').focus();
     });
 
-    function saveDescription(){
+    
+
+    $(document).delegate('#description .buttons button', "click", function saveDescription(){
         var description = $('#id_desc').val();
         $('#menu-description .value').html(description);
         if(!description.length) {
@@ -242,9 +243,7 @@
         current.filled = true;
         current.valid = description.length;
         nextStep();
-    }
-
-    $(document).delegate('#description .buttons button', "click", saveDescription);
+    });
     //$(document).delegate('#description #id_desc', "blur", saveDescription);
 
     $(document).delegate('#resume .submit', "click", function(evt){
@@ -256,7 +255,7 @@
     $(document).delegate('.help', "click", function(){
         var $this = $(this),
             tips = $this.closest('.ui-page').find('.tips');
-        console.log(tips)
+
         if($this.data('fms-tips')) {
             $this.data('fms-tips',false);
             tips.slideUp();
@@ -284,12 +283,21 @@
             }
             reportData = {};
             index = -1;
+
+            // clear all data in process
             wizardHtml.children().removeClass('current');
             wizardHtml.children().removeClass('filled');
-            //$.mobile.changePage('#home');
-            /*setTimeout(function(){
-                $('#welcome').find('.msg').slideUp();
-            },3000);*/
+            wizardHtml.children().removeClass('valid');
+
+            $('#category').find('li.ui-btn-active').removeClass('ui-btn-active');
+
+            $('#address .address-validate').html('');
+
+            $('#photo #preview img').remove();
+            $('#menu-photo img.ui-li-icon').prop('src','images/photo.png');
+            $('#menu-photo .value').html('').removeClass('error-msg');
+
+            $('#id_desc').val('');
         }
         
         window.fms.getToken(function(token,backend){

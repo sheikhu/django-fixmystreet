@@ -229,6 +229,9 @@ ul.errorlist li {
     max-width: 100%;
 }
 
+#category li a {
+    white-space: normal;
+}
 .error-msg {
 	color:red;
 }

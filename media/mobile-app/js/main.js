@@ -40,6 +40,11 @@
         }
     });
 
+    window.fms.isOnline = function(dateTimeStr) {
+        return navigator.network.connection.type !== Connection.NONE;
+    }
+
+
 	$(document).bind('initapp', function() {
         if(window.PG) {
             FB.init({ 
