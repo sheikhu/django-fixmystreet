@@ -41,7 +41,7 @@
     });
 
     window.fms.isOnline = function(dateTimeStr) {
-        return navigator.network.connection.type !== Connection.NONE;
+        return (!window.Connection && !navigator.network) || navigator.network.connection.type !== Connection.NONE;
     }
 
 
