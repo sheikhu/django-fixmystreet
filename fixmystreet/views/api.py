@@ -90,10 +90,10 @@ def create_report(request):
         report.photo = request.FILES.get('photo')
         # Description
         report.desc = data.get('description')
-    except Exception, e:
+    except Exception as e:
         return JsonHttpResponse('error', {
             'errortype':'validation_error',
-            'message': 'Some data are invalid {}'.format(e)
+            'message': 'Some data are invalid {0}'.format(e)
         })
 
     report.save()

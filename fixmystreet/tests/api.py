@@ -36,7 +36,7 @@ class ApiTest(TestCase):
             response = urlparse.parse_qs(urlopen(request).read())
             self.app_access_token = response['access_token'][0]
             #print settings.FACEBOOK_APP_ID,self.app_access_token
-        except HTTPError, e:
+        except HTTPError as e:
             print e.code
             print simplejson.loads(e.read())['error']['message']
             raise e
@@ -50,7 +50,7 @@ class ApiTest(TestCase):
                     self.users[user['id']] = {}
                 self.users[user['id']]['access_token'] = user['access_token']
             # print self.users
-        except HTTPError, e:
+        except HTTPError as e:
             print e.code
             print simplejson.loads(e.read())['error']['message']
             raise e
