@@ -69,10 +69,6 @@ body {
     display:block;
 }
 
-#welcome .msg {
-    Color:green;
-}
-
 #wizard {
     cursor: pointer;
     border: 1px solid grey;

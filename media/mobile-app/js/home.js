@@ -178,7 +178,10 @@
             var caption = $('.address-validate').addClass('loader').removeClass('error-msg');
 
             window.fms.getCurrentPosition(function(p){
-                loadAddress(p, function(address, postalcode) {
+                loadAddress(p, function(address, post) {
+                    postalcode = post;
+                    location = p;
+                    
                     reportData['address'] = address;
                     reportData['postalcode'] = postalcode;
                     reportData['x'] = p.x;
@@ -279,6 +282,10 @@
 
         var success = function(content){
             console.log('ajax success');
+            if(content.status != 'success') {
+                alert(content.message || content.errortype || content.status);
+                return;
+            }
             $.mobile.hidePageLoadingMsg();
             $('#welcome').find('.msg').show().html('Your report has been saved successfully. See you soon for a new report !');
             $('#resume').slideUp();
@@ -307,7 +314,7 @@
         
         window.fms.getToken(function(token,backend){
             if(token) {
-                reportData.token = token;
+                reportData.access_token = token;
                 reportData.backend = backend;
                 console.log('sending ' + JSON.stringify(reportData));
                 if(reportData.photo) 
@@ -317,12 +324,15 @@
                     options.fileKey = 'photo';
                     options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
                     options.mimeType = "image/jpeg";
-                    var params = reportData;
-                    delete params.photo;
+                    options.params = reportData;
+                    delete options.params.photo;
                     
                     var ft = new FileTransfer();
                     
-                    ft.upload(imageURI, url, function(r){success(r.response);}, window.fms.connectionErrorCallback, options);
+                    ft.upload(imageURI, url, function(r) {
+                        console.log(r.response);
+                        success(JSON.parse(r.response));
+                    }, window.fms.connectionErrorCallback, options);
                 } else {
                     $.post(url,reportData,success,'json').error(window.fms.connectionErrorCallback);
                 }
@@ -345,11 +355,11 @@
                 if(response.status == 'success')
                 {
                     var address = response.result.address.street.name + ', ' + response.result.address.number;
-                    cb(address);
+                    cb(address, response.result.address.street.postCode);
                 }
                 else
                 {
-                    cb('<span class="error-msg">' + response.status + '</span>');
+                    cb('<span class="error-msg">' + response.status + '</span>','');
                 }
             }
         ).error(window.fms.connectionErrorCallback);
