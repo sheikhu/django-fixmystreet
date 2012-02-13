@@ -1,4 +1,4 @@
-(function(){
+(function() {
     $(document).bind("mobileinit", function() {
         //$.mobile.page.prototype.options.addBackBtn = true;
         $.mobile.pushStateEnable = false;
@@ -47,10 +47,10 @@
 
 	$(document).bind('initapp', function() {
         if(window.PG) {
-            FB.init({ 
+            FB.init({
                 appId: "263584440367959",
                 nativeInterface: PG.FB,
-                oauth: true
+                cookie: true
             });
         } else {
             console.log('fail to init fb sdk with native interface');
@@ -60,7 +60,8 @@
         }
         var expires = window.localStorage.getItem('fms_fb_access_token_expires');
         if (expires && new Date(expires) > new Date()) {
-            $(function(){
+            console.log('token not expired, try to init config');
+            $(function() {
                 $(document).trigger('connected');
             });
         }
@@ -93,9 +94,9 @@
         $('#back-report').closest('p').hide();
     });
     
-    $(document).bind('connected',function(){
+    $(document).bind('connected', function() {
         FB.api('/me', function(response) {
-            console.log(response);
+            console.log('get my info ' + JSON.stringify(response));
             if(!response.error) {
                 $('#login-status').html('You are connected as');
                 $('#login-status').append('<p><strong>' + response.name + '</strong></p>');

@@ -158,16 +158,19 @@
     $(document).bind("locationchange", function(evt,p){
         var btn = $(this).find('.address-confirm, .address-invalidate').button('disable');
         var caption = $('.address-validate').html('').addClass('loader');
-
+        console.log('location change')
         
-        loadAddress(p,function(address, postalcode){
-            //reportData['address'] = address;
-            //reportData['location'] = p;
-            location = p;
-            postalcode = postalcode;
-            caption.html(address).removeClass('loader');
-            btn.button('enable');
-        });
+        if(p) {
+            loadAddress(p,function(address, postalcode){
+                //reportData['address'] = address;
+                //reportData['location'] = p;
+                location = p;
+                postalcode = postalcode;
+                caption.html(address).removeClass('loader');
+                btn.button('enable');
+            });
+        }
+        $.mobile.changePage('#address',{transition:'flip'});
     });
 
     function initAddressPage(evt){
@@ -217,9 +220,6 @@
 
     $(document).delegate('#address .address-invalidate', "click", function(evt){
         $.mobile.changePage('#map',{transition:'flip'});
-    });
-    $(document).delegate('#map .confirm', "click", function(evt){
-        $.mobile.changePage('#address',{transition:'flip'});
     });
 
     $(document).delegate('#category li:not([data-role=list-divider])', "click", function(){

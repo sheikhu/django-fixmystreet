@@ -1,13 +1,19 @@
 (function(){
-    var $map, initialized, newPoint;
+    var $map, initialized, newPoint, $page;
 
     
-    $(document).delegate('#map', "pageshow", function(){
+    $(document).delegate('#map', "pageshow", function() {
         $('#instructable').fadeIn();
+        $map.one('markerdrag click movestart zoomend',function(evt,point){
+            $('#instructable').fadeOut();
+        });
     });
     
-    $(document).bind("online", initMapPage);
-    $(document).delegate('#map', "pageinit", initMapPage);
+    $(document).delegate('#map', "pageinit", function() {
+        $(document).bind("online", initMapPage);
+        $page = $(this);
+        initMapPage();
+    });
     function initMapPage(){
         if(initialized || !window.fms.isOnline()) {
             if(!window.fms.isOnline()) {
@@ -15,7 +21,6 @@
             return;
         }
 
-        $page = $(this);
         $map = $page.find('#map-bxl');
 
         window.fms.getCurrentPosition(initMap)
@@ -32,12 +37,9 @@
             evt.preventDefault();
             evt.stopPropagation();
 
-            if(newPoint){
-                /* set location */
-                //loadAddress(newPoint);
-                $(document).trigger('locationchange',[newPoint]);
-            }
-            history.back();
+            /* set location */
+            //loadAddress(newPoint);
+            $(document).trigger('locationchange',[newPoint]);
         });
 
         $page.find('#zoom-in,#zoom-out').click(function(evt){
@@ -105,7 +107,7 @@
                         {
                             var loc = response.result[0];
                             $map.fmsMap('setCenter',loc.point.x, loc.point.y);
-                            $(document).trigger('locationchange',[loc]);
+                            //$(document).trigger('locationchange',[loc]);
                             
                             loadReports(loc.point,function(){
                                 $('#create-report').removeClass('ui-disabled');
@@ -129,7 +131,7 @@
                                         //console.log(loc);
                                         $map.fmsMap('setCenter',loc.point.x, loc.point.y);
                                         //$('#create-report').addClass('ui-disabled').data('position',loc.point);
-                                        $(document).trigger('locationchange',[loc]);
+                                        //$(document).trigger('locationchange',[loc]);
                                         
                                         loadReports(loc.point,function(){
                                             $('#create-report').removeClass('ui-disabled');
