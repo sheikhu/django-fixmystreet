@@ -78,6 +78,7 @@ class ApiTest(TestCase):
 
         response = client.post(reverse('api_report_new'), params, follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/json')
         result = simplejson.loads(response.content)
 
         self.assertEquals(result['status'], 'success',result.get('message'))
