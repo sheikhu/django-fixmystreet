@@ -86,6 +86,8 @@ body {
     text-align: center;
     padding: 2px;
     box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     background-color:#ccc;
     position: relative;
 }

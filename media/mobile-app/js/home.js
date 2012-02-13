@@ -14,7 +14,7 @@
     });
     
     var reportData = {};
-    var location = null;
+    var location = null, postalcode = null;
     
     var wizard = [
         {
@@ -117,12 +117,6 @@
         nextStep($(this).data('step'));
     });
 
-    $(document).delegate('#photo #capture', "click", function(evt){
-        getPhoto(Camera.PictureSourceType.CAMERA);
-    });
-    $(document).delegate('#photo #select', "click", function(evt){
-        getPhoto(Camera.PictureSourceType.LIBRARY);
-    });
     $(document).delegate('#photo #skip', "click", function(evt){
         reportData['photo'] = null;
         $('#menu-photo').find('img.ui-li-icon').prop('src','images/photo.png');
@@ -131,13 +125,19 @@
         current.valid = false;
         nextStep();
     });
+    $(document).delegate('#photo #capture', "click", function(evt){
+        getPhoto(Camera.PictureSourceType.CAMERA);
+    });
+    $(document).delegate('#photo #select', "click", function(evt){
+        getPhoto(Camera.PictureSourceType.PHOTOLIBRARY);
+    });
     function getPhoto(source){
         $.mobile.showPageLoadingMsg();
         
         navigator.camera.getPicture(function(fileURI) {
             reportData['photo'] = fileURI;
             $('#photo #preview').html('<img src="'+fileURI+'"/>');
-            $('#menu-photo value').html('').removeClass('error-msg');
+            $('#menu-photo .value').html(source === Camera.PictureSourceType.CAMERA?'Photo from camera':'Photo from Library').removeClass('error-msg');
             $('#menu-photo img.ui-li-icon').prop('src',fileURI);
             
             $.mobile.hidePageLoadingMsg();
@@ -160,10 +160,11 @@
         var caption = $('.address-validate').html('').addClass('loader');
 
         
-        loadAddress(p,function(address){
+        loadAddress(p,function(address, postalcode){
             //reportData['address'] = address;
             //reportData['location'] = p;
             location = p;
+            postalcode = postalcode;
             caption.html(address).removeClass('loader');
             btn.button('enable');
         });
@@ -177,9 +178,11 @@
             var caption = $('.address-validate').addClass('loader').removeClass('error-msg');
 
             window.fms.getCurrentPosition(function(p){
-                loadAddress(p, function(address) {
+                loadAddress(p, function(address, postalcode) {
                     reportData['address'] = address;
-                    reportData['location'] = p;
+                    reportData['postalcode'] = postalcode;
+                    reportData['x'] = p.x;
+                    reportData['y'] = p.y;
 
                     caption.html(address).removeClass('loader');
                     btn.button('enable');
@@ -200,7 +203,9 @@
         $('#menu-address .value').html(address);
         
         reportData['address'] = address;
-        reportData['location'] = location;
+        reportData['postalcode'] = postalcode;
+        reportData['x'] = location.x;
+        reportData['y'] = location.y;
         
         current.filled = true;
         current.valid = true;

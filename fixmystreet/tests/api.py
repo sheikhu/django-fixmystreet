@@ -8,6 +8,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 
 import settings
+from fixmystreet.models import Report
 
 # https://developers.facebook.com/docs/test_users/
 # https://developers.facebook.com/docs/authentication/#applogin
@@ -48,7 +49,7 @@ class ApiTest(TestCase):
                 if user['id'] not in self.users:
                     self.users[user['id']] = {}
                 self.users[user['id']]['access_token'] = user['access_token']
-            print self.users
+            # print self.users
         except HTTPError, e:
             print e.code
             print simplejson.loads(e.read())['error']['message']
@@ -65,13 +66,37 @@ class ApiTest(TestCase):
         params = {
             'category': 1,
             'address': 'turlututu',
-            'location': {'x':'1000','y':'1000'},
+            'x': '1000',
+            'y': '1000',
+            'postalcode':'1000',
             'description':'hello',
-            'token':self.steven['access_token'],
+            'access_token':self.steven['access_token'],
             'backend':'facebook'
         }
+
         client = Client()
-        response = client.get(reverse('api_report_new'), params, follow=True)
+
+        response = client.post(reverse('api_report_new'), params, follow=True)
         self.assertEqual(response.status_code, 200)
+        result = simplejson.loads(response.content)
+
+        self.assertEquals(result['status'], 'success',result.get('message'))
+        report = Report.objects.get(id=result['report']['id'])
+        self.assertEquals(report.desc, 'hello')
+        self.assertEquals(report.category.id, 1)
+
+        params['postalcode'] = "4321"
+        response = client.post(reverse('api_report_new'), params, follow=True)
+        self.assertEqual(response.status_code, 200)
+        result = simplejson.loads(response.content)
+        self.assertEquals(result['status'], 'error')
+        self.assertEquals(result['errortype'], 'validation_error')
+
+        del params['postalcode']
+        response = client.post(reverse('api_report_new'), params, follow=True)
+        self.assertEqual(response.status_code, 200)
+        result = simplejson.loads(response.content)
+        self.assertEquals(result['status'], 'error')
+        self.assertEquals(result['errortype'], 'validation_error')
 
 
