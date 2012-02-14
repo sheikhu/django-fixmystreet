@@ -349,8 +349,8 @@
 
     function loadAddress(p,cb){
         position = p;
-        $.getJSON(
-            window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressfromxy?callback=?',
+        $.get(
+            window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressfromxy',
             {
                 json: JSON.stringify({
                     "language": "en",
@@ -368,7 +368,8 @@
                 {
                     cb('<span class="error-msg">' + response.status + '</span>','');
                 }
-            }
+            },
+            'jsonp'
         ).error(window.fms.connectionErrorCallback);
     }
 }());

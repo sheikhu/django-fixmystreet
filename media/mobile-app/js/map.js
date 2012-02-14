@@ -84,7 +84,7 @@
             $searchTerm.addClass('loading');
             
             
-            $.getJSON(window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressesfields?callback=?',
+            $.get(window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressesfields?callback=?',
                 {
                     json: JSON.stringify({
                         "language": "fr",
@@ -156,7 +156,7 @@
                             $proposal.html('<li class="error-msg">' + response.status + ' ' + response.msg + '</li>').slideDown().listview('refresh');
                         }
                     }
-                }).error(function(){
+                },'jsonp').error(function(){
                     $searchTerm.removeClass('loading');
              
                     $proposal.html('<p class="error-msg">Unexpected error.</p>');
