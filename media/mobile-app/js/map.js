@@ -84,7 +84,7 @@
             $searchTerm.addClass('loading');
             
             
-            $.getJSON(window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressesfields',
+            $.getJSON(window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressesfields?callback=?',
                 {
                     json: JSON.stringify({
                         "language": "fr",

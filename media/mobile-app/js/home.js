@@ -350,7 +350,7 @@
     function loadAddress(p,cb){
         position = p;
         $.getJSON(
-            window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressfromxy',
+            window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressfromxy?callback=?',
             {
                 json: JSON.stringify({
                     "language": "en",
