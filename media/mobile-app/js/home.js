@@ -80,6 +80,8 @@
             current = null;
             $('#welcome').hide();
             $('#resume').show();
+            $('#home [data-rel=back]').show();
+            $('#home .submit').show();
             $.mobile.changePage('#home');
         }
     }
@@ -254,7 +256,7 @@
     });
     //$(document).delegate('#description #id_desc', "blur", saveDescription);
 
-    $(document).delegate('#resume .submit', "click", function(evt){
+    $(document).delegate('#home .submit', "click", function(evt){
         evt.preventDefault();
         evt.stopPropagation();
         submitReport();
@@ -290,8 +292,11 @@
             $('#welcome').find('.msg').show().html('Your report has been saved successfully. See you soon for a new report !');
             $('#resume').slideUp();
             $('#welcome').slideDown();
+            $('#home [data-rel=back]').hide();
+            $('#home .submit').hide();
             for(var i in wizard) {
                 wizard[i].filled = false;
+                wizard[i].valid = false;
             }
             reportData = {};
             index = -1;
@@ -301,7 +306,7 @@
             wizardHtml.children().removeClass('filled');
             wizardHtml.children().removeClass('valid');
 
-            $('#category').find('li.ui-btn-active').removeClass('ui-btn-active');
+            $('#category .ui-content li.ui-btn-active').removeClass('ui-btn-active');
 
             $('#address .address-validate').html('');
 
@@ -344,12 +349,14 @@
 
     function loadAddress(p,cb){
         position = p;
-        $.post(
-            window.fms.rootUrl + '/api/locate/',
-            '{\
-                "language": "en",\
-                "point":{x:' + p.x + ',y:' + p.y + '}\
-            }',
+        $.getJSON(
+            window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressfromxy',
+            {
+                json: JSON.stringify({
+                    "language": "en",
+                    "point":{x: p.x, y: p.y}
+                })
+            },
             function(response)
             {
                 if(response.status == 'success')

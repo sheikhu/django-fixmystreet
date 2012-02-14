@@ -11,6 +11,7 @@ body {
 .ui-header {
     position: fixed !important;
     top:0 !important;
+    min-height: 42px;
 }
 
 .ui-footer {
@@ -71,6 +72,7 @@ body {
 
 #welcome .msg {
     Color:white;
+    text-shadow: none;
 }
 
 #wizard {

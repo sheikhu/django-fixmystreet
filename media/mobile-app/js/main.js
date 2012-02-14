@@ -10,15 +10,16 @@
 
     window.fms.rootUrl = 'http://fixmystreet.irisnet.be';
     window.fms.rootUrl = 'http://dev.fixmystreet.irisnetlab.be';
-    if(window.location.protocol == 'http:'){
+    if(window.location.protocol == 'http:') {
         window.fms.rootUrl = window.location.protocol + '//' + window.location.host;
     }
 
     window.fms.mediaUrl = window.fms.rootUrl + '/media/';
+    window.fms.serviceGisUrl = 'http://service.gis.irisnetlab.be';
     
     var DEBUG = true;
 
-    if(window.Notification) {
+    if(window.Phonegap && window.Notification) {
         window.alert = function(message) {
             return Notification.prototype.alert.apply(this, [message, function(){}, 'Fix My Street Brussels', 'OK']);
         }
@@ -41,7 +42,10 @@
     });
 
     window.fms.isOnline = function(dateTimeStr) {
-        return (!window.Connection && !navigator.network) || navigator.network.connection.type !== Connection.NONE;
+        if(!window.Connection || !navigator.network || !navigator.network.connection) {
+            return true;
+        }
+        return navigator.network.connection.type !== Connection.NONE;
     }
 
 
@@ -95,6 +99,7 @@
     });
     
     $(document).bind('connected', function() {
+        $.mobile.showPageLoadingMsg();
         FB.api('/me', function(response) {
             console.log('get my info ' + JSON.stringify(response));
             if(!response.error) {
@@ -105,6 +110,7 @@
                 $('#disconnect').closest('p').show();
                 $('#back-report').closest('p').show();
             }
+            $.mobile.hidePageLoadingMsg();
         });
     });
  

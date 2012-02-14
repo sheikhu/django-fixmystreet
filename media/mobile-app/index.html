@@ -73,22 +73,24 @@
                         evt.initEvent('initapp', true, true);
                         document.dispatchEvent(evt);
 	            	}, false);
-	             }
+	             }back
 	        }
         </script>
     </head>
 
     <body onload="onBodyLoad()">
         <div id="home" class="panel" data-role="page">
-            <div data-role="header">
+            <div data-role="header" data-position="inline">
+                <a data-rel="back" data-icon="arrow-l" style="display:none;">back</a>
                 <h1>Fix My Street</h1>
+                <a data-icon="check" data-theme="b" class="submit" style="display:none;">Send</a>
             </div>
 
             <div data-role="content">
                 <div id="welcome">
                     <center><img src="images/logo.png"/></center>
                     <p><button id="start" data-theme="b">Create a report</button></p>
-                     <p><strong class="msg"></strong></p>
+                    <p><strong class="msg"></strong></p>
 <!--
                     <p><strong class="msg">Welcome to Fix My Street Brussel !</strong></p>
 -->
@@ -120,7 +122,6 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="submit"><button data-theme="b">Submit</button></p>
                 </div>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
