@@ -251,13 +251,6 @@ ul.errorlist li {
 	left: 0;
 }
 
-#locate {
-    vertical-align: top;
-    display: inline-block;
-    position: absolute;
-    right: 0;
-}
-
 #map-bxl{
 	height:100%;
 	width:100%;
@@ -285,13 +278,15 @@ ul.errorlist li {
 #control-options {
 	z-index: 1000;
 	position: absolute;
-	top: 10px;
+	bottom: 10px;
 	right: 10px;
     margin:0;
 }
 
 #locate {
     margin: 0;
+    vertical-align: top;
+    display: inline-block;
 }
 
 .olControlPanZoom {
@@ -305,13 +300,14 @@ ul.errorlist li {
 	left: 10px;
     margin:0;
 }
-
+/*
 #map .confirm {
 	z-index: 1000;
 	position: absolute;
 	bottom: 10px;
 	right: 10px;
 }
+*/
 
 #search-form {
 	z-index: 1000;
@@ -338,15 +334,12 @@ ul.errorlist li {
 
 .ui-icon.ui-icon-locate{
 	background-image:url("../images/locate.png");
-}
-
-.ui-icon.ui-icon-help{
-	background-image:url("../images/help.png");
+    background-position: 50% 50%;
 }
 
 .map-control .ui-btn-icon-notext {
-    width: 34px;
-    height: 34px;
+    width: 48px;
+    height: 48px;
     position: relative;
     
 }
@@ -357,15 +350,27 @@ ul.errorlist li {
 
 .map-control .ui-btn-icon-notext .ui-btn-inner {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    bottom: 7px;
-    left: 8px;
+    top: 6px;
+    right: 6px;
+    bottom: 6px;
+    left: 6px;
     padding: 0;
 }
 
 .map-control .ui-btn-icon-notext .ui-icon {
     height:100%;
     width:100%;
+    -moz-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius: 16px;
+}
+.map-control .ui-btn-icon-notext .ui-icon.ui-icon-plus {
+    background-image: url(../jquery.mobile-1.0/images/icons-36-white.png);
+    background-position: -1px 50%;
+}
+
+.map-control .ui-btn-icon-notext .ui-icon.ui-icon-minus {
+    background-image: url(../jquery.mobile-1.0/images/icons-36-white.png);
+    background-position: -72px 50%;
 }
 

@@ -39,6 +39,7 @@
 
             /* set location */
             //loadAddress(newPoint);
+            console.log(newPoint)
             $(document).trigger('locationchange',[newPoint]);
         });
 
@@ -54,7 +55,17 @@
         $page.find('#locate').click(function(evt){
             evt.preventDefault();
             evt.stopPropagation();
-            $map.fmsMap('center');
+            window.fms.getCurrentPosition(function(p){
+                $map.fmsMap('setCenter', p.x, p.y);
+            });
+            //$map.fmsMap('center');
+        });
+        
+        $page.bind('reinit', function(evt) {
+            newPoint = null;
+            window.fms.getCurrentPosition(function(p){
+                $map.fmsMap('setCenter', p.x, p.y);
+            });
         });
 
 
@@ -107,6 +118,7 @@
                             var loc = response.result[0];
                             $map.fmsMap('setCenter',loc.point.x, loc.point.y);
                             //$(document).trigger('locationchange',[loc]);
+                            newPoint = loc.point;
              
                             loadReports(loc.point,function(){
                                 $('#create-report').removeClass('ui-disabled');
@@ -128,6 +140,7 @@
                                             var loc = $(this).data('loc');
                                             //console.log(loc);
                                             $map.fmsMap('setCenter',loc.point.x, loc.point.y);
+                                            newPoint = loc.point;
                                             //$('#create-report').addClass('ui-disabled').data('position',loc.point);
                                             //$(document).trigger('locationchange',[loc]);
              

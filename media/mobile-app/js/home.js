@@ -309,6 +309,9 @@
             $('#category .ui-content li.ui-btn-active').removeClass('ui-btn-active');
 
             $('#address .address-validate').html('');
+            $('#map').trigger('reinit');
+            location = null;
+            postalcode = null;
 
             $('#photo #preview img').remove();
             $('#menu-photo img.ui-li-icon').prop('src','images/photo.png');
