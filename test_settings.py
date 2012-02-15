@@ -33,14 +33,14 @@ LOCAL_DEV = False
 SITE_URL = "http://dev.fixmystreet.irisnetlab.be"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
-LOCAL_API = "service.gis.irisnetlab.be" # gislb.irisnetlab.be
+SERVICE_GIS = "service.gis.irisnetlab.be" # gislb.irisnetlab.be
 #SECRET_KEY=
 #GMAP_KEY=
 
-FACEBOOK_API_SECRET         = '0d148b918b91fadf5d62136439404b50'
+FACEBOOK_API_SECRET         = 'xxx'
 
 GOOGLE_OAUTH2_CLIENT_ID     = '985105651100-538gtjuj3lghsf4nmn9n1kbsl0t6rr14.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = 'rWyvoLGrAVnL5b58dF61kdfi'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'xxx'
 
 settings.INSTALLED_APPS += ('django_jenkins',)
 

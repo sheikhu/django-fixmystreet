@@ -16,7 +16,9 @@ $(document).ready(function() {
 	
 	$map.fmsMap({
 		apiLang:'{{ LANGUAGE_CODE }}',
-		origin:{
+        localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl: 'http://{{ GEOSERVER }}/geoserver/wms',
+        origin:{
 			x:{{ pnt.x }},
 			y:{{ pnt.y }} 
 		}

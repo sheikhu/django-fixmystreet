@@ -19,17 +19,17 @@ $(function(){
 		$searchButton.prop('disabled',true);
 		
 		$.ajax({
-            url:'{% url api_search %}',
-            type:'POST',
-            dataType:'json',
-            contentType:'text/json',
-			data:'{"language": "{{ LANGUAGE_CODE }}",' +
+            url:'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressesfields',
+            dataType:'jsonp',
+			data:{
+                json:'{"language": "{{ LANGUAGE_CODE }}",' +
 				'"address": {' +
 					'"street": {' +
 						'"name": "' + $searchTerm.val().replace("\"","\\\"") + '",' +
 						'"postcode": "' + $searchWard.val().replace("\"","\\\"") + '"' +
 					'},"number": ""' +
 				'}}'
+            }
         }).success(function(response){
             if(response.status == 'success' && response.result.length > 0)
             {
