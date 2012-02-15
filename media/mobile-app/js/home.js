@@ -284,11 +284,11 @@
 
         var success = function(content){
             console.log('ajax success');
-            $.mobile.hidePageLoadingMsg();
             if(content.status != 'success') {
                 alert(content.message || content.errortype || content.status);
                 return;
             }
+            $.mobile.hidePageLoadingMsg();
             $('#welcome').find('.msg').show().html('Your report has been saved successfully. See you soon for a new report !');
             $('#resume').slideUp();
             $('#welcome').slideDown();
