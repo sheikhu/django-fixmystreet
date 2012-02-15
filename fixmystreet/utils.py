@@ -90,7 +90,6 @@ class FixStdImageField(StdImageField):
             orientation = 1
             if('Orientation' in exifs):
                 orientation = exifs['Orientation']
-                print orientation
                 
                 if(orientation == 3 or orientation == 4):
                     img = img.rotate(180)
