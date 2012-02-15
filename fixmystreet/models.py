@@ -13,11 +13,13 @@ from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
 
 from transmeta import TransMeta
-from stdimage import StdImageField
+from utils import FixStdImageField
 
 import settings
 
-
+#class Report:
+    #pass
+#post_save.connect(fix_exif_data, sender=Report)
 
 class Report(models.Model):
     title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
@@ -44,7 +46,7 @@ class Report(models.Model):
     
     point = models.PointField(null=True, srid=31370)
 
-    photo = StdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
@@ -53,6 +55,10 @@ class Report(models.Model):
 
     def get_absolute_url(self):
         return reverse("report_show", args=[self.id])
+
+    def save(self, *args, **kwargs):
+        super(Report, self).save(*args, **kwargs)
+        #fix_exif_data(self)
 
     def flagAsOffensive(self):
         msg = HtmlTemplateMail('flag_report', {
@@ -71,6 +77,11 @@ def report_notify(sender, instance, **kwargs):
     if kwargs['created'] and not kwargs['raw']:
         NotificationResolver(instance).resolve()
 
+#signal on a report to register author as subscriber to his own report
+@receiver(post_save,sender=Report)
+def report_subscribe_author(sender, instance, **kwargs):
+    if kwargs['created']:
+        ReportSubscription(report=instance,subscriber=instance.author).save()
 
 class ReportUpdate(models.Model):
     """A new version of the status of a report"""
@@ -506,5 +517,6 @@ class HtmlTemplateMail(EmailMultiAlternatives):
         super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
         if html:
             self.attach_alternative(html, "text/html")
+
 
 
