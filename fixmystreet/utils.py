@@ -90,7 +90,6 @@ class FixStdImageField(StdImageField):
             orientation = 1
             if('Orientation' in exifs):
                 orientation = exifs['Orientation']
-                print orientation
                 
                 if(orientation == 3 or orientation == 4):
                     img = img.rotate(180)
@@ -103,8 +102,6 @@ class FixStdImageField(StdImageField):
                     img = ImageOps.mirror(img)
                 
                 img.save(path)
-                import shutil
-                shutil.copyfile(path, '/home/jonathan/Projects/django-fixmystreet/media/photos/test.jpg')
 
     def contribute_to_class(self, cls, name):
         """Call methods for generating all operations on specified signals"""
