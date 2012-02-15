@@ -84,7 +84,7 @@
             $searchTerm.addClass('loading');
             
             
-            $.getJSON(window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressesfields',
+            $.get(window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressesfields',
                 {
                     json: JSON.stringify({
                         "language": "fr",
@@ -156,87 +156,11 @@
                             $proposal.html('<li class="error-msg">' + response.status + ' ' + response.msg + '</li>').slideDown().listview('refresh');
                         }
                     }
-                }).error(function(){
+                },'jsonp').error(function(){
                     $searchTerm.removeClass('loading');
              
                     $proposal.html('<p class="error-msg">Unexpected error.</p>');
                 });
-            /*
-            $.ajax({
-                url:window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddresses/',
-                dataType:'jsonp',
-                data:{
-                    "language": "fr",
-                    "address": $searchTerm.val()
-                },
-                success:function(response){
-                    $searchTerm.removeClass('loading');
-                    $proposal.empty();
-                    if(response.status == 'success' && response.result.length > 0)
-                    {
-                        if(response.result.length == 1)
-                        {
-                            var loc = response.result[0];
-                            $map.fmsMap('setCenter',loc.point.x, loc.point.y);
-                            //$(document).trigger('locationchange',[loc]);
-                            
-                            loadReports(loc.point,function(){
-                                $('#create-report').removeClass('ui-disabled');
-                            });
-                            
-                            //$searchForm.hide();
-                            //$('#show-search').show();
-                            $proposal.slideUp();
-                        }
-                        else
-                        {
-                            for(var i in response.result)
-                            {
-                                var loc = response.result[i];
-                                var street = loc.address.street;
-                                $street = $('<li><a href="#">' + street.name + ' (' + street.postCode + ')</a></li>')
-                                    .data('loc',loc)
-                                    .click(function()
-                                    {
-                                        var loc = $(this).data('loc');
-                                        //console.log(loc);
-                                        $map.fmsMap('setCenter',loc.point.x, loc.point.y);
-                                        //$('#create-report').addClass('ui-disabled').data('position',loc.point);
-                                        //$(document).trigger('locationchange',[loc]);
-                                        
-                                        loadReports(loc.point,function(){
-                                            $('#create-report').removeClass('ui-disabled');
-                                        });
-
-                                        //$searchForm.hide();
-                                        //$('#show-search').show();
-                                        $proposal.slideUp();
-                                    });
-                                $proposal.append($street);
-                            }
-                            $proposal.slideDown().listview('refresh');
-                        }
-                    }
-                    else
-                    {
-                        $searchTerm.removeClass('loading');
-                        if(response.status == "noresult" || response.status == "success")
-                        {
-                            $proposal.html('<li class="error-msg">No corresponding address has been found</li>').slideDown().listview('refresh');
-                        }
-                        else
-                        {
-                            $proposal.html('<li class="error-msg">' + response.status + ' ' + response.msg + '</li>').slideDown().listview('refresh');
-                        }
-                    }
-                },
-                error:function(){
-                    $searchTerm.removeClass('loading');
-            
-                    $proposal.html('<p class="error-msg">Unexpected error.</p>');
-                }
-            });
-             */
         }
     }
 

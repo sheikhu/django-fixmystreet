@@ -29,7 +29,7 @@ LOCAL_DEV = False
 SITE_URL = "###"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
-LOCAL_API = "service.gis.irisnetlab.be"
+SERVICE_GIS = "service.gis.irisnetlab.be"
 
 
 FACEBOOK_API_SECRET         = '###'

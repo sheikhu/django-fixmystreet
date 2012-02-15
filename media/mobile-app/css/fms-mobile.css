@@ -75,14 +75,14 @@ body {
     text-shadow: none;
 }
 
-#wizard {
+.wizard {
     cursor: pointer;
     border: 1px solid grey;
     border-radius: 14px;
     overflow: hidden;
 }
 
-#wizard span {
+.wizard span {
     display: inline-block;
     width: 25%;
     text-align: center;
@@ -94,22 +94,22 @@ body {
     position: relative;
 }
 
-#wizard img {
+.wizard img {
     width: 30px;
     font-size:0;
 }
 
-#wizard span:first-child {
+.wizard span:first-child {
     border-top-left-radius: 14px;
     border-bottom-left-radius: 14px;
 }
 
-#wizard span:last-child {
+.wizard span:last-child {
     border-top-right-radius: 14px;
     border-bottom-right-radius: 14px;
 }
 
-#wizard span:not(:last-child)::after {
+.wizard span:not(:last-child)::after {
     content:' ';
     position:absolute;
     display:block;
@@ -122,17 +122,17 @@ body {
     z-index:1;
 }
 
-#wizard .filled:not(:last-child)::after {
+.wizard .filled:not(:last-child)::after {
     background-image:url(../images/arrow_red.png);
 }
-#wizard .filled.valid:not(:last-child)::after {
+.wizard .filled.valid:not(:last-child)::after {
     background-image:url(../images/arrow_green.png);
 }
-#wizard .filled.current:not(:last-child)::after {
+.wizard .filled.current:not(:last-child)::after {
     background-image:url(../images/arrow_blue.png);
 }
 
-#wizard .filled {
+.wizard .filled {
     color:black;
     background-image: -webkit-gradient(linear,left top,left bottom,from(#eef44c),to(#e7970d));
     background-image: -webkit-linear-gradient(#eef44c,#e7970d);
@@ -142,7 +142,7 @@ body {
     background-image: linear-gradient(#eef44c,#e7970d);
 }
 
-#wizard .filled.valid {
+.wizard .filled.valid {
     color:black;
     background-image: -webkit-gradient(linear,left top,left bottom,from(#09c609),to(#007f00));
     background-image: -webkit-linear-gradient(#09c609,#007f00);
@@ -152,7 +152,7 @@ body {
     background-image: linear-gradient(#09c609,#007f00);
 }
 
-#wizard .filled.current {
+.wizard .filled.current {
     color:white;
     background-color: #5f9cc5;
     background-image: -webkit-gradient(linear, left top, left bottom, from( #85bae4 /*{global-active-background-start}*/), to( #5393c5 /*{global-active-background-end}*/));

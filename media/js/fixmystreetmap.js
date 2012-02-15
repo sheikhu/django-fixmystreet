@@ -2,8 +2,7 @@
 //			  -http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js
 
 (function(){
-	var urbisURL = "http://geoserver.gis.irisnetlab.be/geoserver/wms",
-		markerWidth = 18,
+	var markerWidth = 18,
 		markerHeight = 34,
 		defaultMarkerStyle = {
 			pointRadius:markerHeight,
@@ -23,15 +22,17 @@
 	
 	$.widget("ui.fmsMap", {
 		options:{
-			apiRootUrl:"/api/",
-			apiLang:"fr",
-            showControl:true,
+			apiRootUrl: "/api/",
+			localizeUrl: "/api/locate/",
+			urbisUrl: "http://geoserver.gis.irisnetlab.be/geoserver/wms",
+			apiLang: "fr",
+            showControl: true,
 			markerStyle: $.extend({},defaultMarkerStyle,{
 				externalGraphic: "/media/images/marker.png",
-				graphicXOffset:-32/2,
-				graphicYOffset:-32,
-				graphicHeight:32,
-				graphicWidth:32
+				graphicXOffset: -32/2,
+				graphicYOffset: -32,
+				graphicHeight: 32,
+				graphicWidth: 32
 			}),
 			fixedMarkerStyle: $.extend({},defaultMarkerStyle,{
 				externalGraphic:"/media/images/marker-fixed.png"
@@ -72,7 +73,7 @@
 
 			var wms = new OpenLayers.Layer.WMS(
 				"Bruxelles",
-				urbisURL,
+				this.options.urbisUrl,
 				{ layers: 'urbisFR' } // urbisFRshp,urbisFR
 				
 			);
@@ -176,16 +177,14 @@
 		
 		getSelectedAddress: function(callback)
 		{
-			$('#id_address').addClass('loading'); // !!!
 			$.ajax({
-				url: this.options.apiRootUrl + 'locate/',
+				url: this.options.localizeUrl,
 				type:'POST',
-				contentType:'text/json',
-				dataType:'json',
-				data:'{\
+				dataType:'jsonp',
+				data:{json: '{\
 					"language": "' + this.options.apiLang + '",\
 					"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
-				}',
+				}'},
 				success:function(response)
 				{
 					callback(response);
@@ -328,7 +327,7 @@
             //municipalities layer
             var municipalities = new OpenLayers.Layer.WMS(
                 "Municipalities",
-                urbisURL,
+                this.options.urbisUrl,
                 {layers: 'urbis:URB_A_MU', styles: 'fixms_municipalities', transparent: 'true', featureId: featureId},
                 {singleTile: true, ratio: 1.25, isBaseLayer: false}
             );

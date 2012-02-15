@@ -38,22 +38,30 @@
             icon:'description.png'
         }
     ];
-    var wizardHtml = $('<div id="wizard"></div>');
-    for(i in wizard) {
-        wizardHtml.append('<span id="step-' + wizard[i].id + '" data-role="button" data-inline="true"><img src="images/' + wizard[i].icon + '"/></span>');
-    }
+    var wizardHtml;
+    $(function(){
+        wizardHtml = $('.wizard');
+        for(i in wizard) {
+            wizardHtml.append('<span id="step-' + wizard[i].id + '" data-inline="true"><img src="images/' + wizard[i].icon + '"/></span>');
+        }
+        wizardHtml.delegate('.filled:not(.current)', "click", function(){
+            var target = $(this).parent().children().index(this);
+            nextStep(target, target < index);
+        });
+    });
 
     var index = -1;
     var current = null;
     function nextStep(step, reverse) {
-        wizardHtml.children().eq(index).removeClass('current');
+        var $precStep = wizardHtml.find('span:nth-child(' + (index + 1) + ')');
+        $precStep.removeClass('current');
         //if(current && current.filled) {
             //wizardHtml.children().eq(index).addClass('filled');
         //}
         if(current && current.valid) {
-            wizardHtml.children().eq(index).addClass('valid');
+            $precStep.addClass('valid');
         } else {
-            wizardHtml.children().eq(index).removeClass('valid');
+            $precStep.removeClass('valid');
         }
         
 
@@ -72,8 +80,9 @@
         }
         if(current) {
             // wizardHtml.children().eq(index).removeClass('filled');
-            wizardHtml.children().eq(index).addClass('current');
-            wizardHtml.children().eq(index).addClass('filled');
+            var $currStep = wizardHtml.find('span:nth-child(' + (index + 1) + ')');
+            $currStep.addClass('current');
+            $currStep.addClass('filled');
             $.mobile.changePage('#'+current.id, {reverse:reverse});
             // current.load();
         } else {
@@ -85,15 +94,6 @@
             $.mobile.changePage('#home');
         }
     }
-
-    $(document).delegate(".page-step", "pagebeforeshow", function(){
-        $(this).find('.ui-content').prepend(wizardHtml);
-    });
-
-    wizardHtml.delegate('.filled:not(.current)', "click", function(){
-        var target = $(this).parent().children().index(this);
-        nextStep(target, target < index);
-    });
 
     $(function(){
         $('.page-step').delegate("[data-rel=back]", "click", function(evt){
@@ -158,11 +158,11 @@
     }
 
     $(document).bind("locationchange", function(evt,p){
-        var btn = $(this).find('.address-confirm, .address-invalidate').button('disable');
-        var caption = $('.address-validate').html('').addClass('loader');
-        console.log('location change')
-        
         if(p) {
+            var btn = $(this).find('.address-confirm, .address-invalidate').button('disable');
+            var caption = $('.address-validate').html('').addClass('loader');
+            console.log('location change')
+        
             loadAddress(p,function(address, postalcode){
                 //reportData['address'] = address;
                 //reportData['location'] = p;
@@ -349,7 +349,7 @@
 
     function loadAddress(p,cb){
         position = p;
-        $.getJSON(
+        $.get(
             window.fms.serviceGisUrl + '/urbis/Rest/Localize/getaddressfromxy',
             {
                 json: JSON.stringify({
@@ -368,7 +368,8 @@
                 {
                     cb('<span class="error-msg">' + response.status + '</span>','');
                 }
-            }
+            },
+            'jsonp'
         ).error(window.fms.connectionErrorCallback);
     }
 }());

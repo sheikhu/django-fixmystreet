@@ -76,7 +76,6 @@ class ReportForm(forms.ModelForm):
         report.point = self.point
         if commit:
             report.save()
-        ReportSubscription(report=report,subscriber=user).save()
         return report
 
 

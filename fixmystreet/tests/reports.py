@@ -93,6 +93,12 @@ class NotificationTest(TestCase):
         self.assertEquals(mail.outbox[1].to, [self.councillor.email])
         self.assertEquals(mail.outbox[2].to, [self.councillor2.email])
 
+    def testSubscrciber(self):
+        self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+        self.report.save()
+
+        self.assertTrue(ReportSubscription.objects.filter(report=self.report,subscriber=self.user).exists())
+        # TODO
 #
     #def testMultiRecipients(self):
         #parks_category = ReportCategory.objects.get(name_en='Lights Malfunctioning in Park')
