@@ -81,6 +81,9 @@ for sample data set loading
 
     $ python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
 
+open external connexion to pg:
+    /var/lib/pgsql/data/pg_hba.conf
+
 
 To build a mobile app:
 * build a new project with phone gap

@@ -5,10 +5,10 @@ import settings
 DATABASES = {
    'default': {
        'ENGINE': 'postgresql_psycopg2',
-       'NAME': 'fixmystreet-dev',
-       'USER': 'postgres',
-       'PASSWORD': 'password',
-       'HOST': 'localhost',
+       'NAME': 'fixmystreet-test',
+       'USER': 'jenkins',
+       'PASSWORD': 'jenkins',
+       'HOST': '192.168.13.55',
        'PORT': 5432
    }
 }
