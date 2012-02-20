@@ -9,7 +9,7 @@ from fixmystreet.models import Report, ReportSubscription
 class ReportViewsTest(TestCase):
     fixtures = ['sample']
     def setUp(self):
-        self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
+        self.user = User.objects.create_user('test1', 'test1@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
         self.client = Client()
 
