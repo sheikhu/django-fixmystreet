@@ -2,13 +2,14 @@ import os
 
 import settings
 
+
 DATABASES = {
    'default': {
        'ENGINE': 'postgresql_psycopg2',
        'NAME': 'fixmystreet-test',
-       'USER': 'jenkins',
-       'PASSWORD': 'jenkins',
-       'HOST': '192.168.13.55',
+       'USER': os.environ.get('POSTGISUSER'),
+       'PASSWORD': os.environ.get('POSTGISPWD'),
+       'HOST': os.environ.get('POSTGISDB'),
        'PORT': 5432
    }
 }
