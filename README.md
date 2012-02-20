@@ -21,6 +21,7 @@ requirements: transmeta, stdimage, GeoDjango, PIL
     $ easy_install django-transmeta
     $ easy_install django-stdimage
     $ easy_install django-social-auth
+    $ easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz (???)
 
 may be requied:
 

@@ -38,7 +38,7 @@ SERVICE_GIS = "service.gis.irisnetlab.be" # gislb.irisnetlab.be
 #SECRET_KEY=
 #GMAP_KEY=
 
-FACEBOOK_API_SECRET         = 'xxx'
+FACEBOOK_API_SECRET         = os.environ.get('FBSECRET')
 
 GOOGLE_OAUTH2_CLIENT_ID     = '985105651100-538gtjuj3lghsf4nmn9n1kbsl0t6rr14.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = 'xxx'
