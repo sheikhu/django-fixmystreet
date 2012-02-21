@@ -5,12 +5,16 @@ import settings
 
 DATABASES = {
    'default': {
-       'ENGINE': 'postgresql_psycopg2',
-       'NAME': 'fixmystreet',
-       'USER': os.environ.get('POSTGISUSER'),
-       'PASSWORD': os.environ.get('POSTGISPWD'),
-       'HOST': os.environ.get('POSTGISDB'),
-       'PORT': 5432
+        'ENGINE': 'postgresql_psycopg2',
+        'NAME': 'fixmystreet',
+        'USER': os.environ.get('POSTGISUSER'),
+        'PASSWORD': os.environ.get('POSTGISPWD'),
+        'HOST': os.environ.get('POSTGISDB'),
+        'PORT': 5432,
+        'OPTIONS': {
+            'autocommit': True
+        }
+
    }
 }
 
