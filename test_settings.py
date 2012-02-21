@@ -34,6 +34,7 @@ ADMIN = ["Jonathan"]
 DEBUG = True
 SITE_ID = 2
 LOCAL_DEV = False
+HTTPS_SUPPORT = False # todo remove it and test ssl redirection
 SITE_URL = "http://dev.fixmystreet.irisnetlab.be"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
