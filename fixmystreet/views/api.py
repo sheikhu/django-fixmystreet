@@ -60,7 +60,7 @@ def create_report(request):
     if request.user.is_authenticated():
         user = request.user
     try:
-        user = user or oauthtoken_to_user(request.POST.get('backend'), request.POST.get('access_token'), equest)
+        user = user or oauthtoken_to_user(request.POST.get('backend'), request.POST.get('access_token'), request)
     except HTTPError, e:
         return JsonHttpResponse('error', {
             'code': e.code,
