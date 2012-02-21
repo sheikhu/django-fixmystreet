@@ -14,7 +14,6 @@ DATABASES = {
         'OPTIONS': {
             'autocommit': True
         }
-
    }
 }
 

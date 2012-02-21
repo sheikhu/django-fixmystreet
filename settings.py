@@ -111,9 +111,6 @@ AUTHENTICATION_BACKENDS = (
     'fixmystreet.googlebackend.GoogleProfileBackend',
 )
 
-SOCIAL_AUTH_IMPORT_BACKENDS = (
-    'fixmystreet',
-)
 SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login-callback/'
