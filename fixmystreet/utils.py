@@ -82,7 +82,7 @@ class FixStdImageField(StdImageField):
         img_file = getattr(instance, self.name)
         if img_file:
             path = img_file.path
-            print 'path:',path
+            #print 'path:',path
             from PIL import Image, ImageOps
             img = Image.open(path)
 
