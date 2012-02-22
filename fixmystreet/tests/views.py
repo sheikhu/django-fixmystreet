@@ -9,7 +9,7 @@ from fixmystreet.models import Report, ReportSubscription
 class ReportViewsTest(TestCase):
     fixtures = ['sample']
     def setUp(self):
-        self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
+        self.user = User.objects.create_user('test1', 'test1@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
         self.client = Client()
 
@@ -32,7 +32,7 @@ class ReportViewsTest(TestCase):
 
     def test_create_report(self):
         """Tests the creation of a report and test the view of it."""
-        self.client.login(username='admin', password='pwd')
+        self.client.login(username='test1', password='pwd')
         url = reverse('report_new')
         response = self.client.post(url, {'x':'1000','y':'1000','title':'Just a test', 'address': 'Av des arts', 'category':1,'postalcode':'1000'}, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -44,7 +44,7 @@ class ReportViewsTest(TestCase):
 
     def test_update_report(self):
         """Tests the update of a report and flag it as fixed."""
-        self.client.login(username='admin', password='pwd')
+        self.client.login(username='test1', password='pwd')
         report = Report.objects.all()[0]
         nb_initial_update = report.reportupdate_set.count()
         report.is_fixed = False
@@ -68,7 +68,7 @@ class ReportViewsTest(TestCase):
     def test_subscription(self):
         """Tests the creation of a report and test the view of it."""
         report = Report.objects.all()[0]
-        self.client.login(username='admin', password='pwd')
+        self.client.login(username='test1', password='pwd')
 
         #current user is not subscribed yet
         self.assertFalse(ReportSubscription.objects.filter(report=report,subscriber=self.user).exists())

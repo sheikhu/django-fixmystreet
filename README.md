@@ -21,6 +21,7 @@ requirements: transmeta, stdimage, GeoDjango, PIL
     $ easy_install django-transmeta
     $ easy_install django-stdimage
     $ easy_install django-social-auth
+    $ easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz (???)
 
 may be requied:
 
@@ -80,6 +81,9 @@ for sample data set loading
     $ python manage.py testserver sample.json
 
     $ python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
+
+open external connexion to pg:
+    /var/lib/pgsql/data/pg_hba.conf
 
 
 To build a mobile app:

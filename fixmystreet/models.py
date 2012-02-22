@@ -56,10 +56,6 @@ class Report(models.Model):
     def get_absolute_url(self):
         return reverse("report_show", args=[self.id])
 
-    def save(self, *args, **kwargs):
-        super(Report, self).save(*args, **kwargs)
-        #fix_exif_data(self)
-
     def flagAsOffensive(self):
         msg = HtmlTemplateMail('flag_report', {
             'report_url': 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url()), 

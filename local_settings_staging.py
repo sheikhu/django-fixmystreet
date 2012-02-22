@@ -3,12 +3,15 @@ import settings
 
 DATABASES = {
    'default': {
-       'ENGINE': 'postgresql_psycopg2',
-       'NAME': 'fixmystreet',
-       'USER': '###',
-       'PASSWORD': '###',
-       'HOST': 'localhost',
-       'PORT': 5432
+        'ENGINE': 'postgresql_psycopg2',
+        'NAME': 'fixmystreet',
+        'USER': '###',
+        'PASSWORD': '###',
+        'HOST': 'localhost',
+        'PORT': 5432,
+        'OPTIONS': {
+            'autocommit': True
+        }
    }
 }
 

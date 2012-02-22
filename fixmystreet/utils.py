@@ -36,10 +36,13 @@ def ssl_required(view_func):
     return _wrapped_view_func
 
 
-def oauthtoken_to_user(backend_name,token,request,*args, **kwargs):
+def oauthtoken_to_user(backend_name, token, request, *args, **kwargs):
     """Check and retrieve user with given token.
     """
-    backend = get_backend(backend_name,request,"")
+    backend = get_backend(backend_name, request, "")
+    if not backend:
+        raise Exception('Backend {0} not found'.format(backend_name))
+    #print backend
     response = backend.user_data(token) or {}
     response['access_token'] = token
     kwargs.update({'response': response, backend_name: True})
@@ -82,7 +85,7 @@ class FixStdImageField(StdImageField):
         img_file = getattr(instance, self.name)
         if img_file:
             path = img_file.path
-            print 'path:',path
+            #print 'path:',path
             from PIL import Image, ImageOps
             img = Image.open(path)
 

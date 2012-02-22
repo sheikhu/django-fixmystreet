@@ -2,14 +2,18 @@ import os
 
 import settings
 
+
 DATABASES = {
    'default': {
-       'ENGINE': 'postgresql_psycopg2',
-       'NAME': 'fixmystreet-dev',
-       'USER': 'postgres',
-       'PASSWORD': 'password',
-       'HOST': 'localhost',
-       'PORT': 5432
+        'ENGINE': 'postgresql_psycopg2',
+        'NAME': 'fixmystreet',
+        'USER': os.environ.get('POSTGISUSER'),
+        'PASSWORD': os.environ.get('POSTGISPWD'),
+        'HOST': os.environ.get('POSTGISDB'),
+        'PORT': 5432,
+        'OPTIONS': {
+            'autocommit': True
+        }
    }
 }
 
@@ -30,6 +34,7 @@ ADMIN = ["Jonathan"]
 DEBUG = True
 SITE_ID = 2
 LOCAL_DEV = False
+HTTPS_SUPPORT = False # todo remove it and test ssl redirection
 SITE_URL = "http://dev.fixmystreet.irisnetlab.be"
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
@@ -37,7 +42,7 @@ SERVICE_GIS = "service.gis.irisnetlab.be" # gislb.irisnetlab.be
 #SECRET_KEY=
 #GMAP_KEY=
 
-FACEBOOK_API_SECRET         = 'xxx'
+FACEBOOK_API_SECRET         = os.environ.get('FBSECRET')
 
 GOOGLE_OAUTH2_CLIENT_ID     = '985105651100-538gtjuj3lghsf4nmn9n1kbsl0t6rr14.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = 'xxx'

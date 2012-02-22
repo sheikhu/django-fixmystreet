@@ -81,7 +81,7 @@ class ApiTest(TestCase):
         self.assertEqual(response['Content-Type'], 'application/json')
         result = simplejson.loads(response.content)
 
-        self.assertEquals(result['status'], 'success',result.get('message'))
+        self.assertEquals(result['status'], 'success', result.get('message'))
         report = Report.objects.get(id=result['report']['id'])
         self.assertEquals(report.desc, 'hello')
         self.assertEquals(report.category.id, 1)
