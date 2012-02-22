@@ -96,7 +96,7 @@
     }
 
     $(function(){
-        $('.page-step').delegate("[data-rel=back]", "click", function(evt){
+        $('.page-step, #home').delegate("[data-rel=back]", "click", function(evt){
             evt.preventDefault();
             evt.stopImmediatePropagation();
             if(index == 0) {
@@ -105,6 +105,8 @@
                 wizardHtml.children().first().removeClass('current');
                 $.mobile.changePage('#home', {reverse:true});
                 return ;
+            } else if (index == -1) {
+                index = 4;
             }
             nextStep(index - 1, true);
             return ;

@@ -88,8 +88,13 @@
 
             <div data-role="content">
                 <div id="welcome">
-                    <center><img src="images/logo.png"/></center>
-                    <p><button id="start" data-theme="b">Create a report</button></p>
+                    <div id="intro">
+                        <img class="logo" src="images/logo_welcom.png"/>
+                        <h1>Fix My Street</h1>
+                        <h2>Brussels</h2>
+                    </div>
+                    
+                    <p><button id="start">Create a report</button></p>
                     <p><strong class="msg"></strong></p>
 <!--
                     <p><strong class="msg">Welcome to Fix My Street Brussel !</strong></p>
@@ -195,9 +200,11 @@
                 <div class="wizard"></div>
                 <p class="tips">A photo is not required to fill a report but one picture is stronger than words, it is hightly recommended.</p>
                 <div id="preview"></div>
-                <p><button id="capture" data-theme="b">Take a photo</button></p>
-                <p><button id="select" data-theme="c">Select in library</button></p>
-                <p><button id="skip" data-theme="e">No photo</button></p>
+                <div class="buttons-box">
+                    <p><button id="capture">Take a photo</button></p>
+                    <p><button id="select">Select in library</button></p>
+                    <p><button id="skip" data-theme="e">No photo</button></p>
+                </div>
             </div>
         </div>
 
@@ -213,12 +220,14 @@
                 <div>
                     <p class="tips">This is the address retrieved from where you are, 
                     if it is not the location of the report please locate it on the map.</p>
-                    <p>The problem is located here:</p>
-                    <strong class="address-validate"></strong>
-                    <p><button class="address-confirm" data-theme="b">Ok</button></p>
-                    <p><button class="address-invalidate" data-theme="e">Wrong, locate it on map</button></p>
-                    <p class="tips">The map is only available if you are connected, 
-                    if you are on mobile connection, it is not recommented.</p>
+                    <div class="buttons-box">
+                        <p>Is it located here ?</p>
+                        <strong class="address-validate"></strong>
+                        <p><button class="address-confirm">Yes</button></p>
+                        <p><button class="address-invalidate" data-theme="e">No, locate it on map...</button></p>
+                        <p class="tips">The map is only available if you are connected, 
+                        if you are on mobile connection, it is not recommented.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -266,7 +275,7 @@
                 <p>
                     <textarea id="id_desc" name="desc"></textarea>
                 </p>
-                <p class="buttons"><button data-theme="b" data-inline="true">Ok</button></p>
+                <p class="buttons"><button data-theme="b" data-inline="true">OK</button></p>
             </div>
         </div>
 
@@ -314,7 +323,7 @@
             </div>
             <div data-role="content">
                 <p id="login-status">To create a report you have to login</p>
-                <p><button id="login-fb">Facebook</button></p>
+                <p><a id="login-fb"><span>Login with Facebook</span></a></p>
                 <p style="display:none;"><button id="disconnect" data-theme="e">Disconnect</button></p>
                 <p style="display:none;"><a id="back-report" data-role="button" data-transition="fade" href="#home" data-theme="b">Back to my report</a></p>
             </div>
