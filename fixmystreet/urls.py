@@ -43,11 +43,6 @@ urlpatterns += patterns('fixmystreet.views.main',
     url(r'^robots.txt$', 'robot'),
 )
 
-#urlpatterns += patterns('fixmystreet.views.faq',
-    #(r'^about/(\S+)$', 'show'),
-#)
-
-
 urlpatterns += patterns('fixmystreet.views.promotion',
     (r'^promotions/(\w+)$', 'show'),
 )
@@ -74,11 +69,6 @@ urlpatterns += patterns( 'fixmystreet.views.reports.subscribers',
 urlpatterns += patterns( 'fixmystreet.views.reports.flags',
     url(r'^report/(\d+)/flags/thanks', 'thanks',name='flag_success'),
     url(r'^report/(\d+)/flags', 'new',name='flag_report'),
-)
-
-urlpatterns += patterns('fixmystreet.views.reports.mobile',
-    url(r'^mobile/report/(\d+)$', 'show',name='mobile_report_show'),       
-    url(r'^mobile/report/new', 'new',name='mobile_report_new'),
 )
 
 urlpatterns += patterns('fixmystreet.views.contact',
