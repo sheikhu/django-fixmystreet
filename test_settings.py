@@ -6,7 +6,7 @@ import settings
 DATABASES = {
    'default': {
         'ENGINE': 'postgresql_psycopg2',
-        'NAME': 'fixmystreet',
+        'NAME': 'fixmystreet-test',
         'USER': os.environ.get('POSTGISUSER'),
         'PASSWORD': os.environ.get('POSTGISPWD'),
         'HOST': os.environ.get('POSTGISDB'),
