@@ -13,6 +13,7 @@ import settings
 
 
 # deprecated ! service.gis.irisnet.be support jsonp
+"""
 def search(request): 
     conn = httplib.HTTPConnection(settings.LOCAL_API)
     #conn.request("POST", "/WSGeoloc/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8').encode('iso-8859-15'))
@@ -39,7 +40,7 @@ def locate(request):
         #return HttpResponse(data.decode('iso-8859-15'))
     #except UnicodeError:
     return HttpResponse(data,mimetype="text/json")
-
+"""
 
 def reports(request):
     pnt = dictToPoint(request.REQUEST)

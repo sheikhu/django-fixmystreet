@@ -100,4 +100,11 @@ class ApiTest(TestCase):
         self.assertEquals(result['status'], 'error')
         self.assertEquals(result['errortype'], 'validation_error')
 
+        params['postalcode'] = "1000"
+        params['access_token'] = "broken_token"
+        response = client.post(reverse('api_report_new'), params, follow=True)
+        self.assertEqual(response.status_code, 200)
+        result = simplejson.loads(response.content)
+        self.assertEquals(result['status'], 'error')
+        self.assertEquals(result['errortype'], 'trasaction_error')
 

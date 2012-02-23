@@ -81,9 +81,6 @@ urlpatterns += patterns('fixmystreet.views.ajax',
 )
 
 urlpatterns += patterns('fixmystreet.views.api',
-    url(r'^api/search/$', 'search',name='api_search'),
-    url(r'^api/locate/$', 'locate',name='api_locate'),
-    #url(r'^api/wards/$', 'wards',name='api_wards'),
     url(r'^api/reports/$', 'reports',name='api_reports'),
     url(r'^api/report/new/$', 'create_report',name='api_report_new'),
 )
