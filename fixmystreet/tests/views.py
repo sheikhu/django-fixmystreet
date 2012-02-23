@@ -3,6 +3,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from django.utils.translation import ugettext as _
 
 from fixmystreet.models import Report, ReportSubscription
 from django.core import mail
@@ -116,15 +117,17 @@ class ReportViewsTest(TestCase):
     def test_misc_pages(self):
         response = self.client.get(reverse('about'), follow=True)
         self.assertEqual(response.status_code, 200)
+
         response = self.client.get(reverse('contact'), follow=True)
         self.assertEqual(response.status_code, 200)
         response = self.client.post(reverse('contact'), {
-            'name':'Test',
+            'name':'',
             'email':'test',
             'body':'This is just a test'
         }, follow=True)
         self.assertEquals(len(mail.outbox), 0)
-        self.assertFormError(response, 'contact_form', 'email', 'This field is required.')
+        self.assertFormError(response, 'contact_form', 'name', _('This field is required.'))
+        self.assertFormError(response, 'contact_form', 'email', _('Enter a valid e-mail address.'))
 
         response = self.client.post(reverse('contact'), {
             'name':'Test',
