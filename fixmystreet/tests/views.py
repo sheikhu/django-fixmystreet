@@ -99,10 +99,19 @@ class ReportViewsTest(TestCase):
 
     def test_home(self):
         """Tests the new report view."""
-        response = self.client.get(reverse('home'), {}, follow=True)
+        response = self.client.get(reverse('home'), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('report_counts' in response.context)
         self.assertTrue('zipcodes' in response.context)
+
+    def test_wards_city(self):
+        """Tests the city and wards view."""
+        response = self.client.get(reverse('bxl_wards'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('city' in response.context)
+        self.assertEquals(response.context['city'].id,1)
+        response = self.client.get(reverse('ward_show',args=[1]), follow=True)
+        self.assertEqual(response.status_code, 404) # this is unstable, will send a mail ?
 
     def test_misc_pages(self):
         response = self.client.get(reverse('about'), follow=True)
