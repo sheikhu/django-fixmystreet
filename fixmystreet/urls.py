@@ -43,9 +43,9 @@ urlpatterns += patterns('fixmystreet.views.main',
     url(r'^robots.txt$', 'robot'),
 )
 
-urlpatterns += patterns('fixmystreet.views.faq',
-    (r'^about/(\S+)$', 'show'),
-)
+#urlpatterns += patterns('fixmystreet.views.faq',
+    #(r'^about/(\S+)$', 'show'),
+#)
 
 
 urlpatterns += patterns('fixmystreet.views.promotion',

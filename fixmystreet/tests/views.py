@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 
 from fixmystreet.models import Report, ReportSubscription
+from django.core import mail
+
+import settings
 
 class ReportViewsTest(TestCase):
     fixtures = ['sample']
@@ -93,3 +96,36 @@ class ReportViewsTest(TestCase):
         #there is already a subscription => raise an IntegrityError
         with self.assertRaises(IntegrityError):
             response = self.client.get(reverse('subscribe',args=[report.id]), {}, follow=True)
+
+    def test_home(self):
+        """Tests the new report view."""
+        response = self.client.get(reverse('home'), {}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('report_counts' in response.context)
+        self.assertTrue('zipcodes' in response.context)
+
+    def test_misc_pages(self):
+        response = self.client.get(reverse('about'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse('contact'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(reverse('contact'), {
+            'name':'Test',
+            'email':'test@test.irisnet.be',
+            'body':'This is just a test'
+        }, follow=True)
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertEquals(len(mail.outbox[0].to), 1)
+        self.assertEquals(mail.outbox[0].from_email, settings.EMAIL_FROM_USER)
+        #self.assertEquals(mail.outbox[0].from_email, 'Test<test@test.irisnet.be>') TODO for reply behavior
+        self.assertEquals(mail.outbox[0].to, [settings.EMAIL_ADMIN])
+
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse('terms_of_use'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/robots.txt', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/plain')
+
+
+
