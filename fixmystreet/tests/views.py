@@ -111,7 +111,7 @@ class ReportViewsTest(TestCase):
         self.assertTrue('city' in response.context)
         self.assertEquals(response.context['city'].id,1)
         response = self.client.get(reverse('ward_show',args=[1]), follow=True)
-        self.assertEqual(response.status_code, 404) # this is unstable, will send a mail ?
+        self.assertEqual(response.status_code, 200)
 
     def test_misc_pages(self):
         response = self.client.get(reverse('about'), follow=True)
