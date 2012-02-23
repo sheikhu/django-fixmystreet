@@ -15,6 +15,7 @@ from fixmystreet.models import Report
 
 
 class ApiTest(TestCase):
+    fixtures = ['sample']
     users = {
         '100003558692539': {
             'name':'Steven Test',
@@ -107,4 +108,12 @@ class ApiTest(TestCase):
         result = simplejson.loads(response.content)
         self.assertEquals(result['status'], 'error')
         self.assertEquals(result['errortype'], 'trasaction_error')
+
+    def testLoadReports(self):
+        client = Client()
+        response = client.get(reverse('api_reports'), {'x':1000,'y':1000}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        result = simplejson.loads(response.content)
+        self.assertEquals(result['status'], 'success')
+        self.assertEquals(len(result['results']), 13) # sample contains 14 reports but 1 is fixed
 

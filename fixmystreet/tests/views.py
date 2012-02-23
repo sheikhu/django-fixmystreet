@@ -120,6 +120,14 @@ class ReportViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         response = self.client.post(reverse('contact'), {
             'name':'Test',
+            'email':'test',
+            'body':'This is just a test'
+        }, follow=True)
+        self.assertEquals(len(mail.outbox), 0)
+        self.assertFormError(response, 'contact_form', 'email', 'This field is required.')
+
+        response = self.client.post(reverse('contact'), {
+            'name':'Test',
             'email':'test@test.irisnet.be',
             'body':'This is just a test'
         }, follow=True)
