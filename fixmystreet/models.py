@@ -101,10 +101,11 @@ def update_report(sender, instance, **kwargs):
 #notify subscribers that report has been updated
 @receiver(pre_save, sender=ReportUpdate)
 def notify(sender, instance, **kwargs):
-    for subscribe in instance.report.reportsubscription_set.all():
-        unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
-        msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
-        msg.send()
+    if not kwargs['raw']:
+        for subscribe in instance.report.reportsubscription_set.all():
+            unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
+            msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
+            msg.send()
 
 
 class ReportSubscription(models.Model):
