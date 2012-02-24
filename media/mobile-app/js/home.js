@@ -20,22 +20,22 @@
         {
             label: 'Photo',
             id: 'photo',
-            icon:'photo.png'
+            icon:'wiz_photo.png'
         },
         {
             label: 'Category',
             id:'category',
-            icon:'category.png'
+            icon:'wiz_category.png'
         },
         {
             label: 'Address',
             id:'address',
-            icon:'map.png'
+            icon:'wiz_map.png'
         },
         {
             label: 'Description',
             id:'description',
-            icon:'description.png'
+            icon:'wiz_desc.png'
         }
     ];
     var wizardHtml;
@@ -123,7 +123,7 @@
 
     $(document).delegate('#photo #skip', "click", function(evt){
         reportData['photo'] = null;
-        $('#menu-photo').find('img.ui-li-icon').prop('src','images/photo.png');
+        $('#menu-photo').find('img.ui-li-icon').prop('src','images/wiz_photo.png');
         $('#menu-photo .value').html('Empty').addClass('error-msg');
         current.filled = true;
         current.valid = false;
@@ -316,7 +316,7 @@
             postalcode = null;
 
             $('#photo #preview img').remove();
-            $('#menu-photo img.ui-li-icon').prop('src','images/photo.png');
+            $('#menu-photo img.ui-li-icon').prop('src','images/wiz_photo.png');
             $('#menu-photo .value').html('').removeClass('error-msg');
 
             $('#id_desc').val('');
