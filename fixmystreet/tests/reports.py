@@ -127,29 +127,15 @@ class PhotosTest(TestCase):
             'path': 'bottom-right-3.jpg',
             'orientation': 3
         })
-        
-        from django.conf import settings
 
-        # upload photo in new dir to prevent file overwrite
-        tmp_dir = os.path.join(settings.PROJECT_PATH, 'media-tmp')
-        
-        old_media_root = settings.MEDIA_ROOT
-        settings.MEDIA_ROOT = tmp_dir
-        try:
-            os.mkdir(tmp_dir)
-            os.mkdir(os.path.join(tmp_dir,'photos'))
-        except OSError:
-            pass
-        
         for img in imgs_to_test:
-            path = os.path.join(old_media_root, 'photos-test', img['path'])
+            path = os.path.join(settings.MEDIA_ROOT, 'photos-test', img['path'])
             
-            shutil.copyfile(path, os.path.join(tmp_dir, 'tmp.jpg'))
+            shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
             
             report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
 
             report.photo = 'tmp.jpg'
-            report.photo.storage = FileSystemStorage(location=tmp_dir)
             report.save()
 
             self.assertEquals(report.photo.url, '{0}photos/photo_{1}.jpeg'.format(settings.MEDIA_URL, report.id))
@@ -171,7 +157,6 @@ class PhotosTest(TestCase):
             # self.assertEquals(former_pix[0,0],new_pix[0,0]) # no image rotation but resized, how to test it ??
             # TODO check the image is correctly rotated
 
-        os.rmdir(tmp_dir)
 
 
     #def testMultiRecipients(self):

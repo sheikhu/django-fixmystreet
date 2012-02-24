@@ -1,11 +1,29 @@
 # Django settings for fixmystreet project.
-import os
+import os, sys
 import logging
+import shutil
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+
+if sys.argv[1] == 'test':
+    tmp_dir = os.path.join(PROJECT_PATH, 'media-tmp')
+    
+    try:
+        shutil.rmtree(tmp_dir)
+    except OSError:
+        pass
+
+    try:
+        shutil.copytree(MEDIA_ROOT, tmp_dir)
+    except OSError:
+        pass
+
+    MEDIA_ROOT = tmp_dir
+
+
 MEDIA_URL = '/media/'
 
 #TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
