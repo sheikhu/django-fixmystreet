@@ -1,11 +1,13 @@
 from datetime import date
+import shutil, os
 
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core import mail
+from django.core.files.storage import FileSystemStorage
 
+import settings
 from fixmystreet.models import Report, ReportUpdate, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportCategoryClass, Ward, City, Councillor
-
 
 
 class NotificationTest(TestCase):
@@ -99,7 +101,79 @@ class NotificationTest(TestCase):
 
         self.assertTrue(ReportSubscription.objects.filter(report=self.report,subscriber=self.user).exists())
         # TODO
-#
+
+
+class PhotosTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('test', 'test@fixmystreet.irisnet.be', 'pwd')
+        self.user.save()
+
+        self.category = ReportCategory.objects.all()[0] 
+        self.ward = Ward.objects.all()[0]
+
+    def testPhotoExifData(self):
+        
+        imgs_to_test = ({
+            'path': 'top-left-1.jpg',
+            'orientation': 1
+        },{
+            'path': 'top-right-6.jpg',
+            'orientation': 6
+        },{
+            'path': 'bottom-left-8.jpg',
+            'orientation': 8
+        },{
+            'path': 'bottom-right-3.jpg',
+            'orientation': 3
+        })
+        
+        from django.conf import settings
+
+        # upload photo in new dir to prevent file overwrite
+        tmp_dir = os.path.join(settings.PROJECT_PATH, 'media-tmp')
+        
+        old_media_root = settings.MEDIA_ROOT
+        settings.MEDIA_ROOT = tmp_dir
+        try:
+            os.mkdir(tmp_dir)
+            os.mkdir(os.path.join(tmp_dir,'photos'))
+        except OSError:
+            pass
+        
+        for img in imgs_to_test:
+            path = os.path.join(old_media_root, 'photos-test', img['path'])
+            
+            shutil.copyfile(path, os.path.join(tmp_dir, 'tmp.jpg'))
+            
+            report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+
+            report.photo = 'tmp.jpg'
+            report.photo.storage = FileSystemStorage(location=tmp_dir)
+            report.save()
+
+            self.assertEquals(report.photo.url, '{0}photos/photo_{1}.jpeg'.format(settings.MEDIA_URL, report.id))
+
+            from PIL import Image, ImageOps
+            from fixmystreet.utils import get_exifs
+
+            former_img = Image.open(path)
+            exifs = get_exifs(former_img)
+            self.assertTrue('Orientation' in exifs)
+            self.assertEquals(exifs['Orientation'], img['orientation'])
+
+            new_img = Image.open(report.photo.path)
+            exifs = get_exifs(new_img)
+            self.assertTrue('Orientation' not in exifs)
+            
+            # former_pix = former_img.load()
+            # new_pix = new_img.load()
+            # self.assertEquals(former_pix[0,0],new_pix[0,0]) # no image rotation but resized, how to test it ??
+            # TODO check the image is correctly rotated
+
+        os.rmdir(tmp_dir)
+
+
     #def testMultiRecipients(self):
         #parks_category = ReportCategory.objects.get(name_en='Lights Malfunctioning in Park')
         #not_parks_category = ReportCategory.objects.get(name_en='Damaged Curb')

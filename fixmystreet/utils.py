@@ -90,7 +90,6 @@ class FixStdImageField(StdImageField):
             img = Image.open(path)
 
             exifs = get_exifs(img)
-            orientation = 1
             if('Orientation' in exifs):
                 orientation = exifs['Orientation']
                 
