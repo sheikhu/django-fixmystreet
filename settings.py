@@ -8,7 +8,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
-if sys.argv.len() > 1 and sys.argv[1] == 'test':
+if len(sys.argv) > 1 and sys.argv[1] == 'test':
     tmp_dir = os.path.join(PROJECT_PATH, 'media-tmp')
     
     try:
