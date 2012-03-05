@@ -437,6 +437,7 @@ ul.errorlist li {
 	left:50%;
 	right:5px;
 	font-size:.8em;
+    color:black;
 	z-index:1000;
     margin:0 0 70px 22px;
 	background-color:white;
@@ -541,7 +542,8 @@ ul.errorlist li {
 
 
 .map-control .ui-icon-locate{
-    background-position:-1150px 50%;
+    background-image: url("../images/locate.png");
+    background-position: 50% 50%;
 }
 
 
