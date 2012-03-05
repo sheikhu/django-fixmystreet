@@ -20,9 +20,8 @@
             $('.login-btn').click(function(evt){
                 evt.preventDefault();
                 var loginHref = $(this).prop('href');
-                var title = $(this).prop('title');
                 if(loginWin == null || loginWin.closed) {
-                    loginWin = window.open(loginHref,title, "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=780,height=410");
+                    loginWin = window.open(loginHref, 'login', "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=780,height=410");
                 } else {
                     loginWin.focus();
                 }
