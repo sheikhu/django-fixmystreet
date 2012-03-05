@@ -493,10 +493,6 @@ ul.errorlist li {
 	left: 10px;
 }
 
-#search-box{
-    margin-right: 50px;
-}
-
 #search.loading + .ui-input-clear .ui-icon{
 	background:url("../images/ajax-loader.gif") no-repeat center center transparent;
 }
