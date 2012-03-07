@@ -75,6 +75,13 @@ Jenkins
 This project is on de CIRB's Jenkins at http://jenkins.cirb.lan/job/FixMyStreet/
 It will be automaticly build on every push on github, if tests failed mails are send,
 if tests successed project will be deployed.
+requirements-test.pip contains debug and Jenkins test requirements, this is installed only on Jenkins server.
+test_settings.py is used for test local_settings, it used environment vars, be sure to set it correctly if you use it
+export POSTGISDB=xx.xx.xx.xx
+export POSTGISUSER=xxx
+export POSTGISPWD=xxx
+export FBSECRET=xxx
+
 
 Branches
 --------
@@ -82,9 +89,16 @@ NOTE : this is not current branching organisation, need to fix server and Jenkin
 NOTE2 : this is draft, not finalized structure
 
 
-develop     - developing version of the project, branch off from this branch for features implementation, this branch will be sync with http://dev.fixmystreet.irisnetlab.be.
-pre-release - beta version of the project, only merge from develop or hot fix may be applied on this branch, this branch will be sync with http://fixmystreet.irisnetlab.be.
-master      - finale and stable version of the project, only merge from pre-release or hot fix may be applied on this branch, this branch will be sync with http://fixmystreet.irisnetlab.be.
+|branch name  | description|
+|develop      | developing version of the project, 
+                branch off from this branch for features implementation, 
+                this branch will be sync with http://dev.fixmystreet.irisnetlab.be on staging.|
+|pre-release  | beta version of the project, 
+                only merge from develop or hot fix may be applied on this branch, 
+                this branch will be sync with http://fixmystreet.irisnetlab.be on staging.|
+|master       | finale and stable version of the project, 
+                only merge from pre-release or hot fix may be applied on this branch, 
+                this branch will be sync with http://fixmystreet.irisnetlab.be on production server.|
 
 Developments needs to be applyed on develop ! not on master !
 
