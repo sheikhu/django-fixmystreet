@@ -75,6 +75,7 @@ Jenkins
 This project is on de CIRB's Jenkins at http://jenkins.cirb.lan/job/FixMyStreet/
 It will be automaticly build on every push on github, if tests failed mails are send,
 if tests successed project will be deployed.
+
 requirements-test.pip contains debug and Jenkins test requirements, this is installed only on Jenkins server.
 test_settings.py is used for test local_settings, it used environment vars, be sure to set it correctly if you use it
 export POSTGISDB=xx.xx.xx.xx
@@ -82,6 +83,7 @@ export POSTGISUSER=xxx
 export POSTGISPWD=xxx
 export FBSECRET=xxx
 
+media folder will be cloned in media-tmp by settings.py for tests because some unit tests modify the folder content.
 
 Branches
 --------
