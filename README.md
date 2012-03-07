@@ -1,6 +1,6 @@
 
 Thanks
-------
+======
 This is the code of http://fixmystreet.irisnet.be project stand at https://github.com/CIRB/django-fixmystreet.
 
 It is a fork of http://fixmystreet.ca (https://github.com/visiblegovernment/django-fixmystreet), thank you to them for providing this great project !
@@ -68,8 +68,33 @@ finally:
     $ cp local_settings_staging.py local_settings.py
 
 
-Usefull
+CI, tests & coding organisation
+===============================
+Jenkins
 -------
+This project is on de CIRB's Jenkins at http://jenkins.cirb.lan/job/FixMyStreet/
+It will be automaticly build on every push on github, if tests failed mails are send,
+if tests successed project will be deployed.
+
+Branches
+--------
+NOTE : this is not current branching organisation, need to fix server and Jenkins sync first, currently master is synced with dev.fixmystreet.irisnetlab.be.
+NOTE2 : this is draft, not finalized structure
+
+
+develop     - developing version of the project, branch off from this branch for features implementation, this branch will be sync with http://dev.fixmystreet.irisnetlab.be.
+pre-release - beta version of the project, only merge from develop or hot fix may be applied on this branch, this branch will be sync with http://fixmystreet.irisnetlab.be.
+master      - finale and stable version of the project, only merge from pre-release or hot fix may be applied on this branch, this branch will be sync with http://fixmystreet.irisnetlab.be.
+
+Developments needs to be applyed on develop ! not on master !
+
+### ressources
+Git Workflow for Agile Teams - http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html
+A successful Git branching model - http://nvie.com/posts/a-successful-git-branching-model/
+
+
+Usefull
+=======
 To generate po file run the following command:
     $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/admin/* --ignore=templates/posters.html --ignore=templates/promotions/*
     $ django-admin.py compilemessages
