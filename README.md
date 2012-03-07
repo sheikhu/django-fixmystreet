@@ -91,16 +91,16 @@ NOTE : this is not current branching organisation, need to fix server and Jenkin
 NOTE2 : this is draft, not finalized structure
 
 
-|branch name  | description|
-|develop      | developing version of the project, 
+| branch name | description |
+| develop     | developing version of the project, 
                 branch off from this branch for features implementation, 
-                this branch will be sync with http://dev.fixmystreet.irisnetlab.be on staging.|
-|pre-release  | beta version of the project, 
+                this branch will be sync with http://dev.fixmystreet.irisnetlab.be on staging. |
+| pre-release | beta version of the project, 
                 only merge from develop or hot fix may be applied on this branch, 
-                this branch will be sync with http://fixmystreet.irisnetlab.be on staging.|
-|master       | finale and stable version of the project, 
+                this branch will be sync with http://fixmystreet.irisnetlab.be on staging. |
+| master      | finale and stable version of the project, 
                 only merge from pre-release or hot fix may be applied on this branch, 
-                this branch will be sync with http://fixmystreet.irisnetlab.be on production server.|
+                this branch will be sync with http://fixmystreet.irisnetlab.be on production server. |
 
 Developments needs to be applyed on develop ! not on master !
 
