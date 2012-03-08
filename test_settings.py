@@ -59,5 +59,5 @@ JENKINS_TASKS = (
 )
 
 JSLINT_CHECKED_FILES = (
-    'media/js/*'
+    '<app>/media/js/*.js'
 )
