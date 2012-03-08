@@ -55,9 +55,9 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',
     'django_jenkins.tasks.with_coverage',
     'django_jenkins.tasks.django_tests',
-    'django_jenkins.tasks.run_jslint',
+    #'django_jenkins.tasks.run_jslint',
 )
 
-JSLINT_CHECKED_FILES = (
-    '<app>/media/js/*.js'
-)
+#JSLINT_CHECKED_FILES = (
+    #'<app>/media/js/*.js'
+#)
