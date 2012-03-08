@@ -13,7 +13,7 @@ from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
 
 from transmeta import TransMeta
-from utils import FixStdImageField
+from utils import fixmystreet.FixStdImageField
 
 import settings
 
