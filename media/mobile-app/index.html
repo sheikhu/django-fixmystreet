@@ -19,6 +19,7 @@
 
         <script src="js/fixmystreetmap.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/fb-connect.js"></script>
         <script src="js/map.js"></script>
         <script src="js/home.js"></script>
 
@@ -323,10 +324,15 @@
                 <h1>Configuration</h1>
             </div>
             <div data-role="content">
-                <p id="login-status">To create a report you have to login</p>
-                <p><a id="login-fb"><span>Login with Facebook</span></a></p>
-                <p style="display:none;"><a id="back-report" data-role="button" data-transition="fade" href="#home">Ok</a></p>
-                <p style="display:none; margin-top:45px;"><button id="disconnect" data-theme="e">Log off</button></p>
+                <div id="loggedout">
+                    <p>To create a report you have to login</p>
+                    <p><a id="login-fb"><span>Login with Facebook</span></a></p>
+                </div>
+                <div id="loggedin">
+                    <p>You are logged as:</p>
+                    <p><a id="back-report" data-role="button" data-transition="fade" href="#home">Ok</a></p>
+                    <p style="margin-top:45px;"><button id="disconnect" data-theme="e">Log off</button></p>
+                </div>
             </div>
             <div data-id="footer" data-role="footer" data-position="fixed">		
                 <div data-role="navbar">
