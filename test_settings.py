@@ -57,3 +57,7 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.django_tests',
     'django_jenkins.tasks.run_jslint',
 )
+
+JSLINT_CHECKED_FILES = (
+    'media/js/*'
+)

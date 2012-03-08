@@ -77,7 +77,7 @@ def report_notify(sender, instance, **kwargs):
 @receiver(post_save,sender=Report)
 def report_subscribe_author(sender, instance, **kwargs):
     if kwargs['created']:
-        ReportSubscription(report=instance,subscriber=instance.author).save()
+        ReportSubscription(report=instance, subscriber=instance.author).save()
 
 class ReportUpdate(models.Model):
     """A new version of the status of a report"""
