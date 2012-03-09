@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
+from django.http import Http404
 
 from transmeta import TransMeta
 from fixmystreet.utils import FixStdImageField
@@ -279,21 +280,8 @@ class City(models.Model):
     def __unicode__(self):      
         return self.name
     
-    def get_categories(self):
-        if self.category_set:
-            return self.category_set.categories
-        else:
-            # the 'Default' group is defined in fixtures/initial_data
-            default = ReportCategorySet.objects.get(name='Default')
-            return default.categories
-    
     def get_absolute_url(self):
-        return reverse('city_show', args[self.id])
-
-    def get_rule_descriptions(self):
-        rules = EmailRule.objects.filter(city=self)
-        describer = emailrules.EmailRulesDesciber(rules, self)
-        return describer.values()
+        return reverse('city_show', args=[self.id])
 
     class Meta:
         verbose_name_plural = "cities"
@@ -355,13 +343,13 @@ class FaqMgr(object):
         if faq_entry.order == 1:
             return
         other = FaqEntry.objects.get(order=faq_entry.order-1)
-        swap_order(other[0], faq_entry)
+        self.swap_order(other[0], faq_entry)
     
     def decr_order(self, faq_entry): 
         other = FaqEntry.objects.filter(order=faq_entry.order+1)
         if len(other) == 0:
             return
-        swap_order(other[0],faq_entry)
+        self.swap_order(other[0], faq_entry)
         
     def swap_order(self, entry1, entry2):
         entry1.order = entry2.order
@@ -430,13 +418,13 @@ class ReportCountQuery(SqlQuery):
  count( case when age(clock_timestamp(), reports.updated_at) < interval '%s' AND reports.is_fixed = False and reports.updated_at != reports.created_at THEN 1 ELSE null end ) as recent_updated,\
  count( case when age(clock_timestamp(), reports.fixed_at) > interval '%s' AND reports.is_fixed = True THEN 1 ELSE null end ) as old_fixed,\
  count( case when age(clock_timestamp(), reports.created_at) > interval '%s' AND reports.is_fixed = False THEN 1 ELSE null end ) as old_unfixed   
- """ % (interval,interval,interval,interval,interval) 
+ """ % (interval, interval, interval, interval, interval) 
         self.sql = self.base_query + " from fixmystreet_report as reports" 
 
 class CityTotals(ReportCountQuery):
 
     def __init__(self, interval, city):
-        ReportCountQuery.__init__(self,interval)
+        ReportCountQuery.__init__(self, interval)
         self.sql = self.base_query 
         self.sql += """ from fixmystreet_report as reports left join fixmystreet_ward as wards on reports.ward_id = wards.id left join fixmystreet_city as cities on cities.id = wards.city_id 
         """ 
@@ -485,7 +473,7 @@ class AllCityTotals(ReportCountQuery):
 
 def dictToPoint(data):
     if not data.has_key('x') or not data.has_key('y'):
-        raise HttpResponseNotFound('<h1>Location not found</h1>')
+        raise Http404('<h1>Location not found</h1>')
     px = data.get('x')
     py = data.get('y')
 

@@ -61,3 +61,5 @@ JENKINS_TASKS = (
 #JSLINT_CHECKED_FILES = (
     #'<app>/media/js/*.js'
 #)
+
+PYLINT_RCFILE = os.path.join(settings.PROJECT_PATH, 'pylintrc')
