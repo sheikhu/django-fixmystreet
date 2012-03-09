@@ -53,7 +53,7 @@
         window.localStorage.removeItem('fms_fb_access_token_expires');
         FB.logout();
 
-        $(this).closest('ui-content').addClass('connected');
+        $('#config').removeClass('logged');
         //$('#login-status').html('To create a report you have to login');
         //$('#login-fb').closest('p').show();
         //$('#disconnect').closest('p').hide();
@@ -65,12 +65,12 @@
         FB.api('/me', function(response) {
             console.log('get my info ' + JSON.stringify(response));
             if(!response.error) {
-                $('#login-status').html('You are connected as');
-                $('#login-status').append('<p><strong>' + response.name + '</strong></p>');
-                $('#login-status').append('<p><strong>' + response.email + '</strong></p>');
-                $('#login-fb').closest('p').hide();
-                $('#disconnect').closest('p').show();
-                $('#back-report').closest('p').show();
+                $('#config').addClass('logged');
+                $('#login-name').html(response.name);
+                $('#login-email').html(response.email);
+                //$('#login-fb').closest('p').hide();
+                //$('#disconnect').closest('p').show();
+                //$('#back-report').closest('p').show();
             }
             $.mobile.hidePageLoadingMsg();
         });

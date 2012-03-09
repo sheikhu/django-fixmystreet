@@ -414,7 +414,25 @@ ul.errorlist li {
     display: inline-block;
 }
 
-#configuration .ui-content
+#loggedin {
+    display: none;
+}
+
+#login-name {
+    font-weight: bold;
+}
+
+#login-email {
+    font-weight: bold;
+}
+
+#config.logged #loggedout {
+    display: none;
+}
+
+#config.logged #loggedin {
+    display: block;
+}
 
 /* MAP CSS */
 #map .ui-content {
