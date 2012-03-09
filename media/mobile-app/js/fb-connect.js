@@ -54,10 +54,6 @@
         FB.logout();
 
         $('#config').removeClass('logged');
-        //$('#login-status').html('To create a report you have to login');
-        //$('#login-fb').closest('p').show();
-        //$('#disconnect').closest('p').hide();
-        //$('#back-report').closest('p').hide();
     });
     
     $(document).bind('connected', function() {
@@ -68,9 +64,6 @@
                 $('#config').addClass('logged');
                 $('#login-name').html(response.name);
                 $('#login-email').html(response.email);
-                //$('#login-fb').closest('p').hide();
-                //$('#disconnect').closest('p').show();
-                //$('#back-report').closest('p').show();
             }
             $.mobile.hidePageLoadingMsg();
         });
