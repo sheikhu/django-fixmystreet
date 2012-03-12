@@ -20,7 +20,8 @@ def domain_context_processor(request):
     return {
         'SITE_URL': 'http://{0}'.format(site.domain),
         'GEOSERVER': settings.GEOSERVER,
-        'SERVICE_GIS': settings.SERVICE_GIS
+        'SERVICE_GIS': settings.SERVICE_GIS,
+        'STAGING': settings.DEBUG
     }
 
 

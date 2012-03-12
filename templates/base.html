@@ -80,6 +80,7 @@
 				<a href="/"><img id="logo" src="{{ MEDIA_URL }}images/logo-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Fix My Street Brussels" %}"/></a>
 				<!--<a href="/"><h1 id="banner-title">{% trans "Fix My Street Brussels" %}</h1></a>-->
                 <img id="logo-rbc" src="{{ MEDIA_URL }}images/logo-rbc-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Brussels-Capital Region" %}"/>
+                {% if STAGING %}<img id="staging-badge" src="{{ MEDIA_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />{% endif %}
 				<div id="language">
 					<form action="/i18n/setlang/" method="post">
 						<select id="select-language" name="language">
