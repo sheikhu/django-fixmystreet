@@ -21,7 +21,7 @@ def domain_context_processor(request):
         'SITE_URL': 'http://{0}'.format(site.domain),
         'GEOSERVER': settings.GEOSERVER,
         'SERVICE_GIS': settings.SERVICE_GIS,
-        'STAGING': settings.DEBUG
+        'STAGING': getattr(settings, 'STAGING', getattr(settings, 'DEBUG', False))
     }
 
 

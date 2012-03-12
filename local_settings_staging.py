@@ -26,10 +26,11 @@ EMAIL_ADMIN = "###@cirb.irisnet.be"
 ADMIN_EMAIL = "###@cirb.irisnet.be"
 ADMIN = ["Jonathan"]
 
-DEBUG = True
 SITE_ID = 2
-LOCAL_DEV = False
 SITE_URL = "###"
+DEBUG = True
+LOCAL_DEV = False
+STAGING = False
 
 GEOSERVER = "geoserver.gis.irisnetlab.be"
 SERVICE_GIS = "service.gis.irisnetlab.be"
