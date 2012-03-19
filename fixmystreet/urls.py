@@ -10,9 +10,9 @@ from fixmystreet.models import City
 from fixmystreet.views import cities
 
 feeds = {
-    'reports': LatestReports,
-    'communes': LatestReportsByWard,
-    'cities': LatestReportsByCity,
+    'report': LatestReports,
+    'commune': LatestReportsByWard,
+    'city': LatestReportsByCity,
     'report_updates': LatestUpdatesByReport,
 }
 
@@ -50,6 +50,10 @@ urlpatterns += patterns('fixmystreet.views.promotion',
 urlpatterns += patterns('fixmystreet.views.wards',
     (r'^communes/$', cities.show, {"city_id":1}, 'bxl_wards'), 
     url(r'^commune/(\d+)', 'show',name='ward_show'),
+)
+
+urlpatterns += patterns('fixmystreet.views.cities',
+    url(r'^commune/(\d+)', 'show',name='city_show'),
 )
 
 urlpatterns += patterns('fixmystreet.views.reports.main',

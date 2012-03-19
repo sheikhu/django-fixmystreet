@@ -9,7 +9,7 @@ class LatestReports(Feed):
     description = "All FixMyStreet Reports"
 
     def items(self):
-        return Report.objects.filter(is_confirmed=True).order_by('-created_at')[:30]
+        return Report.objects.order_by('-created_at')[:30]
 
 class LatestReportsByCity(Feed):
     
@@ -32,7 +32,7 @@ class LatestReportsByCity(Feed):
         return "Problems recently reported in the city of %s" % obj.name
 
     def items(self, obj):
-       return Report.objects.filter(is_confirmed=True,ward__city=obj.id).order_by('-created_at')[:30]
+       return Report.objects.filter(ward__city=obj.id).order_by('-created_at')[:30]
 
 
 class LatestReportsByWard(Feed):
@@ -56,7 +56,7 @@ class LatestReportsByWard(Feed):
         return "Problems recently reported in %s, %s" % ( obj.name, obj.city.name)
 
     def items(self, obj):
-        return Report.objects.filter(is_confirmed=True,ward=obj.id).order_by('-created_at')[:30]
+        return Report.objects.filter(ward=obj.id).order_by('-created_at')[:30]
 
 # Allow subsciption to a particular report.
 
