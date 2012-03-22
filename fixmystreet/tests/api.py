@@ -7,6 +7,8 @@ from django.utils import simplejson
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
+from social_auth.backends.exceptions import AuthTokenError
+
 import settings
 from fixmystreet.models import Report
 
@@ -103,11 +105,7 @@ class ApiTest(TestCase):
 
         params['postalcode'] = "1000"
         params['access_token'] = "broken_token"
-        response = client.post(reverse('api_report_new'), params, follow=True)
-        self.assertEqual(response.status_code, 200)
-        result = simplejson.loads(response.content)
-        self.assertEquals(result['status'], 'error')
-        self.assertEquals(result['errortype'], 'trasaction_error')
+        self.assertRaises(AuthTokenError, lambda:client.post(reverse('api_report_new'), params, follow=True))
 
     def testLoadReports(self):
         client = Client()
