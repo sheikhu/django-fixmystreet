@@ -111,7 +111,7 @@ INSTALLED_APPS = (
     'transmeta',
     'social_auth',
     'south',
-    'fixmystreet',
+    'django-fixmystreet.fixmystreet',
 )
 
 AUTHENTICATION_BACKENDS = (
