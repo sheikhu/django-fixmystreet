@@ -10,19 +10,12 @@ this project in place use Urbis for map, search and locate engine (http://geoser
 Installation
 ============
 
-git clone git@github.com:CIRB/buildout-fixmystreet.git
-cd buildout-fixmystreet
-ln -s dev.cfg buildout.cfg
-python bootstrap.py -c dev.cfg
-bin/buildout -c dev.cfg -Nvt 5
+    git clone git@github.com:CIRB/django-fixmystreet.git
+    cd django-fixmystreet/buildout
+    python bootstrap.py -c dev.cfg
+    bin/buildout -c dev.cfg -Nvt 5
 
-enchure libxml2-dev is installed
-
-bin/createuser postgres
-bin/psql -d postgres -c "ALTER USER postgres CREATEDB;"
-bin/psql -d postgres -c "ALTER USER postgres PASSWORD '$1$vmLiz6y5$9dcqMUzWjAyRY3Nzy20lF.';"
-bin/pg_ctl -D parts/postgresql/var/data/ start
-
+enchure libxml2-dev and gdal is installed
 
 
 Old school install
