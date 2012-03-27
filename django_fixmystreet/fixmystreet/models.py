@@ -14,9 +14,9 @@ from django.contrib.gis.db import models
 from django.http import Http404
 
 from transmeta import TransMeta
-from fixmystreet.utils import FixStdImageField
+from django_fixmystreet.fixmystreet.utils import FixStdImageField
 
-import settings
+from django_fixmystreet import settings
 
 #class Report:
     #pass

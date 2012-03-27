@@ -1,7 +1,8 @@
-from fixmystreet.models import NotificationRule, Ward, ReportCategory, Report, City, ReportCategoryClass, FaqEntry, Councillor
 from django.contrib import admin
-from transmeta import canonical_fieldname
 from django import forms
+from transmeta import canonical_fieldname
+
+from django_fixmystreet.fixmystreet.models import NotificationRule, Ward, ReportCategory, Report, City, ReportCategoryClass, FaqEntry, Councillor
 
 
 class ReportCategoryClassAdmin(admin.ModelAdmin):

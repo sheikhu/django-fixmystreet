@@ -6,7 +6,7 @@ from django.utils import simplejson
 from social_auth.backends import USERNAME
 from social_auth.backends.google import GoogleOAuth2, GoogleOAuth2Backend
 
-import settings
+from django_fixmystreet import settings
 
 
 class GoogleProfileBackend(GoogleOAuth2Backend):

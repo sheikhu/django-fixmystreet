@@ -4,8 +4,8 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 
-from fixmystreet.models import Report, ReportUpdate, Ward, ReportCategory
-from fixmystreet.forms import ReportForm, ReportUpdateForm
+from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, Ward, ReportCategory
+from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)

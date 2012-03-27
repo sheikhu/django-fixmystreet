@@ -6,10 +6,10 @@ from django.http import HttpResponse
 from django.utils import simplejson
 
 
-from fixmystreet.models import Report, ReportCategory, Ward, dictToPoint
-from fixmystreet.utils import ssl_required, oauthtoken_to_user, JsonHttpResponse
-from fixmystreet.templatetags.tags import report_to_array
-import settings
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, Ward, dictToPoint
+from django_fixmystreet.fixmystreet.utils import ssl_required, oauthtoken_to_user, JsonHttpResponse
+from django_fixmystreet.fixmystreet.templatetags.tags import report_to_array
+
 
 
 # deprecated ! service.gis.irisnet.be support jsonp

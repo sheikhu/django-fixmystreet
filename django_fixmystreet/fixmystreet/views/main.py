@@ -5,8 +5,8 @@ from django.template import RequestContext
 from django.utils.http import urlquote
 from django.utils.translation import get_language
 
-import settings
-from fixmystreet.models import ZipCode, ReportCountQuery, City, FaqEntry
+from django_fixmystreet.fixmystreet.models import ZipCode, ReportCountQuery, City, FaqEntry
+from django_fixmystreet import settings
 
 def home(request, location = None, error_msg =None): 
     if request.GET.has_key('q'):

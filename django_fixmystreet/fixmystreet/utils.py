@@ -10,7 +10,7 @@ from django.db.models.signals import post_save
 from social_auth.backends import get_backend
 
 from stdimage import StdImageField
-import settings
+from django_fixmystreet import settings
 
 
 def domain_context_processor(request):

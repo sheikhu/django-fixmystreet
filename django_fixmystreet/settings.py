@@ -71,7 +71,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     "django.contrib.messages.context_processors.messages",
     'social_auth.context_processors.social_auth_by_name_backends',
-    'fixmystreet.utils.domain_context_processor'
+    'django_fixmystreet.fixmystreet.utils.domain_context_processor'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,7 +97,7 @@ LANGUAGES = (
   ('nl', gettext('Dutch')),
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'django_fixmystreet.urls'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -111,7 +111,7 @@ INSTALLED_APPS = (
     'transmeta',
     'social_auth',
     'south',
-    'django-fixmystreet.fixmystreet',
+    'django_fixmystreet.fixmystreet',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -128,7 +128,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.github.GithubBackend',
     'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'fixmystreet.googlebackend.GoogleProfileBackend',
+    'django_fixmystreet.fixmystreet.googlebackend.GoogleProfileBackend',
 )
 
 SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
@@ -186,6 +186,7 @@ DEBUG = False
 
 # import local settings overriding the defaults
 # local_settings.py is machine independent and should not be checked in
+
 
 try:
     from local_settings import *

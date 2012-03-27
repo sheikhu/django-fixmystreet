@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
-from fixmystreet.models import Report, ReportSubscription
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 
 
 def create(request, report_id):

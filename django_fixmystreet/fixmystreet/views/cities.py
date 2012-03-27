@@ -1,7 +1,8 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from fixmystreet.models import City, Report, CityTotals, CityWardsTotals, AllCityTotals
 from django.template import Context, RequestContext
 from django.db.models import  Count
+
+from django_fixmystreet.fixmystreet.models import City, Report, CityTotals, CityWardsTotals, AllCityTotals
 
 def index(request):    
     return render_to_response("cities/index.html",

@@ -1,7 +1,8 @@
 from django.contrib.syndication.feeds import Feed
 from django.contrib.syndication.feeds import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
-from fixmystreet.models import Report, ReportUpdate, City, Ward
+
+from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, City, Ward
 
 class LatestReports(Feed):
     title = "All FixMyStreet Reports"

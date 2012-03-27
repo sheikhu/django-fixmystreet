@@ -7,36 +7,39 @@ It is a fork of http://fixmystreet.ca (https://github.com/visiblegovernment/djan
 
 this project in place use Urbis for map, search and locate engine (http://geoserver.gis.irisnet.be/).
 
-installation
+Installation
 ============
 
-Installation instructions are available here:
-> http://wiki.github.com/visiblegovernment/django-fixmystreet/
+git clone git@github.com:CIRB/buildout-fixmystreet.git
+cd buildout-fixmystreet
+python bootstrap.py
+bin/buildout -Nv
 
+enchure libxml2-dev is installed
 
-(to check)
+bin/createuser postgres
+bin/psql -d fixmystreet -c "ALTER USER postgres CREATEDB;"
+bin/psql -d fixmystreet -c "ALTER USER postgres PASSWORD '$1$vmLiz6y5$9dcqMUzWjAyRY3Nzy20lF.';"
+bin/pg_ctl -D parts/postgresql/var/data/ start
+
+Old school install
+------------------
+
 requirements: transmeta, stdimage, GeoDjango, PIL
 
     $ easy_install django
     $ easy_install django-transmeta
     $ easy_install django-stdimage
     $ easy_install django-social-auth
-    $ easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz (???)
-
-may be requied:
-
+    $ easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
     $ easy_install psycopg2==2.4.1
-
-
-install http://www.pythonware.com/products/pil/ V-1.1.7
-pip install PIL
 
 
 for GeoDjango installation:
 
 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
 
-may be incompatibility between postgis and psycopg2 on python2.6
+may be incompatibility between postgis and psycopg2 on postgresql 9.1
 if message is like "invalid byte sequence for encoding UTF8: 0x00"
 need to apply this patch:
 
@@ -57,10 +60,6 @@ after install, create the database:
     $ createdb -U postgres -T template_postgis fixmystreet
     $ python manage.py syncdb
 
-if running tests failed with:
-    psycopg2.ProgrammingError: autocommit cannot be used inside a transaction
-then
-    easy_install psycopg2==2.4.1
 
 
 finally:

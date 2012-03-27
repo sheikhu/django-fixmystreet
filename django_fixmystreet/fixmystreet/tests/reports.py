@@ -7,7 +7,7 @@ from django.core import mail
 from django.core.files.storage import FileSystemStorage
 
 import settings
-from fixmystreet.models import Report, ReportUpdate, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportCategoryClass, Ward, City, Councillor
+from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportCategoryClass, Ward, City, Councillor
 
 
 class NotificationTest(TestCase):
@@ -141,7 +141,7 @@ class PhotosTest(TestCase):
             self.assertEquals(report.photo.url, '{0}photos/photo_{1}.jpeg'.format(settings.MEDIA_URL, report.id))
 
             from PIL import Image, ImageOps
-            from fixmystreet.utils import get_exifs
+            from django_fixmystreet.fixmystreet.utils import get_exifs
 
             former_img = Image.open(path)
             exifs = get_exifs(former_img)

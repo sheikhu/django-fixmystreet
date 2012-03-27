@@ -1,6 +1,6 @@
 import re
 import json
-import settings
+from django_fixmystreet import settings
 
 from django import template
 from django.conf import settings
