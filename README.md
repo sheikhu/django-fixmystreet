@@ -13,8 +13,8 @@ Installation
 git clone git@github.com:CIRB/buildout-fixmystreet.git
 cd buildout-fixmystreet
 ln -s dev.cfg buildout.cfg
-python bootstrap.py
-bin/buildout -Nvt 5
+python bootstrap.py -c dev.cfg
+bin/buildout -c dev.cfg -Nvt 5
 
 enchure libxml2-dev is installed
 
