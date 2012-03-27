@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 
 from social_auth.backends.exceptions import AuthTokenError
 
-import settings
+from django_fixmystreet import settings
 from django_fixmystreet.fixmystreet.models import Report
 
 # https://developers.facebook.com/docs/test_users/

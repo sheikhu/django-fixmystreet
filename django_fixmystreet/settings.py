@@ -146,46 +146,12 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/'
 
 
-
 ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
 
 EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
 DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
 
 DEBUG = False
-
-#################################################################################
-# These variables Should be defined in the local settings file
-#################################################################################
-#
-#DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.postgresql',
-#       'NAME': 'fixmystreet',
-#       'USER': 'postgres',
-#       'PASSWORD': 'xxx',
-#       'HOST': 'localhost',
-#       'PORT': 5432
-#   }
-#}
-#EMAIL_USE_TLS =
-#EMAIL_HOST =
-#EMAIL_HOST_USER =
-#EMAIL_HOST_PASSWORD =
-#EMAIL_PORT =
-#EMAIL_FROM_USER =
-
-#LOCAL_DEV =
-#SITE_URL = http://localhost:8000
-#SECRET_KEY=
-#GMAP_KEY=
-#
-#ADMIN_EMAIL =
-#ADMINS =
-#####################################################################################
-
-# import local settings overriding the defaults
-# local_settings.py is machine independent and should not be checked in
 
 
 try:
@@ -199,3 +165,10 @@ except ImportError:
         sys.stderr.write( "local_settings.py not set; using default settings\n" )
 
 TEMPLATE_DEBUG = True
+
+JSLINT_CHECKED_FILES = (
+    'media/js/fixmystreetmap.js'
+)
+
+PYLINT_RCFILE = os.path.join(settings.PROJECT_PATH, 'pylintrc')
+

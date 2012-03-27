@@ -4,11 +4,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.utils.translation import ugettext as _
-
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 from django.core import mail
 
-import settings
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
+from django_fixmystreet import settings
 
 class ReportViewsTest(TestCase):
     fixtures = ['sample']

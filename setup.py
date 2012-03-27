@@ -12,7 +12,7 @@ setup(
     packages=find_packages(exclude=['ez_setup']),
     #package_dir = {'': 'src'},
     install_requires = ['setuptools', 
-                        'django','django-debug-toolbar'],
+                        'django'],
     #extras_require = { 'test': ['django-debug-toolbar', 'django-jenkins'] }
     entry_points="""
     # -*- Entry points: -*-
