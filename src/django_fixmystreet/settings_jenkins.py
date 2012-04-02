@@ -2,7 +2,7 @@
 DATABASES = {
    'default': {
         'ENGINE': 'postgresql_psycopg2',
-        'NAME': 'fixmystreet-test',
+        'NAME': 'fixmystreet',
         'USER': 'postgres',
         'PASSWORD': 'none',
         'HOST': 'localhost',
