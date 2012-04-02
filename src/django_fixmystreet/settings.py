@@ -170,5 +170,5 @@ JSLINT_CHECKED_FILES = (
     'media/js/fixmystreetmap.js'
 )
 
-PYLINT_RCFILE = os.path.join(settings.PROJECT_PATH, 'pylintrc')
+PYLINT_RCFILE = os.path.join(PROJECT_PATH, 'pylintrc')
 
