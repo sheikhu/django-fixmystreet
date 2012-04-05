@@ -21,27 +21,16 @@ then
     python2.6 bootstrap.py -c $CONF
 fi
 bin/buildout -c $CONF -Nvt 5
-#
-#PG_EXISTS=0
-#PG_DOWN=0
-#if [ -f bin/pg_ctl ]
-#then
-    #echo "postgres is installed using buildout"
-    #PG_EXISTS=1
-#
-    #ps -C postgres 1> /dev/null
-    #PG_DOWN=$? # $? == 1 if no process postgres is found
-#
-    #if [ $PG_DOWN ]
-    #then
-        #echo "postgres is down, start postgres"
-        #bin/pg_start
-    #fi
-#fi
+echo "end of buildout!"
+
+bin/django syncdb --noinput
+bin/django migrate
+
 
 case "$1" in
   jenkins)
     bin/django-jenkins jenkins $APP
+    # rpm
     ;;
   test)
     bin/django test $APP
@@ -53,9 +42,4 @@ case "$1" in
     bin/django runserver
     ;;
 esac
-#
-#if [[ $PG_EXISTS != 0 && $PG_DOWN != 0 ]]
-#then
-    #echo "postgres was started, shutdown postgres"
-    #bin/pg_stop
-#fi
+

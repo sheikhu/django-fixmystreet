@@ -1,10 +1,11 @@
+import os
 
 DATABASES = {
    'default': {
         'ENGINE': 'postgresql_psycopg2',
         'NAME': 'fixmystreet',
         'USER': 'fixmystreet',
-        #'PASSWORD': 'none',
+        'PASSWORD': os.environ.get('DB_PWD'),
         'HOST': 'localhost',
         'PORT': 5432,
         'OPTIONS': {
