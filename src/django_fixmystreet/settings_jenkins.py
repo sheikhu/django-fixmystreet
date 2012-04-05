@@ -1,19 +1,5 @@
 import os
 
-DATABASES = {
-   'default': {
-        'ENGINE': 'postgresql_psycopg2',
-        'NAME': 'fixmystreet',
-        'USER': 'fixmystreet',
-        'PASSWORD': os.environ.get('DB_PWD'),
-        'HOST': 'localhost',
-        'PORT': 5432,
-        'OPTIONS': {
-            'autocommit': True
-        }
-   }
-}
-
 from django_fixmystreet.settings import *
 
 INSTALLED_APPS += ('django_jenkins',)
