@@ -3,8 +3,8 @@ DATABASES = {
    'default': {
         'ENGINE': 'postgresql_psycopg2',
         'NAME': 'fixmystreet',
-        'USER': 'postgres',
-        'PASSWORD': 'none',
+        'USER': 'fixmystreet',
+        #'PASSWORD': 'none',
         'HOST': 'localhost',
         'PORT': 5432,
         'OPTIONS': {
