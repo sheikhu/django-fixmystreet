@@ -152,6 +152,7 @@ EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
 DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
 
 DEBUG = False
+SITE_ID = 3 # default value
 
 try:
     from local_settings import *
