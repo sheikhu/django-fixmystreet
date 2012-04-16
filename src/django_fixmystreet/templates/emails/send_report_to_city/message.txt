@@ -1,6 +1,6 @@
 Title:        {{report.title|safe}}
 Category:     {{report.category.name}}
-Submitted By: {{report.author|safe}}	
+Submitted By: {{report.author.get_full_name|safe}}	
 Phone:        {{report.author.phone}}
 Email:        {{report.author.email}}
 FMS ID:       {{report.id}}
