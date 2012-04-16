@@ -908,5 +908,69 @@
             "a_fr": "<p>Jamais. Nous vous enverrons un email si quelqu'un signale  une mise \u00e0 jour sur un probl\u00e8me que vous avez signal\u00e9, ou auquel vous avez souscrit un abonnement.</p>", 
             "a_en": "<p>Never. We will email you if someone leaves an update on a problem you\u2019ve reported, or subscribed to.  We will also send you a questionnaire email four weeks after you submit a problem, asking for a status update.</p> \r\n<p>We\u2019ll only ever send you emails in relation to problems you have reported or subscribed to.</p>\r\n"
         }
+    },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jonathan",
+            "last_name": "Sanchez",
+            "username": "jsanchezpando",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk": 1,
+        "model": "social_auth.usersocialauth",
+        "fields": {
+            "user": 1,
+            "provider": "facebook",
+            "uid": "100000545063842",
+            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100000545063842\"}"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Lahcen",
+            "last_name": "Afif",
+            "username": "lafif",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk": 2,
+        "model": "social_auth.usersocialauth",
+        "fields": {
+            "user": 2,
+            "provider": "facebook",
+            "uid": "100000594973287",
+            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100000594973287\"}"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Patrick",
+            "last_name": "Van Vooren",
+            "username": "pvanvooren",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk": 3,
+        "model": "social_auth.usersocialauth",
+        "fields": {
+            "user": 3,
+            "provider": "facebook",
+            "uid": "100001613324697",
+            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100001613324697\"}"
+        }
     }
 ]
+
