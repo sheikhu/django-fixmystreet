@@ -1,6 +1,7 @@
 from datetime import datetime as dt
 
 from django.db import models, connection
+from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string, TemplateDoesNotExist
@@ -93,17 +94,21 @@ class ReportUpdate(models.Model):
         #order_with_respect_to = 'report'
 
 #update the report, set updated_at and is_fixed correctly
-@receiver(pre_save, sender=ReportUpdate)
+@receiver(post_save, sender=ReportUpdate)
 def update_report(sender, instance, **kwargs):
     instance.report.updated_at = instance.created_at
+
     instance.report.is_fixed = instance.is_fixed
+    if(instance.is_fixed and not instance.report.fixed_at):
+        instance.report.fixed_at = instance.created_at
+
     instance.report.save()
 
 #notify subscribers that report has been updated
-@receiver(pre_save, sender=ReportUpdate)
+@receiver(post_save, sender=ReportUpdate)
 def notify(sender, instance, **kwargs):
     if not kwargs['raw']:
-        for subscribe in instance.report.reportsubscription_set.all():
+        for subscribe in instance.report.reportsubscription_set.exclude(Q(subscriber__email__isnull=True) | Q(subscriber__email__exact='')):
             unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
             msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
             msg.send()
