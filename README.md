@@ -45,11 +45,11 @@ https://code.djangoproject.com/ticket/16778
 this project has been developped and tested with PostgreSql
 
 to install GeoDjango for PostgreSql:
-* GEOS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#geos
-* PROJ.4 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#proj4
-* PostGIS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#postgis
-* (install psycopg2?)
-* Create PostGIS template https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#spatialdb-template
+- GEOS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#geos
+- PROJ.4 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#proj4
+- PostGIS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#postgis
+- (install psycopg2?)
+- Create PostGIS template https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#spatialdb-template
 
 
 after install, create the database:
@@ -73,16 +73,17 @@ if tests successed project will be deployed.
 
 requirements-test.pip contains debug and Jenkins test requirements, this is installed only on Jenkins server.
 test_settings.py is used for test local_settings, it used environment vars, be sure to set it correctly if you use it
-export POSTGISDB=xx.xx.xx.xx
-export POSTGISUSER=xxx
-export POSTGISPWD=xxx
-export FBSECRET=xxx
+    export POSTGISDB=xx.xx.xx.xx
+    export POSTGISUSER=xxx
+    export POSTGISPWD=xxx
+    export FBSECRET=xxx
 
 media folder will be cloned in media-tmp by settings.py for tests because some unit tests modify the folder content.
 
 Branches
 --------
 NOTE : this is not current branching organisation, need to fix server and Jenkins sync first, currently master is synced with dev.fixmystreet.irisnetlab.be.
+
 NOTE2 : this is draft, not finalized structure
 
 
