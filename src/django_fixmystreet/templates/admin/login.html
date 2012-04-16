@@ -55,8 +55,8 @@
     padding: 0 0 0 1px;
 }
 </style>
-<a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
-<a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
+<a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}?next=/admin/" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
+<a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}?next=/admin/" title="{% trans 'Login with Google' %}"><span>Login</span></a>
 
 <form action="{{ app_path }}" method="post" id="login-form">
   {% csrf_token %}
