@@ -72,8 +72,8 @@ $(document).ready(function() {
 	$('#id_category').change();// initialize notes
 
 	$map.bind('markermoved',function(evt,point){
-		$('#id_lon').val(point.x);
-		$('#id_lat').val(point.y);
+		$('#id_x').val(point.x);
+		$('#id_y').val(point.y);
 		
 		if(window.location.hash != '#form')
 		{
