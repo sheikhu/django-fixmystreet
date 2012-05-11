@@ -23,7 +23,7 @@ $(function(){
 	{% endfor %}
 	
 	$('#map-bxl').bind('reportselected',function(evt, point, report){
-		window.location.assign('/reports/' + report.id);
+		window.location.assign('/report/' + report.id);
 	});
 
 });

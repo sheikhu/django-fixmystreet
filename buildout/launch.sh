@@ -1,23 +1,23 @@
 #!/bin/bash
 
-cd "$( dirname "${BASH_SOURCE[0]}" )"
+CURRENT_DIR="$( dirname "${BASH_SOURCE[0]}" )"
 
 APP="fixmystreet"
 echo "--launching $1 $APP"
 
 case "$1" in
   jenkins)
-    bin/django-jenkins jenkins $APP
+    $CURRENT_DIR/bin/django-jenkins jenkins $APP
     # rpm
     ;;
   test)
-    bin/django test $APP
+    $CURRENT_DIR/bin/django test $APP
     ;;
   debug)
-    bin/django-debug runserver
+    $CURRENT_DIR/bin/django-debug runserver
     ;;
   *)
-    bin/django runserver
+    $CURRENT_DIR/bin/django runserver
     ;;
 esac
 

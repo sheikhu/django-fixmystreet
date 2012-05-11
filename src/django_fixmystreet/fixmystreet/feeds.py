@@ -82,7 +82,7 @@ class LatestUpdatesByReport(Feed):
         return( obj.report.get_absolute_url())
 
     def description(self, obj):
-        return "Updates for FixMySteet.ca Problem Report %s" % obj.title
+        return "Updates for FixMySteet Problem Report %s" % obj.title
 
     def items(self, obj):
        return obj.reportupdate_set.order_by('created_at')[:30]

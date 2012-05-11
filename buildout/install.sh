@@ -1,14 +1,14 @@
 #!/bin/bash
 
-cd "$( dirname "${BASH_SOURCE[0]}" )"
+CURRENT_DIR="$( dirname "${BASH_SOURCE[0]}" )"
 
 APP="fixmystreet"
 echo "--installing app $APP"
 
 case "$1" in
   sync)
-    bin/django syncdb --noinput
-    bin/django migrate
+    $CURRENT_DIR/bin/django syncdb --noinput
+    $CURRENT_DIR/bin/django migrate
     exit 0
     ;;
   jenkins)
@@ -24,11 +24,11 @@ if [[ ! -d bin ]]
 then
     python2.6 bootstrap.py -c $CONF
 fi
-bin/buildout -c $CONF -Nvt 5
+$CURRENT_DIR/bin/buildout -c $CONF -Nvt 5
 echo "end of buildout!"
 
 
 echo "--sync db"
-bin/django syncdb --noinput
-bin/django migrate
+$CURRENT_DIR/bin/django syncdb --noinput
+$CURRENT_DIR/bin/django migrate
 

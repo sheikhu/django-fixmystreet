@@ -53,7 +53,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.wards',
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.cities',
-    url(r'^commune/(\d+)', 'show',name='city_show'),
+    url(r'^city/(\d+)', 'show',name='city_show'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',

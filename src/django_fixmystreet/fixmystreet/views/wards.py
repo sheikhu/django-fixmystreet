@@ -26,17 +26,17 @@ def show( request, ward_id ):
     reports = list(Report.objects.filter(ward = ward).extra( select = { 'status' : """
         CASE 
         WHEN age( clock_timestamp(), created_at ) < interval '1 month' AND is_fixed = false THEN 'New Problems'
-        WHEN age( clock_timestamp(), created_at ) > interval '1 month' AND is_fixed = false THEN 'Older Unresolved Problems'
+        WHEN age( clock_timestamp(), created_at ) >= interval '1 month' AND is_fixed = false THEN 'Older Unresolved Problems'
         WHEN age( clock_timestamp(), fixed_at ) < interval '1 month' AND is_fixed = true THEN 'Recently Fixed'
-        WHEN age( clock_timestamp(), fixed_at ) > interval '1 month' AND is_fixed = true THEN 'Old Fixed'
+        WHEN age( clock_timestamp(), fixed_at ) >= interval '1 month' AND is_fixed = true THEN 'Old Fixed'
         ELSE 'Unknown Status'
         END """,
         'status_int' : """
         CASE 
         WHEN age( clock_timestamp(), created_at ) < interval '1 month' AND is_fixed = false THEN 0
-        WHEN age( clock_timestamp(), created_at ) > interval '1 month' AND is_fixed = false THEN 1
+        WHEN age( clock_timestamp(), created_at ) >= interval '1 month' AND is_fixed = false THEN 1
         WHEN age( clock_timestamp(), fixed_at ) < interval '1 month' AND is_fixed = true THEN 2
-        WHEN age( clock_timestamp(), fixed_at ) > interval '1 month' AND is_fixed = true THEN 3
+        WHEN age( clock_timestamp(), fixed_at ) >= interval '1 month' AND is_fixed = true THEN 3
         ELSE 4
         END """ }, order_by = ['-created_at'] ))#[:40]
     reports.sort(key=attrgetter('status_int'))
