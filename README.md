@@ -1,4 +1,3 @@
-
 Thanks
 ======
 This is the code of http://fixmystreet.irisnet.be project stand at https://github.com/CIRB/django-fixmystreet.
@@ -15,6 +14,8 @@ Installation
     python bootstrap.py -c dev.cfg
     bin/buildout -c dev.cfg -Nvt 5
 
+(todo make file)
+
 enchure libxml2-dev and gdal is installed
 
 
@@ -23,12 +24,15 @@ Old school install
 
 requirements: transmeta, stdimage, GeoDjango, PIL
 
+    $ virtualenv env --no-site-packages
+    $ env/bin/activate
     $ easy_install django
     $ easy_install django-transmeta
     $ easy_install django-stdimage
     $ easy_install django-social-auth
     $ easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
     $ easy_install psycopg2==2.4.1
+    $ deactivate
 
 
 for GeoDjango installation:
@@ -53,8 +57,10 @@ to install GeoDjango for PostgreSql:
 
 
 after install, create the database:
+
     $ createdb -U postgres -T template_postgis fixmystreet
     $ python manage.py syncdb
+(todo initdb.sh)
 
 
 
@@ -104,10 +110,12 @@ A successful Git branching model - http://nvie.com/posts/a-successful-git-branch
 Usefull
 =======
 To generate po file run the following command:
+
     $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/admin/* --ignore=templates/posters.html --ignore=templates/promotions/*
     $ django-admin.py compilemessages
 
 for sample data set loading
+
     $ python manage.py loaddata sample.json
     $ cp -Rf media/photos-sample/ media/photos/
 
@@ -116,6 +124,7 @@ for sample data set loading
     $ python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
 
 open external connexion to pg:
+
     /var/lib/pgsql/data/pg_hba.conf
 
 
