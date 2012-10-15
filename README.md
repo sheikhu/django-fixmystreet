@@ -60,6 +60,7 @@ after install, create the database:
 
     $ createdb -U postgres -T template_postgis fixmystreet
     $ python manage.py syncdb
+
 (todo initdb.sh)
 
 
@@ -79,6 +80,7 @@ if tests successed project will be deployed.
 
 requirements-test.pip contains debug and Jenkins test requirements, this is installed only on Jenkins server.
 test_settings.py is used for test local_settings, it used environment vars, be sure to set it correctly if you use it
+
     export POSTGISDB=xx.xx.xx.xx
     export POSTGISUSER=xxx
     export POSTGISPWD=xxx
