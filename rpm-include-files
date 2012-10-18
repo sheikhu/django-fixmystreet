@@ -1,0 +1,5 @@
+bin/django
+bin/django-debug
+bin/django-deploy
+libs/eggs
+src
