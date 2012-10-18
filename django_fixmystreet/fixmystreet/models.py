@@ -17,7 +17,7 @@ from django.http import Http404
 from transmeta import TransMeta
 from django_fixmystreet.fixmystreet.utils import FixStdImageField
 
-from django_fixmystreet import settings
+from django.conf import settings
 
 #class Report:
     #pass

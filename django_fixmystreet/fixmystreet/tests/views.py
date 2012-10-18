@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from django.core import mail
 
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
-from django_fixmystreet import settings
+from django.conf import settings
 
 class ReportViewsTest(TestCase):
     fixtures = ['sample']

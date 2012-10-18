@@ -3,7 +3,7 @@ from django.template import Context, RequestContext
 from django.http import HttpResponseRedirect
 
 from django_fixmystreet.fixmystreet.forms import ContactForm
-from django_fixmystreet import settings
+from django.conf import settings
 
 def thanks(request): 
      return render_to_response("contact/thanks.html", {},

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 from django.core.files.storage import FileSystemStorage
 
-from django_fixmystreet import settings
+from django.conf import settings
 from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportCategoryClass, Ward, City, Councillor
 
 

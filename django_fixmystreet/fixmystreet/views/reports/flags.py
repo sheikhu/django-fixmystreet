@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 
 from django_fixmystreet.fixmystreet.models import Report
-from django_fixmystreet import settings
+from django.conf import settings
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)

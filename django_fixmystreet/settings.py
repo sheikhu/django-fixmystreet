@@ -57,18 +57,18 @@ FILE_UPLOAD_PERMISSIONS = 0644
 DATE_FORMAT = "l, j F Y"
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
-)
+# TEMPLATE_LOADERS = (
+    # 'django.template.loaders.filesystem.Loader',
+    # 'django.template.loaders.app_directories.Loader',
+    # 'django.template.loaders.eggs.load_template_source',
+# )
 
 # include request object in template to determine active page
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
-    'django.core.context_processors.auth',
     'django.core.context_processors.media',
     'django.core.context_processors.i18n',
+    'django.contrib.auth.context_processors.auth',
     "django.contrib.messages.context_processors.messages",
     'social_auth.context_processors.social_auth_by_name_backends',
     'django_fixmystreet.fixmystreet.utils.domain_context_processor'
@@ -151,24 +151,69 @@ ADD_THIS_KEY = "broken" #"xa-4a620b09451f9502"
 EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
 DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
 
-DEBUG = False
-SITE_ID = 3 # default value
 
-try:
-    from local_settings import *
-except ImportError:
-    try:
-        from mod_python import apache
-        apache.log_error( "local_settings.py not set; using default settings", apache.APLOG_NOTICE )
-    except ImportError:
-        import sys
-        sys.stderr.write( "local_settings.py not set; using default settings\n" )
+if "ENV" in os.environ:
+    # supported value of ENVIRONMENT are dev, jenkins, staging, production
+    ENVIRONMENT = os.environ['ENV']
+else:
+    ENVIRONMENT = "dev"
+    sys.stderr.write( "No ENV specified, using dev.\n" ) 
 
-TEMPLATE_DEBUG = True
+
+
+if ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins" or ENVIRONMENT=="staging":
+    DEBUG = True
+    GEOSERVER = "geoserver.gis.irisnetlab.be"
+    SERVICE_GIS = "service.gis.irisnetlab.be"
+else:
+    DEBUG = False
+    GEOSERVER = "geoserver.gis.irisnet.be"
+    SERVICE_GIS = "service.gis.irisnet.be"
+
+
+
+if ENVIRONMENT=="dev":
+    SITE_ID = 3
+
+elif ENVIRONMENT=="jenkins":
+    SITE_ID = 3
+
+    INSTALLED_APPS += ('debug_toolbar', )
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+
+    INSTALLED_APPS += ('django_jenkins',)
+    PROJECT_APPS = ('fixmystreet',)
+    JENKINS_TASKS = (
+        'django_jenkins.tasks.run_pylint',
+        'django_jenkins.tasks.with_coverage',
+        'django_jenkins.tasks.django_tests',
+        #'django_jenkins.tasks.run_jslint',
+    )
+
+elif ENVIRONMENT=="staging":
+    SITE_ID = 2
+    SITE_URL = "fixmystreet.irisnetlab.be"
+
+    MEDIA_ROOT = os.path.join('data', 'fms')
+elif ENVIRONMENT=="production":
+    SITE_ID = 1
+    SITE_URL = "fixmystreet.irisnet.be"
+
+    MEDIA_ROOT = os.path.join('data', 'fms')
 
 JSLINT_CHECKED_FILES = (
     'media/js/fixmystreetmap.js'
 )
 
 PYLINT_RCFILE = os.path.join(PROJECT_PATH, 'pylintrc')
+
+
+
+
+try:
+    from local_settings import *
+except ImportError:
+    import sys
+    sys.stderr.write( "local_settings.py not set; using default settings\n" )
 

@@ -1,14 +1,14 @@
 
 from django.conf.urls.defaults import *
 
-from django_fixmystreet import settings
+from django.conf import settings
 
 urlpatterns = patterns('',
     (r'', include('django_fixmystreet.fixmystreet.urls'))
 )
 
 #The following is used to serve up local media files like images
-if settings.LOCAL_DEV:
+if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'
     urlpatterns += patterns('',
         (

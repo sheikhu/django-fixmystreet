@@ -25,7 +25,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^admin/', admin.site.urls),#{'SSL':SSL_ON}),
     (r'^i18n/', include('django.conf.urls.i18n')),
-    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds},'feeds'),
+    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', {'feed_dict': feeds},'feeds'),
     url(r'^', include('social_auth.urls')),
     url(r'^logout/$',
             auth_views.logout_then_login,

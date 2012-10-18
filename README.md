@@ -10,14 +10,11 @@ Installation
 ============
 
     git clone git@github.com:CIRB/django-fixmystreet.git
-    cd django-fixmystreet/buildout
-    python bootstrap.py -c dev.cfg
-    bin/buildout -c dev.cfg -Nvt 5
+    make install
+    ENV=dev bin/django runserver
 
-(todo make file)
 
-enchure libxml2-dev and gdal is installed
-
+enchure libxml2-dev, psycopg2 and GeoDjango is installed
 
 Old school install
 ------------------

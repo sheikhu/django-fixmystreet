@@ -6,7 +6,7 @@ from django.utils.http import urlquote
 from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.models import ZipCode, ReportCountQuery, City, FaqEntry
-from django_fixmystreet import settings
+from django.conf import settings
 
 def home(request, location = None, error_msg =None): 
     if request.GET.has_key('q'):

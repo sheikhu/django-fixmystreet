@@ -1,9 +1,8 @@
 import os
-import settings
 
 DATABASES = {
    'default': {
-        'ENGINE': 'postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'fixmystreet',
         'USER': '###',
         'PASSWORD': '###',
@@ -15,26 +14,10 @@ DATABASES = {
    }
 }
 
-
-
-#EMAIL_USE_TLS =
 EMAIL_HOST = "relay.irisnet.be"
-#EMAIL_HOST_USER =
-#EMAIL_HOST_PASSWORD =
-#EMAIL_PORT =
 EMAIL_ADMIN = "###@cirb.irisnet.be"
 ADMIN_EMAIL = "###@cirb.irisnet.be"
-ADMIN = ["Jonathan"]
-
-SITE_ID = 2
-SITE_URL = "###"
-DEBUG = True
-LOCAL_DEV = False
-STAGING = False
-
-GEOSERVER = "geoserver.gis.irisnetlab.be"
-SERVICE_GIS = "service.gis.irisnetlab.be"
-
+ADMIN = (,)
 
 FACEBOOK_API_SECRET         = '###'
 

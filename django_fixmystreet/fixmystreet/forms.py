@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy
 from django.contrib.gis.geos import fromstr
 from django.forms.util import ErrorDict
 
-from django_fixmystreet import settings
+from django.conf import settings
 from django_fixmystreet.fixmystreet.models import Ward, City, Report, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint
 
 
