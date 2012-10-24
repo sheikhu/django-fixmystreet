@@ -1,10 +1,15 @@
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, include
+from django.contrib import admin
 
 from django.conf import settings
 
+admin.autodiscover()
+
 urlpatterns = patterns('',
-    (r'', include('django_fixmystreet.fixmystreet.urls'))
+    (r'', include('django_fixmystreet.fixmystreet.urls')),
+    (r'pro/', include('django_fixmystreet.backoffice.urls')),
+    (r'^admin/', admin.site.urls),
 )
 
 #The following is used to serve up local media files like images

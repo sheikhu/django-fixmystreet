@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.generic.simple import direct_to_template
 
@@ -16,14 +15,8 @@ feeds = {
     'report_updates': LatestUpdatesByReport,
 }
 
-if settings.DEBUG:
-    SSL_ON = False
-else:
-    SSL_ON = True
-    
-admin.autodiscover()
+
 urlpatterns = patterns('',
-    (r'^admin/', admin.site.urls),#{'SSL':SSL_ON}),
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', {'feed_dict': feeds},'feeds'),
     url(r'^', include('social_auth.urls')),
