@@ -6,7 +6,7 @@
 		markerHeight = 34,
 		defaultMarkerStyle = {
 			pointRadius:markerHeight,
-			externalGraphic:"/media/images/marker.png",
+			externalGraphic:"/static/images/marker.png",
 			graphicXOffset:-markerWidth/2,
 			graphicYOffset:-markerHeight,
 			graphicHeight:markerHeight,
@@ -28,17 +28,17 @@
 			apiLang: "fr",
             showControl: true,
 			markerStyle: $.extend({},defaultMarkerStyle,{
-				externalGraphic: "/media/images/marker.png",
+				externalGraphic: "/static/images/marker.png",
 				graphicXOffset: -32/2,
 				graphicYOffset: -32,
 				graphicHeight: 32,
 				graphicWidth: 32
 			}),
 			fixedMarkerStyle: $.extend({},defaultMarkerStyle,{
-				externalGraphic:"/media/images/marker-fixed.png"
+				externalGraphic:"/static/images/marker-fixed.png"
 			}),
 			pendingMarkerStyle: $.extend({},defaultMarkerStyle,{
-				externalGraphic:"/media/images/marker-pending.png",
+				externalGraphic:"/static/images/marker-pending.png",
 			})
 		},
 		/**
