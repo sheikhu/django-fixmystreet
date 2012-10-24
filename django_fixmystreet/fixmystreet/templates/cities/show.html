@@ -3,7 +3,7 @@
 
 {% block title %}{% trans "All Reports" %}{% endblock %}
 {% block content %}
-	<h1>{% trans "All Reports" %} <a href='{% url feeds "city/1" %}'><img src="{{ MEDIA_URL }}images/rss-big.png" /></a></h1>
+	<h1>{% trans "All Reports" %} <a href='{% url feeds "city/1" %}'><img src="{{ STATIC_URL }}images/rss-big.png" /></a></h1>
 	{% if top_problems %}
 	<h2>{% trans "Top Reports" %}</h2>
 	<div id='city-stat-group'>

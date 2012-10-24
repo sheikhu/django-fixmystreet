@@ -3,7 +3,7 @@
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
-<script src="{{MEDIA_URL}}hashchange/jquery.ba-hashchange.min.js"></script>
+<script src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script>
 
 {% map_scripts %}
 <script>

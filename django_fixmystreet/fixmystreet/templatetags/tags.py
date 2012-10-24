@@ -28,9 +28,9 @@ def get_active_menu(context):
 def map_scripts():
     return '''
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-    <script src="%(media)sOpenLayers-2.11/OpenLayers.js"></script>
-    <script src="%(media)sjs/fixmystreetmap.js"></script>
-    ''' % {'media':settings.MEDIA_URL}
+    <script src="{STATIC_URL}OpenLayers-2.11/OpenLayers.js"></script>
+    <script src="{STATIC_URL}js/fixmystreetmap.js"></script>
+    '''.format(STATIC_URL=settings.STATIC_URL)
 
 @register.simple_tag
 def addthis_scripts():

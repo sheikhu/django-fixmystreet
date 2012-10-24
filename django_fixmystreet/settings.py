@@ -5,9 +5,12 @@ import shutil
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
+# TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
@@ -25,8 +28,6 @@ if len(sys.argv) > 1 and sys.argv[1] == 'test':
 
     MEDIA_ROOT = tmp_dir
 
-
-MEDIA_URL = '/media/'
 
 #TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE = 'template_postgis'
@@ -67,6 +68,7 @@ DATE_FORMAT = "l, j F Y"
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
     'django.core.context_processors.i18n',
     'django.contrib.auth.context_processors.auth',
     "django.contrib.messages.context_processors.messages",
