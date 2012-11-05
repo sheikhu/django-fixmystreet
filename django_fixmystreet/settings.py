@@ -15,23 +15,6 @@ STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
-
-# if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    # tmp_dir = os.path.join(PROJECT_PATH, 'media-tmp')
-    # 
-    # try:
-        # shutil.rmtree(tmp_dir)
-    # except OSError:
-        # pass
-# 
-    # try:
-        # shutil.copytree(MEDIA_ROOT, tmp_dir)
-    # except OSError:
-        # pass
-# 
-    # MEDIA_ROOT = tmp_dir
-
-
 #TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE = 'template_postgis'
 

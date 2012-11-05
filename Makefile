@@ -1,15 +1,15 @@
 .PHONY        = install deploy test run jenkins rpm clean
 APP_NAME      = fixmystreet
+# backoffice
 BIN_DIR       = bin
 LIBS_DIR      = libs
 
 RPM_VERSION   = test
 RPM_URL       = https://github.com/CIRB/Monitoring-Des-Quartiers
-RPM_USER      = fms
-RPM_GROUP     = fms
-RPM_NAME      = monitoring-des-quartiers
-RPM_PREFIX    = /home/ibsa/Monitoring-Des-Quartiers
-RPM_ITERATION = dev
+RPM_USER      = fixmystreet
+RPM_GROUP     = fixmystreet
+RPM_NAME      = fixmystreet
+RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
 $(BIN_DIR)/buildout: $(LIBS_DIR)
@@ -42,7 +42,6 @@ rpm:
 			--rpm-user $(RPM_USER) \
 			--rpm-group $(RPM_GROUP) \
 			-v $(RPM_VERSION) \
-			--iteration $(RPM_ITERATION) \
 			--prefix $(RPM_PREFIX) \
 			--after-install after-install.sh \
 			`cat $(RPM_INPUTS_FILE)`
