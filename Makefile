@@ -12,7 +12,7 @@ RPM_PREFIX    = /home/ibsa/Monitoring-Des-Quartiers
 RPM_ITERATION = dev
 RPM_INPUTS_FILE = rpm-include-files
 
-$(BIN_DIR)/buildout: $(BIN_DIR) $(LIBS_DIR)
+$(BIN_DIR)/buildout: $(LIBS_DIR)
 	python bootstrap.py
 
 $(BIN_DIR):
@@ -25,7 +25,7 @@ $(LIBS_DIR):
 	# $(BIN_DIR)/buildout install django
 
 install: $(BIN_DIR)/buildout
-	$(BIN_DIR)/buildout
+	$(BIN_DIR)/buildout -Nvt 5
 
 test: $(BIN_DIR)/django
 	$(BIN_DIR)/django test $(APP_NAME)
