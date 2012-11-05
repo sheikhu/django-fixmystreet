@@ -28,9 +28,11 @@ install: $(BIN_DIR)/buildout
 	$(BIN_DIR)/buildout -Nvt 5
 
 test: $(BIN_DIR)/django
+	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django test $(APP_NAME)
 
 jenkins: $(BIN_DIR)/django
+	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django jenkins $(APP_NAME)
 
 rpm:

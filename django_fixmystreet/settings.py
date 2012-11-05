@@ -3,30 +3,33 @@ import os, sys
 import logging
 import shutil
 
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
 # TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+if 'MEDIA_ROOT' in os.environ:
+    MEDIA_ROOT = os.environ['MEDIA_ROOT']
+else:
+    MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    tmp_dir = os.path.join(PROJECT_PATH, 'media-tmp')
-    
-    try:
-        shutil.rmtree(tmp_dir)
-    except OSError:
-        pass
-
-    try:
-        shutil.copytree(MEDIA_ROOT, tmp_dir)
-    except OSError:
-        pass
-
-    MEDIA_ROOT = tmp_dir
+# if len(sys.argv) > 1 and sys.argv[1] == 'test':
+    # tmp_dir = os.path.join(PROJECT_PATH, 'media-tmp')
+    # 
+    # try:
+        # shutil.rmtree(tmp_dir)
+    # except OSError:
+        # pass
+# 
+    # try:
+        # shutil.copytree(MEDIA_ROOT, tmp_dir)
+    # except OSError:
+        # pass
+# 
+    # MEDIA_ROOT = tmp_dir
 
 
 #TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
@@ -176,8 +179,8 @@ else:
 
 if ENVIRONMENT=="dev":
     SITE_ID = 3
-    INSTALLED_APPS += ('debug_toolbar', )
-    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    # INSTALLED_APPS += ('debug_toolbar', )
+    # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 elif ENVIRONMENT=="jenkins":
     SITE_ID = 3
@@ -194,12 +197,9 @@ elif ENVIRONMENT=="staging":
     SITE_ID = 2
     SITE_URL = "fixmystreet.irisnetlab.be"
 
-    MEDIA_ROOT = os.path.join('data', 'fms')
 elif ENVIRONMENT=="production":
     SITE_ID = 1
     SITE_URL = "fixmystreet.irisnet.be"
-
-    MEDIA_ROOT = os.path.join('data', 'fms')
 
 JSLINT_CHECKED_FILES = (
     'media/js/fixmystreetmap.js'
