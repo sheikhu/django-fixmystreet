@@ -129,7 +129,7 @@ class PhotosTest(TestCase):
         })
 
         for img in imgs_to_test:
-            path = os.path.join(settings.MEDIA_ROOT, 'photos', img['path'])
+            path = os.path.join(settings.MEDIA_ROOT, 'photos-test', img['path'])
             
             shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
             
