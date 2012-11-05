@@ -208,11 +208,24 @@ JSLINT_CHECKED_FILES = (
 PYLINT_RCFILE = os.path.join(PROJECT_PATH, 'pylintrc')
 
 
-
-
 try:
     from local_settings import *
 except ImportError:
     import sys
     sys.stderr.write( "local_settings.py not set; using default settings\n" )
+
+if not DATABASES:
+    DATABASES = {
+       'default': {
+            'ENGINE': os.environ['DATABASE_ENGINE'],
+            'NAME': os.environ['DATABASE_NAME'],
+            'USER': os.environ['DATABASE_USER'],
+            'PASSWORD': os.environ['DATABASE_PASSWORD'],
+            'HOST': os.environ['DATABASE_HOST'],
+            'PORT': os.environ['DATABASE_PORT'],
+            'OPTIONS': {
+                'autocommit': True
+            }
+       }
+    }
 
