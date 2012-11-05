@@ -212,9 +212,7 @@ try:
     from local_settings import *
 except ImportError:
     import sys
-    sys.stderr.write( "local_settings.py not set; using default settings\n" )
-
-if not DATABASES:
+    sys.stderr.write( "local_settings.py not set; using environment settings\n" )
     DATABASES = {
        'default': {
             'ENGINE': os.environ['DATABASE_ENGINE'],
