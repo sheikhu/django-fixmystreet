@@ -211,5 +211,7 @@ except ImportError:
     }
     if 'EMAIL_ADMIN' in os.environ:
         EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
-        ADMIN_EMAIL = os.environ['EMAIL_ADMIN']
+    else:
+        EMAIL_ADMIN = 'jsanchezpando@cirb.irisnet.be'
+    ADMIN_EMAIL = EMAIL_ADMIN
 
