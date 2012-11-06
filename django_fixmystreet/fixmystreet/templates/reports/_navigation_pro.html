@@ -1,5 +1,5 @@
 {% load i18n %}
-<a href="{{report.get_absolute_url}}" class="report">
+<a href="{{report.get_absolute_url_pro}}" class="report">
 	<img src="{{ STATIC_URL }}images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
 	{% if report.photo %}
 	<img src="{{ report.photo.thumbnail.url }}" class="report-preview"/>

@@ -4,11 +4,10 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy
 from django.contrib.gis.geos import fromstr
 from django.forms.util import ErrorDict
-
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward, City, Report, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint
-
-
+from django_fixmystreet.fixmystreet.models import Ward,File, Comment, City, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, Agent
 
 
 class CategoryChoiceField(forms.fields.ChoiceField):
@@ -40,23 +39,22 @@ class CategoryChoiceField(forms.fields.ChoiceField):
         except ReportCategory.DoesNotExist:
             raise ValidationError(self.error_messages['invalid_choice'])
         return model
-
+  
 
 class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x','y','title', 'address', 'category','postalcode','photo','desc')
+        fields = ('x','y','title', 'address', 'category','postalcode','description')
 
     required_css_class = 'required'
     category = CategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
-    
-    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-
+    
+    
     def __init__(self,data=None, files=None, initial=None):
         if data:
             self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
@@ -73,8 +71,9 @@ class ReportForm(forms.ModelForm):
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
         report.ward = self.ward
-        report.author = user
+        report.status = list(Status.objects.all())[0]
         report.point = self.point
+        report.creator = user
         if commit:
             report.save()
         return report
@@ -83,8 +82,14 @@ class ReportForm(forms.ModelForm):
 class ReportUpdateForm(forms.ModelForm):
     class Meta:
         model = ReportUpdate
-        fields = ('desc',)
-
+        fields = ('desc','photo',)
+    
+    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    
+    def __init__(self,data=None, files=None, initial=None):
+        super(ReportUpdateForm,self).__init__(data, files, initial=initial)
+        
+	
     def save(self, user, report, commit=True):
         update = super(ReportUpdateForm, self).save(commit=False)
         update.author = user
@@ -92,6 +97,7 @@ class ReportUpdateForm(forms.ModelForm):
         if commit:
             update.save()
         return update
+
 
 
 class ContactForm(forms.Form):
@@ -111,4 +117,50 @@ class ContactForm(forms.Form):
         send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message, 
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
+class AgentCreationForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = ('telephone',)
+	
+	telephone = forms.CharField(max_length="20",
+                           widget=forms.TextInput(attrs={ 'class': 'required' }),
+                           label=ugettext_lazy('Tel.'))
+    
+	def save(self, commit=True):
+		user = super(AgentCreationForm, self).save(commit=False)
+		user.save()
+		agent = Agent(user=user)
+		agent.telephone = self.cleaned_data['telephone']
+		agent.lastUsedLanguage = "NL"
+		agent.hashCode=0
+		agent.save();
+		return user;
+		
+class ReportFileForm(forms.ModelForm):
+	class Meta:
+		model=File
+		fields=('title','file',)
+	
+	file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
+	
+	def __init__(self,data=None, files=None, initial=None):
+		super(ReportFileForm,self).__init__(data, files, initial=initial)
+	
+	def save(self,user,report,commit=True):
+		fileUpdate= super(ReportFileForm,self).save(commit=False)
+		fileUpdate.report = report
+		if commit:
+			fileUpdate.save()
+		return fileUpdate
 
+class ReportCommentForm(forms.ModelForm):
+	class Meta:
+		model=Comment
+		fields=('title','text',)
+	
+	def save(self,user,report,commit=True):
+		comment= super(ReportCommentForm,self).save(commit=False)
+		comment.report = report
+		if commit:
+			comment.save()
+		return comment

@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'', include('django_fixmystreet.fixmystreet.urls')),
-    (r'pro/', include('django_fixmystreet.backoffice.urls')),
+    (r'^pro/', include('django_fixmystreet.backoffice.urls')),
     (r'^admin/', admin.site.urls),
 )
 

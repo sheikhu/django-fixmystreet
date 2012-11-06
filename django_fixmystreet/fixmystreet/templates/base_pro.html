@@ -13,6 +13,7 @@
 		{% block script %}{% endblock %}
 		<script>
         var loginWin = null;
+        var userPosition;
 		$(document).ready(function(){
 			$('#select-language').change(function(){
 				$(this).closest('form').submit();
@@ -31,13 +32,29 @@
                 }
                 return false;
             });
+            test();
+            
+            
 		});
         window.connectionCallback = function(username){
             $(document).trigger('connected',[username]);
             $('.login-bar').hide();
             $('.logged-bar').show().find('.username').html(username);
         }
-        
+            
+            test = function(){
+        	if (navigator.geolocation){
+    			navigator.geolocation.getCurrentPosition(setPosition);
+    		}
+        }
+        setPosition = function(position){
+        	userPosition = position;
+        	//$("#createdMenuItem").attr("href","{% url report_new_pro %}?x="+userPosition.coords.latitude+"&y="+userPosition.coords.longitude+"&status=0");
+        	//$("#progressMenuItem").attr("href","{% url report_new_pro %}?x="+userPosition.coords.latitude+"&y="+userPosition.coords.longitude+"&status=1");
+        	//$("#closedMenuItem").attr("href","{% url report_new_pro %}?x="+userPosition.coords.latitude+"&y="+userPosition.coords.longitude+"&status=2");
+        	//$("#createMenuItem").attr("href","{% url report_new_pro %}?x="+userPosition.coords.latitude+"&y="+userPosition.coords.longitude+"#form");
+        	
+        }
         /*
         .required.mandatory input, .required.mandatory select {
             border:1px solid red !important;
@@ -77,12 +94,12 @@
 	<body>
 		<div id="header">
 			<div id="header_content">
-				<a href="/"><img id="logo" src="{{ STATIC_URL }}images/logo-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Fix My Street Brussels" %}"/></a>
+				<a href="/pro/"><img id="logo" src="{{ STATIC_URL }}images/logo-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Fix My Street Brussels" %}"/></a>
 				<!--<a href="/"><h1 id="banner-title">{% trans "Fix My Street Brussels" %}</h1></a>-->
                 <img id="logo-rbc" src="{{ STATIC_URL }}images/logo-rbc-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Brussels-Capital Region" %}"/>
                 {% if STAGING %}<img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />{% endif %}
 				<div id="loginButton">
-					<button type="button" onclick="window.location.href='{% url login %}?next={% url home_pro %}'" style="float: right;margin-top: 44px;">Sign in</button>
+					<button type="button" onclick="window.location.href='{% url auth_logout %}'" style="float: right;margin-top: 44px;">Log out</button>
 				</div>
 				<div id="language">
 					<form action="/i18n/setlang/" method="post">
@@ -95,26 +112,38 @@
 					</form>
 				</div>
 				{% load tags %}
-				<div id="menu">
-					{% get_active_menu %}
-					<a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home %}">{%      trans "Submit a Report" %}</a>
-					<a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url bxl_wards %}">{% trans "View Reports" %}</a>
-					<a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">{%     trans "About" %}</a>
-					<a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">{%   trans "Contact Us" %}</a>
-				</div>
+				
 			</div>
 		</div>
 
 		<div id="main_container">
+		<div >
+				<ul class='leftPane' id="leftMenuPanePro">
+				<li> <a class='category'> Reports </a> <p class="category_number">87</p></li>
+				
+				<li><a id='createdMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=0"> Created </a> <p class="category_number">3</p></li>
+				<li><a id='progressMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=1"> Progress </a> <p class="category_number">42</p></li>
+				<li><a id='closedMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=2"> Closed </a> <p class="category_number">42</p></li>
+				<li><a class='subcategory'> My subscriptions </a> <p class="category_number">2</p></li>
+				<li><a class='subcategory'> My communes </a> <p class="category_number">0</p></li>
+				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a> </td>
+				
+				<li> <a class='category'> Collaborators </a></li>
+				
+				<li><a class='subcategory'>Agents </a> <p class="category_number">3</p></li>
+				<li><a class='subcategory'>Exec de travaux</a> <p class="category_number">12</p></li>
+				<li><a class='subcategory'> Impétrants </a> <p class="category_number">43</p></li>
+				<li><a class='subcategory'> Gestionnaires </a> <p class="category_number">4</p></li>
+			
+				<li> <a class='category'> Configuration </a></li>
+				
+				<li><a class='subcategory'> Gestionnaires </a></li>
+				<li><a class='subcategory' href="{% url create_agent_user_pro %}"> Create users </a></li>
+				
+				</ul>
+				</div>
 			<div id='body_content'>
                 
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
 				{% block content %}{% endblock %}
 			</div>
 		</div>

@@ -1,0 +1,72 @@
+{% extends "base_pro.html" %}
+{% load i18n %}
+{% block script %}
+	{% include "_search_pro.js" %}
+{% endblock %}
+
+{% block content %}
+	<form id='search_form'>
+		<p>{% trans "Enter a nearby street name:" %}</p>
+		<input id='search_box' type="search" name="q" {% if location %}value="{{location}}"{% endif %}/>
+
+		<div id="ward_select">
+			<select id="search_ward" name="ward">
+				<option value="">{% trans "Choose a ward..." %}</option>
+				{% for zip in zipcodes %}
+                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+				{% endfor %}
+			</select>
+			<p>{% trans "or leave empty for a global search" %}</p>
+		</div>
+
+		<ul id='proposal'> </ul>
+		
+		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans 'Search' %}">
+	</form>
+    <div id="indications">
+        <div id="leftcol">
+            <h4>{% trans "How to fill a report" %}</h4>
+            <ol>
+                <li>{% trans "Enter a nearby street name" %}</li>
+                <li>{% trans "Locate the problem on a map of the area" %}</li>
+                <li>{% trans "Enter details of the problem" %}</li>
+                <li>{% trans "We send it to the city on your behalf" %}</li>
+            </ol>
+        </div>
+        <div id="rightcol">
+            <div id='stat-group'>
+                <div class='stat'>
+                    <span class='number'>{{report_counts.recent_new}}</span><br/>
+                    <span class='text'>{% trans "Reports Filed" %}<br/></span>
+                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
+                </div>
+                <div class='stat'>
+                    <span  class='number'>{{report_counts.recent_fixed}}</span><br/>
+                    <span class='text'>{% trans "Reports Fixed" %}*<br/></span>
+                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
+                </div>
+                <div class='stat'>
+                    <span class='number'>{{report_counts.recent_updated}}</span><br/>
+                    <span class='text'>{% trans "Reports Updated" %}</span><br/>
+                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
+                </div>
+            </div>
+            <div class="fix-disclaimer">
+                <p>*{% trans "As reported by Fix My Street users." %}</p>
+            </div>
+
+            <!--
+            <div class='block'>
+                <h4>{% trans "Recent Reports" %}</h4>
+                <ul>
+                {% for report in recent_reports %}
+                    <li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+            -->
+        </div>
+    </div>
+{% endblock %}
+	
+{% block content_third %}{% endblock %}

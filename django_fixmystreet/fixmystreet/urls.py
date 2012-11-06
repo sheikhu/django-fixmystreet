@@ -19,13 +19,6 @@ feeds = {
 urlpatterns = patterns('',
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', {'feed_dict': feeds},'feeds'),
-    url(r'^', include('social_auth.urls')),
-    url(r'^logout/$',
-            auth_views.logout_then_login,
-            {'login_url':'/'},
-            name='auth_logout'
-    ),
-    url(r'^login-callback/$', direct_to_template, {'template': 'login-callback.html'}),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.main',

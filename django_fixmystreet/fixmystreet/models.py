@@ -8,7 +8,7 @@ from django.template.loader import render_to_string, TemplateDoesNotExist
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
@@ -19,54 +19,268 @@ from django_fixmystreet.fixmystreet.utils import FixStdImageField
 
 from django.conf import settings
 
-#class Report:
-    #pass
-#post_save.connect(fix_exif_data, sender=Report)
+class Role (models.Model):
+	__metaclass__= TransMeta
+	
+	code = models.CharField(max_length=50,null=False)
+	label = models.CharField(max_length=100,null=False)
+	
+	class Meta:
+		translate = ('label',)
+class Category (models.Model):
+	__metaclass__ = TransMeta
+	
+	code = models.CharField(max_length=50,null=False)
+	label = models.CharField(max_length=100,null=False)
+	type = models.IntegerField()
+	
+	class Meta:
+		translate=('label',)
+		
+class Type (models.Model):
+	__metaclass__ = TransMeta
+	
+	code= models.CharField(max_length=50,null=False)
+	label = models.CharField(max_length=100,null=False)
+	public = models.BooleanField(default=True)
+	mainCategory = models.ForeignKey(Category,related_name='mainCategory')
+	secondCategory = models.ForeignKey(Category,related_name='secondCategory')
+	
+	class Meta:
+		translate=('label',)
 
-class Report(models.Model):
-    title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
-    category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
-    ward = models.ForeignKey('Ward', null=True)
 
-    author = models.ForeignKey(User, null=False)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    # last time report was updated
-    updated_at = models.DateTimeField(null=True)
 
-    is_hate = models.BooleanField(default=False)
-    
-    is_fixed = models.BooleanField(default=False)
-    # time report was marked as 'fixed'
-    fixed_at = models.DateTimeField(null=True, blank=True)
 
-    # email where the report was sent
-    email_sent_to = models.EmailField(null=True)
-    
-    # last time a reminder was sent to the person that filed the report.
-    reminded_at = models.DateTimeField(auto_now_add=True)
-    
-    point = models.PointField(null=True, srid=31370)
+class FMSUser (User):
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
 
-    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
-    desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
-    address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
-    postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
+class Pro (User):
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
 
-    objects = models.GeoManager()
+class NonPro (User):
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
 
-    def get_absolute_url(self):
-        return reverse("report_show", args=[self.id])
+class Citizen (User):
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
 
-    def flagAsOffensive(self):
-        msg = HtmlTemplateMail('flag_report', {
-            'report_url': 'http://%s%s' % (Site.objects.get_current().domain, self.get_absolute_url()), 
-            'report': self 
-        }, [settings.EMAIL_ADMIN])
-        msg.send()
+class Admin (User):
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
 
-    class Meta:
-        ordering = ['updated_at', 'created_at']
+class PhysicalPerson(User):
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+
+class Entity(User):
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+
+class Company(User):
+	companyName = models.CharField(max_length=200)
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+
+class ExecuteurDeTravaux (User):	
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+
+
+
+class Agent(models.Model):
+	""" Nothing to be written here"""
+	user = models.ForeignKey(User)
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+
+class Gestionnaire(User):
+	typeList = models.ManyToManyField(Type)
+	entity = models.ForeignKey(Entity)
+	default = models.BooleanField(default=False)
+	responsibleOfAnEntity = models.BooleanField(default=False)
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+
+
+class Impetrant(User):
+	""" Nothing to be written here"""
+	roles = models.ManyToManyField(Role)
+	telephone= models.CharField(max_length=20,null=True)
+	active = models.BooleanField(default=True)
+	lastUsedLanguage = models.CharField(max_length=10,null=True)
+	hashCode = models.IntegerField(null=True)
+	
+	objects = UserManager()
+		
+class Status(models.Model):
+	__metaclass__=TransMeta
+	name=models.CharField(verbose_name=_('Name'),max_length=100,null=False)
+	code=models.CharField(max_length=50,null=False)
+	
+	class Meta:
+		translate = ('name', )
+
+		
+class Report (models.Model):
+	status = models.ForeignKey(Status,null=False)
+	point = models.PointField(null=True, srid=31370)
+	address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
+	title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
+	category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
+	created_at = models.DateTimeField(auto_now_add=True)
+	# last time report was updated
+	updated_at = models.DateTimeField(null=True)
+	is_hate = models.BooleanField(default=False)
+	is_fixed = models.BooleanField(default=False)
+	# time report was marked as 'fixed'
+	fixed_at = models.DateTimeField(null=True, blank=True)
+	ward = models.ForeignKey('Ward', null=True)
+	hashCode = models.IntegerField(null=True)
+	creator = models.ForeignKey(User,null=True)
+	description = models.TextField(null=True)
+	entity = models.ForeignKey(Entity,related_name='Entity',null=False)
+	executeurDeTravaux = models.ForeignKey(ExecuteurDeTravaux,related_name='Executeur de travaux',null=True)
+	impetrant = models.ForeignKey(Impetrant,related_name='impetrant',null=True)
+	gestionnaireResponsable = models.ForeignKey(Gestionnaire,related_name='Gestionnaire responsable',null=True)
+	gestionnaireResponsableHasAcceptedReport = models.BooleanField(default=False)
+	reportType = models.ForeignKey(Type)
+	valid = models.BooleanField(default=False)
+	markedAsFinished = models.BooleanField(default=False)
+	photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+	closedDatum = models.DateTimeField(null=True, blank=True)
+	objects = models.GeoManager()
+	private = models.BooleanField(default=True)
+	def get_absolute_url(self):
+	#TODO determine when pro and no-pro url must be returned
+	    return reverse("report_show", args=[self.id])
+	
+	def get_absolute_url_pro(self):
+	#TODO determine when pro and no-pro url must be returned
+	    return reverse("report_show_pro", args=[self.id])
+
+class Exportable(models.Model):
+	def asJSON():
+		return
+	def asXML():
+		return
+
+class Abonment (models.Model):
+	report = models.ForeignKey(Report)
+
+class Address (models.Model):
+	__metaclass__= TransMeta
+	
+	street = models.CharField(max_length=100)
+	city = models.CharField(max_length= 100)
+	zipCode = models.IntegerField()
+	streetNumber = models.CharField(max_length=100)
+	geoX = models.FloatField()
+	geoY = models.FloatField()
+	
+	class Meta:
+		translate=('street','city',)
+
+class AttachmentType(models.Model):
+	code= models.CharField(max_length=50)
+	url = models.CharField(max_length=50)
+		
+
+	
+
+class Attachment(models.Model):
+	report = models.ForeignKey(Report)
+	validated=models.BooleanField(default=False)
+	isVisible=models.BooleanField(default=False)
+	title=models.CharField(max_length=250)
+
+class Comment (Attachment):
+	text = models.TextField()
+
+class File(Attachment):
+	file = models.FileField(upload_to="files")
+	fileType= models.ForeignKey(AttachmentType)
+
+class UserType(models.Model):
+	__metaclass__= TransMeta
+
+	code=models.CharField(max_length=50)
+	name=models.CharField(max_length=100)
+	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+	
+	class Meta:
+		translate = ('name', )
+
+
+
+
+
 
 
 #signal on a report to notify public authority that a report has been filled
@@ -76,10 +290,10 @@ def report_notify(sender, instance, **kwargs):
         NotificationResolver(instance).resolve()
 
 #signal on a report to register author as subscriber to his own report
-@receiver(post_save,sender=Report)
-def report_subscribe_author(sender, instance, **kwargs):
-    if kwargs['created']:
-        ReportSubscription(report=instance, subscriber=instance.author).save()
+#@receiver(post_save,sender=Report)
+#def report_subscribe_author(sender, instance, **kwargs):
+#    if kwargs['created']:
+#        ReportSubscription(report=instance, subscriber=instance.author).save()
 
 class ReportUpdate(models.Model):
     """A new version of the status of a report"""
@@ -87,8 +301,9 @@ class ReportUpdate(models.Model):
     desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
     created_at = models.DateTimeField(auto_now_add=True)
     is_fixed = models.BooleanField(default=False)
-    author = models.ForeignKey(User, null=False)
-
+    author = models.ForeignKey(User,null=True)
+    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50)) 
+    
     class Meta:
         ordering = ['created_at']
         #order_with_respect_to = 'report'
@@ -131,7 +346,8 @@ class ReportCategoryClass(models.Model):
     """
 
     name = models.CharField(max_length=100)
-
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):      
         return self.name
 
@@ -150,6 +366,8 @@ class ReportCategory(models.Model):
 
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     hint = models.TextField(verbose_name=_('Hint'), blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category_class = models.ForeignKey(ReportCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
@@ -160,6 +378,19 @@ class ReportCategory(models.Model):
         translate = ('name', 'hint', )
 
 
+
+class GestType(models.Model):
+	help_text="""
+	Defines the relation of a user and a category
+	"""
+	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+	category = models.ForeignKey(ReportCategory)
+	user = models.ForeignKey(FMSUser)
+	
+
+
+ 
 class Councillor(models.Model):
     help_text = """
     Represent a public authority that can resolve a problem from a fix my street report. 
@@ -270,8 +501,46 @@ class NotificationResolver(object):
 
 
 class Province(models.Model):
-    name = models.CharField(max_length=100)
-    abbrev = models.CharField(max_length=3)
+	__metaclass__ = TransMeta
+	
+	name = models.CharField(max_length=100)
+	abbrev = models.CharField(max_length=3)
+	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+	
+	class Meta:
+		translate = ('name', )
+    
+class Commune(models.Model):
+	__metaclass__ = TransMeta
+	
+	name = models.CharField(max_length=100)
+	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+	province = models.ForeignKey(Province)
+	
+	class Meta:
+		translate = ('name', )
+	
+class Zone(models.Model):
+	__metaclass__ = TransMeta
+	
+	name=models.CharField(max_length=100)
+	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+	commune = models.ForeignKey(Commune)
+	
+	class Meta:
+		translate = ('name', )
+
+
+
+
+class FMSUserZone(models.Model):
+	user = models.ForeignKey(FMSUser)
+	zone = models.ForeignKey(Zone)
+	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
 
 
 class City(models.Model):
