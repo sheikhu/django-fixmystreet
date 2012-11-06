@@ -1,7 +1,7 @@
 Vagrant::Config.run do |config|
   config.vm.box = "cirb-6-64"
   #config.vm.boot_mode = :gui
-  config.vm.host_name = "fixmystreet"
+  config.vm.host_name = "fixmystreet_jenkins.ad.cirb.lan"
   config.ssh.max_tries = 333
   config.vm.forward_port 22, 2222
   config.vm.forward_port 80, 8080
