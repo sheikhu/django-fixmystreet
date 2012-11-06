@@ -33,7 +33,7 @@ test: $(BIN_DIR)/django
 
 jenkins: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
-	$(BIN_DIR)/django jenkins $(APP_NAME)
+	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 
 rpm:
 	find . -type f -name "*.pyc" -delete
