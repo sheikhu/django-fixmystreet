@@ -1,4 +1,4 @@
-chown -R ibsa:ibsa /home/ibsa/Monitoring-Des-Quartiers
-sudo -u ibsa ln -fs /data/ibsa/attachments /home/ibsa/Monitoring-Des-Quartiers/src/static/attachments
-sudo -u ibsa /home/ibsa/Monitoring-Des-Quartiers/bin/django-deploy clear_cache
-#sudo -u ibsa /home/ibsa/Monitoring-Des-Quartiers/bin/django-deploy syncdb --migrate
+$INSTALL_ROOT=/home/fixmystreet/django-fixmystreet
+chown -R fixmystreet:fixmystreet $INSTALL_ROOT
+sudo -u fixmystreet $INSTALL_ROOT/bin/django clear_cache
+sudo -u fixmystreet $INSTALL_ROOT/bin/django syncdb --migrate
