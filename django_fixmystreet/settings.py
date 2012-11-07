@@ -136,12 +136,12 @@ if "ENV" in os.environ:
     # supported value of ENVIRONMENT are dev, jenkins, staging, production
     ENVIRONMENT = os.environ['ENV']
 else:
-    ENVIRONMENT = "dev"
-    sys.stderr.write( "No ENV specified, using dev.\n" ) 
+    ENVIRONMENT = "local"
+    sys.stderr.write( "No ENV specified, using local.\n" ) 
 
 
 
-if ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins" or ENVIRONMENT=="staging":
+if ENVIRONMENT=="local" or ENVIRONMENT=="jenkins" or ENVIRONMENT=="dev" or ENVIRONMENT=="staging":
     DEBUG = True
     GEOSERVER = "geoserver.gis.irisnetlab.be"
     SERVICE_GIS = "service.gis.irisnetlab.be"
@@ -151,21 +151,21 @@ else:
     SERVICE_GIS = "service.gis.irisnet.be"
 
 
+if ENVIRONMENT=="dev" or ENVIRONMENT=="staging" or ENVIRONMENT=="production":
+    INSTALLED_APPS += ('gunicorn', )
 
-if ENVIRONMENT=="dev":
-    SITE_ID = 3
+
+if ENVIRONMENT=="local":
     # INSTALLED_APPS += ('debug_toolbar', )
     # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     logging.basicConfig(
         level = logging.DEBUG,
         format = '%(asctime)s %(levelname)s %(message)s',
-        filename = '/tmp/fixmystreet.log',
+        filename = './fixmystreet.log',
         filemode = 'w'
     )
 
-
 elif ENVIRONMENT=="jenkins":
-    SITE_ID = 3
     INSTALLED_APPS += ('django_jenkins',)
     PROJECT_APPS = ('fixmystreet',)
     JENKINS_TASKS = (
@@ -174,6 +174,10 @@ elif ENVIRONMENT=="jenkins":
         'django_jenkins.tasks.django_tests',
         #'django_jenkins.tasks.run_jslint',
     )
+
+if ENVIRONMENT=="dev" or ENVIRONMENT=="local" or ENVIRONMENT=="jenkins":
+    SITE_ID = 3
+
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2
