@@ -17,13 +17,6 @@ STATIC_URL = '/static/'
 #TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE = 'template_postgis'
 
-logging.basicConfig(
-    level = logging.DEBUG,
-    format = '%(asctime)s %(levelname)s %(message)s',
-    filename = '/tmp/fixmystreet.log',
-    filemode = 'w'
-)
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -163,6 +156,13 @@ if ENVIRONMENT=="dev":
     SITE_ID = 3
     # INSTALLED_APPS += ('debug_toolbar', )
     # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    logging.basicConfig(
+        level = logging.DEBUG,
+        format = '%(asctime)s %(levelname)s %(message)s',
+        filename = '/tmp/fixmystreet.log',
+        filemode = 'w'
+    )
+
 
 elif ENVIRONMENT=="jenkins":
     SITE_ID = 3
