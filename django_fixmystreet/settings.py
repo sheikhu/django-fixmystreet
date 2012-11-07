@@ -1,7 +1,6 @@
 # Django settings for fixmystreet project.
 import os, sys
 import logging
-import shutil
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
@@ -170,7 +169,7 @@ elif ENVIRONMENT=="jenkins":
     INSTALLED_APPS += ('django_jenkins',)
     PROJECT_APPS = ('fixmystreet',)
     JENKINS_TASKS = (
-        'django_jenkins.tasks.run_pylint',
+        # 'django_jenkins.tasks.run_pylint',
         'django_jenkins.tasks.with_coverage',
         'django_jenkins.tasks.django_tests',
         #'django_jenkins.tasks.run_jslint',
@@ -187,8 +186,6 @@ elif ENVIRONMENT=="production":
 JSLINT_CHECKED_FILES = (
     'media/js/fixmystreetmap.js'
 )
-
-PYLINT_RCFILE = os.path.join(PROJECT_PATH, 'pylintrc')
 
 
 try:

@@ -60,20 +60,6 @@ def create_report(request):
     user = None
     if request.user.is_authenticated():
         user = request.user
-    try:
-        user = user or oauthtoken_to_user(request.POST.get('backend'), request.POST.get('access_token'), request)
-    except HTTPError, e:
-        return JsonHttpResponse('error', {
-            'code': e.code,
-            'errortype':'trasaction_error',
-            'message': simplejson.loads(e.read())['error']['message']
-        })
-    
-    if not user:
-        return JsonHttpResponse('error', {
-            'errortype':'connection_error',
-            'message': 'Enable to authenticate user'
-        })
 
     data = request.POST
     report = Report()

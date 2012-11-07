@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 
-from django.db import models, connection
+from django.db import connection
 from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver

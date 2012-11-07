@@ -17,7 +17,6 @@ DATABASES = {
 EMAIL_HOST = "relay.irisnet.be"
 EMAIL_ADMIN = "###@cirb.irisnet.be"
 ADMIN_EMAIL = "###@cirb.irisnet.be"
-ADMIN = (,)
 
 FACEBOOK_API_SECRET         = '###'
 
