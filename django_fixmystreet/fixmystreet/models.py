@@ -503,28 +503,17 @@ class NotificationResolver(object):
                     self.send(rule.councillor)
 
 
-class Province(models.Model):
-	__metaclass__ = TransMeta
-	
-	name = models.CharField(max_length=100)
-	abbrev = models.CharField(max_length=3)
-	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-	
-	class Meta:
-		translate = ('name', )
-    
+
 class Commune(models.Model):
 	__metaclass__ = TransMeta
 	
 	name = models.CharField(max_length=100)
 	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
 	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-	province = models.ForeignKey(Province)
 	
 	class Meta:
 		translate = ('name', )
-	
+
 class Zone(models.Model):
 	__metaclass__ = TransMeta
 	
@@ -546,28 +535,9 @@ class FMSUserZone(models.Model):
 	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
 
 
-class City(models.Model):
-    province = models.ForeignKey(Province)
-    name = models.CharField(max_length=100)
-    # the city's 311 email, if it has one.
-    #email = models.EmailField(blank=True, null=True)    
-    #category_set = models.ForeignKey(ReportCategorySet, null=True, blank=True)
-    objects = models.GeoManager()
-
-    def __unicode__(self):      
-        return self.name
-    
-    def get_absolute_url(self):
-        return reverse('city_show', args=[self.id])
-
-    class Meta:
-        verbose_name_plural = "cities"
-
-
 class Ward(models.Model):
     name = models.CharField(max_length=100)
     councillor = models.ForeignKey(Councillor, null=True, blank=True)
-    city = models.ForeignKey(City)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
     feature_id = models.CharField(max_length=25)

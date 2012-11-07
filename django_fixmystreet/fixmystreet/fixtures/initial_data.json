@@ -22,24 +22,8 @@
             "domain": "localhost:8000", 
             "name": "localhost"
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "fixmystreet.province", 
-        "fields": {
-            "abbrev": "BXL", 
-            "name": "Brabant"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "fixmystreet.city", 
-        "fields": {
-            "name": "La Region de Bruxelles-Capitale",
-            "province": 1
-        }
-    }, 
-        {
         "pk": 1, 
         "model": "fixmystreet.councillor", 
         "fields": {
