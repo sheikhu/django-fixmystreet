@@ -7,7 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, Comment, City, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, Agent
+from django_fixmystreet.fixmystreet.models import Ward,File, Comment, City, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, Agent, AttachmentType
 
 
 class CategoryChoiceField(forms.fields.ChoiceField):
@@ -139,7 +139,7 @@ class AgentCreationForm(UserCreationForm):
 class ReportFileForm(forms.ModelForm):
 	class Meta:
 		model=File
-		fields=('title','file',)
+		fields=('title','file','isVisible',)
 	
 	file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
 	
@@ -149,6 +149,7 @@ class ReportFileForm(forms.ModelForm):
 	def save(self,user,report,commit=True):
 		fileUpdate= super(ReportFileForm,self).save(commit=False)
 		fileUpdate.report = report
+		fileUpdate.fileType = AttachmentType.objects.all()[0];
 		if commit:
 			fileUpdate.save()
 		return fileUpdate
@@ -156,7 +157,7 @@ class ReportFileForm(forms.ModelForm):
 class ReportCommentForm(forms.ModelForm):
 	class Meta:
 		model=Comment
-		fields=('title','text',)
+		fields=('title','text','isVisible',)
 	
 	def save(self,user,report,commit=True):
 		comment= super(ReportCommentForm,self).save(commit=False)

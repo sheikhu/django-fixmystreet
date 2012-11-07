@@ -258,7 +258,10 @@ class Attachment(models.Model):
 	validated=models.BooleanField(default=False)
 	isVisible=models.BooleanField(default=False)
 	title=models.CharField(max_length=250)
-
+	
+	class Meta:
+		abstract=True
+	
 class Comment (Attachment):
 	text = models.TextField()
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, File,Comment, Attachment
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm, ReportFileForm,ReportCommentForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -45,12 +45,16 @@ def new(request):
 @login_required(login_url='/pro/accounts/login/')
 def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
+    files= File.objects.filter(report_id=report_id)
+    comments = Comment.objects.filter(report_id=report_id)
     return render_to_response("reports/show_pro.html",
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
                 "update_form": ReportUpdateForm(),
                 "comment_form": ReportCommentForm(),
-                "file_form":ReportFileForm()
+                "file_form":ReportFileForm(),
+                "files":files,
+                "comments":comments
             },
             context_instance=RequestContext(request))
