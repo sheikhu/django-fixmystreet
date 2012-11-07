@@ -13,10 +13,8 @@ RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
 $(BIN_DIR)/buildout: $(LIBS_DIR)
+	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
 	python bootstrap.py
-
-$(BIN_DIR):
-	mkdir $(BIN_DIR)
 
 $(LIBS_DIR):
 	mkdir $(LIBS_DIR)
@@ -33,6 +31,7 @@ test: $(BIN_DIR)/django
 
 jenkins: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
+	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes > pyflakes.log
 	ENV=jenkins $(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 
 rpm:
