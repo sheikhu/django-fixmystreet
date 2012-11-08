@@ -94,7 +94,7 @@ class Report (models.Model):
     is_fixed = models.BooleanField(default=False)
     # time report was marked as 'fixed'
     fixed_at = models.DateTimeField(null=True, blank=True)
-    ward = models.ForeignKey('Ward', null=True)
+    commune = models.ForeignKey('Commune', null=True)
     hashCode = models.IntegerField(null=True)
     creator = models.ForeignKey(User,null=True)
     description = models.TextField(null=True)
@@ -337,10 +337,10 @@ class NotificationRule(models.Model):
         help_text="compare to the category of the report and this selected category."
     )
     # the city this rule applies to 
-    ward = models.ForeignKey(
-        'Ward',
+    commune = models.ForeignKey(
+        'Commune',
         null=False,
-        help_text="The ward where the rule apply."
+        help_text="The commune where the rule apply."
     )
     # filled in if this is a category class rule
     category_class = models.ForeignKey(
@@ -356,7 +356,7 @@ class NotificationRule(models.Model):
                 self.councillor.name,
                 (self.category_class and self.category_class.name or ''),
                 self.RuleChoices[self.rule][1],
-                self.ward.name
+                self.commune.name
         )
 
 
@@ -378,7 +378,7 @@ class ReportNotification(models.Model):
 class NotificationResolver(object):
     def __init__(self, report):
         self.report = report
-        self.rules = NotificationRule.objects.filter(ward=self.report.ward)
+        self.rules = NotificationRule.objects.filter(commune=self.report.commune)
 
     def send(self, councillor):
         notification = ReportNotification(report=self.report, to_councillor=councillor)
@@ -386,8 +386,8 @@ class NotificationResolver(object):
         notification.save()
 
     def resolve(self):
-        if self.report.ward.councillor:
-            self.send(self.report.ward.councillor)
+        if self.report.commune.councillor:
+            self.send(self.report.commune.councillor)
         for rule in self.rules:
             if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)
@@ -408,7 +408,8 @@ class Commune(models.Model):
     name = models.CharField(max_length=100)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    
+    feature_id = models.CharField(max_length=25)
+
     class Meta:
         translate = ('name', )
 
@@ -455,7 +456,7 @@ class Ward(models.Model):
 class ZipCode(models.Model):
     __metaclass__ = TransMeta
     
-    ward = models.ForeignKey(Ward)
+    commune = models.ForeignKey(Commune)
     code = models.CharField(max_length=4)
     name = models.CharField(max_length=100)
     hide = models.BooleanField()
