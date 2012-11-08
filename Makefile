@@ -12,8 +12,10 @@ RPM_NAME      = fixmystreet
 RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
-$(BIN_DIR)/buildout: $(LIBS_DIR)
+bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
+
+$(BIN_DIR)/buildout: bootstrap.py $(LIBS_DIR)
 	python bootstrap.py
 
 $(LIBS_DIR):

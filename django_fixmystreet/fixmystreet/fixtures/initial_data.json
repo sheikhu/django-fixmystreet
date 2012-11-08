@@ -25,153 +25,172 @@
     }, 
     {
         "pk": 1, 
-        "model": "fixmystreet.ward",
+        "model": "fixmystreet.commune",
         "fields": {
-            "name": "Anderlecht", 
+            "name_fr": "Anderlecht", 
+            "name_nl": "Anderlecht", 
             "feature_id": "URB_A_MU.7100"
         }
     },
     {
         "pk": 2, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Auderghem",
+            "name_fr": "Auderghem",
+            "name_nl": "Auderghem",
             "feature_id": "URB_A_MU.7200"
         }
     },
     {
         "pk": 3, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Berchem Ste Agathe",
+            "name_fr": "Berchem Ste Agathe",
+            "name_nl": "Berchem Ste Agathe",
             "feature_id": "URB_A_MU.7300"
         }
     },
     {
         "pk": 4, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Bruxelles",
+            "name_fr": "Bruxelles",
+            "name_nl": "Bruxelles",
             "feature_id": "URB_A_MU.7400"
         }
     }, 
     {
         "pk": 5, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Etterbeek",
+            "name_fr": "Etterbeek",
+            "name_nl": "Etterbeek",
             "feature_id": "URB_A_MU.7500"
         }
     }, 
     {
         "pk": 6, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Evere",
+            "name_fr": "Evere",
+            "name_nl": "Evere",
             "feature_id": "URB_A_MU.7600"
         }
     }, 
     {
         "pk": 7, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Forest",
+            "name_fr": "Forest",
+            "name_nl": "Forest",
             "feature_id": "URB_A_MU.7700"
         }
     }, 
     {
         "pk": 8, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Ganshoren",
+            "name_fr": "Ganshoren",
+            "name_nl": "Ganshoren",
             "feature_id": "URB_A_MU.7800"
         }
     }, 
     {
         "pk": 9, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Ixelles",
+            "name_fr": "Ixelles",
+            "name_nl": "Ixelles",
             "feature_id": "URB_A_MU.7900"
         }
     }, 
     {
         "pk": 10, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Jette",
+            "name_fr": "Jette",
+            "name_nl": "Jette",
             "feature_id": "URB_A_MU.8000"
         }
     },
     {
         "pk": 11, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Koekelberg",
+            "name_fr": "Koekelberg",
+            "name_nl": "Koekelberg",
             "feature_id": "URB_A_MU.8100"
         }
     }, 
     {
         "pk": 12, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Molenbeek St Jean",
+            "name_fr": "Molenbeek St Jean",
+            "name_nl": "Molenbeek St Jean",
             "feature_id": "URB_A_MU.8200"
         }
     }, 
     {
         "pk": 13, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Saint-Gilles",
+            "name_fr": "Saint-Gilles",
+            "name_nl": "Saint-Gilles",
             "feature_id": "URB_A_MU.8300"
         }
     }, 
     {
         "pk": 14, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Saint-Josse ten Noode",
+            "name_fr": "Saint-Josse ten Noode",
+            "name_nl": "Saint-Josse ten Noode",
             "feature_id": "URB_A_MU.8400"
         }
     }, 
     {
         "pk": 15, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Schaerbeek",
+            "name_fr": "Schaerbeek",
+            "name_nl": "Schaerbeek",
             "feature_id": "URB_A_MU.8500"
         }
     },
     {
         "pk": 16, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Uccle",
+            "name_fr": "Uccle",
+            "name_nl": "Uccle",
             "feature_id": "URB_A_MU.8600"
         }
     }, 
     {
         "pk": 17, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Watermael-Boisfort",
+            "name_fr": "Watermael-Boisfort",
+            "name_nl": "Watermael-Boisfort",
             "feature_id": "URB_A_MU.8700"
         }
     }, 
     {
         "pk": 18, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Woluwe St Lambert",
+            "name_fr": "Woluwe St Lambert",
+            "name_nl": "Woluwe St Lambert",
             "feature_id": "URB_A_MU.8800"
         }
     }, 
     {
         "pk": 19, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.commune", 
         "fields": {
-            "name": "Woluwe St Pierre",
+            "name_fr": "Woluwe St Pierre",
+            "name_nl": "Woluwe St Pierre",
             "feature_id": "URB_A_MU.8900"
         }
     },
@@ -179,7 +198,7 @@
         "pk": 1, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 1, 
+            "commune": 1, 
             "name_fr": "Anderlecht", 
             "name_nl": "Anderlecht", 
             "name_en": "Anderlecht", 
@@ -191,7 +210,7 @@
         "pk": 2, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 2, 
+            "commune": 2, 
             "name_fr": "Auderghem", 
             "name_nl": "Oudergem", 
             "name_en": "Auderghem", 
@@ -203,7 +222,7 @@
         "pk": 3, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 3, 
+            "commune": 3, 
             "name_fr": "Berchem Ste Agathe", 
             "name_nl": "Sint-Agatha-Berchem", 
             "name_en": "Berchem Ste Agathe", 
@@ -215,7 +234,7 @@
         "pk": 4, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "Bruxelles", 
             "name_nl": "Brussel", 
             "name_en": "Brussels", 
@@ -227,7 +246,7 @@
         "pk": 5, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 5, 
+            "commune": 5, 
             "name_fr": "Etterbeek", 
             "name_nl": "Etterbeek", 
             "name_en": "Etterbeek", 
@@ -239,7 +258,7 @@
         "pk": 6, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 6, 
+            "commune": 6, 
             "name_fr": "Evere", 
             "name_nl": "Evere", 
             "name_en": "Evere", 
@@ -251,7 +270,7 @@
         "pk": 7, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 7, 
+            "commune": 7, 
             "name_fr": "Forest", 
             "name_nl": "Vorst", 
             "name_en": "Forest", 
@@ -263,7 +282,7 @@
         "pk": 8, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 8,
+            "commune": 8,
             "name_fr": "Ganshoren", 
             "name_nl": "Ganshoren", 
             "name_en": "Ganshoren", 
@@ -275,7 +294,7 @@
         "pk": 9, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 9, 
+            "commune": 9, 
             "name_fr": "Ixelles", 
             "name_nl": "Elsene", 
             "name_en": "Ixelles", 
@@ -287,7 +306,7 @@
         "pk": 10, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 10, 
+            "commune": 10, 
             "name_fr": "Jette", 
             "name_nl": "Jette", 
             "name_en": "Jette", 
@@ -299,7 +318,7 @@
         "pk": 11, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 11, 
+            "commune": 11, 
             "name_fr": "Koekelberg", 
             "name_nl": "Koekelberg", 
             "name_en": "Koekelberg", 
@@ -311,7 +330,7 @@
         "pk": 12, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 12, 
+            "commune": 12, 
             "name_fr": "Molenbeek St Jean", 
             "name_nl": "Sint-Jans-Molenbeek", 
             "name_en": "Molenbeek St Jean", 
@@ -323,7 +342,7 @@
         "pk": 13, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 13, 
+            "commune": 13, 
             "name_fr": "Saint-Gilles", 
             "name_nl": "Sint-Gillis", 
             "name_en": "Saint-Gilles", 
@@ -335,7 +354,7 @@
         "pk": 14, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 14, 
+            "commune": 14, 
             "name_fr": "Saint-Josse ten Noode", 
             "name_nl": "Sint-Joost-ten-Node", 
             "name_en": "Saint-Josse ten Noode", 
@@ -347,7 +366,7 @@
         "pk": 15, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 15, 
+            "commune": 15, 
             "name_fr": "Schaerbeek", 
             "name_nl": "Schaarbeek", 
             "name_en": "Schaerbeek", 
@@ -359,7 +378,7 @@
         "pk": 16, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 16, 
+            "commune": 16, 
             "name_fr": "Uccle", 
             "name_nl": "Ukkel", 
             "name_en": "Uccle", 
@@ -371,7 +390,7 @@
         "pk": 17, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 17, 
+            "commune": 17, 
             "name_fr": "Watermael-Boisfort", 
             "name_nl": "Watermaal-Bosvoorde", 
             "name_en": "Watermael-Boisfort", 
@@ -383,7 +402,7 @@
         "pk": 18, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 18, 
+            "commune": 18, 
             "name_fr": "Woluwe St Lambert", 
             "name_nl": "Sint-Lambrechts-Woluwe", 
             "name_en": "Woluwe St Lambert", 
@@ -395,7 +414,7 @@
         "pk": 19, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 19,
+            "commune": 19,
             "name_fr": "Woluwe St Pierre", 
             "name_nl": "Sint-Pieters-Woluwe", 
             "name_en": "Woluwe St Pierre", 
@@ -407,7 +426,7 @@
         "pk": 20, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "Laeken", 
             "name_nl": "Laeken", 
             "name_en": "Laeken", 
@@ -419,7 +438,7 @@
         "pk": 21, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "Neder-over-Heembeek", 
             "name_nl": "Neder-over-Heembeek", 
             "name_en": "Neder-over-Heembeek", 
@@ -431,7 +450,7 @@
         "pk": 22, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "Haren", 
             "name_nl": "Haren", 
             "name_en": "Haren", 
@@ -443,7 +462,7 @@
         "pk": 23, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
             "name_en": "", 
@@ -455,7 +474,7 @@
         "pk": 24, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
             "name_en": "", 
@@ -467,7 +486,7 @@
         "pk": 25, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
             "name_en": "", 
@@ -479,7 +498,7 @@
         "pk": 26, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "ward": 4,
+            "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
             "name_en": "", 

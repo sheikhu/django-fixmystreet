@@ -1,9 +1,9 @@
 *.pyc
 *.egg-info
+*.log
 .mr.developer.cfg
 bootstrap.py
 libs/
 bin/
 django_fixmystreet/local_settings.py
-django_fixmystreet/media/photos/
-django_fixmystreet/media-tmp/
+media/photos/
