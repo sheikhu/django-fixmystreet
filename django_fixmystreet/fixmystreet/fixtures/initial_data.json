@@ -23,21 +23,11 @@
             "name": "localhost"
         }
     }, 
-
     {
         "pk": 1, 
-        "model": "fixmystreet.councillor", 
-        "fields": {
-            "name": "Jonathan Sanchez", 
-            "email": "jsanchezpando@cirb.irisnet.be"
-        }
-    },
-    {
-        "pk": 1, 
-        "model": "fixmystreet.ward", 
+        "model": "fixmystreet.ward",
         "fields": {
             "name": "Anderlecht", 
-            "councillor": 1,
             "feature_id": "URB_A_MU.7100"
         }
     },
@@ -45,8 +35,7 @@
         "pk": 2, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Auderghem", 
-            "councillor": 1,
+            "name": "Auderghem",
             "feature_id": "URB_A_MU.7200"
         }
     },
@@ -54,8 +43,7 @@
         "pk": 3, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Berchem Ste Agathe", 
-            "councillor": 1,
+            "name": "Berchem Ste Agathe",
             "feature_id": "URB_A_MU.7300"
         }
     },
@@ -63,8 +51,7 @@
         "pk": 4, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Bruxelles", 
-            "councillor": 1,
+            "name": "Bruxelles",
             "feature_id": "URB_A_MU.7400"
         }
     }, 
@@ -72,8 +59,7 @@
         "pk": 5, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Etterbeek", 
-            "councillor": 1,
+            "name": "Etterbeek",
             "feature_id": "URB_A_MU.7500"
         }
     }, 
@@ -81,8 +67,7 @@
         "pk": 6, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Evere", 
-            "councillor": 1, 
+            "name": "Evere",
             "feature_id": "URB_A_MU.7600"
         }
     }, 
@@ -90,8 +75,7 @@
         "pk": 7, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Forest", 
-            "councillor": 1, 
+            "name": "Forest",
             "feature_id": "URB_A_MU.7700"
         }
     }, 
@@ -99,8 +83,7 @@
         "pk": 8, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Ganshoren", 
-            "councillor": 1, 
+            "name": "Ganshoren",
             "feature_id": "URB_A_MU.7800"
         }
     }, 
@@ -108,8 +91,7 @@
         "pk": 9, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Ixelles", 
-            "councillor": 1, 
+            "name": "Ixelles",
             "feature_id": "URB_A_MU.7900"
         }
     }, 
@@ -117,8 +99,7 @@
         "pk": 10, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Jette", 
-            "councillor": 1, 
+            "name": "Jette",
             "feature_id": "URB_A_MU.8000"
         }
     },
@@ -126,8 +107,7 @@
         "pk": 11, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Koekelberg", 
-            "councillor": 1, 
+            "name": "Koekelberg",
             "feature_id": "URB_A_MU.8100"
         }
     }, 
@@ -135,8 +115,7 @@
         "pk": 12, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Molenbeek St Jean", 
-            "councillor": 1, 
+            "name": "Molenbeek St Jean",
             "feature_id": "URB_A_MU.8200"
         }
     }, 
@@ -144,8 +123,7 @@
         "pk": 13, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Saint-Gilles", 
-            "councillor": 1, 
+            "name": "Saint-Gilles",
             "feature_id": "URB_A_MU.8300"
         }
     }, 
@@ -153,8 +131,7 @@
         "pk": 14, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Saint-Josse ten Noode", 
-            "councillor": 1, 
+            "name": "Saint-Josse ten Noode",
             "feature_id": "URB_A_MU.8400"
         }
     }, 
@@ -162,8 +139,7 @@
         "pk": 15, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Schaerbeek", 
-            "councillor": 1, 
+            "name": "Schaerbeek",
             "feature_id": "URB_A_MU.8500"
         }
     },
@@ -171,8 +147,7 @@
         "pk": 16, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Uccle", 
-            "councillor": 1, 
+            "name": "Uccle",
             "feature_id": "URB_A_MU.8600"
         }
     }, 
@@ -180,8 +155,7 @@
         "pk": 17, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Watermael-Boisfort", 
-            "councillor": 1, 
+            "name": "Watermael-Boisfort",
             "feature_id": "URB_A_MU.8700"
         }
     }, 
@@ -189,8 +163,7 @@
         "pk": 18, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Woluwe St Lambert", 
-            "councillor": 1, 
+            "name": "Woluwe St Lambert",
             "feature_id": "URB_A_MU.8800"
         }
     }, 
@@ -198,8 +171,7 @@
         "pk": 19, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "name": "Woluwe St Pierre", 
-            "councillor":1, 
+            "name": "Woluwe St Pierre",
             "feature_id": "URB_A_MU.8900"
         }
     },
@@ -2593,16 +2565,6 @@
         }
     },
     {
-        "pk": 1,
-        "model": "social_auth.usersocialauth",
-        "fields": {
-            "user": 1,
-            "provider": "facebook",
-            "uid": "100000545063842",
-            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100000545063842\"}"
-        }
-    },
-    {
         "pk": 2,
         "model": "auth.user",
         "fields": {
@@ -2612,16 +2574,6 @@
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=", 
             "is_staff": true,
             "is_superuser": true
-        }
-    },
-    {
-        "pk": 2,
-        "model": "social_auth.usersocialauth",
-        "fields": {
-            "user": 2,
-            "provider": "facebook",
-            "uid": "100000594973287",
-            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100000594973287\"}"
         }
     },
     {
@@ -2664,16 +2616,6 @@
             "organisation":1
         }
     },
-    {
-        "pk": 3,
-        "model": "social_auth.usersocialauth",
-        "fields": {
-            "user": 3,
-            "provider": "facebook",
-            "uid": "100001613324697",
-            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100001613324697\"}"
-        }
-    },
    {
         "pk": 4,
         "model": "auth.user",
@@ -2698,16 +2640,6 @@
             "manager":true,
             "leader":true,
             "organisation":1
-        }
-    },
-    {
-        "pk": 4,
-        "model": "social_auth.usersocialauth",
-        "fields": {
-            "user": 4,
-            "provider": "facebook",
-            "uid": "100004563324697",
-            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100005513324697\"}"
         }
     },
    {
@@ -2737,16 +2669,6 @@
         }
     },
     {
-        "pk": 5,
-        "model": "social_auth.usersocialauth",
-        "fields": {
-            "user": 5,
-            "provider": "facebook",
-            "uid": "1000045767324697",
-            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100085513324697\"}"
-        }
-    }, 
-   {
     	"pk":1,
     	"model":"fixmystreet.status",
     	"fields": {
