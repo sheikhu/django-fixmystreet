@@ -39,17 +39,17 @@ class Category (models.Model):
 	class Meta:
 		translate=('label',)
 		
-class Type (models.Model):
-	__metaclass__ = TransMeta
-	
-	code= models.CharField(max_length=50,null=False)
-	label = models.CharField(max_length=100,null=False)
-	public = models.BooleanField(default=True)
-	mainCategory = models.ForeignKey(Category,related_name='mainCategory')
-	secondCategory = models.ForeignKey(Category,related_name='secondCategory')
-	
-	class Meta:
-		translate=('label',)
+#class Type (models.Model):
+#	__metaclass__ = TransMeta
+#	
+#	code= models.CharField(max_length=50,null=False)
+#	label = models.CharField(max_length=100,null=False)
+#	public = models.BooleanField(default=True)
+#	mainCategory = models.ForeignKey(Category,related_name='mainCategory')
+#	secondCategory = models.ForeignKey(Category,related_name='secondCategory')
+#	
+#	class Meta:
+#		translate=('label',)
 
 class FMSUser (User):
 	roles = models.ManyToManyField(Role)
@@ -60,8 +60,8 @@ class FMSUser (User):
 	
 	objects = UserManager()
 
-class OrganisationEntity  (Group):
-	type = models.ForeignKey(Type)
+#class OrganisationEntity  (Group):
+#	type = models.ForeignKey(Type)
 		
 class Status(models.Model):
 	__metaclass__=TransMeta
@@ -94,7 +94,7 @@ class Report (models.Model):
 	impetrant = models.ForeignKey(FMSUser,related_name='impetrant',null=True)
 	gestionnaireResponsable = models.ForeignKey(FMSUser,related_name='Gestionnaire responsable',null=True)
 	gestionnaireResponsableHasAcceptedReport = models.BooleanField(default=False)
-	reportType = models.ForeignKey(Type)
+	#reportType = models.ForeignKey(Type)
 	valid = models.BooleanField(default=False)
 	markedAsFinished = models.BooleanField(default=False)
 	photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
@@ -281,6 +281,7 @@ class ReportCategory(models.Model):
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
+    public = models.BooleanField(default=True)
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
  
