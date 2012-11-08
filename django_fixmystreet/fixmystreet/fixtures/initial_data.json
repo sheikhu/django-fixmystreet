@@ -36,7 +36,6 @@
         "pk": 1, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Anderlecht", 
             "councillor": 1,
             "feature_id": "URB_A_MU.7100"
@@ -46,7 +45,6 @@
         "pk": 2, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Auderghem", 
             "councillor": 1,
             "feature_id": "URB_A_MU.7200"
@@ -56,7 +54,6 @@
         "pk": 3, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Berchem Ste Agathe", 
             "councillor": 1,
             "feature_id": "URB_A_MU.7300"
@@ -66,7 +63,6 @@
         "pk": 4, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1,
             "name": "Bruxelles", 
             "councillor": 1,
             "feature_id": "URB_A_MU.7400"
@@ -76,7 +72,6 @@
         "pk": 5, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Etterbeek", 
             "councillor": 1,
             "feature_id": "URB_A_MU.7500"
@@ -86,7 +81,6 @@
         "pk": 6, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Evere", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.7600"
@@ -96,7 +90,6 @@
         "pk": 7, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Forest", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.7700"
@@ -106,7 +99,6 @@
         "pk": 8, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Ganshoren", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.7800"
@@ -116,7 +108,6 @@
         "pk": 9, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Ixelles", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.7900"
@@ -126,7 +117,6 @@
         "pk": 10, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Jette", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8000"
@@ -136,7 +126,6 @@
         "pk": 11, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Koekelberg", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8100"
@@ -146,7 +135,6 @@
         "pk": 12, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Molenbeek St Jean", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8200"
@@ -156,7 +144,6 @@
         "pk": 13, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Saint-Gilles", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8300"
@@ -166,7 +153,6 @@
         "pk": 14, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Saint-Josse ten Noode", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8400"
@@ -176,7 +162,6 @@
         "pk": 15, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Schaerbeek", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8500"
@@ -186,7 +171,6 @@
         "pk": 16, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Uccle", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8600"
@@ -196,7 +180,6 @@
         "pk": 17, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Watermael-Boisfort", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8700"
@@ -206,7 +189,6 @@
         "pk": 18, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Woluwe St Lambert", 
             "councillor": 1, 
             "feature_id": "URB_A_MU.8800"
@@ -216,7 +198,6 @@
         "pk": 19, 
         "model": "fixmystreet.ward", 
         "fields": {
-            "city": 1, 
             "name": "Woluwe St Pierre", 
             "councillor":1, 
             "feature_id": "URB_A_MU.8900"
@@ -922,6 +903,7 @@
             "first_name": "Lahcen",
             "last_name": "Afif",
             "username": "lafif",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=", 
             "is_staff": true,
             "is_superuser": true
         }

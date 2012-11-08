@@ -436,7 +436,7 @@ class Ward(models.Model):
         return reverse('ward_show', args=[self.id])
 
     def __unicode__(self):      
-        return self.city.name + " " + self.name
+        return self.name
 
 
 class ZipCode(models.Model):

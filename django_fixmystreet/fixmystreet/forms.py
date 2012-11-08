@@ -10,6 +10,7 @@ from django.conf import settings
 from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, City, Role, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
 
 
+
 class CategoryChoiceField(forms.fields.ChoiceField):
     """
     Do some pre-processing to
