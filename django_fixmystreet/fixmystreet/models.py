@@ -156,13 +156,16 @@ class Attachment(models.Model):
     
     class Meta:
         abstract=True
-    
+
+
 class Comment (Attachment):
     text = models.TextField()
+
 
 class File(Attachment):
     file = models.FileField(upload_to="files")
     fileType= models.ForeignKey(AttachmentType)
+
 
 class UserType(models.Model):
     __metaclass__= TransMeta
@@ -174,8 +177,6 @@ class UserType(models.Model):
     
     class Meta:
         translate = ('name', )
-
-
 
 
 #signal on a report to notify public authority that a report has been filled
@@ -386,8 +387,8 @@ class NotificationResolver(object):
         notification.save()
 
     def resolve(self):
-        if self.report.commune.councillor:
-            self.send(self.report.commune.councillor)
+        if self.report.commune.default_manager:
+            self.send(self.report.commune.default_manager)
         for rule in self.rules:
             if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)
@@ -401,7 +402,6 @@ class NotificationResolver(object):
                     self.send(rule.councillor)
 
 
-
 class Commune(models.Model):
     __metaclass__ = TransMeta
     
@@ -409,9 +409,11 @@ class Commune(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     feature_id = models.CharField(max_length=25)
+    default_manager = models.ForeignKey(FMSUser, null=True)
 
     class Meta:
         translate = ('name', )
+
 
 class Zone(models.Model):
     __metaclass__ = TransMeta

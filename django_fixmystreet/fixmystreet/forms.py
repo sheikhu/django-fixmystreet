@@ -7,7 +7,8 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Commune, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
 
 class MainCategoryChoiceField(forms.fields.ChoiceField):
     """
@@ -86,20 +87,20 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
-            self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
+            self.commune = Commune.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
 
         super(ReportForm,self).__init__(data, files, initial=initial)
         #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
 
     def clean(self):
-        if not self.ward:
+        if not self.commune:
             raise forms.ValidationError("Location not supported")
         return super(ReportForm, self).clean()
 
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
-        report.ward = self.ward
+        report.commune = self.commune
         report.status = list(Status.objects.all())[0]
         report.point = self.point
         if user.is_authenticated():

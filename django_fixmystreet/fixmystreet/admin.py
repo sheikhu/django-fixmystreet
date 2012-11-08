@@ -24,7 +24,7 @@ class FaqEntryAdmin(admin.ModelAdmin):
 
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('ward','title','is_fixed','created_at','updated_at','category')
+    list_display = ('commune','title','is_fixed','created_at','updated_at','category')
     list_display_links = ('title',)
     ordering = ['created_at']
     exclude = ['photo']
