@@ -7,7 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, Role, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
+from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity, Comment, Role, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, AttachmentType, FMSUser
 
 
 
@@ -123,7 +123,7 @@ class AgentCreationForm(UserCreationForm):
         model = User
         fields = ('first_name','last_name','email','telephone',)
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    def save(self,user, commit=True):
+    def save(self,userID,userType, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
@@ -134,7 +134,10 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
         fmsuser.save()
-        fmsuser.roles.add(roleFromGroupObject(0,groupFromUser(user.id)))
+        fmsuser.roles.add(Role.objects.get(code=userType))
+        currentUser = FMSUser.objects.get(user_ptr_id=userID)
+        groupID = currentUser.entityGroups.all()[0].group_ptr_id
+        fmsuser.entityGroups.add(OrganisationEntity.objects.get(group_ptr_id=groupID))
         return fmsuser;
 		
 class ReportFileForm(forms.ModelForm):

@@ -37,12 +37,16 @@ $(function(){
         $('.login-bar').show();
         $('form :submit').prop('disabled',false);
     });
-
+	$('#map-bxl').hide();
     {% if user.is_authenticated %}
         $(document).trigger('connected');
     {% else %}
         $(document).trigger('disconnected');
     {% endif %}});
+
+	function showMap() {
+			$("#map-bxl").toggle();
+	}
 </script>
 {% endblock %}
 {% block css %}
@@ -82,9 +86,8 @@ $(function(){
 
     <h1>{{report.title}}</h1>
     <div>
-    <div>
-	<div style="float:left">    
-		{% if report.is_fixed %}
+	<div id="leftcol">    
+		{% if report.markedAsFinished %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
 
@@ -120,6 +123,10 @@ $(function(){
                     <td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td>
                 </tr>
                 <tr>
+                	<th></th>
+                	<td><input type="button" class='big_button' onclick="showMap();" value='{% trans "Show on map" %}' ></input></td>
+                </tr>
+                <tr>
                     <th>{% trans "Category:" %}</th>
                     <td>{{report.category.name}}</td>
                 </tr>
@@ -128,39 +135,40 @@ $(function(){
                 	<td>{{ report.status.name_en }}</td>
                 </tr>
             </table>
-
-
-			<div id="more-actions">
-				<p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-			</div>
-		
-			{% if report.reportupdate_set.all %}
-			<h3>{% trans "Extra information" %}</h3>
+			<div id="map-bxl"></div>
+			{% if files %}
+			<h3>{% trans "Extra files" %}</h3>
 			<div id="report_updates">
-				{% for update in report.reportupdate_set.all %}
+				{% for file in files %}
 				<div class="report_update">
-					<p>{{update.desc}}</p>
-					{% if update.photo  %}
-					<center><img style="max-width:100px;max-heigth:100px" src='{{ update.photo.url }}'/></center>
-		    		{% endif %}
-					{% if update.is_fixed %}<strong class="fixed_msg">{% trans "This problem has been fixed." %}</strong>{% endif %}
-					<p class="author-sign">{% blocktrans with by=update.author.username on=update.created_at|date %}Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>{% endblocktrans %}</p>
+					<h4>{{file.title}}</h4>
+					{% if file.file %}
+					<center><img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/></center>
+					{% endif %}
 				</div>
 				{% endfor %}
 			</div>
 			{% endif %}
-
+			{% if comments %}
+			<h3>{% trans "Extra comments" %}</h3>
+			<div id="report_updates">
+				{% for comment in comments %}
+				<div class="report_update">
+					<h4>{{comment.title}}</h4>
+					<p>{{comment.text}}</p>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+	
 			
 		</div>
 	</div>
-	<div style="float:right">
-     	<div id="map-bxl" ></div>
-    </div>
-    </div>
-    <div>
-    <div style="float:left">
-			<h2>{% trans "Provide extra information" %}</h2>
-			<p>{% trans "Add a comment to this report" %}</p>
+	<div id="rightcol">
+	
+			
+		
+			<h2>{% trans "Add a comment to this report" %}</h2>
 			
 			<form enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
 				<table id="report_form" class="form">
@@ -169,16 +177,16 @@ $(function(){
                         <td></td>
                         <td>
                             <p style="float:left;">
-                                <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
+                            	<input type="hidden" name="form-type" value="comment-form"/>
+                                <input type="submit" class='big_button' value="{% trans 'Add' %}" />
                             </p>
                             
                         </td>
                     </tr>
 				</table>
 			</form>
-    </div>
-    <div style="float:right">
-    	<p>{% trans "Add a file to this report" %}</p>
+			
+			<h2>{% trans "Add a file to this report" %}</h2>
 			<form enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
 				<table id="report_form" class="form">
 					{{file_form.as_table}}					
@@ -186,16 +194,25 @@ $(function(){
                         <td></td>
                         <td>
                             <p style="float:left;">
-                                <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
+                            	<input type="hidden" name="form-type" value="file-form"/>
+                                <input type="submit" class='big_button' value="{% trans 'Add' %}" />
                             </p>
                             
                         </td>
                     </tr>
+                    
 				</table>
+				
 			</form>
+			
+     		
     </div>
+
+    	
     </div>
-    </div>
+    <div id="more-actions">
+				<p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+			</div>
 </div>
 	
 {% endblock %}

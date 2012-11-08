@@ -13,7 +13,7 @@ from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
 from django.http import Http404
-
+from django.contrib.sessions.models import Session
 from transmeta import TransMeta
 from django_fixmystreet.fixmystreet.utils import FixStdImageField
 
@@ -21,8 +21,7 @@ from django.conf import settings
 
 class Role (models.Model):
 	__metaclass__= TransMeta
-	
-	group = models.ForeignKey(Group)
+
 	code = models.CharField(max_length=50,null=False)
 	label = models.CharField(max_length=100,null=False)
 	
@@ -51,17 +50,19 @@ class Type (models.Model):
 	class Meta:
 		translate=('label',)
 
+class OrganisationEntity  (Group):
+    type = models.ForeignKey(Type)
+
 class FMSUser (User):
 	roles = models.ManyToManyField(Role)
 	telephone= models.CharField(max_length=20,null=True)
 	active = models.BooleanField(default=True)
 	lastUsedLanguage = models.CharField(max_length=10,null=True)
 	hashCode = models.IntegerField(null=True)
-	
+	entityGroups = models.ManyToManyField(OrganisationEntity,related_name="OrganisationEntityGroup")
 	objects = UserManager()
 
-class OrganisationEntity  (Group):
-	type = models.ForeignKey(Type)
+
 		
 class Status(models.Model):
 	__metaclass__=TransMeta
@@ -611,14 +612,11 @@ def dictToPoint(data):
 
     return fromstr("POINT(" + px + " " + py + ")", srid=31370)
 
-
-def roleFromGroupObject(role_code,group_id):
-	r1 = Role.objects.filter(code=role_code)
-	return r1.get(group_id=group_id)
-
-def groupFromUser(user_id):
-	fmsUser = get_object_or_404(FMSUser, user_ptr_id=user_id)
-	return OrganisationEntity.objects.filter(group_ptr_id=fmsUser.roles.all()[0].group_id)
+def getLoggedInUserId(sessionKey):
+    session = Session.objects.get(session_key=sessionKey)
+    uid = session.get_decoded().get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+    return uid
 
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):
