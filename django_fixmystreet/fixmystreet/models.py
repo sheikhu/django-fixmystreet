@@ -1,5 +1,5 @@
 from datetime import datetime as dt
-
+from django.shortcuts import get_object_or_404
 from django.db import connection
 from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
@@ -8,7 +8,7 @@ from django.template.loader import render_to_string, TemplateDoesNotExist
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.models import User, UserManager
+from django.contrib.auth.models import User, UserManager, Group
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
@@ -22,11 +22,13 @@ from django.conf import settings
 class Role (models.Model):
 	__metaclass__= TransMeta
 	
+	group = models.ForeignKey(Group)
 	code = models.CharField(max_length=50,null=False)
 	label = models.CharField(max_length=100,null=False)
 	
 	class Meta:
 		translate = ('label',)
+
 class Category (models.Model):
 	__metaclass__ = TransMeta
 	
@@ -49,10 +51,6 @@ class Type (models.Model):
 	class Meta:
 		translate=('label',)
 
-
-
-
-
 class FMSUser (User):
 	roles = models.ManyToManyField(Role)
 	telephone= models.CharField(max_length=20,null=True)
@@ -62,121 +60,8 @@ class FMSUser (User):
 	
 	objects = UserManager()
 
-class Pro (User):
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class NonPro (User):
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class Citizen (User):
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class Admin (User):
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class PhysicalPerson(User):
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class Entity(User):
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class Company(User):
-	companyName = models.CharField(max_length=200)
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class ExecuteurDeTravaux (User):	
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-
-
-class Agent(models.Model):
-	""" Nothing to be written here"""
-	user = models.ForeignKey(User)
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-class Gestionnaire(User):
-	typeList = models.ManyToManyField(Type)
-	entity = models.ForeignKey(Entity)
-	default = models.BooleanField(default=False)
-	responsibleOfAnEntity = models.BooleanField(default=False)
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
-
-
-class Impetrant(User):
-	""" Nothing to be written here"""
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	
-	objects = UserManager()
+class OrganisationEntity  (Group):
+	type = models.ForeignKey(Type)
 		
 class Status(models.Model):
 	__metaclass__=TransMeta
@@ -204,10 +89,10 @@ class Report (models.Model):
 	hashCode = models.IntegerField(null=True)
 	creator = models.ForeignKey(User,null=True)
 	description = models.TextField(null=True)
-	entity = models.ForeignKey(Entity,related_name='Entity',null=False)
-	executeurDeTravaux = models.ForeignKey(ExecuteurDeTravaux,related_name='Executeur de travaux',null=True)
-	impetrant = models.ForeignKey(Impetrant,related_name='impetrant',null=True)
-	gestionnaireResponsable = models.ForeignKey(Gestionnaire,related_name='Gestionnaire responsable',null=True)
+	entity = models.ForeignKey(FMSUser,related_name='Entity',null=False)
+	executeurDeTravaux = models.ForeignKey(FMSUser,related_name='Executeur de travaux',null=True)
+	impetrant = models.ForeignKey(FMSUser,related_name='impetrant',null=True)
+	gestionnaireResponsable = models.ForeignKey(FMSUser,related_name='Gestionnaire responsable',null=True)
 	gestionnaireResponsableHasAcceptedReport = models.BooleanField(default=False)
 	reportType = models.ForeignKey(Type)
 	valid = models.BooleanField(default=False)
@@ -756,6 +641,14 @@ def dictToPoint(data):
 
     return fromstr("POINT(" + px + " " + py + ")", srid=31370)
 
+
+def roleFromGroupObject(role_code,group_id):
+	r1 = Role.objects.filter(code=role_code)
+	return r1.get(group_id=group_id)
+
+def groupFromUser(user_id):
+	fmsUser = get_object_or_404(FMSUser, user_ptr_id=user_id)
+	return OrganisationEntity.objects.filter(group_ptr_id=fmsUser.roles.all()[0].group_id)
 
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):

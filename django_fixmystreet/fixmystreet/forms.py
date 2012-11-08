@@ -7,7 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, Comment, City, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, Agent, AttachmentType
+from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, City, Role, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
 
 
 class CategoryChoiceField(forms.fields.ChoiceField):
@@ -118,23 +118,23 @@ class ContactForm(forms.Form):
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
 class AgentCreationForm(UserCreationForm):
-	class Meta:
-		model = User
-		fields = ('telephone',)
-	
-	telephone = forms.CharField(max_length="20",
-                           widget=forms.TextInput(attrs={ 'class': 'required' }),
-                           label=ugettext_lazy('Tel.'))
-    
-	def save(self, commit=True):
-		user = super(AgentCreationForm, self).save(commit=False)
-		user.save()
-		agent = Agent(user=user)
-		agent.telephone = self.cleaned_data['telephone']
-		agent.lastUsedLanguage = "NL"
-		agent.hashCode=0
-		agent.save();
-		return user;
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email','telephone',)
+    telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
+    def save(self,user, commit=True):
+        user = super(AgentCreationForm,self).save(commit=False)
+        fmsuser = FMSUser(user_ptr=user)
+        fmsuser.username = self.cleaned_data["username"]
+        fmsuser.set_password(self.cleaned_data["password1"])
+        fmsuser.first_name=self.cleaned_data["first_name"]
+        fmsuser.last_name=self.cleaned_data["last_name"]
+        fmsuser.email=self.cleaned_data["email"]
+        fmsuser.telephone= self.cleaned_data['telephone']
+        fmsuser.lastUsedLanguage="EN"
+        fmsuser.save()
+        fmsuser.roles.add(roleFromGroupObject(0,groupFromUser(user.id)))
+        return fmsuser;
 		
 class ReportFileForm(forms.ModelForm):
 	class Meta:
