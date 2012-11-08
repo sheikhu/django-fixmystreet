@@ -7,7 +7,37 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+
+class MainCategoryChoiceField(forms.fields.ChoiceField):
+    """
+    Do some pre-processing to
+    render opt-groups (silently supported, but undocumented
+    http://code.djangoproject.com/ticket/4412 )
+    """
+    def __init__(self,  *args, **kwargs):
+        # assemble the opt groups.
+        choices = []
+        choices.append(('', ugettext_lazy("Select a Category")))
+        categories = ReportMainCategoryClass.objects.all()
+
+        groups = {}
+        for category in categories:
+            catclass = str(category.category_class)
+            if not groups.has_key(catclass):
+                groups[catclass] = []
+            groups[catclass].append((category.pk, category.name))
+        for catclass, values in groups.items():
+            choices.append((catclass,values))
+        super(MainCategoryChoiceField,self).__init__(choices,*args,**kwargs)
+
+    def clean(self, value):
+        super(MainCategoryChoiceField,self).clean(value)
+        try:
+            model = ReportMainCategoryClass.objects.get(pk=value)
+        except ReportMainCategoryClass.DoesNotExist:
+            raise ValidationError(self.error_messages['invalid_choice'])
+        return model
 
 class CategoryChoiceField(forms.fields.ChoiceField):
     """
@@ -47,6 +77,7 @@ class ReportForm(forms.ModelForm):
         fields = ('x','y','title', 'address', 'category','postalcode','description')
 
     required_css_class = 'required'
+    #mainCategory = MainCategoryChoiceField(label=ugettext_lazy("category")) 
     category = CategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
