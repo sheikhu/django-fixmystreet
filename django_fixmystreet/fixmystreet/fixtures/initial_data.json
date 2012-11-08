@@ -968,6 +968,45 @@
     		"name_fr":"Precessed",
     		"code":"3"
     	}
+    },
+    {
+        "pk":1,
+        "model":"auth.group",
+        "fields":{
+            "name":"EntityJette"
+        }
+    },
+    {
+        "pk":1,
+        "model":"fixmystreet.role",
+        "fields":{
+            "group":1,
+            "code":0,
+            "label_en":"Agent",
+            "label_fr":"Agent",
+            "label_nl":"Agent"
+        }
+    },
+
+    
+    {
+        "pk":1,
+        "model":"fixmystreet.type",
+        "fields":{
+            "code":0,
+            "label_en":"Entity",
+            "label_fr":"Entité",
+            "label_nl":"Entiteit",
+            "public" : false
+        }
+    },
+    {
+        "pk":1,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "type":1
+        }
     }
+    
 ]
 
