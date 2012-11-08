@@ -7,7 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, Role, Report, Status, ReportUpdate, ReportSubscription, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
+from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, Report, Status, ReportUpdate, ReportSubscription, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
 
 
 
@@ -54,13 +54,12 @@ class ReportForm(forms.ModelForm):
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    
-    
+
     def __init__(self,data=None, files=None, initial=None):
         if data:
             self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
-        
+
         super(ReportForm,self).__init__(data, files, initial=initial)
         #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
 
@@ -74,7 +73,8 @@ class ReportForm(forms.ModelForm):
         report.ward = self.ward
         report.status = list(Status.objects.all())[0]
         report.point = self.point
-        report.creator = user
+        if user.is_authenticated():
+            report.creator = user
         if commit:
             report.save()
         return report
@@ -89,8 +89,7 @@ class ReportUpdateForm(forms.ModelForm):
     
     def __init__(self,data=None, files=None, initial=None):
         super(ReportUpdateForm,self).__init__(data, files, initial=initial)
-        
-	
+
     def save(self, user, report, commit=True):
         update = super(ReportUpdateForm, self).save(commit=False)
         update.author = user

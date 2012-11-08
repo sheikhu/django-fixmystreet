@@ -11,9 +11,7 @@
 $(document).ready(function() {
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
-    var connected = true;
 
-	
 	$map.fmsMap({
 		apiLang:'{{ LANGUAGE_CODE }}',
         localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
@@ -45,7 +43,7 @@ $(document).ready(function() {
 
             $('#instructable').fadeIn();
             $map.one('markerdrag click movestart zoomend',function(evt,point){
-                $('#instructable').fadeOut();	
+                $('#instructable').fadeOut();
             });
 		}
 		else
@@ -102,9 +100,7 @@ $(document).ready(function() {
 			{
 				$('#id_postalcode').val(response.result.address.street.postCode);
 				$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
-                if(connected) {
-                    $form.find(':submit').prop('disabled',false);
-                }
+                $form.find(':submit').prop('disabled',false);
 			}
 			else
 			{
@@ -118,51 +114,6 @@ $(document).ready(function() {
 			}
 		});
 	}
-    
-    $('form').submit(function(){
-        if(!connected){
-            evt.preventDefault();
-        }
-    });
-    $(document).bind('connected',function(){
-        connected = true;
-        $('.login-bar').hide();
-        $('form :submit').prop('disabled',false);
-    });
-    $(document).bind('disconnected',function(){
-        connected = false;
-        $('.login-bar').show();
-        $('form :submit').prop('disabled',true);
-    });
-
-    {% if user.is_authenticated %}
-        $(document).trigger('connected');
-    {% else %}
-        $(document).trigger('disconnected');
-    {% endif %}
-
-	/*
-	// in the case of grafity category, we ask Is it Hate Graffiti.
-	// it is disabled see templates-bxl/ajax/category_description.html
-	if($('input[name=is_hate]:checked').val() == 'yes') {
-		$('.ishate').show();
-	}
-
-	$('.radiohate').live('click', function(event) {
-		if($(this)[0].value =='yes') {
-			$('.ishate').show('slow');
-			// disable fields
-			$('.hideonhate').hide();
-			$('#submit_report_button').enabled = false;
-	
-		} else {
-			$('.ishate').hide();
-			$('.hideonhate').show();
-			$('#submit_report_button').enabled = true;
-		}
-	});
-	*/
-
 });
 </script>
 {% endblock %}
@@ -206,13 +157,6 @@ $(document).ready(function() {
 					<td align="right">
                         <p>
                             <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-                        </p>
-                        <p class="login-bar">
-                            <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
-                            <a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
-                        </p>
-                        <p class="login-bar">
-                            {% trans 'You are not connected, please login to submit your report' %}
                         </p>
                     </td>
 				</tr>
