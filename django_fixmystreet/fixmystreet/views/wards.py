@@ -7,8 +7,8 @@ from django.db import connection
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.db.models import  Count
 
-from django_fixmystreet.fixmystreet.models import City, Ward, Report
-from django_fixmystreet.fixmystreet.models import City, Report, CityTotals, CityWardsTotals, AllCityTotals
+from django_fixmystreet.fixmystreet.models import Ward, Report
+from django_fixmystreet.fixmystreet.models import Report, CityTotals, CityWardsTotals, AllCityTotals
 
 def show_by_number( request, city_id, ward_no ):
     city= get_object_or_404(City, id=city_id)
