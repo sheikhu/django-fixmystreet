@@ -2553,6 +2553,20 @@
         }
     },
     {
+        "pk":1,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Jette",
+            "name_fr":"Jette",
+            "name_nl":"Jette",
+            "commune":true,
+            "region":false,
+            "subcontractor":false,
+            "applicant":false
+        }
+    },
+
+    {
         "pk": 1,
         "model": "auth.user",
         "fields": {
@@ -2562,6 +2576,20 @@
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true
+        }
+    },
+    {
+        "pk":2,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1,
+            "telephone":"123456789",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":true,
+            "organisation":1
         }
     },
     {
@@ -2597,6 +2625,20 @@
         }
     },
     {
+        "pk":1,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":2,
+            "telephone":"123456789",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":1
+        }
+    },
+    {
         "pk": 3,
         "model": "auth.user",
         "fields": {
@@ -2606,6 +2648,20 @@
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true
+        }
+    },
+    {
+        "pk":3,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":3,
+            "telephone":"123456789",
+            "active":true,
+            "lastUsedLanguage":"NL",
+            "agent":true,
+            "manager":false,
+            "leader":false,
+            "organisation":1
         }
     },
     {
@@ -2631,6 +2687,20 @@
         }
     },
     {
+        "pk":4,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":4,
+            "telephone":"123456789",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":true,
+            "organisation":1
+        }
+    },
+    {
         "pk": 4,
         "model": "social_auth.usersocialauth",
         "fields": {
@@ -2650,6 +2720,20 @@
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true
+        }
+    },
+    {
+        "pk":5,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":5,
+            "telephone":"123456789",
+            "active":true,
+            "lastUsedLanguage":"NL",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":1
         }
     },
     {

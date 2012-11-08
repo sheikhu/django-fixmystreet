@@ -118,8 +118,9 @@ class ContactForm(forms.Form):
 class AgentCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','telephone',)
+        fields = ('first_name','last_name','email','telephone','username','password1','password2','active',)
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
+    active = forms.BooleanField(required=False)
     def save(self,userID,userType, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
@@ -130,6 +131,7 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.email=self.cleaned_data["email"]
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
+        fmsuser.active = self.cleaned_data['active']
         fmsuser.agent = (userType=="0")
         fmsuser.manager = (userType=="1")
         fmsuser.leader = (userType=="2")
