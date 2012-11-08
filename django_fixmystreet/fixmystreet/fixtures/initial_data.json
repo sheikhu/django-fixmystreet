@@ -882,6 +882,7 @@
             "first_name": "Jonathan",
             "last_name": "Sanchez",
             "username": "jsanchezpando",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true
         }
@@ -925,6 +926,7 @@
             "first_name": "Patrick",
             "last_name": "Van Vooren",
             "username": "pvanvooren",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true
         }
@@ -939,7 +941,51 @@
             "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100001613324697\"}"
         }
     },
+   {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thibaut",
+            "last_name": "de Sany",
+            "username": "tdesany",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
     {
+        "pk": 4,
+        "model": "social_auth.usersocialauth",
+        "fields": {
+            "user": 4,
+            "provider": "facebook",
+            "uid": "100004563324697",
+            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100005513324697\"}"
+        }
+    },
+   {
+        "pk": 5,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Livio",
+            "last_name": "Van Rymenant",
+            "username": "livio",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk": 5,
+        "model": "social_auth.usersocialauth",
+        "fields": {
+            "user": 5,
+            "provider": "facebook",
+            "uid": "1000045767324697",
+            "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100085513324697\"}"
+        }
+    }, 
+   {
     	"pk":1,
     	"model":"fixmystreet.status",
     	"fields": {
