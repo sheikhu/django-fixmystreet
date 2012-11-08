@@ -26,7 +26,7 @@ install: $(BIN_DIR)/buildout
 	$(BIN_DIR)/buildout -Nvt 5
 
 init:
-	$(BIN_DIR)/django syncdb --migrate
+	$(BIN_DIR)/django syncdb --migrate --noinput
 
 
 test: $(BIN_DIR)/django
