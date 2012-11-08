@@ -25,6 +25,10 @@ $(LIBS_DIR):
 install: $(BIN_DIR)/buildout
 	$(BIN_DIR)/buildout -Nvt 5
 
+init:
+	$(BIN_DIR)/django syncdb --migrate --noinput
+
+
 test: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
 	ENV=dev $(BIN_DIR)/django test $(APP_NAME)

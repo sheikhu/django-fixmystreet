@@ -11,6 +11,7 @@ from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity,
 
 
 
+
 class CategoryChoiceField(forms.fields.ChoiceField):
     """
     Do some pre-processing to

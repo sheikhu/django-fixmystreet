@@ -1,6 +1,7 @@
 *.pyc
 *.egg-info
 .mr.developer.cfg
+bootstrap.py
 libs/
 bin/
 django_fixmystreet/local_settings.py

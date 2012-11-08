@@ -38,17 +38,17 @@ class Category (models.Model):
 	class Meta:
 		translate=('label',)
 		
-class Type (models.Model):
-	__metaclass__ = TransMeta
-	
-	code= models.CharField(max_length=50,null=False)
-	label = models.CharField(max_length=100,null=False)
-	public = models.BooleanField(default=True)
-	mainCategory = models.ForeignKey(Category,related_name='mainCategory')
-	secondCategory = models.ForeignKey(Category,related_name='secondCategory')
-	
-	class Meta:
-		translate=('label',)
+#class Type (models.Model):
+#	__metaclass__ = TransMeta
+#	
+#	code= models.CharField(max_length=50,null=False)
+#	label = models.CharField(max_length=100,null=False)
+#	public = models.BooleanField(default=True)
+#	mainCategory = models.ForeignKey(Category,related_name='mainCategory')
+#	secondCategory = models.ForeignKey(Category,related_name='secondCategory')
+#	
+#	class Meta:
+#		translate=('label',)
 
 class OrganisationEntity  (Group):
     type = models.ForeignKey(Type)
@@ -61,7 +61,6 @@ class FMSUser (User):
 	hashCode = models.IntegerField(null=True)
 	entityGroups = models.ManyToManyField(OrganisationEntity,related_name="OrganisationEntityGroup")
 	objects = UserManager()
-
 
 		
 class Status(models.Model):
@@ -95,7 +94,7 @@ class Report (models.Model):
 	impetrant = models.ForeignKey(FMSUser,related_name='impetrant',null=True)
 	gestionnaireResponsable = models.ForeignKey(FMSUser,related_name='Gestionnaire responsable',null=True)
 	gestionnaireResponsableHasAcceptedReport = models.BooleanField(default=False)
-	reportType = models.ForeignKey(Type)
+	#reportType = models.ForeignKey(Type)
 	valid = models.BooleanField(default=False)
 	markedAsFinished = models.BooleanField(default=False)
 	photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
@@ -228,7 +227,7 @@ class ReportSubscription(models.Model):
         unique_together = (("report", "subscriber"),)
 
 
-class ReportCategoryClass(models.Model):
+class ReportMainCategoryClass(models.Model):
     __metaclass__ = TransMeta
     help_text = """
     Manage the category container list (see the report form). Allow to group categories.
@@ -246,6 +245,24 @@ class ReportCategoryClass(models.Model):
         translate = ('name', )
 
 
+class ReportSecondaryCategoryClass(models.Model):
+    __metaclass__ = TransMeta
+    help_text = """
+    Manage the category container list (see the report form). Allow to group categories.
+    """
+
+    name = models.CharField(max_length=100)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "category group"
+        verbose_name_plural = "category groups"
+        translate = ('name', )
+
+
 class ReportCategory(models.Model):
     __metaclass__ = TransMeta
     help_text = """
@@ -255,9 +272,16 @@ class ReportCategory(models.Model):
 
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     hint = models.TextField(verbose_name=_('Hint'), blank=True, null=True)
+    #code     = models.CharField(max_length=32)
+    #label_en = models.TextField(blank=True, null=True)
+    #label_fr = models.TextField(blank=True, null=True)
+    #label_nl = models.TextField(blank=True, null=True)
+    #type     = models.CharField(max_length=32)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    category_class = models.ForeignKey(ReportCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
+    category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
+    secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
+    public = models.BooleanField(default=True)
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
  
@@ -333,7 +357,7 @@ class NotificationRule(models.Model):
     )
     # filled in if this is a category class rule
     category_class = models.ForeignKey(
-        ReportCategoryClass,null=True, blank=True,
+        ReportMainCategoryClass,null=True, blank=True,
         verbose_name='Category Group',
         help_text="Only set for 'Category Group' rule types."
     )
