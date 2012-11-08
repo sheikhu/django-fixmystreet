@@ -7,9 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, Report, Status, ReportUpdate, ReportSubscription, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
-
-
+from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
 
 class CategoryChoiceField(forms.fields.ChoiceField):
     """
@@ -120,9 +118,10 @@ class ContactForm(forms.Form):
 class AgentCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','telephone',)
+        fields = ('first_name','last_name','email','telephone','username','password1','password2','active',)
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    def save(self,user, commit=True):
+    active = forms.BooleanField(required=False)
+    def save(self,userID,userType, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
@@ -132,8 +131,13 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.email=self.cleaned_data["email"]
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
+        fmsuser.active = self.cleaned_data['active']
+        fmsuser.agent = (userType=="0")
+        fmsuser.manager = (userType=="1")
+        fmsuser.leader = (userType=="2")
+        currentUser = FMSUser.objects.get(user_ptr_id=userID)
+        fmsuser.organisation = currentUser.organisation
         fmsuser.save()
-        fmsuser.roles.add(roleFromGroupObject(0,groupFromUser(user.id)))
         return fmsuser;
 		
 class ReportFileForm(forms.ModelForm):

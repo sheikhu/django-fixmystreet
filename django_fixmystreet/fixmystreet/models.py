@@ -13,12 +13,11 @@ from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
 from django.http import Http404
-
+from django.contrib.sessions.models import Session
 from transmeta import TransMeta
 from django_fixmystreet.fixmystreet.utils import FixStdImageField
 
 from django.conf import settings
-
 
 class Category (models.Model):
 	__metaclass__ = TransMeta
@@ -29,6 +28,7 @@ class Category (models.Model):
 	
 	class Meta:
 		translate=('label',)
+
 
         
 class Type (models.Model):
@@ -178,9 +178,6 @@ class UserType(models.Model):
 
 
 
-
-
-
 #signal on a report to notify public authority that a report has been filled
 @receiver(post_save,sender=Report)
 def report_notify(sender, instance, **kwargs):
@@ -310,26 +307,6 @@ class GestType(models.Model):
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category = models.ForeignKey(ReportCategory)
     user = models.ForeignKey(FMSUser)
-    
-
-
- 
-class Councillor(models.Model):
-    help_text = """
-    Represent a public authority that can resolve a problem from a fix my street report. 
-    When a report if filled in the website, a notification mail will be sent to the corresponding 
-    councillors that is able to resolve it.
-    """
-    
-    name = models.CharField(max_length=100)
-    
-    # this email addr. is the destination for reports
-    # if the 'Councillor' email rule is enabled
-    email = models.EmailField(blank=True, null=True)
-    # city = models.ForeignKey(City,null=True)
-
-    def __unicode__(self):
-        return self.name
 
 
 # Override where to send a report for a given city.        
@@ -372,7 +349,7 @@ class NotificationRule(models.Model):
         help_text="Only set for 'Category Group' rule types."
     )
     # filled in if an additional email address is required for the rule type
-    councillor = models.ForeignKey(Councillor, null=False)
+    councillor = models.ForeignKey(FMSUser, null=False)
 
     def __str__(self):
         return "%s - %s %s (%s)" % ( 
@@ -385,9 +362,10 @@ class NotificationRule(models.Model):
 
 class ReportNotification(models.Model):
     report = models.ForeignKey(Report)
-    to_councillor = models.ForeignKey(Councillor)
+    to_manager = models.ForeignKey(FMSUser)
     sent_at = models.DateTimeField()
-    #status error/success ?
+    success = models.BooleanField()
+    message = models.TextField()
 
     def send(self):
         msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
@@ -457,7 +435,7 @@ class FMSUserZone(models.Model):
 
 class Ward(models.Model):
     name = models.CharField(max_length=100)
-    councillor = models.ForeignKey(Councillor, null=True, blank=True)
+    # councillor = models.ForeignKey(Councillor, null=True, blank=True)
     # geom = models.MultiPolygonField( null=True)
     objects = models.GeoManager()
     feature_id = models.CharField(max_length=25)
@@ -647,13 +625,12 @@ def dictToPoint(data):
     return fromstr("POINT(" + px + " " + py + ")", srid=31370)
 
 
-def roleFromGroupObject(role_code,group_id):
-    r1 = Role.objects.filter(code=role_code)
-    return r1.get(group_id=group_id)
+def getLoggedInUserId(sessionKey):
+    session = Session.objects.get(session_key=sessionKey)
+    uid = session.get_decoded().get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+    return uid
 
-def groupFromUser(user_id):
-    fmsUser = get_object_or_404(FMSUser, user_ptr_id=user_id)
-    return OrganisationEntity.objects.filter(group_ptr_id=fmsUser.roles.all()[0].group_id)
 
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):

@@ -2,17 +2,7 @@
 {% load i18n %}
 {% load tags %}
 {% block script %}
-<script type="text/javascript">
-     $(function() {
-          // navigate to page on click event
-          $('#usercreationtype').bind('change', function() {  
-          	var baseUrl = '/pro/createuser/';
-      		window.location.href = baseUrl + $('#usercreationtype').val()
-          } );
-          document.getElementById('usercreationtype').value = window.location.href.split('/').pop();
-     });
 
-</script>
 {% endblock %}
 
 {% block title %}Create user {% endblock %}
@@ -20,27 +10,22 @@
 {% block content %}
 
 <div id="fullwidth">
-        <h1>Create user</h1>
-		<div>
-			<select id="usercreationtype">
-				<option value="agent">Agent</option>
-				<option value="entity">Entity</option>
-				<option value="executeur">Executeur de travaux</option>
-				<option value="gestionnaire">Gestionnaire</option>
-				<option value = "impetrant">Impetrant</option>
-		</div>
-		<div>
-			</select>
-			<form action="" method="POST">
-			{% csrf_token %}
-            <table>
-            {{ createform.as_table }}
-            </table>
-        <p>
-            <input type="submit" value="Submit" class="big_button"/>
-        </p>
-        </form>
-		</div>
+  <h1>Create user</h1>
+  <div>
+    <form action="" method="POST">
+      {% csrf_token %}
+        <input type="radio" name="userType" value="0" checked>{% trans 'Agent' %}</input>
+        <input type="radio" name="userType" value="1">{% trans 'Manager' %}</input>
+        <input type="radio" name="userType" value="2">{% trans 'Leader' %}</input>
+      </select>
+      <table>
+        {{ createform.as_table }}
+      </table>
+      <p>
+        <input type="submit" value="Submit" class="big_button"/>
+      </p>
+    </form>
+  </div>
 </div>
 
 {% endblock %}

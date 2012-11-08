@@ -38,9 +38,5 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.flags',
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.createuser',
-	url(r'^createuser/agent','createAgent',name='create_agent_user_pro'),
-	url(r'^createuser/entity','createEntity',name='create_entity_user_pro'),
-	url(r'^createuser/gestionnaire','createGestionnaire',name='create_gestionnaire_user_pro'),
-	url(r'^createuser/executeur','createExecuteur',name='create_executeur_user_pro'),
-	url(r'^createuser/impetrant','createImpetrant',name='create_impetrant_user_pro'),
+	url(r'^createuser','createUser',name='create_user_pro'),
 )

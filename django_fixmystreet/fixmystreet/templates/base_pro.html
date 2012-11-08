@@ -118,30 +118,30 @@
 
 		<div id="main_container">
 		<div >
-				<ul class='leftPane' id="leftMenuPanePro">
-				<li> <a class='category'> Reports </a> <p class="category_number">87</p></li>
+			<ul class='leftPane' id="leftMenuPanePro">
+				<li> <a class='category'> Reports </a> <p class="category_number"></p></li>
 				
-				<li><a id='createdMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=0"> Created </a> <p class="category_number">3</p></li>
-				<li><a id='progressMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=1"> Progress </a> <p class="category_number">42</p></li>
-				<li><a id='closedMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=2"> Closed </a> <p class="category_number">42</p></li>
-				<li><a class='subcategory'> My subscriptions </a> <p class="category_number">2</p></li>
-				<li><a class='subcategory'> My communes </a> <p class="category_number">0</p></li>
-				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a> </td>
+				<li><a id='createdMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=0"> Created </a> <p class="category_number"></p></li>
+				<li><a id='progressMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=1"> Progress </a> <p class="category_number"></p></li>
+				<li><a id='closedMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=2"> Closed </a> <p class="category_number"></p></li>
+				<li><a class='subcategory'> My subscriptions </a> <p class="category_number"></p></li>
+				<li><a class='subcategory'> My communes </a> <p class="category_number"></p></li>
+				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a></li> 
 				
 				<li> <a class='category'> Collaborators </a></li>
 				
-				<li><a class='subcategory'>Agents </a> <p class="category_number">3</p></li>
-				<li><a class='subcategory'>Exec de travaux</a> <p class="category_number">12</p></li>
-				<li><a class='subcategory'> Impétrants </a> <p class="category_number">43</p></li>
-				<li><a class='subcategory'> Gestionnaires </a> <p class="category_number">4</p></li>
+				<li><a class='subcategory'>Agents </a> <p class="category_number"></p></li>
+				<li><a class='subcategory'>Exec de travaux</a> <p class="category_number"></p></li>
+				<li><a class='subcategory'> Impétrants </a> <p class="category_number"></p></li>
+				<li><a class='subcategory'> Gestionnaires </a> <p class="category_number"></p></li>
 			
 				<li> <a class='category'> Configuration </a></li>
 				
 				<li><a class='subcategory'> Gestionnaires </a></li>
-				<li><a class='subcategory' href="{% url create_agent_user_pro %}"> Create users </a></li>
+				<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
 				
-				</ul>
-				</div>
+			</ul>
+		</div>
 			<div id='body_content'>
                 
 				{% block content %}{% endblock %}
