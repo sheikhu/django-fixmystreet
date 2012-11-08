@@ -7,3 +7,9 @@ def category_desc(request,id):
                 {"category": ReportCategory.objects.get(id=id),
                   },
                 context_instance=RequestContext(request))
+
+def maincategory_desc(request,id):    
+   return render_to_response("ajax/maincategory_description.html",
+                {"category": ReportMainCategoryClass.objects.get(id=id),
+                  },
+                context_instance=RequestContext(request))

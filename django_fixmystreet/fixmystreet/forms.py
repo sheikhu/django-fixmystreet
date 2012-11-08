@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
 
-class MainCategoryChoiceField(forms.fields.ChoiceField):
+class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
     """
     Do some pre-processing to
     render opt-groups (silently supported, but undocumented
@@ -19,7 +19,7 @@ class MainCategoryChoiceField(forms.fields.ChoiceField):
         # assemble the opt groups.
         choices = []
         choices.append(('', ugettext_lazy("Select a Category")))
-        categories = ReportMainCategoryClass.objects.all()
+        categories = ReportCategory.objects.all()
 
         groups = {}
         for category in categories:
@@ -29,13 +29,13 @@ class MainCategoryChoiceField(forms.fields.ChoiceField):
             groups[catclass].append((category.pk, category.name))
         for catclass, values in groups.items():
             choices.append((catclass,values))
-        super(MainCategoryChoiceField,self).__init__(choices,*args,**kwargs)
+        super(CategoryChoiceField,self).__init__(choices,*args,**kwargs)
 
     def clean(self, value):
-        super(MainCategoryChoiceField,self).clean(value)
+        super(CategoryChoiceField,self).clean(value)
         try:
-            model = ReportMainCategoryClass.objects.get(pk=value)
-        except ReportMainCategoryClass.DoesNotExist:
+            model = ReportCategory.objects.get(pk=value)
+        except ReportCategory.DoesNotExist:
             raise ValidationError(self.error_messages['invalid_choice'])
         return model
 
@@ -74,11 +74,12 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x','y','title', 'address', 'category','postalcode','description')
+        fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description')
 
     required_css_class = 'required'
-    #mainCategory = MainCategoryChoiceField(label=ugettext_lazy("category")) 
     category = CategoryChoiceField(label=ugettext_lazy("Category"))
+    #main_category = CategoryChoiceField(label=ugettext_lazy("Category"))
+    secondary_category = CategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !

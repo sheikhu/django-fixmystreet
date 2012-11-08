@@ -86,7 +86,9 @@ class Report (models.Model):
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
-    category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
+    category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
+    #main_category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
+    secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
     created_at = models.DateTimeField(auto_now_add=True)
     # last time report was updated
     updated_at = models.DateTimeField(null=True)
