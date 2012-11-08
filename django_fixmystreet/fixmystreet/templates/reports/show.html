@@ -11,8 +11,6 @@
 {% map_scripts %}
 <script>
 $(function(){
-    var connected = true;
-
 	$('#map-bxl').fmsMap({ 
 		origin:{
 			x:{{ report.point.x }},
@@ -20,29 +18,7 @@ $(function(){
 		}
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
-
-
-    $('form').submit(function(){
-        if(!connected){
-            evt.preventDefault();
-        }
-    });
-    $(document).bind('connected',function(){
-        connected = true;
-        $('.login-bar').hide();
-        $('form :submit').prop('disabled',false);
-    });
-    $(document).bind('disconnected',function(){
-        connected = false;
-        $('.login-bar').show();
-        $('form :submit').prop('disabled',true);
-    });
-
-    {% if user.is_authenticated %}
-        $(document).trigger('connected');
-    {% else %}
-        $(document).trigger('disconnected');
-    {% endif %}});
+});
 </script>
 {% endblock %}
 {% block css %}
@@ -146,17 +122,13 @@ $(function(){
 			<p>{% trans "The status of this report has changed? Thank you let us know by filling this form." %}</p>
 			<form action="{% url report_update report.id %}" method="post">
 				<table id="report_form" class="form">
-					{{update_form.as_table}}					
+					{{update_form.as_table}}
 					<tr><td></td><td><input type="checkbox" id="is_fixed" name="is_fixed" value="1">{% trans "This problem has been fixed." %}</td></tr>
 					<tr>
                         <td></td>
                         <td>
                             <p>
                                 <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-                            </p>
-                            <p class="login-bar">
-                                <a class="fb-login login-btn" href="{% url socialauth_begin 'facebook' %}" title="{% trans 'Login with Facebook' %}"><span>Login</span></a>
-                                <a class="gg-login login-btn" href="{% url socialauth_begin 'google-profile' %}" title="{% trans 'Login with Google' %}"><span>Login</span></a>
                             </p>
                             <p class="login-bar">
                                 {% trans 'You are not connected, please login to submit your report' %}

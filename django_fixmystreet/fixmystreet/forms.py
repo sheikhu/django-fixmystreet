@@ -7,10 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity, Comment, Role, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, AttachmentType, FMSUser
-
-
-
+from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
 
 class CategoryChoiceField(forms.fields.ChoiceField):
     """
@@ -55,13 +52,12 @@ class ReportForm(forms.ModelForm):
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    
-    
+
     def __init__(self,data=None, files=None, initial=None):
         if data:
             self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
-        
+
         super(ReportForm,self).__init__(data, files, initial=initial)
         #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
 
@@ -75,7 +71,8 @@ class ReportForm(forms.ModelForm):
         report.ward = self.ward
         report.status = list(Status.objects.all())[0]
         report.point = self.point
-        report.creator = user
+        if user.is_authenticated():
+            report.creator = user
         if commit:
             report.save()
         return report
@@ -90,8 +87,7 @@ class ReportUpdateForm(forms.ModelForm):
     
     def __init__(self,data=None, files=None, initial=None):
         super(ReportUpdateForm,self).__init__(data, files, initial=initial)
-        
-	
+
     def save(self, user, report, commit=True):
         update = super(ReportUpdateForm, self).save(commit=False)
         update.author = user
@@ -134,11 +130,12 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.email=self.cleaned_data["email"]
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
-        fmsuser.save()
-        fmsuser.roles.add(Role.objects.get(code=userType))
+        fmsuser.agent = (userType=="0")
+        fmsuser.manager = (userType=="1")
+        fmsuser.leader = (userType=="2")
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
-        groupID = currentUser.entityGroups.all()[0].group_ptr_id
-        fmsuser.entityGroups.add(OrganisationEntity.objects.get(group_ptr_id=groupID))
+        fmsuser.organisation = currentUser.organisation
+        fmsuser.save()
         return fmsuser;
 		
 class ReportFileForm(forms.ModelForm):

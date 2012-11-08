@@ -19,15 +19,6 @@ from django_fixmystreet.fixmystreet.utils import FixStdImageField
 
 from django.conf import settings
 
-class Role (models.Model):
-	__metaclass__= TransMeta
-
-	code = models.CharField(max_length=50,null=False)
-	label = models.CharField(max_length=100,null=False)
-	
-	class Meta:
-		translate = ('label',)
-
 class Category (models.Model):
 	__metaclass__ = TransMeta
 	
@@ -37,133 +28,152 @@ class Category (models.Model):
 	
 	class Meta:
 		translate=('label',)
-		
-#class Type (models.Model):
-#	__metaclass__ = TransMeta
-#	
-#	code= models.CharField(max_length=50,null=False)
-#	label = models.CharField(max_length=100,null=False)
-#	public = models.BooleanField(default=True)
-#	mainCategory = models.ForeignKey(Category,related_name='mainCategory')
-#	secondCategory = models.ForeignKey(Category,related_name='secondCategory')
-#	
-#	class Meta:
-#		translate=('label',)
 
-class OrganisationEntity  (Group):
-    type = models.ForeignKey(Type)
 
-class FMSUser (User):
-	roles = models.ManyToManyField(Role)
-	telephone= models.CharField(max_length=20,null=True)
-	active = models.BooleanField(default=True)
-	lastUsedLanguage = models.CharField(max_length=10,null=True)
-	hashCode = models.IntegerField(null=True)
-	entityGroups = models.ManyToManyField(OrganisationEntity,related_name="OrganisationEntityGroup")
-	objects = UserManager()
+        
+class Type (models.Model):
+    __metaclass__ = TransMeta
 
-		
+    code= models.CharField(max_length=50,null=False)
+    label = models.CharField(max_length=100,null=False)
+    public = models.BooleanField(default=True)
+    mainCategory = models.ForeignKey(Category,related_name='mainCategory')
+    secondCategory = models.ForeignKey(Category,related_name='secondCategory')
+
+    class Meta:
+        translate=('label',)
+
+
+class FMSUser(User):
+    telephone= models.CharField(max_length=20,null=True)
+    active = models.BooleanField(default=True)
+    lastUsedLanguage = models.CharField(max_length=10,null=True)
+    hashCode = models.IntegerField(null=True)
+
+    agent = models.BooleanField(default=True)
+    manager = models.BooleanField(default=True)
+    leader = models.BooleanField(default=True)
+
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team')
+
+    objects = UserManager()
+
+
+class OrganisationEntity(models.Model):
+    __metaclass__= TransMeta
+    name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
+
+    commune = models.BooleanField(default=True)
+    region = models.BooleanField(default=True)
+    subcontractor = models.BooleanField(default=True)
+    applicant = models.BooleanField(default=True)
+
+    class Meta:
+        translate = ('name', )
+
+
 class Status(models.Model):
-	__metaclass__=TransMeta
-	name=models.CharField(verbose_name=_('Name'),max_length=100,null=False)
-	code=models.CharField(max_length=50,null=False)
-	
-	class Meta:
-		translate = ('name', )
+    __metaclass__=TransMeta
+    name=models.CharField(verbose_name=_('Name'),max_length=100,null=False)
+    code=models.CharField(max_length=50,null=False)
+    
+    class Meta:
+        translate = ('name', )
 
-		
+        
 class Report (models.Model):
-	status = models.ForeignKey(Status,null=False)
-	point = models.PointField(null=True, srid=31370)
-	address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
-	title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
-	category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
-	created_at = models.DateTimeField(auto_now_add=True)
-	# last time report was updated
-	updated_at = models.DateTimeField(null=True)
-	is_hate = models.BooleanField(default=False)
-	is_fixed = models.BooleanField(default=False)
-	# time report was marked as 'fixed'
-	fixed_at = models.DateTimeField(null=True, blank=True)
-	ward = models.ForeignKey('Ward', null=True)
-	hashCode = models.IntegerField(null=True)
-	creator = models.ForeignKey(User,null=True)
-	description = models.TextField(null=True)
-	entity = models.ForeignKey(FMSUser,related_name='Entity',null=False)
-	executeurDeTravaux = models.ForeignKey(FMSUser,related_name='Executeur de travaux',null=True)
-	impetrant = models.ForeignKey(FMSUser,related_name='impetrant',null=True)
-	gestionnaireResponsable = models.ForeignKey(FMSUser,related_name='Gestionnaire responsable',null=True)
-	gestionnaireResponsableHasAcceptedReport = models.BooleanField(default=False)
-	#reportType = models.ForeignKey(Type)
-	valid = models.BooleanField(default=False)
-	markedAsFinished = models.BooleanField(default=False)
-	photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
-	closedDatum = models.DateTimeField(null=True, blank=True)
-	objects = models.GeoManager()
-	private = models.BooleanField(default=True)
-	def get_absolute_url(self):
-	#TODO determine when pro and no-pro url must be returned
-	    return reverse("report_show", args=[self.id])
-	
-	def get_absolute_url_pro(self):
-	#TODO determine when pro and no-pro url must be returned
-	    return reverse("report_show_pro", args=[self.id])
+    status = models.ForeignKey(Status,null=False)
+    point = models.PointField(null=True, srid=31370)
+    address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
+    title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
+    category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
+    created_at = models.DateTimeField(auto_now_add=True)
+    # last time report was updated
+    updated_at = models.DateTimeField(null=True)
+    is_hate = models.BooleanField(default=False)
+    is_fixed = models.BooleanField(default=False)
+    # time report was marked as 'fixed'
+    fixed_at = models.DateTimeField(null=True, blank=True)
+    ward = models.ForeignKey('Ward', null=True)
+    hashCode = models.IntegerField(null=True)
+    creator = models.ForeignKey(User,null=True)
+    description = models.TextField(null=True)
+    #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
+    subcontractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
+    responsible_manager = models.ForeignKey(FMSUser, related_name='in_charge_reports', null=True)
+    responsible_manager_validated = models.BooleanField(default=False)
+#    report_type = models.ForeignKey(Type)
+    valid = models.BooleanField(default=False)
+    private = models.BooleanField(default=True)
+    finished = models.BooleanField(default=False)
+    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    close_date = models.DateTimeField(null=True, blank=True)
+
+    objects = models.GeoManager()
+    def get_absolute_url(self):
+    #TODO determine when pro and no-pro url must be returned
+        return reverse("report_show", args=[self.id])
+    
+    def get_absolute_url_pro(self):
+    #TODO determine when pro and no-pro url must be returned
+        return reverse("report_show_pro", args=[self.id])
+
 
 class Exportable(models.Model):
-	def asJSON():
-		return
-	def asXML():
-		return
+    def asJSON():
+        return
+    def asXML():
+        return
 
 class Abonment (models.Model):
-	report = models.ForeignKey(Report)
+    report = models.ForeignKey(Report)
 
 class Address (models.Model):
-	__metaclass__= TransMeta
-	
-	street = models.CharField(max_length=100)
-	city = models.CharField(max_length= 100)
-	zipCode = models.IntegerField()
-	streetNumber = models.CharField(max_length=100)
-	geoX = models.FloatField()
-	geoY = models.FloatField()
-	
-	class Meta:
-		translate=('street','city',)
+    __metaclass__= TransMeta
+    
+    street = models.CharField(max_length=100)
+    city = models.CharField(max_length= 100)
+    zipCode = models.IntegerField()
+    streetNumber = models.CharField(max_length=100)
+    geoX = models.FloatField()
+    geoY = models.FloatField()
+    
+    class Meta:
+        translate=('street','city',)
 
 class AttachmentType(models.Model):
-	code= models.CharField(max_length=50)
-	url = models.CharField(max_length=50)
-		
+    code= models.CharField(max_length=50)
+    url = models.CharField(max_length=50)
+        
 
-	
+    
 
 class Attachment(models.Model):
-	report = models.ForeignKey(Report)
-	validated=models.BooleanField(default=False)
-	isVisible=models.BooleanField(default=False)
-	title=models.CharField(max_length=250)
-	
-	class Meta:
-		abstract=True
-	
+    report = models.ForeignKey(Report)
+    validated=models.BooleanField(default=False)
+    isVisible=models.BooleanField(default=False)
+    title=models.CharField(max_length=250)
+    
+    class Meta:
+        abstract=True
+    
 class Comment (Attachment):
-	text = models.TextField()
+    text = models.TextField()
 
 class File(Attachment):
-	file = models.FileField(upload_to="files")
-	fileType= models.ForeignKey(AttachmentType)
+    file = models.FileField(upload_to="files")
+    fileType= models.ForeignKey(AttachmentType)
 
 class UserType(models.Model):
-	__metaclass__= TransMeta
+    __metaclass__= TransMeta
 
-	code=models.CharField(max_length=50)
-	name=models.CharField(max_length=100)
-	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-	
-	class Meta:
-		translate = ('name', )
+    code=models.CharField(max_length=50)
+    name=models.CharField(max_length=100)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    
+    class Meta:
+        translate = ('name', )
 
 
 
@@ -293,14 +303,14 @@ class ReportCategory(models.Model):
 
 
 class GestType(models.Model):
-	help_text="""
-	Defines the relation of a user and a category
-	"""
-	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-	category = models.ForeignKey(ReportCategory)
-	user = models.ForeignKey(FMSUser)
-	
+    help_text="""
+    Defines the relation of a user and a category
+    """
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    category = models.ForeignKey(ReportCategory)
+    user = models.ForeignKey(FMSUser)
+    
 
 
  
@@ -415,34 +425,34 @@ class NotificationResolver(object):
 
 
 class Commune(models.Model):
-	__metaclass__ = TransMeta
-	
-	name = models.CharField(max_length=100)
-	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-	
-	class Meta:
-		translate = ('name', )
+    __metaclass__ = TransMeta
+    
+    name = models.CharField(max_length=100)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    
+    class Meta:
+        translate = ('name', )
 
 class Zone(models.Model):
-	__metaclass__ = TransMeta
-	
-	name=models.CharField(max_length=100)
-	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-	commune = models.ForeignKey(Commune)
-	
-	class Meta:
-		translate = ('name', )
+    __metaclass__ = TransMeta
+    
+    name=models.CharField(max_length=100)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    commune = models.ForeignKey(Commune)
+    
+    class Meta:
+        translate = ('name', )
 
 
 
 
 class FMSUserZone(models.Model):
-	user = models.ForeignKey(FMSUser)
-	zone = models.ForeignKey(Zone)
-	creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-	update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    user = models.ForeignKey(FMSUser)
+    zone = models.ForeignKey(Zone)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
 
 
 class Ward(models.Model):
@@ -636,11 +646,13 @@ def dictToPoint(data):
 
     return fromstr("POINT(" + px + " " + py + ")", srid=31370)
 
+
 def getLoggedInUserId(sessionKey):
     session = Session.objects.get(session_key=sessionKey)
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
     return uid
+
 
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):

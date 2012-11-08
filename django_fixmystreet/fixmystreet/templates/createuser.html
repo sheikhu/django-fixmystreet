@@ -14,10 +14,9 @@
   <div>
     <form action="" method="POST">
       {% csrf_token %}
-        <input type="radio" name="userType" value="0" checked>Agent</input>
-        <input type="radio" name="userType" value="1">Executeur de travaux</input>
-        <input type="radio" name="userType" value="2">Gestionnaire</input>
-        <input type="radio" name="userType" value="3">Impetrant</input>
+        <input type="radio" name="userType" value="0" checked>{% trans 'Agent' %}</input>
+        <input type="radio" name="userType" value="1">{% trans 'Manager' %}</input>
+        <input type="radio" name="userType" value="2">{% trans 'Leader' %}</input>
       </select>
       <table>
         {{ createform.as_table }}
