@@ -2,13 +2,13 @@ from django.contrib import admin
 from django import forms
 from transmeta import canonical_fieldname
 
-from django_fixmystreet.fixmystreet.models import NotificationRule, Ward, ReportCategory, Report, ReportCategoryClass, FaqEntry, Councillor
+from django_fixmystreet.fixmystreet.models import NotificationRule, Ward, ReportCategory, Report, ReportMainCategoryClass, FaqEntry, Councillor
 
 
 class ReportCategoryClassAdmin(admin.ModelAdmin):
     list_display = ('name',)
     
-admin.site.register(ReportCategoryClass,ReportCategoryClassAdmin)
+admin.site.register(ReportMainCategoryClass,ReportCategoryClassAdmin)
 
 
 class ReportCategoryAdmin(admin.ModelAdmin):

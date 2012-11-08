@@ -7,7 +7,7 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, Role, Report, Status, ReportUpdate, ReportSubscription, ReportCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
+from django_fixmystreet.fixmystreet.models import Ward,File, Comment, groupFromUser, Role, Report, Status, ReportUpdate, ReportSubscription, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory, dictToPoint, AttachmentType, roleFromGroupObject, FMSUser
 
 
 
