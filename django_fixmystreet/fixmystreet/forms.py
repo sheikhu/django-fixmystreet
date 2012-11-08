@@ -122,7 +122,8 @@ class ReportUpdateForm(forms.ModelForm):
 
     def save(self, user, report, commit=True):
         update = super(ReportUpdateForm, self).save(commit=False)
-        update.author = user
+        if user.is_authenticated():
+            update.author = user
         update.report = report
         if commit:
             update.save()
