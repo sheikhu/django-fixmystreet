@@ -42,36 +42,36 @@ msgstr ""
 
 #: fixmystreet/forms.py:52
 msgid "Select a Category"
-msgstr ""
+msgstr "Kies een Categorie"
 
 #: fixmystreet/forms.py:85 fixmystreet/models.py:89 fixmystreet/models.py:91
 msgid "Category"
-msgstr ""
+msgstr "Categorie"
 
 #: fixmystreet/forms.py:90 fixmystreet/forms.py:153
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: fixmystreet/forms.py:91
 msgid "Firstname"
-msgstr ""
+msgstr "Voornaam"
 
 #: fixmystreet/forms.py:92 fixmystreet/forms.py:150 fixmystreet/models.py:64
 #: fixmystreet/models.py:77 fixmystreet/models.py:285
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: fixmystreet/forms.py:155
 msgid "Message"
-msgstr ""
+msgstr "Boodschap"
 
 #: fixmystreet/forms.py:166
 msgid "Tel."
-msgstr ""
+msgstr "Tel."
 
 #: fixmystreet/models.py:87
 msgid "Location"
-msgstr ""
+msgstr "Geolocatie"
 
 #: fixmystreet/models.py:88
 msgid "Subject"
@@ -91,11 +91,11 @@ msgstr ""
 
 #: fixmystreet/models.py:477
 msgid "Question"
-msgstr ""
+msgstr "Vraag"
 
 #: fixmystreet/models.py:478
 msgid "Answere"
-msgstr ""
+msgstr "Antwoord"
 
 #: fixmystreet/templates/about.html:4 fixmystreet/templates/base.html:102
 #: fixmystreet/templates/faq/show.html:3 fixmystreet/templates/faq/show.html:7
@@ -104,7 +104,7 @@ msgstr ""
 
 #: fixmystreet/templates/about.html:8
 msgid "About FixMyStreet Brussels"
-msgstr ""
+msgstr "Over FixMyStreet Brussels"
 
 #: fixmystreet/templates/about.html:15
 #, python-format

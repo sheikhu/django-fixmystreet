@@ -53,7 +53,7 @@ msgstr "Votre email"
 
 #: fixmystreet/forms.py:91
 msgid "Firstname"
-msgstr ""
+msgstr "Prenom"
 
 #: fixmystreet/forms.py:92 fixmystreet/forms.py:150 fixmystreet/models.py:64
 #: fixmystreet/models.py:77 fixmystreet/models.py:285
