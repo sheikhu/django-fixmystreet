@@ -12,6 +12,9 @@ $(document).ready(function() {
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 
+	/*Remove non-public categories*/
+        $("#id_secondary_category").find("option[public='False']").hide();
+
 	$map.fmsMap({
 		apiLang:'{{ LANGUAGE_CODE }}',
         localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
@@ -56,18 +59,30 @@ $(document).ready(function() {
 	$(window).hashchange();
 
 	$('#id_category').change(function(evt) {
-		// updates entry notes
-		var el_id = $('#id_category').val();
-		if(el_id)
-		{
-			$("#secondary_container").load("/ajax/categories/" + el_id);
-		}
-		else
-		{
-			$("#secondary_container").html('');
-		}
-	});
+                // updates entry notes
+                var el_id = $('#id_category').val();
+                var refSecondary = $("#id_secondary_category");
+                if(el_id)
+                {
+                        refSecondary.find("option:eq(0)").attr("selected", "selected");
+                        refSecondary.removeAttr("disabled");
+                        $("#secondary_container").load("/ajax/categories/" + el_id);
+                        <!-- FILTER SECOND DROPDOWN -->
+                        refSecondary.find("option").hide();
+                        refSecondary.find("option[family='"+el_id+"'][public='True']").show();
+                }
+                else
+                {
+                        refSecondary.find("option:eq(0)").attr("selected", "selected");
+                        $("#secondary_container").html('');
+                        refSecondary.attr('disabled', 'disabled');
+                }
+        });
 	$('#id_category').change();// initialize notes
+
+	$('#id_secondary_category').change(function(evt) {
+                <!-- Nothing when selecting a secondary item -->
+        });
 
 	$map.bind('markermoved',function(evt,point){
 		$('#id_x').val(point.x);

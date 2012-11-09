@@ -7,10 +7,40 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
+from django.utils.encoding import force_unicode
+from django.utils.html import escape, conditional_escape
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Commune, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, Commune, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+
+class SecondaryCategorySelect(forms.Select):
+    def render_option(self, selected_choices, option_value, option_label):
+        option_value = force_unicode(option_value)
+        if (option_value in selected_choices):
+            selected_html = u' selected="selected"'
+        else:
+            selected_html = ''
+        disabled_html = ''
+        text_label = option_label;
+        family_param = '';
+        public_param = '';
+        if isinstance(option_label, dict):
+            if dict.get(option_label, 'disabled'):
+                disabled_html = u' disabled="disabled"'
+            if dict.get(option_label, 'label'):
+                text_label = option_label['label']
+            if dict.get(option_label, 'family'):
+                family_param = option_label['family']
+            if dict.get(option_label, 'public'):
+                public_param = option_label['public']
+        return u'<option public="%s" family="%s"  value="%s"%s%s>%s</option>' % (
+            escape(public_param), escape(family_param), escape(option_value), selected_html, disabled_html,
+            conditional_escape(force_unicode(text_label)))
+
+
 
 class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
+
+
     """
     Do some pre-processing to
     render opt-groups (silently supported, but undocumented
@@ -24,52 +54,26 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
 
         groups = {}
         for category in categories:
-            catclass = str(category.category_class)
+            catclass = str(category.secondary_category_class)
             if not groups.has_key(catclass):
                 groups[catclass] = []
-            groups[catclass].append((category.pk, category.name))
+            groups[catclass].append((category.pk, {'label':category.name, 'family':category.category_class.pk, 'public':category.public}))
+        
         for catclass, values in groups.items():
             choices.append((catclass,values))
-        super(CategoryChoiceField,self).__init__(choices,*args,**kwargs)
+       
+        super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(attrs={'class':category.pk}),*args,**kwargs)
+
+
 
     def clean(self, value):
-        super(CategoryChoiceField,self).clean(value)
+        super(SecondaryCategoryChoiceField,self).clean(value)
         try:
             model = ReportCategory.objects.get(pk=value)
         except ReportCategory.DoesNotExist:
             raise ValidationError(self.error_messages['invalid_choice'])
         return model
 
-class CategoryChoiceField(forms.fields.ChoiceField):
-    """
-    Do some pre-processing to
-    render opt-groups (silently supported, but undocumented
-    http://code.djangoproject.com/ticket/4412 )
-    """
-    def __init__(self,  *args, **kwargs):
-        # assemble the opt groups.
-        choices = []
-        choices.append(('', ugettext_lazy("Select a Category")))
-        categories = ReportCategory.objects.all()
-
-        groups = {}
-        for category in categories:
-            catclass = str(category.category_class)
-            if not groups.has_key(catclass):
-                groups[catclass] = []
-            groups[catclass].append((category.pk, category.name))
-        for catclass, values in groups.items():
-            choices.append((catclass,values))
-        super(CategoryChoiceField,self).__init__(choices,*args,**kwargs)
-
-    def clean(self, value):
-        super(CategoryChoiceField,self).clean(value)
-        try:
-            model = ReportCategory.objects.get(pk=value)
-        except ReportCategory.DoesNotExist:
-            raise ValidationError(self.error_messages['invalid_choice'])
-        return model
-  
 
 class ReportForm(forms.ModelForm):
     """Report form"""
@@ -78,9 +82,7 @@ class ReportForm(forms.ModelForm):
         fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description')
 
     required_css_class = 'required'
-    category = CategoryChoiceField(label=ugettext_lazy("Category"))
-    #main_category = CategoryChoiceField(label=ugettext_lazy("Category"))
-    secondary_category = CategoryChoiceField(label=ugettext_lazy("Category"))
+    secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
