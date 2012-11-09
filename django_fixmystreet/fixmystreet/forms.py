@@ -79,7 +79,7 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description')
+        fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description','citizen_email','citizen_firstname','citizen_lastname')
 
     required_css_class = 'required'
     secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
@@ -87,6 +87,9 @@ class ReportForm(forms.ModelForm):
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
     # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
+    citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
+    citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
@@ -106,8 +109,13 @@ class ReportForm(forms.ModelForm):
         report.commune = self.commune
         report.status = list(Status.objects.all())[0]
         report.point = self.point
+
         if user.is_authenticated():
             report.creator = user
+        else:
+            #Add information about the citizen connected.
+            
+            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
         if commit:
             report.save()
         return report

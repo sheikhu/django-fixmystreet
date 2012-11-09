@@ -54,7 +54,7 @@ class FMSUser(User):
     manager = models.BooleanField(default=True)
     leader = models.BooleanField(default=True)
 
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team')
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
 
     objects = UserManager()
 
@@ -98,7 +98,9 @@ class Report (models.Model):
     fixed_at = models.DateTimeField(null=True, blank=True)
     commune = models.ForeignKey('Commune', null=True)
     hashCode = models.IntegerField(null=True)
-    creator = models.ForeignKey(User,null=True)
+    creator = models.ForeignKey(User,null=True, related_name='creator')
+    
+    citizen = models.ForeignKey(User,null=True, related_name='citizen')
     description = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     subcontractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)

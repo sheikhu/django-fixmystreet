@@ -23,7 +23,7 @@ msgstr "Anglais"
 
 #: settings.py:76
 msgid "French"
-msgstr "Francais"
+msgstr "Frais"
 
 #: settings.py:77
 msgid "Dutch"
