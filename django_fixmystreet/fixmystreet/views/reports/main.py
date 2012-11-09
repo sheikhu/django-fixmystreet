@@ -1,14 +1,14 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm
+from django_fixmystreet.fixmystreet.forms import ReportForm, CitizenReportForm, ReportUpdateForm
 from django.template import RequestContext
 
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
-        report_form = ReportForm(request.POST, request.FILES)
+        report_form = CitizenReportForm(request.POST, request.FILES)
         # this checks update is_valid too
         if report_form.is_valid():
             # this saves the update as part of the report.
@@ -16,7 +16,7 @@ def new(request):
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
     else:
-        report_form = ReportForm(initial={
+        report_form = CitizenReportForm(initial={
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
         })
