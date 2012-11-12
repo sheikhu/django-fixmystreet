@@ -7,11 +7,19 @@ $(document).ready(function(){
 	
 	$("#dialog").dialog({
     modal: true,
-    autoOpen:false
+    autoOpen:false,
+    width:'auto',
+    resizable: false
 });
 	$('#dialog').dialog('option', 'close', function(){
 		window.location.href='{% url category_gestionnaire_configuration %}';
 	});
+
+  $.each($(".matrixButton"),function(idx,value){
+    if($(value).text().indexOf("No manager selected")!=-1){
+      $(value).addClass("emptySelection");
+    }
+  });
 });
 function saveSelection(){
   var url='{% url saveSelection %}?';
@@ -34,19 +42,19 @@ function saveSelection(){
   <h1>{% trans 'Configure gestionnaire categories' %}</h1>
 
   <div id="configurationTable">
-  	<table>
+  	<table class="configTable">
   		<tr>
-  			<th></th>
+  			<th style="border-right:1px solid black"></th>
   			{% for mainCat in maincategories %}
-  				<th>{{mainCat.name}}</th>
+  				<th >{{mainCat.name}}</th>
   			{% endfor %}
   		</tr>
   		{% for secondCat in secondcategories %}
   			<tr>
-  				<td>{{secondCat.name}}</td>
+  				<td class="firstItem">{{secondCat.name}}</td>
   				{% for m in maincategories %}
   				<td> 
-            <button onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
+            <button class="matrixButton" onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
               {{currentSelectedList|getElementFromList:forloop.counter0|getElementFromList:forloop.parentloop.counter0}}
             </button> 
           </td>
@@ -57,15 +65,15 @@ function saveSelection(){
   </div>
   	<div id="dialog" title="Select gestionnaires">
     	<form action="">
-    		<table>
+    		<table style="padding:20px">
     			{% for cat in categories %}
     			<tr>
-    				<td>{{cat.name}}</td><td id="{{cat.id}}"> {{managerDropDown.as_p}}</td>
+    				<td style="padding:5px;">{{cat.name}}</td><td id="{{cat.id}}"> {{managerDropDown.as_p}}</td>
     			</tr>
     			{% endfor %}
     		</table>
          
-        <a href="#" onclick="saveSelection();">Save</a>
+        <a href="#" onclick="saveSelection();" class="saveFormButton" >Save</a>
     	</form>
 	</div>
 	{% if categories %}

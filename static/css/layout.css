@@ -1,6 +1,6 @@
 
 
-/********* PAGE LAYOUT ********/
+/********* PAGE LAYOUT *********/
 
 body {
 	background-color:#004990;
@@ -9,7 +9,7 @@ body {
 }
 
 #header_content, #body_content, #footer_content {
-	width: 960px;
+	width: 70%;
 	margin: 0 auto;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -35,7 +35,7 @@ body {
 
 #body_content {
 	background-color:white;
-	min-height: 400px; 
+	min-height: 750px; 
 }
 
 #term_of_use {
@@ -203,8 +203,9 @@ a {
 #rightcol {
 	margin-left:1em;
 	display:inline-block; 
+	
 	vertical-align:top;
-	width: 530px;
+	width: 390px;
 }
 
 #body_content h1 {
@@ -260,13 +261,13 @@ li img {
 	background-image: linear-gradient(bottom,  #D5E5F6 0, #517EB5 70%);
 	display:inline-block;
 	vertical-align: top;
-	width: 145px;
-	margin: 0.6em;
+	width: 105px;
+	margin: 0.4em;
 	text-align: center;
 	vertical-align: top;
 	border: 2px solid #004990;
 	border-radius:8px;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	line-height:1.0;
 	padding-top:0.5em;
 }
@@ -295,8 +296,8 @@ li img {
 #map-bxl {
 	position:relative;
 	margin: 0px auto;
-	width: 520px;
-	height: 400px;
+	width: 390px;
+	height: 390px;
 	border:2px solid #717171;
 }
 
@@ -979,4 +980,113 @@ td.section {
 	background-color:#000000;
 }
 
+.leftPane {
+	float:left;
+	width:15%;
+}
+
+ul.leftPane {
+	padding:0;
+	margin:0;
+}
+
+.leftPane a{
+	text-decoration:none;
+	color:black;
+}
+
+.leftPane li {
+	padding:0px;
+	background-color:#FAD200;
+	display:block;
+	margin:0;
+}
+
+.leftPane li a {
+	display:block;
+}
+
+.leftPane li:hover {
+	background-color:#144A93;
+	display:block;
+	margin:0;
+}
+
+.leftPane a:hover{
+	text-decoration:none;
+	color:white;
+}
+
+.leftPane p {
+	margin-left:10px;
+}
+
+.leftPane .category {
+	margin-left:10px;
+	font-weight:bold;
+}
+
+.leftPane .subcategory {
+	margin-left:20px;
+}
+
+.leftPane .category_number {
+	float:right;
+	margin-right:5px;
+}
+
+.centerContent {
+
+}
+
+table.configTable th {
+	border-bottom:1px solid black;
+	padding:5px;
+}
+
+table.configTable td {
+	padding:5px;
+}
+
+table.configTable td.firstItem {
+	border-right:1px solid black;
+}
+
+.matrixButton {
+	width:100%;
+	padding:5px;
+}
+
+.matrixButton.emptySelection{
+	width:100%;
+	padding:5px;
+	color:red;
+}
+
+.saveFormButton {
+	background-color:#517EB5;
+	background-image:-moz-linear-gradient(bottom, #517EB5 0, #004990 45%);
+	background-image: -webkit-linear-gradient(bottom, #517EB5 0, #004990 45%);
+	background-image: linear-gradient(bottom,  #517EB5 0, #004990 45%);
+	padding:0.3em 0.4em;
+	border:2px solid #517EB5;
+	border-radius:7px;
+	font-size: 1.2em;
+	color:#ffffff !important; 
+	font-weight: bold; 
+	margin-top:1.2em;
+	cursor: pointer;
+	text-decoration: none;
+
+}
+
+.saveFormButton:hover {
+	border:2px solid #004990;
+}
+
+.saveFormButton:disabled {
+	background:#EEE;
+	border:2px solid #AAA;
+	color:#AAA;
+}
 

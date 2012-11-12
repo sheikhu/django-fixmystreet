@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django_fixmystreet.backoffice.forms import ManagersListForm
 from django_fixmystreet.fixmystreet.models import TypesWithUsersOfOrganisation,FMSUser, UsersAssignedToCategories, getLoggedInUserId, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
 from django.contrib.sessions.models import Session
+from django.utils.translation import ugettext_lazy
 
 @login_required(login_url='/pro/accounts/login/')
 def show(request):
@@ -23,6 +24,8 @@ def show(request):
             userString = ""
             for u in users.get_results():
                 userString+= u[0]+" "+u[1]+"/"
+            if userString == "":
+                userString= "No manager selected"
             currentSelectedList[main.id-1][second.id-1]= currentSelectedList[main.id-1][second.id-1]+userString
     # Return the main categories list, secondary categories list for displaying the matrix column- and rowheaders.
     # Return an empty categories list (types) because we are showing the page (not doing the selection via popup)
@@ -54,6 +57,8 @@ def update(request):
             userString = ""
             for u in users.get_results():
                 userString+= u[0]+" "+u[1]+"/"
+            if userString == "":
+                userString= "No manager selected"
             currentSelectedList[main.id-1][second.id-1]= currentSelectedList[main.id-1][second.id-1]+userString
     #This list will be filled with the names of the selected managers for the given types in "categories"
     categoryUserMapping = [0]*len(ReportCategory.objects.all())
