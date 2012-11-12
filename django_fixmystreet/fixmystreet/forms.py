@@ -7,9 +7,40 @@ from django.forms.util import ErrorDict
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Ward,File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+from django.utils.encoding import force_unicode
+from django.utils.html import escape, conditional_escape
 
-class CategoryChoiceField(forms.fields.ChoiceField):
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, Commune, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+
+class SecondaryCategorySelect(forms.Select):
+    def render_option(self, selected_choices, option_value, option_label):
+        option_value = force_unicode(option_value)
+        if (option_value in selected_choices):
+            selected_html = u' selected="selected"'
+        else:
+            selected_html = ''
+        disabled_html = ''
+        text_label = option_label;
+        family_param = '';
+        public_param = '';
+        if isinstance(option_label, dict):
+            if dict.get(option_label, 'disabled'):
+                disabled_html = u' disabled="disabled"'
+            if dict.get(option_label, 'label'):
+                text_label = option_label['label']
+            if dict.get(option_label, 'family'):
+                family_param = option_label['family']
+            if dict.get(option_label, 'public'):
+                public_param = option_label['public']
+        return u'<option public="%s" family="%s"  value="%s"%s%s>%s</option>' % (
+            escape(public_param), escape(family_param), escape(option_value), selected_html, disabled_html,
+            conditional_escape(force_unicode(text_label)))
+
+
+
+class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
+
+
     """
     Do some pre-processing to
     render opt-groups (silently supported, but undocumented
@@ -23,31 +54,35 @@ class CategoryChoiceField(forms.fields.ChoiceField):
 
         groups = {}
         for category in categories:
-            catclass = str(category.category_class)
+            catclass = str(category.secondary_category_class)
             if not groups.has_key(catclass):
                 groups[catclass] = []
-            groups[catclass].append((category.pk, category.name))
+            groups[catclass].append((category.pk, {'label':category.name, 'family':category.category_class.pk, 'public':category.public}))
+        
         for catclass, values in groups.items():
             choices.append((catclass,values))
-        super(CategoryChoiceField,self).__init__(choices,*args,**kwargs)
+       
+        super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(attrs={'class':category.pk}),*args,**kwargs)
+
+
 
     def clean(self, value):
-        super(CategoryChoiceField,self).clean(value)
+        super(SecondaryCategoryChoiceField,self).clean(value)
         try:
             model = ReportCategory.objects.get(pk=value)
         except ReportCategory.DoesNotExist:
             raise ValidationError(self.error_messages['invalid_choice'])
         return model
-  
+
 
 class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x','y','title', 'address', 'category','postalcode','description')
+        fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description')
 
     required_css_class = 'required'
-    category = CategoryChoiceField(label=ugettext_lazy("Category"))
+    secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
@@ -55,27 +90,56 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
-            self.ward = Ward.objects.get(zipcode__code=data['postalcode'])
+            self.commune = Commune.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
 
         super(ReportForm,self).__init__(data, files, initial=initial)
         #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
 
     def clean(self):
-        if not self.ward:
+        if not self.commune:
             raise forms.ValidationError("Location not supported")
         return super(ReportForm, self).clean()
 
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
-        report.ward = self.ward
+        report.commune = self.commune
         report.status = list(Status.objects.all())[0]
         report.point = self.point
+
         if user.is_authenticated():
             report.creator = user
+        
         if commit:
             report.save()
         return report
+
+class CitizenReportForm(ReportForm):
+    """Citizen Report form"""
+    class Meta:
+        model = Report
+        fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description','citizen_email','citizen_firstname','citizen_lastname')
+
+    citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
+    citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
+    citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))
+
+    def save(self, user, commit=True):
+        report = super(ReportForm, self).save(commit=False)
+        report.commune = self.commune
+        report.status = list(Status.objects.all())[0]
+        report.point = self.point
+
+        if user.is_authenticated():
+            report.creator = user
+        else:
+            #Add information about the citizen connected.
+            
+            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+        if commit:
+            report.save()
+        return report
+
 
 
 class ReportUpdateForm(forms.ModelForm):
@@ -90,7 +154,8 @@ class ReportUpdateForm(forms.ModelForm):
 
     def save(self, user, report, commit=True):
         update = super(ReportUpdateForm, self).save(commit=False)
-        update.author = user
+        if user.is_authenticated():
+            update.author = user
         update.report = report
         if commit:
             update.save()

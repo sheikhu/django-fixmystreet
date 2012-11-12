@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 10:56+0100\n"
+"POT-Creation-Date: 2012-11-09 09:46-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,104 +23,91 @@ msgstr "Anglais"
 
 #: settings.py:76
 msgid "French"
-msgstr "Francais"
+msgstr "Frais"
 
 #: settings.py:77
 msgid "Dutch"
 msgstr "Néerlandais"
 
-#: fixmystreet/forms.py:71 fixmystreet/models.py:174
-msgid "Name"
-msgstr "Votre nom"
-
-#: fixmystreet/forms.py:74
-msgid "Email"
-msgstr "Votre email"
-
-#: fixmystreet/forms.py:76
-msgid "Message"
-msgstr "Message"
-
-#: fixmystreet/forms.py:95
-msgid "Select a Category"
-msgstr "Choisissez une catégorie"
-
-#: fixmystreet/models.py:29
-msgid "Subject"
-msgstr "Sujet"
-
-#: fixmystreet/models.py:30
-msgid "Category"
-msgstr "Catégorie"
-
-#: fixmystreet/models.py:54 fixmystreet/models.py:108
-msgid "Details"
-msgstr "Détails"
-
-#: fixmystreet/models.py:55
-msgid "Location"
-msgstr "Adresse"
-
-#: fixmystreet/models.py:56
-msgid "Postal Code"
-msgstr "Code postal"
-
-#: fixmystreet/models.py:175
-msgid "Hint"
-msgstr "Astuce"
-
-#: fixmystreet/models.py:176
-msgid "Category group"
-msgstr "Groupe catégorie:"
-
-#: fixmystreet/models.py:371
-msgid "Question"
-msgstr "Question"
-
-#: fixmystreet/models.py:372
-msgid "Answere"
-msgstr "Réponse"
-
-#: fixmystreet/views/wards.py:43
-msgid "New Problems"
-msgstr "Nouveaux rapports"
-
-#: fixmystreet/views/wards.py:44
-msgid "Older Unresolved Problems"
-msgstr "Rapports non résolus"
-
-#: fixmystreet/views/wards.py:45
-msgid "Recently Fixed"
-msgstr "Rapports résolus"
-
-#: fixmystreet/views/wards.py:46
-msgid "Older Fixed Problems"
-msgstr "Rapports non résolus"
-
+#: backoffice/views/reports/subscribers.py:15
 #: fixmystreet/views/reports/subscribers.py:15
 msgid "You have subscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
+#: backoffice/views/reports/subscribers.py:22
 #: fixmystreet/views/reports/subscribers.py:22
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes désabonné aux mises à jour"
 
-#: fixmystreet/views/reports/updates.py:18
-msgid "The report has been sucessfully updated."
-msgstr "Votre mise à jour a été enregistré"
+#: fixmystreet/forms.py:52
+msgid "Select a Category"
+msgstr "Choisissez une catégorie"
 
-#: templates/about.html:4 templates/base.html:65 templates/faq/show.html:3
-#: templates/faq/show.html.py:7
+#: fixmystreet/forms.py:85 fixmystreet/models.py:89 fixmystreet/models.py:91
+msgid "Category"
+msgstr "Catégorie"
+
+#: fixmystreet/forms.py:90 fixmystreet/forms.py:153
+msgid "Email"
+msgstr "Votre email"
+
+#: fixmystreet/forms.py:91
+msgid "Firstname"
+msgstr "Prenom"
+
+#: fixmystreet/forms.py:92 fixmystreet/forms.py:150 fixmystreet/models.py:64
+#: fixmystreet/models.py:77 fixmystreet/models.py:285
+msgid "Name"
+msgstr "Votre nom"
+
+#: fixmystreet/forms.py:155
+msgid "Message"
+msgstr "Message"
+
+#: fixmystreet/forms.py:166
+msgid "Tel."
+msgstr ""
+
+#: fixmystreet/models.py:87
+msgid "Location"
+msgstr "Adresse"
+
+#: fixmystreet/models.py:88
+msgid "Subject"
+msgstr "Sujet"
+
+#: fixmystreet/models.py:201
+msgid "Details"
+msgstr "Détails"
+
+#: fixmystreet/models.py:286
+msgid "Hint"
+msgstr "Astuce"
+
+#: fixmystreet/models.py:294 fixmystreet/models.py:295
+msgid "Category group"
+msgstr "Groupe catégorie:"
+
+#: fixmystreet/models.py:477
+msgid "Question"
+msgstr "Question"
+
+#: fixmystreet/models.py:478
+msgid "Answere"
+msgstr "Réponse"
+
+#: fixmystreet/templates/about.html:4 fixmystreet/templates/base.html:102
+#: fixmystreet/templates/faq/show.html:3 fixmystreet/templates/faq/show.html:7
 msgid "About"
 msgstr "A propos"
 
 #
-#: templates/about.html:8
+#: fixmystreet/templates/about.html:8
 msgid "About FixMyStreet Brussels"
 msgstr "A propos de Fix My Street Bruxelles"
 
-#: templates/about.html:15
-#, python-format
+#: fixmystreet/templates/about.html:15
+#, fuzzy, python-format
 msgid ""
 "\n"
 "        <h2>Contact</h2>\n"
@@ -173,9 +160,9 @@ msgid ""
 "        <ul>\n"
 "            <li><a href='http://mysociety.org'>MySociety</a>, for the "
 "original concept.</li>\n"
-"            <li><a href='visiblegovernment.ca'>visiblegovernment.ca</a> for "
-"the original open source project <a href='fixmystreet.ca'>fixmystreet.ca</a>."
-"</li>\n"
+"            <li><a href='http://visiblegovernment.ca'>visiblegovernment.ca</"
+"a> for the original open source project <a href='http://fixmystreet."
+"ca'>fixmystreet.ca</a>.</li>\n"
 "        </ul>\n"
 "        "
 msgstr ""
@@ -242,119 +229,205 @@ msgstr ""
 "        </ul>\n"
 "        "
 
-#: templates/base.html:10 templates/base.html.py:47 templates/base.html:48
+#: fixmystreet/templates/base.html:10 fixmystreet/templates/base.html.py:80
+#: fixmystreet/templates/base.html:81 fixmystreet/templates/base_pro.html:10
+#: fixmystreet/templates/base_pro.html:97
+#: fixmystreet/templates/base_pro.html:98
 msgid "Fix My Street Brussels"
 msgstr "Fix My Street Bruxelles"
 
-#: templates/base.html:10
+#: fixmystreet/templates/base.html:10 fixmystreet/templates/base_pro.html:10
+#: fixmystreet/templates/admin/change_form.html:19
 msgid "Home"
 msgstr "Page d'accueil"
 
-#: templates/base.html:49
+#: fixmystreet/templates/base.html:82 fixmystreet/templates/base_pro.html:99
 msgid "Brussels-Capital Region"
 msgstr "Région de Bruxelle Capital"
 
-#: templates/base.html:63
+#: fixmystreet/templates/base.html:100
 msgid "Submit a Report"
 msgstr "Soumettre un rapport"
 
-#: templates/base.html:64
+#: fixmystreet/templates/base.html:101
 msgid "View Reports"
 msgstr "Voir les rapports"
 
-#: templates/base.html:66 templates/contact/new.html:4
-#: templates/contact/new.html.py:24
+#: fixmystreet/templates/base.html:103
+#: fixmystreet/templates/contact/new.html:4
+#: fixmystreet/templates/contact/new.html:24
 msgid "Contact Us"
 msgstr "Contact"
 
-#: templates/base.html:73
-msgid "Welcome"
-msgstr "Bienvenue"
-
-#: templates/base.html:76 templates/reports/new.html:209
-#: templates/reports/show.html:158
-msgid "Login with Facebook"
-msgstr "S'authentifier avec Facebook"
-
-#: templates/base.html:77 templates/reports/new.html:210
-#: templates/reports/show.html:159
-msgid "Login with Google"
-msgstr "S'authentifier avec Google"
-
-#: templates/base.html:94 templates/term_of_use.html:4
+#: fixmystreet/templates/base.html:126 fixmystreet/templates/base_pro.html:155
+#: fixmystreet/templates/term_of_use.html:4
 msgid "Terms of Use"
 msgstr "Conditions d'utilistation"
 
-#: templates/home.html:9
+#: fixmystreet/templates/createuser.html:17
+msgid "Agent"
+msgstr ""
+
+#: fixmystreet/templates/createuser.html:18
+msgid "Manager"
+msgstr ""
+
+#: fixmystreet/templates/createuser.html:19
+msgid "Leader"
+msgstr ""
+
+#: fixmystreet/templates/home.html:9 fixmystreet/templates/home_pro.html:9
 msgid "Enter a nearby street name:"
 msgstr "Entrez le nom d'une rue à proximité :"
 
-#: templates/home.html:14
+#: fixmystreet/templates/home.html:14 fixmystreet/templates/home_pro.html:14
 msgid "Choose a ward..."
 msgstr "Choisissez une commune..."
 
-#: templates/home.html:19
+#: fixmystreet/templates/home.html:19 fixmystreet/templates/home_pro.html:19
 msgid "or leave empty for a global search"
 msgstr "ou laissez vide pour une recherce globale"
 
-#: templates/home.html:24
+#: fixmystreet/templates/home.html:24 fixmystreet/templates/home_pro.html:24
 msgid "Search"
 msgstr "Rechercher"
 
-#: templates/home.html:28
+#: fixmystreet/templates/home.html:28 fixmystreet/templates/home_pro.html:28
 msgid "How to fill a report"
 msgstr "Comment créer un rapport"
 
-#: templates/home.html:30
+#: fixmystreet/templates/home.html:30 fixmystreet/templates/home_pro.html:30
 msgid "Enter a nearby street name"
 msgstr "Entrez le nom d'une rue à proximité"
 
-#: templates/home.html:31
+#: fixmystreet/templates/home.html:31 fixmystreet/templates/home_pro.html:31
 msgid "Locate the problem on a map of the area"
 msgstr "Localisez le problème sur une carte de la région"
 
-#: templates/home.html:32
+#: fixmystreet/templates/home.html:32 fixmystreet/templates/home_pro.html:32
 msgid "Enter details of the problem"
 msgstr "Entrez les détails du problème"
 
-#: templates/home.html:33
+#: fixmystreet/templates/home.html:33 fixmystreet/templates/home_pro.html:33
 msgid "We send it to the city on your behalf"
 msgstr "Nous le rapporterons au service concerné en votre nom"
 
-#: templates/home.html:40 templates/cities/show.html:12
+#: fixmystreet/templates/home.html:40 fixmystreet/templates/home_pro.html:40
+#: fixmystreet/templates/cities/show.html:12
 msgid "Reports Filed"
 msgstr "Rapports"
 
-#: templates/home.html:41 templates/home.html.py:46 templates/home.html:51
+#: fixmystreet/templates/home.html:41 fixmystreet/templates/home.html.py:46
+#: fixmystreet/templates/home.html:51 fixmystreet/templates/home_pro.html:41
+#: fixmystreet/templates/home_pro.html:46
+#: fixmystreet/templates/home_pro.html:51
 msgid "In the Last Year"
 msgstr "Durant la dernière année"
 
-#: templates/home.html:45 templates/cities/show.html:16
+#: fixmystreet/templates/home.html:45 fixmystreet/templates/home_pro.html:45
+#: fixmystreet/templates/cities/show.html:16
 msgid "Reports Fixed"
 msgstr "Rapports résolus"
 
-#: templates/home.html:50 templates/cities/show.html:20
+#: fixmystreet/templates/home.html:50 fixmystreet/templates/home_pro.html:50
+#: fixmystreet/templates/cities/show.html:20
 msgid "Reports Updated"
 msgstr "Rapports <span style='display:inline-block;'>mis à jour</span>"
 
-#: templates/home.html:55 templates/cities/_report_count_table.html:28
+#: fixmystreet/templates/home.html:55 fixmystreet/templates/home_pro.html:55
+#: fixmystreet/templates/cities/_report_count_table.html:28
 msgid "As reported by Fix My Street users."
 msgstr "Comme indiqué par les utilisateurs de Fix My Street."
 
-#: templates/home.html:60
+#: fixmystreet/templates/home.html:60 fixmystreet/templates/home_pro.html:60
 msgid "Recent Reports"
 msgstr "Derniers Rapports"
 
-#: templates/ajax/category_description.html:2 templates/reports/new.html:232
-#: templates/reports/mobile/new.html:29
+#: fixmystreet/templates/posters.html:4 fixmystreet/templates/posters.html:8
+#, fuzzy
+msgid "Posters"
+msgstr "Signalé par"
+
+#: fixmystreet/templates/posters.html:10
+msgid ""
+"\n"
+"Help spread the word.  The more people who know about fixmystreet.ca, the "
+"more \n"
+"useful it will be.  Share your report on Twitter or Facebook, \n"
+"or hang a poster at a university or neighbourhood coffee shop.\n"
+msgstr ""
+
+#: fixmystreet/templates/posters.html:17
+#, fuzzy
+msgid "Poster"
+msgstr "Signalé par"
+
+#: fixmystreet/templates/admin/base_site.html:4
+#, fuzzy
+msgid "Fix My Street Admin"
+msgstr "Fix My Street:"
+
+#: fixmystreet/templates/admin/base_site.html:15
+#, fuzzy
+msgid "Fix My Street Administration"
+msgstr "Fix My Street:"
+
+#: fixmystreet/templates/admin/change_form.html:22
+#: fixmystreet/templates/reports/show_pro.html:181
+#: fixmystreet/templates/reports/show_pro.html:198
+msgid "Add"
+msgstr ""
+
+#: fixmystreet/templates/admin/change_form.html:32
+msgid "History"
+msgstr ""
+
+#: fixmystreet/templates/admin/change_form.html:33
+msgid "View on site"
+msgstr ""
+
+#: fixmystreet/templates/admin/change_form.html:44
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: fixmystreet/templates/admin/login.html:58
+msgid "Login with Facebook"
+msgstr "S'authentifier avec Facebook"
+
+#: fixmystreet/templates/admin/login.html:59
+msgid "Login with Google"
+msgstr "S'authentifier avec Google"
+
+#: fixmystreet/templates/admin/login.html:64
+msgid "Username:"
+msgstr ""
+
+#: fixmystreet/templates/admin/login.html:67
+msgid "Password:"
+msgstr ""
+
+#: fixmystreet/templates/admin/login.html:70
+msgid "Forgot password?"
+msgstr ""
+
+#: fixmystreet/templates/admin/login.html:73
+msgid "Log in"
+msgstr ""
+
+#: fixmystreet/templates/ajax/category_description.html:2
+#: fixmystreet/templates/reports/new.html:193
+#: fixmystreet/templates/reports/new_pro.html:237
+#: fixmystreet/templates/reports/mobile/new.html:29
 msgid "Please Note"
 msgstr "Notez"
 
-#: templates/ajax/category_description.html:5
+#: fixmystreet/templates/ajax/category_description.html:5
 msgid "Is it Hate Graffiti?"
 msgstr "Est-ce du Graffiti Haineux?"
 
-#: templates/ajax/category_description.html:6
+#: fixmystreet/templates/ajax/category_description.html:6
 msgid ""
 "Please contact the City directly regarding hate or racist graffiti by "
 "calling #311."
@@ -362,47 +435,48 @@ msgstr ""
 "S'il vous plaît contactez directement la ville en ce qui concerne les "
 "graffitis racistes ou haineux en appelant # 311."
 
-#: templates/cities/_report_count_table.html:7
+#: fixmystreet/templates/cities/_report_count_table.html:7
 msgid "New <small>(less than 1 month)</small>"
 msgstr "Nouveaux <small>(moins d'un mois)</small>"
 
-#: templates/cities/_report_count_table.html:8
+#: fixmystreet/templates/cities/_report_count_table.html:8
 msgid "Older Unresolved <small>(more than 1 month)</small>"
 msgstr "Non résolu <small>(plus d'un mois)</small>"
 
-#: templates/cities/_report_count_table.html:9
+#: fixmystreet/templates/cities/_report_count_table.html:9
 msgid "Recently Fixed* <small>(fixed less than 1 month ago)</small>"
 msgstr "Résolu* récemment <small>(il y a moins d'un mois)</small>"
 
-#: templates/cities/_report_count_table.html:10
+#: fixmystreet/templates/cities/_report_count_table.html:10
 msgid "Old Fixed* <small>(fixed more than 1 month ago)</small>"
 msgstr "Résolu* <small>(il y a plus d'un mois)</small>"
 
-#: templates/cities/show.html:4 templates/cities/show.html.py:6
+#: fixmystreet/templates/cities/show.html:4
+#: fixmystreet/templates/cities/show.html:6
 msgid "All Reports"
 msgstr "Tous les rapports"
 
-#: templates/cities/show.html:8
+#: fixmystreet/templates/cities/show.html:8
 msgid "Top Reports"
 msgstr "Rapport classé"
 
-#: templates/cities/show.html:26
+#: fixmystreet/templates/cities/show.html:26
 msgid "Rank"
 msgstr "Classement"
 
-#: templates/cities/show.html:27
+#: fixmystreet/templates/cities/show.html:27
 msgid "Report"
 msgstr "Rapport"
 
-#: templates/cities/show.html:28
+#: fixmystreet/templates/cities/show.html:28
 msgid "Number of Subscribers"
 msgstr "Nombre d'abonnés"
 
-#: templates/cities/show.html:40
+#: fixmystreet/templates/cities/show.html:40
 msgid "Reports by wards"
 msgstr "Rapports par communes"
 
-#: templates/contact/new.html:27
+#: fixmystreet/templates/contact/new.html:27
 msgid ""
 "\n"
 "            <p>\n"
@@ -425,24 +499,26 @@ msgstr ""
 "a>.</p>\n"
 "            "
 
-#: templates/contact/new.html:37
+#: fixmystreet/templates/contact/new.html:37
 msgid "We'd love to get your feedback"
 msgstr "N’hésitez pas à nous laisser vos commentaires sur ce site"
 
-#: templates/contact/new.html:43 templates/reports/new.html:195
-#: templates/reports/mobile/new.html:26
+#: fixmystreet/templates/contact/new.html:43
+#: fixmystreet/templates/reports/new.html:163
+#: fixmystreet/templates/reports/new_pro.html:207
+#: fixmystreet/templates/reports/mobile/new.html:26
 msgid "* This fields are required"
 msgstr "* Ces champs sont requis"
 
-#: templates/contact/new.html:48
+#: fixmystreet/templates/contact/new.html:48
 msgid "Send"
 msgstr "Envoyer"
 
-#: templates/contact/thanks.html:5
+#: fixmystreet/templates/contact/thanks.html:5
 msgid "Thank you"
 msgstr "Merci"
 
-#: templates/contact/thanks.html:6
+#: fixmystreet/templates/contact/thanks.html:6
 msgid ""
 "\n"
 "<p>Thanks for submitting your comments.</p>\n"
@@ -452,20 +528,23 @@ msgstr ""
 "<p>Merci pour nous avoir envoyer vos commentaires.</p>\n"
 "<a href=\"/\">Retournez à Fix My Street</a>\n"
 
-#: templates/emails/base_email.html:4 templates/emails/base_email.txt:2
+#: fixmystreet/templates/emails/base_email.html:4
+#: fixmystreet/templates/emails/base_email.txt:2
 #, python-format
 msgid "Hello %(name)s,"
 msgstr "Bonjour %(name)s,"
 
-#: templates/emails/base_email.html:8 templates/emails/base_email.txt:5
+#: fixmystreet/templates/emails/base_email.html:8
+#: fixmystreet/templates/emails/base_email.txt:5
 msgid "Thank you,"
 msgstr "Merci,"
 
-#: templates/emails/base_email.html:9 templates/emails/base_email.txt:6
+#: fixmystreet/templates/emails/base_email.html:9
+#: fixmystreet/templates/emails/base_email.txt:6
 msgid "The Fix My Street Team"
 msgstr "L'équipe Fix My Street"
 
-#: templates/emails/confirm_report/message.html:4
+#: fixmystreet/templates/emails/confirm_report/message.html:4
 #, python-format
 msgid ""
 "\n"
@@ -486,7 +565,7 @@ msgstr ""
 "\n"
 "<p>Pour confirmer votre rapport, veuillez cliquer le lien suivant:</p>\n"
 
-#: templates/emails/confirm_report/message.txt:4
+#: fixmystreet/templates/emails/confirm_report/message.txt:4
 #, python-format
 msgid ""
 "\n"
@@ -499,12 +578,12 @@ msgstr ""
 "\n"
 "Pour confirmer votre rapport, veuillez cliquer le lien suivant:\n"
 
-#: templates/emails/confirm_report/subject.txt:1
+#: fixmystreet/templates/emails/confirm_report/subject.txt:1
 #, python-format
 msgid "Fix My Street: Please Confirm Report: %(title)s"
 msgstr "Fix My Street: Veuillez Confirmer votre rapport: %(title)s"
 
-#: templates/emails/confirm_update/message.html:4
+#: fixmystreet/templates/emails/confirm_update/message.html:4
 #, python-format
 msgid ""
 "\n"
@@ -525,7 +604,7 @@ msgstr ""
 "\n"
 "<p>Pour confirmer votre mise à jour, veuillez cliquer le lien suivant:</p>\n"
 
-#: templates/emails/confirm_update/message.txt:4
+#: fixmystreet/templates/emails/confirm_update/message.txt:4
 #, python-format
 msgid ""
 "\n"
@@ -539,16 +618,16 @@ msgstr ""
 "\n"
 "Pour confirmer votre mise à jour, veuillez cliquer le lien suivant:\n"
 
-#: templates/emails/confirm_update/subject.txt:1
+#: fixmystreet/templates/emails/confirm_update/subject.txt:1
 #, python-format
 msgid "Fix My Street: Please Confirm Update For: %(title)s"
 msgstr "Fix My Street: Veuillez Confirmer votre mise à jour: %(title)s"
 
-#: templates/emails/flag_report/subject.txt:1
+#: fixmystreet/templates/emails/flag_report/subject.txt:1
 msgid "FixMyStreet Report Flagged as Offensive"
 msgstr "FixMyStreet rapport signallé offensif"
 
-#: templates/emails/report_update/message.html:5
+#: fixmystreet/templates/emails/report_update/message.html:5
 #, python-format
 msgid ""
 "\n"
@@ -559,17 +638,17 @@ msgstr ""
 "<p>Le rapport: <strong>%(title)s</strong></p>\n"
 "<p>a été mis à jour par %(author)s le %(date)s:</p>\n"
 
-#: templates/emails/report_update/message.html:9
-#: templates/emails/report_update/message.txt:5
+#: fixmystreet/templates/emails/report_update/message.html:9
+#: fixmystreet/templates/emails/report_update/message.txt:5
 msgid "This issue has been fixed."
 msgstr "Ce problème a été résolu."
 
-#: templates/emails/report_update/message.html:14
-#: templates/emails/report_update/message.txt:11
+#: fixmystreet/templates/emails/report_update/message.html:14
+#: fixmystreet/templates/emails/report_update/message.txt:11
 msgid "For more information, see the full report at:"
 msgstr "Pour plus d'information, voir le rapport complet:"
 
-#: templates/emails/report_update/message.html:17
+#: fixmystreet/templates/emails/report_update/message.html:17
 msgid ""
 "\n"
 "<p>You are receiving this email because you subscribed to updates for this "
@@ -581,7 +660,7 @@ msgstr ""
 "<p>Vous avez reçu cet email suite à une inscription sur Fix My Street. Pour "
 "vous désinscrire, veillez cliquer sur le lien ci-dessous:</p>\n"
 
-#: templates/emails/report_update/message.txt:1
+#: fixmystreet/templates/emails/report_update/message.txt:1
 #, python-format
 msgid ""
 "\n"
@@ -593,7 +672,7 @@ msgstr ""
 "a été mis à jour par %(author)s le %(date)s:\n"
 
 #
-#: templates/emails/report_update/message.txt:15
+#: fixmystreet/templates/emails/report_update/message.txt:15
 msgid ""
 "\n"
 "You are receiving this email because you subscribed to updates for this "
@@ -605,19 +684,19 @@ msgstr ""
 "Vous avez reçu cet email suite à une inscription sur Fix My Street. Pour\n"
 "vous désinscrire, veillez cliquer sur le lien ci-dessous:\n"
 
-#: templates/emails/report_update/subject.txt:1
+#: fixmystreet/templates/emails/report_update/subject.txt:1
 msgid "Fix My Street:"
 msgstr "Fix My Street:"
 
-#: templates/emails/report_update/subject.txt:1
+#: fixmystreet/templates/emails/report_update/subject.txt:1
 msgid "Fixed"
 msgstr "Résolus"
 
-#: templates/emails/report_update/subject.txt:1
+#: fixmystreet/templates/emails/report_update/subject.txt:1
 msgid "Updated"
 msgstr "Mis à jour"
 
-#: templates/emails/subscribe/message.html:4
+#: fixmystreet/templates/emails/subscribe/message.html:4
 #, python-format
 msgid ""
 "\n"
@@ -632,7 +711,7 @@ msgstr ""
 "<p>Afin de finaliser la procédure d'abonnement, veillez cliquer sur le lien "
 "d'activation suivant:</p>\n"
 
-#: templates/emails/subscribe/message.txt:4
+#: fixmystreet/templates/emails/subscribe/message.txt:4
 #, python-format
 msgid ""
 "\n"
@@ -646,65 +725,92 @@ msgstr ""
 "Afin de finaliser la procédure d'abonnement, veillez cliquer sur le lien "
 "d'activation suivant:\n"
 
-#: templates/emails/subscribe/subject.txt:1
+#: fixmystreet/templates/emails/subscribe/subject.txt:1
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
 msgstr "Fix My Street: abonnement aux mises à jour du rapport"
 
-#: templates/reports/_navigation.html:9
+#: fixmystreet/templates/promotions/show.html:4
+#: fixmystreet/templates/wards/show.html:4
+#: fixmystreet/templates/wards/show.html:35
+msgid "Reports for"
+msgstr "Rapports pour"
+
+#: fixmystreet/templates/promotions/show.html:8
+#, fuzzy
+msgid "First 100 Reports"
+msgstr "Soumettre un rapport"
+
+#: fixmystreet/templates/promotions/show.html:9
+msgid ""
+" out of the first 100 confirmed reports were filed with the promotional code "
+msgstr ""
+
+#: fixmystreet/templates/reports/_navigation.html:9
+#: fixmystreet/templates/reports/_navigation_pro.html:9
 msgid "fixed"
 msgstr "résolus"
 
-#: templates/reports/new.html:4
+#: fixmystreet/templates/reports/new.html:4
+#: fixmystreet/templates/reports/new_pro.html:4
 msgid "New Report"
 msgstr "Nouveau rapport"
 
-#: templates/reports/new.html:170
+#: fixmystreet/templates/reports/new.html:138
+#: fixmystreet/templates/reports/new_pro.html:183
 msgid "Submitting a report"
 msgstr "Soumettre un rapport"
 
-#: templates/reports/new.html:174
+#: fixmystreet/templates/reports/new.html:142
+#: fixmystreet/templates/reports/new_pro.html:187
 msgid "Nearby reports"
 msgstr "Rapports à proximité"
 
-#: templates/reports/new.html:184
+#: fixmystreet/templates/reports/new.html:152
+#: fixmystreet/templates/reports/new_pro.html:196
 msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
-#: templates/reports/new.html:190
+#: fixmystreet/templates/reports/new.html:158
+#: fixmystreet/templates/reports/new_pro.html:202
 msgid "Fill the report"
 msgstr "Envoyer"
 
-#: templates/reports/new.html:206 templates/reports/show.html:155
-#: templates/reports/mobile/new.html:38 templates/reports/mobile/show.html:94
+#: fixmystreet/templates/reports/new.html:174
+#: fixmystreet/templates/reports/new_pro.html:218
+#: fixmystreet/templates/reports/show.html:131
+#: fixmystreet/templates/reports/mobile/new.html:38
+#: fixmystreet/templates/reports/mobile/show.html:94
 msgid "Submit"
 msgstr "Envoyer"
 
-#: templates/reports/new.html:213 templates/reports/show.html:162
-msgid "You are not connected, please login to submit your report"
-msgstr ""
-"Vous n'êtes pas connecté, veillez vous authentifier pour créer un rapport"
-
-#: templates/reports/new.html:221
+#: fixmystreet/templates/reports/new.html:182
 msgid "Review reports"
 msgstr "Voir les rapports"
 
-#: templates/reports/new.html:224
+#: fixmystreet/templates/reports/new.html:185
+#: fixmystreet/templates/reports/new_pro.html:229
 msgid "To fill a new report"
 msgstr "Nouveau rapport"
 
-#: templates/reports/new.html:226
+#: fixmystreet/templates/reports/new.html:187
+#: fixmystreet/templates/reports/new_pro.html:231
 msgid "Drag me to the correct location on the map."
 msgstr "Faites moi glisser sur la carte."
 
-#: templates/reports/new.html:230
+#: fixmystreet/templates/reports/new.html:191
+#: fixmystreet/templates/reports/new_pro.html:235
 msgid "Zoom out to see more reports nearby."
 msgstr "Zoom en arrière pour voir d'autres rapports en proximité."
 
-#: templates/reports/new.html:234 templates/reports/mobile/new.html:31
+#: fixmystreet/templates/reports/new.html:195
+#: fixmystreet/templates/reports/new_pro.html:239
+#: fixmystreet/templates/reports/mobile/new.html:31
 msgid "Please be polite, concise and to the point."
 msgstr "Soyez poli, précis et concis."
 
-#: templates/reports/new.html:235 templates/reports/mobile/new.html:32
+#: fixmystreet/templates/reports/new.html:196
+#: fixmystreet/templates/reports/new_pro.html:240
+#: fixmystreet/templates/reports/mobile/new.html:32
 msgid ""
 "Please do not be abusive - abusing the service devalues the service for all "
 "users."
@@ -712,7 +818,9 @@ msgstr ""
 "Veillez à ne pas être abusif, ceci dévalue le service pour tous les "
 "utilisateurs"
 
-#: templates/reports/new.html:236 templates/reports/mobile/new.html:33
+#: fixmystreet/templates/reports/new.html:197
+#: fixmystreet/templates/reports/new_pro.html:241
+#: fixmystreet/templates/reports/mobile/new.html:33
 msgid ""
 "Writing your message entirely in block capitals makes it hard to read, as "
 "does a lack of punctuation."
@@ -720,7 +828,9 @@ msgstr ""
 "Écrire votre message entièrement en lettres majuscules ou sans ponctuation "
 "rend la lecture difficile."
 
-#: templates/reports/new.html:237 templates/reports/mobile/new.html:34
+#: fixmystreet/templates/reports/new.html:198
+#: fixmystreet/templates/reports/new_pro.html:242
+#: fixmystreet/templates/reports/mobile/new.html:34
 msgid ""
 "Remember that FixMyStreet is primarily for reporting physical problems that "
 "can be fixed. If your problem is not appropriate for submission via this "
@@ -731,29 +841,39 @@ msgstr ""
 "pour ce site, veillez contacter directement les services communaux et "
 "régionaux concernés."
 
-#: templates/reports/show.html:86 templates/reports/show.html.py:137
-#: templates/reports/show.html:150 templates/reports/mobile/show.html:17
-#: templates/reports/mobile/show.html:91
+#: fixmystreet/templates/reports/show.html:62
+#: fixmystreet/templates/reports/show.html:113
+#: fixmystreet/templates/reports/show.html:126
+#: fixmystreet/templates/reports/show_pro.html:91
+#: fixmystreet/templates/reports/mobile/show.html:17
+#: fixmystreet/templates/reports/mobile/show.html:91
 msgid "This problem has been fixed."
 msgstr "Ce problème a été résolu."
 
-#: templates/reports/show.html:91 templates/reports/mobile/show.html:41
+#: fixmystreet/templates/reports/show.html:67
+#: fixmystreet/templates/reports/show_pro.html:96
+#: fixmystreet/templates/reports/mobile/show.html:41
 msgid "Subscribers:"
 msgstr "Abonnés:"
 
-#: templates/reports/show.html:94 templates/reports/mobile/show.html:44
+#: fixmystreet/templates/reports/show.html:70
+#: fixmystreet/templates/reports/show_pro.html:99
+#: fixmystreet/templates/reports/mobile/show.html:44
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
-#: templates/reports/show.html:96
+#: fixmystreet/templates/reports/show.html:72
+#: fixmystreet/templates/reports/show_pro.html:101
 msgid "You've subscribed for updates"
 msgstr "Vous êtes abonné aux mises à jour"
 
-#: templates/reports/show.html:97
+#: fixmystreet/templates/reports/show.html:73
+#: fixmystreet/templates/reports/show_pro.html:102
 msgid "Unsubscribe"
 msgstr "Annuler l'abonnement"
 
-#: templates/reports/show.html:109
+#: fixmystreet/templates/reports/show.html:85
+#: fixmystreet/templates/reports/show_pro.html:114
 #, python-format
 msgid ""
 "\n"
@@ -764,32 +884,41 @@ msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:117 templates/reports/mobile/show.html:53
+#: fixmystreet/templates/reports/show.html:93
+#: fixmystreet/templates/reports/show_pro.html:122
+#: fixmystreet/templates/reports/mobile/show.html:53
 msgid "Location:"
 msgstr "Adresse:"
 
-#: templates/reports/show.html:121 templates/reports/mobile/show.html:51
+#: fixmystreet/templates/reports/show.html:97
+#: fixmystreet/templates/reports/show_pro.html:130
+#: fixmystreet/templates/reports/mobile/show.html:51
 msgid "Category:"
 msgstr "Catégorie:"
 
-#: templates/reports/show.html:128 templates/reports/mobile/show.html:69
+#: fixmystreet/templates/reports/show.html:104
+#: fixmystreet/templates/reports/show_pro.html:214
+#: fixmystreet/templates/reports/mobile/show.html:69
 msgid "Offensive? Unsuitable? Tell us"
 msgstr "Abus ? Inapproprié ? Avertissez-nous."
 
-#: templates/reports/show.html:132 templates/reports/mobile/show.html:74
+#: fixmystreet/templates/reports/show.html:108
+#: fixmystreet/templates/reports/mobile/show.html:74
 msgid "Updates"
 msgstr "Mises à jour"
 
-#: templates/reports/show.html:138
+#: fixmystreet/templates/reports/show.html:114
 #, python-format
 msgid "Posted by <strong>%(by)s</strong> on <strong>%(on)s</strong>"
 msgstr "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:145 templates/reports/mobile/show.html:86
+#: fixmystreet/templates/reports/show.html:121
+#: fixmystreet/templates/reports/mobile/show.html:86
 msgid "Provide an update"
 msgstr "Fournir une mise à jour"
 
-#: templates/reports/show.html:146 templates/reports/mobile/show.html:87
+#: fixmystreet/templates/reports/show.html:122
+#: fixmystreet/templates/reports/mobile/show.html:87
 msgid ""
 "The status of this report has changed? Thank you let us know by filling this "
 "form."
@@ -797,11 +926,41 @@ msgstr ""
 "Le statut de ce rapport a évolué ? Merci de nous le signaler en remplissant "
 "ce formulaire."
 
-#: templates/reports/flags/new.html:4
+#: fixmystreet/templates/reports/show.html:134
+msgid "You are not connected, please login to submit your report"
+msgstr ""
+"Vous n'êtes pas connecté, veillez vous authentifier pour créer un rapport"
+
+#: fixmystreet/templates/reports/show_pro.html:127
+msgid "Show on map"
+msgstr ""
+
+#: fixmystreet/templates/reports/show_pro.html:134
+msgid "Status:"
+msgstr ""
+
+#: fixmystreet/templates/reports/show_pro.html:140
+msgid "Extra files"
+msgstr ""
+
+#: fixmystreet/templates/reports/show_pro.html:153
+msgid "Extra comments"
+msgstr ""
+
+#: fixmystreet/templates/reports/show_pro.html:171
+msgid "Add a comment to this report"
+msgstr ""
+
+#: fixmystreet/templates/reports/show_pro.html:189
+#, fuzzy
+msgid "Add a file to this report"
+msgstr "Envoyer"
+
+#: fixmystreet/templates/reports/flags/new.html:4
 msgid "Flag an Offensive Report"
 msgstr "Vous avez identifié un contenu comme étant offensif ou inapproprié"
 
-#: templates/reports/flags/new.html:5
+#: fixmystreet/templates/reports/flags/new.html:5
 msgid ""
 "You are reporting the following problem report for being abusive, containing "
 "personal information, or similar to another report:"
@@ -809,11 +968,11 @@ msgstr ""
 "Indiquez pourquoi le contenu est offensif ou inapproprié et pourquoi ilne "
 "peut être publié. Notre modérateur jugera si son retrait est justifié."
 
-#: templates/reports/flags/new.html:12
+#: fixmystreet/templates/reports/flags/new.html:12
 msgid "Flag this Report"
 msgstr "Envoyer"
 
-#: templates/reports/flags/thanks.html:4
+#: fixmystreet/templates/reports/flags/thanks.html:4
 msgid ""
 "\n"
 "<h2>Thank you</h2>\n"
@@ -825,19 +984,19 @@ msgstr ""
 "<p>Merci, vos commentaires ont été reçus et nous agirons en conséquence dès "
 "que possible.</p>\n"
 
-#: templates/reports/flags/thanks.html:8
+#: fixmystreet/templates/reports/flags/thanks.html:8
 msgid "Return"
 msgstr "Retour"
 
-#: templates/reports/mobile/new.html:12
+#: fixmystreet/templates/reports/mobile/new.html:12
 msgid "New report"
 msgstr "Nouveau rapport"
 
-#: templates/reports/mobile/new.html:18
+#: fixmystreet/templates/reports/mobile/new.html:18
 msgid "* Optional"
 msgstr "* Facultatif"
 
-#: templates/reports/mobile/show.html:21
+#: fixmystreet/templates/reports/mobile/show.html:21
 msgid ""
 "<p>Please check your email for a message from FixMyStreet, which will "
 "include a confirmation link.  Complete your submission by clicking on it.</"
@@ -849,44 +1008,75 @@ msgstr ""
 "d'activation. Votre rapport sera alors envoyé au service concerné et sera "
 "visible aux autres utilisateurs sur la carte.</p>"
 
-#: templates/reports/mobile/show.html:55
+#: fixmystreet/templates/reports/mobile/show.html:55
 msgid "Filed by:"
 msgstr "Signalé par:"
 
-#: templates/reports/mobile/show.html:56
+#: fixmystreet/templates/reports/mobile/show.html:56
 msgid "Filed on:"
 msgstr "Signalé le:"
 
-#: templates/reports/mobile/show.html:65
+#: fixmystreet/templates/reports/mobile/show.html:65
 msgid "Fill a new report"
 msgstr "Nouveau rapport"
 
-#: templates/reports/mobile/show.html:78
+#: fixmystreet/templates/reports/mobile/show.html:78
 msgid "Posted by"
 msgstr "Signalé par"
 
-#: templates/wards/show.html:4 templates/wards/show.html.py:35
-msgid "Reports for"
-msgstr "Rapports pour"
-
-#: templates/wards/show.html:39
+#: fixmystreet/templates/wards/show.html:39
 #, python-format
 msgid "Reports filed between %(start)s and %(end)s."
 msgstr "Rapports déposés entre %(start)s et %(end)s."
 
-#: templates/wards/show.html:40
+#: fixmystreet/templates/wards/show.html:40
 msgid "See older reports"
 msgstr "Voir les anciens rapports"
 
-#: templates/wards/show.html:44
+#: fixmystreet/templates/wards/show.html:44
 msgid "No problems have been reported."
 msgstr "Aucun problème n'a été signalé."
 
-#: templates/wards/show.html:56
+#: fixmystreet/templates/wards/show.html:56
 msgid "Note: Fix My Street relies on users to report problems as fixed."
 msgstr ""
 "Note: Fix My Street s'appuie sur les utilisateurs pour signaler les "
 "problèmes comme étant résolus."
+
+#: fixmystreet/tests/views.py:128
+#, fuzzy
+msgid "This field is required."
+msgstr "* Ces champs sont requis"
+
+#: fixmystreet/tests/views.py:129
+msgid "Enter a valid e-mail address."
+msgstr ""
+
+#: fixmystreet/views/wards.py:45
+msgid "New Problems"
+msgstr "Nouveaux rapports"
+
+#: fixmystreet/views/wards.py:46
+msgid "Older Unresolved Problems"
+msgstr "Rapports non résolus"
+
+#: fixmystreet/views/wards.py:47
+msgid "Recently Fixed"
+msgstr "Rapports résolus"
+
+#: fixmystreet/views/wards.py:48
+msgid "Older Fixed Problems"
+msgstr "Rapports non résolus"
+
+#: fixmystreet/views/reports/updates.py:18
+msgid "The report has been sucessfully updated."
+msgstr "Votre mise à jour a été enregistré"
+
+#~ msgid "Postal Code"
+#~ msgstr "Code postal"
+
+#~ msgid "Welcome"
+#~ msgstr "Bienvenue"
 
 #~ msgid "report/view/discuss"
 #~ msgstr "Rapporter / Voir / Discuter"
