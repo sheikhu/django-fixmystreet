@@ -47,7 +47,11 @@ def report_to_array(report):
                 "x": report.point.x,
                 "y": report.point.y,
         },
-        "is_fixed":report.is_fixed
+        "is_fixed":report.is_fixed,
+        "close_date":report.close_date,
+        "private":report.pivate,
+        "valid":report.valid,
+        "finished":report.finished
     }
 
 @register.filter
