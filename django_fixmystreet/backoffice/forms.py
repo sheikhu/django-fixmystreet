@@ -1,6 +1,7 @@
 from django import forms
 from django_fixmystreet.fixmystreet.models import FMSUser, getLoggedInUserId
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 from django.conf import settings
 from django.utils.translation import ugettext_lazy
 from django.contrib.sessions.models import Session
@@ -11,11 +12,9 @@ class ManagersChoiceField (forms.fields.ChoiceField):
 	def __init__(self,  *args, **kwargs):
 		choices = []
 		choices.append(('', ugettext_lazy("Select a manager")))
-
 		currentUserOrganisationId = 1
 		if Session.objects.all()[0].session_key:
 			currentUserOrganisationId = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
-
 		managers = FMSUser.objects.filter(manager=True)
 		managers = managers.filter(organisation_id=currentUserOrganisationId)
 
@@ -35,3 +34,21 @@ class ManagersChoiceField (forms.fields.ChoiceField):
 
 class ManagersListForm(forms.Form):
 	manager=ManagersChoiceField(label="")
+
+class UserEditForm(UserChangeForm):
+    class Meta:
+        model = FMSUser
+        fields = ('first_name','last_name',"username",'email','telephone','active',)
+        
+    telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
+    active = forms.BooleanField(required=False)
+
+    def save(self,userID, commit=True):
+        
+        fmsuser = FMSUser.objects.filter(pk=userID)
+        fmsuser.update(first_name = self.data["first_name"])
+        fmsuser.update(last_name = self.data["last_name"])
+        fmsuser.update(email = self.data["email"])
+        fmsuser.update(telephone = self.data["telephone"])
+        fmsuser.update(active=self.data['active'])
+        return fmsuser;
