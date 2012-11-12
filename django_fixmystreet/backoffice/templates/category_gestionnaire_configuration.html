@@ -1,0 +1,87 @@
+{% extends "base_pro.html" %}
+{% load i18n %}
+{% load tags %}
+{% block script %}
+<script>
+$(document).ready(function(){
+	
+	$("#dialog").dialog({
+    modal: true,
+    autoOpen:false
+});
+	$('#dialog').dialog('option', 'close', function(){
+		window.location.href='{% url category_gestionnaire_configuration %}';
+	});
+});
+function saveSelection(){
+  var url='{% url saveSelection %}?';
+  var i =0;
+  $.each($('[name=manager]'),function(idx,value){
+    url+="cat"+i+"="+$(value).parent().parent().attr("id")+"&man"+i+"="+value.value+"&";
+    i= i+1;
+  });
+  window.location.href=url;
+}
+
+</script>
+{% endblock %}
+
+{% block title %}Create user {% endblock %}
+
+{% block content %}
+
+<div id="fullwidth">
+  <h1>{% trans 'Configure gestionnaire categories' %}</h1>
+
+  <div id="configurationTable">
+  	<table>
+  		<tr>
+  			<th></th>
+  			{% for mainCat in maincategories %}
+  				<th>{{mainCat.name}}</th>
+  			{% endfor %}
+  		</tr>
+  		{% for secondCat in secondcategories %}
+  			<tr>
+  				<td>{{secondCat.name}}</td>
+  				{% for m in maincategories %}
+  				<td> 
+            <button onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
+              {{currentSelectedList|getElementFromList:forloop.counter0|getElementFromList:forloop.parentloop.counter0}}
+            </button> 
+          </td>
+  				{% endfor %}
+  			</tr>
+  		{% endfor %}
+  	</table>
+  </div>
+  	<div id="dialog" title="Select gestionnaires">
+    	<form action="">
+    		<table>
+    			{% for cat in categories %}
+    			<tr>
+    				<td>{{cat.name}}</td><td id="{{cat.id}}"> {{managerDropDown.as_p}}</td>
+    			</tr>
+    			{% endfor %}
+    		</table>
+         
+        <a href="#" onclick="saveSelection();">Save</a>
+    	</form>
+	</div>
+	{% if categories %}
+	<script>
+		$(function() {
+		$("#dialog").dialog('open');
+    $.each($("#dialog").find("select"),function(idx,value){
+      var catId =parseInt($(value).parent().parent().attr("id"));
+      catId = catId-1;
+      console.log()
+      var userIDForCat = {{categoryUserMapping}}[catId];
+      $(value).val(userIDForCat);
+    });
+	  });
+	</script>
+	{% endif %}
+</div>
+
+{% endblock %}

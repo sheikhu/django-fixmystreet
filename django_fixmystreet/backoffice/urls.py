@@ -40,3 +40,12 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.flags',
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.createuser',
 	url(r'^createuser','createUser',name='create_user_pro'),
 )
+urlpatterns += patterns('django_fixmystreet.backoffice.views.categoryGestionnaireConfiguration',
+    url(r'^categoryGestionnaireConfiguration/dialog/','update',name='gestionnaire_selection_dialog'),
+    url(r'^categoryGestionnaireConfiguration','show',name='category_gestionnaire_configuration'),
+
+)
+
+urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
+    url(r'^ajax/saveSelection','saveCategoryConfiguration',name='saveSelection'),
+)

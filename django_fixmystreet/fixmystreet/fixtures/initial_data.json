@@ -2747,34 +2747,33 @@
         }
     }, 
    {
-    	"pk":1,
-    	"model":"fixmystreet.status",
-    	"fields": {
-    		"name_nl":"Aangemaakt",
-    		"name_en":"Created",
-    		"name_fr":"Créé",
-    		"code":"0"
-    	}
+    "pk":1,
+    "model":"fixmystreet.status",
+    "fields": {
+    "name_nl":"Aangemaakt",
+    "name_en":"Created",
+    "name_fr":"Créé",
+    "code":"0"
+    }
     },
     {
-    	"pk":2,
-    	"model":"fixmystreet.status",
-    	"fields": {
-    		"name_nl":"In behandeling",
-    		"name_en":"In progress",
-    		"name_fr":"En progres",
-    		"code":"1"
-    	}
+    "pk":2,
+    "model":"fixmystreet.status",
+    "fields": {
+    "name_nl":"In behandeling",
+    "name_en":"In progress",
+    "name_fr":"En progres",
+    "code":"1"
+    }
     },
     {
-    	"pk":3,
-    	"model":"fixmystreet.status",
-    	"fields": {
-    		"name_nl":"Afgehandeld",
-    		"name_en":"Processed",
-    		"name_fr":"Precessed",
-    		"code":"3"
-    	}
+    "pk":3,
+    "model":"fixmystreet.status",
+    "fields": {
+    "name_nl":"Afgehandeld",
+    "name_en":"Processed",
+    "name_fr":"Precessed",
+    "code":"3"
+    }
     }
 ]
-
