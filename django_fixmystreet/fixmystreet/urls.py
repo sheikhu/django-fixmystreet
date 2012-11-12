@@ -71,7 +71,13 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
-    url(r'^api/reports/$', 'reports',name='api_reports'),
+    #next line to be deprecated...
+    url(r'^api/reports/$', 'reports_pro',name='api_reports'),
+    url(r'^api/reports/map/$', 'reports_pro',name='api_reports'),
+    url(r'^api/reports/citizen/nearest/$', 'near_reports_citizen',name='api_reports'),
+    url(r'^api/reports/pro/nearest/$', 'near_reports_pro',name='api_reports'),
+    url(r'^api/reports/citizen/$', 'reports_citizen',name='api_reports'),
+    url(r'^api/reports/pro/$', 'reports_pro',name='api_reports'),
     url(r'^api/report/new/$', 'create_report',name='api_report_new'),
 )
 

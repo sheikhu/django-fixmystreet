@@ -49,7 +49,7 @@ def report_to_array(report):
         },
         "is_fixed":report.is_fixed,
         "close_date":report.close_date,
-        "private":report.pivate,
+        "private":report.private,
         "valid":report.valid,
         "finished":report.finished
     }

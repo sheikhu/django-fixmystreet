@@ -106,6 +106,7 @@ class ReportForm(forms.ModelForm):
         report.commune = self.commune
         report.status = list(Status.objects.all())[0]
         report.point = self.point
+        report.private = True
 
         if user.is_authenticated():
             report.creator = user
@@ -129,6 +130,7 @@ class CitizenReportForm(ReportForm):
         report.commune = self.commune
         report.status = list(Status.objects.all())[0]
         report.point = self.point
+        report.private = False
 
         if user.is_authenticated():
             report.creator = user

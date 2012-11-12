@@ -4,7 +4,8 @@ from urllib2 import HTTPError
 from django.contrib.gis.measure import D
 from django.http import HttpResponse
 from django.utils import simplejson
-
+from django.db.models import Q
+from datetime import datetime, timedelta
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, Ward, dictToPoint
 from django_fixmystreet.fixmystreet.utils import ssl_required, oauthtoken_to_user, JsonHttpResponse
@@ -42,9 +43,13 @@ def locate(request):
     return HttpResponse(data,mimetype="text/json")
 """
 
-def reports(request):
+#Method used to retrieve nearest reports for pro
+def near_reports_pro(request):
     pnt = dictToPoint(request.REQUEST)
-    reports = Report.objects.filter(is_fixed = False).distance(pnt).order_by('distance')[:20]
+   
+    #Max 1 month in the past 
+    timestamp_from = datetime.now().date() - timedelta(days=31)
+    reports = Report.objects.filter(Q(created_at__gte=timestamp_from)).distance(pnt).order_by('distance')[:20]
     
     result = []
     for i,report in enumerate(reports):
@@ -54,6 +59,63 @@ def reports(request):
         'status':'success',
         'results':result
     })
+
+
+#Method used to retrieve nearest reports for citizens
+def near_reports_citizen(request):
+    pnt = dictToPoint(request.REQUEST)
+   
+    #Max 1 month in the past 
+    timestamp_from = datetime.now().date() - timedelta(days=31)
+    reports = Report.objects.filter(Q(created_at__gte=timestamp_from) & Q(private=False)).distance(pnt).order_by('distance')[:20]
+    
+    result = []
+    for i,report in enumerate(reports):
+        result.append(report_to_array(report))
+
+    return JsonHttpResponse({
+        'status':'success',
+        'results':result
+    })
+
+
+#Method used to retrieve all reports for citizens
+def reports_citizen(request):
+    pnt = dictToPoint(request.REQUEST)
+    
+    #Max 1 month in the past 
+    timestamp_from = datetime.now().date() - timedelta(days=31)
+    reports = Report.objects.filter(Q(created_at__gte=timestamp_from) & Q(private=False)).distance(pnt).order_by('distance')[:20]
+    
+    result = []
+    
+    for i,report in enumerate(reports):
+        result.append(report_to_array(report))
+
+    return JsonHttpResponse({
+        'status':'success',
+        'results':result
+    })
+
+
+#Method used to retrieve all reports for pros
+def reports_pro(request):
+    pnt = dictToPoint(request.REQUEST)
+    reports = Report.objects.filter().distance(pnt).order_by('distance')
+    
+    #Max 1 month in the past 
+    timestamp_from = datetime.now().date() - timedelta(days=31)
+    reports = Report.objects.filter(Q(created_at__gte=timestamp_from)).distance(pnt).order_by('distance')[:20]
+    result = []
+    
+    for i,report in enumerate(reports):
+        result.append(report_to_array(report))
+
+    return JsonHttpResponse({
+        'status':'success',
+        'results':result
+    })
+
 
 @ssl_required
 def create_report(request):
