@@ -11,9 +11,11 @@ class ManagersChoiceField (forms.fields.ChoiceField):
 	def __init__(self,  *args, **kwargs):
 		choices = []
 		choices.append(('', ugettext_lazy("Select a manager")))
+
 		currentUserOrganisationId = 1
 		if Session.objects.all()[0].session_key:
 			currentUserOrganisationId = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
+
 		managers = FMSUser.objects.filter(manager=True)
 		managers = managers.filter(organisation_id=currentUserOrganisationId)
 

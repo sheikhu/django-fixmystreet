@@ -607,6 +607,13 @@ class ReportCountQuery(SqlQuery):
             
     def __init__(self, interval = '1 month'):
         SqlQuery.__init__(self)
+
+        #5 years for pro, 1 month for citizens
+        #if isUserAuthenticated() == True:
+        #      interval = '60 month'
+        #
+        #interval = '1 day'
+
         self.base_query = """select count( case when age(clock_timestamp(), reports.created_at) < interval '%s' THEN 1 ELSE null end ) as recent_new,\
  count( case when age(clock_timestamp(), reports.fixed_at) < interval '%s' AND reports.is_fixed = True THEN 1 ELSE null end ) as recent_fixed,\
  count( case when age(clock_timestamp(), reports.updated_at) < interval '%s' AND reports.is_fixed = False and reports.updated_at != reports.created_at THEN 1 ELSE null end ) as recent_updated,\
@@ -679,6 +686,13 @@ def getLoggedInUserId(sessionKey):
     uid = session.get_decoded().get('_auth_user_id')
     user = User.objects.get(pk=uid)
     return uid
+
+
+def getUserAuthenticated(sessionKey):
+    session = Session.objects.get(session_key=sessionKey)
+    uid = session.get_decoded().get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+    return user.is_authenticated() == True
 
 
 class HtmlTemplateMail(EmailMultiAlternatives):
