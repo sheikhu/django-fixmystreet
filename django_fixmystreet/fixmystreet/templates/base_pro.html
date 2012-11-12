@@ -4,12 +4,14 @@
 		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/global.css" />
 		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
 		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 		{% load i18n %}
 		{% get_available_languages as LANGUAGES %}
 	
 		<title>{% trans "Fix My Street Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
 		{% block css %}{% endblock %}
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 		{% block script %}{% endblock %}
 		<script>
         var loginWin = null;
@@ -137,7 +139,7 @@
 			
 				<li> <a class='category'> Configuration </a></li>
 				
-				<li><a class='subcategory'> Gestionnaires </a></li>
+				<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
 				<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
 				
 			</ul>

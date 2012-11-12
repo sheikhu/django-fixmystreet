@@ -53,8 +53,11 @@ class FMSUser(User):
     agent = models.BooleanField(default=True)
     manager = models.BooleanField(default=True)
     leader = models.BooleanField(default=True)
+    
+    categories = models.ManyToManyField('ReportCategory',related_name='type')
 
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
+
 
     objects = UserManager()
 
@@ -542,6 +545,45 @@ class SqlQuery(object):
             self.cursor.execute(self.sql)
             self.results = self.cursor.fetchall()
         return( self.results )
+
+class UsersAssignedToCategories(SqlQuery):
+    def __init__(self,mainCategoryId,secondaryCategoryId,organisationId):
+        SqlQuery.__init__(self)
+        self.base_query = """ select FilterU.first_name, FilterU.last_name from(\
+        select auth_user.first_name, auth_user.last_name, auth_user.id from(\
+                select distinct fixmystreet_fmsuser_categories.fmsuser_id from(\
+                        select id from fixmystreet_reportcategory where fixmystreet_reportcategory.category_class_id=%d and fixmystreet_reportcategory.secondary_category_class_id=%d) as RCat \
+                join fixmystreet_fmsuser_categories on fixmystreet_fmsuser_categories.reportcategory_id = RCat.id ) as UserCat \
+        join auth_user\
+        on auth_user.id = UserCat.fmsuser_id \
+    ) as FilterU \
+join\
+    (\
+        select fixmystreet_fmsuser.user_ptr_id \
+        from fixmystreet_fmsuser \
+        where fixmystreet_fmsuser.organisation_id = %d \
+    ) as FMSU \
+on FMSU.user_ptr_id = FilterU.id """ % (mainCategoryId,secondaryCategoryId,organisationId)
+        self.sql = self.base_query
+
+class UserTypeForOrganisation(SqlQuery):
+    def __init__(self,typeId,organisationId):
+        SqlQuery.__init__(self)
+        self.base_query="""select Cat.fmsuser_id,Cat.reportcategory_id \
+from (select fmsuser_id,reportcategory_id from fixmystreet_fmsuser_categories where reportcategory_id=%d) as Cat \
+join (select user_ptr_id from fixmystreet_fmsuser where fixmystreet_fmsuser.organisation_id=%d) as U \
+on U.user_ptr_id = Cat.fmsuser_id """ % (typeId,organisationId) 
+        self.sql=self.base_query
+
+
+class TypesWithUsersOfOrganisation(SqlQuery):
+    def __init__(self,organisationId):
+        SqlQuery.__init__(self)
+        self.base_query=""" select A.reportcategory_id, A.fmsuser_id \
+from (select * from fixmystreet_fmsuser_categories) as A \
+join (select user_ptr_id from fixmystreet_fmsuser where organisation_id=%d) as B \
+on B.user_ptr_id = A.fmsuser_id""" % (organisationId)
+        self.sql=self.base_query
 
 class ReportCountQuery(SqlQuery):
       

@@ -49,3 +49,8 @@ def report_to_array(report):
         },
         "is_fixed":report.is_fixed
     }
+
+@register.filter
+def getElementFromList(list,index):
+    #Defined to get an element from a list
+    return list[index]
