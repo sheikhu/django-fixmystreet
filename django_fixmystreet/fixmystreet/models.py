@@ -155,7 +155,7 @@ class Address(models.Model):
         translate=('street','city',)
 
 class AttachmentType(models.Model):
-    code= models.CharField(max_length=50)
+    code = models.CharField(max_length=50)
     url = models.CharField(max_length=50)
         
 
@@ -461,25 +461,6 @@ class FMSUserZone(models.Model):
     zone = models.ForeignKey(Zone)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-
-
-class Ward(models.Model):
-    name = models.CharField(max_length=100)
-    # councillor = models.ForeignKey(Councillor, null=True, blank=True)
-    # geom = models.MultiPolygonField( null=True)
-    objects = models.GeoManager()
-    feature_id = models.CharField(max_length=25)
-
-
-    # this email addr. is the destination for reports
-    # if the 'Ward' email rule is enabled
-    # email = models.EmailField(blank=True, null=True)
-
-    def get_absolute_url(self):
-        return reverse('ward_show', args=[self.id])
-
-    def __unicode__(self):      
-        return self.name
 
 
 class ZipCode(models.Model):
