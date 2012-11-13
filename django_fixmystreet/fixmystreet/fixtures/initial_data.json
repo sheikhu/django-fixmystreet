@@ -2553,7 +2553,92 @@
             "commune":true,
             "region":false,
             "subcontractor":false,
-            "applicant":false
+            "applicant":false,
+            "dependency":3 
+        }
+    },
+    {
+        "pk":2,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Anderlecht",
+            "name_fr":"Anderlecht",
+            "name_nl":"Anderlecht",
+            "commune":true,
+            "region":false,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":3 
+        }
+    },
+    {
+        "pk":3,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Region Brussels",
+            "name_fr":"Region Bruxelloise",
+            "name_nl":"Brusselse Gewest",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":4,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Communal Agency Work (en)",
+            "name_fr":"Communal Agency Work (fr)",
+            "name_nl":"Communal Agency Work (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":true,
+            "applicant":false,
+            "dependency":1
+        }
+    },
+    {
+        "pk":5,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Waterwerven (en)",
+            "name_fr":"Waterwerven (fr)",
+            "name_nl":"Waterwerven (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":true,
+            "applicant":false,
+            "dependency":1
+        }
+    },
+    {
+        "pk":6,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Elia (en)",
+            "name_fr":"Elia (fr)",
+            "name_nl":"Elia (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true,
+            "dependency":1
+        }
+    },
+    {
+        "pk":7,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Electrabel (en)",
+            "name_fr":"Electrabel (fr)",
+            "name_nl":"Electrabel (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true,
+            "dependency":1
         }
     },
 

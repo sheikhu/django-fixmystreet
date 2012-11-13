@@ -73,6 +73,7 @@ class OrganisationEntity(models.Model):
     region = models.BooleanField(default=True)
     subcontractor = models.BooleanField(default=True)
     applicant = models.BooleanField(default=True)
+    dependency = models.ForeignKey('OrganisationEntity',related_name='parent', null=True)
 
     class Meta:
         translate = ('name', )

@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'social_auth',
     'south',
     'django_fixmystreet.fixmystreet',
+    'django_fixmystreet.backoffice',
 )
 
 AUTHENTICATION_BACKENDS = (
