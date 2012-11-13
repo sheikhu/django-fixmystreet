@@ -14,11 +14,60 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL}}js/jquery/iphone-style-checkboxes.js"></script>
+		<script src="/static/js/proj4js/engine/proj4js-compressed.js"></script>
+		<script src="/static/js/proj4js/defs/EPSG31370.js"></script>
 		{% block script %}{% endblock %}
-		<script>
+		<script type="text/javascript">
+
+		function updateMenuEntries(x,y) {
+			//Update the left menu coordinates
+			var currentHref;
+			$("#leftMenuPanePro .positionable").each(function(idx,value){
+		       		currentHref = $(value).attr('href');
+		       	 	$(value).attr('href',currentHref+'&x='+x+'&y='+y);
+			});
+		        //End update menu	
+		}
+
         var loginWin = null;
         var userPosition;
 		$(document).ready(function(){
+			//Update menu entries with coordinates
+			var USER_POSITION = new Object();
+			if(navigator.geolocation){
+				var options = {timeout:60000};
+				var mapReference = this.map;
+				navigator.geolocation.getCurrentPosition(
+					//success
+					function(position) {
+						var latitude = POSY = position.coords.latitude;
+						var longitude = POSX = position.coords.longitude;
+						var p = new Proj4js.Point(longitude, latitude);
+						Proj4js.transform(new Proj4js.Proj("EPSG:4326"), new Proj4js.Proj("EPSG:31370"), p);
+						USER_POSITION.x = p.x;
+						USER_POSITION.y = p.y;
+						updateMenuEntries(p.x,p.y);
+					},
+					//failure
+					function(err) {
+						if(err.code == 1) {
+							console.log("Error: Access is denied!");
+						}else if( err.code == 2) {
+							console.log("Error: Position is unavailable!");
+						}
+						//Use default x,y
+						USER_POSITION.x = 148954.431;
+						USER_POSITION.y = 170458.371;
+						updateMenuEntries(p.x,p.y);
+					},
+				options);
+			}else{
+				//Use default x,y
+				USER_POSITION.x = 148954.431;
+				USER_POSITION.y = 170458.371
+				updateMenuEntries(p.x,p.y);
+			}
+
 			$('#select-language').change(function(){
 				$(this).closest('form').submit();
 			});
@@ -123,12 +172,12 @@
 		<div id="main_container">
 		<div >
 			<ul class='leftPane' id="leftMenuPanePro">
-				<li> <a class='category'> Reports </a> <p class="category_number"></p></li>
+				<li> <a id="allMenuItem" class='category positionable' href="{% url report_new_pro %}?status=all"> Reports </a> <p class="category_number"></p></li>
 				
-				<li><a id='createdMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=0"> Created </a> <p class="category_number"></p></li>
-				<li><a id='progressMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=1"> Progress </a> <p class="category_number"></p></li>
-				<li><a id='closedMenuItem' class='subcategory' href="{% url report_new_pro %}?x=149157.349&y=170375.278&status=2"> Closed </a> <p class="category_number"></p></li>
-				<li><a class='subcategory'> My subscriptions </a> <p class="category_number"></p></li>
+				<li><a id='createdMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=0"> Created </a> <p class="category_number"></p></li>
+				<li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=1"> Progress </a> <p class="category_number"></p></li>
+				<li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=2"> Closed </a> <p class="category_number"></p></li>
+				<li><a id="subscriptionMenuItem" class='subcategory positionable' href="{% url report_subscription_pro %}?aubscription=1"> My subscriptions </a> <p class="category_number"></p></li>
 				<li><a class='subcategory'> My communes </a> <p class="category_number"></p></li>
 				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a></li> 
 				
@@ -150,7 +199,6 @@
 			</ul>
 		</div>
 			<div id='body_content'>
-                
 				{% block content %}{% endblock %}
 			</div>
 		</div>

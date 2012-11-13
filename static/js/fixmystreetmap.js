@@ -49,7 +49,7 @@
 		 */
 		_init: function()
 		{
-			var x = null, y = null, self = this;
+                        var x = null, y = null, self = this;
 			if(this.options.origin)
 			{
 				x = this.options.origin.x;
@@ -61,7 +61,6 @@
 				units: 'm',
 				projection: "EPSG:31370"
 			});
-
 			this.map.events.on({
 				movestart:function(){
 					self.element.trigger('movestart');
@@ -81,23 +80,9 @@
 			
 			if(x && y)
 			{
-				this.map.zoomTo(6);
 				this.map.setCenter(new OpenLayers.LonLat(x,y));
+		        	this.map.zoomTo(6);
 			}
-			else
-			{
-				this.map.zoomToMaxExtent();
-			}
-			
-			// this.map.addControl(new OpenLayers.Control.LayerSwitcher());
-			/*
-			this.superLayer = new OpenLayers.Layer.Vector( "Super Layer" );
-			this.map.addLayer(this.superLayer);
-		
-			this.superControl = new OpenLayers.Control.ModifyFeature(this.superLayer);
-			this.map.addControl(this.superControl);
-			this.superControl.activate();
-			*/
 		},
 
         reset: function(){
