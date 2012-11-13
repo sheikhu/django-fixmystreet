@@ -39,6 +39,8 @@ $(function(){
     });
 	$('#map-bxl').hide();
     $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8" });
+    $("#commentForm").hide();
+    $("#fileForm").hide();
     {% if user.is_authenticated %}
         $(document).trigger('connected');
     {% else %}
@@ -48,6 +50,18 @@ $(function(){
 	function showMap() {
 			$("#map-bxl").toggle();
 	}
+
+    function toggleFileForm() {
+        $("#fileForm").toggle();
+        $("#showFileFormButton").toggle();
+        $("#addCommmentDiv").toggle();
+    }
+
+    function toggleCommentForm() {
+        $("#commentForm").toggle();
+        $("#showCommentFormButton").toggle();
+        $('#addFileDiv').toggle();
+    }
 </script>
 {% endblock %}
 {% block css %}
@@ -87,9 +101,36 @@ $(function(){
 
     <h1>
         {{report.title}} 
-        <button class="saveFormButton" style="float:right;font-size: 0.6em;margin-top: 0px;">Validate</button>
+        <div style="float:right;margin-top:-23px">
+            <table class="reportActionButtons">
+                <tr>
+                    <td ></td>
+                    <td >
+                        <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Validate</button>
+                    </td>
+                    <td >
+                        <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Accept</button>
+                    </td>
+
+                    <td >
+                        <button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Reject</button>
+
+                    </td>
+                    <td >
+                        
+                        <button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Validate all</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
     </h1>
-    <div>
+    <div style="border-bottom:1px solid black; padding-bottom:30px">
 	<div id="leftcol">    
 		{% if report.markedAsFinished %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
@@ -140,42 +181,18 @@ $(function(){
                 </tr>
             </table>
 			<div id="map-bxl"></div>
-			{% if files %}
-			<h3>{% trans "Extra files" %}</h3>
-			<div id="report_updates">
-				{% for file in files %}
-				<div class="report_update">
-					<h4>{{file.title}}</h4>
-					{% if file.file %}
-					<center><img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/></center>
-					{% endif %}
-				</div>
-				{% endfor %}
-			</div>
-			{% endif %}
-			{% if comments %}
-			<h3>{% trans "Extra comments" %}</h3>
-			<div id="report_updates">
-				{% for comment in comments %}
-				<div class="report_update">
-					<h4>{{comment.title}}</h4>
-					<p>{{comment.text}}</p>
-                    <input checked='checked' class='normal' type='checkbox' />
-				</div>
-				{% endfor %}
-			</div>
-			{% endif %}
-	
+			
 			
 		</div>
 	</div>
 	<div id="rightcol">
 	
 			
-		
+		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
+            <input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
 			
-			<form enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
+			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
 				<table id="report_form" class="form">
 					{{comment_form.as_table}}					
 					<tr>
@@ -183,16 +200,19 @@ $(function(){
                         <td>
                             <p style="float:left;">
                             	<input type="hidden" name="form-type" value="comment-form"/>
-                                <input type="submit" class='big_button' value="{% trans 'Add' %}" />
+                                <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleCommentForm();"/>
+                                <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
                             </p>
                             
                         </td>
                     </tr>
 				</table>
 			</form>
-			
+        </div>
+			<div id="addFileDiv">
 			<h2>{% trans "Add a file to this report" %}</h2>
-			<form enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
+            <input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
+			<form id="fileForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
 				<table id="report_form" class="form">
 					{{file_form.as_table}}					
 					<tr>
@@ -200,7 +220,8 @@ $(function(){
                         <td>
                             <p style="float:left;">
                             	<input type="hidden" name="form-type" value="file-form"/>
-                                <input type="submit" class='big_button' value="{% trans 'Add' %}" />
+                                <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleFileForm();"/>
+                                <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
                             </p>
                             
                         </td>
@@ -209,11 +230,71 @@ $(function(){
 				</table>
 				
 			</form>
-			
+			</div>
      		
     </div>
 
     	
+    </div>
+    <div style="padding-top:30px">
+        {% if files %}
+            <h3>{% trans "Extra files" %}</h3>
+            <div id="report_updates">
+                <table id="extraFilesTable">
+                    <th></th>
+                    <th>Public</th>
+                    <th> Confidential </th>
+                    {% for file in files %}
+                    <tr>
+                        <td class="annexesFirstTD">
+                    <div class="report_update">
+                        <h4>{{file.title}}</h4>
+                        {% if file.file %}
+                        <center><img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/></center>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="annexesChoiceBoxTD">
+                    <center><input checked='checked' class='normal' type='checkbox' id="publicFile{{file.id}}"/></center>
+                </td>
+                <td class="annexesChoiceBoxTD">
+                    <center><input checked='checked' class='normal' type='checkbox' id="confidentialFile{{file.id}}"/></center>
+                </td>
+            </tr>
+                    {% endfor %}
+            </table>
+            </div>
+            {% endif %}
+            {% if comments %}
+            <h3>{% trans "Extra comments" %}</h3>
+            <div id="report_updates">
+                <table class="extraCommentsTable">
+                    <th></th>
+                    <th>Public</th>
+                    <th> Confidential </th>
+                {% for comment in comments %}
+                <tr>
+                    <td class="annexesFirstTD">
+                <div class="report_update">
+                    <h4>{{comment.title}}</h4>
+                    <p>{{comment.text}}</p>
+                    
+                </div>
+                <td class="annexesChoiceBoxTD">
+                    <input checked='checked' class='normal' type='checkbox' id="publicComment{{comment.id}}"/>
+                </td>
+                <td class="annexesChoiceBoxTD">
+                    <input checked='checked' class='normal' type='checkbox' id="confidentialComment{{comment.id}}"/>
+                </td>
+            </tr>
+                {% endfor %}
+            </table>
+            </div>
+            {% endif %}
+        </div>
+
+        </div>
+    
     </div>
     <div id="more-actions">
 				<p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>

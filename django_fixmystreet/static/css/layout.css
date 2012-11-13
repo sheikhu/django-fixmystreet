@@ -1044,4 +1044,20 @@ ul.leftPane {
 
 }
 
+.leftCol {
+	display:inline-block; 
+	vertical-align:top;
+	width: 390px;
+}
+
+.rightCol {
+	margin-left:5em;
+	display:inline-block; 
+	
+	vertical-align:top;
+	width: 390px;
+}
+table.extraCommentsTable th {
+
+}
 

@@ -83,6 +83,7 @@ class Status(models.Model):
     __metaclass__=TransMeta
     name=models.CharField(verbose_name=_('Name'),max_length=100,null=False)
     code=models.CharField(max_length=50,null=False)
+    parentStatus = models.ForeignKey('self',null=True)
     
     class Meta:
         translate = ('name', )

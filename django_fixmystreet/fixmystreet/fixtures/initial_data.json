@@ -2812,5 +2812,71 @@
     "code":"3"
     }
 
+    },
+    {
+        "pk":4,
+        "model":"fixmystreet.status",
+        "fields":{
+            "name_nl":"Gestionnaire is toegekend",
+            "name_fr":"Gestionnaire est assigné",
+            "name_en":"Manager is assigned",
+            "code":"4",
+            "parentStatus":2
+        }
+    },
+    {
+        "pk":5,
+        "model":"fixmystreet.status",
+        "fields":{
+            "name_nl":"Impetrant is verantwoordelijk",
+            "name_fr":"Impetrant est responsable",
+            "name_en":"Impetrant is responsible",
+            "code":"5",
+            "parentStatus":2
+        }
+    },
+    {
+        "pk":6,
+        "model":"fixmystreet.status",
+        "fields":{
+            "name_nl":"Executeur de travaux is toegekend",
+            "name_fr":"Executeur de travaux est assigné",
+            "name_en":"Contractor is assigned",
+            "code":"6",
+            "parentStatus":2
+        }
+    },
+    {
+        "pk":7,
+        "model":"fixmystreet.status",
+        "fields":{
+            "name_nl":"Opgelost",
+            "name_fr":"Resolu",
+            "name_en":"Solved",
+            "code":"7",
+            "parentStatus":2
+        }
+    },
+    {
+        "pk":8,
+        "model":"fixmystreet.status",
+        "fields":{
+            "name_nl":"Verwijderd",
+            "name_fr":"Suprimé",
+            "name_en":"Deleted",
+            "code":"8",
+            "parentStatus":3
+        }
+    },
+    {
+        "pk":9,
+        "model":"fixmystreet.status",
+        "fields":{
+            "name_nl":"Afgewezen",
+            "name_fr":"Refusé",
+            "name_en":"Refused",
+            "code":"9",
+            "parentStatus":1
+        }
     }
 ]

@@ -198,12 +198,14 @@ a {
 	display:inline-block; 
 	vertical-align:top;
 	width: 390px;
+	padding-right: 10px;
 }
 
 #rightcol {
 	margin-left:1em;
 	display:inline-block; 
-	
+	border-left: 1px solid black;
+	padding-left:10px;
 	vertical-align:top;
 	width: 390px;
 }
@@ -1088,4 +1090,19 @@ table.configTable td.firstItem {
 	background:#EEE;
 	border:2px solid #AAA;
 	color:#AAA;
+}
+
+
+table.extraCommentsTable td.annexesFirstTD {
+	width:70%;
+	padding: 5px 40px 5px 5px;
+}
+
+table.extraCommentsTable td.annexesChoiceBoxTD {
+	padding: 20px 10px 5px;
+}
+
+table.reportActionButtons td {
+	padding-left:2px;
+	padding-right:2px;
 }
