@@ -38,6 +38,7 @@ $(function(){
         $('form :submit').prop('disabled',false);
     });
 	$('#map-bxl').hide();
+    $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8" });
     {% if user.is_authenticated %}
         $(document).trigger('connected');
     {% else %}
@@ -84,7 +85,10 @@ $(function(){
 	<!-- AddThis Button END -->
     {% endif %}
 
-    <h1>{{report.title}}</h1>
+    <h1>
+        {{report.title}} 
+        <button class="saveFormButton" style="float:right;font-size: 0.6em;margin-top: 0px;">Validate</button>
+    </h1>
     <div>
 	<div id="leftcol">    
 		{% if report.markedAsFinished %}
@@ -156,6 +160,7 @@ $(function(){
 				<div class="report_update">
 					<h4>{{comment.title}}</h4>
 					<p>{{comment.text}}</p>
+                    <input checked='checked' class='normal' type='checkbox' />
 				</div>
 				{% endfor %}
 			</div>

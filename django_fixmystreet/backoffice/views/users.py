@@ -10,9 +10,9 @@ from django.utils.translation import ugettext_lazy
 
 @login_required(login_url='/pro/accounts/login/')
 def show(request):
-
+	user = FMSUser.objects.get(user_ptr_id=request.user.id)
 	userType = request.REQUEST.get("userType")
-	currentOrganisationId = 1
+	currentOrganisationId = user.organisation.id
 	users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 	if userType == 'agent':
 		users = users.filter(agent = True)
