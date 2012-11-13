@@ -89,11 +89,10 @@ class Status(models.Model):
         translate = ('name', )
 
         
-class Report (models.Model):
+class Report(models.Model):
     status = models.ForeignKey(Status,null=False)
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
-    title = models.CharField(max_length=100, verbose_name=ugettext_lazy("Subject"))
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     #main_category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
@@ -137,10 +136,10 @@ class Exportable(models.Model):
     def asXML():
         return
 
-class Abonment (models.Model):
+class Abonment(models.Model):
     report = models.ForeignKey(Report)
 
-class Address (models.Model):
+class Address(models.Model):
     __metaclass__= TransMeta
     
     street = models.CharField(max_length=100)
