@@ -21,6 +21,7 @@ urlpatterns += patterns('',
 urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
     url(r'^report/(\d+)$', 'show',name='report_show_pro'),       
     url(r'^report/new', 'new',name='report_new_pro'),
+    url(r'^report/subscription', 'subscription',name='report_subscription_pro'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
