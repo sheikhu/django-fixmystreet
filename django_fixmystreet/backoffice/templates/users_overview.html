@@ -34,7 +34,7 @@ $("[for='id_password']").parent().parent().hide()
         <table>
         {{ editForm.as_table }}
       </table>
-      <input type="submit" value="Submit" class="big_button" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{user.id}}"/>
+      <input type="submit" value="Submit" class="big_button" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{request.GET.userId}}"/>
       </form>
       {%endif%}
   	</div>

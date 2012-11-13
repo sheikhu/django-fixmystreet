@@ -53,6 +53,9 @@ class FMSUser(User):
     agent = models.BooleanField(default=True)
     manager = models.BooleanField(default=True)
     leader = models.BooleanField(default=True)
+
+    impetrant=models.BooleanField(default=False)
+    contractor=models.BooleanField(default=False)
     
     categories = models.ManyToManyField('ReportCategory',related_name='type')
 

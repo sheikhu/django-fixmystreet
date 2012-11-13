@@ -47,8 +47,8 @@ def edit(request):
 
 @login_required(login_url='/pro/accounts/login/')
 def saveChanges(request):
-	print 'Before'
 	userEditForm = UserEditForm(request.POST)
-	print 'After'
+	print "Going to edit user id= "
+	print request.REQUEST.get('userId')
 	userEditForm.save(request.REQUEST.get('userId'))
 	return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))

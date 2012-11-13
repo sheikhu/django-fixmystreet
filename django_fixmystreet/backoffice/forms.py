@@ -44,8 +44,9 @@ class UserEditForm(UserChangeForm):
     active = forms.BooleanField(required=False)
 
     def save(self,userID, commit=True):
-        
-        fmsuser = FMSUser.objects.filter(pk=userID)
+    	print "User id edited ="
+        print userID
+        fmsuser = FMSUser.objects.filter(user_ptr_id=userID)
         fmsuser.update(first_name = self.data["first_name"])
         fmsuser.update(last_name = self.data["last_name"])
         fmsuser.update(email = self.data["email"])
