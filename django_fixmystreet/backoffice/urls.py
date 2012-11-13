@@ -51,6 +51,7 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
+    url(r'users/overview/delete','deleteUser',name="userDelete"),
     url(r'users/overview/edit','edit',name='usersEdit'),
     url(r'users/overview/save','saveChanges',name="userSave"),
     url(r'users/overview','show',name='usersOverview'),

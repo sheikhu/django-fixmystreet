@@ -52,3 +52,10 @@ def saveChanges(request):
 	print request.REQUEST.get('userId')
 	userEditForm.save(request.REQUEST.get('userId'))
 	return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
+
+@login_required(login_url='/pro/accounts/login/')
+def deleteUser(request):
+	print 'Deleting user with id='
+	print request.REQUEST.get('userId')
+	FMSUser.objects.get(user_ptr_id=request.REQUEST.get('userId')).delete()
+	return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))

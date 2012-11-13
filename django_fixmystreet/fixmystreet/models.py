@@ -685,7 +685,11 @@ def dictToPoint(data):
 
 
 def getLoggedInUserId(sessionKey):
-    return 1
+    session = Session.objects.get(session_key=sessionKey)
+    uid = session.get_decoded().get('_auth_user_id')
+    if not uid:
+        uid=1
+    return uid
 
 def getUserAuthenticated(sessionKey):
     session = Session.objects.get(session_key=sessionKey)
