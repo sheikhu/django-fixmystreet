@@ -5,6 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
 		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}js/style.css"
 		{% load i18n %}
 		{% get_available_languages as LANGUAGES %}
 	
@@ -12,6 +13,7 @@
 		{% block css %}{% endblock %}
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL}}js/jquery/iphone-style-checkboxes.js"></script>
 		{% block script %}{% endblock %}
 		<script>
         var loginWin = null;
@@ -135,8 +137,11 @@
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=agent">Agents </a> <p class="category_number"></p></li>
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=contractor">Exec de travaux</a> <p class="category_number"></p></li>
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants </a> <p class="category_number"></p></li>
+
+				{% if request.user.id|isLeader %}
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires </a> <p class="category_number"></p></li>
-			
+				{% endif %}
+				
 				<li> <a class='category'> Configuration </a></li>
 				
 				<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>

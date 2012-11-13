@@ -5,6 +5,7 @@ from django.conf import settings
 from django import template
 from django.conf import settings
 from django.core.urlresolvers import resolve
+from django_fixmystreet.fixmystreet.models import FMSUser
 
 register = template.Library()
 
@@ -58,3 +59,7 @@ def report_to_array(report):
 def getElementFromList(list,index):
     #Defined to get an element from a list
     return list[index]
+
+@register.filter
+def isLeader(userId):
+    return FMSUser.objects.get(user_ptr_id=userId).leader
