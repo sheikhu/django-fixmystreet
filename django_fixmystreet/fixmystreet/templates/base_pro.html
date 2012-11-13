@@ -180,12 +180,12 @@
 				<li><a class='subcategory'> My communes </a> <p class="category_number"></p></li>
 				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a></li> 
 				
-				<li> <a class='category'> Collaborators </a></li>
+				<li> <a class='category' href="{% url usersOverview %}?userType=users"> Collaborators </a></li>
 				
-				<li><a class='subcategory'>Agents </a> <p class="category_number"></p></li>
-				<li><a class='subcategory'>Exec de travaux</a> <p class="category_number"></p></li>
-				<li><a class='subcategory'> Impétrants </a> <p class="category_number"></p></li>
-				<li><a class='subcategory'> Gestionnaires </a> <p class="category_number"></p></li>
+				<li><a class='subcategory' href="{% url usersOverview %}?userType=agent">Agents </a> <p class="category_number"></p></li>
+				<li><a class='subcategory' href="{% url usersOverview %}?userType=contractor">Exec de travaux</a> <p class="category_number"></p></li>
+				<li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants </a> <p class="category_number"></p></li>
+				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires </a> <p class="category_number"></p></li>
 			
 				<li> <a class='category'> Configuration </a></li>
 				

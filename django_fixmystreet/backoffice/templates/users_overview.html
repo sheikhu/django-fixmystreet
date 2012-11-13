@@ -1,0 +1,45 @@
+{% extends "base_pro.html" %}
+{% load i18n %}
+{% load tags %}
+{% block script %}
+<script>
+$(document).ready(function(){
+$("[for='id_password']").parent().parent().hide()
+});
+</script>
+{% endblock %}
+
+{% block title %}Create user {% endblock %}
+
+{% block content %}
+
+<div id='page_content_container'>
+  <h1>{% trans request.GET.userType %}</h1>
+
+  	<div id="leftcol">
+  		{% if users %}
+                <div id='search_results'>
+                {% for user in users %}
+                <div class="report" onclick="window.location.href='{% url usersEdit %}?userType={{request.GET.userType}}&userId={{user.id}}'">
+                <p>{{user.first_name}} {{user.last_name}}</p>
+                </div>
+                {% endfor %}
+                </div>
+            {% else %}
+         {% endif %}
+  	</div>
+  	<div id="rightcol">
+      {% if editForm%}
+  		<form method='post'>
+        <table>
+        {{ editForm.as_table }}
+      </table>
+      <input type="submit" value="Submit" class="big_button" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{request.GET.userId}}"/>
+      <a class= "saveFormButton" href='{% url userDelete %}?userType={{request.GET.userType}}&userId={{request.GET.userId}}' onclick="return confirm('Are you sure you want to delete this user?')">{% trans 'Delete' %}</button>
+      </form>
+      {%endif%}
+  	</div>
+  </div>
+
+
+{% endblock %}

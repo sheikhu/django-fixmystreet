@@ -202,6 +202,8 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.agent = (userType=="0")
         fmsuser.manager = (userType=="1")
         fmsuser.leader = (userType=="2")
+        fmsuser.impetrant = (userType=="3")
+        fmsuser.contractor = (userType=="4")
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
         fmsuser.organisation = currentUser.organisation
         fmsuser.save()

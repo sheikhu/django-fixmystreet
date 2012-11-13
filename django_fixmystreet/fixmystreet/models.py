@@ -53,6 +53,9 @@ class FMSUser(User):
     agent = models.BooleanField(default=True)
     manager = models.BooleanField(default=True)
     leader = models.BooleanField(default=True)
+
+    impetrant=models.BooleanField(default=False)
+    contractor=models.BooleanField(default=False)
     
     categories = models.ManyToManyField('ReportCategory',related_name='type')
 
@@ -682,7 +685,11 @@ def dictToPoint(data):
 
 
 def getLoggedInUserId(sessionKey):
-    return 1
+    session = Session.objects.get(session_key=sessionKey)
+    uid = session.get_decoded().get('_auth_user_id')
+    if not uid:
+        uid=1
+    return uid
 
 def getUserAuthenticated(sessionKey):
     session = Session.objects.get(session_key=sessionKey)
