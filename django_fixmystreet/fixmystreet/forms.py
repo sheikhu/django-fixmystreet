@@ -79,7 +79,7 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x','y','title', 'address', 'category', 'secondary_category', 'postalcode','description')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'postalcode', 'description')
 
     required_css_class = 'required'
     secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
