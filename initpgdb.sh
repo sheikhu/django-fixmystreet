@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 USER=fixmystreet
-DBNAME=fixmystreet
+DBNAME=fixmystreet-thibaut
 
 if [ -f ./bin/pg_ctl ]
 then
