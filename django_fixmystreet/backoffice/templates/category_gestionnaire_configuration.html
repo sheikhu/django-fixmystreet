@@ -68,8 +68,15 @@ function saveSelection(){
     		<table style="padding:20px">
     			{% for cat in categories %}
     			<tr>
-    				<td style="padding:5px;">{{cat.name}}</td><td id="{{cat.id}}"> {{managerDropDown.as_p}}</td>
-    			</tr>
+    				<td style="padding:5px;">{{cat.name}}</td>
+				<td id="{{cat.id}}">
+                                        <p><select name="manager" id="id_manager">
+                                                {% for choice in managerDropDown %}
+                                                        <option value="{{choice.0}}">{{choice.1}}</option>
+                                                {% endfor %}
+                                        </select></p>
+                                </td>
+			</tr>
     			{% endfor %}
     		</table>
          

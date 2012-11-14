@@ -65,3 +65,18 @@ def getElementFromList(list,index):
 @register.filter
 def isLeader(userId):
     return FMSUser.objects.get(user_ptr_id=userId).leader
+
+@register.filter
+def isManager(userId):
+    return FMSUser.objects.get(user_ptr_id=userId).manager
+
+@register.filter
+def isAgent(userId):
+    return FMSUser.objects.get(user_ptr_id=userId).agent
+
+
+@register.filter
+def hasAtLeastAManager(userId):
+    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
+     
+    return len(FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True)) > 0

@@ -187,13 +187,20 @@
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants </a> <p class="category_number"></p></li>
 
 				{% if request.user.id|isLeader %}
+
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires </a> <p class="category_number"></p></li>
 				{% endif %}
 				
-				<li> <a class='category'> Configuration </a></li>
-				
-				<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
-				<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
+				{% if request.user.id|isLeader or request.user.id|isManager %}
+					<li> <a class='category'> Configuration </a></li>
+					{% if request.user.id|isLeader %}
+						{% if request.user.id|hasAtLeastAManager %}
+							<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
+						{% endif %}
+					{% endif %}
+					<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
+				{% endif %}
+
 				
 			</ul>
 		</div>

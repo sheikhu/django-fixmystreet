@@ -71,13 +71,16 @@ def update(request):
     #Return the current selected list so that the buttons in the matrix have as label all names of selected managers
     #Return the dropdown form to select managers from
     #Return the category user mapping so that the shown selection boxes contain the current selected managers
+    managersForm = ManagersListForm()
+    managersForm.refreshChoices()
+    #import pdb; pdb.set_trace()    
     return render_to_response("category_gestionnaire_configuration.html",
             {
                 "maincategories" : maincategories,
                 "secondcategories": secondcategories,
                 "categories":categories,
                 "currentSelectedList":currentSelectedList,
-                "managerDropDown":ManagersListForm(),
+                "managerDropDown":managersForm.manager.choices,
                 "categoryUserMapping":categoryUserMapping
             },
             context_instance=RequestContext(request))
