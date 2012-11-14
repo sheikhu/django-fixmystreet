@@ -24,8 +24,8 @@ def show(request):
             userString = ""
             for u in users.get_results():
                 userString+= u[0]+" "+u[1]+"/"
-            if userString == "":
-                userString= "No manager selected"
+            #if userString == "":
+            #    userString= "No manager selected"
             currentSelectedList[main.id-1][second.id-1]= currentSelectedList[main.id-1][second.id-1]+userString
     # Return the main categories list, secondary categories list for displaying the matrix column- and rowheaders.
     # Return an empty categories list (types) because we are showing the page (not doing the selection via popup)

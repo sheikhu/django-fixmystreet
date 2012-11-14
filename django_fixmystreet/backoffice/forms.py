@@ -11,15 +11,15 @@ from django.contrib.auth.decorators import login_required
 class ManagersChoiceField (forms.fields.ChoiceField):
 	def __init__(self,  *args, **kwargs):
 		choices = []
-		choices.append(('', ugettext_lazy("Select a manager")))
+		#choices.append(('', ugettext_lazy("Select a manager")))
 		currentUserOrganisationId = 1
 		if Session.objects.all()[0].session_key:
 			currentUserOrganisationId = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
-		managers = FMSUser.objects.filter(manager=True)
+		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
 		managers = managers.filter(organisation_id=currentUserOrganisationId)
 
 		for manager in managers:
-			choices.append((manager.pk,manager.first_name+manager.last_name))
+			choices.append((manager.pk,manager.last_name+" "+manager.first_name))
 
 		super(ManagersChoiceField,self).__init__(choices,*args,**kwargs)
 
