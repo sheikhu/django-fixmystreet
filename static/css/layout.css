@@ -1092,6 +1092,12 @@ table.configTable td.firstItem {
 	color:#AAA;
 }
 
+.saveFormButton.disabled {
+	background:#EEE;
+	border:2px solid #AAA;
+	color:#AAA !important;
+}
+
 
 table.extraCommentsTable td.annexesFirstTD {
 	width:70%;

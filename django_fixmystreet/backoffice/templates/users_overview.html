@@ -21,7 +21,8 @@ $("[for='id_password']").parent().parent().hide()
                 <div id='search_results'>
                 {% for user in users %}
                 <div class="report" onclick="window.location.href='{% url usersEdit %}?userType={{request.GET.userType}}&userId={{user.id}}'">
-                <p>{{user.first_name}} {{user.last_name}}</p>
+
+                <p><img src="{{STATIC_URL}}images/{{user.id|getUserType}}.png"/>{{user.first_name}} {{user.last_name}}</p>
                 </div>
                 {% endfor %}
                 </div>
@@ -34,9 +35,21 @@ $("[for='id_password']").parent().parent().hide()
         <table>
         {{ editForm.as_table }}
       </table>
-      <input type="submit" value="Submit" class="big_button" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{request.GET.userId}}"/>
-      <a class= "saveFormButton" href='{% url userDelete %}?userType={{request.GET.userType}}&userId={{request.GET.userId}}' onclick="return confirm('Are you sure you want to delete this user?')">{% trans 'Delete' %}</button>
+      <input id="editFormSubmitButton" type="submit" value="Submit" class="big_button" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{request.GET.userId}}"/>
+      <a id="deleteButton" class= "saveFormButton" href='{% url userDelete %}?userType={{request.GET.userType}}&userId={{request.GET.userId}}' onclick="return confirm('Are you sure you want to delete this user?')">{% trans 'Delete' %}</button>
       </form>
+      {% if not request.user.id|isLeader %}
+      <script>
+      $.each($("input"),function(idx,value){
+        $(value).attr("disabled","disabled");
+      });
+      $("#deleteButton").hide();
+      $("#editFormSubmitButton").hide();
+      $(".helptext").hide();
+      $("#id_username").parent().parent().hide();
+      $("#id_active").parent().parent().hide();
+      </script>
+      {% endif %}
       {%endif%}
   	</div>
   </div>

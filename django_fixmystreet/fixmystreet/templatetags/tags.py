@@ -65,3 +65,18 @@ def getElementFromList(list,index):
 @register.filter
 def isLeader(userId):
     return FMSUser.objects.get(user_ptr_id=userId).leader
+
+@register.filter
+def getUserType(userId):
+    result = ""
+    user = FMSUser.objects.get(user_ptr_id=userId)
+    if user.leader:
+        return "leader"
+    if user.manager:
+        return "manager"
+    if user.agent:
+        return "agent"
+    if user.impetrant:
+        return "impetrant"
+    if user.contractor:
+        return "contractor"
