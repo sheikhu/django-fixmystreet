@@ -16,7 +16,9 @@ from django.http import Http404
 from django.contrib.sessions.models import Session
 from transmeta import TransMeta
 from django_fixmystreet.fixmystreet.utils import FixStdImageField
-
+from django.core import serializers
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.conf import settings
 
 class Category (models.Model):
@@ -722,5 +724,40 @@ class HtmlTemplateMail(EmailMultiAlternatives):
         if html:
             self.attach_alternative(html, "text/html")
 
+def exportUsers():
+    XMLSerializer = serializers.get_serializer("xml")
+    xml_serializer = XMLSerializer()
+    with open("backup/pro/users.xml", "w") as out:
+        xml_serializer.serialize(FMSUser.objects.all(), stream=out)
 
-
+def exportReportsOfEntity(entityId):
+    # TODO loop over all reports to get files and comments (Structure result data in correct manner)
+    #define xml object serializer
+    XMLSerializer = serializers.get_serializer("xml")
+    xml_serializer = XMLSerializer()
+    #Get reports
+    data1 = Report.objects.filter(commune=entityId)
+    #Starting tag
+    d="<Reports>"
+    #For each found report
+    for report in data1:
+        d = d+ "<Report>"
+        #Get the info of the report
+        d1= xml_serializer.serialize(Report.objects.filter(id=report.id),fields=('id','category', 'description', 'created_at', 'updated_at', 'status'))
+        #Get comments of the report
+        data2 = Comment.objects.filter(report_id=data1[0].id)
+        d2 = xml_serializer.serialize(data2,fields=('title','text'))
+        #Get files of the report
+        data3 = File.objects.filter(report_id=data1[0].id)
+        d3 = xml_serializer.serialize(data3,fields=('title','file'))
+        #Concat serialized data
+        d = d+ d1+"<Comments>"+d2+"</Comments><Files>"+d3+"</Files>"
+        d = d + "</Report>"
+    #Add closing tag
+    d = d+"</Reports>"
+    #open/create file to save data to
+    f =  open("backup/pro/reportsOfEntity.xml","w")
+    #write data to file
+    f.write(d)
+    #close file stream
+    f.close()

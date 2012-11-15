@@ -1099,12 +1099,14 @@ table.configTable td.firstItem {
 }
 
 
-table.extraCommentsTable td.annexesFirstTD {
+
+
+table td.annexesFirstTD {
 	width:70%;
 	padding: 5px 40px 5px 5px;
 }
 
-table.extraCommentsTable td.annexesChoiceBoxTD {
+table td.annexesChoiceBoxTD {
 	padding: 20px 10px 5px;
 }
 

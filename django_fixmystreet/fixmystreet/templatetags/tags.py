@@ -5,7 +5,7 @@ from django.conf import settings
 from django import template
 from django.conf import settings
 from django.core.urlresolvers import resolve
-from django_fixmystreet.fixmystreet.models import FMSUser
+from django_fixmystreet.fixmystreet.models import FMSUser, Report
 
 register = template.Library()
 
@@ -88,6 +88,59 @@ def isManager(userId):
 def isAgent(userId):
     return FMSUser.objects.get(user_ptr_id=userId).agent
 
+@register.filter
+def numberOfCreatedReports(userId):
+    reports = Report.objects.filter(status_id=1)
+    return len(reports)
+
+@register.filter
+def numberOfInProgressReports(userId):
+    reports = Report.objects.filter(status_id=2)
+    return len(reports)
+
+@register.filter
+def numberOfClosedReports(userId):
+    reports = Report.objects.filter(status_id=3)
+    return len(reports)
+
+@register.filter
+def numberOfReports(userId):
+    reports = Report.objects.all()
+    return len(reports)
+
+@register.filter
+def numberOfUsers(userId):
+    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
+    users = FMSUser.objects.filter(organisation_id = organisationId)
+    return len(users)
+
+@register.filter
+def numberOfAgents(userId):
+    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
+    agents = FMSUser.objects.filter(organisation_id = organisationId)
+    agents = agents.filter(agent = True)
+    return len(agents)
+
+@register.filter
+def numberOfContractors(userId):
+    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
+    contractors = FMSUser.objects.filter(organisation_id = organisationId)
+    contractors = contractors.filter(contractor = True)
+    return len(contractors)
+
+@register.filter
+def numberOfImpetrants(userId):
+    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
+    impetrants = FMSUser.objects.filter(organisation_id = organisationId)
+    impetrants = impetrants.filter(impetrant = True)
+    return len(impetrants)
+
+@register.filter
+def numberOfManagers(userId):
+    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
+    managers = FMSUser.objects.filter(organisation_id = organisationId)
+    managers = managers.filter(manager = True)
+    return len(managers)
 
 @register.filter
 def hasAtLeastAManager(userId):

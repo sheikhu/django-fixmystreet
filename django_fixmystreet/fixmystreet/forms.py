@@ -107,7 +107,7 @@ class ReportForm(forms.ModelForm):
         report.status = list(Status.objects.all())[0]
         report.point = self.point
         report.private = True
-
+        
         if user.is_authenticated():
             report.creator = user
         
