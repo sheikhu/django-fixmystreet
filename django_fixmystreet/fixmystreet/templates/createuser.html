@@ -15,8 +15,10 @@
     <form action="" method="POST">
       {% csrf_token %}
         <input type="checkbox" name="userType" value="0" id="agentRadio" checked>{% trans 'Agent' %}</input>
-        {% if isManager %}
+        {% if request.user.id|isLeader %}
         <input type="checkbox" name="userType" value="1" id="managerRadio">{% trans 'Manager' %}</input>
+        {% endif %}
+        {% if request.user.id|isManager %}
         <input type="checkbox" name="userType" value="3" id="impetrantRadio">{% trans 'Impetrant'%}</input>
         <input type="checkbox" name="userType" value="4" id="contractorRadio">{% trans 'Contractor'%}</input>
         {% endif %}

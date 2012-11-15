@@ -24,8 +24,8 @@ def show(request):
             userString = ""
             for u in users.get_results():
                 userString+= u[0]+" "+u[1]+"/"
-            if userString == "":
-                userString= "No manager selected"
+            #if userString == "":
+            #    userString= "No manager selected"
             currentSelectedList[main.id-1][second.id-1]= currentSelectedList[main.id-1][second.id-1]+userString
     # Return the main categories list, secondary categories list for displaying the matrix column- and rowheaders.
     # Return an empty categories list (types) because we are showing the page (not doing the selection via popup)
@@ -71,13 +71,16 @@ def update(request):
     #Return the current selected list so that the buttons in the matrix have as label all names of selected managers
     #Return the dropdown form to select managers from
     #Return the category user mapping so that the shown selection boxes contain the current selected managers
+    managersForm = ManagersListForm()
+    managersForm.refreshChoices()
+    #import pdb; pdb.set_trace()    
     return render_to_response("category_gestionnaire_configuration.html",
             {
                 "maincategories" : maincategories,
                 "secondcategories": secondcategories,
                 "categories":categories,
                 "currentSelectedList":currentSelectedList,
-                "managerDropDown":ManagersListForm(),
+                "managerDropDown":managersForm.manager.choices,
                 "categoryUserMapping":categoryUserMapping
             },
             context_instance=RequestContext(request))

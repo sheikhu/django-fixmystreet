@@ -20,6 +20,11 @@ $(document).ready(function(){
       $(value).addClass("emptySelection");
     }
   });
+
+  /*Hide empty selection zones*/
+  $('#54').hide();
+  $('#38').hide();
+  $('#58').hide();
 });
 function saveSelection(){
   var url='{% url saveSelection %}?';
@@ -54,7 +59,7 @@ function saveSelection(){
   				<td class="firstItem">{{secondCat.name}}</td>
   				{% for m in maincategories %}
   				<td> 
-            <button class="matrixButton" onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
+            <button id="{{m.id}}{{secondCat.id}}" class="matrixButton" onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
               {{currentSelectedList|getElementFromList:forloop.counter0|getElementFromList:forloop.parentloop.counter0}}
             </button> 
           </td>
@@ -68,8 +73,15 @@ function saveSelection(){
     		<table style="padding:20px">
     			{% for cat in categories %}
     			<tr>
-    				<td style="padding:5px;">{{cat.name}}</td><td id="{{cat.id}}"> {{managerDropDown.as_p}}</td>
-    			</tr>
+    				<td style="padding:5px;">{{cat.name}}</td>
+				<td id="{{cat.id}}">
+                                        <p><select name="manager" id="id_manager">
+                                                {% for choice in managerDropDown %}
+                                                        <option value="{{choice.0}}">{{choice.1}}</option>
+                                                {% endfor %}
+                                        </select></p>
+                                </td>
+			</tr>
     			{% endfor %}
     		</table>
          

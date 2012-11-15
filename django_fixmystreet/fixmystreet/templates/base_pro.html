@@ -178,8 +178,9 @@
 				<li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=1"> Progress </a> <p class="category_number"></p></li>
 				<li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=2"> Closed </a> <p class="category_number"></p></li>
 				<li><a id="subscriptionMenuItem" class='subcategory positionable' href="{% url report_subscription_pro %}?aubscription=1"> My subscriptions </a> <p class="category_number"></p></li>
+				{% if request.user.id|hasAtLeastAManager %}
 				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a></li> 
-				
+				{% endif %}
 				<li> <a class='category' href="{% url usersOverview %}?userType=users"> Collaborators </a></li>
 				
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=agent">Agents </a> <p class="category_number"></p></li>
@@ -187,13 +188,21 @@
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants </a> <p class="category_number"></p></li>
 
 				{% if request.user.id|isLeader %}
+					{% if request.user.id|hasAtLeastAManager %}
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires </a> <p class="category_number"></p></li>
+					{% endif %}
 				{% endif %}
 				
-				<li> <a class='category'> Configuration </a></li>
-				
-				<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
-				<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
+				{% if request.user.id|isLeader or request.user.id|isManager %}
+					<li> <a class='category'> Configuration </a></li>
+					{% if request.user.id|isLeader %}
+						{% if request.user.id|hasAtLeastAManager %}
+							<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
+						{% endif %}
+					{% endif %}
+					<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
+				{% endif %}
+
 				
 			</ul>
 		</div>

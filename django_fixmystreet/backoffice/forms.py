@@ -6,23 +6,36 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy
 from django.contrib.sessions.models import Session
 from django.contrib.auth.decorators import login_required
+import time
 
 
 class ManagersChoiceField (forms.fields.ChoiceField):
+
 	def __init__(self,  *args, **kwargs):
 		choices = []
-		choices.append(('', ugettext_lazy("Select a manager")))
-		currentUserOrganisationId = 1
+		#currentUserOrganisationId = 1
 		if Session.objects.all()[0].session_key:
-			currentUserOrganisationId = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
-		managers = FMSUser.objects.filter(manager=True)
-		managers = managers.filter(organisation_id=currentUserOrganisationId)
+			currentUserOrganisation = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
+		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
+		managers = managers.filter(organisation_id=currentUserOrganisation.id)
 
 		for manager in managers:
-			choices.append((manager.pk,manager.first_name+manager.last_name))
+			choices.append((manager.pk,manager.last_name+" "+manager.first_name))
 
 		super(ManagersChoiceField,self).__init__(choices,*args,**kwargs)
 
+	def refreshChoices(self):
+		choices = []
+		currentUserOrganisationId = 1
+		if Session.objects.all()[0].session_key:
+			currentUserOrganisation = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
+		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
+		managers = managers.filter(organisation_id=currentUserOrganisation.id)
+		
+		for manager in managers:
+			choices.append((manager.pk,manager.last_name+" "+manager.first_name))
+		super(ManagersChoiceField, self)._set_choices(choices)
+	
 	def clean(self, value):
 		super(ManagersChoiceField,self).clean(value)
 		try:
@@ -33,7 +46,14 @@ class ManagersChoiceField (forms.fields.ChoiceField):
 
 
 class ManagersListForm(forms.Form):
-	manager=ManagersChoiceField(label="")
+	def __init__(self,  *args, **kwargs):
+		super(ManagersListForm, self).__init__(*args, **kwargs)
+		self.manager = ManagersChoiceField(label="")
+		
+	
+	def refreshChoices(self):
+		self.manager.refreshChoices()
+	
 
 class UserEditForm(UserChangeForm):
     class Meta:
