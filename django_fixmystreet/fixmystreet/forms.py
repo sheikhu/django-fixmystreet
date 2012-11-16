@@ -74,7 +74,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
             raise ValidationError(self.error_messages['invalid_choice'])
         return model
 
-
+#Used by PRO version
 class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
@@ -110,11 +110,19 @@ class ReportForm(forms.ModelForm):
         
         if user.is_authenticated():
             report.creator = user
+	    #Detect who is the responsible Manager for the given type
+	    #userCandidates = FMSUsers.objects.filter(organisation__id=user.organisation.id).filter(manager=True, categories__any=report.secondary_category)
+            #loop elements to find the right user to assign
+            #for (user in userCandidates):
+            #     for (categoriesOfResponsability in user.categories)
+            #          if (categoriesOfResponsability == report.secondary_category):
+            #               report.responsible_manager = user 
         
         if commit:
             report.save()
         return report
 
+#Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
     class Meta:
