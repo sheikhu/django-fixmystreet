@@ -48,6 +48,11 @@ body {
 
 /********* HEADER LAYOUT ********/
 
+#header-name {
+	font-weight: bold;
+	color: white;
+}
+
 #header h1 {
 	color:white;
 	font-size: 4em;
