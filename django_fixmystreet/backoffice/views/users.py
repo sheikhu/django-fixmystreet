@@ -41,8 +41,18 @@ def edit(request):
 	if userType == 'manager':
 		users = users.filter(manager=True)
 	user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
+
+	userid = getLoggedInUserId(request.COOKIES.get("sessionid"))	
+    	connectedUser = FMSUser.objects.get(user_ptr_id=userid)
+	
+
+	canEditGivenUser = (((user.manager or user.agent) and connectedUser.leader) or ((user.agent) and connectedUser.manager))
+	#import pdb
+        #pdb.set_trace()
+
 	return render_to_response("users_overview.html",{
 						"users":users,
+						"canEditGivenUser":canEditGivenUser,
 						"editForm":UserEditForm(instance=user)
 						},context_instance=RequestContext(request))
 
