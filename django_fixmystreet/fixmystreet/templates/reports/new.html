@@ -129,7 +129,16 @@ $(document).ready(function() {
 			}
 		});
 	}
+
+    $(document).delegate("form", "submit", function(evt) {
+        if (!$(':submit').hasClass('confirm')) {
+            evt.preventDefault();
+            $(':submit').val('Confirm');
+            $(':submit').addClass('confirm');
+        }
+    });
 });
+
 </script>
 {% endblock %}
 
