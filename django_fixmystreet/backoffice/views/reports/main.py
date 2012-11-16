@@ -30,7 +30,7 @@ def new(request):
     if statusQ == "0":
     	reports = Report.objects.filter(is_fixed = False).filter(status=1).distance(pnt).order_by('distance')
     elif statusQ == "1":
-    	reports = Report.objects.filter(is_fixed = False).filter(status=2).distance(pnt).order_by('distance')
+    	reports = Report.objects.filter(is_fixed = False).filter(status_id__in=[2,4,5,6]).distance(pnt).order_by('distance')
     elif statusQ == "2":
     	reports = Report.objects.filter(is_fixed = False).filter(status=3).distance(pnt).order_by('distance')
     else:
