@@ -12,7 +12,7 @@ urlpatterns += patterns('',
 	url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'connection.html'},name='login'),
 	url(r'^logout/$',
             auth_views.logout_then_login,
-            {'login_url':'/pro/accounts/login/'},
+            {'login_url':'/pro/accounts/login/?next=/pro/'},
             name='auth_logout'
     ),
 )

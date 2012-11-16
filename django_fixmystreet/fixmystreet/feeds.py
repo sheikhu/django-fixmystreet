@@ -2,7 +2,7 @@ from django.contrib.syndication.views import Feed
 from django.contrib.syndication.views import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
 
-from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, Ward
+from django_fixmystreet.fixmystreet.models import Report, ReportUpdate
 
 class LatestReports(Feed):
     title = "All FixMyStreet Reports"
@@ -35,29 +35,31 @@ class LatestReportsByCity(Feed):
     def items(self, obj):
        return Report.objects.filter(ward__city=obj.id).order_by('-created_at')[:30]
 
-
-class LatestReportsByWard(Feed):
-    
-    def get_object(self, bits):
+# 
+# class LatestReportsByWard(Feed):
+    # 
+    # def get_object(self, bits):
+        # """
         # In case of "/rss/beats/0613/foo/bar/baz/", or other such clutter,
         # check that bits has only one member.
-        if len(bits) != 1:
-            raise ObjectDoesNotExist        
-        return Ward.objects.get(id=bits[0])
-
-    def title(self, obj):
-        return "FixMyStreet: Reports for %s, %s" % (obj.name, obj.city.name)
-
-    def link(self, obj):
-        if not obj:
-            raise FeedDoesNotExist
-        return obj.get_absolute_url()
-
-    def description(self, obj):
-        return "Problems recently reported in %s, %s" % ( obj.name, obj.city.name)
-
-    def items(self, obj):
-        return Report.objects.filter(ward=obj.id).order_by('-created_at')[:30]
+        # """
+        # if len(bits) != 1:
+            # raise ObjectDoesNotExist        
+        # return Ward.objects.get(id=bits[0])
+# 
+    # def title(self, obj):
+        # return "FixMyStreet: Reports for %s, %s" % (obj.name, obj.city.name)
+# 
+    # def link(self, obj):
+        # if not obj:
+            # raise FeedDoesNotExist
+        # return obj.get_absolute_url()
+# 
+    # def description(self, obj):
+        # return "Problems recently reported in %s, %s" % ( obj.name, obj.city.name)
+# 
+    # def items(self, obj):
+        # return Report.objects.filter(ward=obj.id).order_by('-created_at')[:30]
 
 # Allow subsciption to a particular report.
 

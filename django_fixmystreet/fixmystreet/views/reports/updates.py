@@ -4,7 +4,7 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 
-from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, Ward, ReportCategory
+from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, ReportCategory
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm
 
 def new( request, report_id ):

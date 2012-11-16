@@ -51,6 +51,9 @@ body {
 #header-name {
 	font-weight: bold;
 	color: white;
+	position:absolute;
+	right:0;
+	bottom:0;
 }
 
 #header h1 {

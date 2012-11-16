@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db import transaction
 
-from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, Ward, ReportCategory
+
+from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, ReportCategory
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm, ReportCommentForm, ReportFileForm
 
 @transaction.commit_on_success
