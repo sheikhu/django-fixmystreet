@@ -37,8 +37,8 @@ $("[for='id_password']").parent().parent().hide()
 				<img src="{{STATIC_URL}}images/{{user.id|getUserType}}.png"/>
 				{{user.first_name}} {{user.last_name}}
 				(
-					{% if user.leader %}LEADER {% endif %}
-					{% if user.manager %}MANAGER {% endif %}
+					{% if user.leader %}ENTITE {% endif %}
+					{% if user.manager %}GESTIONNAIRE {% endif %}
 					{% if user.agent %}AGENT {% endif %}
 				)
 			</p>

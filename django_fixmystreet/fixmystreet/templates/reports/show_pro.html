@@ -255,9 +255,23 @@ $(function(){
                     <tr>
                         <td class="annexesFirstTD">
                     <div class="report_update">
-                        <h4>{{file.title}}</h4>
                         {% if file.file %}
-                        <center><img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/></center>
+                        	<center>
+					<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
+					{{file.title}}
+					{% if file.fileType_id == 1 %}
+						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/>
+					{% endif %}
+					{% if file.fileType_id == 2 %}
+						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/>
+					{% endif %}
+					{% if file.fileType_id == 3 %}
+						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/>
+					{% endif %}
+					{% if file.fileType_id == 4 %}
+						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/>
+					{% endif %}
+				</center>
                         {% endif %}
                     </div>
                 </td>

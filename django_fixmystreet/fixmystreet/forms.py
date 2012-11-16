@@ -234,7 +234,17 @@ class ReportFileForm(forms.ModelForm):
 		fileUpdate.report = report
 		#import pdb
                 #pdb.set_trace()
+		#default
 		fileUpdate.fileType = AttachmentType.objects.all()[0];
+		if (str(fileUpdate.file.name).endswith("pdf")):
+			fileUpdate.fileType = AttachmentType.objects.get(pk=2);
+		if (str(fileUpdate.file.name).endswith("doc")):
+			fileUpdate.fileType = AttachmentType.objects.get(pk=3);
+		if (str(fileUpdate.file.name).endswith("png")):
+			fileUpdate.fileType = AttachmentType.objects.get(pk=4);
+		if (str(fileUpdate.file.name).endswith("jpg")):
+			fileUpdate.fileType = AttachmentType.objects.get(pk=1);
+		
 		if commit:
 			fileUpdate.save()
 		return fileUpdate
