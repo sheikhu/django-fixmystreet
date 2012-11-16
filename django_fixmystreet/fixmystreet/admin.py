@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from transmeta import canonical_fieldname
 
-from django_fixmystreet.fixmystreet.models import NotificationRule, Ward, ReportCategory, Report, ReportMainCategoryClass, FaqEntry
+from django_fixmystreet.fixmystreet.models import NotificationRule, ReportCategory, Report, ReportMainCategoryClass, FaqEntry
 
 
 class ReportCategoryClassAdmin(admin.ModelAdmin):
@@ -29,15 +29,6 @@ class ReportAdmin(admin.ModelAdmin):
     exclude = ['photo']
 
 admin.site.register(Report,ReportAdmin)
-
-
-
-class WardAdmin(admin.ModelAdmin):
-    fields = ('name',)#,'emailrule_set')
-    #raw_id_fields = ('emailrule_set',)
-    readonly_fields = ('name',)
-
-admin.site.register(Ward,WardAdmin)
 
 
 class NotificationRuleAdmin(admin.ModelAdmin):

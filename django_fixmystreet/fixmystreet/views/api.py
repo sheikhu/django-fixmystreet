@@ -7,7 +7,7 @@ from django.utils import simplejson
 from django.db.models import Q
 from datetime import datetime, timedelta
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, Ward, dictToPoint
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, dictToPoint
 from django_fixmystreet.fixmystreet.utils import ssl_required, oauthtoken_to_user, JsonHttpResponse
 from django_fixmystreet.fixmystreet.templatetags.tags import report_to_array
 
