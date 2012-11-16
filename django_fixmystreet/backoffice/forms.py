@@ -71,5 +71,6 @@ class UserEditForm(UserChangeForm):
         fmsuser.update(last_name = self.data["last_name"])
         fmsuser.update(email = self.data["email"])
         fmsuser.update(telephone = self.data["telephone"])
-        fmsuser.update(active=self.data['active'])
+        isActive = self.data['active']
+        fmsuser.update(active=isActive)
         return fmsuser;

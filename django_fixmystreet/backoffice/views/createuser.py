@@ -18,7 +18,7 @@ def createUser(request):
         createform = AgentCreationForm(request.POST)
         if createform.is_valid():
         	#createdUser = createform.save(userid,request.POST.get("userType"))
-        	createdUser = createform.save(userid,request.POST.get("agentRadio"),request.POST.get("managerRadio"),request.POST.get("impetrantRadio"),request.POST.get("contractorRadio"))
+        	createdUser = createform.save(userid,request.POST.get("agentRadio"),request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
         	#If this is the first user created and of type gestionnaire then assign all reportcategories to him
 		if (createdUser.manager == True & connectedUser.leader == True):
 			#if we have just created the first one, then apply all type to him
