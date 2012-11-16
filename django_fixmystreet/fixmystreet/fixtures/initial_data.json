@@ -2730,9 +2730,9 @@
         "pk": 3,
         "model": "auth.user",
         "fields": {
-            "first_name": "Patrick",
-            "last_name": "Van Vooren",
-            "username": "pvanvooren",
+            "first_name": "Catherine",
+            "last_name": "Corbesier",
+            "username": "ccorbesier",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true
