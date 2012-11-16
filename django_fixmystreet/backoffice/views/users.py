@@ -29,7 +29,8 @@ def show(request):
 @login_required(login_url='/pro/accounts/login/')
 def edit(request):
 	userType = request.REQUEST.get("userType")
-	currentOrganisationId = 1
+	user = FMSUser.objects.get(user_ptr_id=request.user.id)
+	currentOrganisationId = user.organisation.id
 	users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 	if userType == 'agent':
 		users = users.filter(agent = True)
