@@ -90,22 +90,38 @@ def isAgent(userId):
 
 @register.filter
 def numberOfCreatedReports(userId):
-    reports = Report.objects.filter(status_id=1)
+    userConnected = FMSUser.objects.get(user_ptr_id=userId)
+    userConnectedOrganisation = userConnected.organisation
+    reports = Report.objects.filter(status_id__in=[1])
+    #Activate something similar to this to filter per entity !!!
+    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
     return len(reports)
 
 @register.filter
 def numberOfInProgressReports(userId):
-    reports = Report.objects.filter(status_id=2)
+    userConnected = FMSUser.objects.get(user_ptr_id=userId)
+    userConnectedOrganisation = userConnected.organisation
+    reports = Report.objects.filter(status_id__in=[2,4,5,6])
+    #Activate something similar to this to filter per entity !!!
+    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
     return len(reports)
 
 @register.filter
 def numberOfClosedReports(userId):
+    userConnected = FMSUser.objects.get(user_ptr_id=userId)
+    userConnectedOrganisation = userConnected.organisation
     reports = Report.objects.filter(status_id=3)
+    #Activate something similar to this to filter per entity !!!
+    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
     return len(reports)
 
 @register.filter
 def numberOfReports(userId):
+    userConnected = FMSUser.objects.get(user_ptr_id=userId)
+    userConnectedOrganisation = userConnected.organisation
     reports = Report.objects.all()
+    #Activate something similar to this to filter per entity !!!
+    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
     return len(reports)
 
 @register.filter

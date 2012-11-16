@@ -103,28 +103,35 @@ $(function(){
         {{report.secondary_category.name}} 
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		{% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %} 
                 <tr>
-                    <td ></td>
-                    <td >
-                        <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Validate</button>
-                    </td>
-                    <td >
-                        <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
-                    </td>
+                    	<td ></td>
+                    	<td >
+                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Validate</button>
+                    	</td>
+                    	<td >
+                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+                    	</td>
                 </tr>
+    		{% endif %}
                 <tr>
-                    <td >
-                        <button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Accept</button>
-                    </td>
+			{% if report.status.code == '0' %} 
+                    	<td >
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Accept</button>
+                    	</td>
 
-                    <td >
-                        <button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Reject</button>
-
-                    </td>
-                    <td >
-                        
-                        <button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Validate all</button>
-                    </td>
+                    	<td >
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/refuse'" class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Reject</button>
+                    	</td>
+    			{% endif %}
+			{% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %} 
+                    	<td >
+                        	<button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Validate all</button>
+                    	</td>
+    			{% endif %}
                 </tr>
             </table>
         </div>

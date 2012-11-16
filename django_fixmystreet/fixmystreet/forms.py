@@ -74,7 +74,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
             raise ValidationError(self.error_messages['invalid_choice'])
         return model
 
-
+#Used by PRO version
 class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
@@ -110,11 +110,19 @@ class ReportForm(forms.ModelForm):
         
         if user.is_authenticated():
             report.creator = user
+	    #Detect who is the responsible Manager for the given type
+	    #userCandidates = FMSUsers.objects.filter(organisation__id=user.organisation.id).filter(manager=True, categories__any=report.secondary_category)
+            #loop elements to find the right user to assign
+            #for (user in userCandidates):
+            #     for (categoriesOfResponsability in user.categories)
+            #          if (categoriesOfResponsability == report.secondary_category):
+            #               report.responsible_manager = user 
         
         if commit:
             report.save()
         return report
 
+#Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
     class Meta:
@@ -188,7 +196,7 @@ class AgentCreationForm(UserCreationForm):
         fields = ('first_name','last_name','email','telephone','username','password1','password2','active',)
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     active = forms.BooleanField(required=False)
-    def save(self,userID,userType, commit=True):
+    def save(self,userID,isAgent,isManager,isImpetrant,isContractor, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
@@ -199,11 +207,13 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
         fmsuser.active = self.cleaned_data['active']
-        fmsuser.agent = (userType=="0")
-        fmsuser.manager = (userType=="1")
-        fmsuser.leader = (userType=="2")
-        fmsuser.impetrant = (userType=="3")
-        fmsuser.contractor = (userType=="4")
+        fmsuser.agent = (isAgent=="1")
+        fmsuser.manager = (isManager=="1")
+        #fmsuser.leader = (isImpetrant=="2")
+	#In V1 all leaders are created in DB on application launch (in other words by sql queries)
+        fmsuser.leader = False
+        fmsuser.impetrant = (isImpetrant=="1")
+        fmsuser.contractor = (isContractor=="1")
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
         fmsuser.organisation = currentUser.organisation
         fmsuser.save()
