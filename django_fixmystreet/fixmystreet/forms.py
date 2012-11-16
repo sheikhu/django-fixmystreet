@@ -196,7 +196,7 @@ class AgentCreationForm(UserCreationForm):
         fields = ('first_name','last_name','email','telephone','username','password1','password2','active',)
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     active = forms.BooleanField(required=False)
-    def save(self,userID,isAgent,isManager,isImpetrant,isContractor, commit=True):
+    def save(self,userID,isAgent,isManager,isContractor, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
@@ -212,7 +212,7 @@ class AgentCreationForm(UserCreationForm):
         #fmsuser.leader = (isImpetrant=="2")
 	#In V1 all leaders are created in DB on application launch (in other words by sql queries)
         fmsuser.leader = False
-        fmsuser.impetrant = (isImpetrant=="1")
+        fmsuser.impetrant = False
         fmsuser.contractor = (isContractor=="1")
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
         fmsuser.organisation = currentUser.organisation
@@ -232,6 +232,8 @@ class ReportFileForm(forms.ModelForm):
 	def save(self,user,report,commit=True):
 		fileUpdate= super(ReportFileForm,self).save(commit=False)
 		fileUpdate.report = report
+		#import pdb
+                #pdb.set_trace()
 		fileUpdate.fileType = AttachmentType.objects.all()[0];
 		if commit:
 			fileUpdate.save()

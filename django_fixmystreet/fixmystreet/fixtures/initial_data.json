@@ -2962,5 +2962,37 @@
             "code":"9",
             "parentStatus":1
         }
+    },
+    {
+        "pk":1,
+        "model":"fixmystreet.attachmenttype",
+        "fields":{
+            "code":"jpeg",
+            "url":"http://monimage.jpeg"
+        }
+    },
+    {
+        "pk":2,
+        "model":"fixmystreet.attachmenttype",
+        "fields":{
+            "code":"pdf",
+            "url":"http://monimage.jpeg"
+        }
+    },
+    {
+        "pk":3,
+        "model":"fixmystreet.attachmenttype",
+        "fields":{
+            "code":"doc",
+            "url":"http://monimage.jpeg"
+        }
+    },
+    {
+        "pk":4,
+        "model":"fixmystreet.attachmenttype",
+        "fields":{
+            "code":"png",
+            "url":"http://monimage.jpeg"
+        }
     }
 ]

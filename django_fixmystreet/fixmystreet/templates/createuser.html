@@ -16,10 +16,9 @@
       {% csrf_token %}
         <input type="checkbox" name="agentRadio" value="1" id="agentRadio" checked>{% trans 'Agent' %}</input>
         {% if request.user.id|isLeader %}
-        <input type="checkbox" name="managerRadio" value="1" id="managerRadio">{% trans 'Manager' %}</input>
+        <input type="checkbox" name="managerRadio" value="1" id="managerRadio">{% trans 'Gestionnaire' %}</input>
         {% endif %}
         {% if request.user.id|isManager %}
-        <input type="checkbox" name="impetrantRadio" value="1" id="impetrantRadio">{% trans 'Impetrant'%}</input>
         <input type="checkbox" name="contractorRadio" value="1" id="contractorRadio">{% trans 'Contractor'%}</input>
         {% endif %}
       </select>
