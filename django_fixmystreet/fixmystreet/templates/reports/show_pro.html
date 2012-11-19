@@ -61,6 +61,7 @@ $(function(){
                 //Confidential file checkbox changed
                 console.log("Confidential file: "+vals);
                 //TODO handle Confidential bool of file with id vals[2]
+
             }
             else{
                 //Confidential comment checkbox changed
@@ -69,6 +70,22 @@ $(function(){
             }
         }
     } });
+    $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+    $("#report_responsible_manager_select").bind("change",function(event){
+        var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
+        if (r==true){
+            window.location = '{% url report_new_pro %}/../../report/{{report.id}}/changeManager/?manId='+$("#report_responsible_manager_select").val();
+        }
+        else{
+            $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+        }
+    });
+    $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
+    $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
+        //TODO update report with new contractor
+        console.log($("#report_responsible_impetrant_contractor_select").val());
+        window.location = '{% url report_new_pro %}/../../report/{{report.id}}/changeContractor/?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+    });
     $("#commentForm").hide();
     $("#fileForm").hide();
     {% if user.is_authenticated %}
@@ -133,9 +150,8 @@ $(function(){
         {{report.secondary_category.name}} 
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
-		<tr>
-			<td colspan="3">&nbsp;</td>
-		</tr>
+		
+        {% if report.responsible_manager.id == request.user.id %}
 		{% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %} 
                 <tr>
                     	<td ></td>
@@ -145,23 +161,23 @@ $(function(){
                     	<td >
                         	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
                     	</td>
+                        <td >
+                            <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Validate all</button>
+                        </td>
                 </tr>
     		{% endif %}
                 <tr>
 			{% if report.status.code == '0' %} 
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Accept</button>
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Accept</button>
                     	</td>
 
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/refuse'" class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Reject</button>
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/refuse'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Reject</button>
                     	</td>
     			{% endif %}
-			{% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %} 
-                    	<td >
-                        	<button class="saveFormButton" style="float:right;font-size: 0.4em;margin-top: 0px;width:100%;">Validate all</button>
-                    	</td>
-    			{% endif %}
+			
+                {% endif %}
                 </tr>
             </table>
         </div>
@@ -216,6 +232,44 @@ $(function(){
                 	<th>{% trans "Status:" %}</th>
                 	<td>{{ report.status.name_en }}</td>
                 </tr>
+                {% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %}
+                {% if request.user.id == report.responsible_manager.id %}
+                <tr>
+                    <th>{% trans "Responsible manager:" %}</th>
+                    <td>
+                        <select id="report_responsible_manager_select">
+                            {% for manager in managers %}
+                            <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
+                            {% endfor %}
+                            {% for entity in entities %}
+                            <option value="entity_{{entity.id}}">{{entity.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{% trans "Contractor/Impetrant:" %}</th>
+                    <td>
+                        <select id="report_responsible_impetrant_contractor_select">
+                            <option value="contractor_">{% trans 'Select a contractor/impetrant' %}</option>
+                            {% for organisation in contractors %}
+                            <option value="contractor_{{organisation.id}}">{{organisation.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <th>{% trans "Responsible manager:" %}</th>
+                    <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</td>
+                </tr>
+                <tr>
+                    <th>{% trans "Contractor/Impetrant:" %}</th>
+                    <td>{{report.subcontractor.name}}</td>
+                </tr>
+                {% endif %}
+
+                {% endif %}
             </table>
 			<div id="map-bxl"></div>
 			
@@ -277,11 +331,14 @@ $(function(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     <th></th>
+                    <!--If the current user is the responsible manager-->
+        {% if report.responsible_manager.id == request.user.id %}
 			<!-- If the status allow such interactions -->		
 			{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
                     	<th>Public</th>
                     	<th> Confidential </th>
 			{% endif %}
+            {% endif %}
                     {% for file in files %}
                     <tr>
                         <td class="annexesFirstTD">
@@ -306,6 +363,8 @@ $(function(){
                         {% endif %}
                     </div>
                 </td>
+        <!--If the current user is the responsible manager-->
+        {% if report.responsible_manager.id == request.user.id %}
 		<!-- If the status allow such interactions -->		
 		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
                 	<td class="annexesChoiceBoxTD">
@@ -314,6 +373,7 @@ $(function(){
                 	<td class="annexesChoiceBoxTD">
                     		<center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
                 	</td>
+        {% endif %}
 		{% endif %}
             </tr>
                     {% endfor %}
@@ -325,8 +385,14 @@ $(function(){
             <div id="report_updates">
                 <table class="extraCommentsTable">
                     <th></th>
+                    <!--If the current user is the responsible manager-->
+                    {% if report.responsible_manager.id == request.user.id %}
+                    <!-- If the status allow such interactions -->      
+                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
                     <th>Public</th>
                     <th> Confidential </th>
+                    {% endif %}
+                    {% endif %}
                 {% for comment in comments %}
                 <tr>
                     <td class="annexesFirstTD">
@@ -335,12 +401,19 @@ $(function(){
                     <p>{{comment.text}}</p>
                     
                 </div>
+            </td>
+            <!--If the current user is the responsible manager-->
+            {% if report.responsible_manager.id == request.user.id %}
+            <!-- If the status allow such interactions -->      
+            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
                 <td class="annexesChoiceBoxTD">
                     <input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
                 </td>
                 <td class="annexesChoiceBoxTD">
                     <input checked='checked' class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
                 </td>
+            {% endif %}
+            {% endif %}
             </tr>
                 {% endfor %}
             </table>

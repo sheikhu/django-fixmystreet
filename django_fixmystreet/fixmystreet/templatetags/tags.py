@@ -5,7 +5,7 @@ from django.conf import settings
 from django import template
 from django.conf import settings
 from django.core.urlresolvers import resolve
-from django_fixmystreet.fixmystreet.models import FMSUser, Report
+from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportSubscription
 
 register = template.Library()
 
@@ -153,10 +153,8 @@ def numberOfImpetrants(userId):
 
 @register.filter
 def numberOfSubscriptions(userId):
-    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-    impetrants = FMSUser.objects.filter(organisation_id = organisationId)
-    impetrants = impetrants.filter(impetrant = True)
-    return len(impetrants)
+    subscriptions = ReportSubscription.objects.filter(subscriber_id=userId)
+    return len(subscriptions)
 
 @register.filter
 def numberOfManagers(userId):
