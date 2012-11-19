@@ -22,7 +22,7 @@ class SecondaryCategorySelect(forms.Select):
         disabled_html = ''
         text_label = option_label;
         family_param = '';
-        public_param = '';
+        public_param = False;
         if isinstance(option_label, dict):
             if dict.get(option_label, 'disabled'):
                 disabled_html = u' disabled="disabled"'
@@ -31,7 +31,10 @@ class SecondaryCategorySelect(forms.Select):
             if dict.get(option_label, 'family'):
                 family_param = option_label['family']
             if dict.get(option_label, 'public'):
-                public_param = option_label['public']
+                 if option_label['public'] == False:
+                     public_param = False
+                 else:
+                     public_param = True
         return u'<option public="%s" family="%s"  value="%s"%s%s>%s</option>' % (
             escape(public_param), escape(family_param), escape(option_value), selected_html, disabled_html,
             conditional_escape(force_unicode(text_label)))
@@ -79,10 +82,11 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'postalcode', 'description')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description')
 
     required_css_class = 'required'
     secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
+    secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !

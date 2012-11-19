@@ -9,6 +9,10 @@
 <script>
 
 $(document).ready(function() {
+        //Hide original list of elements
+	$("#id_secondary_category_copy").hide();
+	$("[for='id_secondary_category_copy']").hide();
+	
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 
@@ -68,8 +72,11 @@ $(document).ready(function() {
                         refSecondary.removeAttr("disabled");
                         $("#secondary_container").load("/ajax/categories/" + el_id);
                         <!-- FILTER SECOND DROPDOWN -->
-                        refSecondary.find("option").hide();
-                        refSecondary.find("option[family='"+el_id+"'][public='True']").show();
+			
+			refSecondary.html('');
+			refSecondary.html($('#id_secondary_category_copy').html());
+			refSecondary.find("option[family!='"+el_id+"']").remove();
+			refSecondary.find("option[public='False']").remove();
                 }
                 else
                 {
