@@ -22,6 +22,7 @@ $(function(){
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 
 
+
     $('form').submit(function(){
         if(!connected){
             evt.preventDefault();
@@ -38,7 +39,36 @@ $(function(){
         $('form :submit').prop('disabled',false);
     });
 	$('#map-bxl').hide();
-    $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8" });
+    $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8",onChange:function(value){
+        console.log($(value).attr("id"));
+        var vals = $(value).attr("id").split("_");
+        if(vals[0].indexOf("public")!=-1){
+            // Public checkbox changed
+            if(vals[1].indexOf("file")!=-1){
+                //public file checkbox changed
+                console.log("public file: "+vals);
+                //TODO handle public bool of file with id vals[2]
+            }
+            else{
+                //public comment checkbox changed
+                console.log("public comment: "+vals);
+                //TODO handle public bool of comment with id vals[2]
+            }
+        }
+        else{
+            //Confidential checkbox changed
+            if(vals[1].indexOf("file")!=-1){
+                //Confidential file checkbox changed
+                console.log("Confidential file: "+vals);
+                //TODO handle Confidential bool of file with id vals[2]
+            }
+            else{
+                //Confidential comment checkbox changed
+                console.log("Confidential comment: "+vals);
+                //TODO handle Confidential bool of comment with id vals[2]
+            }
+        }
+    } });
     $("#commentForm").hide();
     $("#fileForm").hide();
     {% if user.is_authenticated %}
@@ -260,26 +290,26 @@ $(function(){
 					<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
 					{{file.title}}
 					{% if file.fileType_id == 1 %}
-						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/>
+						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
 					{% endif %}
 					{% if file.fileType_id == 2 %}
-						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/>
+						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
 					{% endif %}
 					{% if file.fileType_id == 3 %}
-						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/>
+						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
 					{% endif %}
 					{% if file.fileType_id == 4 %}
-						<img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/>
+						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
 					{% endif %}
 				</center>
                         {% endif %}
                     </div>
                 </td>
                 <td class="annexesChoiceBoxTD">
-                    <center><input checked='checked' class='normal' type='checkbox' id="publicFile{{file.id}}"/></center>
+                    <center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
                 </td>
                 <td class="annexesChoiceBoxTD">
-                    <center><input checked='checked' class='normal' type='checkbox' id="confidentialFile{{file.id}}"/></center>
+                    <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
                 </td>
             </tr>
                     {% endfor %}
@@ -302,10 +332,10 @@ $(function(){
                     
                 </div>
                 <td class="annexesChoiceBoxTD">
-                    <input checked='checked' class='normal' type='checkbox' id="publicComment{{comment.id}}"/>
+                    <input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
                 </td>
                 <td class="annexesChoiceBoxTD">
-                    <input checked='checked' class='normal' type='checkbox' id="confidentialComment{{comment.id}}"/>
+                    <input checked='checked' class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
                 </td>
             </tr>
                 {% endfor %}

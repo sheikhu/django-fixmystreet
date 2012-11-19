@@ -165,7 +165,7 @@
 					</form>
 				</div>
 				<div id="header-name">
-					Connecte: {{request.user.first_name}} {{request.user.last_name}}
+					Connected: {{request.user.first_name}} {{request.user.last_name}}
 				</div>
 				{% load tags %}
 		</div>
@@ -178,7 +178,7 @@
 				<li><a id='createdMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=0"> Created <p class="category_number">{{request.user|numberOfCreatedReports}}</p></a> </li>
 				<li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=1"> Progress <p class="category_number">{{request.user|numberOfInProgressReports}}</p></a></li>
 				<li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_new_pro %}?status=2"> Closed <p class="category_number">{{request.user|numberOfClosedReports}} </p></a> </li>
-				<li><a id="subscriptionMenuItem" class='subcategory positionable' href="{% url report_subscription_pro %}?aubscription=1"> My subscriptions </a> <p class="category_number"></p></li>
+				<li><a id="subscriptionMenuItem" class='subcategory' href="{% url report_subscription_pro %}?subscription=1"> My subscriptions <p class="category_number">{{request.user|numberOfSubscriptions}}</p> </a> <p class="category_number"></p></li>
 				{% if request.user.id|hasAtLeastAManager %}
 				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a></li> 
 				{% endif %}
