@@ -2814,6 +2814,46 @@
             "extra_data": "{\"access_token\": \"\", \"expires\": \"\", \"id\": \"100085513324697\"}"
         }
     }, 
+    {
+        "pk":11,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":3,
+            "telephone":"923456789",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":2
+        }
+    },
+   {
+        "pk":10,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Demo",
+            "last_name": "Demo",
+            "username": "demo",
+            "password": "pbkdf2_sha256$10000$JwbjSCeIkCxj$j6AJO6xQhP/Y76+ine5gyYykVxv1Wl9h1aBs2E3WOSM=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10,
+            "telephone":"123456789",
+            "active":true,
+            "lastUsedLanguage":"NL",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":1
+        }
+    },
    {
         "pk":8,
         "model": "auth.user",

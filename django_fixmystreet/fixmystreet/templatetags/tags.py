@@ -110,7 +110,7 @@ def numberOfInProgressReports(userId):
 def numberOfClosedReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status_id=3)
+    reports = Report.objects.filter(status_id__in=[3,7,8,9])
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
     return len(reports)
