@@ -111,6 +111,7 @@ class Report(models.Model):
     
     citizen = models.ForeignKey(User,null=True, related_name='citizen')
     description = models.TextField(null=True)
+    refusal_motivation = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     subcontractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
     responsible_manager = models.ForeignKey(FMSUser, related_name='in_charge_reports', null=True)

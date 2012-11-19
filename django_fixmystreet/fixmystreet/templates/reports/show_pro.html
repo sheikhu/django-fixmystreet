@@ -210,7 +210,7 @@ $(function(){
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
-                    <td>{{report.category.name}}</td>
+                    <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
                 </tr>
                 <tr>
                 	<th>{% trans "Status:" %}</th>
@@ -224,50 +224,48 @@ $(function(){
 	</div>
 	<div id="rightcol">
 	
-			
+		<!-- If the status allow such interactions -->		
+		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
-            <input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
+            		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
 			
 			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
-				<table id="report_form" class="form">
-					{{comment_form.as_table}}					
-					<tr>
-                        <td></td>
-                        <td>
-                            <p style="float:left;">
-                            	<input type="hidden" name="form-type" value="comment-form"/>
-                                <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleCommentForm();"/>
-                                <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
-                            </p>
-                            
-                        </td>
-                    </tr>
-				</table>
+			<table id="report_form" class="form">
+				{{comment_form.as_table}}					
+				<tr>
+                        	<td></td>
+                        	<td>
+                            		<p style="float:left;">
+                            		<input type="hidden" name="form-type" value="comment-form"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleCommentForm();"/>
+                                	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
+                            		</p>
+                        	</td>
+                   	 	</tr>
+			</table>
 			</form>
-        </div>
-			<div id="addFileDiv">
-			<h2>{% trans "Add a file to this report" %}</h2>
-            <input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
+        	</div>
+		<div id="addFileDiv">
+		<h2>{% trans "Add a file to this report" %}</h2>
+            		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
 			<form id="fileForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
-				<table id="report_form" class="form">
-					{{file_form.as_table}}					
-					<tr>
-                        <td></td>
-                        <td>
-                            <p style="float:left;">
-                            	<input type="hidden" name="form-type" value="file-form"/>
-                                <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleFileForm();"/>
-                                <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
-                            </p>
-                            
-                        </td>
-                    </tr>
-                    
-				</table>
-				
+			<table id="report_form" class="form">
+				{{file_form.as_table}}					
+				<tr>
+                        	<td></td>
+                        	<td>
+                            		<p style="float:left;">
+                            		<input type="hidden" name="form-type" value="file-form"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleFileForm();"/>
+                                	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
+                            	</p>
+                        	</td>
+                    		</tr>
+			</table>
 			</form>
-			</div>
+		</div>
+		{% endif %}
      		
     </div>
 
@@ -279,8 +277,11 @@ $(function(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     <th></th>
-                    <th>Public</th>
-                    <th> Confidential </th>
+			<!-- If the status allow such interactions -->		
+			{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+                    	<th>Public</th>
+                    	<th> Confidential </th>
+			{% endif %}
                     {% for file in files %}
                     <tr>
                         <td class="annexesFirstTD">
@@ -305,12 +306,15 @@ $(function(){
                         {% endif %}
                     </div>
                 </td>
-                <td class="annexesChoiceBoxTD">
-                    <center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
-                </td>
-                <td class="annexesChoiceBoxTD">
-                    <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
-                </td>
+		<!-- If the status allow such interactions -->		
+		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+                	<td class="annexesChoiceBoxTD">
+                    		<center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                	</td>
+                	<td class="annexesChoiceBoxTD">
+                    		<center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
+                	</td>
+		{% endif %}
             </tr>
                     {% endfor %}
             </table>

@@ -188,11 +188,7 @@
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=contractor">Exec de travaux <p class="category_number">{{request.user|numberOfContractors}}</p></a></a> </li>
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants <p class="category_number">{{request.user|numberOfImpetrants}}</p></a></a></li>
 
-				{% if request.user.id|isLeader %}
-					{% if request.user.id|hasAtLeastAManager %}
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires <p class="category_number">{{request.user|numberOfManagers}}</p></a></a></li>
-					{% endif %}
-				{% endif %}
 				
 				{% if request.user.id|isLeader or request.user.id|isManager %}
 					<li> <a class='category'> Configuration </a></li>
