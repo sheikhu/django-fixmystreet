@@ -5,7 +5,7 @@ from django.conf import settings
 from django import template
 from django.conf import settings
 from django.core.urlresolvers import resolve
-from django_fixmystreet.fixmystreet.models import FMSUser, Report
+from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportSubscription
 
 register = template.Library()
 
@@ -123,6 +123,11 @@ def numberOfReports(userId):
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
     return len(reports)
+
+@register.filter
+def numberOfSubscriptions(userId):
+    subscriptions = ReportSubscription.objects.filter(subscriber_id=userId)
+    return len(subscriptions)
 
 @register.filter
 def numberOfUsers(userId):

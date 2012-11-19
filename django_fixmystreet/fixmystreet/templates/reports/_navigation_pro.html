@@ -4,7 +4,7 @@
 	{% if report.photo %}
 	<img src="{{ report.photo.thumbnail.url }}" class="report-preview"/>
 	{% endif %}
-	<h3 class="report-title"> {{report.title}} {% if report.distance  %}({{report.distance.km|floatformat:2}} km){% endif %}</h3>
+	<h3 class="report-title"> {{report.category}} {% if report.distance  %}({{report.distance.km|floatformat:2}} km){% endif %}</h3>
 	<p class="report-address">{{report.address}}</p>
 	{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
 </a>

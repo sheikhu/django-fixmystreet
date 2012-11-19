@@ -47,32 +47,15 @@ def new(request):
 #Method used to load all my subscription reports
 @login_required(login_url='/pro/accounts/login/')
 def subscription(request):
-    pnt = dictToPoint(request.REQUEST)
-    if request.method == "POST":
-        report_form = ReportForm(request.POST, request.FILES)
-        # this checks update is_valid too
-        if report_form.is_valid():
-            # this saves the update as part of the report.
-            report = report_form.save(request.user)
-            if report:
-            	if "pro" in request.path:
-                	return HttpResponseRedirect(report.get_absolute_url_pro())
-                else:
-                	return HttpResponseRedirect(report.get_absolute_url())
-    else:
-        report_form = ReportForm(initial={
-            'x': request.REQUEST.get('x'),
-            'y': request.REQUEST.get('y')
-        })
-    
-    #STATUS 3 = PROCESSED
-    reports = Report.objects.filter(is_fixed = False).filter(status=3).distance(pnt).order_by('distance')[0:10]
-    	
-    return render_to_response("reports/new_pro.html",
+    subscriptions = ReportSubscription.objects.filter(subscriber_id = request.user.id)
+    reports = [None]*len(subscriptions)
+    i = 0
+    for subscription in subscriptions:
+        reports[i] = Report.objects.get(pk=subscription.report_id)
+        i= i+1
+    return render_to_response("reports/subscriptions.html",
             {
-                "report_form": report_form,
-                "pnt":pnt,
-                "reports":reports
+              "reports":reports  
             },
             context_instance=RequestContext(request))
 
