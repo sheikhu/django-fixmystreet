@@ -1,16 +1,19 @@
-.PHONY        = install deploy test run jenkins rpm clean
+.PHONY        = install init deploy test run jenkins rpm createdb dropdb scratchdb clean
 APP_NAME      = fixmystreet
 # backoffice
 BIN_DIR       = bin
 LIBS_DIR      = libs
 
+USER          = fixmystreet
+GROUP         = fixmystreet
+SOURCE_URL    = https://github.com/CIRB/Monitoring-Des-Quartiers
+
 RPM_VERSION   = test
-RPM_URL       = https://github.com/CIRB/Monitoring-Des-Quartiers
-RPM_USER      = fixmystreet
-RPM_GROUP     = fixmystreet
 RPM_NAME      = fixmystreet
 RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
+
+DBNAME        = fixmystreet
 
 bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
@@ -43,17 +46,24 @@ jenkins: $(BIN_DIR)/django
 rpm:
 	find . -type f -name "*.pyc" -delete
 	fpm -s dir -t rpm -n $(RPM_NAME) \
-			--url $(RPM_URL) \
-			--rpm-user $(RPM_USER) \
-			--rpm-group $(RPM_GROUP) \
+			--url $(SOURCE_URL) \
+			--rpm-user $(USER) \
+			--rpm-group $(GROUP) \
 			-v $(RPM_VERSION) \
 			--prefix $(RPM_PREFIX) \
 			--after-install after-install.sh \
 			`cat $(RPM_INPUTS_FILE)`
 
 
-initdb:
-	sh initpgdb.sh
+createdb:
+	createdb $(DBNAME) -U $(USER) -T template_postgis
+
+dropdb:
+	dropdb $(DBNAME) -U $(USER)
+
+# for scratching another db call:
+# $ make DBNAME=my_fms_db_name scratchdb
+scratchdb: dropdb createdb init
 
 clean:
 	rm -rf bootstrap.py \
