@@ -2673,7 +2673,461 @@
             "dependency":1
         }
     },
-
+    {
+        "pk":1000000,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Alcatel-Lucent Bell/Base (en)",
+            "name_fr":"Alcatel-Lucent Bell/Base (fr)",
+            "name_nl":"Alcatel-Lucent Bell/Base (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000001,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Belgacom (en)",
+            "name_fr":"Belgacom (fr)",
+            "name_nl":"Belgacom (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000002,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Brutele (en)",
+            "name_fr":"Brutele (fr)",
+            "name_nl":"Brutele (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000003,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"BT (en)",
+            "name_fr":"BT (fr)",
+            "name_nl":"BT (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000004,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"CIRB-CIBG Mandat AM/TV Telindus - France Telecom (en)",
+            "name_fr":"CIRB-CIBG Mandat AM/TV Telindus - France Telecom (fr)",
+            "name_nl":"CIRB-CIBG Mandat AM/TV Telindus - France Telecom (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000005,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Coditel (en)",
+            "name_fr":"Coditel (fr)",
+            "name_nl":"Coditel (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000006,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Colt Technology Services N.V. (en)",
+            "name_fr":"Colt Technology Services N.V. (fr)",
+            "name_nl":"Colt Technology Services N.V. (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000007,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Dir. de L'infra des Transports Publics (en)",
+            "name_fr":"Dir. de L'infra des Transports Publics (fr)",
+            "name_nl":"Dir. Infra. van het Openbaar Vervoer (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000008,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Dir. de l'Infra. des Transports Publics (en)",
+            "name_fr":"Dir. de l'Infra. des Transports Publics (fr)",
+            "name_nl":"Dir. Infra. van het Openbaar Vervoer (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000009,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Direction Gestion et Entretien des Voiries (en)",
+            "name_fr":"Direction Gestion et Entretien des Voiries (fr)",
+            "name_nl":"Directie Beheer en Onderhoud van de Wegen (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000010,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Direction Projets et Travaux d'Amenagement des Voiries (en)",
+            "name_fr":"Direction Projets et Travaux d'Amenagement des Voiries (fr)",
+            "name_nl":"Directie Projecten en Werken inzake Weginrichtingen (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000011,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Eandis (en)",
+            "name_fr":"Eandis (fr)",
+            "name_nl":"Eandis (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000012,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Elia (en)",
+            "name_fr":"Elia (fr)",
+            "name_nl":"Elia (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000013,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Eurofiber (en)",
+            "name_fr":"Eurofiber (fr)",
+            "name_nl":"Eurofiber (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000014,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Fluxys (en)",
+            "name_fr":"Fluxys (fr)",
+            "name_nl":"Fluxys (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000015,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"GC Pan European Crossing Belgium BVBA (en)",
+            "name_fr":"GC Pan European Crossing Belgium BVBA (fr)",
+            "name_nl":"GC Pan European Crossing Belgium BVBA (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000016,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"HYDROBRU (en)",
+            "name_fr":"HYDROBRU (fr)",
+            "name_nl":"HYDROBRU (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000017,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Interoute Belgium NV Mandat RD Engineering BVBA (en)",
+            "name_fr":"Interoute Belgium NV Mandat RD Engineering BVBA (fr)",
+            "name_nl":"Interoute Belgium NV Mandat RD Engineering BVBA (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000018,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"JCDecaux Billboard (en)",
+            "name_fr":"JCDecaux Billboard (fr)",
+            "name_nl":"JCDecaux Billboard (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000019,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Level 3 Communications, SA.NV (en)",
+            "name_fr":"Level 3 Communications, SA.NV (fr)",
+            "name_nl":"Level 3 Communications, SA.NV (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000020,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"M.E.T. - D.455 (en)",
+            "name_fr":"M.E.T. - D.455 (fr)",
+            "name_nl":"M.E.T. - D.455 (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000021,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Mobistar (en)",
+            "name_fr":"Mobistar (fr)",
+            "name_nl":"Mobistar (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000022,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"MOBISTAR ENTERPRISE SERVICES S.A. (en)",
+            "name_fr":"MOBISTAR ENTERPRISE SERVICES S.A. (fr)",
+            "name_nl":"MOBISTAR ENTERPRISE SERVICES S.A. (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000023,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Police Zone 5344 Schaerbeek-Evere Saint-Josse-ten-Noode (en)",
+            "name_fr":"Police Zone 5344 Schaerbeek-Evere Saint-Josse-ten-Noode (fr)",
+            "name_nl":"Police Zone 5344 Schaerbeek-Evere Saint-Josse-ten-Noode (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000024,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"S.T.I.B. - M.I.V.B. (en)",
+            "name_fr":"S.T.I.B. - M.I.V.B. (fr)",
+            "name_nl":"S.T.I.B. - M.I.V.B. (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000025,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Sibelga (en)",
+            "name_fr":"Sibelga (fr)",
+            "name_nl":"Sibelga (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000026,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Societe Bruxelloise de la Gestion d'Eau (en)",
+            "name_fr":"Societe Bruxelloise de la Gestion d'Eau (fr)",
+            "name_nl":"Brusselse Maatschappij voor het Water Beheer (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000027,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"SPF - FOD (en)",
+            "name_fr":"SPF - FOD (fr)",
+            "name_nl":"SPF - FOD (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000028,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"SYNTIGO - B-Telecom (en)",
+            "name_fr":"SYNTIGO - B-Telecom (fr)",
+            "name_nl":"SYNTIGO - B-Telecom (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000029,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Telenet N.V. (en)",
+            "name_fr":"Telenet N.V. (fr)",
+            "name_nl":"Telenet N.V. (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000030,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Verizon Belgium Luxembourg (en)",
+            "name_fr":"Verizon Belgium Luxembourg (fr)",
+            "name_nl":"Verizon Belgium Luxembourg (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000031,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"VIVAQUA (en)",
+            "name_fr":"VIVAQUA (fr)",
+            "name_nl":"VIVAQUA (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000032,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Vlaamse Overheid Agentschap Wegen en Verkeer - EMA (en)",
+            "name_fr":"Vlaamse Overheid Agentschap Wegen en Verkeer - EMA (fr)",
+            "name_nl":"Vlaamse Overheid Agentschap Wegen en Verkeer - EMA (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000033,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Volker Wessels Telecom Belgium NV Dienst Viatel (en)",
+            "name_fr":"Volker Wessels Telecom Belgium NV Dienst Viatel (fr)",
+            "name_nl":"Volker Wessels Telecom Belgium NV Dienst Viatel (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
+    {
+        "pk":1000034,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Wolu-TV (en)",
+            "name_fr":"Wolu-TV (fr)",
+            "name_nl":"Wolu-TV (nl)",
+            "commune":false,
+            "region":false,
+            "subcontractor":false,
+            "applicant":true
+        }
+    },
     {
         "pk": 1,
         "model": "auth.user",
@@ -2878,6 +3332,1113 @@
             "manager":false,
             "leader":false,
             "organisation":2
+        }
+    },
+    {
+        "pk":1000000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Mercedes",
+            "last_name": "Rapaille",
+            "username": "mrapaille",
+            "email": "Estates.Base@alcatel-lucent.com",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000000,
+            "telephone":"0486161873",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000000
+        }
+    },
+    {
+        "pk":1000001,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Terry",
+            "last_name": "De Clerck",
+            "username": "tdeclerck",
+            "email": "intake.a3@belgacom.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000001,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000001,
+            "telephone":"0477503242",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000001
+        }
+    },
+    {
+        "pk":1000002,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Pierre",
+            "last_name": "Moreau",
+            "username": "pmoreau",
+            "email": "intake.a3@belgacom.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000002,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000002,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000001
+        }
+    },
+    {
+        "pk":1000003,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Cedric",
+            "last_name": "Helson",
+            "username": "chelson",
+            "email": "cedric.helson@voo.eu
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000003,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000003,
+            "telephone":"0494565361",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000002
+        }
+    },
+    {
+        "pk":1000004,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Nicolas",
+            "last_name": "Papoudaris",
+            "username": "npapoudaris",
+            "email": "nicolas.papoudaris@voo.eu",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000004,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000004,
+            "telephone":"028509659",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000002
+        }
+    },
+    {
+        "pk":1000005,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Semi",
+            "last_name": "El Majeri",
+            "username": "selmajeri",
+            "email": "semi.el.majeri@bt.com",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000005,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000005,
+            "telephone":"0496573549",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000003
+        }
+    },
+    {
+        "pk":1000006,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Luc",
+            "last_name": "Medats",
+            "username": "lmedats",
+            "email": "plan.coordination@bt.com",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000006,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000006,
+            "telephone":"027003211",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000003
+        }
+    },
+    {
+        "pk":1000007,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Pascal",
+            "last_name": "Dumoulin",
+            "username": "pdumoulin",
+            "email": "man.coordination@cirb.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000007,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000007,
+            "telephone":"0495559736",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000004
+        }
+    },
+    {
+        "pk":1000008,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Denis",
+            "last_name": "Guillemot",
+            "username": "dguillemot",
+            "email": "man.coordination@cirb.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000008,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000008,
+            "telephone":"0495559417",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":1000009,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Stephane",
+            "last_name": "Courion",
+            "username": "scourion",
+            "email": "scourion@cirb.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000009,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000009,
+            "telephone":"022821978",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000004
+        }
+    },
+    {
+        "pk":1000010,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "M.",
+            "last_name": "Mathys",
+            "username": "mmathys",
+            "email": "attest.plan@numericable.eu",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000010,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000010,
+            "telephone":"022265462",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000010
+        }
+    },
+    {
+        "pk":1000011,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "P.",
+            "last_name": "Deherve",
+            "username": "pdeherve",
+            "email": "attest.plan@numericable.eu",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000011,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000011,
+            "telephone":"022265461",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000005
+        }
+    },
+    {
+        "pk":1000012,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "T.",
+            "last_name": "Defauw",
+            "username": "tdefauw",
+            "email": "authorizations@numericable.eu",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000012,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000012,
+            "telephone":"022265482",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000005
+        }
+    },
+    {
+        "pk":1000013,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Roel",
+            "last_name": "Walraevens",
+            "username": "rwalraevens",
+            "email": "construction@colt.net",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000013,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000013,
+            "telephone":"027901754",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000006
+        }
+    },
+    {
+        "pk":1000014,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jan",
+            "last_name": "Vermeir",
+            "username": "jvermeir",
+            "email": "construction@colt.net",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000014,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000014,
+            "telephone":"027901934",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000006
+        }
+    },
+    {
+        "pk":1000015,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "F.",
+            "last_name": "Schaukens",
+            "username": "fschaukens",
+            "email": "aed.ditp@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000015,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000015,
+            "telephone":"022042970",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000007
+        }
+    },
+    {
+        "pk":1000016,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Valerie",
+            "last_name": "Bouvy",
+            "username": "ibouvy",
+            "email": "vbouvy@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000016,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000016,
+            "telephone":"022042076",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000008
+        }
+    },
+    {
+        "pk":1000017,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "E.",
+            "last_name": "Ghilain",
+            "username": "eghilain",
+            "email": "eghilain@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000017,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000017,
+            "telephone":"022042108",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000008
+        }
+    },
+    {
+        "pk":1000018,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Majid",
+            "last_name": "Douibi",
+            "username": "mdouibi",
+            "email": "mdouibi@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000018,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000018,
+            "telephone":"022041019",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000009
+        }
+    },
+    {
+        "pk":1000019,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "M.",
+            "last_name": "Lefebvre",
+            "username": "mlefebvre",
+            "email": "alefebvre@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000019,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000019,
+            "telephone":"022042250",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000009
+        }
+    },
+    {
+        "pk":1000020,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Christophe",
+            "last_name": "Meert",
+            "username": "cmeert",
+            "email": "hulplijn@eandis.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000020,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000020,
+            "telephone":"092635939",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000010
+        }
+    },
+    {
+        "pk":1000021,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Hans",
+            "last_name": "Hoppe",
+            "username": "hhoppe",
+            "email": "hulplijn@eandis.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000021,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000021,
+            "telephone":"0473693795",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000010
+        }
+    },
+    {
+        "pk":1000022,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Christian",
+            "last_name": "Debois",
+            "username": "cdebois",
+            "email": "sts.Bruxelles@elia.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000022,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000022,
+            "telephone":"081237731",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000011
+        }
+    },
+    {
+        "pk":1000023,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Christophe",
+            "last_name": "Decuyper",
+            "username": "cdecuyper",
+            "email": "proaxis@eurofiber.com",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000023,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000023,
+            "telephone":"0475255303",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":1000012
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
+        }
+    },
+    {
+        "pk":10000,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "",
+            "last_name": "",
+            "username": "",
+            "email": "",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":10000,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":10000,
+            "telephone":"",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":false,
+            "organisation":10000
         }
     },
    {
