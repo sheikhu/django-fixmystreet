@@ -86,7 +86,7 @@ class ReportForm(forms.ModelForm):
 
     required_css_class = 'required'
     secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
-    secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
+    secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"),required=False)
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
