@@ -195,18 +195,19 @@ class UserType(models.Model):
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     """signal on a report to notify public authority that a report has been filled"""
-    #Detect who is the responsible Manager for the given type
-    if instance.creator:
-        fmsUser = FMSUser.objects.get(pk=instance.creator.id)
-        userCandidates = FMSUser.objects.filter(organisation__id=fmsUser.organisation.id).filter(manager=True)
-        for currentUser in userCandidates:
-            userCategories = currentUser.categories.all()
-            for currentCategory in userCategories:
-                if (currentCategory == instance.secondary_category):
-                #import pdb
-                #pdb.set_trace()
-                    instance.responsible_manager = fmsUser
-                    #instance.save()
+    if not instance.responsible_manager:
+        #Detect who is the responsible Manager for the given type
+        if instance.creator:
+            fmsUser = FMSUser.objects.get(pk=instance.creator.id)
+            userCandidates = FMSUser.objects.filter(organisation__id=fmsUser.organisation.id).filter(manager=True)
+            for currentUser in userCandidates:
+                userCategories = currentUser.categories.all()
+                for currentCategory in userCategories:
+                    if (currentCategory == instance.secondary_category):
+                    #import pdb
+                    #pdb.set_trace()
+                        instance.responsible_manager = currentUser
+                        #instance.save()
 
 #signal on a report to notify public authority that a report has been filled
 @receiver(post_save,sender=Report)

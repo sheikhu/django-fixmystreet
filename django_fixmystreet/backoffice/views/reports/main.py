@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, File,Comment, Attachment
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, File,Comment, Attachment, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm, ReportFileForm,ReportCommentForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -77,6 +77,11 @@ def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     files= File.objects.filter(report_id=report_id)
     comments = Comment.objects.filter(report_id=report_id)
+    organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
+    managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
+    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True)
+    contractors = OrganisationEntity.objects.filter(subcontractor=True)
+    contractors = list(contractors) + list(OrganisationEntity.objects.filter(applicant=True))
     return render_to_response("reports/show_pro.html",
             {
                 "report": report,
@@ -85,6 +90,9 @@ def show(request, report_id):
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),
                 "files":files,
-                "comments":comments
+                "comments":comments,
+                "managers":managers,
+                "contractors":contractors,
+                "entities":entities
             },
             context_instance=RequestContext(request))
