@@ -1,0 +1,21 @@
+{% extends "base_pro.html" %}
+{% load i18n %}
+{% load tags %}
+
+{% block title %}{{report.title}}{% endblock %}
+{% block script %}
+{% endblock %}
+
+{% block content %}
+<div id="page_content_container">
+	<h1>My subscriptions</h1>
+		{% if reports %}
+        <div id='search_results'>
+	        {% for report in reports %}
+            {% include "reports/_navigation_pro.html" %}
+            {% endfor %}
+         </div>
+        {% endif %}
+</div>
+	
+{% endblock %}
