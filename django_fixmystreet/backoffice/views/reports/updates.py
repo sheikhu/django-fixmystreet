@@ -22,7 +22,7 @@ def accept( request, report_id ):
 
 def refuse( request, report_id ):
 	report = get_object_or_404(Report, id=report_id)
-        report.status = Status.objects.get(pk='4') #Refused
+        report.status = Status.objects.get(pk='9') #Refused
 	report.save()    	
 
 	if "pro" in request.path:
