@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'transmeta',
     'social_auth',
     'south',
+    'django_extensions',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
 )
