@@ -3321,6 +3321,32 @@
             "organisation":2
         }
     },
+   {
+        "pk":11,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Soulira",
+            "last_name": "---",
+            "username": "soulira",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":11,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":11,
+            "telephone":"923456789",
+            "active":true,
+            "lastUsedLanguage":"FR",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":2
+        }
+    },
     {
         "pk":1000000,
         "model": "auth.user",

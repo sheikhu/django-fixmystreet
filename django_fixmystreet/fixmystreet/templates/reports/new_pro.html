@@ -9,9 +9,13 @@
 <script>
 
 $(document).ready(function() {
+	 //Hide original list of elements
+        $("#id_secondary_category_copy").hide();
+        $("[for='id_secondary_category_copy']").hide();
+
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
-    var connected = true;
+    	var connected = true;
 
 	$map.fmsMap({
 		apiLang:'{{ LANGUAGE_CODE }}',
@@ -61,20 +65,22 @@ $(document).ready(function() {
 		var el_id = $('#id_category').val();
 		var refSecondary = $("#id_secondary_category");
 		if(el_id)
-		{
-			refSecondary.find("option:eq(0)").attr("selected", "selected");
-			refSecondary.removeAttr("disabled");
-			$("#secondary_container").load("/ajax/categories/" + el_id);
-			<!-- FILTER SECOND DROPDOWN -->
-			refSecondary.find("option").hide();
-			refSecondary.find("option[family='"+el_id+"']").show();
-		}
-		else
-		{
-			refSecondary.find("option:eq(0)").attr("selected", "selected");
-			$("#secondary_container").html('');
-			refSecondary.attr('disabled', 'disabled');
-		}
+                {
+                        refSecondary.find("option:eq(0)").attr("selected", "selected");
+                        refSecondary.removeAttr("disabled");
+                        $("#secondary_container").load("/ajax/categories/" + el_id);
+                        <!-- FILTER SECOND DROPDOWN -->
+
+                        refSecondary.html('');
+                        refSecondary.html($('#id_secondary_category_copy').html());
+                        refSecondary.find("option[family!='"+el_id+"']").remove();
+                }
+                else
+                {
+                        refSecondary.find("option:eq(0)").attr("selected", "selected");
+                        $("#secondary_container").html('');
+                        refSecondary.attr('disabled', 'disabled');
+                }
 	});
 	$('#id_category').change();// initialize notes
 	
