@@ -100,11 +100,11 @@ class Report(models.Model):
     SYNDICATE = 3
     ASSOCIATION = 4
     REPORT_QUALITY_CHOICES = (
-	(RIVERAIN,_("Created")), 
-	(OTHER,_("Created")),
-	(COMMERCANT,_("Created")),
-	(SYNDICATE,_("Created")),
-	(ASSOCIATION,_("Created"))
+        (RIVERAIN,_("Created")), 
+        (OTHER,_("Created")),
+        (COMMERCANT,_("Created")),
+        (SYNDICATE,_("Created")),
+        (ASSOCIATION,_("Created"))
     )
 
     CREATED = 0
@@ -120,9 +120,9 @@ class Report(models.Model):
     DELETED   = 8
 
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
-    REPORT_STATUS_OFF         = (PROCESSED, DELETED, REFUSED, SOLVED)
-    REPORT_STATUS_OPEN        = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    REPORT_STATUS_VIEWABLE    = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
+    REPORT_STATUS_OFF         = (DELETED, CREATED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
@@ -203,30 +203,25 @@ class Exportable(models.Model):
     def asXML():
         return
 
-class Abonment(models.Model):
-    report = models.ForeignKey(Report)
-
-class Address(models.Model):
-    __metaclass__= TransMeta
-    
-    street = models.CharField(max_length=100)
-    city = models.CharField(max_length= 100)
-    zipCode = models.IntegerField()
-    streetNumber = models.CharField(max_length=100)
-    geoX = models.FloatField()
-    geoY = models.FloatField()
-    
     class Meta:
-        translate=('street','city',)
+        abstract = True
 
-class AttachmentType(models.Model):
-    code = models.CharField(max_length=50)
-    url = models.CharField(max_length=50)
-        
 
-    
+# class Address(models.Model):
+    # __metaclass__= TransMeta
+    # 
+    # street = models.CharField(max_length=100)
+    # city = models.CharField(max_length= 100)
+    # zipCode = models.IntegerField()
+    # streetNumber = models.CharField(max_length=100)
+    # geoX = models.FloatField()
+    # geoY = models.FloatField()
+    # 
+    # class Meta:
+        # translate=('street','city',)
 
-class Attachment(models.Model):
+
+class ReportAttachment(models.Model):
     report = models.ForeignKey(Report)
     validated=models.BooleanField(default=False)
     isVisible=models.BooleanField(default=False)
@@ -236,13 +231,18 @@ class Attachment(models.Model):
         abstract=True
 
 
-class Comment (Attachment):
+class ReportComment (Attachment):
     text = models.TextField()
 
 
-class File(Attachment):
+class ReportFile(Attachment):
+    AttachmentType = (
+        (1, "pdf"),
+        (2, "word"),
+        (3, "excel")
+    )
     file = models.FileField(upload_to="files")
-    fileType= models.ForeignKey(AttachmentType)
+    fileType = models.IntegerField(choices=AttachmentType)
 
 
 class UserType(models.Model):
@@ -481,8 +481,8 @@ class NotificationResolver(object):
         notification.save()
 
     def resolve(self):
-        if self.report.commune.default_manager:
-            self.send(self.report.commune.default_manager)
+        # if self.report.commune.default_manager:
+            # self.send(self.report.commune.default_manager)
         for rule in self.rules:
             if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)
