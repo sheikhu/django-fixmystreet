@@ -34,7 +34,8 @@ ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 FILE_UPLOAD_PERMISSIONS = 0644
 DATE_FORMAT = "l, j F Y"
-
+#Max file upload size
+MAX_UPLOAD_SIZE = "821440"
 # List of callables that know how to import templates from various sources.
 # TEMPLATE_LOADERS = (
     # 'django.template.loaders.filesystem.Loader',
