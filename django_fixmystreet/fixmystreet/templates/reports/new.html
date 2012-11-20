@@ -140,16 +140,59 @@ $(document).ready(function() {
 			}
 		});
 	}
-
+	$('#report_overview_table').hide();
     $(document).delegate("form", "submit", function(evt) {
         if (!$(':submit').hasClass('confirm')) {
             evt.preventDefault();
+            $("#locationView").children().remove();
+			$("#category1View").children().remove();
+			$("#category2View").children().remove();
+			$("#descriptionView").children().remove();
+			$("#emailView").children().remove();
+			$("#firstNameView").children().remove();
+			$("#nameView").children().remove();
+			$("#photoView").children().remove();
+            //TODO show overview hide form
+            vals = [];
+            i = 0;
+            $('[type=text]').each(function() {
+  			 vals[i]=this.value;
+  			 i++;
+			});
+			$('select').each(function(){
+				vals[i] = $(this).find("option[value="+this.value+"]").text();
+				i++;
+			});
+			$('textarea').each(function(){
+				vals[i]=this.value;
+				i++;
+			});
+			$('[type=file]').each(function() {
+  			 vals[i]=this.value;
+  			 i++;
+			});
+			$("#locationView").append("<p>"+vals[0]+"</p>");
+			$("#category1View").append("<p>"+vals[5]+"</p>");
+			$("#category2View").append("<p>"+vals[6]+"</p>");
+			$("#descriptionView").append("<p>"+vals[8]+"</p>");
+			$("#emailView").append("<p>"+vals[1]+"</p>");
+			$("#firstNameView").append("<p>"+vals[2]+"</p>");
+			$("#nameView").append("<p>"+vals[3]+"</p>");
+			$("#photoView").append("<p>"+vals[9].split("\\")[2]+"</p>");
+            $('#new_report_citizen_form').hide();
+            $('#report_overview_table').show();
             $(':submit').val('Confirm');
             $(':submit').addClass('confirm');
         }
     });
 });
 
+function showForm(){
+	$('#new_report_citizen_form').show();
+    $('#report_overview_table').hide();
+    $(':submit').val('Submit');
+    $(':submit').removeClass('confirm');
+}
 </script>
 {% endblock %}
 
@@ -177,7 +220,7 @@ $(document).ready(function() {
             <h2>
                 {% trans "Fill the report" %} 
             </h2>
-			<table class='form'>
+			<table id="new_report_citizen_form" class='form'>
 				<tr>
 					<th></th>
 					<td id="required_note">{% trans "* This fields are required" %}</td>
@@ -187,15 +230,66 @@ $(document).ready(function() {
 					<td></td>
 					<td><div id='secondary_container'></div></td>
 				</tr>
+				
+			</table>
+			<div id="report_overview_table">
+			<table >
 				<tr>
-					<td></td>
-					<td align="right">
-                        <p>
-                            <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-                        </p>
-                    </td>
+					<th>{% trans 'Location' %}</th>
+					<td id="locationView">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'Category' %}</th>
+					<td id="category1View">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'Category' %}</th>
+					<td id="category2View">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'Photo' %}</th>
+					<td id="photoView">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'Description' %}</th>
+					<td id="descriptionView">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'Email' %}</th>
+					<td id="emailView">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'First name' %}</th>
+					<td id="firstNameView">
+						
+					</td>	
+				</tr>
+				<tr>
+					<th>{% trans 'Name' %}</th>
+					<td id="nameView">
+						
+					</td>	
 				</tr>
 			</table>
+			<p>
+                <input type="button" class='big_button' value="{% trans 'Edit' %}" style="float:left;" onclick="showForm();"/>
+            </p>
+			</div>
+			<p style="float:right;">
+                <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
+            </p>
 		</form>
 	</div>
 	<div id="rightcol">
