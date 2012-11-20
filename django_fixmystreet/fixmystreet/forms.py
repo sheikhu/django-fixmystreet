@@ -108,7 +108,7 @@ class ReportForm(forms.ModelForm):
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
         report.commune = self.commune
-        report.status = list(Status.objects.all())[0]
+        report.status = Report.CREATED
         report.point = self.point
         report.private = True
         
@@ -140,7 +140,7 @@ class CitizenReportForm(ReportForm):
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
         report.commune = self.commune
-        report.status = list(Status.objects.all())[0]
+        report.status = Report.CREATED 
         report.point = self.point
         report.private = False
 

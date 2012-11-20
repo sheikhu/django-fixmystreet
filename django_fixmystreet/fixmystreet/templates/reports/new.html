@@ -77,6 +77,8 @@ $(document).ready(function() {
 			refSecondary.html($('#id_secondary_category_copy').html());
 			refSecondary.find("option[family!='"+el_id+"']").remove();
 			refSecondary.find("option[public='False']").remove();
+			/*remove empty optgroup*/
+			refSecondary.find("optgroup:not(:has(option))").remove();
                 }
                 else
                 {
