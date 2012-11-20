@@ -72,6 +72,8 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
     def clean(self, value):
         super(SecondaryCategoryChoiceField,self).clean(value)
         try:
+            #import pdb
+            #pdb.set_trace()
             model = ReportCategory.objects.get(pk=value)
         except ReportCategory.DoesNotExist:
             raise ValidationError(self.error_messages['invalid_choice'])
@@ -138,6 +140,8 @@ class CitizenReportForm(ReportForm):
     citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))
 
     def save(self, user, commit=True):
+        #import pdb
+        #pdb.set_trace()
         report = super(ReportForm, self).save(commit=False)
         report.commune = self.commune
         report.status = Report.CREATED 

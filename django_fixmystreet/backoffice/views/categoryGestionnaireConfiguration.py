@@ -14,8 +14,8 @@ def show(request):
     secondcategories = ReportSecondaryCategoryClass.objects.all()
     #This list will be filled with the names of the current selected managers over the whole matrix
     currentSelectedList = [["" for _ in range(len(secondcategories))] for _ in range(len(maincategories))]
-    
-    currentUserOrganisationId = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation.id
+   
+    currentUserOrganisationId = FMSUser.objects.get(pk=request.user.id).organisation.id
     for main in maincategories:
         for second in secondcategories:
             #This query will get all the users that are assigned to the types that are linked with the given main and secondary category. 
@@ -48,7 +48,7 @@ def update(request):
     categories = categories.filter(secondary_category_class_id=request.REQUEST.get('second'))
     #This list will be filled with the names of the current selected managers over the whole matrix
     currentSelectedList = [["" for _ in range(len(secondcategories))] for _ in range(len(maincategories))]
-    currentUserOrganisationId = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation.id
+    currentUserOrganisationId = FMSUser.objects.get(pk=request.user.id).organisation.id
     for main in maincategories:
         for second in secondcategories:
             #This query will get all the users that are assigned to the types that are linked with the given main and secondary category.
@@ -71,8 +71,8 @@ def update(request):
     #Return the current selected list so that the buttons in the matrix have as label all names of selected managers
     #Return the dropdown form to select managers from
     #Return the category user mapping so that the shown selection boxes contain the current selected managers
-    managersForm = ManagersListForm()
-    managersForm.refreshChoices()
+    managersForm = ManagersListForm(request.user)
+    managersForm.refreshChoices(request.user)
     #import pdb; pdb.set_trace()    
     return render_to_response("category_gestionnaire_configuration.html",
             {

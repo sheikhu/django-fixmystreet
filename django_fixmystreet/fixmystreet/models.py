@@ -92,6 +92,13 @@ class Status(models.Model):
 
 
 class Report(models.Model):
+    #LIST OF QUALITIES
+    RIVERAIN = 0
+    OTHER = 1
+    COMMERCANT = 2
+    SYNDICATE = 3
+    ASSOCIATION = 4
+
     CREATED = 0
     REFUSED = 9
     
