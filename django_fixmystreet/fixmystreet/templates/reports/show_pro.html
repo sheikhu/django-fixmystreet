@@ -156,25 +156,29 @@ $(function(){
                 <tr>
                     	<td ></td>
                     	<td >
-                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Validate</button>
+                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button>
                     	</td>
                     	<td >
-                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
                     	</td>
                         <td >
-                            <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Validate all</button>
+                            <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>
                         </td>
                 </tr>
     		{% endif %}
                 <tr>
 			{% if report.status.code == '0' %} 
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Accept</button>
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
                     	</td>
 
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/refuse'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Reject</button>
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/refuse'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
                     	</td>
+
+                        <td >
+                            <button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept_and_validate'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
+                        </td>
     			{% endif %}
 			
                 {% endif %}
@@ -335,8 +339,8 @@ $(function(){
         {% if report.responsible_manager.id == request.user.id %}
 			<!-- If the status allow such interactions -->		
 			{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
-                    	<th>Public</th>
-                    	<th> Confidential </th>
+                    	<th>{% trans 'Valid' %}</th>
+                    	<th> {% trans 'Confidential' %} </th>
 			{% endif %}
             {% endif %}
                     {% for file in files %}
@@ -368,10 +372,18 @@ $(function(){
 		<!-- If the status allow such interactions -->		
 		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
                 	<td class="annexesChoiceBoxTD">
+                            {%if file.validated%}
                     		<center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                            {%else%}
+                            <center><input class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                            {%endif%}
                 	</td>
                 	<td class="annexesChoiceBoxTD">
-                    		<center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
+                            {%if file.validated%}
+                    		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
+                            {%else%}
+                            <center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                            {%endif%}
                 	</td>
         {% endif %}
 		{% endif %}
@@ -389,8 +401,8 @@ $(function(){
                     {% if report.responsible_manager.id == request.user.id %}
                     <!-- If the status allow such interactions -->      
                     {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
-                    <th>Public</th>
-                    <th> Confidential </th>
+                    <th>{% trans 'Valid' %}</th>
+                        <th> {% trans 'Confidential' %} </th>
                     {% endif %}
                     {% endif %}
                 {% for comment in comments %}
@@ -407,10 +419,18 @@ $(function(){
             <!-- If the status allow such interactions -->      
             {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
                 <td class="annexesChoiceBoxTD">
+                    {% if comment.validated %}
                     <input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
+                    {% else %}
+                    <input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    {% endif%}
                 </td>
                 <td class="annexesChoiceBoxTD">
-                    <input checked='checked' class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    {% if comment.validated %}
+                    <input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    {% else %}
+                    <input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    {% endif%}
                 </td>
             {% endif %}
             {% endif %}
