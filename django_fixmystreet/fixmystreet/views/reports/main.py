@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity
 from django_fixmystreet.fixmystreet.forms import ReportForm, CitizenReportForm, ReportUpdateForm
 from django.template import RequestContext
 
@@ -45,13 +45,14 @@ def show(request, report_id):
             context_instance=RequestContext(request))
 
 
-def index(request):
-    report = get_object_or_404(Report, id=report_id)
-    return render_to_response("reports/show.html",
-            {
-                "report": report,
-                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "update_form": ReportUpdateForm()
-            },
-            context_instance=RequestContext(request))
+def index(request, commune_id=None):
+    if commune_id:
+        entity = OrganisationEntity.objects.get(id=commune_id)
+        return render_to_response("reports/list.html", {
+            "reports": entity.reports_in_charge.all()
+        }, context_instance=RequestContext(request))
 
+    communes = OrganisationEntity.objects.filter(commune=True)
+    return render_to_response("reports/index.html", {
+        "communes": communes
+    }, context_instance=RequestContext(request))

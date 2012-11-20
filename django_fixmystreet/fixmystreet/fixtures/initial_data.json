@@ -22,11 +22,27 @@
             "domain": "localhost:8000", 
             "name": "localhost"
         }
-    }, 
+    },
+    {
+        "pk":20,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_en":"Region Brussels",
+            "name_fr":"Region Bruxelloise",
+            "name_nl":"Brusselse Gewest",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
     {
         "pk": 1, 
-        "model": "fixmystreet.commune",
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Anderlecht", 
             "name_nl": "Anderlecht", 
             "feature_id": "URB_A_MU.7100"
@@ -34,8 +50,10 @@
     },
     {
         "pk": 2, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Auderghem",
             "name_nl": "Auderghem",
             "feature_id": "URB_A_MU.7200"
@@ -43,8 +61,10 @@
     },
     {
         "pk": 3, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Berchem Ste Agathe",
             "name_nl": "Berchem Ste Agathe",
             "feature_id": "URB_A_MU.7300"
@@ -52,8 +72,10 @@
     },
     {
         "pk": 4, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Bruxelles",
             "name_nl": "Bruxelles",
             "feature_id": "URB_A_MU.7400"
@@ -61,8 +83,10 @@
     }, 
     {
         "pk": 5, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Etterbeek",
             "name_nl": "Etterbeek",
             "feature_id": "URB_A_MU.7500"
@@ -70,8 +94,10 @@
     }, 
     {
         "pk": 6, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Evere",
             "name_nl": "Evere",
             "feature_id": "URB_A_MU.7600"
@@ -79,8 +105,10 @@
     }, 
     {
         "pk": 7, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Forest",
             "name_nl": "Forest",
             "feature_id": "URB_A_MU.7700"
@@ -88,8 +116,10 @@
     }, 
     {
         "pk": 8, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Ganshoren",
             "name_nl": "Ganshoren",
             "feature_id": "URB_A_MU.7800"
@@ -97,8 +127,10 @@
     }, 
     {
         "pk": 9, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Ixelles",
             "name_nl": "Ixelles",
             "feature_id": "URB_A_MU.7900"
@@ -106,8 +138,10 @@
     }, 
     {
         "pk": 10, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Jette",
             "name_nl": "Jette",
             "feature_id": "URB_A_MU.8000"
@@ -115,8 +149,10 @@
     },
     {
         "pk": 11, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Koekelberg",
             "name_nl": "Koekelberg",
             "feature_id": "URB_A_MU.8100"
@@ -124,8 +160,10 @@
     }, 
     {
         "pk": 12, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Molenbeek St Jean",
             "name_nl": "Molenbeek St Jean",
             "feature_id": "URB_A_MU.8200"
@@ -133,8 +171,10 @@
     }, 
     {
         "pk": 13, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Saint-Gilles",
             "name_nl": "Saint-Gilles",
             "feature_id": "URB_A_MU.8300"
@@ -142,8 +182,10 @@
     }, 
     {
         "pk": 14, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Saint-Josse ten Noode",
             "name_nl": "Saint-Josse ten Noode",
             "feature_id": "URB_A_MU.8400"
@@ -151,8 +193,10 @@
     }, 
     {
         "pk": 15, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Schaerbeek",
             "name_nl": "Schaerbeek",
             "feature_id": "URB_A_MU.8500"
@@ -160,8 +204,10 @@
     },
     {
         "pk": 16, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Uccle",
             "name_nl": "Uccle",
             "feature_id": "URB_A_MU.8600"
@@ -169,8 +215,10 @@
     }, 
     {
         "pk": 17, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Watermael-Boisfort",
             "name_nl": "Watermael-Boisfort",
             "feature_id": "URB_A_MU.8700"
@@ -178,8 +226,10 @@
     }, 
     {
         "pk": 18, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Woluwe St Lambert",
             "name_nl": "Woluwe St Lambert",
             "feature_id": "URB_A_MU.8800"
@@ -187,8 +237,10 @@
     }, 
     {
         "pk": 19, 
-        "model": "fixmystreet.commune", 
+        "model": "fixmystreet.organisationentity", 
         "fields": {
+            "commune": true, 
+            "dependency":3, 
             "name_fr": "Woluwe St Pierre",
             "name_nl": "Woluwe St Pierre",
             "feature_id": "URB_A_MU.8900"
@@ -2576,49 +2628,7 @@
         }
     },
     {
-        "pk":1,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_en":"Jette",
-            "name_fr":"Jette",
-            "name_nl":"Jette",
-            "commune":true,
-            "region":false,
-            "subcontractor":false,
-            "applicant":false,
-            "dependency":3 
-        }
-    },
-    {
-        "pk":2,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_en":"Anderlecht",
-            "name_fr":"Anderlecht",
-            "name_nl":"Anderlecht",
-            "commune":true,
-            "region":false,
-            "subcontractor":false,
-            "applicant":false,
-            "dependency":3 
-        }
-    },
-    {
-        "pk":3,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_en":"Region Brussels",
-            "name_fr":"Region Bruxelloise",
-            "name_nl":"Brusselse Gewest",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
-            "dependency":null
-        }
-    },
-    {
-        "pk":4,
+        "pk":21,
         "model":"fixmystreet.organisationentity",
         "fields":{
             "name_en":"Communal Agency Work (en)",
@@ -2632,7 +2642,7 @@
         }
     },
     {
-        "pk":5,
+        "pk":22,
         "model":"fixmystreet.organisationentity",
         "fields":{
             "name_en":"Waterwerven (en)",
@@ -2646,7 +2656,7 @@
         }
     },
     {
-        "pk":6,
+        "pk":23,
         "model":"fixmystreet.organisationentity",
         "fields":{
             "name_en":"Elia (en)",
@@ -2660,7 +2670,7 @@
         }
     },
     {
-        "pk":7,
+        "pk":24,
         "model":"fixmystreet.organisationentity",
         "fields":{
             "name_en":"Electrabel (en)",
@@ -2671,45 +2681,6 @@
             "subcontractor":false,
             "applicant":true,
             "dependency":1
-        }
-    },
-    {
-        "pk":8,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_en":"commune1",
-            "name_fr":"commune1",
-            "name_nl":"commune1",
-            "commune":true,
-            "region":false,
-            "subcontractor":false,
-            "applicant":false
-        }
-    },
-    {
-        "pk":9,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_en":"commune2",
-            "name_fr":"commune2",
-            "name_nl":"commune2",
-            "commune":true,
-            "region":false,
-            "subcontractor":false,
-            "applicant":false
-        }
-    },
-    {
-        "pk":10,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_en":"commune3",
-            "name_fr":"commune3",
-            "name_nl":"commune3",
-            "commune":true,
-            "region":false,
-            "subcontractor":false,
-            "applicant":false
         }
     },
     {

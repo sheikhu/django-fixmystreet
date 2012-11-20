@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, Commune, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -96,7 +96,7 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
-            self.commune = Commune.objects.get(zipcode__code=data['postalcode'])
+            self.commune = OrganisationEntity.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
 
         super(ReportForm,self).__init__(data, files, initial=initial)

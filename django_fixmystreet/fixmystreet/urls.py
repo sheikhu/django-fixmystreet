@@ -42,6 +42,8 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.wards',
 #)
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
+    url(r'^reports/$', 'index',name='report_index'),       
+    url(r'^reports/(\d+)$', 'index',name='report_commune_index'),       
     url(r'^report/(\d+)$', 'show',name='report_show'),       
     url(r'^report/new', 'new',name='report_new'),
 )

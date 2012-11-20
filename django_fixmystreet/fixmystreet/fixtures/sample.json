@@ -11,7 +11,7 @@
       "creator": 1,
       "fixed_at": null,
       "postalcode": "1000",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Rue Antoine Dansaert, 101",
       "description": "Nous avons inform\u00e9 la commune \u00e0 plusieurs reprises comme l'ont fait les voisins. On nous a promis une action. Nous avons un probl\u00e8me important d'humidit\u00e9 et notre porte est gonfl\u00e9 et le voisin a son mur tr\u00e8s humide. \u00c9videmment, nous aimerions r\u00e9soudre ce probl\u00e8me avant que l'hiver s'installe."
@@ -29,7 +29,7 @@
       "creator": 2,
       "fixed_at": null,
       "postalcode": "1000",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Rue Royale, 40",
       "description": "Plusieurs lampadaires sur le c\u00f4t\u00e9 rue royal du parc avant la 2\u00e8me entr\u00e9e cligniote ou ne fonctionne plus."
@@ -47,7 +47,7 @@
       "creator": 3,
       "fixed_at": null,
       "postalcode": "1000",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Avenue de la Reine, 175",
       "description": "La piste cyclable a de nombreux nids de poule et des fissures tout le long de l'avenue qui pourraient facilement provoquer un accident pour un cycliste. Les nids de poule sont surtout autour des plaques d'\u00e9gout et la piste cyclable est si \u00e9troite qu'un cycliste doit sortir de la piste pour \u00e9viter de heurter les trous."
@@ -65,7 +65,7 @@
       "creator": 4,
       "fixed_at": null,
       "postalcode": "1020",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Rue St\u00e9phanie, 175",
       "description": "Il y a un v\u00e9lo convenable abandonn\u00e9s juste \u00e0 c\u00f4t\u00e9 de la passerelle, attach\u00e9 au poteaux de signalisation. Il est l\u00e0 depuis quelques jours."
@@ -83,7 +83,7 @@
       "creator": 5,
       "fixed_at": null,
       "postalcode": "1020",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Rue Charles Demeer, 21",
       "description": "Bouteilles de bi\u00e8re cass\u00e9es occupe le sentier et la piste cyclable."
@@ -101,7 +101,7 @@
       "creator": 1,
       "fixed_at": null,
       "postalcode": "1000",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Rue de Tournai, 11",
       "description": "Les arbustes et les arbres envahissent le trottoir. De plus en plus difficile pour les usagers."
@@ -119,7 +119,7 @@
       "creator": 2,
       "fixed_at": null,
       "postalcode": "1020",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Rue Mathieu Desmar\u00e9, 13",
       "description": ""
@@ -137,7 +137,7 @@
       "creator": 3,
       "fixed_at": null,
       "postalcode": "1000",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 1,
       "address": "Quai \u00e0 la Houille, 7",
       "description": "Les promeneurs de chiens ramasse leurs crottes de chien, mais souvent les laisser dans la poubelle \u00e0 l'entr\u00e9e. Elle \u00e9tait pleine et non vid\u00e9e depuis plusieurs semaines et la poubelle s'est renvers\u00e9."
@@ -155,7 +155,7 @@
       "creator": 5,
       "fixed_at": null,
       "postalcode": "1070",
-      "commune": 1,
+      "responsible_entity": 1,
       "status": 0,
       "address": "Avenue Victor et Jules Bertaux, 20",
       "description": "Il y a un grand arbre adjacent au sentier qui est fendu de bas en haut et menace de tomber."
@@ -173,8 +173,8 @@
       "creator": 4,
       "fixed_at": null,
       "postalcode": "1000",
-      "commune": 4,
-      "status": 2,
+      "responsible_entity": 4,
+      "status": 3,
       "address": "Rue du Marteau, 59",
       "description": "J'utilise cette route chaque jour, ce matin, j'ai remarqu\u00e9 au moins deux poteaux ont disparus, laissant un trou de 10cm dans sur le trotoire. Je n'ai pas remarqu\u00e9 \u00e7a hier, je suppose qu'ils ont \u00e9t\u00e9 vol\u00e9s la nuit derni\u00e8re?"
     }
@@ -191,7 +191,7 @@
       "creator": 5,
       "fixed_at": null,
       "postalcode": "1060",
-      "commune": 13,
+      "responsible_entity": 13,
       "status": 3,
       "address": "Parvis Saint-Gilles, 6",
       "description": "La plaque de rue \"Parvis Saint-Gilles\" est cass\u00e9 en deux et l'une des parties est manquante."
@@ -209,7 +209,7 @@
       "creator": 1,
       "fixed_at": null,
       "postalcode": "1081",
-      "commune": 11,
+      "responsible_entity": 11,
       "status": 3,
       "address": "Avenue du Panth\u00e9on, 74",
       "description": "Les tilleuls du square adjacent au club de tennis viennent d'\u00eatre \u00e9cim\u00e9s et devait. Toutefois, d'autres arbres dans le voisinage qui en ont \u00e9galement besoin."
@@ -227,7 +227,7 @@
       "creator": 2,
       "fixed_at": "2011-11-18 09:02:39",
       "postalcode": "1000",
-      "commune": 4,
+      "responsible_entity": 4,
       "status": 4,
       "address": "Rue Haute, 80",
       "description": "Une Ford Mondeo bleu sans plaque a \u00e9t\u00e9 abandonn\u00e9e pendant environ trois mois maintenant au bas de la rue Haute. Elle est d\u00e9sormais vandalis\u00e9e par des voyous."
@@ -245,7 +245,7 @@
       "creator": 3,
       "fixed_at": null,
       "postalcode": "1210",
-      "commune": 14,
+      "responsible_entity": 14,
       "status": 5,
       "address": "Avenue de l'Astronomie, 30",
       "description": "Voiture grise Toyota, de graves dommages de collision frontale, Pneus plat, inesth\u00e9tiques est la cible des vandales. pourrait \u00eatre s\u00e9rieusement dangereux pour les maisons voisines si quelqu'un y met une allumette."

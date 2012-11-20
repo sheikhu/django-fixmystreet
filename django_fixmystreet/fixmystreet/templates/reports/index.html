@@ -39,6 +39,17 @@
 
 	<h2>{% trans "Reports by wards" %}</h2>
 	<div id="city_all_problems" style="clear:both">
-		{% include "cities/_report_count_table.html" %}		
+<table id="reports" width="100%">
+{% for commune in communes %}
+	<tr class="{% cycle 'row-odd' 'row-even' %}">
+	<td class="feeds"><a href='/feeds{{ commune.get_absolute_url }}'><img src="{{ STATIC_URL }}images/rss-small.png" /></a></td>
+	<!--<td>{{report_counts.number}}</td>-->
+	<td><a href='{% url report_commune_index commune.id %}'>{{ commune.name }}</a></td>
+
+	{% if report_counts.next %}{% endif %}
+	</tr>
+{% endfor %}
+</table>
+<div class="fix-disclaimer"><p>*{% trans "As reported by Fix My Street users." %}</p></div>
 	</div>
 {% endblock %}

@@ -11,7 +11,7 @@ register = template.Library()
 
 MENU_DEFS = [ 
     ('submit', ['home','report_new']),
-    ('view', ['report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report', 'bxl_wards', 'ward_show']),
+    ('view', ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report']),
     ('about',  ['about', 'terms_of_use']),
     ('contact', ['contact'])
 ]
