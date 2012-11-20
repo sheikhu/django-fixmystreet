@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 from django.db import transaction
 
 
-from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, ReportCategory, FMSUser, OrganisationEntity
+from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, ReportCategory, FMSUser, OrganisationEntity, Comment, File
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm, ReportCommentForm, ReportFileForm
 
 @transaction.commit_on_success
@@ -89,6 +89,46 @@ def changeContractor(request,report_id):
         organisation = OrganisationEntity.objects.get(pk=int(contractorId))
         report.subcontractor = organisation
     report.save()
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+def acceptAndValidate(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    report.status = Status.objects.get(pk='4') #Gestionnaire is assigned
+    report.save()
+    comments = Comment.objects.filter(report_id=report_id)
+    for comment in comments:
+        comment.validated= True
+        comment.save()
+    files = File.objects.filter(report_id=report_id)
+    for f in files:
+        f.validated = True
+        f.save()
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+def updateComment(request,report_id):
+    report = get_object_or_404(Report,id=report_id)
+    updateType = request.REQUEST.get('updateType')
+    comment = Comment.objects.get(pk=request.REQUEST.get('commentId'))
+    print request.REQUEST
+    if updateType == "valid":
+        comment.validated= (request.REQUEST.get('updateValue')=='checked')
+        if comment.validated:
+            comment.isVisible= True
+    if updateType == 'confidential':
+        comment.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+    comment.save()
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+def updateFile(request,report_id):
+    report = get_object_or_404(Report,id=report_id)
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
