@@ -129,6 +129,15 @@ def updateComment(request,report_id):
 
 def updateFile(request,report_id):
     report = get_object_or_404(Report,id=report_id)
+    updateType = request.REQUEST.get('updateType')
+    f = File.objects.get(pk=request.REQUEST.get('fileId'))
+    if updateType == "valid":
+        f.validated= (request.REQUEST.get('updateValue')=='checked')
+        if f.validated:
+            f.isVisible= True
+    if updateType == 'confidential':
+        f.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+    f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:

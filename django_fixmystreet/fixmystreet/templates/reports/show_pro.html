@@ -63,7 +63,7 @@ $(function(){
                 //Confidential file checkbox changed
                 console.log("Confidential file: "+$(value).attr("checked"));
                 //TODO handle Confidential bool of file with id vals[2]
-                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateFile?fileId='+vals[2]+'&updateType=confidentialf&updateValue='+ $(value).attr("checked");
+                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateFile?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
 
             }
             else{
@@ -339,14 +339,17 @@ $(function(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     <th></th>
-                    <!--If the current user is the responsible manager-->
-        {% if report.responsible_manager.id == request.user.id %}
-			<!-- If the status allow such interactions -->		
-			{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
-                    	<th>{% trans 'Valid' %}</th>
-                    	<th> {% trans 'Confidential' %} </th>
-			{% endif %}
-            {% endif %}
+                    <!-- If the status allow such interactions -->      
+                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+                    <!--If the current user is the responsible manager--> 
+                    {% if report.responsible_manager.id == request.user.id %}
+                    <th>{% trans 'Valid' %}</th>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                    <th> {% trans 'Confidential' %} </th>
+                    {% endif %}
+                    {% endif %}
                     {% for file in files %}
                     <tr>
                         <td class="annexesFirstTD">
@@ -371,10 +374,11 @@ $(function(){
                         {% endif %}
                     </div>
                 </td>
-        <!--If the current user is the responsible manager-->
-        {% if report.responsible_manager.id == request.user.id %}
+        
 		<!-- If the status allow such interactions -->		
-		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+        <!--If the current user is the responsible manager-->
+        {% if report.responsible_manager.id == request.user.id %} 
                 	<td class="annexesChoiceBoxTD">
                             {%if file.validated%}
                     		<center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
@@ -382,6 +386,9 @@ $(function(){
                             <center><input class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
                             {%endif%}
                 	</td>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
                 	<td class="annexesChoiceBoxTD">
                             {%if file.isVisible%}
                     		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
@@ -401,12 +408,17 @@ $(function(){
             <div id="report_updates">
                 <table class="extraCommentsTable">
                     <th></th>
-                    <!--If the current user is the responsible manager-->
-                    {% if report.responsible_manager.id == request.user.id %}
+                    
+                    
                     <!-- If the status allow such interactions -->      
-                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+                    <!--If the current user is the responsible manager--> 
+                    {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
-                        <th> {% trans 'Confidential' %} </th>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                    <th> {% trans 'Confidential' %} </th>
                     {% endif %}
                     {% endif %}
                 {% for comment in comments %}
@@ -418,10 +430,12 @@ $(function(){
                     
                 </div>
             </td>
-            <!--If the current user is the responsible manager-->
-            {% if report.responsible_manager.id == request.user.id %}
+            
+            
             <!-- If the status allow such interactions -->      
             {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+            <!--If the current user is the responsible manager-->
+            {% if report.responsible_manager.id == request.user.id %}
                 <td class="annexesChoiceBoxTD">
                     {% if comment.validated %}
                     <input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
@@ -429,6 +443,9 @@ $(function(){
                     <input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
                     {% endif%}
                 </td>
+            {% endif %}
+            <!--If the current user is the responsible manager or the creator of the report-->
+            {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
                 <td class="annexesChoiceBoxTD">
                     {% if comment.isVisible %}
                     <input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
