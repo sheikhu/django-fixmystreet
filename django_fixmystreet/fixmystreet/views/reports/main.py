@@ -21,7 +21,8 @@ def new(request):
             'y': request.REQUEST.get('y')
         })
 
-    reports = Report.objects.all().distance(pnt).order_by('distance')[0:10]
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+    
     return render_to_response("reports/new.html",
             {
                 "report_form": report_form,
@@ -32,6 +33,17 @@ def new(request):
 
 
 def show(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    return render_to_response("reports/show.html",
+            {
+                "report": report,
+                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+                "update_form": ReportUpdateForm()
+            },
+            context_instance=RequestContext(request))
+
+
+def index(request):
     report = get_object_or_404(Report, id=report_id)
     return render_to_response("reports/show.html",
             {
