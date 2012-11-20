@@ -90,7 +90,7 @@ class ReportForm(forms.ModelForm):
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
-    # address = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
@@ -131,7 +131,7 @@ class CitizenReportForm(ReportForm):
     """Citizen Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'postalcode', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'postalcode', 'photo', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
 
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
     citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
