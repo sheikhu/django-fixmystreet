@@ -9,7 +9,9 @@ def new(request):
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
-        # this checks update is_valid too
+        #import pdb
+	#pdb.set_trace()
+	# this checks update is_valid too
         if report_form.is_valid():
             # this saves the update as part of the report.
             report = report_form.save(request.user)

@@ -11,11 +11,9 @@ import time
 
 class ManagersChoiceField (forms.fields.ChoiceField):
 
-	def __init__(self,  *args, **kwargs):
+	def __init__(self, connectedUser, *args, **kwargs):
 		choices = []
-		#currentUserOrganisationId = 1
-		if Session.objects.all()[0].session_key:
-			currentUserOrganisation = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
+		currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
 		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
 		managers = managers.filter(organisation_id=currentUserOrganisation.id)
 
@@ -24,11 +22,9 @@ class ManagersChoiceField (forms.fields.ChoiceField):
 
 		super(ManagersChoiceField,self).__init__(choices,*args,**kwargs)
 
-	def refreshChoices(self):
+	def refreshChoices(self, connectedUser):
 		choices = []
-		currentUserOrganisationId = 1
-		if Session.objects.all()[0].session_key:
-			currentUserOrganisation = FMSUser.objects.get(pk=getLoggedInUserId(Session.objects.all()[0].session_key)).organisation
+		currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
 		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
 		managers = managers.filter(organisation_id=currentUserOrganisation.id)
 		
@@ -46,22 +42,22 @@ class ManagersChoiceField (forms.fields.ChoiceField):
 
 
 class ManagersListForm(forms.Form):
-	def __init__(self,  *args, **kwargs):
+	def __init__(self, connectedUser,  *args, **kwargs):
 		super(ManagersListForm, self).__init__(*args, **kwargs)
-		self.manager = ManagersChoiceField(label="")
+		self.manager = ManagersChoiceField(connectedUser, label="")
 		
 	
-	def refreshChoices(self):
-		self.manager.refreshChoices()
+	def refreshChoices(self, connectedUser):
+		self.manager.refreshChoices(connectedUser)
 	
 
 class UserEditForm(UserChangeForm):
     class Meta:
         model = FMSUser
-        fields = ('first_name','last_name',"username",'email','telephone','active',)
+        fields = ('first_name','last_name',"username",'email','telephone','active')
         
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    active = forms.BooleanField(required=False)
+    active = forms.BooleanField(required=True)
 
     def save(self,userID, commit=True):
     	print "User id edited ="
@@ -71,6 +67,9 @@ class UserEditForm(UserChangeForm):
         fmsuser.update(last_name = self.data["last_name"])
         fmsuser.update(email = self.data["email"])
         fmsuser.update(telephone = self.data["telephone"])
-        isActive = self.data['active']
+        if (self.data.__contains__('active')):
+               isActive = True
+        else:
+               isActive = False
         fmsuser.update(active=isActive)
         return fmsuser;
