@@ -110,3 +110,26 @@ def acceptAndValidate(request, report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
+def updateComment(request,report_id):
+    report = get_object_or_404(Report,id=report_id)
+    updateType = request.REQUEST.get('updateType')
+    comment = Comment.objects.get(pk=request.REQUEST.get('commentId'))
+    print request.REQUEST
+    if updateType == "valid":
+        comment.validated= (request.REQUEST.get('updateValue')=='checked')
+        if comment.validated:
+            comment.isVisible= True
+    if updateType == 'confidential':
+        comment.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+    comment.save()
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+def updateFile(request,report_id):
+    report = get_object_or_404(Report,id=report_id)
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())

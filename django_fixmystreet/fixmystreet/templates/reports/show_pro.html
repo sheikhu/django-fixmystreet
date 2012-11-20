@@ -46,27 +46,31 @@ $(function(){
             // Public checkbox changed
             if(vals[1].indexOf("file")!=-1){
                 //public file checkbox changed
-                console.log("public file: "+vals);
+                console.log("public file: "+$(value).val());
                 //TODO handle public bool of file with id vals[2]
+                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateFile?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
             }
             else{
                 //public comment checkbox changed
-                console.log("public comment: "+vals);
+                console.log("public comment: "+$(value).attr("checked"));
                 //TODO handle public bool of comment with id vals[2]
+                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateComment?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
             }
         }
         else{
             //Confidential checkbox changed
             if(vals[1].indexOf("file")!=-1){
                 //Confidential file checkbox changed
-                console.log("Confidential file: "+vals);
+                console.log("Confidential file: "+$(value).attr("checked"));
                 //TODO handle Confidential bool of file with id vals[2]
+                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateFile?fileId='+vals[2]+'&updateType=confidentialf&updateValue='+ $(value).attr("checked");
 
             }
             else{
                 //Confidential comment checkbox changed
-                console.log("Confidential comment: "+vals);
+                console.log("Confidential comment: "+$(value).attr("checked"));
                 //TODO handle Confidential bool of comment with id vals[2]
+                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateComment?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
             }
         }
     } });
@@ -379,10 +383,10 @@ $(function(){
                             {%endif%}
                 	</td>
                 	<td class="annexesChoiceBoxTD">
-                            {%if file.validated%}
+                            {%if file.isVisible%}
                     		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
                             {%else%}
-                            <center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                            <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
                             {%endif%}
                 	</td>
         {% endif %}
@@ -422,11 +426,11 @@ $(function(){
                     {% if comment.validated %}
                     <input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
                     {% else %}
-                    <input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    <input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
                     {% endif%}
                 </td>
                 <td class="annexesChoiceBoxTD">
-                    {% if comment.validated %}
+                    {% if comment.isVisible %}
                     <input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
                     {% else %}
                     <input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
