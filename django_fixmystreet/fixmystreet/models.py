@@ -71,11 +71,12 @@ class OrganisationEntity(models.Model):
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
 
-    commune = models.BooleanField(default=True)
-    region = models.BooleanField(default=True)
-    subcontractor = models.BooleanField(default=True)
-    applicant = models.BooleanField(default=True)
+    commune = models.BooleanField(default=False)
+    region = models.BooleanField(default=False)
+    subcontractor = models.BooleanField(default=False)
+    applicant = models.BooleanField(default=False)
     dependency = models.ForeignKey('OrganisationEntity',related_name='parent', null=True)
+    feature_id = models.CharField(max_length=25)
 
     class Meta:
         translate = ('name', )
@@ -99,11 +100,11 @@ class Report(models.Model):
     SYNDICATE = 3
     ASSOCIATION = 4
     REPORT_QUALITY_CHOICES = (
-	(RIVERAIN,_("Created")), 
-	(OTHER,_("Created")),
-	(COMMERCANT,_("Created")),
-	(SYNDICATE,_("Created")),
-	(ASSOCIATION,_("Created"))
+        (RIVERAIN,_("Created")), 
+        (OTHER,_("Created")),
+        (COMMERCANT,_("Created")),
+        (SYNDICATE,_("Created")),
+        (ASSOCIATION,_("Created"))
     )
 
     CREATED = 0
@@ -119,9 +120,9 @@ class Report(models.Model):
     DELETED   = 8
 
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
-    REPORT_STATUS_OFF         = (PROCESSED, DELETED, REFUSED, SOLVED)
-    REPORT_STATUS_OPEN        = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    REPORT_STATUS_VIEWABLE    = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
+    REPORT_STATUS_OFF         = (DELETED, CREATED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
@@ -146,7 +147,6 @@ class Report(models.Model):
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
-    commune = models.ForeignKey('Commune', null=True)
     description = models.TextField(null=True)
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
@@ -163,8 +163,9 @@ class Report(models.Model):
     citizen = models.ForeignKey(User,null=True, related_name='citizen')
     #refusal_motivation = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
-    subcontractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
-    responsible_manager = models.ForeignKey(FMSUser, related_name='in_charge_reports', null=True)
+    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
+    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
+    responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True)
     responsible_manager_validated = models.BooleanField(default=False)
 
     valid = models.BooleanField(default=False)
@@ -202,30 +203,25 @@ class Exportable(models.Model):
     def asXML():
         return
 
-class Abonment(models.Model):
-    report = models.ForeignKey(Report)
-
-class Address(models.Model):
-    __metaclass__= TransMeta
-    
-    street = models.CharField(max_length=100)
-    city = models.CharField(max_length= 100)
-    zipCode = models.IntegerField()
-    streetNumber = models.CharField(max_length=100)
-    geoX = models.FloatField()
-    geoY = models.FloatField()
-    
     class Meta:
-        translate=('street','city',)
+        abstract = True
 
-class AttachmentType(models.Model):
-    code = models.CharField(max_length=50)
-    url = models.CharField(max_length=50)
-        
 
-    
+# class Address(models.Model):
+    # __metaclass__= TransMeta
+    # 
+    # street = models.CharField(max_length=100)
+    # city = models.CharField(max_length= 100)
+    # zipCode = models.IntegerField()
+    # streetNumber = models.CharField(max_length=100)
+    # geoX = models.FloatField()
+    # geoY = models.FloatField()
+    # 
+    # class Meta:
+        # translate=('street','city',)
 
-class Attachment(models.Model):
+
+class ReportAttachment(models.Model):
     report = models.ForeignKey(Report)
     validated=models.BooleanField(default=False)
     isVisible=models.BooleanField(default=False)
@@ -235,13 +231,18 @@ class Attachment(models.Model):
         abstract=True
 
 
-class Comment (Attachment):
+class ReportComment (Attachment):
     text = models.TextField()
 
 
-class File(Attachment):
+class ReportFile(Attachment):
+    AttachmentType = (
+        (1, "pdf"),
+        (2, "word"),
+        (3, "excel")
+    )
     file = models.FileField(upload_to="files")
-    fileType= models.ForeignKey(AttachmentType)
+    fileType = models.IntegerField(choices=AttachmentType)
 
 
 class UserType(models.Model):
@@ -432,7 +433,7 @@ class NotificationRule(models.Model):
     )
     # the city this rule applies to 
     commune = models.ForeignKey(
-        'Commune',
+        'OrganisationEntity',
         null=False,
         help_text="The commune where the rule apply."
     )
@@ -480,8 +481,8 @@ class NotificationResolver(object):
         notification.save()
 
     def resolve(self):
-        if self.report.commune.default_manager:
-            self.send(self.report.commune.default_manager)
+        # if self.report.commune.default_manager:
+            # self.send(self.report.commune.default_manager)
         for rule in self.rules:
             if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)
@@ -495,44 +496,41 @@ class NotificationResolver(object):
                     self.send(rule.councillor)
 
 
-class Commune(models.Model):
-    __metaclass__ = TransMeta
-    
-    name = models.CharField(max_length=100)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    feature_id = models.CharField(max_length=25)
-    default_manager = models.ForeignKey(FMSUser, null=True)
+# class Commune(models.Model):
+    # __metaclass__ = TransMeta
+    # 
+    # name = models.CharField(max_length=100)
+    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    # default_manager = models.ForeignKey(FMSUser, null=True)
+# 
+    # class Meta:
+        # translate = ('name', )
+# 
 
-    class Meta:
-        translate = ('name', )
-
-
-class Zone(models.Model):
-    __metaclass__ = TransMeta
-    
-    name=models.CharField(max_length=100)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    commune = models.ForeignKey(Commune)
-    
-    class Meta:
-        translate = ('name', )
-
-
-
-
-class FMSUserZone(models.Model):
-    user = models.ForeignKey(FMSUser)
-    zone = models.ForeignKey(Zone)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-
+# class Zone(models.Model):
+    # __metaclass__ = TransMeta
+    # 
+    # name=models.CharField(max_length=100)
+    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    # commune = models.ForeignKey(Commune)
+    # 
+    # class Meta:
+        # translate = ('name', )
+# 
+# 
+# class FMSUserZone(models.Model):
+    # user = models.ForeignKey(FMSUser)
+    # zone = models.ForeignKey(Zone)
+    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
+    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+# 
 
 class ZipCode(models.Model):
     __metaclass__ = TransMeta
     
-    commune = models.ForeignKey(Commune)
+    commune = models.ForeignKey(OrganisationEntity)
     code = models.CharField(max_length=4)
     name = models.CharField(max_length=100)
     hide = models.BooleanField()

@@ -44,9 +44,9 @@ $(function(){
 			<p>{% trans "No problems have been reported." %}</p>
 			{% endif %}
 			<div id="search_results">
-				{% for report in reports %}					
-					{% ifchanged report.status %}  	
-					<h2>{% trans report.status %}</h2>
+				{% for report in reports %}
+					{% ifchanged report.status %}
+					<h2>{{ report.get_status_display }}</h2>
 					{% endifchanged %}
                     {% include "reports/_navigation.html" %}
                 {% endfor %}
