@@ -133,7 +133,7 @@ class CitizenReportForm(ReportForm):
     """Citizen Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'postalcode', 'photo', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'photo', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
 
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
     citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
@@ -201,9 +201,9 @@ class ContactForm(forms.Form):
 class AgentCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','telephone','username','password1','password2','active',)
+        fields = ('first_name','last_name','email','telephone','username','password1','password2','is_active')
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    active = forms.BooleanField(required=False)
+    is_active = forms.BooleanField(required=False)
     def save(self,userID,isAgent,isManager,isContractor, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
@@ -214,7 +214,13 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.email=self.cleaned_data["email"]
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
-        fmsuser.active = self.cleaned_data['active']
+        
+        if (self.data.__contains__('is_active')):
+               isActive = True
+        else:
+               isActive = False
+        fmsuser.is_active = isActive
+
         fmsuser.agent = (isAgent=="1")
         fmsuser.manager = (isManager=="1")
         #fmsuser.leader = (isImpetrant=="2")

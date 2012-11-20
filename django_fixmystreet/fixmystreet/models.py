@@ -48,7 +48,7 @@ class Type (models.Model):
 
 class FMSUser(User):
     telephone= models.CharField(max_length=20,null=True)
-    active = models.BooleanField(default=True)
+    #active = models.BooleanField(default=True)
     lastUsedLanguage = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
@@ -98,6 +98,13 @@ class Report(models.Model):
     COMMERCANT = 2
     SYNDICATE = 3
     ASSOCIATION = 4
+    REPORT_QUALITY_CHOICES = (
+	(RIVERAIN,_("Created")), 
+	(OTHER,_("Created")),
+	(COMMERCANT,_("Created")),
+	(SYNDICATE,_("Created")),
+	(ASSOCIATION,_("Created"))
+    )
 
     CREATED = 0
     REFUSED = 9
@@ -135,6 +142,7 @@ class Report(models.Model):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, null=False)
+    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=False)
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))

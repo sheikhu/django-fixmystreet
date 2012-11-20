@@ -54,22 +54,20 @@ class ManagersListForm(forms.Form):
 class UserEditForm(UserChangeForm):
     class Meta:
         model = FMSUser
-        fields = ('first_name','last_name',"username",'email','telephone','active')
+        fields = ('first_name','last_name',"username",'email','telephone','is_active')
         
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    active = forms.BooleanField(required=True)
+    is_active = forms.BooleanField(required=True)
 
     def save(self,userID, commit=True):
-    	print "User id edited ="
-        print userID
         fmsuser = FMSUser.objects.filter(user_ptr_id=userID)
         fmsuser.update(first_name = self.data["first_name"])
         fmsuser.update(last_name = self.data["last_name"])
         fmsuser.update(email = self.data["email"])
         fmsuser.update(telephone = self.data["telephone"])
-        if (self.data.__contains__('active')):
+        if (self.data.__contains__('is_active')):
                isActive = True
         else:
                isActive = False
-        fmsuser.update(active=isActive)
+        fmsuser.update(is_active=isActive)
         return fmsuser;
