@@ -85,7 +85,9 @@ $(document).ready(function() {
 	$('#id_category').change();// initialize notes
 	
 	$('#id_secondary_category').change(function(evt) {
-		<!-- Nothing when selecting a secondary item -->
+		//Copy is necessary to avoid django validation problem	
+		var el_id_copy = $('#id_secondary_category').val();
+		$('#id_secondary_category_copy').val(el_id_copy);
 	});
 
 	$map.bind('markermoved',function(evt,point){

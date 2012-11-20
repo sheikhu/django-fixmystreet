@@ -159,7 +159,7 @@ $(function(){
                         	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button>
                     	</td>
                     	<td >
-                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/fixed'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
                     	</td>
                         <td >
                             <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>

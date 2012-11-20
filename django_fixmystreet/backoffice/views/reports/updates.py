@@ -30,6 +30,16 @@ def refuse( request, report_id ):
        	else:
        		return HttpResponseRedirect(report.get_absolute_url())
 
+def fixed( request, report_id ):
+	report = get_object_or_404(Report, id=report_id)
+        report.status = Status.objects.get(pk='7') #Refused
+	report.save()    	
+
+	if "pro" in request.path:
+       		return HttpResponseRedirect(report.get_absolute_url_pro())
+       	else:
+       		return HttpResponseRedirect(report.get_absolute_url())
+
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
@@ -99,3 +109,4 @@ def acceptAndValidate(request, report_id):
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
+
