@@ -48,7 +48,7 @@ def near_reports_pro(request):
    
     #Max 1 month in the past 
     timestamp_from = datetime.now().date() - timedelta(days=31)
-    reports = Report.objects.filter(Q(created_at__gte=timestamp_from)).distance(pnt).order_by('distance')[:20]
+    reports = Report.objects.filter(Q(created_at__gte=timestamp_from)).distance(pnt).filter('distance',1000).order_by('distance')
     
     result = []
     for i,report in enumerate(reports):

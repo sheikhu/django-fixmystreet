@@ -28,14 +28,16 @@ def new(request):
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
     statusQ = request.REQUEST.get('status')
     if statusQ == 'created':
-    	reports = Report.objects.filter(status=Report.CREATED).distance(pnt).order_by('distance')
+    	reports = Report.objects.filter(status=Report.CREATED)
     elif statusQ == 'in_progress':
-    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).distance(pnt).order_by('distance')
+    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif statusQ == 'off':
-    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF).distance(pnt).order_by('distance')
+    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
     else:
-        reports = Report.objects.distance(pnt).order_by('distance')
-    	
+        reports = Report.objects.all()
+
+    reports = reports.distance(pnt).order_by('distance')
+
     return render_to_response("reports/new_pro.html",
             {
                 "report_form": report_form,
