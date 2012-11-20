@@ -65,6 +65,7 @@ dropdb:
 # for scratching another db call:
 # $ make DBNAME=my_fms_db_name scratchdb
 scratchdb: dropdb createdb
+	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django loaddata sample
 
 clean:

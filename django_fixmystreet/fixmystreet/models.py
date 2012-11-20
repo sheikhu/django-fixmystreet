@@ -170,14 +170,14 @@ class Report(models.Model):
         return {
             "id": self.id,
             "point": {
-                    "x": self.point.x,
-                    "y": self.point.y,
+                "x": self.point.x,
+                "y": self.point.y,
             },
-            "status":self.status,
-            "status_label":self.get_status_display(),
-            "close_date":self.close_date,
-            "private":self.private,
-            "valid":self.valid
+            "status": self.status,
+            "status_label": self.get_status_display(),
+            "close_date": self.close_date,
+            "private": self.private,
+            "valid": self.valid
         }
 
 
