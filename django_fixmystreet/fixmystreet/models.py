@@ -142,7 +142,7 @@ class Report(models.Model):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, null=False)
-    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=False)
+    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True)
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
