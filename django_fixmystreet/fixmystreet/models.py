@@ -50,7 +50,7 @@ class FMSUser(User):
     telephone= models.CharField(max_length=20,null=True)
     active = models.BooleanField(default=True)
     lastUsedLanguage = models.CharField(max_length=10,null=True)
-    hashCode = models.IntegerField(null=True)
+    hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
     agent = models.BooleanField(default=True)
     manager = models.BooleanField(default=True)
@@ -90,47 +90,95 @@ class Status(models.Model):
     class Meta:
         translate = ('name', )
 
-        
+
 class Report(models.Model):
-    status = models.ForeignKey(Status,null=False)
+    CREATED = 0
+    REFUSED = 9
+    
+    IN_PROGRESS           = 1
+    MANAGER_ASSIGNED      = 4
+    APPLICANT_RESPONSIBLE = 5
+    CONTRACTOR_ASSIGNED   = 6
+    SOLVED                = 7
+
+    PROCESSED = 3
+    DELETED   = 8
+
+    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
+    REPORT_STATUS_OFF         = (PROCESSED, DELETED, REFUSED, SOLVED)
+    REPORT_STATUS_OPEN        = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
+
+    REPORT_STATUS_CHOICES = (
+        (_("Created"), (
+            (CREATED,               _("Created")), # Aangemaakt, Cree
+            (REFUSED,               _("Refused")), # Afgewezen, Refuse
+        )),
+        (_("In progress"), (
+            (IN_PROGRESS,           _("In progress")),              # In behandeling, En progres
+            (MANAGER_ASSIGNED,      _("Manager is assigned")),      # Gestionnaire is toegekend, Gestionnaire est assigne
+            (APPLICANT_RESPONSIBLE, _("Applicant is responsible")), # Impetrant is verantwoordelijk, Impetrant est responsable
+            (CONTRACTOR_ASSIGNED,   _("Contractor is assigned")),   # Executeur de travaux is toegekend, Executeur de travaux est assigne
+            (SOLVED,                _("Solved")),                   # Opgelost, Resolu
+        )),
+        (_("Processed"), (
+            (PROCESSED,             _("Processed")),# Afgehandeld, Precessed
+            (DELETED,               _("Deleted")),  # Suprime, Verwijderd
+        ))
+    )
+
+    status = models.IntegerField(choices=REPORT_STATUS_CHOICES, null=False)
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
+    postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
+    commune = models.ForeignKey('Commune', null=True)
+    description = models.TextField(null=True)
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
-    #main_category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
+
+    creator = models.ForeignKey(User,null=True, related_name='creator')
     created_at = models.DateTimeField(auto_now_add=True)
     # last time report was updated
     updated_at = models.DateTimeField(null=True)
-    is_hate = models.BooleanField(default=False)
-    is_fixed = models.BooleanField(default=False)
     # time report was marked as 'fixed'
     fixed_at = models.DateTimeField(null=True, blank=True)
-    commune = models.ForeignKey('Commune', null=True)
-    hashCode = models.IntegerField(null=True)
-    creator = models.ForeignKey(User,null=True, related_name='creator')
+
+    hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
     
     citizen = models.ForeignKey(User,null=True, related_name='citizen')
-    description = models.TextField(null=True)
     #refusal_motivation = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     subcontractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
     responsible_manager = models.ForeignKey(FMSUser, related_name='in_charge_reports', null=True)
     responsible_manager_validated = models.BooleanField(default=False)
-#    report_type = models.ForeignKey(Type)
+
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
-    finished = models.BooleanField(default=False)
     photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
     def get_absolute_url(self):
-    #TODO determine when pro and no-pro url must be returned
+        #TODO determine when pro and no-pro url must be returned
         return reverse("report_show", args=[self.id])
     
     def get_absolute_url_pro(self):
-    #TODO determine when pro and no-pro url must be returned
+        #TODO determine when pro and no-pro url must be returned
         return reverse("report_show_pro", args=[self.id])
+
+    def to_object(self):
+        return {
+            "id": self.id,
+            "point": {
+                    "x": self.point.x,
+                    "y": self.point.y,
+            },
+            "status":self.status,
+            "status_label":self.get_status_display(),
+            "close_date":self.close_date,
+            "private":self.private,
+            "valid":self.valid
+        }
 
 
 class Exportable(models.Model):
@@ -618,13 +666,14 @@ class ReportCountQuery(SqlQuery):
         #
         #interval = '1 day'
 
-        self.base_query = """select count( case when age(clock_timestamp(), reports.created_at) < interval '%s' THEN 1 ELSE null end ) as recent_new,\
- count( case when age(clock_timestamp(), reports.fixed_at) < interval '%s' AND reports.is_fixed = True THEN 1 ELSE null end ) as recent_fixed,\
- count( case when age(clock_timestamp(), reports.updated_at) < interval '%s' AND reports.is_fixed = False and reports.updated_at != reports.created_at THEN 1 ELSE null end ) as recent_updated,\
- count( case when age(clock_timestamp(), reports.fixed_at) > interval '%s' AND reports.is_fixed = True THEN 1 ELSE null end ) as old_fixed,\
- count( case when age(clock_timestamp(), reports.created_at) > interval '%s' AND reports.is_fixed = False THEN 1 ELSE null end ) as old_unfixed   
- """ % (interval, interval, interval, interval, interval) 
-        self.sql = self.base_query + " from fixmystreet_report as reports" 
+        self.sql = """select count( case when age(clock_timestamp(), reports.created_at) < interval '{interval}' THEN 1 ELSE null end ) as recent_new,
+count( case when age(clock_timestamp(), reports.fixed_at) < interval '{interval}' AND reports.status = {closed} THEN 1 ELSE null end ) as recent_fixed,
+count( case when age(clock_timestamp(), reports.updated_at) < interval '{interval}' AND reports.status in ({progress}) and reports.updated_at != reports.created_at THEN 1 ELSE null end ) as recent_updated,
+count( case when age(clock_timestamp(), reports.fixed_at) > interval '{interval}' AND reports.status = {closed} THEN 1 ELSE null end ) as old_fixed,
+count( case when age(clock_timestamp(), reports.created_at) > interval '{interval}' AND reports.status in ({progress}) THEN 1 ELSE null end ) as old_unfixed
+from fixmystreet_report as reports;
+""".format(interval=interval, progress=','.join([str(s) for s in Report.REPORT_STATUS_IN_PROGRESS]), closed=Report.PROCESSED)
+
 
 class CityTotals(ReportCountQuery):
 

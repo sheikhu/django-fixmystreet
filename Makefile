@@ -57,13 +57,15 @@ rpm:
 
 createdb:
 	createdb $(DBNAME) -U $(USER) -T template_postgis
+	$(BIN_DIR)/django syncdb --migrate --noinput
 
 dropdb:
 	dropdb $(DBNAME) -U $(USER)
 
 # for scratching another db call:
 # $ make DBNAME=my_fms_db_name scratchdb
-scratchdb: dropdb createdb init
+scratchdb: dropdb createdb
+	$(BIN_DIR)/django loaddata sample
 
 clean:
 	rm -rf bootstrap.py \
