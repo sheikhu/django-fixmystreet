@@ -21,7 +21,7 @@ def new(request):
             'y': request.REQUEST.get('y')
         })
 
-    reports = Report.objects.filter(is_fixed = False).distance(pnt).order_by('distance')[0:10]
+    reports = Report.objects.all().distance(pnt).order_by('distance')[0:10]
     return render_to_response("reports/new.html",
             {
                 "report_form": report_form,

@@ -50,7 +50,7 @@ class FMSUser(User):
     telephone= models.CharField(max_length=20,null=True)
     active = models.BooleanField(default=True)
     lastUsedLanguage = models.CharField(max_length=10,null=True)
-    hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
+    #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
     agent = models.BooleanField(default=True)
     manager = models.BooleanField(default=True)
