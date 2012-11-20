@@ -25,16 +25,16 @@ def new(request):
             'y': request.REQUEST.get('y')
         })
     
-    #reports = Report.objects.filter(is_fixed = False).distance(pnt).order_by('distance')[0:10]
+    #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
     statusQ = request.REQUEST.get('status')
-    if statusQ == "0":
-    	reports = Report.objects.filter(is_fixed = False).filter(status=1).distance(pnt).order_by('distance')
-    elif statusQ == "1":
-    	reports = Report.objects.filter(is_fixed = False).filter(status_id__in=[2,4,5,6]).distance(pnt).order_by('distance')
-    elif statusQ == "2":
-    	reports = Report.objects.filter(is_fixed = False).filter(status_id__in=[3,7,8,9]).distance(pnt).order_by('distance')
+    if statusQ == 'created':
+    	reports = Report.objects.filter(status=Report.CREATED).distance(pnt).order_by('distance')
+    elif statusQ == 'in_progress':
+    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).distance(pnt).order_by('distance')
+    elif statusQ == 'off':
+    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF).distance(pnt).order_by('distance')
     else:
-        reports = Report.objects.filter(is_fixed = False).distance(pnt).order_by('distance')
+        reports = Report.objects.distance(pnt).order_by('distance')
     	
     return render_to_response("reports/new_pro.html",
             {

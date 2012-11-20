@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, dictToPoint
 from django_fixmystreet.fixmystreet.utils import ssl_required, oauthtoken_to_user, JsonHttpResponse
-from django_fixmystreet.fixmystreet.templatetags.tags import report_to_array
 
 
 
@@ -53,7 +52,7 @@ def near_reports_pro(request):
     
     result = []
     for i,report in enumerate(reports):
-        result.append(report_to_array(report))
+        result.append(report.to_object())
 
     return JsonHttpResponse({
         'status':'success',
@@ -71,7 +70,7 @@ def near_reports_citizen(request):
     
     result = []
     for i,report in enumerate(reports):
-        result.append(report_to_array(report))
+        result.append(report.to_object())
 
     return JsonHttpResponse({
         'status':'success',
@@ -90,7 +89,7 @@ def reports_citizen(request):
     result = []
     
     for i,report in enumerate(reports):
-        result.append(report_to_array(report))
+        result.append(report.to_object())
 
     return JsonHttpResponse({
         'status':'success',
@@ -109,7 +108,7 @@ def reports_pro(request):
     result = []
     
     for i,report in enumerate(reports):
-        result.append(report_to_array(report))
+        result.append(report.to_object())
 
     return JsonHttpResponse({
         'status':'success',

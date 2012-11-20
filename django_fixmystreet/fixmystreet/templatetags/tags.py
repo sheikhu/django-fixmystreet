@@ -41,21 +41,7 @@ def addthis_scripts():
 
 @register.simple_tag
 def report_to_json(report):
-    return json.dumps(report_to_array(report))
-
-def report_to_array(report):
-    return {
-        "id": report.id,
-        "point": {
-                "x": report.point.x,
-                "y": report.point.y,
-        },
-        "is_fixed":report.is_fixed,
-        "close_date":report.close_date,
-        "private":report.private,
-        "valid":report.valid,
-        "finished":report.finished
-    }
+    return json.dumps(report.to_object())
 
 @register.filter
 def getElementFromList(list,index):
@@ -92,79 +78,78 @@ def isAgent(userId):
 def numberOfCreatedReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status_id__in=[1])
+    reports = Report.objects.filter(status=Report.CREATED)
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
-    return len(reports)
+    return reports.count()
 
 @register.filter
 def numberOfInProgressReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status_id__in=[2,4,5,6])
+    reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
-    return len(reports)
+    return reports.count()
 
 @register.filter
 def numberOfClosedReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status_id__in=[3,7,8,9])
+    reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
-    return len(reports)
+    return reports.count()
 
 @register.filter
 def numberOfReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.all()
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
-    return len(reports)
+    return Report.objects.count()
 
 @register.filter
 def numberOfUsers(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
     users = FMSUser.objects.filter(organisation_id = organisationId)
-    return len(users)
+    return users.count()
 
 @register.filter
 def numberOfAgents(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
     agents = FMSUser.objects.filter(organisation_id = organisationId)
     agents = agents.filter(agent = True)
-    return len(agents)
+    return agents.count()
 
 @register.filter
 def numberOfContractors(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
     contractors = FMSUser.objects.filter(organisation_id = organisationId)
     contractors = contractors.filter(contractor = True)
-    return len(contractors)
+    return contractors.count()
 
 @register.filter
 def numberOfImpetrants(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
     impetrants = FMSUser.objects.filter(organisation_id = organisationId)
     impetrants = impetrants.filter(impetrant = True)
-    return len(impetrants)
+    return impetrants.count()
 
 @register.filter
 def numberOfSubscriptions(userId):
     subscriptions = ReportSubscription.objects.filter(subscriber_id=userId)
-    return len(subscriptions)
+    return subscriptions.count()
 
 @register.filter
 def numberOfManagers(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
     managers = FMSUser.objects.filter(organisation_id = organisationId)
     managers = managers.filter(manager = True)
-    return len(managers)
+    return managers.count()
 
 @register.filter
 def hasAtLeastAManager(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
      
-    return len(FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True)) > 0
+    return FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True).exists()
