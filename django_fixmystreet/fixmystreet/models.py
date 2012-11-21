@@ -243,17 +243,39 @@ def report_assign_responsible(sender, instance, **kwargs):
     """signal on a report to notify public authority that a report has been filled"""
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
-        if instance.creator:
-            fmsUser = FMSUser.objects.get(pk=instance.creator.id)
-            userCandidates = FMSUser.objects.filter(organisation__id=fmsUser.organisation.id).filter(manager=True)
+        #When created by pro a creator exists otherwise a citizen object
+        organizationSearchCriteria = -1
+        #if instance.creator:
+        #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
+        #    organizationSearchCriteria = fmsUser.organisation
+        #elif instance.citizen:
+        instance.commune = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+        organizationSearchCriteria = instance.commune
+        #import pdb
+        #pdb.set_trace()
+
+        #Assign the entity.
+        instance.responsible_entity = organizationSearchCriteria
+
+        #Searcht the right responsible for the current organization.            
+        userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
+        managerFound = False
+        for currentUser in userCandidates:
+            userCategories = currentUser.categories.all()
+            for currentCategory in userCategories:
+                if (currentCategory == instance.secondary_category):
+                   managerFound = True
+                   instance.responsible_manager = currentUser
+
+        #If not manager found for the responsible commune, then reassign to the region
+        if (managerFound == False):
+            instance.responsible_entity  = OrganisationEntity.objects.get(region=True)
+            userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
             for currentUser in userCandidates:
                 userCategories = currentUser.categories.all()
                 for currentCategory in userCategories:
                     if (currentCategory == instance.secondary_category):
-                    #import pdb
-                    #pdb.set_trace()
                         instance.responsible_manager = currentUser
-                        #instance.save()
 
 #signal on a report to notify public authority that a report has been filled
 @receiver(post_save,sender=Report)
@@ -463,8 +485,8 @@ class NotificationResolver(object):
         notification.save()
 
     def resolve(self):
-        # if self.report.commune.default_manager:
-            # self.send(self.report.commune.default_manager)
+        #if self.report.commune.default_manager:
+        #    self.send(self.report.commune.default_manager)
         for rule in self.rules:
             if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)

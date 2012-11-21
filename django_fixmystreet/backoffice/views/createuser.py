@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView
 @login_required(login_url='/pro/accounts/login/')
 def createUser(request):
     user = request.user
-    connectedUser = FMSUser.objects.get(user_ptr_id=userid)
+    connectedUser = FMSUser.objects.get(user_ptr_id=user.id)
 
     isManager = connectedUser.manager
 

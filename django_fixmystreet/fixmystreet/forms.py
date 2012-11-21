@@ -94,6 +94,8 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
+            #import pdb
+            #pdb.set_trace()
             self.commune = OrganisationEntity.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
 
@@ -149,9 +151,15 @@ class CitizenReportForm(ReportForm):
         if user.is_authenticated():
             report.creator = user
         else:
-            #Add information about the citizen connected.
-            
-            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+            try:
+                existingUser = FMSUser.objects.get(username=self.cleaned_data["citizen_email"]);
+                #Assign citizen
+                report.citizen = existingUser
+            except FMSUser.DoesNotExist:
+                #Add information about the citizen connected if it does not exist
+                report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+        
+        
         if commit:
             report.save()
         return report

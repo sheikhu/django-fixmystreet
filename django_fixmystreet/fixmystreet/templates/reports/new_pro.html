@@ -74,6 +74,7 @@ $(document).ready(function() {
                         refSecondary.html('');
                         refSecondary.html($('#id_secondary_category_copy').html());
                         refSecondary.find("option[family!='"+el_id+"']").remove();
+			$('#id_secondary_category').change();//copy value to hidden dropdown 
                 }
                 else
                 {

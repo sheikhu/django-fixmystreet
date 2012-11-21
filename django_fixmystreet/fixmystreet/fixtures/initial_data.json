@@ -3425,6 +3425,56 @@
             "organisation":10
         }
     },
+   {
+        "pk":16,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "regionbxl",
+            "last_name": "---",
+            "username": "regionbxl",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":16,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":16,
+            "telephone":"923456789",
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":20
+        }
+    },
+   {
+        "pk":15,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "entbxl",
+            "last_name": "---",
+            "username": "entbxl",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":15,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":15,
+            "telephone":"923456789",
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":4
+        }
+    },
     {
         "pk":1000000,
         "model": "auth.user",
