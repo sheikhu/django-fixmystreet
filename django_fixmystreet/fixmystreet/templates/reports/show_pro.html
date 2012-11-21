@@ -155,8 +155,8 @@ $(function(){
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
 		
-        {% if report.responsible_manager.id == request.user.id %}
-		{% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %} 
+        {% if report.responsible_manager.id == request.user.id %} 
+		{% if report.status == 4 or report.status == 5 or report.status == 6  %} 
                 <tr>
                     	<td ></td>
                     	<td >
@@ -171,7 +171,7 @@ $(function(){
                 </tr>
     		{% endif %}
                 <tr>
-			{% if report.status.code == '0' %} 
+			{% if report.status == 0 %} 
                     	<td >
                         	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
                     	</td>
@@ -240,7 +240,7 @@ $(function(){
                 	<th>{% trans "Status:" %}</th>
                 	<td>{{ report.status.name_en }}</td>
                 </tr>
-                {% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %}
+                {% if report.status == '4' or report.status == '5' or report.status == '6'  %}
                 {% if request.user.id == report.responsible_manager.id %}
                 <tr>
                     <th>{% trans "Responsible manager:" %}</th>
@@ -287,7 +287,7 @@ $(function(){
 	<div id="rightcol">
 	
 		<!-- If the status allow such interactions -->		
-		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+		{% if report.status != 3 and report.status != 8 and report.status != 9 %} 
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
@@ -340,7 +340,7 @@ $(function(){
                 <table id="extraFilesTable">
                     <th></th>
                     <!-- If the status allow such interactions -->      
-                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+                    {% if report.status != 3 and report.status != 8 and report.status != 9 %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
@@ -376,7 +376,7 @@ $(function(){
                 </td>
         
 		<!-- If the status allow such interactions -->		
-		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+		{% if report.status != 3 and report.status != 8 and report.status != 9 %}
         <!--If the current user is the responsible manager-->
         {% if report.responsible_manager.id == request.user.id %} 
                 	<td class="annexesChoiceBoxTD">
@@ -411,7 +411,7 @@ $(function(){
                     
                     
                     <!-- If the status allow such interactions -->      
-                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+                    {% if report.status != 3 and report.status != 8 and report.status != 9  %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
@@ -433,7 +433,7 @@ $(function(){
             
             
             <!-- If the status allow such interactions -->      
-            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+            {% if report.status != 3 and report.status != 8 and report.status != 9  %}
             <!--If the current user is the responsible manager-->
             {% if report.responsible_manager.id == request.user.id %}
                 <td class="annexesChoiceBoxTD">

@@ -24,18 +24,20 @@ def list(request):
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
         })
-    
+   
+    user_organisation = FMSUser.objects.get(pk=request.user.id).organisation
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
     statusQ = request.REQUEST.get('status')
     if statusQ == 'created':
-    	reports = Report.objects.filter(status=Report.CREATED)
+    	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status=Report.CREATED)
     elif statusQ == 'in_progress':
-    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+    	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif statusQ == 'off':
-    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
+    	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
     else:
-        reports = Report.objects.all()
-
+        reports = Report.objects.filter(responsible_entity=user_organisation).all()
+    #import pdb
+    #pdb.set_trace()
     reports = reports.distance(pnt).order_by('distance')
     return render_to_response("reports/list_pro.html",
             {
