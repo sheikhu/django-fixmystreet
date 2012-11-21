@@ -7,7 +7,7 @@ from django.core.files import File
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_save
 
-from social_auth.backends import get_backend
+# from social_auth.backends import get_backend
 
 from stdimage import StdImageField
 from django.conf import settings
@@ -15,13 +15,11 @@ from django.conf import settings
 
 def domain_context_processor(request):
     site = Site.objects.get_current()
-    
-
     return {
         'SITE_URL': 'http://{0}'.format(site.domain),
         'GEOSERVER': settings.GEOSERVER,
         'SERVICE_GIS': settings.SERVICE_GIS,
-        'STAGING': getattr(settings, 'STAGING', getattr(settings, 'DEBUG', False))
+        'ENVIRONMENT': getattr(settings, 'ENVIRONMENT')
     }
 
 
@@ -36,19 +34,19 @@ def ssl_required(view_func):
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
 
-
-def oauthtoken_to_user(backend_name, token, request, *args, **kwargs):
-    """Check and retrieve user with given token.
-    """
-    backend = get_backend(backend_name, request, "")
-    if not backend:
-        raise Exception('Backend {0} not found'.format(backend_name))
-    #print backend
-    response = backend.user_data(token) or {}
-    response['access_token'] = token
-    kwargs.update({'response': response, backend_name: True})
-    user = authenticate(*args, **kwargs)
-    return user
+# 
+# def oauthtoken_to_user(backend_name, token, request, *args, **kwargs):
+    # """Check and retrieve user with given token.
+    # """
+    # backend = get_backend(backend_name, request, "")
+    # if not backend:
+        # raise Exception('Backend {0} not found'.format(backend_name))
+    # #print backend
+    # response = backend.user_data(token) or {}
+    # response['access_token'] = token
+    # kwargs.update({'response': response, backend_name: True})
+    # user = authenticate(*args, **kwargs)
+    # return user
 
 class JsonHttpResponse(HttpResponse):
     data = {}
