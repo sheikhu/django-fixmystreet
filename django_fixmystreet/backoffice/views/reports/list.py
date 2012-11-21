@@ -37,8 +37,7 @@ def list(request):
         reports = Report.objects.all()
 
     reports = reports.distance(pnt).order_by('distance')
-
-    return render_to_response("reports/new_pro.html",
+    return render_to_response("reports/list_pro.html",
             {
                 "report_form": report_form,
                 "pnt":pnt,

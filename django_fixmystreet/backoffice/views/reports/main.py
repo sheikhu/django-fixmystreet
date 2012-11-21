@@ -77,8 +77,8 @@ def show(request, report_id):
 @login_required(login_url='/pro/accounts/login/')
 def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    files= File.objects.filter(report_id=report_id)
-    comments = Comment.objects.filter(report_id=report_id)
+    files= ReportFile.objects.filter(report_id=report_id)
+    comments = ReportComment.objects.filter(report_id=report_id)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True)
@@ -88,7 +88,6 @@ def show(request, report_id):
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "update_form": ReportUpdateForm(),
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),
                 "files":files,
