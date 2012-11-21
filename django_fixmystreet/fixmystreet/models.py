@@ -90,7 +90,7 @@ class Report(models.Model):
 
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
-    REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
+    REPORT_STATUS_CLOSED      = (PROCESSED, DELETED, REFUSED)
     REPORT_STATUS_OFF         = (DELETED)
 
     REPORT_STATUS_CHOICES = (
@@ -143,6 +143,16 @@ class Report(models.Model):
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
+    
+    def is_created(self):
+        return self.status == Report.CREATED
+
+    def is_in_progress(self):
+        return self.status in Report.REPORT_STATUS_IN_PROGRESS
+    
+    def is_closed(self):
+        return self.status in Report.REPORT_STATUS_CLOSED
+    
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show", args=[self.id])

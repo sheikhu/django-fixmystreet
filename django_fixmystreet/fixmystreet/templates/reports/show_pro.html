@@ -87,18 +87,25 @@ $(function(){
     $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
     $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
         //TODO update report with new contractor
-        console.log($("#report_responsible_impetrant_contractor_select").val());
         window.location = '{% url report_new_pro %}/../../report/{{report.id}}/changeContractor/?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
     });
+
     $("#commentForm").hide();
     $("#fileForm").hide();
+
     {% if user.is_authenticated %}
         $(document).trigger('connected');
     {% else %}
         $(document).trigger('disconnected');
     {% endif %}});
 
-	function showMap() {
+    /* When JQUERY is ready*/
+    $(document).ready(function() {
+    	/*Set the contractor dropdown*/
+    	$('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
+    });
+
+    function showMap() {
 			$("#map-bxl").toggle();
 	}
 
@@ -155,12 +162,13 @@ $(function(){
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
 		
-        {% if report.responsible_manager.id == request.user.id %} 
-		{% if report.status == 4 or report.status == 5 or report.status == 6  %} 
+        {% if report.responsible_manager.id == request.user.id %}
+		{% if report.is_in_progress %} 
                 <tr>
                     	<td ></td>
                     	<td >
-                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button>
+                        	<!--button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button-->
+				&nbsp;
                     	</td>
                     	<td >
                         	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/fixed'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
@@ -171,7 +179,7 @@ $(function(){
                 </tr>
     		{% endif %}
                 <tr>
-			{% if report.status == 0 %} 
+			{% if report.is_created %} 
                     	<td >
                         	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
                     	</td>
@@ -238,9 +246,9 @@ $(function(){
                 </tr>
                 <tr>
                 	<th>{% trans "Status:" %}</th>
-                	<td>{{ report.status.name_en }}</td>
+                	<td>{{ report.get_status_display }}</td>
                 </tr>
-                {% if report.status == '4' or report.status == '5' or report.status == '6'  %}
+                {% if report.is_in_progress  %}
                 {% if request.user.id == report.responsible_manager.id %}
                 <tr>
                     <th>{% trans "Responsible manager:" %}</th>
@@ -259,9 +267,9 @@ $(function(){
                     <th>{% trans "Contractor/Impetrant:" %}</th>
                     <td>
                         <select id="report_responsible_impetrant_contractor_select">
-                            <option value="contractor_">{% trans 'Select a contractor/impetrant' %}</option>
+                            <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
                             {% for organisation in contractors %}
-                            <option value="contractor_{{organisation.id}}">{{organisation.name}}</option>
+                            	<option value="{{organisation.id}}">{{organisation.name}}</option>
                             {% endfor %}
                         </select>
                     </td>
@@ -287,7 +295,7 @@ $(function(){
 	<div id="rightcol">
 	
 		<!-- If the status allow such interactions -->		
-		{% if report.status != 3 and report.status != 8 and report.status != 9 %} 
+		{% if report.is_in_progress %} 
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
@@ -340,7 +348,7 @@ $(function(){
                 <table id="extraFilesTable">
                     <th></th>
                     <!-- If the status allow such interactions -->      
-                    {% if report.status != 3 and report.status != 8 and report.status != 9 %}
+		    {% if report.is_in_progress %} 
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
@@ -376,7 +384,7 @@ $(function(){
                 </td>
         
 		<!-- If the status allow such interactions -->		
-		{% if report.status != 3 and report.status != 8 and report.status != 9 %}
+		{% if report.is_in_progress %}
         <!--If the current user is the responsible manager-->
         {% if report.responsible_manager.id == request.user.id %} 
                 	<td class="annexesChoiceBoxTD">
@@ -411,7 +419,7 @@ $(function(){
                     
                     
                     <!-- If the status allow such interactions -->      
-                    {% if report.status != 3 and report.status != 8 and report.status != 9  %}
+                    {% if report.is_in_progress %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
@@ -433,7 +441,7 @@ $(function(){
             
             
             <!-- If the status allow such interactions -->      
-            {% if report.status != 3 and report.status != 8 and report.status != 9  %}
+            {% if report.is_in_progress  %}
             <!--If the current user is the responsible manager-->
             {% if report.responsible_manager.id == request.user.id %}
                 <td class="annexesChoiceBoxTD">

@@ -31,7 +31,7 @@ def refuse( request, report_id ):
 
 def fixed( request, report_id ):
 	report = get_object_or_404(Report, id=report_id)
-        report.status = Report.REFUSED
+        report.status = Report.SOLVED
 	report.save()    	
 
 	if "pro" in request.path:
@@ -81,12 +81,11 @@ def changeManager(request,report_id):
 def changeContractor(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     contractorId = request.REQUEST.get("contractorId")
-    contractorId = contractorId.split("_")[1]
-    if contractorId=='':
+    if contractorId=='-1':
         report.subcontractor = None
     else:
         organisation = OrganisationEntity.objects.get(pk=int(contractorId))
-        report.subcontractor = organisation
+        report.contractor = organisation
     report.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
