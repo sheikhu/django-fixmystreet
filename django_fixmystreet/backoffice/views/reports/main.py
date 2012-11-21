@@ -82,8 +82,8 @@ def show(request, report_id):
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True)
-    contractors = OrganisationEntity.objects.filter(subcontractor=True)
-    contractors = list(contractors) + list(OrganisationEntity.objects.filter(applicant=True))
+    contractors = OrganisationEntity.objects.filter(id=organisationId).filter(subcontractor=True)
+    contractors = list(contractors) + list(OrganisationEntity.objects.filter(dependency=organisationId).filter(applicant=True))
     return render_to_response("reports/show_pro.html",
             {
                 "report": report,

@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django_fixmystreet.fixmystreet.forms import AgentCreationForm
-from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, OrganisationEntity
 from django.views.generic.edit import FormView
 
 @login_required(login_url='/pro/accounts/login/')
@@ -20,7 +20,21 @@ def createUser(request):
         if createform.is_valid():
         	#createdUser = createform.save(userid,request.POST.get("userType"))
         	createdUser = createform.save(user, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
-        	#If this is the first user created and of type gestionnaire then assign all reportcategories to him
+		
+		#Also create the organisation too
+		if (createdUser.contractor == True):
+        		createdOrganisationEntity = OrganisationEntity()
+			createdOrganisationEntity.name_nl = createdUser.first_name+"/"+createdUser.last_name
+			createdOrganisationEntity.name_fr = createdUser.first_name+"/"+createdUser.last_name
+			createdOrganisationEntity.name_en = createdUser.first_name+"/"+createdUser.last_name
+			createdOrganisationEntity.region = False
+			createdOrganisationEntity.commune = False
+			createdOrganisationEntity.subcontractor = True
+			createdOrganisationEntity.applicant = False
+			createdOrganisationEntity.dependency_id = connectedUser.organisation.id
+			createdOrganisationEntity.save()
+        	
+		#If this is the first user created and of type gestionnaire then assign all reportcategories to him
 		if (createdUser.manager == True & connectedUser.leader == True):
 			#if we have just created the first one, then apply all type to him
 			#import pdb
