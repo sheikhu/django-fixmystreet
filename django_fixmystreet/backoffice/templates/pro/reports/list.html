@@ -1,4 +1,4 @@
-{% extends "base_pro.html" %}
+{% extends "pro/base.html" %}
 {% load i18n %}
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
@@ -94,7 +94,6 @@ $(document).ready(function() {
 	$map.bind('markermoved',function(evt,point){
 		$('#id_x').val(point.x);
 		$('#id_y').val(point.y);
-		
 		if(window.location.hash != '#form')
 		{
 			window.location.assign('#form');
@@ -182,7 +181,9 @@ $(document).ready(function() {
 		}
 	});
 	*/
-
+	/*Hide the edition form*/
+	$('#report_form').hide();
+	$('#nearby-reports').show();
 });
 </script>
 {% endblock %}

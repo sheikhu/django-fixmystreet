@@ -39,7 +39,7 @@ def list(request):
     #import pdb
     #pdb.set_trace()
     reports = reports.distance(pnt).order_by('distance')
-    return render_to_response("reports/list_pro.html",
+    return render_to_response("pro/reports/list.html",
             {
                 "report_form": report_form,
                 "pnt":pnt,
