@@ -18,21 +18,22 @@ def createUser(request):
     if request.method == "POST":
         createform = AgentCreationForm(request.POST)
         if createform.is_valid():
-        	#createdUser = createform.save(userid,request.POST.get("userType"))
-        	createdUser = createform.save(user, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
-		
+	
+		createdOrganisationEntity = -1;	
 		#Also create the organisation too
-		if (createdUser.contractor == True):
+		if (request.POST.get("contractorRadio") == "1"):
         		createdOrganisationEntity = OrganisationEntity()
-			createdOrganisationEntity.name_nl = createdUser.first_name+"/"+createdUser.last_name
-			createdOrganisationEntity.name_fr = createdUser.first_name+"/"+createdUser.last_name
-			createdOrganisationEntity.name_en = createdUser.first_name+"/"+createdUser.last_name
+			createdOrganisationEntity.name_nl = request.POST.get('first_name')+"/"+request.POST.get('last_name')
+			createdOrganisationEntity.name_fr = request.POST.get('first_name')+"/"+request.POST.get('last_name')
+			createdOrganisationEntity.name_en = request.POST.get('first_name')+"/"+request.POST.get('last_name')
 			createdOrganisationEntity.region = False
 			createdOrganisationEntity.commune = False
 			createdOrganisationEntity.subcontractor = True
 			createdOrganisationEntity.applicant = False
 			createdOrganisationEntity.dependency_id = connectedUser.organisation.id
 			createdOrganisationEntity.save()
+		#createdUser = createform.save(userid,request.POST.get("userType"))
+        	createdUser = createform.save(user, createdOrganisationEntity, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
         	
 		#If this is the first user created and of type gestionnaire then assign all reportcategories to him
 		if (createdUser.manager == True & connectedUser.leader == True):

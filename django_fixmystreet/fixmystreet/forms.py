@@ -187,7 +187,7 @@ class AgentCreationForm(UserCreationForm):
         fields = ('first_name','last_name','email','telephone','username','password1','password2','is_active')
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     is_active = forms.BooleanField(required=False)
-    def save(self,userID,isAgent,isManager,isContractor, commit=True):
+    def save(self, userID, contractorOrganisation, isAgent,isManager,isContractor, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
@@ -212,7 +212,12 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.impetrant = False
         fmsuser.contractor = (isContractor=="1")
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
-        fmsuser.organisation = currentUser.organisation
+        if (isContractor == "1"):
+             fmsuser.organisation = contractorOrganisation
+        else:
+             fmsuser.organisation = currentUser.organisation
+        #import pdb
+        #pdb.set_trace()
         fmsuser.save()
         return fmsuser;
 		
