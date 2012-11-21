@@ -4,11 +4,12 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django_fixmystreet.fixmystreet.forms import AgentCreationForm
-from django_fixmystreet.fixmystreet.models import getLoggedInUserId, FMSUser, ReportCategory
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory
+from django.views.generic.edit import FormView
 
 @login_required(login_url='/pro/accounts/login/')
 def createUser(request):
-    userid = getLoggedInUserId(request.COOKIES.get("sessionid"))
+    user = request.user
     connectedUser = FMSUser.objects.get(user_ptr_id=userid)
 
     isManager = connectedUser.manager
@@ -18,7 +19,7 @@ def createUser(request):
         createform = AgentCreationForm(request.POST)
         if createform.is_valid():
         	#createdUser = createform.save(userid,request.POST.get("userType"))
-        	createdUser = createform.save(userid,request.POST.get("agentRadio"),request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
+        	createdUser = createform.save(user, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
         	#If this is the first user created and of type gestionnaire then assign all reportcategories to him
 		if (createdUser.manager == True & connectedUser.leader == True):
 			#if we have just created the first one, then apply all type to him

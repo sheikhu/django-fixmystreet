@@ -4,7 +4,8 @@ from django.template import RequestContext
 from django.utils.http import urlquote
 from django.utils.translation import get_language
 from django.contrib.auth.decorators import login_required
-from django_fixmystreet.fixmystreet.models import ZipCode, ReportCountQuery, FaqEntry
+from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry
+from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 from django.conf import settings
 
 @login_required(login_url='/pro/accounts/login/')

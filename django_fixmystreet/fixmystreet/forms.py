@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, File, OrganisationEntity, Comment, Report, Status, ReportUpdate, ReportSubscription, ReportCategory, dictToPoint, AttachmentType, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, Status, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -42,8 +42,6 @@ class SecondaryCategorySelect(forms.Select):
 
 
 class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
-
-
     """
     Do some pre-processing to
     render opt-groups (silently supported, but undocumented
@@ -158,29 +156,6 @@ class CitizenReportForm(ReportForm):
             report.save()
         return report
 
-
-
-class ReportUpdateForm(forms.ModelForm):
-    class Meta:
-        model = ReportUpdate
-        fields = ('desc','photo',)
-    
-    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
-    
-    def __init__(self,data=None, files=None, initial=None):
-        super(ReportUpdateForm,self).__init__(data, files, initial=initial)
-
-    def save(self, user, report, commit=True):
-        update = super(ReportUpdateForm, self).save(commit=False)
-        if user.is_authenticated():
-            update.author = user
-        update.report = report
-        if commit:
-            update.save()
-        return update
-
-
-
 class ContactForm(forms.Form):
     required_css_class = 'required'
 
@@ -235,7 +210,7 @@ class AgentCreationForm(UserCreationForm):
 		
 class ReportFileForm(forms.ModelForm):
 	class Meta:
-		model=File
+		model=ReportFile
 		fields=('title','file','isVisible',)
 	
 	file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
@@ -246,18 +221,15 @@ class ReportFileForm(forms.ModelForm):
 	def save(self,user,report,commit=True):
 		fileUpdate= super(ReportFileForm,self).save(commit=False)
 		fileUpdate.report = report
-		#import pdb
-                #pdb.set_trace()
-		#default
-		fileUpdate.fileType = AttachmentType.objects.all()[0];
-		if (str(fileUpdate.file.name).endswith("pdf")):
-			fileUpdate.fileType = AttachmentType.objects.get(pk=2);
-		if (str(fileUpdate.file.name).endswith("doc")):
-			fileUpdate.fileType = AttachmentType.objects.get(pk=3);
-		if (str(fileUpdate.file.name).endswith("png")):
-			fileUpdate.fileType = AttachmentType.objects.get(pk=4);
-		if (str(fileUpdate.file.name).endswith("jpg")):
-			fileUpdate.fileType = AttachmentType.objects.get(pk=1);
+
+		if str(fileUpdate.file.name).endswith("pdf"):
+			fileUpdate.fileType = ReportFile.PDF
+		if str(fileUpdate.file.name).endswith("doc"):
+			fileUpdate.fileType = ReportFile.WORD
+		if str(fileUpdate.file.name).endswith("png") or str(fileUpdate.file.name).endswith("jpg"):
+			fileUpdate.fileType = ReportFile.IMAGE
+		if str(fileUpdate.file.name).endswith("xls"):
+			fileUpdate.fileType = ReportFile.EXCEL
 		
 		if commit:
 			fileUpdate.save()
@@ -265,7 +237,7 @@ class ReportFileForm(forms.ModelForm):
 
 class ReportCommentForm(forms.ModelForm):
 	class Meta:
-		model=Comment
+		model=ReportComment
 		fields=('title','text','isVisible',)
 	
 	def save(self,user,report,commit=True):

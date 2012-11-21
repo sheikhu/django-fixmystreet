@@ -4,7 +4,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django_fixmystreet.backoffice.forms import ManagersListForm
-from django_fixmystreet.fixmystreet.models import TypesWithUsersOfOrganisation,FMSUser, UsersAssignedToCategories, getLoggedInUserId, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
+from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, UsersAssignedToCategories
 from django.contrib.sessions.models import Session
 from django.utils.translation import ugettext_lazy
 

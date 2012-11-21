@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity
-from django_fixmystreet.fixmystreet.forms import ReportForm, CitizenReportForm, ReportUpdateForm
+from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm
 from django.template import RequestContext
 
 
@@ -40,7 +40,7 @@ def show(request, report_id):
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "update_form": ReportUpdateForm()
+                "update_form": ReportCommentForm()
             },
             context_instance=RequestContext(request))
 
