@@ -7,6 +7,7 @@ from django.contrib.sessions.models import Session
 from django.utils.translation import ugettext_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django_fixmystreet.fixmystreet.forms import AgentCreationForm
 from django_fixmystreet.backoffice.forms import UserEditForm
 from django_fixmystreet.fixmystreet.models import FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
 from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, UsersAssignedToCategories
@@ -25,14 +26,16 @@ def show(request):
 		users = users.filter(impetrant=True)
 	if userType == 'manager':
 		users = users.filter(manager=True)
-	return render_to_response("users_overview.html",{
+	return render_to_response("pro/users_overview.html",{
 		"users":users,
 	},context_instance=RequestContext(request))
 
-@login_required(login_url='/pro/accounts/login/')
+
 def edit(request):
 	userType = request.REQUEST.get("userType")
+	#Get user connected
 	user = FMSUser.objects.get(user_ptr_id=request.user.id)
+	
 	currentOrganisationId = user.organisation.id
 	users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 	if userType == 'agent':
@@ -43,17 +46,14 @@ def edit(request):
 		users = users.filter(impetrant=True)
 	if userType == 'manager':
 		users = users.filter(manager=True)
-	user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
+	#Get used to edit
+        user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
 
-	userid = getLoggedInUserId(request.COOKIES.get("sessionid"))	
-    	connectedUser = FMSUser.objects.get(user_ptr_id=userid)
+    	connectedUser = FMSUser.objects.get(user_ptr_id=request.user.id)
 	
 
 	canEditGivenUser = (((user.manager or user.agent) and connectedUser.leader) or ((user.agent) and connectedUser.manager))
-	#import pdb
-        #pdb.set_trace()
-
-	return render_to_response("users_overview.html",{
+	return render_to_response("pro/users_overview.html",{
 						"users":users,
 						"canEditGivenUser":canEditGivenUser,
 						"editForm":UserEditForm(instance=user)
@@ -73,6 +73,54 @@ def deleteUser(request):
 	print request.REQUEST.get('userId')
 	FMSUser.objects.get(user_ptr_id=request.REQUEST.get('userId')).delete()
 	return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
+
+def createUser(request):
+    user = request.user
+    connectedUser = FMSUser.objects.get(user_ptr_id=user.id)
+
+    isManager = connectedUser.manager
+
+    #a boolean value to tell the ui if the user can edit the given form content
+    if request.method == "POST":
+        createform = AgentCreationForm(request.POST)
+        if createform.is_valid():
+	
+		createdOrganisationEntity = -1;	
+		#Also create the organisation too
+		if (request.POST.get("contractorRadio") == "1"):
+        		createdOrganisationEntity = OrganisationEntity()
+			createdOrganisationEntity.name_nl = request.POST.get('first_name')+"/"+request.POST.get('last_name')
+			createdOrganisationEntity.name_fr = request.POST.get('first_name')+"/"+request.POST.get('last_name')
+			createdOrganisationEntity.name_en = request.POST.get('first_name')+"/"+request.POST.get('last_name')
+			createdOrganisationEntity.region = False
+			createdOrganisationEntity.commune = False
+			createdOrganisationEntity.subcontractor = True
+			createdOrganisationEntity.applicant = False
+			createdOrganisationEntity.dependency_id = connectedUser.organisation.id
+			createdOrganisationEntity.save()
+		#createdUser = createform.save(userid,request.POST.get("userType"))
+        	createdUser = createform.save(user, createdOrganisationEntity, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
+        	
+		#If this is the first user created and of type gestionnaire then assign all reportcategories to him
+		if (createdUser.manager == True & connectedUser.leader == True):
+			#if we have just created the first one, then apply all type to him
+			#import pdb
+			#pdb.set_trace()
+			if len(FMSUser.objects.filter(organisation_id=connectedUser.organisation.id).filter(manager=True)) == 1:
+				for type in ReportCategory.objects.all():
+					createdUser.categories.add(type)
+
+		if createdUser:
+        		return HttpResponseRedirect('/pro/')
+    else:
+        createform = AgentCreationForm()
+    
+    return render_to_response("pro/user_create.html",
+            {
+                "createform":createform,
+                "isManager":isManager
+            },
+            context_instance=RequestContext(request))
 
 # 
 # class CreateUser(CreateView):

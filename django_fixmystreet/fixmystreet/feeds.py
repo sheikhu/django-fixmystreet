@@ -2,7 +2,7 @@ from django.contrib.syndication.views import Feed
 from django.contrib.syndication.views import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
 
-from django_fixmystreet.fixmystreet.models import Report, ReportUpdate
+from django_fixmystreet.fixmystreet.models import Report
 
 class LatestReports(Feed):
     title = "All FixMyStreet Reports"

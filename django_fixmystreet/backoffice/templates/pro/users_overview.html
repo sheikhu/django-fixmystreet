@@ -1,4 +1,4 @@
-{% extends "base_pro.html" %}
+{% extends "pro/base.html" %}
 {% load i18n %}
 {% load tags %}
 {% block script %}
@@ -40,6 +40,7 @@ $("[for='id_password']").parent().parent().hide()
 					{% if user.leader %}ENTITE {% endif %}
 					{% if user.manager %}GESTIONNAIRE {% endif %}
 					{% if user.agent %}AGENT {% endif %}
+					{% if user.contractor %}EXECUTEUR DE TRAVAUX {% endif %}
 				)
 			</p>
                 	</div>

@@ -80,6 +80,8 @@ $(document).ready(function() {
 			refSecondary.find("option[public='False']").remove();
 			/*remove empty optgroup*/
 			refSecondary.find("optgroup:not(:has(option))").remove();
+			/*Copy value to hiddendropdown */
+			$('#id_secondary_category').change();// initialize notes
                 }
                 else
                 {
@@ -93,8 +95,9 @@ $(document).ready(function() {
 	$('#id_secondary_category').change(function(evt) {
          	//Copy is necessary to avoid django validation problem
                 var el_id_copy = $('#id_secondary_category').val();
-                $('#id_secondary_category_copy').val(el_id_copy);
+		$('#id_secondary_category_copy').val(el_id_copy);
 	});
+	$('#id_secondary_category').change();// initialize notes
 
 	$map.bind('markermoved',function(evt,point){
 		$('#id_x').val(point.x);

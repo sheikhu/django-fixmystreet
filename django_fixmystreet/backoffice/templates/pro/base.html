@@ -179,9 +179,6 @@
 				<li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_list_pro %}?status=in_progress"> Progress <p class="category_number">{{request.user|numberOfInProgressReports}}</p></a></li>
 				<li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro %}?status=off"> Closed <p class="category_number">{{request.user|numberOfClosedReports}} </p></a> </li>
 				<li><a id="subscriptionMenuItem" class='subcategory' href="{% url report_subscription_pro %}?subscription=1"> My subscriptions <p class="category_number">{{request.user|numberOfSubscriptions}}</p> </a> <p class="category_number"></p></li>
-				{% if request.user.id|hasAtLeastAManager %}
-				<li><a id='createMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Create </a></li> 
-				{% endif %}
 				<li> <a class='category' href="{% url usersOverview %}?userType=users"> Collaborators <p class="category_number">{{request.user|numberOfUsers}}</p></a></a></li>
 				
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=agent">Agents <p class="category_number">{{request.user|numberOfAgents}}</p></a> </a> </li>
@@ -190,17 +187,21 @@
 
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires <p class="category_number">{{request.user|numberOfManagers}}</p></a></a></li>
 				
-				{% if request.user.id|isLeader or request.user.id|isManager %}
+				{% if request.user.id|isLeader %}
+					{% if request.user.id|hasAtLeastAManager %}
 					<li> <a class='category'> Configuration </a></li>
-					{% if request.user.id|isLeader %}
-						{% if request.user.id|hasAtLeastAManager %}
-							<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
-						{% endif %}
+					<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
 					{% endif %}
-					<li><a class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
 				{% endif %}
 
 				
+				<li><a id='createMenu' class='category' href=""> Create </a></li> 
+				{% if request.user.id|hasAtLeastAManager %}
+					<li><a id='createReportMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Report </a></li> 
+				{% endif %}
+				{% if request.user.id|isLeader or request.user.id|isManager %}
+					<li><a id='createUserMenuItem' class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
+				{% endif %}
 			</ul>
 		</div>
 			<div id='body_content'>
@@ -213,7 +214,7 @@
 				{% block content_third %}{% endblock %}
                 <p id="legal_notice">
                     <a id="term_of_use" href="{% url terms_of_use %}">{% trans "Terms of Use" %}</a>
-                    Copyright 2011, <a href="http://www.cirb.irisnet.be">CIRB</a> <a href="http://www.cirb.irisnet.be"><img src="/media/images/CIRB-CIBG-inverse.gif"/></a>
+                    Copyright 2011, <a href="http://www.cirb.irisnet.be">CIRB</a> <a href="http://www.cirb.irisnet.be"><img src="{{ STATIC_URL }}images/CIRB-CIBG-inverse.gif"/></a>
                 </p>
 			</div>
 		</div>

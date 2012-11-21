@@ -54,7 +54,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.contrib.auth.context_processors.auth',
     "django.contrib.messages.context_processors.messages",
-    'social_auth.context_processors.social_auth_by_name_backends',
+    # 'social_auth.context_processors.social_auth_by_name_backends',
     'django_fixmystreet.fixmystreet.utils.domain_context_processor'
 )
 
@@ -102,25 +102,25 @@ INSTALLED_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuthBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.google.GoogleBackend',
-    'social_auth.backends.yahoo.YahooBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-    'social_auth.backends.contrib.orkut.OrkutBackend',
-    'social_auth.backends.contrib.foursquare.FoursquareBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.OpenIDBackend',
+    # 'social_auth.backends.twitter.TwitterBackend',
+    # 'social_auth.backends.facebook.FacebookBackend',
+    # 'social_auth.backends.google.GoogleOAuthBackend',
+    # 'social_auth.backends.google.GoogleOAuth2Backend',
+    # 'social_auth.backends.google.GoogleBackend',
+    # 'social_auth.backends.yahoo.YahooBackend',
+    # 'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    # 'social_auth.backends.contrib.livejournal.LiveJournalBackend',
+    # 'social_auth.backends.contrib.orkut.OrkutBackend',
+    # 'social_auth.backends.contrib.foursquare.FoursquareBackend',
+    # 'social_auth.backends.contrib.github.GithubBackend',
+    # 'social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'django_fixmystreet.fixmystreet.googlebackend.GoogleProfileBackend',
+    # 'django_fixmystreet.fixmystreet.googlebackend.GoogleProfileBackend',
 )
 
-SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
+# SOCIAL_AUTH_ENABLED_BACKENDS = ('google-profile', 'facebook')
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login-callback/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login-callback/'
 
 FACEBOOK_EXTENDED_PERMISSIONS = ('email',)
 

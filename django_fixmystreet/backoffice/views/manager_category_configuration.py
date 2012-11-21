@@ -9,7 +9,7 @@ from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, U
 from django.contrib.sessions.models import Session
 from django.utils.translation import ugettext_lazy
 
-@login_required(login_url='/pro/accounts/login/')
+
 def show(request):
     maincategories = ReportMainCategoryClass.objects.all()
     secondcategories = ReportSecondaryCategoryClass.objects.all()
@@ -31,7 +31,7 @@ def show(request):
     # Return the main categories list, secondary categories list for displaying the matrix column- and rowheaders.
     # Return an empty categories list (types) because we are showing the page (not doing the selection via popup)
     # Return the current selected list so that the buttons in the matrix have as label all names of selected managers
-    return render_to_response("category_gestionnaire_configuration.html",
+    return render_to_response("pro/manager_category_configuration.html",
             {
                 "maincategories" : maincategories,
                 "secondcategories": secondcategories,
@@ -40,7 +40,7 @@ def show(request):
             },
             context_instance=RequestContext(request))
 
-@login_required(login_url='/pro/accounts/login/')
+
 def update(request):
     maincategories = ReportMainCategoryClass.objects.all()
     secondcategories = ReportSecondaryCategoryClass.objects.all()
@@ -75,7 +75,7 @@ def update(request):
     managersForm = ManagersListForm(request.user)
     managersForm.refreshChoices(request.user)
     #import pdb; pdb.set_trace()    
-    return render_to_response("category_gestionnaire_configuration.html",
+    return render_to_response("pro/manager_category_configuration.html",
             {
                 "maincategories" : maincategories,
                 "secondcategories": secondcategories,

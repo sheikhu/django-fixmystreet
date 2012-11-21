@@ -26,7 +26,7 @@ from django_fixmystreet.fixmystreet.utils import FixStdImageField
 class FMSUser(User):
     telephone = models.CharField(max_length=20,null=True)
     #active = models.BooleanField(default=True)
-    lastUsedLanguage = models.CharField(max_length=10,null=True)
+    last_used_language = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
     agent = models.BooleanField(default=True)
@@ -59,31 +59,23 @@ class OrganisationEntity(models.Model):
         translate = ('name', )
 
 
-class Status(models.Model):
-    __metaclass__=TransMeta
-    name=models.CharField(verbose_name=_('Name'),max_length=100,null=False)
-    code=models.CharField(max_length=50,null=False)
-    parentStatus = models.ForeignKey('self',null=True)
-    
-    class Meta:
-        translate = ('name', )
-
-
 class Report(models.Model):
-    #LIST OF QUALITIES
-    RIVERAIN = 0
+
+    #List of qualities
+    RESIDENT = 0
     OTHER = 1
-    COMMERCANT = 2
+    TRADE = 2
     SYNDICATE = 3
     ASSOCIATION = 4
     REPORT_QUALITY_CHOICES = (
-        (RIVERAIN,_("Created")), 
-        (OTHER,_("Created")),
-        (COMMERCANT,_("Created")),
-        (SYNDICATE,_("Created")),
-        (ASSOCIATION,_("Created"))
+        (RESIDENT,_("Resident")), 
+        (OTHER,_("Other")),
+        (TRADE,_("Trade")),
+        (SYNDICATE,_("Syndicate")),
+        (ASSOCIATION,_("Association"))
     )
 
+    # List of status
     CREATED = 0
     REFUSED = 9
     
@@ -96,10 +88,10 @@ class Report(models.Model):
     PROCESSED = 3
     DELETED   = 8
 
-    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
-    REPORT_STATUS_VIEWABLE    = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
+    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
-    REPORT_STATUS_OFF         = (DELETED, CREATED)
+    REPORT_STATUS_OFF         = (DELETED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
@@ -184,20 +176,6 @@ class Exportable(models.Model):
         abstract = True
 
 
-# class Address(models.Model):
-    # __metaclass__= TransMeta
-    # 
-    # street = models.CharField(max_length=100)
-    # city = models.CharField(max_length= 100)
-    # zipCode = models.IntegerField()
-    # streetNumber = models.CharField(max_length=100)
-    # geoX = models.FloatField()
-    # geoY = models.FloatField()
-    # 
-    # class Meta:
-        # translate=('street','city',)
-
-
 class ReportAttachment(models.Model):
     report = models.ForeignKey(Report)
     validated=models.BooleanField(default=False)
@@ -208,7 +186,7 @@ class ReportAttachment(models.Model):
         abstract=True
 
 
-class ReportComment (ReportAttachment):
+class ReportComment(ReportAttachment):
     text = models.TextField()
 
 
@@ -217,43 +195,52 @@ class ReportFile(ReportAttachment):
     WORD  = 2
     EXCEL = 3
     IMAGE = 4
-    AttachmentType = (
+    attachment_type = (
         (PDF  , "pdf"),
         (WORD , "word"),
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
     file = models.FileField(upload_to="files")
-    fileType = models.IntegerField(choices=AttachmentType)
+    file_type = models.IntegerField(choices=attachment_type)
 
-
-class UserType(models.Model):
-    __metaclass__= TransMeta
-
-    code=models.CharField(max_length=50)
-    name=models.CharField(max_length=100)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    
-    class Meta:
-        translate = ('name', )
 
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     """signal on a report to notify public authority that a report has been filled"""
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
-        if instance.creator:
-            fmsUser = FMSUser.objects.get(pk=instance.creator.id)
-            userCandidates = FMSUser.objects.filter(organisation__id=fmsUser.organisation.id).filter(manager=True)
+        #When created by pro a creator exists otherwise a citizen object
+        organizationSearchCriteria = -1
+        #if instance.creator:
+        #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
+        #    organizationSearchCriteria = fmsUser.organisation
+        #elif instance.citizen:
+        instance.commune = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+        organizationSearchCriteria = instance.commune
+
+        #Assign the entity.
+        instance.responsible_entity = organizationSearchCriteria
+
+        #Searcht the right responsible for the current organization.            
+        userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
+        managerFound = False
+        for currentUser in userCandidates:
+            userCategories = currentUser.categories.all()
+            for currentCategory in userCategories:
+                if (currentCategory == instance.secondary_category):
+                   managerFound = True
+                   instance.responsible_manager = currentUser
+
+        #If not manager found for the responsible commune, then reassign to the region
+        if (managerFound == False):
+            instance.responsible_entity  = OrganisationEntity.objects.get(region=True)
+            userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
             for currentUser in userCandidates:
                 userCategories = currentUser.categories.all()
                 for currentCategory in userCategories:
                     if (currentCategory == instance.secondary_category):
-                    #import pdb
-                    #pdb.set_trace()
                         instance.responsible_manager = currentUser
-                        #instance.save()
 
 #signal on a report to notify public authority that a report has been filled
 @receiver(post_save,sender=Report)
@@ -267,38 +254,38 @@ def report_notify(sender, instance, **kwargs):
 #    if kwargs['created']:
 #        ReportSubscription(report=instance, subscriber=instance.author).save()
 
-class ReportUpdate(models.Model):
-    """A new version of the status of a report"""
-    report = models.ForeignKey(Report)
-    desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_fixed = models.BooleanField(default=False)
-    author = models.ForeignKey(User,null=True)
-    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50)) 
-    
-    class Meta:
-        ordering = ['created_at']
-        #order_with_respect_to = 'report'
-
-#update the report, set updated_at and is_fixed correctly
-@receiver(post_save, sender=ReportUpdate)
-def update_report(sender, instance, **kwargs):
-    instance.report.updated_at = instance.created_at
-
-    instance.report.is_fixed = instance.is_fixed
-    if(instance.is_fixed and not instance.report.fixed_at):
-        instance.report.fixed_at = instance.created_at
-
-    instance.report.save()
+# class ReportUpdate(models.Model):
+    # """A new version of the status of a report"""
+    # report = models.ForeignKey(Report)
+    # desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # is_fixed = models.BooleanField(default=False)
+    # author = models.ForeignKey(User,null=True)
+    # photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50)) 
+    # 
+    # class Meta:
+        # ordering = ['created_at']
+        # #order_with_respect_to = 'report'
+# 
+# #update the report, set updated_at and is_fixed correctly
+# @receiver(post_save, sender=ReportUpdate)
+# def update_report(sender, instance, **kwargs):
+    # instance.report.updated_at = instance.created_at
+# 
+    # instance.report.is_fixed = instance.is_fixed
+    # if(instance.is_fixed and not instance.report.fixed_at):
+        # instance.report.fixed_at = instance.created_at
+# 
+    # instance.report.save()
 
 #notify subscribers that report has been updated
-@receiver(post_save, sender=ReportUpdate)
-def notify(sender, instance, **kwargs):
-    if not kwargs['raw']:
-        for subscribe in instance.report.reportsubscription_set.exclude(Q(subscriber__email__isnull=True) | Q(subscriber__email__exact='')):
-            unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
-            msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
-            msg.send()
+# @receiver(post_save, sender=ReportUpdate)
+# def notify(sender, instance, **kwargs):
+    # if not kwargs['raw']:
+        # for subscribe in instance.report.reportsubscription_set.exclude(Q(subscriber__email__isnull=True) | Q(subscriber__email__exact='')):
+            # unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
+            # msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
+            # msg.send()
 
 
 class ReportSubscription(models.Model):
@@ -318,6 +305,7 @@ class ReportMainCategoryClass(models.Model):
     """
 
     name = models.CharField(max_length=100)
+    hint = models.ForeignKey('ReportCategoryHint', null=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):      
@@ -355,12 +343,6 @@ class ReportCategory(models.Model):
     """
 
     name = models.CharField(verbose_name=_('Name'), max_length=100)
-    hint = models.TextField(verbose_name=_('Hint'), blank=True, null=True)
-    #code     = models.CharField(max_length=32)
-    #label_en = models.TextField(blank=True, null=True)
-    #label_fr = models.TextField(blank=True, null=True)
-    #label_nl = models.TextField(blank=True, null=True)
-    #type     = models.CharField(max_length=32)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
@@ -372,8 +354,14 @@ class ReportCategory(models.Model):
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
-        translate = ('name', 'hint', )
+        translate = ('name', )
 
+
+class ReportCategoryHint(models.Model):
+    __metaclass__ = TransMeta
+    label = models.TextField(verbose_name=_('Label'), blank=False, null=False)
+    class Meta:
+        translate = ('label', )
 
 
 class GestType(models.Model):
@@ -463,8 +451,8 @@ class NotificationResolver(object):
         notification.save()
 
     def resolve(self):
-        # if self.report.commune.default_manager:
-            # self.send(self.report.commune.default_manager)
+        #if self.report.commune.default_manager:
+        #    self.send(self.report.commune.default_manager)
         for rule in self.rules:
             if rule.rule == NotificationRule.TO_COUNCILLOR:
                 self.send(rule.councillor)
@@ -477,18 +465,6 @@ class NotificationResolver(object):
                 if self.report.category.category_class != rule.category_class:
                     self.send(rule.councillor)
 
-
-# class Commune(models.Model):
-    # __metaclass__ = TransMeta
-    # 
-    # name = models.CharField(max_length=100)
-    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    # default_manager = models.ForeignKey(FMSUser, null=True)
-# 
-    # class Meta:
-        # translate = ('name', )
-# 
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta
@@ -560,6 +536,20 @@ class FaqMgr(object):
         entry2.save()
  
 
+class ListItem(models.Model):
+    """
+    Only for sql selection purpose
+    """
+    __metaclass__= TransMeta
+    label = models.CharField(verbose_name=_('Label'),max_length=100,null=False)
+    model_class = models.CharField(verbose_name=_('Related model class name'),max_length=100,null=False)
+    model_field = models.CharField(verbose_name=_('Related model field'),max_length=100,null=False)
+    code = models.CharField(max_length=50,null=False)
+    
+    class Meta:
+        translate = ('label', )
+
+
 def dictToPoint(data):
     if not data.has_key('x') or not data.has_key('y'):
         raise Http404('<h1>Location not found</h1>')
@@ -592,11 +582,13 @@ class HtmlTemplateMail(EmailMultiAlternatives):
         if html:
             self.attach_alternative(html, "text/html")
 
+
 def exportUsers():
     XMLSerializer = serializers.get_serializer("xml")
     xml_serializer = XMLSerializer()
     with open("backup/pro/users.xml", "w") as out:
         xml_serializer.serialize(FMSUser.objects.all(), stream=out)
+
 
 def exportReportsOfEntity(entityId):
     # TODO loop over all reports to get files and comments (Structure result data in correct manner)

@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, Status, ReportSubscription, ReportCategory, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -94,6 +94,8 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
+            #import pdb
+            #pdb.set_trace()
             self.commune = OrganisationEntity.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
 
@@ -149,9 +151,15 @@ class CitizenReportForm(ReportForm):
         if user.is_authenticated():
             report.creator = user
         else:
-            #Add information about the citizen connected.
-            
-            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+            try:
+                existingUser = FMSUser.objects.get(username=self.cleaned_data["citizen_email"]);
+                #Assign citizen
+                report.citizen = existingUser
+            except FMSUser.DoesNotExist:
+                #Add information about the citizen connected if it does not exist
+                report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+        
+        
         if commit:
             report.save()
         return report
@@ -179,7 +187,7 @@ class AgentCreationForm(UserCreationForm):
         fields = ('first_name','last_name','email','telephone','username','password1','password2','is_active')
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     is_active = forms.BooleanField(required=False)
-    def save(self,userID,isAgent,isManager,isContractor, commit=True):
+    def save(self, userID, contractorOrganisation, isAgent,isManager,isContractor, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
@@ -204,7 +212,12 @@ class AgentCreationForm(UserCreationForm):
         fmsuser.impetrant = False
         fmsuser.contractor = (isContractor=="1")
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
-        fmsuser.organisation = currentUser.organisation
+        if (isContractor == "1"):
+             fmsuser.organisation = contractorOrganisation
+        else:
+             fmsuser.organisation = currentUser.organisation
+        #import pdb
+        #pdb.set_trace()
         fmsuser.save()
         return fmsuser;
 		

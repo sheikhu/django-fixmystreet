@@ -1,4 +1,4 @@
-{% extends "base_pro.html" %}
+{% extends "pro/base.html" %}
 {% load i18n %}
 {% load tags %}
 
@@ -48,13 +48,13 @@ $(function(){
                 //public file checkbox changed
                 console.log("public file: "+$(value).val());
                 //TODO handle public bool of file with id vals[2]
-                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateFile?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+                window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
             }
             else{
                 //public comment checkbox changed
                 console.log("public comment: "+$(value).attr("checked"));
                 //TODO handle public bool of comment with id vals[2]
-                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateComment?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+                window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
             }
         }
         else{
@@ -63,14 +63,14 @@ $(function(){
                 //Confidential file checkbox changed
                 console.log("Confidential file: "+$(value).attr("checked"));
                 //TODO handle Confidential bool of file with id vals[2]
-                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateFile?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+                window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
 
             }
             else{
                 //Confidential comment checkbox changed
                 console.log("Confidential comment: "+$(value).attr("checked"));
                 //TODO handle Confidential bool of comment with id vals[2]
-                window.location = '{% url report_new_pro %}/../../report/{{report.id}}/updateComment?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+                window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
             }
         }
     } });
@@ -78,7 +78,7 @@ $(function(){
     $("#report_responsible_manager_select").bind("change",function(event){
         var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
         if (r==true){
-            window.location = '{% url report_new_pro %}/../../report/{{report.id}}/changeManager/?manId='+$("#report_responsible_manager_select").val();
+            window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
         }
         else{
             $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
@@ -87,18 +87,25 @@ $(function(){
     $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
     $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
         //TODO update report with new contractor
-        console.log($("#report_responsible_impetrant_contractor_select").val());
-        window.location = '{% url report_new_pro %}/../../report/{{report.id}}/changeContractor/?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+        window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
     });
+
     $("#commentForm").hide();
     $("#fileForm").hide();
+
     {% if user.is_authenticated %}
         $(document).trigger('connected');
     {% else %}
         $(document).trigger('disconnected');
     {% endif %}});
 
-	function showMap() {
+    /* When JQUERY is ready*/
+    $(document).ready(function() {
+    	/*Set the contractor dropdown*/
+    	$('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
+    });
+
+    function showMap() {
 			$("#map-bxl").toggle();
 	}
 
@@ -156,14 +163,15 @@ $(function(){
             <table class="reportActionButtons">
 		
         {% if report.responsible_manager.id == request.user.id %}
-		{% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %} 
+		{% if report.is_in_progress %} 
                 <tr>
                     	<td ></td>
                     	<td >
-                        	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button>
+                        	<!--button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button-->
+				&nbsp;
                     	</td>
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/fixed'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+                        	<button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
                     	</td>
                         <td >
                             <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>
@@ -171,17 +179,17 @@ $(function(){
                 </tr>
     		{% endif %}
                 <tr>
-			{% if report.status.code == '0' %} 
+			{% if report.is_created %} 
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
+                        	<button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
                     	</td>
 
                     	<td >
-                        	<button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/refuse'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
+                        	<button onclick="window.location = '{% url report_refuse_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
                     	</td>
 
                         <td >
-                            <button onclick="window.location = '{% url report_new_pro %}/../../report/{{report.id}}/accept_and_validate'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
+                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
                         </td>
     			{% endif %}
 			
@@ -238,9 +246,9 @@ $(function(){
                 </tr>
                 <tr>
                 	<th>{% trans "Status:" %}</th>
-                	<td>{{ report.status.name_en }}</td>
+                	<td>{{ report.get_status_display }}</td>
                 </tr>
-                {% if report.status.code == '4' or report.status.code == '5' or report.status.code == '6'  %}
+                {% if report.is_in_progress  %}
                 {% if request.user.id == report.responsible_manager.id %}
                 <tr>
                     <th>{% trans "Responsible manager:" %}</th>
@@ -259,9 +267,9 @@ $(function(){
                     <th>{% trans "Contractor/Impetrant:" %}</th>
                     <td>
                         <select id="report_responsible_impetrant_contractor_select">
-                            <option value="contractor_">{% trans 'Select a contractor/impetrant' %}</option>
+                            <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
                             {% for organisation in contractors %}
-                            <option value="contractor_{{organisation.id}}">{{organisation.name}}</option>
+                            	<option value="{{organisation.id}}">{{organisation.name}}</option>
                             {% endfor %}
                         </select>
                     </td>
@@ -287,7 +295,7 @@ $(function(){
 	<div id="rightcol">
 	
 		<!-- If the status allow such interactions -->		
-		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+		{% if report.is_in_progress %} 
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
@@ -340,7 +348,7 @@ $(function(){
                 <table id="extraFilesTable">
                     <th></th>
                     <!-- If the status allow such interactions -->      
-                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+		    {% if report.is_in_progress %} 
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
@@ -376,7 +384,7 @@ $(function(){
                 </td>
         
 		<!-- If the status allow such interactions -->		
-		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+		{% if report.is_in_progress %}
         <!--If the current user is the responsible manager-->
         {% if report.responsible_manager.id == request.user.id %} 
                 	<td class="annexesChoiceBoxTD">
@@ -411,7 +419,7 @@ $(function(){
                     
                     
                     <!-- If the status allow such interactions -->      
-                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+                    {% if report.is_in_progress %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Valid' %}</th>
@@ -433,7 +441,7 @@ $(function(){
             
             
             <!-- If the status allow such interactions -->      
-            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
+            {% if report.is_in_progress  %}
             <!--If the current user is the responsible manager-->
             {% if report.responsible_manager.id == request.user.id %}
                 <td class="annexesChoiceBoxTD">

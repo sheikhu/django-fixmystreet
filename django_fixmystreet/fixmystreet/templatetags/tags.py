@@ -78,36 +78,31 @@ def isAgent(userId):
 def numberOfCreatedReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status=Report.CREATED)
-    #Activate something similar to this to filter per entity !!!
-    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
+    reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
     return reports.count()
 
 @register.filter
 def numberOfInProgressReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-    #Activate something similar to this to filter per entity !!!
-    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
+    reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     return reports.count()
 
 @register.filter
 def numberOfClosedReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
-    #Activate something similar to this to filter per entity !!!
-    #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
+    reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
     return reports.count()
 
 @register.filter
 def numberOfReports(userId):
     userConnected = FMSUser.objects.get(user_ptr_id=userId)
     userConnectedOrganisation = userConnected.organisation
+    reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).all()
     #Activate something similar to this to filter per entity !!!
     #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
-    return Report.objects.count()
+    return reports.count()
 
 @register.filter
 def numberOfUsers(userId):

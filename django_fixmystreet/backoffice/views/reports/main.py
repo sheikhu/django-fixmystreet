@@ -5,7 +5,7 @@ from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm,Repo
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-@login_required(login_url='/pro/accounts/login/')
+
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
@@ -38,7 +38,7 @@ def new(request):
 
     reports = reports.distance(pnt).order_by('distance')
 
-    return render_to_response("reports/new_pro.html",
+    return render_to_response("pro/reports/new.html",
             {
                 "report_form": report_form,
                 "pnt":pnt,
@@ -46,16 +46,18 @@ def new(request):
             },
             context_instance=RequestContext(request))
 
-#Method used to load all my subscription reports
-@login_required(login_url='/pro/accounts/login/')
+
 def subscription(request):
+    """
+    Method used to load all my subscription reports
+    """
     subscriptions = ReportSubscription.objects.filter(subscriber_id = request.user.id)
     reports = [None]*len(subscriptions)
     i = 0
     for subscription in subscriptions:
         reports[i] = Report.objects.get(pk=subscription.report_id)
         i= i+1
-    return render_to_response("reports/subscriptions.html",
+    return render_to_response("pro/reports/subscriptions.html",
             {
               "reports":reports  
             },
@@ -63,32 +65,27 @@ def subscription(request):
 
 
 
-@login_required(login_url='/pro/accounts/login/')
 def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
 
-@login_required(login_url='/pro/accounts/login/')
 def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
 
-
-@login_required(login_url='/pro/accounts/login/')
 def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    files= File.objects.filter(report_id=report_id)
-    comments = Comment.objects.filter(report_id=report_id)
+    files= ReportFile.objects.filter(report_id=report_id)
+    comments = ReportComment.objects.filter(report_id=report_id)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True)
-    contractors = OrganisationEntity.objects.filter(subcontractor=True)
-    contractors = list(contractors) + list(OrganisationEntity.objects.filter(applicant=True))
-    return render_to_response("reports/show_pro.html",
+    contractors = OrganisationEntity.objects.filter(id=organisationId).filter(subcontractor=True)
+    contractors = list(contractors) + list(OrganisationEntity.objects.filter(dependency=organisationId).filter(applicant=True))
+    return render_to_response("pro/reports/show.html",
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "update_form": ReportUpdateForm(),
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),
                 "files":files,

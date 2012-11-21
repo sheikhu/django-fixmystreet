@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db import transaction
 
-from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
 
 @transaction.commit_on_success
@@ -31,7 +31,7 @@ def refuse( request, report_id ):
 
 def fixed( request, report_id ):
 	report = get_object_or_404(Report, id=report_id)
-        report.status = Status.objects.get(pk='7') #Refused
+        report.status = Report.SOLVED
 	report.save()    	
 
 	if "pro" in request.path:
@@ -81,12 +81,11 @@ def changeManager(request,report_id):
 def changeContractor(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     contractorId = request.REQUEST.get("contractorId")
-    contractorId = contractorId.split("_")[1]
-    if contractorId=='':
+    if contractorId=='-1':
         report.subcontractor = None
     else:
         organisation = OrganisationEntity.objects.get(pk=int(contractorId))
-        report.subcontractor = organisation
+        report.contractor = organisation
     report.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -94,7 +93,7 @@ def changeContractor(request,report_id):
             return HttpResponseRedirect(report.get_absolute_url())
 def acceptAndValidate(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    report.status = Status.objects.get(pk='4') #Gestionnaire is assigned
+    report.status = Report.MANAGER_ASSIGNED
     report.save()
     comments = Comment.objects.filter(report_id=report_id)
     for comment in comments:
