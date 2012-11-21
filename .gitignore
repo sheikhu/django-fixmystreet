@@ -5,5 +5,6 @@
 bootstrap.py
 libs/
 bin/
+doc/build/
 django_fixmystreet/local_settings.py
 media/photos/
