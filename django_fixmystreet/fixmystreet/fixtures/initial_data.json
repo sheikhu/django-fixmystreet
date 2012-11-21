@@ -24,6 +24,231 @@
         }
     },
     {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jonathan",
+            "last_name": "Sanchez",
+            "username": "jsanchezpando",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":2,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1,
+            "telephone":"123456789",
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":true,
+            "organisation":4
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Lahcen",
+            "last_name": "Afif",
+            "username": "lafif",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=", 
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":2,
+            "telephone":"123456789",
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":1
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Catherine",
+            "last_name": "Corbesier",
+            "username": "ccorbesier",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":3,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":3,
+            "telephone":"123456789",
+            "lastUsedLanguage":"NL",
+            "agent":true,
+            "manager":false,
+            "leader":false,
+            "organisation":1
+        }
+    },
+   {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thibaut",
+            "last_name": "de Sany",
+            "username": "tdesany",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":4,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":4,
+            "telephone":"123456789",
+            "lastUsedLanguage":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":true,
+            "organisation":1
+        }
+    },
+   {
+        "pk": 5,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Livio",
+            "last_name": "Van Rymenant",
+            "username": "livio",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":5,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":5,
+            "telephone":"123456789",
+            "lastUsedLanguage":"NL",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":1
+        }
+    },
+    {
+        "pk":6,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Demo",
+            "last_name": "Demo",
+            "username": "demo",
+            "password": "pbkdf2_sha256$10000$JwbjSCeIkCxj$j6AJO6xQhP/Y76+ine5gyYykVxv1Wl9h1aBs2E3WOSM=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":6,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":6,
+            "telephone":"123456789",
+            "lastUsedLanguage":"NL",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":1
+        }
+    },
+   {
+        "pk":7,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Catherine",
+            "last_name": "Agent",
+            "username": "cagent",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":7,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":7,
+            "telephone":"923456789",
+            "lastUsedLanguage":"FR",
+            "agent":true,
+            "manager":false,
+            "leader":false,
+            "organisation":2
+        }
+    },
+   {
+        "pk":8,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Soulira",
+            "last_name": "Kerri",
+            "username": "skerri",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":8,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":8,
+            "telephone":"923456789",
+            "lastUsedLanguage":"FR",
+            "agent":true,
+            "manager":false,
+            "leader":false,
+            "organisation":1
+        }
+    },
+   {
+        "pk":11,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Soulira",
+            "last_name": "---",
+            "username": "soulira",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":11,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":11,
+            "telephone":"923456789",
+            "lastUsedLanguage":"FR",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":2
+        }
+    },
+    {
         "pk":20,
         "model":"fixmystreet.organisationentity",
         "fields":{
@@ -2778,231 +3003,6 @@
             "region":false,
             "subcontractor":false,
             "applicant":true
-        }
-    },
-    {
-        "pk": 1,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Jonathan",
-            "last_name": "Sanchez",
-            "username": "jsanchezpando",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":2,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":1,
-            "telephone":"123456789",
-            "lastUsedLanguage":"FR",
-            "agent":false,
-            "manager":true,
-            "leader":true,
-            "organisation":1
-        }
-    },
-    {
-        "pk": 2,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Lahcen",
-            "last_name": "Afif",
-            "username": "lafif",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=", 
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":1,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":2,
-            "telephone":"123456789",
-            "lastUsedLanguage":"FR",
-            "agent":false,
-            "manager":false,
-            "leader":true,
-            "organisation":1
-        }
-    },
-    {
-        "pk": 3,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Catherine",
-            "last_name": "Corbesier",
-            "username": "ccorbesier",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":3,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":3,
-            "telephone":"123456789",
-            "lastUsedLanguage":"NL",
-            "agent":true,
-            "manager":false,
-            "leader":false,
-            "organisation":1
-        }
-    },
-   {
-        "pk": 4,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Thibaut",
-            "last_name": "de Sany",
-            "username": "tdesany",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":4,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":4,
-            "telephone":"123456789",
-            "lastUsedLanguage":"FR",
-            "agent":false,
-            "manager":true,
-            "leader":true,
-            "organisation":1
-        }
-    },
-   {
-        "pk": 5,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Livio",
-            "last_name": "Van Rymenant",
-            "username": "livio",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":5,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":5,
-            "telephone":"123456789",
-            "lastUsedLanguage":"NL",
-            "agent":true,
-            "manager":true,
-            "leader":false,
-            "organisation":1
-        }
-    },
-    {
-        "pk":6,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Demo",
-            "last_name": "Demo",
-            "username": "demo",
-            "password": "pbkdf2_sha256$10000$JwbjSCeIkCxj$j6AJO6xQhP/Y76+ine5gyYykVxv1Wl9h1aBs2E3WOSM=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":6,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":6,
-            "telephone":"123456789",
-            "lastUsedLanguage":"NL",
-            "agent":true,
-            "manager":true,
-            "leader":false,
-            "organisation":1
-        }
-    },
-   {
-        "pk":7,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Catherine",
-            "last_name": "Agent",
-            "username": "cagent",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":7,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":7,
-            "telephone":"923456789",
-            "lastUsedLanguage":"FR",
-            "agent":true,
-            "manager":false,
-            "leader":false,
-            "organisation":2
-        }
-    },
-   {
-        "pk":8,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Soulira",
-            "last_name": "Kerri",
-            "username": "skerri",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":8,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":8,
-            "telephone":"923456789",
-            "lastUsedLanguage":"FR",
-            "agent":true,
-            "manager":false,
-            "leader":false,
-            "organisation":1
-        }
-    },
-   {
-        "pk":11,
-        "model": "auth.user",
-        "fields": {
-            "first_name": "Soulira",
-            "last_name": "---",
-            "username": "soulira",
-            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
-            "is_staff": true,
-            "is_superuser": true
-        }
-    },
-    {
-        "pk":11,
-        "model":"fixmystreet.fmsuser",
-        "fields":{
-            "user_ptr":11,
-            "telephone":"923456789",
-            "lastUsedLanguage":"FR",
-            "agent":true,
-            "manager":true,
-            "leader":false,
-            "organisation":2
         }
     },
     {
