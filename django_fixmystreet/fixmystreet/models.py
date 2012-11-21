@@ -315,6 +315,7 @@ class ReportMainCategoryClass(models.Model):
     """
 
     name = models.CharField(max_length=100)
+    hint = models.ForeignKey('ReportCategoryHint', null=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):      
@@ -352,12 +353,6 @@ class ReportCategory(models.Model):
     """
 
     name = models.CharField(verbose_name=_('Name'), max_length=100)
-    hint = models.TextField(verbose_name=_('Hint'), blank=True, null=True)
-    #code     = models.CharField(max_length=32)
-    #label_en = models.TextField(blank=True, null=True)
-    #label_fr = models.TextField(blank=True, null=True)
-    #label_nl = models.TextField(blank=True, null=True)
-    #type     = models.CharField(max_length=32)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
@@ -369,8 +364,14 @@ class ReportCategory(models.Model):
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
-        translate = ('name', 'hint', )
+        translate = ('name', )
 
+
+class ReportCategoryHint(models.Model):
+    __metaclass__ = TransMeta
+    label = models.TextField(verbose_name=_('Label'), blank=False, null=False)
+    class Meta:
+        translate = ('label', )
 
 
 class GestType(models.Model):

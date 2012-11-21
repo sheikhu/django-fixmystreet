@@ -12,7 +12,7 @@ admin.site.register(ReportMainCategoryClass,ReportCategoryClassAdmin)
 
 
 class ReportCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'hint',)
+    list_display = ('name',)
 
 admin.site.register(ReportCategory, ReportCategoryAdmin)
 

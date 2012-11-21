@@ -32,6 +32,5 @@ class LoginRequiredMiddleware:
             path = request.path_info.lstrip('/')
             if path != LOGIN_URL:
                 for m in LOGIN_REQUIRED_URLS:
-                    print path, m.match(path)
                     if m.match(path):
                         return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
