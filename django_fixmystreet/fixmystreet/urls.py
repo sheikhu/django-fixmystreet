@@ -3,7 +3,6 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib.auth import views as auth_views
 from django.views.generic.simple import direct_to_template
-
 from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestReportsByCity, LatestUpdatesByReport
 
 
@@ -44,7 +43,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
     url(r'^reports/$', 'index',name='report_index'),       
     url(r'^reports/(\d+)$', 'index',name='report_commune_index'),       
-    url(r'^report/(\d+)$', 'show',name='report_show'),       
+    url(r'^report/(\d+)$', 'show',name='report_show'),     
     url(r'^report/new', 'new',name='report_new'),
 )
 
@@ -70,6 +69,8 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.contact',
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
     (r'^ajax/categories/(\d+)', 'category_desc'),
     (r'^ajax/categories/main', 'maincategory_desc'),
+    (r'^ajax/createComment','create_comment'),
+    (r'^ajax/createFile','create_file'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
