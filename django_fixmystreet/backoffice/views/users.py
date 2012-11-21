@@ -45,7 +45,7 @@ def edit(request):
 		users = users.filter(manager=True)
 	user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
 
-	userid = getLoggedInUserId(request.COOKIES.get("sessionid"))	
+	userid = user.id
     	connectedUser = FMSUser.objects.get(user_ptr_id=userid)
 	
 

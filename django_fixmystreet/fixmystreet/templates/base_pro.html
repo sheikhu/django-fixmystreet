@@ -188,11 +188,9 @@
 				<li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires <p class="category_number">{{request.user|numberOfManagers}}</p></a></a></li>
 				
 				{% if request.user.id|isLeader %}
+					{% if request.user.id|hasAtLeastAManager %}
 					<li> <a class='category'> Configuration </a></li>
-					{% if request.user.id|isLeader %}
-						{% if request.user.id|hasAtLeastAManager %}
-							<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
-						{% endif %}
+					<li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
 					{% endif %}
 				{% endif %}
 
