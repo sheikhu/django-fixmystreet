@@ -32,7 +32,9 @@ def show(request):
 @login_required(login_url='/pro/accounts/login/')
 def edit(request):
 	userType = request.REQUEST.get("userType")
+	#Get user connected
 	user = FMSUser.objects.get(user_ptr_id=request.user.id)
+	
 	currentOrganisationId = user.organisation.id
 	users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 	if userType == 'agent':
@@ -43,16 +45,13 @@ def edit(request):
 		users = users.filter(impetrant=True)
 	if userType == 'manager':
 		users = users.filter(manager=True)
-	user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
+	#Get used to edit
+        user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
 
-	userid = user.id
-    	connectedUser = FMSUser.objects.get(user_ptr_id=userid)
+    	connectedUser = FMSUser.objects.get(user_ptr_id=request.user.id)
 	
 
 	canEditGivenUser = (((user.manager or user.agent) and connectedUser.leader) or ((user.agent) and connectedUser.manager))
-	#import pdb
-        #pdb.set_trace()
-
 	return render_to_response("users_overview.html",{
 						"users":users,
 						"canEditGivenUser":canEditGivenUser,
