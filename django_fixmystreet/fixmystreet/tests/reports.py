@@ -7,7 +7,7 @@ from django.core import mail
 from django.core.files.storage import FileSystemStorage
 
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Report, ReportUpdate, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportCategoryClass, Ward, City, Councillor
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportCategoryClass, Ward, City, Councillor
 
 
 class NotificationTest(TestCase):

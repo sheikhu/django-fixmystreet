@@ -88,7 +88,7 @@ def show(request, report_id):
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "update_form": ReportUpdateForm(),
+                # "update_form": ReportUpdateForm(),
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),
                 "files":files,
