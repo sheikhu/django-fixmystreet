@@ -205,17 +205,6 @@ class ReportFile(ReportAttachment):
     fileType = models.IntegerField(choices=AttachmentType)
 
 
-class UserType(models.Model):
-    __metaclass__= TransMeta
-
-    code=models.CharField(max_length=50)
-    name=models.CharField(max_length=100)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    
-    class Meta:
-        translate = ('name', )
-
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     """signal on a report to notify public authority that a report has been filled"""
