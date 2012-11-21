@@ -59,31 +59,23 @@ class OrganisationEntity(models.Model):
         translate = ('name', )
 
 
-class Status(models.Model):
-    __metaclass__=TransMeta
-    name=models.CharField(verbose_name=_('Name'),max_length=100,null=False)
-    code=models.CharField(max_length=50,null=False)
-    parentStatus = models.ForeignKey('self',null=True)
-    
-    class Meta:
-        translate = ('name', )
-
-
 class Report(models.Model):
-    #LIST OF QUALITIES
-    RIVERAIN = 0
+
+    #List of qualities
+    RESIDENT = 0
     OTHER = 1
-    COMMERCANT = 2
+    TRADE = 2
     SYNDICATE = 3
     ASSOCIATION = 4
     REPORT_QUALITY_CHOICES = (
-        (RIVERAIN,_("Created")), 
-        (OTHER,_("Created")),
-        (COMMERCANT,_("Created")),
-        (SYNDICATE,_("Created")),
-        (ASSOCIATION,_("Created"))
+        (RESIDENT,_("Resident")), 
+        (OTHER,_("Other")),
+        (TRADE,_("Trade")),
+        (SYNDICATE,_("Syndicate")),
+        (ASSOCIATION,_("Association"))
     )
 
+    # List of status
     CREATED = 0
     REFUSED = 9
     
@@ -184,20 +176,6 @@ class Exportable(models.Model):
         abstract = True
 
 
-# class Address(models.Model):
-    # __metaclass__= TransMeta
-    # 
-    # street = models.CharField(max_length=100)
-    # city = models.CharField(max_length= 100)
-    # zipCode = models.IntegerField()
-    # streetNumber = models.CharField(max_length=100)
-    # geoX = models.FloatField()
-    # geoY = models.FloatField()
-    # 
-    # class Meta:
-        # translate=('street','city',)
-
-
 class ReportAttachment(models.Model):
     report = models.ForeignKey(Report)
     validated=models.BooleanField(default=False)
@@ -208,7 +186,7 @@ class ReportAttachment(models.Model):
         abstract=True
 
 
-class ReportComment (ReportAttachment):
+class ReportComment(ReportAttachment):
     text = models.TextField()
 
 
@@ -227,17 +205,6 @@ class ReportFile(ReportAttachment):
     fileType = models.IntegerField(choices=AttachmentType)
 
 
-class UserType(models.Model):
-    __metaclass__= TransMeta
-
-    code=models.CharField(max_length=50)
-    name=models.CharField(max_length=100)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    
-    class Meta:
-        translate = ('name', )
-
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     """signal on a report to notify public authority that a report has been filled"""
@@ -251,8 +218,6 @@ def report_assign_responsible(sender, instance, **kwargs):
         #elif instance.citizen:
         instance.commune = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
         organizationSearchCriteria = instance.commune
-        #import pdb
-        #pdb.set_trace()
 
         #Assign the entity.
         instance.responsible_entity = organizationSearchCriteria
@@ -500,18 +465,6 @@ class NotificationResolver(object):
                     self.send(rule.councillor)
 
 
-# class Commune(models.Model):
-    # __metaclass__ = TransMeta
-    # 
-    # name = models.CharField(max_length=100)
-    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    # default_manager = models.ForeignKey(FMSUser, null=True)
-# 
-    # class Meta:
-        # translate = ('name', )
-# 
-
 # class Zone(models.Model):
     # __metaclass__ = TransMeta
     # 
@@ -582,6 +535,20 @@ class FaqMgr(object):
         entry2.save()
  
 
+class ListItem(models.Model):
+    """
+    Only for sql selection purpose
+    """
+    __metaclass__= TransMeta
+    label = models.CharField(verbose_name=_('Label'),max_length=100,null=False)
+    model_class = models.CharField(verbose_name=_('Related model class name'),max_length=100,null=False)
+    model_field = models.CharField(verbose_name=_('Related model field'),max_length=100,null=False)
+    code = models.CharField(max_length=50,null=False)
+    
+    class Meta:
+        translate = ('label', )
+
+
 def dictToPoint(data):
     if not data.has_key('x') or not data.has_key('y'):
         raise Http404('<h1>Location not found</h1>')
@@ -614,11 +581,13 @@ class HtmlTemplateMail(EmailMultiAlternatives):
         if html:
             self.attach_alternative(html, "text/html")
 
+
 def exportUsers():
     XMLSerializer = serializers.get_serializer("xml")
     xml_serializer = XMLSerializer()
     with open("backup/pro/users.xml", "w") as out:
         xml_serializer.serialize(FMSUser.objects.all(), stream=out)
+
 
 def exportReportsOfEntity(entityId):
     # TODO loop over all reports to get files and comments (Structure result data in correct manner)
