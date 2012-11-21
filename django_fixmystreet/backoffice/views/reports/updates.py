@@ -5,14 +5,13 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db import transaction
 
-
-from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, ReportCategory, FMSUser, OrganisationEntity, Comment, File
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm, ReportCommentForm, ReportFileForm
+from django_fixmystreet.fixmystreet.models import Report, Status, ReportUpdate, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
 
 @transaction.commit_on_success
 def accept( request, report_id ):
 	report = get_object_or_404(Report, id=report_id)
-        report.status = Status.objects.get(pk='4') #Gestionnaire is assigned
+        report.status = Report.MANAGER_ASSIGNED
 	report.save()    
 	
     	if "pro" in request.path:
@@ -22,7 +21,7 @@ def accept( request, report_id ):
 
 def refuse( request, report_id ):
 	report = get_object_or_404(Report, id=report_id)
-        report.status = Status.objects.get(pk='9') #Refused
+        report.status = Report.REFUSED
 	report.save()    	
 
 	if "pro" in request.path:

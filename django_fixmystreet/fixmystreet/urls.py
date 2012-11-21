@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.simple import direct_to_template
 
 from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestReportsByCity, LatestUpdatesByReport
-from django_fixmystreet.fixmystreet.views import cities
+
 
 feeds = {
     'report': LatestReports,
@@ -32,10 +32,10 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
     (r'^promotions/(\w+)$', 'show'),
 )
 
-urlpatterns += patterns('django_fixmystreet.fixmystreet.views.wards',
-    (r'^communes/$', cities.show, {"city_id":1}, 'bxl_wards'), 
-    url(r'^commune/(\d+)', 'show',name='ward_show'),
-)
+# urlpatterns += patterns('django_fixmystreet.fixmystreet.views.wards',
+    # (r'^communes/$', cities.show, {"city_id":1}, 'bxl_wards'), 
+    # url(r'^commune/(\d+)', 'show',name='ward_show'),
+# )
 
 #urlpatterns += patterns('django_fixmystreet.fixmystreet.views.cities',
 #    url(r'^city/(\d+)', 'show',name='city_show'),

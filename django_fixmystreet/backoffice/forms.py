@@ -1,5 +1,5 @@
 from django import forms
-from django_fixmystreet.fixmystreet.models import FMSUser, getLoggedInUserId
+from django_fixmystreet.fixmystreet.models import FMSUser
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django.conf import settings

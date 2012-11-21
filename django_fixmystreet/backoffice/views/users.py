@@ -3,12 +3,15 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django_fixmystreet.backoffice.forms import UserEditForm
-from django_fixmystreet.fixmystreet.models import TypesWithUsersOfOrganisation,FMSUser, UsersAssignedToCategories, getLoggedInUserId, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
 from django.contrib.sessions.models import Session
 from django.utils.translation import ugettext_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-@login_required(login_url='/pro/accounts/login/')
+from django_fixmystreet.backoffice.forms import UserEditForm
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
+from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, UsersAssignedToCategories
+
+
 def show(request):
 	user = FMSUser.objects.get(user_ptr_id=request.user.id)
 	userType = request.REQUEST.get("userType")
@@ -56,7 +59,7 @@ def edit(request):
 						"editForm":UserEditForm(instance=user)
 						},context_instance=RequestContext(request))
 
-@login_required(login_url='/pro/accounts/login/')
+
 def saveChanges(request):
 	userEditForm = UserEditForm(request.POST)
 	print "Going to edit user id= "
@@ -64,9 +67,25 @@ def saveChanges(request):
 	userEditForm.save(request.REQUEST.get('userId'))
 	return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
 
-@login_required(login_url='/pro/accounts/login/')
+
 def deleteUser(request):
 	print 'Deleting user with id='
 	print request.REQUEST.get('userId')
 	FMSUser.objects.get(user_ptr_id=request.REQUEST.get('userId')).delete()
 	return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
+
+# 
+# class CreateUser(CreateView):
+    # template_name = 'createuser.html'
+    # form_class = UserForm
+# 
+# class UpdateUser(UpdateView):
+    # template_name = 'users_overview.html'
+    # form_class = UserForm
+# 
+# 
+# class DeleteUser(UpdateView):
+    # template_name = 'users_overview.html'
+    # form_class = UserForm
+    # success_url = '/pro/'
+

@@ -4,6 +4,9 @@ import logging
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
+AUTH_PROFILE_MODULE = 'fixmystreet.UserProfile'
+LOGIN_REQUIRED_URLS = '^pro/'
+
 # TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
 if 'MEDIA_ROOT' in os.environ:
     MEDIA_ROOT = os.environ['MEDIA_ROOT']
@@ -60,7 +63,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware'
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware'
 )
 
 # Language code for this installation. All choices can be found here:
@@ -90,7 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     
     'transmeta',
-    'social_auth',
+    # 'social_auth',
     'south',
     'django_extensions',
     'django_fixmystreet.fixmystreet',

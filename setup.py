@@ -12,7 +12,7 @@ install_requires = [
     'Django == 1.4.1',
     'django-transmeta',
     'django-stdimage',
-    'django-social-auth',
+    # 'django-social-auth',
     'south',
     'django-nose',
     'django-extensions',

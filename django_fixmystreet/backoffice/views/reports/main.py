@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, File,Comment, Attachment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportUpdateForm, ReportFileForm,ReportCommentForm
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, ReportAttachment, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm,ReportCommentForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 

@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import views as auth_views
 from django.views.generic.simple import direct_to_template
 
+# from django_fixmystreet.backoffice.views.users import CreateUser
+
 urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
     url(r'^$', 'home',name='home_pro'),
 )
@@ -24,9 +26,9 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
     url(r'^report/subscription', 'subscription',name='report_subscription_pro'),
 )
 
-urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.list',
-    url(r'^report/list', 'list',name='report_list_pro'),
-)
+# urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.list',
+    # url(r'^report/list', 'list',name='report_list_pro'),
+# )
 
 urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
     url(r'^report/(\d+)/update/', 'new', name='report_update_pro'),
@@ -69,4 +71,5 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(r'users/overview/edit','edit',name='usersEdit'),
     url(r'users/overview/save','saveChanges',name="userSave"),
     url(r'users/overview','show',name='usersOverview'),
+    # url(r'users/', CreateUser.as_view(), name='user_create'),
 )
