@@ -41,7 +41,7 @@
         "fields":{
             "user_ptr":1,
             "telephone":"123456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":true,
             "leader":true,
@@ -66,7 +66,7 @@
         "fields":{
             "user_ptr":2,
             "telephone":"123456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":true,
@@ -91,7 +91,7 @@
         "fields":{
             "user_ptr":3,
             "telephone":"123456789",
-            "lastUsedLanguage":"NL",
+            "last_used_language":"NL",
             "agent":true,
             "manager":false,
             "leader":false,
@@ -116,7 +116,7 @@
         "fields":{
             "user_ptr":4,
             "telephone":"123456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":true,
             "leader":true,
@@ -141,7 +141,7 @@
         "fields":{
             "user_ptr":5,
             "telephone":"123456789",
-            "lastUsedLanguage":"NL",
+            "last_used_language":"NL",
             "agent":true,
             "manager":true,
             "leader":false,
@@ -166,7 +166,7 @@
         "fields":{
             "user_ptr":6,
             "telephone":"123456789",
-            "lastUsedLanguage":"NL",
+            "last_used_language":"NL",
             "agent":true,
             "manager":true,
             "leader":false,
@@ -191,7 +191,7 @@
         "fields":{
             "user_ptr":7,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":true,
             "manager":false,
             "leader":false,
@@ -216,7 +216,7 @@
         "fields":{
             "user_ptr":8,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":true,
             "manager":false,
             "leader":false,
@@ -241,7 +241,7 @@
         "fields":{
             "user_ptr":11,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":true,
             "manager":true,
             "leader":false,
@@ -3024,7 +3024,7 @@
         "fields":{
             "user_ptr":1000000,
             "telephone":"0486161873",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3050,7 +3050,7 @@
         "fields":{
             "user_ptr":1000001,
             "telephone":"0477503242",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3076,7 +3076,7 @@
         "fields":{
             "user_ptr":1000002,
             "telephone":"",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3127,7 +3127,7 @@
         "fields":{
             "user_ptr":1000004,
             "telephone":"028509659",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3153,7 +3153,7 @@
         "fields":{
             "user_ptr":1000005,
             "telephone":"0496573549",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3179,7 +3179,7 @@
         "fields":{
             "user_ptr":1000006,
             "telephone":"027003211",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3205,7 +3205,7 @@
         "fields":{
             "user_ptr":1000007,
             "telephone":"0495559736",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3231,7 +3231,7 @@
         "fields":{
             "user_ptr":1000008,
             "telephone":"0495559417",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3257,7 +3257,7 @@
         "fields":{
             "user_ptr":1000009,
             "telephone":"022821978",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3283,7 +3283,7 @@
         "fields":{
             "user_ptr":1000010,
             "telephone":"022265462",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3309,7 +3309,7 @@
         "fields":{
             "user_ptr":1000011,
             "telephone":"022265461",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3335,7 +3335,7 @@
         "fields":{
             "user_ptr":1000012,
             "telephone":"022265482",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3361,7 +3361,7 @@
         "fields":{
             "user_ptr":1000013,
             "telephone":"027901754",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3387,7 +3387,7 @@
         "fields":{
             "user_ptr":1000014,
             "telephone":"027901934",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3413,7 +3413,7 @@
         "fields":{
             "user_ptr":1000015,
             "telephone":"022042970",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3439,7 +3439,7 @@
         "fields":{
             "user_ptr":1000016,
             "telephone":"022042076",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3465,7 +3465,7 @@
         "fields":{
             "user_ptr":1000017,
             "telephone":"022042108",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3491,7 +3491,7 @@
         "fields":{
             "user_ptr":1000018,
             "telephone":"022041019",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3517,7 +3517,7 @@
         "fields":{
             "user_ptr":1000019,
             "telephone":"022042250",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3543,7 +3543,7 @@
         "fields":{
             "user_ptr":1000020,
             "telephone":"092635939",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3569,7 +3569,7 @@
         "fields":{
             "user_ptr":1000021,
             "telephone":"0473693795",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3595,7 +3595,7 @@
         "fields":{
             "user_ptr":1000022,
             "telephone":"081237731",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3621,7 +3621,7 @@
         "fields":{
             "user_ptr":1000023,
             "telephone":"0475255303",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3647,7 +3647,7 @@
         "fields":{
             "user_ptr":1000024,
             "telephone":"022827253",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3673,7 +3673,7 @@
         "fields":{
             "user_ptr":1000025,
             "telephone":"022755111",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3699,7 +3699,7 @@
         "fields":{
             "user_ptr":1000026,
             "telephone":"025188556",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3725,7 +3725,7 @@
         "fields":{
             "user_ptr":1000027,
             "telephone":"025188464",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3751,7 +3751,7 @@
         "fields":{
             "user_ptr":1000028,
             "telephone":"0498455713",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3777,7 +3777,7 @@
         "fields":{
             "user_ptr":1000029,
             "telephone":"057359729",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3803,7 +3803,7 @@
         "fields":{
             "user_ptr":1000030,
             "telephone":"022741111",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3829,7 +3829,7 @@
         "fields":{
             "user_ptr":1000031,
             "telephone":"0475255303",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3855,7 +3855,7 @@
         "fields":{
             "user_ptr":1000032,
             "telephone":"0478540433",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3881,7 +3881,7 @@
         "fields":{
             "user_ptr":1000033,
             "telephone":"0476838095",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3907,7 +3907,7 @@
         "fields":{
             "user_ptr":1000034,
             "telephone":"027199024",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3933,7 +3933,7 @@
         "fields":{
             "user_ptr":1000035,
             "telephone":"0495557892",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3959,7 +3959,7 @@
         "fields":{
             "user_ptr":1000036,
             "telephone":"027457616",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -3985,7 +3985,7 @@
         "fields":{
             "user_ptr":1000037,
             "telephone":"027457111",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4011,7 +4011,7 @@
         "fields":{
             "user_ptr":1000038,
             "telephone":"0496590902",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4037,7 +4037,7 @@
         "fields":{
             "user_ptr":1000039,
             "telephone":"0473888345",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4063,7 +4063,7 @@
         "fields":{
             "user_ptr":1000040,
             "telephone":"025637560",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4089,7 +4089,7 @@
         "fields":{
             "user_ptr":1000041,
             "telephone":"022743224",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4115,7 +4115,7 @@
         "fields":{
             "user_ptr":1000042,
             "telephone":"025054728",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4141,7 +4141,7 @@
         "fields":{
             "user_ptr":1000043,
             "telephone":"025054710",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4167,7 +4167,7 @@
         "fields":{
             "user_ptr":1000044,
             "telephone":"027390604",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4193,7 +4193,7 @@
         "fields":{
             "user_ptr":1000045,
             "telephone":"0478503340",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4219,7 +4219,7 @@
         "fields":{
             "user_ptr":1000046,
             "telephone":"025251967",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4245,7 +4245,7 @@
         "fields":{
             "user_ptr":1000047,
             "telephone":"015335697",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4271,7 +4271,7 @@
         "fields":{
             "user_ptr":1000048,
             "telephone":"015333287",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4297,7 +4297,7 @@
         "fields":{
             "user_ptr":1000049,
             "telephone":"015335382",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4323,7 +4323,7 @@
         "fields":{
             "user_ptr":1000050,
             "telephone":"0475841519",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4349,7 +4349,7 @@
         "fields":{
             "user_ptr":1000051,
             "telephone":"0498455713",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4375,7 +4375,7 @@
         "fields":{
             "user_ptr":1000052,
             "telephone":"025188556",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4401,7 +4401,7 @@
         "fields":{
             "user_ptr":1000053,
             "telephone":"032246657",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4427,7 +4427,7 @@
         "fields":{
             "user_ptr":1000054,
             "telephone":"032246612",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4453,7 +4453,7 @@
         "fields":{
             "user_ptr":1000055,
             "telephone":"034510416",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4479,7 +4479,7 @@
         "fields":{
             "user_ptr":1000056,
             "telephone":"0477970144",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,
@@ -4505,7 +4505,7 @@
         "fields":{
             "user_ptr":1000057,
             "telephone":"027367789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":false,

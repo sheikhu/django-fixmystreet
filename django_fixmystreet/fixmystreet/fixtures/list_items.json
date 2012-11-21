@@ -112,7 +112,7 @@
         "model":"fixmystreet.listitem",
         "fields":{
             "model_class":"fixmystreet.reportfile",
-            "model_field":"fileType",
+            "model_field":"file_type",
             "label_nl":"pdf",
             "label_fr":"pdf",
             "label_en":"pdf",
@@ -124,7 +124,7 @@
         "model":"fixmystreet.listitem",
         "fields":{
             "model_class":"fixmystreet.reportfile",
-            "model_field":"fileType",
+            "model_field":"file_type",
             "label_nl":"word",
             "label_fr":"word",
             "label_en":"word",
@@ -136,7 +136,7 @@
         "model":"fixmystreet.listitem",
         "fields":{
             "model_class":"fixmystreet.reportfile",
-            "model_field":"fileType",
+            "model_field":"file_type",
             "label_nl":"excel",
             "label_fr":"excel",
             "label_en":"excel",
@@ -148,7 +148,7 @@
         "model":"fixmystreet.listitem",
         "fields":{
             "model_class":"fixmystreet.reportfile",
-            "model_field":"fileType",
+            "model_field":"file_type",
             "label_nl":"image",
             "label_fr":"image",
             "label_en":"image",
