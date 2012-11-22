@@ -151,6 +151,15 @@ class Report(models.Model):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show_pro", args=[self.id])
 
+    def is_created(self):  	
+        return self.status == Report.CREATED
+
+    def is_in_progress(self):
+        return self.status in Report.REPORT_STATUS_IN_PROGRESS
+
+    def is_closed(self):
+        return self.status in Report.REPORT_STATUS_CLOSED
+
     def to_object(self):
         return {
             "id": self.id,
