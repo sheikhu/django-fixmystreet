@@ -210,7 +210,7 @@ $(function(){
 		<div id='report-body'>
             <div id='report-subscribers'>
                 {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                {% if not report.is_fixed and user.is_authenticated %}
+                {% if not report.is_closed and user.is_authenticated %}
                     {% if not subscribed %}
                     <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
                     {% else %}
