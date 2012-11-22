@@ -26,7 +26,7 @@ from django_fixmystreet.fixmystreet.utils import FixStdImageField
 class FMSUser(User):
     telephone = models.CharField(max_length=20,null=True)
     #active = models.BooleanField(default=True)
-    lastUsedLanguage = models.CharField(max_length=10,null=True)
+    last_used_language = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
     agent = models.BooleanField(default=True)
@@ -90,7 +90,7 @@ class Report(models.Model):
 
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
-    REPORT_STATUS_CLOSED      = (PROCESSED, DELETED, REFUSED)
+    REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
     REPORT_STATUS_OFF         = (DELETED)
 
     REPORT_STATUS_CHOICES = (
@@ -143,16 +143,6 @@ class Report(models.Model):
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
-    
-    def is_created(self):
-        return self.status == Report.CREATED
-
-    def is_in_progress(self):
-        return self.status in Report.REPORT_STATUS_IN_PROGRESS
-    
-    def is_closed(self):
-        return self.status in Report.REPORT_STATUS_CLOSED
-    
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show", args=[self.id])
@@ -205,14 +195,14 @@ class ReportFile(ReportAttachment):
     WORD  = 2
     EXCEL = 3
     IMAGE = 4
-    AttachmentType = (
+    attachment_type = (
         (PDF  , "pdf"),
         (WORD , "word"),
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
     file = models.FileField(upload_to="files")
-    fileType = models.IntegerField(choices=AttachmentType)
+    file_type = models.IntegerField(choices=attachment_type)
 
 
 @receiver(pre_save,sender=Report)

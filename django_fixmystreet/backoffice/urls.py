@@ -11,7 +11,7 @@ urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
 )
 
 urlpatterns += patterns('',
-	url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'connection.html'},name='login'),
+	url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'},name='login'),
 	url(r'^logout/$',
             auth_views.logout_then_login,
             {'login_url':'/pro/accounts/login/?next=/pro/'},
@@ -21,7 +21,7 @@ urlpatterns += patterns('',
 
 
 urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
-    url(r'^report/(\d+)$', 'show',name='report_show_pro'),       
+    url(r'^report/(\d+)$', 'show',name='report_show_pro'),
     url(r'^report/new', 'new',name='report_new_pro'),
     url(r'^report/subscription', 'subscription',name='report_subscription_pro'),
 )
@@ -53,10 +53,7 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.flags',
     url(r'^report/(\d+)/flags', 'new',name='flag_report_pro'),
 )
 
-urlpatterns +=patterns('django_fixmystreet.backoffice.views.createuser',
-	url(r'^createuser','createUser',name='create_user_pro'),
-)
-urlpatterns += patterns('django_fixmystreet.backoffice.views.categoryGestionnaireConfiguration',
+urlpatterns += patterns('django_fixmystreet.backoffice.views.manager_category_configuration',
     url(r'^categoryGestionnaireConfiguration/dialog/','update',name='gestionnaire_selection_dialog'),
     url(r'^categoryGestionnaireConfiguration','show',name='category_gestionnaire_configuration'),
 
@@ -71,5 +68,5 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(r'users/overview/edit','edit',name='usersEdit'),
     url(r'users/overview/save','saveChanges',name="userSave"),
     url(r'users/overview','show',name='usersOverview'),
-    # url(r'users/', CreateUser.as_view(), name='user_create'),
+	url(r'^createuser','createUser',name='create_user_pro'),
 )
