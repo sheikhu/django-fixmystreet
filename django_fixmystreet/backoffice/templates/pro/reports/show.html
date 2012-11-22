@@ -379,16 +379,16 @@ $(function(){
                         	<center>
 					<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
 					{{file.title}}
-					{% if file.fileType_id == 1 %}
+					{% if file.is_image %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
 					{% endif %}
-					{% if file.fileType_id == 2 %}
+					{% if file.is_pdf %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
 					{% endif %}
-					{% if file.fileType_id == 3 %}
+					{% if file.is_word %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
 					{% endif %}
-					{% if file.fileType_id == 4 %}
+					{% if file.is_excel %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
 					{% endif %}
 				</center>

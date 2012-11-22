@@ -37,11 +37,16 @@ class FMSUser(User):
     contractor = models.BooleanField(default=False)
     
     categories = models.ManyToManyField('ReportCategory',related_name='type')
-
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
 
-
     objects = UserManager()
+    
+    def is_pro(self):
+        return self.agent == True or self.manager == True or self.leader == True
+    def is_citizen(self):
+        return not is_pro(self)
+    def get_langage(self):
+        return self.last_used_language
 
 
 class OrganisationEntity(models.Model):
@@ -55,6 +60,15 @@ class OrganisationEntity(models.Model):
     dependency = models.ForeignKey('OrganisationEntity',related_name='parent', null=True)
     feature_id = models.CharField(max_length=25)
 
+    def is_commune(self):
+        return self.commune == True 
+    def is_region(self):
+        return self.region == True 
+    def is_subcontractor(self):
+        return self.subcontractor == True 
+    def is_applicant(self):
+        return self.applicant == True 
+    
     class Meta:
         translate = ('name', )
 
@@ -212,6 +226,15 @@ class ReportFile(ReportAttachment):
     )
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
+    
+    def is_pdf(self):
+        return self.file_type == ReportFile.PDF
+    def is_word(self):
+        return self.file_type == ReportFile.WORD
+    def is_excel(self):
+        return self.file_type == ReportFile.EXCEL
+    def is_image(self):
+        return self.file_type == ReportFile.IMAGE
 
 
 @receiver(pre_save,sender=Report)
