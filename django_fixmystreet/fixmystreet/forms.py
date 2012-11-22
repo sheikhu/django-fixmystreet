@@ -236,13 +236,13 @@ class ReportFileForm(forms.ModelForm):
 		fileUpdate.report = report
 
 		if str(fileUpdate.file.name).endswith("pdf"):
-			fileUpdate.fileType = ReportFile.PDF
+			fileUpdate.file_type = ReportFile.PDF
 		if str(fileUpdate.file.name).endswith("doc"):
-			fileUpdate.fileType = ReportFile.WORD
+			fileUpdate.file_type = ReportFile.WORD
 		if str(fileUpdate.file.name).endswith("png") or str(fileUpdate.file.name).endswith("jpg"):
-			fileUpdate.fileType = ReportFile.IMAGE
+			fileUpdate.file_type = ReportFile.IMAGE
 		if str(fileUpdate.file.name).endswith("xls"):
-			fileUpdate.fileType = ReportFile.EXCEL
+			fileUpdate.file_type = ReportFile.EXCEL
 		
 		if commit:
 			fileUpdate.save()

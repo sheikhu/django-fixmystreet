@@ -165,8 +165,10 @@ $(function(){
         {% if report.responsible_manager.id == request.user.id %}
 		{% if report.is_in_progress %} 
                 <tr>
-                    	<td ></td>
-                    	<td >
+			<td>
+                        	<button onclick="window.location = '{% url report_close_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Cloturer</button>
+                    	</td>
+			<td >
                         	<!--button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button-->
 				&nbsp;
                     	</td>
