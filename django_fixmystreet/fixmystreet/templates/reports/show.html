@@ -19,6 +19,9 @@ $(function(){
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 });
+function subscribe() {
+	window.location = "{% url subscribe report.id %}?citizen_email="+$('#citizen_email').val();
+}
 </script>
 {% endblock %}
 {% block css %}
@@ -65,12 +68,11 @@ $(function(){
 		<div id='report-body'>
             <div id='report-subscribers'>
                 {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                {% if not report.is_fixed and user.is_authenticated %}
+                {% if not report.is_closed %}
+                    <input type="text" value="" placeholder="Your Email" id="citizen_email" />
+		    <br/>
                     {% if not subscribed %}
-                    <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
-                    {% else %}
-                    <p><small>{% trans "You've subscribed for updates" %}</small></p>
-                    <a href="{% url unsubscribe report.id %}">{% trans "Unsubscribe" %}</a>
+                    <a href="javascript:subscribe()">{% trans "Subscribe" %}</a>
                     {% endif %}
                 {% endif %}
             </div>

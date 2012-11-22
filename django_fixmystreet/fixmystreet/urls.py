@@ -54,7 +54,6 @@ urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.updates',
 
 urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.subscribers',
     url(r'^report/(\d+)/subscribe/', 'create', name='subscribe'),
-    url(r'^report/(\d+)/unsubscribe/', 'unsubscribe',name='unsubscribe'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.flags',
