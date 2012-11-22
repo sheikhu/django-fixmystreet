@@ -79,7 +79,11 @@ def show(request, report_id):
     comments = ReportComment.objects.filter(report_id=report_id)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
-    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True)
+    
+    entitiesHavingAManager = FMSUser.objects.filter(manager=True);
+    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingAManager)
+    #import pdb
+    #pdb.set_trace() 
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     #contractors = list(contractors) + list(OrganisationEntity.objects.filter(dependency=organisationId).filter(applicant=True))
     applicants = OrganisationEntity.objects.filter(applicant=True)
