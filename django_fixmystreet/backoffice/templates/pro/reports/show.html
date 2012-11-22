@@ -254,12 +254,16 @@ $(function(){
                     <th>{% trans "Responsible manager:" %}</th>
                     <td>
                         <select id="report_responsible_manager_select">
-                            {% for manager in managers %}
-                            <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
-                            {% endfor %}
-                            {% for entity in entities %}
-                            <option value="entity_{{entity.id}}">{{entity.name}}</option>
-                            {% endfor %}
+                            <optgroup label="Gestionnaires">
+				{% for manager in managers %}
+                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
+                            	{% endfor %}
+			    </optgroup>
+                            <optgroup label="Entites">
+                            	{% for entity in entities %}
+                            	<option value="entity_{{entity.id}}">{{entity.name}}</option>
+                            	{% endfor %}
+			    </optgroup>
                         </select>
                     </td>
                 </tr>
@@ -268,9 +272,16 @@ $(function(){
                     <td>
                         <select id="report_responsible_impetrant_contractor_select">
                             <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
-                            {% for organisation in contractors %}
-                            	<option value="{{organisation.id}}">{{organisation.name}}</option>
-                            {% endfor %}
+                            <optgroup label="Executeur de travaux">
+                            	{% for organisation in contractors %}
+                            		<option value="{{organisation.id}}">{{organisation.name}}</option>
+                            	{% endfor %}
+			    </optgroup>
+                            <optgroup label="Impetrants">
+                            	{% for applicant in applicants %}
+                            		<option value="{{applicant.id}}">{{applicant.name_fr}}</option>
+                            	{% endfor %}
+			    </optgroup>
                         </select>
                     </td>
                 </tr>

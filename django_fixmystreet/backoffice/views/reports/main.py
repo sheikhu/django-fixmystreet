@@ -80,8 +80,12 @@ def show(request, report_id):
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True)
-    contractors = OrganisationEntity.objects.filter(id=organisationId).filter(subcontractor=True)
-    contractors = list(contractors) + list(OrganisationEntity.objects.filter(dependency=organisationId).filter(applicant=True))
+    contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
+    #contractors = list(contractors) + list(OrganisationEntity.objects.filter(dependency=organisationId).filter(applicant=True))
+    applicants = OrganisationEntity.objects.filter(applicant=True)
+     
+    #import pdb
+    #pdb.set_trace()
     return render_to_response("pro/reports/show.html",
             {
                 "report": report,
@@ -92,6 +96,7 @@ def show(request, report_id):
                 "comments":comments,
                 "managers":managers,
                 "contractors":contractors,
+                "applicants":applicants,
                 "entities":entities
             },
             context_instance=RequestContext(request))
