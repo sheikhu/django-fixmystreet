@@ -40,7 +40,7 @@ test: $(BIN_DIR)/django
 
 jenkins: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
-	bash -c 'find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes > pyflakes.log'
+	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/'| egrep -v '^django_fixmystreet/static/' | xargs bin/pyflakes > pyflakes.log || echo "pyflakes found $? error"
 	ENV=jenkins $(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 
 rpm:
