@@ -173,11 +173,11 @@
 		<div id="main_container">
 		<div >
 			<ul class='leftPane' id="leftMenuPanePro">
-				<li> <a id="allMenuItem" class='category positionable' href="{% url report_list_pro %}?status=all"> Reports <p class="category_number">{{request.user|numberOfReports}}</p></a></a> </li>
+				<li> <a id="allMenuItem" class='category positionable' href="{% url report_list_pro %}?"> Reports <p class="category_number">{{request.user|numberOfReports}}</p></a></a> </li>
 				
 				<li><a id='createdMenuItem' class='subcategory positionable' href="{% url report_list_pro %}?status=created"> Created <p class="category_number">{{request.user|numberOfCreatedReports}}</p></a> </li>
 				<li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_list_pro %}?status=in_progress"> Progress <p class="category_number">{{request.user|numberOfInProgressReports}}</p></a></li>
-				<li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro %}?status=off"> Closed <p class="category_number">{{request.user|numberOfClosedReports}} </p></a> </li>
+				<li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro %}?status=closed"> Closed <p class="category_number">{{request.user|numberOfClosedReports}} </p></a> </li>
 				<li><a id="subscriptionMenuItem" class='subcategory' href="{% url report_subscription_pro %}?subscription=1"> My subscriptions <p class="category_number">{{request.user|numberOfSubscriptions}}</p> </a> <p class="category_number"></p></li>
 				<li> <a class='category' href="{% url usersOverview %}?userType=users"> Collaborators <p class="category_number">{{request.user|numberOfUsers}}</p></a></a></li>
 				

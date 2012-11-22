@@ -27,12 +27,12 @@ def list(request):
    
     user_organisation = FMSUser.objects.get(pk=request.user.id).organisation
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
-    statusQ = request.REQUEST.get('status')
+    statusQ = request.REQUEST.get('status', 'all')
     if statusQ == 'created':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status=Report.CREATED)
     elif statusQ == 'in_progress':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-    elif statusQ == 'off':
+    elif statusQ == 'closed':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
     else:
         reports = Report.objects.filter(responsible_entity=user_organisation).all()
