@@ -95,37 +95,24 @@ $(function(){
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
-                    <td>{{report.category.name}}</td>
+                    <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
                 </tr>
             </table>
-
-	    {% if report.comments %}
+	    {% if report.get_comments %}
             <h3>{% trans "Extra comments" %}</h3>
             <div id="report_updates">
                 <table class="extraCommentsTable">
-                    <th></th>
-
-
-                    <!-- If the status allow such interactions -->
-                    {% if report.is_in_progress %}
-                    <!--If the current user is the responsible manager-->
-                    {% if report.responsible_manager.id == request.user.id %}
-                    <th>{% trans 'Public?' %}</th>
-                    {% endif %}
-                    <!--If the current user is the responsible manager or the creator of the report-->
-                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                    <th> {% trans 'Confidentiel?' %} </th>
-                    {% endif %}
-                    {% endif %}
-                {% for comment in report.comments %}
-                <tr>
-                    <td class="annexesFirstTD">
-                	<div class="report_update">
-                    		<h4>{{comment.title}}</h4>
-                    		<p>{{comment.text}}</p>
-                	</div>
+                {% for comment in report.get_comments %}
+		{% if comment.validated %} 
+                	<tr>
+                    	<td class="annexesFirstTD">
+                		<div class="report_update">
+                    			<h4>{{comment.title}}</h4>
+                    			<p>{{comment.text}}</p>
+                		</div>
             		</td>
-		</tr>
+			</tr>
+		{% endif %}
 		{% endfor %}
 		</table>
 	</div>
@@ -152,7 +139,7 @@ $(function(){
 			</div>
 			{% endif %}
 
-			{% if not report.is_fixed %}
+			{% if not report.is_closed %}
 			<h2>{% trans "Provide an update" %} </h2>
 			<p>{% trans "The status of this report has changed? Thank you let us know by filling this form." %}</p>
 			<form action="{% url report_update report.id %}" method="post">
