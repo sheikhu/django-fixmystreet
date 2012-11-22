@@ -364,11 +364,11 @@ $(function(){
 		    {% if report.is_in_progress %} 
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
-                    <th>{% trans 'Valid' %}</th>
+                    <th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                    <th> {% trans 'Confidential' %} </th>
+                    <th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
                     {% for file in files %}
@@ -435,11 +435,11 @@ $(function(){
                     {% if report.is_in_progress %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
-                    <th>{% trans 'Valid' %}</th>
+                    <th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                    <th> {% trans 'Confidential' %} </th>
+                    <th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
                 {% for comment in comments %}

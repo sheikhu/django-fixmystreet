@@ -99,6 +99,41 @@ $(function(){
                 </tr>
             </table>
 
+	    {% if report.comments %}
+            <h3>{% trans "Extra comments" %}</h3>
+            <div id="report_updates">
+                <table class="extraCommentsTable">
+                    <th></th>
+
+
+                    <!-- If the status allow such interactions -->
+                    {% if report.is_in_progress %}
+                    <!--If the current user is the responsible manager-->
+                    {% if report.responsible_manager.id == request.user.id %}
+                    <th>{% trans 'Public?' %}</th>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                    <th> {% trans 'Confidentiel?' %} </th>
+                    {% endif %}
+                    {% endif %}
+                {% for comment in report.comments %}
+                <tr>
+                    <td class="annexesFirstTD">
+                	<div class="report_update">
+                    		<h4>{{comment.title}}</h4>
+                    		<p>{{comment.text}}</p>
+                	</div>
+            		</td>
+		</tr>
+		{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+
+
+            <!-- If the status allow such interactions -->
+
 
 			<div id="more-actions">
 				<p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>

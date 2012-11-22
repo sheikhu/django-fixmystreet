@@ -129,6 +129,9 @@ def updateComment(request,report_id):
             comment.isVisible= True
     if updateType == 'confidential':
         comment.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+        if (comment.isVisible == False):
+            comment.validated = False #When setting element to confidential then it becomes unvalidated automatically
+    
     comment.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -145,6 +148,8 @@ def updateFile(request,report_id):
             f.isVisible= True
     if updateType == 'confidential':
         f.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+        if (f.isVisible == False):
+            f.validated = False #When setting element to confidential then it becomes unvalidated automatically
     f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
