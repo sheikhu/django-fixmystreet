@@ -168,6 +168,9 @@ class Report(models.Model):
     def get_comments(self):  	
         return ReportComment.objects.filter(report__id=self.id)
     
+    def get_files(self):  	
+        return ReportFile.objects.filter(report__id=self.id)
+    
     def is_created(self):  	
         return self.status == Report.CREATED
 

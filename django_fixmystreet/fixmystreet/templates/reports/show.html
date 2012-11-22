@@ -98,6 +98,54 @@ $(function(){
                     <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
                 </tr>
             </table>
+
+
+	    <!-- ################# FILES ############### -->
+	    <!-- ################# FILES ############### -->
+	    <!-- ################# FILES ############### -->
+	    {% if report.get_files %}
+            <h3>{% trans "Extra files" %}</h3>
+            <div id="report_updates">
+                <table id="extraFilesTable">
+                    {% for file in report.get_files %}
+		    {% if file.validated %} <!-- PUBLIC? -->
+                    <tr>
+                        <td class="annexesFirstTD">
+                    <div class="report_update">
+                        {% if file.file %}
+                                <center>
+                                        <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
+                                        {{file.title}}
+                                        {% if file.is_image %}
+                                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
+                                        {% endif %}
+                                        {% if file.is_pdf %}
+                                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
+                                        {% endif %}
+                                        {% if file.is_word %}
+       <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+                                        {% endif %}
+                                        {% if file.is_excel %}
+                                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
+                                        {% endif %}
+                                </center>
+                        {% endif %}
+                    </div>
+                </td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+
+
+
+
+
+	    <!-- ################# COMMENTS ############### -->
+	    <!-- ################# COMMENTS ############### -->
+	    <!-- ################# COMMENTS ############### -->
 	    {% if report.get_comments %}
             <h3>{% trans "Extra comments" %}</h3>
             <div id="report_updates">
