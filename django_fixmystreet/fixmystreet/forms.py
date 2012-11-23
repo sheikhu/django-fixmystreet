@@ -223,7 +223,7 @@ class AgentCreationForm(UserCreationForm):
 		
 class ReportFileForm(forms.ModelForm):
     class Meta:
-        model=File
+        model=ReportFile
         fields=('title','file','isVisible',)
     file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
     def clean_file(self):
