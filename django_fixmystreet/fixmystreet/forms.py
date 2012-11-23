@@ -138,30 +138,30 @@ class CitizenReportForm(ReportForm):
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
     citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
     citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))
+    citizen_subscription = forms.BooleanField(required=False)
 
     def save(self, user, commit=True):
-        #import pdb
-        #pdb.set_trace()
         report = super(ReportForm, self).save(commit=False)
         report.commune = self.commune
         report.status = Report.CREATED 
         report.point = self.point
         report.private = False
 
-        if user.is_authenticated():
-            report.creator = user
-        else:
-            try:
-                existingUser = FMSUser.objects.get(username=self.cleaned_data["citizen_email"]);
-                #Assign citizen
-                report.citizen = existingUser
-            except FMSUser.DoesNotExist:
-                #Add information about the citizen connected if it does not exist
-                report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
-        
-        
+        try:
+       	  existingUser = FMSUser.objects.get(username=self.cleaned_data["citizen_email"]);
+          #Assign citizen
+          report.citizen = existingUser
+        except FMSUser.DoesNotExist:
+          #Add information about the citizen connected if it does not exist
+          report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+    	
         if commit:
-            report.save()
+            report.save() 
+            
+            if (self.data.__contains__('citizen_subscription')):
+                #Create the subscription record if necessary
+	        subscriber = ReportSubscription(subscriber=report.citizen,report=report)
+   	        subscriber.save()
         return report
 
 class ContactForm(forms.Form):
@@ -246,13 +246,13 @@ class ReportFileForm(forms.ModelForm):
 		fileUpdate.report = report
 
 		if str(fileUpdate.file.name).endswith("pdf"):
-			fileUpdate.fileType = ReportFile.PDF
+			fileUpdate.file_type = ReportFile.PDF
 		if str(fileUpdate.file.name).endswith("doc"):
-			fileUpdate.fileType = ReportFile.WORD
+			fileUpdate.file_type = ReportFile.WORD
 		if str(fileUpdate.file.name).endswith("png") or str(fileUpdate.file.name).endswith("jpg"):
-			fileUpdate.fileType = ReportFile.IMAGE
+			fileUpdate.file_type = ReportFile.IMAGE
 		if str(fileUpdate.file.name).endswith("xls"):
-			fileUpdate.fileType = ReportFile.EXCEL
+			fileUpdate.file_type = ReportFile.EXCEL
 		
 		if commit:
 			fileUpdate.save()

@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django_fixmystreet.fixmystreet.forms import AgentCreationForm
 from django_fixmystreet.backoffice.forms import UserEditForm
-from django_fixmystreet.fixmystreet.models import FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
 from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, UsersAssignedToCategories
 
 
@@ -17,14 +17,26 @@ def show(request):
 	user = FMSUser.objects.get(user_ptr_id=request.user.id)
 	userType = request.REQUEST.get("userType")
 	currentOrganisationId = user.organisation.id
-	users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
+	users = []
+	if userType == 'users':
+    		#Get organisations dependants from the current organisation id
+    		dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
+    		allOrganisation = list(dependantOrganisations)
+    		allOrganisation.append(currentOrganisationId)
+    		users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
 	if userType == 'agent':
+		users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 		users = users.filter(agent = True)
 	if userType == 'contractor':
+		dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
+    		allOrganisation = list(dependantOrganisations)
+		users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
 		users = users.filter(contractor=True)
 	if userType == 'impetrant':
+		users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 		users = users.filter(impetrant=True)
 	if userType == 'manager':
+		users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 		users = users.filter(manager=True)
 	return render_to_response("pro/users_overview.html",{
 		"users":users,
@@ -37,14 +49,26 @@ def edit(request):
 	user = FMSUser.objects.get(user_ptr_id=request.user.id)
 	
 	currentOrganisationId = user.organisation.id
-	users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
+	users = []
+	if userType == 'users':
+    		#Get organisations dependants from the current organisation id
+    		dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
+    		allOrganisation = list(dependantOrganisations)
+    		allOrganisation.append(currentOrganisationId)
+    		users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
 	if userType == 'agent':
+		users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 		users = users.filter(agent = True)
 	if userType == 'contractor':
+		dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
+    		allOrganisation = list(dependantOrganisations)
+		users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
 		users = users.filter(contractor=True)
 	if userType == 'impetrant':
+		users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 		users = users.filter(impetrant=True)
 	if userType == 'manager':
+		users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
 		users = users.filter(manager=True)
 	#Get used to edit
         user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))

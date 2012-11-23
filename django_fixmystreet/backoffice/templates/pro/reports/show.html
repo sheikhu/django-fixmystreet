@@ -165,8 +165,10 @@ $(function(){
         {% if report.responsible_manager.id == request.user.id %}
 		{% if report.is_in_progress %} 
                 <tr>
-                    	<td ></td>
-                    	<td >
+			<td>
+                        	<button onclick="window.location = '{% url report_close_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Cloturer</button>
+                    	</td>
+			<td >
                         	<!--button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button-->
 				&nbsp;
                     	</td>
@@ -208,7 +210,7 @@ $(function(){
 		<div id='report-body'>
             <div id='report-subscribers'>
                 {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                {% if not report.is_fixed and user.is_authenticated %}
+                {% if not report.is_closed and user.is_authenticated %}
                     {% if not subscribed %}
                     <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
                     {% else %}
@@ -254,12 +256,16 @@ $(function(){
                     <th>{% trans "Responsible manager:" %}</th>
                     <td>
                         <select id="report_responsible_manager_select">
-                            {% for manager in managers %}
-                            <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
-                            {% endfor %}
-                            {% for entity in entities %}
-                            <option value="entity_{{entity.id}}">{{entity.name}}</option>
-                            {% endfor %}
+                            <optgroup label="Gestionnaires">
+				{% for manager in managers %}
+                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
+                            	{% endfor %}
+			    </optgroup>
+                            <optgroup label="Entites">
+                            	{% for entity in entities %}
+                            	<option value="entity_{{entity.id}}">{{entity.name}}</option>
+                            	{% endfor %}
+			    </optgroup>
                         </select>
                     </td>
                 </tr>
@@ -268,9 +274,16 @@ $(function(){
                     <td>
                         <select id="report_responsible_impetrant_contractor_select">
                             <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
-                            {% for organisation in contractors %}
-                            	<option value="{{organisation.id}}">{{organisation.name}}</option>
-                            {% endfor %}
+                            <optgroup label="Executeur de travaux">
+                            	{% for organisation in contractors %}
+                            		<option value="{{organisation.id}}">{{organisation.name}}</option>
+                            	{% endfor %}
+			    </optgroup>
+                            <optgroup label="Impetrants">
+                            	{% for applicant in applicants %}
+                            		<option value="{{applicant.id}}">{{applicant.name_fr}}</option>
+                            	{% endfor %}
+			    </optgroup>
                         </select>
                     </td>
                 </tr>
@@ -351,11 +364,11 @@ $(function(){
 		    {% if report.is_in_progress %} 
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
-                    <th>{% trans 'Valid' %}</th>
+                    <th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                    <th> {% trans 'Confidential' %} </th>
+                    <th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
                     {% for file in files %}
@@ -366,16 +379,16 @@ $(function(){
                         	<center>
 					<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
 					{{file.title}}
-					{% if file.fileType_id == 1 %}
+					{% if file.is_image %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
 					{% endif %}
-					{% if file.fileType_id == 2 %}
+					{% if file.is_pdf %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
 					{% endif %}
-					{% if file.fileType_id == 3 %}
+					{% if file.is_word %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
 					{% endif %}
-					{% if file.fileType_id == 4 %}
+					{% if file.is_excel %}
 						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
 					{% endif %}
 				</center>
@@ -422,11 +435,11 @@ $(function(){
                     {% if report.is_in_progress %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
-                    <th>{% trans 'Valid' %}</th>
+                    <th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                    <th> {% trans 'Confidential' %} </th>
+                    <th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
                 {% for comment in comments %}

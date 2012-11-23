@@ -74,7 +74,9 @@ def update(request):
     #Return the category user mapping so that the shown selection boxes contain the current selected managers
     managersForm = ManagersListForm(request.user)
     managersForm.refreshChoices(request.user)
-    #import pdb; pdb.set_trace()    
+
+    mainCategory = ReportMainCategoryClass.objects.get(id=request.REQUEST.get('main'))
+    secondCategory = ReportSecondaryCategoryClass.objects.get(id=request.REQUEST.get('second'))
     return render_to_response("pro/manager_category_configuration.html",
             {
                 "maincategories" : maincategories,
@@ -82,6 +84,8 @@ def update(request):
                 "categories":categories,
                 "currentSelectedList":currentSelectedList,
                 "managerDropDown":managersForm.manager.choices,
-                "categoryUserMapping":categoryUserMapping
+                "categoryUserMapping":categoryUserMapping,
+                "firstCateg":mainCategory,
+                "secondCateg":secondCategory
             },
             context_instance=RequestContext(request))

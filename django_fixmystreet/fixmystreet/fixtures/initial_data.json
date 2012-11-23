@@ -42,7 +42,7 @@
             "user_ptr":1,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":true,
             "organisation":4
@@ -67,8 +67,8 @@
             "user_ptr":2,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
-            "manager":false,
+            "agent":true,
+            "manager":true,
             "leader":true,
             "organisation":1
         }

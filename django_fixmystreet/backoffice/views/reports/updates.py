@@ -39,6 +39,16 @@ def fixed( request, report_id ):
        	else:
        		return HttpResponseRedirect(report.get_absolute_url())
 
+def close( request, report_id ):
+	report = get_object_or_404(Report, id=report_id)
+        report.status = Report.PROCESSED
+	report.save()    	
+
+	if "pro" in request.path:
+       		return HttpResponseRedirect(report.get_absolute_url_pro())
+       	else:
+       		return HttpResponseRedirect(report.get_absolute_url())
+
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
@@ -111,7 +121,7 @@ def acceptAndValidate(request, report_id):
 def updateComment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     updateType = request.REQUEST.get('updateType')
-    comment = Comment.objects.get(pk=request.REQUEST.get('commentId'))
+    comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
     print request.REQUEST
     if updateType == "valid":
         comment.validated= (request.REQUEST.get('updateValue')=='checked')
@@ -119,6 +129,9 @@ def updateComment(request,report_id):
             comment.isVisible= True
     if updateType == 'confidential':
         comment.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+        if (comment.isVisible == False):
+            comment.validated = False #When setting element to confidential then it becomes unvalidated automatically
+    
     comment.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -128,13 +141,15 @@ def updateComment(request,report_id):
 def updateFile(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     updateType = request.REQUEST.get('updateType')
-    f = File.objects.get(pk=request.REQUEST.get('fileId'))
+    f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
     if updateType == "valid":
         f.validated= (request.REQUEST.get('updateValue')=='checked')
         if f.validated:
             f.isVisible= True
     if updateType == 'confidential':
         f.isVisible = not (request.REQUEST.get('updateValue')=='checked')
+        if (f.isVisible == False):
+            f.validated = False #When setting element to confidential then it becomes unvalidated automatically
     f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())

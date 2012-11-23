@@ -269,7 +269,7 @@
         "fields":{
             "user_ptr":212,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":true,
@@ -294,7 +294,7 @@
         "fields":{
             "user_ptr":213,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":true,
@@ -319,7 +319,7 @@
         "fields":{
             "user_ptr":214,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":true,
@@ -344,7 +344,7 @@
         "fields":{
             "user_ptr":216,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":true,
@@ -369,7 +369,7 @@
         "fields":{
             "user_ptr":215,
             "telephone":"923456789",
-            "lastUsedLanguage":"FR",
+            "last_used_language":"FR",
             "agent":false,
             "manager":false,
             "leader":true,

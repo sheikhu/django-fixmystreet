@@ -5,7 +5,7 @@ from django.conf import settings
 from django import template
 from django.conf import settings
 from django.core.urlresolvers import resolve
-from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportSubscription
+from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportSubscription, OrganisationEntity
 
 register = template.Library()
 
@@ -120,7 +120,11 @@ def numberOfAgents(userId):
 @register.filter
 def numberOfContractors(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-    contractors = FMSUser.objects.filter(organisation_id = organisationId)
+    #Get organisations dependants from the current organisation id
+    dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = organisationId)
+    allOrganisation = list(dependantOrganisations)
+    allOrganisation.append(organisationId)
+    contractors = FMSUser.objects.filter(organisation_id__in=allOrganisation)
     contractors = contractors.filter(contractor = True)
     return contractors.count()
 
