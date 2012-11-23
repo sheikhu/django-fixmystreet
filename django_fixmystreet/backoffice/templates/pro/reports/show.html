@@ -215,7 +215,7 @@ $(function(){
                     <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
                     {% else %}
                     <p><small>{% trans "You've subscribed for updates" %}</small></p>
-                    <a href="{% url unsubscribe report.id %}">{% trans "Unsubscribe" %}</a>
+                    <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
                     {% endif %}
                 {% endif %}
             </div>
