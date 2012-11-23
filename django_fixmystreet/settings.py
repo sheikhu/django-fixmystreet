@@ -30,7 +30,7 @@ TIME_ZONE = 'America/Chicago'
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/admin_media/'
+# ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # ensure large uploaded files end up with correct permissions.  See
 # http://docs.djangoproject.com/en/dev/ref/settings/#file-upload-permissions
@@ -156,14 +156,25 @@ else:
     GEOSERVER = "geoserver.gis.irisnet.be"
     SERVICE_GIS = "service.gis.irisnet.be"
 
-
-if ENVIRONMENT=="dev" or ENVIRONMENT=="staging" or ENVIRONMENT=="production":
+try:
+    import gunicorn
+    print "using gunicorn"
     INSTALLED_APPS += ('gunicorn', )
+except ImportError:
+    pass
 
+
+
+try:
+    import debug_toolbar
+    print "using debug toolbar"
+    INSTALLED_APPS += ('debug_toolbar', )
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INTERNAL_IPS = ('127.0.0.1',)
+except ImportError:
+    pass
 
 if ENVIRONMENT=="local":
-    # INSTALLED_APPS += ('debug_toolbar', )
-    # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     logging.basicConfig(
         level = logging.DEBUG,
         format = '%(asctime)s %(levelname)s %(message)s',
@@ -171,7 +182,8 @@ if ENVIRONMENT=="local":
         filemode = 'w'
     )
 
-elif ENVIRONMENT=="jenkins":
+try:
+    import django_jenkins
     INSTALLED_APPS += ('django_jenkins',)
     PROJECT_APPS = ('fixmystreet',)
     JENKINS_TASKS = (
@@ -180,10 +192,12 @@ elif ENVIRONMENT=="jenkins":
         'django_jenkins.tasks.django_tests',
         #'django_jenkins.tasks.run_jslint',
     )
+except ImportError:
+    pass
+
 
 if ENVIRONMENT=="dev" or ENVIRONMENT=="local" or ENVIRONMENT=="jenkins":
     SITE_ID = 3
-
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2
@@ -192,6 +206,7 @@ elif ENVIRONMENT=="staging":
 elif ENVIRONMENT=="production":
     SITE_ID = 1
     SITE_URL = "fixmystreet.irisnet.be"
+
 
 JSLINT_CHECKED_FILES = (
     'media/js/fixmystreetmap.js'
