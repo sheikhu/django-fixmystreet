@@ -133,7 +133,7 @@ class Report(models.Model):
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
 
-    creator = models.ForeignKey(User,null=True, related_name='creator')
+    creator = models.ForeignKey(User,null=True, related_name='repors_created')
     created_at = models.DateTimeField(auto_now_add=True)
     # last time report was updated
     updated_at = models.DateTimeField(null=True)
@@ -212,7 +212,7 @@ class ReportAttachment(models.Model):
     isVisible = models.BooleanField(default=False)
     title = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         abstract=True
 
@@ -220,6 +220,7 @@ class ReportAttachment(models.Model):
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
+    creator = models.ForeignKey(User,null=True, related_name='comments_created')
 
 
 class ReportFile(ReportAttachment):
@@ -236,7 +237,8 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
-    
+    creator = models.ForeignKey(User,null=True, related_name='files_created')
+
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
     def is_word(self):

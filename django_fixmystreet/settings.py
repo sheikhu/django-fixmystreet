@@ -4,7 +4,6 @@ import logging
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
-AUTH_PROFILE_MODULE = 'fixmystreet.UserProfile'
 LOGIN_REQUIRED_URLS = '^pro/'
 
 if 'MEDIA_ROOT' in os.environ:
