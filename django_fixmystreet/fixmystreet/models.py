@@ -212,7 +212,6 @@ class ReportAttachment(models.Model):
     isVisible = models.BooleanField(default=False)
     title = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User,null=True, related_name='attachments_created')
 
     class Meta:
         abstract=True
@@ -221,6 +220,7 @@ class ReportAttachment(models.Model):
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
+    creator = models.ForeignKey(User,null=True, related_name='comments_created')
 
 
 class ReportFile(ReportAttachment):
@@ -237,7 +237,8 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
-    
+    creator = models.ForeignKey(User,null=True, related_name='files_created')
+
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
     def is_word(self):
