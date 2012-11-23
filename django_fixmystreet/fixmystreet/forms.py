@@ -63,7 +63,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
         for catclass, values in groups.items():
             choices.append((catclass,values))
        
-        super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(attrs={'class':category.pk}),*args,**kwargs)
+        super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(),*args,**kwargs)
 
 
 
