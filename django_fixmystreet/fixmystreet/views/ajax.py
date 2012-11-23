@@ -23,3 +23,13 @@ def create_file(request):
 	session_manager = SessionManager()
 	session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
 	return True
+
+def uploadFile(request):
+	print request.FILES
+	print request.FILES.getlist('form_file')
+	for upfile in request.FILES.getlist('form_file'):
+		filename = upfile.name
+		# instead of "filename" specify the full path and filename of your choice here
+		fd = open(filename, 'w')
+		fd.write(upfile['content'])
+		fd.close()

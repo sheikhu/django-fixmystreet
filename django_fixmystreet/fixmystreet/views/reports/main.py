@@ -8,6 +8,7 @@ from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
+    print request.FILES
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
         #import pdb

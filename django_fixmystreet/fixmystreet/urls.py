@@ -69,7 +69,8 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
 
     (r'^ajax/createComment','create_comment'),
     (r'^ajax/createFile','create_file'),
-    (r'^ajax/categories/(\d+)', 'report_category_note')
+    (r'^ajax/categories/(\d+)', 'report_category_note'),
+    (r'^ajax/uploadFile','uploadFile'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',

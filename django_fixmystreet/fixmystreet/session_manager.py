@@ -20,21 +20,30 @@ class SessionManager():
 	def saveComments(self,sessionK,reportId):
 		
 		s = SessionStore(session_key = sessionK)
-		print s.keys()
-		commentsData = s['comments']
-		for comment in commentsData:
-			c = ReportComment(title=comment['title'],text=comment['text'], report = Report.objects.get(pk=reportId))
-			c.save()
-		del s['comments']
-		s.save()
+		if 'comments' in s.keys():
+			commentsData = s['comments']
+			for comment in commentsData:
+				c = ReportComment(title=comment['title'],text=comment['text'], report = Report.objects.get(pk=reportId))
+				c.save()
+			del s['comments']
+			s.save()
 
 	def saveFiles(self,sessionK,reportId):
 
 		s = SessionStore(session_key = sessionK)
-		print s.keys()
-		filesData = s['files']
-		for f in filesData:
-			c = ReportFile(title=f['title'],file=f['file'], report = Report.objects.get(pk=reportId))
-			c.save()
-		del s['files']
-		s.save()
+		if 'files' in s.keys():
+			filesData = s['files']
+			for f in filesData:
+				ftype = ReportFile.PDF
+				if str(f['file']).endswith("pdf"):
+					ftype = ReportFile.PDF
+				if str(f['file']).endswith("doc"):
+					ftype = ReportFile.WORD
+				if str(f['file']).endswith("png") or str(f['file']).endswith("jpg"):
+					ftype = ReportFile.IMAGE
+				if str(f['file']).endswith("xls"):
+					ftype = ReportFile.EXCEL
+				c = ReportFile(title=f['title'],file=f['file'], file_type = ftype,report = Report.objects.get(pk=reportId))
+				c.save()
+			del s['files']
+			s.save()
