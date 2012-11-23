@@ -57,6 +57,7 @@ rpm:
 createdb:
 	createdb $(DBNAME) -U $(USER) -T template_postgis
 	$(BIN_DIR)/django syncdb --migrate --noinput
+	$(BIN_DIR)/django loaddata bootstrap list_items
 
 dropdb:
 	dropdb $(DBNAME) -U $(USER)
@@ -65,7 +66,7 @@ dropdb:
 # $ make DBNAME=my_fms_db_name scratchdb
 scratchdb: dropdb createdb
 	cp -Rf media/photos-sample/ media/photos/
-	$(BIN_DIR)/django loaddata bootstrap list_items sample
+	$(BIN_DIR)/django loaddata sample
 
 clean:
 	rm -rf bootstrap.py \
