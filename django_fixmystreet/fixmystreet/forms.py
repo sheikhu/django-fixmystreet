@@ -74,7 +74,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
             #pdb.set_trace()
             model = ReportCategory.objects.get(pk=value)
         except ReportCategory.DoesNotExist:
-            raise ValidationError(self.error_messages['invalid_choice'])
+            raise forms.ValidationError(self.error_messages['invalid_choice'])
         return model
 
 #Used by PRO version
