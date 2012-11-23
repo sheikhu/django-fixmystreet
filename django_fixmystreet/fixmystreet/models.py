@@ -133,7 +133,7 @@ class Report(models.Model):
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
 
-    creator = models.ForeignKey(User,null=True, related_name='creator')
+    creator = models.ForeignKey(User,null=True, related_name='repors_created')
     created_at = models.DateTimeField(auto_now_add=True)
     # last time report was updated
     updated_at = models.DateTimeField(null=True)
@@ -212,7 +212,8 @@ class ReportAttachment(models.Model):
     isVisible = models.BooleanField(default=False)
     title = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+    creator = models.ForeignKey(User,null=True, related_name='attachments_created')
+
     class Meta:
         abstract=True
 
