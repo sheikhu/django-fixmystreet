@@ -1122,3 +1122,11 @@ table.reportActionButtons td {
 	padding-left:2px;
 	padding-right:2px;
 }
+
+table.report_overview_table td{
+	padding:5px;
+}
+
+table.report_overview_table th{
+	padding:5px;
+}

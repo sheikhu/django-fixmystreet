@@ -1,6 +1,5 @@
 .PHONY        = install init deploy test run jenkins rpm createdb dropdb scratchdb clean
-APP_NAME      = fixmystreet
-# backoffice
+APP_NAME      = fixmystreet backoffice
 BIN_DIR       = bin
 LIBS_DIR      = libs
 
@@ -36,12 +35,12 @@ init:
 
 test: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
-	ENV=dev $(BIN_DIR)/django test $(APP_NAME)
+	$(BIN_DIR)/django test $(APP_NAME)
 
 jenkins: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
-	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes > pyflakes.log
-	ENV=jenkins $(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
+	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | egrep -v '^django_fixmystreet/static/' | xargs bin/pyflakes > pyflakes.log || echo "pyflakes found $? error"
+	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 
 rpm:
 	find . -type f -name "*.pyc" -delete
@@ -58,6 +57,7 @@ rpm:
 createdb:
 	createdb $(DBNAME) -U $(USER) -T template_postgis
 	$(BIN_DIR)/django syncdb --migrate --noinput
+	$(BIN_DIR)/django loaddata bootstrap list_items
 
 dropdb:
 	dropdb $(DBNAME) -U $(USER)
@@ -66,7 +66,7 @@ dropdb:
 # $ make DBNAME=my_fms_db_name scratchdb
 scratchdb: dropdb createdb
 	cp -Rf media/photos-sample/ media/photos/
-	$(BIN_DIR)/django loaddata list_items sample
+	$(BIN_DIR)/django loaddata sample
 
 clean:
 	rm -rf bootstrap.py \

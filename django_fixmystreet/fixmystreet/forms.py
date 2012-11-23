@@ -63,7 +63,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
         for catclass, values in groups.items():
             choices.append((catclass,values))
        
-        super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(attrs={'class':category.pk}),*args,**kwargs)
+        super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(),*args,**kwargs)
 
 
 
@@ -74,7 +74,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
             #pdb.set_trace()
             model = ReportCategory.objects.get(pk=value)
         except ReportCategory.DoesNotExist:
-            raise ValidationError(self.error_messages['invalid_choice'])
+            raise forms.ValidationError(self.error_messages['invalid_choice'])
         return model
 
 #Used by PRO version
@@ -222,16 +222,26 @@ class AgentCreationForm(UserCreationForm):
         return fmsuser;
 		
 class ReportFileForm(forms.ModelForm):
-	class Meta:
-		model=ReportFile
-		fields=('title','file','isVisible',)
-	
-	file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
-	
+    class Meta:
+        model=ReportFile
+        fields=('title','file','isVisible',)
+    file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
+    def clean_file(self):
+        file = self.cleaned_data['file']
+        #file_type = file.file_type.split('/')[0]
+        #if file_type in settings.CONTENT_TYPES:
+        print 'File size ='
+        print file._size
+        print 'max size = '
+        print settings.MAX_UPLOAD_SIZE
+        if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
+            raise forms.ValidationError("File is too large")
+        #else:
+         #   raise forms.ValidationError(_('File type is not supported'))
+        return file
 	def __init__(self,data=None, files=None, initial=None):
 		super(ReportFileForm,self).__init__(data, files, initial=initial)
-	
-	def save(self,user,report,commit=True):
+    def save(self,user,report,commit=True):
 		fileUpdate= super(ReportFileForm,self).save(commit=False)
 		fileUpdate.report = report
 

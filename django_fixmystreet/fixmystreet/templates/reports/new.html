@@ -61,7 +61,8 @@ $(document).ready(function() {
 		}
 	});
 	$(window).hashchange();
-
+	$("#commentForm").hide();
+    $("#fileForm").hide();
 	$('#id_category').change(function(evt) {
                 // updates entry notes
                 var el_id = $('#id_category').val();
@@ -97,7 +98,8 @@ $(document).ready(function() {
 		$('#id_secondary_category_copy').val(el_id_copy);
 	});
 	$('#id_secondary_category').change();// initialize notes
-
+	$("#addFileDiv").hide();
+    $("#addCommmentDiv").hide();
 	$map.bind('markermoved',function(evt,point){
 		$('#id_x').val(point.x);
 		$('#id_y').val(point.y);
@@ -105,6 +107,8 @@ $(document).ready(function() {
 		if(window.location.hash != '#form')
 		{
 			window.location.assign('#form');
+			$("#addFileDiv").show();
+            $("#addCommmentDiv").show();
 			return; // address is retrieved when form is shown
 		}
 		
@@ -143,7 +147,9 @@ $(document).ready(function() {
 			}
 		});
 	}
-	$('#report_overview_table').hide();
+	$("#extraCommentsDiv").hide();
+	$("#extraFilesDiv").hide();
+	$('#report_overview_table_div').hide();
     $(document).delegate("form", "submit", function(evt) {
         if (!$(':submit').hasClass('confirm')) {
             evt.preventDefault();
@@ -174,28 +180,82 @@ $(document).ready(function() {
   			 vals[i]=this.value;
   			 i++;
 			});
+			console.log(vals);
 			$("#locationView").append("<p>"+vals[0]+"</p>");
-			$("#category1View").append("<p>"+vals[5]+"</p>");
-			$("#category2View").append("<p>"+vals[6]+"</p>");
+			$("#category1View").append("<p>"+vals[7]+"</p>");
+			$("#category2View").append("<p>"+vals[8]+"</p>");
 			$("#descriptionView").append("<p>"+vals[8]+"</p>");
 			$("#emailView").append("<p>"+vals[1]+"</p>");
 			$("#firstNameView").append("<p>"+vals[2]+"</p>");
 			$("#nameView").append("<p>"+vals[3]+"</p>");
 			$("#photoView").append("<p>"+vals[9].split("\\")[2]+"</p>");
             $('#new_report_citizen_form').hide();
-            $('#report_overview_table').show();
+            $('#report_overview_table_div').show();
             $(':submit').val('Confirm');
             $(':submit').addClass('confirm');
+            $(':submit').attr('onclick','submitAnnexes();');
+            $("#addFileDiv").hide();
+            $("#addCommmentDiv").hide();
         }
     });
 });
 
+function AddFileToView(){
+	$.post('/ajax/uploadFile');
+	if(!$("#extraFilesDiv").is(":visible")){
+		$("#extraFilesDiv").show();
+	}
+	//Structured Data of the file to add
+	var data = {"title":$("#fileTitleInput").val(),"file":$("#fileFileInput").val().replace('C:\\fakepath\\','/static/')};
+	//Put the file data in the session
+	$.post("/ajax/createFile",data);
+	//Create the html to add in the view
+	var htmlToAdd = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+$("#fileTitleInput").val()+"</h3><img src='"+$("#fileFileInput").val().replace('C:\\fakepath\\','/static/')+"'/></div></td></tr>";
+	console.log(htmlToAdd)
+	$("#extraFilesTable").append(htmlToAdd);
+}
+
+function AddCommentToView(){
+	if(!$("#extraCommentsDiv").is(":visible")){
+		$("#extraCommentsDiv").show();
+	}
+	// Structured Data of the comment to add
+	var data = {"title":$("#commentTitleInput").val(),"text":$("#commentTextTextArea").val()};
+	//Create the html to add in the view
+	var html = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+$("#commentTitleInput").val()+"</h3><p>"+$("#commentTextTextArea").val()+"</p></div></td></tr>"
+	
+	//Put comment data in the session
+	$.post("/ajax/createComment",data);
+	$(".extraCommentsTable").append(html);
+	
+	
+}
+
 function showForm(){
 	$('#new_report_citizen_form').show();
-    $('#report_overview_table').hide();
+    $('#report_overview_table_div').hide();
     $(':submit').val('Submit');
     $(':submit').removeClass('confirm');
+    $(':submit').attr('onclick','');
+    $("#addFileDiv").show();
+    $("#addCommmentDiv").show();
 }
+
+function toggleFileForm() {
+		$("#fileTitleInput").val("");
+		$("#fileFileInput").val("");
+        $("#fileForm").toggle();
+        $("#showFileFormButton").toggle();
+        $("#addCommmentDiv").toggle();
+    }
+
+    function toggleCommentForm() {
+    	$("#commentTitleInput").val("");
+    	$("#commentTextTextArea").val("");
+        $("#commentForm").toggle();
+        $("#showCommentFormButton").toggle();
+        $('#addFileDiv').toggle();
+    }
 </script>
 {% endblock %}
 
@@ -235,8 +295,8 @@ function showForm(){
 				</tr>
 				
 			</table>
-			<div id="report_overview_table">
-			<table >
+			<div id="report_overview_table_div">
+			<table class="report_overview_table">
 				<tr>
 					<th>{% trans 'Location' %}</th>
 					<td id="locationView">
@@ -294,6 +354,81 @@ function showForm(){
                 <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
             </p>
 		</form>
+
+		<div id="addAnnexes">
+		<div style="padding-top:30px">
+        	<div id="extraFilesDiv">
+            <h3>{% trans "Extra files" %}</h3>
+            
+                <table id="extraFilesTable" style='width:100%;'>
+                    
+            	</table>
+            </div>
+            <div id="extraCommentsDiv">
+            <h3>{% trans "Extra comments" %}</h3>
+            
+                <table class="extraCommentsTable" style='width:100%;'>
+                    
+            	</table>
+            </div>
+        </div>
+
+     </div>
+     <!-- If the status allow such interactions -->		
+		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+		<div id="addCommmentDiv">
+			<h2>{% trans "Add a comment to this report" %}</h2>
+			<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
+			
+			<form id="commentForm" enctype="multipart/form-data"  method="post">
+				<table id="report_form" class="form">
+					<tr>
+						<th>{% trans 'Title'%}:</th>
+						<td> <input type="text" id="commentTitleInput"/></td>
+					</tr>
+					<tr>
+						<th>{% trans 'Text'%}:</th>
+						<td><textarea id="commentTextTextArea"></textarea></td>
+					</tr>				
+					<tr>
+						<td></td>
+						<td>
+							<p style="float:left;">
+								<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddCommentToView();toggleCommentForm();"/>
+								<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
+							</p>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+        	<div id="addFileDiv">
+        		<h2>{% trans "Add a file to this report" %}</h2>
+        		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
+        		<form id="fileForm" enctype="multipart/form-data"  method="post">
+        			<table id="report_form" class="form">
+        				<tr>
+        					<th>{% trans 'Title'%}:</th>
+        					<td><input type="text" id="fileTitleInput"></td>
+        				</tr>
+        				<tr>
+        					<th>{% trans 'File' %}
+        					</th>
+        					<td><input type="file" name="form_file" id="fileFileInput" ></td>
+        				</tr>				
+        				<tr>
+        					<td></td>
+        					<td>
+        						<p style="float:left;">
+        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddFileToView();toggleFileForm();"/>
+        							<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
+        						</p>
+        					</td>
+        				</tr>
+        			</table>
+        		</form>
+        	</div>
+		{% endif %}
 	</div>
 	<div id="rightcol">
 		<a id="back" class="button" href="#reports">{% trans "Review reports" %}</a>
@@ -316,6 +451,12 @@ function showForm(){
             </ul>
             <p/>
         </div>
+	</div>
+	
+
+
+
+		
 	</div>
 </div>
 {% endblock %}

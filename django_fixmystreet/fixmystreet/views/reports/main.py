@@ -1,12 +1,14 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity
-from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm
+from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm
 from django.template import RequestContext
+from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
+    print request.FILES
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
         #import pdb
@@ -15,6 +17,9 @@ def new(request):
         if report_form.is_valid():
             # this saves the update as part of the report.
             report = report_form.save(request.user)
+            session_manager = SessionManager()
+            session_manager.saveComments(request.session.session_key, report.id)
+            session_manager.saveFiles(request.session.session_key, report.id)
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
     else:
@@ -27,6 +32,8 @@ def new(request):
     
     return render_to_response("reports/new.html",
             {
+                "comment_form":ReportCommentForm(),
+                "file_form":ReportFileForm(),
                 "report_form": report_form,
                 "pnt":pnt,
                 "reports":reports

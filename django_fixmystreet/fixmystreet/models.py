@@ -5,7 +5,6 @@ from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string, TemplateDoesNotExist
-from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.contrib.auth.models import User, UserManager, Group
@@ -20,7 +19,7 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 
 from transmeta import TransMeta
-from django_fixmystreet.fixmystreet.utils import FixStdImageField
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
 
 
 class FMSUser(User):
@@ -134,7 +133,7 @@ class Report(models.Model):
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
 
-    creator = models.ForeignKey(User,null=True, related_name='creator')
+    creator = models.ForeignKey(User,null=True, related_name='repors_created')
     created_at = models.DateTimeField(auto_now_add=True)
     # last time report was updated
     updated_at = models.DateTimeField(null=True)
@@ -180,6 +179,9 @@ class Report(models.Model):
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
 
+    def attachments(self):
+        return list(self.comments.all()) + list(self.files.all()) # order by created_at
+
     def to_object(self):
         return {
             "id": self.id,
@@ -206,17 +208,19 @@ class Exportable(models.Model):
 
 
 class ReportAttachment(models.Model):
-    report = models.ForeignKey(Report)
-    validated=models.BooleanField(default=False)
-    isVisible=models.BooleanField(default=False)
-    title=models.CharField(max_length=250)
-    
+    validated = models.BooleanField(default=False)
+    isVisible = models.BooleanField(default=False)
+    title = models.CharField(max_length=250)
+    created_at = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         abstract=True
 
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
+    report = models.ForeignKey(Report, related_name="comments")
+    creator = models.ForeignKey(User,null=True, related_name='comments_created')
 
 
 class ReportFile(ReportAttachment):
@@ -232,7 +236,9 @@ class ReportFile(ReportAttachment):
     )
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
-    
+    report = models.ForeignKey(Report, related_name="files")
+    creator = models.ForeignKey(User,null=True, related_name='files_created')
+
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
     def is_word(self):
@@ -286,25 +292,19 @@ def report_notify(sender, instance, **kwargs):
     if kwargs['created'] and not kwargs['raw']:
         NotificationResolver(instance).resolve()
 
-#signal on a report to register author as subscriber to his own report
-#@receiver(post_save,sender=Report)
-#def report_subscribe_author(sender, instance, **kwargs):
-#    if kwargs['created']:
-#        ReportSubscription(report=instance, subscriber=instance.author).save()
-
-# class ReportUpdate(models.Model):
-    # """A new version of the status of a report"""
-    # report = models.ForeignKey(Report)
-    # desc = models.TextField(blank=True, null=True, verbose_name=ugettext_lazy("Details"))
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # is_fixed = models.BooleanField(default=False)
-    # author = models.ForeignKey(User,null=True)
-    # photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50)) 
-    # 
-    # class Meta:
-        # ordering = ['created_at']
-        # #order_with_respect_to = 'report'
 # 
+@receiver(post_save,sender=Report)
+def report_subscribe_author(sender, instance, **kwargs):
+    """
+    signal on a report to register author as subscriber to his own report
+    """
+    if kwargs['created']:
+        if instance.creator:
+            ReportSubscription(report=instance, subscriber=instance.creator).save()
+        if instance.citizen:
+            ReportSubscription(report=instance, subscriber=instance.citizen).save()
+
+
 # #update the report, set updated_at and is_fixed correctly
 # @receiver(post_save, sender=ReportUpdate)
 # def update_report(sender, instance, **kwargs):
@@ -315,6 +315,7 @@ def report_notify(sender, instance, **kwargs):
         # instance.report.fixed_at = instance.created_at
 # 
     # instance.report.save()
+
 
 #notify subscribers that report has been updated
 # @receiver(post_save, sender=ReportUpdate)
@@ -596,29 +597,6 @@ def dictToPoint(data):
 
     return fromstr("POINT(" + px + " " + py + ")", srid=31370)
 
-
-class HtmlTemplateMail(EmailMultiAlternatives):
-    def __init__(self, template_dir, data, recipients, **kargs):
-        site = Site.objects.get_current()
-        data['SITE_URL'] = 'http://{0}'.format(site.domain)
-        subject, html, text = '', '', ''
-        try:
-            subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
-        except TemplateDoesNotExist:
-            pass
-        try:
-            text    = render_to_string('emails/' + template_dir + "/message.txt", data)
-        except TemplateDoesNotExist:
-            pass
-        try:
-            html    = render_to_string('emails/' + template_dir + "/message.html", data)
-        except TemplateDoesNotExist:
-            pass
-        
-        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
-        super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
-        if html:
-            self.attach_alternative(html, "text/html")
 
 
 def exportUsers():

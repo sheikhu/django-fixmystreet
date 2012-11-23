@@ -10,7 +10,7 @@ from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 from django.conf import settings
 
 class ReportViewsTest(TestCase):
-    fixtures = ['sample']
+    fixtures = ['bootstrap', 'sample']
     def setUp(self):
         self.user = User.objects.create_user('test1', 'test1@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
@@ -20,8 +20,7 @@ class ReportViewsTest(TestCase):
         """Tests the new report view."""
         # Make sure that the list view exists
         url = reverse('report_new')
-
-        response = self.client.get(url, {'x':'1000','y':'1000'}, follow=True)
+        response = self.client.get(url, {'x':'148360','y':'171177'}, follow=True)
         self.assertEqual(response.status_code, 200)
         # Assert that the list view has suitable content for templates
         self.assertTrue('reports' in response.context)
@@ -30,6 +29,7 @@ class ReportViewsTest(TestCase):
         for report in response.context['reports']:
             #self.assertContains(response, report.title)
             self.assertContains(response, report.get_absolute_url())
+            self.assertTrue(report.distance < 1000) # limit to 1km around
             self.assertTrue(report.distance > last_dist) # ordered by distance
             last_dist = report.distance
 
@@ -37,7 +37,14 @@ class ReportViewsTest(TestCase):
         """Tests the creation of a report and test the view of it."""
         self.client.login(username='test1', password='pwd')
         url = reverse('report_new')
-        response = self.client.post(url, {'x':'1000','y':'1000','title':'Just a test', 'address': 'Av des arts', 'category':1,'postalcode':'1000'}, follow=True)
+        response = self.client.post(url, {
+            'x':'148360',
+            'y':'171177',
+            'title':'Just a test',
+            'address': 'Av des arts',
+            'category':1,
+            'postalcode':'1000'
+        }, follow=True)
         self.assertEqual(response.status_code, 200)
 
         self.assertTrue('report' in response.context)
@@ -49,7 +56,7 @@ class ReportViewsTest(TestCase):
         """Tests the update of a report and flag it as fixed."""
         self.client.login(username='test1', password='pwd')
         report = Report.objects.all()[0]
-        nb_initial_update = report.reportupdate_set.count()
+        nb_initial_attachment = report.attachments.count()
         report.is_fixed = False
         report.save()
 
