@@ -3,12 +3,13 @@ from django.http import HttpResponseRedirect, Http404
 from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
+
     if request.method == 'POST':
         update_form = ReportCommentForm(request.POST)
         if update_form.is_valid():
@@ -16,6 +17,13 @@ def new( request, report_id ):
             update.is_fixed = request.POST.has_key('is_fixed')
             update.save()
             messages.add_message(request, messages.SUCCESS, _('The report has been sucessfully updated.'))
-
+        if request.POST.has_key('is_fixed'):
+                alreadySolved = (report.status == Report.SOLVED)
+                print alreadySolved
+                if not alreadySolved:
+                    report.status = Report.SOLVED
+                    report.save()
+                    mail = HtmlTemplateMail(template_dir='send_report_fixed_to_gest_resp', data={'report': report}, recipients=(report.responsible_manager.email,))
+                    mail.send()
         return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()

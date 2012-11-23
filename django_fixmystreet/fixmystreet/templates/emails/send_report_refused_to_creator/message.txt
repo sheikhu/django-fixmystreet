@@ -1,0 +1,9 @@
+{% extends 'emails/base_email.txt' %}
+{% load i18n %}
+{% block content %}
+
+A report you created has been refused.
+Hello,
+The report you created at {{report.address}} has been refused.
+{{extra_info_text}}
+{% endblock %}

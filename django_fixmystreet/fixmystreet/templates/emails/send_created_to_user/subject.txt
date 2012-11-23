@@ -1,0 +1,1 @@
+{% load i18n %}{% trans "Fix My Street: A user has been created for you" %}

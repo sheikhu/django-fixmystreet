@@ -120,6 +120,14 @@ $(function(){
         $("#showCommentFormButton").toggle();
         $('#addFileDiv').toggle();
     }
+
+    function refuse(){
+        var name=prompt("Please enter more information about rejecting the report","");
+        if(name!=null){
+            window.location = '{% url report_refuse_pro report.id %}?more_info_text='+name;
+        }
+        
+    }
 </script>
 {% endblock %}
 {% block css %}
@@ -187,7 +195,7 @@ $(function(){
                     	</td>
 
                     	<td >
-                        	<button onclick="window.location = '{% url report_refuse_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
+                        	<button onclick="refuse();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
                     	</td>
 
                         <td >

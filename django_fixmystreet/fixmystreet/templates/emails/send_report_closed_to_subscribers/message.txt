@@ -1,0 +1,7 @@
+{% extends 'emails/base_email.txt' %}
+{% load i18n %}
+{% block content %}
+
+The report is now closed
+
+{% endblock %}
