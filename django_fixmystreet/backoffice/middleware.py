@@ -37,13 +37,7 @@ class LoginRequiredMiddleware:
 
 class LoadUserMiddleware:
     """
-    Middleware that requires a user to be authenticated to view any page other
-    than LOGIN_URL. Exemptions to this requirement can optionally be specified
-    in settings via a list of regular expressions in LOGIN_EXEMPT_URLS (which
-    you can copy from your urls.py).
-
-    Requires authentication middleware and template context processors to be
-    loaded. You'll get an error if they aren't.
     """
     def process_request(self, request):
-        request.fmsuser = request.user.fmsuser
+        if request.user.is_authenticated():
+            request.fmsuser = request.user.fmsuser

@@ -25,7 +25,7 @@ deploy_require = [
 tests_require = [
     'django-jenkins',
     'coverage',
-    'pylint'
+    'pyflakes'
     ]
 debug_require = [
     'django-debug-toolbar',

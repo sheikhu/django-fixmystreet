@@ -44,7 +44,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware'
+    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
+    'django_fixmystreet.backoffice.middleware.LoadUserMiddleware'
 )
 
 LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
@@ -117,6 +118,8 @@ try:
     JENKINS_TASKS = (
         'django_jenkins.tasks.with_coverage',
         'django_jenkins.tasks.django_tests',
+        'django_jenkins.tasks.run_pyflakes',
+        #'django_jenkins.tasks.run_graphmodels',
     )
 except ImportError:
     pass
