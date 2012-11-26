@@ -42,7 +42,7 @@ lint:
 
 jenkins: $(BIN_DIR)/django
 	cp -Rf media/photos-sample/ media/photos/
-	rm -r reports
+	rm -rf reports
 	mkdir reports
 	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 
