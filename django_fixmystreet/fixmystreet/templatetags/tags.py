@@ -66,6 +66,7 @@ def getUserType(userId):
         return "impetrant"
     if user.contractor:
         return "contractor"
+
 @register.filter
 def isManager(userId):
     return FMSUser.objects.get(user_ptr_id=userId).manager
