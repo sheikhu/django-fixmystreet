@@ -1,0 +1,20 @@
+{% extends "pro/base.html" %}
+{% load i18n %}
+{% load tags %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+<div id="page_content_container">
+	<h1>My subscriptions</h1>
+		{% if reports %}
+        <div id='search_results'>
+	        {% for report in reports %}
+            {% include "pro/reports/_navigation.html" %}
+            {% endfor %}
+         </div>
+        {% endif %}
+</div>
+	
+{% endblock %}

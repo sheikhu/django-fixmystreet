@@ -1,0 +1,8 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+{% block content %}
+<h1>Dear {{user.first_name}} {{user.last_name}},</h1>
+<p> A user has been created for you for Fixmystreet PRO on {{SITE_URL}}.</p>
+<p> Your username is {{user.username}}.</p>
+<p> Your password is {{password}}</p>
+{% endblock %}

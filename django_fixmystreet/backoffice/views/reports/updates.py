@@ -4,8 +4,9 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db import transaction
-
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
+from django.contrib.auth.models import User
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
 
 @transaction.commit_on_success
@@ -20,14 +21,20 @@ def accept( request, report_id ):
         	return HttpResponseRedirect(report.get_absolute_url())
 
 def refuse( request, report_id ):
-	report = get_object_or_404(Report, id=report_id)
-        report.status = Report.REFUSED
-	report.save()    	
-
-	if "pro" in request.path:
-       		return HttpResponseRedirect(report.get_absolute_url_pro())
-       	else:
-       		return HttpResponseRedirect(report.get_absolute_url())
+    report = get_object_or_404(Report, id=report_id)
+    report.status = Report.REFUSED
+    report.save()
+    creator = None
+    if report.creator:
+        creator = report.creator
+    else:
+        creator = report.citizen
+    mail = HtmlTemplateMail(template_dir='send_report_refused_to_creator', data={'report': report, "more_info_text":request.REQUEST.get('more_info_text')}, recipients=(creator.email,))
+    mail.send()
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def fixed( request, report_id ):
 	report = get_object_or_404(Report, id=report_id)
@@ -40,14 +47,21 @@ def fixed( request, report_id ):
        		return HttpResponseRedirect(report.get_absolute_url())
 
 def close( request, report_id ):
-	report = get_object_or_404(Report, id=report_id)
-        report.status = Report.PROCESSED
-	report.save()    	
-
-	if "pro" in request.path:
-       		return HttpResponseRedirect(report.get_absolute_url_pro())
-       	else:
-       		return HttpResponseRedirect(report.get_absolute_url())
+    report = get_object_or_404(Report, id=report_id)
+    report.status = Report.PROCESSED
+    report.save()
+    subscriptions = ReportSubscription.objects.filter(report_id=report_id)
+    mailto = ['']*len(subscriptions)
+    i =0
+    for reportsubscription in subscriptions:
+        mailto[i] = User.objects.get(pk=reportsubscription.subscriber_id).email
+        i = i+1
+    mail = HtmlTemplateMail(template_dir='send_report_closed_to_subscribers', data={'report': report}, recipients=tuple(mailto))
+    mail.send()
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)

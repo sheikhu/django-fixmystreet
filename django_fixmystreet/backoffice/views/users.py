@@ -7,6 +7,7 @@ from django.contrib.sessions.models import Session
 from django.utils.translation import ugettext_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
 from django_fixmystreet.fixmystreet.forms import AgentCreationForm
 from django_fixmystreet.backoffice.forms import UserEditForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
@@ -135,7 +136,9 @@ def createUser(request):
 					createdUser.categories.add(type)
 
 		if createdUser:
-        		return HttpResponseRedirect('/pro/')
+				mail = HtmlTemplateMail(template_dir='send_created_to_user', data={'user': createdUser,"password":request.POST.get('password1')}, recipients=(createdUser.email,))
+                mail.send()
+                return HttpResponseRedirect('/pro/')
     else:
         createform = AgentCreationForm()
     

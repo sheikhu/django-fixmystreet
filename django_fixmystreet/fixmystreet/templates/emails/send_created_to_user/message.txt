@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.txt' %}
+{% load i18n %}
+{% block content %}
+
+Dear {{user.first_name}} {{user.last_name}}
+A user has been created for you for Fixmystreet PRO on {{SITE_URL}}.
+Your username is {{user.username}}.
+Your password is {{user.password}}.
+
+{% endblock %}

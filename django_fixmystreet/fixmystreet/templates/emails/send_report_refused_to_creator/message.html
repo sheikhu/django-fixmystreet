@@ -1,0 +1,8 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+{% block content %}
+<h1>A report you created has been refused.<h1>
+<p> Hello,</p>
+<p> The report you created at {{report.address}} has been refused.</p>
+<p> {{extra_info_text}} </p>
+{% endblock %}
