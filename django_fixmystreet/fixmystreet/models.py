@@ -292,11 +292,6 @@ def report_notify(sender, instance, **kwargs):
     if kwargs['created'] and not kwargs['raw']:
         NotificationResolver(instance).resolve()
 
-@receiver(post_save,sender=Report)
-def notify_report_creation(sender, instance,**kwargs):
-    mail = HtmlTemplateMail(template_dir='send_report_creation_to_gest_resp', data={'report': instance}, recipients=(instance.responsible_manager.email,))
-    mail.send()
-
 # 
 @receiver(post_save,sender=Report)
 def report_subscribe_author(sender, instance, **kwargs):
