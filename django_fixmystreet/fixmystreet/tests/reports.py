@@ -1,6 +1,6 @@
 from datetime import date
 import shutil, os
-from unittest import skip
+#from unittest import skip
 
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -25,93 +25,93 @@ class NotificationTest(TestCase):
         self.commune = OrganisationEntity(name='test ward')
         self.ward.save()
 
-    @skip("to conform")
-    def testToCouncillor(self):
-        self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-        self.report.save()
+    #@skip("to conform")
+    #def testToCouncillor(self):
+    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+    #    self.report.save()
 
-        self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertEquals(mail.outbox[0].to, [self.councillor.email])
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
+    #    self.assertEquals(len(mail.outbox), 1)
+    #    self.assertEquals(len(mail.outbox[0].to), 1)
+    #    self.assertEquals(mail.outbox[0].to, [self.councillor.email])
 
-        rule = NotificationRule(rule=NotificationRule.TO_COUNCILLOR, ward=self.ward, councillor=self.councillor2)
-        rule.save()
+    #    rule = NotificationRule(rule=NotificationRule.TO_COUNCILLOR, ward=self.ward, councillor=self.councillor2)
+    #    rule.save()
 
-        self.report = Report(ward=self.ward, category=self.category, title='Just a second test', author=self.user)
-        self.report.save()
+    #    self.report = Report(ward=self.ward, category=self.category, title='Just a second test', author=self.user)
+    #    self.report.save()
 
-        self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-        self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertEquals(len(mail.outbox[1].to), 1)
-        self.assertEquals(len(mail.outbox[2].to), 1)
-        self.assertTrue(self.councillor2.email in mail.outbox[1].to or self.councillor2.email in mail.outbox[2].to)
-        self.assertTrue(self.councillor.email in mail.outbox[1].to or self.councillor.email in mail.outbox[2].to)
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
+    #    self.assertEquals(len(mail.outbox), 3)
+    #    self.assertEquals(len(mail.outbox[1].to), 1)
+    #    self.assertEquals(len(mail.outbox[2].to), 1)
+    #    self.assertTrue(self.councillor2.email in mail.outbox[1].to or self.councillor2.email in mail.outbox[2].to)
+    #    self.assertTrue(self.councillor.email in mail.outbox[1].to or self.councillor.email in mail.outbox[2].to)
 
-    @skip("to conform")
-    def testMatchingCategoryClass(self):
-        rule = NotificationRule(rule=NotificationRule.MATCHING_CATEGORY_CLASS, ward=self.ward, category_class=self.categoryclass, councillor=self.councillor2)
-        rule.save()
+    #@skip("to conform")
+    #def testMatchingCategoryClass(self):
+    #    rule = NotificationRule(rule=NotificationRule.MATCHING_CATEGORY_CLASS, ward=self.ward, category_class=self.categoryclass, councillor=self.councillor2)
+    #    rule.save()
 
-        self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-        self.report.save()
+    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+    #    self.report.save()
 
-        self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-        self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
-        self.assertEquals(len(mail.outbox), 2)
-        self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertEquals(len(mail.outbox[1].to), 1)
-        self.assertEquals(mail.outbox[0].to, [self.councillor.email])
-        self.assertEquals(mail.outbox[1].to, [self.councillor2.email])
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
+    #    self.assertEquals(len(mail.outbox), 2)
+    #    self.assertEquals(len(mail.outbox[0].to), 1)
+    #    self.assertEquals(len(mail.outbox[1].to), 1)
+    #    self.assertEquals(mail.outbox[0].to, [self.councillor.email])
+    #    self.assertEquals(mail.outbox[1].to, [self.councillor2.email])
 
-        self.report2 = Report(ward=self.ward, category=self.not_category, title='Just a second test', author=self.user)
-        self.report2.save()
+    #    self.report2 = Report(ward=self.ward, category=self.not_category, title='Just a second test', author=self.user)
+    #    self.report2.save()
 
-        self.assertFalse(ReportNotification.objects.filter(report=self.report2,to_councillor=self.councillor2).exists())
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertEquals(len(mail.outbox[2].to), 1)
-        self.assertEquals(mail.outbox[2].to, [self.councillor.email])
+    #    self.assertFalse(ReportNotification.objects.filter(report=self.report2,to_councillor=self.councillor2).exists())
+    #    self.assertEquals(len(mail.outbox), 3)
+    #    self.assertEquals(len(mail.outbox[2].to), 1)
+    #    self.assertEquals(mail.outbox[2].to, [self.councillor.email])
         
 
-    @skip("to conform")
-    def testNotMatchingCategoryClass(self):
-        rule = NotificationRule(rule=NotificationRule.NOT_MATCHING_CATEGORY_CLASS, ward = self.ward, category_class = self.categoryclass, councillor=self.councillor2)
-        rule.save()
+    #@skip("to conform")
+    #def testNotMatchingCategoryClass(self):
+    #    rule = NotificationRule(rule=NotificationRule.NOT_MATCHING_CATEGORY_CLASS, ward = self.ward, category_class = self.categoryclass, councillor=self.councillor2)
+    #    rule.save()
 
-        self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-        self.report.save()
+    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+    #    self.report.save()
 
-        self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-        self.assertFalse(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].to, [self.councillor.email])
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
+    #    self.assertFalse(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
+    #    self.assertEquals(len(mail.outbox), 1)
+    #    self.assertEquals(mail.outbox[0].to, [self.councillor.email])
 
-        self.report2 = Report(ward=self.ward, category=self.not_category, title='Just a second test', author=self.user)
-        self.report2.save()
+    #    self.report2 = Report(ward=self.ward, category=self.not_category, title='Just a second test', author=self.user)
+    #    self.report2.save()
 
-        self.assertTrue(ReportNotification.objects.filter(report=self.report2,to_councillor=self.councillor2).exists())
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertEquals(mail.outbox[1].to, [self.councillor.email])
-        self.assertEquals(mail.outbox[2].to, [self.councillor2.email])
+    #    self.assertTrue(ReportNotification.objects.filter(report=self.report2,to_councillor=self.councillor2).exists())
+    #    self.assertEquals(len(mail.outbox), 3)
+    #    self.assertEquals(mail.outbox[1].to, [self.councillor.email])
+    #    self.assertEquals(mail.outbox[2].to, [self.councillor2.email])
 
-    @skip("to conform")
-    def testSubscrciber(self):
-        self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-        self.report.save()
+    #@skip("to conform")
+    #def testSubscrciber(self):
+    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+    #    self.report.save()
 
-        self.assertTrue(ReportSubscription.objects.filter(report=self.report,subscriber=self.user).exists())
-        # TODO
+    #    self.assertTrue(ReportSubscription.objects.filter(report=self.report,subscriber=self.user).exists())
 
 
 class PhotosTest(TestCase):
 
+    fixtures = ["bootstrap","list_items"]
+
     def setUp(self):
         self.user = User.objects.create_user('test', 'test@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
-
-        self.category = ReportCategory.objects.all()[0] 
-        self.ward = Ward.objects.all()[0]
+        self.category = ReportMainCategoryClass.objects.all()[0] 
+        #self.ward = Ward.objects.all()[0]
 
     def testPhotoExifData(self):
         
@@ -134,7 +134,8 @@ class PhotosTest(TestCase):
             
             shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
             
-            report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+            #report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
+            report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000)
 
             report.photo = 'tmp.jpg'
             report.save()
