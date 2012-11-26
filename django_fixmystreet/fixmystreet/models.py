@@ -247,7 +247,10 @@ class ReportFile(ReportAttachment):
         return self.file_type == ReportFile.EXCEL
     def is_image(self):
         return self.file_type == ReportFile.IMAGE
-
+    def is_a_document(self):
+        return self.is_pdf() or self.is_word() or self.is_excel() 
+    def is_an_image(self):
+        return self.is_image()
 
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):

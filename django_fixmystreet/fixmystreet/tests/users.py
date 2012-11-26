@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 
 from django.conf import settings
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser
-
+from django.db import IntegrityError
 
 class FMSUserTest(TestCase):
     
@@ -25,7 +25,7 @@ class FMSUserTest(TestCase):
 
        self.commune = OrganisationEntity(name='test ward')
        #Create a FMSUser
-       self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False)
+       self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False, username="aaa", first_name="aaa", last_name="aaa", email="a@a.com")
        self.fmsuser.save();
 
     def testCreationOfFMSUser(self):

@@ -8,7 +8,7 @@ from django.core import mail
 from django.core.files.storage import FileSystemStorage
 
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
 
 
 class NotificationTest(TestCase):
@@ -18,13 +18,46 @@ class NotificationTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
-
-        # these are from the fixtures file.
-        self.category = ReportCategory.objects.all()[0]
-        self.categoryclass = self.category.category_class
-
+        self.category = ReportMainCategoryClass.objects.all()[0] 
+        #Create a FMSUser
+        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False)
+        self.fmsuser.save();
         self.commune = OrganisationEntity(name='test ward')
-        #self.ward.save()
+    
+    def testReportFileType(self):
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000, responsible_manager=self.fmsuser)
+        
+        reportFile = ReportFile(file_type=ReportFile.PDF, report = new_report, creator=self.user)
+        self.assertTrue(reportFile.is_pdf())
+        self.assertFalse(reportFile.is_word())
+        self.assertFalse(reportFile.is_excel())
+        self.assertFalse(reportFile.is_image())
+        self.assertTrue(reportFile.is_a_document())
+        self.assertFalse(reportFile.is_an_image())
+        
+        reportFile = ReportFile(file_type=ReportFile.WORD, report = new_report, creator=self.user)
+        self.assertFalse(reportFile.is_pdf())
+        self.assertTrue(reportFile.is_word())
+        self.assertFalse(reportFile.is_excel())
+        self.assertFalse(reportFile.is_image())
+        self.assertTrue(reportFile.is_a_document())
+        self.assertFalse(reportFile.is_an_image())
+        
+        reportFile = ReportFile(file_type=ReportFile.EXCEL, report = new_report, creator=self.user)
+        self.assertFalse(reportFile.is_pdf())
+        self.assertFalse(reportFile.is_word())
+        self.assertTrue(reportFile.is_excel())
+        self.assertFalse(reportFile.is_image())
+        self.assertTrue(reportFile.is_a_document())
+        self.assertFalse(reportFile.is_an_image())
+        
+        reportFile = ReportFile(file_type=ReportFile.IMAGE, report = new_report, creator=self.user)
+        self.assertFalse(reportFile.is_pdf())
+        self.assertFalse(reportFile.is_word())
+        self.assertFalse(reportFile.is_excel())
+        self.assertTrue(reportFile.is_image())
+        self.assertFalse(reportFile.is_a_document())
+        self.assertTrue(reportFile.is_an_image())
 
     #@skip("to conform")
     #def testToCouncillor(self):
