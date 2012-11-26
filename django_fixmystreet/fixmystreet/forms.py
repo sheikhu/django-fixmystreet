@@ -94,22 +94,16 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
-            #import pdb
-            #pdb.set_trace()
-            self.commune = OrganisationEntity.objects.get(zipcode__code=data['postalcode'])
             self.point = dictToPoint(data)
 
         super(ReportForm,self).__init__(data, files, initial=initial)
         #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
 
     def clean(self):
-        if not self.commune:
-            raise forms.ValidationError("Location not supported")
         return super(ReportForm, self).clean()
 
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
-        report.commune = self.commune
         report.status = Report.CREATED
         report.point = self.point
         report.private = True
@@ -142,7 +136,6 @@ class CitizenReportForm(ReportForm):
 
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
-        report.commune = self.commune
         report.status = Report.CREATED 
         report.point = self.point
         report.private = False

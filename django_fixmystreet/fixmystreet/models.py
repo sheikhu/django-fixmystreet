@@ -263,11 +263,8 @@ def report_assign_responsible(sender, instance, **kwargs):
         #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
         #    organizationSearchCriteria = fmsUser.organisation
         #elif instance.citizen:
-        instance.commune = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
-        organizationSearchCriteria = instance.commune
-
-        #Assign the entity.
-        instance.responsible_entity = organizationSearchCriteria
+        instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+        organizationSearchCriteria = instance.responsible_entity
 
         #Searcht the right responsible for the current organization.            
         userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)

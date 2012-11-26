@@ -59,6 +59,17 @@ class NotificationTest(TestCase):
         self.assertFalse(reportFile.is_a_document())
         self.assertTrue(reportFile.is_an_image())
 
+    def testReportResponsibleAssignment(self):
+        '''Test the assignment of a responsible when creating a report'''
+        #When a responsible_manager is defined responsible_entity is not recomputed      
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000, responsible_manager=self.fmsuser)
+        new_report.save()
+        self.assertTrue(new_report.responsible_entity==None) 
+        #When no responsible_manager is defined then the commune must be assigned and the responsible_entity        
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000)
+        new_report.save()
+        self.assertTrue(new_report.responsible_entity!=None) 
+ 
     #@skip("to conform")
     #def testToCouncillor(self):
     #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)

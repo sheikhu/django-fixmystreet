@@ -16,6 +16,46 @@ class ReportViewsTest(TestCase):
         self.user.save()
         self.client = Client()
 
+    def test_home(self):
+        """Tests the new report view."""
+        response = self.client.get(reverse('home'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('report_counts' in response.context)
+        self.assertTrue('zipcodes' in response.context)
+        #Are the zipcodes well loaded from DB??
+        self.assertTrue(len(response.context['zipcodes']) > 0)
+    
+    def test_about(self):
+        """Tests the about view."""
+        response = self.client.get(reverse('about'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('faq_entries' in response.context)
+    
+    def test_term_of_use(self):
+        """Tests the term of use view."""
+        response = self.client.get(reverse('terms_of_use'), follow=True)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_robots_file(self):
+        """Tests the robots file."""
+        response = self.client.get('/robots.txt', follow=True)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_posters_languages(self):
+        """Tests the about view."""
+        response = self.client.get(reverse('posters'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('languages' in response.context)
+        
+        frFound = False
+        nlFound = False
+
+        for current in response.context["languages"]:
+             if current[0] == 'fr':
+                  frFound = True
+             if current[0] == 'nl':
+                  nlFound = True
+        self.assertTrue(frFound and nlFound)
     #def test_new_report(self):
     #    """Tests the new report view."""
         # Make sure that the list view exists
@@ -104,12 +144,6 @@ class ReportViewsTest(TestCase):
     #    with self.assertRaises(IntegrityError):
     #        response = self.client.get(reverse('subscribe',args=[report.id]), {}, follow=True)
 
-    def test_home(self):
-        """Tests the new report view."""
-        response = self.client.get(reverse('home'), follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('report_counts' in response.context)
-        self.assertTrue('zipcodes' in response.context)
 
     #def test_wards_city(self):
     #    """Tests the city and wards view."""
