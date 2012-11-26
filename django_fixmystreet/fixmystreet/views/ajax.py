@@ -17,12 +17,14 @@ def report_category_note(request, id):
 def create_comment(request):
 	session_manager = SessionManager()
 	session_manager.createComment(request.POST.get('title'),request.POST.get('text'),request.session.session_key)
-	return True
+        hh = HttpResponse(content='True', mimetype='text/html')
+	return hh 
 	
 def create_file(request):
 	session_manager = SessionManager()
 	session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
-	return True
+        hh = HttpResponse(content='True', mimetype='text/html')
+	return hh 
 
 def uploadFile(request):
 	print request.FILES

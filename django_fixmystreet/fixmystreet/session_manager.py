@@ -18,7 +18,8 @@ class SessionManager():
 		s.save()
 
 	def saveComments(self,sessionK,reportId):
-		
+		import pdb
+		pdb.set_trace()	
 		s = SessionStore(session_key = sessionK)
 		if 'comments' in s.keys():
 			commentsData = s['comments']

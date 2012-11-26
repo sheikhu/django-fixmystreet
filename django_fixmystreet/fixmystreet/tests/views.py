@@ -6,13 +6,14 @@ from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 from django.core import mail
 
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, FMSUser, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django.conf import settings
 
 class ReportViewsTest(TestCase):
     fixtures = ['bootstrap', 'sample']
     def setUp(self):
-        self.user = User.objects.create_user('test1', 'test1@fixmystreet.irisnet.be', 'pwd')
+        self.user = User.objects.create_user(username='test1', email='test1@fixmystreet.irisnet.be', password='fms')
         self.user.save()
         self.client = Client()
 
@@ -42,7 +43,7 @@ class ReportViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_posters_languages(self):
-        """Tests the about view."""
+        """Tests the posters view."""
         response = self.client.get(reverse('posters'), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('languages' in response.context)
@@ -56,64 +57,59 @@ class ReportViewsTest(TestCase):
              if current[0] == 'nl':
                   nlFound = True
         self.assertTrue(frFound and nlFound)
-    #def test_new_report(self):
-    #    """Tests the new report view."""
-        # Make sure that the list view exists
-    #    url = reverse('report_new')
-    #    response = self.client.get(url, {'x':'148360','y':'171177'}, follow=True)
-    #    self.assertEqual(response.status_code, 200)
-        # Assert that the list view has suitable content for templates
-    #    self.assertTrue('reports' in response.context)
+    
+    def test_new_report(self):
+        """Tests the new report page."""
+        url = reverse('report_new')
+        response = self.client.get(url, {'x':'148360','y':'171177'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('reports' in response.context)
         # Assert that the list view displays minimal information about reports
-    #    last_dist = 0
-    #    for report in response.context['reports']:
-    #        #self.assertContains(response, report.title)
-    #        self.assertContains(response, report.get_absolute_url())
-    #        self.assertTrue(report.distance < 1000) # limit to 1km around
-    #        self.assertTrue(report.distance > last_dist) # ordered by distance
-    #        last_dist = report.distance
+        last_dist = 0
+        for report in response.context['reports']:
+            self.assertContains(response, report.get_absolute_url())
+            self.assertTrue(report.distance.m <= 1000) # limit to 1km around
+            self.assertTrue(report.distance.m >= last_dist) # ordered by distance
+            last_dist = report.distance.m
+    
+    def test_create_report(self):
+        """Tests the creation of a report and test the view of it."""
+        self.client.login(username='test1', password='pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=')
+        url = reverse('report_new')
+        response = self.client.post(url, {
+            'x':'148360',
+            'y':'171177',
+            'title':'Just a test',
+            'address': 'Av des arts',
+            'category':1,
+            'postalcode':'1000'
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
 
-    #def test_create_report(self):
-    #    """Tests the creation of a report and test the view of it."""
-    #    self.client.login(username='test1', password='pwd')
-    #    url = reverse('report_new')
-    #    response = self.client.post(url, {
-    #        'x':'148360',
-    #        'y':'171177',
-    #        'title':'Just a test',
-    #        'address': 'Av des arts',
-    #        'category':1,
-    #        'postalcode':'1000'
-    #    }, follow=True)
-    #    self.assertEqual(response.status_code, 200)
+        self.assertTrue('report' in response.context)
+        report = response.context['report']
+        self.assertContains(response, report.postalcode)
+        self.assertContains(response, report.status)
 
-    #    self.assertTrue('report' in response.context)
-    #    report = response.context['report']
-    #    self.assertRedirects(response, report.get_absolute_url())
-    #    self.assertContains(response, report.title)
-
-    #def test_update_report(self):
+    #def test_add_comment(self):
     #    """Tests the update of a report and flag it as fixed."""
-    #    self.client.login(username='test1', password='pwd')
+    #    self.client.login(username='test1', password='pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=')
     #    report = Report.objects.all()[0]
-    #    nb_initial_attachment = report.attachments.count()
+    #    nb_initial_attachment = report.get_comments().count()
     #    report.is_fixed = False
     #    report.save()
 
-    #    url = reverse('report_update',args=[report.id])
-    #    response = self.client.post(url, {'desc':'Just a description test'}, follow=True)
-    #    report = Report.objects.get(id=report.id)
-    #    self.assertRedirects(response, report.get_absolute_url())
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertEqual(report.reportupdate_set.count(), nb_initial_update + 1)
+    #    session_manager = SessionManager()
+    #    session_manager.createComment("title 1","text 2","session_id_1")
+    #    session_manager.createComment("title 3","text 4","session_id_1")
 
-    #    response = self.client.post(url, {'desc':'Just a fix test', 'is_fixed':'1'}, follow=True)
+    #    session_manager.saveComments("session_id_1", report.id)
     #    report = Report.objects.get(id=report.id)
-    #    self.assertRedirects(response, report.get_absolute_url())
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertEqual(report.reportupdate_set.count(), nb_initial_update + 2)
-    #    self.assertTrue(report.reportupdate_set.all()[report.reportupdate_set.count()-1].is_fixed)
-    #    self.assertTrue(report.is_fixed)
+    #    aaa = ReportComment.objects.filter(report__id=report.id)
+        #self.assertRedirects(response, report.get_absolute_url())
+        #self.assertEqual(response.status_code, 200)
+    #    self.assertNotEqual(aaa.count(), 0)
+
 
     #def test_subscription(self):
     #    """Tests the creation of a report and test the view of it."""
