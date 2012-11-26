@@ -21,7 +21,7 @@
 
     <li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires <p class="category_number">{{request.user|numberOfManagers}}</p></a></a></li>
     
-    {% if request.user.id|isLeader %}
+    {% if request.fmsuser.leader %}
         {% if request.user.id|hasAtLeastAManager %}
         <li> <a class='category'> Configuration </a></li>
         <li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
@@ -33,7 +33,7 @@
     {% if request.user.id|hasAtLeastAManager %}
         <li><a id='createReportMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Report </a></li> 
     {% endif %}
-    {% if request.user.id|isLeader or request.user.id|isManager %}
+    {% if request.fmsuser.leader or request.fmsuser.manager %}
         <li><a id='createUserMenuItem' class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
     {% endif %}
 </ul>

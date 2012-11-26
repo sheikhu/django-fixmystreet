@@ -32,7 +32,7 @@ class FMSUser(User):
     manager = models.BooleanField(default=True)
     leader = models.BooleanField(default=True)
 
-    impetrant = models.BooleanField(default=False)
+    impetrant = models.BooleanField(default=False) # todo rename to applicant
     contractor = models.BooleanField(default=False)
     
     categories = models.ManyToManyField('ReportCategory',related_name='type')
@@ -46,6 +46,19 @@ class FMSUser(User):
         return not self.is_pro()
     def get_langage(self):
         return self.last_used_language
+
+    def get_user_type(self):
+        if self.leader:
+            return "leader"
+        if self.manager:
+            return "manager"
+        if self.agent:
+            return "agent"
+        if self.impetrant:
+            return "impetrant"
+        if self.contractor:
+            return "contractor"
+
 
 
 class OrganisationEntity(models.Model):

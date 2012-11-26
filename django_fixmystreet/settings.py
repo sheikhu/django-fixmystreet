@@ -44,7 +44,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware'
+    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
+    'django_fixmystreet.backoffice.middleware.LoadUserMiddleware'
 )
 
 LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
