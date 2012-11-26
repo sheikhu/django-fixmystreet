@@ -39,4 +39,5 @@ class LoadUserMiddleware:
     """
     """
     def process_request(self, request):
-        request.fmsuser = request.user.fmsuser
+        if request.user.is_authenticated():
+            request.fmsuser = request.user.fmsuser
