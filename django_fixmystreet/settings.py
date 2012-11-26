@@ -34,7 +34,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.contrib.auth.context_processors.auth',
     "django.contrib.messages.context_processors.messages",
-    'django_fixmystreet.fixmystreet.utils.domain_context_processor'
+    'django_fixmystreet.fixmystreet.context_processor.domain',
+    'django_fixmystreet.fixmystreet.context_processor.environment'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -43,7 +44,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware'
+    'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
+    'django_fixmystreet.backoffice.middleware.LoadUserMiddleware'
 )
 
 LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
@@ -116,6 +118,8 @@ try:
     JENKINS_TASKS = (
         'django_jenkins.tasks.with_coverage',
         'django_jenkins.tasks.django_tests',
+        'django_jenkins.tasks.run_pyflakes',
+        #'django_jenkins.tasks.run_graphmodels',
     )
 except ImportError:
     pass

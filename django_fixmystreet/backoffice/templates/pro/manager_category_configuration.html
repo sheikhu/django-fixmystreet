@@ -60,7 +60,7 @@ function saveSelection(){
   				{% for m in maincategories %}
   				<td> 
             <button id="{{m.id}}{{secondCat.id}}" class="matrixButton" onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
-              {{currentSelectedList|getElementFromList:forloop.counter0|getElementFromList:forloop.parentloop.counter0}}
+              {{currentSelectedList|get_element_from_list:forloop.counter0|get_element_from_list:forloop.parentloop.counter0}}
             </button> 
           </td>
   				{% endfor %}

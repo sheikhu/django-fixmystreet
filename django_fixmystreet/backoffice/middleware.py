@@ -34,3 +34,10 @@ class LoginRequiredMiddleware:
                 for m in LOGIN_REQUIRED_URLS:
                     if m.match(path):
                         return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
+
+class LoadUserMiddleware:
+    """
+    """
+    def process_request(self, request):
+        if request.user.is_authenticated():
+            request.fmsuser = request.user.fmsuser

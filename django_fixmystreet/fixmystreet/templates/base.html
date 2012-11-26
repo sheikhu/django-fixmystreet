@@ -1,43 +1,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load tags i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/global.css" />
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
-		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
-		{% load i18n %}
 		{% get_available_languages as LANGUAGES %}
 	
 		<title>{% trans "Fix My Street Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
-		{% block css %}{% endblock %}
+        {% block script %}
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
-		{% block script %}{% endblock %}
+		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL}}js/common.js"></script>
+		{% endblock %}
+		{% block css %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/global.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
+		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
+        {% endblock %}
 		<script>
-        var loginWin = null;
-		$(document).ready(function(){
-			$('#select-language').change(function(){
-				$(this).closest('form').submit();
-			});
-            $('.login-btn').click(function(evt){
-                evt.preventDefault();
-                var loginHref = $(this).prop('href');
-                if(loginWin == null || loginWin.closed) {
-                    loginWin = window.open(loginHref, 'login', "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=780,height=410");
-                } else {
-                    loginWin.focus();
-                }
-                if(loginWin == null) {
-                    // popup has been blocked...
-                    window.location.assign(loginHref);
-                }
-                return false;
-            });
-		});
-        window.connectionCallback = function(username){
-            $(document).trigger('connected',[username]);
-            $('.login-bar').hide();
-            $('.logged-bar').show().find('.username').html(username);
-        }
-        
+
         /*
         .required.mandatory input, .required.mandatory select {
             border:1px solid red !important;
@@ -84,7 +64,11 @@
                     <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
                 {% endifequal %}
 				<div id="loginButton">
+                    {% if request.user.is_authenticated %}
+					<button type="button" onclick="window.location.href='{% url auth_logout %}'" style="float: right;margin-top: 44px;">Log out</button>
+                    {% else %}
 					<button type="button" onclick="window.location.href='{% url login %}?next={% url home_pro %}'" style="float: right;margin-top: 44px;">Sign in</button>
+                    {% endif %}
 				</div>
 				<div id="language">
 					<form action="/i18n/setlang/" method="post">
@@ -96,19 +80,23 @@
 						</select>
 					</form>
 				</div>
-				{% load tags %}
-				<div id="menu">
-					{% get_active_menu %}
-					<a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home %}">{%      trans "Submit a Report" %}</a>
-					<a class="{% ifequal 'view' menu %}active{% endifequal %}"    href="{% url report_index %}">{%     trans "View Reports" %}</a>
-					<a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">{%     trans "About" %}</a>
-					<a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">{%   trans "Contact Us" %}</a>
-				</div>
+                <div id="header-name">
+                    Connected: {{ request.user.get_full_name }}
+                </div>
 			</div>
 		</div>
 
 		<div id="main_container">
 			<div id='body_content'>
+                {% block main_menu %}
+                <div id="menu">
+                    {% get_active_menu %}
+                    <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home %}">{%         trans "Submit a Report" %}</a>
+                    <a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url report_index %}">{% trans "View Reports" %}</a>
+                    <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">{%        trans "About" %}</a>
+                    <a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">{%      trans "Contact Us" %}</a>
+                </div>
+                {% endblock %}
                 
                 {% if messages %}
                 <div class="messages">
