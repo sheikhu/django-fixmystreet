@@ -1,7 +1,6 @@
 import json
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.sites.models import Site
 from django.contrib.auth import authenticate
 from django.core.files import File
 from django.core.files.base import ContentFile
@@ -13,18 +12,6 @@ from django.template.loader import render_to_string
 
 from stdimage import StdImageField
 from django.conf import settings
-
-
-def domain_context_processor(request):
-    site = Site.objects.get_current()
-    return {
-        'SITE_URL': 'http://{0}'.format(site.domain),
-        'GEOSERVER': settings.GEOSERVER,
-        'SERVICE_GIS': settings.SERVICE_GIS,
-        'ENVIRONMENT': getattr(settings, 'ENVIRONMENT'),
-        'DEFAULT_LOCAITON_X': 123,
-        'DEFAULT_LOCAITON_Y':456
-    }
 
 
 def ssl_required(view_func):
