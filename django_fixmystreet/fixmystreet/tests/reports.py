@@ -8,22 +8,23 @@ from django.core import mail
 from django.core.files.storage import FileSystemStorage
 
 from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, NotificationRule, ReportCategory, ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser
 
 
 class NotificationTest(TestCase):
+    
+    fixtures = ["bootstrap","list_items"]
     
     def setUp(self):
         self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
 
         # these are from the fixtures file.
-        self.category = ReportCategory.objects.get(name_en='Broken or Damaged Equipment/Play Structures')
+        self.category = ReportCategory.objects.all()[0]
         self.categoryclass = self.category.category_class
-        self.not_category = ReportCategory.objects.get(name_en='Damaged Curb')
 
         self.commune = OrganisationEntity(name='test ward')
-        self.ward.save()
+        #self.ward.save()
 
     #@skip("to conform")
     #def testToCouncillor(self):
@@ -111,6 +112,9 @@ class PhotosTest(TestCase):
         self.user = User.objects.create_user('test', 'test@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
         self.category = ReportMainCategoryClass.objects.all()[0] 
+        #Create a FMSUser
+        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False)
+        self.fmsuser.save();
         #self.ward = Ward.objects.all()[0]
 
     def testPhotoExifData(self):
@@ -135,7 +139,7 @@ class PhotosTest(TestCase):
             shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
             
             #report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-            report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000)
+            report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000, responsible_manager=self.fmsuser)
 
             report.photo = 'tmp.jpg'
             report.save()

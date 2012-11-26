@@ -41,9 +41,9 @@ class FMSUser(User):
     objects = UserManager()
     
     def is_pro(self):
-        return self.agent == True or self.manager == True or self.leader == True
+        return self.agent == True or self.manager == True or self.leader == True or self.impetrant == True or self.contractor == True
     def is_citizen(self):
-        return not is_pro(self)
+        return not self.is_pro()
     def get_langage(self):
         return self.last_used_language
 
@@ -286,17 +286,6 @@ def report_assign_responsible(sender, instance, **kwargs):
                     if (currentCategory == instance.secondary_category):
                         instance.responsible_manager = currentUser
 
-#signal on a report to notify public authority that a report has been filled
-@receiver(post_save,sender=Report)
-def report_notify(sender, instance, **kwargs):
-    if kwargs['created'] and not kwargs['raw']:
-        NotificationResolver(instance).resolve()
-
-@receiver(post_save,sender=Report)
-def notify_report_creation(sender, instance,**kwargs):
-    mail = HtmlTemplateMail(template_dir='send_report_creation_to_gest_resp', data={'report': instance}, recipients=(instance.responsible_manager.email,))
-    mail.send()
-
 # 
 @receiver(post_save,sender=Report)
 def report_subscribe_author(sender, instance, **kwargs):
@@ -341,10 +330,6 @@ class ReportSubscription(models.Model):
     class Meta:
         unique_together = (("report", "subscriber"),)
 
-@receiver(post_save,sender=ReportSubscription)
-def notify_report_subscription(sender, instance, **kwargs):
-    mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={'subscription': instance}, recipients=(instance.subscriber.email,))
-    mail.send()
 
 class ReportMainCategoryClass(models.Model):
     __metaclass__ = TransMeta
@@ -422,56 +407,6 @@ class GestType(models.Model):
     user = models.ForeignKey(FMSUser)
 
 
-# Override where to send a report for a given city.        
-#
-# If no rule exists, the email destination is the 311 email address 
-# for that city.
-#
-# Cities can have more than one rule.  If a given report matches more than
-# one rule, more than one email is sent.  (Desired behaviour for cities that 
-# want councillors CC'd)
-class NotificationRule(models.Model):
-    help_text = """
-    Declare that an extra Councillors has authority for resolving a problem and need to recieve notifiaction.
-    """
-    TO_COUNCILLOR = 0
-    MATCHING_CATEGORY_CLASS = 1
-    NOT_MATCHING_CATEGORY_CLASS = 2
-    
-    RuleChoices = (
-        (TO_COUNCILLOR, 'All the time'),
-        (MATCHING_CATEGORY_CLASS, 'Report\'s category group is ...'),
-        (NOT_MATCHING_CATEGORY_CLASS, 'Report\'s category group is not ...'), 
-    )
-    
-    rule = models.IntegerField(
-        choices=RuleChoices,
-        verbose_name='Send a notification if',
-        help_text="compare to the category of the report and this selected category."
-    )
-    # the city this rule applies to 
-    commune = models.ForeignKey(
-        'OrganisationEntity',
-        null=False,
-        help_text="The commune where the rule apply."
-    )
-    # filled in if this is a category class rule
-    category_class = models.ForeignKey(
-        ReportMainCategoryClass,null=True, blank=True,
-        verbose_name='Category Group',
-        help_text="Only set for 'Category Group' rule types."
-    )
-    # filled in if an additional email address is required for the rule type
-    councillor = models.ForeignKey(FMSUser, null=False)
-
-    def __str__(self):
-        return "%s - %s %s (%s)" % ( 
-                self.councillor.name,
-                (self.category_class and self.category_class.name or ''),
-                self.RuleChoices[self.rule][1],
-                self.commune.name
-        )
-
 
 class ReportNotification(models.Model):
     report = models.ForeignKey(Report)
@@ -486,32 +421,6 @@ class ReportNotification(models.Model):
             msg.attach_file(self.report.photo.file.name)
         msg.send()
         self.sent_at = dt.now()
-
-
-class NotificationResolver(object):
-    def __init__(self, report):
-        self.report = report
-        self.rules = NotificationRule.objects.filter(commune=self.report.commune)
-
-    def send(self, councillor):
-        notification = ReportNotification(report=self.report, to_councillor=councillor)
-        notification.send()
-        notification.save()
-
-    def resolve(self):
-        #if self.report.commune.default_manager:
-        #    self.send(self.report.commune.default_manager)
-        for rule in self.rules:
-            if rule.rule == NotificationRule.TO_COUNCILLOR:
-                self.send(rule.councillor)
-
-            if rule.rule == NotificationRule.MATCHING_CATEGORY_CLASS:
-                if self.report.category.category_class == rule.category_class:
-                    self.send(rule.councillor)
-
-            if rule.rule == NotificationRule.NOT_MATCHING_CATEGORY_CLASS:
-                if self.report.category.category_class != rule.category_class:
-                    self.send(rule.councillor)
 
 
 # class Zone(models.Model):
