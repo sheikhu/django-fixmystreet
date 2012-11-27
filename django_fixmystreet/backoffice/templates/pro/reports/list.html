@@ -2,6 +2,7 @@
 {% load i18n tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
+{{ block.super }}
 <script src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script>
 
 {% map_scripts %}

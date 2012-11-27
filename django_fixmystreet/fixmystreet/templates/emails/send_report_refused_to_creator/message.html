@@ -1,8 +1,9 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
 {% block content %}
-<h1>A report you created has been refused.<h1>
-<p> Hello,</p>
-<p> The report you created at {{report.address}} has been refused.</p>
-<p> {{extra_info_text}} </p>
+{% blocktrans with reportType=report.category.name date=report.created_at|date %}
+<p>Your report off type {{reportType}} created at {{date}} is not supported by the FixMyStreet system.</p>
+<p>If necessary, you can contact your town hall. </p>
+{% endblocktrans %}
+<p>{{more_info_text}}</p>
 {% endblock %}

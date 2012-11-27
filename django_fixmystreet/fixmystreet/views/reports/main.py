@@ -1,18 +1,16 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
-
+from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     print request.FILES
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
-        #import pdb
-	#pdb.set_trace()
 	# this checks update is_valid too
         if report_form.is_valid():
             # this saves the update as part of the report.
@@ -20,6 +18,10 @@ def new(request):
             session_manager = SessionManager()
             session_manager.saveComments(request.session.session_key, report.id)
             session_manager.saveFiles(request.session.session_key, report.id)
+            comments = ReportComment.objects.filter(report_id=report.id)
+            files = ReportFile.objects.filter(report_id=report.id)
+            mail = HtmlTemplateMail(template_dir='send_report_creation_to_gest_resp', data={'report': report,'comments':comments,'files':files}, recipients=(report.responsible_manager.email,))
+            mail.send()
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
     else:

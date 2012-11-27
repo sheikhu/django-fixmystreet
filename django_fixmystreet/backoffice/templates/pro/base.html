@@ -4,7 +4,10 @@
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL}}js/jquery/iphone-style-checkboxes.js"></script>
 {% endblock %}
-
+{% block css %}
+{{ block.super }}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL}}js/style.css"/>
+{% endblock %}
 {% block main_menu %}
 <ul class='leftPane' id="leftMenuPanePro">
     <li> <a id="allMenuItem" class='category positionable' href="{% url report_list_pro 'all' %}"> Reports <p class="category_number">{{request.user|numberOfReports}}</p></a></a> </li>

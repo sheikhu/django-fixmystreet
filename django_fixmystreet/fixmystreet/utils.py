@@ -105,9 +105,7 @@ class FixStdImageField(StdImageField):
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):
         
-        site = Site.objects.get_current()
-        
-        data['SITE_URL'] = 'http://{0}'.format(site.domain)
+        data['SITE_URL'] = 'http://localhost:8000'
         
         subject, html, text = '', '', ''
         try:

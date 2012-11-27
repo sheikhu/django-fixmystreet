@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
-
+from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
@@ -157,7 +157,6 @@ class CitizenReportForm(ReportForm):
     	
         if commit:
             report.save() 
-            
             if (self.data.__contains__('citizen_subscription')):
                 #Create the subscription record if necessary
 	        subscriber = ReportSubscription(subscriber=report.citizen,report=report)

@@ -4,6 +4,7 @@
 
 {% block title %}{{report.title}}{% endblock %}
 {% block script %}
+{{ block.super }}
 <meta property="og:title" content="{{ report.title }}" />
 <meta property="og:description" content="{{ report.description }}" />
 <meta property="og:image" content="{{ MEDIA_URL }}{{ report.photo }}" />
@@ -25,6 +26,7 @@ function subscribe() {
 </script>
 {% endblock %}
 {% block css %}
+{{block.super}}
 <style type="text/css" media="screen">
     #update-header {
         float: left;

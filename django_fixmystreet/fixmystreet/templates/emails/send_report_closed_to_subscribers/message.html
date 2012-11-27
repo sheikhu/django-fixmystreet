@@ -1,5 +1,8 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
 {% block content %}
-The report is now closed
+{% blocktrans with reportType=report.category.name date=report.created_at|date reportId=report.id %}
+<p>The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
+{% endblocktrans %}
+{% include "emails/report_show.html" %}
 {% endblock %}

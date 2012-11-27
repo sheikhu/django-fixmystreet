@@ -1,6 +1,9 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
 {% block content %}
-<p>Thank you for following the report. </p>
-<p>You can unsubscribe by clicking on the following <a href="{{SITE_URL}}/"> link </a> </p>
+{% blocktrans with reportType=report.category.name date=report.created_at|date reportId=report.id %}
+<p>You are now subscribed to the report with type {{reportType}}, created at {{date}}. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
+<p>You can unsubscribe yourself by clicking the following link: {{SITE_URL}}/report/{{reportId}}/</p>
+{% endblocktrans %}
+{% include "emails/report_show.html" %}
 {% endblock %}

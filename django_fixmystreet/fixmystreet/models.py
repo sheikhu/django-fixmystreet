@@ -347,6 +347,14 @@ class ReportSubscription(models.Model):
     class Meta:
         unique_together = (("report", "subscriber"),)
 
+@receiver(post_save,sender=ReportSubscription)
+def notify_report_subscription(sender, instance, **kwargs):
+    print instance.report.id
+    comments = ReportComment.objects.filter(report_id=instance.report.id)
+    files = ReportFile.objects.filter(report_id=instance.report.id)
+    print comments
+    mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={'report': Report.objects.get(pk=instance.report_id),'comments':comments,'files':files}, recipients=(instance.subscriber.email,))
+    mail.send()
 
 class ReportMainCategoryClass(models.Model):
     __metaclass__ = TransMeta

@@ -3,6 +3,7 @@
 {% load tags %}
 {% block title %}{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}}{% endblock %}
 {% block css %}
+{{block.super}}
 <style>
 #map-bxl{
 	height: 520px;
@@ -12,6 +13,7 @@
 {% endblock %}
 
 {% block script %}
+{{block.super}}
 {% map_scripts %}
 <script>
 $(function(){

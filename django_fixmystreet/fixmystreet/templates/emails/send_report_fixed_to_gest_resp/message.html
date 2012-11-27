@@ -1,7 +1,8 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
 {% block content %}
-<h1>A new report is marked as fixed..<h1>
-<p> A report at {{report.address}} is marked as fixed by a citizen.</p>
-<p> More details can be found at: <a href="{{SITE_URL}}/pro/report/{{report.id}}">report</a>.</p>
+{% blocktrans with reportType=report.category.name date=report.created_at|date reportId=report.id %}
+<p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at {{SITE_URL}}/pro/report/{{reportId}}.</p>
+{% endblocktrans %}
+{% include "emails/report_show.html" %}
 {% endblock %}

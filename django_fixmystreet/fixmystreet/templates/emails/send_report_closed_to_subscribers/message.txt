@@ -1,7 +1,20 @@
 {% extends 'emails/base_email.txt' %}
 {% load i18n %}
 {% block content %}
+{% blocktrans with reportType=report.category.name date=report.created_at|date reportId=report.id %}
+The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.
+Report overview:
+{% endblocktrans %}
+{% trans 'Address:'%} {{report.address}}
+{% trans 'Postal code:'%} {{report.postalcode}}
+{% trans 'Description:'%} {{report.description}}
+{% trans 'Type:'%} {{report.category.name}}
+{% trans 'Creator:'%} 
+	{% if report.creator %}
+	{{report.creator.username}}
+	{% else %}
+	{{report.citizen.username}}
+	{% endif %}
 
-The report is now closed
-
+{% trans 'Created at:'%} {{report.created_at|date}}
 {% endblock %}

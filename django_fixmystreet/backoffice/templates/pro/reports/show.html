@@ -4,6 +4,7 @@
 
 {% block title %}{{report.title}}{% endblock %}
 {% block script %}
+{{ block.super }}
 <meta property="og:title" content="{{ report.title }}" />
 <meta property="og:description" content="{{ report.description }}" />
 <meta property="og:image" content="{{ MEDIA_URL }}{{ report.photo }}" />
@@ -12,6 +13,13 @@
 <script>
 $(function(){
     var connected = true;
+
+    $("#dialog").dialog({
+        modal: true,
+        autoOpen:false,
+        width:'auto',
+        resizable: false
+    });
 
 	$('#map-bxl').fmsMap({ 
 		origin:{
@@ -122,15 +130,26 @@ $(function(){
     }
 
     function refuse(){
-        var name=prompt("Please enter more information about rejecting the report","");
-        if(name!=null){
-            window.location = '{% url report_refuse_pro report.id %}?more_info_text='+name;
-        }
+        $("#dialog").dialog('open');
+        $('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can edit as needed.");
+        // var name=prompt("Please enter more information about rejecting the report","");
+        // if(name!=null){
+        //     window.location = '{% url report_refuse_pro report.id %}?more_info_text='+name;
+        // }
         
+    }
+
+    function refuseConfirmButton(){
+        window.location = '{% url report_refuse_pro report.id %}?more_info_text='+$('#more_information_text').val();
+    }
+
+    function refuseCancelButton() {
+        $("#dialog").dialog('close');
     }
 </script>
 {% endblock %}
 {% block css %}
+{{ block.super }}
 <style type="text/css" media="screen">
     #update-header {
         float: left;
@@ -235,9 +254,15 @@ $(function(){
 		    {% endif %}
 			
 			<p class="author-sign">
+                {% if report.creator %}
                 {% blocktrans with by=report.creator.username on=report.created_at|date %}
                 Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 {% endblocktrans %}
+                {% else %}
+                {% blocktrans with by=report.citizen.first_name on=report.created_at|date %}
+                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                {% endblocktrans %}
+                {% endif %}
             </p>
 
 
@@ -495,8 +520,15 @@ $(function(){
     
     </div>
     <div id="more-actions">
-				<p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-			</div>
+        <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+    </div>
+
+
+    <div id="dialog" title="Please enter more information about rejecting the report">
+        <textarea id="more_information_text" style="display:block;width:100%"></textarea>
+        <a href="#" onclick="refuseConfirmButton();" class="saveFormButton" style="float:right;">{% trans 'Confirm'%}</a>
+        <a href="#" onclick="refuseCancelButton();" class="saveFormButton" style="float:left;">{% trans 'Cancel'%}</a>
+    </div>
 </div>
 	
 {% endblock %}

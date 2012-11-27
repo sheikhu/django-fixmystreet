@@ -25,7 +25,7 @@ def create(request, report_id):
         subscriber = ReportSubscription(subscriber=user,report=report)
         subscriber.save()
         messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
-    except IntegrityError, e:    
+    except IntegrityError, e:   
         #Do nothing. A subscription for this user already exists...
         messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
     

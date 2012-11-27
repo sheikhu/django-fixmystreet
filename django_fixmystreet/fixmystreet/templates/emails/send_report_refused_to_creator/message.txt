@@ -1,9 +1,9 @@
 {% extends 'emails/base_email.txt' %}
 {% load i18n %}
 {% block content %}
-
-A report you created has been refused.
-Hello,
-The report you created at {{report.address}} has been refused.
-{{extra_info_text}}
+{% blocktrans with reportType=report.category.name date=report.created_at|date %}
+Your report off type {{reportType}} created at {{date}} is not supported by the FixMyStreet system.
+If necessary, you can contact your town hall.
+{% endblocktrans %}
+{{more_info_text}}
 {% endblock %}
