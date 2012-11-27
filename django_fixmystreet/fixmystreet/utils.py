@@ -7,6 +7,7 @@ from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
+from django.contrib.sites.models import Site
 
 # from social_auth.backends import get_backend
 
