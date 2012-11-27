@@ -136,7 +136,7 @@ class CitizenReportForm(ReportForm):
 
     def save(self, user, commit=True):
         report = super(ReportForm, self).save(commit=False)
-        report.status = Report.CREATED 
+        report.status = Report.CREATED
         report.point = self.point
         report.private = False
 
@@ -145,15 +145,10 @@ class CitizenReportForm(ReportForm):
           #Assign citizen
           report.citizen = existingUser
         except FMSUser.DoesNotExist:
-          #Add information about the citizen connected if it does not exist
-          report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
-    	
+            #Add information about the citizen connected if it does not exist
+            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
         if commit:
-            report.save() 
-            if (self.data.__contains__('citizen_subscription')):
-                #Create the subscription record if necessary
-	        subscriber = ReportSubscription(subscriber=report.citizen,report=report)
-   	        subscriber.save()
+            report.save()
         return report
 
 class ContactForm(forms.Form):

@@ -8,7 +8,6 @@ from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
-    print request.FILES
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
 	# this checks update is_valid too
