@@ -40,6 +40,12 @@ class FMSUser(User):
 
     objects = UserManager()
     
+    def get_organisation(self):
+        '''Return the user organisation and its dependency in case of contractor'''
+        if self.contractor == True:
+             return organisation.dependency
+        else:
+             return organisation
     def is_pro(self):
         return self.agent == True or self.manager == True or self.leader == True or self.impetrant == True or self.contractor == True
     def is_citizen(self):

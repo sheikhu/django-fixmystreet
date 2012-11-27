@@ -9,17 +9,38 @@
 
 {% block content %}
 
+<script type="text/javascript">
+   function uncheckRolesWhenClickingOtherCheckboxThanContractor() {
+	var checkContractor = document.getElementById("contractorRadio");
+	if (checkContractor)
+		checkContractor.checked = false;
+   }
+   function uncheckRoleWhenClickingContractor() {
+	var checkContractor = document.getElementById("contractorRadio");
+	if (checkContractor.checked == true) {
+		var checkRadio = document.getElementById("agentRadio");
+		var checkManager = document.getElementById("managerRadio");
+                if (checkRadio) {
+			checkRadio.checked=false;
+		}
+                if (checkManager) {
+			checkManager.checked=false;
+		}
+	}
+   }
+</script>
+
 <div id="fullwidth">
   <h1>Create user</h1>
   <div>
     <form action="" method="POST">
       {% csrf_token %}
-        <input type="checkbox" name="agentRadio" value="1" id="agentRadio" checked>{% trans 'Agent' %}</input>
+        <input type="checkbox" name="agentRadio" value="1" id="agentRadio" onclick="uncheckRolesWhenClickingOtherCheckboxThanContractor()">{% trans 'Agent' %}</input>
         {% if request.fmsuser.leader %}
-        <input type="checkbox" name="managerRadio" value="1" id="managerRadio">{% trans 'Gestionnaire' %}</input>
+        <input type="checkbox" name="managerRadio" value="1" id="managerRadio" onclick="uncheckRolesWhenClickingOtherCheckboxThanContractor()">{% trans 'Gestionnaire' %}</input>
         {% endif %}
         {% if request.fmsuser.manager %}
-        <input type="checkbox" name="contractorRadio" value="1" id="contractorRadio">{% trans 'Contractor'%}</input>
+        <input type="checkbox" name="contractorRadio" value="1" id="contractorRadio" onclick="uncheckRoleWhenClickingContractor()">{% trans 'Contractor'%}</input>
         {% endif %}
       </select>
       <table>

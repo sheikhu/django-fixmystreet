@@ -124,7 +124,7 @@ def createUser(request):
 			createdOrganisationEntity.dependency_id = connectedUser.organisation.id
 			createdOrganisationEntity.save()
 		#createdUser = createform.save(userid,request.POST.get("userType"))
-        	createdUser = createform.save(user, createdOrganisationEntity, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
+        		createdUser = createform.save(user, createdOrganisationEntity, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
         	
 		#If this is the first user created and of type gestionnaire then assign all reportcategories to him
 		if (createdUser.manager == True & connectedUser.leader == True):

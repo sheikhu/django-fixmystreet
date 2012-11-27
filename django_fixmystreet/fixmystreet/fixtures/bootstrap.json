@@ -3727,5 +3727,31 @@
             "leader":false,
             "organisation":1000033
         }
+    },
+    {
+        "pk":1000058,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thibaut",
+            "last_name": "de Sany",
+            "username": "tdesany2",
+            "email": "tdesany2@hotmail.com",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":1000058,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":1000058,
+            "telephone":"027367789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":10
+        }
     }
 ]

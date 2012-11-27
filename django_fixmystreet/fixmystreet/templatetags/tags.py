@@ -60,16 +60,27 @@ def numberOfCreatedReports(userId):
 
 @register.filter
 def numberOfInProgressReports(userId):
-    userConnected = FMSUser.objects.get(user_ptr_id=userId)
-    userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+    connectedUser  = FMSUser.objects.get(user_ptr_id=userId)
+    connectedOrganisation = connectedUser.organisation
+    userConnectedOrganisation = connectedOrganisation
+    #if the user is an executeur de travaux then user the dependent organisation id
+    if (connectedUser.contractor == True):
+        reports = Report.objects.filter(contractor=connectedUser.organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+    else:    
+        reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     return reports.count()
 
 @register.filter
 def numberOfClosedReports(userId):
-    userConnected = FMSUser.objects.get(user_ptr_id=userId)
-    userConnectedOrganisation = userConnected.organisation
-    reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
+    connectedUser  = FMSUser.objects.get(user_ptr_id=userId)
+    connectedOrganisation = connectedUser.organisation
+    userConnectedOrganisation = connectedOrganisation
+    #if the user is an executeur de travaux then user the dependent organisation id
+    if (connectedUser.contractor == True):
+        reports = Report.objects.filter(contractor=connectedUser.organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
+    else:    
+        reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
+    
     return reports.count()
 
 @register.filter
@@ -126,6 +137,11 @@ def numberOfManagers(userId):
 
 @register.filter
 def hasAtLeastAManager(userId):
-    organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-     
+    connectedUser  = FMSUser.objects.get(user_ptr_id=userId)
+    connectedOrganisation = connectedUser.organisation
+    organisationId = connectedOrganisation.id
+    #if the user is an executeur de travaux then user the dependent organisation id
+    if (connectedUser.contractor == True):
+        organisationId = connectedOrganisation.dependency.id 
+
     return FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True).exists()

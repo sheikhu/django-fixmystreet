@@ -181,7 +181,13 @@ class AgentCreationForm(UserCreationForm):
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     is_active = forms.BooleanField(required=False)
     def save(self, userID, contractorOrganisation, isAgent,isManager,isContractor, commit=True):
-        user = super(AgentCreationForm,self).save(commit=False)
+        #Check if contractor has been selected. If it is then remove all other roles. Server side verification !
+        if (isContractor == "1"):
+            isAgent = "0"
+            isManager = "0"
+        if (isAgent == "1" or isManager == "1"):
+            isContractor = "0"
+	user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser(user_ptr=user)
         fmsuser.username = self.cleaned_data["username"]
         fmsuser.set_password(self.cleaned_data["password1"])
