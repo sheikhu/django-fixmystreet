@@ -136,6 +136,7 @@ def createUser(request):
 
             if createdUser:
                 mail = HtmlTemplateMail(template_dir='send_created_to_user', data={'user': createdUser,"password":request.POST.get('password1')}, recipients=(createdUser.email,))
+                mail.send()
                 return HttpResponseRedirect('/pro/')
     else:
         createform = AgentCreationForm()
