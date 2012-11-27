@@ -12,7 +12,6 @@ from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 
 def create(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-   
     #CREATE USER CITIZEN IF NECESSARY 
     try:
         user = FMSUser.objects.get(username=request.REQUEST.get('citizen_email'));

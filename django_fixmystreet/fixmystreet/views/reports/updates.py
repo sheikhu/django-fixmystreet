@@ -4,7 +4,7 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm
 
 def new( request, report_id ):
@@ -19,7 +19,6 @@ def new( request, report_id ):
             messages.add_message(request, messages.SUCCESS, _('The report has been sucessfully updated.'))
         if request.POST.has_key('is_fixed'):
                 alreadySolved = (report.status == Report.SOLVED)
-                print alreadySolved
                 if not alreadySolved:
                     report.status = Report.SOLVED
                     report.save()
@@ -27,6 +26,5 @@ def new( request, report_id ):
                     files = ReportFile.objects.filter(report_id=report_id)
                     mail = HtmlTemplateMail(template_dir='send_report_fixed_to_gest_resp', data={'report': report,'comments':comments,'files':files}, recipients=(report.responsible_manager.email,))
                     mail.send()
-                    print report.responsible_manager.email
         return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()

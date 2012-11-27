@@ -113,17 +113,14 @@ class HtmlTemplateMail(EmailMultiAlternatives):
             subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
         except TemplateDoesNotExist:
             pass
-        print 'subject'
         try:
             text    = render_to_string('emails/' + template_dir + "/message.txt", data)
         except TemplateDoesNotExist:
             pass
-        print 'text'
         try:
             html    = render_to_string('emails/' + template_dir + "/message.html", data)
         except TemplateDoesNotExist:
             pass
-        print 'html'
         subject = subject.rstrip(' \n\t').lstrip(' \n\t')
         super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
         if html:
