@@ -152,6 +152,11 @@ $(document).ready(function() {
 	$("#extraFilesDiv").hide();
 	$('#report_overview_table_div').hide();
     $(document).delegate("form", "submit", function(evt) {
+	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
+		//This commune does not participate to fixmystreet until now.
+		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
+		return false;
+	}
         if (!$(':submit').hasClass('confirm')) {
             evt.preventDefault();
             $("#locationView").children().remove();
@@ -263,6 +268,7 @@ function toggleFileForm() {
 {% block content %}
 <div id="page_content_container">
     <h1>{% trans "Submitting a report" %}</h1>
+
 	<div id="leftcol">
 		<div id="nearby-reports">
             <h2>
@@ -293,6 +299,21 @@ function toggleFileForm() {
 				<tr>
 					<td></td>
 					<td><div id='secondary_container'></div></td>
+				</tr>
+				<tr>
+					<td>
+						<select id="available_zipcodes" style="display:none">
+	 			{% for zip in available_zips %}
+							<option value="{{zip.code}}">
+							</option>
+                		{% endfor %}
+						</select>
+                			<span id="available_zipcodes_as_string" style="display:none">
+	 				{% for zip in available_zips %}
+						{{zip.code}}/{{zip.name}}
+					{% endfor %}
+					</span>
+					</td>
 				</tr>
 				
 			</table>

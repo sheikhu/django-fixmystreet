@@ -52,6 +52,16 @@ class FMSUser(User):
         return not self.is_pro()
     def get_langage(self):
         return self.last_used_language
+    def can_create_report(self):
+        #Search the right responsible for the current organization.            
+        userCandidates = FMSUser.objects.filter(organisation__id=self.get_organisation()).filter(manager=True)
+        managerFound = False
+        for currentUser in userCandidates:
+            userCategories = currentUser.categories.all()
+            for currentCategory in userCategories:
+                if (currentCategory == instance.secondary_category):
+                   return True
+        return False
 
     def get_user_type(self):
         if self.leader:
@@ -86,6 +96,8 @@ class OrganisationEntity(models.Model):
         return self.subcontractor == True 
     def is_applicant(self):
         return self.applicant == True 
+    def get_organisation_having_a_manager(self):
+        return OrganisationEntity.objects.filter()
     
     class Meta:
         translate = ('name', )
@@ -204,7 +216,7 @@ class Report(models.Model):
 
     def attachments(self):
         return list(self.comments.all()) + list(self.files.all()) # order by created_at
-
+    
     def to_object(self):
         return {
             "id": self.id,
@@ -300,14 +312,14 @@ def report_assign_responsible(sender, instance, **kwargs):
                    instance.responsible_manager = currentUser
 
         #If not manager found for the responsible commune, then reassign to the region
-        if (managerFound == False):
-            instance.responsible_entity  = OrganisationEntity.objects.get(region=True)
-            userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
-            for currentUser in userCandidates:
-                userCategories = currentUser.categories.all()
-                for currentCategory in userCategories:
-                    if (currentCategory == instance.secondary_category):
-                        instance.responsible_manager = currentUser
+        #if (managerFound == False):
+        #    instance.responsible_entity  = OrganisationEntity.objects.get(region=True)
+        #    userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
+        #    for currentUser in userCandidates:
+        #        userCategories = currentUser.categories.all()
+        #        for currentCategory in userCategories:
+        #            if (currentCategory == instance.secondary_category):
+        #                instance.responsible_manager = currentUser
 
 
 # 
@@ -482,6 +494,11 @@ class ZipCode(models.Model):
     name = models.CharField(max_length=100)
     hide = models.BooleanField()
 
+    def get_usable_zipcodes(self):       
+        allManagers = FMSUser.objects.filter(manager=True)
+        allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
+        return allCommunesHavingManagers.filter(hide=False)
+    
     class Meta:
         translate = ('name', )
 

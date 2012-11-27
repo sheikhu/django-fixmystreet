@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ReportComment, ReportFile, ZipCode
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
@@ -9,6 +9,7 @@ from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     print request.FILES
+
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
 	# this checks update is_valid too
@@ -34,6 +35,7 @@ def new(request):
     
     return render_to_response("reports/new.html",
             {
+                "available_zips":ZipCode().get_usable_zipcodes(),
                 "comment_form":ReportCommentForm(),
                 "file_form":ReportFileForm(),
                 "report_form": report_form,

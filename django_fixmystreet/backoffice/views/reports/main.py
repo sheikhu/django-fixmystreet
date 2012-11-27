@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, ReportAttachment, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, ReportAttachment, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm,ReportCommentForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -35,12 +35,13 @@ def new(request):
     	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
     else:
         reports = Report.objects.all()
-
+    
     reports = reports.distance(pnt).order_by('distance')
 
     return render_to_response("pro/reports/new.html",
             {
-                "report_form": report_form,
+                "available_zips":ZipCode().get_usable_zipcodes(),
+		"report_form": report_form,
                 "pnt":pnt,
                 "reports":reports
             },

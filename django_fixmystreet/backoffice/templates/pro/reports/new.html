@@ -144,6 +144,11 @@ $(document).ready(function() {
 	}
     
     $('form').submit(function(){
+        if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
+                //This commune does not participate to fixmystreet until now.
+                alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
+                return false;
+        }
         if(!connected){
             evt.preventDefault();
         }
@@ -282,6 +287,21 @@ function toggleFileForm() {
 					<td></td>
 					<td><div id='secondary_container'></div></td>
 				</tr>
+				<tr>
+                                        <td>
+                                                <select id="available_zipcodes" style="display:none">
+                                {% for zip in available_zips %}
+                                                        <option value="{{zip.code}}">
+                                                        </option>
+                                {% endfor %}
+                                                </select>
+                                        <span id="available_zipcodes_as_string" style="display:none">
+                                        {% for zip in available_zips %}
+                                                {{zip.code}}/{{zip.name}}
+                                        {% endfor %}
+                                        </span>
+                                        </td>
+                                </tr>
 				<tr>
 					<td></td>
 					<td align="right">
