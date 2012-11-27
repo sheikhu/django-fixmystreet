@@ -48,7 +48,8 @@ $(document).ready(function() {
 			$form.hide();
 			$('#nearby-reports').show();
 			$('#back').css({visibility: 'hidden'});
-
+			$("#addFileDiv").hide();
+			$("#addCommmentDiv").hide();
             $('#instructable').fadeIn();
             $map.one('markerdrag click movestart zoomend',function(evt,point){
                 $('#instructable').fadeOut();
