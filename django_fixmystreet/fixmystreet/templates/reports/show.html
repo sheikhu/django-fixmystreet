@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% load tags %}
-
+{% load i18n tags %}
 {% block title %}{{report.title}}{% endblock %}
 {% block script %}
 {{ block.super }}
@@ -26,7 +24,9 @@ function subscribe() {
 </script>
 {% endblock %}
 {% block css %}
+
 {{block.super}}
+
 <style type="text/css" media="screen">
     #update-header {
         float: left;

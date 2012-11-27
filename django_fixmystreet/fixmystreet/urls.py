@@ -67,10 +67,10 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.contact',
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
 
-    (r'^ajax/createComment','create_comment'),
-    (r'^ajax/createFile','create_file'),
-    (r'^ajax/categories/(\d+)', 'report_category_note'),
-    (r'^ajax/uploadFile','uploadFile'),
+    url(r'^ajax/createComment','create_comment',name='create_report_comment'),
+    url(r'^ajax/createFile','create_file',name='create_report_file'),
+    url(r'^ajax/categories/(\d+)', 'report_category_note',name='report_category_note'),
+    url(r'^ajax/uploadFile','uploadFile',name='report_upload_file'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',

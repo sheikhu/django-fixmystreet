@@ -2,6 +2,8 @@
 {% load i18n %}
 {% load tags %}
 {% block script %}
+{{ block.super }}
+
 <script>
 $(document).ready(function(){
 $("[for='id_password']").parent().parent().hide()
