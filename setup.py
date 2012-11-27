@@ -12,10 +12,11 @@ install_requires = [
     'Django == 1.4.1',
     'django-transmeta',
     'django-stdimage',
-    # 'django-social-auth',
     'south',
     'django-nose',
     'django-extensions',
+    #'django-simple-history',
+    'wkhtmltopdf'
     # 'lizard-ui >= 4.0b5'
     ],
 

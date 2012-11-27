@@ -8,11 +8,10 @@ from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
-
-# from social_auth.backends import get_backend
-
-from stdimage import StdImageField
 from django.conf import settings
+
+from wkhtmltopdf import WKHtmlToPdf
+from stdimage import StdImageField
 
 
 def ssl_required(view_func):
@@ -125,4 +124,24 @@ class HtmlTemplateMail(EmailMultiAlternatives):
         super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
         if html:
             self.attach_alternative(html, "text/html")
-        
+
+def render_to_pdf(request, template_name, dictionary, *args, **kwargs):
+    if request.GET.get('output',False):
+        return render_to_response(*args, **kwargs)
+    else:
+        tmpfolder = tempfile.mkdtemp()
+        html_tmp_file_path = "%s/export.html" %(tmpfolder)
+        html_tmp_file = file(html_tmp_file_path, "w")
+        html_tmp_file.write(render_to_string(*args, **kwargs).encode("utf-8"))
+        html_tmp_file.close()
+
+        pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
+
+        wkhtmltopdf(url=html_tmp_file_path, output_file=pdf_tmp_file_path)
+
+        pdf_tmp_file = file(pdf_tmp_file_path, "r")
+        response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=%s_%s.pdf' %(u"export", date.today().isoformat())
+        pdf_tmp_file.close()
+        return response
+
