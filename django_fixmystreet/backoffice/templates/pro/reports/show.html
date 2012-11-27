@@ -226,7 +226,9 @@ $(function(){
                             <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
                         </td>
     			{% endif %}
-			
+		        <td>
+                            <button onclick="window.location = '{% url report_pdf report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
+			</td>	
                 {% endif %}
                 </tr>
             </table>

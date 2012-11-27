@@ -128,8 +128,6 @@ def createUser(request):
             #If this is the first user created and of type gestionnaire then assign all reportcategories to him
             if (createdUser.manager == True & connectedUser.leader == True):
                 #if we have just created the first one, then apply all type to him
-                #import pdb
-                #pdb.set_trace()
                 if len(FMSUser.objects.filter(organisation_id=connectedUser.organisation.id).filter(manager=True)) == 1:
                     for type in ReportCategory.objects.all():
                         createdUser.categories.add(type)

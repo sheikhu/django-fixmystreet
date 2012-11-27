@@ -125,6 +125,13 @@ def changeContractor(request,report_id):
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
+
+def reportPdf(request, report_id):
+    '''reportPdf is called from report details page to generate the pdf with report story'''
+    report = get_object_or_404(Report, id=report_id)
+    return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments()},
+            context_instance=RequestContext(request))    
+
 def acceptAndValidate(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.MANAGER_ASSIGNED
