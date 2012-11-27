@@ -120,6 +120,7 @@ class Report(models.Model):
     PROCESSED = 3
     DELETED   = 8
 
+    REPORT_STATUS_SETTABLE_TO_SOLVED = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
@@ -197,6 +198,9 @@ class Report(models.Model):
 
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
+    
+    def is_markable_as_solved(self):
+        return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def attachments(self):
         return list(self.comments.all()) + list(self.files.all()) # order by created_at

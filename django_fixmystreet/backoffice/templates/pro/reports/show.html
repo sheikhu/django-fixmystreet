@@ -201,7 +201,9 @@ $(function(){
 				&nbsp;
                     	</td>
                     	<td >
+			{% if report.is_markable_as_solved %} 
                         	<button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+    			{% endif %}
                     	</td>
                         <td >
 				{% if not fms_user.contractor %} 

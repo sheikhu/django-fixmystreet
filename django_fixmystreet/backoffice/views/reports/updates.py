@@ -86,6 +86,7 @@ def new( request, report_id ):
 
 def changeManager(request,report_id):
     report = Report.objects.get(pk=report_id)
+    report.status = Report.MANAGER_ASSIGNED
     manId = request.REQUEST.get("manId")
     if manId.split("_")[0] == "manager":
         newRespMan = FMSUser.objects.get(pk=int(manId.split("_")[1]))
@@ -109,9 +110,16 @@ def changeContractor(request,report_id):
     contractorId = request.REQUEST.get("contractorId")
     if contractorId=='-1':
         report.subcontractor = None
+        #Restore status to IN_PROGRESS 
+        report.status = Report.IN_PROGRESS
     else:
         organisation = OrganisationEntity.objects.get(pk=int(contractorId))
         report.contractor = organisation
+        if organisation.is_subcontractor() == True:
+            report.status = Report.CONTRACTOR_ASSIGNED
+        else:
+            report.status = Report.APPLICANT_RESPONSIBLE
+
     report.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
