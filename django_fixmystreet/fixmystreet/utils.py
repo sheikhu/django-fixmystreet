@@ -7,6 +7,7 @@ from django.core.files.base import ContentFile
 from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
+from django.contrib.sites.models import Site
 
 # from social_auth.backends import get_backend
 
@@ -105,30 +106,26 @@ class FixStdImageField(StdImageField):
 class HtmlTemplateMail(EmailMultiAlternatives):
     def __init__(self, template_dir, data, recipients, **kargs):
         
-        #site = Site.objects.get_current()
-        
         data['SITE_URL'] = 'http://locahost'
         
         subject, html, text = '', '', ''
-        
         try:
             subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
         except TemplateDoesNotExist:
             pass
-        
+        print 'subject'
         try:
             text    = render_to_string('emails/' + template_dir + "/message.txt", data)
         except TemplateDoesNotExist:
             pass
-        
+        print 'text'
         try:
             html    = render_to_string('emails/' + template_dir + "/message.html", data)
         except TemplateDoesNotExist:
             pass
-        
+        print 'html'
         subject = subject.rstrip(' \n\t').lstrip(' \n\t')
         super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
-        
         if html:
             self.attach_alternative(html, "text/html")
         

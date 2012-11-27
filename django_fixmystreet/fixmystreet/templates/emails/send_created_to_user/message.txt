@@ -1,10 +1,11 @@
 {% extends 'emails/base_email.txt' %}
 {% load i18n %}
 {% block content %}
-
-Dear {{user.first_name}} {{user.last_name}}
-A user has been created for you for Fixmystreet PRO on {{SITE_URL}}.
-Your username is {{user.username}}.
-Your password is {{user.password}}.
-
+{% blocktrans with firstname=user.first_name lastname=user.last_name url=SITE_URL username=user.username password=password %}
+The user {{firstname}} {{lastname}} is created for you.
+Please activate yourself first by clicking the following link: {{url}}
+User information:
+Username: {{username}}
+Password: {{password}}
+{% endblocktrans %}
 {% endblock %}

@@ -1,0 +1,27 @@
+{% load i18n %}
+<h2>{% trans 'Report overview:' %}</h2>
+
+<p>{% trans 'Address:'%} {{report.address}}</p>
+<p>{% trans 'Postal code:'%} {{report.postalcode}}</p>
+<p>{% trans 'Description:'%} {{report.description}}</p>
+<p>{% trans 'Type:'%} {{report.category.name}}</p>
+<p>{% trans 'Creator:'%} 
+	{% if report.creator %}
+	{{report.creator.username}}
+	{% else %}
+	{{report.citizen.username}}
+	{% endif %}
+</p>
+<p>{% trans 'Created at:'%} {{report.created_at|date}}</p>
+
+<h3> {% trans 'Extra comments'%} </h3>
+{% for  comment in comments%}
+<p>{% trans 'Title:'%} {{comment.title}}</p>
+<p>{% trans 'Comment:' %} {{comment.text}}</p>
+{% endfor %}
+
+<h3> {% trans 'Extra files'%} </h3>
+{% for  file in files %}
+<p>{% trans 'Title:'%} {{comment.title}}</p>
+<p><img src="{{file.url}}"></p>
+{% endfor %}

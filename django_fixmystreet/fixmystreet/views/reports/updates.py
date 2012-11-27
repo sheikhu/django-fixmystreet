@@ -23,7 +23,10 @@ def new( request, report_id ):
                 if not alreadySolved:
                     report.status = Report.SOLVED
                     report.save()
-                    mail = HtmlTemplateMail(template_dir='send_report_fixed_to_gest_resp', data={'report': report}, recipients=(report.responsible_manager.email,))
+                    comments = ReportComment.objects.filter(report_id=report_id)
+                    files = ReportFile.objects.filter(report_id=report_id)
+                    mail = HtmlTemplateMail(template_dir='send_report_fixed_to_gest_resp', data={'report': report,'comments':comments,'files':files}, recipients=(report.responsible_manager.email,))
                     mail.send()
+                    print report.responsible_manager.email
         return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()

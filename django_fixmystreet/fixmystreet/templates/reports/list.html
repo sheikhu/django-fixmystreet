@@ -3,6 +3,7 @@
 {% load tags %}
 {% block title %}{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}}{% endblock %}
 {% block css %}
+{{ block.super }}
 <style>
 #map-bxl{
 	height: 520px;
@@ -28,9 +29,9 @@ $(function(){
 	});
 
 });
-
 </script>
 {% endblock %}
+
 {% block content %}
 	<div id="fullwidth">
         <h1>{% trans "Reports for" %} {{ward.name}}</h1>

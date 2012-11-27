@@ -2,8 +2,4 @@
 {% load i18n %}
 {% block content %}
 
-A new report is marked as fixed.
-A report at {{report.address}} is marked as fixed.
-More details can be found at: {{SITE_URL}}/pro/report/{{report.id}}
-
 {% endblock %}

@@ -83,16 +83,13 @@ def show(request, report_id):
     
     entitiesHavingAManager = FMSUser.objects.filter(manager=True);
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingAManager)
-    #import pdb
-    #pdb.set_trace() 
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
-    #contractors = list(contractors) + list(OrganisationEntity.objects.filter(dependency=organisationId).filter(applicant=True))
     applicants = OrganisationEntity.objects.filter(applicant=True)
-     
-    #import pdb
-    #pdb.set_trace()
+    
+    fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
             {
+                "fms_user": fms_user,
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
                 "comment_form": ReportCommentForm(),

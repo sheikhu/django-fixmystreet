@@ -56,7 +56,9 @@ def close( request, report_id ):
     for reportsubscription in subscriptions:
         mailto[i] = User.objects.get(pk=reportsubscription.subscriber_id).email
         i = i+1
-    mail = HtmlTemplateMail(template_dir='send_report_closed_to_subscribers', data={'report': report}, recipients=tuple(mailto))
+    comments = ReportComment.objects.filter(report_id=report_id)
+    files = ReportFile.objects.filter(report_id=report_id)
+    mail = HtmlTemplateMail(template_dir='send_report_closed_to_subscribers', data={'report': report,'comments':comments,'files':files}, recipients=tuple(mailto))
     mail.send()
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -119,11 +121,11 @@ def acceptAndValidate(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.MANAGER_ASSIGNED
     report.save()
-    comments = Comment.objects.filter(report_id=report_id)
+    comments = ReportComment.objects.filter(report_id=report_id)
     for comment in comments:
         comment.validated= True
         comment.save()
-    files = File.objects.filter(report_id=report_id)
+    files = ReportFile.objects.filter(report_id=report_id)
     for f in files:
         f.validated = True
         f.save()
