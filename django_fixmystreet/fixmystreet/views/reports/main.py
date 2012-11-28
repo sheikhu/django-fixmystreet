@@ -1,12 +1,13 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ReportComment, ReportFile, ZipCode
-from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm
+from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 
 def new(request):
+    print request.FILES
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
@@ -24,6 +25,8 @@ def new(request):
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
     else:
+        session_manager = SessionManager()
+        session_manager.clearSession(request.session.session_key)
         report_form = CitizenReportForm(initial={
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
@@ -38,7 +41,8 @@ def new(request):
                 "file_form":ReportFileForm(),
                 "report_form": report_form,
                 "pnt":pnt,
-                "reports":reports
+                "reports":reports,
+                "file_upload_Form":FileUploadForm()
             },
             context_instance=RequestContext(request))
 

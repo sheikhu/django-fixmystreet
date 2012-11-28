@@ -10,6 +10,29 @@
 <script>
 
 $(document).ready(function() {
+	// Redefine the submit function for the add ReportFile form
+	$("form:last").submit(function(){
+		//Define a new FormData, in this object the file(s) will be saved
+		var data = new FormData();
+		$.each($("form:last #id_file")[0].files, function(i, file) {
+			//For each file in the file input field append the file to the FormData
+    		data.append('file',file);
+		});
+		//Process the data by sending it using ajax.
+		$.ajax({ 
+                data: data, 
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                processData: false,
+  				contentType: false,
+                success: function(response) {
+                    //Nothing to be done
+                }
+            });
+            return false;
+        }
+    );
+
         //Hide original list of elements
 	$("#id_secondary_category_copy").hide();
 	$("[for='id_secondary_category_copy']").hide();
@@ -149,15 +172,21 @@ $(document).ready(function() {
 			}
 		});
 	}
+	//On page load: the add comment and add file forms must be hidden
 	$("#extraCommentsDiv").hide();
 	$("#extraFilesDiv").hide();
+	$("#fileForm #id_file").attr("onchange","fileSelected();");
+	//On page load: The report overview needs to be hidden
 	$('#report_overview_table_div').hide();
+	// On submit: validate if the current commune participates with the FixMyStreet project
     $(document).delegate("form", "submit", function(evt) {
-	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
+    	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
 		//This commune does not participate to fixmystreet until now.
 		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
 		return false;
-	}
+		}
+		//When the user presses the submit button for the first time: the overview must be shown.
+		// The following code will popuplate the report_overview_table with the entered values
         if (!$(':submit').hasClass('confirm')) {
             evt.preventDefault();
             $("#locationView").children().remove();
@@ -187,7 +216,6 @@ $(document).ready(function() {
   			 vals[i]=this.value;
   			 i++;
 			});
-			console.log(vals);
 			$("#locationView").append("<p>"+vals[0]+"</p>");
 			$("#category1View").append("<p>"+vals[7]+"</p>");
 			$("#category2View").append("<p>"+vals[8]+"</p>");
@@ -206,23 +234,68 @@ $(document).ready(function() {
         }
     });
 });
-
+//Add the submitted file to the view and save it in the session and on the server.
 function AddFileToView(){
-	$.post('/ajax/uploadFile');
+	//Submit the last form to save the file to the server
+	$("form:last").submit();
+	// If no files are yet added: show the div containing the added files table list
 	if(!$("#extraFilesDiv").is(":visible")){
 		$("#extraFilesDiv").show();
 	}
+	//Get the file from the file input component
+	var file = document.getElementById('id_file').files[0];
+	//Determine the type of the submited file
+	var type = $("form:last #id_file")[0].files[0].type.split("/")[1];
 	//Structured Data of the file to add
-	var data = {"title":$("#fileTitleInput").val(),"file":$("#fileFileInput").val().replace('C:\\fakepath\\','/static/')};
+	var title = $("#fileForm #id_title").val();
+	if (title == ""){
+		title = file.name;
+	}
+	var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','/media/files/')};
 	//Put the file data in the session
 	$.post("/ajax/createFile",data);
+	//Create a file reader so that we can create a thumbnail of the submitted file.
+	var reader = new FileReader();
+	//Define the onload function of the reader
+	reader.onload = function(ev){
+		var url = ev.target.result;
+		//Show a thumbnail of the file depending on the file type
+		if (type == "pdf"){
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-pdf.png");
+		}
+		else if (type == "png"){
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src",url);
+		}
+		else if (type == "jpeg"){
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src",url);
+		}
+		else if (type == "msword"){
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-word.jpg");
+		}
+		else if(type == "vnd.ms-excel"){
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-xls.png");
+		}
+		else if (type == "vnd.openxmlformats-officedocument.wordprocessingml.document"){
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-word.jpg");
+		}
+		else {
+			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-file.png");
+		}
+		
+	
+	}
+
 	//Create the html to add in the view
-	var htmlToAdd = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+$("#fileTitleInput").val()+"</h3><img src='"+$("#fileFileInput").val().replace('C:\\fakepath\\','/static/')+"'/></div></td></tr>";
-	console.log(htmlToAdd)
+	var htmlToAdd = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+title+"</h3><img src='' id='fileImage"+$('#extraFilesTable').find('tr').length+"' style='max-width: 50px;'/></div></td></tr>";
 	$("#extraFilesTable").append(htmlToAdd);
+	// Read the file that is submited. If the file is read the onload function will be called.
+	reader.readAsDataURL(file);
+	
 }
 
+//Add a comment to the extra comment table in the view.
 function AddCommentToView(){
+	// If no comments are added yet: show the div containing the extra comments div
 	if(!$("#extraCommentsDiv").is(":visible")){
 		$("#extraCommentsDiv").show();
 	}
@@ -237,7 +310,7 @@ function AddCommentToView(){
 	
 	
 }
-
+//Method called when the edit button is pressed (when the user is already in the overview screen). This function will show all forms again.
 function showForm(){
 	$('#new_report_citizen_form').show();
     $('#report_overview_table_div').hide();
@@ -248,21 +321,38 @@ function showForm(){
     $("#addCommmentDiv").show();
 }
 
+// Show/hide the file form
 function toggleFileForm() {
-		$("#fileTitleInput").val("");
-		$("#fileFileInput").val("");
-        $("#fileForm").toggle();
-        $("#showFileFormButton").toggle();
-        $("#addCommmentDiv").toggle();
-    }
+	$("#fileForm #id_title").val("");
+	$("#fileForm #id_file").val("");
+	$("#fileForm").toggle();
+	$("#showFileFormButton").toggle();
+	$("#addCommmentDiv").toggle();
+}
+//Show/hide the comment form
+function toggleCommentForm() {
+	$("#commentTitleInput").val("");
+	$("#commentTextTextArea").val("");
+	$("#commentForm").toggle();
+	$("#showCommentFormButton").toggle();
+	$('#addFileDiv').toggle();
+}
+//This function checks the size of the current selected file in the file form input field.
+function fileSelected() {
+	var file = document.getElementById('id_file').files[0];
+	if (file) {
+		if(file.size == 0){
+			alert('Filesize must be greater than 0');
+			$("#fileForm #id_file").val("");
+		}
+		//TODO determine max file size
+		if(file.size > 100000){
+			alert('File to large');
+			$("#fileForm #id_file").val("");
+		}
+	}
+}
 
-    function toggleCommentForm() {
-    	$("#commentTitleInput").val("");
-    	$("#commentTextTextArea").val("");
-        $("#commentForm").toggle();
-        $("#showCommentFormButton").toggle();
-        $('#addFileDiv').toggle();
-    }
 </script>
 {% endblock %}
 
@@ -427,18 +517,11 @@ function toggleFileForm() {
 		</div>
         	<div id="addFileDiv">
         		<h2>{% trans "Add a file to this report" %}</h2>
+
         		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
-        		<form id="fileForm" enctype="multipart/form-data"  method="post">
+        		<form id="fileForm" enctype="multipart/form-data" action="{% url report_upload_file %}" method="post">
         			<table id="report_form" class="form">
-        				<tr>
-        					<th>{% trans 'Title'%}:</th>
-        					<td><input type="text" id="fileTitleInput"></td>
-        				</tr>
-        				<tr>
-        					<th>{% trans 'File' %}
-        					</th>
-        					<td><input type="file" name="form_file" id="fileFileInput" ></td>
-        				</tr>				
+        				{{ file_upload_Form.as_table }}
         				<tr>
         					<td></td>
         					<td>

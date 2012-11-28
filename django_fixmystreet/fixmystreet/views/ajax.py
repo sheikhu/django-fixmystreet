@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, RequestContext
 from django_fixmystreet.fixmystreet.models import ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
+from django_fixmystreet.fixmystreet.forms import FileUploadForm
 from django.utils.translation import ugettext as _
 def report_category_note(request, id):
     cat = ReportMainCategoryClass.objects.get(id=id)
@@ -28,10 +29,10 @@ def create_file(request):
 
 def uploadFile(request):
 	print request.FILES
-	print request.FILES.getlist('form_file')
-	for upfile in request.FILES.getlist('form_file'):
-		filename = upfile.name
-		# instead of "filename" specify the full path and filename of your choice here
-		fd = open(filename, 'w')
-		fd.write(upfile['content'])
-		fd.close()
+	for file_code in request.FILES:
+		upfile = request.FILES[file_code]
+		with open('media/files/'+upfile.name, 'wb+') as destination:
+			for chunk in upfile.chunks():
+				destination.write(chunk)
+	hh = HttpResponse(content='True',mimetype='text/html')
+	return hh

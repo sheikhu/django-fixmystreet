@@ -3,12 +3,10 @@ from django_fixmystreet.fixmystreet.models import ReportComment, ReportFile, Rep
 class SessionManager():
 	def createComment(self,title,text,sessionK):
 		s = SessionStore(session_key=sessionK)
-		print s.keys()
 		if not 'comments' in s.keys():
 			s['comments'] = []
 		s['comments'].append({"title":title,"text":text})
 		s.save()
-		print s.keys()
 
 	def createFile(self,title,file,sessionK):
 		s = SessionStore(session_key=sessionK)
@@ -47,3 +45,9 @@ class SessionManager():
 				c.save()
 			del s['files']
 			s.save()
+	def clearSession(self,sessionK):
+		print 'clearing session'
+		s = SessionStore(session_key = sessionK)
+		for key in s.keys():
+			del s[key]
+		s.save()

@@ -72,10 +72,9 @@ def edit(request):
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(manager=True)
     #Get used to edit
-        user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
+    user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
 
     connectedUser = request.fmsuser
-
     canEditGivenUser = (((user.manager or user.agent) and connectedUser.leader) or ((user.agent) and connectedUser.manager))
     return render_to_response("pro/users_overview.html",{
                         "users":users,
