@@ -16,7 +16,6 @@ install_requires = [
     'django-nose',
     'django-extensions',
     #'django-simple-history',
-    'wkhtmltopdf'
     # 'lizard-ui >= 4.0b5'
     ],
 
