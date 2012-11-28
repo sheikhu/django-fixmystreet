@@ -1,7 +1,7 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
 {% block content %}
-{% blocktrans with reportType=report.category.name date=report.created_at|date reportId=report.id %}
+{% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
 <p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at {{SITE_URL}}/pro/report/{{reportId}}.</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" %}

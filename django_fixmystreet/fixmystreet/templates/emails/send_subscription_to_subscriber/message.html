@@ -1,7 +1,7 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
 {% block content %}
-{% blocktrans with reportType=report.category.name date=report.created_at|date reportId=report.id %}
+{% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
 <p>You are now subscribed to the report with type {{reportType}}, created at {{date}}. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
 <p>You can unsubscribe yourself by clicking the following link: {{SITE_URL}}/report/{{reportId}}/</p>
 {% endblocktrans %}

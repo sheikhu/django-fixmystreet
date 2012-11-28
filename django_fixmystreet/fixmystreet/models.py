@@ -256,7 +256,7 @@ class Report(UserTrackedModel):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def attachments(self):
-        return list(self.comments.all()) + list(self.files.all()) # order by created_at
+        return list(self.comments.all()) + list(self.files.all()) # order by created
     
     def to_object(self):
         return {
@@ -378,14 +378,14 @@ def report_subscribe_author(sender, instance, **kwargs):
             ReportSubscription(report=instance, subscriber=instance.citizen).save()
 
 
-# #update the report, set updated_at and is_fixed correctly
+# #update the report, set modified and is_fixed correctly
 # @receiver(post_save, sender=ReportUpdate)
 # def update_report(sender, instance, **kwargs):
-    # instance.report.updated_at = instance.created_at
+    # instance.report.modified = instance.created
 # 
     # instance.report.is_fixed = instance.is_fixed
     # if(instance.is_fixed and not instance.report.fixed_at):
-        # instance.report.fixed_at = instance.created_at
+        # instance.report.fixed_at = instance.created
 # 
     # instance.report.save()
 
@@ -627,7 +627,7 @@ def exportReportsOfEntity(entityId):
     for report in data1:
         d = d+ "<Report>"
         #Get the info of the report
-        d1= xml_serializer.serialize(Report.objects.filter(id=report.id),fields=('id','category', 'description', 'created_at', 'updated_at', 'status'))
+        d1= xml_serializer.serialize(Report.objects.filter(id=report.id),fields=('id','category', 'description', 'created_at', 'updated', 'status'))
         #Get comments of the report
         data2 = Comment.objects.filter(report_id=data1[0].id)
         d2 = xml_serializer.serialize(data2,fields=('title','text'))

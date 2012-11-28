@@ -1,4 +1,4 @@
-{% load i18n %}{% blocktrans with title=update.report.title|safe author=update.author|safe date=update.created_at|date %}
+{% load i18n %}{% blocktrans with title=update.report.title|safe author=update.author|safe date=update.created|date %}
 The Fix My Street Report: '{{title}}' 
 was updated by {{author}} on {{date}}:
 {% endblocktrans %}

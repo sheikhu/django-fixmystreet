@@ -12,7 +12,7 @@
 	{{report.citizen.username}}
 	{% endif %}
 </p>
-<p>{% trans 'Created at:'%} {{report.created_at|date}}</p>
+<p>{% trans 'Created at:'%} {{report.created|date}}</p>
 
 <h3> {% trans 'Extra comments'%} </h3>
 {% for  comment in comments%}

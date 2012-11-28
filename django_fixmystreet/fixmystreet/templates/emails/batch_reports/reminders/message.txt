@@ -1,6 +1,6 @@
 Hello {{report.author}}
 
-On {{report.created_at|date:"l, F dS, Y"}}, you left a problem on FixMyStreet.ca with the 
+On {{report.created|date:"l, F dS, Y"}}, you left a problem on FixMyStreet.ca with the 
 details provided at the end of this email. To keep our site up to date 
 and relevant, we'd appreciate it if you could follow the link below and 
 fill in our short questionnaire updating the status of your problem:
