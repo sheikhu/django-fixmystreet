@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block hello %}{% endblock %}
 {% block content %}
-{% blocktrans with title=update.report.title|safe author=update.author.get_full_name|safe date=update.created_at|date %}
+{% blocktrans with title=update.report.title|safe author=update.author.get_full_name|safe date=update.created|date %}
 <p>The Fix My Street Report: <strong>{{title}}</strong></p>
 <p>was updated by {{author}} on {{date}}:</p>
 {% endblocktrans %}

@@ -10,7 +10,7 @@ class LatestReports(Feed):
     description = "All FixMyStreet Reports"
 
     def items(self):
-        return Report.objects.order_by('-created_at')[:30]
+        return Report.objects.order_by('-created')[:30]
 
 class LatestReportsByCity(Feed):
     
@@ -87,4 +87,4 @@ class LatestUpdatesByReport(Feed):
         return "Updates for FixMySteet Problem Report %s" % obj.title
 
     def items(self, obj):
-       return obj.reportupdate_set.order_by('created_at')[:30]
+       return obj.reportupdate_set.order_by('created')[:30]

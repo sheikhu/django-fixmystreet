@@ -1,8 +1,8 @@
 Title:        {{report.title|safe}}
 Category:     {{report.category.name}}
-Submitted By: {{report.author.get_full_name|safe}}	
-Phone:        {{report.author.phone}}
-Email:        {{report.author.email}}
+Submitted By: {{report.created_by.get_full_name|safe}}	
+Phone:        {{report.created_by.phone}}
+Email:        {{report.created_by.email}}
 FMS ID:       {{report.id}}
 {% if report.address %}Location:     {{report.address}}{% endif %}
 {% if report.photo %}Image URL:    {{SITE_URL}}{{MEDIA_URL}}{{report.photo}}{% endif %}
