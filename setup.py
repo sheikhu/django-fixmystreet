@@ -15,9 +15,10 @@ install_requires = [
     'south',
     'django-nose',
     'django-extensions',
-    #'django-simple-history',
+    'simple_history'
+    # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
-    ],
+    ]
 
 deploy_require = [
     'gunicorn'
