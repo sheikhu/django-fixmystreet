@@ -1,7 +1,3 @@
-{% load i18n %}
-
-<script type="text/javascript">
-//<![CDATA[
 $(function(){
 
     var $searchTerm = $('#search_box');
@@ -13,16 +9,19 @@ $(function(){
 
     $searchForm.submit(function(event){
 		event.preventDefault();
-		
+
 		$proposal.slideUp();
+
+		if (!$searchTerm.val()) { return; }
+
 		$searchTerm.addClass('loading');
 		$searchButton.prop('disabled',true);
 		
 		$.ajax({
-            url:'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressesfields',
+            url: SERVICE_GIS_URL + '/urbis/Rest/Localize/getaddressesfields',
             dataType:'jsonp',
 			data:{
-                json:'{"language": "{{ LANGUAGE_CODE }}",' +
+                json:'{"language": "' + LANGUAGE_CODE + '",' +
 				'"address": {' +
 					'"street": {' +
 						'"name": "' + $searchTerm.val().replace("\"","\\\"") + '",' +
@@ -46,11 +45,12 @@ $(function(){
                     {
                         var street = response.result[i].address.street;
                         var pos = response.result[i].point;
-                        $proposal.append('<li><a class="button" href="{% url report_new_pro %}?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a></li>');
+                        $('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.postCode + ')</a>')
+                            .appendTo($proposal)
+                            .wrap('<li />');
                     }
                     $proposal.slideDown();
                 }
-                // window.location.assign('/reports/new?lon=' + response.result.point.x + '&lat=' + response.result.point.y);
             }
             else
             {
@@ -75,10 +75,5 @@ $(function(){
         });
     });
 
-    {% if location %}
-	$searchForm.submit();
-    {% endif %}
-
+    $searchForm.submit();
 });
-//]]>
-</script>

@@ -45,7 +45,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
-    'django_fixmystreet.backoffice.middleware.LoadUserMiddleware'
+    'django_fixmystreet.backoffice.middleware.LoadUserMiddleware',
+    'django_fixmystreet.fixmystreet.utils.CurrentUserMiddleware'
 )
 
 LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
@@ -71,6 +72,7 @@ INSTALLED_APPS = (
     
     'transmeta',
     'south',
+    'simple_history',
     'django_extensions',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',

@@ -19,8 +19,27 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 
 from transmeta import TransMeta
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
+from simple_history.models import HistoricalRecords
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, get_current_user
+from django_extensions.db.models import TimeStampedModel
 
+
+
+class UserTrackedModel(TimeStampedModel):
+    created_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_created')
+    modified_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_modified')
+
+    def save(self, *args, **kwargs):
+        user = get_current_user()
+        if user.is_authenticated():
+            if self.id:
+                self.modified_by = user
+            else:
+                self.created_by = user
+            self._history_user = user # used by simple_history
+        super(UserTrackedModel, self).save(*args, **kwargs)
+    class Meta:
+        abstract = True
 
 class FMSUser(User):
     telephone = models.CharField(max_length=20,null=True)
@@ -39,7 +58,15 @@ class FMSUser(User):
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
 
     objects = UserManager()
+
+    # history = HistoricalRecords()
     
+    def get_display_name(self):
+        if (self.first_name == None and self.last_name == None):
+             return 'ANONYMOUS'
+        else:
+             return self.first_name+' '+self.last_name 
+
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
@@ -77,7 +104,7 @@ class FMSUser(User):
 
 
 
-class OrganisationEntity(models.Model):
+class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
 
@@ -85,8 +112,10 @@ class OrganisationEntity(models.Model):
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
-    dependency = models.ForeignKey('OrganisationEntity',related_name='parent', null=True)
-    feature_id = models.CharField(max_length=25)
+    dependency = models.ForeignKey('OrganisationEntity', related_name='parent', null=True, blank=True)
+    feature_id = models.CharField(max_length=25, null=True, blank=True)
+
+    history = HistoricalRecords()
 
     def is_commune(self):
         return self.commune == True 
@@ -98,12 +127,12 @@ class OrganisationEntity(models.Model):
         return self.applicant == True 
     def get_organisation_having_a_manager(self):
         return OrganisationEntity.objects.filter()
-    
+
     class Meta:
         translate = ('name', )
 
 
-class Report(models.Model):
+class Report(UserTrackedModel):
 
     #List of qualities
     RESIDENT = 0
@@ -165,11 +194,6 @@ class Report(models.Model):
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
 
-    creator = models.ForeignKey(User,null=True, related_name='repors_created')
-    created_at = models.DateTimeField(auto_now_add=True)
-    # last time report was updated
-    updated_at = models.DateTimeField(null=True)
-    # time report was marked as 'fixed'
     fixed_at = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
@@ -188,6 +212,9 @@ class Report(models.Model):
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
+
+    history = HistoricalRecords()
+
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show", args=[self.id])
@@ -195,6 +222,12 @@ class Report(models.Model):
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show_pro", args=[self.id])
+
+    def has_at_least_one_non_confidential_comment(self):
+        return ReportComment.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    
+    
+    def has_at_least_one_non_confidential_file(self):
+        return ReportFile.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    
 
     def get_comments(self):  	
         return ReportComment.objects.filter(report__id=self.id)
@@ -250,14 +283,19 @@ class ReportAttachment(models.Model):
 
     class Meta:
         abstract=True
+    
+    def get_display_name(self):
+        if (self.creator.first_name == None and self.creator.last_name == None):
+             return 'ANONYMOUS'
+        else:
+             return self.creator.first_name+' '+self.creator.last_name 
 
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
     creator = models.ForeignKey(User,null=True, related_name='comments_created')
-
-
+    
 class ReportFile(ReportAttachment):
     PDF   = 1
     WORD  = 2

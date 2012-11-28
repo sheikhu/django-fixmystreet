@@ -12,7 +12,7 @@
 		{% if reports %}
         <div id='search_results'>
 	        {% for report in reports %}
-            {% include "pro/reports/_navigation.html" %}
+            {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
             {% endfor %}
          </div>
         {% endif %}

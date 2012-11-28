@@ -42,6 +42,7 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
     url(r'^report/(\d+)/changeManager/', 'changeManager', name='report_change_manager_pro'),
     url(r'^report/(\d+)/changeContractor/', 'changeContractor', name='report_change_contractor_pro'),
     url(r'^report/(\d+)/accept_and_validate/', 'acceptAndValidate', name='report_accept_and_validate'),
+    url(r'^report/(\d+)-(\d+)/pdf/', 'reportPdf', name='report_pdf_pro'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.subscribers',

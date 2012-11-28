@@ -217,7 +217,7 @@ class AgentCreationForm(UserCreationForm):
 class ReportFileForm(forms.ModelForm):
     class Meta:
         model=ReportFile
-        fields=('title','file','isVisible',)
+        fields=('title','file',)
     file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
     def clean_file(self):
         file = self.cleaned_data['file']
@@ -246,7 +246,10 @@ class ReportFileForm(forms.ModelForm):
 			fileUpdate.file_type = ReportFile.IMAGE
 		if str(fileUpdate.file.name).endswith("xls"):
 			fileUpdate.file_type = ReportFile.EXCEL
-		
+	
+                #Add the creator
+                fileUpdate.creator = user
+	
 		if commit:
 			fileUpdate.save()
 		return fileUpdate
@@ -254,12 +257,16 @@ class ReportFileForm(forms.ModelForm):
 class ReportCommentForm(forms.ModelForm):
 	class Meta:
 		model=ReportComment
-		fields=('title','text','isVisible',)
+		fields=('title','text',)
 	
 	def save(self,user,report,commit=True):
 		comment= super(ReportCommentForm,self).save(commit=False)
 		comment.report = report
-		if commit:
+                
+                #Add the creator
+                comment.creator = user
+		
+                if commit:
 			comment.save()
 		return comment
 

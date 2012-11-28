@@ -1,0 +1,282 @@
+{% load i18n %}
+
+<!-- ############################################################## -->
+<!-- ####################### REPORT ############################### -->
+<!-- ############################################################## -->
+<hr/>
+<h1>{% trans 'label_pdf_report_title_main' %}</h1>
+
+<table>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_localisation' %}
+			</strong>
+		</td>	
+		<td colspan="2">
+			<strong>
+				{% trans 'label_pdf_report_title_commune' %}
+			</strong>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.address}}{{report.postalcode}}
+		</td>	
+		<td colspan="2">
+			{{report.responsible_entity.name}}
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_object' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_manager' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_urgency' %}
+			</strong>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.category.name}} / {{report.secondary_category.name}}
+		</td>	
+		<td>
+			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}
+		</td>
+		<td>
+			???
+		</td>	
+	</tr>
+
+
+</table>
+<hr/>
+<table>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_counter' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_incident_number' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_agatte' %}
+			</strong>
+		</td>	
+		<td colspan="2">
+			<strong>
+				{% trans 'label_pdf_report_title_geocode' %}
+			</strong>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.id}}	
+		</td>	
+		<td>
+			<!--request.user.id|numberOfReports-->TODO
+		</td>	
+		<td>
+			???TODO
+		</td>
+		<td colspan="2">
+			L:{{report.point.x}} l:{{report.point.y}}
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_date' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_requester' %}
+			</strong>
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_author' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_phone' %}
+			</strong>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.created_at}}
+		</td>	
+		<td>
+			{{report.creator.fmsuser.get_display_name}}
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			{{report.creator.fmsuser.get_display_name}}
+		</td>	
+		<td>
+			{{report.creator.fmsuser.telephone}}
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_status' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_action' %}
+			</strong>
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_exe' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'label_pdf_report_title_intervention' %}
+			</strong>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.status}}
+		</td>	
+		<td>
+			TODO
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			TODO
+		</td>	
+		<td>
+			TODO
+		</td>	
+	</tr>
+</table>
+
+
+<!-- ############################################################## -->
+<!-- ####################### HISTORY ############################## -->
+<!-- ############################################################## -->
+<hr/>
+<h1>{% trans 'label_pdf_historique_title_main' %}</h1>
+
+{% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
+
+<table>
+	<th><strong>{% trans 'label_pdf_historique_title_date' %}</strong></th>
+	<th><strong>{% trans 'label_pdf_historique_title_from' %}</strong></th>
+	<th><strong>{% trans 'label_pdf_historique_title_title' %}</strong></th>
+	<th><strong>{% trans 'label_pdf_historique_title_text' %}</strong></th>
+
+	{% for comment in comment_list %}
+	{% if not comment.isVisible and pro_version == "0" %}
+		<!-- SKIP ROW if the current comment annex is confidential -->
+	{% else %}
+	<tr>
+		<td>{{comment.created_at}}</td>
+		<td>{{comment.creator.fmsuser.get_display_name}}</td>
+		<td>{{comment.title}}</td>
+		<td>{{comment.text}}</td>
+	</tr>
+	{% endif %}
+	{% endfor %}
+</table>
+
+{% else %}
+
+<h3>{% trans 'label_pdf_historique_title_no_content' %}</h3>
+
+{% endif %}
+
+<hr/>
+
+<!-- ############################################################## -->
+<!-- ####################### PHOTOS ############################### -->
+<!-- ############################################################## -->
+<hr/>
+<h1>{% trans 'label_pdf_photo_title_main' %}</h1>
+
+{% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
+
+<table>
+	{% for file in file_list %}
+	<!-- If we asked for a public version -->
+	{% if not file.isVisible and pro_version == "0" %}
+		<!-- SKIP ROW if the current file annex is confidential -->
+	{% else %}
+	<tr>
+		<td rowspan="11">
+			<img width="256px" height="256px" src="http://www.fgtb.be/image/image_gallery?uuid=19b59168-7103-48c3-b05a-1b8e448d6f23&groupId=10134&t=1353400703444"/>
+		</td>
+		<td>
+			{{file.created_at}}
+		</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_title_city' %}</strong></td>
+	</tr>
+	<tr>
+		<td>{{report.responsible_entity.name}}</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_title_source' %}</strong></td>
+	</tr>
+	<tr>
+		<td>{{file.get_display_name}}</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_title_instruction' %}</strong></td>
+	</tr>
+	<tr>
+		<td>TODO</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_title_title' %}</strong></td>
+	</tr>
+	<tr>
+		<td>{{file.title}}</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_title_keywords' %}</strong></td>
+	</tr>
+	<tr>
+		<td>TODO</td>
+	</tr>
+	{% endif %}
+	{% endfor %}
+</table>
+
+{% else %}
+
+<h3>{% trans 'label_pdf_photo_title_no_content' %}</h3>
+
+{% endif %}

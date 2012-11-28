@@ -12,12 +12,13 @@ install_requires = [
     'Django == 1.4.1',
     'django-transmeta',
     'django-stdimage',
-    # 'django-social-auth',
     'south',
     'django-nose',
     'django-extensions',
+    'simple_history'
+    # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
-    ],
+    ]
 
 deploy_require = [
     'gunicorn'

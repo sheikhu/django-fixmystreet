@@ -4,7 +4,7 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db import transaction
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, render_to_pdf
 from django.contrib.auth.models import User
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
@@ -125,6 +125,22 @@ def changeContractor(request,report_id):
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
+
+def reportPdf(request, report_id, pro_version):
+    '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
+    report = get_object_or_404(Report, id=report_id)
+    
+    #Verify if the connected user is well pro ! (Server side protection)
+    if request.user.fmsuser.is_citizen():
+       pro_Version = 0
+    
+    if request.GET.get('output', False):
+        return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments(), 'pro_version': pro_version},
+                context_instance=RequestContext(request))
+    else:
+        return render_to_pdf("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments(), 'pro_version' : pro_version},
+                context_instance=RequestContext(request))
+
 def acceptAndValidate(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.MANAGER_ASSIGNED

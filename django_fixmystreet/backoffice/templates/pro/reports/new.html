@@ -1,12 +1,9 @@
-{% extends "pro/base.html" %}
+{% extends "reports/new.html" %}
 {% load i18n %}
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
-{% block script %}
+{# block script %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script>
-
-{% map_scripts %}
 <script>
 
 $(document).ready(function() {
@@ -252,7 +249,7 @@ function toggleFileForm() {
         $('#addFileDiv').toggle();
     }
 </script>
-{% endblock %}
+{% endblock #}
 
 {% block content %}
 <div id="page_content_container">
@@ -265,7 +262,7 @@ function toggleFileForm() {
             {% if reports %}
                 <div id='search_results'>
                 {% for report in reports %}
-                {% include "reports/_navigation_pro.html" %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                 {% endfor %}
                 </div>
             {% else %}

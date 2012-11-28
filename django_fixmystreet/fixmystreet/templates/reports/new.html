@@ -40,13 +40,15 @@ $(document).ready(function() {
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 
-	/*Remove non-public categories*/
+    {% if not BACKOFFICE %}
+        /*Remove non-public categories*/
         $("#id_secondary_category").find("option[public='False']").hide();
+    {% endif %}
 
 	$map.fmsMap({
-		apiLang:'{{ LANGUAGE_CODE }}',
-        localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl: 'http://{{ GEOSERVER }}/geoserver/wms',
+		apiLang:     LANGUAGE_CODE,
+        localizeUrl: SERVICE_GIS_URL + '/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
         origin:{
 			x:{{ pnt.x }},
 			y:{{ pnt.y }} 
@@ -61,6 +63,7 @@ $(document).ready(function() {
 	$(window).hashchange(function(){
 		if(window.location.hash == '#form')
 		{
+            $('#page_content_container').removeClass('form-hide').addClass('form-show');
 			$form.show();
 			$('#nearby-reports,#instructable').hide();
 			$('#back').css({visibility: 'visible'});
@@ -68,6 +71,7 @@ $(document).ready(function() {
 		}
 		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports')
 		{
+            $('#page_content_container').removeClass('form-show').addClass('form-hide');
 			$form.hide();
 			$('#nearby-reports').show();
 			$('#back').css({visibility: 'hidden'});
@@ -369,7 +373,7 @@ function fileSelected() {
             {% if reports %}
                 <div id='search_results'>
                 {% for report in reports %}
-                {% include "reports/_navigation.html" %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
                 {% endfor %}
                 </div>
             {% else %}
