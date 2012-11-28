@@ -29,6 +29,8 @@ def new(request):
                 else:
                 	return HttpResponseRedirect(report.get_absolute_url())
     else:
+        session_manager = SessionManager()
+        session_manager.clearSession(request.session.session_key)
         report_form = ReportForm(initial={
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')

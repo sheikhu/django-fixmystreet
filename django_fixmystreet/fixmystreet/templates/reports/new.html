@@ -332,6 +332,7 @@ function fileSelected() {
             $("#addCommmentDiv").hide();
         }
     });
+$(document).ready(function() {
 	$("#addFileDiv").hide();
     $("#addCommmentDiv").hide();
     $('#id_category').change(function(evt) {
@@ -369,6 +370,7 @@ function fileSelected() {
 		$('#id_secondary_category_copy').val(el_id_copy);
 	});
 	$('#id_secondary_category').change();// initialize notes
+});
 </script>
 {% endblock %}
 {% endblock %}
