@@ -20,9 +20,27 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 
 from transmeta import TransMeta
-# from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
+from simple_history.models import HistoricalRecords
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, get_current_user
+from django_extensions.db.models import TimeStampedModel
 
+
+
+class UserTrackedModel(TimeStampedModel):
+    created_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_created')
+    modified_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_modified')
+
+    def save(self, *args, **kwargs):
+        user = get_current_user()
+        if user.is_authenticated():
+            if self.id:
+                self.modified_by = user
+            else:
+                self.created_by = user
+            self._history_user = user # used by simple_history
+        super(UserTrackedModel, self).save(*args, **kwargs)
+    class Meta:
+        abstract = True
 
 class FMSUser(User):
     telephone = models.CharField(max_length=20,null=True)
@@ -94,7 +112,7 @@ class FMSUser(User):
         d['organisation'] = getattr(self.get_organisation(), 'id')
         return simplejson.dumps(d)
 
-class OrganisationEntity(models.Model):
+class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
 
@@ -102,10 +120,10 @@ class OrganisationEntity(models.Model):
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
-    dependency = models.ForeignKey('OrganisationEntity',related_name='parent', null=True)
-    feature_id = models.CharField(max_length=25)
+    dependency = models.ForeignKey('OrganisationEntity', related_name='parent', null=True, blank=True)
+    feature_id = models.CharField(max_length=25, null=True, blank=True)
 
-    # history = HistoricalRecords()
+    history = HistoricalRecords()
 
     def is_commune(self):
         return self.commune == True 
@@ -117,12 +135,12 @@ class OrganisationEntity(models.Model):
         return self.applicant == True 
     def get_organisation_having_a_manager(self):
         return OrganisationEntity.objects.filter()
-    
+
     class Meta:
         translate = ('name', )
 
 
-class Report(models.Model):
+class Report(UserTrackedModel):
 
     #List of qualities
     RESIDENT = 0
@@ -184,11 +202,6 @@ class Report(models.Model):
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
 
-    creator = models.ForeignKey(User,null=True, related_name='repors_created')
-    created_at = models.DateTimeField(auto_now_add=True)
-    # last time report was updated
-    updated_at = models.DateTimeField(null=True)
-    # time report was marked as 'fixed'
     fixed_at = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
@@ -208,7 +221,7 @@ class Report(models.Model):
 
     objects = models.GeoManager()
 
-    # history = HistoricalRecords()
+    history = HistoricalRecords()
 
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned

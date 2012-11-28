@@ -3,6 +3,7 @@ import tempfile
 import datetime
 import os
 import logging
+from threading import local
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
@@ -157,3 +158,18 @@ def render_to_pdf(request, *args, **kwargs):
     pdf_tmp_file.close()
     return response
 
+
+
+
+_thread_locals = local()
+
+def set_current_user(user):
+    _thread_locals.user=user
+
+def get_current_user():
+    return getattr(_thread_locals, 'user', None)
+    
+
+class CurrentUserMiddleware:
+    def process_request(self, request):
+        set_current_user(getattr(request, 'user', None))
