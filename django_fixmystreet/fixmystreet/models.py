@@ -19,6 +19,7 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 
 from transmeta import TransMeta
+# from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail
 
 
@@ -39,6 +40,8 @@ class FMSUser(User):
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
 
     objects = UserManager()
+
+    # history = HistoricalRecords()
     
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
@@ -87,6 +90,8 @@ class OrganisationEntity(models.Model):
     applicant = models.BooleanField(default=False)
     dependency = models.ForeignKey('OrganisationEntity',related_name='parent', null=True)
     feature_id = models.CharField(max_length=25)
+
+    # history = HistoricalRecords()
 
     def is_commune(self):
         return self.commune == True 
@@ -188,6 +193,9 @@ class Report(models.Model):
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
+
+    # history = HistoricalRecords()
+
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show", args=[self.id])

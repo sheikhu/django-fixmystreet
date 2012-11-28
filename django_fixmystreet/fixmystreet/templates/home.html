@@ -2,7 +2,12 @@
 {% load i18n %}
 {% block script %}
     {{ block.super }}
-	{% include "_search.js" %}
+    {% block script-search %}
+    <script type="text/javascript">
+    var NEXT_PAGE_URL = '{% url report_new %}';
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+    {% endblock %}
 {% endblock %}
 
 {% block content %}

@@ -6,17 +6,24 @@
 	
 		<title>{% trans "Fix My Street Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
         {% block script %}
+        <script type="text/javascript">
+            var SERVICE_GIS_URL = 'http://{{ SERVICE_GIS }}';
+            var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
+            var GEOSERVER_URL = 'http://{{ GEOSERVER }}';
+        </script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL}}js/common.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL}}js/jquery/iphone-style-checkboxes.js"></script>
 		{% endblock %}
 		{% block css %}
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/global.css" />
 		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
         <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
 		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}js/style.css"/>
         {% endblock %}
 		<script>
 
@@ -90,7 +97,7 @@
 
 		<div id="main_container">
 			<div id='body_content'>
-                {% block main_menu %}
+                {% if not BACKOFFICE %}
                 <div id="menu">
                     {% get_active_menu %}
                     <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home %}">{%         trans "Submit a Report" %}</a>
@@ -98,8 +105,41 @@
                     <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">{%        trans "About" %}</a>
                     <a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">{%      trans "Contact Us" %}</a>
                 </div>
-                {% endblock %}
-                
+                {% else %}
+                <ul class='leftPane' id="leftMenuPanePro">
+                    <li> <a id="allMenuItem" class='category positionable' href="{% url report_list_pro 'all' %}"> Reports <p class="category_number">{{request.user|numberOfReports}}</p></a></a> </li>
+                    {% if not request.fmsuser.contractor %}
+                    <li><a id='createdMenuItem' class='subcategory positionable' href="{% url report_list_pro 'created' %}"> Created <p class="category_number">{{request.user|numberOfCreatedReports}}</p></a> </li>
+                    {% endif %}
+                    <li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_list_pro 'in_progress' %}"> Progress <p class="category_number">{{request.user|numberOfInProgressReports}}</p></a></li>
+                    <li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro 'closed' %}"> Closed <p class="category_number">{{request.user|numberOfClosedReports}} </p></a> </li>
+                    <li><a id="subscriptionMenuItem" class='subcategory' href="{% url report_subscription_pro %}?subscription=1"> My subscriptions <p class="category_number">{{request.user|numberOfSubscriptions}}</p> </a> <p class="category_number"></p></li>
+                    {% if not request.fmsuser.contractor %}
+                    <li> <a class='category' href="{% url usersOverview %}?userType=users"> Collaborators <p class="category_number">{{request.user|numberOfUsers}}</p></a></a></li>
+                    
+                    <li><a class='subcategory' href="{% url usersOverview %}?userType=agent">Agents <p class="category_number">{{request.user|numberOfAgents}}</p></a> </a> </li>
+                    <li><a class='subcategory' href="{% url usersOverview %}?userType=contractor">Exec de travaux <p class="category_number">{{request.user|numberOfContractors}}</p></a></a> </li>
+                    <li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants <p class="category_number">{{request.user|numberOfImpetrants}}</p></a></a></li>
+
+                    <li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires <p class="category_number">{{request.user|numberOfManagers}}</p></a></a></li>
+                    
+                    {% if request.fmsuser.leader %}
+                        {% if request.user.id|hasAtLeastAManager %}
+                        <li> <a class='category'> Configuration </a></li>
+                        <li><a class='subcategory' href="{% url category_gestionnaire_configuration %}"> Gestionnaires </a></li>
+                        {% endif %}
+                    {% endif %}
+                    {% endif %}
+                    <li><a id='createMenu' class='category' href=""> Create </a></li> 
+                    {% if request.user.id|hasAtLeastAManager %}
+                        <li><a id='createReportMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Report </a></li> 
+                    {% endif %}
+                    {% if request.fmsuser.leader or request.fmsuser.manager %}
+                        <li><a id='createUserMenuItem' class='subcategory' href="{% url create_user_pro %}"> Create users </a></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+
                 {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
