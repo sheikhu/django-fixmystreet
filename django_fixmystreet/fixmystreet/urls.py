@@ -49,6 +49,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
 
 urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.updates',
     url(r'^report/(\d+)/update/', 'new', name='report_update'),
+    url(r'^report/(\d+)-(\d+)/pdf/', 'reportPdf', name='report_pdf'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.subscribers',

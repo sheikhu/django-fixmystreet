@@ -75,7 +75,21 @@ function subscribe() {
 	<!-- AddThis Button END -->
     {% endif %}
 
-    <h1>{{report.title}}</h1>
+	<br/>	
+ 	<div style="float:right;margin-top:-23px">
+        	<table class="reportActionButtons">
+			<tr>
+				<td>
+					<button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<!-- ################ -->
+	<!-- # REPORT TITLE # -->
+	<!-- ################ -->
+    	<h1>{{report.title}}</h1>
+
 	<div id="leftcol">    
 		<!-- ###################### -->
 		<!-- IS FIXED (DEPRECATED?) -->

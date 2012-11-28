@@ -296,10 +296,10 @@ $(function(){
         	                </td>
     			{% endif %}
 		        <td>
-                            <button onclick="window.location = '{% url report_pdf report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
+                            <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
 			</td>	
 		        <td>
-                            <button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
+                            <button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
 			</td>	
                	{% endif %}
                 </tr>
