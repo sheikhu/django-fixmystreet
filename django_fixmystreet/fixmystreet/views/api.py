@@ -2,14 +2,43 @@ import httplib
 from urllib2 import HTTPError
 
 from django.contrib.gis.measure import D
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.utils import simplejson
 from django.db.models import Q
 from datetime import datetime, timedelta
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, dictToPoint
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, dictToPoint, FMSUser
 from django_fixmystreet.fixmystreet.utils import ssl_required, JsonHttpResponse
 
+from django.core.exceptions import ObjectDoesNotExist
+
+def login_user(request):
+        '''login_user is a method used by the mobiles to connect a user to the application'''
+        try:
+            postedData = simplejson.loads(request.POST.items()[0][0])
+        except ValueError:
+            #Catching malformed input request data
+            return HttpResponseBadRequest(simplejson.dumps({"request":request.POST.items()[0][0]}),mimetype='application/json')
+        
+        user_email    = postedData.get('email')
+        user_password = postedData.get('password')
+        
+        #Invalid request. Expected values are not present
+        if (user_email == None or user_password == None):
+            return HttpResponseBadRequest(simplejson.dumps({"email":user_email}),mimetype='application/json')
+        
+        try:
+            #Search user
+            user_object   = FMSUser.objects.get(email=user_email)
+            if user_object.check_password(user_password) == False:
+                #Bad Password
+                return HttpResponseForbidden(simplejson.dumps({"email": user_email}),mimetype='application/json')
+        except ObjectDoesNotExist:
+            #The user has not the right to access the login section (Based user/pass combination
+            return HttpResponseForbidden(simplejson.dumps({"email": user_email}),mimetype='application/json')
+        
+        #Right ! Logged in :-)
+        return HttpResponse(user_object.toJSON(),mimetype='application/json')
 
 
 # deprecated ! service.gis.irisnet.be support jsonp

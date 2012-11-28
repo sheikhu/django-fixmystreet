@@ -1,3 +1,4 @@
+from django.utils import simplejson
 from datetime import datetime as dt
 
 from django.shortcuts import get_object_or_404
@@ -70,9 +71,9 @@ class FMSUser(User):
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
-             return organisation.dependency
+             return self.organisation.dependency
         else:
-             return organisation
+             return self.organisation
     def is_pro(self):
         return self.agent == True or self.manager == True or self.leader == True or self.impetrant == True or self.contractor == True
     def is_citizen(self):
@@ -101,8 +102,15 @@ class FMSUser(User):
             return "impetrant"
         if self.contractor:
             return "contractor"
-
-
+    def toJSON(self):
+        d = {}
+        d['id'] = getattr(self, 'id')
+        d['first_name'] = getattr(self, 'first_name')
+        d['last_name'] = getattr(self, 'last_name')
+        d['email'] = getattr(self, 'email')
+        d['last_used_language'] = getattr(self, 'last_used_language')
+        d['organisation'] = getattr(self.get_organisation(), 'id')
+        return simplejson.dumps(d)
 
 class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
@@ -275,11 +283,10 @@ class Exportable(models.Model):
         abstract = True
 
 
-class ReportAttachment(models.Model):
+class ReportAttachment(UserTrackedModel):
     validated = models.BooleanField(default=False)
     isVisible = models.BooleanField(default=False)
     title = models.CharField(max_length=250)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract=True
@@ -294,7 +301,6 @@ class ReportAttachment(models.Model):
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
-    creator = models.ForeignKey(User,null=True, related_name='comments_created')
     
 class ReportFile(ReportAttachment):
     PDF   = 1
@@ -310,7 +316,6 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
-    creator = models.ForeignKey(User,null=True, related_name='files_created')
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
@@ -367,8 +372,8 @@ def report_subscribe_author(sender, instance, **kwargs):
     signal on a report to register author as subscriber to his own report
     """
     if kwargs['created']:
-        if instance.creator:
-            ReportSubscription(report=instance, subscriber=instance.creator).save()
+        if instance.created_by:
+            ReportSubscription(report=instance, subscriber=instance.created_by).save()
         if instance.citizen:
             ReportSubscription(report=instance, subscriber=instance.citizen).save()
 

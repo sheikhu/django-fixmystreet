@@ -126,16 +126,16 @@
 			{{report.created_at}}
 		</td>	
 		<td>
-			{{report.creator.fmsuser.get_display_name}}
+			{{report.created_by.fmsuser.get_display_name}}
 		</td>	
 		<td>
 			&nbsp;
 		</td>
 		<td>
-			{{report.creator.fmsuser.get_display_name}}
+			{{report.created_by.fmsuser.get_display_name}}
 		</td>	
 		<td>
-			{{report.creator.fmsuser.telephone}}
+			{{report.created_by.fmsuser.telephone}}
 		</td>	
 	</tr>
 	<tr>
@@ -202,8 +202,8 @@
 		<!-- SKIP ROW if the current comment annex is confidential -->
 	{% else %}
 	<tr>
-		<td>{{comment.created_at}}</td>
-		<td>{{comment.creator.fmsuser.get_display_name}}</td>
+		<td>{{comment.created}}</td>
+		<td>{{comment.created_by.fmsuser.get_display_name}}</td>
 		<td>{{comment.title}}</td>
 		<td>{{comment.text}}</td>
 	</tr>

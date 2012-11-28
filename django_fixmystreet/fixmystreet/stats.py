@@ -8,9 +8,9 @@ class ReportCount(object):
         self.interval = interval
     
     def dict(self):
-        return({ "recent_new": "count( case when age(clock_timestamp(), reports.created_at) < interval '%s' THEN 1 ELSE null end )" % self.interval,
+        return({ "recent_new": "count( case when age(clock_timestamp(), reports.created) < interval '%s' THEN 1 ELSE null end )" % self.interval,
           "recent_fixed": "count( case when age(clock_timestamp(), reports.fixed_at) < interval '%s' AND reports.is_fixed = True THEN 1 ELSE null end )" % self.interval,
-          "recent_updated": "count( case when age(clock_timestamp(), reports.updated_at) < interval '%s' AND reports.is_fixed = False and reports.updated_at != reports.created_at THEN 1 ELSE null end )" % self.interval,
+          "recent_updated": "count( case when age(clock_timestamp(), reports.modified) < interval '%s' AND reports.is_fixed = False and reports.modified != reports.created THEN 1 ELSE null end )" % self.interval,
           "old_fixed": "count( case when age(clock_timestamp(), reports.fixed_at) > interval '%s' AND reports.is_fixed = True THEN 1 ELSE null end )" % self.interval,
           "old_unfixed": "count( case when age(clock_timestamp(), reports.fixed_at) > interval '%s' AND reports.is_fixed = False THEN 1 ELSE null end )" % self.interval } )  
 
@@ -105,11 +105,11 @@ class ReportCountQuery(SqlQuery):
         #
         #interval = '1 day'
 
-        self.sql = """select count( case when age(clock_timestamp(), reports.created_at) < interval '{interval}' THEN 1 ELSE null end ) as recent_new,
+        self.sql = """select count( case when age(clock_timestamp(), reports.created) < interval '{interval}' THEN 1 ELSE null end ) as recent_new,
 count( case when age(clock_timestamp(), reports.fixed_at) < interval '{interval}' AND reports.status = {closed} THEN 1 ELSE null end ) as recent_fixed,
-count( case when age(clock_timestamp(), reports.updated_at) < interval '{interval}' AND reports.status in ({progress}) and reports.updated_at != reports.created_at THEN 1 ELSE null end ) as recent_updated,
+count( case when age(clock_timestamp(), reports.modified) < interval '{interval}' AND reports.status in ({progress}) and reports.modified != reports.created THEN 1 ELSE null end ) as recent_updated,
 count( case when age(clock_timestamp(), reports.fixed_at) > interval '{interval}' AND reports.status = {closed} THEN 1 ELSE null end ) as old_fixed,
-count( case when age(clock_timestamp(), reports.created_at) > interval '{interval}' AND reports.status in ({progress}) THEN 1 ELSE null end ) as old_unfixed
+count( case when age(clock_timestamp(), reports.created) > interval '{interval}' AND reports.status in ({progress}) THEN 1 ELSE null end ) as old_unfixed
 from fixmystreet_report as reports;
 """.format(interval=interval, progress=','.join([str(s) for s in Report.REPORT_STATUS_IN_PROGRESS]), closed=Report.PROCESSED)
 

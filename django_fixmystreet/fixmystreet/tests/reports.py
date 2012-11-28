@@ -25,9 +25,9 @@ class NotificationTest(TestCase):
         self.commune = OrganisationEntity(name='test ward')
     
     def testReportFileType(self):
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000, responsible_manager=self.fmsuser)
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
         
-        reportFile = ReportFile(file_type=ReportFile.PDF, report = new_report, creator=self.user)
+        reportFile = ReportFile(file_type=ReportFile.PDF, report = new_report)
         self.assertTrue(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
@@ -35,7 +35,7 @@ class NotificationTest(TestCase):
         self.assertTrue(reportFile.is_a_document())
         self.assertFalse(reportFile.is_an_image())
         
-        reportFile = ReportFile(file_type=ReportFile.WORD, report = new_report, creator=self.user)
+        reportFile = ReportFile(file_type=ReportFile.WORD, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertTrue(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
@@ -43,7 +43,7 @@ class NotificationTest(TestCase):
         self.assertTrue(reportFile.is_a_document())
         self.assertFalse(reportFile.is_an_image())
         
-        reportFile = ReportFile(file_type=ReportFile.EXCEL, report = new_report, creator=self.user)
+        reportFile = ReportFile(file_type=ReportFile.EXCEL, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertTrue(reportFile.is_excel())
@@ -51,7 +51,7 @@ class NotificationTest(TestCase):
         self.assertTrue(reportFile.is_a_document())
         self.assertFalse(reportFile.is_an_image())
         
-        reportFile = ReportFile(file_type=ReportFile.IMAGE, report = new_report, creator=self.user)
+        reportFile = ReportFile(file_type=ReportFile.IMAGE, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
@@ -62,11 +62,11 @@ class NotificationTest(TestCase):
     def testReportResponsibleAssignment(self):
         '''Test the assignment of a responsible when creating a report'''
         #When a responsible_manager is defined responsible_entity is not recomputed      
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000, responsible_manager=self.fmsuser)
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
         new_report.save()
         self.assertTrue(new_report.responsible_entity==None) 
         #When no responsible_manager is defined then the commune must be assigned and the responsible_entity        
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000)
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000)
         new_report.save()
         self.assertTrue(new_report.responsible_entity!=None) 
  
@@ -183,7 +183,7 @@ class PhotosTest(TestCase):
             shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
             
             #report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-            report = Report(status=Report.CREATED, category=self.category, description='Just a test', creator=self.user, postalcode = 1000, responsible_manager=self.fmsuser)
+            report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
 
             report.photo = 'tmp.jpg'
             report.save()
