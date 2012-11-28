@@ -1,3 +1,4 @@
+from django.utils import simplejson
 from datetime import datetime as dt
 
 from django.shortcuts import get_object_or_404
@@ -52,9 +53,9 @@ class FMSUser(User):
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
-             return organisation.dependency
+             return self.organisation.dependency
         else:
-             return organisation
+             return self.organisation
     def is_pro(self):
         return self.agent == True or self.manager == True or self.leader == True or self.impetrant == True or self.contractor == True
     def is_citizen(self):
@@ -83,8 +84,15 @@ class FMSUser(User):
             return "impetrant"
         if self.contractor:
             return "contractor"
-
-
+    def toJSON(self):
+        d = {}
+        d['id'] = getattr(self, 'id')
+        d['first_name'] = getattr(self, 'first_name')
+        d['last_name'] = getattr(self, 'last_name')
+        d['email'] = getattr(self, 'email')
+        d['last_used_language'] = getattr(self, 'last_used_language')
+        d['organisation'] = getattr(self.get_organisation(), 'id')
+        return simplejson.dumps(d)
 
 class OrganisationEntity(models.Model):
     __metaclass__= TransMeta
