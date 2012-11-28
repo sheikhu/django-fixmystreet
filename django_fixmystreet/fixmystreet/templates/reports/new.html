@@ -4,6 +4,7 @@
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
 {{ block.super }}
+
 <script src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script>
 
 {% map_scripts %}
@@ -11,10 +12,10 @@
 
 $(document).ready(function() {
 	// Redefine the submit function for the add ReportFile form
-	$("form:last").submit(function(){
+	$("#fileForm").submit(function(){
 		//Define a new FormData, in this object the file(s) will be saved
 		var data = new FormData();
-		$.each($("form:last #id_file")[0].files, function(i, file) {
+		$.each($("#fileForm #id_file")[0].files, function(i, file) {
 			//For each file in the file input field append the file to the FormData
     		data.append('file',file);
 		});
@@ -67,6 +68,8 @@ $(document).ready(function() {
 			$form.show();
 			$('#nearby-reports,#instructable').hide();
 			$('#back').css({visibility: 'visible'});
+			$("#addFileDiv").show();
+            $("#addCommmentDiv").show();
 			retrieveAddress();
 		}
 		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports')
@@ -92,43 +95,10 @@ $(document).ready(function() {
 	$(window).hashchange();
 	$("#commentForm").hide();
     $("#fileForm").hide();
-	$('#id_category').change(function(evt) {
-                // updates entry notes
-                var el_id = $('#id_category').val();
-                var refSecondary = $("#id_secondary_category");
-                if(el_id)
-                {
-                        refSecondary.find("option:eq(0)").attr("selected", "selected");
-                        refSecondary.removeAttr("disabled");
-                        $("#secondary_container").load("/ajax/categories/" + el_id);
-                        <!-- FILTER SECOND DROPDOWN -->
-			
-			refSecondary.html('');
-			refSecondary.html($('#id_secondary_category_copy').html());
-			refSecondary.find("option[family!='"+el_id+"']").remove();
-			refSecondary.find("option[public='False']").remove();
-			/*remove empty optgroup*/
-			refSecondary.find("optgroup:not(:has(option))").remove();
-			/*Copy value to hiddendropdown */
-			$('#id_secondary_category').change();// initialize notes
-                }
-                else
-                {
-                        refSecondary.find("option:eq(0)").attr("selected", "selected");
-                        $("#secondary_container").html('');
-                        refSecondary.attr('disabled', 'disabled');
-                }
-        });
-	$('#id_category').change();// initialize notes
-
-	$('#id_secondary_category').change(function(evt) {
-         	//Copy is necessary to avoid django validation problem
-                var el_id_copy = $('#id_secondary_category').val();
-		$('#id_secondary_category_copy').val(el_id_copy);
-	});
-	$('#id_secondary_category').change();// initialize notes
-	$("#addFileDiv").hide();
-    $("#addCommmentDiv").hide();
+    //On page load: The report overview needs to be hidden
+	$('#report_overview_table_div').hide();
+	
+	
 	$map.bind('markermoved',function(evt,point){
 		$('#id_x').val(point.x);
 		$('#id_y').val(point.y);
@@ -180,68 +150,13 @@ $(document).ready(function() {
 	$("#extraCommentsDiv").hide();
 	$("#extraFilesDiv").hide();
 	$("#fileForm #id_file").attr("onchange","fileSelected();");
-	//On page load: The report overview needs to be hidden
-	$('#report_overview_table_div').hide();
-	// On submit: validate if the current commune participates with the FixMyStreet project
-    $(document).delegate("form", "submit", function(evt) {
-    	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
-		//This commune does not participate to fixmystreet until now.
-		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
-		return false;
-		}
-		//When the user presses the submit button for the first time: the overview must be shown.
-		// The following code will popuplate the report_overview_table with the entered values
-        if (!$(':submit').hasClass('confirm')) {
-            evt.preventDefault();
-            $("#locationView").children().remove();
-			$("#category1View").children().remove();
-			$("#category2View").children().remove();
-			$("#descriptionView").children().remove();
-			$("#emailView").children().remove();
-			$("#firstNameView").children().remove();
-			$("#nameView").children().remove();
-			$("#photoView").children().remove();
-            //TODO show overview hide form
-            vals = [];
-            i = 0;
-            $('[type=text]').each(function() {
-  			 vals[i]=this.value;
-  			 i++;
-			});
-			$('select').each(function(){
-				vals[i] = $(this).find("option[value="+this.value+"]").text();
-				i++;
-			});
-			$('textarea').each(function(){
-				vals[i]=this.value;
-				i++;
-			});
-			$('[type=file]').each(function() {
-  			 vals[i]=this.value;
-  			 i++;
-			});
-			$("#locationView").append("<p>"+vals[0]+"</p>");
-			$("#category1View").append("<p>"+vals[7]+"</p>");
-			$("#category2View").append("<p>"+vals[8]+"</p>");
-			$("#descriptionView").append("<p>"+vals[8]+"</p>");
-			$("#emailView").append("<p>"+vals[1]+"</p>");
-			$("#firstNameView").append("<p>"+vals[2]+"</p>");
-			$("#nameView").append("<p>"+vals[3]+"</p>");
-			$("#photoView").append("<p>"+vals[9].split("\\")[2]+"</p>");
-            $('#new_report_citizen_form').hide();
-            $('#report_overview_table_div').show();
-            $(':submit').val('Confirm');
-            $(':submit').addClass('confirm');
-            $(':submit').attr('onclick','submitAnnexes();');
-            $("#addFileDiv").hide();
-            $("#addCommmentDiv").hide();
-        }
-    });
+	
+	
 });
 //Add the submitted file to the view and save it in the session and on the server.
 function AddFileToView(){
 	//Submit the last form to save the file to the server
-	$("form:last").submit();
+	$("#fileForm").submit();
 	// If no files are yet added: show the div containing the added files table list
 	if(!$("#extraFilesDiv").is(":visible")){
 		$("#extraFilesDiv").show();
@@ -249,7 +164,7 @@ function AddFileToView(){
 	//Get the file from the file input component
 	var file = document.getElementById('id_file').files[0];
 	//Determine the type of the submited file
-	var type = $("form:last #id_file")[0].files[0].type.split("/")[1];
+	var type = $("#fileForm #id_file")[0].files[0].type.split("/")[1];
 	//Structured Data of the file to add
 	var title = $("#fileForm #id_title").val();
 	if (title == ""){
@@ -358,6 +273,104 @@ function fileSelected() {
 }
 
 </script>
+
+
+{% block specific_scripts %}
+<script>
+// On submit: validate if the current commune participates with the FixMyStreet project
+    $(document).delegate("form", "submit", function(evt) {
+    	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
+		//This commune does not participate to fixmystreet until now.
+		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
+		return false;
+		}
+		//When the user presses the submit button for the first time: the overview must be shown.
+		// The following code will popuplate the report_overview_table with the entered values
+        if (!$(':submit').hasClass('confirm')) {
+            evt.preventDefault();
+            $("#locationView").children().remove();
+			$("#category1View").children().remove();
+			$("#category2View").children().remove();
+			$("#descriptionView").children().remove();
+			$("#emailView").children().remove();
+			$("#firstNameView").children().remove();
+			$("#nameView").children().remove();
+			$("#photoView").children().remove();
+            //TODO show overview hide form
+            vals = [];
+            i = 0;
+            $('[type=text]').each(function() {
+  			 vals[i]=this.value;
+  			 i++;
+			});
+			$('select').each(function(){
+				vals[i] = $(this).find("option[value="+this.value+"]").text();
+				i++;
+			});
+			$('textarea').each(function(){
+				vals[i]=this.value;
+				i++;
+			});
+			$('[type=file]').each(function() {
+  			 vals[i]=this.value;
+  			 i++;
+			});
+			$("#locationView").append("<p>"+vals[0]+"</p>");
+			$("#category1View").append("<p>"+vals[7]+"</p>");
+			$("#category2View").append("<p>"+vals[8]+"</p>");
+			$("#descriptionView").append("<p>"+vals[8]+"</p>");
+			$("#emailView").append("<p>"+vals[1]+"</p>");
+			$("#firstNameView").append("<p>"+vals[2]+"</p>");
+			$("#nameView").append("<p>"+vals[3]+"</p>");
+			$("#photoView").append("<p>"+vals[9].split("\\")[2]+"</p>");
+            $('#new_report_citizen_form').hide();
+            $('#report_overview_table_div').show();
+            $(':submit').val('Confirm');
+            $(':submit').addClass('confirm');
+            $(':submit').attr('onclick','submitAnnexes();');
+            $("#addFileDiv").hide();
+            $("#addCommmentDiv").hide();
+        }
+    });
+	$("#addFileDiv").hide();
+    $("#addCommmentDiv").hide();
+    $('#id_category').change(function(evt) {
+                // updates entry notes
+                var el_id = $('#id_category').val();
+                var refSecondary = $("#id_secondary_category");
+                if(el_id)
+                {
+                        refSecondary.find("option:eq(0)").attr("selected", "selected");
+                        refSecondary.removeAttr("disabled");
+                        $("#secondary_container").load("/ajax/categories/" + el_id);
+                        <!-- FILTER SECOND DROPDOWN -->
+			
+			refSecondary.html('');
+			refSecondary.html($('#id_secondary_category_copy').html());
+			refSecondary.find("option[family!='"+el_id+"']").remove();
+			refSecondary.find("option[public='False']").remove();
+			/*remove empty optgroup*/
+			refSecondary.find("optgroup:not(:has(option))").remove();
+			/*Copy value to hiddendropdown */
+			$('#id_secondary_category').change();// initialize notes
+                }
+                else
+                {
+                        refSecondary.find("option:eq(0)").attr("selected", "selected");
+                        $("#secondary_container").html('');
+                        refSecondary.attr('disabled', 'disabled');
+                }
+        });
+	$('#id_category').change();// initialize notes
+
+	$('#id_secondary_category').change(function(evt) {
+         	//Copy is necessary to avoid django validation problem
+                var el_id_copy = $('#id_secondary_category').val();
+		$('#id_secondary_category_copy').val(el_id_copy);
+	});
+	$('#id_secondary_category').change();// initialize notes
+</script>
+{% endblock %}
 {% endblock %}
 
 {% block content %}
@@ -380,7 +393,7 @@ function fileSelected() {
                 <p>{% trans "No problems have been reported in this area." %}</p>
             {% endif %}
 		</div>
-	
+		{% block report_form %}
 		<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
             <h2>
                 {% trans "Fill the report" %} 
@@ -471,7 +484,7 @@ function fileSelected() {
                 <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
             </p>
 		</form>
-
+		{% endblock %}
 		<div id="addAnnexes">
 		<div style="padding-top:30px">
         	<div id="extraFilesDiv">
