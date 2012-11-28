@@ -31,11 +31,12 @@ class UserTrackedModel(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         user = get_current_user()
-        if self.id:
-            self.modified_by = user
-        else:
-            self.created_by = user
-        self._history_user = user # used by simple_history
+        if user.is_authenticated():
+            if self.id:
+                self.modified_by = user
+            else:
+                self.created_by = user
+            self._history_user = user # used by simple_history
         super(UserTrackedModel, self).save(*args, **kwargs)
     class Meta:
         abstract = True
@@ -193,11 +194,6 @@ class Report(UserTrackedModel):
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
 
-    creator = models.ForeignKey(User,null=True, related_name='repors_created')
-    created_at = models.DateTimeField(auto_now_add=True)
-    # last time report was updated
-    updated_at = models.DateTimeField(null=True)
-    # time report was marked as 'fixed'
     fixed_at = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
