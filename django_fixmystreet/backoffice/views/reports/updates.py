@@ -25,8 +25,8 @@ def refuse( request, report_id ):
     report.status = Report.REFUSED
     report.save()
     creator = None
-    if report.creator:
-        creator = report.creator
+    if report.created_by:
+        creator = report.created_by
     else:
         creator = report.citizen
     mail = HtmlTemplateMail(template_dir='send_report_refused_to_creator', data={'report': report, "more_info_text":request.REQUEST.get('more_info_text')}, recipients=(creator.email,))

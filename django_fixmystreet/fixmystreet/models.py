@@ -283,11 +283,10 @@ class Exportable(models.Model):
         abstract = True
 
 
-class ReportAttachment(models.Model):
+class ReportAttachment(UserTrackedModel):
     validated = models.BooleanField(default=False)
     isVisible = models.BooleanField(default=False)
     title = models.CharField(max_length=250)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract=True
@@ -302,7 +301,6 @@ class ReportAttachment(models.Model):
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
-    creator = models.ForeignKey(User,null=True, related_name='comments_created')
     
 class ReportFile(ReportAttachment):
     PDF   = 1
@@ -318,7 +316,6 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
-    creator = models.ForeignKey(User,null=True, related_name='files_created')
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
@@ -375,8 +372,8 @@ def report_subscribe_author(sender, instance, **kwargs):
     signal on a report to register author as subscriber to his own report
     """
     if kwargs['created']:
-        if instance.creator:
-            ReportSubscription(report=instance, subscriber=instance.creator).save()
+        if instance.created_by:
+            ReportSubscription(report=instance, subscriber=instance.created_by).save()
         if instance.citizen:
             ReportSubscription(report=instance, subscriber=instance.citizen).save()
 

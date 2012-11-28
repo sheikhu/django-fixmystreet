@@ -334,12 +334,12 @@ $(function(){
 				<center><img style="max-width:390px;max-heigth:390px" src='{{ report.photo.url }}'/></center>
 			{% endif %}
 			<p class="author-sign">
-                	{% if report.creator %}
-                		{% blocktrans with by=report.creator.username on=report.created_at|date %}
+                	{% if report.created_by %}
+                		{% blocktrans with by=report.created_by.username on=report.created|date %}
 		                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 		{% endblocktrans %}
 	                {% else %}
-        		        {% blocktrans with by=report.citizen.first_name on=report.created_at|date %}
+        		        {% blocktrans with by=report.citizen.first_name on=report.created|date %}
 		                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 		{% endblocktrans %}
 	                {% endif %}
@@ -503,7 +503,7 @@ $(function(){
                     <th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
-                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                     <th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
@@ -545,7 +545,7 @@ $(function(){
                 	</td>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
-                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 	<td class="annexesChoiceBoxTD">
                             {%if file.isVisible%}
                     		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
@@ -576,7 +576,7 @@ $(function(){
                     	<th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
-                    {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                     	<th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
@@ -601,7 +601,7 @@ $(function(){
                 			</td>
             			{% endif %}
             			<!--If the current user is the responsible manager or the creator of the report-->
-            			{% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+            			{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 			<td class="annexesChoiceBoxTD">
                     				{% if comment.isVisible %}
                     					<input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
