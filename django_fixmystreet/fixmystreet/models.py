@@ -43,6 +43,12 @@ class FMSUser(User):
 
     # history = HistoricalRecords()
     
+    def get_display_name(self):
+        if (self.first_name == None and self.last_name == None):
+             return 'ANONYMOUS'
+        else:
+             return self.first_name+' '+self.last_name 
+
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
@@ -204,6 +210,12 @@ class Report(models.Model):
         #TODO determine when pro and no-pro url must be returned
         return reverse("report_show_pro", args=[self.id])
 
+    def has_at_least_one_non_confidential_comment(self):
+        return ReportComment.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    
+    
+    def has_at_least_one_non_confidential_file(self):
+        return ReportFile.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    
+
     def get_comments(self):  	
         return ReportComment.objects.filter(report__id=self.id)
     
@@ -258,14 +270,19 @@ class ReportAttachment(models.Model):
 
     class Meta:
         abstract=True
+    
+    def get_display_name(self):
+        if (self.creator.first_name == None and self.creator.last_name == None):
+             return 'ANONYMOUS'
+        else:
+             return self.creator.first_name+' '+self.creator.last_name 
 
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
     creator = models.ForeignKey(User,null=True, related_name='comments_created')
-
-
+    
 class ReportFile(ReportAttachment):
     PDF   = 1
     WORD  = 2

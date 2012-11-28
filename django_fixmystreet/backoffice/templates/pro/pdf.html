@@ -126,16 +126,16 @@
 			{{report.created_at}}
 		</td>	
 		<td>
-			{{report.creator.first_name}} {{report.creator.last_name}}
+			{{report.creator.fmsuser.get_display_name}}
 		</td>	
 		<td>
 			&nbsp;
 		</td>
 		<td>
-			{{report.creator.first_name}} {{report.creator.last_name}}
+			{{report.creator.fmsuser.get_display_name}}
 		</td>	
 		<td>
-			{{report.creator.telephone}}TODO
+			{{report.creator.fmsuser.telephone}}
 		</td>	
 	</tr>
 	<tr>
@@ -189,19 +189,33 @@
 <hr/>
 <h1>{% trans 'label_pdf_historique_title_main' %}</h1>
 
+{% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
+
 <table>
 	<th><strong>{% trans 'label_pdf_historique_title_date' %}</strong></th>
 	<th><strong>{% trans 'label_pdf_historique_title_from' %}</strong></th>
-	<th><strong>{% trans 'label_pdf_historique_title_to' %}</strong></th>
-	<th><strong>{% trans 'label_pdf_historique_title_communication' %}</strong></th>
+	<th><strong>{% trans 'label_pdf_historique_title_title' %}</strong></th>
+	<th><strong>{% trans 'label_pdf_historique_title_text' %}</strong></th>
 
+	{% for comment in comment_list %}
+	{% if not comment.isVisible and pro_version == "0" %}
+		<!-- SKIP ROW if the current comment annex is confidential -->
+	{% else %}
 	<tr>
-		<td>2012-12-12</td>
-		<td>MD</td>
-		<td>AE</td>
-		<td>Ma communication</td>
+		<td>{{comment.created_at}}</td>
+		<td>{{comment.creator.fmsuser.get_display_name}}</td>
+		<td>{{comment.title}}</td>
+		<td>{{comment.text}}</td>
 	</tr>
+	{% endif %}
+	{% endfor %}
 </table>
+
+{% else %}
+
+<h3>{% trans 'label_pdf_historique_title_no_content' %}</h3>
+
+{% endif %}
 
 <hr/>
 
@@ -211,8 +225,14 @@
 <hr/>
 <h1>{% trans 'label_pdf_photo_title_main' %}</h1>
 
+{% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
+
 <table>
 	{% for file in file_list %}
+	<!-- If we asked for a public version -->
+	{% if not file.isVisible and pro_version == "0" %}
+		<!-- SKIP ROW if the current file annex is confidential -->
+	{% else %}
 	<tr>
 		<td rowspan="11">
 			<img width="256px" height="256px" src="http://www.fgtb.be/image/image_gallery?uuid=19b59168-7103-48c3-b05a-1b8e448d6f23&groupId=10134&t=1353400703444"/>
@@ -231,7 +251,7 @@
 		<td><strong>{% trans 'label_pdf_file_title_source' %}</strong></td>
 	</tr>
 	<tr>
-		<td>TODO</td>
+		<td>{{file.get_display_name}}</td>
 	</tr>
 	<tr>
 		<td><strong>{% trans 'label_pdf_file_title_instruction' %}</strong></td>
@@ -251,5 +271,12 @@
 	<tr>
 		<td>TODO</td>
 	</tr>
+	{% endif %}
 	{% endfor %}
 </table>
+
+{% else %}
+
+<h3>{% trans 'label_pdf_photo_title_no_content' %}</h3>
+
+{% endif %}

@@ -126,14 +126,19 @@ def changeContractor(request,report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-def reportPdf(request, report_id):
-    '''reportPdf is called from report details page to generate the pdf with report story'''
+def reportPdf(request, report_id, pro_version):
+    '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
     report = get_object_or_404(Report, id=report_id)
+    
+    #Verify if the connected user is well pro ! (Server side protection)
+    if request.user.fmsuser.is_citizen():
+       pro_Version = 0
+    
     if request.GET.get('output', False):
-        return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments()},
+        return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments(), 'pro_version': pro_version},
                 context_instance=RequestContext(request))
     else:
-        return render_to_pdf("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments()},
+        return render_to_pdf("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments(), 'pro_version' : pro_version},
                 context_instance=RequestContext(request))
 
 def acceptAndValidate(request, report_id):
