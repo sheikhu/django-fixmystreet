@@ -10,146 +10,200 @@
 <meta property="og:image" content="{{ MEDIA_URL }}{{ report.photo }}" />
 {% addthis_scripts %}
 {% map_scripts %}
+
 <script>
+/******************************/
+/* QUERY READY INITIALIZATION */
+/******************************/
 $(function(){
-    var connected = true;
+    	var connected = true;
 
-    $("#dialog").dialog({
-        modal: true,
-        autoOpen:false,
-        width:'auto',
-        resizable: false
-    });
+    	$("#dialog").dialog({
+        	modal: true,
+        	autoOpen:false,
+        	width:'auto',
+        	resizable: false
+    	});
 
+	/***********************/
+	/* Call FMS MAP WIDGET */
+	/***********************/
 	$('#map-bxl').fmsMap({ 
 		origin:{
 			x:{{ report.point.x }},
 			y:{{ report.point.y }} 
 		}
 	});
+	/*****************************************/
+	/* Call FMS MAP WIDGET ADD REPORT METHOD */
+	/*****************************************/
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 
-
-
-    $('form').submit(function(){
-        if(!connected){
-            evt.preventDefault();
-        }
-    });
-    $(document).bind('connected',function(){
-        connected = true;
-        $('.login-bar').hide();
-        $('form :submit').prop('disabled',false);
-    });
-    $(document).bind('disconnected',function(){
-        connected = false;
-        $('.login-bar').show();
-        $('form :submit').prop('disabled',false);
-    });
+    	/*******************************/
+    	/* When clicking any page form */
+    	/*******************************/
+    	$('form').submit(function(){
+        	if(!connected){
+            		evt.preventDefault();
+        	}
+    	});
+    
+    	/******************************/
+    	/* When the user is connected */
+    	/******************************/
+    	$(document).bind('connected',function(){
+        	connected = true;
+        	$('.login-bar').hide();
+        	$('form :submit').prop('disabled',false);
+    	});
+    
+    	/*********************************/
+    	/* When the user is ideconnected */
+    	/*********************************/
+    	$(document).bind('disconnected',function(){
+        	connected = false;
+        	$('.login-bar').show();
+       	 	$('form :submit').prop('disabled',false);
+	});
+	
 	$('#map-bxl').hide();
-    $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8",onChange:function(value){
-        console.log($(value).attr("id"));
-        var vals = $(value).attr("id").split("_");
-        if(vals[0].indexOf("public")!=-1){
-            // Public checkbox changed
-            if(vals[1].indexOf("file")!=-1){
-                //public file checkbox changed
-                console.log("public file: "+$(value).val());
-                //TODO handle public bool of file with id vals[2]
-                window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
-            }
-            else{
-                //public comment checkbox changed
-                console.log("public comment: "+$(value).attr("checked"));
-                //TODO handle public bool of comment with id vals[2]
-                window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
-            }
-        }
-        else{
-            //Confidential checkbox changed
-            if(vals[1].indexOf("file")!=-1){
-                //Confidential file checkbox changed
-                console.log("Confidential file: "+$(value).attr("checked"));
-                //TODO handle Confidential bool of file with id vals[2]
-                window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+    
+	/**********************************************/
+	/* Prepare iphone toogle button look and feel */
+	/**********************************************/
+	$(":checkbox.normal").iphoneStyle({ background: "#F9F3E8",onChange:function(value){
+        	var vals = $(value).attr("id").split("_");
+        	if(vals[0].indexOf("public")!=-1){
+            		// Public checkbox changed
+            		if(vals[1].indexOf("file")!=-1){
+                	//TODO handle public bool of file with id vals[2]
+                	window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+            	}
+            	else{
+                	//TODO handle public bool of comment with id vals[2]
+                	window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+            	}
+        	}
+        	else{
+            		//Confidential checkbox changed
+            		if(vals[1].indexOf("file")!=-1){
+                		//TODO handle Confidential bool of file with id vals[2]
+                		window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+            		}
+            		else{
+                		//TODO handle Confidential bool of comment with id vals[2]
+                		window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+            		}
+        	}
+    	} });
+	
+	/***************************/
+	/* Set the current manager */
+	/***************************/
+    	$("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+    
+	/*************************************************************/
+	/* Implement method when changing manager using the dropdown */
+	/*************************************************************/
+	$("#report_responsible_manager_select").bind("change",function(event){
+        	var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
+        	if (r==true){
+            		window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
+        	}
+        	else{
+            		$("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+        	}
+    	});
+	
+	/******************************/
+	/* Set the current contractor */
+	/******************************/
+    	$("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
+	
+	/****************************************************************/
+	/* Implement method when changing contractor using the dropdown */
+	/****************************************************************/
+    	$("#report_responsible_impetrant_contractor_select").bind("change",function(event){
+        	//TODO update report with new contractor
+        	window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+    	});
 
-            }
-            else{
-                //Confidential comment checkbox changed
-                console.log("Confidential comment: "+$(value).attr("checked"));
-                //TODO handle Confidential bool of comment with id vals[2]
-                window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
-            }
-        }
-    } });
-    $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
-    $("#report_responsible_manager_select").bind("change",function(event){
-        var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
-        if (r==true){
-            window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
-        }
-        else{
-            $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
-        }
-    });
-    $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
-    $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
-        //TODO update report with new contractor
-        window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
-    });
+	/************************************/
+	/* Hide the annex forms per default */
+	/************************************/
+   	$("#commentForm").hide();
+    	$("#fileForm").hide();
 
-    $("#commentForm").hide();
-    $("#fileForm").hide();
+	/********************************/
+	/* Trigger the connection event */
+	/********************************/
+    	{% if user.is_authenticated %}
+        	$(document).trigger('connected');
+    	{% else %}
+        	$(document).trigger('disconnected');
+    	{% endif %}});
 
-    {% if user.is_authenticated %}
-        $(document).trigger('connected');
-    {% else %}
-        $(document).trigger('disconnected');
-    {% endif %}});
+    	/* When JQUERY is ready*/
+    	$(document).ready(function() {
+    		/*Set the contractor dropdown*/
+    		$('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
+    	});
 
-    /* When JQUERY is ready*/
-    $(document).ready(function() {
-    	/*Set the contractor dropdown*/
-    	$('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
-    });
-
-    function showMap() {
-			$("#map-bxl").toggle();
+	/******************************************/
+	/* showMap is used to show the mpa widget */
+	/******************************************/
+    	function showMap() {
+		$("#map-bxl").toggle();
 	}
 
-    function toggleFileForm() {
-        $("#fileForm").toggle();
-        $("#showFileFormButton").toggle();
-        $("#addCommmentDiv").toggle();
-    }
+	/**************************************************************/
+	/* toogleFileForm is used to show/hide the file annex section */
+	/**************************************************************/
+    	function toggleFileForm() {
+        	$("#fileForm").toggle();
+        	$("#showFileFormButton").toggle();
+        	$("#addCommmentDiv").toggle();
+    	}
 
-    function toggleCommentForm() {
-        $("#commentForm").toggle();
-        $("#showCommentFormButton").toggle();
-        $('#addFileDiv').toggle();
-    }
+	/********************************************************************/
+	/* toogleCommentForm is used to show/hide the comment annex section */
+	/********************************************************************/
+    	function toggleCommentForm() {
+        	$("#commentForm").toggle();
+        	$("#showCommentFormButton").toggle();
+        	$('#addFileDiv').toggle();
+    	}
 
-    function refuse(){
-        $("#dialog").dialog('open');
-        $('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can edit as needed.");
-        // var name=prompt("Please enter more information about rejecting the report","");
-        // if(name!=null){
-        //     window.location = '{% url report_refuse_pro report.id %}?more_info_text='+name;
-        // }
-        
-    }
+	/****************************************************************************/
+	/* Refuse method is called when the gestionnaire decides to refuse a report */
+	/****************************************************************************/
+    	function refuse(){
+        	$("#dialog").dialog('open');
+        	$('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
+    	}
 
-    function refuseConfirmButton(){
-        window.location = '{% url report_refuse_pro report.id %}?more_info_text='+$('#more_information_text').val();
-    }
+	/***************************************************************************/
+	/* refuseConfirmButton method is called when the user confirms his refusal */
+	/***************************************************************************/
+    	function refuseConfirmButton(){
+        	window.location = '{% url report_refuse_pro report.id %}?more_info_text='+$('#more_information_text').val();
+    	}
 
-    function refuseCancelButton() {
-        $("#dialog").dialog('close');
-    }
+	/*************************************************************************/
+	/* refuseCancelButton method is called when the user cancels his refusal */
+	/*************************************************************************/
+    	function refuseCancelButton() {
+        	$("#dialog").dialog('close');
+   	 }
 </script>
 {% endblock %}
 {% block css %}
 {{ block.super }}
+
+<!-- ##################### -->
+<!-- # SPECIFIC CSS ZONE # -->
+<!-- ##################### -->
+
 <style type="text/css" media="screen">
     #update-header {
         float: left;
@@ -171,63 +225,75 @@ $(function(){
 {% endblock %}
 {% block content %}
 <div id="page_content_container">
-    {% if not report.is_fixed and report.is_confirmed %}
-    <!-- AddThis Button BEGIN -->
-    <div class="addthis_toolbox addthis_default_style">
-        <a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
-        <span class="addthis_separator">|</span>
-        <a class="addthis_button_facebook"></a>
-        <a class="addthis_button_myspace"></a>
-        <a class="addthis_button_google"></a>
-        <a class="addthis_button_twitter"></a>
-    </div>
-	<!-- AddThis Button END -->
-    {% endif %}
+	<!-- ######################################################################## -->
+	<!-- # TEST IF THE REPORT IS NOT FIXED AND AT LEAST CONFIRMED (DEPRECATED?) # -->
+	<!-- ######################################################################## -->
+    	{% if not report.is_fixed and report.is_confirmed %}
+    		<!-- AddThis Button BEGIN -->
+    			<div class="addthis_toolbox addthis_default_style">
+	        	<a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
+	        	<span class="addthis_separator">|</span>
+	        	<a class="addthis_button_facebook"></a>
+        		<a class="addthis_button_myspace"></a>
+		        <a class="addthis_button_google"></a>
+        		<a class="addthis_button_twitter"></a>
+	    	</div>
+		<!-- AddThis Button END -->
+	{% endif %}
 
-    <h1>
+    	<h1>
+	<!-- ########################### -->
+	<!-- # DISPLAY REPORT CATEGORY # -->
+	<!-- ########################### -->
         {{report.secondary_category.name}} 
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
-        {% if report.responsible_manager.id == request.user.id or report.contractor.id = fms_user.organisation.id %}
-		{% if report.is_in_progress %} 
-                <tr>
-			<td>
-				{% if not fms_user.contractor %} 
-                        	<button onclick="window.location = '{% url report_close_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Cloturer</button>
+		<!-- ################################################### -->
+		<!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
+		<!-- ################################################### -->
+        	{% if report.responsible_manager.id == request.user.id or report.contractor.id = fms_user.organisation.id %}
+			<!-- ############################################# -->
+			<!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
+			<!-- ############################################# -->
+			{% if report.is_in_progress %}
+                	<tr>
+				<td>
+					{% if not fms_user.contractor %} 
+                        		<button onclick="window.location = '{% url report_close_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Cloturer</button>
+    					{% endif %}
+                    		</td>
+				<td >
+					&nbsp;
+                    		</td>
+	                    	<td >
+				{% if report.is_markable_as_solved %} 
+                	        	<button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
     				{% endif %}
-                    	</td>
-			<td >
-                        	<!--button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate' %}</button-->
-				&nbsp;
-                    	</td>
-                    	<td >
-			{% if report.is_markable_as_solved %} 
-                        	<button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+	                    	</td>
+        	                <td >
+					{% if not fms_user.contractor %} 
+                        	    	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>
+    					{% endif %}
+	                        </td>	
+				<td>
+					&nbsp;
+				</td>
+                	</tr>
     			{% endif %}
-                    	</td>
-                        <td >
-				{% if not fms_user.contractor %} 
-                            	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>
-    				{% endif %}
-                        </td>
-			<td>
-				&nbsp;
-			</td>
-                </tr>
-    		{% endif %}
-                <tr>
+                	<tr>
+			<!-- ######################################### -->
+			<!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
+			<!-- ######################################### -->
 			{% if report.is_created %} 
-                    	<td >
-                        	<button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
-                    	</td>
-
-                    	<td >
-                        	<button onclick="refuse();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
-                    	</td>
-
-                        <td >
-                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
-                        </td>
+                    		<td>
+                        		<button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
+	                    	</td>
+                    		<td>
+                        		<button onclick="refuse();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
+	                    	</td>
+                        	<td>
+	                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
+        	                </td>
     			{% endif %}
 		        <td>
                             <button onclick="window.location = '{% url report_pdf report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
@@ -235,126 +301,144 @@ $(function(){
 		        <td>
                             <button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
 			</td>	
-                {% endif %}
+               	{% endif %}
                 </tr>
             </table>
         </div>
-        
     </h1>
-    <div style="border-bottom:1px solid black; padding-bottom:30px">
-	<div id="leftcol">    
-		{% if report.markedAsFinished %}
-		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
-		{% endif %}
 
+	<!-- ##################################### -->
+	<!-- # SMALL SECTION TO SUBSCRIBE OR NOT # -->
+	<!-- ##################################### -->
+    	<div style="border-bottom:1px solid black; padding-bottom:30px">
+		<div id="leftcol">    
+			{% if report.markedAsFinished %}
+				<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
+			{% endif %}
 		<div id='report-body'>
-            <div id='report-subscribers'>
-                {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                {% if not report.is_closed and user.is_authenticated %}
-                    {% if not subscribed %}
-                    <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
-                    {% else %}
-                    <p><small>{% trans "You've subscribed for updates" %}</small></p>
-                    <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
-                    {% endif %}
-                {% endif %}
-            </div>
+            		<div id='report-subscribers'>
+                		{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
+		                {% if not report.is_closed and user.is_authenticated %}
+                		    {% if not subscribed %}
+			                    <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
+		                    {% else %}
+                			    <p><small>{% trans "You've subscribed for updates" %}</small></p>
+			                    <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
+		                    {% endif %}
+		                {% endif %}
+            		</div>
 
 			<p>{{report.description|linebreaks}}</p>
 
 			{% if report.photo  %}
-			<center><img style="max-width:390px;max-heigth:390px" src='{{ report.photo.url }}'/></center>
-		    {% endif %}
-			
+				<center><img style="max-width:390px;max-heigth:390px" src='{{ report.photo.url }}'/></center>
+			{% endif %}
 			<p class="author-sign">
-                {% if report.creator %}
-                {% blocktrans with by=report.creator.username on=report.created_at|date %}
-                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                {% endblocktrans %}
-                {% else %}
-                {% blocktrans with by=report.citizen.first_name on=report.created_at|date %}
-                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                {% endblocktrans %}
-                {% endif %}
-            </p>
+                	{% if report.creator %}
+                		{% blocktrans with by=report.creator.username on=report.created_at|date %}
+		                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                		{% endblocktrans %}
+	                {% else %}
+        		        {% blocktrans with by=report.citizen.first_name on=report.created_at|date %}
+		                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                		{% endblocktrans %}
+	                {% endif %}
+            	</p>
 
 
-            <table id='report-status'>			
-                <tr>
-                    <th>{% trans "Location:" %}</th>
-                    <td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td>
-                </tr>
-                <tr>
-                	<th></th>
-                	<td><input type="button" class='big_button' onclick="showMap();" value='{% trans "Show on map" %}' ></input></td>
-                </tr>
-                <tr>
-                    <th>{% trans "Category:" %}</th>
-                    <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
-                </tr>
-                <tr>
-                	<th>{% trans "Status:" %}</th>
-                	<td>{{ report.get_status_display }}</td>
-                </tr>
-                {% if report.is_in_progress  %}
-                {% if request.user.id == report.responsible_manager.id %}
-                <tr>
-                    <th>{% trans "Responsible manager:" %}</th>
-                    <td>
-                        <select id="report_responsible_manager_select">
-                            <optgroup label="Gestionnaires">
-				{% for manager in managers %}
-                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
-                            	{% endfor %}
-			    </optgroup>
-                            <optgroup label="Entites">
-                            	{% for entity in entities %}
-                            	<option value="entity_{{entity.id}}">{{entity.name}}</option>
-                            	{% endfor %}
-			    </optgroup>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>{% trans "Contractor/Impetrant:" %}</th>
-                    <td>
-                        <select id="report_responsible_impetrant_contractor_select">
-                            <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
-                            <optgroup label="Executeur de travaux">
-                            	{% for organisation in contractors %}
-                            		<option value="{{organisation.id}}">{{organisation.name}}</option>
-                            	{% endfor %}
-			    </optgroup>
-                            <optgroup label="Impetrants">
-                            	{% for applicant in applicants %}
-                            		<option value="{{applicant.id}}">{{applicant.name_fr}}</option>
-                            	{% endfor %}
-			    </optgroup>
-                        </select>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <th>{% trans "Responsible manager:" %}</th>
-                    <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</td>
-                </tr>
-                <tr>
-                    <th>{% trans "Contractor/Impetrant:" %}</th>
-                    <td>{{report.contractor.name}}</td>
-                </tr>
-                {% endif %}
-
-                {% endif %}
-            </table>
-			<div id="map-bxl"></div>
-			
-			
+		<!-- ################## -->
+		<!-- # REPORT DETAILS # -->
+		<!-- ################## -->
+            	<table id='report-status'>			
+	                <tr>
+        	            <th>{% trans "Location:" %}</th>
+                	    <td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td>
+	                </tr>
+        	        <tr>
+                		<th></th>
+                		<td><input type="button" class='big_button' onclick="showMap();" value='{% trans "Show on map" %}' ></input></td>
+	                </tr>
+        	        <tr>
+                	    <th>{% trans "Category:" %}</th>
+	                    <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
+        	        </tr>
+                	<tr>
+                		<th>{% trans "Status:" %}</th>
+	                	<td>{{ report.get_status_display }}</td>
+        	        </tr>
+                	{% if report.is_in_progress  %}
+		                {% if request.user.id == report.responsible_manager.id %}
+					<!-- ############################### -->
+					<!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
+					<!-- ############################### -->
+                			<tr>
+			                	<th>{% trans "Responsible manager:" %}</th>
+                    				<td>
+				                        <select id="report_responsible_manager_select">
+				                            	<optgroup label="Gestionnaires">
+								{% for manager in managers %}
+					                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
+                            					{% endfor %}
+			    					</optgroup>
+                            					<optgroup label="Entites">
+				                            	{% for entity in entities %}
+					                            	<option value="entity_{{entity.id}}">{{entity.name}}</option>
+				                            	{% endfor %}
+			    					</optgroup>
+                        				</select>
+			                	</td>
+                			</tr>
+					<!-- ################################# -->
+					<!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
+					<!-- ################################# -->
+		                	<tr>
+                		    		<th>{% trans "Contractor/Impetrant:" %}</th>
+                    				<td>
+		                        		<select id="report_responsible_impetrant_contractor_select">
+                		            			<option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
+                            						<optgroup label="Executeur de travaux">
+                            							{% for organisation in contractors %}
+                            								<option value="{{organisation.id}}">{{organisation.name}}</option>
+		                            					{% endfor %}
+					    				</optgroup>
+                            						<optgroup label="Impetrants">
+                            							{% for applicant in applicants %}
+                            								<option value="{{applicant.id}}">{{applicant.name_fr}}</option>
+		                            					{% endfor %}
+					    				</optgroup>
+                        				</select>
+		                    		</td>
+                			</tr>
+                		{% else %}
+					<!-- ########################################################### -->
+					<!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
+					<!-- ########################################################### -->
+                			<tr>
+                    				<th>{% trans "Responsible manager:" %}</th>
+				                <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</td>
+			                </tr>				
+                			<tr>
+				                <th>{% trans "Contractor/Impetrant:" %}</th>
+				                <td>{{report.contractor.name}}</td>
+			                </tr>
+                		{% endif %}
+                	{% endif %}
+            	</table>
+		<!-- ################## -->
+		<!-- # THE MAP WIDGET # -->
+		<!-- ################## -->
+		<div id="map-bxl"></div>
 		</div>
 	</div>
+
+	<!-- ############################ -->
+	<!-- # A SECTION TO ADD ANNEXES # -->
+	<!-- ############################ -->
 	<div id="rightcol">
-	
-		<!-- If the status allow such interactions -->		
 		{% if report.is_in_progress %} 
+		<!-- ############################################# -->
+		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+		<!-- ############################################# -->
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
@@ -375,6 +459,9 @@ $(function(){
 			</table>
 			</form>
         	</div>
+		<!-- ############################################# -->
+		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+		<!-- ############################################# -->
 		<div id="addFileDiv">
 		<h2>{% trans "Add a file to this report" %}</h2>
             		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
@@ -401,6 +488,9 @@ $(function(){
     	
     </div>
     <div style="padding-top:30px">
+	<!-- ########################## -->
+	<!-- # DISPLAY EXISTING FILES # -->
+	<!-- ########################## -->
         {% if files %}
             <h3>{% trans "Extra files" %}</h3>
             <div id="report_updates">
@@ -470,59 +560,58 @@ $(function(){
             </table>
             </div>
             {% endif %}
-            {% if comments %}
-            <h3>{% trans "Extra comments" %}</h3>
-            <div id="report_updates">
+	
+	<!-- ############################# -->
+	<!-- # DISPLAY EXISTING COMMENTS # -->
+	<!-- ############################# -->
+        {% if comments %}
+            	<h3>{% trans "Extra comments" %}</h3>
+            	<div id="report_updates">
                 <table class="extraCommentsTable">
                     <th></th>
-                    
-                    
-                    <!-- If the status allow such interactions -->      
+		    <!-- If the status allow such interactions -->      
                     {% if report.is_in_progress %}
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
-                    <th>{% trans 'Public?' %}</th>
+                    	<th>{% trans 'Public?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                    <th> {% trans 'Confidentiel?' %} </th>
+                    	<th> {% trans 'Confidentiel?' %} </th>
                     {% endif %}
                     {% endif %}
-                {% for comment in comments %}
-                <tr>
-                    <td class="annexesFirstTD">
-                <div class="report_update">
-                    <h4>{{comment.title}}</h4>
-                    <p>{{comment.text}}</p>
-                    
-                </div>
-            </td>
-            
-            
-            <!-- If the status allow such interactions -->      
-            {% if report.is_in_progress  %}
-            <!--If the current user is the responsible manager-->
-            {% if report.responsible_manager.id == request.user.id %}
-                <td class="annexesChoiceBoxTD">
-                    {% if comment.validated %}
-                    <input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
-                    {% else %}
-                    <input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
-                    {% endif%}
-                </td>
-            {% endif %}
-            <!--If the current user is the responsible manager or the creator of the report-->
-            {% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
-                <td class="annexesChoiceBoxTD">
-                    {% if comment.isVisible %}
-                    <input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
-                    {% else %}
-                    <input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
-                    {% endif%}
-                </td>
-            {% endif %}
-            {% endif %}
-            </tr>
+                    {% for comment in comments %}
+                	<tr>
+                    		<td class="annexesFirstTD">
+                			<div class="report_update">
+                    				<h4>{{comment.title}}</h4>
+                    				<p>{{comment.text}}</p>
+                			</div>
+            			</td>
+            			<!-- If the status allow such interactions -->      
+		            	{% if report.is_in_progress  %}
+            			<!--If the current user is the responsible manager-->
+            			{% if report.responsible_manager.id == request.user.id %}
+                			<td class="annexesChoiceBoxTD">
+                    				{% if comment.validated %}
+                    					<input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
+                    				{% else %}
+                    					<input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
+                    				{% endif%}
+                			</td>
+            			{% endif %}
+            			<!--If the current user is the responsible manager or the creator of the report-->
+            			{% if report.responsible_manager.id == request.user.id or report.creator.id == request.user.id %}
+                			<td class="annexesChoiceBoxTD">
+                    				{% if comment.isVisible %}
+                    					<input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                   				{% else %}
+                    					<input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    				{% endif%}
+                			</td>
+            			{% endif %}
+            		{% endif %}
+            	</tr>
                 {% endfor %}
             </table>
             </div>

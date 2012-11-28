@@ -9,6 +9,9 @@
 {% addthis_scripts %}
 {% map_scripts %}
 <script>
+/******************************/
+/* QUERY READY INITIALIZATION */
+/******************************/
 $(function(){
 	$('#map-bxl').fmsMap({ 
 		origin:{
@@ -18,6 +21,9 @@ $(function(){
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 });
+/************************************************/
+/* FUNCTION CALLED WHEN SUBSCRIPTION IS CLICKED */
+/************************************************/
 function subscribe() {
 	window.location = "{% url subscribe report.id %}?citizen_email="+$('#citizen_email').val();
 }
@@ -26,6 +32,10 @@ function subscribe() {
 {% block css %}
 
 {{block.super}}
+
+<!-- ##################### -->
+<!-- # SPECIFIC CSS ZONE # -->
+<!-- ##################### -->
 
 <style type="text/css" media="screen">
     #update-header {
@@ -47,6 +57,10 @@ function subscribe() {
 </style>
 {% endblock %}
 {% block content %}
+
+<!-- ######################### -->
+<!-- # MAIN CONTENT DEFINITION -->
+<!-- ######################### -->
 <div id="page_content_container">
     {% if not report.is_fixed and report.is_confirmed %}
     <!-- AddThis Button BEGIN -->
@@ -63,35 +77,51 @@ function subscribe() {
 
     <h1>{{report.title}}</h1>
 	<div id="leftcol">    
+		<!-- ###################### -->
+		<!-- IS FIXED (DEPRECATED?) -->
+		<!-- ###################### -->
 		{% if report.is_fixed %}
-		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
+			<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
 
 		<div id='report-body'>
-            <div id='report-subscribers'>
-                {% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                {% if not report.is_closed %}
-                    <input type="text" value="" placeholder="Your Email" id="citizen_email" />
-		    <br/>
-                    {% if not subscribed %}
-                    <a href="javascript:subscribe()">{% trans "Subscribe" %}</a>
-                    {% endif %}
-                {% endif %}
-            </div>
+            
+		<!-- ################ -->
+		<!-- SUBSCRIBER BLOCK -->
+		<!-- ################ -->
+		<div id='report-subscribers'>
+                	{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
+                	{% if not report.is_closed %}
+                    		<input type="text" value="" placeholder="Your Email" id="citizen_email" />
+		    		<br/>
+                    		{% if not subscribed %}
+                    		<a href="javascript:subscribe()">{% trans "Subscribe" %}</a>
+                    		{% endif %}
+                	{% endif %}
+            	</div>
 
 			<p>{{report.description|linebreaks}}</p>
 
-			{% if report.photo  %}
+		<!-- ########################## -->
+		<!-- REPORT PHOTO (DEPRECATED?) -->
+		<!-- ########################## -->
+		{% if report.photo  %}
 			<center><img src='{{ report.photo.url }}'/></center>
-		    {% endif %}
+	   	{% endif %}
 
-			<p class="author-sign">
+		<!-- ################### -->
+		<!-- REPORT CREATOR ZONE -->
+		<!-- ################### -->
+		<p class="author-sign">
                 {% blocktrans with by=report.author.get_full_name on=report.created_at|date %}
-                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                	Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 {% endblocktrans %}
             </p>
 
 
+	<!-- ################## -->
+	<!-- REPORT STATUS ZONE -->
+	<!-- ################## -->
             <table id='report-status'>			
                 <tr>
                     <th>{% trans "Location:" %}</th>
@@ -177,7 +207,10 @@ function subscribe() {
 			<div id="more-actions">
 				<p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
 			</div>
-		
+	
+		<!-- ############### -->
+		<!-- # DEPRECATED? # -->	
+		<!-- ############### -->
 			{% if report.reportupdate_set.all %}
 			<h3>{% trans "Updates" %}</h3>
 			<div id="report_updates">
@@ -191,6 +224,9 @@ function subscribe() {
 			</div>
 			{% endif %}
 
+		<!-- ############### -->
+		<!-- # DEPRECATED? # -->	
+		<!-- ############### -->
 			{% if not report.is_closed %}
 			<h2>{% trans "Provide an update" %} </h2>
 			<p>{% trans "The status of this report has changed? Thank you let us know by filling this form." %}</p>
@@ -214,9 +250,12 @@ function subscribe() {
 			{% endif %}
 		</div>
 	</div>
+	<!-- ############## -->
+	<!-- # MAP WIDGET # -->
+	<!-- ############## -->
 	<div id="rightcol">
-     	<div id="map-bxl" ></div>
-    </div>
+     		<div id="map-bxl" ></div>
+    	</div>
 </div>
 	
 {% endblock %}
