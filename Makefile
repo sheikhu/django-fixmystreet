@@ -37,7 +37,7 @@ lint:
 	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes
 
 jenkins: $(BIN_DIR)/django
-	rm -r reports
+	rm -rf reports
 	mkdir reports
 	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 
