@@ -17,11 +17,8 @@ DBNAME        = fixmystreet
 bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
 
-$(BIN_DIR)/buildout: bootstrap.py $(LIBS_DIR)
+$(BIN_DIR)/buildout: bootstrap.py
 	python bootstrap.py
-
-$(LIBS_DIR):
-	mkdir $(LIBS_DIR)
 
 # deploy: $(BIN_DIR)/buildout
 	# $(BIN_DIR)/buildout install django

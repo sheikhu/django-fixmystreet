@@ -101,6 +101,7 @@ class FixStdImageField(StdImageField):
 
     def contribute_to_class(self, cls, name):
         """Call methods for generating all operations on specified signals"""
+        # if not issubclass(cls, )
         post_save.connect(self.fix_exif_data, sender=cls)
         super(FixStdImageField, self).contribute_to_class(cls, name)
 

@@ -9,7 +9,7 @@ class SampleFilesTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        default_storage.location = 'media' # force using source media folder to avoid real data erasing
+        default_storage.location = 'media/' # force using source media folder to avoid real data erasing
     # @classmethod
     # def setUpClass(cls):
         # shutil.copytree('media', 'media-tmp')
