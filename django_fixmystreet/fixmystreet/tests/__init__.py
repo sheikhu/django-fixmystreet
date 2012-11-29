@@ -25,8 +25,6 @@ class SampleFilesTestCase(TestCase):
         shutil.copytree('media/photos-sample', 'media/photos')
         super(SampleFilesTestCase, self)._fixture_setup()
 
-    def tearDown(self):
-        shutil.rmtree('media/photos')
 
 from django_fixmystreet.fixmystreet.tests.views import *
 from django_fixmystreet.fixmystreet.tests.reports import *
