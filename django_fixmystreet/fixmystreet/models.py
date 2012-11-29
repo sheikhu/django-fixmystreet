@@ -371,7 +371,7 @@ def report_subscribe_author(sender, instance, **kwargs):
     """
     signal on a report to register author as subscriber to his own report
     """
-    if kwargs['created']:
+    if kwargs['created'] and not kwargs['raw']:
         if instance.created_by:
             ReportSubscription(report=instance, subscriber=instance.created_by).save()
         if instance.citizen:
