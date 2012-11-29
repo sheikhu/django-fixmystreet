@@ -32,7 +32,7 @@ class UserTrackedModel(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         user = get_current_user()
-        if user.is_authenticated():
+        if user and user.is_authenticated():
             if self.id:
                 self.modified_by = user
             else:
@@ -411,10 +411,11 @@ class ReportSubscription(models.Model):
 
 @receiver(post_save,sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
-    comments = ReportComment.objects.filter(report_id=instance.report.id)
-    files = ReportFile.objects.filter(report_id=instance.report.id)
-    mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={'report': Report.objects.get(pk=instance.report_id),'comments':comments,'files':files}, recipients=(instance.subscriber.email,))
-    mail.send()
+    if not kwargs['raw']:
+        comments = ReportComment.objects.filter(report_id=instance.report.id)
+        files = ReportFile.objects.filter(report_id=instance.report.id)
+        mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={'report': Report.objects.get(pk=instance.report_id),'comments':comments,'files':files}, recipients=(instance.subscriber.email,))
+        mail.send()
 
 class ReportMainCategoryClass(models.Model):
     __metaclass__ = TransMeta
