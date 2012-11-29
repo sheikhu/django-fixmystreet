@@ -80,13 +80,13 @@ class ReportViewsTest(SampleFilesTestCase):
         self.client.login(username='test1', password='test')
         url = reverse('report_new')
         response = self.client.post(url, {
-            'x':'148360',
-            'y':'171177',
-            'title':'Just a test',
+            'x': '148360',
+            'y': '171177',
+            'title': 'Just a test',
             'address': 'Av des arts',
-            'category':1,
-            'secondary_category':1,
-            'postalcode':'1000'
+            'category': 1,
+            'secondary_category': 1,
+            'postalcode': '1000'
         }, follow=True)
         self.assertEqual(response.status_code, 200)
 
