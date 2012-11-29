@@ -168,7 +168,7 @@ def set_current_user(user):
 
 def get_current_user():
     return getattr(_thread_locals, 'user', None)
-    
+
 
 class CurrentUserMiddleware:
     def process_request(self, request):

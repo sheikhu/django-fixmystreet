@@ -34,15 +34,13 @@ init:
 
 
 test: $(BIN_DIR)/django
-	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django test $(APP_NAME)
 
 lint:
 	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes
 
 jenkins: $(BIN_DIR)/django
-	cp -Rf media/photos-sample/ media/photos/
-	rm -rf reports
+	rm -r reports
 	mkdir reports
 	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
 

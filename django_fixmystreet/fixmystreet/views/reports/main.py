@@ -7,7 +7,6 @@ from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 
 def new(request):
-    print request.FILES
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES)
