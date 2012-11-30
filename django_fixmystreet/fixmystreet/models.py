@@ -295,6 +295,15 @@ class ReportAttachment(UserTrackedModel):
     class Meta:
         abstract=True
     
+    def is_confidential_visible(self):
+        '''visible when not confidential'''
+        current_user = get_current_user().fmsuser
+        return (self.isVisible==True and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+    
+    def is_citizen_visible(self):
+        '''Visible when not confidential and public'''
+        return self.validated==True and self.isVisible==True
+    
     def get_display_name(self):
         if (self.created_by.first_name == None and self.created_by.last_name == None):
              return 'ANONYMOUS'
