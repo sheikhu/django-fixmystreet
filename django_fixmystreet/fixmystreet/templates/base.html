@@ -172,11 +172,6 @@
                             {% trans "Applicant" %} <span class="category_number">{{request.user|numberOfImpetrants}}</span>
                         </a>
                     </li>
-                    <li>
-                        <a class='subcategory' href="{% url usersOverview %}?userType=manager">
-                            {% trans "Manager" %} <p class="category_number">{{request.user|numberOfManagers}}</p>
-                        </a>
-                    </li>
                     {% if request.fmsuser.leader %}
                         {% if request.user.id|hasAtLeastAManager %}
                         <li>
