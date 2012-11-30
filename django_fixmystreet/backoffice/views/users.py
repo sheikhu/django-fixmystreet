@@ -72,15 +72,14 @@ def edit(request):
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(manager=True)
     #Get used to edit
-        user = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
+    user_to_edit = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
 
     connectedUser = request.fmsuser
-
-    canEditGivenUser = (((user.manager or user.agent) and connectedUser.leader) or ((user.agent) and connectedUser.manager))
+    canEditGivenUser = (((user_to_edit.manager or user_to_edit.agent) and connectedUser.leader) or ((user_to_edit.agent) and connectedUser.manager))
     return render_to_response("pro/users_overview.html",{
                         "users":users,
                         "canEditGivenUser":canEditGivenUser,
-                        "editForm":UserEditForm(instance=user)
+                        "editForm":UserEditForm(instance=user_to_edit)
                         },context_instance=RequestContext(request))
 
 
