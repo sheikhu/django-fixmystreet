@@ -87,7 +87,7 @@ def show(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
 
-def show(request, report_id):
+def show(request,slug, report_id):
     report = get_object_or_404(Report, id=report_id)
     files= ReportFile.objects.filter(report_id=report_id)
     comments = ReportComment.objects.filter(report_id=report_id)

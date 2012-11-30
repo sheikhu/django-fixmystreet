@@ -1,6 +1,9 @@
 {% extends "pro/base.html" %}
 {% load i18n %}
 {% load tags %}
+{% block title %}
+{% trans 'Default manager configuration' %}
+{% endblock %}
 {% block script %}
 {{ block.super }}
 
@@ -41,7 +44,6 @@ function saveSelection(){
 </script>
 {% endblock %}
 
-{% block title %}Create user {% endblock %}
 
 {% block content %}
 

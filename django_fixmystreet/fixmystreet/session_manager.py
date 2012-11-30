@@ -48,6 +48,8 @@ class SessionManager():
 	def clearSession(self,sessionK):
 		print 'clearing session'
 		s = SessionStore(session_key = sessionK)
-		for key in s.keys():
-			del s[key]
+		if 'files' in s.keys():
+			del s['files']
+		if 'comments' in s.keys():
+			del s['keys']
 		s.save()

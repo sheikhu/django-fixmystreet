@@ -15,7 +15,7 @@ def domain(request):
 def environment(request):
     return {
         'ENVIRONMENT': getattr(settings, 'ENVIRONMENT'),
-        'BACKOFFICE': (request.user.is_authenticated() and re.compile('^/pro/').search(request.path))
+        'BACKOFFICE': (request.user.is_authenticated() and re.compile('^/(.*)/pro/').search(request.path))
     }
 
 

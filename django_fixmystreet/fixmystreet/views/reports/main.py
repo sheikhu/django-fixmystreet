@@ -47,22 +47,25 @@ def new(request):
             context_instance=RequestContext(request))
 
 
-def show(request, report_id):
+def show(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id)
     return render_to_response("reports/show.html",
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "update_form": ReportCommentForm()
+                "update_form": ReportCommentForm(),
+                "comment_form": ReportCommentForm(),
+                "file_form":ReportFileForm(),
             },
             context_instance=RequestContext(request))
 
 
-def index(request, commune_id=None):
+def index(request,slug=None, commune_id=None):
     if commune_id:
         entity = OrganisationEntity.objects.get(id=commune_id)
         return render_to_response("reports/list.html", {
-            "reports": entity.reports_in_charge.all()
+            "reports": entity.reports_in_charge.all(),
+            "entity":entity,
         }, context_instance=RequestContext(request))
 
     communes = OrganisationEntity.objects.filter(commune=True)

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load tags %}
-{% block title %}{% trans "Reports for" %} {{ward.name}}, {{ward.city.name}}{% endblock %}
+{% block title %}{% trans "Reports for" %} {{entity.name}}{% endblock %}
 {% block css %}
 {{ block.super }}
 <style>
@@ -18,14 +18,14 @@
 <script>
 $(function(){
 	$('#map-bxl').fmsMap();
-    $('#map-bxl').fmsMap('highlightArea', '{{ ward.feature_id }}');
+    $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
 
 	{% for report in reports %}
 	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %}, {{ forloop.counter }});
 	{% endfor %}
 	
 	$('#map-bxl').bind('reportselected',function(evt, point, report){
-		window.location.assign('/report/' + report.id);
+		window.location.assign('{{report.get_absolute_url}}');
 	});
 
 });
@@ -34,7 +34,7 @@ $(function(){
 
 {% block content %}
 	<div id="fullwidth">
-        <h1>{% trans "Reports for" %} {{ward.name}}</h1>
+        <h1>{% trans "Reports for" %} {{entity.name}}</h1>
 		<div id='leftcol'>
 			<!--
 			<p>{% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %}, {% endif %}{% endfor %}</p>

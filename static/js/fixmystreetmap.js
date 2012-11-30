@@ -244,7 +244,7 @@
 			if(index){
 				//make a copy
 				markerConf = $.extend({},markerConf,{
-					externalGraphic:'/media/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
+					externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
 				});
 			}
 			this.markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf)]);

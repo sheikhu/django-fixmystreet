@@ -20,6 +20,6 @@ def unsubscribe(request, report_id):
     report = subscriber.report
     subscriber.delete()
     messages.add_message(request, messages.SUCCESS, _("You have unsubscribed from updates successfully"))
-    return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
     

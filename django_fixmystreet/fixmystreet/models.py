@@ -225,11 +225,13 @@ class Report(UserTrackedModel):
 
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
-        return reverse("report_show", args=[self.id])
+        slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+'-'
+        return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
     
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
-        return reverse("report_show_pro", args=[self.id])
+        slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+'-'
+        return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
         return ReportComment.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    

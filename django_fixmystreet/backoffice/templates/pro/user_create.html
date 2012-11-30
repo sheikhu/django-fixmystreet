@@ -5,7 +5,7 @@
 
 {% endblock %}
 
-{% block title %}Create user {% endblock %}
+{% block title %} {% trans "Create user" %} {% endblock %}
 
 {% block content %}
 
@@ -31,7 +31,7 @@
 </script>
 
 <div id="fullwidth">
-  <h1>Create user</h1>
+  <h1>{% trans "Create user" %}</h1>
   <div>
     <form action="" method="POST">
       {% csrf_token %}
