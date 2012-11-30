@@ -199,7 +199,7 @@ $(document).ready(function() {
 //Add the submitted file to the view and save it in the session and on the server.
 function AddFileToView(){
 	//Submit the last form to save the file to the server
-	$("#fileForm").submit();
+	
 	// If no files are yet added: show the div containing the added files table list
 	if(!$("#extraFilesDiv").is(":visible")){
 		$("#extraFilesDiv").show();
@@ -215,7 +215,7 @@ function AddFileToView(){
 	}
 	var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','/media/files/')};
 	//Put the file data in the session
-	$.post("/ajax/createFile",data);
+	$.post("/{{LANGUAGE_CODE}}/ajax/createFile",data);
 	//Create a file reader so that we can create a thumbnail of the submitted file.
 	var reader = new FileReader();
 	//Define the onload function of the reader
@@ -243,7 +243,7 @@ function AddFileToView(){
 		else {
 			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-file.png");
 		}
-		
+		$("#fileForm").submit();
 	
 	}
 

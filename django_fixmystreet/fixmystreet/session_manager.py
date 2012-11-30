@@ -27,7 +27,6 @@ class SessionManager():
 			s.save()
 
 	def saveFiles(self,sessionK,reportId):
-
 		s = SessionStore(session_key = sessionK)
 		if 'files' in s.keys():
 			filesData = s['files']

@@ -15,7 +15,6 @@ feeds = {
 
 
 urlpatterns = patterns('',
-    (_(r'^i18n/'), include('django.conf.urls.i18n')),
     (_(r'^feeds/(?P<url>.*)/$'), 'django.contrib.syndication.views.Feed', {'feed_dict': feeds},'feeds'),
 )
 

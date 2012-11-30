@@ -11,7 +11,7 @@ $("[for='id_password']").parent().parent().hide()
 </script>
 {% endblock %}
 
-{% block title %}{% trans "User overview:"%} {% endblock %}
+{% block title %}{% trans "User overview:"%}{%if editForm %}: {{editForm.username.value}}{%endif%}{% endblock %}
 
 {% block content %}
 <script>

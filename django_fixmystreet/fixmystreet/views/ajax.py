@@ -25,20 +25,20 @@ def create_comment(request):
 	return hh 
 	
 def create_file(request):
-	session_manager = SessionManager()
-	session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
-        hh = HttpResponse(content='True', mimetype='text/html')
-	return hh 
+    session_manager = SessionManager()
+    print request.POST
+    session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
+    hh = HttpResponse(content='True', mimetype='text/html')
+    return hh 
 
 def uploadFile(request):
-	print request.FILES
-	for file_code in request.FILES:
-		upfile = request.FILES[file_code]
-		with open('media/files/'+upfile.name, 'wb+') as destination:
-			for chunk in upfile.chunks():
-				destination.write(chunk)
-	hh = HttpResponse(content='True',mimetype='text/html')
-	return hh
+    for file_code in request.FILES:
+        upfile = request.FILES[file_code]
+        with open('media/files/'+upfile.name, 'wb+') as destination:
+            for chunk in upfile.chunks():
+                destination.write(chunk)
+    hh = HttpResponse(content='True',mimetype='text/html')
+    return hh
 
 def update_last_used_language(request):
     if request.user.id:
@@ -46,5 +46,9 @@ def update_last_used_language(request):
         fmsUser.last_used_language = request.REQUEST.get('language').upper()
         fmsUser.save()
     translation.activate(request.REQUEST.get('language'))
-    toURL = request.REQUEST.get('from').replace('/en/','/'+request.REQUEST.get('language')+'/').replace('/fr/','/'+request.REQUEST.get('language')+'/').replace('/nl/','/'+request.REQUEST.get('language')+'/')
-    return HttpResponseRedirect(toURL)
+    fromUrl = request.REQUEST.get('from')
+    if 'pro' in fromUrl:
+        fromUrl = '/'+request.REQUEST.get('language')+'/pro/'
+    else:
+        fromUrl = '/'+request.REQUEST.get('language')+'/'
+    return HttpResponseRedirect(fromUrl)
