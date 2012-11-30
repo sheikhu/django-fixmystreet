@@ -19,6 +19,7 @@ bootstrap.py:
 
 $(BIN_DIR)/buildout: bootstrap.py
 	python bootstrap.py
+	mkdir $(LIBS_DIR)
 
 # deploy: $(BIN_DIR)/buildout
 	# $(BIN_DIR)/buildout install django
@@ -70,4 +71,5 @@ scratchdb: dropdb createdb
 clean:
 	rm -rf bootstrap.py \
 			$(BIN_DIR) \
-			$(LIBS_DIR)
+			$(LIBS_DIR) \
+			src
