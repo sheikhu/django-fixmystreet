@@ -94,7 +94,7 @@
 					</form>
 				</div>
                 <div id="header-name">
-                    Connected: {{ request.user.get_full_name }}
+                    Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})
                 </div>
 			</div>
 		</div>

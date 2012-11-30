@@ -298,6 +298,110 @@
             "organisation":2
         }
     },
+   {
+        "pk":14,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thierry",
+            "last_name": "s",
+            "username": "thierrystartent",
+            "email": "tschreiber@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":14,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":14,
+            "telephone":"923456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":18
+        }
+    },
+   {
+        "pk":15,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thierry",
+            "last_name": "s",
+            "username": "thierryallent",
+            "email": "tschreiber@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":15,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":15,
+            "telephone":"923456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":19
+        }
+    },
+   {
+        "pk":16,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thierry",
+            "last_name": "s",
+            "username": "thierryallgest",
+            "email": "tschreiber@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":16,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":16,
+            "telephone":"923456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":19
+        }
+    },
+   {
+        "pk":17,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thierry",
+            "last_name": "s",
+            "username": "thierryallagent",
+            "email": "tschreiber@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":17,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":17,
+            "telephone":"923456789",
+            "last_used_language":"FR",
+            "agent":true,
+            "manager":false,
+            "leader":false,
+            "organisation":19
+        }
+    },
     {
         "pk":20,
         "model":"fixmystreet.organisationentity",
@@ -317,7 +421,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Anderlecht", 
             "name_nl": "Anderlecht", 
             "feature_id": "URB_A_MU.7100"
@@ -328,7 +432,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Auderghem",
             "name_nl": "Auderghem",
             "feature_id": "URB_A_MU.7200"
@@ -339,7 +443,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Berchem Ste Agathe",
             "name_nl": "Berchem Ste Agathe",
             "feature_id": "URB_A_MU.7300"
@@ -350,7 +454,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Bruxelles",
             "name_nl": "Bruxelles",
             "feature_id": "URB_A_MU.7400"
@@ -361,7 +465,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Etterbeek",
             "name_nl": "Etterbeek",
             "feature_id": "URB_A_MU.7500"
@@ -372,7 +476,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Evere",
             "name_nl": "Evere",
             "feature_id": "URB_A_MU.7600"
@@ -383,7 +487,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Forest",
             "name_nl": "Forest",
             "feature_id": "URB_A_MU.7700"
@@ -394,7 +498,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Ganshoren",
             "name_nl": "Ganshoren",
             "feature_id": "URB_A_MU.7800"
@@ -405,7 +509,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Ixelles",
             "name_nl": "Ixelles",
             "feature_id": "URB_A_MU.7900"
@@ -416,7 +520,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Jette",
             "name_nl": "Jette",
             "feature_id": "URB_A_MU.8000"
@@ -427,7 +531,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Koekelberg",
             "name_nl": "Koekelberg",
             "feature_id": "URB_A_MU.8100"
@@ -438,7 +542,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Molenbeek St Jean",
             "name_nl": "Molenbeek St Jean",
             "feature_id": "URB_A_MU.8200"
@@ -449,7 +553,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Saint-Gilles",
             "name_nl": "Saint-Gilles",
             "feature_id": "URB_A_MU.8300"
@@ -460,7 +564,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Saint-Josse ten Noode",
             "name_nl": "Saint-Josse ten Noode",
             "feature_id": "URB_A_MU.8400"
@@ -471,7 +575,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Schaerbeek",
             "name_nl": "Schaerbeek",
             "feature_id": "URB_A_MU.8500"
@@ -482,7 +586,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Uccle",
             "name_nl": "Uccle",
             "feature_id": "URB_A_MU.8600"
@@ -493,7 +597,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Watermael-Boisfort",
             "name_nl": "Watermael-Boisfort",
             "feature_id": "URB_A_MU.8700"
@@ -504,7 +608,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Woluwe St Lambert",
             "name_nl": "Woluwe St Lambert",
             "feature_id": "URB_A_MU.8800"
@@ -515,7 +619,7 @@
         "model": "fixmystreet.organisationentity", 
         "fields": {
             "commune": true, 
-            "dependency":3, 
+            "dependency":20, 
             "name_fr": "Woluwe St Pierre",
             "name_nl": "Woluwe St Pierre",
             "feature_id": "URB_A_MU.8900"
