@@ -2,8 +2,6 @@
 {% load i18n %}
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
-{% block script %}
-{{ block.super }}
 {% block specific_scripts %}
 <script>
 $(document).delegate("form", "submit", function(evt) {
@@ -53,7 +51,6 @@ $('#id_category').change(function(evt) {
 	});
 });
 </script>
-{% endblock %}
 {% endblock %}
 
 {% block content %}

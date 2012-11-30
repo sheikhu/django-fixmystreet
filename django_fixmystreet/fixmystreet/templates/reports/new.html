@@ -321,12 +321,12 @@ function fileSelected() {
 {% block specific_scripts %}
 <script>
 // On submit: validate if the current commune participates with the FixMyStreet project
-    $(document).delegate("form", "submit", function(evt) {
+    $(document).delegate("#report_form", "submit", function(evt) {
     	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
 		//This commune does not participate to fixmystreet until now.
 		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
 		return false;
-		}
+	}
 		//When the user presses the submit button for the first time: the overview must be shown.
 		// The following code will popuplate the report_overview_table with the entered values
         if (!$(':submit').hasClass('confirm')) {
@@ -391,10 +391,14 @@ $(document).ready(function() {
 			
 			refSecondary.html('');
 			refSecondary.html($('#id_secondary_category_copy').html());
+			//Keep the first element in memory (the headlabel)
+                        var headLabelOption = refSecondary.find("option:first");
 			refSecondary.find("option[family!='"+el_id+"']").remove();
 			refSecondary.find("option[public='False']").remove();
 			/*remove empty optgroup*/
 			refSecondary.find("optgroup:not(:has(option))").remove();
+			//Prepend the headlabel again.
+                        refSecondary.prepend(headLabelOption);
 			/*Copy value to hiddendropdown */
 			$('#id_secondary_category').change();// initialize notes
                 }
