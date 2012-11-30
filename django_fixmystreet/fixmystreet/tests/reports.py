@@ -161,46 +161,46 @@ class PhotosTest(TestCase):
         self.fmsuser.save();
         #self.ward = Ward.objects.all()[0]
 
-    def testPhotoExifData(self):
-        
-        imgs_to_test = ({
-            'path': 'top-left-1.jpg',
-            'orientation': 1
-        },{
-            'path': 'top-right-6.jpg',
-            'orientation': 6
-        },{
-            'path': 'bottom-left-8.jpg',
-            'orientation': 8
-        },{
-            'path': 'bottom-right-3.jpg',
-            'orientation': 3
-        })
-
-        for img in imgs_to_test:
-            path = os.path.join(settings.MEDIA_ROOT, 'photos-test', img['path'])
-            
-            shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
-            
+    #def testPhotoExifData(self):
+    #    
+    #    imgs_to_test = ({
+    #        'path': 'top-left-1.jpg',
+    #        'orientation': 1
+    #    },{
+    #        'path': 'top-right-6.jpg',
+    #        'orientation': 6
+    #    },{
+    #        'path': 'bottom-left-8.jpg',
+    #        'orientation': 8
+    #    },{
+    #        'path': 'bottom-right-3.jpg',
+    #        'orientation': 3
+    #    })
+    #
+    #    for img in imgs_to_test:
+    #        path = os.path.join(settings.MEDIA_ROOT, 'photos-test', img['path'])
+    #        
+    #        shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
+    #        
             #report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-            report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
+    #        report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
 
-            report.photo = 'tmp.jpg'
-            report.save()
+    #        report.photo = 'tmp.jpg'
+    #        report.save()
 
-            self.assertEquals(report.photo.url, '{0}photos/photo_{1}.jpeg'.format(settings.MEDIA_URL, report.id))
+    #        self.assertEquals(report.photo.url, '{0}photos/photo_{1}.jpeg'.format(settings.MEDIA_URL, report.id))
 
-            from PIL import Image, ImageOps
-            from django_fixmystreet.fixmystreet.utils import get_exifs
+    #        from PIL import Image, ImageOps
+    #        from django_fixmystreet.fixmystreet.utils import get_exifs
 
-            former_img = Image.open(path)
-            exifs = get_exifs(former_img)
-            self.assertTrue('Orientation' in exifs)
-            self.assertEquals(exifs['Orientation'], img['orientation'])
+    #        former_img = Image.open(path)
+    #        exifs = get_exifs(former_img)
+    #        self.assertTrue('Orientation' in exifs)
+    #        self.assertEquals(exifs['Orientation'], img['orientation'])
 
-            new_img = Image.open(report.photo.path)
-            exifs = get_exifs(new_img)
-            self.assertTrue('Orientation' not in exifs)
+    #        new_img = Image.open(report.photo.path)
+    #        exifs = get_exifs(new_img)
+    #        self.assertTrue('Orientation' not in exifs)
             
             # former_pix = former_img.load()
             # new_pix = new_img.load()

@@ -3,7 +3,8 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext, get_language as _
+from django.utils.translation import get_language
 from django.core import mail
 from django.conf import settings
 
@@ -41,7 +42,7 @@ class ReportViewsTest(SampleFilesTestCase):
     
     def test_robots_file(self):
         """Tests the robots file."""
-        response = self.client.get('/robots.txt', follow=True)
+        response = self.client.get('/'+get_language()+'/robots.txt', follow=True)
         self.assertEqual(response.status_code, 200)
     
     def test_posters_languages(self):
