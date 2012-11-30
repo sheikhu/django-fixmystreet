@@ -113,21 +113,65 @@
                 </div>
                 {% else %}
                 <ul class='leftPane' id="leftMenuPanePro">
-                    <li> <a id="allMenuItem" class='category positionable' href="{% url report_list_pro 'all' %}"> Reports <p class="category_number">{{request.user|numberOfReports}}</p></a></a> </li>
+                    <li>
+                        <a id='createMenu' class='category' href="">
+                            {% trans "Submit a report" %}
+                        </a>
+                    </li> 
+                    <li>
+                        <a id="subscriptionMenuItem" class='category' href="{% url report_subscription_pro %}?subscription=1">
+                            {% trans "My subscriptions" %} <span class="category_number">{{request.user|numberOfSubscriptions}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="allMenuItem" class='category positionable' href="{% url report_list_pro 'all' %}">
+                            {% trans "Reports assinged to me" %} <span class="category_number">{{request.user|numberOfReports}}</span>
+                        </a>
+                    </li>
                     {% if not request.fmsuser.contractor %}
-                    <li><a id='createdMenuItem' class='subcategory positionable' href="{% url report_list_pro 'created' %}"> Created <p class="category_number">{{request.user|numberOfCreatedReports}}</p></a> </li>
+                    <li>
+                        <a id='createdMenuItem' class='subcategory positionable' href="{% url report_list_pro 'created' %}">
+                            {% trans "Unpublished" %} <span class="category_number">{{request.user|numberOfCreatedReports}}</span>
+                        </a>
+                    </li>
                     {% endif %}
-                    <li><a id='progressMenuItem' class='subcategory positionable' href="{% url report_list_pro 'in_progress' %}"> Progress <p class="category_number">{{request.user|numberOfInProgressReports}}</p></a></li>
-                    <li><a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro 'closed' %}"> Closed <p class="category_number">{{request.user|numberOfClosedReports}} </p></a> </li>
-                    <li><a id="subscriptionMenuItem" class='subcategory' href="{% url report_subscription_pro %}?subscription=1"> My subscriptions <p class="category_number">{{request.user|numberOfSubscriptions}}</p> </a> <p class="category_number"></p></li>
+                    <li>
+                        <a id='progressMenuItem' class='subcategory positionable' href="{% url report_list_pro 'in_progress' %}">
+                            {% trans "In progress" %} <span class="category_number">{{request.user|numberOfInProgressReports}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro 'closed' %}">
+                            {% trans "Closed" %} <span class="category_number">{{request.user|numberOfClosedReports}} </span>
+                        </a>
+                    </li>
                     {% if not request.fmsuser.contractor %}
-                    <li> <a class='category' href="{% url usersOverview %}?userType=users"> Collaborators <p class="category_number">{{request.user|numberOfUsers}}</p></a></a></li>
-                    
-                    <li><a class='subcategory' href="{% url usersOverview %}?userType=agent">Agents <p class="category_number">{{request.user|numberOfAgents}}</p></a> </a> </li>
-                    <li><a class='subcategory' href="{% url usersOverview %}?userType=contractor">Exec de travaux <p class="category_number">{{request.user|numberOfContractors}}</p></a></a> </li>
-                    <li><a class='subcategory' href="{% url usersOverview %}?userType=impetrant"> Impétrants <p class="category_number">{{request.user|numberOfImpetrants}}</p></a></a></li>
+                    <li>
+                        <a class='category' href="{% url usersOverview %}?userType=users">
+                            {% trans "Collaborators" %} <span class="category_number">{{request.user|numberOfUsers}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class='subcategory' href="{% url usersOverview %}?userType=agent">
+                            {% trans "Agents" %} <span class="category_number">{{request.user|numberOfAgents}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class='subcategory' href="{% url usersOverview %}?userType=contractor">
+                            {% trans "Contractors" %} <span class="category_number">{{request.user|numberOfContractors}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class='subcategory' href="{% url usersOverview %}?userType=impetrant">
+                            {% trans "Applicant" %} <span class="category_number">{{request.user|numberOfImpetrants}}</span>
+                        </a>
+                    </li>
 
-                    <li><a class='subcategory' href="{% url usersOverview %}?userType=manager"> Gestionnaires <p class="category_number">{{request.user|numberOfManagers}}</p></a></a></li>
+                    <li>
+                        <a class='subcategory' href="{% url usersOverview %}?userType=manager">
+                            {% trans "Manager" %} <p class="category_number">{{request.user|numberOfManagers}}</p>
+                        </a>
+                    </li>
                     
                     {% if request.fmsuser.leader %}
                         {% if request.user.id|hasAtLeastAManager %}
@@ -136,7 +180,6 @@
                         {% endif %}
                     {% endif %}
                     {% endif %}
-                    <li><a id='createMenu' class='category' href=""> Create </a></li> 
                     {% if request.user.id|hasAtLeastAManager %}
                         <li><a id='createReportMenuItem' class='subcategory' href="{% url report_new_pro %}?x=150035.431&y=170906.871#form"> Report </a></li> 
                     {% endif %}
