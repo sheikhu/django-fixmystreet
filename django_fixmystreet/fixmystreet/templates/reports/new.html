@@ -82,8 +82,14 @@ $(document).ready(function() {
 			
 			refSecondary.html('');
 			refSecondary.html($('#id_secondary_category_copy').html());
+                        //Keep the first element in memory (the headlabel)
+                        var headLabelOption = refSecondary.find("option:first");
 			refSecondary.find("option[family!='"+el_id+"']").remove();
+                        //Prepend the headlabel again.
+                        refSecondary.prepend(headLabelOption);
+    			{% if not BACKOFFICE %}
 			refSecondary.find("option[public='False']").remove();
+                        {% endif %}
 			/*remove empty optgroup*/
 			refSecondary.find("optgroup:not(:has(option))").remove();
 			/*Copy value to hiddendropdown */
