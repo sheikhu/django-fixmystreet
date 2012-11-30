@@ -17,7 +17,7 @@ def create(request, report_id):
         user = FMSUser.objects.get(username=request.REQUEST.get('citizen_email'));
     except FMSUser.DoesNotExist:
         #Add information about the citizen connected if it does not exist
-        user = FMSUser.objects.create(username=request.REQUEST.get('citizen_email'), email=request.REQUEST.get('citizen_email'), first_name='ANONYMOUS', last_name='ANONYMOUS')
+        user = FMSUser.objects.create(username=request.REQUEST.get('citizen_email'), email=request.REQUEST.get('citizen_email'), first_name='ANONYMOUS', last_name='ANONYMOUS', agent=False, contractor=False, manager=False, leader=False)
 
     #VERIFY THAT A SUBSCRIPTION DOES NOT ALREADY EXIST
     try:

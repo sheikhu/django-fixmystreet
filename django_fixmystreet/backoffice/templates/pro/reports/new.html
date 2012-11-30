@@ -2,8 +2,6 @@
 {% load i18n %}
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
-{% block script %}
-{{ block.super }}
 {% block specific_scripts %}
 <script>
 $(document).delegate("form", "submit", function(evt) {
@@ -30,7 +28,11 @@ $('#id_category').change(function(evt) {
 
                         refSecondary.html('');
                         refSecondary.html($('#id_secondary_category_copy').html());
-                        refSecondary.find("option[family!='"+el_id+"']").remove();
+                        //Keep the first element in memory (the headlabel)
+                        var headLabelOption = refSecondary.find("option:first");
+			refSecondary.find("option[family!='"+el_id+"']").remove();
+			//Prepend the headlabel again.
+                        refSecondary.prepend(headLabelOption);
 			$('#id_secondary_category').change();//copy value to hidden dropdown 
                 }
                 else
@@ -49,7 +51,6 @@ $('#id_category').change(function(evt) {
 	});
 });
 </script>
-{% endblock %}
 {% endblock %}
 
 {% block content %}

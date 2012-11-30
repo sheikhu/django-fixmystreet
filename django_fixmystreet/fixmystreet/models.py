@@ -78,6 +78,8 @@ class FMSUser(User):
         return self.agent == True or self.manager == True or self.leader == True or self.impetrant == True or self.contractor == True
     def is_citizen(self):
         return not self.is_pro()
+    def can_see_confidential(self):
+        return self.leader or self.manager
     def get_langage(self):
         return self.last_used_language
     def can_create_report(self):
@@ -216,7 +218,7 @@ class Report(UserTrackedModel):
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
-    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
@@ -294,10 +296,10 @@ class ReportAttachment(UserTrackedModel):
         abstract=True
     
     def get_display_name(self):
-        if (self.creator.first_name == None and self.creator.last_name == None):
+        if (self.created_by.first_name == None and self.created_by.last_name == None):
              return 'ANONYMOUS'
         else:
-             return self.creator.first_name+' '+self.creator.last_name 
+             return self.created_by.first_name+' '+self.created_by.last_name 
 
 
 class ReportComment(ReportAttachment):
@@ -331,6 +333,18 @@ class ReportFile(ReportAttachment):
         return self.is_pdf() or self.is_word() or self.is_excel() 
     def is_an_image(self):
         return self.is_image()
+
+@receiver(post_save,sender=FMSUser)
+def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
+    """This method is used to create the security matrix when creating the first manager of the entity"""
+    #If this is the first user created and of type gestionnaire then assign all reportcategories to him
+    if (instance.manager == True):
+       #if we have just created the first one, then apply all type to him
+       if len(FMSUser.objects.filter(organisation_id=instance.organisation.id).filter(manager=True)) == 1:
+          for type in ReportCategory.objects.all():
+             instance.categories.add(type)
+
+
 
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
