@@ -77,6 +77,43 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
             raise forms.ValidationError(self.error_messages['invalid_choice'])
         return model
 
+class CategoryChoiceField(forms.fields.ChoiceField):
+    """
+    Do some pre-processing to
+    render opt-groups (silently supported, but undocumented
+    http://code.djangoproject.com/ticket/4412 )
+    """
+    def __init__(self,  *args, **kwargs):
+        # assemble the opt groups.
+        choices = []
+        choices.append(('', ugettext_lazy("Select a Category")))
+        categories = ReportMainCategoryClass.objects.all()
+
+        uniqueCategory = ugettext_lazy("Main Category")
+        groups = {}
+        for category in categories:
+            catclass = uniqueCategory 
+            if not groups.has_key(catclass):
+                groups[catclass] = []
+            if not groups[catclass].__contains__((category.pk, category.name)):
+                groups[catclass].append((category.pk, category.name))
+        
+        for catclass, values in groups.items():
+            choices.append((catclass,values))
+       
+        super(CategoryChoiceField,self).__init__(choices=choices,*args,**kwargs)
+
+    def clean(self, value):
+        super(CategoryChoiceField,self).clean(value)
+        try:
+            #import pdb
+            #pdb.set_trace()
+            model = ReportMainCategoryClass.objects.get(pk=value)
+        except ReportCategory.DoesNotExist:
+            raise forms.ValidationError(self.error_messages['invalid_choice'])
+        return model
+
+
 #Used by PRO version
 class ReportForm(forms.ModelForm):
     """Report form"""
@@ -85,6 +122,7 @@ class ReportForm(forms.ModelForm):
         fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'photo', 'postalcode', 'description')
 
     required_css_class = 'required'
+    category = CategoryChoiceField(label=ugettext_lazy("category"))
     secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
     secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"),required=False)
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
@@ -129,6 +167,7 @@ class CitizenReportForm(ReportForm):
         model = Report
         fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'photo', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
 
+    category = CategoryChoiceField(label=ugettext_lazy("category"))
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
     citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
     citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))

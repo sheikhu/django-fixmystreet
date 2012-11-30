@@ -286,13 +286,13 @@ $(function(){
 			<!-- ######################################### -->
 			{% if report.is_created %} 
                     		<td>
-                        		<button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept' %}</button>
+                        		<button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish' %}</button>
 	                    	</td>
                     		<td>
                         		<button onclick="refuse();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
 	                    	</td>
                         	<td>
-	                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Accept and validate' %}</button>
+	                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish All' %}</button>
         	                </td>
     			{% endif %}
 		        <td>
