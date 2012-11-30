@@ -22,7 +22,7 @@ urlpatterns += patterns('',
 
 
 urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
-    url(_(r'^report/(?P<slug>[\w-]+)(?P<report_id>\d+)$'), 'show',name='report_show_pro'),
+    url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show_pro'),
     url(_(r'^report/new'), 'new',name='report_new_pro'),
     url(_(r'^report/subscription'), 'subscription',name='report_subscription_pro'),
 )
