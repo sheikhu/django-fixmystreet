@@ -13,7 +13,7 @@ def create(request, report_id):
     subscriber = ReportSubscription(subscriber=request.user,report=report)
     subscriber.save()
     messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
-    return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 def unsubscribe(request, report_id):
     subscriber = get_object_or_404(ReportSubscription, report__id=report_id, subscriber=request.user)

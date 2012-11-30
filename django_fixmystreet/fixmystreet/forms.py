@@ -185,7 +185,7 @@ class CitizenReportForm(ReportForm):
           report.citizen = existingUser
         except FMSUser.DoesNotExist:
             #Add information about the citizen connected if it does not exist
-            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"])
+            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
         if commit:
             report.save()
         return report

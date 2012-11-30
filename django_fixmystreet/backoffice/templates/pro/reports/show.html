@@ -320,7 +320,7 @@ $(function(){
                 		{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
 		                {% if not report.is_closed and user.is_authenticated %}
                 		    {% if not subscribed %}
-			                    <a href="{% url subscribe report.id %}">{% trans "Subscribe" %}</a>
+			                    <a href="{% url subscribe_pro report.id %}">{% trans "Subscribe" %}</a>
 		                    {% else %}
                 			    <p><small>{% trans "You've subscribed for updates" %}</small></p>
 			                    <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
@@ -508,29 +508,32 @@ $(function(){
                     {% endif %}
                     {% endif %}
                     {% for file in files %}
-                    <tr>
-                        <td class="annexesFirstTD">
-                    <div class="report_update">
-                        {% if file.file %}
-                        	<center>
-					<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-					{{file.title}}
-					{% if file.is_image %}
-						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
-					{% endif %}
-					{% if file.is_pdf %}
-						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
-					{% endif %}
-					{% if file.is_word %}
-						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
-					{% endif %}
-					{% if file.is_excel %}
-						<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
-					{% endif %}
-				</center>
-                        {% endif %}
-                    </div>
-                </td>
+			{% if not file.isVisible and not fms_user.can_see_confidential %}
+				<!-- Skip -->
+			{% else %}
+                    	<tr>
+                        	<td class="annexesFirstTD">
+                    		<div class="report_update">
+                        		{% if file.file %}
+                        			<center>
+						<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
+						{{file.title}}
+						{% if file.is_image %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
+						{% endif %}
+						{% if file.is_pdf %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
+						{% endif %}
+						{% if file.is_word %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+						{% endif %}
+						{% if file.is_excel %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
+						{% endif %}
+						</center>
+                        		{% endif %}
+                    		</div>
+                		</td>
         
 		<!-- If the status allow such interactions -->		
 		{% if report.is_in_progress %}
@@ -553,9 +556,10 @@ $(function(){
                             <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
                             {%endif%}
                 	</td>
-        {% endif %}
+       		{% endif %}
 		{% endif %}
             </tr>
+		{% endif %}
                     {% endfor %}
             </table>
             </div>
@@ -581,6 +585,9 @@ $(function(){
                     {% endif %}
                     {% endif %}
                     {% for comment in comments %}
+			{% if not comment.isVisible and not fms_user.can_see_confidential %}
+				<!-- Skip -->
+			{% else %}
                 	<tr>
                     		<td class="annexesFirstTD">
                 			<div class="report_update">
@@ -611,7 +618,8 @@ $(function(){
                 			</td>
             			{% endif %}
             		{% endif %}
-            	</tr>
+            		</tr>
+			{% endif %}
                 {% endfor %}
             </table>
             </div>
