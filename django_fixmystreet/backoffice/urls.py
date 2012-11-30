@@ -57,8 +57,8 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.flags',
 )
 
 urlpatterns += patterns('django_fixmystreet.backoffice.views.manager_category_configuration',
-    url(_(r'^categoryGestionnaireConfiguration/dialog/'),'update',name='gestionnaire_selection_dialog'),
-    url(_(r'^categoryGestionnaireConfiguration'),'show',name='category_gestionnaire_configuration'),
+    url(r'^category-gestionnaire-configuration/dialog/','update',name='gestionnaire_selection_dialog'),
+    url(r'^category-gestionnaire-configuration','show',name='category_gestionnaire_configuration'),
 
 )
 
@@ -67,9 +67,10 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
-    url(_(r'users/overview/delete'),'deleteUser',name="userDelete"),
-    url(_(r'users/overview/edit'),'edit',name='usersEdit'),
-    url(_(r'users/overview/save'),'saveChanges',name="userSave"),
-    url(_(r'users/overview'),'show',name='usersOverview'),
-	url(_(r'^createuser'),'createUser',name='create_user_pro'),
+    url(r'users/overview/delete','deleteUser',name="userDelete"),
+    url(r'users/overview/edit','edit',name='usersEdit'),
+    url(r'users/overview/save','saveChanges',name="userSave"),
+    url(r'users/overview','show',name='usersOverview'),
+	url(r'^create-manager', 'createUser', {'userType': 'manager'}, name='create_manager'),
+	url(r'^create-agent','createUser', {'userType': 'agent'}, name='create_agent'),
 )
