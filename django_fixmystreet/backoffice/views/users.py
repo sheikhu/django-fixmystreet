@@ -98,7 +98,7 @@ def deleteUser(request):
     FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
     return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
 
-def createUser(request):
+def createUser(request, userType):
     connectedUser = request.fmsuser
 
     isManager = connectedUser.manager
