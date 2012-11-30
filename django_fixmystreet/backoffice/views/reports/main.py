@@ -70,7 +70,6 @@ def subscription(request):
     for subscription in subscriptions:
         reports[i] = Report.objects.get(pk=subscription.report_id)
         i= i+1
-    print reports
     return render_to_response("pro/reports/subscriptions.html",
             {
               "reports":reports  

@@ -162,7 +162,6 @@ def updateComment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     updateType = request.REQUEST.get('updateType')
     comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
-    print request.REQUEST
     if updateType == "valid":
         comment.validated= (request.REQUEST.get('updateValue')=='checked')
         if comment.validated:

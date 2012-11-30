@@ -16,12 +16,10 @@ DBNAME        = fixmystreet
 
 bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
-
-$(BIN_DIR)/buildout: bootstrap.py $(LIBS_DIR)
-	python bootstrap.py
-
-$(LIBS_DIR):
 	mkdir $(LIBS_DIR)
+
+$(BIN_DIR)/buildout: bootstrap.py
+	python bootstrap.py
 
 # deploy: $(BIN_DIR)/buildout
 	# $(BIN_DIR)/buildout install django
@@ -34,14 +32,12 @@ init:
 
 
 test: $(BIN_DIR)/django
-	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django test $(APP_NAME)
 
 lint:
 	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes
 
 jenkins: $(BIN_DIR)/django
-	cp -Rf media/photos-sample/ media/photos/
 	rm -rf reports
 	mkdir reports
 	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
@@ -75,4 +71,5 @@ scratchdb: dropdb createdb
 clean:
 	rm -rf bootstrap.py \
 			$(BIN_DIR) \
-			$(LIBS_DIR)
+			$(LIBS_DIR) \
+			src

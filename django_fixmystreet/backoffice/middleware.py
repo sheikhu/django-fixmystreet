@@ -4,6 +4,9 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 
+from django_fixmystreet.fixmystreet.models import FMSUser
+
+
 LOGIN_URL = reverse("login").lstrip('/')
 if hasattr(settings, 'LOGIN_REQUIRED_URLS') and isinstance(settings.LOGIN_REQUIRED_URLS, (list, tuple)):
     LOGIN_REQUIRED_URLS = [compile(expr) for expr in settings.LOGIN_REQUIRED_URLS]
@@ -35,9 +38,13 @@ class LoginRequiredMiddleware:
                     if m.match(path):
                         return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
 
+
 class LoadUserMiddleware:
     """
     """
     def process_request(self, request):
         if request.user.is_authenticated():
-            request.fmsuser = request.user.fmsuser
+            try:
+                request.fmsuser = request.user.fmsuser
+            except FMSUser.DoesNotExist:
+                pass # authenticated user is not a FMSUser

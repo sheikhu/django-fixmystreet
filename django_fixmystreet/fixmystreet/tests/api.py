@@ -6,17 +6,18 @@ from django.test import TestCase
 from django.utils import simplejson
 from django.test.client import Client
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from social_auth.backends.exceptions import AuthTokenError
 
-from django.conf import settings
 from django_fixmystreet.fixmystreet.models import Report
+from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
 # https://developers.facebook.com/docs/test_users/
 # https://developers.facebook.com/docs/authentication/#applogin
 
 
-class ApiTest(TestCase):
+class ApiTest(SampleFilesTestCase):
     fixtures = ['sample']
     users = {
         '100003558692539': {
@@ -24,7 +25,7 @@ class ApiTest(TestCase):
             'email': "steven_strubyi_test@tfbnw.net"
         }
     }
-    
+
     def setUp(self):
         self.steven = self.users['100003558692539']
         
