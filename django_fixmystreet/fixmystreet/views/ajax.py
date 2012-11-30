@@ -43,7 +43,7 @@ def uploadFile(request):
 def update_last_used_language(request):
     if request.user.id:
         fmsUser = FMSUser.objects.get(pk=request.user.id)
-        fmsUser.last_used_language = request.REQUEST.get('language')
+        fmsUser.last_used_language = request.REQUEST.get('language').upper()
         fmsUser.save()
     translation.activate(request.REQUEST.get('language'))
     toURL = request.REQUEST.get('from').replace('/en/','/'+request.REQUEST.get('language')+'/').replace('/fr/','/'+request.REQUEST.get('language')+'/').replace('/nl/','/'+request.REQUEST.get('language')+'/')
