@@ -308,3 +308,7 @@ class ReportCommentForm(forms.ModelForm):
                 if commit:
 			comment.save()
 		return comment
+
+class FileUploadForm(forms.Form):
+    title = forms.CharField(max_length=50,required=False)
+    file  = forms.FileField()
