@@ -216,7 +216,7 @@ class Report(UserTrackedModel):
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
-    photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
@@ -331,6 +331,19 @@ class ReportFile(ReportAttachment):
         return self.is_pdf() or self.is_word() or self.is_excel() 
     def is_an_image(self):
         return self.is_image()
+
+@receiver(post_save,sender=FMSUser)
+def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
+    """This method is used to create the security matrix when creating the first manager of the entity"""
+
+    #If this is the first user created and of type gestionnaire then assign all reportcategories to him
+    if (instance.manager == True):
+       #if we have just created the first one, then apply all type to him
+       if len(FMSUser.objects.filter(organisation_id=instance.organisation.id).filter(manager=True)) == 1:
+          for type in ReportCategory.objects.all():
+             instance.categories.add(type)
+
+
 
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):

@@ -125,11 +125,11 @@ def createUser(request):
             createdUser = createform.save(connectedUser, createdOrganisationEntity, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
 
             #If this is the first user created and of type gestionnaire then assign all reportcategories to him
-            if (createdUser.manager == True & connectedUser.leader == True):
-                #if we have just created the first one, then apply all type to him
-                if len(FMSUser.objects.filter(organisation_id=connectedUser.organisation.id).filter(manager=True)) == 1:
-                    for type in ReportCategory.objects.all():
-                        createdUser.categories.add(type)
+            #if (createdUser.manager == True & connectedUser.leader == True):
+            #    #if we have just created the first one, then apply all type to him
+            #    if len(FMSUser.objects.filter(organisation_id=connectedUser.organisation.id).filter(manager=True)) == 1:
+            #        for type in ReportCategory.objects.all():
+            #            createdUser.categories.add(type)
 
             if createdUser:
                 mail = HtmlTemplateMail(template_dir='send_created_to_user', data={'user': createdUser,"password":request.POST.get('password1')}, recipients=(createdUser.email,))

@@ -27,7 +27,7 @@ class FaqEntryAdmin(admin.ModelAdmin):
 class ReportAdmin(SimpleHistoryAdmin):
     list_display = ('responsible_entity', 'created', 'modified', 'category', 'secondary_category')
     ordering = ['modified']
-    exclude = ['photo']
+    #exclude = ['photo']
 
 admin.site.register(Report,ReportAdmin)
 

@@ -119,7 +119,7 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'photo', 'postalcode', 'description')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description')
 
     required_css_class = 'required'
     category = CategoryChoiceField(label=ugettext_lazy("category"))
@@ -128,7 +128,7 @@ class ReportForm(forms.ModelForm):
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
-    photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    #photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
@@ -165,7 +165,7 @@ class CitizenReportForm(ReportForm):
     """Citizen Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'photo', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
 
     category = CategoryChoiceField(label=ugettext_lazy("category"))
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
