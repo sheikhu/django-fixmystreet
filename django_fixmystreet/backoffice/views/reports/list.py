@@ -61,6 +61,7 @@ def list(request, status):
             {
                 "report_form": report_form,
                 "pnt":pnt,
-                "reports":reports
+                "reports":reports,
+                "status":status,
             },
             context_instance=RequestContext(request))

@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 {% load i18n tags %}
 {% block title %}{{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}}{% endblock %}
+
 {% block script %}
 {{ block.super }}
-<meta property="og:title" content="{{ report.title }}" />
-<meta property="og:description" content="{{ report.description }}" />
-<meta property="og:image" content="{{ MEDIA_URL }}{{ report.photo }}" />
+
+
+<meta property="og:title" content="{{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}}" />
+<meta property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
 {% map_scripts %}
+
+<script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script>
 /******************************/
 /* QUERY READY INITIALIZATION */
@@ -28,30 +32,7 @@ function subscribe() {
 	window.location = "{% url subscribe report.id %}?citizen_email="+$('#citizen_email').val();
 }
 
-	/**************************************************************/
-	/* toogleFileForm is used to show/hide the file annex section */
-	/**************************************************************/
-    	function toggleFileForm() {
-        	$("#fileForm").toggle();
-        	$("#showFileFormButton").toggle();
-        	$("#addCommmentDiv").toggle();
-    	}
-
-	/********************************************************************/
-	/* toogleCommentForm is used to show/hide the comment annex section */
-	/********************************************************************/
-    	function toggleCommentForm() {
-        	$("#commentForm").toggle();
-        	$("#showCommentFormButton").toggle();
-        	$('#addFileDiv').toggle();
-    	}
-$(function(){
-    		/************************************/
-	/* Hide the annex forms per default */
-	/************************************/
-   	$("#commentForm").hide();
-    	$("#fileForm").hide();
-    });
+	
 </script>
 {% endblock %}
 {% block css %}
@@ -87,43 +68,34 @@ $(function(){
 <!-- # MAIN CONTENT DEFINITION -->
 <!-- ######################### -->
 <div id="page_content_container">
-    {% if not report.is_fixed and report.is_confirmed %}
-    <!-- AddThis Button BEGIN -->
-    <div class="addthis_toolbox addthis_default_style">
-        <a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
-        <span class="addthis_separator">|</span>
-        <a class="addthis_button_facebook"></a>
-        <a class="addthis_button_myspace"></a>
-        <a class="addthis_button_google"></a>
-        <a class="addthis_button_twitter"></a>
-    </div>
-	<!-- AddThis Button END -->
-    {% endif %}
 
-	<br/>	
+{% block pageHeader %}
+<h1>
+    <!-- ########################### -->
+    <!-- # DISPLAY REPORT CATEGORY # -->
+    <!-- ########################### -->
+        {{report.secondary_category.name}}
  	<div style="float:right;margin-top:-23px">
         	<table class="reportActionButtons">
 			<tr>
 				<td>
-					<button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
+					<button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
 				</td>
 				{% if report.is_in_progress %}
 				<td>
-					<button onclick="window.location = '{% url report_update report.id %}?is_fixed=True'" class="saveFormButton" style="margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+					<button onclick="window.location = '{% url report_update report.id %}?is_fixed=True'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
 				</td>
 				{% endif %}
 			</tr>
 		</table>
 	</div>
-	<!-- ################ -->
-	<!-- # REPORT TITLE # -->
-	<!-- ################ -->
-    	<h1>{{report.title}}</h1>
+</h1>
+    {% endblock %}
 
 	<div id="leftcol">    
-		<!-- ###################### -->
-		<!-- IS FIXED (DEPRECATED?) -->
-		<!-- ###################### -->
+		<!-- ######### -->
+		<!-- IS FIXED  -->
+		<!-- ######### -->
 		{% if report.is_fixed %}
 			<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
@@ -145,13 +117,6 @@ $(function(){
             	</div>
 
 			<p>{{report.description|linebreaks}}</p>
-
-		<!-- ########################## -->
-		<!-- REPORT PHOTO (DEPRECATED?) -->
-		<!-- ########################## -->
-		{% if report.photo  %}
-			<center><img src='{{ report.photo.url }}'/></center>
-	   	{% endif %}
 
 		<!-- ################### -->
 		<!-- REPORT CREATOR ZONE -->
@@ -252,9 +217,6 @@ $(function(){
 				<p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
 			</div>
 
-		<!-- ############################## -->
-		<!-- # DEPRECATED? UPDATED BY LVR # -->	
-		<!-- ############################## -->
 			{% if report.is_in_progress %} 
 		<!-- ############################################# -->
 		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
@@ -271,7 +233,7 @@ $(function(){
                         	<td>
                             		<p style="float:left;">
                             		<input type="hidden" name="form-type" value="comment-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleCommentForm();"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
                                 	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
                             		</p>
                         	</td>
@@ -293,7 +255,7 @@ $(function(){
                         	<td>
                             		<p style="float:left;">
                             		<input type="hidden" name="form-type" value="file-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleFileForm();"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleFileForm()',200);"/>
                                 	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
                             	</p>
                         	</td>

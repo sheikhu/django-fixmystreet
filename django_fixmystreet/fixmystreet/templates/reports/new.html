@@ -6,51 +6,22 @@
 {{ block.super }}
 
 <script src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script>
-
+<script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
+<script src="{{ STATIC_URL }}js/categorySelection.js"></script>
 {% map_scripts %}
-<script>
 
-$(document).ready(function() {
-	// Redefine the submit function for the add ReportFile form
-	$("#fileForm").submit(function(){
-		//Define a new FormData, in this object the file(s) will be saved
-		var data = new FormData();
-		$.each($("#fileForm #id_file")[0].files, function(i, file) {
-			//For each file in the file input field append the file to the FormData
-    		data.append('file',file);
-		});
-		//Process the data by sending it using ajax.
-		$.ajax({ 
-                data: data, 
-                type: $(this).attr('method'),
-                url: $(this).attr('action'),
-                processData: false,
-  				contentType: false,
-                success: function(response) {
-                    //Nothing to be done
-                }
-            });
-            return false;
-        }
-    );
-
-        //Hide original list of elements
-	$("#id_secondary_category_copy").hide();
-	$("[for='id_secondary_category_copy']").hide();
-	
+<meta property="og:title" content="{% trans 'New Report' %}" />
+<meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur FixMyStreet qui identifiera alors le service public en charge de le traiter.' %}" />
+<script> 
+$(function(){
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 
-    {% if not BACKOFFICE %}
-        /*Remove non-public categories*/
-        $("#id_secondary_category").find("option[public='False']").hide();
-    {% endif %}
-
 	$map.fmsMap({
 		apiLang:     LANGUAGE_CODE,
-        localizeUrl: SERVICE_GIS_URL + '/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
-        origin:{
+		localizeUrl: SERVICE_GIS_URL + '/urbis/Rest/Localize/getaddressfromxy',
+		urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
+		origin:{
 			x:{{ pnt.x }},
 			y:{{ pnt.y }} 
 		}
@@ -60,365 +31,13 @@ $(document).ready(function() {
 	{% endfor %}
 	$map.fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
 
-	
-	$(window).hashchange(function(){
-		if(window.location.hash == '#form')
-		{
-            $('#page_content_container').removeClass('form-hide').addClass('form-show');
-			$form.show();
-			$('#nearby-reports,#instructable').hide();
-			$('#back').css({visibility: 'visible'});
-			$("#addFileDiv").show();
-            $("#addCommmentDiv").show();
-			retrieveAddress();
-		}
-		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports')
-		{
-            $('#page_content_container').removeClass('form-show').addClass('form-hide');
-			$form.hide();
-			$('#nearby-reports').show();
-			$('#back').css({visibility: 'hidden'});
-			$("#addFileDiv").hide();
-			$("#addCommmentDiv").hide();
-            $('#instructable').fadeIn();
-            $map.one('markerdrag click movestart zoomend',function(evt,point){
-                $('#instructable').fadeOut();
-            });
-		}
-		else
-		{
-			$form.show();
-			$('#nearby-reports,#instructable').hide();
-			$('#back').css({visibility: 'visible'});
-		}
-	});
-	$(window).hashchange();
-	$("#commentForm").hide();
-    $("#fileForm").hide();
-	$('#id_category').change(function(evt) {
-                // updates entry notes
-                var el_id = $('#id_category').val();
-                var refSecondary = $("#id_secondary_category");
-                if(el_id)
-                {
-                        refSecondary.find("option:eq(0)").attr("selected", "selected");
-                        refSecondary.removeAttr("disabled");
-                        $("#secondary_container").load("/ajax/categories/" + el_id);
-                        <!-- FILTER SECOND DROPDOWN -->
-			
-			refSecondary.html('');
-			refSecondary.html($('#id_secondary_category_copy').html());
-                        //Keep the first element in memory (the headlabel)
-                        var headLabelOption = refSecondary.find("option:first");
-			refSecondary.find("option[family!='"+el_id+"']").remove();
-                        //Prepend the headlabel again.
-                        refSecondary.prepend(headLabelOption);
-    			{% if not BACKOFFICE %}
-			refSecondary.find("option[public='False']").remove();
-                        {% endif %}
-			/*remove empty optgroup*/
-			refSecondary.find("optgroup:not(:has(option))").remove();
-			/*Copy value to hiddendropdown */
-			$('#id_secondary_category').change();// initialize notes
-                }
-                else
-                {
-                        refSecondary.find("option:eq(0)").attr("selected", "selected");
-                        $("#secondary_container").html('');
-                        refSecondary.attr('disabled', 'disabled');
-                }
-        });
-	$('#id_category').change();// initialize notes
-
-	$('#id_secondary_category').change(function(evt) {
-         	//Copy is necessary to avoid django validation problem
-                var el_id_copy = $('#id_secondary_category').val();
-		$('#id_secondary_category_copy').val(el_id_copy);
-	});
-	$('#id_secondary_category').change();// initialize notes
-	$("#addFileDiv").hide();
-    $("#addCommmentDiv").hide();
-    //On page load: The report overview needs to be hidden
-	$('#report_overview_table_div').hide();
-	
-	
-	$map.bind('markermoved',function(evt,point){
-		$('#id_x').val(point.x);
-		$('#id_y').val(point.y);
-		
-		if(window.location.hash != '#form')
-		{
-			window.location.assign('#form');
-			$("#addFileDiv").show();
-            $("#addCommmentDiv").show();
-			return; // address is retrieved when form is shown
-		}
-		
-		retrieveAddress();
-	});
-
-	$map.bind('reportselected',function(evt, point, report){
-		window.location.assign('/reports/' + report.id);
-	});
-
-	function retrieveAddress()
-	{
-		$form.find('.error-msg').remove();
-		$form.find(':submit').prop('disabled',true);
-		$('#id_address').addClass('loading');
-
-		$map.fmsMap('getSelectedAddress',function(response)
-		{
-			$('#id_address').removeClass('loading');
-			
-			if(response.status == 'success')
-			{
-				$('#id_postalcode').val(response.result.address.street.postCode);
-				$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
-                $form.find(':submit').prop('disabled',false);
-			}
-			else
-			{
-				var msg = 'Error: ' + response.status;
-				if(response.status == 'error')
-				{
-					msg = 'Unable to locate this address';
-				}
-				$('#id_address').removeClass('loading');
-				$('#id_address').after('<p class="error-msg">' + msg + '</p>');
-			}
-		});
-	}
-	//On page load: the add comment and add file forms must be hidden
-	$("#extraCommentsDiv").hide();
-	$("#extraFilesDiv").hide();
-	$("#fileForm #id_file").attr("onchange","fileSelected();");
-	
-	
 });
-//Add the submitted file to the view and save it in the session and on the server.
-function AddFileToView(){
-	//Submit the last form to save the file to the server
-	
-	// If no files are yet added: show the div containing the added files table list
-	if(!$("#extraFilesDiv").is(":visible")){
-		$("#extraFilesDiv").show();
-	}
-	//Get the file from the file input component
-	var file = document.getElementById('id_file').files[0];
-	//Determine the type of the submited file
-	var type = $("#fileForm #id_file")[0].files[0].type.split("/")[1];
-	//Structured Data of the file to add
-	var title = $("#fileForm #id_title").val();
-	if (title == ""){
-		title = file.name;
-	}
-	var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','/media/files/')};
-	//Put the file data in the session
-	$.post("/{{LANGUAGE_CODE}}/ajax/createFile",data);
-	//Create a file reader so that we can create a thumbnail of the submitted file.
-	var reader = new FileReader();
-	//Define the onload function of the reader
-	reader.onload = function(ev){
-		var url = ev.target.result;
-		//Show a thumbnail of the file depending on the file type
-		if (type == "pdf"){
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-pdf.png");
-		}
-		else if (type == "png"){
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src",url);
-		}
-		else if (type == "jpeg"){
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src",url);
-		}
-		else if (type == "msword"){
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-word.jpg");
-		}
-		else if(type == "vnd.ms-excel"){
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-xls.png");
-		}
-		else if (type == "vnd.openxmlformats-officedocument.wordprocessingml.document"){
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-word.jpg");
-		}
-		else {
-			$('#fileImage'+($('#extraFilesTable').find('tr').length-1)).attr("src","/static/images/icon-file.png");
-		}
-		$("#fileForm").submit();
-	
-	}
-
-	//Create the html to add in the view
-	var htmlToAdd = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+title+"</h3><img src='' id='fileImage"+$('#extraFilesTable').find('tr').length+"' style='max-width: 50px;'/></div></td></tr>";
-	$("#extraFilesTable").append(htmlToAdd);
-	// Read the file that is submited. If the file is read the onload function will be called.
-	reader.readAsDataURL(file);
-	
-}
-
-//Add a comment to the extra comment table in the view.
-function AddCommentToView(){
-	// If no comments are added yet: show the div containing the extra comments div
-	if(!$("#extraCommentsDiv").is(":visible")){
-		$("#extraCommentsDiv").show();
-	}
-	// Structured Data of the comment to add
-	var data = {"title":$("#commentTitleInput").val(),"text":$("#commentTextTextArea").val()};
-	//Create the html to add in the view
-	var html = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+$("#commentTitleInput").val()+"</h3><p>"+$("#commentTextTextArea").val()+"</p></div></td></tr>"
-	
-	//Put comment data in the session
-	$.post("/ajax/createComment",data);
-	$(".extraCommentsTable").append(html);
-	
-	
-}
-//Method called when the edit button is pressed (when the user is already in the overview screen). This function will show all forms again.
-function showForm(){
-	$('#new_report_citizen_form').show();
-    $('#report_overview_table_div').hide();
-    $(':submit').val('Submit');
-    $(':submit').removeClass('confirm');
-    $(':submit').attr('onclick','');
-    $("#addFileDiv").show();
-    $("#addCommmentDiv").show();
-}
-
-// Show/hide the file form
-function toggleFileForm() {
-	$("#fileForm #id_title").val("");
-	$("#fileForm #id_file").val("");
-	$("#fileForm").toggle();
-	$("#showFileFormButton").toggle();
-	$("#addCommmentDiv").toggle();
-}
-//Show/hide the comment form
-function toggleCommentForm() {
-	$("#commentTitleInput").val("");
-	$("#commentTextTextArea").val("");
-	$("#commentForm").toggle();
-	$("#showCommentFormButton").toggle();
-	$('#addFileDiv').toggle();
-}
-//This function checks the size of the current selected file in the file form input field.
-function fileSelected() {
-	var file = document.getElementById('id_file').files[0];
-	if (file) {
-		if(file.size == 0){
-			alert('Filesize must be greater than 0');
-			$("#fileForm #id_file").val("");
-		}
-		//TODO determine max file size
-		if(file.size > 100000){
-			alert('File to large');
-			$("#fileForm #id_file").val("");
-		}
-	}
-}
-
 </script>
+<script src="{{STATIC_URL}}js/new_report.js"></script>
 
 
 {% block specific_scripts %}
-<script>
-// On submit: validate if the current commune participates with the FixMyStreet project
-    $(document).delegate("#report_form", "submit", function(evt) {
-    	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
-		//This commune does not participate to fixmystreet until now.
-		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
-		return false;
-	}
-		//When the user presses the submit button for the first time: the overview must be shown.
-		// The following code will popuplate the report_overview_table with the entered values
-        if (!$(':submit').hasClass('confirm')) {
-            evt.preventDefault();
-            $("#locationView").children().remove();
-			$("#category1View").children().remove();
-			$("#category2View").children().remove();
-			$("#descriptionView").children().remove();
-			$("#emailView").children().remove();
-			$("#firstNameView").children().remove();
-			$("#nameView").children().remove();
-			$("#photoView").children().remove();
-            //TODO show overview hide form
-            vals = [];
-            i = 0;
-            $('[type=text]').each(function() {
-  			 vals[i]=this.value;
-  			 i++;
-			});
-			$('select').each(function(){
-				vals[i] = $(this).find("option[value="+this.value+"]").text();
-				i++;
-			});
-			$('textarea').each(function(){
-				vals[i]=this.value;
-				i++;
-			});
-			$('[type=file]').each(function() {
-  			 vals[i]=this.value;
-  			 i++;
-			});
-			$("#locationView").append("<p>"+vals[0]+"</p>");
-			$("#category1View").append("<p>"+vals[7]+"</p>");
-			$("#category2View").append("<p>"+vals[8]+"</p>");
-			$("#descriptionView").append("<p>"+vals[8]+"</p>");
-			$("#emailView").append("<p>"+vals[1]+"</p>");
-			$("#firstNameView").append("<p>"+vals[2]+"</p>");
-			$("#nameView").append("<p>"+vals[3]+"</p>");
-			$("#photoView").append("<p>"+vals[9].split("\\")[2]+"</p>");
-            $('#new_report_citizen_form').hide();
-            $('#report_overview_table_div').show();
-            $(':submit').val('Confirm');
-            $(':submit').addClass('confirm');
-            $(':submit').attr('onclick','submitAnnexes();');
-            $("#addFileDiv").hide();
-            $("#addCommmentDiv").hide();
-        }
-    });
-$(document).ready(function() {
-	$("#addFileDiv").hide();
-    $("#addCommmentDiv").hide();
-    $('#id_category').change(function(evt) {
-                // updates entry notes
-                var el_id = $('#id_category').val();
-                var refSecondary = $("#id_secondary_category");
-                if(el_id)
-                {
-                        refSecondary.find("option:eq(0)").attr("selected", "selected");
-                        refSecondary.removeAttr("disabled");
-                        $("#secondary_container").load("/ajax/categories/" + el_id);
-                        <!-- FILTER SECOND DROPDOWN -->
-			
-			refSecondary.html('');
-			refSecondary.html($('#id_secondary_category_copy').html());
-			//Keep the first element in memory (the headlabel)
-                        var headLabelOption = refSecondary.find("option:first");
-			refSecondary.find("option[family!='"+el_id+"']").remove();
-			refSecondary.find("option[public='False']").remove();
-			/*remove empty optgroup*/
-			refSecondary.find("optgroup:not(:has(option))").remove();
-			//Prepend the headlabel again.
-                        refSecondary.prepend(headLabelOption);
-			/*Copy value to hiddendropdown */
-			$('#id_secondary_category').change();// initialize notes
-                }
-                else
-                {
-                        refSecondary.find("option:eq(0)").attr("selected", "selected");
-                        $("#secondary_container").html('');
-                        refSecondary.attr('disabled', 'disabled');
-                }
-        });
-	$('#id_category').change();// initialize notes
-
-	$('#id_secondary_category').change(function(evt) {
-         	//Copy is necessary to avoid django validation problem
-                var el_id_copy = $('#id_secondary_category').val();
-		$('#id_secondary_category_copy').val(el_id_copy);
-	});
-	$('#id_secondary_category').change();// initialize notes
-});
-</script>
+<script src="{{STATIC_URL}}js/reportFormReview.js"></script>
 {% endblock %}
 {% endblock %}
 
@@ -494,12 +113,12 @@ $(document).ready(function() {
 						
 					</td>	
 				</tr>
-				<tr>
+				<!--<tr>
 					<th>{% trans 'Photo' %}</th>
 					<td id="photoView">
 						
 					</td>	
-				</tr>
+				</tr>-->
 				<tr>
 					<th>{% trans 'Description' %}</th>
 					<td id="descriptionView">
@@ -573,7 +192,7 @@ $(document).ready(function() {
 						<td></td>
 						<td>
 							<p style="float:left;">
-								<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddCommentToView();toggleCommentForm();"/>
+								<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddCommentToView('{{LANGUAGE_CODE}}');toggleCommentForm();"/>
 								<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
 							</p>
 						</td>
@@ -592,7 +211,7 @@ $(document).ready(function() {
         					<td></td>
         					<td>
         						<p style="float:left;">
-        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddFileToView();toggleFileForm();"/>
+        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddFileToView('{{LANGUAGE_CODE}}');toggleFileForm();"/>
         							<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
         						</p>
         					</td>

@@ -50,5 +50,5 @@ class SessionManager():
 		if 'files' in s.keys():
 			del s['files']
 		if 'comments' in s.keys():
-			del s['keys']
+			del s['comments']
 		s.save()
