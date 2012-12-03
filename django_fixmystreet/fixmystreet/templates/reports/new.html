@@ -17,18 +17,18 @@ $(document).ready(function() {
 		var data = new FormData();
 		$.each($("#fileForm #id_file")[0].files, function(i, file) {
 			//For each file in the file input field append the file to the FormData
-    		data.append('file',file);
+    			data.append('file',file);
 		});
 		//Process the data by sending it using ajax.
 		$.ajax({ 
-                data: data, 
-                type: $(this).attr('method'),
-                url: $(this).attr('action'),
-                processData: false,
-  				contentType: false,
-                success: function(response) {
-                    //Nothing to be done
-                }
+                	data: data, 
+                	type: $(this).attr('method'),
+                	url: $(this).attr('action'),
+                	processData: false,
+  			contentType: false,
+                	success: function(response) {
+                    		//Nothing to be done
+               	 	}
             });
             return false;
         }
@@ -212,6 +212,7 @@ function AddFileToView(){
 	var title = $("#fileForm #id_title").val();
 	if (title == ""){
 		title = file.name;
+		$("#fileForm #id_title").val(title);
 	}
 	var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','/media/files/')};
 	//Put the file data in the session

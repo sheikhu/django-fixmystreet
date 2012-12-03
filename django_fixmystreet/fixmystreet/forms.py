@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
-from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
+from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail, FixStdImageField
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
@@ -277,15 +277,22 @@ class ReportFileForm(forms.ModelForm):
 		fileUpdate= super(ReportFileForm,self).save(commit=False)
 		fileUpdate.report = report
 
-		if str(fileUpdate.file.name).endswith("pdf"):
+		file_name_upper = str(fileUpdate.file.name).upper()
+
+		if file_name_upper.endswith("PDF"):
 			fileUpdate.file_type = ReportFile.PDF
-		if str(fileUpdate.file.name).endswith("doc"):
+		if file_name_upper.endswith("DOC") or file_name_upper.endswith("DOCX"):
 			fileUpdate.file_type = ReportFile.WORD
-		if str(fileUpdate.file.name).endswith("png") or str(fileUpdate.file.name).endswith("jpg"):
+		if file_name_upper.endswith("PNG") or file_name_upper.endswith("JPG") or file_name_upper.endswith("JPEG"):
 			fileUpdate.file_type = ReportFile.IMAGE
-		if str(fileUpdate.file.name).endswith("xls"):
+		if file_name_upper.endswith("XLS"):
 			fileUpdate.file_type = ReportFile.EXCEL
-	
+	 
+		if fileUpdate.file_type == ReportFile.IMAGE:
+			if report.files.count() == 0:
+				report.photo = fileUpdate.file
+				report.save()
+
                 #Add the creator
                 fileUpdate.creator = user
 	

@@ -29,6 +29,10 @@ def new( request, report_id ):
                 comment_form.save(request.user, report)
         
         if request.POST['form-type'] == u"file-form":
+            #set default title if not given
+            fileTitle = request.POST.get("title")
+            if (fileTitle == ""):
+                  request.POST.__setitem__("title",request.FILES.get('file').name)
             file_form = ReportFileForm(request.POST,request.FILES)
             if file_form.is_valid:
                 file_form.save(request.user, report)

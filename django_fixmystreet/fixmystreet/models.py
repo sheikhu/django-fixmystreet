@@ -219,6 +219,7 @@ class Report(UserTrackedModel):
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    photo = models.FileField(upload_to="photos")
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()

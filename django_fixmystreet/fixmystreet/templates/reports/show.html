@@ -32,6 +32,11 @@ function subscribe() {
 	/* toogleFileForm is used to show/hide the file annex section */
 	/**************************************************************/
     	function toggleFileForm() {
+		/*var filePath = $('#id_file').val();
+ 		var fileName  = $('#id_title').val();
+                if (fileName == "") {
+			$('#id_title').val(filePath);
+		}*/
         	$("#fileForm").toggle();
         	$("#showFileFormButton").toggle();
         	$("#addCommmentDiv").toggle();
@@ -46,7 +51,7 @@ function subscribe() {
         	$('#addFileDiv').toggle();
     	}
 $(function(){
-    		/************************************/
+    	/************************************/
 	/* Hide the annex forms per default */
 	/************************************/
    	$("#commentForm").hide();
