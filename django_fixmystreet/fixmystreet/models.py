@@ -455,6 +455,18 @@ class ReportMainCategoryClass(models.Model):
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):      
         return self.name
+    
+    @staticmethod    
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['name_en'] = getattr(current_element, 'name_en')
+            d['name_fr'] = getattr(current_element, 'name_fr')
+            d['name_nl'] = getattr(current_element, 'name_nl')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -473,6 +485,18 @@ class ReportSecondaryCategoryClass(models.Model):
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):
         return self.name
+
+    @staticmethod    
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['name_en'] = getattr(current_element, 'name_en')
+            d['name_fr'] = getattr(current_element, 'name_fr')
+            d['name_nl'] = getattr(current_element, 'name_nl')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -495,6 +519,26 @@ class ReportCategory(models.Model):
     public = models.BooleanField(default=True)
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
+    
+    @staticmethod    
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['n_en'] = getattr(current_element, 'name_en')
+            d['n_fr'] = getattr(current_element, 'name_fr')
+            d['n_nl'] = getattr(current_element, 'name_nl')
+            d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
+            d['m_c_n_en'] = getattr(getattr(current_element, 'category_class'),'name_en')
+            d['m_c_n_fr'] = getattr(getattr(current_element, 'category_class'),'name_fr')
+            d['m_c_n_nl'] = getattr(getattr(current_element, 'category_class'),'name_nl')
+            d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
+            d['s_c_n_en'] = getattr(getattr(current_element, 'secondary_category_class'),'name_en')
+            d['s_c_n_fr'] = getattr(getattr(current_element, 'secondary_category_class'),'name_fr')
+            d['s_c_n_nl'] = getattr(getattr(current_element, 'secondary_category_class'),'name_nl')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
  
     class Meta:
         verbose_name = "category"

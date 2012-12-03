@@ -7,42 +7,105 @@ from django.utils import simplejson
 from django.db.models import Q
 from datetime import datetime, timedelta
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 from django_fixmystreet.fixmystreet.utils import ssl_required, JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
 
-def login_user(request):
-        '''login_user is a method used by the mobiles to connect a user to the application'''
+def load_categories(request):
+        '''load_categories is a method used by the mobiles to load available categories and dependencies'''
+        user_name = None
         try:
-            postedData = simplejson.loads(request.POST.items()[0][0])
+            user_name    = request.POST.get('username')
         except ValueError:
             #Catching malformed input request data
-            return HttpResponseBadRequest(simplejson.dumps({"request":request.POST.items()[0][0]}),mimetype='application/json')
-        
-        user_email    = postedData.get('email')
-        user_password = postedData.get('password')
-        
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_REQUEST","request":request.POST}),mimetype='application/json')
         #Invalid request. Expected values are not present
-        if (user_email == None or user_password == None):
-            return HttpResponseBadRequest(simplejson.dumps({"email":user_email}),mimetype='application/json')
+        if (user_name == None):
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_PARAMETERS","request":request.POST}),mimetype='application/json')
         
         try:
             #Search user
-            user_object   = FMSUser.objects.get(email=user_email)
-            if user_object.check_password(user_password) == False:
-                #Bad Password
-                return HttpResponseForbidden(simplejson.dumps({"email": user_email}),mimetype='application/json')
+            user_object   = FMSUser.objects.get(username=user_name)
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
-            return HttpResponseForbidden(simplejson.dumps({"email": user_email}),mimetype='application/json')
+            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_USER","username": user_name}),mimetype='application/json')
+       
+        all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
+ 
+        #Right ! Logged in :-)
+        return HttpResponse(ReportCategory.listToJSON(all_categories),mimetype='application/json')
+
+def login_user(request):
+        '''login_user is a method used by the mobiles to connect a user to the application'''
+        user_name = None
+        user_password = None
+        try:
+            user_name    = request.POST.get('username')
+            user_password = request.POST.get('password')
+        except ValueError:
+            #Catching malformed input request data
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_REQUEST","request":request.POST}),mimetype='application/json')
+
+        
+        #Invalid request. Expected values are not present
+        if (user_name == None or user_password == None):
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_PARAMETERS","username":user_name}),mimetype='application/json')
+        
+        try:
+            #Search user
+            user_object   = FMSUser.objects.get(username=user_name)
+            if user_object.check_password(user_password) == False:
+                #Bad Password
+                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_BAD_PASSWORD","username": user_name}),mimetype='application/json')
+        except ObjectDoesNotExist:
+            #The user has not the right to access the login section (Based user/pass combination
+            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),mimetype='application/json')
+        
+        #Right ! Logged in :-)
+        return HttpResponse(user_object.toJSON(),mimetype='application/json')
+
+
+
+
+
+
+
+
+# deprecated ! service.gis.irisnet.be support jsonp
+"""
+def search(request): 
+def login_user(request):
+        '''login_user is a method used by the mobiles to connect a user to the application'''
+        user_name = None
+        user_password = None
+        try:
+            user_name    = request.POST.get('username')
+            user_password = request.POST.get('password')
+        except ValueError:
+            #Catching malformed input request data
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_REQUEST","request":request.POST.items()[0][0]}),mimetype='application/json')
+
+        
+        #Invalid request. Expected values are not present
+        if (user_name == None or user_password == None):
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_PARAMETERS","username":user_name}),mimetype='application/json')
+        
+        try:
+            #Search user
+            user_object   = FMSUser.objects.get(username=user_name)
+            if user_object.check_password(user_password) == False:
+                #Bad Password
+                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_BAD_PASSWORD","username": user_name}),mimetype='application/json')
+        except ObjectDoesNotExist:
+            #The user has not the right to access the login section (Based user/pass combination
+            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),mimetype='application/json')
         
         #Right ! Logged in :-)
         return HttpResponse(user_object.toJSON(),mimetype='application/json')
 
 
 # deprecated ! service.gis.irisnet.be support jsonp
-"""
 def search(request): 
     conn = httplib.HTTPConnection(settings.LOCAL_API)
     #conn.request("POST", "/WSGeoloc/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8').encode('iso-8859-15'))

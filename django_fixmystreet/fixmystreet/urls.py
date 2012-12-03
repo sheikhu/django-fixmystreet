@@ -85,5 +85,6 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/reports/pro/$'), 'reports_pro',name='api_reports'),
     url(_(r'^api/report/new/$'), 'create_report',name='api_report_new'),
     url(_(r'^api/login/$'),'login_user',name='login_user'),
+    url(_(r'^api/load_categories/$'),'load_categories',name='load_categories'),
 )
 
