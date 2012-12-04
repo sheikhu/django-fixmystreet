@@ -1,23 +1,16 @@
 from django.utils import simplejson
 from datetime import datetime as dt
 
-from django.shortcuts import get_object_or_404
-from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from django.template.loader import render_to_string, TemplateDoesNotExist
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.models import User, UserManager, Group
-from django.contrib.sites.models import Site
+from django.contrib.auth.models import User, UserManager
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
 from django.http import Http404
-from django.contrib.sessions.models import Session
 from django.core import serializers
-from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.conf import settings
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -39,8 +32,10 @@ class UserTrackedModel(TimeStampedModel):
                 self.created_by = user
             self._history_user = user # used by simple_history
         super(UserTrackedModel, self).save(*args, **kwargs)
+
     class Meta:
         abstract = True
+
 
 class FMSUser(User):
     telephone = models.CharField(max_length=20,null=True)
@@ -74,24 +69,18 @@ class FMSUser(User):
              return self.organisation.dependency
         else:
              return self.organisation
+
     def is_pro(self):
-        return self.agent == True or self.manager == True or self.leader == True or self.impetrant == True or self.contractor == True
+        return self.agent or self.manager or self.leader or self.impetrant or self.contractor
+
     def is_citizen(self):
         return not self.is_pro()
+
     def can_see_confidential(self):
         return self.leader or self.manager
+
     def get_langage(self):
         return self.last_used_language
-    def can_create_report(self):
-        #Search the right responsible for the current organization.            
-        userCandidates = FMSUser.objects.filter(organisation__id=self.get_organisation()).filter(manager=True)
-        managerFound = False
-        for currentUser in userCandidates:
-            userCategories = currentUser.categories.all()
-            for currentCategory in userCategories:
-                if (currentCategory == instance.secondary_category):
-                   return True
-        return False
 
     def get_user_type(self):
         if self.leader:
@@ -104,6 +93,7 @@ class FMSUser(User):
             return "impetrant"
         if self.contractor:
             return "contractor"
+
     def toJSON(self):
         d = {}
         d['id'] = getattr(self, 'id')
@@ -113,6 +103,7 @@ class FMSUser(User):
         d['last_used_language'] = getattr(self, 'last_used_language')
         d['organisation'] = getattr(self.get_organisation(), 'id')
         return simplejson.dumps(d)
+
 
 class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
@@ -289,8 +280,8 @@ class Exportable(models.Model):
 
 
 class ReportAttachment(UserTrackedModel):
-    validated = models.BooleanField(default=False)
-    isVisible = models.BooleanField(default=False)
+    is_validated = models.BooleanField(default=False)
+    is_visible = models.BooleanField(default=False)
     title = models.CharField(max_length=250)
 
     class Meta:
@@ -299,11 +290,11 @@ class ReportAttachment(UserTrackedModel):
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
-        return (self.isVisible==True and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        return (self.isVisible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
     
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''
-        return self.validated==True and self.isVisible==True
+        return self.validated and self.isVisible
     
     def get_display_name(self):
         if (self.created_by.first_name == None and self.created_by.last_name == None):
@@ -537,7 +528,6 @@ class ReportCategory(models.Model):
             d['s_c_n_en'] = getattr(getattr(current_element, 'secondary_category_class'),'name_en')
             d['s_c_n_fr'] = getattr(getattr(current_element, 'secondary_category_class'),'name_fr')
             d['s_c_n_nl'] = getattr(getattr(current_element, 'secondary_category_class'),'name_nl')
-            d['p'] = getattr(current_element, 'public')
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
  

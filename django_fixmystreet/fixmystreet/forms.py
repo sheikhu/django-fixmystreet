@@ -1,14 +1,16 @@
+
 from django import forms
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from django.utils.translation import ugettext_lazy
-from django.contrib.gis.geos import fromstr
+from django.utils.translation import ugettext_lazy, ugettext as _
+from django.utils.encoding import force_unicode
+from django.utils.html import escape, conditional_escape
 from django.forms.util import ErrorDict
+from django.contrib.gis.geos import fromstr
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from django.utils.encoding import force_unicode
-from django.utils.html import escape, conditional_escape
+
 from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail, FixStdImageField
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
@@ -160,6 +162,9 @@ class ReportForm(forms.ModelForm):
             report.save()
         return report
 
+qualities = list(Report.REPORT_QUALITY_CHOICES)
+qualities.insert(0, ('', _('Choose your quality')))
+
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
@@ -168,6 +173,7 @@ class CitizenReportForm(ReportForm):
         fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
     
     category = CategoryChoiceField(label=ugettext_lazy("category"))
+    quality = forms.ChoiceField(choices=qualities)
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
     citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
     citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))
