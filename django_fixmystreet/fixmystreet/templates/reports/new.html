@@ -10,6 +10,7 @@
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
 {% map_scripts %}
 
+
 <meta property="og:title" content="{% trans 'New Report' %}" />
 <meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur FixMyStreet qui identifiera alors le service public en charge de le traiter.' %}" />
 <script> 
@@ -32,6 +33,7 @@ $(function(){
 	$map.fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
 
 });
+
 </script>
 <script src="{{STATIC_URL}}js/new_report.js"></script>
 

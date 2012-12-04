@@ -219,6 +219,7 @@ class Report(UserTrackedModel):
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    photo = models.FileField(upload_to="photos")
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
@@ -294,6 +295,15 @@ class ReportAttachment(UserTrackedModel):
 
     class Meta:
         abstract=True
+    
+    def is_confidential_visible(self):
+        '''visible when not confidential'''
+        current_user = get_current_user().fmsuser
+        return (self.isVisible==True and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+    
+    def is_citizen_visible(self):
+        '''Visible when not confidential and public'''
+        return self.validated==True and self.isVisible==True
     
     def get_display_name(self):
         if (self.created_by.first_name == None and self.created_by.last_name == None):
@@ -445,6 +455,18 @@ class ReportMainCategoryClass(models.Model):
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):      
         return self.name
+    
+    @staticmethod    
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['name_en'] = getattr(current_element, 'name_en')
+            d['name_fr'] = getattr(current_element, 'name_fr')
+            d['name_nl'] = getattr(current_element, 'name_nl')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -463,6 +485,18 @@ class ReportSecondaryCategoryClass(models.Model):
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):
         return self.name
+
+    @staticmethod    
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['name_en'] = getattr(current_element, 'name_en')
+            d['name_fr'] = getattr(current_element, 'name_fr')
+            d['name_nl'] = getattr(current_element, 'name_nl')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -485,6 +519,26 @@ class ReportCategory(models.Model):
     public = models.BooleanField(default=True)
     def __unicode__(self):      
         return self.category_class.name + ":" + self.name
+    
+    @staticmethod    
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['n_en'] = getattr(current_element, 'name_en')
+            d['n_fr'] = getattr(current_element, 'name_fr')
+            d['n_nl'] = getattr(current_element, 'name_nl')
+            d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
+            d['m_c_n_en'] = getattr(getattr(current_element, 'category_class'),'name_en')
+            d['m_c_n_fr'] = getattr(getattr(current_element, 'category_class'),'name_fr')
+            d['m_c_n_nl'] = getattr(getattr(current_element, 'category_class'),'name_nl')
+            d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
+            d['s_c_n_en'] = getattr(getattr(current_element, 'secondary_category_class'),'name_en')
+            d['s_c_n_fr'] = getattr(getattr(current_element, 'secondary_category_class'),'name_fr')
+            d['s_c_n_nl'] = getattr(getattr(current_element, 'secondary_category_class'),'name_nl')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
  
     class Meta:
         verbose_name = "category"

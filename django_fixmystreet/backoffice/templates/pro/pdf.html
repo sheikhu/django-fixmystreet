@@ -198,9 +198,11 @@
 	<th><strong>{% trans 'label_pdf_historique_title_text' %}</strong></th>
 
 	{% for comment in comment_list %}
-	{% if not comment.isVisible and pro_version == "0" %}
+	{% if not comment.is_citizen_visible and pro_version == "0" %}
 		<!-- SKIP ROW if the current comment annex is confidential -->
-	{% else %}
+	{% elif not comment.is_confidential_visible and pro_version == "1" %}
+	
+        {% else %}
 	<tr>
 		<td>{{comment.created}}</td>
 		<td>{{comment.created_by.fmsuser.get_display_name}}</td>
@@ -230,7 +232,9 @@
 <table>
 	{% for file in file_list %}
 	<!-- If we asked for a public version -->
-	{% if not file.isVisible and pro_version == "0" %}
+	{% if not file.is_citizen_visible and pro_version == "0" %}
+		<!-- SKIP ROW if the current file annex is confidential -->
+	{% elif not file.is_confidential_visible and pro_version == "1" %}
 		<!-- SKIP ROW if the current file annex is confidential -->
 	{% else %}
 	<tr>
