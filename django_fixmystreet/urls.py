@@ -15,23 +15,3 @@ urlpatterns = i18n_patterns('',
 urlpatterns += patterns('',
     (r'^i18n/', include('django.conf.urls.i18n')),
 )
-#The following is used to serve up local media files like images
-if settings.DEBUG:
-    baseurlregex = r'^static/(?P<path>.*)$'
-    urlpatterns += patterns('',
-        (
-            baseurlregex, 
-            'django.views.static.serve',
-            {'document_root':  settings.STATIC_ROOT}
-        ),
-    )
-#The following is used to serve up local media files like images
-if settings.DEBUG:
-    baseurlregex = r'^media/(?P<path>.*)$'
-    urlpatterns += patterns('',
-        (
-            baseurlregex, 
-            'django.views.static.serve',
-            {'document_root':  settings.MEDIA_ROOT}
-        ),
-    )

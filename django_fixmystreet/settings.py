@@ -76,11 +76,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.gis',
+    'django.contrib.staticfiles',
 
     'transmeta',
     'south',
     'simple_history',
-    'django_extensions',
+    # 'django_extensions',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
 )
