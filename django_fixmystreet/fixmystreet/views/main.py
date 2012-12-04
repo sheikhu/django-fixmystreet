@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.utils.http import urlquote
-from django.utils.translation import get_language
+from django.utils.translation import get_language, activate
 from django.conf import settings
 
 from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, FMSUser
@@ -32,7 +32,7 @@ def update_current_language(request):
         fmsUser = request.user.fmsuser
         fmsUser.last_used_language = request.REQUEST.get('language').upper()
         fmsUser.save()
-    translation.activate(request.REQUEST.get('language'))
+    activate(request.REQUEST.get('language'))
     fromUrl = request.REQUEST.get('from')
     if 'pro' in fromUrl:
         fromUrl = '/'+request.REQUEST.get('language')+'/pro/'
