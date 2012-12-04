@@ -10,7 +10,7 @@ It is a fork of http://fixmystreet.ca (https://github.com/visiblegovernment/djan
 
 this project in place use Urbis for map, search and locate engine (http://geoserver.gis.irisnet.be/).
 
-![data model](data-model.png)
+![data model](https://raw.github.com/CIRB/django-fixmystreet/master/data-model.png)
 
 
 Installation
