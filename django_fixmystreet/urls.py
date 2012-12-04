@@ -8,11 +8,13 @@ from django.conf import settings
 admin.autodiscover()
 
 urlpatterns = i18n_patterns('',
-    url(_(r'^'), include('django_fixmystreet.fixmystreet.urls')),
-    url(_(r'^pro/'), include('django_fixmystreet.backoffice.urls')),
+    url(r'^', include('django_fixmystreet.fixmystreet.urls')),
+    url(r'^pro/', include('django_fixmystreet.backoffice.urls')),
     (r'^admin/', admin.site.urls),
 )
-
+urlpatterns += patterns('',
+    (r'^i18n/', include('django.conf.urls.i18n')),
+)
 #The following is used to serve up local media files like images
 if settings.DEBUG:
     baseurlregex = r'^static/(?P<path>.*)$'

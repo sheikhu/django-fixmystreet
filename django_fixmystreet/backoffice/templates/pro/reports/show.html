@@ -1,246 +1,94 @@
-{% extends "pro/base.html" %}
+{% extends "reports/show.html" %}
 {% load i18n %}
 {% load tags %}
 
 {% block title %}{{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}}{% endblock %}
+
 {% block script %}
 {{ block.super }}
-<meta property="og:title" content="{{ report.title }}" />
-<meta property="og:description" content="{{ report.description }}" />
-<meta property="og:image" content="{{ MEDIA_URL }}{{ report.photo }}" />
-{% addthis_scripts %}
-{% map_scripts %}
 
+{% block specific_scripts %}
 <script>
-/******************************/
-/* QUERY READY INITIALIZATION */
-/******************************/
+
 $(function(){
-    	var connected = true;
+ /**********************************************/
+    /* Prepare iphone toogle button look and feel */
+    /**********************************************/
+    $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8",onChange:function(value){
+        var vals = $(value).attr("id").split("_");
+        if(vals[0].indexOf("public")!=-1){
+                    // Public checkbox changed
+                    if(vals[1].indexOf("file")!=-1){
+                    //TODO handle public bool of file with id vals[2]
+                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+                }
+                else{
+                    //TODO handle public bool of comment with id vals[2]
+                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+                }
+            }
+            else{
+                    //Confidential checkbox changed
+                    if(vals[1].indexOf("file")!=-1){
+                        //TODO handle Confidential bool of file with id vals[2]
+                        window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+                    }
+                    else{
+                        //TODO handle Confidential bool of comment with id vals[2]
+                        window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
+                    }
+                }
+            } });
 
-    	$("#dialog").dialog({
-        	modal: true,
-        	autoOpen:false,
-        	width:'auto',
-        	resizable: false
-    	});
+/***************************/
+/* Set the current manager */
+/***************************/
+$("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
 
-	/***********************/
-	/* Call FMS MAP WIDGET */
-	/***********************/
-	$('#map-bxl').fmsMap({ 
-		origin:{
-			x:{{ report.point.x }},
-			y:{{ report.point.y }} 
-		}
-	});
-	/*****************************************/
-	/* Call FMS MAP WIDGET ADD REPORT METHOD */
-	/*****************************************/
-	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
+/*************************************************************/
+/* Implement method when changing manager using the dropdown */
+/*************************************************************/
+$("#report_responsible_manager_select").bind("change",function(event){
+    var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
+    if (r==true){
+        window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
+    }
+    else{
+        $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+    }
+});
+/******************************/
+/* Set the current contractor */
+/******************************/
+$("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
 
-    	/*******************************/
-    	/* When clicking any page form */
-    	/*******************************/
-    	$('form').submit(function(){
-        	if(!connected){
-            		evt.preventDefault();
-        	}
-    	});
-    
-    	/******************************/
-    	/* When the user is connected */
-    	/******************************/
-    	$(document).bind('connected',function(){
-        	connected = true;
-        	$('.login-bar').hide();
-        	$('form :submit').prop('disabled',false);
-    	});
-    
-    	/*********************************/
-    	/* When the user is ideconnected */
-    	/*********************************/
-    	$(document).bind('disconnected',function(){
-        	connected = false;
-        	$('.login-bar').show();
-       	 	$('form :submit').prop('disabled',false);
-	});
-	
-	$('#map-bxl').hide();
-    
-	/**********************************************/
-	/* Prepare iphone toogle button look and feel */
-	/**********************************************/
-	$(":checkbox.normal").iphoneStyle({ background: "#F9F3E8",onChange:function(value){
-        	var vals = $(value).attr("id").split("_");
-        	if(vals[0].indexOf("public")!=-1){
-            		// Public checkbox changed
-            		if(vals[1].indexOf("file")!=-1){
-                	//TODO handle public bool of file with id vals[2]
-                	window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
-            	}
-            	else{
-                	//TODO handle public bool of comment with id vals[2]
-                	window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
-            	}
-        	}
-        	else{
-            		//Confidential checkbox changed
-            		if(vals[1].indexOf("file")!=-1){
-                		//TODO handle Confidential bool of file with id vals[2]
-                		window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
-            		}
-            		else{
-                		//TODO handle Confidential bool of comment with id vals[2]
-                		window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
-            		}
-        	}
-    	} });
-	
-	/***************************/
-	/* Set the current manager */
-	/***************************/
-    	$("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
-    
-	/*************************************************************/
-	/* Implement method when changing manager using the dropdown */
-	/*************************************************************/
-	$("#report_responsible_manager_select").bind("change",function(event){
-        	var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
-        	if (r==true){
-            		window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
-        	}
-        	else{
-            		$("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
-        	}
-    	});
-	
-	/******************************/
-	/* Set the current contractor */
-	/******************************/
-    	$("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
-	
-	/****************************************************************/
-	/* Implement method when changing contractor using the dropdown */
-	/****************************************************************/
-    	$("#report_responsible_impetrant_contractor_select").bind("change",function(event){
-        	//TODO update report with new contractor
-        	window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
-    	});
+/****************************************************************/
+/* Implement method when changing contractor using the dropdown */
+/****************************************************************/
+$("#report_responsible_impetrant_contractor_select").bind("change",function(event){
+            //TODO update report with new contractor
+            window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+        });
 
-	/************************************/
-	/* Hide the annex forms per default */
-	/************************************/
-   	$("#commentForm").hide();
-    	$("#fileForm").hide();
+});
+/* When JQUERY is ready*/
+$(document).ready(function() {
+    /*Set the contractor dropdown*/
+    $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
+});
 
-	/********************************/
-	/* Trigger the connection event */
-	/********************************/
-    	{% if user.is_authenticated %}
-        	$(document).trigger('connected');
-    	{% else %}
-        	$(document).trigger('disconnected');
-    	{% endif %}});
-
-    	/* When JQUERY is ready*/
-    	$(document).ready(function() {
-    		/*Set the contractor dropdown*/
-    		$('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
-    	});
-
-	/******************************************/
-	/* showMap is used to show the mpa widget */
-	/******************************************/
-    	function showMap() {
-		$("#map-bxl").toggle();
-	}
-
-	/**************************************************************/
-	/* toogleFileForm is used to show/hide the file annex section */
-	/**************************************************************/
-    	function toggleFileForm() {
-        	$("#fileForm").toggle();
-        	$("#showFileFormButton").toggle();
-        	$("#addCommmentDiv").toggle();
-    	}
-
-	/********************************************************************/
-	/* toogleCommentForm is used to show/hide the comment annex section */
-	/********************************************************************/
-    	function toggleCommentForm() {
-        	$("#commentForm").toggle();
-        	$("#showCommentFormButton").toggle();
-        	$('#addFileDiv').toggle();
-    	}
-
-	/****************************************************************************/
-	/* Refuse method is called when the gestionnaire decides to refuse a report */
-	/****************************************************************************/
-    	function refuse(){
-        	$("#dialog").dialog('open');
-        	$('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
-    	}
-
-	/***************************************************************************/
-	/* refuseConfirmButton method is called when the user confirms his refusal */
-	/***************************************************************************/
-    	function refuseConfirmButton(){
-        	window.location = '{% url report_refuse_pro report.id %}?more_info_text='+$('#more_information_text').val();
-    	}
-
-	/*************************************************************************/
-	/* refuseCancelButton method is called when the user cancels his refusal */
-	/*************************************************************************/
-    	function refuseCancelButton() {
-        	$("#dialog").dialog('close');
-   	 }
 </script>
+<script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
+{% endblock %}
+
 {% block css %}
 {{ block.super }}
-
-<!-- ##################### -->
-<!-- # SPECIFIC CSS ZONE # -->
-<!-- ##################### -->
-
-<style type="text/css" media="screen">
-    #update-header {
-        float: left;
-        width: 100%;
-    }
-    
-    #update-title {
-        float: left;
-        width: 48%;
-    }
-    
-    #update-email-me {
-        float: right;
-        width: 48%;
-        text-align: right;
-        margin-top: 4px;
-    }
-</style>
 {% endblock %}
 {% block content %}
 <div id="page_content_container">
-	<!-- ######################################################################## -->
-	<!-- # TEST IF THE REPORT IS NOT FIXED AND AT LEAST CONFIRMED (DEPRECATED?) # -->
-	<!-- ######################################################################## -->
-    	{% if not report.is_fixed and report.is_confirmed %}
-    		<!-- AddThis Button BEGIN -->
-    			<div class="addthis_toolbox addthis_default_style">
-	        	<a href="http://www.addthis.com/bookmark.php?v=250&pub=xa-4a620b09451f9502" class="addthis_button_compact">Share</a>
-	        	<span class="addthis_separator">|</span>
-	        	<a class="addthis_button_facebook"></a>
-        		<a class="addthis_button_myspace"></a>
-		        <a class="addthis_button_google"></a>
-        		<a class="addthis_button_twitter"></a>
-	    	</div>
-		<!-- AddThis Button END -->
-	{% endif %}
 
+{% block pageHeader %}
     	<h1>
 	<!-- ########################### -->
 	<!-- # DISPLAY REPORT CATEGORY # -->
@@ -272,7 +120,7 @@ $(function(){
 	                    	</td>
         	                <td >
 					{% if not fms_user.contractor %} 
-                        	    	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>
+                        	    	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
     					{% endif %}
 	                        </td>	
 				<td>
@@ -306,7 +154,7 @@ $(function(){
             </table>
         </div>
     </h1>
-
+{% endblock %}
 	<!-- ##################################### -->
 	<!-- # SMALL SECTION TO SUBSCRIBE OR NOT # -->
 	<!-- ##################################### -->
@@ -451,7 +299,7 @@ $(function(){
                         	<td>
                             		<p style="float:left;">
                             		<input type="hidden" name="form-type" value="comment-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleCommentForm();"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
                                 	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
                             		</p>
                         	</td>
@@ -473,7 +321,7 @@ $(function(){
                         	<td>
                             		<p style="float:left;">
                             		<input type="hidden" name="form-type" value="file-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="toggleFileForm();"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleFileForm()',200);"/>
                                 	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
                             	</p>
                         	</td>

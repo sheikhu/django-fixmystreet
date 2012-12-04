@@ -1,14 +1,15 @@
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, RequestContext
+from django.utils.translation import ugettext as _
+from django.conf import settings
+
 from django_fixmystreet.fixmystreet.models import ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, FMSUser
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django_fixmystreet.fixmystreet.forms import FileUploadForm
-from django.utils.translation import ugettext as _
-from django.utils.translation import get_language
-from django.utils import translation
-from django.conf import settings
+
+
 def report_category_note(request, id):
     cat = ReportMainCategoryClass.objects.get(id=id)
     if not cat.hint:
@@ -25,26 +26,18 @@ def create_comment(request):
 	return hh 
 	
 def create_file(request):
-	session_manager = SessionManager()
-	session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
-        hh = HttpResponse(content='True', mimetype='text/html')
-	return hh 
+    session_manager = SessionManager()
+    print request.POST
+    session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
+    hh = HttpResponse(content='True', mimetype='text/html')
+    return hh 
 
 def uploadFile(request):
-	print request.FILES
-	for file_code in request.FILES:
-		upfile = request.FILES[file_code]
-		with open('media/files/'+upfile.name, 'wb+') as destination:
-			for chunk in upfile.chunks():
-				destination.write(chunk)
-	hh = HttpResponse(content='True',mimetype='text/html')
-	return hh
+    for file_code in request.FILES:
+        upfile = request.FILES[file_code]
+        with open('media/files/'+upfile.name, 'wb+') as destination:
+            for chunk in upfile.chunks():
+                destination.write(chunk)
+    hh = HttpResponse(content='True',mimetype='text/html')
+    return hh
 
-def update_last_used_language(request):
-    if request.user.id:
-        fmsUser = FMSUser.objects.get(pk=request.user.id)
-        fmsUser.last_used_language = request.REQUEST.get('language').upper()
-        fmsUser.save()
-    translation.activate(request.REQUEST.get('language'))
-    toURL = request.REQUEST.get('from').replace('/en/','/'+request.REQUEST.get('language')+'/').replace('/fr/','/'+request.REQUEST.get('language')+'/').replace('/nl/','/'+request.REQUEST.get('language')+'/')
-    return HttpResponseRedirect(toURL)

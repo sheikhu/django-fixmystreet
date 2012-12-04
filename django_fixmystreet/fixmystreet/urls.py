@@ -15,7 +15,6 @@ feeds = {
 
 
 urlpatterns = patterns('',
-    (_(r'^i18n/'), include('django.conf.urls.i18n')),
     (_(r'^feeds/(?P<url>.*)/$'), 'django.contrib.syndication.views.Feed', {'feed_dict': feeds},'feeds'),
 )
 
@@ -23,8 +22,9 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.main',
     url(_(r'^$'), 'home',name='home'),
     url(_(r'^about/$'), 'about',name='about'),
     url(_(r'^posters/$'), 'posters',name='posters'),
-    url(_(r'^terms_of_use/$'), 'terms_of_use',name='terms_of_use'),
-    url(_(r'^robots.txt$'), 'robot'),
+    url(_(r'^terms-of-use/$'), 'terms_of_use',name='terms_of_use'),
+    url(_(r'^update-language/'),'update_current_language',name="update_current_language"),
+
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
@@ -68,11 +68,10 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.contact',
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
 
-    url(_(r'^ajax/createComment'),'create_comment',name='create_report_comment'),
-    url(_(r'^ajax/createFile'),'create_file',name='create_report_file'),
+    url(_(r'^ajax/create-comment'),'create_comment',name='create_report_comment'),
+    url(_(r'^ajax/create-file'),'create_file',name='create_report_file'),
     url(_(r'^ajax/categories/(\d+)'), 'report_category_note',name='report_category_note'),
-    url(_(r'^ajax/uploadFile'),'uploadFile',name='report_upload_file'),
-    url(_(r'^ajax/update_language/'),'update_last_used_language',name="update_last_used_language"),
+    url(_(r'^ajax/upload-file'),'uploadFile',name='report_upload_file'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
@@ -86,8 +85,8 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     #url(_(r'^api/report/new/$'), 'create_report',name='api_report_new'),
     url(_(r'^api/login/$'),'login_user',name='login_user'),
     url(_(r'^api/load_categories/$'),'load_categories',name='load_categories'),
-	url(_(r'^api/create_report_citizen/$'),'create_report_citizen',name='create_report_citizen'),
-	url(_(r'^api/create_report_pro/$'),'create_report_pro',name='create_report_pro'),
-	url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
+    url(_(r'^api/create_report_citizen/$'),'create_report_citizen',name='create_report_citizen'),
+    url(_(r'^api/create_report_pro/$'),'create_report_pro',name='create_report_pro'),
+    url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
 )
 

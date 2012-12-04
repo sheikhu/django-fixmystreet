@@ -8,9 +8,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from social_auth.backends.exceptions import AuthTokenError
-
-from django_fixmystreet.fixmystreet.models import Report
+from django_fixmystreet.fixmystreet.models import Report, ReportSecondaryCategoryClass, ReportMainCategoryClass, ReportCategory
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
 # https://developers.facebook.com/docs/test_users/
@@ -27,6 +25,16 @@ class ApiTest(SampleFilesTestCase):
     }
 
     def setUp(self):
+        #organisation = Organisation(id=10, telephone="00000000", last_used_language="fr")
+        #FMSUser = FMSUser(id=10, telephone="00000000", last_used_language="fr")
+        main_category = ReportMainCategoryClass(id=2,name_en='test main en',name_nl='test main nl',name_fr='test main fr')
+        secondary_category = ReportSecondaryCategoryClass(id=2,name_en='test second en',name_nl='test second nl',name_fr='test second fr')
+        category = ReportCategory(id=2,name_en='test parent en',name_nl='test parent nl',name_fr='test parent fr', public=True, category_class=main_category, secondary_category_class=secondary_category)
+
+        main_category.save();
+        secondary_category.save();
+        category.save();
+        """
         self.steven = self.users['100003558692539']
         
         params = {
@@ -58,56 +66,78 @@ class ApiTest(SampleFilesTestCase):
             print e.code
             print simplejson.loads(e.read())['error']['message']
             raise e
+        """
         
-        
-    def testCreateReport(self):
-        # check if Facebook can authenticate steven
-        url = 'https://graph.facebook.com/me?access_token={0}'.format(self.steven['access_token'])
-        request = Request(url)
-        response = simplejson.loads(urlopen(request).read())
-        self.assertEquals(response['email'],self.steven['email'])
-        
+    def testCreateReportCitizen(self):
+        #Parameters to save the report in database.
         params = {
-            'category': 1,
-            'address': 'turlututu',
-            'x': '1000',
-            'y': '1000',
-            'postalcode':'1000',
-            'description':'hello',
-            'access_token':self.steven['access_token'],
-            'backend':'facebook'
+            "user_email": "test@test.com",
+            "report_category_id": "2",
+            "report_quality": "2",
+            "report_description": "zazadescr",
+            "user_firstname": "Thibo",
+            "report_address": "Avenue des emeutes",
+            "user_lastname": "Bilbao",
+            "report_secondary_category_id": "2",
+            "report_zipcode": "1000",
+            "report_id": "22",
+            "user_name": "thierryallent",
+            "report_y": "170375.278",
+            "report_x": "149157.349"
         }
-
+        
+        #Create a client to launch requests
         client = Client()
-
-        response = client.post(reverse('api_report_new'), params, follow=True)
-        self.assertEqual(response.status_code, 200)
+        #Get the request response
+        response = client.post(reverse('create_report_citizen'), params, follow=True)        
+        #Test the http response code (200 = OK)
+        self.assertEqual(response.status_code, 200)        
+        #Test if the response if JSON structured.
         self.assertEqual(response['Content-Type'], 'application/json')
+        #Load the response data as JSON object
         result = simplejson.loads(response.content)
-
-        self.assertEquals(result['status'], 'success', result.get('message'))
-        report = Report.objects.get(id=result['report']['id'])
-        self.assertEquals(report.desc, 'hello')
-        self.assertEquals(report.category.id, 1)
-
-        params['postalcode'] = "4321"
-        response = client.post(reverse('api_report_new'), params, follow=True)
-        self.assertEqual(response.status_code, 200)
+        #Verify if the report_id is returned by the webservice
+        self.assertTrue(result['report_id'] != None)
+        #Get in the DB the created report
+        report = Report.objects.get(id=result['report_id'])
+        #Verify the persisted data for the new created report
+        self.assertEquals(report.description, 'zazadescr')                
+"""
+    def testCreateReportPro(self):
+        #Parameters to save the report in database.
+        params = {
+            "user_name": "test@test.com",
+            "report_category_id": "2",
+            "report_quality": "2",
+            "report_description": "zazadescr",
+            "user_firstname": "Thibo",
+            "report_address": "Avenue des emeutes",
+            "user_lastname": "Bilbao",
+            "report_secondary_category_id": "2",
+            "report_zipcode": "1000",
+            "report_id": "22",
+            "user_name": "thierryallent",
+            "report_y": "170375.278",
+            "report_x": "149157.349"
+        }
+        
+        #Create a client to launch requests
+        client = Client()
+        #Get the request response
+        response = client.post(reverse('create_report_citizen'), params, follow=True)        
+        #Test the http response code (200 = OK)
+        self.assertEqual(response.status_code, 200)        
+        #Test if the response if JSON structured.
+        self.assertEqual(response['Content-Type'], 'application/json')
+        #Load the response data as JSON object
         result = simplejson.loads(response.content)
-        self.assertEquals(result['status'], 'error')
-        self.assertEquals(result['errortype'], 'validation_error')
-
-        del params['postalcode']
-        response = client.post(reverse('api_report_new'), params, follow=True)
-        self.assertEqual(response.status_code, 200)
-        result = simplejson.loads(response.content)
-        self.assertEquals(result['status'], 'error')
-        self.assertEquals(result['errortype'], 'validation_error')
-
-        params['postalcode'] = "1000"
-        params['access_token'] = "broken_token"
-        self.assertRaises(AuthTokenError, lambda:client.post(reverse('api_report_new'), params, follow=True))
-
+        #Verify if the report_id is returned by the webservice
+        self.assertTrue(result['report_id'] != None)
+        #Get in the DB the created report
+        report = Report.objects.get(id=result['report_id'])
+        #Verify the persisted data for the new created report
+        self.assertEquals(report.description, 'zazadescr')
+   
     def testLoadReports(self):
         client = Client()
         response = client.get(reverse('api_reports'), {'x':1000,'y':1000}, follow=True)
@@ -115,4 +145,4 @@ class ApiTest(SampleFilesTestCase):
         result = simplejson.loads(response.content)
         self.assertEquals(result['status'], 'success')
         self.assertEquals(len(result['results']), 13) # sample contains 14 reports but 1 is fixed
-
+    """

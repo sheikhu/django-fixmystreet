@@ -240,7 +240,7 @@ def create_report_citizen(request):
         report.description = data_description
         # Address
         report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
-        report.postalcode = data_zip	    
+        report.postalcode = data_zip
         report.address = data_address
         report.quality = data_quality
         #Subscription is automatic.

@@ -4,17 +4,17 @@
 {% block title %}{% trans "Reports for" %} {{entity.name}}{% endblock %}
 {% block css %}
 {{ block.super }}
-<style>
-#map-bxl{
-	height: 520px;
-	width: 520px;
-}
-</style>
+
 {% endblock %}
 
 {% block script %}
 {{ block.super }}
+
 {% map_scripts %}
+
+<meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
+<meta property="og:description" content="{% trans 'Meta description for list page' %}" />
+
 <script>
 $(function(){
 	$('#map-bxl').fmsMap();
@@ -36,11 +36,6 @@ $(function(){
 	<div id="fullwidth">
         <h1>{% trans "Reports for" %} {{entity.name}}</h1>
 		<div id='leftcol'>
-			<!--
-			<p>{% for zip in ward.zipcode_set.all %}{{zip.code}}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-			<p>{% blocktrans with start=date_range_start|date:"j N Y" end=date_range_end|date:"j N Y" %}Reports filed between {{ start }} and {{ end }}.{% endblocktrans %} 
-			{% if older_reports_link %} (<a href="{{older_reports_link}}" %}>{% trans "See older reports" %}</a>){% endif %}</p>
-			-->
 
 			{% if not reports %}
 			<p>{% trans "No problems have been reported." %}</p>
@@ -53,11 +48,6 @@ $(function(){
                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
                 {% endfor %}
              </div>
-             {% if reports %}
-             <div class="fix-disclaimer">
-             	<p>{% trans "Note: Fix My Street relies on users to report problems as fixed." %}</p>
-             </div>
-             {% endif %}
  		</div>
 		<div id='rightcol'>
 			<div id="map-bxl"> </div>

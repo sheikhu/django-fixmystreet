@@ -27,7 +27,6 @@ class SessionManager():
 			s.save()
 
 	def saveFiles(self,sessionK,reportId):
-
 		s = SessionStore(session_key = sessionK)
 		if 'files' in s.keys():
 			filesData = s['files']
@@ -51,5 +50,5 @@ class SessionManager():
 		if 'files' in s.keys():
 			del s['files']
 		if 'comments' in s.keys():
-			del s['keys']
+			del s['comments']
 		s.save()
