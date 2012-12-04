@@ -537,6 +537,7 @@ class ReportCategory(models.Model):
             d['s_c_n_en'] = getattr(getattr(current_element, 'secondary_category_class'),'name_en')
             d['s_c_n_fr'] = getattr(getattr(current_element, 'secondary_category_class'),'name_fr')
             d['s_c_n_nl'] = getattr(getattr(current_element, 'secondary_category_class'),'name_nl')
+            d['p'] = getattr(current_element, 'public')
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
  
