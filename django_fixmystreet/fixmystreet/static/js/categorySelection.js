@@ -17,20 +17,20 @@ $(document).ready(function() {
                 {
                 	refSecondary.find("option:eq(0)").attr("selected", "selected");
                 	refSecondary.removeAttr("disabled");
-                	$("#secondary_container").load("/ajax/categories/" + el_id);
-                	<!-- FILTER SECOND DROPDOWN -->
-
+                	$("#secondary_container").load("/ajax/categories/" + el_id);                	
                 	refSecondary.html('');
                 	refSecondary.html($('#id_secondary_category_copy').html());
-                        //Keep the first element in memory (the headlabel)
-                        var headLabelOption = refSecondary.find("option:first");
-                        refSecondary.find("option[family!='"+el_id+"']").remove();
-                        //Prepend the headlabel again.
-                        refSecondary.prepend(headLabelOption);
-                 //If not pro
-                 if(window.location.href.indexOf("/pro/") == -1){
+                 //Keep the first element in memory (the headlabel)
+                 var headLabelOption = refSecondary.find("option:first");
+                 refSecondary.find("option[family!='"+el_id+"']").remove();                        
+				 if(window.location.href.indexOf("/pro/") == -1){
                  	refSecondary.find("option[public='False']").remove();
                  }
+				 
+				 //Prepend the headlabel again.						
+                        refSecondary.prepend(headLabelOption);
+				//Prepend the headlabel again.						
+                 refSecondary.prepend(headLabelOption);				 
                  /*remove empty optgroup*/
                  refSecondary.find("optgroup:not(:has(option))").remove();
                  /*Copy value to hiddendropdown */
