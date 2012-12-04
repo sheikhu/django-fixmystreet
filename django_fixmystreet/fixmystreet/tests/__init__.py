@@ -5,7 +5,7 @@ from django.core.files.storage import default_storage
 from django.test import TestCase
 
 class SampleFilesTestCase(TestCase):
-    fixtures = ['sample']
+    fixtures = ['bootstrap', 'sample']
 
     @classmethod
     def setUpClass(cls):

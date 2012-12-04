@@ -18,7 +18,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class ApiTest(SampleFilesTestCase):
-    fixtures = ['sample']
+    fixtures = ['bootstrap', 'sample']
     users = {
         '100003558692539': {
             'name':'Steven Test',

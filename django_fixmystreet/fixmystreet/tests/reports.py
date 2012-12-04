@@ -13,7 +13,7 @@ from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, Re
 
 class NotificationTest(TestCase):
     
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
     
     def setUp(self):
         self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')

@@ -14,7 +14,7 @@ from django.conf import settings
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
 
 class MailTest(TestCase):
-	fixtures = ["bootstrap","list_items"]
+	fixtures = ["bootstrap", "list_items"]
 	def setUp(self):
 		self.citizen = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False, username="citizen", first_name="citizen", last_name="citizen", email="citizen@a.com")
 		self.citizen.save()
