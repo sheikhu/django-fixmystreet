@@ -75,7 +75,7 @@ function AddFileToView(langcode){
     }
     var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','/media/files/')};
     //Put the file data in the session
-    $.post("/"+langcode+"/ajax/createFile",data);
+    $.post("/"+langcode+"/ajax/create-file",data);
     //Create a file reader so that we can create a thumbnail of the submitted file.
     var reader = new FileReader();
     //Define the onload function of the reader
@@ -129,7 +129,7 @@ function AddCommentToView(langcode){
     var html = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+$("#commentTitleInput").val()+"</h3><p>"+$("#commentTextTextArea").val()+"</p></div></td></tr>"
     
     //Put comment data in the session
-    $.post("/"+langcode+"/ajax/createComment",data);
+    $.post("/"+langcode+"/ajax/create-comment",data);
     $(".extraCommentsTable").append(html);
     
     
