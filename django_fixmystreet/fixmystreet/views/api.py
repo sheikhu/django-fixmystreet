@@ -17,7 +17,7 @@ def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''
         user_name = None
         try:
-            user_name    = request.POST.get('username')
+            user_name    = request.POST.get('user_name')
         except ValueError:
             #Catching malformed input request data
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_REQUEST","request":request.POST}),mimetype='application/json')

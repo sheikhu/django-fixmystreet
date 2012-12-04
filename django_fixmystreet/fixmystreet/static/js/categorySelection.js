@@ -26,10 +26,7 @@ $(document).ready(function() {
 				 if(window.location.href.indexOf("/pro/") == -1){
                  	refSecondary.find("option[public='False']").remove();
                  }
-				 
 				 //Prepend the headlabel again.						
-                        refSecondary.prepend(headLabelOption);
-				//Prepend the headlabel again.						
                  refSecondary.prepend(headLabelOption);				 
                  /*remove empty optgroup*/
                  refSecondary.find("optgroup:not(:has(option))").remove();

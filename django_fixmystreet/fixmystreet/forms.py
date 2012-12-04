@@ -166,7 +166,7 @@ class CitizenReportForm(ReportForm):
     class Meta:
         model = Report
         fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
-
+    
     category = CategoryChoiceField(label=ugettext_lazy("category"))
     citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
     citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
