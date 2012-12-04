@@ -25,6 +25,9 @@ STATIC_URL = '/static/'
 
 POSTGIS_TEMPLATE = 'template_postgis'
 
+GEOSERVER = "geoserver.gis.irisnet.be"
+SERVICE_GIS = "service.gis.irisnet.be"
+
 TIME_ZONE = 'Europe/Brussels'
 
 FILE_UPLOAD_PERMISSIONS = 0644
@@ -132,12 +135,8 @@ except ImportError:
 
 if ENVIRONMENT=="local" or ENVIRONMENT=="jenkins" or ENVIRONMENT=="dev" or ENVIRONMENT=="staging":
     DEBUG = True
-    GEOSERVER = "geoserver.gis.irisnetlab.be"
-    SERVICE_GIS = "service.gis.irisnetlab.be"
 else:
     DEBUG = False
-    GEOSERVER = "geoserver.gis.irisnet.be"
-    SERVICE_GIS = "service.gis.irisnet.be"
 
 if ENVIRONMENT=="local":
     logging.basicConfig(
