@@ -213,7 +213,7 @@ $(function(){
         					<td></td>
         					<td>
         						<p style="float:left;">
-        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddFileToView('{{LANGUAGE_CODE}}');toggleFileForm();"/>
+        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddFileToView('{{LANGUAGE_CODE}}');setTimeout('toggleFileForm()',200);"/>
         							<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
         						</p>
         					</td>
