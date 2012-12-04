@@ -40,11 +40,6 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.get(reverse('terms_of_use'), follow=True)
         self.assertEqual(response.status_code, 200)
     
-    def test_robots_file(self):
-        """Tests the robots file."""
-        response = self.client.get('/'+get_language()+'/robots.txt', follow=True)
-        self.assertEqual(response.status_code, 200)
-    
     def test_posters_languages(self):
         """Tests the posters view."""
         response = self.client.get(reverse('posters'), follow=True)
