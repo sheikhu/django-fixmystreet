@@ -226,8 +226,8 @@ class AgentCreationForm(UserCreationForm):
             isManager = "0"
         if (isAgent == "1" or isManager == "1"):
             isContractor = "0"
-	user = super(AgentCreationForm,self).save(commit=False)
-        fmsuser = FMSUser(user_ptr=user)
+        user = super(AgentCreationForm,self).save(commit=False)
+        fmsuser = user.fmsuser
         fmsuser.username = self.cleaned_data["username"]
         fmsuser.set_password(self.cleaned_data["password1"])
         fmsuser.first_name=self.cleaned_data["first_name"]
