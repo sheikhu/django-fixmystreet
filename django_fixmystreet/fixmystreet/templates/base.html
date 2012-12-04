@@ -78,13 +78,13 @@
                 {% endifequal %}
 				<div id="loginButton">
                     {% if request.user.is_authenticated %}
-					<button type="button" onclick="window.location.href='{% url auth_logout %}'" style="float: right;margin-top: 44px;">Log out</button>
+					<button type="button" onclick="window.location.assign('{% url auth_logout %}')" style="float: right;margin-top: 44px;">Log out</button>
                     {% else %}
-					<button type="button" onclick="window.location.href='{% url login %}?next={% url home_pro %}'" style="float: right;margin-top: 44px;">Sign in</button>
+					<button type="button" onclick="window.location.assign('{% url login %}?next={% url home_pro %}')" style="float: right;margin-top: 44px;">Sign in</button>
                     {% endif %}
 				</div>
 				<div id="language">
-					<form action="{% url update_last_used_language %}?from={{request.get_full_path}}" method="post">
+					<form action="{% url update_current_language %}?from={{request.get_full_path}}" method="post">
 						<select id="select-language" name="language" onchange="">
 							{% for l in LANGUAGES %}
                                 {% get_language_info for l.0 as lang %}
