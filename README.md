@@ -1,36 +1,29 @@
+
+
+
 Thanks
 ======
+
 This is the code of http://fixmystreet.irisnet.be project stand at https://github.com/CIRB/django-fixmystreet.
 
 It is a fork of http://fixmystreet.ca (https://github.com/visiblegovernment/django-fixmystreet), thank you to them for providing this great project !
 
 this project in place use Urbis for map, search and locate engine (http://geoserver.gis.irisnet.be/).
 
+![data model](data-model.png)
+
+
 Installation
 ============
 
-    git clone git@github.com:CIRB/django-fixmystreet.git
-    make install
-    ENV=dev bin/django runserver
-
+```bash
+$ git clone git@github.com:CIRB/django-fixmystreet.git
+$ make install
+$ bin/django runserver
+$ bin/django-debug runserver # debug toolbar mode
+```
 
 enchure libxml2-dev, psycopg2 and GeoDjango is installed
-
-Old school install
-------------------
-
-requirements: transmeta, stdimage, GeoDjango, PIL
-
-    $ virtualenv env --no-site-packages
-    $ env/bin/activate
-    $ easy_install django
-    $ easy_install django-transmeta
-    $ easy_install django-stdimage
-    $ easy_install django-social-auth
-    $ easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
-    $ easy_install psycopg2==2.4.1
-    $ deactivate
-
 
 for GeoDjango installation:
 
@@ -46,6 +39,7 @@ https://code.djangoproject.com/ticket/16778
 this project has been developped and tested with PostgreSql
 
 to install GeoDjango for PostgreSql:
+
 - GEOS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#geos
 - PROJ.4 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#proj4
 - PostGIS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#postgis
@@ -55,59 +49,56 @@ to install GeoDjango for PostgreSql:
 
 after install, create the database:
 
-    $ createdb -U postgres -T template_postgis fixmystreet
-    $ python manage.py syncdb
+```bash
+$ make createdb
+$ bin/django loaddata sample # if you want some sample data to work with
+$ cp local_settings_staging.py local_settings.py # and edit db connection settings
+```
 
-(todo initdb.sh)
+In deploy environment, settings are given by system environment variable.
+
+Available variables:
+
+```bash
+ENV # environment that is running, supported values are local / dev / staging / production
+ADD_THIS_KEY # code from add_this service
+MEDIA_ROOT # path to dynamic files upload location
+GA_CODE # code Google Analytic
+
+# database variables
+DATABASE_ENGINE
+DATABASE_NAME
+DATABASE_USER
+DATABASE_PASSWORD
+DATABASE_PORT
+DATABASE_HOST
+```
 
 
 
-finally:
 
-    $ cp local_settings_staging.py local_settings.py
+Continuous Integration, Deployment and Delivery
+===============================================
 
-
-CI, tests & coding organisation
-===============================
 Jenkins
 -------
-This project is on de CIRB's Jenkins at http://jenkins.cirb.lan/job/FixMyStreet/
-It will be automaticly build on every push on github, if tests failed mails are send,
-if tests successed project will be deployed.
 
-requirements-test.pip contains debug and Jenkins test requirements, this is installed only on Jenkins server.
-test_settings.py is used for test local_settings, it used environment vars, be sure to set it correctly if you use it
-
-    export POSTGISDB=xx.xx.xx.xx
-    export POSTGISUSER=xxx
-    export POSTGISPWD=xxx
-    export FBSECRET=xxx
-
-media folder will be cloned in media-tmp by settings.py for tests because some unit tests modify the folder content.
-
-Branches
---------
-NOTE : this is not current branching organisation, need to fix server and Jenkins sync first, currently master is synced with dev.fixmystreet.irisnetlab.be.
-
-NOTE2 : this is draft, not finalized structure
+This project is tested under de Jenkins CI at http://jenkins.cirb.lan/job/django-fixmystreet/
+It will be automaticly build on every push on github, if tests successed
+project will be deployed.
 
 
-| branch name | description |
-|:------------|:------------|
-| master      | developing version of the project, branch off from this branch for features implementation, this branch will be sync with http://dev.fixmystreet.irisnetlab.be on staging. |
-| pre-release | beta version of the project, only merge from master or hot fix may be applied on this branch, this branch will be sync with http://fixmystreet.irisnetlab.be on staging. |
-| release     | finale and stable version of the project, only merge from pre-release or hot fix may be applied on this branch, this branch will be sync with http://fixmystreet.irisnet.be on production server. |
+branching tagging and deployment
+--------------------------------
+
+dev server will be automatically updated with the latest commit from github,
+staging will be automatically updated with the latest tagged commit from github
+production will be manually updated with the fixed tagged commit from github
 
 
-Developments needs to be applyed on develop ! not on master !
+Usefull commands
+================
 
-### ressources
-Git Workflow for Agile Teams - http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html
-A successful Git branching model - http://nvie.com/posts/a-successful-git-branching-model/
-
-
-Usefull
-=======
 To generate po file run the following command:
 
     $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/admin/* --ignore=templates/posters.html --ignore=templates/promotions/*
@@ -121,6 +112,12 @@ for sample data set loading
     $ python manage.py testserver sample.json
 
     $ python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
+
+
+generate data model image
+
+    $ bin/django graph_models fixmystreet -g -o data-model.png
+
 
 open external connexion to pg:
 

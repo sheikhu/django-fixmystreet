@@ -6,11 +6,19 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
 LOGIN_REQUIRED_URLS = '^pro/'
 
+LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
+ADD_THIS_KEY = os.environ['ADD_THIS_KEY'] if 'ADD_THIS_KEY' in os.environ else ''
+GA_CODE = os.environ['GA_CODE'] if 'GA_CODE' in os.environ else ''
+
 if 'MEDIA_ROOT' in os.environ:
     MEDIA_ROOT = os.environ['MEDIA_ROOT']
 else:
     MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+
+EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
+DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
@@ -22,9 +30,8 @@ TIME_ZONE = 'Europe/Brussels'
 FILE_UPLOAD_PERMISSIONS = 0644
 DATE_FORMAT = "l, j F Y"
 
-#Max file upload size
+# Max file upload size
 MAX_UPLOAD_SIZE = "821440"
-
 
 # include request object in template to determine active page
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -49,7 +56,6 @@ MIDDLEWARE_CLASSES = (
     'django_fixmystreet.fixmystreet.utils.CurrentUserMiddleware',
 )
 
-LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
 USE_I18N = True
 
 gettext = lambda s: s
@@ -61,6 +67,7 @@ LANGUAGES = (
 
 ROOT_URLCONF = 'django_fixmystreet.urls'
 
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
@@ -69,7 +76,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.gis',
-    
+
     'transmeta',
     'south',
     'simple_history',
@@ -81,12 +88,6 @@ INSTALLED_APPS = (
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
-
-ADD_THIS_KEY = os.environ['ADD_THIS_KEY'] if 'ADD_THIS_KEY' in os.environ else 'Not set'
-
-EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
-DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
-
 
 # supported value of ENVIRONMENT are dev, jenkins, staging, production
 if "ENV" in os.environ:
