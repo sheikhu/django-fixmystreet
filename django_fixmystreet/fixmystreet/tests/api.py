@@ -35,12 +35,9 @@ class ApiTest(SampleFilesTestCase):
             organisation.save()
         
         
-        try:
-            user = FMSUser.objects.get(id=1)            
-        except ObjectDoesNotExist:              
-            user = FMSUser(first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username="superuser")
-            user.save()
-        
+        user = FMSUser(first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username="superuser")
+        user.save()
+
         main_category = ReportMainCategoryClass(id=2,name_en='test main en',name_nl='test main nl',name_fr='test main fr')
         main_category.save()
         
@@ -124,14 +121,14 @@ class ApiTest(SampleFilesTestCase):
         #Parameters to save the report in database.
         params = {
             "user_name": "superuser",
-            "report_category_id": "2",            
+            "report_category_id": "2",
             "report_description": "zazadescr",
             "user_firstname": "Thibo",
             "report_address": "Avenue des emeutes",
             "user_lastname": "Bilbao",
             "report_secondary_category_id": "2",
             "report_zipcode": "1000",
-            "report_id": "22",            
+            "report_id": "22",
             "report_y": "170375.278",
             "report_x": "149157.349"
         }
