@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.utils.http import urlquote
-from django.utils.translation import get_language
+from django.utils.translation import get_language, activate
 from django.conf import settings
 
 from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, FMSUser
@@ -28,14 +28,17 @@ def home(request, location = None, error_msg =None):
 
 
 def update_current_language(request):
-    old_language = get_language()
-    new_language = request.REQUEST.get('language')
     if request.user.is_authenticated():
-        request.user.fmsuser.last_used_language = new_language.upper()
+        fmsUser = request.user.fmsuser
+        fmsUser.last_used_language = request.REQUEST.get('language').upper()
         fmsUser.save()
-
-    toURL = request.REQUEST.get('from').replace('/{0}/'.format(old_language), '/{0}/'.format(new_language))
-    return HttpResponseRedirect(toURL)
+    activate(request.REQUEST.get('language'))
+    fromUrl = request.REQUEST.get('from')
+    if 'pro' in fromUrl:
+        fromUrl = '/'+request.REQUEST.get('language')+'/pro/'
+    else:
+        fromUrl = '/'+request.REQUEST.get('language')+'/'
+    return HttpResponseRedirect(fromUrl)
 
 
 def about(request):
