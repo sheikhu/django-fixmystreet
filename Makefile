@@ -29,6 +29,7 @@ install: $(BIN_DIR)/buildout
 
 init:
 	$(BIN_DIR)/django syncdb --migrate --noinput
+	$(BIN_DIR)/django collectstatic --noinput
 
 
 test: $(BIN_DIR)/django
