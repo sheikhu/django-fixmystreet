@@ -76,6 +76,7 @@ $(document).ready(function() {
     /*Set the contractor dropdown*/
     $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
 });
+
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
@@ -119,7 +120,7 @@ $(document).ready(function() {
 	                    	</td>
         	                <td >
 					{% if not fms_user.contractor %} 
-                        	    	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Validate all' %}</button>
+                        	    	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
     					{% endif %}
 	                        </td>	
 				<td>

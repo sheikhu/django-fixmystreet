@@ -160,6 +160,21 @@ def acceptAndValidate(request, report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
+def validateAll(request,report_id):
+    report = get_object_or_404(Report, id=report_id)
+    comments = ReportComment.objects.filter(report_id=report_id)
+    files = ReportFile.objects.filter(report_id=report_id)
+    for comment in comments:
+        comment.validated = True
+        comment.save()
+    for f in files:
+        f.validated = True
+        f.save()
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
 def updateComment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     updateType = request.REQUEST.get('updateType')
