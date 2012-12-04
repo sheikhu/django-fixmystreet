@@ -2,6 +2,9 @@
 {% load i18n %}
 {% block script %}
     {{ block.super }}
+
+<meta property="og:title" content="{% trans 'Home' %}" />
+<meta property="og:description" content="{% trans 'Meta description for home page' %}" />
     {% block script-search %}
     <script type="text/javascript">
     var NEXT_PAGE_URL = '{% url report_new %}';

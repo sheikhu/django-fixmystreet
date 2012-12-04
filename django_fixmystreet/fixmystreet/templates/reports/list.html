@@ -9,7 +9,12 @@
 
 {% block script %}
 {{ block.super }}
+
 {% map_scripts %}
+
+<meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
+<meta property="og:description" content="{% trans 'Meta description for list page' %}" />
+
 <script>
 $(function(){
 	$('#map-bxl').fmsMap();

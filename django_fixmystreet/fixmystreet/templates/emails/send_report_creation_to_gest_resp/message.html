@@ -1,8 +1,24 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
+{% get_available_languages as languages %}
+
 {% block content %}
+{% get_language_info for "nl" as langNL %}
+{% get_language_info for "fr" as langFR %}
+{% language langFR.code %}
 {% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
 <p>A report of type {{reportType}} created at {{date}} is assigned to you. If you want to accept this report, click the following link: {{SITE_URL}}/report/{{reportId}}/accept. If you want to see the content of the report, click the follwing link: {{SITE_URL}}/report/{{reportId}} .(A mail is automatically sent to the creator of this report.) </p>
 {% endblocktrans %}
 {% include "emails/report_show.html" %}
+{% endlanguage %}
+<br/>
+-------------------------------------------------
+<br/>
+{% language langNL.code %}
+{% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
+<p>A report of type {{reportType}} created at {{date}} is assigned to you. If you want to accept this report, click the following link: {{SITE_URL}}/report/{{reportId}}/accept. If you want to see the content of the report, click the follwing link: {{SITE_URL}}/report/{{reportId}} .(A mail is automatically sent to the creator of this report.) </p>
+{% endblocktrans %}
+{% include "emails/report_show.html" %}
+{% endlanguage %}
+
 {% endblock %}

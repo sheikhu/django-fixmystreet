@@ -1,8 +1,23 @@
 {% extends 'emails/base_email.html' %}
 {% load i18n %}
+{% get_available_languages as languages %}
+
 {% block content %}
+{% get_language_info for "nl" as langNL %}
+{% get_language_info for "fr" as langFR %}
+{% language langFR.code %}
 {% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
 <p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at {{SITE_URL}}/pro/report/{{reportId}}.</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" %}
+{% endlanguage %}
+<br/>
+-------------------------------------------------
+<br/>
+{% language langNL.code %}
+{% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
+<p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at {{SITE_URL}}/pro/report/{{reportId}}.</p>
+{% endblocktrans %}
+{% include "emails/report_show.html" %}
+{% endlanguage %}
 {% endblock %}

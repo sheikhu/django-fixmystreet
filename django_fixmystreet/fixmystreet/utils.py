@@ -14,6 +14,7 @@ from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from django.conf import settings
+from django.template import TemplateDoesNotExist
 
 from stdimage import StdImageField
 
