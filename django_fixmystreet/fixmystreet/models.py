@@ -557,15 +557,14 @@ class GestType(models.Model):
     user = models.ForeignKey(FMSUser)
 
 
-# 
-# class ReportNotification(models.Model):
-    # report = models.ForeignKey(Report)
-    # recipient = models.ForeignKey(FMSUser)
-    # content_template = models.CharField(max_size)
-    # sent_at = models.DateTimeField()
-    # success = models.BooleanField()
-    # message = models.TextField()
-# 
+class ReportNotification(models.Model):
+    report = models.ForeignKey(Report)
+    recipient = models.ForeignKey(FMSUser)
+    content_template = models.CharField(max_length=20)
+    sent_at = models.DateTimeField()
+    success = models.BooleanField()
+    message = models.TextField()
+
 # 
     # def send(self):
         # msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
