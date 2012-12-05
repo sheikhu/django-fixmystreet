@@ -31,7 +31,6 @@ def load_categories(request):
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_USER","username": user_name}),mimetype='application/json')
-       
         all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
  
         #Right ! Logged in :-)
