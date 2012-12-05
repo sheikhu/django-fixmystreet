@@ -7,7 +7,6 @@ from django.conf import settings
 from django_fixmystreet.fixmystreet.models import FMSUser
 
 
-LOGIN_URL = reverse("login").lstrip('/')
 if hasattr(settings, 'LOGIN_REQUIRED_URLS') and isinstance(settings.LOGIN_REQUIRED_URLS, (list, tuple)):
     LOGIN_REQUIRED_URLS = [compile(expr) for expr in settings.LOGIN_REQUIRED_URLS]
 elif hasattr(settings, 'LOGIN_REQUIRED_URLS'):
@@ -32,8 +31,8 @@ class LoginRequiredMiddleware:
  work, ensure your TEMPLATE_CONTEXT_PROCESSORS setting includes\
  'django.core.context_processors.auth'."
         if not request.user.is_authenticated():
-            path = request.path_info.lstrip('/')
-            if path != LOGIN_URL:
+            path = request.path_info
+            if path != reverse("login"):
                 for m in LOGIN_REQUIRED_URLS:
                     if m.match(path):
                         return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
