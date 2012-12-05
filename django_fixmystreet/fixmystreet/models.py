@@ -1,5 +1,6 @@
 from django.utils import simplejson
 from datetime import datetime as dt
+from smtplib import SMTPException
 
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
@@ -43,9 +44,9 @@ class FMSUser(User):
     last_used_language = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
-    agent = models.BooleanField(default=True)
-    manager = models.BooleanField(default=True)
-    leader = models.BooleanField(default=True)
+    agent = models.BooleanField(default=False)
+    manager = models.BooleanField(default=False)
+    leader = models.BooleanField(default=False)
 
     impetrant = models.BooleanField(default=False) # todo rename to applicant
     contractor = models.BooleanField(default=False)
@@ -186,7 +187,7 @@ class Report(UserTrackedModel):
         ))
     )
 
-    status = models.IntegerField(choices=REPORT_STATUS_CHOICES, null=False)
+    status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True)
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
@@ -391,8 +392,6 @@ def report_subscribe_author(sender, instance, **kwargs):
     if kwargs['created'] and not kwargs['raw']:
         if instance.created_by:
             ReportSubscription(report=instance, subscriber=instance.created_by).save()
-        if instance.citizen:
-            ReportSubscription(report=instance, subscriber=instance.citizen).save()
 
 
 # #update the report, set modified and is_fixed correctly
@@ -428,10 +427,14 @@ class ReportSubscription(models.Model):
 
 @receiver(post_save,sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
-    if not kwargs['raw']:
-        comments = ReportComment.objects.filter(report_id=instance.report.id)
-        files = ReportFile.objects.filter(report_id=instance.report.id)
-        mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={'report': Report.objects.get(pk=instance.report_id),'comments':comments,'files':files}, recipients=(instance.subscriber.email,))
+    if not kwargs['raw'] and instance.subscriber.email:
+        report = instance.report
+        mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={
+            'report':   report,
+            'comments': report.comments.all(),
+            'files':    report.files.all()
+        },
+        recipients=(instance.subscriber.email,))
         mail.send()
 
 class ReportMainCategoryClass(models.Model):
@@ -554,21 +557,49 @@ class GestType(models.Model):
     user = models.ForeignKey(FMSUser)
 
 
-
-class ReportNotification(models.Model):
-    report = models.ForeignKey(Report)
-    to_manager = models.ForeignKey(FMSUser)
-    sent_at = models.DateTimeField()
-    success = models.BooleanField()
-    message = models.TextField()
-
-    def send(self):
-        msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
-        if self.report.photo:
-            msg.attach_file(self.report.photo.file.name)
-        msg.send()
-        self.sent_at = dt.now()
-
+# 
+# class ReportNotification(models.Model):
+    # report = models.ForeignKey(Report)
+    # recipient = models.ForeignKey(FMSUser)
+    # content_template = models.CharField(max_size)
+    # sent_at = models.DateTimeField()
+    # success = models.BooleanField()
+    # message = models.TextField()
+# 
+# 
+    # def send(self):
+        # msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
+        # data['SITE_URL'] = 'http://locahost'
+        # 
+        # subject, html, text = '', '', ''
+        # try:
+            # subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
+        # except TemplateDoesNotExist:
+            # pass
+        # try:
+            # text    = render_to_string('emails/' + template_dir + "/message.txt", data)
+        # except TemplateDoesNotExist:
+            # pass
+        # try:
+            # html    = render_to_string('emails/' + template_dir + "/message.html", data)
+        # except TemplateDoesNotExist:
+            # pass
+        # subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+        # super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
+        # if html:
+            # self.attach_alternative(html, "text/html")
+# 
+# 
+        # if self.report.photo:
+            # msg.attach_file(self.report.photo.file.name)
+        # self.sent_at = dt.now()
+        # try:
+            # msg.send()
+            # self.success = True
+        # except SMTPException as e:
+            # self.success = False
+            # self.msg = str(e)
+# 
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta

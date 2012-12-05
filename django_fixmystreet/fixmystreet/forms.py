@@ -142,22 +142,12 @@ class ReportForm(forms.ModelForm):
     def clean(self):
         return super(ReportForm, self).clean()
 
-    def save(self, user, commit=True):
+    def save(self, commit=True):
         report = super(ReportForm, self).save(commit=False)
         report.status = Report.CREATED
         report.point = self.point
         report.private = True
-        
-        if user.is_authenticated():
-            report.creator = user
-	    #Detect who is the responsible Manager for the given type
-	    #userCandidates = FMSUsers.objects.filter(organisation__id=user.organisation.id).filter(manager=True, categories__any=report.secondary_category)
-            #loop elements to find the right user to assign
-            #for (user in userCandidates):
-            #     for (categoriesOfResponsability in user.categories)
-            #          if (categoriesOfResponsability == report.secondary_category):
-            #               report.responsible_manager = user 
-        
+
         if commit:
             report.save()
         return report
@@ -180,20 +170,23 @@ class CitizenReportForm(ReportForm):
     citizen_subscription = forms.BooleanField(required=False)
 
     def save(self, user, commit=True):
-        report = super(ReportForm, self).save(commit=False)
-        report.status = Report.CREATED
-        report.point = self.point
+        report = super(CitizenReportForm, self).save(commit=False)
+        # report.status = Report.CREATED # default value
         report.private = False
 
         try:
-       	  existingUser = FMSUser.objects.get(username=self.cleaned_data["citizen_email"]);
-          #Assign citizen
-          report.citizen = existingUser
+            #Assign citizen
+            report.citizen = FMSUser.objects.get(email=self.cleaned_data["citizen_email"])
         except FMSUser.DoesNotExist:
             #Add information about the citizen connected if it does not exist
             report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
+
         if commit:
             report.save()
+
+        if self.cleaned_data["citizen_subscription"]:
+            ReportSubscription(report=report, subscriber=report.citizen).save()
+
         return report
 
 class ContactForm(forms.Form):
