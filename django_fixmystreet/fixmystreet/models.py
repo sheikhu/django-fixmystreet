@@ -282,16 +282,10 @@ def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
         #When created by pro a creator exists otherwise a citizen object
-        organizationSearchCriteria = -1
-        #if instance.creator:
-        #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
-        #    organizationSearchCriteria = fmsUser.organisation
-        #elif instance.citizen:
         instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
-        organizationSearchCriteria = instance.responsible_entity
 
         #Searcht the right responsible for the current organization.            
-        userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
+        userCandidates = FMSUser.objects.filter(organisation=instance.responsible_entity).filter(manager=True)
         managerFound = False
         for currentUser in userCandidates:
             userCategories = currentUser.categories.all()
@@ -412,21 +406,6 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
-
-
-
-# #update the report, set modified and is_fixed correctly
-# @receiver(post_save, sender=ReportUpdate)
-# def update_report(sender, instance, **kwargs):
-    # instance.report.modified = instance.created
-# 
-    # instance.report.is_fixed = instance.is_fixed
-    # if(instance.is_fixed and not instance.report.fixed_at):
-        # instance.report.fixed_at = instance.created
-# 
-    # instance.report.save()
-
-
 #notify subscribers that report has been updated
 # @receiver(post_save, sender=ReportUpdate)
 # def notify(sender, instance, **kwargs):
@@ -448,7 +427,7 @@ class ReportSubscription(models.Model):
 
 @receiver(post_save,sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
-    if not kwargs['raw'] and instance.subscriber.email:
+    if not kwargs['raw'] and kwargs['created'] and instance.subscriber.email:
         report = instance.report
         mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={
             'report':   report,
@@ -620,7 +599,7 @@ class GestType(models.Model):
 
 
 class ReportNotification(models.Model):
-    recipient = models.ForeignKey(FMSUser)
+    recipient = models.ForeignKey(User)
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
     error_msg = models.TextField()
