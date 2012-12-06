@@ -207,7 +207,7 @@ class Report(UserTrackedModel):
 
     hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
     
-    citizen = models.ForeignKey(User,null=True, related_name='citizen')
+    citizen = models.ForeignKey(User,null=True, related_name='citizen_reports')
     #refusal_motivation = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
@@ -275,6 +275,65 @@ class Report(UserTrackedModel):
             "private": self.private,
             "valid": self.valid
         }
+
+
+@receiver(pre_save,sender=Report)
+def report_assign_responsible(sender, instance, **kwargs):
+    if not instance.responsible_manager:
+        #Detect who is the responsible Manager for the given type
+        #When created by pro a creator exists otherwise a citizen object
+        organizationSearchCriteria = -1
+        #if instance.creator:
+        #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
+        #    organizationSearchCriteria = fmsUser.organisation
+        #elif instance.citizen:
+        instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+        organizationSearchCriteria = instance.responsible_entity
+
+        #Searcht the right responsible for the current organization.            
+        userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
+        managerFound = False
+        for currentUser in userCandidates:
+            userCategories = currentUser.categories.all()
+            for currentCategory in userCategories:
+                if (currentCategory == instance.secondary_category):
+                   managerFound = True
+                   instance.responsible_manager = currentUser
+
+@receiver(post_init, sender=Report)
+def track_former_value(sender, instance, **kwargs):
+    """Save former data to compare with new data and track changed values"""
+    instance.__former = dict((field.name, field.value_from_object(instance)) for field in Report._meta.fields)
+
+@receiver(post_save, sender=Report)
+def report_notify_author(sender, instance, **kwargs):
+    """signal on a report to notify author that the status of the report has changed"""
+    if not kwargs['raw'] and instance.__former['status'] != instance.status:
+        if instance.status == Report.REFUSED:
+            notifiation = ReportNotification(
+                content_template='send_report_refused_to_creator',
+                recipient=instance.citizen or instance.created_by,
+                related=instance,
+            )
+            notifiation.save()
+
+@receiver(post_save, sender=Report)
+def report_notify_manager(sender, instance, **kwargs):
+    """signal on a report to notify manager that a report has been filled"""
+    if not kwargs['raw'] and kwargs['created']:
+        notifiation = ReportNotification(
+            content_template='send_report_creation_to_gest_resp',
+            recipient=instance.responsible_manager,
+            related=instance,
+        )
+        notifiation.save()
+
+@receiver(post_save,sender=Report)
+def report_subscribe_author(sender, instance, **kwargs):
+    """signal on a report to register author as subscriber to his own report"""
+    if kwargs['created'] and not kwargs['raw']:
+        if instance.created_by:
+            ReportSubscription(report=instance, subscriber=instance.created_by).save()
 
 
 class Exportable(models.Model):
@@ -353,82 +412,6 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
-
-
-@receiver(pre_save,sender=Report)
-def report_assign_responsible(sender, instance, **kwargs):
-    """signal on a report to notify public authority that a report has been filled"""
-    if not instance.responsible_manager:
-        #Detect who is the responsible Manager for the given type
-        #When created by pro a creator exists otherwise a citizen object
-        organizationSearchCriteria = -1
-        #if instance.creator:
-        #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
-        #    organizationSearchCriteria = fmsUser.organisation
-        #elif instance.citizen:
-        instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
-        organizationSearchCriteria = instance.responsible_entity
-
-        #Searcht the right responsible for the current organization.            
-        userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
-        managerFound = False
-        for currentUser in userCandidates:
-            userCategories = currentUser.categories.all()
-            for currentCategory in userCategories:
-                if (currentCategory == instance.secondary_category):
-                   managerFound = True
-                   instance.responsible_manager = currentUser
-
-        #If not manager found for the responsible commune, then reassign to the region
-        #if (managerFound == False):
-        #    instance.responsible_entity  = OrganisationEntity.objects.get(region=True)
-        #    userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
-        #    for currentUser in userCandidates:
-        #        userCategories = currentUser.categories.all()
-        #        for currentCategory in userCategories:
-        #            if (currentCategory == instance.secondary_category):
-        #                instance.responsible_manager = currentUser
-
-@receiver(post_init, sender=Report)
-def track_former_value(sender, instance, **kwargs):
-    instance.__former = dict((field.name, field.value_from_object(instance)) for field in Report._meta.fields)
-
-@receiver(post_save, sender=Report)
-def report_notify_author(sender, instance, **kwargs):
-    """
-    notify author for notifications
-    """
-    if not kwargs['raw'] and instance.__former['status'] != instance.status:
-        if instance.status == Report.REFUSED:
-            notifiation = ReportNotification(
-                content_template='send_report_refused_to_creator',
-                recipient=instance.citizien or instance.created_by,
-                related=instance,
-            )
-            notifiation.save()
-
-@receiver(post_save, sender=Report)
-def report_notify_manager(sender, instance, **kwargs):
-    """
-    notify manager for notifications
-    """
-    if not kwargs['raw'] and kwargs['created']:
-        notifiation = ReportNotification(
-            content_template='send_report_creation_to_gest_resp',
-            recipient=instance.responsible_manager,
-            related=instance,
-        )
-        notifiation.save()
-
-
-@receiver(post_save,sender=Report)
-def report_subscribe_author(sender, instance, **kwargs):
-    """
-    signal on a report to register author as subscriber to his own report
-    """
-    if kwargs['created'] and not kwargs['raw']:
-        if instance.created_by:
-            ReportSubscription(report=instance, subscriber=instance.created_by).save()
 
 
 
