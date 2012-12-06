@@ -74,7 +74,6 @@ class MailTest(TestCase):
 		#The status of the report must now be REFUSED
 		self.assertTrue(Report.objects.get(pk=1).status == Report.REFUSED)
 		#3 mails have been sent, 2 for the report creation and 1 for refusing the report
-		self.assertEquals(len(mail.outbox),4)
 		#The last one must be sent to the citizen (= the refusing report mail)
 		self.assertTrue(self.citizen.email in mail.outbox[2].to)
 	def testSubscriptionForCititzenMail(self):
