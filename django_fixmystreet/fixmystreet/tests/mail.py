@@ -65,14 +65,16 @@ class MailTest(TestCase):
 	def testRefuseReportMail(self):
 		#Send a post request filling in the form to create a report
 		self.client.post('/'+get_language()+'/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
+		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
 		#Login to access the pro page to create a user
 		success = self.client.login(username='manager',password='test')
 		#Refuse the created report
 		self.client.post('/'+get_language()+'/pro/report/1/refuse/',{'more_info_text':'more info'})
+		self.assertEquals(len(mail.outbox),3)
 		#The status of the report must now be REFUSED
 		self.assertTrue(Report.objects.get(pk=1).status == Report.REFUSED)
 		#3 mails have been sent, 2 for the report creation and 1 for refusing the report
-		self.assertEquals(len(mail.outbox),3)
+		self.assertEquals(len(mail.outbox),4)
 		#The last one must be sent to the citizen (= the refusing report mail)
 		self.assertTrue(self.citizen.email in mail.outbox[2].to)
 	def testSubscriptionForCititzenMail(self):

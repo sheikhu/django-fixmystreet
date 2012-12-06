@@ -282,10 +282,16 @@ def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
         #When created by pro a creator exists otherwise a citizen object
-        instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+
+        if instance.created_by and hasattr(instance.created_by, 'fmsuser') and instance.created_by.fmsuser.organisation:
+            # assign entity of the creator
+            instance.responsible_entity = instance.created_by.fmsuser.organisation
+        else:
+            instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
 
         #Searcht the right responsible for the current organization.            
         userCandidates = FMSUser.objects.filter(organisation=instance.responsible_entity).filter(manager=True)
+        # TODO: use filters instead of iteration...
         managerFound = False
         for currentUser in userCandidates:
             userCategories = currentUser.categories.all()

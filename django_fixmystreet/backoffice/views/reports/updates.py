@@ -29,8 +29,6 @@ def refuse( request, report_id ):
         creator = report.created_by
     else:
         creator = report.citizen
-    mail = HtmlTemplateMail(template_dir='send_report_refused_to_creator', data={'report': report, "more_info_text":request.REQUEST.get('more_info_text')}, recipients=(creator.email,))
-    mail.send()
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
