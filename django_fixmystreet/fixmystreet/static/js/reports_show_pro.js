@@ -21,8 +21,7 @@ $(function(){
     });
     
     $('#map-bxl').hide();
-    
-   });
+});
 
 /******************************************/
 /* showMap is used to show the mpa widget */
@@ -44,7 +43,7 @@ function refuse(){
 /* refuseConfirmButton method is called when the user confirms his refusal */
 /***************************************************************************/
 function refuseConfirmButton(){
-    window.location = '{% url report_refuse_pro report.id %}?more_info_text='+$('#more_information_text').val();
+    window.location = URL_REPORT_REFUSE + '?more_info_text='+$('#more_information_text').val();
 }
 
 /*************************************************************************/
