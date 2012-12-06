@@ -1,4 +1,4 @@
-.PHONY        = install init deploy test run jenkins rpm createdb dropdb scratchdb clean
+.PHONY        = install init html-doc deploy test run jenkins rpm createdb dropdb scratchdb clean
 APP_NAME      = fixmystreet backoffice
 BIN_DIR       = bin
 LIBS_DIR      = libs
@@ -13,6 +13,7 @@ RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
 DBNAME        = fixmystreet
+
 
 bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
@@ -31,6 +32,9 @@ init:
 	$(BIN_DIR)/django syncdb --migrate --noinput
 	$(BIN_DIR)/django collectstatic --noinput
 
+html-doc:
+	bin/sphinx-apidoc -fF -o doc/source/gen django_fixmystreet
+	bin/sphinx-build -d doc/build/doctrees doc/source doc/build/html
 
 test: $(BIN_DIR)/django
 	$(BIN_DIR)/django test $(APP_NAME)
