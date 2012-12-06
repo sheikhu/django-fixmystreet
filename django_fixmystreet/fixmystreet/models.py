@@ -433,15 +433,14 @@ class ReportSubscription(models.Model):
 
 @receiver(post_save,sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
-    if not kwargs['raw'] and kwargs['created'] and instance.subscriber.email:
+    if not kwargs['raw'] and kwargs['created']:
         report = instance.report
-        mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={
-            'report':   report,
-            'comments': report.comments.all(),
-            'files':    report.files.all()
-        },
-        recipients=(instance.subscriber.email,))
-        mail.send()
+        notifiation = ReportNotification(
+            content_template='send_subscription_to_subscriber',
+            recipient=instance.subscriber,
+            related=report,
+        )
+        notifiation.save()
 
 class ReportMainCategoryClass(models.Model):
     __metaclass__ = TransMeta
