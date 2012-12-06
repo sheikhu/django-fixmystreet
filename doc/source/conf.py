@@ -5,6 +5,8 @@
 # serve to show the default.
 
 import datetime
+import os
+import sys
 
 project = "django_fixmystreet"
 author = ""
@@ -14,12 +16,12 @@ this_year = datetime.date.today().year
 copyright = '%s, %s' % (this_year, author)
 # Comment out one of these if we're a django project.
 #os.environ['DJANGO_SETTINGS_MODULE'] = 'django_fixmystreet.testsettings'
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'django_fixmystreet.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'django_fixmystreet.settings'
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- General configuration -----------------------------------------------------
 

@@ -2,16 +2,23 @@ from django.utils import simplejson
 from datetime import datetime as dt
 from smtplib import SMTPException
 
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.contrib.auth.models import User, UserManager
+from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
-from django.http import Http404
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.template import TemplateDoesNotExist
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 from django.core import serializers
 from django.core.files.base import ContentFile
+from django.conf import settings
+from django.http import Http404
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -382,8 +389,38 @@ def report_assign_responsible(sender, instance, **kwargs):
         #            if (currentCategory == instance.secondary_category):
         #                instance.responsible_manager = currentUser
 
+@receiver(post_init, sender=Report)
+def track_former_value(sender, instance, **kwargs):
+    instance.__former = dict((field.name, field.value_from_object(instance)) for field in Report._meta.fields)
 
-# 
+@receiver(post_save, sender=Report)
+def report_notify_author(sender, instance, **kwargs):
+    """
+    notify author for notifications
+    """
+    if not kwargs['raw'] and instance.__former['status'] != instance.status:
+        if instance.status == Report.REFUSED:
+            notifiation = ReportNotification(
+                content_template='send_report_refused_to_creator',
+                recipient=instance.citizien or instance.created_by,
+                related=instance,
+            )
+            notifiation.save()
+
+@receiver(post_save, sender=Report)
+def report_notify_manager(sender, instance, **kwargs):
+    """
+    notify manager for notifications
+    """
+    if not kwargs['raw'] and kwargs['created']:
+        notifiation = ReportNotification(
+            content_template='send_report_creation_to_gest_resp',
+            recipient=instance.responsible_manager,
+            related=instance,
+        )
+        notifiation.save()
+
+
 @receiver(post_save,sender=Report)
 def report_subscribe_author(sender, instance, **kwargs):
     """
@@ -392,6 +429,7 @@ def report_subscribe_author(sender, instance, **kwargs):
     if kwargs['created'] and not kwargs['raw']:
         if instance.created_by:
             ReportSubscription(report=instance, subscriber=instance.created_by).save()
+
 
 
 # #update the report, set modified and is_fixed correctly
@@ -599,47 +637,65 @@ class GestType(models.Model):
 
 
 class ReportNotification(models.Model):
-    report = models.ForeignKey(Report)
     recipient = models.ForeignKey(FMSUser)
-    content_template = models.CharField(max_length=20)
-    sent_at = models.DateTimeField()
+    sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
-    message = models.TextField()
+    error_msg = models.TextField()
+    content_template = models.CharField(max_length=40)
 
-# 
-    # def send(self):
-        # msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
-        # data['SITE_URL'] = 'http://locahost'
-        # 
-        # subject, html, text = '', '', ''
-        # try:
-            # subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
-        # except TemplateDoesNotExist:
-            # pass
-        # try:
-            # text    = render_to_string('emails/' + template_dir + "/message.txt", data)
-        # except TemplateDoesNotExist:
-            # pass
-        # try:
-            # html    = render_to_string('emails/' + template_dir + "/message.html", data)
-        # except TemplateDoesNotExist:
-            # pass
-        # subject = subject.rstrip(' \n\t').lstrip(' \n\t')
-        # super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
-        # if html:
-            # self.attach_alternative(html, "text/html")
-# 
-# 
+    related = generic.GenericForeignKey('related_content_type', 'related_object_id')
+    related_content_type = models.ForeignKey(ContentType)
+    related_object_id = models.PositiveIntegerField()
+
+    def save(self, data={}, *args, **kwargs):
+        if not self.recipient.email:
+            self.error_msg = "No email recipient"
+            self.success = False
+            super(ReportNotification, self).save(*args, **kwargs)
+            return 
+
+        recipients = (self.recipient.email,)
+
+        data = data or {}
+        data.update({
+            "related": self.related,
+            "SITE_URL": Site.objects.get_current().domain
+        })
+
+        subject, html, text = '', '', ''
+        try:
+            subject = render_to_string('emails/' + self.content_template + "/subject.txt", data)
+        except TemplateDoesNotExist:
+            self.error_msg = "No subject"
+        try:
+            text    = render_to_string('emails/' + self.content_template + "/message.txt", data)
+        except TemplateDoesNotExist:
+            self.error_msg = "No content"
+
+        try:
+            html    = render_to_string('emails/' + self.content_template + "/message.html", data)
+        except TemplateDoesNotExist:
+            pass
+
+        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+
+        msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients)
+
+        if html:
+            msg.attach_alternative(html, "text/html")
+
         # if self.report.photo:
             # msg.attach_file(self.report.photo.file.name)
-        # self.sent_at = dt.now()
-        # try:
-            # msg.send()
-            # self.success = True
-        # except SMTPException as e:
-            # self.success = False
-            # self.msg = str(e)
-# 
+
+        try:
+            msg.send()
+            self.success = True
+        except SMTPException as e:
+            self.success = False
+            self.error_msg = str(e)
+
+        super(ReportNotification, self).save(*args, **kwargs)
+
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta

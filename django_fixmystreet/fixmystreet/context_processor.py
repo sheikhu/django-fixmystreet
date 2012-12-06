@@ -1,4 +1,3 @@
-import re
 
 from django.contrib.sites.models import Site
 from django.conf import settings
@@ -15,7 +14,7 @@ def domain(request):
 def environment(request):
     return {
         'ENVIRONMENT': getattr(settings, 'ENVIRONMENT'),
-        'BACKOFFICE': (request.user.is_authenticated() and re.compile('^/(.*)/pro/').search(request.path))
+        'BACKOFFICE': request.backoffice
     }
 
 

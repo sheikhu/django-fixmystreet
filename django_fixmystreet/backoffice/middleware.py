@@ -1,4 +1,4 @@
-from re import compile
+import re
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -6,11 +6,6 @@ from django.conf import settings
 
 from django_fixmystreet.fixmystreet.models import FMSUser
 
-
-if hasattr(settings, 'LOGIN_REQUIRED_URLS') and isinstance(settings.LOGIN_REQUIRED_URLS, (list, tuple)):
-    LOGIN_REQUIRED_URLS = [compile(expr) for expr in settings.LOGIN_REQUIRED_URLS]
-elif hasattr(settings, 'LOGIN_REQUIRED_URLS'):
-    LOGIN_REQUIRED_URLS = [compile(settings.LOGIN_REQUIRED_URLS)]
 
 
 class LoginRequiredMiddleware:
@@ -24,18 +19,13 @@ class LoginRequiredMiddleware:
     loaded. You'll get an error if they aren't.
     """
     def process_request(self, request):
-        assert hasattr(request, 'user'), "The Login Required middleware\
- requires authentication middleware to be installed. Edit your\
- MIDDLEWARE_CLASSES setting to insert\
- 'django.contrib.auth.middlware.AuthenticationMiddleware'. If that doesn't\
- work, ensure your TEMPLATE_CONTEXT_PROCESSORS setting includes\
- 'django.core.context_processors.auth'."
-        if not request.user.is_authenticated():
-            path = request.path_info
-            if path != reverse("login"):
-                for m in LOGIN_REQUIRED_URLS:
-                    if m.match(path):
-                        return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
+        request.backoffice = False
+        if re.compile('^/(.*)/pro/').search(request.path_info):
+            if request.user.is_authenticated():
+                request.backoffice = True
+            else:
+                if request.path_info != reverse("login"):
+                    return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
 
 
 class LoadUserMiddleware:

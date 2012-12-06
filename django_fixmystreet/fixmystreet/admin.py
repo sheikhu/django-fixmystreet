@@ -3,7 +3,7 @@ from django import forms
 from transmeta import canonical_fieldname
 from simple_history.admin import SimpleHistoryAdmin
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, Report, ReportMainCategoryClass, FaqEntry, OrganisationEntity
+from django_fixmystreet.fixmystreet.models import ReportCategory, Report, ReportMainCategoryClass, FaqEntry, OrganisationEntity, ReportNotification
 
 
 class ReportCategoryClassAdmin(admin.ModelAdmin):
@@ -21,7 +21,7 @@ admin.site.register(ReportCategory, ReportCategoryAdmin)
 class FaqEntryAdmin(admin.ModelAdmin):
     list_display = ('q', 'order')
 
-# admin.site.register(FaqEntry, FaqEntryAdmin)
+admin.site.register(FaqEntry, FaqEntryAdmin)
 
 
 class ReportAdmin(SimpleHistoryAdmin):
@@ -35,7 +35,11 @@ admin.site.register(Report,ReportAdmin)
 class OrganisationEntityAdmin(SimpleHistoryAdmin):
     list_display = ('name',)
 
-admin.site.register(OrganisationEntity, OrganisationEntityAdmin)
+
+class ReportNotificationAdmin(admin.ModelAdmin):
+    list_display = ('recipient', 'success')
+
+admin.site.register(ReportNotification, ReportNotificationAdmin)
 
 
 
