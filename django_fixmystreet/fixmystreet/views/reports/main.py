@@ -4,7 +4,6 @@ from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSub
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
-from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 
 
 def new(request):

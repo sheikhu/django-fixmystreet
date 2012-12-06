@@ -30,19 +30,6 @@ def ssl_required(view_func):
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
 
-# 
-# def oauthtoken_to_user(backend_name, token, request, *args, **kwargs):
-    # """Check and retrieve user with given token.
-    # """
-    # backend = get_backend(backend_name, request, "")
-    # if not backend:
-        # raise Exception('Backend {0} not found'.format(backend_name))
-    # #print backend
-    # response = backend.user_data(token) or {}
-    # response['access_token'] = token
-    # kwargs.update({'response': response, backend_name: True})
-    # user = authenticate(*args, **kwargs)
-    # return user
 
 class JsonHttpResponse(HttpResponse):
     data = {}
@@ -75,6 +62,7 @@ def get_exifs(img):
         ret[decoded] = value
     return ret
 
+
 class FixStdImageField(StdImageField):
     def fix_exif_data(self, instance=None, **kwargs):
         img_file = getattr(instance, self.name)
@@ -106,30 +94,6 @@ class FixStdImageField(StdImageField):
         post_save.connect(self.fix_exif_data, sender=cls)
         super(FixStdImageField, self).contribute_to_class(cls, name)
 
-
-
-class HtmlTemplateMail(EmailMultiAlternatives):
-    def __init__(self, template_dir, data, recipients, **kargs):
-        
-        data['SITE_URL'] = 'http://locahost'
-        
-        subject, html, text = '', '', ''
-        try:
-            subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
-        except TemplateDoesNotExist:
-            pass
-        try:
-            text    = render_to_string('emails/' + template_dir + "/message.txt", data)
-        except TemplateDoesNotExist:
-            pass
-        try:
-            html    = render_to_string('emails/' + template_dir + "/message.html", data)
-        except TemplateDoesNotExist:
-            pass
-        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
-        super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
-        if html:
-            self.attach_alternative(html, "text/html")
 
 def render_to_pdf(request, *args, **kwargs):
     tmpfolder = tempfile.mkdtemp()

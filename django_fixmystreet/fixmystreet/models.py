@@ -22,7 +22,7 @@ from django.http import Http404
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, get_current_user
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user
 from django_extensions.db.models import TimeStampedModel
 
 
@@ -308,23 +308,41 @@ def track_former_value(sender, instance, **kwargs):
 @receiver(post_save, sender=Report)
 def report_notify_author(sender, instance, **kwargs):
     """signal on a report to notify author that the status of the report has changed"""
-    if not kwargs['raw'] and instance.__former['status'] != instance.status:
-        if instance.status == Report.REFUSED:
+    report = instance
+    if not kwargs['raw'] and report.__former['status'] != report.status:
+        if report.status == Report.REFUSED:
             notifiation = ReportNotification(
                 content_template='send_report_refused_to_creator',
-                recipient=instance.citizen or instance.created_by,
-                related=instance,
+                recipient=report.citizen or report.created_by,
+                related=report,
             )
             notifiation.save()
+        elif report.status == Report.PROCESSED:
+            for subscription in report.subscriptions.all():
+                notifiation = ReportNotification(
+                    content_template='send_report_closed_to_subscribers',
+                    recipient=subscription.subscriber,
+                    related=report,
+                )
+                notifiation.save()
+        elif report.status == Report.SOLVED:
+            notifiation = ReportNotification(
+                content_template='send_report_fixed_to_gest_resp',
+                recipient=report.responsible_manager,
+                related=report,
+            )
+            notifiation.save()
+
 
 @receiver(post_save, sender=Report)
 def report_notify_manager(sender, instance, **kwargs):
     """signal on a report to notify manager that a report has been filled"""
+    report = instance
     if not kwargs['raw'] and kwargs['created']:
         notifiation = ReportNotification(
             content_template='send_report_creation_to_gest_resp',
-            recipient=instance.responsible_manager,
-            related=instance,
+            recipient=report.responsible_manager,
+            related=report,
         )
         notifiation.save()
 
@@ -412,21 +430,12 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
-#notify subscribers that report has been updated
-# @receiver(post_save, sender=ReportUpdate)
-# def notify(sender, instance, **kwargs):
-    # if not kwargs['raw']:
-        # for subscribe in instance.report.reportsubscription_set.exclude(Q(subscriber__email__isnull=True) | Q(subscriber__email__exact='')):
-            # unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
-            # msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
-            # msg.send()
-
 
 class ReportSubscription(models.Model):
     """ 
     Report Subscribers are notified when there's an update to an existing report.
     """
-    report = models.ForeignKey(Report)
+    report = models.ForeignKey(Report, related_name="subscriptions")
     subscriber = models.ForeignKey(User, null=False)
     class Meta:
         unique_together = (("report", "subscriber"),)

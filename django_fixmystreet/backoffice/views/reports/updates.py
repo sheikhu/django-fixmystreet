@@ -4,7 +4,7 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db import transaction
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, render_to_pdf
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, render_to_pdf
 from django.contrib.auth.models import User
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
@@ -48,16 +48,9 @@ def close( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.PROCESSED
     report.save()
-    subscriptions = ReportSubscription.objects.filter(report_id=report_id)
-    mailto = ['']*len(subscriptions)
-    i =0
-    for reportsubscription in subscriptions:
-        mailto[i] = User.objects.get(pk=reportsubscription.subscriber_id).email
-        i = i+1
     comments = ReportComment.objects.filter(report_id=report_id)
     files = ReportFile.objects.filter(report_id=report_id)
-    mail = HtmlTemplateMail(template_dir='send_report_closed_to_subscribers', data={'report': report,'comments':comments,'files':files}, recipients=tuple(mailto))
-    mail.send()
+
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:

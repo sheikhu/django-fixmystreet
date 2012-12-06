@@ -3,25 +3,19 @@ from django.http import HttpResponseRedirect, Http404
 from django.template import Context, RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, render_to_pdf
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportComment, ReportFile
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     if request.REQUEST.has_key('is_fixed'):
-                alreadySolved = (report.status == Report.SOLVED)
-                if not alreadySolved:
-                    report.status = Report.SOLVED
-                    report.save()
-                    comments = ReportComment.objects.filter(report_id=report_id)
-                    files = ReportFile.objects.filter(report_id=report_id)
-                    mail = HtmlTemplateMail(template_dir='send_report_fixed_to_gest_resp', data={'report': report,'comments':comments,'files':files}, recipients=(report.responsible_manager.email,))
-                    mail.send()
-                if "pro" in request.path:
-                    return HttpResponseRedirect(report.get_absolute_url_pro())
-                else:
-                    return HttpResponseRedirect(report.get_absolute_url())
+        report.status = Report.SOLVED
+        report.save()
+        if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        else:
+            return HttpResponseRedirect(report.get_absolute_url())
     if request.method == 'POST':
         if request.POST['form-type'] == u"comment-form":
             comment_form = ReportCommentForm(request.POST)
