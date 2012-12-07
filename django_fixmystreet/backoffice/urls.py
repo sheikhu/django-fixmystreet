@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import views as auth_views
 from django.views.generic.simple import direct_to_template
 from django.utils.translation import ugettext_lazy as _
+from django_fixmystreet.fixmystreet.models import FMSUser
 
 # from django_fixmystreet.backoffice.views.users import CreateUser
 
@@ -72,6 +73,7 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(r'users/overview/edit','edit',name='usersEdit'),
     url(r'users/overview/save','saveChanges',name="userSave"),
     url(r'users/overview','show',name='usersOverview'),
-	url(r'^create-manager', 'createUser', {'userType': 'manager'}, name='create_manager'),
-	url(r'^create-agent','createUser', {'userType': 'agent'}, name='create_agent'),
+	url(r'^create-contractor', 'createUser', {'user_type': FMSUser.CONTRACTOR}, name='create_manager'),
+	url(r'^create-manager', 'createUser', {'user_type': FMSUser.MANAGER}, name='create_manager'),
+	url(r'^create-agent','createUser', {'user_type': FMSUser.AGENT}, name='create_agent'),
 )

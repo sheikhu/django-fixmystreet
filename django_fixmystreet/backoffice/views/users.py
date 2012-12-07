@@ -90,25 +90,20 @@ def edit(request):
 
 def saveChanges(request):
     userEditForm = UserEditForm(request.POST)
-    print "Going to edit user id= "
-    print request.REQUEST.get('userId')
     userEditForm.save(request.REQUEST.get('userId'))
     return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
 
 
 def deleteUser(request):
     # todo set active = false
-    print 'Deleting user with id='
-    print request.REQUEST.get('userId')
     user_to_delete = FMSUser.objects.get(id=request.REQUEST.get('userId'))
     user_to_delete.logical_deleted = True
     user_to_delete.save()
     #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
     return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
 
-def createUser(request, userType):
-    connectedUser = request.fmsuser
-
+def createUser(request, user_type):
+    connectedUser = request.fmsuser    
     isManager = connectedUser.manager    
     #a boolean value to tell the ui if the user can edit the given form content
     if request.method == "POST":
@@ -141,8 +136,10 @@ def createUser(request, userType):
                         "password":request.POST.get('password1')
                     })
                 return HttpResponseRedirect('/pro/')
-    else:
+    else:        
         createform = AgentCreationForm()
+        #user_type is used when accessing the page the first time to preset the dropdown value        
+        createform.initial['user_type'] = user_type        
     
     return render_to_response("pro/user_create.html",
             {
@@ -150,19 +147,3 @@ def createUser(request, userType):
                 "isManager":isManager
             },
             context_instance=RequestContext(request))
-
-# 
-# class CreateUser(CreateView):
-    # template_name = 'createuser.html'
-    # form_class = UserForm
-# 
-# class UpdateUser(UpdateView):
-    # template_name = 'users_overview.html'
-    # form_class = UserForm
-# 
-# 
-# class DeleteUser(UpdateView):
-    # template_name = 'users_overview.html'
-    # form_class = UserForm
-    # success_url = '/pro/'
-

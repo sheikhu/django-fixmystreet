@@ -41,7 +41,7 @@ def addthis_scripts():
 
 @register.simple_tag
 def report_to_json(report):
-    return json.dumps(report.to_object())
+    return json.dumps(report.toJSON())
 
 @register.filter
 def get_element_from_list(list, index):
