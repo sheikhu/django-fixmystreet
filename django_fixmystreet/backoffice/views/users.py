@@ -98,6 +98,7 @@ def deleteUser(request):
     # todo set active = false
     user_to_delete = FMSUser.objects.get(id=request.REQUEST.get('userId'))
     user_to_delete.logical_deleted = True
+    user_to_delete.is_active = False
     user_to_delete.save()
     #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
     return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
