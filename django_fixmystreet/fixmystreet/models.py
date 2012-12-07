@@ -255,18 +255,34 @@ class Report(UserTrackedModel):
     def attachments(self):
         return list(self.comments.all()) + list(self.files.all()) # order by created
     
-    def to_object(self):
+    def toJSON(self):
+        """
+        Method used to display the object as JSON structure
+        id = unique id
+        p = point
+        p.x = x coordinate
+        p.y = y coordinate
+        s = status
+        c_d = close date
+        pr = private flag
+        v = valid flag
+        c = main category id
+        m_c = first category
+        s_c = second category
+        """
         return {
             "id": self.id,
-            "point": {
+            "p": {
                 "x": self.point.x,
                 "y": self.point.y,
             },
-            "status": self.status,
-            "status_label": self.get_status_display(),
-            "close_date": self.close_date,
-            "private": self.private,
-            "valid": self.valid
+            "s": self.status,
+            "c_d": self.close_date,
+            "pr": self.private,
+            "v": self.valid,
+            "c": self.secondary_category.id,
+            "m_c": self.secondary_category.category_class.id,
+            "s_c": self.secondary_category.secondary_category_class.id
         }
 
 

@@ -168,7 +168,7 @@ def reports_pro(request):
     result = []
     
     for i,report in enumerate(reports):
-        result.append(report.to_object())
+        result.append(report.toJSON())
 
     return JsonHttpResponse({
         'status':'success',
@@ -255,7 +255,7 @@ def create_report_citizen(request):
 	
 def create_report_pro(request):
     '''This method is used to create citizens reports. Validation included.'''
-    data_username	              = request.POST.get('user_name')
+    data_username	          = request.POST.get('user_name')
     data_category_id              = request.POST.get('report_category_id')
     data_secondary_category_id    = request.POST.get('report_secondary_category_id')
     data_description              = request.POST.get('report_description')
