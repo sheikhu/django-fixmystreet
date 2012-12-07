@@ -140,11 +140,11 @@ def acceptAndValidate(request, report_id):
     report.save()
     comments = ReportComment.objects.filter(report_id=report_id)
     for comment in comments:
-        comment.validated= True
+        comment.is_validated= True
         comment.save()
     files = ReportFile.objects.filter(report_id=report_id)
     for f in files:
-        f.validated = True
+        f.is_validated = True
         f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -156,10 +156,10 @@ def validateAll(request,report_id):
     comments = ReportComment.objects.filter(report_id=report_id)
     files = ReportFile.objects.filter(report_id=report_id)
     for comment in comments:
-        comment.validated = True
+        comment.is_validated = True
         comment.save()
     for f in files:
-        f.validated = True
+        f.is_validated = True
         f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -171,13 +171,13 @@ def updateComment(request,report_id):
     updateType = request.REQUEST.get('updateType')
     comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
     if updateType == "valid":
-        comment.validated= (request.REQUEST.get('updateValue')=='checked')
-        if comment.validated:
-            comment.isVisible= True
+        comment.is_validated = (request.REQUEST.get('updateValue')=='checked')
+        if comment.is_validated:
+            comment.is_visible= True
     if updateType == 'confidential':
-        comment.isVisible = not (request.REQUEST.get('updateValue')=='checked')
-        if (comment.isVisible == False):
-            comment.validated = False #When setting element to confidential then it becomes unvalidated automatically
+        comment.is_visible = not (request.REQUEST.get('updateValue')=='checked')
+        if comment.is_visible == False:
+            comment.is_validated = False #When setting element to confidential then it becomes unvalidated automatically
     
     comment.save()
     if "pro" in request.path:
@@ -190,13 +190,13 @@ def updateFile(request,report_id):
     updateType = request.REQUEST.get('updateType')
     f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
     if updateType == "valid":
-        f.validated= (request.REQUEST.get('updateValue')=='checked')
-        if f.validated:
-            f.isVisible= True
+        f.is_validated= (request.REQUEST.get('updateValue')=='checked')
+        if f.is_validated:
+            f.is_visible= True
     if updateType == 'confidential':
-        f.isVisible = not (request.REQUEST.get('updateValue')=='checked')
-        if (f.isVisible == False):
-            f.validated = False #When setting element to confidential then it becomes unvalidated automatically
+        f.is_visible = not (request.REQUEST.get('updateValue')=='checked')
+        if (f.is_visible == False):
+            f.is_validated = False #When setting element to confidential then it becomes unvalidated automatically
     f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())

@@ -356,7 +356,7 @@ $(document).ready(function() {
                     {% endif %}
                     {% endif %}
                     {% for file in files %}
-			{% if not file.isVisible and not fms_user.can_see_confidential %}
+			{% if not file.is_visible and not fms_user.can_see_confidential %}
 				<!-- Skip -->
 			{% else %}
                     	<tr>
@@ -388,7 +388,7 @@ $(document).ready(function() {
         <!--If the current user is the responsible manager-->
         {% if report.responsible_manager.id == request.user.id %} 
                 	<td class="annexesChoiceBoxTD">
-                            {%if file.validated%}
+                            {%if file.is_validated%}
                     		<center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
                             {%else%}
                             <center><input class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
@@ -398,7 +398,7 @@ $(document).ready(function() {
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 	<td class="annexesChoiceBoxTD">
-                            {%if file.isVisible%}
+                            {%if file.is_visible%}
                     		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
                             {%else%}
                             <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
@@ -433,7 +433,7 @@ $(document).ready(function() {
                     {% endif %}
                     {% endif %}
                     {% for comment in comments %}
-			{% if not comment.isVisible and not fms_user.can_see_confidential %}
+			{% if not comment.is_visible and not fms_user.can_see_confidential %}
 				<!-- Skip -->
 			{% else %}
                 	<tr>
@@ -448,7 +448,7 @@ $(document).ready(function() {
             			<!--If the current user is the responsible manager-->
             			{% if report.responsible_manager.id == request.user.id %}
                 			<td class="annexesChoiceBoxTD">
-                    				{% if comment.validated %}
+                    				{% if comment.is_validated %}
                     					<input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
                     				{% else %}
                     					<input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
@@ -458,7 +458,7 @@ $(document).ready(function() {
             			<!--If the current user is the responsible manager or the creator of the report-->
             			{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 			<td class="annexesChoiceBoxTD">
-                    				{% if comment.isVisible %}
+                    				{% if comment.is_visible %}
                     					<input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
                    				{% else %}
                     					<input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
