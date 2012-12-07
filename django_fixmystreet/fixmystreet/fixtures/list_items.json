@@ -31,7 +31,7 @@
             "model_field":"status",
             "label_nl":"Afgehandeld",
             "label_en":"Processed",
-            "label_fr":"Precessed",
+            "label_fr":"Ferme",
             "code":"3"
         }
     },
