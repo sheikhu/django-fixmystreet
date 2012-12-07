@@ -42,9 +42,6 @@ $(function(){
 			{% endif %}
 			<div id="search_results">
 				{% for report in reports %}
-					{% ifchanged report.status %}
-					<h2>{{ report.get_status_display }}</h2>
-					{% endifchanged %}
                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
                 {% endfor %}
              </div>
