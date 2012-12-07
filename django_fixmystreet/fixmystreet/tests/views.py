@@ -100,11 +100,10 @@ class ReportViewsTest(SampleFilesTestCase):
     #    report.is_fixed = False
     #    report.save()
 
-    #    session_manager = SessionManager()
-    #    session_manager.createComment("title 1","text 2","session_id_1")
-    #    session_manager.createComment("title 3","text 4","session_id_1")
+    #    SessionManager.createComment("title 1","text 2","session_id_1")
+    #    SessionManager.createComment("title 3","text 4","session_id_1")
 
-    #    session_manager.saveComments("session_id_1", report.id)
+    #    SessionManager.saveComments("session_id_1", report)
     #    report = Report.objects.get(id=report.id)
     #    aaa = ReportComment.objects.filter(report__id=report.id)
         #self.assertRedirects(response, report.get_absolute_url())

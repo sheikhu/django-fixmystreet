@@ -20,15 +20,12 @@ def report_category_note(request, id):
     ))
 
 def create_comment(request):
-	session_manager = SessionManager()
-	session_manager.createComment(request.POST.get('title'),request.POST.get('text'),request.session.session_key)
-        hh = HttpResponse(content='True', mimetype='text/html')
+	SessionManager.createComment(request.POST.get('title'), request.POST.get('text'), request.session)
+	hh = HttpResponse(content='True', mimetype='text/html')
 	return hh 
-	
+
 def create_file(request):
-    session_manager = SessionManager()
-    print request.POST
-    session_manager.createFile(request.POST.get('title'),request.POST.get('file'),request.session.session_key)
+    SessionManager.createFile(request.POST.get('title'), request.POST.get('file'), request.session)
     hh = HttpResponse(content='True', mimetype='text/html')
     return hh 
 
