@@ -58,7 +58,7 @@ def index(request, slug=None, commune_id=None):
     if commune_id:
         entity = OrganisationEntity.objects.get(id=commune_id)
         return render_to_response("reports/list.html", {
-            "reports": entity.reports_in_charge.order_by('address').all(),
+            "reports": entity.reports_in_charge.order_by('address').filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).all(),
             "entity":entity,
         }, context_instance=RequestContext(request))
 
