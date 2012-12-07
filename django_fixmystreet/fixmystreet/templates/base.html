@@ -184,6 +184,13 @@
                     {% endif %}
                     {% if request.fmsuser.leader %}
                         <li>
+                            <a id='createUserMenuItem' class='category' href="{% url create_contractor %}">
+                                {% trans "Create new contractor" %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if request.fmsuser.leader %}
+                        <li>
                             <a id='createUserMenuItem' class='category' href="{% url create_manager %}">
                                 {% trans "Create new manager" %}
                             </a>

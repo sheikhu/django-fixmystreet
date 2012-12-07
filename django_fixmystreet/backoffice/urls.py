@@ -73,7 +73,7 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(r'users/overview/edit','edit',name='usersEdit'),
     url(r'users/overview/save','saveChanges',name="userSave"),
     url(r'users/overview','show',name='usersOverview'),
-	url(r'^create-contractor', 'createUser', {'user_type': FMSUser.CONTRACTOR}, name='create_manager'),
+	url(r'^create-contractor', 'createUser', {'user_type': FMSUser.CONTRACTOR}, name='create_contractor'),
 	url(r'^create-manager', 'createUser', {'user_type': FMSUser.MANAGER}, name='create_manager'),
 	url(r'^create-agent','createUser', {'user_type': FMSUser.AGENT}, name='create_agent'),
 )
