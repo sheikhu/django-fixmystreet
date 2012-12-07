@@ -128,12 +128,12 @@ def createUser(request, user_type):
             createdUser = createform.save(connectedUser, createdOrganisationEntity, user_type)
 
             if createdUser:
-                notifiation = ReportNotification(
+                notification = ReportNotification(
                     content_template='send_created_to_user',
                     recipient=createdUser,
                     related=createdUser,
                 )
-                notifiation.save(data={
+                notification.save(data={
                         "password":request.POST.get('password1')
                     })
                 return HttpResponseRedirect('/pro/')
