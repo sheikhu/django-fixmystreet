@@ -190,9 +190,9 @@ class CitizenReportForm(ReportForm):
     
     category = CategoryChoiceField(label=ugettext_lazy("category"))
     quality = forms.ChoiceField(choices=qualities)
-    citizen_email = forms.CharField(max_length="50",widget=forms.TextInput(attrs={'class':'required'}),label=ugettext_lazy('Email'))
-    citizen_firstname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Firstname'))
-    citizen_lastname = forms.CharField(max_length="50",widget=forms.TextInput(),label=ugettext_lazy('Name'))
+    citizen_email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
+    citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
+    citizen_lastname = forms.CharField(max_length="30", label=ugettext_lazy('Name'))
     citizen_subscription = forms.BooleanField(required=False)
 
     def save(self, user, commit=True):

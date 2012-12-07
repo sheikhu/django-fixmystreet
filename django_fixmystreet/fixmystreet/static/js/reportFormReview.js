@@ -1,7 +1,7 @@
  /****************************************************************************************/
  /* On submit: validate if the current commune participates with the FixMyStreet project */
  /****************************************************************************************/
- $(document).delegate("#report_form", "submit", function(evt) {
+ $("#report_form").submit(function(evt) {
 
  		if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
 		//This commune does not participate to fixmystreet until now.
@@ -10,7 +10,7 @@
 			}
 		//When the user presses the submit button for the first time: the overview must be shown.
 		// The following code will popuplate the report_overview_table with the entered values
-        if (!$(':submit').hasClass('confirm')) {
+        if (!$(':submit').hasClass('confirm') && !$('form').hasClass("required-invalid")) {
             evt.preventDefault();
             $("#locationView").children().remove();
 			$("#category1View").children().remove();
@@ -39,7 +39,6 @@
   			 vals[i]=this.value;
   			 i++;
 			});
-			console.log(vals);
 			$("#locationView").append("<p>"+vals[0]+"</p>");
 			$("#category1View").append("<p>"+vals[7]+"</p>");
 			$("#category2View").append("<p>"+vals[8]+"</p>");

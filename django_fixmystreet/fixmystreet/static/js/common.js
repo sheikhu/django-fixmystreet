@@ -24,6 +24,33 @@ $(document).ready(function(){
             options);
         }
     }
+
+    /* form validation */
+    $("form").submit(function(evt) {
+        var $form = $(this);
+        var valid = true;
+
+        $('.required input, .required select, .required textarea').each(function(ind,input) {
+            var $input = $(input);
+            if(!$input.val()) {
+                valid = false;
+                $input.closest('.required').addClass('mandatory');
+            } else {
+                $input.closest('.required').removeClass('mandatory');
+            }
+        });
+        
+        if(!valid) {
+            evt.preventDefault();
+
+            $form.find('.mandatory input, .mandatory select').first().focus();
+            $form.find('.required-error-msg').fadeIn();
+            $form.addClass('required-invalid');
+            
+            return false;
+        }
+    });
+
 });
 
 function updateMenuEntries(x,y) {

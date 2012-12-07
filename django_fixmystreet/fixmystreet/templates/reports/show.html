@@ -102,8 +102,7 @@ $(function(){
                 	{% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
                 	{% if not report.is_closed and not subscribed %}
                         <form action="{% url subscribe report.id %}">
-                            <input type="text" value="" placeholder="Your Email" name="citizen_email" />
-                            <br/>
+                            <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
                             <input type="submit" value="{% trans "Subscribe" %}" />
                         </form>
                 	{% endif %}
