@@ -95,13 +95,13 @@ def numberOfReports(userId):
 @register.filter
 def numberOfUsers(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-    users = FMSUser.objects.filter(organisation_id = organisationId)
+    users = FMSUser.objects.filter(organisation_id = organisationId).filter(logical_deleted = False)
     return users.count()
 
 @register.filter
 def numberOfAgents(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-    agents = FMSUser.objects.filter(organisation_id = organisationId)
+    agents = FMSUser.objects.filter(organisation_id = organisationId).filter(logical_deleted = False)
     agents = agents.filter(agent = True)
     return agents.count()
 
@@ -112,14 +112,14 @@ def numberOfContractors(userId):
     dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = organisationId)
     allOrganisation = list(dependantOrganisations)
     allOrganisation.append(organisationId)
-    contractors = FMSUser.objects.filter(organisation_id__in=allOrganisation)
+    contractors = FMSUser.objects.filter(organisation_id__in=allOrganisation).filter(logical_deleted = False)
     contractors = contractors.filter(contractor = True)
     return contractors.count()
 
 @register.filter
 def numberOfImpetrants(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-    impetrants = FMSUser.objects.filter(organisation_id = organisationId)
+    impetrants = FMSUser.objects.filter(organisation_id = organisationId).filter(logical_deleted = False)
     impetrants = impetrants.filter(impetrant = True)
     return impetrants.count()
 
@@ -131,7 +131,7 @@ def numberOfSubscriptions(userId):
 @register.filter
 def numberOfManagers(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
-    managers = FMSUser.objects.filter(organisation_id = organisationId)
+    managers = FMSUser.objects.filter(organisation_id = organisationId).filter(logical_deleted = False)
     managers = managers.filter(manager = True)
     return managers.count()
 

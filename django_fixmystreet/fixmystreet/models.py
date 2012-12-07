@@ -64,6 +64,8 @@ class FMSUser(User):
     impetrant = models.BooleanField(default=False) # todo rename to applicant
     contractor = models.BooleanField(default=False)
     
+    logical_deleted = models.BooleanField(default=False)
+    
     categories = models.ManyToManyField('ReportCategory',related_name='type')
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
 

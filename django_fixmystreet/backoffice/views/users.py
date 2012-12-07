@@ -39,6 +39,9 @@ def show(request):
     if userType == 'manager':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(manager=True)
+    
+    users = users.filter(logical_deleted = False)
+    
     return render_to_response("pro/users_overview.html",{
         "users":users,
     },context_instance=RequestContext(request))
@@ -71,6 +74,8 @@ def edit(request):
     if userType == 'manager':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(manager=True)
+    #Filter deleted users
+    users = users.filter(logical_deleted = False)
     #Get used to edit
     user_to_edit = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
 
@@ -95,7 +100,10 @@ def deleteUser(request):
     # todo set active = false
     print 'Deleting user with id='
     print request.REQUEST.get('userId')
-    FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
+    user_to_delete = FMSUser.objects.get(id=request.REQUEST.get('userId'))
+    user_to_delete.logical_deleted = True
+    user_to_delete.save()
+    #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
     return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
 
 def createUser(request, userType):
