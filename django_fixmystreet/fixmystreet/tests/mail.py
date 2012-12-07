@@ -29,7 +29,7 @@ class MailTest(TestCase):
 		#Login to access the pro page to create a user
 		success = self.client.login(username='manager',password='test')
 		#Send a post request with data filling the form on the user creation page
-		response = self.client.post(url, {'username':'test','password1':'test','password2':'test','first_name':'test','last_name':'test','email':'test@email.com','telephone':'1234556','agentRadio':'1','managerRadio':'0','contractorRadio':'0'})
+		response = self.client.post(url, {'username':'test','password1':'test','password2':'test','first_name':'test','last_name':'test','email':'test@email.com','telephone':'1234556','user_type':'1'})
 		#1 mail is sent to the created user
 		self.assertEquals(len(mail.outbox),1)
 		#The destination address must be equal to the one given to the created user
