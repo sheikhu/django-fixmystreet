@@ -29,7 +29,6 @@ $(document).ready(function() {
 /* toogleCommentForm is used to show/hide the comment annex section */
 /********************************************************************/
 	function toggleCommentForm() {
-        $("#commentTitleInput").val("");
         $("#commentTextTextArea").val("");
         $("#commentForm").toggle();
         $("#showCommentFormButton").toggle();
@@ -124,9 +123,9 @@ function AddCommentToView(langcode){
         $("#extraCommentsDiv").show();
     }
     // Structured Data of the comment to add
-    var data = {"title":$("#commentTitleInput").val(),"text":$("#commentTextTextArea").val()};
+    var data = {"text":$("#commentTextTextArea").val()};
     //Create the html to add in the view
-    var html = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+$("#commentTitleInput").val()+"</h3><p>"+$("#commentTextTextArea").val()+"</p></div></td></tr>"
+    var html = "<tr><td class='annexesFirstTD'><div class='report_update'><h3>"+"</h3><p>"+$("#commentTextTextArea").val()+"</p></div></td></tr>"
     
     //Put comment data in the session
     $.post("/"+langcode+"/ajax/create-comment",data);

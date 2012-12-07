@@ -303,7 +303,7 @@ class ReportFileForm(forms.ModelForm):
 class ReportCommentForm(forms.ModelForm):
 	class Meta:
 		model=ReportComment
-		fields=('title','text',)
+		fields=('text',)
 	
 	def save(self,user,report,commit=True):
 		comment= super(ReportCommentForm,self).save(commit=False)
