@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import ListItem, ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -115,6 +115,32 @@ class CategoryChoiceField(forms.fields.ChoiceField):
             raise forms.ValidationError(self.error_messages['invalid_choice'])
         return model
 
+class UserTypeChoiceField(forms.fields.ChoiceField):
+    """
+    Do some pre-processing to
+    render opt-groups (silently supported, but undocumented
+    http://code.djangoproject.com/ticket/4412 )
+    """
+    def __init__(self,  *args, **kwargs):
+        # assemble the opt groups.
+        choices = []
+        choices.append(('', ugettext_lazy("Select a Category")))
+        #Take only Agent, Gestionnaire and contractor
+        user_types = ListItem.objects.filter(id__in=[19,20,22])
+
+        uniqueSet = ugettext_lazy("Types")
+        groups = {}
+        for type in user_types:
+            user_class = uniqueSet 
+            if not groups.has_key(user_class):
+                groups[user_class] = []
+            if not groups[user_class].__contains__((type.code, type.label)):
+                groups[user_class].append((type.code, type.label))
+        
+        for user_class, values in groups.items():
+            choices.append((user_class,values))
+       
+        super(UserTypeChoiceField,self).__init__(choices=choices,*args,**kwargs)   
 
 #Used by PRO version
 class ReportForm(forms.ModelForm):
@@ -209,16 +235,13 @@ class ContactForm(forms.Form):
 class AgentCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','telephone','username','password1','password2','is_active')
+        fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')
+    
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     is_active = forms.BooleanField(required=False)
-    def save(self, userID, contractorOrganisation, isAgent,isManager,isContractor, commit=True):
-        #Check if contractor has been selected. If it is then remove all other roles. Server side verification !
-        if (isContractor == "1"):
-            isAgent = "0"
-            isManager = "0"
-        if (isAgent == "1" or isManager == "1"):
-            isContractor = "0"
+    user_type = UserTypeChoiceField(label=ugettext_lazy("UserType"),required=True)
+    
+    def save(self, userID, contractorOrganisation, user_type, commit=True):
         user = super(AgentCreationForm,self).save(commit=False)
         fmsuser = FMSUser()
         user.fmsuser = fmsuser
@@ -236,20 +259,22 @@ class AgentCreationForm(UserCreationForm):
                isActive = False
         fmsuser.is_active = isActive
 
-        fmsuser.agent = (isAgent=="1")
-        fmsuser.manager = (isManager=="1")
-        #fmsuser.leader = (isImpetrant=="2")
-	#In V1 all leaders are created in DB on application launch (in other words by sql queries)
+        #Set all rights to 0
+        fmsuser.agent = False
+        fmsuser.manager = False
         fmsuser.leader = False
         fmsuser.impetrant = False
-        fmsuser.contractor = (isContractor=="1")
+        fmsuser.contractor = False
+        
+        #In V1 all leaders are created in DB on application launch (in other words by sql queries)
+        fmsuser.agent = (user_type == FMSUser.AGENT or user_type == FMSUser.MANAGER) #All gestionnaires are also agents
+        fmsuser.manager = (user_type == FMSUser.MANAGER)
+        fmsuser.contractor = (user_type == FMSUser.CONTRACTOR)
         currentUser = FMSUser.objects.get(user_ptr_id=userID)
-        if (isContractor == "1"):
+        if (fmsuser.contractor):
              fmsuser.organisation = contractorOrganisation
         else:
              fmsuser.organisation = currentUser.organisation
-        #import pdb
-        #pdb.set_trace()
         fmsuser.save()
         return fmsuser;
 		

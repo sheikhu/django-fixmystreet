@@ -46,6 +46,12 @@ class UserTrackedModel(TimeStampedModel):
 
 
 class FMSUser(User):
+    AGENT        = 1
+    MANAGER      = 2
+    LEADER       = 3
+    CONTRACTOR   = 4
+    APPLICANT    = 5
+
     telephone = models.CharField(max_length=20,null=True)
     #active = models.BooleanField(default=True)
     last_used_language = models.CharField(max_length=10,null=True)

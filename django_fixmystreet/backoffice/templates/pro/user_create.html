@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<script type="text/javascript">
+<!--script type="text/javascript">
    function uncheckRolesWhenClickingOtherCheckboxThanContractor() {
 	var checkContractor = document.getElementById("contractorRadio");
 	if (checkContractor)
@@ -28,21 +28,12 @@
 		}
 	}
    }
-</script>
+</script-->
 
 <div id="fullwidth">
   <h1>{% trans "Create user" %}</h1>
   <div>
-    <form action="" method="POST">
-      {% csrf_token %}
-        <input type="checkbox" name="agentRadio" value="1" id="agentRadio" onclick="uncheckRolesWhenClickingOtherCheckboxThanContractor()">{% trans 'Agent' %}</input>
-        {% if request.fmsuser.leader %}
-        <input type="checkbox" name="managerRadio" value="1" id="managerRadio" onclick="uncheckRolesWhenClickingOtherCheckboxThanContractor()">{% trans 'Gestionnaire' %}</input>
-        {% endif %}
-        {% if request.fmsuser.manager %}
-        <input type="checkbox" name="contractorRadio" value="1" id="contractorRadio" onclick="uncheckRoleWhenClickingContractor()">{% trans 'Contractor'%}</input>
-        {% endif %}
-      </select>
+    <form action="" method="POST">     
       <table>
         {{ createform.as_table }}
       </table>

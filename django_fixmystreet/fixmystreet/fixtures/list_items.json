@@ -214,6 +214,66 @@
             "label_en":"association",
             "code":"4"
         }
+    },
+    {
+        "pk":19,
+        "model":"fixmystreet.listitem",
+        "fields":{
+            "model_class":"fixmystreet.user",
+            "model_field":"type",
+            "label_nl":"Agent",
+            "label_fr":"Agent",
+            "label_en":"Agent",
+            "code":"1"
+        }
+    },
+    {
+        "pk":20,
+        "model":"fixmystreet.listitem",
+        "fields":{
+            "model_class":"fixmystreet.user",
+            "model_field":"type",
+            "label_nl":"Gestionnaire (nl)",
+            "label_fr":"Gestionnaire",
+            "label_en":"Manager",
+            "code":"2"
+        }
+    },
+    {
+        "pk":21,
+        "model":"fixmystreet.listitem",
+        "fields":{
+            "model_class":"fixmystreet.user",
+            "model_field":"type",
+            "label_nl":"Entiteit",
+            "label_fr":"Entité",
+            "label_en":"Entity",
+            "code":"3"
+        }
+    },
+    {
+        "pk":22,
+        "model":"fixmystreet.listitem",
+        "fields":{
+            "model_class":"fixmystreet.user",
+            "model_field":"type",
+            "label_nl":"Contractor (nl)",
+            "label_fr":"Exécuteur de travaux",
+            "label_en":"Contractor",
+            "code":"4"
+        }
+    },
+    {
+        "pk":23,
+        "model":"fixmystreet.listitem",
+        "fields":{
+            "model_class":"fixmystreet.user",
+            "model_field":"type",
+            "label_nl":"Impetrant (nl)",
+            "label_fr":"Impétrant",
+            "label_en":"Applicant",
+            "code":"5"
+        }
     }
 ]
 

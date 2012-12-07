@@ -101,15 +101,15 @@ def deleteUser(request):
 def createUser(request, userType):
     connectedUser = request.fmsuser
 
-    isManager = connectedUser.manager
-
+    isManager = connectedUser.manager    
     #a boolean value to tell the ui if the user can edit the given form content
     if request.method == "POST":
+        user_type = int(request.POST.get("user_type"))
         createform = AgentCreationForm(request.POST)
         if createform.is_valid():
             createdOrganisationEntity = -1;    
-            #Also create the organisation too
-            if (request.POST.get("contractorRadio") == "1"):
+            #Also create the organisation too            
+            if (user_type == FMSUser.CONTRACTOR):
                 createdOrganisationEntity = OrganisationEntity()
                 createdOrganisationEntity.name_nl = request.POST.get('first_name')+"/"+request.POST.get('last_name')
                 createdOrganisationEntity.name_fr = request.POST.get('first_name')+"/"+request.POST.get('last_name')
@@ -120,16 +120,8 @@ def createUser(request, userType):
                 createdOrganisationEntity.applicant = False
                 createdOrganisationEntity.dependency_id = connectedUser.organisation.id
                 createdOrganisationEntity.save()
-
-            #createdUser = createform.save(userid,request.POST.get("userType"))
-            createdUser = createform.save(connectedUser, createdOrganisationEntity, request.POST.get("agentRadio"), request.POST.get("managerRadio"),request.POST.get("contractorRadio"))
-
-            #If this is the first user created and of type gestionnaire then assign all reportcategories to him
-            #if (createdUser.manager == True & connectedUser.leader == True):
-            #    #if we have just created the first one, then apply all type to him
-            #    if len(FMSUser.objects.filter(organisation_id=connectedUser.organisation.id).filter(manager=True)) == 1:
-            #        for type in ReportCategory.objects.all():
-            #            createdUser.categories.add(type)
+            
+            createdUser = createform.save(connectedUser, createdOrganisationEntity, user_type)
 
             if createdUser:
                 notifiation = ReportNotification(
