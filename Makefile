@@ -73,6 +73,10 @@ scratchdb: dropdb createdb
 	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django loaddata sample
 
+messages:
+	cd django_fixmystreet/fixmystreet; ../../bin/django makemessages -a ; ../../bin/django compilemessages
+	cd django_fixmystreet/backoffice; ../../bin/django makemessages -a ; ../../bin/django compilemessages
+
 clean:
 	rm -rf bootstrap.py \
 			$(BIN_DIR) \
