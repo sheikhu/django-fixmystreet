@@ -1,11 +1,10 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, ReportAttachment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm,ReportCommentForm, FileUploadForm
+from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, ReportAttachment, OrganisationEntity, FMSUser, ReportNotification
+from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm, ReportCommentForm, FileUploadForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
-from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
 
 
 def new(request):
@@ -21,13 +20,12 @@ def new(request):
             session_manager.saveFiles(request.session.session_key, report.id)
             comments = ReportComment.objects.filter(report_id=report.id)
             files = ReportFile.objects.filter(report_id=report.id)
-            mail = HtmlTemplateMail(template_dir='send_report_creation_to_gest_resp', data={'report': report,'comments':comments,'files':files}, recipients=(report.responsible_manager.email,))
-            mail.send()
+
             if report:
-            	if "pro" in request.path:
-                	return HttpResponseRedirect(report.get_absolute_url_pro())
+                if request.backoffice:
+                    return HttpResponseRedirect(report.get_absolute_url_pro())
                 else:
-                	return HttpResponseRedirect(report.get_absolute_url())
+                    return HttpResponseRedirect(report.get_absolute_url())
     else:
         session_manager = SessionManager()
         session_manager.clearSession(request.session.session_key)

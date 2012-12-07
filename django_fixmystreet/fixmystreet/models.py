@@ -2,20 +2,27 @@ from django.utils import simplejson
 from datetime import datetime as dt
 from smtplib import SMTPException
 
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.contrib.auth.models import User, UserManager
+from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
-from django.http import Http404
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.template import TemplateDoesNotExist
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 from django.core import serializers
 from django.core.files.base import ContentFile
+from django.conf import settings
+from django.http import Http404
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, HtmlTemplateMail, get_current_user
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user
 from django_extensions.db.models import TimeStampedModel
 
 
@@ -200,7 +207,7 @@ class Report(UserTrackedModel):
 
     hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
     
-    citizen = models.ForeignKey(User,null=True, related_name='citizen')
+    citizen = models.ForeignKey(User,null=True, related_name='citizen_reports')
     #refusal_motivation = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
@@ -286,6 +293,83 @@ class Report(UserTrackedModel):
         }
 
 
+@receiver(pre_save,sender=Report)
+def report_assign_responsible(sender, instance, **kwargs):
+    if not instance.responsible_manager:
+        #Detect who is the responsible Manager for the given type
+        #When created by pro a creator exists otherwise a citizen object
+
+        if instance.created_by and hasattr(instance.created_by, 'fmsuser') and instance.created_by.fmsuser.organisation:
+            # assign entity of the creator
+            instance.responsible_entity = instance.created_by.fmsuser.organisation
+        else:
+            instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+
+        #Searcht the right responsible for the current organization.            
+        userCandidates = FMSUser.objects.filter(organisation=instance.responsible_entity).filter(manager=True)
+        # TODO: use filters instead of iteration...
+        managerFound = False
+        for currentUser in userCandidates:
+            userCategories = currentUser.categories.all()
+            for currentCategory in userCategories:
+                if (currentCategory == instance.secondary_category):
+                   managerFound = True
+                   instance.responsible_manager = currentUser
+
+@receiver(post_init, sender=Report)
+def track_former_value(sender, instance, **kwargs):
+    """Save former data to compare with new data and track changed values"""
+    instance.__former = dict((field.name, field.value_from_object(instance)) for field in Report._meta.fields)
+
+@receiver(post_save, sender=Report)
+def report_notify_author(sender, instance, **kwargs):
+    """signal on a report to notify author that the status of the report has changed"""
+    report = instance
+    if not kwargs['raw'] and report.__former['status'] != report.status:
+        if report.status == Report.REFUSED:
+            notifiation = ReportNotification(
+                content_template='send_report_refused_to_creator',
+                recipient=report.citizen or report.created_by,
+                related=report,
+            )
+            notifiation.save()
+        elif report.status == Report.PROCESSED:
+            for subscription in report.subscriptions.all():
+                notifiation = ReportNotification(
+                    content_template='send_report_closed_to_subscribers',
+                    recipient=subscription.subscriber,
+                    related=report,
+                )
+                notifiation.save()
+        elif report.status == Report.SOLVED:
+            notifiation = ReportNotification(
+                content_template='send_report_fixed_to_gest_resp',
+                recipient=report.responsible_manager,
+                related=report,
+            )
+            notifiation.save()
+
+
+@receiver(post_save, sender=Report)
+def report_notify_manager(sender, instance, **kwargs):
+    """signal on a report to notify manager that a report has been filled"""
+    report = instance
+    if not kwargs['raw'] and kwargs['created']:
+        notifiation = ReportNotification(
+            content_template='send_report_creation_to_gest_resp',
+            recipient=report.responsible_manager,
+            related=report,
+        )
+        notifiation.save()
+
+@receiver(post_save,sender=Report)
+def report_subscribe_author(sender, instance, **kwargs):
+    """signal on a report to register author as subscriber to his own report"""
+    if kwargs['created'] and not kwargs['raw']:
+        if instance.created_by:
+            ReportSubscription(report=instance, subscriber=instance.created_by).save()
+
+
 class Exportable(models.Model):
     def asJSON():
         return
@@ -363,95 +447,25 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
              instance.categories.add(type)
 
 
-
-@receiver(pre_save,sender=Report)
-def report_assign_responsible(sender, instance, **kwargs):
-    """signal on a report to notify public authority that a report has been filled"""
-    if not instance.responsible_manager:
-        #Detect who is the responsible Manager for the given type
-        #When created by pro a creator exists otherwise a citizen object
-        organizationSearchCriteria = -1
-        #if instance.creator:
-        #    fmsUser = FMSUser.objects.get(pk=instance.creator.id)
-        #    organizationSearchCriteria = fmsUser.organisation
-        #elif instance.citizen:
-        instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
-        organizationSearchCriteria = instance.responsible_entity
-
-        #Searcht the right responsible for the current organization.            
-        userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
-        managerFound = False
-        for currentUser in userCandidates:
-            userCategories = currentUser.categories.all()
-            for currentCategory in userCategories:
-                if (currentCategory == instance.secondary_category):
-                   managerFound = True
-                   instance.responsible_manager = currentUser
-
-        #If not manager found for the responsible commune, then reassign to the region
-        #if (managerFound == False):
-        #    instance.responsible_entity  = OrganisationEntity.objects.get(region=True)
-        #    userCandidates = FMSUser.objects.filter(organisation__id=organizationSearchCriteria.id).filter(manager=True)
-        #    for currentUser in userCandidates:
-        #        userCategories = currentUser.categories.all()
-        #        for currentCategory in userCategories:
-        #            if (currentCategory == instance.secondary_category):
-        #                instance.responsible_manager = currentUser
-
-
-# 
-@receiver(post_save,sender=Report)
-def report_subscribe_author(sender, instance, **kwargs):
-    """
-    signal on a report to register author as subscriber to his own report
-    """
-    if kwargs['created'] and not kwargs['raw']:
-        if instance.created_by:
-            ReportSubscription(report=instance, subscriber=instance.created_by).save()
-
-
-# #update the report, set modified and is_fixed correctly
-# @receiver(post_save, sender=ReportUpdate)
-# def update_report(sender, instance, **kwargs):
-    # instance.report.modified = instance.created
-# 
-    # instance.report.is_fixed = instance.is_fixed
-    # if(instance.is_fixed and not instance.report.fixed_at):
-        # instance.report.fixed_at = instance.created
-# 
-    # instance.report.save()
-
-
-#notify subscribers that report has been updated
-# @receiver(post_save, sender=ReportUpdate)
-# def notify(sender, instance, **kwargs):
-    # if not kwargs['raw']:
-        # for subscribe in instance.report.reportsubscription_set.exclude(Q(subscriber__email__isnull=True) | Q(subscriber__email__exact='')):
-            # unsubscribe_url = 'http://{0}{1}'.format(Site.objects.get_current().domain, reverse("unsubscribe", args=[instance.report.id]))
-            # msg = HtmlTemplateMail('report_update', {'update': instance, 'unsubscribe_url': unsubscribe_url}, [subscribe.subscriber.email])
-            # msg.send()
-
-
 class ReportSubscription(models.Model):
     """ 
     Report Subscribers are notified when there's an update to an existing report.
     """
-    report = models.ForeignKey(Report)
+    report = models.ForeignKey(Report, related_name="subscriptions")
     subscriber = models.ForeignKey(User, null=False)
     class Meta:
         unique_together = (("report", "subscriber"),)
 
 @receiver(post_save,sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
-    if not kwargs['raw'] and instance.subscriber.email:
+    if not kwargs['raw'] and kwargs['created']:
         report = instance.report
-        mail = HtmlTemplateMail(template_dir='send_subscription_to_subscriber', data={
-            'report':   report,
-            'comments': report.comments.all(),
-            'files':    report.files.all()
-        },
-        recipients=(instance.subscriber.email,))
-        mail.send()
+        notifiation = ReportNotification(
+            content_template='send_subscription_to_subscriber',
+            recipient=instance.subscriber,
+            related=report,
+        )
+        notifiation.save()
 
 class ReportMainCategoryClass(models.Model):
     __metaclass__ = TransMeta
@@ -615,47 +629,65 @@ class GestType(models.Model):
 
 
 class ReportNotification(models.Model):
-    report = models.ForeignKey(Report)
-    recipient = models.ForeignKey(FMSUser)
-    content_template = models.CharField(max_length=20)
-    sent_at = models.DateTimeField()
+    recipient = models.ForeignKey(User)
+    sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
-    message = models.TextField()
+    error_msg = models.TextField()
+    content_template = models.CharField(max_length=40)
 
-# 
-    # def send(self):
-        # msg = HtmlTemplateMail('send_report_to_city', {'report': self.report}, (self.to_councillor.email,))
-        # data['SITE_URL'] = 'http://locahost'
-        # 
-        # subject, html, text = '', '', ''
-        # try:
-            # subject = render_to_string('emails/' + template_dir + "/subject.txt", data)
-        # except TemplateDoesNotExist:
-            # pass
-        # try:
-            # text    = render_to_string('emails/' + template_dir + "/message.txt", data)
-        # except TemplateDoesNotExist:
-            # pass
-        # try:
-            # html    = render_to_string('emails/' + template_dir + "/message.html", data)
-        # except TemplateDoesNotExist:
-            # pass
-        # subject = subject.rstrip(' \n\t').lstrip(' \n\t')
-        # super(HtmlTemplateMail, self).__init__(subject, text, settings.EMAIL_FROM_USER, recipients, **kargs)
-        # if html:
-            # self.attach_alternative(html, "text/html")
-# 
-# 
+    related = generic.GenericForeignKey('related_content_type', 'related_object_id')
+    related_content_type = models.ForeignKey(ContentType)
+    related_object_id = models.PositiveIntegerField()
+
+    def save(self, data={}, *args, **kwargs):
+        if not self.recipient.email:
+            self.error_msg = "No email recipient"
+            self.success = False
+            super(ReportNotification, self).save(*args, **kwargs)
+            return 
+
+        recipients = (self.recipient.email,)
+
+        data = data or {}
+        data.update({
+            "related": self.related,
+            "SITE_URL": Site.objects.get_current().domain
+        })
+
+        subject, html, text = '', '', ''
+        try:
+            subject = render_to_string('emails/' + self.content_template + "/subject.txt", data)
+        except TemplateDoesNotExist:
+            self.error_msg = "No subject"
+        try:
+            text    = render_to_string('emails/' + self.content_template + "/message.txt", data)
+        except TemplateDoesNotExist:
+            self.error_msg = "No content"
+
+        try:
+            html    = render_to_string('emails/' + self.content_template + "/message.html", data)
+        except TemplateDoesNotExist:
+            pass
+
+        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+
+        msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients)
+
+        if html:
+            msg.attach_alternative(html, "text/html")
+
         # if self.report.photo:
             # msg.attach_file(self.report.photo.file.name)
-        # self.sent_at = dt.now()
-        # try:
-            # msg.send()
-            # self.success = True
-        # except SMTPException as e:
-            # self.success = False
-            # self.msg = str(e)
-# 
+
+        try:
+            msg.send()
+            self.success = True
+        except SMTPException as e:
+            self.success = False
+            self.error_msg = str(e)
+
+        super(ReportNotification, self).save(*args, **kwargs)
+
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta

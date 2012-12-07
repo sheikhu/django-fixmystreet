@@ -6,16 +6,16 @@
 {% get_language_info for "nl" as langNL %}
 {% get_language_info for "fr" as langFR %}
 {% language langFR.code %}
-{% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
+{% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
 <p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at {{SITE_URL}}/pro/report/{{reportId}}.</p>
 {% endblocktrans %}
-{% include "emails/report_show.html" %}
+{% include "emails/report_show.html" with report=related %}
 {% endlanguage %}
 <br/>
 -------------------------------------------------
 <br/>
 {% language langNL.code %}
-{% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
+{% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
 <p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at {{SITE_URL}}/pro/report/{{reportId}}.</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" %}

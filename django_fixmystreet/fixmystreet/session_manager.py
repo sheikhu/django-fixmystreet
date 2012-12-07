@@ -21,7 +21,7 @@ class SessionManager():
 		if 'comments' in s.keys():
 			commentsData = s['comments']
 			for comment in commentsData:
-				c = ReportComment(title=comment['title'],text=comment['text'], report = Report.objects.get(pk=reportId))
+				c = ReportComment(text=comment['text'], report = Report.objects.get(pk=reportId))
 				c.save()
 			del s['comments']
 			s.save()

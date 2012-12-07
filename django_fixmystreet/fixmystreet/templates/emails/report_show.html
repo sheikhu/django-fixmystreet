@@ -15,13 +15,13 @@
 <p>{% trans 'Created at:'%} {{report.created|date}}</p>
 
 <h3> {% trans 'Extra comments'%} </h3>
-{% for  comment in comments%}
+{% for  comment in report.comments.all %}
 <p>{% trans 'Title:'%} {{comment.title}}</p>
 <p>{% trans 'Comment:' %} {{comment.text}}</p>
 {% endfor %}
 
 <h3> {% trans 'Extra files'%} </h3>
-{% for  file in files %}
+{% for  file in report.files.all %}
 <p>{% trans 'Title:'%} {{comment.title}}</p>
 <p><img src="{{file.url}}"></p>
 {% endfor %}

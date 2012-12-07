@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail, FixStdImageField
+from django_fixmystreet.fixmystreet.utils import FixStdImageField
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
@@ -303,7 +303,7 @@ class ReportFileForm(forms.ModelForm):
 class ReportCommentForm(forms.ModelForm):
 	class Meta:
 		model=ReportComment
-		fields=('title','text',)
+		fields=('text',)
 	
 	def save(self,user,report,commit=True):
 		comment= super(ReportCommentForm,self).save(commit=False)

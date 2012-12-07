@@ -4,7 +4,7 @@ from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSub
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
-from django_fixmystreet.fixmystreet.utils import HtmlTemplateMail
+
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
@@ -19,8 +19,6 @@ def new(request):
             session_manager.saveFiles(request.session.session_key, report.id)
             comments = ReportComment.objects.filter(report_id=report.id)
             files = ReportFile.objects.filter(report_id=report.id)
-            mail = HtmlTemplateMail(template_dir='send_report_creation_to_gest_resp', data={'report': report,'comments':comments,'files':files}, recipients=(report.responsible_manager.email,))
-            mail.send()
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
     else:
