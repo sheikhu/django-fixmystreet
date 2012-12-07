@@ -270,7 +270,24 @@ class Report(UserTrackedModel):
     def attachments(self):
         return list(self.comments.all()) + list(self.files.all()) # order by created
     
-    def toJSON(self):
+    def to_JSON(self):
+        """
+        Method used to display the object as JSON structure for website
+		"""
+        return {
+            "id": self.id,
+            "point": {
+                "x": self.point.x,
+                "y": self.point.y,
+            },
+            "status": self.status,
+            "status_label": self.get_status_display(),
+            "close_date": self.close_date,
+            "private": self.private,
+            "valid": self.valid
+        }
+
+    def to_mobile_JSON(self):
         """
         Method used to display the object as JSON structure
         id = unique id

@@ -156,6 +156,23 @@ def reports_citizen(request):
         'results':result
     })
 
+#Method used to retrieve all reports for pros on mobiles
+def reports_pro_mobile(request):
+    pnt = dictToPoint(request.REQUEST)
+    reports = Report.objects.filter().distance(pnt).order_by('distance')
+    
+    #Max 1 month in the past 
+    timestamp_from = datetime.now().date() - timedelta(days=31)
+    reports = Report.objects.filter(Q(created__gte=timestamp_from)).distance(pnt).order_by('distance')[:20]
+    result = []
+    
+    for i,report in enumerate(reports):
+        result.append(report.to_mobile_JSON())
+
+    return JsonHttpResponse({
+        'status':'success',
+        'results':result
+    })
 
 #Method used to retrieve all reports for pros
 def reports_pro(request):
@@ -168,7 +185,7 @@ def reports_pro(request):
     result = []
     
     for i,report in enumerate(reports):
-        result.append(report.toJSON())
+        result.append(report.to_JSON())
 
     return JsonHttpResponse({
         'status':'success',
