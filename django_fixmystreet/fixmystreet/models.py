@@ -367,7 +367,6 @@ class Exportable(models.Model):
 class ReportAttachment(UserTrackedModel):
     is_validated = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=False)
-    title = models.CharField(max_length=250)
 
     class Meta:
         abstract=True
@@ -406,6 +405,7 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
+    title = models.CharField(max_length=250)
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
