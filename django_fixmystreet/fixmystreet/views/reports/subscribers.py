@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django_fixmystreet.fixmystreet.models import FMSUser
 from django.db import IntegrityError
+from django.db.models import Q
 
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 
@@ -14,7 +15,7 @@ def create(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     #CREATE USER CITIZEN IF NECESSARY 
     try:
-        user = FMSUser.objects.get(username=request.REQUEST.get('citizen_email'));
+        user = FMSUser.objects.get(email=request.REQUEST.get('citizen_email'));
     except FMSUser.DoesNotExist:
         #Add information about the citizen connected if it does not exist
         user = FMSUser.objects.create(username=request.REQUEST.get('citizen_email'), email=request.REQUEST.get('citizen_email'), first_name='ANONYMOUS', last_name='ANONYMOUS', agent=False, contractor=False, manager=False, leader=False)

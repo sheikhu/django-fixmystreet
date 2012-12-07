@@ -25,12 +25,6 @@ $(function(){
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 });
-/************************************************/
-/* FUNCTION CALLED WHEN SUBSCRIPTION IS CLICKED */
-/************************************************/
-function subscribe() {
-	window.location = "{% url subscribe report.id %}?citizen_email="+$('#citizen_email').val();
-}
 
 </script>
 {% endblock %}
@@ -105,13 +99,13 @@ function subscribe() {
 		<!-- SUBSCRIBER BLOCK -->
 		<!-- ################ -->
 		<div id='report-subscribers'>
-                	{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                	{% if not report.is_closed %}
-                    		<input type="text" value="" placeholder="Your Email" id="citizen_email" />
-		    		<br/>
-                    		{% if not subscribed %}
-                    		<a href="javascript:subscribe()">{% trans "Subscribe" %}</a>
-                    		{% endif %}
+                	{% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+                	{% if not report.is_closed and not subscribed %}
+                        <form action="{% url subscribe report.id %}">
+                            <input type="text" value="" placeholder="Your Email" name="citizen_email" />
+                            <br/>
+                            <input type="submit" value="{% trans "Subscribe" %}" />
+                        </form>
                 	{% endif %}
             	</div>
 
@@ -121,7 +115,7 @@ function subscribe() {
 		<!-- REPORT CREATOR ZONE -->
 		<!-- ################### -->
 		<p class="author-sign">
-                {% blocktrans with by=report.author.get_full_name on=report.created_at|date %}
+                {% blocktrans with by=author.get_full_name on=report.created|date %}
                 	Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 {% endblocktrans %}
             </p>

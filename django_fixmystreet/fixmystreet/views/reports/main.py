@@ -46,6 +46,7 @@ def show(request, slug, report_id):
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+                "author": report.citizen or report.created_by,
                 "update_form": ReportCommentForm(),
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),
@@ -53,11 +54,11 @@ def show(request, slug, report_id):
             context_instance=RequestContext(request))
 
 
-def index(request,slug=None, commune_id=None):
+def index(request, slug=None, commune_id=None):
     if commune_id:
         entity = OrganisationEntity.objects.get(id=commune_id)
         return render_to_response("reports/list.html", {
-            "reports": entity.reports_in_charge.all(),
+            "reports": entity.reports_in_charge.order_by('address').all(),
             "entity":entity,
         }, context_instance=RequestContext(request))
 
