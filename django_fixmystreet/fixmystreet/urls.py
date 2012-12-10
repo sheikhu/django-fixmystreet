@@ -41,9 +41,10 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
 #)
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
-    url(_(r'^reports/$'), 'index',name='report_index'),
+    url(_(r'^reports/$'), 'index',name='report_index'),	
     url(_(r'^reports/(?P<slug>.*)/(?P<commune_id>\d+)$'), 'index',name='report_commune_index'),       
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show'),     
+	url(_(r'^report/search_ticket'), 'search_ticket',name='search_ticket'),
     url(_(r'^report/new'), 'new',name='report_new'),
 )
 

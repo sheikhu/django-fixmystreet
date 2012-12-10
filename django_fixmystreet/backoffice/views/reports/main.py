@@ -55,6 +55,11 @@ def new(request):
             },
             context_instance=RequestContext(request))
 
+def search_ticket(request):
+    report_id = request.REQUEST.get('report_id')
+    report = Report.objects.get(id=report_id)
+    
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 def subscription(request):
     """
