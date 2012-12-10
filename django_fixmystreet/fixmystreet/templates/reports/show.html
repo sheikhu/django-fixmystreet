@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load i18n tags %}
-{% block title %}{{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}}{% endblock %}
+{% block title %}{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}{% endblock %}
 
 {% block script %}
 {{ block.super }}
 
 
-<meta property="og:title" content="{{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}}" />
-<meta property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name}} {{report.category.name}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
+<meta property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
+<meta property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
 {% map_scripts %}
 
@@ -25,12 +25,6 @@ $(function(){
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 });
-/************************************************/
-/* FUNCTION CALLED WHEN SUBSCRIPTION IS CLICKED */
-/************************************************/
-function subscribe() {
-	window.location = "{% url subscribe report.id %}?citizen_email="+$('#citizen_email').val();
-}
 
 </script>
 {% endblock %}
@@ -105,13 +99,12 @@ function subscribe() {
 		<!-- SUBSCRIBER BLOCK -->
 		<!-- ################ -->
 		<div id='report-subscribers'>
-                	{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-                	{% if not report.is_closed %}
-                    		<input type="text" value="" placeholder="Your Email" id="citizen_email" />
-		    		<br/>
-                    		{% if not subscribed %}
-                    		<a href="javascript:subscribe()">{% trans "Subscribe" %}</a>
-                    		{% endif %}
+                	{% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+                	{% if not report.is_closed and not subscribed %}
+                        <form action="{% url subscribe report.id %}">
+                            <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
+                            <input type="submit" value="{% trans "Subscribe" %}" />
+                        </form>
                 	{% endif %}
             	</div>
 
@@ -121,7 +114,7 @@ function subscribe() {
 		<!-- REPORT CREATOR ZONE -->
 		<!-- ################### -->
 		<p class="author-sign">
-                {% blocktrans with by=report.author.get_full_name on=report.created_at|date %}
+                {% blocktrans with by=author.get_full_name on=report.created|date %}
                 	Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                 {% endblocktrans %}
             </p>
@@ -222,7 +215,7 @@ function subscribe() {
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
-			
+
 			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
 			<table id="report_form" class="form">
 				{{comment_form.as_table}}					
@@ -271,5 +264,5 @@ function subscribe() {
      		<div id="map-bxl" ></div>
     	</div>
 </div>
-	
+
 {% endblock %}

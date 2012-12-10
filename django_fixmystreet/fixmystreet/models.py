@@ -121,6 +121,10 @@ class FMSUser(User):
         return simplejson.dumps(d)
 
 
+User._meta.get_field_by_name('email')[0]._unique = True
+User._meta.get_field_by_name('email')[0].null = True
+
+
 class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
@@ -863,4 +867,3 @@ def exportReportsOfEntity(entityId):
     f.write(d)
     #close file stream
     f.close()
-

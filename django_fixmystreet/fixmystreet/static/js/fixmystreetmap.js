@@ -78,10 +78,11 @@
 			);
 			this.map.addLayer(wms);
 			
-			if(x && y)
-			{
+			if(x && y) {
 				this.map.setCenter(new OpenLayers.LonLat(x,y));
-		        	this.map.zoomTo(6);
+				this.map.zoomTo(6);
+			} else {
+				this.map.zoomToMaxExtent();
 			}
 		},
 

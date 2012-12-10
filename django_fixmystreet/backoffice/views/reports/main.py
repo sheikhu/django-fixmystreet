@@ -15,9 +15,8 @@ def new(request):
         if report_form.is_valid():
             # this saves the update as part of the report.
             report = report_form.save(request.user)
-            session_manager = SessionManager()
-            session_manager.saveComments(request.session.session_key, report.id)
-            session_manager.saveFiles(request.session.session_key, report.id)
+            SessionManager.saveComments(request.session, report.id)
+            SessionManager.saveFiles(request.session, report.id)
             comments = ReportComment.objects.filter(report_id=report.id)
             files = ReportFile.objects.filter(report_id=report.id)
 
@@ -27,8 +26,7 @@ def new(request):
                 else:
                     return HttpResponseRedirect(report.get_absolute_url())
     else:
-        session_manager = SessionManager()
-        session_manager.clearSession(request.session.session_key)
+        SessionManager.clearSession(request.session)
         report_form = ReportForm(initial={
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')

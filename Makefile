@@ -62,7 +62,7 @@ rpm:
 createdb:
 	createdb $(DBNAME) -U $(USER) -T template_postgis
 	$(BIN_DIR)/django syncdb --migrate --noinput
-	$(BIN_DIR)/django loaddata bootstrap list_items
+	$(BIN_DIR)/django loaddata bootstrap list_items applicants
 
 dropdb:
 	dropdb $(DBNAME) -U $(USER)
@@ -72,6 +72,10 @@ dropdb:
 scratchdb: dropdb createdb
 	cp -Rf media/photos-sample/ media/photos/
 	$(BIN_DIR)/django loaddata sample
+
+messages:
+	cd django_fixmystreet/fixmystreet; ../../bin/django makemessages -a ; ../../bin/django compilemessages
+	cd django_fixmystreet/backoffice; ../../bin/django makemessages -a ; ../../bin/django compilemessages
 
 clean:
 	rm -rf bootstrap.py \

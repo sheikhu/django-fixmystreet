@@ -261,6 +261,17 @@ a {
     color:green;
 }
 
+/* form validation */
+.required.mandatory input, .required.mandatory select, .required.mandatory textarea {
+    border:2px solid red !important;
+}
+.required.mandatory input, .required.mandatory textarea {
+    background-color: #FDD;
+}
+form.required-invalid .required-msg {
+    color:red;
+}
+
 #leftcol {
 	display:inline-block; 
 	vertical-align:top;

@@ -10,7 +10,7 @@
             var SERVICE_GIS_URL = 'http://{{ SERVICE_GIS }}';
             var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
             var GEOSERVER_URL = 'http://{{ GEOSERVER }}';
-        </script>
+		</script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
@@ -25,42 +25,6 @@
 		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}js/style.css"/>
         {% endblock %}
-		<script>
-
-        /*
-        .required.mandatory input, .required.mandatory select {
-            border:1px solid red !important;
-        }
-        form.required-invalid .required-msg {
-            color:red;
-        }
-        
-        $(document).delegate("form", "submit", function(evt) {
-            var $form = $(this);
-            var valid = true;
-            
-            $('.required input, .required select').each(function(ind,input) {
-                var $input = $(input);
-                if(!$input.val()) {
-                    valid = false;
-                    $input.closest('.required').addClass('mandatory');
-                } else {
-                    $input.closest('.required').removeClass('mandatory');
-                }
-            });
-            
-            if(!valid) {
-                evt.preventDefault();
-
-                $form.find('.mandatory input, .mandatory select').first().focus();
-                $form.find('.required-error-msg').fadeIn();
-                $form.addClass('required-invalid');
-                
-                return false;
-            }
-        });
-        */
-		</script>
 	</head>
 
 	<body>
