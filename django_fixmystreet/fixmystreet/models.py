@@ -1,4 +1,3 @@
-import mimetypes
 from django.utils import simplejson
 from datetime import datetime as dt
 from smtplib import SMTPException
@@ -73,6 +72,21 @@ class FMSUser(User):
     objects = UserManager()
 
     # history = HistoricalRecords()
+    
+    def display_category(self):
+        return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
+
+    def get_ticket_number(self):
+        '''Return the report ticket as a usable string'''
+        report_ticket_id = str(self.id)
+        if (report_ticket_id.__len__() <= 8):
+            for i in range(8-(report_ticket_id.__len__())):
+                report_ticket_id = "0"+report_ticket_id;
+        return report_ticket_id
+
+    def get_ticket_as_string(self):   
+        '''Return the report ticket as a displayable component'''
+        return "#"+self.get_ticket_number()
     
     def get_display_name(self):
         if (self.first_name == None and self.last_name == None):
@@ -252,15 +266,15 @@ class Report(UserTrackedModel):
     def get_ticket_as_string(self):   
         '''Return the report ticket as a displayable component'''
         return "#"+self.get_ticket_number()
-
+    
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+''
+        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
         return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
     
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+''
+        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
@@ -479,7 +493,7 @@ class ReportFile(ReportAttachment):
     def is_a_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel() 
     def is_an_image(self):
-        return self.is_image()  
+        return self.is_image()
 
 @receiver(post_save,sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):

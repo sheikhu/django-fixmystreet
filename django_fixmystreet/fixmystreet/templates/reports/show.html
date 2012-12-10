@@ -7,7 +7,7 @@
 
 
 <meta property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
-<meta property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
+<meta property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
 {% map_scripts %}
 
@@ -67,7 +67,7 @@ $(function(){
     <!-- ########################### -->
     <!-- # DISPLAY REPORT CATEGORY # -->
     <!-- ########################### -->
-    {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
+       {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
  	<div style="float:right;margin-top:-23px">
         	<table class="reportActionButtons">
 			<tr>
@@ -130,7 +130,7 @@ $(function(){
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
-                    <td>{{ report.display_category }}</td>
+                    <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
                 </tr>
             </table>
 
@@ -143,7 +143,7 @@ $(function(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     {% for file in report.get_files %}
-		    {% if file.validated %} <!-- PUBLIC? -->
+		    {% if file.is_validated %} <!-- PUBLIC? -->
                     <tr>
                         <td class="annexesFirstTD">
                     <div class="report_update">
@@ -186,7 +186,7 @@ $(function(){
             <div id="report_updates">
                 <table class="extraCommentsTable">
                 {% for comment in report.get_comments %}
-		{% if comment.validated %} 
+		{% if comment.is_validated %} 
                 	<tr>
                     	<td class="annexesFirstTD">
                 		<div class="report_update">
@@ -215,7 +215,7 @@ $(function(){
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
-
+			
 			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
 			<table id="report_form" class="form">
 				{{comment_form.as_table}}					
@@ -264,5 +264,6 @@ $(function(){
      		<div id="map-bxl" ></div>
     	</div>
 </div>
-
+	
 {% endblock %}
+>>>>>>> eedc897d5623398968169dab4378a3e377cea3fc
