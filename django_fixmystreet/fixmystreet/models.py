@@ -304,10 +304,61 @@ class Report(UserTrackedModel):
     def attachments(self):
         return list(self.comments.all()) + list(self.files.all()) # order by created
     
+    def to_full_JSON(self):
+        """
+        Method used to display the whole object content as JSON structure for website
+        """
+        return {
+            "id": self.id,
+            "point": {
+                "x": self.point.x,
+                "y": self.point.y,
+            },
+            "status": self.status,
+            "quality": self.quality,
+            "address": self.address,
+            "postalcode": self.postalcode,
+            "description": self.description,
+            "category": self.category.id,
+            "secondary_category": self.secondary_category.id,                       
+			"fixed_at": self.fixed_at,
+			"hash_code": self.hash_code,
+			"citizen": self.citizen.email,
+			"responsible_entity": self.responsible_entity.id,
+			"contractor": self.contractor,
+			"responsible_manager": self.responsible_manager.username,			
+            "close_date":  str(self.close_date),
+            "private": self.private,
+            "valid": self.valid
+        }
+       
+       
+    hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
+    
+    citizen = models.ForeignKey(User,null=True, related_name='citizen_reports')
+    #refusal_motivation = models.TextField(null=True)
+    #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
+    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
+    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
+    responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True)
+    responsible_manager_validated = models.BooleanField(default=False)
+
+    valid = models.BooleanField(default=False)
+    private = models.BooleanField(default=True)
+    #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    photo = models.FileField(upload_to="photos")
+    close_date = models.DateTimeField(null=True, blank=True)
+
+    objects = models.GeoManager()
+
+    history
+
+
+
     def to_JSON(self):
         """
         Method used to display the object as JSON structure for website
-		"""
+        """
         return {
             "id": self.id,
             "point": {

@@ -92,3 +92,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
 )
 
+urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
+    #next line to be deprecated...
+    url(_(r'^import/report/close/$'), 'close_report',name='close_report'),
+)
