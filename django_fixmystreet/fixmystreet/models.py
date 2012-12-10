@@ -233,6 +233,18 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    def get_ticket_number(self):
+        '''Return the report ticket as a usable string'''
+        report_ticket_id = str(self.id)
+        if (report_ticket_id.__len__() <= 8):
+            for i in range(8-(report_ticket_id.__len__())):
+                report_ticket_id = "0"+report_ticket_id;
+        return report_ticket_id
+
+    def get_ticket_as_string(self):   
+        '''Return the report ticket as a displayable component'''
+        return "#"+self.get_ticket_number()
+
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
         slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+''

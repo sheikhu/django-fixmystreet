@@ -93,7 +93,7 @@ $(document).ready(function() {
 	<!-- ########################### -->
 	<!-- # DISPLAY REPORT CATEGORY # -->
 	<!-- ########################### -->
-        {{report.secondary_category.name}} 
+        {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
 		<!-- ################################################### -->
