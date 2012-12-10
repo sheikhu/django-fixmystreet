@@ -206,7 +206,7 @@ $(document).ready(function() {
 	                </tr>
         	        <tr>
                 	    <th>{% trans "Category:" %}</th>
-	                    <td>{{report.category.name}} / {{report.secondary_category.name}}</td>
+	                    <td>{{ report.display_category }}</td>
         	        </tr>
                 	<tr>
                 		<th>{% trans "Status:" %}</th>
@@ -374,7 +374,7 @@ $(document).ready(function() {
 							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
 						{% endif %}
 						{% if file.is_excel %}
-							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-png.png' width="48px" height="48px"/> </a>
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
 						{% endif %}
 						</center>
                         		{% endif %}

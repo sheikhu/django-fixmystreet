@@ -1,3 +1,4 @@
+import mimetypes
 from django.utils import simplejson
 from datetime import datetime as dt
 from smtplib import SMTPException
@@ -237,6 +238,9 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    def display_category(self):
+        return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
+
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
         report_ticket_id = str(self.id)
@@ -475,7 +479,7 @@ class ReportFile(ReportAttachment):
     def is_a_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel() 
     def is_an_image(self):
-        return self.is_image()
+        return self.is_image()  
 
 @receiver(post_save,sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):

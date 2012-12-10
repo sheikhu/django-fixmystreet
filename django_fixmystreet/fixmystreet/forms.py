@@ -303,16 +303,17 @@ class ReportFileForm(forms.ModelForm):
 		fileUpdate.report = report
 
 		file_name_upper = str(fileUpdate.file.name).upper()
-
-		if file_name_upper.endswith("PDF"):
+		loaded_file = self.files.get('file')
+		
+		if loaded_file.content_type == "application/pdf":
 			fileUpdate.file_type = ReportFile.PDF
-		if file_name_upper.endswith("DOC") or file_name_upper.endswith("DOCX"):
+		elif loaded_file.content_type == 'application/msword' or loaded_file.content_type == 'application/vnd.oasis.opendocument.text' or loaded_file.content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
 			fileUpdate.file_type = ReportFile.WORD
-		if file_name_upper.endswith("PNG") or file_name_upper.endswith("JPG") or file_name_upper.endswith("JPEG"):
+		elif loaded_file.content_type == 'image/png' or loaded_file.content_type == 'image/jpeg':
 			fileUpdate.file_type = ReportFile.IMAGE
-		if file_name_upper.endswith("XLS"):
+		elif loaded_file.content_type == 'application/vnd.ms-excel' or loaded_file.content_type == 'application/vnd.oasis.opendocument.spreadsheet':
 			fileUpdate.file_type = ReportFile.EXCEL
-	 
+
 		if fileUpdate.file_type == ReportFile.IMAGE:
 			if report.files.count() == 0:
 				report.photo = fileUpdate.file
