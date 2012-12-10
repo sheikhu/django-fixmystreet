@@ -239,12 +239,12 @@ class Report(UserTrackedModel):
 
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+''
+        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
         return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
     
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '').replace('(','').replace(')','') + '-'+str(self.category.name).replace(' ', '').replace('(','').replace(')','')+'-'+self.responsible_entity.name+''
+        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
