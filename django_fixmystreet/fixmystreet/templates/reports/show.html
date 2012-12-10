@@ -143,7 +143,7 @@ $(function(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     {% for file in report.get_files %}
-		    {% if file.validated %} <!-- PUBLIC? -->
+		    {% if file.is_validated %} <!-- PUBLIC? -->
                     <tr>
                         <td class="annexesFirstTD">
                     <div class="report_update">
@@ -186,7 +186,7 @@ $(function(){
             <div id="report_updates">
                 <table class="extraCommentsTable">
                 {% for comment in report.get_comments %}
-		{% if comment.validated %} 
+		{% if comment.is_validated %} 
                 	<tr>
                     	<td class="annexesFirstTD">
                 		<div class="report_update">
