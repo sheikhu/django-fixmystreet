@@ -158,21 +158,23 @@ $(document).ready(function() {
 	<!-- ##################################### -->
     	<div style="border-bottom:1px solid black; padding-bottom:30px">
 		<div id="leftcol">    
-			{% if report.markedAsFinished %}
+			{% if report.is_closed %}
 				<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 			{% endif %}
 		<div id='report-body'>
-            		<div id='report-subscribers'>
-                		{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
-		                {% if not report.is_closed and user.is_authenticated %}
-                		    {% if not subscribed %}
-			                    <a href="{% url subscribe_pro report.id %}">{% trans "Subscribe" %}</a>
-		                    {% else %}
-                			    <p><small>{% trans "You've subscribed for updates" %}</small></p>
-			                    <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
-		                    {% endif %}
-		                {% endif %}
-            		</div>
+			{% if not report.is_closed %}
+			<div id='report-subscribers'>
+				{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
+				{% if not report.is_closed and user.is_authenticated %}
+					{% if not subscribed %}
+						<a href="{% url subscribe_pro report.id %}">{% trans "Subscribe" %}</a>
+					{% else %}
+						<p><small>{% trans "You've subscribed for updates" %}</small></p>
+						<a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
+					{% endif %}
+				{% endif %}
+			</div>
+			{% endif %}
 
 			<p>{{report.description|linebreaks}}</p>
 
