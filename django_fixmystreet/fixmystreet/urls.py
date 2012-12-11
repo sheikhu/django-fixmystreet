@@ -95,4 +95,5 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
     #next line to be deprecated...
     url(_(r'^import/report/close/$'), 'close_report',name='close_report'),
+    url(_(r'^import/report/change_manager/$'), 'change_manager_report',name='change_manager_report'),
 )
