@@ -359,6 +359,11 @@ class Report(UserTrackedModel):
         """
         Method used to display the object as JSON structure for website
         """
+
+        close_date_as_string = ""
+        if (self.close_date):
+            close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
+
         return {
             "id": self.id,
             "point": {
@@ -367,7 +372,7 @@ class Report(UserTrackedModel):
             },
             "status": self.status,
             "status_label": self.get_status_display(),
-            "close_date": self.close_date,
+            "close_date": close_date_as_string,
             "private": self.private,
             "valid": self.valid
         }
