@@ -840,7 +840,17 @@ class ZipCode(models.Model):
         allManagers = FMSUser.objects.filter(manager=True)
         allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
         return allCommunesHavingManagers.filter(hide=False)
+
+    def get_usable_zipcodes_to_mobile_json(self):
+        list_of_elements_as_json = []
+        for current_element in self.get_usable_zipcodes():
+            d = {}
+            d['c'] = getattr(current_element, 'code')
+            list_of_elements_as_json.append(d)
+        return simplejson.dumps(list_of_elements_as_json)
+
     
+ 
     class Meta:
         translate = ('name', )
 

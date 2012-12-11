@@ -8,10 +8,15 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
 
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser, ZipCode
 from django_fixmystreet.fixmystreet.utils import ssl_required, JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
+
+def load_zipcodes(request):
+        '''load_zipcodes is a method used by the mobiles to retrieve all usable zipcodes'''
+        #Right !
+        return HttpResponse(ZipCode().get_usable_zipcodes_to_mobile_json(),mimetype='application/json')
 
 def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''
@@ -274,13 +279,13 @@ def create_report_pro(request):
     '''This method is used to create citizens reports. Validation included.'''
     data_username	          = request.POST.get('user_name')
     data_category_id              = request.POST.get('report_category_id')
-    data_secondary_category_id    = request.POST.get('report_secondary_category_id')
+    data_main_category_id    = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
     data_address                  = request.POST.get('report_address')
     data_zip                      = request.POST.get('report_zipcode')
     data_x                        = request.POST.get('report_x')
     data_y                        = request.POST.get('report_y')
-	#data_subscription             = request.POST.get('report_subscription')
+    #data_subscription             = request.POST.get('report_subscription')
     #create a new object
     report = Report()    
 
@@ -289,8 +294,8 @@ def create_report_pro(request):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_USERNAME","request":request.POST}),mimetype='application/json')
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-    if (data_secondary_category_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_SECONDARY_CATEGORY_ID","request":request.POST}),mimetype='application/json')		
+    if (data_main_category_id == None):
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')		
     if (data_description == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')		
     if (data_address == None):
@@ -317,8 +322,8 @@ def create_report_pro(request):
         # Status
         report.status = Report.CREATED
         # Category
-        report.category           = ReportMainCategoryClass.objects.get(id=data_category_id)
-        report.secondary_category = ReportCategory.objects.get(id=data_secondary_category_id)
+        report.category           = ReportMainCategoryClass.objects.get(id=data_main_category_id)
+        report.secondary_category = ReportCategory.objects.get(id=data_category_id)
         # Description
         report.description = data_description
         # Address
