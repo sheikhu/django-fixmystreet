@@ -13,6 +13,7 @@ from django_fixmystreet.backoffice.forms import UserEditForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory, ReportNotification
 from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, UsersAssignedToCategories
 
+from django.utils import simplejson
 
 def show(request):
     user = request.fmsuser
@@ -108,6 +109,11 @@ def createUser(request, user_type):
     isManager = connectedUser.manager    
     #a boolean value to tell the ui if the user can edit the given form content
     if request.method == "POST":
+        #try:
+        #   import pdb
+        #   pdb.set_trace()
+        #   user_type = simplejson.loads(request.body).get('user_type')
+        #except ValueError as e:
         user_type = int(request.POST.get("user_type"))
         createform = AgentCreationForm(request.POST)
         if createform.is_valid():
