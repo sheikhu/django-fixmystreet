@@ -47,6 +47,7 @@ def fixed( request, report_id ):
 def close( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.PROCESSED
+    report.close_date = datetime.now()
     report.save()
     comments = ReportComment.objects.filter(report_id=report_id)
     files = ReportFile.objects.filter(report_id=report_id)
