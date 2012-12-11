@@ -9,7 +9,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
 
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportComment, ReportFile, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 from django_fixmystreet.fixmystreet.utils import ssl_required, JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -47,8 +47,6 @@ def entity_reports(request):
         #############################################
         try:            
             entity_object   = FMSUser.objects.get(username=entity_username)
-            import pdb
-            pdb.set_trace()
         except ObjectDoesNotExist:
             #The report is unknown
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),mimetype='application/json')
@@ -71,8 +69,7 @@ def entity_reports(request):
 
         #If everything is ok, then return all requested reports as XML 
         ##############################################################
-        xml_structure = Report.objects.filter(responsible_entity__id = entity_object.id, created__gte = from_date, created__lte = to_date)
-        
+        xml_structure = Report.objects.filter(responsible_entity__id = entity_object.organisation.id, created__gte = from_date, created__lte = to_date)
         #Job Done
         #Return signal to the caller
         return JsonHttpResponse({
@@ -219,12 +216,13 @@ def export_reports_of_entity(list_of_reports):
     for report in list_of_reports:
         d = d+ "<Report>"
         #Get the info of the report
-        d1= xml_serializer.serialize(Report.objects.filter(id=report.id),fields=('id','category', 'description', 'created_at', 'updated', 'status'))
+        data1 = Report.objects.filter(id=report.id)
+        d1= xml_serializer.serialize(data1,fields=('id','category', 'description', 'created_at', 'updated', 'status'))
         #Get comments of the report
-        data2 = Comment.objects.filter(report_id=data1[0].id)
+        data2 = ReportComment.objects.filter(report_id=data1[0].id)
         d2 = xml_serializer.serialize(data2,fields=('title','text'))
         #Get files of the report
-        data3 = File.objects.filter(report_id=data1[0].id)
+        data3 = ReportFile.objects.filter(report_id=data1[0].id)
         d3 = xml_serializer.serialize(data3,fields=('title','file'))
         #Concat serialized data
         d = d+ d1+"<Comments>"+d2+"</Comments><Files>"+d3+"</Files>"
