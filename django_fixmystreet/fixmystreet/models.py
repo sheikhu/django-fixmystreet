@@ -392,6 +392,11 @@ class Report(UserTrackedModel):
         m_c = first category
         s_c = second category
         """
+        
+        close_date_as_string = ""
+        if (self.close_date):
+            close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
+        
         return {
             "id": self.id,
             "p": {
@@ -399,7 +404,7 @@ class Report(UserTrackedModel):
                 "y": self.point.y,
             },
             "s": self.status,
-            "c_d": self.close_date,
+            "c_d": close_date_as_string,
             "pr": self.private,
             "v": self.valid,
             "c": self.secondary_category.id,

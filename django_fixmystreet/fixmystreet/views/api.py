@@ -346,8 +346,6 @@ def create_report_photo(request):
     data_file_content   = request.FILES.get('report_file')
     
     report_file = ReportFile()    
-    import pdb
-    pdb.set_trace()
     #Verify that everything has been posted to create a citizen report.
     if (data_report_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_MISSING_DATA_REPORT_ID","request":request.POST}),mimetype='application/json')

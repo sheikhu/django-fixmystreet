@@ -43,6 +43,14 @@ def entity_reports(request):
         if (to_date == None):
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),mimetype='application/json')
 
+        #Verify than the difference betweendate from and to is max 365 days
+        ###################################################################
+        d1 = datetime.strptime(from_date, "%Y-%m-%d")
+        d2 = datetime.strptime(to_date, "%Y-%m-%d")
+        date_diff = abs((d2 - d1).days)
+        if (date_diff > 365):
+            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MORE_THAN_365_DAYS_REQUESTED","request":request.POST}),mimetype='application/json')
+
         #Get objects in the DB to verify if it exists
         #############################################
         try:            
