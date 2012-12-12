@@ -1,6 +1,7 @@
 import httplib
 from urllib2 import HTTPError
 
+from django.contrib.auth import authenticate, login
 from django.contrib.gis.measure import D
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.utils import simplejson
@@ -278,7 +279,7 @@ def create_report_citizen(request):
 def create_report_pro(request):
     '''This method is used to create citizens reports. Validation included.'''
     data_username	          = request.POST.get('user_name')
-    data_password	          = request.POST.get('password')
+    #data_password	          = request.POST.get('user_p')
     data_category_id              = request.POST.get('report_category_id')
     data_main_category_id         = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
@@ -290,13 +291,11 @@ def create_report_pro(request):
     #create a new object
     report = Report()    
 
-    import pdb
-    pdb.set_trace()
     #Verify that everything has been posted to create a citizen report.
     if (data_username == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_USERNAME","request":request.POST}),mimetype='application/json')
-    if (data_password == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PASSWORD","request":request.POST}),mimetype='application/json')
+    #if (data_password == None):
+    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PASSWORD","request":request.POST}),mimetype='application/json')
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
     if (data_main_category_id == None):
@@ -323,12 +322,12 @@ def create_report_pro(request):
         return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
     #Login the user
-    user = authenticate(username=data_username, password=data_password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-        else:
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
+    #user = authenticate(username=data_username, password=data_password)
+    #if user is not None:
+    #    if user.is_active:
+    #        login(request, user)
+    #    else:
+    #        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
     else:
         return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
@@ -359,8 +358,6 @@ def create_report_pro(request):
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''    
     #Test the submit content size (max 2MB)
-    import pdb
-    pdb.set_trace()
     if (request.META.get('CONTENT_LENGTH') > 2000000):
 	    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_EXCEED_SIZE","request":request.POST}),mimetype='application/json')
 		
