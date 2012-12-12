@@ -492,11 +492,10 @@ $(document).ready(function() {
     </div>
 
 
-    <div id="dialog" title="Please enter more information about rejecting the report">
-        <textarea id="more_information_text" style="display:block;width:100%"></textarea>
-        <a href="#" onclick="refuseConfirmButton();" class="saveFormButton" style="float:right;">{% trans 'Confirm'%}</a>
-        <a href="#" onclick="refuseCancelButton();" class="saveFormButton" style="float:left;">{% trans 'Cancel'%}</a>
-    </div>
+    <form id="dialog" title="Please enter more information about rejecting the report" action="{% url report_refuse_pro report.id %}" method="post">
+        {{ refusal_form.as_p }}
+        <input type="submit" class="saveFormButton" style="float:right;" value="{% trans 'Confirm'%}"/>
+    </form>
 </div>
 	
 {% endblock %}

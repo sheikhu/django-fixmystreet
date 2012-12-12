@@ -8,7 +8,7 @@ from django.db import transaction
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, render_to_pdf
 from django.contrib.auth.models import User
 from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
+from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm, RefuseForm
 
 @transaction.commit_on_success
 def accept( request, report_id ):
@@ -23,14 +23,10 @@ def accept( request, report_id ):
 
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
-    report.status = Report.REFUSED
-    report.refusal_motivation = request.GET['more_info_text']
-    report.save()
-    creator = None
-    if report.created_by:
-        creator = report.created_by
-    else:
-        creator = report.citizen
+
+    form = RefuseForm(request)
+    form.save(report)
+
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:

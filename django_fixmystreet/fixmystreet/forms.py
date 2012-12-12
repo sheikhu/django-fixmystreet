@@ -344,6 +344,19 @@ class ReportCommentForm(forms.ModelForm):
 			comment.save()
 		return comment
 
+class RefuseForm(forms.ModelForm):
+    class Meta:
+        model=Report
+        fields=('refusal_motivation',)
+
+    def save(self,report):
+
+        report.refusal_motivation = self.fields['refusal_motivation']#.value
+
+        report.status = Report.REFUSED
+        report.save()
+        return report
+
 class FileUploadForm(forms.Form):
     title = forms.CharField(max_length=50,required=False)
     file  = forms.FileField()
