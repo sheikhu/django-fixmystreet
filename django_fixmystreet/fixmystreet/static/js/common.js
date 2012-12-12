@@ -30,11 +30,12 @@ $(document).ready(function(){
         var $form = $(this);
         var valid = true;
 
-        $('.required input, .required select, .required textarea').each(function(ind,input) {
+        $form.find('.required input, .required select, .required textarea').each(function(ind,input) {
             var $input = $(input);
             if(!$input.val()) {
                 valid = false;
                 $input.closest('.required').addClass('mandatory');
+                console.log("not valid", $input);
             } else {
                 $input.closest('.required').removeClass('mandatory');
             }

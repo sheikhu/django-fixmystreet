@@ -20,8 +20,7 @@ $(document).ready(function() {
                 }
             });
 		return false;
-	}
-	);
+	});
 
 	
 	var $form = $('#report_form');
@@ -80,7 +79,7 @@ $(document).ready(function() {
 		retrieveAddress();
 	});
 
-    $map.bind('reportselected',function(evt, point, report){
+    $map.bind('reportselected', function(evt, point, report){
     	window.location.assign('/reports/' + report.id);
     });
 

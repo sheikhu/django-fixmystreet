@@ -27,8 +27,7 @@ $(document).ready(function() {
 	$map.fmsMap('addIndicator',{'x':{{ pnt.x }}, 'y':{{ pnt.y }}});
 
 	$map.bind('reportselected',function(evt, point, report){
-		//TODO get current url
-		window.location.assign(report.id);
+		window.location.assign('{{ report.get_absolute_url_pro }}');
 	});
 	
 	/*Hide the edition form*/
