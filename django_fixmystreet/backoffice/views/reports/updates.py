@@ -90,6 +90,7 @@ def changeManager(request,report_id):
         report.save()
     if manId.split("_")[0] == "entity":
         orgId = int(manId.split("_")[1])
+        report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
         managers = FMSUser.objects.filter(organisation_id = orgId).filter(manager=True)
         for manager in managers:
             if manager.categories.all().filter(id = report.category.id):

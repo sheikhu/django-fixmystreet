@@ -66,7 +66,7 @@ def numberOfInProgressReports(userId):
     #if the user is an executeur de travaux then user the dependent organisation id
     if (connectedUser.contractor == True):
         reports = Report.objects.filter(contractor=connectedUser.organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-    else:    
+    else:   
         reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     return reports.count()
 

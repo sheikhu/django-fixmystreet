@@ -257,13 +257,161 @@ $(function(){
 		{% endif %}
 		</div>
 	</div>
-	<!-- ############## -->
-	<!-- # MAP WIDGET # -->
-	<!-- ############## -->
-	<div id="rightcol">
-     		<div id="map-bxl" ></div>
-    	</div>
-</div>
-	
+        </div>
+
+    	
+    </div>
+    <div style="padding-top:30px">
+	<!-- ########################## -->
+	<!-- # DISPLAY EXISTING FILES # -->
+	<!-- ########################## -->
+        {% if files %}
+            <h3>{% trans "Extra files" %}</h3>
+            <div id="report_updates">
+                <table id="extraFilesTable">
+                    <th></th>
+                    <!-- If the status allow such interactions -->      
+		    {% if report.is_in_progress %} 
+                    <!--If the current user is the responsible manager--> 
+                    {% if report.responsible_manager.id == request.user.id %}
+                    <th>{% trans 'Public?' %}</th>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
+                    <th> {% trans 'Confidentiel?' %} </th>
+                    {% endif %}
+                    {% endif %}
+                    {% for file in files %}
+			{% if not file.is_visible and not fms_user.can_see_confidential %}
+				<!-- Skip -->
+			{% else %}
+                    	<tr>
+                        	<td class="annexesFirstTD">
+                    		<div class="report_update">
+                        		{% if file.file %}
+                        			<center>
+						<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
+						{{file.title}}
+						{% if file.is_image %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
+						{% endif %}
+						{% if file.is_pdf %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
+						{% endif %}
+						{% if file.is_word %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+						{% endif %}
+						{% if file.is_excel %}
+							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
+						{% endif %}
+						</center>
+                        		{% endif %}
+                    		</div>
+                		</td>
+        
+		<!-- If the status allow such interactions -->		
+		{% if report.is_in_progress %}
+        <!--If the current user is the responsible manager-->
+        {% if report.responsible_manager.id == request.user.id %} 
+                	<td class="annexesChoiceBoxTD">
+                            {%if file.is_validated%}
+                    		<center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                            {%else%}
+                            <center><input class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
+                            {%endif%}
+                	</td>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
+                	<td class="annexesChoiceBoxTD">
+                            {%if file.is_visible%}
+                    		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
+                            {%else%}
+                            <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
+                            {%endif%}
+                	</td>
+       		{% endif %}
+		{% endif %}
+            </tr>
+		{% endif %}
+                    {% endfor %}
+            </table>
+            </div>
+            {% endif %}
+
+	<!-- ############################# -->
+	<!-- # DISPLAY EXISTING COMMENTS # -->
+	<!-- ############################# -->
+        {% if comments %}
+            	<h3>{% trans "Extra comments" %}</h3>
+            	<div id="report_updates">
+                <table class="extraCommentsTable">
+                    <th></th>
+		    <!-- If the status allow such interactions -->      
+                    {% if report.is_in_progress %}
+                    <!--If the current user is the responsible manager--> 
+                    {% if report.responsible_manager.id == request.user.id %}
+                    	<th>{% trans 'Public?' %}</th>
+                    {% endif %}
+                    <!--If the current user is the responsible manager or the creator of the report-->
+                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
+                    	<th> {% trans 'Confidentiel?' %} </th>
+                    {% endif %}
+                    {% endif %}
+                    {% for comment in comments %}
+			{% if not comment.is_visible and not fms_user.can_see_confidential %}
+				<!-- Skip -->
+			{% else %}
+                	<tr>
+                    		<td class="annexesFirstTD">
+                			<div class="report_update">
+                    				<h4>{{comment.title}}</h4>
+                    				<p>{{comment.text}}</p>
+                			</div>
+            			</td>
+            			<!-- If the status allow such interactions -->      
+		            	{% if report.is_in_progress  %}
+            			<!--If the current user is the responsible manager-->
+            			{% if report.responsible_manager.id == request.user.id %}
+                			<td class="annexesChoiceBoxTD">
+                    				{% if comment.is_validated %}
+                    					<input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
+                    				{% else %}
+                    					<input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
+                    				{% endif%}
+                			</td>
+            			{% endif %}
+            			<!--If the current user is the responsible manager or the creator of the report-->
+            			{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
+                			<td class="annexesChoiceBoxTD">
+                    				{% if comment.is_visible %}
+                    					<input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                   				{% else %}
+                    					<input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
+                    				{% endif%}
+                			</td>
+            			{% endif %}
+            		{% endif %}
+            		</tr>
+			{% endif %}
+                {% endfor %}
+            </table>
+            </div>
+            {% endif %}
+        </div>
+
+        </div>
+    
+    </div>
+    <div id="more-actions">
+        <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+    </div>
+
+
+    <div id="dialog" title="Please enter more information about rejecting the report">
+        <textarea id="more_information_text" style="display:block;width:100%"></textarea>
+        <a href="#" onclick="refuseConfirmButton();" class="saveFormButton" style="float:right;">{% trans 'Confirm'%}</a>
+        <a href="#" onclick="refuseCancelButton();" class="saveFormButton" style="float:left;">{% trans 'Cancel'%}</a>
+    </div>
+</div>	
 {% endblock %}
->>>>>>> eedc897d5623398968169dab4378a3e377cea3fc
