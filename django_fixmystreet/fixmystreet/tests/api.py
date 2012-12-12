@@ -35,7 +35,7 @@ class ApiTest(SampleFilesTestCase):
             organisation.save()
         
         
-        user = FMSUser(first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username="superuser")
+        user = FMSUser(first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username="superuser", password="fms")
         user.save()
 
         main_category = ReportMainCategoryClass(id=2,name_en='test main en',name_nl='test main nl',name_fr='test main fr')
@@ -121,6 +121,7 @@ class ApiTest(SampleFilesTestCase):
         #Parameters to save the report in database.
         params = {
             "user_name": "superuser",
+            "password": "fms",
             "report_category_id": "2",
             "report_description": "zazadescr",
             "user_firstname": "Thibo",
