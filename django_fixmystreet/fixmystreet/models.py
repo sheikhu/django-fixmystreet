@@ -748,8 +748,7 @@ class ReportNotification(models.Model):
         data = data or {}
         data.update({
             "related": self.related,
-            "SITE_URL": Site.objects.get_current().domain,
-            "more_info_text": self.related.refusal_motivation
+            "SITE_URL": Site.objects.get_current().domain
         })
 
         subject, html, text = '', '', ''
