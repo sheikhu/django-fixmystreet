@@ -278,10 +278,10 @@ class Report(UserTrackedModel):
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
-        return ReportComment.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    
+        return ReportComment.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0    
     
     def has_at_least_one_non_confidential_file(self):
-        return ReportFile.objects.filter(report__id=self.id).filter(isVisible=True).count() != 0    
+        return ReportFile.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0    
 
     def get_comments(self):  	
         return ReportComment.objects.filter(report__id=self.id)
@@ -487,14 +487,14 @@ class ReportAttachment(UserTrackedModel):
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
-        return (self.isVisible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
     
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''
-        return self.validated and self.isVisible
+        return self.is_validated and self.is_visible
     
     def get_display_name(self):
-        if (self.created_by.first_name == None and self.created_by.last_name == None):
+        if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
              return 'ANONYMOUS'
         else:
              return self.created_by.first_name+' '+self.created_by.last_name 

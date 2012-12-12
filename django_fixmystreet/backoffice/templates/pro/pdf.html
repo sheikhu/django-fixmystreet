@@ -189,7 +189,7 @@
 <hr/>
 <h1>{% trans 'label_pdf_historique_title_main' %}</h1>
 
-{% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
+{% if report.has_at_least_one_non_confidential_comment %}
 
 <table>
 	<th><strong>{% trans 'label_pdf_historique_title_date' %}</strong></th>
