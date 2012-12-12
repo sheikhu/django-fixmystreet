@@ -24,6 +24,7 @@ def accept( request, report_id ):
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.REFUSED
+    report.refusal_motivation = request.GET['more_info_text']
     report.save()
     creator = None
     if report.created_by:

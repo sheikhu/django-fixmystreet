@@ -235,7 +235,7 @@ class Report(UserTrackedModel):
     hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
     
     citizen = models.ForeignKey(User,null=True, related_name='citizen_reports')
-    #refusal_motivation = models.TextField(null=True)
+    refusal_motivation = models.TextField(null=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
@@ -331,29 +331,6 @@ class Report(UserTrackedModel):
             "private": self.private,
             "valid": self.valid
         }
-       
-       
-    hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
-    
-    citizen = models.ForeignKey(User,null=True, related_name='citizen_reports')
-    #refusal_motivation = models.TextField(null=True)
-    #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
-    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
-    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
-    responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True)
-    responsible_manager_validated = models.BooleanField(default=False)
-
-    valid = models.BooleanField(default=False)
-    private = models.BooleanField(default=True)
-    #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
-    photo = models.FileField(upload_to="photos")
-    close_date = models.DateTimeField(null=True, blank=True)
-
-    objects = models.GeoManager()
-
-    history
-
-
 
     def to_JSON(self):
         """
@@ -452,7 +429,7 @@ def report_notify_author(sender, instance, **kwargs):
                 recipient=report.citizen or report.created_by,
                 related=report,
             )
-            notifiation.save({'reason':kwargs['more_info_text']})
+            notifiation.save()
         elif report.status == Report.PROCESSED:
             for subscription in report.subscriptions.all():
                 notifiation = ReportNotification(
