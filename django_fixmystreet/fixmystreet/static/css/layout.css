@@ -642,6 +642,9 @@ input.big_button:disabled {
 #search_results .report-address{
 	margin-left:30px;
 }
+#search_results .report-entity{
+	margin-left:30px;
+}
 #search_results .report-preview{
 	float:right;
 }

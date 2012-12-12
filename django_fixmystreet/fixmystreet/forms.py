@@ -147,7 +147,7 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description')
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description', 'is_private')
 
     required_css_class = 'required'
     category = CategoryChoiceField(label=ugettext_lazy("category"))
@@ -156,6 +156,7 @@ class ReportForm(forms.ModelForm):
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
+    is_private = forms.BooleanField(required=True)
     #photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
 
     def __init__(self,data=None, files=None, initial=None):
@@ -173,6 +174,7 @@ class ReportForm(forms.ModelForm):
         report.status = Report.CREATED
         report.point = self.point
         report.private = True
+        #report.private = self.cleaned_data["is_private"]
 
         if commit:
             report.save()

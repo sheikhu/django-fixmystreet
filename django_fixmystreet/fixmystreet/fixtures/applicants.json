@@ -445,7 +445,7 @@
         "pk":100,
         "model": "auth.user",
         "fields": {
-            "first_name": "Mercedes",
+            "first_name": "Mercedes",			
             "last_name": "Rapaille",
             "username": "mrapaille",
             "email": "Estates.Base@alcatel-lucent.com",
@@ -471,7 +471,7 @@
         "pk":101,
         "model": "auth.user",
         "fields": {
-            "first_name": "Terry",
+            "first_name": "Terry",			
             "last_name": "De Clerck",
             "username": "tdeclerck",
             "email": "intake.a3@belgacom.be",
@@ -498,6 +498,7 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Pierre",
+			"email": "zaza@mrbc.irisnet.be",
             "last_name": "Moreau",
             "username": "pmoreau",
             "password": "pbkdf2_sha256$1$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -522,7 +523,7 @@
         "pk":103,
         "model": "auth.user",
         "fields": {
-            "first_name": "Cedric",
+            "first_name": "Cedric",			
             "last_name": "Helson",
             "username": "chelson",
             "email": "cedric.helson@voo.eu",
@@ -547,7 +548,7 @@
         "pk":104,
         "model": "auth.user",
         "fields": {
-            "first_name": "Nicolas",
+            "first_name": "Nicolas",			
             "last_name": "Papoudaris",
             "username": "npapoudaris",
             "email": "nicolas.papoudaris@voo.eu",
@@ -573,7 +574,7 @@
         "pk":105,
         "model": "auth.user",
         "fields": {
-            "first_name": "Semi",
+            "first_name": "Semi",			
             "last_name": "El Majeri",
             "username": "selmajeri",
             "email": "semi.el.majeri@bt.com",
