@@ -6,7 +6,7 @@
 {% get_language_info for "nl" as langNL %}
 {% get_language_info for "fr" as langFR %}
 {% language langFR.code %}
-{% blocktrans with reportType=report.category.name date=report.created|date %}
+{% blocktrans with reportType=related.category.name date=related.created|date %}
 <p>Your report off type {{reportType}} created at {{date}} is not supported by the FixMyStreet system.</p>
 <p>If necessary, you can contact your town hall. </p>
 {% endblocktrans %}
@@ -16,7 +16,7 @@
 -------------------------------------------------
 <br/>
 {% language langNL.code %}
-{% blocktrans with reportType=report.category.name date=report.created|date %}
+{% blocktrans with reportType=related.category.name date=related.created|date %}
 <p>Your report off type {{reportType}} created at {{date}} is not supported by the FixMyStreet system.</p>
 <p>If necessary, you can contact your town hall. </p>
 {% endblocktrans %}

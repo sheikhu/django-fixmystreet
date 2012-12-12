@@ -452,7 +452,7 @@ def report_notify_author(sender, instance, **kwargs):
                 recipient=report.citizen or report.created_by,
                 related=report,
             )
-            notifiation.save()
+            notifiation.save({'reason':kwargs['more_info_text']})
         elif report.status == Report.PROCESSED:
             for subscription in report.subscriptions.all():
                 notifiation = ReportNotification(
