@@ -6,6 +6,7 @@
 
 <script>
 $(document).delegate("form", "submit", function(evt) {
+            console.log("hoy");
 	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
 		//This commune does not participate to fixmystreet until now.
 		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
@@ -17,48 +18,48 @@ $(document).delegate("form", "submit", function(evt) {
 {% endblock %}
 
 {% block content %}
-		{{block.super}}
-		{% block report_form %}
-		<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
-			<h2>
-				{% trans "Fill the report" %} 
-			</h2>
-			<table class='form'>
-				<tr>
-					<th></th>
-					<td id="required_note">{% trans "* This fields are required" %}</td>
-				</tr>
-				{{ report_form.as_table }}
-				<tr>
-					<td></td>
-					<td><div id='secondary_container'></div></td>
-				</tr>
-				<tr>
-					<td>
-						<select id="available_zipcodes" style="display:none">
-							{% for zip in available_zips %}
-							<option value="{{zip.code}}">
-							</option>
-							{% endfor %}
-						</select>
-						<span id="available_zipcodes_as_string" style="display:none">
-							{% for zip in available_zips %}
-							{{zip.code}}/{{zip.name}}
-							{% endfor %}
-						</span>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td align="right">
-						<p>
-							<input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-						</p>
+    {{ block.super }}
+{% endblock %}
 
-					</td>
-				</tr>
-			</table>
-		</form>
-		{% endblock %}
-		
+{% block report_form %}
+<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
+    <h2>
+        {% trans "Fill the report" %} 
+    </h2>
+    <table class='form'>
+        <tr>
+            <th></th>
+            <td id="required_note">{% trans "* This fields are required" %}</td>
+        </tr>
+        {{ report_form.as_table }}
+        <tr>
+            <td></td>
+            <td><div id='secondary_container'></div></td>
+        </tr>
+        <tr>
+            <td>
+                <select id="available_zipcodes" style="display:none">
+                    {% for zip in available_zips %}
+                    <option value="{{zip.code}}">
+                    </option>
+                    {% endfor %}
+                </select>
+                <span id="available_zipcodes_as_string" style="display:none">
+                    {% for zip in available_zips %}
+                    {{zip.code}}/{{zip.name}}
+                    {% endfor %}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="right">
+                <p>
+                    <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
+                </p>
+
+            </td>
+        </tr>
+    </table>
+</form>
 {% endblock %}
