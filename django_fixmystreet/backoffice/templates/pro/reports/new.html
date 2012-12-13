@@ -4,16 +4,6 @@
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block specific_scripts %}
 
-<script>
-$(document).delegate("form", "submit", function(evt) {
-	if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
-		//This commune does not participate to fixmystreet until now.
-		alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
-		return false;
-	}
-});
-
-</script>
 {% endblock %}
 
 {% block content %}

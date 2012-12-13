@@ -147,7 +147,7 @@ class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description', 'is_private')
+        fields = ('x', 'y', 'address', 'address_number', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description', 'is_private')
 
     required_css_class = 'required'
     category = CategoryChoiceField(label=ugettext_lazy("category"))
@@ -155,7 +155,8 @@ class ReportForm(forms.ModelForm):
     secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"),required=False)
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
+    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    address_number = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     is_private = forms.BooleanField(required=False, initial=True)
     #photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
 
@@ -174,7 +175,9 @@ class ReportForm(forms.ModelForm):
         report.status = Report.CREATED
         report.point = self.point
         report.private = self.cleaned_data["is_private"]
-
+        #split address in 2 pieces
+        report.address = self.cleaned_data["address"].split(", ")[0]
+        report.address_number = self.cleaned_data["address_number"]
         if commit:
             report.save()
         return report
@@ -201,6 +204,9 @@ class CitizenReportForm(ReportForm):
         report = super(CitizenReportForm, self).save(commit=False)
         # report.status = Report.CREATED # default value
         report.private = False
+        #split address in 2 pieces
+        report.address = self.cleaned_data["address"].split(", ")[0]
+        report.address_number = self.cleaned_data["address_number"]
 
         try:
             #Assign citizen
@@ -208,7 +214,7 @@ class CitizenReportForm(ReportForm):
         except FMSUser.DoesNotExist:
             #Add information about the citizen connected if it does not exist
             report.citizen = FMSUser.objects.create(telephone=self.cleaned_data['telephone'],username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
-
+        
         if commit:
             report.save()
 

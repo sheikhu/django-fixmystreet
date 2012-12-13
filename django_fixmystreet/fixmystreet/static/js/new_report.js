@@ -96,7 +96,8 @@ $(document).ready(function() {
     		if(response.status == 'success')
     		{
     			$('#id_postalcode').val(response.result.address.street.postCode);
-    			$('#id_address').val(response.result.address.street.name + ', ' + response.result.address.number);
+    			$('#id_address').val(response.result.address.street.name+ ', ' + response.result.address.number);
+    			$('#id_address_number').val(response.result.address.number);
     			$form.find(':submit').prop('disabled',false);
     		}
     		else

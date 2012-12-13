@@ -37,12 +37,13 @@ $("[for='id_password']").parent().parent().hide()
                 	<div class="report" onclick="window.location.href='{% url usersEdit %}?userType={{request.GET.userType}}&userId={{user.id}}'">
                 	<p>
 				<img src="{{ STATIC_URL }}images/{{ user.fmsuser.get_user_type }}.png"/>
-				{{user.first_name}} {{user.last_name}}
+				<a href="mailto:{{user.email}}">{{user.first_name}} {{user.last_name}}</a> / {{user.telephone}}
+				<br/>
 				(
-					{% if user.leader %}ENTITE {% endif %}
-					{% if user.manager %}GESTIONNAIRE {% endif %}
-					{% if user.agent %}AGENT {% endif %}
-					{% if user.contractor %}EXECUTEUR DE TRAVAUX {% endif %}
+					{% if user.leader %}{% trans 'ENTITE' %}{% endif %}
+					{% if user.manager %}{% trans 'GESTIONNAIRE' %}{% endif %}
+					{% if user.agent %}{% trans 'AGENT' %}{% endif %}
+					{% if user.contractor %}{% trans 'EXECUTEUR DE TRAVAUX' %}{% endif %}
 				)
 			</p>
                 	</div>

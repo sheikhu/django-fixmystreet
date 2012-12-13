@@ -56,7 +56,8 @@ def list(request, status):
     if (connectedUser.contractor == True):
         reports = reports.filter(contractor = connectedUser.organisation)
 
-    reports = reports.distance(pnt).order_by('distance')
+    #reports = reports.distance(pnt).order_by('distance')
+    reports = reports.distance(pnt).order_by('address', 'address_number')
     return render_to_response("pro/reports/list.html",
             {
                 "report_form": report_form,

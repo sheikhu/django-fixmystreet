@@ -225,6 +225,7 @@ class Report(UserTrackedModel):
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True)
     point = models.PointField(null=True, srid=31370)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
+    address_number = models.CharField(max_length=255, verbose_name=ugettext_lazy("Address Number"))
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
     description = models.TextField(null=True)
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))

@@ -207,7 +207,7 @@ $(document).ready(function() {
             	<table id='report-status'>			
 	                <tr>
         	            <th>{% trans "Location:" %}</th>
-                	    <td>{{report.address}} ({{report.postalcode}} {{report.ward.name}})</td>
+                	    <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
 	                </tr>
         	        <tr>
                 		<th></th>
@@ -281,7 +281,10 @@ $(document).ready(function() {
 					<!-- ########################################################### -->
                 			<tr>
                     				<th>{% trans "Responsible manager:" %}</th>
-				                <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</td>
+				                <td>
+							<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</a> ({{report.responsible_entity.name}})
+							
+						</td>
 			                </tr>				
                 			<tr>
 				                <th>{% trans "Contractor/Impetrant:" %}</th>
