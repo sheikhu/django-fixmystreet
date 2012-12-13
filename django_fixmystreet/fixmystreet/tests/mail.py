@@ -59,12 +59,12 @@ class MailTest(TestCase):
 		success = self.client.login(username='manager', password='test')
 
 		#Accept the created report
-		response = self.client.get(reverse('report_accept', args=[report_id]))
+		response = self.client.get(reverse('report_accept_pro', args=[report_id]))
 		#The status of the report must now be MANAGER_ASSIGNED
 		self.assertEquals(response.status_code, 200)
 		self.assertTrue(Report.objects.get(pk=1).status == Report.MANAGER_ASSIGNED)
 		#Close the report
-		response = self.client.get(reverse('report_close', args=[report_id]))
+		response = self.client.get(reverse('report_close_pro', args=[report_id]))
 		self.assertEquals(response.status_code, 200)
 		#The status of the report must now be PROCESSED
 		self.assertTrue(Report.objects.get(pk=1).status == Report.PROCESSED)
