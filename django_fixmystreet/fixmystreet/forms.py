@@ -156,7 +156,7 @@ class ReportForm(forms.ModelForm):
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
-    is_private = forms.BooleanField(required=False)
+    is_private = forms.BooleanField(required=False, initial=True)
     #photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
 
     def __init__(self,data=None, files=None, initial=None):

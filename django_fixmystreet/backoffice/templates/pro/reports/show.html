@@ -64,15 +64,24 @@ $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.su
 /* Implement method when changing contractor using the dropdown */
 /****************************************************************/
 $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
-            //TODO update report with new contractor
             window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
         });
+/****************************************************************/
+/* Implement method when clicking private/public checkbox       */
+/****************************************************************/
+$("#id_is_private").bind("click",function(event){
+        window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_is_private").is(":checked");
+});
 
 });
 /* When JQUERY is ready*/
 $(document).ready(function() {
     /*Set the contractor dropdown*/
     $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
+    /*Set the checked value*/
+    {% if report.private %}
+    	$('#id_is_private').attr("checked", "checked");
+    {% endif %}
 });
 
 </script>
@@ -256,17 +265,16 @@ $(document).ready(function() {
 		                    		</td>
                 			</tr>
 					<!-- ################################# -->
-					<!-- # PUBLIC OR PRIVATE DROPDOWN    # -->
+					<!-- # PUBLIC OR PRIVATE CHECKBOX    # -->
 					<!-- ################################# -->
-		                	<!--tr>
-                		    		<th>{% trans "Public/Private:" %}</th>
-                    				<td>
-		                        		<select>
-                		            			<option value="0">{% trans 'public' %}</option>
-                		            			<option value="1">{% trans 'prive' %}</option>
-                        				</select>
-		                    		</td>
-                			</tr-->
+					<tr>
+						<th>
+							<label for="id_is_private">{% trans "Private?" %}</label>			
+						</th>
+						<td>
+							<input type="checkbox" name="is_private" id="id_is_private">
+						</td>
+					</tr>
                 		{% else %}
 					<!-- ########################################################### -->
 					<!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
