@@ -5,7 +5,7 @@ import shutil, os
 from django.utils.translation import get_language
 from django.test import TestCase
 from django.test.client import Client
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core.files.storage import FileSystemStorage
@@ -36,15 +36,36 @@ class MailTest(TestCase):
 		self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
 	def testCloseReportMail(self):
 		#Send a post request filling in the form to create a report
-		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
+		response = self.client.post('/en/report/new?x=150056.538&y=170907.56#form', {
+			'x':'150056.538','y':'170907.56',
+			'address':'Avenue des Arts, 3',
+			'postalcode':'1210',
+			'category':'1',
+			'secondary_category':'1',
+			'quality':'0',
+			'description':'test',
+			'citizen_email':self.citizen.email,
+			'citizen_firstname':self.citizen.first_name,
+			'citizen_lastname':self.citizen.last_name,
+			'citizen_subscription':'on',
+			'secondary_category_copy':'1',
+			'photo':''
+		}, follow=True)
+
+		self.assertEquals(response.status_code, 200)
+		# report_id = resolve(response.redirect_chain[-1][0]).kwargs['report_id']
+		report_id = 1
 		#Login to access the pro page to create a user
-		success = self.client.login(username='manager',password='test')
+		success = self.client.login(username='manager', password='test')
+
 		#Accept the created report
-		self.client.get('/en/pro/report/1/accept/')
+		response = self.client.get(reverse('report_accept_pro', args=[report_id]), follow=True)
 		#The status of the report must now be MANAGER_ASSIGNED
+		self.assertEquals(response.status_code, 200)
 		self.assertTrue(Report.objects.get(pk=1).status == Report.MANAGER_ASSIGNED)
 		#Close the report
-		self.client.get('/en/pro/report/1/close/')
+		response = self.client.get(reverse('report_close_pro', args=[report_id]), follow=True)
+		self.assertEquals(response.status_code, 200)
 		#The status of the report must now be PROCESSED
 		self.assertTrue(Report.objects.get(pk=1).status == Report.PROCESSED)
 		#3 mails have been sent, 2 for the report creation and 1 for closing the report
@@ -56,7 +77,7 @@ class MailTest(TestCase):
 		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
 		#Login to access the pro page to create a user
-		success = self.client.login(username='manager',password='test')
+		success = self.client.login(username='manager', password='test')
 		#Refuse the created report
 		self.client.post('/en/pro/report/1/refuse/',{'more_info_text':'more info'})
 		self.assertEquals(len(mail.outbox),3)

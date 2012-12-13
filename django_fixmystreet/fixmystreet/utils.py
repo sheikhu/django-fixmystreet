@@ -3,6 +3,7 @@ import tempfile
 import datetime
 import os
 import logging
+import shutil
 from threading import local
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -17,7 +18,6 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
 from stdimage import StdImageField
-
 
 def ssl_required(view_func):
     """Decorator makes sure URL is accessed over https."""
@@ -139,3 +139,18 @@ def get_current_user():
 class CurrentUserMiddleware:
     def process_request(self, request):
         set_current_user(getattr(request, 'user', None))
+
+
+def save_file_to_server(file_name, file_type, file_extension,report_id):
+        date = datetime.datetime.now()
+        filepath = "media/files/%s/%s/" % (date.year,date.month);
+        if not os.path.exists(filepath):
+            os.makedirs(filepath)
+        filepath += "%s_%s.%s" % (file_type,report_id,file_extension)
+        print filepath
+        print file_name
+        srcpath = (file_name)
+        if not "media" in srcpath:
+            srcpath = "media/%s" % (srcpath)
+        shutil.move(srcpath,filepath)
+        return filepath.replace("media/","")
