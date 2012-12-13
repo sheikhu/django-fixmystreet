@@ -156,7 +156,7 @@ class ReportForm(forms.ModelForm):
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput,initial='1000')# Todo no initial value !
-    is_private = forms.BooleanField(required=True)
+    is_private = forms.BooleanField(required=False)
     #photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
 
     def __init__(self,data=None, files=None, initial=None):
@@ -173,8 +173,7 @@ class ReportForm(forms.ModelForm):
         report = super(ReportForm, self).save(commit=False)
         report.status = Report.CREATED
         report.point = self.point
-        report.private = True
-        #report.private = self.cleaned_data["is_private"]
+        report.private = self.cleaned_data["is_private"]
 
         if commit:
             report.save()
@@ -188,13 +187,14 @@ class CitizenReportForm(ReportForm):
     """Citizen Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_firstname','citizen_lastname')
-    
+        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_lastname', 'telephone')
+   
+    telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
     category = CategoryChoiceField(label=ugettext_lazy("category"))
     quality = forms.ChoiceField(choices=qualities)
     citizen_email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
-    citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
-    citizen_lastname = forms.CharField(max_length="30", label=ugettext_lazy('Name'))
+    #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
+    citizen_lastname = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
     citizen_subscription = forms.BooleanField(required=False)
 
     def save(self, user, commit=True):
@@ -207,7 +207,7 @@ class CitizenReportForm(ReportForm):
             report.citizen = FMSUser.objects.get(email=self.cleaned_data["citizen_email"])
         except FMSUser.DoesNotExist:
             #Add information about the citizen connected if it does not exist
-            report.citizen = FMSUser.objects.create(username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], first_name=self.cleaned_data["citizen_firstname"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
+            report.citizen = FMSUser.objects.create(telephone=self.cleaned_data['telephone'],username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
 
         if commit:
             report.save()

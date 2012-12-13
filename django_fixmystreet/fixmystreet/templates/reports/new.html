@@ -37,6 +37,18 @@ $(function(){
 </script>
 <script src="{{STATIC_URL}}js/new_report.js"></script>
 
+<script>
+$(document).delegate("form", "submit", function(evt) {
+        if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
+                //This commune does not participate to fixmystreet until now.
+                alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
+                return false;
+        }
+});
+
+</script>
+
+
 
 {% block specific_scripts %}
 <script src="{{STATIC_URL}}js/reportFormReview.js"></script>
@@ -248,4 +260,9 @@ $(function(){
 		
 	</div>
 </div>
+{% if not BACKOFFICE %}
+	<script>
+        	$("#id_is_private").attr('disabled', 'disabled');
+	</script>
+{% endif %}
 {% endblock %}

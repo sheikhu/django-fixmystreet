@@ -201,10 +201,11 @@ def reports_pro(request):
 def create_report_citizen(request):
     '''This method is used to create citizens reports. Validation included.'''
     data_email 		              = request.POST.get('user_email')
-    data_firstname 	              = request.POST.get('user_firstname')
+    #data_firstname 	              = request.POST.get('user_firstname')
+    data_firstname 	          = ''
     data_lastname                 = request.POST.get('user_lastname')
     data_category_id              = request.POST.get('report_category_id')
-    data_secondary_category_id    = request.POST.get('report_secondary_category_id')
+    data_main_category_id         = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
     data_address                  = request.POST.get('report_address')
     data_zip                      = request.POST.get('report_zipcode')
@@ -218,14 +219,14 @@ def create_report_citizen(request):
     #Verify that everything has been posted to create a citizen report.
     if (data_email == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_EMAIL","request":request.POST}),mimetype='application/json')
-    if (data_firstname == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_FIRSTNAME","request":request.POST}),mimetype='application/json')
+    #if (data_firstname == None):
+    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_FIRSTNAME","request":request.POST}),mimetype='application/json')
     if (data_lastname == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_LASTNAME","request":request.POST}),mimetype='application/json')
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-    if (data_secondary_category_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_SECONDARY_CATEGORY_ID","request":request.POST}),mimetype='application/json')		
+    if (data_main_category_id == None):
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')		
     if (data_description == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')		
     if (data_address == None):
@@ -256,8 +257,8 @@ def create_report_citizen(request):
         # Status
         report.status = Report.CREATED
         # Category
-        report.category           = ReportMainCategoryClass.objects.get(id=data_category_id)
-        report.secondary_category = ReportCategory.objects.get(id=data_secondary_category_id)
+        report.category           = ReportMainCategoryClass.objects.get(id=data_main_category_id)
+        report.secondary_category = ReportCategory.objects.get(id=data_category_id)
         # Description
         report.description = data_description
         # Address
