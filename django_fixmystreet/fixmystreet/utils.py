@@ -150,5 +150,6 @@ def save_file_to_server(file_name, file_type, file_extension,file_index,report_i
         srcpath = str(file_name)
         if not "media" in srcpath:
             srcpath = ("media/%s")%(srcpath)
-        shutil.move(srcpath,filepath)
+        srcpath = os.path.join(settings.PROJECT_PATH,srcpath)
+        shutil.move(srcpath,os.path.join(settings.PROJECT_PATH,filepath))
         return filepath.replace("media/","")

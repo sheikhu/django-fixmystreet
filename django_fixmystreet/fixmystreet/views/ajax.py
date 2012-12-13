@@ -32,9 +32,11 @@ def create_file(request):
 def uploadFile(request):
     for file_code in request.FILES:
         upfile = request.FILES[file_code]
-        if not os.path.exists('media/files/'):
-            os.makedirs('media/files/')
-        with open('media/files/'+upfile.name, 'wb+') as destination:
+        path = os.path.join(settings.PROJECT_PATH,'media/files/')
+        print os.path.exists(path)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        with open(path+upfile.name, 'wb+') as destination:
             for chunk in upfile.chunks():
                 destination.write(chunk)
     hh = HttpResponse(content='True',mimetype='text/html')
