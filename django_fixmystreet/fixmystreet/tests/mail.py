@@ -26,7 +26,21 @@ class MailTest(TestCase):
 		self.client = Client()
 	def testCreateReportMail(self):
 		#Send a post request filling in the form to create a report
-		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
+		self.client.post('/en/report/new?x=150056.538&y=170907.56#form', {
+			'x':'150056.538','y':'170907.56',
+			'address':'Avenue des Arts, 3',
+			'postalcode':'1210',
+			'category':'1',
+			'secondary_category':'1',
+			'quality':'0',
+			'description':'test',
+			'citizen_email':self.citizen.email,
+			'citizen_firstname':self.citizen.first_name,
+			'citizen_lastname':self.citizen.last_name,
+			'citizen_subscription':'on',
+			'secondary_category_copy':'1',
+			'photo':''
+		}, follow=True)
 		#2 mails must be sent, one to the creator and 1 to the responsible manager
 		self.assertEquals(len(mail.outbox), 2)
 		self.assertEquals(len(mail.outbox[0].to), 1)
@@ -34,6 +48,7 @@ class MailTest(TestCase):
 		#Mail to creator and manager must be sent
 		self.assertTrue(self.citizen.email in mail.outbox[0].to or self.citizen.email in mail.outbox[1].to)
 		self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
+
 	def testCloseReportMail(self):
 		#Send a post request filling in the form to create a report
 		response = self.client.post('/en/report/new?x=150056.538&y=170907.56#form', {
