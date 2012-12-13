@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ReportComment, ReportFile, ZipCode
@@ -63,7 +64,8 @@ def index(request, slug=None, commune_id=None):
     if commune_id:
         entity = OrganisationEntity.objects.get(id=commune_id)
         return render_to_response("reports/list.html", {
-            "reports": entity.reports_in_charge.order_by('address').filter(private=False, status__in=Report.REPORT_STATUS_IN_PROGRESS).all(),
+            #"reports": entity.reports_in_charge.order_by('address').filter(Q(private=False, status__in=Report.REPORT_STATUS_IN_PROGRESS) | Q(private=False, status__in=Report.CREATED, citizen__isnull=False)).all(),
+            "reports": entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status__in=Report.CREATED) and Q(citizen__isnull=False))).order_by('address'),
             "entity":entity,
         }, context_instance=RequestContext(request))
 
