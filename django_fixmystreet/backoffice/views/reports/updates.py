@@ -76,6 +76,17 @@ def new( request, report_id ):
         	return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()
 
+
+def switchPrivacy(request,report_id):
+    report = get_object_or_404(Report, id=report_id)
+    privacy = request.REQUEST.get("privacy")
+    report.private = ('true' == privacy)
+    report.save()
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
 def changeManager(request,report_id):
     report = Report.objects.get(pk=report_id)
     report.status = Report.MANAGER_ASSIGNED
