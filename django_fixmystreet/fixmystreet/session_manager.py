@@ -34,18 +34,18 @@ class SessionManager:
 				file_path = ""
 				if str(f['file']).endswith("pdf"):
 					ftype = ReportFile.PDF
-					file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"pdf", report.id)
+					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"pdf", report.id)
 				if str(f['file']).endswith("doc"):
 					ftype = ReportFile.WORD
-					file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"doc", report.id)
+					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"doc", report.id)
 				if str(f['file']).endswith("png") or str(f['file']).endswith("jpg"):
 					ftype = ReportFile.IMAGE
-					file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"jpg", report.id)
+					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"jpg", report.id)
 				if str(f['file']).endswith("xls"):
 					ftype = ReportFile.EXCEL
-					file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"xls", report.id)
+					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"xls", report.id)
 				
-				c = ReportFile(title=f['title'], file=file_path, file_type=ftype, report=report)
+				c = ReportFile(title=f['title'], file=f['file'], file_type=ftype, report=report)
 				c.save()
 			del session['files']
 

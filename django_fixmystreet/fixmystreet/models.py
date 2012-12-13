@@ -22,7 +22,7 @@ from django.http import Http404
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server
 from django_extensions.db.models import TimeStampedModel
 
 
@@ -446,7 +446,6 @@ def report_notify_author(sender, instance, **kwargs):
             )
             notifiation.save()
 
-
 @receiver(post_save, sender=Report)
 def report_notify_manager(sender, instance, **kwargs):
     """signal on a report to notify manager that a report has been filled"""
@@ -543,6 +542,15 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
+
+@receiver(post_save,sender=ReportFile)
+def move_file(sender,instance,**kwargs):
+    if kwargs['created']:
+        file_type_string =ReportFile.attachment_type[instance.file_type-1][1]
+        extension = {1:'pdf',2:'doc',3:'xls',4:'jpg'}[instance.file_type]
+        new_destination = save_file_to_server(instance.file,file_type_string,extension,len(ReportFile.objects.filter(report_id=instance.report_id)), instance.report.id)
+        instance.file = new_destination
+        instance.save()
 
 class ReportSubscription(models.Model):
     """ 

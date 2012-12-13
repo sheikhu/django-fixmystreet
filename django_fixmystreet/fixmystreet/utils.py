@@ -141,16 +141,14 @@ class CurrentUserMiddleware:
         set_current_user(getattr(request, 'user', None))
 
 
-def save_file_to_server(file_name, file_type, file_extension,report_id):
+def save_file_to_server(file_name, file_type, file_extension,file_index,report_id):
         date = datetime.datetime.now()
         filepath = "media/files/%s/%s/" % (date.year,date.month);
         if not os.path.exists(filepath):
             os.makedirs(filepath)
-        filepath += "%s_%s.%s" % (file_type,report_id,file_extension)
-        print filepath
-        print file_name
-        srcpath = (file_name)
+        filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
+        srcpath = str(file_name)
         if not "media" in srcpath:
-            srcpath = "media/%s" % (srcpath)
+            srcpath = ("media/%s")%(srcpath)
         shutil.move(srcpath,filepath)
         return filepath.replace("media/","")
