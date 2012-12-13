@@ -58,7 +58,7 @@ $(document).ready(function() {
 /************************************************************************************/
 function AddFileToView(langcode){
     //Submit the last form to save the file to the server
-    
+    // $("#fileForm").submit();
     // If no files are yet added: show the div containing the added files table list
     if(!$("#extraFilesDiv").is(":visible")){
         $("#extraFilesDiv").show();
@@ -72,7 +72,7 @@ function AddFileToView(langcode){
     if (title == ""){
         title = file.name;
     }
-    var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','/media/files/')};
+    var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','media/files/')};
     //Put the file data in the session
     $.post("/"+langcode+"/ajax/create-file",data);
     //Create a file reader so that we can create a thumbnail of the submitted file.

@@ -8,7 +8,7 @@ from django.conf import settings
 from django_fixmystreet.fixmystreet.models import ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, FMSUser
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django_fixmystreet.fixmystreet.forms import FileUploadForm
-
+import os
 
 def report_category_note(request, id):
     cat = ReportMainCategoryClass.objects.get(id=id)
@@ -32,6 +32,8 @@ def create_file(request):
 def uploadFile(request):
     for file_code in request.FILES:
         upfile = request.FILES[file_code]
+        if not os.path.exists('media/files/'):
+            os.makedirs('media/files/')
         with open('media/files/'+upfile.name, 'wb+') as destination:
             for chunk in upfile.chunks():
                 destination.write(chunk)

@@ -15,8 +15,8 @@ def new(request):
         if report_form.is_valid():
             # this saves the update as part of the report.
             report = report_form.save(request.user)
-            SessionManager.saveComments(request.session, report.id)
-            SessionManager.saveFiles(request.session, report.id)
+            SessionManager.saveComments(request.session, report)
+            SessionManager.saveFiles(request.session, report)
             comments = ReportComment.objects.filter(report_id=report.id)
             files = ReportFile.objects.filter(report_id=report.id)
 
