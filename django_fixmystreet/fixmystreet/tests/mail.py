@@ -29,6 +29,7 @@ class MailTest(TestCase):
 		self.client.post('/en/report/new?x=150056.538&y=170907.56#form', {
 			'x':'150056.538','y':'170907.56',
 			'address':'Avenue des Arts, 3',
+			'address_number':'3',
 			'postalcode':'1210',
 			'category':'1',
 			'secondary_category':'1',
@@ -54,6 +55,7 @@ class MailTest(TestCase):
 		response = self.client.post('/en/report/new?x=150056.538&y=170907.56#form', {
 			'x':'150056.538','y':'170907.56',
 			'address':'Avenue des Arts, 3',
+			'address_number':'3',
 			'postalcode':'1210',
 			'category':'1',
 			'secondary_category':'1',
@@ -89,7 +91,7 @@ class MailTest(TestCase):
 		self.assertTrue(self.citizen.email in mail.outbox[2].to)
 	def testRefuseReportMail(self):
 		#Send a post request filling in the form to create a report
-		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
+		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts','address_number':'3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
 		#Login to access the pro page to create a user
 		success = self.client.login(username='manager', password='test')
@@ -103,7 +105,7 @@ class MailTest(TestCase):
 		self.assertTrue(self.citizen.email in mail.outbox[2].to)
 	def testSubscriptionForCititzenMail(self):
 		#Send a post request filling in the form to create a report
-		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
+		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts','address_number':'3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
 		#Send a post request subscribing a citizen to the just created report
 		self.client.post('/en/report/1/subscribe/',{'citizen_email':'post@test.com'})
 		#3 mails have been sent, 2 for the report creation and 1 for subscribing to the report
@@ -111,7 +113,7 @@ class MailTest(TestCase):
 		self.assertTrue('post@test.com' in mail.outbox[2].to)
 	def testMarkReportAsDoneMail(self):
 		#Send a post request filling in the form to create a report
-		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts, 3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
+		self.client.post('/en/report/new?x=150056.538&y=170907.56#form',{'x':'150056.538','y':'170907.56','address':'Avenue des Arts','address_number':'3','postalcode':'1210','category':'1','secondary_category':'1','quality':'0','description':'test','citizen_email':self.citizen.email,'citizen_firstname':self.citizen.first_name,'citizen_lastname':self.citizen.last_name,'citizen_subscription':'on','secondary_category_copy':'1','photo':''})
 		#Send a post request to mark the report as done
 		self.client.post('/en/report/1/update/',{'is_fixed':'1'})
 		#3 mails have been sent, 2 for the report creation and 1 for telling the responsible manager that the report is marked as done
