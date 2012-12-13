@@ -9,7 +9,7 @@ long_description = '\n\n'.join([
     ])
 
 install_requires = [
-    'Django == 1.4.2',
+    'Django == 1.4.3',
     'django-transmeta',
     'django-stdimage',
     'south',
