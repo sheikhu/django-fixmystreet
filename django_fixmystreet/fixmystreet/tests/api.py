@@ -89,15 +89,14 @@ class ApiTest(SampleFilesTestCase):
         #Parameters to save the report in database.
         params = {
             "user_email": "test@test.com",
-            "report_category_id": "2",
+            "user_firstname": "Thibo",
+            "user_lastname": "Bilbao",
             "report_quality": "2",
             "report_description": "zazadescr",
-            "user_firstname": "Thibo",
             "report_address": "Avenue des emeutes",
-            "user_lastname": "Bilbao",
-            "report_secondary_category_id": "2",
+            "report_category_id": "2",
+            "report_main_category_id": "2",
             "report_zipcode": "1000",
-            "report_id": "22",
             #"username": "thierryallent",
             "report_y": "170375.278",
             "report_x": "149157.349"
