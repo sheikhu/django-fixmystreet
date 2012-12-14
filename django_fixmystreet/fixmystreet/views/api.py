@@ -266,6 +266,7 @@ def create_report_citizen(request):
         report.postalcode = data_zip
         report.address = data_address
         report.quality = data_quality
+        report.private = False
         #Subscription is automatic.
         #Save given data
         report.save()
