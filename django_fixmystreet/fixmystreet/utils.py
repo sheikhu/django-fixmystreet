@@ -161,4 +161,6 @@ def save_file_to_server(file_name, file_type, file_extension,file_index,report_i
             srcpath = os.path.join(settings.MEDIA_ROOT,srcpath)
         if os.path.exists(srcpath):
             shutil.move(srcpath,os.path.join(settings.MEDIA_ROOT,filepath))
-        return filepath
+            return filepath
+        else:
+            return str(file_name)
