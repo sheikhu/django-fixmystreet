@@ -43,11 +43,15 @@ def new(request):
 
 def show(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id)
+    if report.citizen:
+        user_to_show = report.citizen
+    else:
+        user_to_show = report.created_by
     return render_to_response("reports/show.html",
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "author": report.citizen or report.created_by,
+                "author": user_to_show,
                 "update_form": ReportCommentForm(),
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),

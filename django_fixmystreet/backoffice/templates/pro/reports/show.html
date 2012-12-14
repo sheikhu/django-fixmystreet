@@ -189,13 +189,18 @@ $(document).ready(function() {
 				<center><img style="max-width:390px;max-heigth:390px" src='{{ report.photo.url }}'/></center>
 			{% endif %}
 			<p class="author-sign">
-                	{% if report.created_by %}
-                		{% blocktrans with by=report.created_by.username on=report.created|date %}
-		                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                		{% endblocktrans %}
+                	{% if report.citizen %}
+        		        {% if report.citizen.last_name = ''%}
+			        Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created|date}}</strong>
+				{% else %}
+        		        {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+			        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+        	        	{% endblocktrans %}
+				{% endif %}
 	                {% else %}
-        		        {% blocktrans with by=report.citizen.first_name on=report.created|date %}
-		                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                		{% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
+
+			        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
                 		{% endblocktrans %}
 	                {% endif %}
             	</p>
