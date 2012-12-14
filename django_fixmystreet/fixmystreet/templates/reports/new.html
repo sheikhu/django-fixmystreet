@@ -31,7 +31,6 @@ $(function(){
 	$map.fmsMap('addReport', {% report_to_json report %},{{forloop.counter}});
 	{% endfor %}
 	$map.fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
-
 });
 
 </script>
