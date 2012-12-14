@@ -23,9 +23,10 @@ def accept( request, report_id ):
 
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
-
+    report.status = Report.REFUSED
     form = RefuseForm(request)
-    form.save(report)
+    report.refusal_motivation = form.data.POST.get('refusal_motivation')
+    report.save()
 
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
