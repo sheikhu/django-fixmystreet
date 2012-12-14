@@ -53,10 +53,13 @@ def get_exifs(img):
     from PIL.ExifTags import TAGS
 
     ret = {}
-    info = img._getexif()
+    info = None
+    try:
+        info = img._getexif()
+    except:
+        print 'no jpg'
     if(not info):
         return ret
-    #import pdb;pdb.set_trace()
     for tag, value in info.items():
         decoded = TAGS.get(tag, tag)
         ret[decoded] = value
@@ -143,13 +146,19 @@ class CurrentUserMiddleware:
 
 def save_file_to_server(file_name, file_type, file_extension,file_index,report_id):
         date = datetime.datetime.now()
-        filepath = "media/files/%s/%s/" % (date.year,date.month);
-        if not os.path.exists(filepath):
-            os.makedirs(filepath)
+        filepath = "files/%s/%s/" % (date.year,date.month);
+        if not os.path.exists(os.path.join(settings.MEDIA_ROOT,filepath)):
+            os.makedirs(os.path.join(settings.MEDIA_ROOT,filepath))
         filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
         srcpath = str(file_name)
         if not "media" in srcpath:
             srcpath = ("media/%s")%(srcpath)
         srcpath = os.path.join(settings.PROJECT_PATH,srcpath)
-        shutil.move(srcpath,os.path.join(settings.PROJECT_PATH,filepath))
-        return filepath.replace("media/","")
+        if not os.path.exists(srcpath):
+            srcpath = str(file_name)
+            if not "media" in srcpath:
+                srcpath = ("media/%s")%(srcpath)
+            srcpath = os.path.join(settings.MEDIA_ROOT,srcpath)
+        if os.path.exists(srcpath):
+            shutil.move(srcpath,os.path.join(settings.MEDIA_ROOT,filepath))
+        return filepath

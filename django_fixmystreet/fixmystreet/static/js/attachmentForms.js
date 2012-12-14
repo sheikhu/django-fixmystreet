@@ -72,7 +72,7 @@ function AddFileToView(langcode){
     if (title == ""){
         title = file.name;
     }
-    var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','media/files/')};
+    var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','files/'),"file_creation_date":file.lastModifiedDate};
     //Put the file data in the session
     $.post("/"+langcode+"/ajax/create-file",data);
     //Create a file reader so that we can create a thumbnail of the submitted file.
