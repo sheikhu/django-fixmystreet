@@ -677,36 +677,37 @@ class ReportCategory(models.Model):
             d['n_fr'] = getattr(current_element, 'name_fr')
             d['n_nl'] = getattr(current_element, 'name_nl')
             d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
-            #Optimize data transfered removing duplicates on main class names
-            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en') 
-            if not prev_d['m_c_n_en'] == m_c_n_en_value:
-                prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
-            m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr') 
-            if not prev_d['m_c_n_fr'] == m_c_n_fr_value:
-                prev_d['m_c_n_fr'] = d['m_c_n_fr'] = m_c_n_fr_value
-            
-            m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl') 
-            if not prev_d['m_c_n_nl'] == m_c_n_nl_value:
-                prev_d['m_c_n_nl'] = d['m_c_n_nl'] = m_c_n_nl_value
-            d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
-            
-            #Optimize data transfered removing duplicates on main class names
-            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en') 
-            if not prev_d['s_c_n_en'] == s_c_n_en_value:
-                prev_d['s_c_n_en'] = d['s_c_n_en'] = s_c_n_en_value
-            s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr') 
-            if not prev_d['s_c_n_fr'] == s_c_n_fr_value:
-                prev_d['s_c_n_fr'] = d['s_c_n_fr'] = s_c_n_fr_value
-            
-            s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl') 
-            if not prev_d['s_c_n_nl'] == s_c_n_nl_value:
-                prev_d['s_c_n_nl'] = d['s_c_n_nl'] = s_c_n_nl_value
             
             is_it_public = getattr(current_element, 'public')
             if is_it_public:
                 d['p'] = 1
             else:
                 d['p'] = 0
+            
+            #Optimize data transfered removing duplicates on main class names
+            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en') 
+            if is_it_public or not prev_d['m_c_n_en'] == m_c_n_en_value:
+                prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
+            m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr') 
+            if is_it_public or not prev_d['m_c_n_fr'] == m_c_n_fr_value:
+                prev_d['m_c_n_fr'] = d['m_c_n_fr'] = m_c_n_fr_value
+            
+            m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl') 
+            if is_it_public or not prev_d['m_c_n_nl'] == m_c_n_nl_value:
+                prev_d['m_c_n_nl'] = d['m_c_n_nl'] = m_c_n_nl_value
+            d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
+            
+            #Optimize data transfered removing duplicates on main class names
+            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en') 
+            if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
+                prev_d['s_c_n_en'] = d['s_c_n_en'] = s_c_n_en_value
+            s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr') 
+            if is_it_public or not prev_d['s_c_n_fr'] == s_c_n_fr_value:
+                prev_d['s_c_n_fr'] = d['s_c_n_fr'] = s_c_n_fr_value
+            s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl') 
+            if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
+                prev_d['s_c_n_nl'] = d['s_c_n_nl'] = s_c_n_nl_value
+            
 
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
