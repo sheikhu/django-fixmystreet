@@ -478,7 +478,7 @@
         "pk": 20, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "commune": 4,
+            "commune": 5,
             "name_fr": "Laeken", 
             "name_nl": "Laeken", 
             "name_en": "Laeken", 
@@ -490,7 +490,7 @@
         "pk": 21, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "commune": 4,
+            "commune": 5,
             "name_fr": "Neder-over-Heembeek", 
             "name_nl": "Neder-over-Heembeek", 
             "name_en": "Neder-over-Heembeek", 
@@ -502,7 +502,7 @@
         "pk": 22, 
         "model": "fixmystreet.zipcode", 
         "fields": {
-            "commune": 4,
+            "commune": 5,
             "name_fr": "Haren", 
             "name_nl": "Haren", 
             "name_en": "Haren", 
