@@ -51,7 +51,6 @@ setup(name='django-fixmystreet',
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require={
-      'deploy': deploy_require,
       'jenkins': tests_require,
       'debug': debug_require
       },
