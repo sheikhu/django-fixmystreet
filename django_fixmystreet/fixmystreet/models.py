@@ -19,6 +19,7 @@ from django.core import serializers
 from django.core.files.base import ContentFile
 from django.conf import settings
 from django.http import Http404
+from email.MIMEImage import MIMEImage
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -403,7 +404,7 @@ def report_assign_responsible(sender, instance, **kwargs):
         else:
             instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
 
-        #Searcht the right responsible for the current organization.            
+        #Search the right responsible for the current organization.            
         userCandidates = FMSUser.objects.filter(organisation=instance.responsible_entity).filter(manager=True)
         # TODO: use filters instead of iteration...
         managerFound = False
@@ -786,7 +787,17 @@ class ReportNotification(models.Model):
 
         # if self.report.photo:
             # msg.attach_file(self.report.photo.file.name)
+        if isinstance(self.related,Report):
+            for f in self.related.get_files():
+                if f.file_type == 4 and f.is_visible:
+                    # Open the file
+                    fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
+                    msgImage = MIMEImage(fp.read())
+                    fp.close()
 
+                    # Define the image's ID to reference to it
+                    msgImage.add_header('Content-ID', '<image'+str(f.id)+'>')
+                    msg.attach(msgImage)
         try:
             msg.send()
             self.success = True

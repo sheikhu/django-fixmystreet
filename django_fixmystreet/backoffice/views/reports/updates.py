@@ -12,45 +12,48 @@ from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, 
 
 @transaction.commit_on_success
 def accept( request, report_id ):
-	report = get_object_or_404(Report, id=report_id)
-        report.status = Report.MANAGER_ASSIGNED
-	report.save()    
-	
-    	if "pro" in request.path:
-        	return HttpResponseRedirect(report.get_absolute_url_pro())
-        else:
-        	return HttpResponseRedirect(report.get_absolute_url())
+    report = get_object_or_404(Report, id=report_id)
+    #Update the status and persist to the database
+    report.status = Report.MANAGER_ASSIGNED
+    report.save()
+    #Redirect to the report show page
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
+    #Update the status
     report.status = Report.REFUSED
     form = RefuseForm(request)
+    #Save the refusal motivation in the database
     report.refusal_motivation = form.data.POST.get('refusal_motivation')
     report.save()
-
+    #Redirect to the report show page
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
 def fixed( request, report_id ):
-	report = get_object_or_404(Report, id=report_id)
-        report.status = Report.SOLVED
-	report.save()    	
-
-	if "pro" in request.path:
-       		return HttpResponseRedirect(report.get_absolute_url_pro())
-       	else:
-       		return HttpResponseRedirect(report.get_absolute_url())
+    report = get_object_or_404(Report, id=report_id)
+    #Update the status
+    report.status = Report.SOLVED
+    report.save()
+    #Redirect to the report show page
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def close( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
+    #Update the status and set the close date
     report.status = Report.PROCESSED
     report.close_date = datetime.now()
     report.save()
-    comments = ReportComment.objects.filter(report_id=report_id)
-    files = ReportFile.objects.filter(report_id=report_id)
-
+    #Redirect to the report show page
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
@@ -169,9 +172,11 @@ def validateAll(request,report_id):
     files = ReportFile.objects.filter(report_id=report_id)
     for comment in comments:
         comment.is_validated = True
+        comment.is_visible = True
         comment.save()
     for f in files:
         f.is_validated = True
+        f.is_visible = True
         f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
