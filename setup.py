@@ -15,8 +15,8 @@ install_requires = [
     'south',
     'django-nose',
     'django-extensions',
-    'simple_history'
-    'docutils'
+    'simple_history',
+    'docutils',
     # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
     ]
