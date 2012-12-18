@@ -1,8 +1,6 @@
-from django.conf.urls.defaults import *
-from django.conf.urls.defaults import patterns, include
+from django.conf.urls.defaults import url, patterns, include
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 admin.autodiscover()
