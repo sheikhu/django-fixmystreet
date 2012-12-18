@@ -23,7 +23,7 @@ from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta
 from django_extensions.db.models import TimeStampedModel
-from django_extensions.db.fields import AutoSlugField
+
 
 
 
@@ -276,12 +276,12 @@ class Report(UserTrackedModel):
     
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = self.secondary_category.slug  + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
+        slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
     
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
+        slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
@@ -608,7 +608,7 @@ class ReportMainCategoryClass(models.Model):
     class Meta:
         verbose_name = "category group"
         verbose_name_plural = "category groups"
-        translate = ('name', )
+        translate = ('name', 'slug')
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportMainCategoryClass)
 
@@ -642,7 +642,7 @@ class ReportSecondaryCategoryClass(models.Model):
     class Meta:
         verbose_name = "category group"
         verbose_name_plural = "category groups"
-        translate = ('name', )
+        translate = ('name', 'slug')
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportSecondaryCategoryClass)
 
@@ -731,7 +731,7 @@ class ReportCategory(models.Model):
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
-        translate = ('name', )
+        translate = ('name', 'slug')
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportCategory)
 
