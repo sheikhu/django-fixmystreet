@@ -13,12 +13,13 @@
 	{% endif %}
 </p>
 <p>{% trans 'Created at:'%} {{report.created|date}}</p>
-
+{% if report.comments.all %}
 <h3> {% trans 'Extra comments'%} </h3>
 {% for  comment in report.comments.all %}
 <p>{% trans 'Comment:' %} {{comment.text}}</p>
 {% endfor %}
-
+{% endif %}
+{% if report.files.all %}
 <h3> {% trans 'Extra files'%} </h3>
 {% for  file in report.files.all %}
 {% if file.is_visible %}
@@ -28,3 +29,4 @@
 {% endif %}
 {% endif %}
 {% endfor %}
+{% endif %}
