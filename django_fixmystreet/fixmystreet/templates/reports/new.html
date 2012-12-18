@@ -44,7 +44,7 @@ $(document).delegate("form", "submit", function(evt) {
                 	alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
                 	return false;
         	}
-	{% endif %}
+		{% endif %}
 });
 
 </script>
@@ -222,7 +222,7 @@ $(document).delegate("form", "submit", function(evt) {
         					<td></td>
         					<td>
         						<p style="float:left;">
-        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="AddFileToView('{{LANGUAGE_CODE}}');setTimeout('toggleFileForm()',200);"/>
+        							<input type="button" class='big_button' value="{% trans 'Add' %}" onclick="checkFileFieldValue();AddFileToView('{{LANGUAGE_CODE}}');setTimeout('toggleFileForm()',200);"/>
         							<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
         						</p>
         					</td>

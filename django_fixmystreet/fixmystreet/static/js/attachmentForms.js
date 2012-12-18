@@ -40,6 +40,7 @@ $(document).ready(function() {
 /********************************************************************************************/
     function fileSelected() {
         var file = document.getElementById('id_file').files[0];
+        var allowed_file_types = ["image/png","image/jpeg","application/pdf","application/msword","application/vnd.ms-excel","application/vnd.oasis.opendocument.text","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.oasis.opendocument.spreadsheet"];
         if (file) {
             if(file.size == 0){
                 alert('Filesize must be greater than 0');
@@ -48,6 +49,10 @@ $(document).ready(function() {
             //TODO determine max file size
             if(file.size > 100000){
                 alert('File to large');
+                $("#fileForm #id_file").val("");
+            }
+            if(allowed_file_types.indexOf(file.type)==-1 ){
+                alert('The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls.');
                 $("#fileForm #id_file").val("");
             }
         }
@@ -72,7 +77,9 @@ function AddFileToView(langcode){
     if (title == ""){
         title = file.name;
     }
-    var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','files/'),"file_creation_date":file.lastModifiedDate};
+    var file_creation_date = new Date(""+file.lastModifiedDate);
+    var dateString = file_creation_date.getFullYear() + "-"+ (file_creation_date.getMonth()+1) + "-" + file_creation_date.getDate()+ " " + file_creation_date.getHours()+":"+file_creation_date.getMinutes();
+    var data = {"title":title,"file":$("#fileForm #id_file").val().replace('C:\\fakepath\\','files/'),"file_creation_date":""+dateString};
     //Put the file data in the session
     $.post("/"+langcode+"/ajax/create-file",data);
     //Create a file reader so that we can create a thumbnail of the submitted file.

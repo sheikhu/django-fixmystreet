@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.urlresolvers import resolve
 from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportSubscription, OrganisationEntity
 
+
 register = template.Library()
 
 MENU_DEFS = [ 

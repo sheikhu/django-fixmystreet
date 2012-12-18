@@ -519,6 +519,7 @@ class ReportFile(ReportAttachment):
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
     title = models.CharField(max_length=250)
+    file_creation_date= models.DateTimeField(null=True)
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF

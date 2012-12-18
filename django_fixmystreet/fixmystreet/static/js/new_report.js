@@ -22,7 +22,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 
@@ -38,7 +37,7 @@ $(document).ready(function() {
 			$("#addCommmentDiv").show();
 			retrieveAddress();
 		}
-		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports')
+		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports' || window.location.href.indexOf('nieuw') >= 0 || window.location.href.indexOf('nouveau') >= 0)
 		{
 			$('#page_content_container').removeClass('form-show').addClass('form-hide');
 			$form.hide();
@@ -83,8 +82,18 @@ $(document).ready(function() {
     	window.location.assign('/reports/' + report.id);
     });
 
-    function retrieveAddress()
+    
+	//On page load: the add comment and add file forms must be hidden
+	$("#extraCommentsDiv").hide();
+	$("#extraFilesDiv").hide();
+	
+	
+});
+
+function retrieveAddress()
     {
+    	var $form = $('#report_form');
+    	var $map = $('#map-bxl');
     	$form.find('.error-msg').remove();
     	$form.find(':submit').prop('disabled',true);
     	$('#id_address').addClass('loading');
@@ -112,11 +121,11 @@ $(document).ready(function() {
     		}
     	});
     }
-	//On page load: the add comment and add file forms must be hidden
-	$("#extraCommentsDiv").hide();
-	$("#extraFilesDiv").hide();
-	
-	
-});
 
+function checkFileFieldValue(){
+	if($("#id_file").val() == ""){
+		alert("Please select a file to add.");
+		return false;
+	}
+}
 

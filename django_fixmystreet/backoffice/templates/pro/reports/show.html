@@ -347,8 +347,9 @@ $(document).ready(function() {
                         	<td>
                             		<p style="float:left;">
                             		<input type="hidden" name="form-type" value="file-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleFileForm()',200);"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
                                 	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
+                                	<input type="hidden" name="file_creation_date"/>
                             	</p>
                         	</td>
                     		</tr>

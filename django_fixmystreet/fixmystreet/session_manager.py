@@ -12,10 +12,11 @@ class SessionManager:
 
 
 	@classmethod
-	def createFile(cls, title, file, session):
+	def createFile(cls, title, file, file_creation_date, session):
 		if not 'files' in session:
 			session['files'] = []
-		session['files'].append({"title":title,"file":file})
+		print file_creation_date
+		session['files'].append({"title":title,"file":file,"file_creation_date":file_creation_date})
 
 	@classmethod
 	def saveComments(cls, session, report):
@@ -38,14 +39,14 @@ class SessionManager:
 				if str(f['file']).endswith("doc"):
 					ftype = ReportFile.WORD
 					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"doc", report.id)
-				if str(f['file']).endswith("png") or str(f['file']).endswith("jpg"):
+				if str(f['file']).endswith("png") or str(f['file']).endswith("jpg") or str(f['file']).endswith("jpeg"):
 					ftype = ReportFile.IMAGE
 					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"jpg", report.id)
 				if str(f['file']).endswith("xls"):
 					ftype = ReportFile.EXCEL
 					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"xls", report.id)
-				
-				c = ReportFile(title=f['title'], file=f['file'], file_type=ftype, report=report)
+				print f['file_creation_date']
+				c = ReportFile(title=f['title'], file=f['file'], file_creation_date = f['file_creation_date'], file_type=ftype, report=report)
 				c.save()
 			del session['files']
 

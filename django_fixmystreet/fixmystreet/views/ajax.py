@@ -25,7 +25,8 @@ def create_comment(request):
 	return hh 
 
 def create_file(request):
-    SessionManager.createFile(request.POST.get('title'), request.POST.get('file'), request.session)
+    print request.POST
+    SessionManager.createFile(request.POST.get('title'), request.POST.get('file'), request.POST.get("file_creation_date"), request.session)
     hh = HttpResponse(content='True', mimetype='text/html')
     return hh 
 

@@ -21,39 +21,31 @@
 	</tr>
 	<tr>
 		<td>
-			{{report.address}}{{report.postalcode}}
+			{{report.address}}
 		</td>	
 		<td colspan="2">
-			{{report.responsible_entity.name}}
+			{{report.postalcode}} {{report.responsible_entity.name}}
 		</td>	
 	</tr>
 	<tr>
 		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_object' %}
+				{% trans 'label_pdf_report_title_category' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
 				{% trans 'label_pdf_report_title_manager' %}
 			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_urgency' %}
-			</strong>
-		</td>	
+		</td>
 	</tr>
 	<tr>
 		<td>
-			{{report.category.name}} / {{report.secondary_category.name}}
+			{{report.display_category}}
 		</td>	
 		<td>
-			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}
+			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} (<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.email}}</a>, {{report.responsible_manager.telephone}})
 		</td>
-		<td>
-			???
-		</td>	
 	</tr>
 
 
@@ -61,21 +53,12 @@
 <hr/>
 <table>
 	<tr>
-		<td>
+		<td colspan="2">
 			<strong>
-				{% trans 'label_pdf_report_title_counter' %}
+				{% trans 'label_pdf_report_title_ticket_number' %}
 			</strong>
 		</td>	
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_incident_number' %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_agatte' %}
-			</strong>
-		</td>	
+
 		<td colspan="2">
 			<strong>
 				{% trans 'label_pdf_report_title_geocode' %}
@@ -83,32 +66,18 @@
 		</td>	
 	</tr>
 	<tr>
-		<td>
-			{{report.id}}	
+		<td colspan="2">
+			{{report.get_ticket_as_string}}	
 		</td>	
-		<td>
-			<!--request.user.id|numberOfReports-->TODO
-		</td>	
-		<td>
-			???TODO
-		</td>
 		<td colspan="2">
 			L:{{report.point.x}} l:{{report.point.y}}
 		</td>	
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<strong>
 				{% trans 'label_pdf_report_title_date' %}
 			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_requester' %}
-			</strong>
-		</td>	
-		<td>
-			&nbsp;
 		</td>
 		<td>
 			<strong>
@@ -122,62 +91,52 @@
 		</td>	
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			{{report.created}}
 		</td>	
 		<td>
+			{% if report.created_by %}
 			{{report.created_by.fmsuser.get_display_name}}
-		</td>	
-		<td>
-			&nbsp;
+			{% else %}
+			{{report.citizen.fmsuser.get_display_name}}
+			{% endif %}
 		</td>
 		<td>
-			{{report.created_by.fmsuser.get_display_name}}
-		</td>	
-		<td>
+			{% if report.created_by %}
 			{{report.created_by.fmsuser.telephone}}
+			{% else %}
+			{{report.citizen.fmsuser.telephone}}
+			{% endif %}
 		</td>	
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<strong>
 				{% trans 'label_pdf_report_title_status' %}
 			</strong>
-		</td>	
-		<td>
+		</td>
+		<td colspan="2">
 			<strong>
-				{% trans 'label_pdf_report_title_action' %}
+				{% trans 'label_pdf_report_title_email' %}
 			</strong>
 		</td>	
 		<td>
 			&nbsp;
-		</td>
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_exe' %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_intervention' %}
-			</strong>
 		</td>	
 	</tr>
 	<tr>
-		<td>
-			{{report.status}}
+		<td colspan="2">
+			{{ report.get_status_display }}
 		</td>	
-		<td>
-			TODO
+		<td colspan="2">
+			{% if report.created_by %}
+			<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
+			{% else %}
+			<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
+			{% endif %}
 		</td>	
 		<td>
 			&nbsp;
-		</td>
-		<td>
-			TODO
-		</td>	
-		<td>
-			TODO
 		</td>	
 	</tr>
 </table>
@@ -221,6 +180,59 @@
 
 <hr/>
 
+
+<!-- ############################################################## -->
+<!-- ###################### COMMENTS ############################## -->
+<!-- ############################################################## -->
+
+
+
+<h1>{% trans 'label_pdf_comment_title_main' %}</h1>
+{% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
+{% if comment_list %}
+<table>
+	{% for comment in comment_list %}
+	<!-- If we asked for a public version -->
+	{% if not comment.is_citizen_visible and pro_version == "0" %}
+		<!-- SKIP ROW if the current file annex is confidential -->
+	{% elif not comment.is_confidential_visible and pro_version == "1" %}
+		<!-- SKIP ROW if the current file annex is confidential -->
+	{% else %}
+	<tr>
+		<td colspan="2">
+			<strong>{% trans 'label_pdf_comment_title_text' %}</strong>
+		</td>
+		<td>
+			<strong>{% trans 'label_pdf_comment_title_created_at' %}</strong>
+		</td>
+		<td>
+			<strong>{% trans 'label_pdf_comment_title_city' %}</strong>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			{{comment.text}}
+		</td>
+		<td>
+			{{comment.created}}
+		</td>
+		<td>
+			{{report.responsible_entity.name}}
+		</td>
+	</tr>
+	{% endif %}
+	{% endfor %}
+</table>
+
+{% else %}
+
+<h3>{% trans 'label_pdf_comment_title_no_content' %}</h3>
+
+{% endif %}
+{% endif %}
+
+
+
 <!-- ############################################################## -->
 <!-- ####################### PHOTOS ############################### -->
 <!-- ############################################################## -->
@@ -228,7 +240,7 @@
 <h1>{% trans 'label_pdf_photo_title_main' %}</h1>
 
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
-
+{% if file_list %}
 <table>
 	{% for file in file_list %}
 	<!-- If we asked for a public version -->
@@ -239,11 +251,31 @@
 	{% else %}
 	<tr>
 		<td rowspan="11">
-			<img width="256px" height="256px" src="http://www.fgtb.be/image/image_gallery?uuid=19b59168-7103-48c3-b05a-1b8e448d6f23&groupId=10134&t=1353400703444"/>
+			{% if file.file_type == 1 %}
+			<img width="256px" height="256px" src="http://localhost:8000/static/images/icon-pdf.png"/>
+			{% endif %}
+			{% if file.file_type == 2 %}
+			<img width="256px" height="256px" src="http://localhost:8000/static/images/icon-word.jpg"/>
+			{% endif %}
+			{% if file.file_type == 3 %}
+			<img width="256px" height="256px" src="http://localhost:8000/static/images/icon-excel.png"/>
+			{% endif %}
+			{% if file.file_type == 4 %}
+			<img style="max-width:256px;max-height:256px;" src="http://localhost:8000{{file.file.url}}"/>
+			{% endif %}
 		</td>
-		<td>
-			{{file.created}}
-		</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_created' %}</strong></td>
+	</tr>
+	<tr>
+		<td>{{file.file_creation_date}}</td>
+	</tr>
+	<tr>
+		<td><strong>{% trans 'label_pdf_file_published' %}</strong></td>
+	</tr>
+	<tr>
+		<td>{{file.created}}</td>
 	</tr>
 	<tr>
 		<td><strong>{% trans 'label_pdf_file_title_city' %}</strong></td>
@@ -255,13 +287,7 @@
 		<td><strong>{% trans 'label_pdf_file_title_source' %}</strong></td>
 	</tr>
 	<tr>
-		<td>{{file.get_display_name}}</td>
-	</tr>
-	<tr>
-		<td><strong>{% trans 'label_pdf_file_title_instruction' %}</strong></td>
-	</tr>
-	<tr>
-		<td>TODO</td>
+		<td>{{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, {{file.created_by.fmsuser.telephone}}){% endif %}</td>
 	</tr>
 	<tr>
 		<td><strong>{% trans 'label_pdf_file_title_title' %}</strong></td>
@@ -270,10 +296,9 @@
 		<td>{{file.title}}</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'label_pdf_file_title_keywords' %}</strong></td>
-	</tr>
-	<tr>
-		<td>TODO</td>
+		<td>
+			&nbsp;
+		</td>
 	</tr>
 	{% endif %}
 	{% endfor %}
@@ -283,4 +308,5 @@
 
 <h3>{% trans 'label_pdf_photo_title_no_content' %}</h3>
 
+{% endif %}
 {% endif %}

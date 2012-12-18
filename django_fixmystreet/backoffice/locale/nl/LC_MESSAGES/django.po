@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-07 18:03+0100\n"
+"POT-Creation-Date: 2012-12-13 16:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,76 +46,86 @@ msgstr "^rapport/nieuw"
 msgid "^report/subscription"
 msgstr "^rapport/abonnement"
 
-#: urls.py:32
+#: urls.py:29
+#, fuzzy
+msgid "^report/search_ticket"
+msgstr "areport/(\\d+)/aanvaarden/"
+
+#: urls.py:33
 msgid "^report/list/(.+)"
 msgstr "^rapport/lijst/(.+)"
 
-#: urls.py:36
+#: urls.py:37
 msgid "^report/(\\d+)/update/"
 msgstr "^rapport/(\\d+)/update/"
 
-#: urls.py:37
+#: urls.py:38
 msgid "^report/(\\d+)/accept/"
 msgstr "areport/(\\d+)/aanvaarden/"
 
-#: urls.py:38
+#: urls.py:39
 msgid "^report/(\\d+)/refuse/"
 msgstr "^raport/(\\d+)/weiger/"
 
-#: urls.py:39 urls.py:44
+#: urls.py:40 urls.py:45
 msgid "^report/(\\d+)/fixed/"
 msgstr "^report/(\\d+)/opgelost/"
 
-#: urls.py:40
+#: urls.py:41
 msgid "^report/(\\d+)/close/"
 msgstr "^report/(\\d+)/sluiten/"
 
-#: urls.py:41
+#: urls.py:42
 #, fuzzy
 msgid "^report/(\\d+)/validateAll/"
 msgstr "^rapport/(\\d+)/update/"
 
-#: urls.py:42
+#: urls.py:43
 msgid "^report/(\\d+)/updateFile"
 msgstr "^report/(\\d+)/bestandUpdaten"
 
-#: urls.py:43
+#: urls.py:44
 msgid "^report/(\\d+)/updateComment"
 msgstr "^report/(\\d+)/commentaarUpdaten"
 
-#: urls.py:45
+#: urls.py:46
 msgid "^report/(\\d+)/changeManager/"
 msgstr "^report/(\\d+)/beheerderAanpassen/"
 
-#: urls.py:46
+#: urls.py:47
 msgid "^report/(\\d+)/changeContractor/"
 msgstr ""
 
-#: urls.py:47
+#: urls.py:48
+#, fuzzy
+msgid "^report/(\\d+)/switchPrivacy/"
+msgstr "^report/(\\d+)/abonneren/"
+
+#: urls.py:49
 msgid "^report/(\\d+)/accept_and_validate/"
 msgstr ""
 
-#: urls.py:48
+#: urls.py:50
 msgid "^report/(\\d+)-(\\d+)/pdf/"
 msgstr ""
 
-#: urls.py:52
+#: urls.py:54
 msgid "^report/(\\d+)/subscribe/"
 msgstr "^report/(\\d+)/abonneren/"
 
-#: urls.py:53
+#: urls.py:55
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr "^report/(\\d+)/deabonneren/"
 
-#: urls.py:57
+#: urls.py:59
 msgid "^report/(\\d+)/flags/thanks"
 msgstr "^report/(\\d+)/flags/bedankt"
 
-#: urls.py:58
+#: urls.py:60
 msgid "^report/(\\d+)/flags"
 msgstr ""
 
-#: urls.py:68
+#: urls.py:70
 msgid "^ajax/saveSelection"
 msgstr ""
 
@@ -137,127 +147,119 @@ msgstr "Configureer de beheerder categorieën"
 
 #: templates/pro/pdf.html:7
 msgid "label_pdf_report_title_main"
-msgstr ""
+msgstr "Rapport overzicht"
 
 #: templates/pro/pdf.html:13
 msgid "label_pdf_report_title_localisation"
-msgstr ""
+msgstr "Locatie"
 
 #: templates/pro/pdf.html:18
 msgid "label_pdf_report_title_commune"
-msgstr ""
+msgstr "Gemeente"
 
 #: templates/pro/pdf.html:33
-msgid "label_pdf_report_title_object"
-msgstr ""
+msgid "label_pdf_report_title_category"
+msgstr "Categorie"
 
 #: templates/pro/pdf.html:38
 msgid "label_pdf_report_title_manager"
-msgstr ""
+msgstr "Beheerder"
 
-#: templates/pro/pdf.html:43
-msgid "label_pdf_report_title_urgency"
-msgstr ""
+#: templates/pro/pdf.html:58
+msgid "label_pdf_report_title_ticket_number"
+msgstr "Ticket nummer"
 
-#: templates/pro/pdf.html:66
-msgid "label_pdf_report_title_counter"
-msgstr ""
-
-#: templates/pro/pdf.html:71
-msgid "label_pdf_report_title_incident_number"
-msgstr ""
-
-#: templates/pro/pdf.html:76
-msgid "label_pdf_report_title_agatte"
-msgstr ""
-
-#: templates/pro/pdf.html:81
+#: templates/pro/pdf.html:64
 msgid "label_pdf_report_title_geocode"
-msgstr ""
+msgstr "Coordinaten"
 
-#: templates/pro/pdf.html:102
+#: templates/pro/pdf.html:79
 msgid "label_pdf_report_title_date"
-msgstr ""
+msgstr "Datum"
 
-#: templates/pro/pdf.html:107
-msgid "label_pdf_report_title_requester"
-msgstr ""
+#: templates/pro/pdf.html:84
+msgid "label_pdf_report_title_author"
+msgstr "Auteur"
+
+#: templates/pro/pdf.html:89
+msgid "label_pdf_report_title_phone"
+msgstr "Tel"
 
 #: templates/pro/pdf.html:115
-msgid "label_pdf_report_title_author"
-msgstr ""
-
-#: templates/pro/pdf.html:120
-msgid "label_pdf_report_title_phone"
-msgstr ""
-
-#: templates/pro/pdf.html:144
 msgid "label_pdf_report_title_status"
-msgstr ""
+msgstr "Status"
+
+#: templates/pro/pdf.html:143
+msgid "label_pdf_historique_title_main"
+msgstr "Geschiedenis"
+
+#: templates/pro/pdf.html:148
+msgid "label_pdf_historique_title_date"
+msgstr "Datum"
 
 #: templates/pro/pdf.html:149
-msgid "label_pdf_report_title_action"
-msgstr ""
+msgid "label_pdf_historique_title_from"
+msgstr "Van"
 
-#: templates/pro/pdf.html:157
-msgid "label_pdf_report_title_exe"
-msgstr ""
+#: templates/pro/pdf.html:150
+msgid "label_pdf_historique_title_title"
+msgstr "Naar"
 
-#: templates/pro/pdf.html:162
-msgid "label_pdf_report_title_intervention"
-msgstr ""
+#: templates/pro/pdf.html:151
+msgid "label_pdf_historique_title_text"
+msgstr "Commentaar"
 
-#: templates/pro/pdf.html:190
-msgid "label_pdf_historique_title_main"
-msgstr ""
+#: templates/pro/pdf.html:171
+msgid "label_pdf_historique_title_no_content"
+msgstr "Geen historische gegevens aanwezig"
 
-#: templates/pro/pdf.html:195
-msgid "label_pdf_historique_title_date"
-msgstr ""
+#: templates/pro/pdf.html:184
+msgid "label_pdf_comment_title_main"
+msgstr "Extra commentaren"
 
 #: templates/pro/pdf.html:196
-msgid "label_pdf_historique_title_from"
-msgstr ""
+msgid "label_pdf_comment_title_text"
+msgstr "Commentaar"
 
-#: templates/pro/pdf.html:197
-msgid "label_pdf_historique_title_title"
-msgstr ""
+#: templates/pro/pdf.html:199
+msgid "label_pdf_comment_title_created_at"
+msgstr "Aangemaakt op"
 
-#: templates/pro/pdf.html:198
-msgid "label_pdf_historique_title_text"
-msgstr ""
+#: templates/pro/pdf.html:202
+msgid "label_pdf_comment_title_city"
+msgstr "Gemeente"
 
-#: templates/pro/pdf.html:218
-msgid "label_pdf_historique_title_no_content"
-msgstr ""
+#: templates/pro/pdf.html:222
+msgid "label_pdf_comment_title_no_content"
+msgstr "Geen commentaren aanwezig"
 
-#: templates/pro/pdf.html:228
+#: templates/pro/pdf.html:232
 msgid "label_pdf_photo_title_main"
-msgstr ""
-
-#: templates/pro/pdf.html:249
-msgid "label_pdf_file_title_city"
-msgstr ""
-
-#: templates/pro/pdf.html:255
-msgid "label_pdf_file_title_source"
-msgstr ""
+msgstr "Extra bestanden"
 
 #: templates/pro/pdf.html:261
-msgid "label_pdf_file_title_instruction"
-msgstr ""
+msgid "label_pdf_file_created"
+msgstr "Bestand aangemaakt op"
 
 #: templates/pro/pdf.html:267
-msgid "label_pdf_file_title_title"
-msgstr ""
+msgid "label_pdf_file_published"
+msgstr "Bestand gepubliceerd op"
 
 #: templates/pro/pdf.html:273
-msgid "label_pdf_file_title_keywords"
-msgstr ""
+msgid "label_pdf_file_title_city"
+msgstr "Gemeente"
 
-#: templates/pro/pdf.html:284
+#: templates/pro/pdf.html:279
+msgid "label_pdf_file_title_source"
+msgstr "Aangemaakt door"
+
+#: templates/pro/pdf.html:285
+msgid "label_pdf_file_title_title"
+msgstr "Titel"
+
+#: templates/pro/pdf.html:301
 msgid "label_pdf_photo_title_no_content"
-msgstr ""
+msgstr "Er zijn geen extra bestanden aanwezig"
 
 #: templates/pro/user_create.html:8 templates/pro/user_create.html.py:34
 msgid "Create user"
@@ -267,60 +269,81 @@ msgstr "Gebruiker aanmaken"
 msgid "User overview:"
 msgstr "Overzicht gebruikers"
 
-#: templates/pro/users_overview.html:61
+#: templates/pro/users_overview.html:43
+msgid "ENTITE"
+msgstr ""
+
+#: templates/pro/users_overview.html:44
+msgid "GESTIONNAIRE"
+msgstr ""
+
+#: templates/pro/users_overview.html:45
+msgid "AGENT"
+msgstr ""
+
+#: templates/pro/users_overview.html:46
+msgid "EXECUTEUR DE TRAVAUX"
+msgstr ""
+
+#: templates/pro/users_overview.html:62
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: templates/pro/reports/list.html:3 templates/pro/reports/list.html.py:43
+#: templates/pro/reports/list.html:3 templates/pro/reports/list.html.py:42
 #, python-format
 msgid "%(status)s Reports"
 msgstr ""
 
-#: templates/pro/reports/list.html:47
+#: templates/pro/reports/list.html:46
 msgid "Nearby reports"
 msgstr "Nabijgelegen rapporten"
 
-#: templates/pro/reports/list.html:56
+#: templates/pro/reports/list.html:51
+#, fuzzy
+msgid "create_report"
+msgstr "^gebruikeraanmaken"
+
+#: templates/pro/reports/list.html:58
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
-#: templates/pro/reports/list.html:62 templates/pro/reports/new.html:24
+#: templates/pro/reports/list.html:64 templates/pro/reports/new.html:16
 msgid "Fill the report"
 msgstr "Vul het rapport in"
 
-#: templates/pro/reports/list.html:67 templates/pro/reports/new.html:29
+#: templates/pro/reports/list.html:69 templates/pro/reports/new.html:21
 msgid "* This fields are required"
 msgstr "* Deze velden zijn verplicht"
 
-#: templates/pro/reports/list.html:78 templates/pro/reports/new.html:55
+#: templates/pro/reports/list.html:80 templates/pro/reports/new.html:47
 msgid "Submit"
 msgstr "Doorsturen"
 
-#: templates/pro/reports/list.html:90
+#: templates/pro/reports/list.html:92
 msgid "Zoom out to see more reports nearby."
 msgstr "Zoom uit om meerdere nabijgelegen rapporten te zien"
 
-#: templates/pro/reports/list.html:92
+#: templates/pro/reports/list.html:94
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: templates/pro/reports/list.html:94
+#: templates/pro/reports/list.html:96
 msgid "Please be polite, concise and to the point."
 msgstr "Wees beleefd, bondig en ter zake"
 
-#: templates/pro/reports/list.html:95
+#: templates/pro/reports/list.html:97
 msgid ""
 "Please do not be abusive - abusing the service devalues the service for all "
 "users."
 msgstr ""
 
-#: templates/pro/reports/list.html:96
+#: templates/pro/reports/list.html:98
 msgid ""
 "Writing your message entirely in block capitals makes it hard to read, as "
 "does a lack of punctuation."
 msgstr ""
 
-#: templates/pro/reports/list.html:97
+#: templates/pro/reports/list.html:99
 msgid ""
 "Remember that FixMyStreet is primarily for reporting physical problems that "
 "can be fixed. If your problem is not appropriate for submission via this "
@@ -331,59 +354,56 @@ msgstr ""
 msgid "New Report"
 msgstr "Nieuw rapport"
 
-#: templates/pro/reports/new.html:11
-msgid "This_commune_does_not_participate"
-msgstr ""
+#: templates/pro/reports/show.html:103
+#, fuzzy
+msgid "Report Ticket"
+msgstr "Ingediende Rapporten"
 
-#: templates/pro/reports/show.html:5
-msgid "in"
-msgstr "in"
-
-#: templates/pro/reports/show.html:123
+#: templates/pro/reports/show.html:130
 msgid "Validate all"
 msgstr "Alles bevestigen"
 
-#: templates/pro/reports/show.html:137
+#: templates/pro/reports/show.html:144
 msgid "Publish"
 msgstr "Publiceer"
 
-#: templates/pro/reports/show.html:140
+#: templates/pro/reports/show.html:147
 msgid "Reject"
 msgstr "Afkeuren"
 
-#: templates/pro/reports/show.html:143
+#: templates/pro/reports/show.html:150
 msgid "Publish All"
 msgstr "Alles publiceren"
 
-#: templates/pro/reports/show.html:147
+#: templates/pro/reports/show.html:154
 msgid "report pdf"
 msgstr "PDF rapport"
 
-#: templates/pro/reports/show.html:150
+#: templates/pro/reports/show.html:157
 msgid "report pdf public"
 msgstr "Publiek PDF rapport"
 
-#: templates/pro/reports/show.html:164
+#: templates/pro/reports/show.html:171
 msgid "This problem has been fixed."
 msgstr "Dit probleem is opgelost"
 
-#: templates/pro/reports/show.html:168
+#: templates/pro/reports/show.html:175
 msgid "Subscribers:"
 msgstr "Abonnees"
 
-#: templates/pro/reports/show.html:171
+#: templates/pro/reports/show.html:178
 msgid "Subscribe"
 msgstr "Abonneer"
 
-#: templates/pro/reports/show.html:173
+#: templates/pro/reports/show.html:180
 msgid "You've subscribed for updates"
 msgstr "U bent geabonneerd voor updates"
 
-#: templates/pro/reports/show.html:174
+#: templates/pro/reports/show.html:181
 msgid "Unsubscribe"
 msgstr "Afmelden"
 
-#: templates/pro/reports/show.html:186 templates/pro/reports/show.html:190
+#: templates/pro/reports/show.html:193 templates/pro/reports/show.html:197
 #, python-format
 msgid ""
 "\n"
@@ -392,72 +412,75 @@ msgid ""
 "                \t\t"
 msgstr ""
 
-#: templates/pro/reports/show.html:202
+#: templates/pro/reports/show.html:209
 msgid "Location:"
 msgstr "Adres:"
 
-#: templates/pro/reports/show.html:207
+#: templates/pro/reports/show.html:214
 msgid "Show on map"
 msgstr "Bekijk op de kaart"
 
-#: templates/pro/reports/show.html:210
+#: templates/pro/reports/show.html:217
 msgid "Category:"
 msgstr "Categorie:"
 
-#: templates/pro/reports/show.html:214
+#: templates/pro/reports/show.html:221
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/pro/reports/show.html:223 templates/pro/reports/show.html:265
+#: templates/pro/reports/show.html:230 templates/pro/reports/show.html:283
 msgid "Responsible manager:"
 msgstr "Verantwoordelijke beheerder:"
 
-#: templates/pro/reports/show.html:243 templates/pro/reports/show.html:269
+#: templates/pro/reports/show.html:250 templates/pro/reports/show.html:290
 msgid "Contractor/Impetrant:"
 msgstr "Aannemer/Impetrant"
 
-#: templates/pro/reports/show.html:246
+#: templates/pro/reports/show.html:253
 msgid "Select a contractor/impetrant"
 msgstr "Selecteer een aannemer/impetrant"
 
-#: templates/pro/reports/show.html:291
+#: templates/pro/reports/show.html:272
+msgid "Private?"
+msgstr ""
+
+#: templates/pro/reports/show.html:312
 msgid "Add a comment to this report"
 msgstr "Voeg commentaar toe aan dit rapport"
 
-#: templates/pro/reports/show.html:302 templates/pro/reports/show.html:324
+#: templates/pro/reports/show.html:323 templates/pro/reports/show.html:345
 msgid "Add"
 msgstr "Toevoegen"
 
-#: templates/pro/reports/show.html:303 templates/pro/reports/show.html:325
-#: templates/pro/reports/show.html:488
+#: templates/pro/reports/show.html:324 templates/pro/reports/show.html:346
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: templates/pro/reports/show.html:314
+#: templates/pro/reports/show.html:335
 msgid "Add a file to this report"
 msgstr "Voeg een bestand toe aan dit rapport"
 
-#: templates/pro/reports/show.html:343
+#: templates/pro/reports/show.html:364
 msgid "Extra files"
 msgstr "Extra bestanden"
 
-#: templates/pro/reports/show.html:351 templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:372 templates/pro/reports/show.html:449
 msgid "Public?"
 msgstr "Publiek?"
 
-#: templates/pro/reports/show.html:355 templates/pro/reports/show.html:432
+#: templates/pro/reports/show.html:376 templates/pro/reports/show.html:453
 msgid "Confidentiel?"
 msgstr "Confidentieel?"
 
-#: templates/pro/reports/show.html:420
+#: templates/pro/reports/show.html:441
 msgid "Extra comments"
 msgstr "Extra commentaren"
 
-#: templates/pro/reports/show.html:481
+#: templates/pro/reports/show.html:502
 msgid "Offensive? Unsuitable? Tell us"
 msgstr "Beledigend? Ongepast? Contacteer ons"
 
-#: templates/pro/reports/show.html:487
+#: templates/pro/reports/show.html:508
 msgid "Confirm"
 msgstr "Bevestigen"
 
@@ -468,6 +491,9 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:22
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "in"
+#~ msgstr "in"
 
 #~ msgid "users/overview/delete"
 #~ msgstr "gebruikers/overzicht/verwijderen"
@@ -480,9 +506,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "users/overview"
 #~ msgstr "gebruikers/overzicht"
-
-#~ msgid "^createuser"
-#~ msgstr "^gebruikeraanmaken"
 
 #~ msgid "Agent"
 #~ msgstr "Agent"
@@ -643,9 +666,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "We send it to the city on your behalf"
 #~ msgstr "Wij versturen het naar de stad in uw naam"
-
-#~ msgid "Reports Filed"
-#~ msgstr "Ingediende Rapporten"
 
 #~ msgid "In the Last Year"
 #~ msgstr "In het voorbije jaar"

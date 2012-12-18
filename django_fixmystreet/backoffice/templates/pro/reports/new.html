@@ -3,7 +3,21 @@
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block specific_scripts %}
-
+<script>
+$(document).ready(function() {
+        var t = "{{pnt}}";
+        var point = t.split("(")[1].split(")")[0];
+        var x = point.split(" ")[0];
+        var y = point.split(" ")[1];
+        $('#id_x').val(x);
+        $('#id_y').val(y);
+        if(window.location.hash != '#form')
+        {
+            window.location.assign('#form');
+        }
+        retrieveAddress();
+    });
+</script>
 {% endblock %}
 
 {% block content %}

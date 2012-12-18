@@ -293,12 +293,6 @@ class ReportFileForm(forms.ModelForm):
     file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
     def clean_file(self):
         file = self.cleaned_data['file']
-        #file_type = file.file_type.split('/')[0]
-        #if file_type in settings.CONTENT_TYPES:
-        print 'File size ='
-        print file._size
-        print 'max size = '
-        print settings.MAX_UPLOAD_SIZE
         if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
             raise forms.ValidationError("File is too large")
         #else:
@@ -307,32 +301,33 @@ class ReportFileForm(forms.ModelForm):
 	def __init__(self,data=None, files=None, initial=None):
 		super(ReportFileForm,self).__init__(data, files, initial=initial)
     def save(self,user,report,commit=True):
-		fileUpdate= super(ReportFileForm,self).save(commit=False)
-		fileUpdate.report = report
+        fileUpdate= super(ReportFileForm,self).save(commit=False)
+        fileUpdate.report = report
 
-		file_name_upper = str(fileUpdate.file.name).upper()
-		loaded_file = self.files.get('file')
-		
-		if loaded_file.content_type == "application/pdf":
-			fileUpdate.file_type = ReportFile.PDF
-		elif loaded_file.content_type == 'application/msword' or loaded_file.content_type == 'application/vnd.oasis.opendocument.text' or loaded_file.content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-			fileUpdate.file_type = ReportFile.WORD
-		elif loaded_file.content_type == 'image/png' or loaded_file.content_type == 'image/jpeg':
-			fileUpdate.file_type = ReportFile.IMAGE
-		elif loaded_file.content_type == 'application/vnd.ms-excel' or loaded_file.content_type == 'application/vnd.oasis.opendocument.spreadsheet':
-			fileUpdate.file_type = ReportFile.EXCEL
+        file_name_upper = str(fileUpdate.file.name).upper()
+        loaded_file = self.files.get('file')
 
-		if fileUpdate.file_type == ReportFile.IMAGE:
-			if report.files.count() == 0:
-				report.photo = fileUpdate.file
-				report.save()
+        if loaded_file.content_type == "application/pdf":
+            fileUpdate.file_type = ReportFile.PDF
+        elif loaded_file.content_type == 'application/msword' or loaded_file.content_type == 'application/vnd.oasis.opendocument.text' or loaded_file.content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            fileUpdate.file_type = ReportFile.WORD
+        elif loaded_file.content_type == 'image/png' or loaded_file.content_type == 'image/jpeg':
+            fileUpdate.file_type = ReportFile.IMAGE
+        elif loaded_file.content_type == 'application/vnd.ms-excel' or loaded_file.content_type == 'application/vnd.oasis.opendocument.spreadsheet':
+            fileUpdate.file_type = ReportFile.EXCEL
+        fileUpdate.file_creation_date = self.data['file_creation_date']
+
+        if fileUpdate.file_type == ReportFile.IMAGE:
+            if report.files.count() == 0:
+                report.photo = fileUpdate.file
+                report.save()
 
                 #Add the creator
                 fileUpdate.creator = user
-	
-		if commit:
-			fileUpdate.save()
-		return fileUpdate
+
+        if commit:
+            fileUpdate.save()
+        return fileUpdate
 
 class ReportCommentForm(forms.ModelForm):
 	class Meta:

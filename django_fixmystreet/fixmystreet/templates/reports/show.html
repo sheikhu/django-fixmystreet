@@ -6,8 +6,8 @@
 {{ block.super }}
 
 
-<meta property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
-<meta property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
+<meta name="title" property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
+<meta name="description" property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
 {% map_scripts %}
 
@@ -25,7 +25,13 @@ $(function(){
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
 });
-
+function setFileCreationDate(){
+    var file = document.getElementById('id_file').files[0];
+    var file_creation_date = new Date(""+file.lastModifiedDate);
+    var dateString = file_creation_date.getFullYear() + "-"+ (file_creation_date.getMonth()+1) + "-" + file_creation_date.getDate()+ " " + file_creation_date.getHours()+":"+file_creation_date.getMinutes();
+    
+    $("[name='file_creation_date']").val(dateString);
+}
 </script>
 {% endblock %}
 {% block css %}
@@ -246,8 +252,9 @@ $(function(){
                         	<td>
                             		<p style="float:left;">
                             		<input type="hidden" name="form-type" value="file-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleFileForm()',200);"/>
+                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
                                 	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
+                                    <input type="hidden" name="file_creation_date"/>
                             	</p>
                         	</td>
                     		</tr>
