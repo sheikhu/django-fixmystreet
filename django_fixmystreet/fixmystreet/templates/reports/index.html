@@ -49,7 +49,7 @@
 	<tr class="{% cycle 'row-odd' 'row-even' %}">
 	<td class="feeds"><a href='/feeds{{ commune.get_absolute_url }}'><img src="{{ STATIC_URL }}images/rss-small.png" /></a></td>
 	<!--<td>{{report_counts.number}}</td>-->
-	<td><a href='{% url report_commune_index slug=commune.name commune_id=commune.id %}'>{{ commune.name }}</a></td>
+	<td><a href='{{ commune.get_absolute_url }}'>{{ commune.name }}</a></td>
 
 	{% if report_counts.next %}{% endif %}
 	</tr>

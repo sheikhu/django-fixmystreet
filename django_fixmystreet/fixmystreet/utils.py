@@ -7,16 +7,13 @@ import shutil
 from threading import local
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate
-from django.core.files import File
-from django.core.files.base import ContentFile
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
-from django.contrib.sites.models import Site
 from django.conf import settings
+from django.template.defaultfilters import slugify
+from django.utils.translation import activate, deactivate
 
-from django.core.mail import EmailMultiAlternatives
-
+import transmeta
 from stdimage import StdImageField
 
 def ssl_required(view_func):
@@ -49,7 +46,6 @@ class JsonHttpResponse(HttpResponse):
 
 
 def get_exifs(img):
-    from PIL import Image
     from PIL.ExifTags import TAGS
 
     ret = {}
@@ -126,6 +122,25 @@ def render_to_pdf(request, *args, **kwargs):
     response['Content-Disposition'] = 'attachment; filename=%s_%s.pdf' %(u"export", datetime.date.today().isoformat())
     pdf_tmp_file.close()
     return response
+
+
+def autoslug_transmeta(populate_from, populate_to):
+    """
+    Return a connectable signal function that copy a slugify version of
+    "instance.populate_from" to "instance.populate_to".
+
+    This function can be connected to a pre_save singal. Don't forget to
+    keep a strong reference to this return value or pass weak=False to connect function
+    """
+    def autoslug_transmeta_func(sender, instance, *args, **kwargs):
+        for lang, _ in getattr(settings, 'LANGUAGES', ()):
+            activate(lang)
+            value = slugify(getattr(instance, populate_from))
+            setattr(instance, transmeta.get_real_fieldname(populate_to, lang), value)
+            deactivate()
+
+    return autoslug_transmeta_func
+
 
 
 

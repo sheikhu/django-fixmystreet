@@ -16,15 +16,15 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.core import serializers
-from django.core.files.base import ContentFile
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta
 from django_extensions.db.models import TimeStampedModel
+
 
 
 
@@ -144,6 +144,7 @@ User._meta.get_field_by_name('email')[0].null = True
 class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
@@ -165,8 +166,13 @@ class OrganisationEntity(UserTrackedModel):
     def get_organisation_having_a_manager(self):
         return OrganisationEntity.objects.filter()
 
+    def get_absolute_url(self):
+        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
+
     class Meta:
-        translate = ('name', )
+        translate = ('name', 'slug')
+
+pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
 
 class Report(UserTrackedModel):
@@ -271,12 +277,12 @@ class Report(UserTrackedModel):
     
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
+        slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
     
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
-        slug = str(self.secondary_category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + str(self.secondary_category.secondary_category_class.name).replace(' ', '_').replace('(','').replace(')','').replace('/','_') + '-' + str(self.category.name).replace(' ', '_').replace('(','').replace(')','') + '-' + self.responsible_entity.name + ''
+        slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
@@ -322,13 +328,13 @@ class Report(UserTrackedModel):
             "postalcode": self.postalcode,
             "description": self.description,
             "category": self.category.id,
-            "secondary_category": self.secondary_category.id,                       
-			"fixed_at": self.fixed_at,
-			"hash_code": self.hash_code,
-			"citizen": self.citizen.email,
-			"responsible_entity": self.responsible_entity.id,
-			"contractor": self.contractor,
-			"responsible_manager": self.responsible_manager.username,			
+            "secondary_category": self.secondary_category.id,
+            "fixed_at": self.fixed_at,
+            "hash_code": self.hash_code,
+            "citizen": self.citizen.email,
+            "responsible_entity": self.responsible_entity.id,
+            "contractor": self.contractor,
+            "responsible_manager": self.responsible_manager.username,
             "close_date":  str(self.close_date),
             "private": self.private,
             "valid": self.valid
@@ -407,12 +413,10 @@ def report_assign_responsible(sender, instance, **kwargs):
         #Search the right responsible for the current organization.            
         userCandidates = FMSUser.objects.filter(organisation=instance.responsible_entity).filter(manager=True)
         # TODO: use filters instead of iteration...
-        managerFound = False
         for currentUser in userCandidates:
             userCategories = currentUser.categories.all()
             for currentCategory in userCategories:
                 if (currentCategory == instance.secondary_category):
-                   managerFound = True
                    instance.responsible_manager = currentUser
 
 @receiver(post_init, sender=Report)
@@ -581,7 +585,9 @@ class ReportMainCategoryClass(models.Model):
     Manage the category container list (see the report form). Allow to group categories.
     """
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
+
     hint = models.ForeignKey('ReportCategoryHint', null=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
@@ -603,7 +609,9 @@ class ReportMainCategoryClass(models.Model):
     class Meta:
         verbose_name = "category group"
         verbose_name_plural = "category groups"
-        translate = ('name', )
+        translate = ('name', 'slug')
+
+pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportMainCategoryClass)
 
 
 class ReportSecondaryCategoryClass(models.Model):
@@ -612,7 +620,9 @@ class ReportSecondaryCategoryClass(models.Model):
     Manage the category container list (see the report form). Allow to group categories.
     """
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
+
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):
@@ -633,7 +643,10 @@ class ReportSecondaryCategoryClass(models.Model):
     class Meta:
         verbose_name = "category group"
         verbose_name_plural = "category groups"
-        translate = ('name', )
+        translate = ('name', 'slug')
+
+pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportSecondaryCategoryClass)
+
 
 
 class ReportCategory(models.Model):
@@ -644,6 +657,8 @@ class ReportCategory(models.Model):
     """
 
     name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
+
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
@@ -717,7 +732,10 @@ class ReportCategory(models.Model):
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
-        translate = ('name', )
+        translate = ('name', 'slug')
+
+pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportCategory)
+
 
 
 class ReportCategoryHint(models.Model):
