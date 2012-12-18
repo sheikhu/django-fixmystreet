@@ -154,9 +154,10 @@ function setFileCreationDate(){
                         <td class="annexesFirstTD">
                     <div class="report_update">
                         {% if file.file %}
+                                {{file.title}}:
                                 <center>
                                         <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-                                        {{file.title}}
+                                        
                                         {% if file.is_image %}
                                                 <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
                                         {% endif %}
@@ -169,7 +170,11 @@ function setFileCreationDate(){
                                         {% if file.is_excel %}
                                                 <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
                                         {% endif %}
+
                                 </center>
+                                {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date %}
+                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                                {% endblocktrans %}
                         {% endif %}
                     </div>
                 </td>
@@ -197,6 +202,9 @@ function setFileCreationDate(){
                     	<td class="annexesFirstTD">
                 		<div class="report_update">
                     			<p>{{comment.text}}</p>
+                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created|date %}
+                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                                {% endblocktrans %}
                 		</div>
             		</td>
 			</tr>
@@ -372,8 +380,8 @@ function setFileCreationDate(){
                 	<tr>
                     		<td class="annexesFirstTD">
                 			<div class="report_update">
-                    				<h4>{{comment.title}}</h4>
                     				<p>{{comment.text}}</p>
+                                    <p><strong>Posted by </strong>{{comment.created_by.fmsuser.get_display_name}}</p>
                 			</div>
             			</td>
             			<!-- If the status allow such interactions -->      
@@ -412,13 +420,6 @@ function setFileCreationDate(){
     </div>
     <div id="more-actions">
         <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-    </div>
-
-
-    <div id="dialog" title="Please enter more information about rejecting the report">
-        <textarea id="more_information_text" style="display:block;width:100%"></textarea>
-        <a href="#" onclick="refuseConfirmButton();" class="saveFormButton" style="float:right;">{% trans 'Confirm'%}</a>
-        <a href="#" onclick="refuseCancelButton();" class="saveFormButton" style="float:left;">{% trans 'Cancel'%}</a>
     </div>
 </div>	
 {% endblock %}

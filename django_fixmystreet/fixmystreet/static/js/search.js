@@ -40,7 +40,8 @@ $(function(){
 				{
 					if(response.result.length == 1)
 					{
-						window.location.assign(resToHref(response.result[0]));
+						var pos = response.result[0].point;
+						window.location.assign(NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y);
 					}
 					else
 					{

@@ -10,7 +10,9 @@ It is a fork of http://fixmystreet.ca (https://github.com/visiblegovernment/djan
 
 this project in place use Urbis for map, search and locate engine (http://geoserver.gis.irisnet.be/).
 
-![data model](https://raw.github.com/CIRB/django-fixmystreet/master/data-model.png)
+[the technical documentation](http://fixmystreet.irisnetlab.be/admin/doc/)
+
+[![data model](https://raw.github.com/CIRB/django-fixmystreet/master/data-model.png)](http://fixmystreet.irisnetlab.be/admin/doc/)
 
 
 Installation
@@ -20,7 +22,7 @@ Installation
 $ git clone git@github.com:CIRB/django-fixmystreet.git
 $ make install
 $ bin/django runserver
-$ bin/django-debug runserver # debug toolbar mode
+$ bin/django-debug runserver # debug toolbar mode 
 ```
 
 enchure libxml2-dev, psycopg2 and GeoDjango is installed
@@ -50,9 +52,16 @@ to install GeoDjango for PostgreSql:
 after install, create the database:
 
 ```bash
-$ make createdb
-$ bin/django loaddata sample # if you want some sample data to work with
-$ cp local_settings_staging.py local_settings.py # and edit db connection settings
+
+$ make createdb 
+$ bin/django loaddata sample # if you want some sample data to work with 
+$ cp local_settings_staging.py local_settings.py # and edit db connection settings 
+```
+
+recreate the database from clean state:
+
+```bash
+$ make scratchdb # also import default and samples data. 
 ```
 
 In deploy environment, settings are given by system environment variable.
@@ -71,7 +80,7 @@ DATABASE_NAME
 DATABASE_USER
 DATABASE_PASSWORD
 DATABASE_PORT
-DATABASE_HOST
+DATABASE_HOST 
 ```
 
 

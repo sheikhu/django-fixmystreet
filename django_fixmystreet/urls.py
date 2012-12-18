@@ -10,10 +10,11 @@ admin.autodiscover()
 urlpatterns = i18n_patterns('',
     url(r'^', include('django_fixmystreet.fixmystreet.urls')),
     url(r'^pro/', include('django_fixmystreet.backoffice.urls')),
-    (r'^admin/', admin.site.urls),
 )
 urlpatterns += patterns('',
     (r'^i18n/', include('django.conf.urls.i18n')),
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^admin/', admin.site.urls),
 )
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'

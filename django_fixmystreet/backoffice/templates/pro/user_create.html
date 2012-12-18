@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load tags %}
 {% block script %}
-
+{{ block.super }}
 {% endblock %}
 
 {% block title %} {% trans "Create user" %} {% endblock %}
@@ -29,7 +29,18 @@
 	}
    }
 </script-->
-
+<script type="text/javascript">
+    $(function(){
+      {% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
+      $.each($("#id_user_type").find("option"),function(idx,value){
+        if (value.value != "1"){
+          $(value).remove();
+        }
+      });;
+      {% endif %}
+    }
+    );
+</script>
 <div id="fullwidth">
   <h1>{% trans "Create user" %}</h1>
   <div>

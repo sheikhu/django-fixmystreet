@@ -124,7 +124,7 @@ class UserTypeChoiceField(forms.fields.ChoiceField):
     def __init__(self,  *args, **kwargs):
         # assemble the opt groups.
         choices = []
-        choices.append(('', ugettext_lazy("Select a Category")))
+        # choices.append(('', ugettext_lazy("Select a Category")))
         #Take only Agent, Gestionnaire and contractor
         user_types = ListItem.objects.filter(id__in=[19,20,22])
 

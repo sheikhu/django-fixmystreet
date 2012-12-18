@@ -82,6 +82,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.gis',
     'django.contrib.staticfiles',
+    'django.contrib.admindocs',
 
     'transmeta',
     'south',

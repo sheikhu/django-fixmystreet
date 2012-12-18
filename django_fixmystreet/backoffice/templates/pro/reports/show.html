@@ -390,9 +390,10 @@ $(document).ready(function() {
                         	<td class="annexesFirstTD">
                     		<div class="report_update">
                         		{% if file.file %}
+                        		{{file.title}}:
                         			<center>
 						<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-						{{file.title}}
+						
 						{% if file.is_image %}
 							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
 						{% endif %}
@@ -406,6 +407,9 @@ $(document).ready(function() {
 							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
 						{% endif %}
 						</center>
+						{% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date %}
+                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                                {% endblocktrans %}
                         		{% endif %}
                     		</div>
                 		</td>
@@ -466,8 +470,10 @@ $(document).ready(function() {
                 	<tr>
                     		<td class="annexesFirstTD">
                 			<div class="report_update">
-                    				<h4>{{comment.title}}</h4>
                     				<p>{{comment.text}}</p>
+                    				{% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created|date %}
+                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                                {% endblocktrans %}
                 			</div>
             			</td>
             			<!-- If the status allow such interactions -->      

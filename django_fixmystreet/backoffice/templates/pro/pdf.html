@@ -147,18 +147,18 @@
 <!-- ############################################################## -->
 <hr/>
 <h1>{% trans 'label_pdf_historique_title_main' %}</h1>
-
+<!-- 
 {% if report.has_at_least_one_non_confidential_comment %}
 
 <table>
 	<th><strong>{% trans 'label_pdf_historique_title_date' %}</strong></th>
 	<th><strong>{% trans 'label_pdf_historique_title_from' %}</strong></th>
 	<th><strong>{% trans 'label_pdf_historique_title_title' %}</strong></th>
-	<th><strong>{% trans 'label_pdf_historique_title_text' %}</strong></th>
+	<th><strong>{% trans 'label_pdf_historique_title_text' %}</strong></th> -->
 
-	{% for comment in comment_list %}
+	<!-- {% for comment in comment_list %}
 	{% if not comment.is_citizen_visible and pro_version == "0" %}
-		<!-- SKIP ROW if the current comment annex is confidential -->
+		<!-- SKIP ROW if the current comment annex is confidential ->
 	{% elif not comment.is_confidential_visible and pro_version == "1" %}
 	
         {% else %}
@@ -169,14 +169,14 @@
 		<td>{{comment.text}}</td>
 	</tr>
 	{% endif %}
-	{% endfor %}
-</table>
+	{% endfor %} -->
+<!-- </table> -->
 
-{% else %}
+<!-- {% else %} -->
 
 <h3>{% trans 'label_pdf_historique_title_no_content' %}</h3>
 
-{% endif %}
+<!-- {% endif %} -->
 
 <hr/>
 
@@ -206,7 +206,7 @@
 			<strong>{% trans 'label_pdf_comment_title_created_at' %}</strong>
 		</td>
 		<td>
-			<strong>{% trans 'label_pdf_comment_title_city' %}</strong>
+			<strong>{% trans 'label_pdf_comment_title_created_by' %}</strong>
 		</td>
 	</tr>
 	<tr>
@@ -217,7 +217,11 @@
 			{{comment.created}}
 		</td>
 		<td>
-			{{report.responsible_entity.name}}
+			{% if comment.created_by %}
+			{{comment.created_by.fmsuser.get_display_name}} (<a href="mailto:{{comment.created_by.fmsuser.email}}">{{comment.created_by.fmsuser.email}}</a>, {{comment.created_by.fmsuser.telephone}})
+			{% else %}
+			{% trans 'label_pdf_comment_value_created_by_empty' %}
+			{% endif %}
 		</td>
 	</tr>
 	{% endif %}
