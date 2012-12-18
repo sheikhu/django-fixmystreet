@@ -16,18 +16,17 @@ install_requires = [
     'django-nose',
     'django-extensions',
     'simple_history'
+    'docutils'
     # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
     ]
 
-deploy_require = [
-    'gunicorn'
-    ]
 tests_require = [
     'django-jenkins',
     'coverage',
     'pyflakes'
     ]
+
 debug_require = [
     'django-debug-toolbar',
     ]
