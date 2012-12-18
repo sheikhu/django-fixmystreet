@@ -38,7 +38,7 @@ $(document).ready(function() {
 			$("#addCommmentDiv").show();
 			retrieveAddress();
 		}
-		else if(window.location.href.indexOf('new') >= 0 || window.location.hash == '#reports')
+		else
 		{
 			$('#page_content_container').removeClass('form-show').addClass('form-hide');
 			$form.hide();
@@ -50,12 +50,6 @@ $(document).ready(function() {
 			$map.one('markerdrag click movestart zoomend',function(evt,point){
 				$('#instructable').fadeOut();
 			});
-		}
-		else
-		{
-			$form.show();
-			$('#nearby-reports,#instructable').hide();
-			$('#back').css({visibility: 'visible'});
 		}
 	});
 	$(window).hashchange();
