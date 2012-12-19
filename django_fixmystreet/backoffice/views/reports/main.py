@@ -1,9 +1,8 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, ReportAttachment, OrganisationEntity, FMSUser, ReportNotification
+from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, RefuseForm
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
 
@@ -17,9 +16,6 @@ def new(request):
             report = report_form.save(request.user)
             SessionManager.saveComments(request.session, report)
             SessionManager.saveFiles(request.session, report)
-            comments = ReportComment.objects.filter(report_id=report.id)
-            files = ReportFile.objects.filter(report_id=report.id)
-
             if report:
                 if request.backoffice:
                     return HttpResponseRedirect(report.get_absolute_url_pro())

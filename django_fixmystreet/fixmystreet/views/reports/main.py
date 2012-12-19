@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ReportComment, ReportFile, ZipCode
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ZipCode
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager

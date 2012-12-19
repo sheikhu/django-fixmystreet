@@ -1,19 +1,11 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.sessions.models import Session
-from django.utils.translation import ugettext_lazy
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django_fixmystreet.fixmystreet.utils import FixStdImageField
 from django_fixmystreet.fixmystreet.forms import AgentCreationForm
 from django_fixmystreet.backoffice.forms import UserEditForm
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory, ReportNotification
-from django_fixmystreet.fixmystreet.stats import TypesWithUsersOfOrganisation, UsersAssignedToCategories
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportNotification
 
-from django.utils import simplejson
 
 def show(request):
     user = request.fmsuser

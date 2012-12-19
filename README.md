@@ -83,6 +83,12 @@ DATABASE_PORT
 DATABASE_HOST 
 ```
 
+To initialize variables on the server
+
+```bash
+$ . ~/env
+```
+
 
 
 

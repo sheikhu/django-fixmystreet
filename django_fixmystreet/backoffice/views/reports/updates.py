@@ -1,14 +1,12 @@
 from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
-from django.template import Context, RequestContext
-from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.template import RequestContext
 from django.db import transaction
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, render_to_pdf
-from django.contrib.auth.models import User
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportCategory, FMSUser, OrganisationEntity, ReportComment, ReportFile
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm, RefuseForm
+
+from django_fixmystreet.fixmystreet.utils import render_to_pdf
+from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm, RefuseForm
 
 @transaction.commit_on_success
 def accept( request, report_id ):
@@ -62,22 +60,22 @@ def close( request, report_id ):
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
-    	if request.POST['form-type'] == u"comment-form":
-    		comment_form = ReportCommentForm(request.POST)
-    		if comment_form.is_valid():
-    			comment_form.save(request.user, report)
-    	
-    	if request.POST['form-type'] == u"file-form":
+        if request.POST['form-type'] == u"comment-form":
+            comment_form = ReportCommentForm(request.POST)
+            if comment_form.is_valid():
+                comment_form.save(request.user, report)
+        
+        if request.POST['form-type'] == u"file-form":
             if request.POST['title'] == "":
                 request.POST['title']= request.FILES.get('file').name
-    		file_form = ReportFileForm(request.POST,request.FILES)
-    		if file_form.is_valid:
-    			file_form.save(request.user, report)
-    	
-    	if "pro" in request.path:
-        	return HttpResponseRedirect(report.get_absolute_url_pro())
+            file_form = ReportFileForm(request.POST,request.FILES)
+            if file_form.is_valid:
+                file_form.save(request.user, report)
+        
+        if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
         else:
-        	return HttpResponseRedirect(report.get_absolute_url())
+            return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()
 
 
@@ -139,8 +137,8 @@ def reportPdf(request, report_id, pro_version):
     report = get_object_or_404(Report, id=report_id)
     
     #Verify if the connected user is well pro ! (Server side protection)
-    if request.user.fmsuser.is_citizen():
-       pro_Version = 0
+    # if request.user.fmsuser.is_citizen():
+       # pro_Version = 0
     
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments(), 'pro_version': pro_version},

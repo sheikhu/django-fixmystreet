@@ -1,9 +1,8 @@
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import Context, RequestContext
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.http import HttpResponseRedirect
 
 from django_fixmystreet.fixmystreet.forms import ContactForm
-from django.conf import settings
 
 def thanks(request): 
      return render_to_response("contact/thanks.html", {},

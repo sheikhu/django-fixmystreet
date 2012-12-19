@@ -1,11 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
-from django.template import Context, RequestContext
-from django.contrib import messages
-from django.utils.translation import ugettext as _
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, render_to_pdf
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportComment, ReportFile
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportCommentForm, ReportFileForm
+from django.template import RequestContext
+from django_fixmystreet.fixmystreet.utils import render_to_pdf
+from django_fixmystreet.fixmystreet.models import Report
+from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
@@ -43,7 +41,7 @@ def reportPdf(request, report_id, pro_version):
     report = get_object_or_404(Report, id=report_id)
 
     #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
-    pro_Version = 0
+    # pro_Version = 0
 
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.get_files(), 'comment_list' : report.get_comments(), 'pro_version': pro_version},

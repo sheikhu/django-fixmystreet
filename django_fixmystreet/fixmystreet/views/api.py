@@ -1,16 +1,12 @@
-import httplib
-from urllib2 import HTTPError
 
-from django.contrib.auth import authenticate, login
-from django.contrib.gis.measure import D
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.utils import simplejson
 from django.db.models import Q
 from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
 
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser, ZipCode
-from django_fixmystreet.fixmystreet.utils import ssl_required, JsonHttpResponse
+from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode
+from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -33,14 +29,14 @@ def load_categories(request):
         
         try:
             #Search user
-            user_object   = FMSUser.objects.get(username=user_name)
+            FMSUser.objects.filter(username=user_name).exists()
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_USER","username": user_name}),mimetype='application/json')
         all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
  
         #Right ! Logged in :-)
-        return HttpResponse(ReportCategory.listToJSON(all_categories),mimetype='application/json')
+        return HttpResponse(ReportCategory.listToJSON(all_categories), mimetype='application/json')
 
 def login_user(request):
         '''login_user is a method used by the mobiles to connect a user to the application'''
@@ -71,42 +67,6 @@ def login_user(request):
         #Right ! Logged in :-)
         return HttpResponse(user_object.toJSON(),mimetype='application/json')
 
-
-
-
-
-
-
-
-# deprecated ! service.gis.irisnet.be support jsonp
-"""
-def search(request): 
-    conn = httplib.HTTPConnection(settings.LOCAL_API)
-    #conn.request("POST", "/WSGeoloc/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8').encode('iso-8859-15'))
-    conn.request("POST", "/urbis/Rest/Localize/getstreet", request.raw_post_data.decode('utf-8'))
-    response = conn.getresponse()
-    data = response.read()
-
-    conn.close()
-    #try:
-        #return HttpResponse(data.decode('iso-8859-15'))
-    #except UnicodeError:
-    return HttpResponse(data,mimetype="text/json")
-
-
-def locate(request): 
-    conn = httplib.HTTPConnection(settings.LOCAL_API)
-
-    #conn.request("POST", "/WSGeoloc/Rest/Localize/getaddressfromcoord", request.raw_post_data)
-    conn.request("POST", "/urbis/Rest/Localize/getaddressfromcoord", request.raw_post_data)
-    response = conn.getresponse()
-    data = response.read()
-    conn.close()
-    #try:
-        #return HttpResponse(data.decode('iso-8859-15'))
-    #except UnicodeError:
-    return HttpResponse(data,mimetype="text/json")
-"""
 
 #Method used to retrieve nearest reports for pro
 def near_reports_pro(request):
@@ -199,10 +159,10 @@ def reports_pro(request):
     })
 
 def create_report_citizen(request):
-    '''This method is used to create citizens reports. Validation included.'''
-    data_email 		              = request.POST.get('user_email')
-    #data_firstname 	              = request.POST.get('user_firstname')
-    data_firstname 	          = ''
+    """Create a citizens reports. Validation included."""
+    data_email                       = request.POST.get('user_email')
+    #data_firstname                   = request.POST.get('user_firstname')
+    data_firstname               = ''
     data_lastname                 = request.POST.get('user_lastname')
     data_category_id              = request.POST.get('report_category_id')
     data_main_category_id         = request.POST.get('report_main_category_id')
@@ -212,7 +172,7 @@ def create_report_citizen(request):
     data_quality                  = request.POST.get('report_quality')
     data_x                        = request.POST.get('report_x')
     data_y                        = request.POST.get('report_y')
-	#data_subscription             = request.POST.get('report_subscription')
+    #data_subscription             = request.POST.get('report_subscription')
     #create a new object
     report = Report()    
 
@@ -226,24 +186,24 @@ def create_report_citizen(request):
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
     if (data_main_category_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')        
     if (data_description == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')        
     if (data_address == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')        
     if (data_zip == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')        
     if (data_quality == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_QUALITY","request":request.POST}),mimetype='application/json')				
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_QUALITY","request":request.POST}),mimetype='application/json')                
     if (data_x == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')				
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')                
     if (data_y == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')				
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')                
     #if (data_subscription == None):
-    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_SUBSCRIPTION","request":request.POST}),mimetype='application/json')				
-		
-	#Verify if the citizen profile exists
-	#Create it if necessary and assign value to citizen attribute.
+    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_SUBSCRIPTION","request":request.POST}),mimetype='application/json')                
+        
+    #Verify if the citizen profile exists
+    #Create it if necessary and assign value to citizen attribute.
     try:
         existingUser = FMSUser.objects.get(email=data_email);
         #Assign citizen
@@ -252,7 +212,7 @@ def create_report_citizen(request):
         #Add information about the citizen connected if it does not exist
         report.citizen = FMSUser.objects.create(username=data_email, email=data_email, first_name=data_firstname, last_name=data_lastname, agent=False, contractor=False, manager=False, leader=False)
 
-    #Assign values to the report.		
+    #Assign values to the report.        
     try:
         # Status
         report.status = Report.CREATED
@@ -270,18 +230,18 @@ def create_report_citizen(request):
         #Subscription is automatic.
         #Save given data
         report.save()
-    except Exception as e:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST}),mimetype='application/json')	
+    except Exception:
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST}),mimetype='application/json')    
 
     #Return the report ID
-    return JsonHttpResponse({	    
-        'report_id': report.id	    
+    return JsonHttpResponse({        
+        'report_id': report.id        
     })
-	
+    
 def create_report_pro(request):
     '''This method is used to create citizens reports. Validation included.'''
-    data_username	          = request.POST.get('user_name')
-    #data_password	          = request.POST.get('user_p')
+    data_username              = request.POST.get('user_name')
+    #data_password              = request.POST.get('user_p')
     data_category_id              = request.POST.get('report_category_id')
     data_main_category_id         = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
@@ -301,18 +261,18 @@ def create_report_pro(request):
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
     if (data_main_category_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')        
     if (data_description == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')        
     if (data_address == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')        
     if (data_zip == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')        
     if (data_x == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')				
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')                
     if (data_y == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')				
-		
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')                
+        
     #Verify if the citizen profile exists
     #Create it if necessary and assign value to citizen attribute.
     try:
@@ -333,38 +293,38 @@ def create_report_pro(request):
     else:
         return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
-    #Assign values to the report.		
+    #Assign values to the report.        
     try:
         # Status
         report.status = Report.CREATED
         # Category
-        report.category           = ReportMainCategoryClass.objects.get(id=data_main_category_id)
+        report.category = ReportMainCategoryClass.objects.get(id=data_main_category_id)
         report.secondary_category = ReportCategory.objects.get(id=data_category_id)
         # Description
         report.description = data_description
         # Address
         report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
-        report.postalcode = data_zip	    
+        report.postalcode = data_zip        
         report.address = data_address        
         #Subscription is automatic.
         #Save given data        
         report.save()
-    except Exception as e:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST}),mimetype='application/json')	
+    except Exception:
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST}),mimetype='application/json')    
 
     #Return the report ID
-    return JsonHttpResponse({	    
-        'report_id': report.id	    
+    return JsonHttpResponse({        
+        'report_id': report.id        
     })
-	
+    
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''    
     #Test the submit content size (max 2MB)
     if (request.META.get('CONTENT_LENGTH') > 2000000):
-	    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_EXCEED_SIZE","request":request.POST}),mimetype='application/json')
-		
-    data_report_id	    = request.POST.get('report_id')
-    data_file_content   = request.FILES.get('report_file')
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_EXCEED_SIZE","request":request.POST}),mimetype='application/json')
+        
+    data_report_id = request.POST.get('report_id')
+    data_file_content = request.FILES.get('report_file')
     
     report_file = ReportFile()    
     #Verify that everything has been posted to create a citizen report.
@@ -377,19 +337,19 @@ def create_report_photo(request):
         #Retrieve the report
         reference_report = Report.objects.get(id=data_report_id)
     except Exception as e:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_NOT_FOUND","request":request.POST}),mimetype='application/json')	
-    try:	
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_NOT_FOUND","request":request.POST}),mimetype='application/json')
+    try:
         report_file.title = "Mobile Upload"
-    	report_file.file_type = ReportFile.IMAGE
-    	report_file.file = data_file_content
-    	report_file.report = reference_report
-		
-		#Save given data        
+        report_file.file_type = ReportFile.IMAGE
+        report_file.file = data_file_content
+        report_file.report = reference_report
+        
+        #Save given data        
         report_file.save()
-    except Exception as e:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_PROBLEM_DATA","request":request.POST}),mimetype='application/json')	
+    except Exception:
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_PROBLEM_DATA","request":request.POST}),mimetype='application/json')
 
     #Return the report ID
-    return JsonHttpResponse({	    
-        'report_photo': report_file.id	    
+    return JsonHttpResponse({
+        'report_photo': report_file.id
     })

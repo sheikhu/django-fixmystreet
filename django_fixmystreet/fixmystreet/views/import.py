@@ -1,15 +1,12 @@
-import httplib
-from urllib2 import HTTPError
+from datetime import datetime
 
-from django.contrib.gis.measure import D
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+
+from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.utils import simplejson
-from django.db.models import Q
-from datetime import datetime, timedelta
-from django.contrib.gis.geos import fromstr
 
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, dictToPoint, FMSUser
-from django_fixmystreet.fixmystreet.utils import ssl_required, JsonHttpResponse
+
+from django_fixmystreet.fixmystreet.models import Report, FMSUser
+from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
 

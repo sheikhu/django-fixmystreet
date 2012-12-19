@@ -1,11 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.template import Context, RequestContext
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
+from django.template import RequestContext
 
 from django_fixmystreet.fixmystreet.models import Report
-from django.conf import settings
+
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)

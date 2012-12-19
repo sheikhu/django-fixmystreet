@@ -1,12 +1,11 @@
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.utils.http import urlquote
 from django.utils.translation import get_language, activate
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, FMSUser
+from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
 
