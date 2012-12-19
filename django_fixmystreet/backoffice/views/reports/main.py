@@ -1,7 +1,8 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, RefuseForm
+from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm, ReportCommentForm, FileUploadForm
+from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
@@ -75,7 +76,7 @@ def subscription(request):
 
 def show(request,slug, report_id):
     report = get_object_or_404(Report, id=report_id)
-    files= ReportFile.objects.filter(report_id=report_id)
+    files = ReportFile.objects.filter(report_id=report_id)
     comments = ReportComment.objects.filter(report_id=report_id)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
@@ -99,6 +100,6 @@ def show(request,slug, report_id):
                 "contractors":contractors,
                 "applicants":applicants,
                 "entities":entities,
-                "refusal_form": RefuseForm()
+                "refuse_form": RefuseForm(instance=report)
             },
             context_instance=RequestContext(request))

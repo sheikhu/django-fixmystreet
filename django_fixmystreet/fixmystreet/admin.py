@@ -1,6 +1,4 @@
 from django.contrib import admin
-from django import forms
-from transmeta import canonical_fieldname
 from simple_history.admin import SimpleHistoryAdmin
 
 from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, FaqEntry, OrganisationEntity, ReportNotification

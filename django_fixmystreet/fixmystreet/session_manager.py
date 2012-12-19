@@ -1,7 +1,7 @@
-from django.contrib.sessions.backends.db import SessionStore
-from django_fixmystreet.fixmystreet.models import ReportComment, ReportFile, Report
-from django_fixmystreet.fixmystreet.utils import save_file_to_server
 import os
+
+from django_fixmystreet.fixmystreet.models import ReportComment, ReportFile
+
 
 class SessionManager:
 	@classmethod
@@ -32,20 +32,14 @@ class SessionManager:
 		if 'files' in session:
 			for f in session['files']:
 				ftype = ReportFile.PDF
-				file_path = ""
 				if str(f['file']).endswith("pdf"):
 					ftype = ReportFile.PDF
-					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"pdf", report.id)
 				if str(f['file']).endswith("doc"):
 					ftype = ReportFile.WORD
-					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"doc", report.id)
 				if str(f['file']).endswith("png") or str(f['file']).endswith("jpg") or str(f['file']).endswith("jpeg"):
 					ftype = ReportFile.IMAGE
-					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"jpg", report.id)
 				if str(f['file']).endswith("xls"):
 					ftype = ReportFile.EXCEL
-					# file_path = save_file_to_server(f['file'],ReportFile.attachment_type[ftype-1][1],"xls", report.id)
-				print f['file_creation_date']
 				c = ReportFile(title=f['title'], file=f['file'], file_creation_date = f['file_creation_date'], file_type=ftype, report=report)
 				c.save()
 			del session['files']

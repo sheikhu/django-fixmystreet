@@ -5,14 +5,12 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
-from django.forms.util import ErrorDict
-from django.contrib.gis.geos import fromstr
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField
-from django_fixmystreet.fixmystreet.models import ListItem, ReportMainCategoryClass, ReportSecondaryCategoryClass, OrganisationEntity, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import ListItem, ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -285,12 +283,16 @@ class AgentCreationForm(UserCreationForm):
              fmsuser.organisation = currentUser.organisation
         fmsuser.save()
         return fmsuser;
-		
+
 class ReportFileForm(forms.ModelForm):
     class Meta:
         model=ReportFile
         fields=('title','file',)
     file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
+
+    def __init__(self,data=None, files=None, initial=None):
+        super(ReportFileForm,self).__init__(data, files, initial=initial)
+
     def clean_file(self):
         file = self.cleaned_data['file']
         if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
@@ -298,13 +300,11 @@ class ReportFileForm(forms.ModelForm):
         #else:
          #   raise forms.ValidationError(_('File type is not supported'))
         return file
-	def __init__(self,data=None, files=None, initial=None):
-		super(ReportFileForm,self).__init__(data, files, initial=initial)
+
     def save(self,user,report,commit=True):
         fileUpdate= super(ReportFileForm,self).save(commit=False)
         fileUpdate.report = report
 
-        file_name_upper = str(fileUpdate.file.name).upper()
         loaded_file = self.files.get('file')
 
         if loaded_file.content_type == "application/pdf":
@@ -345,18 +345,6 @@ class ReportCommentForm(forms.ModelForm):
 			comment.save()
 		return comment
 
-class RefuseForm(forms.ModelForm):
-    class Meta:
-        model=Report
-        fields=('refusal_motivation',)
-
-    def save(self,report):
-
-        report.refusal_motivation = self.fields['refusal_motivation']#.value
-
-        report.status = Report.REFUSED
-        report.save()
-        return report
 
 class FileUploadForm(forms.Form):
     title = forms.CharField(max_length=50,required=False)

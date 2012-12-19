@@ -6,7 +6,8 @@ from django.db import transaction
 
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile
-from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm, RefuseForm
+from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm
+from django_fixmystreet.backoffice.forms import RefuseForm
 
 @transaction.commit_on_success
 def accept( request, report_id ):

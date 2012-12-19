@@ -1,12 +1,9 @@
+
 from django import forms
-from django_fixmystreet.fixmystreet.models import FMSUser
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
-from django.conf import settings
 from django.utils.translation import ugettext_lazy
-from django.contrib.sessions.models import Session
-from django.contrib.auth.decorators import login_required
-import time
+
+from django_fixmystreet.fixmystreet.models import FMSUser, Report
 
 
 class ManagersChoiceField (forms.fields.ChoiceField):
@@ -71,3 +68,17 @@ class UserEditForm(UserChangeForm):
                isActive = False
         fmsuser.update(is_active=isActive)
         return fmsuser;
+
+
+class RefuseForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ('refusal_motivation',)
+
+    def save(self, commit=True):
+        report = super(RefuseForm,self).save(commit=False)
+        report.status = Report.REFUSED
+        if commit:
+            report.save()
+        return report
+

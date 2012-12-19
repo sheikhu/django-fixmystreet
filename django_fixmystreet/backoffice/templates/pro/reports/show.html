@@ -516,7 +516,7 @@ $(document).ready(function() {
 
 
     <form id="dialog" title="Please enter more information about rejecting the report" action="{% url report_refuse_pro report.id %}" method="post">
-        {{ refusal_form.as_p }}
+        {{ refuse_form.as_p }}
         <input type="submit" class="saveFormButton" style="float:right;" value="{% trans 'Confirm'%}"/>
     </form>
 </div>
