@@ -11,16 +11,11 @@ from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileFo
 @transaction.commit_on_success
 def accept( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
-<<<<<<< HEAD
+
     #Update the status and persist to the database
     report.status = Report.MANAGER_ASSIGNED
     report.save()
     #Redirect to the report show page
-=======
-    report.status = Report.MANAGER_ASSIGNED
-    report.save()    
-    
->>>>>>> remove pyflakes
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
