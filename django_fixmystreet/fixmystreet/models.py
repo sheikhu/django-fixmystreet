@@ -826,6 +826,23 @@ class ReportNotification(models.Model):
         super(ReportNotification, self).save(*args, **kwargs)
 
 
+
+class ReportEventLog(models.Model):
+    content_template = models.CharField(max_length=40)
+
+    status_old = models.IntegerField()
+    status_new = models.IntegerField()
+
+    object_old = generic.GenericForeignKey('object_content_type', 'object_old_id')
+    object_new = generic.GenericForeignKey('object_content_type', 'object_new_id')
+
+    object_content_type = models.ForeignKey(ContentType)
+
+    object_old_id = models.PositiveIntegerField()
+    object_new_id = models.PositiveIntegerField()
+
+
+
 # class Zone(models.Model):
     # __metaclass__ = TransMeta
     # 
