@@ -883,7 +883,7 @@ class ReportEventLog(models.Model):
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 
     report = models.ForeignKey(Report, related_name='activities')
-    user = models.ForeignKey(User, related_name='activities')
+    user = models.ForeignKey(User, related_name='activities', null=True)
     organisation = models.ForeignKey(OrganisationEntity, related_name='activities')
     event_at = models.DateTimeField(auto_now_add=True)
 
