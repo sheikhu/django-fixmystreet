@@ -35,11 +35,13 @@ class UserTrackedModel(TimeStampedModel):
     def save(self, *args, **kwargs):
         user = get_current_user()
         if user and user.is_authenticated():
-            if self.id:
-                self.modified_by = user
-            else:
+            self.modified_by = user
+            if not self.id:
                 self.created_by = user
             self._history_user = user # used by simple_history
+        else:
+            self.modified_by = None
+
         super(UserTrackedModel, self).save(*args, **kwargs)
 
     class Meta:
@@ -136,9 +138,18 @@ class FMSUser(User):
         d['organisation'] = getattr(self.get_organisation(), 'id')
         return simplejson.dumps(d)
 
-
 User._meta.get_field_by_name('email')[0]._unique = True
 User._meta.get_field_by_name('email')[0].null = True
+
+@receiver(post_save, sender=FMSUser)
+def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
+    """This method is used to create the security matrix when creating the first manager of the entity"""
+    #If this is the first user created and of type gestionnaire then assign all reportcategories to him
+    if (instance.manager == True):
+       #if we have just created the first one, then apply all type to him
+       if len(FMSUser.objects.filter(organisation_id=instance.organisation.id).filter(manager=True)) == 1:
+          for type in ReportCategory.objects.all():
+             instance.categories.add(type)
 
 
 class OrganisationEntity(UserTrackedModel):
@@ -155,22 +166,14 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
-    def is_commune(self):
-        return self.commune == True 
-    def is_region(self):
-        return self.region == True 
-    def is_subcontractor(self):
-        return self.subcontractor == True 
-    def is_applicant(self):
-        return self.applicant == True 
-    def get_organisation_having_a_manager(self):
-        return OrganisationEntity.objects.filter()
-
     def get_absolute_url(self):
         return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
 
     class Meta:
         translate = ('name', 'slug')
+
+    def __unicode__(self):
+        return self.name
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
@@ -229,36 +232,39 @@ class Report(UserTrackedModel):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
-    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True)
-    point = models.PointField(null=True, srid=31370)
+    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
+    point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     address_number = models.CharField(max_length=255, verbose_name=ugettext_lazy("Address Number"))
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
-    description = models.TextField(null=True)
-    category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"))
-    secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"))
+    description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"), blank=True)
+    secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"), blank=True)
 
     fixed_at = models.DateTimeField(null=True, blank=True)
 
-    hash_code = models.IntegerField(null=True) # used by external app for secure sync, must be random generated
+    hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
     
-    citizen = models.ForeignKey(User,null=True, related_name='citizen_reports')
-    refusal_motivation = models.TextField(null=True)
+    citizen = models.ForeignKey(User, null=True, related_name='citizen_reports', blank=True)
+    refusal_motivation = models.TextField(null=True, blank=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
-    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True)
-    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True)
-    responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True)
+    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
+    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
+    responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
     responsible_manager_validated = models.BooleanField(default=False)
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
-    photo = models.FileField(upload_to="photos")
+    photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.GeoManager()
 
     history = HistoricalRecords()
+
+    def __unicode__(self):
+        return self.display_category()
 
     def display_category(self):
         return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
@@ -291,11 +297,11 @@ class Report(UserTrackedModel):
     def has_at_least_one_non_confidential_file(self):
         return ReportFile.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0    
 
-    def get_comments(self):  	
-        return ReportComment.objects.filter(report__id=self.id)
+    def active_comments(self):  	
+        return self.comments.filter(is_validated=True)
     
-    def get_files(self):  	
-        return ReportFile.objects.filter(report__id=self.id)
+    def active_files(self):  	
+        return self.files.filter(is_validated=True)
     
     def is_created(self):  	
         return self.status == Report.CREATED
@@ -398,6 +404,12 @@ class Report(UserTrackedModel):
         }
 
 
+@receiver(post_init, sender=Report)
+def track_former_value(sender, instance, **kwargs):
+    """Save former data to compare with new data and track changed values"""
+    instance.__former = dict((field.name, getattr(instance, field.name)) for field in Report._meta.fields)
+
+
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_manager:
@@ -419,50 +431,83 @@ def report_assign_responsible(sender, instance, **kwargs):
                 if (currentCategory == instance.secondary_category):
                    instance.responsible_manager = currentUser
 
-@receiver(post_init, sender=Report)
-def track_former_value(sender, instance, **kwargs):
-    """Save former data to compare with new data and track changed values"""
-    instance.__former = dict((field.name, field.value_from_object(instance)) for field in Report._meta.fields)
 
 @receiver(post_save, sender=Report)
-def report_notify_author(sender, instance, **kwargs):
-    """signal on a report to notify author that the status of the report has changed"""
+def report_notify(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the status of the report has changed
+    """
     report = instance
-    if not kwargs['raw'] and report.__former['status'] != report.status:
-        if report.status == Report.REFUSED:
-            notifiation = ReportNotification(
-                content_template='send_report_refused_to_creator',
-                recipient=report.citizen or report.created_by,
-                related=report,
-            )
-            notifiation.save()
-        elif report.status == Report.PROCESSED:
-            for subscription in report.subscriptions.all():
-                notifiation = ReportNotification(
-                    content_template='send_report_closed_to_subscribers',
-                    recipient=subscription.subscriber,
+    if not kwargs['raw']:
+        
+        if report.__former['status'] != report.status:
+
+            if report.status == Report.REFUSED:
+                ReportNotification(
+                    content_template='send_report_refused_to_creator',
+                    recipient=report.citizen or report.created_by,
                     related=report,
-                )
-                notifiation.save()
-        elif report.status == Report.SOLVED:
-            notifiation = ReportNotification(
-                content_template='send_report_fixed_to_gest_resp',
+                ).save()
+
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.REFUSE
+                ).save()
+
+            elif report.status == Report.PROCESSED:
+                for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_closed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                    ).save()
+
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.CLOSE
+                ).save()
+
+            elif report.__former['status'] == Report.CREATED:
+                # created => in progress: published by manager
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.PUBLISH
+                ).save()
+
+            elif report.status == Report.SOLVED:
+                ReportNotification(
+                    content_template='send_report_fixed_to_gest_resp',
+                    recipient=report.responsible_manager,
+                    related=report,
+                ).save()
+
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.SOLVE_REQUEST
+                ).save()
+
+        if report.__former['responsible_manager'] != report.responsible_manager:
+            ReportNotification(
+                content_template='send_report_creation_to_gest_resp',
                 recipient=report.responsible_manager,
                 related=report,
-            )
-            notifiation.save()
+            ).save()
 
-@receiver(post_save, sender=Report)
-def report_notify_manager(sender, instance, **kwargs):
-    """signal on a report to notify manager that a report has been filled"""
-    report = instance
-    if not kwargs['raw'] and kwargs['created']:
-        notifiation = ReportNotification(
-            content_template='send_report_creation_to_gest_resp',
-            recipient=report.responsible_manager,
-            related=report,
-        )
-        notifiation.save()
+            l = ReportEventLog()
+            l.report = report
+            l.event_type = ReportEventLog.MANAGER_CHANGED if report.__former['responsible_manager'] else ReportEventLog.MANAGER_ASSIGNED
+            l.related_old = report.__former['responsible_manager']
+            l.related_new = report.responsible_manager
+            l.save()
+
+        if report.__former['responsible_entity'] != report.responsible_entity:
+            l = ReportEventLog()
+            l.report = report
+            l.event_type = ReportEventLog.ENTITY_CHANGED if report.__former['responsible_entity'] else ReportEventLog.ENTITY_ASSIGNED
+            l.related_old = report.__former['responsible_entity']
+            l.related_new = report.responsible_entity
+            l.save()
+
 
 @receiver(post_save,sender=Report)
 def report_subscribe_author(sender, instance, **kwargs):
@@ -470,16 +515,6 @@ def report_subscribe_author(sender, instance, **kwargs):
     if kwargs['created'] and not kwargs['raw']:
         if instance.created_by:
             ReportSubscription(report=instance, subscriber=instance.created_by).save()
-
-
-class Exportable(models.Model):
-    def asJSON():
-        return
-    def asXML():
-        return
-
-    class Meta:
-        abstract = True
 
 
 class ReportAttachment(UserTrackedModel):
@@ -508,7 +543,8 @@ class ReportAttachment(UserTrackedModel):
 class ReportComment(ReportAttachment):
     text = models.TextField()
     report = models.ForeignKey(Report, related_name="comments")
-    
+
+
 class ReportFile(ReportAttachment):
     PDF   = 1
     WORD  = 2
@@ -534,23 +570,11 @@ class ReportFile(ReportAttachment):
         return self.file_type == ReportFile.EXCEL
     def is_image(self):
         return self.file_type == ReportFile.IMAGE
-    def is_a_document(self):
+    def is_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel() 
-    def is_an_image(self):
-        return self.is_image()
-
-@receiver(post_save,sender=FMSUser)
-def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
-    """This method is used to create the security matrix when creating the first manager of the entity"""
-    #If this is the first user created and of type gestionnaire then assign all reportcategories to him
-    if (instance.manager == True):
-       #if we have just created the first one, then apply all type to him
-       if len(FMSUser.objects.filter(organisation_id=instance.organisation.id).filter(manager=True)) == 1:
-          for type in ReportCategory.objects.all():
-             instance.categories.add(type)
 
 
-@receiver(post_save,sender=ReportFile)
+@receiver(post_save, sender=ReportFile)
 def move_file(sender,instance,**kwargs):
     if kwargs['created']:
         file_type_string =ReportFile.attachment_type[instance.file_type-1][1]
@@ -558,6 +582,7 @@ def move_file(sender,instance,**kwargs):
         new_destination = save_file_to_server(instance.file,file_type_string,extension,len(ReportFile.objects.filter(report_id=instance.report_id)), instance.report.id)
         instance.file = new_destination
         instance.save()
+
 
 class ReportSubscription(models.Model):
     """ 
@@ -756,7 +781,7 @@ class GestType(models.Model):
 
 
 class ReportNotification(models.Model):
-    recipient = models.ForeignKey(User)
+    recipient = models.ForeignKey(User, related_name="notifications")
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
     error_msg = models.TextField()
@@ -766,101 +791,157 @@ class ReportNotification(models.Model):
     related_content_type = models.ForeignKey(ContentType)
     related_object_id = models.PositiveIntegerField()
 
-    def save(self, data={}, *args, **kwargs):
-        if not self.recipient.email:
-            self.error_msg = "No email recipient"
-            self.success = False
-            super(ReportNotification, self).save(*args, **kwargs)
-            return 
 
-        recipients = (self.recipient.email,)
+@receiver(pre_save, sender=ReportNotification)
+def send_notification(sender, instance, **kwargs):
+    if not instance.recipient.email:
+        instance.error_msg = "No email recipient"
+        instance.success = False
+        return 
 
-        data = data or {}
-        data.update({
-            "related": self.related,
-            "SITE_URL": Site.objects.get_current().domain
-        })
+    recipients = (instance.recipient.email,)
 
-        subject, html, text = '', '', ''
-        try:
-            subject = render_to_string('emails/' + self.content_template + "/subject.txt", data)
-        except TemplateDoesNotExist:
-            self.error_msg = "No subject"
-        try:
-            text    = render_to_string('emails/' + self.content_template + "/message.txt", data)
-        except TemplateDoesNotExist:
-            self.error_msg = "No content"
+    data = {
+        "related": instance.related,
+        "SITE_URL": Site.objects.get_current().domain
+    }
 
-        try:
-            html    = render_to_string('emails/' + self.content_template + "/message.html", data)
-        except TemplateDoesNotExist:
-            pass
+    subject, html, text = '', '', ''
+    try:
+        subject = render_to_string('emails/' + instance.content_template + "/subject.txt", data)
+    except TemplateDoesNotExist:
+        instance.error_msg = "No subject"
+    try:
+        text    = render_to_string('emails/' + instance.content_template + "/message.txt", data)
+    except TemplateDoesNotExist:
+        instance.error_msg = "No content"
 
-        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+    try:
+        html    = render_to_string('emails/' + instance.content_template + "/message.html", data)
+    except TemplateDoesNotExist:
+        pass
 
-        msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients)
+    subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-        if html:
-            msg.attach_alternative(html, "text/html")
+    msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients)
 
-        # if self.report.photo:
-            # msg.attach_file(self.report.photo.file.name)
-        if isinstance(self.related,Report):
-            for f in self.related.get_files():
-                if f.file_type == 4 and f.is_visible:
-                    # Open the file
-                    fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
-                    msgImage = MIMEImage(fp.read())
-                    fp.close()
+    if html:
+        msg.attach_alternative(html, "text/html")
 
-                    # Define the image's ID to reference to it
-                    msgImage.add_header('Content-ID', '<image'+str(f.id)+'>')
-                    msg.attach(msgImage)
-        try:
-            msg.send()
-            self.success = True
-        except SMTPException as e:
-            self.success = False
-            self.error_msg = str(e)
+    # if self.report.photo:
+        # msg.attach_file(self.report.photo.file.name)
+    if isinstance(instance.related,Report):
+        for f in instance.related.files.all():
+            if f.file_type == 4 and f.is_visible:
+                # Open the file
+                fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
+                msgImage = MIMEImage(fp.read())
+                fp.close()
 
-        super(ReportNotification, self).save(*args, **kwargs)
-
-
+                # Define the image's ID to reference to it
+                msgImage.add_header('Content-ID', '<image'+str(f.id)+'>')
+                msg.attach(msgImage)
+    try:
+        msg.send()
+        instance.success = True
+    except SMTPException as e:
+        instance.success = False
+        instance.error_msg = str(e)
 
 class ReportEventLog(models.Model):
-    content_template = models.CharField(max_length=40)
 
-    status_old = models.IntegerField()
-    status_new = models.IntegerField()
+    # List of event types
+    REFUSE = 1
+    CLOSE = 2
+    SOLVE_REQUEST = 3
+    MANAGER_ASSIGNED = 4
+    MANAGER_CHANGED = 5
+    PUBLISH = 6
+    ENTITY_ASSIGNED = 7
+    ENTITY_CHANGED = 8
+    EVENT_TYPE_CHOICES = (
+        (REFUSE,_("Refuse")),
+        (CLOSE,_("Close")),
+        (SOLVE_REQUEST,_("Mark as Done")),
+        (MANAGER_ASSIGNED,_("Manager assinged")),
+        (MANAGER_CHANGED,_("Manager changed")),
+        (PUBLISH,_("Publish")),
+        (ENTITY_ASSIGNED, _('Organisation assinged')),
+        (ENTITY_CHANGED, _('Organisation changed')),
+    )
+    EVENT_TYPE_TEXT = {
+        REFUSE: _("Report refused by {user}"),
+        CLOSE: _("Report closed by {user}"),
+        SOLVE_REQUEST: _("Report pointed as done"),
+        MANAGER_ASSIGNED: _("Report as been assing to {related_new}"),
+        MANAGER_CHANGED: _("Report as change manager from {related_new} to {related_old}"),
+        PUBLISH: _("Report has been publisbed by {user}"),
+        ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
+        ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
+    }
 
-    object_old = generic.GenericForeignKey('object_content_type', 'object_old_id')
-    object_new = generic.GenericForeignKey('object_content_type', 'object_new_id')
+    event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 
-    object_content_type = models.ForeignKey(ContentType)
+    report = models.ForeignKey(Report, related_name='activities')
+    user = models.ForeignKey(User, related_name='activities')
+    organisation = models.ForeignKey(OrganisationEntity, related_name='activities')
+    event_at = models.DateTimeField(auto_now_add=True)
 
-    object_old_id = models.PositiveIntegerField()
-    object_new_id = models.PositiveIntegerField()
+    status_old = models.IntegerField(choices=Report.REPORT_STATUS_CHOICES, null=True)
+    status_new = models.IntegerField(choices=Report.REPORT_STATUS_CHOICES, null=True)
 
+    related_old = generic.GenericForeignKey('related_content_type', 'related_old_id')
+    related_new = generic.GenericForeignKey('related_content_type', 'related_new_id')
+
+    related_old_id = models.PositiveIntegerField(null=True)
+    related_new_id = models.PositiveIntegerField(null=True)
+
+    related_content_type = models.ForeignKey(ContentType, null=True)
+
+    def __unicode__(self):
+        return self.EVENT_TYPE_TEXT[self.event_type].format(
+            user=self.user,
+            organisation=self.organisation,
+            related_old=self.related_old,
+            related_new=self.related_new
+        )
+
+
+@receiver(pre_save, sender=ReportEventLog)
+def eventlog_init_values(sender, instance, **kwargs):
+    if instance.report:
+
+        if instance.status_new == None:
+            instance.status_new = instance.report.status
+
+        if instance.status_old == None:
+            instance.status_old = instance.report.__former["status"]
+
+        if not hasattr(instance, "organisation"):
+            instance.organisation = instance.report.responsible_entity
+
+        if not hasattr(instance, "user"):
+            instance.user = instance.report.modified_by
 
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta
     # 
     # name=models.CharField(max_length=100)
-    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+    # creation_date = models.DateTimeField(auto_now_add=True)
+    # update_date = models.DateTimeField(auto_now=True)
     # commune = models.ForeignKey(Commune)
     # 
     # class Meta:
         # translate = ('name', )
-# 
-# 
+
+
 # class FMSUserZone(models.Model):
     # user = models.ForeignKey(FMSUser)
     # zone = models.ForeignKey(Zone)
     # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-# 
+
 
 class ZipCode(models.Model):
     __metaclass__ = TransMeta

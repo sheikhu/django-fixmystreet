@@ -1,14 +1,7 @@
-from datetime import date
-import shutil, os
-#from unittest import skip
 
 from django.test import TestCase
-from django.contrib.auth.models import User
-from django.core import mail
-from django.core.files.storage import FileSystemStorage
 
-from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import OrganisationEntity
 
 
 class OrganisationEntityTest(TestCase):
@@ -28,37 +21,10 @@ class OrganisationEntityTest(TestCase):
     
     def testOrganisationRoles(self):
        '''Test the roles of the FMSUser created'''
-       self.assertFalse(self.organisation.is_commune())
-       self.assertFalse(self.organisation.is_region())
-       self.assertFalse(self.organisation.is_subcontractor())
-       self.assertFalse(self.organisation.is_applicant())
-       
-       self.organisation.commune=True
-       self.assertTrue(self.organisation.is_commune())
-       self.assertFalse(self.organisation.is_region())
-       self.assertFalse(self.organisation.is_subcontractor())
-       self.assertFalse(self.organisation.is_applicant())
-       
-       self.organisation.commune=False
-       self.organisation.region=True
-       self.assertFalse(self.organisation.is_commune())
-       self.assertTrue(self.organisation.is_region())
-       self.assertFalse(self.organisation.is_subcontractor())
-       self.assertFalse(self.organisation.is_applicant())
-       
-       self.organisation.region=False
-       self.organisation.subcontractor=True
-       self.assertFalse(self.organisation.is_commune())
-       self.assertFalse(self.organisation.is_region())
-       self.assertTrue(self.organisation.is_subcontractor())
-       self.assertFalse(self.organisation.is_applicant())
-       
-       self.organisation.subcontractor=False
-       self.organisation.applicant=True
-       self.assertFalse(self.organisation.is_commune())
-       self.assertFalse(self.organisation.is_region())
-       self.assertFalse(self.organisation.is_subcontractor())
-       self.assertTrue(self.organisation.is_applicant())
+       self.assertFalse(self.organisation.commune)
+       self.assertFalse(self.organisation.region)
+       self.assertFalse(self.organisation.subcontractor)
+       self.assertFalse(self.organisation.applicant)
     
     def testOrganisationDependency(self):
        '''Test the organisation dependency'''

@@ -144,11 +144,11 @@ function setFileCreationDate(){
 	    <!-- ################# FILES ############### -->
 	    <!-- ################# FILES ############### -->
 	    <!-- ################# FILES ############### -->
-	    {% if report.get_files %}
+	    {% if report.active_files %}
             <h3>{% trans "Extra files" %}</h3>
             <div id="report_updates">
                 <table id="extraFilesTable">
-                    {% for file in report.get_files %}
+                    {% for file in report.active_files.all %}
 		    {% if file.is_validated %} <!-- PUBLIC? -->
                     <tr>
                         <td class="annexesFirstTD">
@@ -192,12 +192,12 @@ function setFileCreationDate(){
 	    <!-- ################# COMMENTS ############### -->
 	    <!-- ################# COMMENTS ############### -->
 	    <!-- ################# COMMENTS ############### -->
-	    {% if report.get_comments %}
+	    {% if report.active_comments %}
             <h3>{% trans "Extra comments" %}</h3>
             <div id="report_updates">
                 <table class="extraCommentsTable">
-                {% for comment in report.get_comments %}
-		{% if comment.is_validated %} 
+                {% for comment in report.active_comments.all %}
+		    {% if comment.is_validated %}
                 	<tr>
                     	<td class="annexesFirstTD">
                 		<div class="report_update">
@@ -208,7 +208,7 @@ function setFileCreationDate(){
                 		</div>
             		</td>
 			</tr>
-		{% endif %}
+		    {% endif %}
 		{% endfor %}
 		</table>
 	</div>

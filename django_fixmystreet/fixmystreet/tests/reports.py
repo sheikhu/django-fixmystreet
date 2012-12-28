@@ -1,14 +1,8 @@
-from datetime import date
-import shutil, os
-#from unittest import skip
 
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.core import mail
-from django.core.files.storage import FileSystemStorage
 
-from django.conf import settings
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, ReportNotification, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
 
 
 class NotificationTest(TestCase):
@@ -33,32 +27,28 @@ class NotificationTest(TestCase):
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
-        self.assertTrue(reportFile.is_a_document())
-        self.assertFalse(reportFile.is_an_image())
+        self.assertTrue(reportFile.is_document())
         
         reportFile = ReportFile(file_type=ReportFile.WORD, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertTrue(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
-        self.assertTrue(reportFile.is_a_document())
-        self.assertFalse(reportFile.is_an_image())
+        self.assertTrue(reportFile.is_document())
         
         reportFile = ReportFile(file_type=ReportFile.EXCEL, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertTrue(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
-        self.assertTrue(reportFile.is_a_document())
-        self.assertFalse(reportFile.is_an_image())
+        self.assertTrue(reportFile.is_document())
         
         reportFile = ReportFile(file_type=ReportFile.IMAGE, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
         self.assertTrue(reportFile.is_image())
-        self.assertFalse(reportFile.is_a_document())
-        self.assertTrue(reportFile.is_an_image())
+        self.assertFalse(reportFile.is_document())
 
     def testReportResponsibleAssignment(self):
         '''Test the assignment of a responsible when creating a report'''
