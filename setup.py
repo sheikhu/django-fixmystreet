@@ -17,6 +17,7 @@ install_requires = [
     'django-extensions',
     'simple_history',
     'docutils',
+    'django-registration',
     # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
     ]
