@@ -6,7 +6,7 @@ from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.models import User, UserManager
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
@@ -49,14 +49,24 @@ class UserTrackedModel(TimeStampedModel):
 
 
 class FMSUser(User):
-    AGENT        = 1
-    MANAGER      = 2
-    LEADER       = 3
-    CONTRACTOR   = 4
-    APPLICANT    = 5
+    AGENT        = "agent"
+    MANAGER      = "manager"
+    LEADER       = "leader"
+    CONTRACTOR   = "contractor"
+    APPLICANT    = "applicant"
+
+    # user types ordered by weight
+    USER_TYPES = (
+        LEADER,
+        MANAGER,
+        AGENT,
+        APPLICANT,
+        CONTRACTOR,
+    )
+
+    # user = models.OneToOneField(User)
 
     telephone = models.CharField(max_length=20,null=True)
-    #active = models.BooleanField(default=True)
     last_used_language = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
 
@@ -64,15 +74,13 @@ class FMSUser(User):
     manager = models.BooleanField(default=False)
     leader = models.BooleanField(default=False)
 
-    impetrant = models.BooleanField(default=False) # todo rename to applicant
+    applicant = models.BooleanField(default=False)
     contractor = models.BooleanField(default=False)
     
     logical_deleted = models.BooleanField(default=False)
     
     categories = models.ManyToManyField('ReportCategory',related_name='type')
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
-
-    objects = UserManager()
 
     # history = HistoricalRecords()
     
@@ -117,16 +125,12 @@ class FMSUser(User):
         return self.last_used_language
 
     def get_user_type(self):
-        if self.leader:
-            return "leader"
-        if self.manager:
-            return "manager"
-        if self.agent:
-            return "agent"
-        if self.impetrant:
-            return "impetrant"
-        if self.contractor:
-            return "contractor"
+        for user_type in self.USER_TYPES:
+            if getattr(self, user_type, False):
+                return user_type
+
+    def is_user_type(self, user_type):
+        return getattr(self, user_type, False)
 
     def toJSON(self):
         d = {}
@@ -181,11 +185,11 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 class Report(UserTrackedModel):
 
     #List of qualities
-    RESIDENT = 0
-    OTHER = 1
+    RESIDENT = 1
     TRADE = 2
     SYNDICATE = 3
     ASSOCIATION = 4
+    OTHER = 5
     REPORT_QUALITY_CHOICES = (
         (RESIDENT,_("Resident")), 
         (OTHER,_("Other")),
@@ -195,10 +199,10 @@ class Report(UserTrackedModel):
     )
 
     # List of status
-    CREATED = 0
+    CREATED = 1
     REFUSED = 9
     
-    IN_PROGRESS           = 1
+    IN_PROGRESS           = 2
     MANAGER_ASSIGNED      = 4
     APPLICANT_RESPONSIBLE = 5
     CONTRACTOR_ASSIGNED   = 6
@@ -589,7 +593,7 @@ class ReportSubscription(models.Model):
     Report Subscribers are notified when there's an update to an existing report.
     """
     report = models.ForeignKey(Report, related_name="subscriptions")
-    subscriber = models.ForeignKey(User, null=False)
+    subscriber = models.ForeignKey(FMSUser, null=False)
     class Meta:
         unique_together = (("report", "subscriber"),)
 
@@ -770,18 +774,16 @@ class ReportCategoryHint(models.Model):
         translate = ('label', )
 
 
-class GestType(models.Model):
+class ManagerCategories(UserTrackedModel):
     help_text="""
     Defines the relation of a user and a category
     """
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category = models.ForeignKey(ReportCategory)
     user = models.ForeignKey(FMSUser)
 
 
 class ReportNotification(models.Model):
-    recipient = models.ForeignKey(User, related_name="notifications")
+    recipient = models.ForeignKey(FMSUser, related_name="notifications")
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
     error_msg = models.TextField()

@@ -121,7 +121,7 @@ def numberOfContractors(userId):
 def numberOfImpetrants(userId):
     organisationId = FMSUser.objects.get(user_ptr_id=userId).organisation.id
     impetrants = FMSUser.objects.filter(organisation_id = organisationId).filter(logical_deleted = False)
-    impetrants = impetrants.filter(impetrant = True)
+    impetrants = impetrants.filter(applicant = True)
     return impetrants.count()
 
 @register.filter

@@ -1784,7 +1784,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Jonathan",
-			"email": "zaza@mrbc.irisnet.be",
             "last_name": "Sanchez",
             "username": "jsanchezpando",
             "email": "jsanchezpando@cirb.irisnet.be",
@@ -1811,7 +1810,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Lahcen",
-			"email": "zaza2@mrbc.irisnet.be",
             "last_name": "Afif",
             "username": "lafif",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -1837,7 +1835,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Catherine",
-			"email": "zaza3@mrbc.irisnet.be",
             "last_name": "Corbesier",
             "username": "ccorbesier",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -1863,7 +1860,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Thibaut",
-			"email": "zaza4@mrbc.irisnet.be",
             "last_name": "de Sany",
             "username": "tdesany",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -1889,7 +1885,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Livio",
-			"email": "zaza5@mrbc.irisnet.be",
             "last_name": "Van Rymenant",
             "username": "livio",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -1915,7 +1910,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Demo",
-			"email": "zaza6@mrbc.irisnet.be",
             "last_name": "Demo",
             "username": "demo",
             "password": "pbkdf2_sha256$10000$JwbjSCeIkCxj$j6AJO6xQhP/Y76+ine5gyYykVxv1Wl9h1aBs2E3WOSM=",
@@ -1941,7 +1935,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Catherine",
-			"email": "zaza7@mrbc.irisnet.be",
             "last_name": "Agent",
             "username": "cagent",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -1967,7 +1960,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Soulira",
-			"email": "zaza8@mrbc.irisnet.be",
             "last_name": "Kerri",
             "username": "skerri",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -1993,8 +1985,7 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Soulira",
-			"email": "zaza9@mrbc.irisnet.be",
-            "last_name": "---",
+            "last_name": "Kerri",
             "username": "soulira",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
@@ -2019,7 +2010,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Marina",
-			"email": "zaza10@mrbc.irisnet.be",
             "last_name": "---",
             "username": "marina",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -2045,7 +2035,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Bart",
-			"email": "zaza11@mrbc.irisnet.be",
             "last_name": "Gerard",
             "username": "bgerard",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -2071,7 +2060,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Thierry",
-			"email": "zaza12@mrbc.irisnet.be",
             "last_name": "s",
             "username": "thierrystartent",
             "email": "tschreiber@mrbc.irisnet.be",
@@ -2098,7 +2086,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Thierry",
-			"email": "zaza13@mrbc.irisnet.be",
             "last_name": "s",
             "username": "thierryallent",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -2124,7 +2111,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Thierry",
-			"email": "zaza14@mrbc.irisnet.be",
             "last_name": "s",
             "username": "thierryallgest",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
@@ -2150,7 +2136,6 @@
         "model": "auth.user",
         "fields": {
             "first_name": "Thierry",
-			"email": "zaza15@mrbc.irisnet.be",
             "last_name": "s",
             "username": "thierryallagent",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",

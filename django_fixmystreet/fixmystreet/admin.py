@@ -43,14 +43,14 @@ class UserEventsInline(admin.TabularInline):
     max_num=10
 
 class FMSUserAdmin(admin.ModelAdmin):
-    list_display = ("get_full_name", "leader", "manager", "agent", "impetrant", "contractor")
+    list_display = ("leader", "manager", "agent", "applicant", "contractor")
     inlines = (
         ReportsInline,
-        NotificationsInline,
-        UserEventsInline
+        # NotificationsInline,
+        # UserEventsInline
     )
-    search_fields = ("username", "email", "first_name", "last_name")
-    list_filter = ("leader", "manager", "agent", "impetrant", "contractor")
+    # search_fields = ("username", "email", "first_name", "last_name")
+    # list_filter = ("leader", "manager", "agent", "impetrant", "contractor")
 
 admin.site.register(FMSUser,FMSUserAdmin)
 

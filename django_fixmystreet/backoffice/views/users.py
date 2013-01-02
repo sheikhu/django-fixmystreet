@@ -1,9 +1,10 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 
-from django_fixmystreet.fixmystreet.forms import AgentCreationForm
-from django_fixmystreet.backoffice.forms import UserEditForm
+from django_fixmystreet.backoffice.forms import UserEditForm, FmsUserForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportNotification
 
 
@@ -106,8 +107,8 @@ def createUser(request, user_type):
         #   pdb.set_trace()
         #   user_type = simplejson.loads(request.body).get('user_type')
         #except ValueError as e:
-        user_type = int(request.POST.get("user_type"))
-        createform = AgentCreationForm(request.POST)
+        user_type = request.POST.get("user_type")
+        createform = FmsUserForm(request.POST)
         if createform.is_valid():
             createdOrganisationEntity = -1;    
             #Also create the organisation too            
@@ -131,12 +132,14 @@ def createUser(request, user_type):
                     recipient=createdUser,
                     related=createdUser,
                 )
-                notification.save(data={
-                        "password":request.POST.get('password1')
-                    })
+                notification.save()
+                    # data={
+                        # "password":request.POST.get('password1')
+                    # })
+                messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
                 return HttpResponseRedirect('/pro/')
     else:        
-        createform = AgentCreationForm()
+        createform = FmsUserForm()
         #user_type is used when accessing the page the first time to preset the dropdown value        
         createform.initial['user_type'] = user_type        
     

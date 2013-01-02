@@ -1,8 +1,5 @@
-from django.conf.urls.defaults import *
-from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth import views as auth_views
-from django.views.generic.simple import direct_to_template
 from django.utils.translation import ugettext_lazy as _
 from django_fixmystreet.fixmystreet.models import FMSUser
 
@@ -13,6 +10,7 @@ urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
 )
 
 urlpatterns += patterns('',
+    # (r'^accounts/', include('registration.backends.simple.urls')),
 	url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'},name='login'),
 	url(_(r'^logout/$'),
             auth_views.logout_then_login,

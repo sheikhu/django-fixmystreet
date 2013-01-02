@@ -38,6 +38,18 @@ DATE_FORMAT = "l, j F Y"
 # Max file upload size
 MAX_UPLOAD_SIZE = "821440"
 
+USE_I18N = True
+REGISTRATION_OPEN = False
+ROOT_URLCONF = 'django_fixmystreet.urls'
+AUTH_PROFILE_MODULE = "django_fixmystreet.fixmystreet.FMSUser"
+
+gettext = lambda s: s
+LANGUAGES = (
+  ('en', gettext('English')),
+  ('fr', gettext('French')),
+  ('nl', gettext('Dutch')),
+)
+
 # include request object in template to determine active page
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -60,18 +72,6 @@ MIDDLEWARE_CLASSES = (
     'django_fixmystreet.backoffice.middleware.LoadUserMiddleware',
     'django_fixmystreet.fixmystreet.utils.CurrentUserMiddleware',
 )
-
-USE_I18N = True
-
-gettext = lambda s: s
-LANGUAGES = (
-  ('en', gettext('English')),
-  ('fr', gettext('French')),
-  ('nl', gettext('Dutch')),
-)
-
-ROOT_URLCONF = 'django_fixmystreet.urls'
-
 
 INSTALLED_APPS = (
     'django.contrib.auth',

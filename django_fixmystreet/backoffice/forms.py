@@ -2,51 +2,56 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext_lazy
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import ugettext as _
+
 
 from django_fixmystreet.fixmystreet.models import FMSUser, Report
 
 
-class ManagersChoiceField (forms.fields.ChoiceField):
+class ManagersChoiceField(forms.fields.ChoiceField):
 
-	def __init__(self, connectedUser, *args, **kwargs):
-		choices = []
-		currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
-		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
-		managers = managers.filter(organisation_id=currentUserOrganisation.id)
+    def __init__(self, connectedUser, *args, **kwargs):
+        choices = []
+        currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
+        managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
+        managers = managers.filter(organisation_id=currentUserOrganisation.id)
 
-		for manager in managers:
-			choices.append((manager.pk,manager.last_name+" "+manager.first_name))
+        for manager in managers:
+            choices.append((manager.pk,manager.last_name+" "+manager.first_name))
 
-		super(ManagersChoiceField,self).__init__(choices,*args,**kwargs)
+        super(ManagersChoiceField,self).__init__(choices,*args,**kwargs)
 
-	def refreshChoices(self, connectedUser):
-		choices = []
-		currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
-		managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
-		managers = managers.filter(organisation_id=currentUserOrganisation.id)
-		
-		for manager in managers:
-			choices.append((manager.pk,manager.last_name+" "+manager.first_name))
-		super(ManagersChoiceField, self)._set_choices(choices)
-	
-	def clean(self, value):
-		super(ManagersChoiceField,self).clean(value)
-		try:
-			model = FMSUser.objects.get(pk=value)
-		except FMSUser.DoesNotExist:
-			raise ValidationError(self.error_messages['invalid_choice'])
-		return model
+    def refreshChoices(self, connectedUser):
+        choices = []
+        currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
+        managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
+        managers = managers.filter(organisation_id=currentUserOrganisation.id)
+        
+        for manager in managers:
+            choices.append((manager.pk,manager.last_name+" "+manager.first_name))
+        super(ManagersChoiceField, self)._set_choices(choices)
+    
+    def clean(self, value):
+        super(ManagersChoiceField,self).clean(value)
+        try:
+            model = FMSUser.objects.get(pk=value)
+        except FMSUser.DoesNotExist:
+            raise ValidationError(self.error_messages['invalid_choice'])
+        return model
 
 
 class ManagersListForm(forms.Form):
-	def __init__(self, connectedUser,  *args, **kwargs):
-		super(ManagersListForm, self).__init__(*args, **kwargs)
-		self.manager = ManagersChoiceField(connectedUser, label="")
-		
-	
-	def refreshChoices(self, connectedUser):
-		self.manager.refreshChoices(connectedUser)
-	
+    def __init__(self, connectedUser,  *args, **kwargs):
+        super(ManagersListForm, self).__init__(*args, **kwargs)
+        self.manager = ManagersChoiceField(connectedUser, label="")
+        
+    
+    def refreshChoices(self, connectedUser):
+        self.manager.refreshChoices(connectedUser)
+    
+
 
 class UserEditForm(UserChangeForm):
     class Meta:
@@ -63,9 +68,9 @@ class UserEditForm(UserChangeForm):
         fmsuser.update(email = self.data["email"])
         fmsuser.update(telephone = self.data["telephone"])
         if (self.data.__contains__('is_active')):
-               isActive = True
+            isActive = True
         else:
-               isActive = False
+            isActive = False
         fmsuser.update(is_active=isActive)
         return fmsuser;
 
@@ -82,3 +87,45 @@ class RefuseForm(forms.ModelForm):
             report.save()
         return report
 
+
+class FmsUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')
+    
+    telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
+    is_active = forms.BooleanField(required=False)
+    user_type = forms.ChoiceField(label=ugettext_lazy("User type"),required=True, choices=(
+        ("agent", _("Agent")),
+        ("manager", _("Manager")),
+    ))
+
+    def save(self, userID, contractorOrganisation, user_type, commit=True):
+        user = super(FmsUserForm,self).save(commit=False)
+        fmsuser = FMSUser()
+        user.fmsuser = fmsuser
+        fmsuser.username = self.cleaned_data["username"]
+        fmsuser.set_password(self.cleaned_data["password1"])
+        fmsuser.first_name=self.cleaned_data["first_name"]
+        fmsuser.last_name=self.cleaned_data["last_name"]
+        fmsuser.email=self.cleaned_data["email"]
+        fmsuser.telephone= self.cleaned_data['telephone']
+        fmsuser.lastUsedLanguage="EN"
+        
+        if (self.data.__contains__('is_active')):
+               isActive = True
+        else:
+               isActive = False
+        fmsuser.is_active = isActive
+        
+        #In V1 all leaders are created in DB on application launch (in other words by sql queries)
+        fmsuser.agent = (user_type == FMSUser.AGENT or user_type == FMSUser.MANAGER) #All gestionnaires are also agents
+        fmsuser.manager = (user_type == FMSUser.MANAGER)
+        fmsuser.contractor = (user_type == FMSUser.CONTRACTOR)
+        currentUser = FMSUser.objects.get(user_ptr_id=userID)
+        if (fmsuser.contractor):
+             fmsuser.organisation = contractorOrganisation
+        else:
+             fmsuser.organisation = currentUser.organisation
+        fmsuser.save()
+        return fmsuser;

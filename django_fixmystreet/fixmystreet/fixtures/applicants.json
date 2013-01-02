@@ -445,7 +445,7 @@
         "pk":100,
         "model": "auth.user",
         "fields": {
-            "first_name": "Mercedes",			
+            "first_name": "Mercedes",
             "last_name": "Rapaille",
             "username": "mrapaille",
             "email": "Estates.Base@alcatel-lucent.com",

@@ -1,9 +1,5 @@
-from django.conf.urls.defaults import *
-from django.conf import settings
-from django.http import HttpResponseRedirect
-from django.contrib.auth import views as auth_views
-from django.views.generic.simple import direct_to_template
-from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestReportsByCity, LatestUpdatesByReport
+from django.conf.urls.defaults import patterns, url
+from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestUpdatesByReport
 from django.utils.translation import ugettext_lazy as _
 
 feeds = {

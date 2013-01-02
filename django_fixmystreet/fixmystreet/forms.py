@@ -5,11 +5,8 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.utils import FixStdImageField
 from django_fixmystreet.fixmystreet.models import ListItem, ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
@@ -113,32 +110,6 @@ class CategoryChoiceField(forms.fields.ChoiceField):
             raise forms.ValidationError(self.error_messages['invalid_choice'])
         return model
 
-class UserTypeChoiceField(forms.fields.ChoiceField):
-    """
-    Do some pre-processing to
-    render opt-groups (silently supported, but undocumented
-    http://code.djangoproject.com/ticket/4412 )
-    """
-    def __init__(self,  *args, **kwargs):
-        # assemble the opt groups.
-        choices = []
-        # choices.append(('', ugettext_lazy("Select a Category")))
-        #Take only Agent, Gestionnaire and contractor
-        user_types = ListItem.objects.filter(id__in=[19,20,22])
-
-        uniqueSet = ugettext_lazy("Types")
-        groups = {}
-        for type in user_types:
-            user_class = uniqueSet 
-            if not groups.has_key(user_class):
-                groups[user_class] = []
-            if not groups[user_class].__contains__((type.code, type.label)):
-                groups[user_class].append((type.code, type.label))
-        
-        for user_class, values in groups.items():
-            choices.append((user_class,values))
-       
-        super(UserTypeChoiceField,self).__init__(choices=choices,*args,**kwargs)   
 
 #Used by PRO version
 class ReportForm(forms.ModelForm):
@@ -238,51 +209,6 @@ class ContactForm(forms.Form):
         send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message, 
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
-class AgentCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')
-    
-    telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    is_active = forms.BooleanField(required=False)
-    user_type = UserTypeChoiceField(label=ugettext_lazy("UserType"),required=True)
-    
-    def save(self, userID, contractorOrganisation, user_type, commit=True):
-        user = super(AgentCreationForm,self).save(commit=False)
-        fmsuser = FMSUser()
-        user.fmsuser = fmsuser
-        fmsuser.username = self.cleaned_data["username"]
-        fmsuser.set_password(self.cleaned_data["password1"])
-        fmsuser.first_name=self.cleaned_data["first_name"]
-        fmsuser.last_name=self.cleaned_data["last_name"]
-        fmsuser.email=self.cleaned_data["email"]
-        fmsuser.telephone= self.cleaned_data['telephone']
-        fmsuser.lastUsedLanguage="EN"
-        
-        if (self.data.__contains__('is_active')):
-               isActive = True
-        else:
-               isActive = False
-        fmsuser.is_active = isActive
-
-        #Set all rights to 0
-        fmsuser.agent = False
-        fmsuser.manager = False
-        fmsuser.leader = False
-        fmsuser.impetrant = False
-        fmsuser.contractor = False
-        
-        #In V1 all leaders are created in DB on application launch (in other words by sql queries)
-        fmsuser.agent = (user_type == FMSUser.AGENT or user_type == FMSUser.MANAGER) #All gestionnaires are also agents
-        fmsuser.manager = (user_type == FMSUser.MANAGER)
-        fmsuser.contractor = (user_type == FMSUser.CONTRACTOR)
-        currentUser = FMSUser.objects.get(user_ptr_id=userID)
-        if (fmsuser.contractor):
-             fmsuser.organisation = contractorOrganisation
-        else:
-             fmsuser.organisation = currentUser.organisation
-        fmsuser.save()
-        return fmsuser;
 
 class ReportFileForm(forms.ModelForm):
     class Meta:
