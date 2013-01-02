@@ -141,6 +141,33 @@ class FMSUser(User):
         d['last_used_language'] = getattr(self, 'last_used_language')
         d['organisation'] = getattr(self.get_organisation(), 'id')
         return simplejson.dumps(d)
+    def get_number_of_created_reports(self):
+        print 'number of created reports'
+        userConnectedOrganisation = self.organisation
+        reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
+        return reports.count()
+    def get_number_of_in_progress_reports(self):
+        connectedOrganisation = self.organisation
+        userConnectedOrganisation = connectedOrganisation
+        #if the user is an executeur de travaux then user the dependent organisation id
+        if (self.contractor == True):
+            reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        else:   
+            reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        return reports.count()
+    def get_number_of_closed_reports(self):
+        connectedOrganisation = self.organisation
+        userConnectedOrganisation = connectedOrganisation
+        #if the user is an executeur de travaux then user the dependent organisation id
+        if (self.contractor == True):
+            reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
+        else:    
+            reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
+    
+        return reports.count()
+    def get_number_of_subscriptions(self):
+        subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
+        return subscriptions.count()
 
 User._meta.get_field_by_name('email')[0]._unique = True
 User._meta.get_field_by_name('email')[0].null = True
@@ -178,6 +205,36 @@ class OrganisationEntity(UserTrackedModel):
 
     def __unicode__(self):
         return self.name
+
+    def get_total_number_of_reports(self):
+        reports = Report.objects.filter(responsible_entity=self).all()
+        #Activate something similar to this to filter per entity !!!
+        #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
+        return reports.count()
+    def get_total_number_of_users(self):
+        print "total number of users"
+        users = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
+        return users.count()
+    def get_number_of_agents(self):
+        agents = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
+        agents = agents.filter(agent = True)
+        return agents.count()
+    def get_number_of_contractors(self):
+        #Get organisations dependants from the current organisation id
+        dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = self.id)
+        allOrganisation = list(dependantOrganisations)
+        allOrganisation.append(self.id)
+        contractors = FMSUser.objects.filter(organisation_id__in=allOrganisation).filter(logical_deleted = False)
+        contractors = contractors.filter(contractor = True)
+        return contractors.count()
+    def get_number_of_impetrants(self):
+        impetrants = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
+        impetrants = impetrants.filter(applicant = True)
+        return impetrants.count()
+    def get_number_of_managers(self):
+        managers = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
+        managers = managers.filter(manager = True)
+        return managers.count()
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
