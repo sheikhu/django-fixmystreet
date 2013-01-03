@@ -134,6 +134,13 @@ class MailTest(TestCase):
 		self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
+
+		#Login to access the pro page
+		self.client.login(username='manager', password='test')
+		#Publish the created report
+		response = self.client.post('/en/pro/report/1/accept/', follow=True)
+		self.assertEquals(response.status_code, 200)
+
 		#Send a post request to mark the report as done
 		response = self.client.post('/en/report/1/update/',{'is_fixed':'1'}, follow=True)
 		self.assertEquals(response.status_code, 200)

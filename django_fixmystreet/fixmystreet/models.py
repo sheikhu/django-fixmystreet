@@ -142,7 +142,6 @@ class FMSUser(User):
         d['organisation'] = getattr(self.get_organisation(), 'id')
         return simplejson.dumps(d)
     def get_number_of_created_reports(self):
-        print 'number of created reports'
         userConnectedOrganisation = self.organisation
         reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
         return reports.count()
@@ -212,7 +211,6 @@ class OrganisationEntity(UserTrackedModel):
         #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
         return reports.count()
     def get_total_number_of_users(self):
-        print "total number of users"
         users = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
         return users.count()
     def get_number_of_agents(self):
@@ -505,11 +503,10 @@ def report_notify(sender, instance, **kwargs):
     if not kwargs['raw']:
 
         if report.__former['status'] != report.status:
-
             if report.status == Report.REFUSED:
                 ReportNotification(
                     content_template='send_report_refused_to_creator',
-                    recipient=report.citizen or report.created_by.fmsuser,
+                    recipient=report.citizen.fmsuser or report.created_by.fmsuser,
                     related=report,
                     reply_to = report.responsible_manager.email,
                 ).save()
