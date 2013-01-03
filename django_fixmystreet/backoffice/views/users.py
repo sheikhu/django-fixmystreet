@@ -29,7 +29,7 @@ def show(request):
         users = users.filter(contractor=True)
     if userType == 'impetrant':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(impetrant=True)
+        users = users.filter(applicant=True)
     if userType == 'manager':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(manager=True)
@@ -64,7 +64,7 @@ def edit(request):
         users = users.filter(contractor=True)
     if userType == 'impetrant':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(impetrant=True)
+        users = users.filter(applicant=True)
     if userType == 'manager':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(manager=True)

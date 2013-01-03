@@ -16,9 +16,9 @@ from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, Re
 class MailTest(TestCase):
 	fixtures = ["bootstrap", "list_items"]
 	def setUp(self):
-		self.citizen = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False, username="citizen", first_name="citizen", last_name="citizen", email="citizen@a.com")
+		self.citizen = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False, username="citizen", first_name="citizen", last_name="citizen", email="citizen@a.com")
 		self.citizen.save()
-		self.manager = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=True, leader=False, impetrant=False, contractor=False, username="manager", password='test', first_name="manager", last_name="manager", email="manager@a.com")
+		self.manager = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=True, leader=False, applicant=False, contractor=False, username="manager", password='test', first_name="manager", last_name="manager", email="manager@a.com")
 		self.manager.set_password('test')
 		self.manager.organisation = OrganisationEntity.objects.get(pk=14)
 		self.manager.save()

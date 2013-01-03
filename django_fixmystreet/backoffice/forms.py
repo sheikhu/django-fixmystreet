@@ -98,6 +98,7 @@ class FmsUserForm(UserCreationForm):
     user_type = forms.ChoiceField(label=ugettext_lazy("User type"),required=True, choices=(
         ("agent", _("Agent")),
         ("manager", _("Manager")),
+        ("contractor", _("Contractor")),
     ))
 
     def save(self, userID, contractorOrganisation, user_type, commit=True):

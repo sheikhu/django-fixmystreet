@@ -113,7 +113,7 @@ class FMSUser(User):
              return self.organisation
 
     def is_pro(self):
-        return self.agent or self.manager or self.leader or self.impetrant or self.contractor
+        return self.agent or self.manager or self.leader or self.applicant or self.contractor
 
     def is_citizen(self):
         return not self.is_pro()
