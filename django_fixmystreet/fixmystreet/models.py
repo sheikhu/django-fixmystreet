@@ -79,8 +79,8 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
-    categories = models.ManyToManyField('ReportCategory',related_name='type')
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
+    categories = models.ManyToManyField('ReportCategory', related_name='type')
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True)
 
     # history = HistoricalRecords()
 
@@ -879,12 +879,12 @@ class ReportCategoryHint(models.Model):
         translate = ('label', )
 
 
-class ManagerCategories(UserTrackedModel):
-    help_text="""
-    Defines the relation of a user and a category
-    """
-    category = models.ForeignKey(ReportCategory)
-    user = models.ForeignKey(FMSUser)
+# class ManagerCategories(UserTrackedModel):
+#     help_text="""
+#     Defines the relation of a user and a category
+#     """
+#     category = models.ForeignKey(ReportCategory)
+#     user = models.ForeignKey(FMSUser)
 
 
 class ReportNotification(models.Model):
