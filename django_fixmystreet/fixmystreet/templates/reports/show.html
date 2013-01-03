@@ -24,6 +24,12 @@ $(function(){
 		}
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
+    $("#dialogMarkAsDone").dialog({
+        modal: true,
+        autoOpen:false,
+        width:'auto',
+        resizable: false
+    });
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -31,6 +37,13 @@ function setFileCreationDate(){
     var dateString = file_creation_date.getFullYear() + "-"+ (file_creation_date.getMonth()+1) + "-" + file_creation_date.getDate()+ " " + file_creation_date.getHours()+":"+file_creation_date.getMinutes();
     
     $("[name='file_creation_date']").val(dateString);
+}
+
+function markAsDone(){
+    $("#dialogMarkAsDone").dialog('open');
+    $('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
+
+    // window.location = '{% url report_update report.id %}?is_fixed=True';
 }
 </script>
 {% endblock %}
@@ -82,7 +95,12 @@ function setFileCreationDate(){
 				</td>
 				{% if report.is_in_progress %}
 				<td>
-					<button onclick="window.location = '{% url report_update report.id %}?is_fixed=True'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+                    {% if not report.status == report.SOLVED %}
+					<button onclick="markAsDone();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+                    {% else %}
+                    <button onclick="" class="saveFormButton" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+                    <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
+                    {% endif %}
 				</td>
 				{% endif %}
 			</tr>
@@ -279,6 +297,10 @@ function setFileCreationDate(){
     
     
     </div>
+    <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post">
+        {{ mark_as_done_form.as_p }}
+        <input type="submit" class="saveFormButton" style="float:right;" value="{% trans 'Confirm'%}"/>
+    </form>
     <div id="more-actions">
         <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
     </div>

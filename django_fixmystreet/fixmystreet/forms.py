@@ -275,3 +275,15 @@ class ReportCommentForm(forms.ModelForm):
 class FileUploadForm(forms.Form):
     title = forms.CharField(max_length=50,required=False)
     file  = forms.FileField()
+
+class MarkAsDoneForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ('mark_as_done_motivation',)
+
+    def save(self, commit=True):
+        report = super(MarkAsDoneForm,self).save(commit=False)
+        report.status = Report.SOLVED
+        if commit:
+            report.save()
+        return report

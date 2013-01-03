@@ -306,6 +306,7 @@ class Report(UserTrackedModel):
 
     citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
     refusal_motivation = models.TextField(null=True, blank=True)
+    mark_as_done_motivation = models.TextField(null=True, blank=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)

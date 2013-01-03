@@ -3,12 +3,15 @@ from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report
-from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm
+from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm, MarkAsDoneForm
 
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     if request.REQUEST.has_key('is_fixed'):
         report.status = Report.SOLVED
+        form = MarkAsDoneForm(request)
+        #Save the mark as done motivation in the database
+        report.mark_as_done_motivation = form.data.POST.get('mark_as_done_motivation')
         report.save()
         if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
