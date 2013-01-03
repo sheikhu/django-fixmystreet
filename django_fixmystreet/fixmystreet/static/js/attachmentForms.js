@@ -47,13 +47,19 @@ $(document).ready(function() {
                 $("#fileForm #id_file").val("");
             }
             //TODO determine max file size
-            if(file.size > 100000){
+            else if(file.size > 100000){
                 alert('File to large');
                 $("#fileForm #id_file").val("");
             }
-            if(allowed_file_types.indexOf(file.type)==-1 ){
+            else if(allowed_file_types.indexOf(file.type)==-1 ){
                 alert('The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls.');
                 $("#fileForm #id_file").val("");
+            }
+            else {
+                var title = $("#fileForm #id_title").val();
+                if (title == ""){
+                    $("#fileForm #id_title").val(file.name);
+                }
             }
         }
     }

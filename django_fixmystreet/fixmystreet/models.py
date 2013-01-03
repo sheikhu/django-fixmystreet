@@ -506,8 +506,9 @@ def report_notify(sender, instance, **kwargs):
             if report.status == Report.REFUSED:
                 ReportNotification(
                     content_template='send_report_refused_to_creator',
-                    recipient=report.citizen or report.created_by,
+                    recipient=report.citizen or report.created_by.fmsuser,
                     related=report,
+                    reply_to = report.responsible_manager.email,
                 ).save()
 
                 ReportEventLog(
@@ -521,6 +522,7 @@ def report_notify(sender, instance, **kwargs):
                         content_template='send_report_closed_to_subscribers',
                         recipient=subscription.subscriber,
                         related=report,
+                        reply_to=report.responsible_manager.email,
                     ).save()
 
                 ReportEventLog(
@@ -662,6 +664,7 @@ def notify_report_subscription(sender, instance, **kwargs):
             content_template='send_subscription_to_subscriber',
             recipient=instance.subscriber,
             related=report,
+            reply_to=report.responsible_manager.email,
         )
         notifiation.save()
 
@@ -845,6 +848,7 @@ class ReportNotification(models.Model):
     success = models.BooleanField()
     error_msg = models.TextField()
     content_template = models.CharField(max_length=40)
+    reply_to = models.CharField(max_length=40,null=True)
 
     related = generic.GenericForeignKey('related_content_type', 'related_object_id')
     related_content_type = models.ForeignKey(ContentType)
@@ -857,7 +861,10 @@ def send_notification(sender, instance, **kwargs):
         instance.error_msg = "No email recipient"
         instance.success = False
         return 
-
+    reply_to = settings.DEFAULT_FROM_EMAIL
+    if instance.reply_to:
+        reply_to = instance.reply_to
+    print reply_to
     recipients = (instance.recipient.email,)
 
     data = {
@@ -882,7 +889,7 @@ def send_notification(sender, instance, **kwargs):
 
     subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-    msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients)
+    msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":reply_to})
 
     if html:
         msg.attach_alternative(html, "text/html")
