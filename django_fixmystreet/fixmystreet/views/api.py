@@ -4,6 +4,7 @@ from django.utils import simplejson
 from django.db.models import Q
 from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
+from django.contrib.auth import authenticate, login
 
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
@@ -241,7 +242,7 @@ def create_report_citizen(request):
 def create_report_pro(request):
     '''This method is used to create citizens reports. Validation included.'''
     data_username              = request.POST.get('user_name')
-    #data_password              = request.POST.get('user_p')
+    data_password              = request.POST.get('user_p')
     data_category_id              = request.POST.get('report_category_id')
     data_main_category_id         = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
@@ -276,7 +277,7 @@ def create_report_pro(request):
     #Verify if the citizen profile exists
     #Create it if necessary and assign value to citizen attribute.
     try:
-        existingUser = FMSUser.objects.get(username=data_username);
+        existingUser = FMSUser.objects.get(username=data_username)
         #Assign creator (as pro user)
         report.created_by = existingUser
     except FMSUser.DoesNotExist:
@@ -284,12 +285,12 @@ def create_report_pro(request):
         return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
     #Login the user
-    #user = authenticate(username=data_username, password=data_password)
-    #if user is not None:
-    #    if user.is_active:
-    #        login(request, user)
-    #    else:
-    #        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
+    user = authenticate(username=data_username, password=data_password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+        else:
+            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
     else:
         return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
@@ -306,11 +307,12 @@ def create_report_pro(request):
         report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
         report.postalcode = data_zip        
         report.address = data_address        
+        report.private = True
         #Subscription is automatic.
         #Save given data        
         report.save()
-    except Exception:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST}),mimetype='application/json')    
+    except Exception as e:
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST, "message": e.message}),mimetype='application/json')    
 
     #Return the report ID
     return JsonHttpResponse({        

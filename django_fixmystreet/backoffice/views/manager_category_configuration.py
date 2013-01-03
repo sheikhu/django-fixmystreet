@@ -12,11 +12,11 @@ def show(request):
     secondcategories = ReportSecondaryCategoryClass.objects.all()
     #This list will be filled with the names of the current selected managers over the whole matrix
     currentSelectedList = [["" for _ in range(len(secondcategories))] for _ in range(len(maincategories))]
-   
+
     currentUserOrganisationId = FMSUser.objects.get(pk=request.user.id).organisation.id
     for main in maincategories:
         for second in secondcategories:
-            #This query will get all the users that are assigned to the types that are linked with the given main and secondary category. 
+            #This query will get all the users that are assigned to the types that are linked with the given main and secondary category.
             #These users must also be in the same organisation as the current logged in user.
             users = UsersAssignedToCategories(main.id,second.id,currentUserOrganisationId)
             userString = ""
@@ -69,7 +69,7 @@ def update(request):
     #Return the current selected list so that the buttons in the matrix have as label all names of selected managers
     #Return the dropdown form to select managers from
     #Return the category user mapping so that the shown selection boxes contain the current selected managers
-    managersForm = ManagersListForm(request.user)
+    managersForm = ManagersListForm(request.fmsuser)
     managersForm.refreshChoices(request.user)
 
     mainCategory = ReportMainCategoryClass.objects.get(id=request.REQUEST.get('main'))

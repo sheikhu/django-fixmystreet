@@ -1,6 +1,7 @@
 from django.utils import simplejson
 from datetime import datetime as dt
 from smtplib import SMTPException
+import logging
 
 from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
@@ -24,7 +25,6 @@ from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta
 from django_extensions.db.models import TimeStampedModel
-
 
 
 
@@ -76,14 +76,14 @@ class FMSUser(User):
 
     applicant = models.BooleanField(default=False)
     contractor = models.BooleanField(default=False)
-    
+
     logical_deleted = models.BooleanField(default=False)
-    
+
     categories = models.ManyToManyField('ReportCategory',related_name='type')
     organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
 
     # history = HistoricalRecords()
-    
+
     def display_category(self):
         return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
 
@@ -95,15 +95,15 @@ class FMSUser(User):
                 report_ticket_id = "0"+report_ticket_id;
         return report_ticket_id
 
-    def get_ticket_as_string(self):   
+    def get_ticket_as_string(self):
         '''Return the report ticket as a displayable component'''
         return "#"+self.get_ticket_number()
-    
+
     def get_display_name(self):
         if (self.first_name == None and self.last_name == None):
              return 'ANONYMOUS'
         else:
-             return self.first_name+' '+self.last_name 
+             return self.first_name+' '+self.last_name
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
@@ -178,7 +178,7 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     #If this is the first user created and of type gestionnaire then assign all reportcategories to him
     if (instance.manager == True):
        #if we have just created the first one, then apply all type to him
-       if len(FMSUser.objects.filter(organisation_id=instance.organisation.id).filter(manager=True)) == 1:
+       if instance.organisation.team.filter(manager=True).count() == 1:
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
@@ -248,7 +248,7 @@ class Report(UserTrackedModel):
     ASSOCIATION = 4
     OTHER = 5
     REPORT_QUALITY_CHOICES = (
-        (RESIDENT,_("Resident")), 
+        (RESIDENT,_("Resident")),
         (OTHER,_("Other")),
         (TRADE,_("Trade")),
         (SYNDICATE,_("Syndicate")),
@@ -258,7 +258,7 @@ class Report(UserTrackedModel):
     # List of status
     CREATED = 1
     REFUSED = 9
-    
+
     IN_PROGRESS           = 2
     MANAGER_ASSIGNED      = 4
     APPLICANT_RESPONSIBLE = 5
@@ -305,7 +305,7 @@ class Report(UserTrackedModel):
     fixed_at = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
-    
+
     citizen = models.ForeignKey(User, null=True, related_name='citizen_reports', blank=True)
     refusal_motivation = models.TextField(null=True, blank=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
@@ -338,33 +338,33 @@ class Report(UserTrackedModel):
                 report_ticket_id = "0"+report_ticket_id;
         return report_ticket_id
 
-    def get_ticket_as_string(self):   
+    def get_ticket_as_string(self):
         '''Return the report ticket as a displayable component'''
         return "#"+self.get_ticket_number()
-    
+
     def get_absolute_url(self):
         #TODO determine when pro and no-pro url must be returned
         slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
-    
+
     def get_absolute_url_pro(self):
         #TODO determine when pro and no-pro url must be returned
         slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
-        return ReportComment.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0    
-    
-    def has_at_least_one_non_confidential_file(self):
-        return ReportFile.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0    
+        return ReportComment.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0
 
-    def active_comments(self):  	
+    def has_at_least_one_non_confidential_file(self):
+        return ReportFile.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0
+
+    def active_comments(self):
         return self.comments.filter(is_validated=True)
-    
-    def active_files(self):  	
+
+    def active_files(self):
         return self.files.filter(is_validated=True)
-    
-    def is_created(self):  	
+
+    def is_created(self):
         return self.status == Report.CREATED
 
     def is_in_progress(self):
@@ -372,13 +372,13 @@ class Report(UserTrackedModel):
 
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
-    
+
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def attachments(self):
         return list(self.comments.all()) + list(self.files.all()) # order by created
-    
+
     def to_full_JSON(self):
         """
         Method used to display the whole object content as JSON structure for website
@@ -444,11 +444,11 @@ class Report(UserTrackedModel):
         m_c = first category
         s_c = second category
         """
-        
+
         close_date_as_string = ""
         if (self.close_date):
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
-        
+
         return {
             "id": self.id,
             "p": {
@@ -483,14 +483,17 @@ def report_assign_responsible(sender, instance, **kwargs):
         else:
             instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
 
-        #Search the right responsible for the current organization.            
-        userCandidates = FMSUser.objects.filter(organisation=instance.responsible_entity).filter(manager=True)
-        # TODO: use filters instead of iteration...
-        for currentUser in userCandidates:
-            userCategories = currentUser.categories.all()
-            for currentCategory in userCategories:
-                if (currentCategory == instance.secondary_category):
-                   instance.responsible_manager = currentUser
+        #Search the right responsible for the current organization.
+        users = instance.responsible_entity.team.filter(manager=True, categories=instance.secondary_category)
+        if len(users) > 0:
+            instance.responsible_manager = users[0]
+        else:
+            logging.error("no responsible")
+        # for currentUser in userCandidates:
+        #     userCategories = currentUser.categories.all()
+        #     for currentCategory in userCategories:
+        #         if (currentCategory == instance.secondary_category):
+        #            instance.responsible_manager = currentUser
 
 
 @receiver(post_save, sender=Report)
@@ -500,7 +503,7 @@ def report_notify(sender, instance, **kwargs):
     """
     report = instance
     if not kwargs['raw']:
-        
+
         if report.__former['status'] != report.status:
 
             if report.status == Report.REFUSED:
@@ -577,7 +580,7 @@ def report_subscribe_author(sender, instance, **kwargs):
     """signal on a report to register author as subscriber to his own report"""
     if kwargs['created'] and not kwargs['raw']:
         if instance.created_by:
-            ReportSubscription(report=instance, subscriber=instance.created_by).save()
+            ReportSubscription(report=instance, subscriber=instance.created_by.fmsuser).save()
 
 
 class ReportAttachment(UserTrackedModel):
@@ -586,21 +589,21 @@ class ReportAttachment(UserTrackedModel):
 
     class Meta:
         abstract=True
-    
+
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
         return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
-    
+
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''
         return self.is_validated and self.is_visible
-    
+
     def get_display_name(self):
         if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
              return 'ANONYMOUS'
         else:
-             return self.created_by.first_name+' '+self.created_by.last_name 
+             return self.created_by.first_name+' '+self.created_by.last_name
 
 
 class ReportComment(ReportAttachment):
@@ -634,7 +637,7 @@ class ReportFile(ReportAttachment):
     def is_image(self):
         return self.file_type == ReportFile.IMAGE
     def is_document(self):
-        return self.is_pdf() or self.is_word() or self.is_excel() 
+        return self.is_pdf() or self.is_word() or self.is_excel()
 
 
 @receiver(post_save, sender=ReportFile)
@@ -648,7 +651,7 @@ def move_file(sender,instance,**kwargs):
 
 
 class ReportSubscription(models.Model):
-    """ 
+    """
     Report Subscribers are notified when there's an update to an existing report.
     """
     report = models.ForeignKey(Report, related_name="subscriptions")
@@ -680,10 +683,10 @@ class ReportMainCategoryClass(models.Model):
     hint = models.ForeignKey('ReportCategoryHint', null=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    def __unicode__(self):      
+    def __unicode__(self):
         return self.name
-    
-    @staticmethod    
+
+    @staticmethod
     def listToJSON(list_of_elements):
         list_of_elements_as_json = []
         for current_element in list_of_elements:
@@ -717,7 +720,7 @@ class ReportSecondaryCategoryClass(models.Model):
     def __unicode__(self):
         return self.name
 
-    @staticmethod    
+    @staticmethod
     def listToJSON(list_of_elements):
         list_of_elements_as_json = []
         for current_element in list_of_elements:
@@ -753,10 +756,10 @@ class ReportCategory(models.Model):
     category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
-    def __unicode__(self):      
+    def __unicode__(self):
         return self.category_class.name + ":" + self.name
-    
-    @staticmethod    
+
+    @staticmethod
     def listToJSON(list_of_elements):
         list_of_elements_as_json = []
         d = {}
@@ -775,7 +778,7 @@ class ReportCategory(models.Model):
            's_c_n_nl':None,
            'p':None
         }
-        
+
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
@@ -783,41 +786,41 @@ class ReportCategory(models.Model):
             d['n_fr'] = getattr(current_element, 'name_fr')
             d['n_nl'] = getattr(current_element, 'name_nl')
             d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
-            
+
             is_it_public = getattr(current_element, 'public')
             if is_it_public:
                 d['p'] = 1
             else:
                 d['p'] = 0
-            
+
             #Optimize data transfered removing duplicates on main class names
-            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en') 
+            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
             if is_it_public or not prev_d['m_c_n_en'] == m_c_n_en_value:
                 prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
-            m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr') 
+            m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
             if is_it_public or not prev_d['m_c_n_fr'] == m_c_n_fr_value:
                 prev_d['m_c_n_fr'] = d['m_c_n_fr'] = m_c_n_fr_value
-            
-            m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl') 
+
+            m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
             if is_it_public or not prev_d['m_c_n_nl'] == m_c_n_nl_value:
                 prev_d['m_c_n_nl'] = d['m_c_n_nl'] = m_c_n_nl_value
             d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
-            
+
             #Optimize data transfered removing duplicates on main class names
-            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en') 
+            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
             if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
                 prev_d['s_c_n_en'] = d['s_c_n_en'] = s_c_n_en_value
-            s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr') 
+            s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_fr'] == s_c_n_fr_value:
                 prev_d['s_c_n_fr'] = d['s_c_n_fr'] = s_c_n_fr_value
-            s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl') 
+            s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
                 prev_d['s_c_n_nl'] = d['s_c_n_nl'] = s_c_n_nl_value
-            
+
 
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
- 
+
     class Meta:
         verbose_name = "category"
         verbose_name_plural = "categories"
@@ -860,11 +863,11 @@ def send_notification(sender, instance, **kwargs):
     if not instance.recipient.email:
         instance.error_msg = "No email recipient"
         instance.success = False
-        return 
+        return
+
     reply_to = settings.DEFAULT_FROM_EMAIL
     if instance.reply_to:
         reply_to = instance.reply_to
-    print reply_to
     recipients = (instance.recipient.email,)
 
     data = {
@@ -992,12 +995,12 @@ def eventlog_init_values(sender, instance, **kwargs):
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta
-    # 
+    #
     # name=models.CharField(max_length=100)
     # creation_date = models.DateTimeField(auto_now_add=True)
     # update_date = models.DateTimeField(auto_now=True)
     # commune = models.ForeignKey(Commune)
-    # 
+    #
     # class Meta:
         # translate = ('name', )
 
@@ -1011,13 +1014,13 @@ def eventlog_init_values(sender, instance, **kwargs):
 
 class ZipCode(models.Model):
     __metaclass__ = TransMeta
-    
+
     commune = models.ForeignKey(OrganisationEntity)
     code = models.CharField(max_length=4)
     name = models.CharField(max_length=100)
     hide = models.BooleanField()
 
-    def get_usable_zipcodes(self):       
+    def get_usable_zipcodes(self):
         allManagers = FMSUser.objects.filter(manager=True)
         allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
         return allCommunesHavingManagers.filter(hide=False)
@@ -1030,8 +1033,8 @@ class ZipCode(models.Model):
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
 
-    
- 
+
+
     class Meta:
         translate = ('name', )
 
@@ -1050,30 +1053,30 @@ class FaqEntry(models.Model):
 
 @receiver(pre_save,sender=FaqEntry)
 def save(sender, instance, **kwargs):
-    if instance.order == None: 
+    if instance.order == None:
         instance.order = instance.id + 1
-    
+
 
 class FaqMgr(object):
-        
+
     def incr_order(self, faq_entry):
         if faq_entry.order == 1:
             return
         other = FaqEntry.objects.get(order=faq_entry.order-1)
         self.swap_order(other[0], faq_entry)
-    
-    def decr_order(self, faq_entry): 
+
+    def decr_order(self, faq_entry):
         other = FaqEntry.objects.filter(order=faq_entry.order+1)
         if len(other) == 0:
             return
         self.swap_order(other[0], faq_entry)
-        
+
     def swap_order(self, entry1, entry2):
         entry1.order = entry2.order
         entry2.order = entry1.order
         entry1.save()
         entry2.save()
- 
+
 
 class ListItem(models.Model):
     """
@@ -1084,7 +1087,7 @@ class ListItem(models.Model):
     model_class = models.CharField(verbose_name=_('Related model class name'),max_length=100,null=False)
     model_field = models.CharField(verbose_name=_('Related model field'),max_length=100,null=False)
     code = models.CharField(max_length=50,null=False)
-    
+
     class Meta:
         translate = ('label', )
 
