@@ -506,7 +506,7 @@ def report_notify(sender, instance, **kwargs):
             if report.status == Report.REFUSED:
                 ReportNotification(
                     content_template='send_report_refused_to_creator',
-                    recipient=report.citizen.fmsuser or report.created_by.fmsuser,
+                    recipient=report.citizen or report.created_by,
                     related=report,
                     reply_to = report.responsible_manager.email,
                 ).save()
