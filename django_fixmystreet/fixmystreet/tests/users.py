@@ -25,7 +25,7 @@ class FMSUserTest(TestCase):
 
        self.commune = OrganisationEntity(name='test ward')
        #Create a FMSUser
-       self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False, username="aaa", first_name="aaa", last_name="aaa", email="a@a.com")
+       self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False, username="aaa", first_name="aaa", last_name="aaa", email="a@a.com")
        self.fmsuser.save();
 
     def testCreationOfFMSUser(self):
@@ -48,10 +48,10 @@ class FMSUserTest(TestCase):
        self.assertFalse(self.fmsuser.is_citizen())
        self.assertTrue(self.fmsuser.is_pro())
        self.fmsuser.leader = False
-       self.fmsuser.impetrant = True 
+       self.fmsuser.applicant = True 
        self.assertFalse(self.fmsuser.is_citizen())
        self.assertTrue(self.fmsuser.is_pro())
-       self.fmsuser.impetrant = False
+       self.fmsuser.applicant = False
        self.fmsuser.contractor = True 
        self.assertFalse(self.fmsuser.is_citizen())
        self.assertTrue(self.fmsuser.is_pro())
@@ -68,15 +68,15 @@ class FMSUserTest(TestCase):
        self.assertFalse(self.fmsuser.agent)
        self.assertFalse(self.fmsuser.manager)
        self.assertFalse(self.fmsuser.leader)
-       self.assertFalse(self.fmsuser.impetrant)
+       self.assertFalse(self.fmsuser.applicant)
        self.assertFalse(self.fmsuser.contractor)
        self.fmsuser.agent = True 
        self.fmsuser.manager = True 
        self.fmsuser.leader = True 
-       self.fmsuser.impetrant = True 
+       self.fmsuser.applicant = True 
        self.fmsuser.contractor = True 
        self.assertTrue(self.fmsuser.agent)
        self.assertTrue(self.fmsuser.manager)
        self.assertTrue(self.fmsuser.leader)
-       self.assertTrue(self.fmsuser.impetrant)
+       self.assertTrue(self.fmsuser.applicant)
        self.assertTrue(self.fmsuser.contractor)

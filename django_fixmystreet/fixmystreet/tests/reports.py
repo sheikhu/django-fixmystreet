@@ -15,7 +15,7 @@ class NotificationTest(TestCase):
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
         #Create a FMSUser
-        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False)
+        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False)
         self.fmsuser.save();
         self.commune = OrganisationEntity(name='test ward')
     
@@ -148,7 +148,7 @@ class PhotosTest(TestCase):
         self.user.save()
         self.category = ReportMainCategoryClass.objects.all()[0] 
         #Create a FMSUser
-        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, impetrant=False, contractor=False)
+        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False)
         self.fmsuser.save();
         #self.ward = Ward.objects.all()[0]
 
