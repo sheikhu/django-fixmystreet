@@ -4,40 +4,49 @@
 <!-- ####################### REPORT ############################### -->
 <!-- ############################################################## -->
 <hr/>
-<h1>{% trans 'label_pdf_report_title_main' %}</h1>
+<h1>{% trans 'Report Data' %}</h1>
 
-<table>
+<table style="width:100%">
 	<tr>
 		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_localisation' %}
-			</strong>
-		</td>	
-		<td colspan="2">
-			<strong>
-				{% trans 'label_pdf_report_title_commune' %}
-			</strong>
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			{{report.address}}
-		</td>	
-		<td colspan="2">
-			{{report.postalcode}} {{report.responsible_entity.name}}
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				{% trans 'label_pdf_report_title_category' %}
+				{% trans 'Report Address' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_manager' %}
+				{% trans 'Report City' %}
 			</strong>
 		</td>
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.address}}, {{report.address_number}}
+		</td>	
+		<td>
+			{{report.postalcode}} {{report.responsible_entity.name}}
+		</td>	
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'Report Category' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'Report Responsible Manager' %}
+			</strong>
+		</td>
+                <td>
+			&nbsp;
+		</td>	
 	</tr>
 	<tr>
 		<td>
@@ -46,52 +55,55 @@
 		<td>
 			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} (<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.email}}</a>, {{report.responsible_manager.telephone}})
 		</td>
-	</tr>
-
-
-</table>
-<hr/>
-<table>
-	<tr>
-		<td colspan="2">
-			<strong>
-				{% trans 'label_pdf_report_title_ticket_number' %}
-			</strong>
-		</td>	
-
-		<td colspan="2">
-			<strong>
-				{% trans 'label_pdf_report_title_geocode' %}
-			</strong>
+                <td>
+			&nbsp;
 		</td>	
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td>
+			<strong>
+				{% trans 'Report Ticket' %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% trans 'Report Geolocation' %}
+			</strong>
+		</td>	
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
 			{{report.get_ticket_as_string}}	
 		</td>	
-		<td colspan="2">
+		<td>
 			L:{{report.point.x}} l:{{report.point.y}}
+		</td>	
+                <td>
+			&nbsp;
 		</td>	
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_date' %}
+				{% trans 'Report Creation Date' %}
 			</strong>
 		</td>
 		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_author' %}
+				{% trans 'Report Author' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_phone' %}
+				{% trans 'Report Contact Phone' %}
 			</strong>
 		</td>	
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td>
 			{{report.created}}
 		</td>	
 		<td>
@@ -110,32 +122,32 @@
 		</td>	
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_status' %}
+				{% trans 'Report Status' %}
 			</strong>
 		</td>
-		<td colspan="2">
+		<td>
 			<strong>
-				{% trans 'label_pdf_report_title_email' %}
+				{% trans 'Report Contact Mail' %}
 			</strong>
 		</td>	
-		<td>
+                <td>
 			&nbsp;
 		</td>	
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td>
 			{{ report.get_status_display }}
 		</td>	
-		<td colspan="2">
+		<td>
 			{% if report.created_by %}
 			<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
 			{% else %}
 			<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
 			{% endif %}
 		</td>	
-		<td>
+                <td>
 			&nbsp;
 		</td>	
 	</tr>
@@ -145,49 +157,28 @@
 <!-- ############################################################## -->
 <!-- ####################### HISTORY ############################## -->
 <!-- ############################################################## -->
-<hr/>
-<h1>{% trans 'label_pdf_historique_title_main' %}</h1>
-<!-- 
-{% if report.has_at_least_one_non_confidential_comment %}
-
+<h1>{% trans 'Report History' %}</h1>
+{% if activity_list %}
 <table>
-	<th><strong>{% trans 'label_pdf_historique_title_date' %}</strong></th>
-	<th><strong>{% trans 'label_pdf_historique_title_from' %}</strong></th>
-	<th><strong>{% trans 'label_pdf_historique_title_title' %}</strong></th>
-	<th><strong>{% trans 'label_pdf_historique_title_text' %}</strong></th> -->
-
-	<!-- {% for comment in comment_list %}
-	{% if not comment.is_citizen_visible and pro_version == "0" %}
-		<!-- SKIP ROW if the current comment annex is confidential ->
-	{% elif not comment.is_confidential_visible and pro_version == "1" %}
-	
-        {% else %}
+	{% for activity in activity_list %}
 	<tr>
-		<td>{{comment.created}}</td>
-		<td>{{comment.created_by.fmsuser.get_display_name}}</td>
-		<td>{{comment.title}}</td>
-		<td>{{comment.text}}</td>
+		<td>
+			<li><strong>{{activity.event_at}}:</strong> {{activity}}</li>
+		</td>
 	</tr>
-	{% endif %}
-	{% endfor %} -->
-<!-- </table> -->
+	{% endfor %}
+</table>
 
-<!-- {% else %} -->
+{% else %}
 
-<h3>{% trans 'label_pdf_historique_title_no_content' %}</h3>
+<h3>{% trans 'No Report History' %}</h3>
 
-<!-- {% endif %} -->
-
-<hr/>
-
+{% endif %}
 
 <!-- ############################################################## -->
 <!-- ###################### COMMENTS ############################## -->
 <!-- ############################################################## -->
-
-
-
-<h1>{% trans 'label_pdf_comment_title_main' %}</h1>
+<h1>{% trans 'Report Comments' %}</h1>
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
 {% if comment_list %}
 <table>
@@ -200,13 +191,13 @@
 	{% else %}
 	<tr>
 		<td colspan="2">
-			<strong>{% trans 'label_pdf_comment_title_text' %}</strong>
+			<strong>{% trans 'Comment title' %}</strong>
 		</td>
 		<td>
-			<strong>{% trans 'label_pdf_comment_title_created_at' %}</strong>
+			<strong>{% trans 'Creation Date' %}</strong>
 		</td>
 		<td>
-			<strong>{% trans 'label_pdf_comment_title_created_by' %}</strong>
+			<strong>{% trans 'Created By' %}</strong>
 		</td>
 	</tr>
 	<tr>
@@ -230,7 +221,7 @@
 
 {% else %}
 
-<h3>{% trans 'label_pdf_comment_title_no_content' %}</h3>
+<h3>{% trans 'No Report Comment' %}</h3>
 
 {% endif %}
 {% endif %}
@@ -241,7 +232,7 @@
 <!-- ####################### PHOTOS ############################### -->
 <!-- ############################################################## -->
 <hr/>
-<h1>{% trans 'label_pdf_photo_title_main' %}</h1>
+<h1>{% trans 'Report Files' %}</h1>
 
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
 {% if file_list %}
@@ -253,48 +244,45 @@
 	{% elif not file.is_confidential_visible and pro_version == "1" %}
 		<!-- SKIP ROW if the current file annex is confidential -->
 	{% else %}
-	<tr>
+        <tr>
 		<td rowspan="11">
 			{% if file.file_type == 1 %}
-			<img width="256px" height="256px" src="http://localhost:8000/static/images/icon-pdf.png"/>
+			<img width="256px" height="256px" src="http://{{request.get_host}}/static/images/icon-pdf.png"/>
 			{% endif %}
 			{% if file.file_type == 2 %}
-			<img width="256px" height="256px" src="http://localhost:8000/static/images/icon-word.jpg"/>
+			<img width="256px" height="256px" src="http://{{request.get_host}}/static/images/icon-word.jpg"/>
 			{% endif %}
 			{% if file.file_type == 3 %}
-			<img width="256px" height="256px" src="http://localhost:8000/static/images/icon-excel.png"/>
+			<img width="256px" height="256px" src="http://{{request.get_host}}/static/images/icon-excel.png"/>
 			{% endif %}
 			{% if file.file_type == 4 %}
-			<img style="max-width:256px;max-height:256px;" src="http://localhost:8000{{file.file.url}}"/>
+			<img style="max-width:256px;max-height:256px;" src="http://{{request.get_host}}{{file.file.url}}"/>
 			{% endif %}
 		</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'label_pdf_file_created' %}</strong></td>
+		<td><strong>{% trans 'Creation Date' %}</strong></td>
 	</tr>
 	<tr>
 		<td>{{file.file_creation_date}}</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'label_pdf_file_published' %}</strong></td>
+		<td><strong>{% trans 'Publication Date' %}</strong></td>
 	</tr>
 	<tr>
 		<td>{{file.created}}</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'label_pdf_file_title_city' %}</strong></td>
+		<td><strong>{% trans 'City' %}</strong></td>
 	</tr>
 	<tr>
 		<td>{{report.responsible_entity.name}}</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'label_pdf_file_title_source' %}</strong></td>
-	</tr>
-	<tr>
 		<td>{{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, {{file.created_by.fmsuser.telephone}}){% endif %}</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'label_pdf_file_title_title' %}</strong></td>
+		<td><strong>{% trans 'Image Name' %}</strong></td>
 	</tr>
 	<tr>
 		<td>{{file.title}}</td>
@@ -310,7 +298,7 @@
 
 {% else %}
 
-<h3>{% trans 'label_pdf_photo_title_no_content' %}</h3>
+<h3>{% trans 'No Report File' %}</h3>
 
 {% endif %}
 {% endif %}

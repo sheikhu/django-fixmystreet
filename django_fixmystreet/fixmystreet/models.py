@@ -620,7 +620,21 @@ class ReportFile(ReportAttachment):
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
+    #def _save_FIELD_file(self, field, filename, raw_contents, save=True):
+    #   import pdb
+    #   pdb.set_trace()
+    #   original_upload_to = field.upload_to
+    #   field.upload_to = '%s/%s' % (field.upload_to, self.user.username)
+    #   super(Patch, self)._save_FIELD_file(field, filename, raw_contents, save)
+    #   field.upload_to = original_upload_to
+    #def generate_filename(instance, old_filename):
+    #    import pdb
+    #    pdb.set_trace()
+    #    extension = os.path.splitext(old_filename)[1]
+    #    filename = old_filename+'_'+str(time.time()) + extension
+    #    return 'files/' + filename
     file = models.FileField(upload_to="files")
+    #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
     title = models.CharField(max_length=250)
@@ -937,7 +951,7 @@ class ReportEventLog(models.Model):
         SOLVE_REQUEST: _("Report pointed as done"),
         MANAGER_ASSIGNED: _("Report as been assing to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_new} to {related_old}"),
-        PUBLISH: _("Report has been publisbed by {user}"),
+        PUBLISH: _("Report has been published by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
     }

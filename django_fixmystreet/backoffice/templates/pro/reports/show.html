@@ -150,6 +150,8 @@ $(document).ready(function() {
 	                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish All' %}</button>
         	                </td>
     			{% endif %}
+               	{% endif %}
+        	{% if report.responsible_manager.id == request.user.id or fms_user.leader %}
 		        <td>
                             <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
 			</td>	

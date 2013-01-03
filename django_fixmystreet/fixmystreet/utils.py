@@ -1,6 +1,7 @@
 import json
 import tempfile
 import datetime
+import time
 import os
 import logging
 import shutil
@@ -12,6 +13,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
+from django.contrib.auth.models import User
 
 import transmeta
 from stdimage import StdImageField
@@ -164,7 +166,10 @@ def save_file_to_server(file_name, file_type, file_extension,file_index,report_i
         filepath = "files/%s/%s/" % (date.year,date.month);
         if not os.path.exists(os.path.join(settings.MEDIA_ROOT,filepath)):
             os.makedirs(os.path.join(settings.MEDIA_ROOT,filepath))
-        filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
+        #filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
+        #Create random number
+        random_number = User.objects.make_random_password(length=30, allowed_chars='123456789')
+        filepath += "%s_%s_%s_%s.%s" % (file_type,report_id,file_index,random_number,file_extension)
         srcpath = str(file_name)
         if not "media" in srcpath:
             srcpath = ("media/%s")%(srcpath)

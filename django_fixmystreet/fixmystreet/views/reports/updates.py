@@ -36,6 +36,7 @@ def new( request, report_id ):
     raise Http404()
 
 
+#DEPRECATED ??? USE TH EONE IN BACKOFFICE???
 def reportPdf(request, report_id, pro_version):
     '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
     report = get_object_or_404(Report, id=report_id)
