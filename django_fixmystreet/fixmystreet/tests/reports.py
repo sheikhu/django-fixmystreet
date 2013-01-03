@@ -6,43 +6,43 @@ from django_fixmystreet.fixmystreet.models import Report, ReportCategory, Report
 
 
 class NotificationTest(TestCase):
-    
+
     fixtures = ["bootstrap", "list_items"]
-    
+
     def setUp(self):
         self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
         #Create a FMSUser
-        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False)
+        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr")
         self.fmsuser.save();
         self.commune = OrganisationEntity(name='test ward')
-    
+
     def testReportFileType(self):
         new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
-        
+
         reportFile = ReportFile(file_type=ReportFile.PDF, report = new_report)
         self.assertTrue(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
         self.assertTrue(reportFile.is_document())
-        
+
         reportFile = ReportFile(file_type=ReportFile.WORD, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertTrue(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
         self.assertTrue(reportFile.is_document())
-        
+
         reportFile = ReportFile(file_type=ReportFile.EXCEL, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertTrue(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
         self.assertTrue(reportFile.is_document())
-        
+
         reportFile = ReportFile(file_type=ReportFile.IMAGE, report = new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
@@ -52,15 +52,15 @@ class NotificationTest(TestCase):
 
     def testReportResponsibleAssignment(self):
         '''Test the assignment of a responsible when creating a report'''
-        #When a responsible_manager is defined responsible_entity is not recomputed      
+        #When a responsible_manager is defined responsible_entity is not recomputed
         new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
         new_report.save()
-        self.assertTrue(new_report.responsible_entity==None) 
+        self.assertTrue(new_report.responsible_entity==None)
         #When no responsible_manager is defined then the commune must be assigned and the responsible_entity
         new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000)
         new_report.save()
         self.assertTrue(new_report.responsible_entity!=None)
- 
+
     #@skip("to conform")
     #def testToCouncillor(self):
     #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
@@ -108,7 +108,7 @@ class NotificationTest(TestCase):
     #    self.assertEquals(len(mail.outbox), 3)
     #    self.assertEquals(len(mail.outbox[2].to), 1)
     #    self.assertEquals(mail.outbox[2].to, [self.councillor.email])
-        
+
 
     #@skip("to conform")
     #def testNotMatchingCategoryClass(self):
@@ -146,14 +146,14 @@ class PhotosTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('test', 'test@fixmystreet.irisnet.be', 'pwd')
         self.user.save()
-        self.category = ReportMainCategoryClass.objects.all()[0] 
+        self.category = ReportMainCategoryClass.objects.all()[0]
         #Create a FMSUser
         self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False)
         self.fmsuser.save();
         #self.ward = Ward.objects.all()[0]
 
     #def testPhotoExifData(self):
-    #    
+    #
     #    imgs_to_test = ({
     #        'path': 'top-left-1.jpg',
     #        'orientation': 1
@@ -170,9 +170,9 @@ class PhotosTest(TestCase):
     #
     #    for img in imgs_to_test:
     #        path = os.path.join(settings.MEDIA_ROOT, 'photos-test', img['path'])
-    #        
+    #
     #        shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
-    #        
+    #
             #report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
     #        report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
 
@@ -192,7 +192,7 @@ class PhotosTest(TestCase):
     #        new_img = Image.open(report.photo.path)
     #        exifs = get_exifs(new_img)
     #        self.assertTrue('Orientation' not in exifs)
-            
+
             # former_pix = former_img.load()
             # new_pix = new_img.load()
             # self.assertEquals(former_pix[0,0],new_pix[0,0]) # no image rotation but resized, how to test it ??

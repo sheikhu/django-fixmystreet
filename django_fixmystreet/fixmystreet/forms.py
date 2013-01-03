@@ -7,7 +7,7 @@ from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import ListItem, ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -56,10 +56,10 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
             if not groups.has_key(catclass):
                 groups[catclass] = []
             groups[catclass].append((category.pk, {'label':category.name, 'family':category.category_class.pk, 'public':category.public}))
-        
+
         for catclass, values in groups.items():
             choices.append((catclass,values))
-       
+
         super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(),*args,**kwargs)
 
 
@@ -89,15 +89,15 @@ class CategoryChoiceField(forms.fields.ChoiceField):
         uniqueCategory = ugettext_lazy("Main Category")
         groups = {}
         for category in categories:
-            catclass = uniqueCategory 
+            catclass = uniqueCategory
             if not groups.has_key(catclass):
                 groups[catclass] = []
             if not groups[catclass].__contains__((category.pk, category.name)):
                 groups[catclass].append((category.pk, category.name))
-        
+
         for catclass, values in groups.items():
             choices.append((catclass,values))
-       
+
         super(CategoryChoiceField,self).__init__(choices=choices,*args,**kwargs)
 
     def clean(self, value):
@@ -160,7 +160,7 @@ class CitizenReportForm(ReportForm):
     class Meta:
         model = Report
         fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_lastname', 'telephone')
-   
+
     telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
     category = CategoryChoiceField(label=ugettext_lazy("category"))
     quality = forms.ChoiceField(choices=qualities)
@@ -183,7 +183,7 @@ class CitizenReportForm(ReportForm):
         except FMSUser.DoesNotExist:
             #Add information about the citizen connected if it does not exist
             report.citizen = FMSUser.objects.create(telephone=self.cleaned_data['telephone'],username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
-        
+
         if commit:
             report.save()
 
@@ -203,10 +203,10 @@ class ContactForm(forms.Form):
                              label=ugettext_lazy('Email'))
     body = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'required' }),
                               label=ugettext_lazy('Message'))
-    
+
     def save(self, fail_silently=False):
         message = render_to_string("emails/contact/message.txt", self.cleaned_data )
-        send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message, 
+        send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message,
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
 
@@ -256,20 +256,20 @@ class ReportFileForm(forms.ModelForm):
         return fileUpdate
 
 class ReportCommentForm(forms.ModelForm):
-	class Meta:
-		model=ReportComment
-		fields=('text',)
-	
-	def save(self,user,report,commit=True):
-		comment= super(ReportCommentForm,self).save(commit=False)
-		comment.report = report
-                
-                #Add the creator
-                comment.creator = user
-		
-                if commit:
-			comment.save()
-		return comment
+    class Meta:
+        model=ReportComment
+        fields=('text',)
+
+    def save(self,user,report,commit=True):
+        comment= super(ReportCommentForm,self).save(commit=False)
+        comment.report = report
+
+        #Add the creator
+        comment.creator = user
+
+        if commit:
+            comment.save()
+        return comment
 
 
 class FileUploadForm(forms.Form):

@@ -10,13 +10,13 @@ from django.utils.translation import ugettext as _
 from django_fixmystreet.fixmystreet.models import FMSUser, Report
 
 
+# TODO replace ALL this class by this single line: forms.ModelChoiceField(queryset=FMSUser.objects.filter(manager=True, organisation=connectedUser.organisation).order_by('last_name', 'first_name'), empty_label=None, widget=forms.RadioSelect)
 class ManagersChoiceField(forms.fields.ChoiceField):
 
     def __init__(self, connectedUser, *args, **kwargs):
         choices = []
-        currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
         managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
-        managers = managers.filter(organisation_id=currentUserOrganisation.id)
+        managers = managers.filter(organisation=connectedUser.organisation)
 
         for manager in managers:
             choices.append((manager.pk,manager.last_name+" "+manager.first_name))
@@ -28,11 +28,11 @@ class ManagersChoiceField(forms.fields.ChoiceField):
         currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
         managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
         managers = managers.filter(organisation_id=currentUserOrganisation.id)
-        
+
         for manager in managers:
             choices.append((manager.pk,manager.last_name+" "+manager.first_name))
         super(ManagersChoiceField, self)._set_choices(choices)
-    
+
     def clean(self, value):
         super(ManagersChoiceField,self).clean(value)
         try:
@@ -46,18 +46,18 @@ class ManagersListForm(forms.Form):
     def __init__(self, connectedUser,  *args, **kwargs):
         super(ManagersListForm, self).__init__(*args, **kwargs)
         self.manager = ManagersChoiceField(connectedUser, label="")
-        
-    
+
+
     def refreshChoices(self, connectedUser):
         self.manager.refreshChoices(connectedUser)
-    
+
 
 
 class UserEditForm(UserChangeForm):
     class Meta:
         model = FMSUser
         fields = ('first_name','last_name',"username",'email','telephone','is_active')
-        
+
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     is_active = forms.BooleanField(required=True)
 
@@ -92,7 +92,7 @@ class FmsUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')
-    
+
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
     is_active = forms.BooleanField(required=False)
     user_type = forms.ChoiceField(label=ugettext_lazy("User type"),required=True, choices=(
@@ -112,13 +112,13 @@ class FmsUserForm(UserCreationForm):
         fmsuser.email=self.cleaned_data["email"]
         fmsuser.telephone= self.cleaned_data['telephone']
         fmsuser.lastUsedLanguage="EN"
-        
+
         if (self.data.__contains__('is_active')):
                isActive = True
         else:
                isActive = False
         fmsuser.is_active = isActive
-        
+
         #In V1 all leaders are created in DB on application launch (in other words by sql queries)
         fmsuser.agent = (user_type == FMSUser.AGENT or user_type == FMSUser.MANAGER) #All gestionnaires are also agents
         fmsuser.manager = (user_type == FMSUser.MANAGER)
