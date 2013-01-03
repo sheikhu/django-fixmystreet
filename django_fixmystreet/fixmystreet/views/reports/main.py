@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ZipCode
-from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm
+from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm, MarkAsDoneForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
@@ -55,6 +55,7 @@ def show(request, slug, report_id):
                 "update_form": ReportCommentForm(),
                 "comment_form": ReportCommentForm(),
                 "file_form":ReportFileForm(),
+                "mark_as_done_form":MarkAsDoneForm(),
             },
             context_instance=RequestContext(request))
 

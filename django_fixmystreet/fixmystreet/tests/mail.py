@@ -104,7 +104,7 @@ class MailTest(TestCase):
 		#Login to access the pro page to create a user
 		self.client.login(username='manager', password='test')
 		#Refuse the created report
-		response = self.client.post('/en/pro/report/1/refuse/',{'more_info_text':'more info'}, follow=True)
+		response = self.client.post('/en/pro/report/1/refuse/',{'refusal_motivation':'more info'}, follow=True)
 		self.assertEquals(response.status_code, 200)
 		self.assertEquals(len(mail.outbox),3)
 		#The status of the report must now be REFUSED
@@ -134,14 +134,26 @@ class MailTest(TestCase):
 		self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
-		#Send a post request to mark the report as done
-		response = self.client.post('/en/report/1/update/',{'is_fixed':'1'}, follow=True)
+
+		#Login to access the pro page
+		self.client.login(username='manager', password='test')
+		#Publish the created report
+		response = self.client.post('/en/pro/report/1/accept/', follow=True)
 		self.assertEquals(response.status_code, 200)
+
+		#Send a post request to mark the report as done
+
+		response = self.client.post('/en/report/1/update/',{'is_fixed':'True'})
+		self.assertEquals(response.status_code, 302)
+		self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 		#3 mails have been sent, 2 for the report creation and 1 for telling the responsible manager that the report is marked as done
+		self.assertEquals(Report.objects.get(id=1).status, Report.SOLVED)
+
 		self.assertEquals(len(mail.outbox),3)
 		self.assertTrue(self.manager.email in mail.outbox[2].to)
 		#Send another post request to mark the report as done
-		response = self.client.post('/en/report/1/update/',{'is_fixed':'1'}, follow=True)
-		self.assertEquals(response.status_code, 200)
+		response = self.client.post('/en/report/1/update/',{'is_fixed':'True'})
+		self.assertEquals(response.status_code, 302)
+		self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 		#Again 3 mails have been sent, the extra mark as done request will not send an extra email to the responsible manager
 		self.assertEquals(len(mail.outbox),3)

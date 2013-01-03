@@ -29,8 +29,8 @@ from django_extensions.db.models import TimeStampedModel
 
 
 class UserTrackedModel(TimeStampedModel):
-    created_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_created')
-    modified_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_modified')
+    created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
+    modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
     def save(self, *args, **kwargs):
         user = get_current_user()
@@ -142,7 +142,6 @@ class FMSUser(User):
         d['organisation'] = getattr(self.get_organisation(), 'id')
         return simplejson.dumps(d)
     def get_number_of_created_reports(self):
-        print 'number of created reports'
         userConnectedOrganisation = self.organisation
         reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
         return reports.count()
@@ -152,7 +151,7 @@ class FMSUser(User):
         #if the user is an executeur de travaux then user the dependent organisation id
         if (self.contractor == True):
             reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-        else:   
+        else:
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
         return reports.count()
     def get_number_of_closed_reports(self):
@@ -161,9 +160,9 @@ class FMSUser(User):
         #if the user is an executeur de travaux then user the dependent organisation id
         if (self.contractor == True):
             reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
-        else:    
+        else:
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
-    
+
         return reports.count()
     def get_number_of_subscriptions(self):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
@@ -212,7 +211,6 @@ class OrganisationEntity(UserTrackedModel):
         #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
         return reports.count()
     def get_total_number_of_users(self):
-        print "total number of users"
         users = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
         return users.count()
     def get_number_of_agents(self):
@@ -306,8 +304,9 @@ class Report(UserTrackedModel):
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
 
-    citizen = models.ForeignKey(User, null=True, related_name='citizen_reports', blank=True)
+    citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
     refusal_motivation = models.TextField(null=True, blank=True)
+    mark_as_done_motivation = models.TextField(null=True, blank=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
@@ -505,12 +504,12 @@ def report_notify(sender, instance, **kwargs):
     if not kwargs['raw']:
 
         if report.__former['status'] != report.status:
-
             if report.status == Report.REFUSED:
                 ReportNotification(
                     content_template='send_report_refused_to_creator',
                     recipient=report.citizen or report.created_by,
                     related=report,
+                    reply_to = report.responsible_manager.email,
                 ).save()
 
                 ReportEventLog(
@@ -524,6 +523,7 @@ def report_notify(sender, instance, **kwargs):
                         content_template='send_report_closed_to_subscribers',
                         recipient=subscription.subscriber,
                         related=report,
+                        reply_to=report.responsible_manager.email,
                     ).save()
 
                 ReportEventLog(
@@ -679,6 +679,7 @@ def notify_report_subscription(sender, instance, **kwargs):
             content_template='send_subscription_to_subscriber',
             recipient=instance.subscriber,
             related=report,
+            reply_to=report.responsible_manager.email,
         )
         notifiation.save()
 
@@ -862,6 +863,7 @@ class ReportNotification(models.Model):
     success = models.BooleanField()
     error_msg = models.TextField()
     content_template = models.CharField(max_length=40)
+    reply_to = models.CharField(max_length=40,null=True)
 
     related = generic.GenericForeignKey('related_content_type', 'related_object_id')
     related_content_type = models.ForeignKey(ContentType)
@@ -875,6 +877,9 @@ def send_notification(sender, instance, **kwargs):
         instance.success = False
         return
 
+    reply_to = settings.DEFAULT_FROM_EMAIL
+    if instance.reply_to:
+        reply_to = instance.reply_to
     recipients = (instance.recipient.email,)
 
     data = {
@@ -899,7 +904,7 @@ def send_notification(sender, instance, **kwargs):
 
     subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-    msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients)
+    msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":reply_to})
 
     if html:
         msg.attach_alternative(html, "text/html")

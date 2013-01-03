@@ -40,7 +40,7 @@ class JsonHttpResponse(HttpResponse):
             data = args.pop(0)
         else:
             self.data['status'] = 'success'
-            
+
         self.data.update(data)
 
         kwargs['mimetype'] = 'application/json'
@@ -76,7 +76,7 @@ class FixStdImageField(StdImageField):
             exifs = get_exifs(img)
             if('Orientation' in exifs):
                 orientation = exifs['Orientation']
-                
+
                 if(orientation == 3 or orientation == 4):
                     img = img.rotate(180)
                 elif(orientation == 5 or orientation == 6):
@@ -86,7 +86,7 @@ class FixStdImageField(StdImageField):
 
                 if(orientation == 2 or orientation == 4 or orientation == 5 or orientation == 7):
                     img = ImageOps.mirror(img)
-                
+
                 img.save(path)
 
     def contribute_to_class(self, cls, name):
@@ -158,7 +158,7 @@ def get_current_user():
 
 class CurrentUserMiddleware:
     def process_request(self, request):
-        set_current_user(getattr(request, 'user', None))
+        set_current_user(getattr(request, 'fmsuser', None))
 
 
 def save_file_to_server(file_name, file_type, file_extension,file_index,report_id):
