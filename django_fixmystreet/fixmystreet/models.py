@@ -29,8 +29,8 @@ from django_extensions.db.models import TimeStampedModel
 
 
 class UserTrackedModel(TimeStampedModel):
-    created_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_created')
-    modified_by = models.ForeignKey(User, null=True, editable=False, related_name='%(class)s_modified')
+    created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
+    modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
     def save(self, *args, **kwargs):
         user = get_current_user()
@@ -151,7 +151,7 @@ class FMSUser(User):
         #if the user is an executeur de travaux then user the dependent organisation id
         if (self.contractor == True):
             reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-        else:   
+        else:
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
         return reports.count()
     def get_number_of_closed_reports(self):
@@ -160,9 +160,9 @@ class FMSUser(User):
         #if the user is an executeur de travaux then user the dependent organisation id
         if (self.contractor == True):
             reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
-        else:    
+        else:
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
-    
+
         return reports.count()
     def get_number_of_subscriptions(self):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
@@ -304,7 +304,7 @@ class Report(UserTrackedModel):
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
 
-    citizen = models.ForeignKey(User, null=True, related_name='citizen_reports', blank=True)
+    citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
     refusal_motivation = models.TextField(null=True, blank=True)
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
