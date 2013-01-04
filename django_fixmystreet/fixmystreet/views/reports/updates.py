@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
@@ -22,7 +22,7 @@ def new( request, report_id ):
             comment_form = ReportCommentForm(request.POST)
             if comment_form.is_valid():
                 comment_form.save(request.user, report)
-        
+
         if request.POST['form-type'] == u"file-form":
             #set default title if not given
             fileTitle = request.POST.get("title")
@@ -31,7 +31,7 @@ def new( request, report_id ):
             file_form = ReportFileForm(request.POST,request.FILES)
             if file_form.is_valid:
                 file_form.save(request.user, report)
-        
+
         if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
         else:
@@ -39,6 +39,7 @@ def new( request, report_id ):
     raise Http404()
 
 
+#DEPRECATED ??? USE TH EONE IN BACKOFFICE???
 def reportPdf(request, report_id, pro_version):
     '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
     report = get_object_or_404(Report, id=report_id)
@@ -46,11 +47,7 @@ def reportPdf(request, report_id, pro_version):
     #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
     # pro_Version = 0
 
-    if request.GET.get('output', False):
-        return render_to_response("pro/pdf.html", {
-            'report' : report
-        }, context_instance=RequestContext(request))
-    else:
-        return render_to_pdf("pro/pdf.html", {'report' : report, 'pro_version' : pro_version},
+
+    return render_to_pdf(request, "pro/pdf.html", {'report' : report, 'pro_version' : pro_version},
                 context_instance=RequestContext(request))
 

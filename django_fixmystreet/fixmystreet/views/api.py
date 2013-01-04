@@ -322,9 +322,9 @@ def create_report_pro(request):
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''    
     #Test the submit content size (max 2MB)
-    if (request.META.get('CONTENT_LENGTH') > 2000000):
+    if (int(request.META.get('CONTENT_LENGTH')) > 2000000):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_EXCEED_SIZE","request":request.POST}),mimetype='application/json')
-        
+    
     data_report_id = request.POST.get('report_id')
     data_file_content = request.FILES.get('report_file')
     

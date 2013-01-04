@@ -12,31 +12,43 @@ $(function(){
  /**********************************************/
     /* Prepare iphone toogle button look and feel */
     /**********************************************/
-    $(":checkbox.normal").iphoneStyle({ background: "#F9F3E8",onChange:function(value){
+    $("input[type=radio]").bind("click",function(){
+        value = this; 
         var vals = $(value).attr("id").split("_");
         if(vals[0].indexOf("public")!=-1){
-                    // Public checkbox changed
-                    if(vals[1].indexOf("file")!=-1){
+        	// Public checkbox changed
+                if(vals[1].indexOf("file")!=-1){
                     //TODO handle public bool of file with id vals[2]
-                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=1';
                 }
                 else{
                     //TODO handle public bool of comment with id vals[2]
-                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=valid&updateValue='+ $(value).attr("checked");
+                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=1';
+                }
+        }
+        else if (vals[0].indexOf("private")!=-1) {
+                //Confidential checkbox changed
+                if(vals[1].indexOf("file")!=-1){
+                    //TODO handle Confidential bool of file with id vals[2]
+                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=2';
+                }
+                else{
+                    //TODO handle Confidential bool of comment with id vals[2]
+                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=2';
+                }
+        }
+        else {
+                //Confidential checkbox changed
+                if(vals[1].indexOf("file")!=-1){
+                    //TODO handle Confidential bool of file with id vals[2]
+                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=3';
+                }
+                else{
+                    //TODO handle Confidential bool of comment with id vals[2]
+                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=3';
                 }
             }
-            else{
-                    //Confidential checkbox changed
-                    if(vals[1].indexOf("file")!=-1){
-                        //TODO handle Confidential bool of file with id vals[2]
-                        window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
-                    }
-                    else{
-                        //TODO handle Confidential bool of comment with id vals[2]
-                        window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=confidential&updateValue='+ $(value).attr("checked");
-                    }
-                }
-            } });
+         });
 
 /***************************/
 /* Set the current manager */
@@ -106,7 +118,7 @@ $(document).ready(function() {
 		<!-- ################################################### -->
 		<!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
 		<!-- ################################################### -->
-        	{% if report.responsible_manager.id == request.user.id or report.contractor.id = fms_user.organisation.id %}
+        	{% if report.responsible_manager == request.user or report.contractor == fms_user.organisation %}
 			<!-- ############################################# -->
 			<!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
 			<!-- ############################################# -->
@@ -150,6 +162,9 @@ $(document).ready(function() {
 	                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish All' %}</button>
         	                </td>
     			{% endif %}
+               	{% endif %}
+               
+        	{% if report.responsible_manager == request.user or fms_user.leader or report.contractor == fms_user.organisation %}
 		        <td>
                             <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
 			</td>	
@@ -376,6 +391,7 @@ $(document).ready(function() {
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Public?' %}</th>
+                    <th>{% trans 'Private?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
@@ -383,7 +399,7 @@ $(document).ready(function() {
                     {% endif %}
                     {% endif %}
                     {% for file in files %}
-			{% if not file.is_visible and not fms_user.can_see_confidential %}
+			{% if not file.is_public and not fms_user.can_see_confidential %}
 				<!-- Skip -->
 			{% else %}
                     	<tr>
@@ -414,30 +430,58 @@ $(document).ready(function() {
                     		</div>
                 		</td>
         
-		<!-- If the status allow such interactions -->		
-		{% if report.is_in_progress %}
-        <!--If the current user is the responsible manager-->
-        {% if report.responsible_manager.id == request.user.id %} 
-                	<td class="annexesChoiceBoxTD">
-                            {%if file.is_validated%}
-                    		<center><input checked='checked' class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
-                            {%else%}
-                            <center><input class='normal' type='checkbox' id="public_file_{{file.id}}"/></center>
-                            {%endif%}
-                	</td>
-                    {% endif %}
-                    <!--If the current user is the responsible manager or the creator of the report-->
-                    {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
-                	<td class="annexesChoiceBoxTD">
-                            {%if file.is_visible%}
-                    		<center><input class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
-                            {%else%}
-                            <center><input checked='checked' class='normal' type='checkbox' id="confidential_file_{{file.id}}"/></center>
-                            {%endif%}
-                	</td>
-       		{% endif %}
-		{% endif %}
-            </tr>
+            	<!-- If the status allow such interactions -->      
+		{% if report.is_in_progress  %}
+            		<!--If the current user is the responsible manager-->
+            		{% if report.responsible_manager.id == request.user.id %}
+               			<td class="annexesChoiceBoxTD">
+               			{% if file.is_public %}
+                                     <input 	type="radio" 
+						name="file_security_level" 
+						id="public_filesecuritylevel_{{file.id}}" 
+						value="{{file.PUBLIC}}"
+						checked="checked">
+                  		{% else %}
+                                     <input 	type="radio" 
+						name="file_security_level" 
+						id="public_filesecuritylevel_{{file.id}}" 
+						value="{{file.PUBLIC}}">
+                   		{% endif %}
+               			</td>
+               			<td class="annexesChoiceBoxTD">
+               			{% if file.is_private %}
+                                     <input 	type="radio" 
+						name="file_security_level" 
+						id="private_filesecuritylevel_{{file.id}}" 
+						value="{{file.PRIVATE}}"
+						checked="checked">
+                  		{% else %}
+                                     <input 	type="radio" 
+						name="file_security_level" 
+						id="private_filesecuritylevel_{{file.id}}" 
+						value="{{file.PRIVATE}}">
+                   		{% endif %}
+               			</td>
+            		{% endif %}
+                    	<!--If the current user is the responsible manager or the creator of the report-->
+                    	{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
+                		<td class="annexesChoiceBoxTD">
+               			{% if file.is_confidential %}
+                                     <input 	type="radio" 
+						name="file_security_level" 
+						id="confidential_filesecuritylevel_{{file.id}}" 
+						value="{{file.CONFIDENTIAL}}"
+						checked="checked">
+                  		{% else %}
+                                     <input 	type="radio" 
+						name="file_security_level" 
+						id="confidential_filesecuritylevel_{{file.id}}" 
+						value="{{file.CONFIDENTIAL}}">
+                   		{% endif %}
+                		</td>
+       		    	{% endif %}
+       	    	{% endif %}
+            	</tr>
 		{% endif %}
                     {% endfor %}
             </table>
@@ -457,6 +501,7 @@ $(document).ready(function() {
                     <!--If the current user is the responsible manager--> 
                     {% if report.responsible_manager.id == request.user.id %}
                     	<th>{% trans 'Public?' %}</th>
+                    	<th>{% trans 'Private?' %}</th>
                     {% endif %}
                     <!--If the current user is the responsible manager or the creator of the report-->
                     {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
@@ -464,7 +509,7 @@ $(document).ready(function() {
                     {% endif %}
                     {% endif %}
                     {% for comment in comments %}
-			{% if not comment.is_visible and not fms_user.can_see_confidential %}
+			{% if not comment.is_public and not fms_user.can_see_confidential %}
 				<!-- Skip -->
 			{% else %}
                 	<tr>
@@ -476,29 +521,56 @@ $(document).ready(function() {
                                 {% endblocktrans %}
                 			</div>
             			</td>
-            			<!-- If the status allow such interactions -->      
-		            	{% if report.is_in_progress  %}
+			{% if report.is_in_progress  %}
             			<!--If the current user is the responsible manager-->
             			{% if report.responsible_manager.id == request.user.id %}
-                			<td class="annexesChoiceBoxTD">
-                    				{% if comment.is_validated %}
-                    					<input checked='checked' class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
-                    				{% else %}
-                    					<input class='normal' type='checkbox' id="public_comment_{{comment.id}}"/>
-                    				{% endif%}
-                			</td>
+               				<td class="annexesChoiceBoxTD">
+               				{% if comment.is_public %}
+                                     	<input 	type="radio" 
+						name="comment_security_level" 
+						id="public_commentsecuritylevel_{{comment.id}}" 
+						value="{{comment.PUBLIC}}"
+						checked="checked">
+                  			{% else %}
+                                     	<input 	type="radio" 
+						name="comment_security_level" 
+						id="public_commentsecuritylevel_{{comment.id}}" 
+						value="{{comment.PUBLIC}}">
+                   			{% endif %}
+               				</td>
+               				<td class="annexesChoiceBoxTD">
+               				{% if comment.is_private %}
+                                     	<input 	type="radio" 
+						name="comment_security_level" 
+						id="private_commentsecuritylevel_{{comment.id}}" 
+						value="{{comment.PRIVATE}}"
+						checked="checked">
+                  			{% else %}
+                                     	<input 	type="radio" 
+						name="comment_security_level" 
+						id="private_commentsecuritylevel_{{comment.id}}" 
+						value="{{comment.PRIVATE}}">
+                   			{% endif %}
+               				</td>
             			{% endif %}
-            			<!--If the current user is the responsible manager or the creator of the report-->
-            			{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
+                    		<!--If the current user is the responsible manager or the creator of the report-->
+                    		{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 			<td class="annexesChoiceBoxTD">
-                    				{% if comment.is_visible %}
-                    					<input class='normal' type='checkbox' id="confidential_comment_{{comment.id}}"/>
-                   				{% else %}
-                    					<input class='normal' checked='checked' type='checkbox' id="confidential_comment_{{comment.id}}"/>
-                    				{% endif%}
+               				{% if comment.is_confidential %}
+                                     	<input 	type="radio" 
+						name="comment_security_level" 
+						id="confidential_commentsecuritylevel_{{comment.id}}" 
+						value="{{comment.CONFIDENTIAL}}"
+						checked="checked">
+                  			{% else %}
+                                     	<input 	type="radio" 
+						name="comment_security_level" 
+						id="confidential_commentsecuritylevel_{{comment.id}}" 
+						value="{{comment.CONFIDENTIAL}}">
+                   			{% endif %}
                 			</td>
-            			{% endif %}
-            		{% endif %}
+       		    		{% endif %}
+       	    		{% endif %}
             		</tr>
 			{% endif %}
                 {% endfor %}

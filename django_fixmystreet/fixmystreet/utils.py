@@ -1,6 +1,7 @@
 import json
 import tempfile
 import datetime
+import time
 import os
 import logging
 import shutil
@@ -8,10 +9,12 @@ from threading import local
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models.signals import post_save
-from django.template.loader import render_to_string
+from django.shortcuts import render_to_response
+from django.contrib.sites.models import Site
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
+from django.contrib.auth.models import User
 
 import transmeta
 from stdimage import StdImageField
@@ -95,27 +98,30 @@ class FixStdImageField(StdImageField):
 
 
 def render_to_pdf(request, *args, **kwargs):
+
+
+    if "output" in request.GET:
+        return render_to_response(*args, **kwargs)
+
     tmpfolder = tempfile.mkdtemp()
-    html_tmp_file_path = "%s/export.html" %(tmpfolder)
-    html_tmp_file = file(html_tmp_file_path, "w")
-    html_tmp_file.write(render_to_string(request, *args, **kwargs).encode("utf-8"))
-    html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
 
+    domain = "http://{0}".format(Site.objects.get_current().domain)
+
     cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10 \
             --footer-font-size 8 \
-            --footer-left '{0}' \
-            --footer-center '' \
-            --footer-right '[page]/[toPage]' {1} {2}
+            --footer-left '{footer_left}' \
+            --footer-center '{site_url}' \
+            --footer-right '[page]/[toPage]' '{content}' {output}
             """.format(
-                datetime.date.today().strftime("%d/%m/%y"),
-                html_tmp_file_path,
-                pdf_tmp_file_path
+                footer_left=datetime.date.today().strftime("%d/%m/%y"),
+                site_url=domain,
+                content="{0}{1}{2}output".format(domain, request.get_full_path(), "&" if request.GET else "?"),
+                output=pdf_tmp_file_path
             )
     logging.info(cmd)
     os.system(cmd)
-
 
     pdf_tmp_file = file(pdf_tmp_file_path, "r")
     response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
@@ -164,7 +170,10 @@ def save_file_to_server(file_name, file_type, file_extension,file_index,report_i
         filepath = "files/%s/%s/" % (date.year,date.month);
         if not os.path.exists(os.path.join(settings.MEDIA_ROOT,filepath)):
             os.makedirs(os.path.join(settings.MEDIA_ROOT,filepath))
-        filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
+        #filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
+        #Create random number
+        random_number = User.objects.make_random_password(length=30, allowed_chars='123456789')
+        filepath += "%s_%s_%s_%s.%s" % (file_type,report_id,file_index,random_number,file_extension)
         srcpath = str(file_name)
         if not "media" in srcpath:
             srcpath = ("media/%s")%(srcpath)

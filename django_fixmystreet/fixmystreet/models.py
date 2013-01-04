@@ -79,8 +79,8 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
-    categories = models.ManyToManyField('ReportCategory',related_name='type')
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team',null=True)
+    categories = models.ManyToManyField('ReportCategory', related_name='type')
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True)
 
     # history = HistoricalRecords()
 
@@ -352,16 +352,16 @@ class Report(UserTrackedModel):
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
     def has_at_least_one_non_confidential_comment(self):
-        return ReportComment.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0
+        return ReportComment.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
     def has_at_least_one_non_confidential_file(self):
-        return ReportFile.objects.filter(report__id=self.id).filter(is_visible=True).count() != 0
+        return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
-    def active_comments(self):
-        return self.comments.filter(is_validated=True)
+    #def active_comments(self):
+    #    return self.comments.filter(is_validated=True)
 
-    def active_files(self):
-        return self.files.filter(is_validated=True)
+    #def active_files(self):
+    #    return self.files.filter(is_validated=True)
 
     def is_created(self):
         return self.status == Report.CREATED
@@ -608,21 +608,51 @@ def report_subscribe_author(sender, instance, **kwargs):
 
 
 class ReportAttachment(UserTrackedModel):
-    is_validated = models.BooleanField(default=False)
-    is_visible = models.BooleanField(default=False)
+   
+    PUBLIC = 1
+    PRIVATE = 2
+    CONFIDENTIAL = 3
 
-    class Meta:
-        abstract=True
+    REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES = (
+        (PUBLIC,_("Public")),
+        (PRIVATE,_("Private")),
+        (CONFIDENTIAL,_("Confidential"))
+    )
+    
+    security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
+    #is_validated = models.BooleanField(default=False)
+    #is_visible = models.BooleanField(default=False)
+    def get_security_level(self, security_level_as_int):
+        '''Return the security level key for the given int value'''
+        if (self.PUBLIC == security_level_as_int):
+            return self.PUBLIC
+        if (self.PRIVATE == security_level_as_int):
+            return self.PRIVATE
+        if (self.CONFIDENTIAL == security_level_as_int):
+            return self.CONFIDENTIAL
+        
 
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
-        return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        #return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        return (self.security_level != ReportAttachment.CONFIDENTIAL and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
 
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''
-        return self.is_validated and self.is_visible
+        #return self.is_validated and self.is_visible
+        return self.security_level == ReportAttachment.PUBLIC
 
+    def is_public(self):
+        '''Is the annex public?'''
+        return self.security_level == ReportAttachment.PUBLIC
+    def is_private(self):
+        '''Is the annex private?'''
+        return self.security_level == ReportAttachment.PRIVATE
+    def is_confidential(self):
+        '''Is the annex confidential?'''
+        return self.security_level == ReportAttachment.CONFIDENTIAL
+    
     def get_display_name(self):
         if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
              return 'ANONYMOUS'
@@ -646,7 +676,21 @@ class ReportFile(ReportAttachment):
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
+    #def _save_FIELD_file(self, field, filename, raw_contents, save=True):
+    #   import pdb
+    #   pdb.set_trace()
+    #   original_upload_to = field.upload_to
+    #   field.upload_to = '%s/%s' % (field.upload_to, self.user.username)
+    #   super(Patch, self)._save_FIELD_file(field, filename, raw_contents, save)
+    #   field.upload_to = original_upload_to
+    #def generate_filename(instance, old_filename):
+    #    import pdb
+    #    pdb.set_trace()
+    #    extension = os.path.splitext(old_filename)[1]
+    #    filename = old_filename+'_'+str(time.time()) + extension
+    #    return 'files/' + filename
     file = models.FileField(upload_to="files")
+    #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     report = models.ForeignKey(Report, related_name="files")
     title = models.CharField(max_length=250)
@@ -861,12 +905,12 @@ class ReportCategoryHint(models.Model):
         translate = ('label', )
 
 
-class ManagerCategories(UserTrackedModel):
-    help_text="""
-    Defines the relation of a user and a category
-    """
-    category = models.ForeignKey(ReportCategory)
-    user = models.ForeignKey(FMSUser)
+# class ManagerCategories(UserTrackedModel):
+#     help_text="""
+#     Defines the relation of a user and a category
+#     """
+#     category = models.ForeignKey(ReportCategory)
+#     user = models.ForeignKey(FMSUser)
 
 
 class ReportNotification(models.Model):
@@ -968,7 +1012,7 @@ class ReportEventLog(models.Model):
         SOLVE_REQUEST: _("Report pointed as done"),
         MANAGER_ASSIGNED: _("Report as been assing to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_new} to {related_old}"),
-        PUBLISH: _("Report has been publisbed by {user}"),
+        PUBLISH: _("Report has been published by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
     }
