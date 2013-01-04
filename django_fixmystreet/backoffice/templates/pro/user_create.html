@@ -33,7 +33,7 @@
     $(function(){
       {% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
       $.each($("#id_user_type").find("option"),function(idx,value){
-        if (value.value != "1"){
+        if (value.value != "agent"){
           $(value).remove();
         }
       });;
