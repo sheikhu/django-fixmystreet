@@ -9,7 +9,8 @@ from threading import local
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models.signals import post_save
-from django.template.loader import render_to_string
+from django.shortcuts import render_to_response
+from django.contrib.sites.models import Site
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
@@ -97,27 +98,30 @@ class FixStdImageField(StdImageField):
 
 
 def render_to_pdf(request, *args, **kwargs):
+
+
+    if "output" in request.GET:
+        return render_to_response(*args, **kwargs)
+
     tmpfolder = tempfile.mkdtemp()
-    html_tmp_file_path = "%s/export.html" %(tmpfolder)
-    html_tmp_file = file(html_tmp_file_path, "w")
-    html_tmp_file.write(render_to_string(request, *args, **kwargs).encode("utf-8"))
-    html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
 
+    domain = "http://{0}".format(Site.objects.get_current().domain)
+
     cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10 \
             --footer-font-size 8 \
-            --footer-left '{0}' \
-            --footer-center '' \
-            --footer-right '[page]/[toPage]' {1} {2}
+            --footer-left '{footer_left}' \
+            --footer-center '{site_url}' \
+            --footer-right '[page]/[toPage]' '{content}' {output}
             """.format(
-                datetime.date.today().strftime("%d/%m/%y"),
-                html_tmp_file_path,
-                pdf_tmp_file_path
+                footer_left=datetime.date.today().strftime("%d/%m/%y"),
+                site_url=domain,
+                content="{0}{1}{2}output".format(domain, request.get_full_path(), "&" if request.GET else "?"),
+                output=pdf_tmp_file_path
             )
     logging.info(cmd)
     os.system(cmd)
-
 
     pdf_tmp_file = file(pdf_tmp_file_path, "r")
     response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')

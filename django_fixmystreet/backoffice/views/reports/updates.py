@@ -67,14 +67,14 @@ def new( request, report_id ):
             comment_form = ReportCommentForm(request.POST)
             if comment_form.is_valid():
                 comment_form.save(request.user, report)
-        
+
         if request.POST['form-type'] == u"file-form":
             if request.POST['title'] == "":
                 request.POST['title']= request.FILES.get('file').name
             file_form = ReportFileForm(request.POST,request.FILES)
             if file_form.is_valid:
                 file_form.save(request.user, report)
-        
+
         if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
         else:
@@ -119,7 +119,7 @@ def changeContractor(request,report_id):
     contractorId = request.REQUEST.get("contractorId")
     if contractorId=='-1':
         report.subcontractor = None
-        #Restore status to IN_PROGRESS 
+        #Restore status to IN_PROGRESS
         report.status = Report.IN_PROGRESS
     else:
         organisation = OrganisationEntity.objects.get(pk=int(contractorId))
@@ -138,16 +138,12 @@ def changeContractor(request,report_id):
 def reportPdf(request, report_id, pro_version):
     '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
     report = get_object_or_404(Report, id=report_id)
-    
+
     #Verify if the connected user is well pro ! (Server side protection)
     # if request.user.fmsuser.is_citizen():
        # pro_Version = 0
-    
-    if request.GET.get('output', False):
-        return render_to_response("pro/pdf.html", {'report' : report, 'file_list' : report.files.all(), 'comment_list' : report.comments.all(), 'activity_list' : report.activities.all() ,'pro_version': pro_version},
-                context_instance=RequestContext(request))
-    else:
-        return render_to_pdf("pro/pdf.html", {'report' : report, 'file_list' : report.files.all(), 'comment_list' : report.comments.all(), 'activity_list' : report.activities.all(), 'pro_version' : pro_version},
+
+    return render_to_pdf(request, "pro/pdf.html", {'report' : report, 'file_list' : report.files.all(), 'comment_list' : report.comments.all(), 'activity_list' : report.activities.all(), 'pro_version' : pro_version},
                 context_instance=RequestContext(request))
 
 def acceptAndValidate(request, report_id):
@@ -188,8 +184,20 @@ def updateComment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     security_level = request.REQUEST.get('updateType')
     comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
+<<<<<<< HEAD
     comment.security_level = comment.get_security_level(int(security_level))
- 
+
+=======
+    if updateType == "valid":
+        comment.is_validated = (request.REQUEST.get('updateValue')=='checked')
+        if comment.is_validated:
+            comment.is_visible= True
+    if updateType == 'confidential':
+        comment.is_visible = not (request.REQUEST.get('updateValue')=='checked')
+        if comment.is_visible == False:
+            comment.is_validated = False #When setting element to confidential then it becomes unvalidated automatically
+
+>>>>>>> fix pdf export
     comment.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -201,7 +209,7 @@ def updateFile(request,report_id):
     security_level = request.REQUEST.get('updateType')
     f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
     f.security_level = f.get_security_level(int(security_level))
-    
+
     f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
