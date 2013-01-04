@@ -547,8 +547,34 @@ def report_notify(sender, instance, **kwargs):
 
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.SOLVE_REQUEST
+                    event_type=ReportEventLog.ENTITY_ASSIGNED
                 ).save()
+
+            elif report.status == Report.APPLICANT_RESPONSIBLE or report.status == Report.CONTRACTOR_ASSIGNED:
+                    ReportNotification(
+                        content_template='send_report_assigned_to_app_contr',
+                        recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                        related=report,
+                        reply_to=report.responsible_manager.email
+                    ).save()
+                    #TODO update
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.SOLVE_REQUEST
+                    ).save()
+
+        if report.__former['contractor']!= report.contractor:
+            ReportNotification(
+                content_template='send_report_assigned_to_app_contr',
+                recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                related=report,
+                reply_to=report.responsible_manager.email
+            ).save()
+            #TODO update
+            ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.ENTITY_CHANGED
+            ).save()
 
         if report.__former['responsible_manager'] != report.responsible_manager:
             ReportNotification(
@@ -849,7 +875,7 @@ class ReportNotification(models.Model):
     success = models.BooleanField()
     error_msg = models.TextField()
     content_template = models.CharField(max_length=40)
-    reply_to = models.CharField(max_length=40,null=True)
+    reply_to = models.CharField(max_length=200,null=True)
 
     related = generic.GenericForeignKey('related_content_type', 'related_object_id')
     related_content_type = models.ForeignKey(ContentType)
