@@ -184,20 +184,7 @@ def updateComment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     security_level = request.REQUEST.get('updateType')
     comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
-<<<<<<< HEAD
     comment.security_level = comment.get_security_level(int(security_level))
-
-=======
-    if updateType == "valid":
-        comment.is_validated = (request.REQUEST.get('updateValue')=='checked')
-        if comment.is_validated:
-            comment.is_visible= True
-    if updateType == 'confidential':
-        comment.is_visible = not (request.REQUEST.get('updateValue')=='checked')
-        if comment.is_visible == False:
-            comment.is_validated = False #When setting element to confidential then it becomes unvalidated automatically
-
->>>>>>> fix pdf export
     comment.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
