@@ -240,8 +240,7 @@
 			}
 			
 			var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-			
-			var markerConf = report.is_fixed ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
+			var markerConf = report.status==3 ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
 			if(index){
 				//make a copy
 				markerConf = $.extend({},markerConf,{
