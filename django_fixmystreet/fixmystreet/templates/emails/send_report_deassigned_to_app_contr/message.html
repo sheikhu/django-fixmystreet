@@ -1,0 +1,24 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+{% get_available_languages as languages %}
+
+{% block content %}
+{% get_language_info for "nl" as langNL %}
+{% get_language_info for "fr" as langFR %}
+{% language langFR.code %}
+{% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
+<p>A report of type {{reportType}} created at {{date}} is deassigned. You won't be able to edit or see this report anymore. </p>
+{% endblocktrans %}
+{% include "emails/report_show.html" with report=related %}
+{% endlanguage %}
+<br/>
+-------------------------------------------------
+<br/>
+{% language langNL.code %}
+{% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
+<p>A report of type {{reportType}} created at {{date}} is deassigned. You won't be able to edit or see this report anymore. </p>
+{% endblocktrans %}
+{% include "emails/report_show.html" with report=related %}
+{% endlanguage %}
+
+{% endblock %}
