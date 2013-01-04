@@ -138,9 +138,16 @@ function markAsDone(){
 		<!-- REPORT CREATOR ZONE -->
 		<!-- ################### -->
 		<p class="author-sign">
-                {% blocktrans with by=author.get_full_name on=report.created|date %}
-                	Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                {% endblocktrans %}
+		{% if report.citizen %}
+	                {% blocktrans with on=report.created|date %}
+        	        	Posted on <strong>{{on}}</strong>
+                	{% endblocktrans %}
+	 	{% else %}
+                        {% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
+                        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+                        {% endblocktrans %}
+                        (tel:{{report.created_by.fmsuser.telephone}})
+		{% endif %}
             </p>
 
 

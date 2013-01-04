@@ -205,18 +205,28 @@ $(document).ready(function() {
 			{% endif %}
 			<p class="author-sign">
                 	{% if report.citizen %}
-        		        {% if report.citizen.last_name = ''%}
-			        Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created|date}}</strong>
+				<!-- Protect privacy from applicant and contractor when creator is a citizen -->
+				{% if fms_user.can_see_confidential %}
+        		        	{% if report.citizen.last_name = ''%}
+			        	Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created|date}}</strong>
+					{% else %}
+        		        	{% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+			        	Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+        	        		{% endblocktrans %}
+                                	(tel:{{report.citizen.fmsuser.telephone}})
+					{% endif %}
 				{% else %}
-        		        {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
-			        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
-        	        	{% endblocktrans %}
+					 {% blocktrans with on=report.created|date %}
+                                		Posted on <strong>{{on}}</strong>
+                        		{% endblocktrans %}
 				{% endif %}
+				
 	                {% else %}
                 		{% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
 
 			        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
                 		{% endblocktrans %}
+                                (tel:{{report.created_by.fmsuser.telephone}})
 	                {% endif %}
             	</p>
 
@@ -252,7 +262,7 @@ $(document).ready(function() {
 				                        <select id="report_responsible_manager_select">
 				                            	<optgroup label="Gestionnaires">
 								{% for manager in managers %}
-					                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}}</option>
+					                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
                             					{% endfor %}
 			    					</optgroup>
                             					<optgroup label="Entites">
@@ -423,8 +433,8 @@ $(document).ready(function() {
 							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
 						{% endif %}
 						</center>
-						{% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date %}
-                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+						{% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date creat=file.file_creation_date %}
+                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong> File Creation Date <strong>{{creat}}</strong>
                                 {% endblocktrans %}
                         		{% endif %}
                     		</div>
@@ -437,13 +447,13 @@ $(document).ready(function() {
                			<td class="annexesChoiceBoxTD">
                			{% if file.is_public %}
                                      <input 	type="radio" 
-						name="file_security_level" 
+						name="file_security_level_{{file.id}}" 
 						id="public_filesecuritylevel_{{file.id}}" 
 						value="{{file.PUBLIC}}"
 						checked="checked">
                   		{% else %}
                                      <input 	type="radio" 
-						name="file_security_level" 
+						name="file_security_level_{{file.id}}" 
 						id="public_filesecuritylevel_{{file.id}}" 
 						value="{{file.PUBLIC}}">
                    		{% endif %}
@@ -451,13 +461,13 @@ $(document).ready(function() {
                			<td class="annexesChoiceBoxTD">
                			{% if file.is_private %}
                                      <input 	type="radio" 
-						name="file_security_level" 
+						name="file_security_level_{{file.id}}" 
 						id="private_filesecuritylevel_{{file.id}}" 
 						value="{{file.PRIVATE}}"
 						checked="checked">
                   		{% else %}
                                      <input 	type="radio" 
-						name="file_security_level" 
+						name="file_security_level_{{file.id}}" 
 						id="private_filesecuritylevel_{{file.id}}" 
 						value="{{file.PRIVATE}}">
                    		{% endif %}
@@ -468,13 +478,13 @@ $(document).ready(function() {
                 		<td class="annexesChoiceBoxTD">
                			{% if file.is_confidential %}
                                      <input 	type="radio" 
-						name="file_security_level" 
+						name="file_security_level_{{file.id}}" 
 						id="confidential_filesecuritylevel_{{file.id}}" 
 						value="{{file.CONFIDENTIAL}}"
 						checked="checked">
                   		{% else %}
                                      <input 	type="radio" 
-						name="file_security_level" 
+						name="file_security_level_{{file.id}}" 
 						id="confidential_filesecuritylevel_{{file.id}}" 
 						value="{{file.CONFIDENTIAL}}">
                    		{% endif %}
@@ -527,13 +537,13 @@ $(document).ready(function() {
                				<td class="annexesChoiceBoxTD">
                				{% if comment.is_public %}
                                      	<input 	type="radio" 
-						name="comment_security_level" 
+						name="comment_security_level_{{comment.id}}" 
 						id="public_commentsecuritylevel_{{comment.id}}" 
 						value="{{comment.PUBLIC}}"
 						checked="checked">
                   			{% else %}
                                      	<input 	type="radio" 
-						name="comment_security_level" 
+						name="comment_security_level_{{comment.id}}" 
 						id="public_commentsecuritylevel_{{comment.id}}" 
 						value="{{comment.PUBLIC}}">
                    			{% endif %}
@@ -541,13 +551,13 @@ $(document).ready(function() {
                				<td class="annexesChoiceBoxTD">
                				{% if comment.is_private %}
                                      	<input 	type="radio" 
-						name="comment_security_level" 
+						name="comment_security_level_{{comment.id}}" 
 						id="private_commentsecuritylevel_{{comment.id}}" 
 						value="{{comment.PRIVATE}}"
 						checked="checked">
                   			{% else %}
                                      	<input 	type="radio" 
-						name="comment_security_level" 
+						name="comment_security_level_{{comment.id}}" 
 						id="private_commentsecuritylevel_{{comment.id}}" 
 						value="{{comment.PRIVATE}}">
                    			{% endif %}
@@ -558,13 +568,13 @@ $(document).ready(function() {
                 			<td class="annexesChoiceBoxTD">
                				{% if comment.is_confidential %}
                                      	<input 	type="radio" 
-						name="comment_security_level" 
+						name="comment_security_level_{{comment.id}}" 
 						id="confidential_commentsecuritylevel_{{comment.id}}" 
 						value="{{comment.CONFIDENTIAL}}"
 						checked="checked">
                   			{% else %}
                                      	<input 	type="radio" 
-						name="comment_security_level" 
+						name="comment_security_level_{{comment.id}}" 
 						id="confidential_commentsecuritylevel_{{comment.id}}" 
 						value="{{comment.CONFIDENTIAL}}">
                    			{% endif %}

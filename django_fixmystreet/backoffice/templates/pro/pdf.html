@@ -7,10 +7,10 @@
 <!-- ############################################################## -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/static/OpenLayers-2.11/OpenLayers.js"></script>
-<script type="text/javascript" src="/static/js/proj4js/engine/proj4js-compressed.js"></script>
-<script type="text/javascript" src="/static/js/proj4js/defs/EPSG31370.js"></script>
-<script type="text/javascript" src="/static/js/fixmystreetmap.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}OpenLayers-2.11/OpenLayers.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/fixmystreetmap.js"></script>
 
 <!-- ############################################################## -->
 <!-- #######################JQUERY INIT METHOD #################### -->
@@ -126,12 +126,16 @@ $(document).ready(function() {
 		</td>
 		<td>
 			<strong>
-				{% trans 'Report Author' %}
+				{% if report.created_by or user.can_see_confidential %}
+					{% trans 'Report Author' %}
+				{% endif %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Report Contact Phone' %}
+				{% if report.created_by or user.can_see_confidential %}
+					{% trans 'Report Contact Phone' %}
+				{% endif %}
 			</strong>
 		</td>	
 	</tr>
@@ -143,14 +147,18 @@ $(document).ready(function() {
 			{% if report.created_by %}
 			{{report.created_by.fmsuser.get_display_name}}
 			{% else %}
-			{{report.citizen.fmsuser.get_display_name}}
+				{% if user.can_see_confidential %}
+				{{report.citizen.fmsuser.get_display_name}}
+				{% endif %}
 			{% endif %}
 		</td>
 		<td>
 			{% if report.created_by %}
 			{{report.created_by.fmsuser.telephone}}
 			{% else %}
-			{{report.citizen.fmsuser.telephone}}
+				{% if user.can_see_confidential %}
+				{{report.citizen.fmsuser.telephone}}
+				{% endif %}
 			{% endif %}
 		</td>	
 	</tr>
@@ -162,7 +170,9 @@ $(document).ready(function() {
 		</td>
 		<td>
 			<strong>
-				{% trans 'Report Contact Mail' %}
+				{% if report.created_by or user.can_see_confidential %}
+					{% trans 'Report Contact Mail' %}
+				{% endif %}
 			</strong>
 		</td>	
                 <td>
@@ -177,7 +187,10 @@ $(document).ready(function() {
 			{% if report.created_by %}
 			<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
 			{% else %}
-			<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
+			<!-- Protect citizen privacy -->
+				{% if user.can_see_confidential %}
+				<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
+				{% endif %}
 			{% endif %}
 		</td>	
                 <td>
@@ -283,10 +296,10 @@ $(document).ready(function() {
 			<img width="256px" height="256px" src="{{STATIC_URL}}images/icon-pdf.png"/>
 			{% endif %}
 			{% if file.file_type == 2 %}
-			<img width="256px" height="256px" src="{{STATIC_URL}}/images/icon-word.jpg"/>
+			<img width="256px" height="256px" src="{{STATIC_URL}}images/icon-word.jpg"/>
 			{% endif %}
 			{% if file.file_type == 3 %}
-			<img width="256px" height="256px" src="{{STATIC_URL}}/images/icon-excel.png"/>
+			<img width="256px" height="256px" src="{{STATIC_URL}}images/icon-excel.png"/>
 			{% endif %}
 			{% if file.file_type == 4 %}
 			<img style="max-width:256px;max-height:256px;" src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/>
@@ -306,13 +319,13 @@ $(document).ready(function() {
 		<td>{{file.created}}</td>
 	</tr>
 	<tr>
+		<td>{% trans 'By' %} {{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, {{file.created_by.fmsuser.telephone}}){% endif %}</td>
+	</tr>
+	<tr>
 		<td><strong>{% trans 'City' %}</strong></td>
 	</tr>
 	<tr>
 		<td>{{report.responsible_entity.name}}</td>
-	</tr>
-	<tr>
-		<td>{{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, {{file.created_by.fmsuser.telephone}}){% endif %}</td>
 	</tr>
 	<tr>
 		<td><strong>{% trans 'Image Name' %}</strong></td>
