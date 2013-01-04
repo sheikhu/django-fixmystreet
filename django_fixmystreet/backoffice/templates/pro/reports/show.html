@@ -187,7 +187,7 @@ $(document).ready(function() {
 			{% endif %}
 		<div id='report-body'>
             		<div id='report-subscribers'>
-                		{% trans "Subscribers:" %} <b>{{report.reportsubscription_set.count}}</b><br/>					
+                		{% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
 		                {% if not report.is_closed and user.is_authenticated %}
                 		    {% if not subscribed %}
 			                    <a href="{% url subscribe_pro report.id %}">{% trans "Subscribe" %}</a>
