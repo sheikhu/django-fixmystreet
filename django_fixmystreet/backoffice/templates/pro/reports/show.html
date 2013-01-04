@@ -399,7 +399,7 @@ $(document).ready(function() {
                     {% endif %}
                     {% endif %}
                     {% for file in files %}
-			{% if not file.is_public and not fms_user.can_see_confidential %}
+			{% if file.is_confidential and not fms_user.can_see_confidential %}
 				<!-- Skip -->
 			{% else %}
                     	<tr>
@@ -509,7 +509,7 @@ $(document).ready(function() {
                     {% endif %}
                     {% endif %}
                     {% for comment in comments %}
-			{% if not comment.is_public and not fms_user.can_see_confidential %}
+			{% if comment.is_confidential and not fms_user.can_see_confidential %}
 				<!-- Skip -->
 			{% else %}
                 	<tr>
