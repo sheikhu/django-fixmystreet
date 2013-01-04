@@ -1,11 +1,44 @@
 {% load i18n %}
 
+<base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
+
+<!-- ############################################################## -->
+<!-- #######################JAVASCRIPT IMPORTS #################### -->
+<!-- ############################################################## -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/OpenLayers-2.11/OpenLayers.js"></script>
+<script type="text/javascript" src="/static/js/proj4js/engine/proj4js-compressed.js"></script>
+<script type="text/javascript" src="/static/js/proj4js/defs/EPSG31370.js"></script>
+<script type="text/javascript" src="/static/js/fixmystreetmap.js"></script>
+
+<!-- ############################################################## -->
+<!-- #######################JQUERY INIT METHOD #################### -->
+<!-- ############################################################## -->
+<script>
+$(document).ready(function() {
+	var $map = $('#map-bxl');
+	$map.fmsMap({
+		apiLang:'nl',
+        	localizeUrl: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
+        	urbisUrl: 'http://geoserver.gis.irisnet.be/geoserver/wms',
+        	origin:{
+				x:{{report.point.x}},
+				y:{{report.point.y}}
+			}
+		});
+});
+</script>
+
+
 <!-- ############################################################## -->
 <!-- ####################### REPORT ############################### -->
 <!-- ############################################################## -->
 <hr/>
 <h1>{% trans 'Report Data' %}</h1>
-
+<div id="map-bxl" style="width:100%; height:200px">
+			
+</div>
 <table style="width:100%">
 	<tr>
 		<td>
@@ -247,16 +280,16 @@
         <tr>
 		<td rowspan="11">
 			{% if file.file_type == 1 %}
-			<img width="256px" height="256px" src="http://{{request.get_host}}/static/images/icon-pdf.png"/>
+			<img width="256px" height="256px" src="{{STATIC_URL}}images/icon-pdf.png"/>
 			{% endif %}
 			{% if file.file_type == 2 %}
-			<img width="256px" height="256px" src="http://{{request.get_host}}/static/images/icon-word.jpg"/>
+			<img width="256px" height="256px" src="{{STATIC_URL}}/images/icon-word.jpg"/>
 			{% endif %}
 			{% if file.file_type == 3 %}
-			<img width="256px" height="256px" src="http://{{request.get_host}}/static/images/icon-excel.png"/>
+			<img width="256px" height="256px" src="{{STATIC_URL}}/images/icon-excel.png"/>
 			{% endif %}
 			{% if file.file_type == 4 %}
-			<img style="max-width:256px;max-height:256px;" src="http://{{request.get_host}}{{file.file.url}}"/>
+			<img style="max-width:256px;max-height:256px;" src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/>
 			{% endif %}
 		</td>
 	</tr>
