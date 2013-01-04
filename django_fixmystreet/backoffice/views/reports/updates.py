@@ -186,17 +186,10 @@ def validateAll(request,report_id):
 
 def updateComment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
-    updateType = request.REQUEST.get('updateType')
+    security_level = request.REQUEST.get('updateType')
     comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
-    if updateType == "valid":
-        comment.is_validated = (request.REQUEST.get('updateValue')=='checked')
-        if comment.is_validated:
-            comment.is_visible= True
-    if updateType == 'confidential':
-        comment.is_visible = not (request.REQUEST.get('updateValue')=='checked')
-        if comment.is_visible == False:
-            comment.is_validated = False #When setting element to confidential then it becomes unvalidated automatically
-    
+    comment.security_level = comment.get_security_level(int(security_level))
+ 
     comment.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -205,16 +198,10 @@ def updateComment(request,report_id):
 
 def updateFile(request,report_id):
     report = get_object_or_404(Report,id=report_id)
-    updateType = request.REQUEST.get('updateType')
+    security_level = request.REQUEST.get('updateType')
     f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
-    if updateType == "valid":
-        f.is_validated= (request.REQUEST.get('updateValue')=='checked')
-        if f.is_validated:
-            f.is_visible= True
-    if updateType == 'confidential':
-        f.is_visible = not (request.REQUEST.get('updateValue')=='checked')
-        if (f.is_visible == False):
-            f.is_validated = False #When setting element to confidential then it becomes unvalidated automatically
+    f.security_level = f.get_security_level(int(security_level))
+    
     f.save()
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())

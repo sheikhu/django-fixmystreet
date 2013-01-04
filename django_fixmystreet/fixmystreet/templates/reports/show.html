@@ -167,7 +167,7 @@ function markAsDone(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     {% for file in report.active_files.all %}
-		    {% if file.is_validated %} <!-- PUBLIC? -->
+		    {% if file.is_public %} <!-- PUBLIC? -->
                     <tr>
                         <td class="annexesFirstTD">
                     <div class="report_update">
@@ -215,7 +215,7 @@ function markAsDone(){
             <div id="report_updates">
                 <table class="extraCommentsTable">
                 {% for comment in report.active_comments.all %}
-		    {% if comment.is_validated %}
+		    {% if comment.is_public %}
                 	<tr>
                     	<td class="annexesFirstTD">
                 		<div class="report_update">
