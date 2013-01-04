@@ -83,6 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
+    'django.contrib.sitemaps',
 
     'transmeta',
     'south',
@@ -101,7 +102,7 @@ if "ENV" in os.environ:
     ENVIRONMENT = os.environ['ENV']
 else:
     ENVIRONMENT = "local"
-    sys.stderr.write( "No ENV specified, using local.\n" ) 
+    sys.stderr.write( "No ENV specified, using local.\n" )
 
 
 
