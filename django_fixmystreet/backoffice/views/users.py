@@ -7,6 +7,12 @@ from django.utils.translation import ugettext as _
 from django_fixmystreet.backoffice.forms import UserEditForm, FmsUserForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportNotification
 
+from django.contrib.sites.models import Site
+from django.template import TemplateDoesNotExist
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from smtplib import SMTPException
 
 def show(request):
     user = request.fmsuser
@@ -127,15 +133,53 @@ def createUser(request, user_type):
             createdUser = createform.save(connectedUser, createdOrganisationEntity, user_type)
 
             if createdUser:
-                notification = ReportNotification(
-                    content_template='send_created_to_user',
-                    recipient=createdUser,
-                    related=createdUser,
-                )
-                notification.save()
+                # notification = ReportNotification(
+                #     content_template='send_created_to_user',
+                #     recipient=createdUser,
+                #     related=createdUser,
+                # )
+                # notification.save()
                     # data={
                         # "password":request.POST.get('password1')
                     # })
+
+                #Send directly an email to the created user (do not use the reportnotification class because then the password is saved in plain text in the DB)
+                recipients = (createdUser.email,)
+
+                data = {
+                    "user": createdUser,
+                    "password":request.POST.get('password1'),
+                    "SITE_URL": Site.objects.get_current().domain
+                }
+
+                subject, html, text = '', '', ''
+                try:
+                    subject = render_to_string('emails/send_created_to_user/subject.txt', data)
+                except TemplateDoesNotExist:
+                    # instance.error_msg = "No subject"
+                    print 'template does not exist'
+                try:
+                    text    = render_to_string('emails/send_created_to_user/message.txt', data)
+                except TemplateDoesNotExist:
+                    # instance.error_msg = "No content"
+                    print "template does not exist"
+
+                try:
+                    html    = render_to_string('emails/send_created_to_user/message.html', data)
+                except TemplateDoesNotExist:
+                    pass
+
+                subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+
+                msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":connectedUser.email})
+
+                if html:
+                    msg.attach_alternative(html, "text/html")
+                try:
+                    msg.send()
+                except SMTPException as e:
+                    print "not sent successfully"
+
                 messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
                 return HttpResponseRedirect('/pro/')
     else:        

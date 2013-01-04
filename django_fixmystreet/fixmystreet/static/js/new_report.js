@@ -68,7 +68,7 @@ $(document).ready(function() {
     		$("#addCommmentDiv").show();
 			return; // address is retrieved when form is shown
 		}
-		
+
 		retrieveAddress();
 	});
 
@@ -101,6 +101,14 @@ function retrieveAddress()
     			$('#id_postalcode').val(response.result.address.street.postCode);
     			$('#id_address').val(response.result.address.street.name+ ', ' + response.result.address.number);
     			$('#id_address_number').val(response.result.address.number);
+
+				if ($('#available_zipcodes option[value="'+$('#id_postalcode').val()+'"]').length == 0) {
+		                	//This commune does not participate to fixmystreet until now.
+		                	$form.find(':submit').prop('disabled',true);
+		                	alert("{% trans 'This_commune_does_not_participate' %}: "+$('#available_zipcodes_as_string').html());
+		                	return false;
+		        }
+
     			$form.find(':submit').prop('disabled',false);
     		}
     		else
