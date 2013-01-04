@@ -551,13 +551,20 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
             elif report.status == Report.APPLICANT_RESPONSIBLE or report.status == Report.CONTRACTOR_ASSIGNED:
+                ReportNotification(
+                    content_template='send_report_assigned_to_app_contr',
+                    recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                    related=report,
+                    reply_to=report.responsible_manager.email
+                ).save()
+                if report.__former['contractor']:
                     ReportNotification(
-                        content_template='send_report_assigned_to_app_contr',
-                        recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                        content_template='send_report_deassigned_to_app_contr',
+                        recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
                         related=report,
                         reply_to=report.responsible_manager.email
                     ).save()
-                    #TODO update
+
                     ReportEventLog(
                         report=report,
                         event_type=ReportEventLog.SOLVE_REQUEST
@@ -570,7 +577,17 @@ def report_notify(sender, instance, **kwargs):
                 related=report,
                 reply_to=report.responsible_manager.email
             ).save()
-            #TODO update
+            ReportNotification(
+                content_template='send_report_deassigned_to_app_contr',
+                recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
+                related=report,
+                reply_to=report.responsible_manager.email
+            ).save()
+
+            ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.SOLVE_REQUEST
+            ).save()
             ReportEventLog(
                 report=report,
                 event_type=ReportEventLog.ENTITY_CHANGED
