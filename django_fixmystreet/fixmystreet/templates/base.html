@@ -1,87 +1,103 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 {% load tags i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		{% get_available_languages as LANGUAGES %}
-	
-		<title>{% trans "Fix My Street Brussels" %} - {% block title %}{% trans "Home" %}{% endblock %}</title>
+    <head>
+        {% get_available_languages as LANGUAGES %}
+
+        <title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
+
         {% block script %}
         <script type="text/javascript">
             var SERVICE_GIS_URL = 'http://{{ SERVICE_GIS }}';
             var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
             var GEOSERVER_URL = 'http://{{ GEOSERVER }}';
-		</script>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL}}js/common.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL}}js/jquery/iphone-style-checkboxes.js"></script>
-		{% endblock %}
-		{% block css %}
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/global.css" />
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
-        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
-		<link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}js/style.css"/>
+        </script>
+        <script type="text/javascript" src="{{ STATIC_URL}}lib/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL}}lib/proj4js/engine/proj4js-compressed.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL}}lib/proj4js/defs/EPSG31370.js"></script>
+
+        <script type="text/javascript" src="{{ STATIC_URL}}js/common.js"></script>
         {% endblock %}
-	</head>
 
-	<body>
-		<div id="header">
-			<div id="header_content">
-                {% if not BACKOFFICE %}
-				<a href="{% url home%}"><img id="logo" src="{{ STATIC_URL }}images/logo-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Fix My Street Brussels" %}"/></a>
-                {% else %}
-                <a href="{% url home_pro %}"><img id="logo" src="{{ STATIC_URL }}images/logo-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Fix My Street Brussels" %}"/></a>
-                {% endif %}
-				<!--<a href="/"><h1 id="banner-title">{% trans "Fix My Street Brussels" %}</h1></a>-->
-                <img id="logo-rbc" src="{{ STATIC_URL }}images/logo-rbc-{{ LANGUAGE_CODE }}.jpg" alt="{% trans "Brussels-Capital Region" %}"/>
-                {% ifequal ENVIRONMENT "staging" %}
-                    <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
-                {% endifequal %}
-				<div id="loginButton">
+        {% block css %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
+
+        <link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
+        {% endblock %}
+    </head>
+
+    <body>
+        <header>
+            {% if not BACKOFFICE %}
+            <a href="{% url home%}">
+                <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans "Fix My Street" %}">
+            </a>
+            {% else %}
+            <a href="{% url home_pro %}">
+                <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans "Fix My Street" %}">
+            </a>
+            {% endif %}
+
+            {% ifequal ENVIRONMENT "staging" %}
+             <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
+            {% endifequal %}
+
+            <section>
+                {% for l in LANGUAGES %}
+                {% get_language_info for l.0 as lang %}
+                <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
+                        href="{% url update_current_language %}?from={{ request.get_full_path }}&language={{ lang.code }}"
+                        alt="{{ lang.name_local }}">{{ lang.code }}</a>
+                {% endfor %}
+
+                <div id="login">
+                    <i class="icon-login"> </i>
                     {% if request.user.is_authenticated %}
-					<button type="button" onclick="window.location.assign('{% url auth_logout %}')" style="float: right;margin-top: 44px;">Log out</button>
+                    <a href="{% url auth_logout %}">Log out</a>
+                    <span>Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})</span>
                     {% else %}
-					<button type="button" onclick="window.location.assign('{% url login %}?next={% url home_pro %}')" style="float: right;margin-top: 44px;">Sign in</button>
-                    {% endif %}
-				</div>
-				<div id="language">
-					<form action="{% url update_current_language %}?from={{request.get_full_path}}" method="post">
-						<select id="select-language" name="language" onchange="">
-							{% for l in LANGUAGES %}
-                                {% get_language_info for l.0 as lang %}
-                                <option value="{{ lang.code }}"{% if lang.code == LANGUAGE_CODE %} selected="selected"{% endif %}>{{ lang.name_local }}</option>
-							{% endfor %}
-						</select>
-					</form>
-				</div>
-                <div id="header-name">
-                    {% if request.user.is_authenticated %}
-                    	Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})
+                    <a href="{% url login %}?next={% url home_pro %}">Sign in</a>
+                    <form id="login-form" class="block highlighted form-horizontal">
+                        <input type="text" id="input-login" name="login" placeholder="Login...">
+                        <input type="password" id="input-password" name="password" placeholder="Password...">
+                        <button type="submit" class="btn">Sign in</button>
+                    </form>
                     {% endif %}
                 </div>
-			</div>
-		</div>
-
-		<div id="main_container">
-			<div id='body_content'>
+            </section>
+            <nav>
                 {% if not BACKOFFICE %}
-                <div id="menu">
+                <ul>
                     {% get_active_menu %}
-                    <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home %}">{%         trans "Submit a Report" %}</a>
-                    <a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url report_index %}">{% trans "View Reports" %}</a>
-                    <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">{%        trans "About" %}</a>
-                    <a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">{%      trans "Contact Us" %}</a>
-                </div>
+                    <li>
+                        <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home %}">
+                            {% trans "Submit a Report" %}
+                        </a>
+                    <li>
+                        <a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url report_index %}">
+                            {% trans "View Reports" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">
+                            {% trans "About" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">
+                            {% trans "Contact Us" %}
+                        </a>
+                    </li>
+                </ul>
                 {% else %}
                 <ul class='leftPane' id="leftMenuPanePro">
                     <li>
                         <a id='createMenu' class='category' href="{% url home_pro %}">
                             {% trans "Submit a report" %}
                         </a>
-                    </li> 
+                    </li>
                     <li>
                         <a id="subscriptionMenuItem" class='category' href="{% url report_subscription_pro %}?subscription=1">
                             {% trans "My subscriptions" %} <span class="category_number">{{request.user.fmsuser.get_number_of_subscriptions}}</span>
@@ -174,28 +190,27 @@
                         </li>
                 </ul>
                 {% endif %}
+            </nav>
+        </header>
 
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
-				{% block content %}{% endblock %}
-			</div>
-		</div>
+        <section id="content">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </section>
 
-		<div id="footer">
-			<div id="footer_content">
-				{% block content_third %}{% endblock %}
-                <p id="legal_notice">
-                    <a id="term_of_use" href="{% url terms_of_use %}">{% trans "Terms of Use" %}</a>
-                    Copyright 2011, <a href="http://www.cirb.irisnet.be">CIRB</a> <a href="http://www.cirb.irisnet.be"><img src="{{ STATIC_URL }}images/CIRB-CIBG-inverse.gif"/></a>
-                </p>
-			</div>
-		</div>
+        <footer>
+            {% block content_third %}{% endblock %}
+            <a href="http://www.cirb.irisnet.be">Copyright 2011, CIRB</a>
+            <a id="term-of-use" href="{% url terms_of_use %}">{% trans "Terms of Use" %}</a>
+            <img src="{{ STATIC_URL }}images/logo-bemystreet.png">
 
-		{% block endbody %}{% endblock %}
-	</body>
+            {% block footer %}{% endblock %}
+        </footer>
+    </body>
 </html>

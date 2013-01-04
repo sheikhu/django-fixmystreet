@@ -1,68 +1,71 @@
 {% extends "base.html" %}
 {% load i18n %}
+
 {% block script %}
-    {{ block.super }}
+{{ block.super }}
 
 <meta property="og:title" content="{% trans 'Home' %}" />
 <meta property="og:description" content="{% trans 'Meta description for home page' %}" />
-    {% block script-search %}
-    <script type="text/javascript">
+
+<script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+
+{% block script-search %}
+<script type="text/javascript">
     var NEXT_PAGE_URL = '{% url report_new %}';
-    </script>
-    <script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
-    {% endblock %}
+</script>
+{% endblock %}
 {% endblock %}
 
 {% block content %}
-	<form id='search_form'>
-		<p>{% trans "Enter a nearby street name:" %}</p>
-		<input id='search_box' type="search" name="q" {% if location %}value="{{location}}"{% endif %}/>
+    <article id="map">
 
-		<div id="ward_select">
-			<select id="search_ward" name="ward">
-				<option value="">{% trans "Choose a ward..." %}</option>
-				{% for zip in zipcodes %}
-                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-				{% endfor %}
-			</select>
-			<p>{% trans "or leave empty for a global search" %}</p>
-		</div>
-
-		<ul id='proposal'> </ul>
-		
-		<input id='search_button' class='big_button' type="submit" name="submit" value="{% trans 'Search' %}">
-	</form>
-    <div id="indications">
-        <div id="leftcol">
-            <h4>{% trans "How to fill a report" %}</h4>
+        <div id="instructions" class="block">
+            <p class="lead">{% trans "How to fill a report" %}</p>
             <ol>
-                <li>{% trans "Enter a nearby street name" %}</li>
-                <li>{% trans "Locate the problem on a map of the area" %}</li>
-                <li>{% trans "Enter details of the problem" %}</li>
+                <li>{% trans "Enter a street" %}</li>
+                <li>{% trans "Locate the problem on map" %}</li>
+                <li>{% trans "Descibe the problem" %}</li>
                 <li>{% trans "We send it to the city on your behalf" %}</li>
             </ol>
         </div>
+
+        <form id='search-form' class="block highlighted form-inline">
+            <p class="lead">{% trans "Enter the address where the incident is:" %}</p>
+            <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street...' %}" />
+            <select id="input-ward" class="input-medium" name="ward">
+                <option value="">{% trans "All communes..." %}</option>
+                {% for zip in zipcodes %}
+                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                {% endfor %}
+            </select>
+            <input class="btn" type="submit" name="submit" value="{% trans 'Search' %}">
+
+
+            <ul id="proposal" class="inline"> </ul>
+
+        </form>
+    </article>
+
+    <article id="counters">
+        <div class='counter'>
+            <h3 class='number'>{{ report_counts.recent_new }}</h3>
+            <span class='text'>{% trans "Reports Filed" %}</span>
+            <span class='qualifier'>{% trans "In the Last Year" %}</span>
+        </div>
+        <div class='counter'>
+            <h3 class='number'>{{ report_counts.recent_fixed }}</h3>
+            <span class='text'>{% trans "Reports Fixed" %}</span>
+            <span class='qualifier'>{% trans "In the Last Year" %}</span>
+        </div>
+        <div class='counter'>
+            <h3 class='number'>{{ report_counts.recent_updated }}</h3>
+            <span class='text'>{% trans "Reports Updated" %}</span>
+            <span class='qualifier'>{% trans "In the Last Year" %}</span>
+        </div>
+    </article>
+
+    <div id="indications">
         <div id="rightcol">
-            <div id='stat-group'>
-                <div class='stat'>
-                    <span class='number'>{{report_counts.recent_new}}</span><br/>
-                    <span class='text'>{% trans "Reports Filed" %}<br/></span>
-                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
-                </div>
-                <div class='stat'>
-                    <span  class='number'>{{report_counts.recent_fixed}}</span><br/>
-                    <span class='text'>{% trans "Reports Fixed" %}*<br/></span>
-                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
-                </div>
-                <div class='stat'>
-                    <span class='number'>{{report_counts.recent_updated}}</span><br/>
-                    <span class='text'>{% trans "Reports Updated" %}</span><br/>
-                    <span class='qualifier'>{% trans "In the Last Year" %}</span>
-                </div>
-            </div>
-            <div class="fix-disclaimer">
-                <p>*{% trans "As reported by Fix My Street users." %}</p>
-            </div>
 
             <!--
             <div class='block'>
@@ -77,5 +80,5 @@
         </div>
     </div>
 {% endblock %}
-	
+
 {% block content_third %}{% endblock %}

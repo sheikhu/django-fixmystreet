@@ -34,20 +34,20 @@ $(document).ready(function(){
             var $input = $(input);
             if(!$input.val()) {
                 valid = false;
-                $input.closest('.required').addClass('mandatory');
+                $input.closest('.required').addClass('invalid');
                 console.log("not valid", $input);
             } else {
-                $input.closest('.required').removeClass('mandatory');
+                $input.closest('.required').removeClass('invalid');
             }
         });
-        
+
         if(!valid) {
             evt.preventDefault();
 
-            $form.find('.mandatory input, .mandatory select').first().focus();
+            $form.find('.invalid input, .invalid select').first().focus();
             $form.find('.required-error-msg').fadeIn();
             $form.addClass('required-invalid');
-            
+
             return false;
         }
     });
@@ -61,5 +61,5 @@ function updateMenuEntries(x,y) {
             currentHref = $(value).attr('href');
             $(value).attr('href',currentHref+'?x='+x+'&y='+y);
     });
-        //End update menu	
+        //End update menu
 }
