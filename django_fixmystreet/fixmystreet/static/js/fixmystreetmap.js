@@ -211,14 +211,15 @@ if (!('fms' in window)) {
 					console.log('image',this);
 				});
 				*/
-			}
 
-			var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-			var markerConf = report.status==3 ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
-			if(index){
-				//make a copy
-				markerConf = $.extend({},markerConf,{
-					externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
+				var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
+				var markerConf = report.status==3 ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
+				if(index){
+					//make a copy
+					markerConf = $.extend({},markerConf,{
+						externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
+					});
+				}
 				callback(response);
 			},
 			error:function()
