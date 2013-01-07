@@ -306,8 +306,18 @@ footer *{
 }
 
 #map {
-    height: 250px;
+    position: relative;
+    height: 300px;
     box-shadow: inset 0px 20px 10px -5px #949499, inset 0px -20px 10px -5px #949499;
+}
+
+#map img {
+    /* overwride twitter bootstrap */
+    max-width: none;
+}
+
+.olMapViewport *:first-child {
+    z-index: -1 !important;
 }
 
 .error-msg {
@@ -354,12 +364,16 @@ footer *{
     padding-top:0;
 }
 
+#recent-reports {
+    width: 40%;
+    margin: 10px;
+}
+
 
 #instructions, #search-form {
-    position: relative;
+    position: absolute;
     top: 18%;
-    float: left;
-    margin-left: 200px;
+    z-index: 10000;
 }
 
 #instructions ul li {
@@ -368,10 +382,12 @@ footer *{
 
 #instructions {
     width: 300px;
+    left: 200px;
 }
 
 #search-form {
     width: 455px;
+    left: 700px;
 }
 
 
@@ -546,17 +562,14 @@ li img {
 /********* REPORT FORM LAYOUT ********/
 
 /* first step: instruction */
-#instructable {
-	position:absolute;
-	bottom:230px;
-	left:270px;
-	right:10px;
-	z-index:1000;
-	background-color:white;
-	padding:4px 14px;
-	border:1px solid black;
-	border-radius:12px;
-	border-bottom-left-radius:0;
+#cursor-instructions {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    width: 100px;
+    margin-left: 50px;
+    margin: auto;
+    z-index: 1000;
 }
 
 #back {

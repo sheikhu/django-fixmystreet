@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n tags %}
 
 {% block script %}
 {{ block.super }}
@@ -12,6 +12,24 @@
 {% block script-search %}
 <script type="text/javascript">
     var NEXT_PAGE_URL = '{% url report_new %}';
+</script>
+
+<script type="text/javascript">
+$(function(){
+    fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
+        origin:{
+            x:{{ reports.0.point.x }},
+            y:{{ reports.0.point.y }}
+        }
+    });
+    {% for report in reports %}
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
+    {% endfor %}
+
+});
 </script>
 {% endblock %}
 {% endblock %}
@@ -64,21 +82,14 @@
         </div>
     </article>
 
-    <div id="indications">
-        <div id="rightcol">
 
-            <!--
-            <div class='block'>
-                <h4>{% trans "Recent Reports" %}</h4>
-                <ul>
-                {% for report in recent_reports %}
-                    <li><a href='{{report.get_absolute_url}}'>{{report.title}}</a></li>
-                {% endfor %}
-                </ul>
-            </div>
-            -->
-        </div>
-    </div>
+    <article id="recent-reports" class="block">
+        <h2>{% trans "Recent Reports" %}</h2>
+        {% for report in reports %}
+        {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+        {% endfor %}
+    </article>
+
 {% endblock %}
 
 {% block content_third %}{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ReportForm, ReportFileForm, ReportCommentForm, FileUploadForm
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm
 from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
@@ -24,22 +24,22 @@ def new(request):
                     return HttpResponseRedirect(report.get_absolute_url())
     else:
         SessionManager.clearSession(request.session)
-        report_form = ReportForm(initial={
+        report_form = ProReportForm(initial={
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
         })
-    
+
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
     statusQ = request.REQUEST.get('status')
     if statusQ == 'created':
-    	reports = Report.objects.filter(status=Report.CREATED)
+        reports = Report.objects.filter(status=Report.CREATED)
     elif statusQ == 'in_progress':
-    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif statusQ == 'off':
-    	reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
+        reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
     else:
         reports = Report.objects.all()
-    
+
     reports = reports.distance(pnt).order_by('distance')
 
     return render_to_response("pro/reports/new.html",
@@ -52,10 +52,11 @@ def new(request):
             },
             context_instance=RequestContext(request))
 
+
 def search_ticket(request):
     report_id = request.REQUEST.get('report_id')
     report = Report.objects.get(id=report_id)
-    
+
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
 def subscription(request):
@@ -70,7 +71,7 @@ def subscription(request):
         i= i+1
     return render_to_response("pro/reports/subscriptions.html",
             {
-              "reports":reports  
+              "reports":reports
             },
             context_instance=RequestContext(request))
 
@@ -80,12 +81,12 @@ def show(request,slug, report_id):
     comments = ReportComment.objects.filter(report_id=report_id)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
-    
+
     entitiesHavingAManager = FMSUser.objects.filter(manager=True);
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingAManager)
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
-    
+
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
             {

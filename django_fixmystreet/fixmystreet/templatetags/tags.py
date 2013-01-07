@@ -1,16 +1,14 @@
-import re
 import json
 from django.conf import settings
 
 from django import template
-from django.conf import settings
 from django.core.urlresolvers import resolve
-from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportSubscription, OrganisationEntity
+from django_fixmystreet.fixmystreet.models import FMSUser
 
 
 register = template.Library()
 
-MENU_DEFS = [ 
+MENU_DEFS = [
     ('submit', ['home','report_new']),
     ('view', ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report']),
     ('about',  ['about', 'terms_of_use']),
@@ -27,22 +25,13 @@ def get_active_menu(context):
     return ''
 
 @register.simple_tag
-def map_scripts():
-    return '''
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-    <script src="{STATIC_URL}OpenLayers-2.11/OpenLayers.js"></script>
-    <script src="{STATIC_URL}js/fixmystreetmap.js"></script>
-    <script src="{STATIC_URL}js/proj4js/engine/proj4js-compressed.js"></script>
-    <script src="{STATIC_URL}js/proj4js/defs/EPSG31370.js"></script>
-    '''.format(STATIC_URL=settings.STATIC_URL)
-
-@register.simple_tag
 def addthis_scripts():
     return '<script src="http://s7.addthis.com/js/250/addthis_widget.js?pub=' + settings.ADD_THIS_KEY + '"></script>'
 
-@register.simple_tag
-def report_to_json(report):
-    return json.dumps(report.to_JSON())
+@register.filter
+def dict_to_json(values):
+    print values
+    return json.dumps(values)
 
 @register.filter
 def get_element_from_list(list, index):
@@ -59,6 +48,6 @@ def hasAtLeastAManager(userId):
     organisationId = connectedOrganisation.id
     #if the user is an executeur de travaux then user the dependent organisation id
     if (connectedUser.contractor == True):
-        organisationId = connectedOrganisation.dependency.id 
+        organisationId = connectedOrganisation.dependency.id
 
     return FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True).exists()

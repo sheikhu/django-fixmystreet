@@ -1,36 +1,31 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% load tags %}
+{% load i18n tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block script %}
 {{ block.super }}
 
-<script src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script>
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
-{% map_scripts %}
-
 
 <meta property="og:title" content="{% trans 'New Report' %}" />
 <meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur FixMyStreet qui identifiera alors le service public en charge de le traiter.' %}" />
-<script> 
+<script>
 $(function(){
 	var $form = $('#report_form');
-	var $map = $('#map-bxl');
 
-	$map.fmsMap({
+	fms.currentMap = new fms.Map('map', {
 		apiLang:     LANGUAGE_CODE,
-		localizeUrl: SERVICE_GIS_URL + '/urbis/Rest/Localize/getaddressfromxy',
+		localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
 		urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
 		origin:{
 			x:{{ pnt.x }},
-			y:{{ pnt.y }} 
+			y:{{ pnt.y }}
 		}
 	});
 	{% for report in reports %}
-	$map.fmsMap('addReport', {% report_to_json report %},{{forloop.counter}});
+	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}});
 	{% endfor %}
-	$map.fmsMap('addDraggableMarker',{{ pnt.x }}, {{ pnt.y }});
+	fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
 });
 
 </script>
@@ -57,31 +52,20 @@ $(document).delegate("form", "submit", function(evt) {
 {% endblock %}
 
 {% block content %}
-<div id="page_content_container">
+    <article id="map">
+        <div id="cursor-instructions" class="block highlighted">
+            {% trans "Drag me to change my location." %}
+        </div>
+    </article>
     <h1>{% trans "Submitting a report" %}</h1>
 
 	<div id="leftcol">
-		<div id="nearby-reports">
-            <h2>
-                {% trans "Nearby reports" %} 
-            </h2>
-            
-            {% if reports %}
-                <div id='search_results'>
-                {% for report in reports %}
-                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-                {% endfor %}
-                </div>
-            {% else %}
-                <p>{% trans "No problems have been reported in this area." %}</p>
-            {% endif %}
-		</div>
 		{% block report_form %}
 		<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
             <h2>
-                {% trans "Fill the report" %} 
+                {% trans "Fill the report" %}
             </h2>
-			<table id="new_report_citizen_form" class='form'>
+			<table id="new_report_citizen_form" class="form">
 				<tr>
 					<th></th>
 					<td id="required_note">{% trans "* This fields are required" %}</td>
@@ -106,99 +90,97 @@ $(document).delegate("form", "submit", function(evt) {
 					</span>
 					</td>
 				</tr>
-				
+
 			</table>
 			<div id="report_overview_table_div">
 			<table class="report_overview_table">
 				<tr>
 					<th>{% trans 'Location' %}</th>
 					<td id="locationView">
-						
-					</td>	
+
+					</td>
 				</tr>
 				<tr>
 					<th>{% trans 'Category' %}</th>
 					<td id="category1View">
-						
-					</td>	
+
+					</td>
 				</tr>
 				<tr>
 					<th>{% trans 'Category' %}</th>
 					<td id="category2View">
-						
-					</td>	
+
+					</td>
 				</tr>
 				<!--<tr>
 					<th>{% trans 'Photo' %}</th>
 					<td id="photoView">
-						
-					</td>	
+
+					</td>
 				</tr>-->
 				<tr>
 					<th>{% trans 'Description' %}</th>
 					<td id="descriptionView">
-						
-					</td>	
+
+					</td>
 				</tr>
 				<tr>
 					<th>{% trans 'Email' %}</th>
 					<td id="emailView">
-						
-					</td>	
+
+					</td>
 				</tr>
 				<tr>
 					<th>{% trans 'First name' %}</th>
 					<td id="firstNameView">
-						
-					</td>	
+
+					</td>
 				</tr>
 				<tr>
 					<th>{% trans 'Name' %}</th>
 					<td id="nameView">
-						
-					</td>	
+
+					</td>
 				</tr>
 			</table>
 			<p>
                 <input type="button" class='big_button' value="{% trans 'Edit' %}" style="float:left;" onclick="showForm();"/>
             </p>
 			</div>
-			<p style="float:right;">
-                <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-            </p>
+            <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
 		</form>
 		{% endblock %}
 		<div id="addAnnexes">
 		<div style="padding-top:30px">
         	<div id="extraFilesDiv">
             <h3>{% trans "Extra files" %}</h3>
-            
+
                 <table id="extraFilesTable" style='width:100%;'>
-                    
+
             	</table>
             </div>
             <div id="extraCommentsDiv">
             <h3>{% trans "Extra comments" %}</h3>
-            
+
                 <table class="extraCommentsTable" style='width:100%;'>
-                    
+
             	</table>
             </div>
         </div>
 
      </div>
-     <!-- If the status allow such interactions -->		
-		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %} 
+     <!-- If the status allow such interactions -->
+		{% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9'  %}
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
 			<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
-			
+
 			<form id="commentForm" enctype="multipart/form-data"  method="post">
 				<table id="report_form" class="form">
 					<tr>
 						<th>{% trans 'Text'%}:</th>
 						<td><textarea id="commentTextTextArea"></textarea></td>
-					</tr>				
+					</tr>
 					<tr>
 						<td></td>
 						<td>
@@ -233,16 +215,7 @@ $(document).delegate("form", "submit", function(evt) {
 		{% endif %}
 	</div>
 	<div id="rightcol">
-		<a id="back" class="button" href="#reports">{% trans "Review reports" %}</a>
-		<div id="map-bxl">
-			<div id="instructable">
-				<h3>{% trans "To fill a new report" %}</h3>
-				<p>
-					{% trans "Drag me to the correct location on the map." %}
-				</p>
-			</div>
-		</div>
-		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
+        <p>{% trans "Zoom out to see more reports nearby." %}</p>
         <div class='note'>
             <p><strong>{% trans "Please Note" %} :</strong></p>
             <ul>
@@ -253,17 +226,25 @@ $(document).delegate("form", "submit", function(evt) {
             </ul>
             <p/>
         </div>
-	</div>
-	
+        <h2>
+            {% trans "Nearby reports" %}
+        </h2>
+
+        {% if reports %}
+            <div id='search_results'>
+            {% for report in reports %}
+            {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+            {% endfor %}
+            </div>
+        {% else %}
+            <p>{% trans "No problems have been reported in this area." %}</p>
+        {% endif %}
+    </div>
 
 
 
-		
+
+
 	</div>
 </div>
-{% if not BACKOFFICE %}
-	<script>
-        	$("#id_is_private").attr('disabled', 'disabled');
-	</script>
-{% endif %}
 {% endblock %}

@@ -111,23 +111,23 @@ class CategoryChoiceField(forms.fields.ChoiceField):
         return model
 
 
-#Used by PRO version
 class ReportForm(forms.ModelForm):
     """Report form"""
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'category', 'secondary_category', 'secondary_category_copy', 'postalcode', 'description', 'is_private')
-
     required_css_class = 'required'
+
     category = CategoryChoiceField(label=ugettext_lazy("category"))
     secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
-    secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"),required=False)
+    secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"), required=False)
+    address = forms.fields.CharField()
+    description = forms.fields.CharField()
+
+    # hidden inputs
     x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
     address_number = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    is_private = forms.BooleanField(required=False, initial=True)
-    #photo = forms.fields.ImageField(required=False,widget=forms.widgets.FileInput(attrs={"accept":"image/*;capture=camera", "capture":"camera"}))
+    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
 
     def __init__(self,data=None, files=None, initial=None):
         if data:
@@ -150,6 +150,11 @@ class ReportForm(forms.ModelForm):
         if commit:
             report.save()
         return report
+
+#Used by pro version
+class ProReportForm(ReportForm):
+    is_private = forms.BooleanField(initial=True)
+
 
 qualities = list(Report.REPORT_QUALITY_CHOICES)
 qualities.insert(0, ('', _('Choose your quality')))
