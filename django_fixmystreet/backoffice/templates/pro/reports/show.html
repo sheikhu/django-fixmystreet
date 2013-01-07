@@ -118,60 +118,62 @@ $(document).ready(function() {
 		<!-- ################################################### -->
 		<!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
 		<!-- ################################################### -->
-        	{% if report.responsible_manager == request.user or report.contractor == fms_user.organisation %}
+        	{% if report.responsible_manager.id == request.user.id or report.contractor == fms_user.organisation %}
 			<!-- ############################################# -->
 			<!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
 			<!-- ############################################# -->
-			{% if report.is_in_progress %}
-                	<tr>
-				<td>
-					{% if not fms_user.contractor %} 
-                        		<button onclick="window.location = '{% url report_close_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Cloturer</button>
-    					{% endif %}
-                    		</td>
-				<td >
-					&nbsp;
-                    		</td>
-	                    	<td >
-				{% if report.is_markable_as_solved %} 
-                	        	<button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
-    				{% endif %}
-	                    	</td>
-        	                <td >
-					{% if not fms_user.contractor %} 
-                        	    	<button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
-    					{% endif %}
-	                        </td>	
-				<td>
-					&nbsp;
-				</td>
-                	</tr>
-    			{% endif %}
+                {% if report.is_in_progress %}
+                 <tr>
+                    <td>
+                     {% if not fms_user.contractor %} 
+                     <button onclick="window.location = '{% url report_close_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Cloturer</button>
+                     {% endif %}
+                    </td>
+                    <td >
+                        &nbsp;
+                    </td>
+                    <td >
+                        {% if report.is_markable_as_solved %} 
+                        <button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+                        {% endif %}
+                    </td>
+                    <td >
+                        {% if not fms_user.contractor %} 
+                        <button class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+                {% endif %}
                 	<tr>
 			<!-- ######################################### -->
 			<!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
 			<!-- ######################################### -->
-			{% if report.is_created %} 
-                    		<td>
-                        		<button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish' %}</button>
-	                    	</td>
-                    		<td>
-                        		<button onclick="refuse();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
-	                    	</td>
-                        	<td>
-	                            <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish All' %}</button>
-        	                </td>
-    			{% endif %}
-               	{% endif %}
-               
-        	{% if report.responsible_manager == request.user or fms_user.leader or report.contractor == fms_user.organisation %}
-		        <td>
-                            <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
-			</td>	
-		        <td>
-                            <button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
-			</td>	
-               	{% endif %}
+
+                    {% if report.is_created %} 
+                    <td>
+                        <button onclick="window.location = '{% url report_accept_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish' %}</button>
+                    </td>
+                    <td>
+                        <button onclick="refuse();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Reject' %}</button>
+                    </td>
+                    <td>
+                        <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Publish All' %}</button>
+                    </td>
+                    {% endif %}
+
+            {% endif %}
+
+            {% if report.responsible_manager == request.user or fms_user.leader or report.contractor == fms_user.organisation %}
+                    <td>
+                        <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
+                    </td>
+                    <td>
+                        <button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
+                    </td>
+            {% endif %}
                 </tr>
             </table>
         </div>
