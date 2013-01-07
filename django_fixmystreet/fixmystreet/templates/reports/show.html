@@ -9,18 +9,16 @@
 <meta name="title" property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
 <meta name="description" property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
-{% map_scripts %}
-
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script>
 /******************************/
 /* QUERY READY INITIALIZATION */
 /******************************/
 $(function(){
-	$('#map-bxl').fmsMap({ 
+	$('#map-bxl').fmsMap({
 		origin:{
 			x:{{ report.point.x }},
-			y:{{ report.point.y }} 
+			y:{{ report.point.y }}
 		}
 	});
 	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
@@ -35,7 +33,7 @@ function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
     var file_creation_date = new Date(""+file.lastModifiedDate);
     var dateString = file_creation_date.getFullYear() + "-"+ (file_creation_date.getMonth()+1) + "-" + file_creation_date.getDate()+ " " + file_creation_date.getHours()+":"+file_creation_date.getMinutes();
-    
+
     $("[name='file_creation_date']").val(dateString);
 }
 
@@ -60,12 +58,12 @@ function markAsDone(){
         float: left;
         width: 100%;
     }
-    
+
     #update-title {
         float: left;
         width: 48%;
     }
-    
+
     #update-email-me {
         float: right;
         width: 48%;
@@ -109,7 +107,7 @@ function markAsDone(){
 </h1>
     {% endblock %}
 
-	<div id="leftcol">    
+	<div id="leftcol">
 		<!-- ######### -->
 		<!-- IS FIXED  -->
 		<!-- ######### -->
@@ -118,7 +116,7 @@ function markAsDone(){
 		{% endif %}
 
 		<div id='report-body'>
-            
+
 		<!-- ################ -->
 		<!-- SUBSCRIBER BLOCK -->
 		<!-- ################ -->
@@ -154,7 +152,7 @@ function markAsDone(){
 	<!-- ################## -->
 	<!-- REPORT STATUS ZONE -->
 	<!-- ################## -->
-            <table id='report-status'>			
+            <table id='report-status'>
                 <tr>
                     <th>{% trans "Location:" %}</th>
                     <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
@@ -182,7 +180,7 @@ function markAsDone(){
                                 {{file.title}}:
                                 <center>
                                         <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-                                        
+
                                         {% if file.is_image %}
                                                 <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
                                         {% endif %}
@@ -247,17 +245,17 @@ function markAsDone(){
 				<p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
 			</div>
 
-			{% if report.is_in_progress %} 
+			{% if report.is_in_progress %}
 		<!-- ############################################# -->
 		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
 		<!-- ############################################# -->
 		<div id="addCommmentDiv">
 			<h2>{% trans "Add a comment to this report" %}</h2>
             		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
-			
+
 			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
 			<table id="report_form" class="form">
-				{{comment_form.as_table}}					
+				{{comment_form.as_table}}
 				<tr>
                         	<td></td>
                         	<td>
@@ -279,7 +277,7 @@ function markAsDone(){
             		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
 			<form id="fileForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
 			<table id="report_form" class="form">
-				{{file_form.as_table}}					
+				{{file_form.as_table}}
 				<tr>
                         	<td></td>
                         	<td>
@@ -299,10 +297,10 @@ function markAsDone(){
 	</div>
         </div>
 
-    	
+
     </div>
-    
-    
+
+
     </div>
     <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post">
         {{ mark_as_done_form.as_p }}
@@ -311,5 +309,5 @@ function markAsDone(){
     <div id="more-actions">
         <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
     </div>
-</div>	
+</div>
 {% endblock %}

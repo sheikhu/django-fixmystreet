@@ -10,8 +10,6 @@
 {% block script %}
 {{ block.super }}
 
-{% map_scripts %}
-
 <meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
 <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 
@@ -23,7 +21,7 @@ $(function(){
 	{% for report in reports %}
 	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %}, {{ forloop.counter }});
 	{% endfor %}
-	
+
 	$('#map-bxl').bind('reportselected',function(evt, point, report){
 		window.location.assign('{{report.get_absolute_url}}');
 	});
