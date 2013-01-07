@@ -143,8 +143,6 @@ class ReportForm(forms.ModelForm):
         report = super(ReportForm, self).save(commit=False)
         report.status = Report.CREATED
         report.point = self.point
-        report.private = self.cleaned_data["is_private"]
-        #split address in 2 pieces
         report.address = self.cleaned_data["address"].split(", ")[0]
         report.address_number = self.cleaned_data["address_number"]
         if commit:
@@ -153,7 +151,7 @@ class ReportForm(forms.ModelForm):
 
 #Used by pro version
 class ProReportForm(ReportForm):
-    is_private = forms.BooleanField(initial=True)
+    private = forms.BooleanField(initial=True)
 
 
 qualities = list(Report.REPORT_QUALITY_CHOICES)
