@@ -15,19 +15,31 @@
 /* QUERY READY INITIALIZATION */
 /******************************/
 $(function(){
-	$('#map-bxl').fmsMap({
-		origin:{
-			x:{{ report.point.x }},
-			y:{{ report.point.y }}
-		}
-	});
-	$('#map-bxl').fmsMap('addReport', {{report.to_JSON|dict_to_json|safe}});
-    $("#dialogMarkAsDone").dialog({
-        modal: true,
-        autoOpen:false,
-        width:'auto',
-        resizable: false
+	// $('#map-bxl').fmsMap({
+	// 	origin:{
+	// 		x:{{ report.point.x }},
+	// 		y:{{ report.point.y }}
+	// 	}
+	// });
+	// $('#map-bxl').fmsMap('addReport', {{report.to_JSON|dict_to_json|safe}});
+    // $("#dialogMarkAsDone").dialog({
+    //     modal: true,
+    //     autoOpen:false,
+    //     width:'auto',
+    //     resizable: false
+    // });
+
+    fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
+        origin:{
+            x:{{ report.point.x }},
+            y:{{ report.point.y }}
+        }
     });
+
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }});
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -73,7 +85,7 @@ function markAsDone(){
 </style>
 {% endblock %}
 {% block content %}
-
+<article id="map"></article>
 <!-- ######################### -->
 <!-- # MAIN CONTENT DEFINITION -->
 <!-- ######################### -->
@@ -84,13 +96,10 @@ function markAsDone(){
     <!-- ########################### -->
     <!-- # DISPLAY REPORT CATEGORY # -->
     <!-- ########################### -->
-       {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
+       
  	<div style="float:right;margin-top:-23px">
         	<table class="reportActionButtons">
 			<tr>
-				<td>
-					<button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
-				</td>
 				{% if report.is_in_progress %}
 				<td>
                     {% if not report.status == report.SOLVED %}
@@ -107,7 +116,8 @@ function markAsDone(){
 </h1>
     {% endblock %}
 
-	<div id="leftcol">
+	<div class="overview_div_left">
+        <h1>{% trans "Report Ticket" %}: {{report.get_ticket_as_string}}</h1>
 		<!-- ######### -->
 		<!-- IS FIXED  -->
 		<!-- ######### -->
@@ -117,20 +127,7 @@ function markAsDone(){
 
 		<div id='report-body'>
 
-		<!-- ################ -->
-		<!-- SUBSCRIBER BLOCK -->
-		<!-- ################ -->
-		<div id='report-subscribers'>
-                	{% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
-                	{% if not report.is_closed and not subscribed %}
-                        <form action="{% url subscribe report.id %}">
-                            <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
-                            <input type="submit" value="{% trans "Subscribe" %}" />
-                        </form>
-                	{% endif %}
-            	</div>
-
-			<p>{{report.description|linebreaks}}</p>
+		<p>{{report.description|linebreaks}}</p>
 
 		<!-- ################### -->
 		<!-- REPORT CREATOR ZONE -->
@@ -167,8 +164,9 @@ function markAsDone(){
 	    <!-- ################# FILES ############### -->
 	    <!-- ################# FILES ############### -->
 	    <!-- ################# FILES ############### -->
+        <h4>{% trans "Photos and files" %}</h4>
 	    {% if report.active_files %}
-            <h3>{% trans "Extra files" %}</h3>
+            
             <div id="report_updates">
                 <table id="extraFilesTable">
                     {% for file in report.active_files.all %}
@@ -177,8 +175,7 @@ function markAsDone(){
                         <td class="annexesFirstTD">
                     <div class="report_update">
                         {% if file.file %}
-                                {{file.title}}:
-                                <center>
+                                
                                         <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
 
                                         {% if file.is_image %}
@@ -194,18 +191,44 @@ function markAsDone(){
                                                 <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
                                         {% endif %}
 
-                                </center>
-                                {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date %}
-                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                                {% endblocktrans %}
+                                <div class="update_text">
+                                    {{file.title}}:
+                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date %}
+                                    Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                                    {% endblocktrans %}
+                                </div>
                         {% endif %}
                     </div>
                 </td>
 		</tr>
 		{% endif %}
 		{% endfor %}
+        {% if report.is_in_progress %}
 		</table>
-	</div>
+        <!-- ############################################# -->
+        <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+        <!-- ############################################# -->
+        <div id="addFileDiv">
+        <a onclick="toggleFileForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a file" %}</a>
+            <form id="fileForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
+            <table id="report_form" class="form">
+                {{file_form.as_table}}
+                <tr>
+                            <td></td>
+                            <td>
+                                    <p style="float:left;">
+                                    <input type="hidden" name="form-type" value="file-form"/>
+                                    <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
+                                    <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
+                                    <input type="hidden" name="file_creation_date"/>
+                                </p>
+                            </td>
+                            </tr>
+            </table>
+            </form>
+        </div>
+        {% endif %}
+       </div>
 	{% endif %}
 
 
@@ -215,8 +238,9 @@ function markAsDone(){
 	    <!-- ################# COMMENTS ############### -->
 	    <!-- ################# COMMENTS ############### -->
 	    <!-- ################# COMMENTS ############### -->
+
+        <h4>{% trans "Comments" %}</h4>
 	    {% if report.active_comments %}
-            <h3>{% trans "Extra comments" %}</h3>
             <div id="report_updates">
                 <table class="extraCommentsTable">
                 {% for comment in report.active_comments.all %}
@@ -234,73 +258,60 @@ function markAsDone(){
 		    {% endif %}
 		{% endfor %}
 		</table>
+
 	</div>
 	{% endif %}
-
-
+    {% if report.is_in_progress %}
+        <!-- ############################################# -->
+        <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+        <!-- ############################################# -->
+        <div id="addCommmentDiv">
+            <a onclick="toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a comment" %}</a>
+                    
+            <form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
+            <table id="report_form" class="form">
+                {{comment_form.as_table}}
+                <tr>
+                            <td></td>
+                            <td>
+                                    <p style="float:left;">
+                                    <input type="hidden" name="form-type" value="comment-form"/>
+                                    <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
+                                    <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
+                                    </p>
+                            </td>
+                        </tr>
+            </table>
+            </form>
+            </div>
+          {% endif %}
             <!-- If the status allow such interactions -->
-
-
-			<div id="more-actions">
-				<p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-			</div>
-
-			{% if report.is_in_progress %}
-		<!-- ############################################# -->
-		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-		<!-- ############################################# -->
-		<div id="addCommmentDiv">
-			<h2>{% trans "Add a comment to this report" %}</h2>
-            		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
-
-			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
-			<table id="report_form" class="form">
-				{{comment_form.as_table}}
-				<tr>
-                        	<td></td>
-                        	<td>
-                            		<p style="float:left;">
-                            		<input type="hidden" name="form-type" value="comment-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
-                                	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
-                            		</p>
-                        	</td>
-                   	 	</tr>
-			</table>
-			</form>
-        	</div>
-		<!-- ############################################# -->
-		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-		<!-- ############################################# -->
-		<div id="addFileDiv">
-		<h2>{% trans "Add a file to this report" %}</h2>
-            		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
-			<form id="fileForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
-			<table id="report_form" class="form">
-				{{file_form.as_table}}
-				<tr>
-                        	<td></td>
-                        	<td>
-                            		<p style="float:left;">
-                            		<input type="hidden" name="form-type" value="file-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
-                                	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
-                                    <input type="hidden" name="file_creation_date"/>
-                            	</p>
-                        	</td>
-                    		</tr>
-			</table>
-			</form>
-		</div>
-		{% endif %}
+			 <a href="" onclick="window.location = '{% url report_pdf report.id 0 %}'" ><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
+            <div id="more-actions">
+                <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+            </div>
 		</div>
 	</div>
+    <div class="overview_div_right">
+        <!-- ################ -->
+        <!-- SUBSCRIBER BLOCK -->
+        <!-- ################ -->
+        <!-- <div id='report-subscribers'> -->
+                    {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+                    {% if not report.is_closed and not subscribed %}
+                        <form action="{% url subscribe report.id %}">
+                            <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
+                            <input type="submit" class="btn" value="{% trans "Subscribe" %}" />
+                        </form>
+                    {% endif %}
+                </div>
+    <!-- </div> -->
         </div>
 
 
     </div>
 
-
+<!--
     </div>
     <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post">
         {{ mark_as_done_form.as_p }}
@@ -308,6 +319,6 @@ function markAsDone(){
     </form>
     <div id="more-actions">
         <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-    </div>
+    </div>-->
 </div>
 {% endblock %}

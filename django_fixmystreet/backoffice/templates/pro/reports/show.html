@@ -105,14 +105,15 @@ $(document).ready(function() {
 {{ block.super }}
 {% endblock %}
 {% block content %}
+<article id="map"></article>
 <div id="page_content_container">
 
 {% block pageHeader %}
-    	<h1>
+    <h1>
 	<!-- ########################### -->
 	<!-- # DISPLAY REPORT CATEGORY # -->
 	<!-- ########################### -->
-         {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
+         
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
 		<!-- ################################################### -->
@@ -166,14 +167,7 @@ $(document).ready(function() {
 
             {% endif %}
 
-            {% if report.responsible_manager == request.user or fms_user.leader or report.contractor == fms_user.organisation %}
-                    <td>
-                        <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf' %}</button>
-                    </td>
-                    <td>
-                        <button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'report pdf public' %}</button>
-                    </td>
-            {% endif %}
+            
                 </tr>
             </table>
         </div>
@@ -183,218 +177,136 @@ $(document).ready(function() {
 	<!-- # SMALL SECTION TO SUBSCRIBE OR NOT # -->
 	<!-- ##################################### -->
     	<div style="border-bottom:1px solid black; padding-bottom:30px">
-		<div id="leftcol">    
+		<div class="overview_div">   
+        <h1>{% trans "Report Ticket" %}: {{report.get_ticket_as_string}}</h1> 
 			{% if report.markedAsFinished %}
 				<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 			{% endif %}
 		<div id='report-body'>
-            		<div id='report-subscribers'>
-                		{% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
-		                {% if not report.is_closed and user.is_authenticated %}
-                		    {% if not subscribed %}
-			                    <a href="{% url subscribe_pro report.id %}">{% trans "Subscribe" %}</a>
-		                    {% else %}
-                			    <p><small>{% trans "You've subscribed for updates" %}</small></p>
-			                    <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
-		                    {% endif %}
-		                {% endif %}
-            		</div>
-
 			<p>{{report.description|linebreaks}}</p>
 
-			{% if report.photo  %}
-				<center><img style="max-width:390px;max-heigth:390px" src='{{ report.photo.url }}'/></center>
-			{% endif %}
 			<p class="author-sign">
-                	{% if report.citizen %}
-				<!-- Protect privacy from applicant and contractor when creator is a citizen -->
-				{% if fms_user.can_see_confidential %}
-        		        	{% if report.citizen.last_name = ''%}
-			        	Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created|date}}</strong>
-					{% else %}
-        		        	{% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
-			        	Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
-        	        		{% endblocktrans %}
-                                	(tel:{{report.citizen.fmsuser.telephone}})
-					{% endif %}
-				{% else %}
-					 {% blocktrans with on=report.created|date %}
-                                		Posted on <strong>{{on}}</strong>
-                        		{% endblocktrans %}
-				{% endif %}
-				
-	                {% else %}
-                		{% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
+               {% if report.citizen %}
+               <!-- Protect privacy from applicant and contractor when creator is a citizen -->
+               {% if fms_user.can_see_confidential %}
+               {% if report.citizen.last_name = ''%}
+               Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created|date}}</strong>
+               {% else %}
+               {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+               Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+               {% endblocktrans %}
+               (tel:{{report.citizen.fmsuser.telephone}})
+               {% endif %}
+               {% else %}
+               {% blocktrans with on=report.created|date %}
+               Posted on <strong>{{on}}</strong>
+               {% endblocktrans %}
+               {% endif %}
 
-			        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
-                		{% endblocktrans %}
-                                (tel:{{report.created_by.fmsuser.telephone}})
-	                {% endif %}
-            	</p>
+               {% else %}
+               {% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
+
+               Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+               {% endblocktrans %}
+               (tel:{{report.created_by.fmsuser.telephone}})
+               {% endif %}
+           </p>
 
 
 		<!-- ################## -->
 		<!-- # REPORT DETAILS # -->
 		<!-- ################## -->
-            	<table id='report-status'>			
-	                <tr>
-        	            <th>{% trans "Location:" %}</th>
-                	    <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
-	                </tr>
-        	        <tr>
-                		<th></th>
-                		<td><input type="button" class='big_button' onclick="showMap();" value='{% trans "Show on map" %}' ></input></td>
-	                </tr>
-        	        <tr>
-                	    <th>{% trans "Category:" %}</th>
-                        <td>{{report.display_category}}</td>
-        	        </tr>
-                	<tr>
-                		<th>{% trans "Status:" %}</th>
-	                	<td>{{ report.get_status_display }}</td>
-        	        </tr>
-                	{% if report.is_in_progress  %}
-		                {% if request.user.id == report.responsible_manager.id %}
-					<!-- ############################### -->
-					<!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
-					<!-- ############################### -->
-                			<tr>
-			                	<th>{% trans "Responsible manager:" %}</th>
-                    				<td>
-				                        <select id="report_responsible_manager_select">
-				                            	<optgroup label="Gestionnaires">
-								{% for manager in managers %}
-					                            	<option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
-                            					{% endfor %}
-			    					</optgroup>
-                            					<optgroup label="Entites">
-				                            	{% for entity in entities %}
-					                            	<option value="entity_{{entity.id}}">{{entity.name}}</option>
-				                            	{% endfor %}
-			    					</optgroup>
-                        				</select>
-			                	</td>
-                			</tr>
-					<!-- ################################# -->
-					<!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
-					<!-- ################################# -->
-		                	<tr>
-                		    		<th>{% trans "Contractor/Impetrant:" %}</th>
-                    				<td>
-		                        		<select id="report_responsible_impetrant_contractor_select">
-                		            			<option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
-                            						<optgroup label="Executeur de travaux">
-                            							{% for organisation in contractors %}
-                            								<option value="{{organisation.id}}">{{organisation.name}}</option>
-		                            					{% endfor %}
-					    				</optgroup>
-                            						<optgroup label="Impetrants">
-                            							{% for applicant in applicants %}
-                            								<option value="{{applicant.id}}">{{applicant.name_fr}}</option>
-		                            					{% endfor %}
-					    				</optgroup>
-                        				</select>
-		                    		</td>
-                			</tr>
-					<!-- ################################# -->
-					<!-- # PUBLIC OR PRIVATE CHECKBOX    # -->
-					<!-- ################################# -->
-					<tr>
-						<th>
-							<label for="id_is_private">{% trans "Private?" %}</label>			
-						</th>
-						<td>
-							<input type="checkbox" name="is_private" id="id_is_private">
-						</td>
-					</tr>
-                		{% else %}
-					<!-- ########################################################### -->
-					<!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
-					<!-- ########################################################### -->
-                			<tr>
-                    				<th>{% trans "Responsible manager:" %}</th>
-				                <td>
-							<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</a> ({{report.responsible_entity.name}})
-							
-						</td>
-			                </tr>				
-                			<tr>
-				                <th>{% trans "Contractor/Impetrant:" %}</th>
-				                <td>{{report.contractor.name}}</td>
-			                </tr>
-                		{% endif %}
-                	{% endif %}
-            	</table>
-		<!-- ################## -->
-		<!-- # THE MAP WIDGET # -->
-		<!-- ################## -->
-		<div id="map-bxl"></div>
-		</div>
-	</div>
+            <table id='report-status'>
+                <tr>
+                    <th>{% trans "Location:" %}</th>
+                    <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
+                </tr>
+                <tr>
+                    <th>{% trans "Category:" %}</th>
+                    <td>{{report.display_category}}</td>
+                </tr>
+                <tr>
+                    <th>{% trans "Status:" %}</th>
+                    <td>{{ report.get_status_display }}</td>
+                </tr>
+                {% if report.is_in_progress  %}
+                {% if request.user.id == report.responsible_manager.id %}
+                <!-- ############################### -->
+                <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
+                <!-- ############################### -->
+                <tr>
+                    <th>{% trans "Responsible manager:" %}</th>
+                    <td>
+                        <select id="report_responsible_manager_select">
+                           <optgroup label="Gestionnaires">
+                            {% for manager in managers %}
+                                <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
+                            {% endfor %}
+                            </optgroup>
+                            <optgroup label="Entites">
+                            {% for entity in entities %}
+                                <option value="entity_{{entity.id}}">{{entity.name}}</option>
+                            {% endfor %}
+                            </optgroup>
+                        </select>
+                    </td>
+                </tr>
+                <!-- ################################# -->
+                <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
+                <!-- ################################# -->
+                <tr>
+                    <th>{% trans "Contractor/Impetrant:" %}</th>
+                    <td>
+                        <select id="report_responsible_impetrant_contractor_select">
+                            <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
+                                <optgroup label="Executeur de travaux">
+                                {% for organisation in contractors %}
+                                <option value="{{organisation.id}}">{{organisation.name}}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="Impetrants">
+                            {% for applicant in applicants %}
+                                <option value="{{applicant.id}}">{{applicant.name_fr}}</option>
+                            {% endfor %}
+                            </optgroup>
+                        </select>
+                    </td>
+                </tr>
+                <!-- ################################# -->
+                <!-- # PUBLIC OR PRIVATE CHECKBOX    # -->
+                <!-- ################################# -->
+                <tr>
+                  <th>
+                     <label for="id_is_private">{% trans "Private?" %}</label>			
+                 </th>
+                 <td>
+                     <input type="checkbox" name="is_private" id="id_is_private">
+                 </td>
+                </tr>
+                {% else %}
+                <!-- ########################################################### -->
+                <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
+                <!-- ########################################################### -->
+                <tr>
+                    <th>{% trans "Responsible manager:" %}</th>
+                    <td>
+                     <a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</a> ({{report.responsible_entity.name}})
 
-	<!-- ############################ -->
-	<!-- # A SECTION TO ADD ANNEXES # -->
-	<!-- ############################ -->
-	<div id="rightcol">
-		{% if report.is_in_progress %} 
-		<!-- ############################################# -->
-		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-		<!-- ############################################# -->
-		<div id="addCommmentDiv">
-			<h2>{% trans "Add a comment to this report" %}</h2>
-            		<input id="showCommentFormButton" type="button" class="big_button" onclick="toggleCommentForm();" value="Add"/>
-			
-			<form id="commentForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
-			<table id="report_form" class="form">
-				{{comment_form.as_table}}					
-				<tr>
-                        	<td></td>
-                        	<td>
-                            		<p style="float:left;">
-                            		<input type="hidden" name="form-type" value="comment-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
-                                	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
-                            		</p>
-                        	</td>
-                   	 	</tr>
-			</table>
-			</form>
-        	</div>
-		<!-- ############################################# -->
-		<!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-		<!-- ############################################# -->
-		<div id="addFileDiv">
-		<h2>{% trans "Add a file to this report" %}</h2>
-            		<input id="showFileFormButton" type="button" class="big_button" onclick="toggleFileForm();" value="Add"/>
-			<form id="fileForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
-			<table id="report_form" class="form">
-				{{file_form.as_table}}					
-				<tr>
-                        	<td></td>
-                        	<td>
-                            		<p style="float:left;">
-                            		<input type="hidden" name="form-type" value="file-form"/>
-                                	<input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
-                                	<input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
-                                	<input type="hidden" name="file_creation_date"/>
-                            	</p>
-                        	</td>
-                    		</tr>
-			</table>
-			</form>
-		</div>
-		{% endif %}
-     		
-    </div>
+                 </td>
+                </tr>				
+                <tr>
+                    <th>{% trans "Contractor/Impetrant:" %}</th>
+                    <td>{{report.contractor.name}}</td>
+                </tr>
+                {% endif %}
+                {% endif %}
+            </table>
 
-    	
-    </div>
-    <div style="padding-top:30px">
 	<!-- ########################## -->
-	<!-- # DISPLAY EXISTING FILES # -->
+	<!-- # DISPLAY FILES SECTION  # -->
 	<!-- ########################## -->
         {% if files %}
-            <h3>{% trans "Extra files" %}</h3>
+            <h4>{% trans "Photos and files" %}</h4>
             <div id="report_updates">
                 <table id="extraFilesTable">
                     <th></th>
@@ -418,10 +330,7 @@ $(document).ready(function() {
                         	<td class="annexesFirstTD">
                     		<div class="report_update">
                         		{% if file.file %}
-                        		{{file.title}}:
-                        			<center>
 						<!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-						
 						{% if file.is_image %}
 							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
 						{% endif %}
@@ -434,11 +343,13 @@ $(document).ready(function() {
 						{% if file.is_excel %}
 							<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
 						{% endif %}
-						</center>
+                        <div class="update_text">
+                        {{file.title}}:
 						{% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date creat=file.file_creation_date %}
                                 Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong> File Creation Date <strong>{{creat}}</strong>
                                 {% endblocktrans %}
                         		{% endif %}
+                            </div>
                     		</div>
                 		</td>
         
@@ -497,14 +408,39 @@ $(document).ready(function() {
 		{% endif %}
                     {% endfor %}
             </table>
+            {% if report.is_in_progress %} 
+            <!-- ############################################# -->
+        <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+        <!-- ############################################# -->
+        <div id="addFileDiv">
+        <a href="javascript:toggleFileForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a file" %}</a>
+            <form id="fileForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
+            <table id="report_form" class="form">
+                {{file_form.as_table}}                  
+                <tr>
+                            <td></td>
+                            <td>
+                                    <p style="float:left;">
+                                    <input type="hidden" name="form-type" value="file-form"/>
+                                    <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
+                                    <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
+                                    <input type="hidden" name="file_creation_date"/>
+                                </p>
+                            </td>
+                            </tr>
+            </table>
+            </form>
+        </div>
+        {% endif %}
             </div>
             {% endif %}
 	
 	<!-- ############################# -->
-	<!-- # DISPLAY EXISTING COMMENTS # -->
+	<!-- # DISPLAY COMMENTS SECTION  # -->
 	<!-- ############################# -->
+    <h4>{% trans "Comments" %}</h4>
         {% if comments %}
-            	<h3>{% trans "Extra comments" %}</h3>
+            	
             	<div id="report_updates">
                 <table class="extraCommentsTable">
                     <th></th>
@@ -589,20 +525,63 @@ $(document).ready(function() {
             </table>
             </div>
             {% endif %}
+
+            {% if report.is_in_progress %} 
+        <!-- ############################################# -->
+        <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+        <!-- ############################################# -->
+        <div id="addCommmentDiv">
+            <a href="javascript:toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a comment" %}</a>
+            
+            <form id="commentForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
+            <table id="report_form" class="form">
+                {{comment_form.as_table}}                   
+                <tr>
+                            <td></td>
+                            <td>
+                                    <p style="float:left;">
+                                    <input type="hidden" name="form-type" value="comment-form"/>
+                                    <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
+                                    <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
+                                    </p>
+                            </td>
+                        </tr>
+            </table>
+            </form>
+            </div>
+            {% endif %}
+            <div id="pdf_report">
+            {% if report.responsible_manager.id == request.user.id or fms_user.leader or report.contractor == fms_user.organisation %}
+                        <a href="" onclick="window.location = '{% url report_pdf_pro report.id 1 %}'"><img src="{{STATIC_URL}}images/">  {% trans 'report pdf' %}</button>
+                        <a href="" onclick="window.location = '{% url report_pdf_pro report.id 0 %}'"><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</button>
+            {% endif %}
+            </div>
         </div>
 
         </div>
     
     </div>
-    <div id="more-actions">
+<!--     <div id="more-actions">
         <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-    </div>
-
+    </div> -->
+    <!--
+    <div id='report-subscribers'>
+                        {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+                        {% if not report.is_closed and user.is_authenticated %}
+                            {% if not subscribed %}
+                                <a href="{% url subscribe_pro report.id %}">{% trans "Subscribe" %}</a>
+                            {% else %}
+                                <p><small>{% trans "You've subscribed for updates" %}</small></p>
+                                <a href="{% url unsubscribe_pro report.id %}">{% trans "Unsubscribe" %}</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
 
     <form id="dialog" title="Please enter more information about rejecting the report" action="{% url report_refuse_pro report.id %}" method="post">
         {{ refuse_form.as_p }}
         <input type="submit" class="saveFormButton" style="float:right;" value="{% trans 'Confirm'%}"/>
     </form>
+-->
 </div>
 	
 {% endblock %}

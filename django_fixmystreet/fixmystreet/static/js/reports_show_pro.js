@@ -4,12 +4,12 @@
 $(function(){
     var connected = true;
 
-    $("#dialog").dialog({
-        modal: true,
-        autoOpen:false,
-        width:'auto',
-        resizable: false
-    });
+    // $("#dialog").dialog({
+    //     modal: true,
+    //     autoOpen:false,
+    //     width:'auto',
+    //     resizable: false
+    // });
 
     /*******************************/
     /* When clicking any page form */
