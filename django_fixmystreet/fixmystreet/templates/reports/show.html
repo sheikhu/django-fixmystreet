@@ -28,7 +28,7 @@ $(function(){
     //     width:'auto',
     //     resizable: false
     // });
-
+    $("#divMarkAsDone").hide();
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
         localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
@@ -50,8 +50,8 @@ function setFileCreationDate(){
 }
 
 function markAsDone(){
-    $("#dialogMarkAsDone").dialog('open');
-    $('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
+    $("#divMarkAsDone").show();
+    $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 
     // window.location = '{% url report_update report.id %}?is_fixed=True';
 }
@@ -85,6 +85,25 @@ function markAsDone(){
 </style>
 {% endblock %}
 {% block content %}
+<div id="divMarkAsDone" class="block highlighted">
+<form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post" >
+    <table>
+        <tr>
+                {{ mark_as_done_form.as_p }}
+            
+        </tr>
+        <tr>
+            <td>
+                <input type="button" class="btn" style="float:left;" value="{% trans 'Cancel'%}" onclick="javascript:$('#divMarkAsDone').hide();"/>
+            </td>
+            <td>
+                <input type="submit" class="btn" style="float:right;" value="{% trans 'Confirm'%}"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+
 <article id="map"></article>
 <!-- ######################### -->
 <!-- # MAIN CONTENT DEFINITION -->
@@ -296,29 +315,14 @@ function markAsDone(){
         <!-- ################ -->
         <!-- SUBSCRIBER BLOCK -->
         <!-- ################ -->
-        <!-- <div id='report-subscribers'> -->
-                    {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
-                    {% if not report.is_closed and not subscribed %}
-                        <form action="{% url subscribe report.id %}">
-                            <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
-                            <input type="submit" class="btn" value="{% trans "Subscribe" %}" />
-                        </form>
-                    {% endif %}
-                </div>
-    <!-- </div> -->
-        </div>
-
-
+        {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+        {% if not report.is_closed and not subscribed %}
+            <form action="{% url subscribe report.id %}">
+                <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
+                <input type="submit" class="btn" value="{% trans "Subscribe" %}" />
+            </form>
+        {% endif %}
     </div>
-
-<!--
-    </div>
-    <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post">
-        {{ mark_as_done_form.as_p }}
-        <input type="submit" class="saveFormButton" style="float:right;" value="{% trans 'Confirm'%}"/>
-    </form>
-    <div id="more-actions">
-        <p><a href='{% url flag_report_pro report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-    </div>-->
 </div>
+
 {% endblock %}

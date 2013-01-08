@@ -345,6 +345,8 @@ footer *{
     padding-left: 20px;
     padding-right: 20px;
     font-family: dosisbold, Arial, sans-serif;
+    display: table;
+    width: 100%;
 }
 
 #map {
@@ -566,6 +568,21 @@ li img {
     font-size: .8em;
 }
 
+
+#divMarkAsDone {
+    width: 50%;
+    position: fixed;
+    left: 50%;
+    margin-left: -25%;
+    z-index: 1;
+}
+
+#divMarkAsDone table{
+    width: 100%;
+}
+#divMarkAsDone textarea{
+    width: 98%;
+}
 
 
 /********* HOME LAYOUT ********/

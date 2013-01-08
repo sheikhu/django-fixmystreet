@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import get_language
-from django_fixmystreet.fixmystreet.models import ZipCode
+from django_fixmystreet.fixmystreet.models import ZipCode, Report
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
 
@@ -15,6 +15,8 @@ def home(request, location = None, error_msg =None):
             {
                 "report_counts": ReportCountQuery('1 year'),
                 'search_error': error_msg,
-                'zipcodes': zipcodes
+                'zipcodes': zipcodes,
+                'location':location,
+                'reports': Report.objects.all()[0:5]
             },
             context_instance=RequestContext(request))
