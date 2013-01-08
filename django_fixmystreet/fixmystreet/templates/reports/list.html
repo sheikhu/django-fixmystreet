@@ -15,22 +15,36 @@
 
 <script>
 $(function(){
-	$('#map-bxl').fmsMap();
-    $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
+	// $('#map-bxl').fmsMap();
+ //    $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
 
-	{% for report in reports %}
-	$('#map-bxl').fmsMap('addReport',  {{ report.to_JSON|dict_to_json|safe }}, {{ forloop.counter }});
-	{% endfor %}
+	// {% for report in reports %}
+	// $('#map-bxl').fmsMap('addReport',  {{ report.to_JSON|dict_to_json|safe }}, {{ forloop.counter }});
+	// {% endfor %}
 
-	$('#map-bxl').bind('reportselected',function(evt, point, report){
-		window.location.assign('{{report.get_absolute_url}}');
-	});
+	// $('#map-bxl').bind('reportselected',function(evt, point, report){
+	// 	window.location.assign('{{report.get_absolute_url}}');
+	// });
+
+	fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
+        origin:{
+            x:{{ reports.0.point.x }},
+            y:{{ reports.0.point.y }}
+        }
+    });
+    {% for report in reports %}
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }});
+    {% endfor %}
 
 });
 </script>
 {% endblock %}
 
 {% block content %}
+<article id="map"></article>
 	<div id="fullwidth">
         <h1>{% trans "Reports for" %} {{entity.name}}</h1>
 		<div id='leftcol'>
@@ -39,16 +53,23 @@ $(function(){
 			<p>{% trans "No problems have been reported." %}</p>
 			{% endif %}
 			<div id="search_results">
-                           <a id="create_report_fastlink" href="/" class="report">
-	                       <h3 class="report-title">{% trans "create_report" %}</h3>
-                           </a>
 				{% for report in reports %}
                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
                 {% endfor %}
              </div>
  		</div>
 		<div id='rightcol'>
-			<div id="map-bxl"> </div>
+			<div id="search_by_ticket_nr">
+            <!-- TODO create logic behind searching -->
+            <p >{% trans "Search by entering a ticket number:" %}</p>
+            <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
+            <p style="float:right">
+                <input type="submit" class='btn' value="{% trans 'Search' %}" />
+            </p>
+		</div>
+        <div id="go_to_submit_report">
+            <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
+        </div>
 		</div>
 	</div>
 	<br/ style="clear:both;">
