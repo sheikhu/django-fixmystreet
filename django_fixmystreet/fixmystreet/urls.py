@@ -103,5 +103,5 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.export',
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.export_piston',
-    url(_(r'^export_file/reports/((?P<emitter_format>.+))/(\d+)'), Resource(ReportHandler)),
+    url(_(r'^export_file/reports/((?P<emitter_format>.+))/'), Resource(ReportHandler)),
 )

@@ -18,7 +18,12 @@ class TextEmitter(Emitter):
 class CSVEmitter(Emitter):
     def render(self, request):
         output = StringIO.StringIO()
-        seria = self.construct()
+        seria = []
+        #Test if multiple record received...
+        if (self.construct().__class__ == list):
+            seria.extend(self.construct())
+        else:
+            seria.insert(0,self.construct())
         writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
         # Write headers to CSV file
@@ -30,7 +35,10 @@ class CSVEmitter(Emitter):
         # Write data to CSV file
         for obj in seria:
             counter = counter + 1
-            current_report_id = self.data[counter].id
+            if isinstance(self.data, Report):
+                current_report_id = self.data.id
+            else:
+                current_report_id = self.data[counter].id
             row = []
             for field in headers:
                 if field in headers:
@@ -252,14 +260,15 @@ class ReportHandler(BaseHandler):
         return len(blogpost.content)
 
 
-    def read(self, request, report_id=None):
-        """
-        Returns a blogpost, if `title` is given,
-        otherwise all the posts.
-        
-        Parameters:
-         - `title`: The title of the post to retrieve.
-        """
+    def read(self, request):
+        """Read the elements matching export request and delegate to the emitter"""
+
+        #Get the first parameter as ID
+        report_id = None
+        try:
+            report_id = int(request.REQUEST.values()[0])
+        except IndexError:
+            pass
         base = Report.objects
         if report_id:
             return base.get(id=report_id)
