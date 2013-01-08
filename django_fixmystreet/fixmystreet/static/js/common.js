@@ -52,6 +52,9 @@ $(document).ready(function(){
         }
     });
 
+    $("#users_menu_item").hover(function(){$("#users_sub_menu").css("visibility","visible");},function(){$("#users_sub_menu").css('visibility','hidden');});
+    $("#users_sub_menu").hover(function(){$("#users_sub_menu").css("visibility","visible");},function(){$("#users_sub_menu").css('visibility','hidden');});
+
 });
 
 function updateMenuEntries(x,y) {

@@ -21,7 +21,7 @@ $(function(){
 			y:{{ report.point.y }}
 		}
 	});
-	$('#map-bxl').fmsMap('addReport', {% report_to_json report %});
+	$('#map-bxl').fmsMap('addReport', {{report.to_JSON|dict_to_json|safe}});
     $("#dialogMarkAsDone").dialog({
         modal: true,
         autoOpen:false,

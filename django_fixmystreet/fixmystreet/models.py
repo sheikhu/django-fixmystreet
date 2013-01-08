@@ -357,11 +357,11 @@ class Report(UserTrackedModel):
     def has_at_least_one_non_confidential_file(self):
         return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
-    #def active_comments(self):
-    #    return self.comments.filter(is_validated=True)
+    def active_comments(self):
+        return self.comments.filter(security_level=1)
 
-    #def active_files(self):
-    #    return self.files.filter(is_validated=True)
+    def active_files(self):
+        return self.files.filter(security_level=1)
 
     def is_created(self):
         return self.status == Report.CREATED

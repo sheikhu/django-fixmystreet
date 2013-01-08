@@ -19,7 +19,7 @@ $(function(){
     $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
 
 	{% for report in reports %}
-	$('#map-bxl').fmsMap('addReport',  {% report_to_json report %}, {{ forloop.counter }});
+	$('#map-bxl').fmsMap('addReport',  {{ report.to_JSON|dict_to_json|safe }}, {{ forloop.counter }});
 	{% endfor %}
 
 	$('#map-bxl').bind('reportselected',function(evt, point, report){

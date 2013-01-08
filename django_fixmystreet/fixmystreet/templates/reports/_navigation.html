@@ -1,11 +1,34 @@
 {% load i18n %}
 <a href="{{ url }}" class="report">
-	<img src="{{ STATIC_URL }}images/marker/{% if report.is_fixed %}green{% else %}red{% endif %}/marker{{ forloop.counter }}.png" class="report-counter"/>
-	{% if report.photo %}
-	<img src="{{ report.photo.thumbnail.url }}" class="report-preview"/>
-	{% endif %}
-	<h3 class="report-title">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}</h3>
-	<p class="report-address">{{ report.address }}, {{report.address_number}}</p>
-	<p class="report-entity">{% trans "responsible_entity" %}: {{ report.responsible_entity.name}}</p>
+	<div class="left_search_result">
+		<img src="{{ STATIC_URL }}images/pin-{% if report.is_created %}red{% elif report.is_in_progress %}orange{% else %}green{% endif %}-XS.png" class="report-counter"/>
+		{% if False %}
+		<img src="{{ report.photo.thumbnail.url }}" class="report-preview"/>
+		{% else %}
+		<img src="{{ STATIC_URL }}images/no-photo.png" class="report-preview"/>
+		{% endif %}
+	</div>
+	<div class="right_search_result">
+		<table style="float:left;">
+		<tr>
+			<td>
+				<h4 class="report-title">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}</h4>
+			</td>
+			<td>
+				<h4>280 {% trans 'subscriptions' %}</h4>
+			</td>
+			<td rowspan="2"><div class="next_image"></div></td>
+		</tr>
+		<tr>
+			<td>
+				<p class="report-address">{{ report.address }}, {{report.address_number}}</p>
+			</td>
+			<td>
+				<p class="report-entity">{% trans "responsible_entity" %}: {{ report.responsible_entity.name}}</p>
+			</td>
+		</tr>
+		</table>
+		
+	</div>
 	{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
 </a>

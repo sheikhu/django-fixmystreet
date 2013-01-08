@@ -241,6 +241,7 @@ if (!('fms' in window)) {
 	 */
 	fms.Map.prototype.addReport = function(report,index)
 	{
+
 		var self = this;
 		if(!this.markersLayer)
 		{
@@ -287,7 +288,6 @@ if (!('fms' in window)) {
 		}
 
 		var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-
 		var markerConf = report.is_fixed ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
 		if(index){
 			//make a copy

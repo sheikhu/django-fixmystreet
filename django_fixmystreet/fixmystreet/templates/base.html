@@ -78,7 +78,64 @@
                     </li>
                 </ul>
                 {% else %}
-                <ul class='leftPane' id="leftMenuPanePro">
+                <ul>
+                    {% get_active_menu %}
+                    <li>
+                        <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url home_pro %}">
+                            {% trans "Submit a Report" %}
+                        </a>
+                    <li>
+                        <a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url report_list_pro 'all' %}">
+                            {% trans "View Reports" %}
+                        </a>
+                    </li>
+                    <li id="users_menu_item">
+                        <a class="{% ifequal 'users' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=users">
+                            {% trans "Users" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">
+                            {% trans "About" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'contact' menu %}active{% endifequal %}"  href="{% url contact %}">
+                            {% trans "Contact Us" %}
+                        </a>
+                    </li>
+                </ul>
+                <ul id="users_sub_menu" style="visibility:hidden">
+                    {% get_active_menu %}
+                    <li>
+                        <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=users">
+                            {% trans "Collaborators in" %} {{ request.user.fmsuser.get_organisation.name }}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'users_agent' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=agent">
+                            {% trans "Agents" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'users_manager' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=manager">
+                            {% trans "Managers" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'users_contractor' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=contractor">
+                            {% trans "Contractors" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% ifequal 'users_impetrant' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=impetrant">
+                            {% trans "Applicant" %}
+                        </a>
+                    </li>
+                </ul>
+
+
+                <!--<ul class='leftPane' id="leftMenuPanePro">
                     <li>
                         <a id='createMenu' class='category' href="{% url home_pro %}">
                             {% trans "Submit a report" %}
@@ -174,7 +231,7 @@
                                 {% trans "Change your password" %}
                             </a>
                         </li>
-                </ul>
+                </ul>-->
                 {% endif %}
             </nav>
         </header>
@@ -192,9 +249,13 @@
 
         <footer>
             {% block content_third %}{% endblock %}
-            <a href="http://www.cirb.irisnet.be">Copyright 2011, CIRB</a>
-            <a id="term-of-use" href="{% url terms_of_use %}">{% trans "Terms of Use" %}</a>
-            <img src="{{ STATIC_URL }}images/logo-bemystreet.png">
+            <div class="footer_left">
+                <a href="http://www.cirb.irisnet.be">Copyright 2011, CIRB</a>
+                <a id="term-of-use" href="{% url terms_of_use %}">{% trans "Terms of Use" %}</a>
+            </div>
+            <div class="footer_right">
+                <img src="{{ STATIC_URL }}images/logo-bemystreet.png">
+            </div>
 
             {% block footer %}{% endblock %}
         </footer>

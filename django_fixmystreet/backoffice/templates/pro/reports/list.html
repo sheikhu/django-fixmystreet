@@ -10,23 +10,36 @@ $(document).ready(function() {
 	var $form = $('#report_form');
 	var $map = $('#map-bxl');
 
-	$map.fmsMap({
-		apiLang:'{{ LANGUAGE_CODE }}',
-        localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl: 'http://{{ GEOSERVER }}/geoserver/wms',
-        origin:{
-			x:{{ pnt.x }},
-			y:{{ pnt.y }}
-		}
-	});
-	{% for report in reports %}
-	$map.fmsMap('addReport', {% report_to_json report %},{{forloop.counter}});
-	{% endfor %}
-	$map.fmsMap('addIndicator',{'x':{{ pnt.x }}, 'y':{{ pnt.y }}});
+	// $map.fmsMap({
+	// 	apiLang:'{{ LANGUAGE_CODE }}',
+ //        localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
+ //        urbisUrl: 'http://{{ GEOSERVER }}/geoserver/wms',
+ //        origin:{
+	// 		x:{{ pnt.x }},
+	// 		y:{{ pnt.y }}
+	// 	}
+	// });
+	// {% for report in reports %}
+	// $map.fmsMap('addReport', {{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}});
+	// {% endfor %}
+	// $map.fmsMap('addIndicator',{'x':{{ pnt.x }}, 'y':{{ pnt.y }}});
 
-	$map.bind('reportselected',function(evt, point, report){
-		window.location.assign('{{ report.get_absolute_url_pro }}');
-	});
+	// $map.bind('reportselected',function(evt, point, report){
+	// 	window.location.assign('{{ report.get_absolute_url_pro }}');
+	// });
+
+	fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    GEOSERVER_URL + '/geoserver/wms',
+        origin:{
+            x:{{ reports.0.point.x }},
+            y:{{ reports.0.point.y }}
+        }
+    });
+    {% for report in reports %}
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
+    {% endfor %}
 
 	/*Hide the edition form*/
 	$('#report_form').hide();
@@ -36,8 +49,29 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
+<article id="map">
+</article>
 <div id="page_content_container">
     <h1>{% blocktrans %}{{status}} Reports{%endblocktrans%}</h1>
+    <div id="incident_filter">
+    	<ul>
+    		<li>
+    			{% trans 'Filter the incidents by:' %}
+    		</li>
+    		<li>
+    			<a href="{% url report_list_pro 'all' %}"><img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px"> <span>{% trans 'All reports' %}</span></a>
+    		</li>
+    		<li>
+    			<a href="{% url report_list_pro 'created' %}"><img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Unpublished' %}</span></a>
+    		</li>
+    		<li>
+    			<a href="{% url report_list_pro 'in_progress' %}"><img src="{{STATIC_URL}}images/pin-orang-L.png"> <span>{% trans 'In progress' %}</span></a>
+    		</li>
+    		<li>
+    			<a href="{% url report_list_pro 'closed' %}"><img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Closed' %}</span></a>
+    		</li>
+    	</ul>
+    </div>
 	<div id="leftcol">
 		<div id="nearby-reports">
             <h2>
@@ -45,12 +79,21 @@ $(document).ready(function() {
             </h2>
             {% if reports %}
                 <div id='search_results'>
-                <a id="create_report_fastlink" href="/pro/" class="report">
+                <!-- <a id="create_report_fastlink" href="/pro/" class="report">
                    <h3 class="report-title">{% trans "create_report" %}</h3>
-                </a>
+                </a> -->
                 {% for report in reports %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                 {% endfor %}
+                </div>
+                <div class="pagination pagination-centered">
+                	<!-- TODO add pagination logic -->
+                	<ul>
+                		<li class="disabled"><a class="pagination_prev"></a></li>
+                		<li class="active"><a >1</a></li>
+                		<li><a >2</a></li>
+                		<li><a class="pagination_next"></a></li>
+                	</ul>
                 </div>
             {% else %}
                 <p>{% trans "No problems have been reported in this area." %}</p>
@@ -84,20 +127,18 @@ $(document).ready(function() {
 		</form>
 	</div>
 	<div id="rightcol">
-		<div id="map-bxl">
-
+		<div id="search_by_ticket_nr">
+            <!-- TODO create logic behind searching -->
+            <p >{% trans "Search by entering a ticket number:" %}</p>
+            <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
+            <p style="float:right">
+                <input type="submit" class='btn' value="{% trans 'Search' %}" />
+            </p>
 		</div>
-		<h3>{% trans "Zoom out to see more reports nearby." %}</h3>
-        <div class='note'>
-            <p><strong>{% trans "Please Note" %} :</strong></p>
-            <ul>
-                <li>{% trans "Please be polite, concise and to the point." %}</li>
-                <li>{% trans "Please do not be abusive - abusing the service devalues the service for all users." %}</li>
-                <li>{% trans "Writing your message entirely in block capitals makes it hard to read, as does a lack of punctuation." %}</li>
-                <li>{% trans "Remember that FixMyStreet is primarily for reporting physical problems that can be fixed. If your problem is not appropriate for submission via this site please contact city officials directly." %}</li>
-            </ul>
-            <p/>
+        <div id="go_to_submit_report">
+            <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/pro/'"/>
         </div>
+            
 	</div>
 </div>
 {% endblock %}
