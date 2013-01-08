@@ -36,6 +36,7 @@ $(function(){
 {% endblock %}
 
 {% block content %}
+<div id="page_content_container">
     <article id="map">
 
         <div id="instructions" class="block">
@@ -84,13 +85,32 @@ $(function(){
     </article>
 
 
-    <article id="recent-reports" class="block">
-        <h2>{% trans "Recent Reports" %}</h2>
+    <article id="recent-reports" class="home_recent_reports">
+        <h4>{% trans 'Last modified reports:' %}</h4>
+        <ul id="recent_home_nav" class="nav nav-tabs">
+            <li class="active">
+                <a href="#">{% trans "Incidents signalés" %}</a>
+            </li>
+            <li>
+                <a href="#">{% trans "Incidents mis a jour" %}</a>
+            </li>
+            <li>
+                <a href="#">{% trans "Incidents cloturés" %}</a>
+            </li>
+        </ul>
+        <div id="search_results" class="search_results_home">
         {% for report in reports %}
         {% include "reports/_navigation.html" with url=report.get_absolute_url %}
         {% endfor %}
+    </div>
     </article>
 
+    <article id="home_download_mobile">
+        <p>{% trans 'Download the fix my street mobile application for your smartphone:' %}</p>
+        <img src="{{STATIC_URL}}images/app-store.png">
+        <img src="{{STATIC_URL}}images/google-play.png">
+    </article>
+</div>
 {% endblock %}
 
 {% block content_third %}{% endblock %}
