@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import patterns, url
 from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestUpdatesByReport
 from django.utils.translation import ugettext_lazy as _
+from piston.resource import Resource
+from django_fixmystreet.fixmystreet.export_piston import ReportHandler
 
 feeds = {
     'report': LatestReports,
@@ -90,14 +92,16 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
-    #next line to be deprecated...
     url(_(r'^import/report/close/$'), 'close_report',name='close_report'),
     url(_(r'^import/report/change_manager/$'), 'change_manager_report',name='change_manager_report'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.export',
-    #next line to be deprecated...
     url(_(r'^export/reports/entity/$'), 'entity_reports',name='entity_reports'),
     url(_(r'^export/reports/contractor/$'), 'contractor_reports',name='contractor_reports'),
     url(_(r'^export/reports/manager/$'), 'manager_reports',name='manager_reports'),
+)
+
+urlpatterns += patterns('django_fixmystreet.fixmystreet.export_piston',
+    url(_(r'^export_file/reports/((?P<emitter_format>.+))/(\d+)'), Resource(ReportHandler)),
 )

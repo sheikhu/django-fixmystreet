@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
+    'piston',
 )
 
 AUTHENTICATION_BACKENDS = (
