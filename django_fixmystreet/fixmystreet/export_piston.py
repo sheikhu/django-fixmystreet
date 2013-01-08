@@ -26,8 +26,11 @@ class CSVEmitter(Emitter):
         for field in Report._meta.fields:
             headers.append(field.name)
         writer.writerow(headers)
+        counter = -1
         # Write data to CSV file
         for obj in seria:
+            counter = counter + 1
+            current_report_id = self.data[counter].id
             row = []
             for field in headers:
                 if field in headers:
@@ -45,6 +48,35 @@ class CSVEmitter(Emitter):
                     else:
                         row.append("")
             writer.writerow(row)
+            #Append annexes (files)
+            try:
+                report_files = ReportFile.objects.filter(report__id = current_report_id)
+                file_counter = 0
+                for file_obj in report_files:
+                    if file_counter == 0:
+                        writer.writerow(['Files'])
+                        writer.writerow(['Filename', 'Creator', 'File Creation Date', 'File Import Date'])
+                    writer.writerow([file_obj.file.__str__(),file_obj.get_display_name(), file_obj.file_creation_date.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S')), file_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
+                    file_counter = file_counter + 1
+            except ReportFile.DoesNotExist:
+                print('error') 
+            #Append annexes (comments)
+            try:
+                report_comments = ReportComment.objects.filter(report__id = current_report_id)
+                comment_counter = 0
+                for comment_obj in report_comments:
+                    if comment_counter == 0:
+                        writer.writerow(['Comments'])
+                        writer.writerow(['Filename', 'Creator', 'File Import Date'])
+                    writer.writerow([comment_obj.text.__str__(),comment_obj.get_display_name(), comment_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
+                    comment_counter = comment_counter + 1
+            except ReportComment.DoesNotExist:
+                print('error') 
+        
+
+
+
+
         #csvWriter.writerow(
 	#	[	#'id', 
 	#			'date_created', 
