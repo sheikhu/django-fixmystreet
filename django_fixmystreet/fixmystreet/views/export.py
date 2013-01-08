@@ -8,7 +8,7 @@ from django_fixmystreet.fixmystreet.models import Report, ReportComment, ReportF
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
-import csv
+#import csv
 
 def entity_reports(request):
     """entity_reports is a method exporting reports for an entity"""
@@ -236,15 +236,25 @@ def export_reports_of_entity(list_of_reports):
     #Return the XML structure
     return d
 
-def export_reports_to_csv(list_of_reports):
-    filename = 'test.csv'
-    with open(filename, 'wb') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(['ReportId','Category','Description','Created_at','Updated','Status'])
-        for report in list_of_reports:
-            row = [report.id,report.category,report.description,report.created_at,report.updated,report.status]
-            writer.writerow(row)
-    return filename
+#PISTON EXPORT SECTION
+######################
+#class BlogpostHandler(BaseHandler):
+#   allowed_methods = ('GET',)
+#   model = Blogpost   
+#       
+#   def read(self, request, blogpost_id=None):
+#      """Returns a single post if `blogpost_id` is given, otherwise a subset"""
+#      base = Blogpost.objects
+#        
+#      if blogpost_id:
+#         return base.get(pk=blogpost_id)
+#      else:
+#         return base.all() # Or base.filter(...)
 
+#def reports_to_csv_file(list_of_reports):
+#    """This method is used to export information of a report to CSV file"""
+#    return reports_to_file(list_of_reports, 'csv')
 
+#def reports_to_file(list_of_reports, export_format):
+#    """This method is used to export information of a report to a format given in parameter"""
 
