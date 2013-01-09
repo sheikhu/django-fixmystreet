@@ -24,7 +24,7 @@ $(function(){
 			$searchButton.prop('disabled',true);
 
 			$.ajax({
-				url: SERVICE_GIS_URL + '/urbis/Rest/Localize/getaddressesfields',
+				url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
 				dataType:'jsonp',
 				data:{
 					json:'{"language": "' + LANGUAGE_CODE + '",' +
