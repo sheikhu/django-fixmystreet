@@ -305,7 +305,10 @@ function markAsDone(){
             </div>
           {% endif %}
             <!-- If the status allow such interactions -->
-			 <a href="" onclick="window.location = '{% url report_pdf report.id 0 %}'" ><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
+	    <a href="" onclick="window.location = '{% url report_pdf report.id 0 %}'" ><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
+             <div>
+                <a onclick="window.open('/export_file/reports/csv?id={{report.id}}')"><img src="{{STATIC_URL}}images/">  {% trans 'export csv' %}</a>
+            </div>
             <div id="more-actions">
                 <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
             </div>

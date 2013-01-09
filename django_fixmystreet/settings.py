@@ -27,8 +27,7 @@ STATIC_URL = '/static/'
 
 POSTGIS_TEMPLATE = 'template_postgis'
 
-GEOSERVER = "geoserver.gis.irisnet.be"
-SERVICE_GIS = "service.gis.irisnet.be"
+URBIS_URL = "http://gis.irisnet.be/"
 
 TIME_ZONE = 'Europe/Brussels'
 

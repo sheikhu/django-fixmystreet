@@ -1,0 +1,18 @@
+{% load tags %}
+{% for field in form.hidden_fields %}
+    {{ field }}
+{% endfor %}
+{% for field in form.visible_fields %}
+    <div class="control-group{% if field.field.required %} required{% endif %}">
+    {% if field.field.widget|classname == "Textarea" %}
+        <label for="id_{{ field.html_name }}">{{ field.label }}</label>
+        {{ field }}
+    {% else %}
+        <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
+        <div class="controls">
+            {{ field }}
+        </div>
+    {% endif %}
+    {{ field.errors }}
+    </div>
+{% endfor %}

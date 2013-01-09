@@ -1,42 +1,70 @@
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportSubscription, OrganisationEntity, ZipCode
-from django_fixmystreet.fixmystreet.forms import CitizenReportForm, ReportCommentForm, ReportFileForm, FileUploadForm, MarkAsDoneForm
+from django.forms.models import modelformset_factory
 from django.template import RequestContext
-from django_fixmystreet.fixmystreet.session_manager import SessionManager
+
+from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
+
 
 
 def new(request):
+    ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=1)
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
-        report_form = CitizenReportForm(request.POST, request.FILES)
-	# this checks update is_valid too
-        if report_form.is_valid():
+        report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
+        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files')
+        print "file"
+        comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+        print "comment"
+        citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+        print "citizen"
+        # this checks update is_valid too
+        if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
             # this saves the update as part of the report.
-            report = report_form.save(request.user)
-            SessionManager.saveComments(request.session, report)
-            SessionManager.saveFiles(request.session, report)
+            citizen = citizen_form.save()
+
+            report = report_form.save(commit=False)
+            report.created_by = citizen
+            report.save()
+
+            if request.POST["comment-text"]:
+                comment = comment_form.save(commit=False)
+                comment.report = report
+                comment.save()
+
+            files = file_formset.save(commit=False)
+            for report_file in files:
+                report_file.report = report
+                report_file.save()
+
+            if request.POST.get("citizen_subscription", False):
+                ReportSubscription(report=report, subscriber=report.citizen).save()
+
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
     else:
-        SessionManager.clearSession(request.session)
         report_form = CitizenReportForm(initial={
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
-        })
+        }, prefix='report')
+        file_formset = ReportFileFormSet(prefix='files')
+        comment_form = ReportCommentForm(prefix='comment')
+        citizen_form = CitizenForm(prefix='citizen')
 
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
-    
+
     return render_to_response("reports/new.html",
             {
                 "available_zips":ZipCode().get_usable_zipcodes(),
-                "comment_form":ReportCommentForm(),
-                "file_form":ReportFileForm(),
+                "category_classes":ReportMainCategoryClass.objects.all().prefetch_related('categories'),
+                "comment_form":comment_form,
+                "file_formset":file_formset,
                 "report_form": report_form,
+                "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports,
-                "file_upload_Form":FileUploadForm()
+                "reports":reports
             },
             context_instance=RequestContext(request))
 
@@ -62,7 +90,7 @@ def show(request, slug, report_id):
 def search_ticket(request):
     report_id = request.REQUEST.get('report_id')
     report = Report.objects.get(id=report_id)
-    
+
     return HttpResponseRedirect(report.get_absolute_url())
 
 def index(request, slug=None, commune_id=None):

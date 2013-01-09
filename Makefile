@@ -26,6 +26,7 @@ $(BIN_DIR)/buildout: bootstrap.py
 	# $(BIN_DIR)/buildout install django
 
 install: $(BIN_DIR)/buildout
+	find . -type f -name "*.pyc" -delete
 	$(BIN_DIR)/buildout -Nvt 5
 
 init:
