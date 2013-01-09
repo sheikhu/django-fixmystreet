@@ -58,6 +58,14 @@ if (!('fms' in window)) {
 			maxResolution:46,
 			units: 'm',
 			projection: "EPSG:31370",
+			controls: [
+				new OpenLayers.Control.TouchNavigation(
+            				{dragPanOptions: {enableKinetic: true}}
+        			),
+				new OpenLayers.Control.Zoom({
+				
+				}),
+			],	
 		});
 
 		// this.map.events.on({
@@ -289,7 +297,6 @@ if (!('fms' in window)) {
 			*/
 		}
 
-                console.log(this.options);
 		var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
 		var markerConf = report.is_closed ? fixedMarkerStyle : report.is_created ? defaultMarkerStyle : pendingMarkerStyle;
 		/*if(index){
@@ -300,9 +307,9 @@ if (!('fms' in window)) {
 		}*/
 		this.markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf)]);
 
-		/*
-		console.log(newMarker);
-		var events = new OpenLayers.Events(newMarker, this.element[0], ['click']);
+	        newMarker.bind('click',function(){
+	        alert('ok')});	
+		/*var events = new OpenLayers.Events(newMarker, this.element[0], ['click']);
 		events.on({
 			'click':function()
 			{
