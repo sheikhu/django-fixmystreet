@@ -625,7 +625,7 @@ def report_subscribe_author(sender, instance, **kwargs):
 
 
 class ReportAttachment(UserTrackedModel):
-   
+
     PUBLIC = 1
     PRIVATE = 2
     CONFIDENTIAL = 3
@@ -635,7 +635,7 @@ class ReportAttachment(UserTrackedModel):
         (PRIVATE,_("Private")),
         (CONFIDENTIAL,_("Confidential"))
     )
-    
+
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
     #is_validated = models.BooleanField(default=False)
     #is_visible = models.BooleanField(default=False)
@@ -647,7 +647,7 @@ class ReportAttachment(UserTrackedModel):
             return self.PRIVATE
         if (self.CONFIDENTIAL == security_level_as_int):
             return self.CONFIDENTIAL
-        
+
 
     def is_confidential_visible(self):
         '''visible when not confidential'''
@@ -669,7 +669,7 @@ class ReportAttachment(UserTrackedModel):
     def is_confidential(self):
         '''Is the annex confidential?'''
         return self.security_level == ReportAttachment.CONFIDENTIAL
-    
+
     def get_display_name(self):
         if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
              return 'ANONYMOUS'
@@ -838,8 +838,8 @@ class ReportCategory(models.Model):
 
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
     update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
-    category_class = models.ForeignKey(ReportMainCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
-    secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, verbose_name=_('Category group'), help_text="The category group container")
+    category_class = models.ForeignKey(ReportMainCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
+    secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
     def __unicode__(self):
         return self.category_class.name + ":" + self.name

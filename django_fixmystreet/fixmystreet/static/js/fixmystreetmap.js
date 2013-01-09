@@ -161,6 +161,7 @@ if (!('fms' in window)) {
 
 	fms.Map.prototype.getSelectedAddress = function(callback)
 	{
+		var self = this;
 		$.ajax({
 			url: this.options.localizeUrl,
 			type:'POST',
@@ -171,8 +172,8 @@ if (!('fms' in window)) {
 			}'},
 			success:function(response)
 			{
-				this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
-				this.map.addLayer(this.markersLayer);
+				self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
+				self.map.addLayer(self.markersLayer);
 
 
 				/*
@@ -182,17 +183,17 @@ if (!('fms' in window)) {
 				the .activate() method of the attached select feature control was called.
 				*/
 
-				var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-					onSelect:function(feature,pixel){
-						var p = feature.geometry.components[0];
-						var point = {x:p.x,y:p.y};
-						//console.log(point,feature.attributes.report);
-						self.element.trigger('reportselected', [point, feature.attributes.report]);
-					}
-				});
-				this.map.addControl(selectFeature);
+				// var selectFeature = new OpenLayers.Control.SelectFeature(self.markersLayer,{
+				// 	onSelect:function(feature,pixel){
+				// 		var p = feature.geometry.components[0];
+				// 		var point = {x:p.x,y:p.y};
+				// 		//console.log(point,feature.attributes.report);
+				// 		self.element.trigger('reportselected', [point, feature.attributes.report]);
+				// 	}
+				// });
+				// self.map.addControl(selectFeature);
 
-				selectFeature.activate();
+				// selectFeature.activate();
 
 				/*
 				this.superControl.selectControl = selectFeature;
@@ -212,14 +213,14 @@ if (!('fms' in window)) {
 				});
 				*/
 
-				var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-				var markerConf = report.status==3 ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
-				if(index){
-					//make a copy
-					markerConf = $.extend({},markerConf,{
-						externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
-					});
-				}
+				// var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
+				// var markerConf = report.status==3 ? fixedMarkerStyle : pendingMarkerStyle;
+				// if(index){
+				// 	//make a copy
+				// 	markerConf = $.extend({},markerConf,{
+				// 		externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
+				// 	});
+				// }
 				callback(response);
 			},
 			error:function()

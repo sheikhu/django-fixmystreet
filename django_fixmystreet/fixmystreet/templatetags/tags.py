@@ -52,3 +52,7 @@ def hasAtLeastAManager(userId):
         organisationId = connectedOrganisation.dependency.id
 
     return FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True).exists()
+
+@register.filter
+def classname(obj):
+    return obj.__class__.__name__

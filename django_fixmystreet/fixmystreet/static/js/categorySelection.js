@@ -1,52 +1,38 @@
 $(document).ready(function() {
-    //Hide original list of elements
-    $("#id_secondary_category_copy").hide();
-    $("[for='id_secondary_category_copy']").hide();
-	//If not pro
-	if(window.location.href.indexOf("/pro/") == -1){
-		/*Remove non-public categories*/
-		$("#id_secondary_category").find("option[public='False']").hide();
-	}
+    var selectCategory = $("#id_report-secondary_category");
+    //If not pro
 
+    // var showPrivate = window.location.href.indexOf("/pro/") == -1;
 
-	$('#id_category').change(function(evt) {
-                // updates entry notes
-                var el_id = $('#id_category').val();
-                var refSecondary = $("#id_secondary_category");
-                if(el_id)
-                {
-                	refSecondary.find("option:eq(0)").attr("selected", "selected");
-                	refSecondary.removeAttr("disabled");
-                	$("#secondary_container").load("/ajax/categories/" + el_id);                	
-                	refSecondary.html('');
-                	refSecondary.html($('#id_secondary_category_copy').html());
-                 //Keep the first element in memory (the headlabel)
-                 var headLabelOption = refSecondary.find("option:first");
-                 refSecondary.find("option[family!='"+el_id+"']").remove();                        
-				 if(window.location.href.indexOf("/pro/") == -1){
-                 	refSecondary.find("option[public='False']").remove();
-                 }
-				 //Prepend the headlabel again.						
-                 refSecondary.prepend(headLabelOption);				 
-                 /*remove empty optgroup*/
-                 refSecondary.find("optgroup:not(:has(option))").remove();
-                 /*Copy value to hiddendropdown */
-			$('#id_secondary_category').change();// initialize notes
-		}
-		else
-		{
-			refSecondary.find("option:eq(0)").attr("selected", "selected");
-			$("#secondary_container").html('');
-			refSecondary.attr('disabled', 'disabled');
-		}
-	});
-	$('#id_category').change();// initialize notes
+    $('#id_report-category').change(function(evt) {
+        // updates entry notes
+        var el_id = $('#id_report-category').val();
+        if(el_id)
+        {
+            $("#secondary_container").load("/ajax/categories/" + el_id);
 
-	$('#id_secondary_category').change(function(evt) {
-         	//Copy is necessary to avoid django validation problem
-         	var el_id_copy = $('#id_secondary_category').val();
-         	$('#id_secondary_category_copy').val(el_id_copy);
-         });
-	$('#id_secondary_category').change();// initialize notes
+            selectCategory.val("");
+            selectCategory.prop('disabled', false);
+            selectCategory.find("option:not(:first)").hide();
+            selectCategory.find("optgroup").hide();
+            for (id in categories[el_id]) {
+                selectCategory.find("option[value="+id+"]").show().parent().show();
+            }
+            selectCategory.find("optgroup").has("option:visible").show();
+            console.log(selectCategory.find("optgroup").has("option"));
+        }
+        else
+        {
+            selectCategory.val("");
+            selectCategory.prop('disabled', true);
+        }
+    });
+    $('#id_report-category').change(); // initialize notes
+
+    $('#id_report-secondary_category').change(function(evt) {
+            //Copy is necessary to avoid django validation problem
+            var el_id_copy = $('#id_report-secondary_category').val();
+            $('#id_report-secondary_category_copy').val(el_id_copy);
+        });
+    $('#id_report-secondary_category').change();// initialize notes
 });
-	

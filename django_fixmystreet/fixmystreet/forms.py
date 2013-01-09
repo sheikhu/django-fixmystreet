@@ -7,7 +7,7 @@ from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportSubscription, ReportCategory, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 
 class SecondaryCategorySelect(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
@@ -62,8 +62,6 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
 
         super(SecondaryCategoryChoiceField,self).__init__(choices=choices,widget=SecondaryCategorySelect(),*args,**kwargs)
 
-
-
     def clean(self, value):
         super(SecondaryCategoryChoiceField,self).clean(value)
         try:
@@ -73,6 +71,7 @@ class SecondaryCategoryChoiceField(forms.fields.ChoiceField):
         except ReportCategory.DoesNotExist:
             raise forms.ValidationError(self.error_messages['invalid_choice'])
         return model
+
 
 class CategoryChoiceField(forms.fields.ChoiceField):
     """
@@ -111,46 +110,71 @@ class CategoryChoiceField(forms.fields.ChoiceField):
         return model
 
 
+def secondaryCategoryChoices(show_private):
+    choices = []
+    choices.append(('', ugettext_lazy("Select a Category")))
+    categories = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all()
+
+    for category_class in categories:
+        values = []
+
+        categories = category_class.categories.all()
+        if not show_private:
+            categories = categories.filter(public=True)
+
+        for category in categories:
+            values.append((category.id, category.name))
+
+        if len(categories):
+            choices.append((category_class.name, values))
+
+    return choices
+
+
 class ReportForm(forms.ModelForm):
     """Report form"""
-    class Meta:
-        model = Report
     required_css_class = 'required'
 
-    category = CategoryChoiceField(label=ugettext_lazy("category"))
-    secondary_category = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"))
-    secondary_category_copy = SecondaryCategoryChoiceField(label=ugettext_lazy("Category"), required=False)
-    address = forms.fields.CharField()
-    description = forms.fields.CharField()
+    class Meta:
+        model = Report
+
+    category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
+    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
 
     # hidden inputs
-    x = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    y = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    address_number = forms.fields.CharField(widget=forms.widgets.HiddenInput)
-    postalcode = forms.fields.CharField(widget=forms.widgets.HiddenInput)
+    address = forms.CharField(widget=forms.widgets.HiddenInput)
+    address_number = forms.CharField(widget=forms.widgets.HiddenInput)
+    postalcode = forms.CharField(widget=forms.widgets.HiddenInput)
+    x = forms.CharField(widget=forms.widgets.HiddenInput)
+    y = forms.CharField(widget=forms.widgets.HiddenInput)
 
-    def __init__(self,data=None, files=None, initial=None):
-        if data:
-            self.point = dictToPoint(data)
-
-        super(ReportForm,self).__init__(data, files, initial=initial)
-        #self.fields['category'] = CategoryChoiceField(label=ugettext_lazy("Category"))
-
-    def clean(self):
-        return super(ReportForm, self).clean()
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        self.fields['secondary_category'].choices = secondaryCategoryChoices(False)
 
     def save(self, commit=True):
         report = super(ReportForm, self).save(commit=False)
+
+        report.point = dictToPoint(self.cleaned_data)
         report.status = Report.CREATED
-        report.point = self.point
-        report.address = self.cleaned_data["address"].split(", ")[0]
-        report.address_number = self.cleaned_data["address_number"]
+        # report.address = self.cleaned_data["address"].split(", ")[0]
+        # report.address_number = self.cleaned_data["address_number"]
         if commit:
             report.save()
         return report
 
 #Used by pro version
 class ProReportForm(ReportForm):
+    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        self.fields['secondary_category'].choices = secondaryCategoryChoices(True)
+
+    class Meta:
+        model = Report
+        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'private')
+
     private = forms.BooleanField(initial=True)
 
 
@@ -160,40 +184,41 @@ qualities.insert(0, ('', _('Choose your quality')))
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
+
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'category', 'secondary_category', 'quality', 'postalcode', 'description', 'citizen_email', 'citizen_lastname', 'telephone')
+        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode')
 
-    telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
-    category = CategoryChoiceField(label=ugettext_lazy("category"))
-    quality = forms.ChoiceField(choices=qualities)
-    citizen_email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
-    #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
-    citizen_lastname = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
-    citizen_subscription = forms.BooleanField(required=False)
-
-    def save(self, user, commit=True):
+    def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
         # report.status = Report.CREATED # default value
         report.private = False
         #split address in 2 pieces
-        report.address = self.cleaned_data["address"].split(", ")[0]
-        report.address_number = self.cleaned_data["address_number"]
-
-        try:
-            #Assign citizen
-            report.citizen = FMSUser.objects.get(email=self.cleaned_data["citizen_email"])
-        except FMSUser.DoesNotExist:
-            #Add information about the citizen connected if it does not exist
-            report.citizen = FMSUser.objects.create(telephone=self.cleaned_data['telephone'],username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
+        # try:
+        #     #Assign citizen
+        #     report.citizen = FMSUser.objects.get(email=self.cleaned_data["citizen_email"])
+        # except FMSUser.DoesNotExist:
+        #     #Add information about the citizen connected if it does not exist
+        #     report.citizen = FMSUser.objects.create(telephone=self.cleaned_data['telephone'],username=self.cleaned_data["citizen_email"], email=self.cleaned_data["citizen_email"], last_name=self.cleaned_data["citizen_lastname"], agent=False, contractor=False, manager=False, leader=False)
 
         if commit:
             report.save()
 
-        if self.cleaned_data["citizen_subscription"]:
-            ReportSubscription(report=report, subscriber=report.citizen).save()
-
         return report
+
+class CitizenForm(forms.ModelForm):
+    required_css_class = 'required'
+    class Meta:
+        model = FMSUser
+        fields = ('quality', 'email', 'lastname', 'subscription', 'telephone')
+
+    quality = forms.ChoiceField(choices=qualities)
+    email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
+    #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
+    lastname = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
+    subscription = forms.BooleanField(required=False)
+    telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
+
 
 class ContactForm(forms.Form):
     required_css_class = 'required'
@@ -214,13 +239,13 @@ class ContactForm(forms.Form):
 
 
 class ReportFileForm(forms.ModelForm):
+    required_css_class = 'required'
     class Meta:
         model=ReportFile
-        fields=('title','file',)
-    file = forms.fields.FileField(required=True,widget=forms.widgets.FileInput())
+        fields = ('file', 'text')
 
-    def __init__(self,data=None, files=None, initial=None):
-        super(ReportFileForm,self).__init__(data, files, initial=initial)
+    title = forms.fields.CharField()
+    text = forms.fields.CharField(widget=forms.Textarea)
 
     def clean_file(self):
         file = self.cleaned_data['file']
@@ -230,9 +255,8 @@ class ReportFileForm(forms.ModelForm):
          #   raise forms.ValidationError(_('File type is not supported'))
         return file
 
-    def save(self,user,report,commit=True):
-        fileUpdate= super(ReportFileForm,self).save(commit=False)
-        fileUpdate.report = report
+    def save(self, commit=True):
+        fileUpdate= super(ReportFileForm, self).save(commit=False)
 
         loaded_file = self.files.get('file')
 
@@ -246,22 +270,17 @@ class ReportFileForm(forms.ModelForm):
             fileUpdate.file_type = ReportFile.EXCEL
         fileUpdate.file_creation_date = self.data['file_creation_date']
 
-        if fileUpdate.file_type == ReportFile.IMAGE:
-            if report.files.count() == 0:
-                report.photo = fileUpdate.file
-                report.save()
-
-                #Add the creator
-                fileUpdate.creator = user
-
         if commit:
             fileUpdate.save()
         return fileUpdate
 
 class ReportCommentForm(forms.ModelForm):
+    required_css_class = 'required'
     class Meta:
-        model=ReportComment
-        fields=('text',)
+        model = ReportComment
+        fields = ('text',)
+
+    text = forms.fields.CharField(widget=forms.Textarea)
 
     def save(self,user,report,commit=True):
         comment= super(ReportCommentForm,self).save(commit=False)

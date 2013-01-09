@@ -10,7 +10,7 @@ from django_fixmystreet.fixmystreet.session_manager import SessionManager
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
-        report_form = ReportForm(request.POST, request.FILES)
+        report_form = ProReportForm(request.POST, request.FILES)
         # this checks update is_valid too
         if report_form.is_valid():
             # this saves the update as part of the report.

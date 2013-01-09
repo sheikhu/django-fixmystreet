@@ -7,8 +7,7 @@ def domain(request):
     site = Site.objects.get_current()
     return {
         'SITE_URL': 'http://{0}'.format(site.domain),
-        'GEOSERVER': settings.GEOSERVER,
-        'SERVICE_GIS': settings.SERVICE_GIS,
+        'URBIS_URL': settings.URBIS_URL,
     }
 
 def environment(request):

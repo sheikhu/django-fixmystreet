@@ -3,12 +3,30 @@
 {% load tags %}
 {% block script %}
 {{ block.super }}
+<script type="text/javascript">
+    $(function(){
+      {% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
+      $.each($("#id_user_type").find("option"),function(idx,value){
+        if (value.value != "agent"){
+          $(value).remove();
+        }
+      });;
+      {% endif %}
+      fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    URBIS_URL + '/geoserver/wms'
+    });
+    }
+    );
+</script>
+<script type="text/javascript">
+  document.getElementById('id_is_active').checked=true
+</script>
 {% endblock %}
-
 {% block title %} {% trans "Create user" %} {% endblock %}
 
 {% block content %}
-
 <!--script type="text/javascript">
    function uncheckRolesWhenClickingOtherCheckboxThanContractor() {
 	var checkContractor = document.getElementById("contractorRadio");
@@ -29,34 +47,27 @@
 	}
    }
 </script-->
-<script type="text/javascript">
-    $(function(){
-      {% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
-      $.each($("#id_user_type").find("option"),function(idx,value){
-        if (value.value != "agent"){
-          $(value).remove();
-        }
-      });;
-      {% endif %}
-    }
-    );
-</script>
-<div id="fullwidth">
-  <h1>{% trans "Create user" %}</h1>
-  <div>
-    <form action="" method="POST">     
-      <table>
-        {{ createform.as_table }}
-      </table>
-      <p>
-        <input type="submit" value="Submit" class="big_button"/>
-      </p>
-    </form>
+
+
+<article id="map"></article>
+
+<div id="page_content_container">
+  <div id="create_user_form">
+    <h1>{% trans "Create user" %}</h1>
+    <div>
+      <form action="" method="POST">     
+        <table>
+          <tr>
+          {{ createform.as_table }}
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="Submit" class="btn" style="float:right;"/>
+          </td>
+        </tr>
+        </table>
+      </form>
+    </div>
   </div>
 </div>
-
-<script type="text/javascript">
-	document.getElementById('id_is_active').checked=true
-</script>
-
 {% endblock %}
