@@ -23,7 +23,7 @@ $(function(){
 		}
 	});
 	{% for report in reports %}
-	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}});
+        fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}});
 	{% endfor %}
 	fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
 });

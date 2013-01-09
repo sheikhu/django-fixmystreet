@@ -13,7 +13,19 @@
 <meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
 <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 
-<script>
+<script type="text/javascript">
+function search_per_ticket() {
+        searchValue = $('input-search').val();
+	//Block to search per ticket number
+	if (searchValue && searchValue.length > 0) {
+		valToSearch = searchValue;
+		//On this page character # is not required as the search zone is dedicated.
+		if (searchValue[0] == "#")
+			valToSearch = searchValue.substring(1);
+		window.location = "report/search_ticket?report_id="+valToSearch;
+	}
+}
+
 $(function(){
 	// $('#map-bxl').fmsMap();
  //    $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
@@ -40,6 +52,8 @@ $(function(){
     {% endfor %}
 
 });
+
+
 </script>
 {% endblock %}
 
@@ -56,21 +70,21 @@ $(function(){
 				{% for report in reports %}
                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
                 {% endfor %}
-             </div>
- 		</div>
+            </div>
+ 	    </div>
 		<div id='rightcol'>
-			<div id="search_by_ticket_nr">
-            <!-- TODO create logic behind searching -->
-            <p >{% trans "Search by entering a ticket number:" %}</p>
-            <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
-            <p style="float:right">
-                <input type="submit" class='btn' value="{% trans 'Search' %}" />
-            </p>
-		</div>
-        <div id="go_to_submit_report">
-            <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
-        </div>
-		</div>
+		<div id="search_by_ticket_nr">
+            		<!-- TODO create logic behind searching -->
+            		<p >{% trans "Search by entering a ticket number:" %}</p>
+            		<input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
+            		<p style="float:right">
+                		<input type="button" onclick='javascript:search_per_ticket()' class='btn' value="{% trans 'Search' %}" />
+            		</p>
+	    	</div>
+        	<div id="go_to_submit_report">
+            	<input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
+        	</div>
+	   </div>
 	</div>
 	<br/ style="clear:both;">
 {% endblock %}
