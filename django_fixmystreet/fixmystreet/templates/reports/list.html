@@ -18,8 +18,8 @@ $(function(){
 	defaultY = 171086.0720425099
 
         {% if reports.0 %}
-		defaultX = reports.0.point.x
-		defaultY = reports.0.point.y
+		defaultX = {{reports.0.point.x}}
+		defaultY = {{reports.0.point.y}}
 	{% endif %}
 
 

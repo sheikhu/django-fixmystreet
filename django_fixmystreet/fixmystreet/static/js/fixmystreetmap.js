@@ -6,11 +6,11 @@ if (!('fms' in window)) {
 }
 
 (function(){
-	var markerWidth = 18,
-		markerHeight = 34,
+	var     markerWidth = 30,
+		markerHeight = 40,
 		defaultMarkerStyle = {
 			pointRadius: markerHeight,
-			externalGraphic: STATIC_URL + "images/marker.png",
+			externalGraphic: STATIC_URL + "images/pin-red-XS.png",
 			graphicXOffset: -markerWidth/2,
 			graphicYOffset: -markerHeight,
 			graphicHeight: markerHeight,
@@ -32,9 +32,9 @@ if (!('fms' in window)) {
 		fixedMarkerStyle = Object.create(defaultMarkerStyle),
 		pendingMarkerStyle = Object.create(defaultMarkerStyle),
 
-		markerStyle.externalGraphic = "/static/images/marker.png",
-		fixedMarkerStyle.externalGraphic = "/static/images/marker-fixed.png",
-		pendingMarkerStyle.externalGraphic = "/static/images/marker-pending.png";
+		markerStyle.externalGraphic = "/static/images/pin-red-XS.png",
+		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XS.png",
+		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XS.png";
 
 	/**
 	 * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
@@ -44,6 +44,7 @@ if (!('fms' in window)) {
 	 */
 	fms.Map = function (elementOrId, options) {
 		this.options = options;
+
 		this.element = typeof elementOrId == 'string' ? document.getElementById(elementOrId) : elementOrId;
 		this.id = this.element.id;
 
@@ -57,6 +58,14 @@ if (!('fms' in window)) {
 			maxResolution:46,
 			units: 'm',
 			projection: "EPSG:31370",
+			controls: [
+				new OpenLayers.Control.TouchNavigation(
+            				{dragPanOptions: {enableKinetic: true}}
+        			),
+				new OpenLayers.Control.Zoom({
+				
+				}),
+			],	
 		});
 
 		// this.map.events.on({
@@ -257,6 +266,8 @@ if (!('fms' in window)) {
 			the .activate() method of the attached select feature control was called.
 			*/
 
+
+
 			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
 				onSelect:function(feature,pixel){
 					var p = feature.geometry.components[0];
@@ -289,18 +300,16 @@ if (!('fms' in window)) {
 		}
 
 		var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-		var markerConf = report.is_fixed ? this.options.fixedMarkerStyle : this.options.pendingMarkerStyle;
-		if(index){
+		var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+		/*if(index){
 			//make a copy
 			markerConf = $.extend({},markerConf,{
-				externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
+				externalGraphic:'/static/images/marker/' + (report.is_closed?'green':'red') + '/marker' + index + '.png'
 			});
-		}
-		this.markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf)]);
-
-		/*
-		console.log(newMarker);
-		var events = new OpenLayers.Events(newMarker, this.element[0], ['click']);
+		}*/
+                var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+		this.markersLayer.addFeatures(vectorOfMarkers);
+		/*var events = new OpenLayers.Events(newMarker, this.element[0], ['click']);
 		events.on({
 			'click':function()
 			{
