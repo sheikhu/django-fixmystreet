@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
-{% load i18n %}
-
-<base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
-
+{% load i18n tags %}
 
 <!-- ############################################################## -->
 <!-- #######################JAVASCRIPT IMPORTS #################### -->
@@ -18,25 +15,30 @@
 <!-- ############################################################## -->
 <!-- #######################JQUERY INIT METHOD #################### -->
 <!-- ############################################################## -->
+{% block script %}
+{{ block.super }}
 <script>
 $(document).ready(function() {
-	fms.currentMap = new fms.Map({
-		'map-bxl',
-		apiLang:'nl',
+	fms.currentMap = new fms.Map(
+		'map',
+		{apiLang:'nl',
         	localizeUrl: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
         	urbisUrl: 'http://geoserver.gis.irisnet.be/geoserver/wms',
-        	origin:{
-				x:{{report.point.x}},
-				y:{{report.point.y}}
+        	origin: {
+			x:{{report.point.x}},
+			y:{{report.point.y}}
 			}
 		});
+	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
+
 });
 </script>
+{% endblock %}
 
 {% block nav %}
-{% endblock%}
+{% endblock %}
 {% block lng %}
-{% endblock%}
+{% endblock %}
 
 {% block css %}
 {{ block.super }}
@@ -53,11 +55,9 @@ header {
 <!-- ############################################################## -->
 <!-- ####################### REPORT ############################### -->
 <!-- ############################################################## -->
-<hr/>
-<h1>{% trans 'Report Data' %}</h1>
-<div id="map-bxl" style="width:100%; height:200px">
-			
+<div id="map">
 </div>
+<h1>{% trans 'Report Data' %}</h1>
 <table style="width:100%">
 	<tr>
 		<td>

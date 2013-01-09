@@ -2,8 +2,8 @@
 {% load tags i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-
-        <title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
+        <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
+	<title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
 
         {% block css %}
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css" />
