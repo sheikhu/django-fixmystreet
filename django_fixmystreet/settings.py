@@ -45,7 +45,7 @@ AUTH_PROFILE_MODULE = "django_fixmystreet.fixmystreet.FMSUser"
 
 gettext = lambda s: s
 LANGUAGES = (
-  ('en', gettext('English')),
+#  ('en', gettext('English')),
   ('fr', gettext('French')),
   ('nl', gettext('Dutch')),
 )

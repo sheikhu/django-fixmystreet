@@ -986,7 +986,7 @@ def send_notification(sender, instance, **kwargs):
         # msg.attach_file(self.report.photo.file.name)
     if isinstance(instance.related,Report):
         for f in instance.related.files.all():
-            if f.file_type == 4 and f.is_visible:
+            if f.file_type == ReportFile.IMAGE and f.is_public:
                 # Open the file
                 fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
                 msgImage = MIMEImage(fp.read())
