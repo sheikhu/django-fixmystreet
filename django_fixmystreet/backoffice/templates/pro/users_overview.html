@@ -12,8 +12,8 @@ console.log(({{request.REQUEST.userType}}));
 $({{request.REQUEST.userType}}).addClass("selected");
 fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
-        localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    GEOSERVER_URL + '/geoserver/wms'
+        localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    URBIS_URL + '/geoserver/wms'
     });
 });
 </script>
