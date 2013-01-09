@@ -22,16 +22,43 @@ $(function(){
         apiLang:     LANGUAGE_CODE,
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
         urbisUrl:    URBIS_URL + '/geoserver/wms',
+        {% if reports.0 %}
         origin:{
             x:{{ reports.0.point.x }},
             y:{{ reports.0.point.y }}
         }
+        {% endif %}
     });
     {% for report in reports %}
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
     {% endfor %}
+    $("#list_created").show();
+    $("#list_closed").hide();
+    $("#list_in_progress").hide();
 
 });
+
+function showResults(type,li){
+    if(type == "created"){
+        $("#list_created").show();
+        $("#list_closed").hide();
+        $("#list_in_progress").hide();
+    }
+    else if (type == "in_progress"){
+        $("#list_created").hide();
+        $("#list_closed").hide();
+        $("#list_in_progress").show();
+    }
+    else {
+        $("#list_created").hide();
+        $("#list_closed").show();
+        $("#list_in_progress").hide();
+    }
+    $.each(li.parent().find("li"),function(idx,val){
+        $(val).removeClass("active");
+    });
+    li.addClass("active");
+}
 </script>
 {% endblock %}
 
@@ -89,20 +116,32 @@ $(function(){
         <h4>{% trans 'Last modified reports:' %}</h4>
         <ul id="recent_home_nav" class="nav nav-tabs">
             <li class="active">
-                <a href="#">{% trans "Incidents signalés" %}</a>
+                <a onclick="showResults('created',$(this).parent());">{% trans "Incidents signalés" %}</a>
             </li>
             <li>
-                <a href="#">{% trans "Incidents mis a jour" %}</a>
+                <a onclick="showResults('in_progress',$(this).parent());">{% trans "Incidents mis a jour" %}</a>
             </li>
             <li>
-                <a href="#">{% trans "Incidents cloturés" %}</a>
+                <a onclick="showResults('closed',$(this).parent());">{% trans "Incidents cloturés" %}</a>
             </li>
         </ul>
         <div id="search_results" class="search_results_home">
-        {% for report in reports %}
-        {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-        {% endfor %}
-    </div>
+            <div id="list_created">
+                {% for report in reports_created %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% endfor %}
+            </div>
+            <div id="list_in_progress">
+                {% for report in reports_in_progress %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% endfor %}
+            </div>
+            <div id="list_closed">
+                {% for report in reports_closed %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% endfor %}
+            </div>
+        </div>
     </article>
 
     <article id="home_download_mobile">
