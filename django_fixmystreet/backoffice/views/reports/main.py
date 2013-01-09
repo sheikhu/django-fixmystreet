@@ -86,10 +86,11 @@ def show(request,slug, report_id):
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingAManager)
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
-
+    reports = Report.objects.all()
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
             {
+                "reports":reports,
                 "fms_user": fms_user,
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),

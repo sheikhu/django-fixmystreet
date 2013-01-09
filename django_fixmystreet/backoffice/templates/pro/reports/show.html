@@ -13,7 +13,11 @@ $(function(){
     /* Prepare iphone toogle button look and feel */
     /**********************************************/
     $("input[type=radio]").bind("click",function(){
-        value = this; 
+        value = this;
+        if($(value).attr('name')=="public_private"){
+            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
+        } 
+        else{
         var vals = $(value).attr("id").split("_");
         if(vals[0].indexOf("public")!=-1){
         	// Public checkbox changed
@@ -48,6 +52,7 @@ $(function(){
                     window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=3';
                 }
             }
+        }
          });
 
 /***************************/
@@ -92,8 +97,13 @@ $(document).ready(function() {
     $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
     /*Set the checked value*/
     {% if report.private %}
-    	$('#id_is_private').attr("checked", "checked");
+    	$('#id_private').attr("checked", "checked");
+    {% else %}
+        $('#id_public').attr("checked", "checked");
     {% endif %}
+    {% for report in reports %}
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
+    {% endfor %}
 });
 
 </script>
@@ -173,7 +183,30 @@ $(document).ready(function() {
         </div>
     </h1>
 {% endblock %}
-	<div class="overview_div">   
+    <div id="nearby-reports" style="float:left;max-width:45%;">
+            {% if reports %}
+                <div id='search_results'>
+                <!-- <a id="create_report_fastlink" href="/pro/" class="report">
+                   <h3 class="report-title">{% trans "create_report" %}</h3>
+                </a> -->
+                {% for report in reports %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+                {% endfor %}
+                </div>
+                <div class="pagination pagination-centered">
+                    <!-- TODO add pagination logic -->
+                    <ul>
+                        <li class="disabled"><a class="pagination_prev"></a></li>
+                        <li class="active"><a >1</a></li>
+                        <li><a >2</a></li>
+                        <li><a class="pagination_next"></a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <p>{% trans "No problems have been reported in this area." %}</p>
+            {% endif %}
+        </div>
+	<div class="overview_div" style="float:right;max-width:45%;">   
         <h1>
             {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
         </h1> 
@@ -214,15 +247,18 @@ $(document).ready(function() {
             <table id='report-status'>
                 <tr>
                     <th>{% trans "Location:" %}</th>
-                    <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
+                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
-                    <td>{{report.display_category}}</td>
+                    <td colspan="4">{{report.display_category}}</td>
                 </tr>
                 <tr>
-                    <th>{% trans "Status:" %}</th>
-                    <td>{{ report.get_status_display }}</td>
+                    <th>{% trans "Status:" %} {{ report.get_status_display }}</th>
+                    <td><img src="{{STATIC_URL}}images/">{% trans "Created" %}</td>
+                    <td><img src="{{STATIC_URL}}images/">{% trans "In progress" %}</td>
+                    <td><img src="{{STATIC_URL}}images/">{% trans "Fixed" %}</td>
+                    <td><img src="{{STATIC_URL}}images/">{% trans "Closed" %}</td>
                 </tr>
                 {% if report.is_in_progress  %}
                 {% if request.user.id == report.responsible_manager.id %}
@@ -231,7 +267,7 @@ $(document).ready(function() {
                 <!-- ############################### -->
                 <tr>
                     <th>{% trans "Responsible manager:" %}</th>
-                    <td>
+                    <td colspan="4">
                         <select id="report_responsible_manager_select">
                            <optgroup label="Gestionnaires">
                             {% for manager in managers %}
@@ -251,7 +287,7 @@ $(document).ready(function() {
                 <!-- ################################# -->
                 <tr>
                     <th>{% trans "Contractor/Impetrant:" %}</th>
-                    <td>
+                    <td colspan="4">
                         <select id="report_responsible_impetrant_contractor_select">
                             <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
                                 <optgroup label="Executeur de travaux">
@@ -274,8 +310,13 @@ $(document).ready(function() {
                   <th>
                      <label for="id_is_private">{% trans "Private?" %}</label>			
                  </th>
-                 <td>
-                     <input type="checkbox" name="is_private" id="id_is_private">
+                 <td colspan="2">
+                     <input type="radio" id="id_private" name="public_private">
+                     {% trans "Private" %}
+                 </td>
+                 <td colspan="2">
+                     <input type="radio" id="id_public" name="public_private">
+                     {% trans "Public" %}
                  </td>
                 </tr>
                 {% else %}
