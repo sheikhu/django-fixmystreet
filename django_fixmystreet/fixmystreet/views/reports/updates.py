@@ -46,13 +46,11 @@ def reportPdf(request, report_id, pro_version):
     
     #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
     # pro_Version = 0
-
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {
-            'user' : request.user.fmsuser,
             'report' : report,
             'pro_version' : pro_version
         }, context_instance=RequestContext(request))
     else:
-        return render_to_pdf("pro/pdf.html", {'user' : request.user.fmsuser,'report' : report, 'pro_version' : pro_version},
+        return render_to_pdf("pro/pdf.html", {'report' : report, 'pro_version' : pro_version},
                 context_instance=RequestContext(request))

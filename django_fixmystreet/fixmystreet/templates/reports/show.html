@@ -305,7 +305,7 @@ function markAsDone(){
             </div>
           {% endif %}
             <!-- If the status allow such interactions -->
-	    <a href="" onclick="window.location = '{% url report_pdf report.id 0 %}'" ><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
+	    <a onclick="window.location = '{% url report_pdf report.id 0 %}'" ><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
              <div>
                 <a onclick="window.open('/export_file/reports/csv?id={{report.id}}')"><img src="{{STATIC_URL}}images/">  {% trans 'export csv' %}</a>
             </div>
