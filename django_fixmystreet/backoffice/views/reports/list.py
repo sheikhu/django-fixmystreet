@@ -6,11 +6,11 @@ from django.conf import settings
 
 @login_required(login_url='/pro/accounts/login/')
 def list(request, status):
-    if request.POST.get("page"):
-        page_number = int(request.POST.get("page"))
+    if request.GET.get("page"):
+        page_number = int(request.GET.get("page"))
     else:
         page_number=1
-        
+
     default_position = {
         'x': '148954.431',
         'y': '170458.371'
@@ -45,8 +45,11 @@ def list(request, status):
 
     #reports = reports.distance(pnt).order_by('distance')
     reports = reports.distance(pnt).order_by('address', 'address_number')
-    pages_list = range(1,int(len(reports)/settings.MAX_ITEMS_PAGE+1))
-    print pages_list
+    pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
+    print request
+    print page_number
+    print int((page_number-1)*settings.MAX_ITEMS_PAGE)
+    print int(page_number*settings.MAX_ITEMS_PAGE)
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,
