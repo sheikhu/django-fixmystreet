@@ -266,6 +266,8 @@ if (!('fms' in window)) {
 			the .activate() method of the attached select feature control was called.
 			*/
 
+
+
 			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
 				onSelect:function(feature,pixel){
 					var p = feature.geometry.components[0];
@@ -298,17 +300,15 @@ if (!('fms' in window)) {
 		}
 
 		var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-		var markerConf = report.is_closed ? fixedMarkerStyle : report.is_created ? defaultMarkerStyle : pendingMarkerStyle;
+		var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
 		/*if(index){
 			//make a copy
 			markerConf = $.extend({},markerConf,{
 				externalGraphic:'/static/images/marker/' + (report.is_closed?'green':'red') + '/marker' + index + '.png'
 			});
 		}*/
-		this.markersLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf)]);
-
-	        newMarker.bind('click',function(){
-	        alert('ok')});	
+                var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+		this.markersLayer.addFeatures(vectorOfMarkers);
 		/*var events = new OpenLayers.Events(newMarker, this.element[0], ['click']);
 		events.on({
 			'click':function()
