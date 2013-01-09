@@ -29,6 +29,7 @@
              <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
             {% endifequal %}
 
+	    {% block lng %}
             <section>
                 {% get_available_languages as LANGUAGES %}
                 {% for l in LANGUAGES %}
@@ -53,6 +54,8 @@
                     {% endif %}
                 </div>
             </section>
+            {% endblock %}
+            {% block nav %}
             <nav>
                 {% if not BACKOFFICE %}
                 <ul>
@@ -235,6 +238,7 @@
                 </ul>-->
                 {% endif %}
             </nav>
+            {% endblock %}
         </header>
 
         <section id="content">

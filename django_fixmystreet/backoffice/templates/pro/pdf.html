@@ -1,6 +1,9 @@
+{% extends "base.html" %}
+
 {% load i18n %}
 
 <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
+
 
 <!-- ############################################################## -->
 <!-- #######################JAVASCRIPT IMPORTS #################### -->
@@ -17,8 +20,8 @@
 <!-- ############################################################## -->
 <script>
 $(document).ready(function() {
-	var $map = $('#map-bxl');
-	$map.fmsMap({
+	fms.currentMap = new fms.Map({
+		'map-bxl',
 		apiLang:'nl',
         	localizeUrl: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
         	urbisUrl: 'http://geoserver.gis.irisnet.be/geoserver/wms',
@@ -30,7 +33,23 @@ $(document).ready(function() {
 });
 </script>
 
+{% block nav %}
+{% endblock%}
+{% block lng %}
+{% endblock%}
 
+{% block css %}
+{{ block.super }}
+<style>
+header {
+	height: 100px;
+	width: auto;
+	background-color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
 <!-- ############################################################## -->
 <!-- ####################### REPORT ############################### -->
 <!-- ############################################################## -->
@@ -348,3 +367,4 @@ $(document).ready(function() {
 
 {% endif %}
 {% endif %}
+{% endblock %}
