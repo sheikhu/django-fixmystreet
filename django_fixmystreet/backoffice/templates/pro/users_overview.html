@@ -7,6 +7,14 @@
 <script>
 $(document).ready(function(){
 $("[for='id_password']").parent().parent().hide()
+// Set the current active type to the filter
+console.log(({{request.REQUEST.userType}}));
+$({{request.REQUEST.userType}}).addClass("selected");
+fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: GEOSERVER_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    GEOSERVER_URL + '/geoserver/wms'
+    });
 });
 </script>
 {% endblock %}
@@ -14,6 +22,7 @@ $("[for='id_password']").parent().parent().hide()
 {% block title %}{% trans "User overview:"%}{%if editForm %}: {{editForm.username.value}}{%endif%}{% endblock %}
 
 {% block content %}
+<article id="map"></article>
 <script>
 	function disableFormFields() {
 		$.each($("input"),function(idx,value){
@@ -28,11 +37,45 @@ $("[for='id_password']").parent().parent().hide()
 </script>
 
 <div id='page_content_container'>
+  <div id="user_type_filter">
+    <ul>
+      <li>
+          <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=users">
+              <img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px" > <span id="users">{% trans "Collaborators in" %} {{ request.user.fmsuser.get_organisation.name }}</span>
+          </a>
+      </li>
+      <li>
+          <a class="{% ifequal 'users_agent' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=agent">
+              <img src="{{STATIC_URL}}images/agent.png"> <span id="agent">{% trans "Agents" %}</span>
+          </a>
+      </li>
+      <li>
+          <a class="{% ifequal 'users_manager' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=manager">
+              <img src="{{STATIC_URL}}images/manager.png"> <span id="manager">{% trans "Managers" %}</span>
+          </a>
+      </li>
+      <li>
+          <a class="{% ifequal 'users_contractor' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=contractor">
+              <img src="{{STATIC_URL}}images/contractor.png"> <span id="contractor">{% trans "Contractors" %}</span>
+          </a>
+      </li>
+      <li>
+          <a class="{% ifequal 'users_impetrant' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=applicant">
+              <img src="{{STATIC_URL}}images/applicant.png"> <span id="applicant">{% trans "Applicant" %}</span>
+          </a>
+      </li>
+    </ul>
+  </div>
   <h1>{% trans request.GET.userType %}</h1>
 
   	<div id="leftcol">
-  		{% if users %}
                 <div id='search_results'>
+                  <div class="report" onclick="window.location.href='{% url create_agent %}'">
+                    <h3>
+                      + {% trans 'Create a new user' %}
+                    </h3>
+                  </div>
+      {% if users %}
                 {% for user in users %}
                 	<div class="report" onclick="window.location.href='{% url usersEdit %}?userType={{request.GET.userType}}&userId={{user.id}}'">
                 	<p>
@@ -44,7 +87,9 @@ $("[for='id_password']").parent().parent().hide()
 					{% if user.manager %}{% trans 'GESTIONNAIRE' %}{% endif %}
 					{% if user.agent %}{% trans 'AGENT' %}{% endif %}
 					{% if user.contractor %}{% trans 'EXECUTEUR DE TRAVAUX' %}{% endif %}
+          {% if user.applicant %}{% trans 'Applicant' %}{% endif %}
 				)
+
 			</p>
                 	</div>
                 {% endfor %}
@@ -58,8 +103,8 @@ $("[for='id_password']").parent().parent().hide()
         <table>
         {{ editForm.as_table }}
       </table>
-      <input id="editFormSubmitButton" type="submit" value="Submit" class="big_button" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{request.GET.userId}}"/>
-      <a id="deleteButton" class= "saveFormButton" href='{% url userDelete %}?userType={{request.GET.userType}}&userId={{request.GET.userId}}' onclick="return confirm('Are you sure you want to delete this user?')">{% trans 'Delete' %}</button>
+      <input id="editFormSubmitButton" type="submit" value="Submit" class="btn" formaction="{% url userSave%}?userType={{request.GET.userType}}&userId={{request.GET.userId}}"/>
+      <a class= "btn" href='{% url userDelete %}?userType={{request.GET.userType}}&userId={{request.GET.userId}}' onclick="return confirm('Are you sure you want to delete this user?')" >{% trans 'Delete' %}</a>
       </form>
       <script>
       	{% if not canEditGivenUser %} 

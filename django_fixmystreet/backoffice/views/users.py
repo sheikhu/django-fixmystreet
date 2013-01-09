@@ -33,7 +33,7 @@ def show(request):
         allOrganisation = list(dependantOrganisations)
         users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
         users = users.filter(contractor=True)
-    if userType == 'impetrant':
+    if userType == 'applicant':
         users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
         users = users.filter(applicant=True)
     if userType == 'manager':
