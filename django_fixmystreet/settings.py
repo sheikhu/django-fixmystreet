@@ -142,6 +142,7 @@ except ImportError:
 
 if ENVIRONMENT=="local" or ENVIRONMENT=="jenkins" or ENVIRONMENT=="dev" or ENVIRONMENT=="staging":
     DEBUG = True
+
 else:
     DEBUG = False
 
@@ -155,6 +156,7 @@ if ENVIRONMENT=="local":
 
 if ENVIRONMENT=="dev" or ENVIRONMENT=="local" or ENVIRONMENT=="jenkins":
     SITE_ID = 3
+    LANGUAGES +=  ('en', gettext('English')),
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2

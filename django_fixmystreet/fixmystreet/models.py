@@ -196,11 +196,11 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
-    def get_absolute_url(self):
-        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
-
     class Meta:
         translate = ('name', 'slug')
+
+    def get_absolute_url(self):
+        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
 
     def __unicode__(self):
         return self.name
@@ -631,6 +631,41 @@ def report_notify(sender, instance, **kwargs):
 #             ReportSubscription(report=instance, subscriber=instance.created_by.fmsuser).save()
 
 
+
+class ReportAttachmentQuerySet(models.query.QuerySet):
+    def files(self):
+        qs = self.select_related('reportfile')
+        qs.cast_to = 'file'
+        return qs
+
+    def comments(self):
+        qs = self.select_related('reportcomment')
+        qs.cast_to = 'comment'
+        return qs
+
+    def _clone(self, *args, **kwargs):
+        qs =  super(ReportAttachmentQuerySet, self)._clone(*args, **kwargs)
+        if hasattr(self, 'cast_to'):
+            qs.cast_to = self.cast_to
+        return qs
+
+    def iterator(self):
+        iter = super(ReportAttachmentQuerySet, self).iterator()
+        if not hasattr(self, 'cast_to'):
+            for obj in iter:
+                yield obj
+        for obj in iter:
+            if self.cast_to == 'file' and hasattr(obj, 'file'):
+                yield obj.reportfile
+            if self.cast_to == 'comment' and hasattr(obj, 'comment'):
+                yield obj.reportcomment
+
+
+class ReportAttachmentManager(models.Manager):
+    def get_query_set(self):
+        return ReportAttachmentQuerySet(self.model)
+
+
 class ReportAttachment(UserTrackedModel):
 
     PUBLIC = 1
@@ -645,6 +680,8 @@ class ReportAttachment(UserTrackedModel):
 
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
     report = models.ForeignKey(Report, related_name="attachments")
+
+    objects = ReportAttachmentManager()
 
     #is_validated = models.BooleanField(default=False)
     #is_visible = models.BooleanField(default=False)
