@@ -31,7 +31,6 @@ def addthis_scripts():
 
 @register.filter
 def dict_to_json(values):
-    print values
     return json.dumps(values)
 
 @register.filter

@@ -100,6 +100,7 @@ var categories = {
                 <legend>Files</legend>
                 <div id="form-files">
                     {{ file_formset.management_form }}
+                    {# file_formset.errors #}
                 </div>
                 <p class="pull-right">
                     <button id="file-upload" class="btn">Add file</button>
@@ -107,13 +108,14 @@ var categories = {
 
                 <div id="file-form-template">
                     <img class="thumbnail" />
+                    {{ file_formset.empty_form.reportattachment_ptr }}
                     {{ file_formset.empty_form.file }}
-                    {{ file_formset.empty_form.text }}
+                    {{ file_formset.empty_form.description }}
                 </div>
             </fieldset>
             {% endif %}
             <p>
-                <input type="submit" class='btn' value="{% trans 'Send' %}" style="float:left;" />
+                <input type="submit" class='btn' value="{% trans 'Send' %}" />
             </p>
         </form>
     </div>

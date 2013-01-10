@@ -196,11 +196,11 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
-    def get_absolute_url(self):
-        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
-
     class Meta:
         translate = ('name', 'slug')
+
+    def get_absolute_url(self):
+        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
 
     def __unicode__(self):
         return self.name
@@ -236,6 +236,10 @@ class OrganisationEntity(UserTrackedModel):
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
+
+class ReportManager(models.GeoManager):
+    def get_query_set(self):
+        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class')
 
 class Report(UserTrackedModel):
 
@@ -319,7 +323,7 @@ class Report(UserTrackedModel):
     photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
-    objects = models.GeoManager()
+    objects = ReportManager()
 
     history = HistoricalRecords()
 
@@ -327,7 +331,7 @@ class Report(UserTrackedModel):
         return self.display_category()
 
     def display_category(self):
-        return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
+        return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
 
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
@@ -358,10 +362,10 @@ class Report(UserTrackedModel):
         return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
     def active_comments(self):
-        return self.comments.filter(security_level=1)
+        return self.comments().filter(security_level=1)
 
     def active_files(self):
-        return self.files.filter(security_level=1)
+        return self.files().filter(security_level=1)
 
     def is_created(self):
         return self.status == Report.CREATED
@@ -375,8 +379,11 @@ class Report(UserTrackedModel):
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
-    def attachments(self):
-        return list(self.comments.all()) + list(self.files.all()) # order by created
+    def comments(self):
+        return self.attachments.get_query_set().comments()
+
+    def files(self):
+        return self.attachments.get_query_set().files()
 
     def to_full_JSON(self):
         """
@@ -616,12 +623,48 @@ def report_notify(sender, instance, **kwargs):
             l.save()
 
 
-@receiver(post_save,sender=Report)
-def report_subscribe_author(sender, instance, **kwargs):
-    """signal on a report to register author as subscriber to his own report"""
-    if kwargs['created'] and not kwargs['raw']:
-        if instance.created_by:
-            ReportSubscription(report=instance, subscriber=instance.created_by.fmsuser).save()
+# @receiver(post_save,sender=Report)
+# def report_subscribe_author(sender, instance, **kwargs):
+#     """signal on a report to register author as subscriber to his own report"""
+#     if kwargs['created'] and not kwargs['raw']:
+#         if instance.created_by:
+#             ReportSubscription(report=instance, subscriber=instance.created_by.fmsuser).save()
+
+
+
+class ReportAttachmentQuerySet(models.query.QuerySet):
+    def files(self):
+        qs = self.select_related('reportfile')
+        qs.cast_to = 'file'
+        return qs
+
+    def comments(self):
+        qs = self.select_related('reportcomment')
+        qs.cast_to = 'comment'
+        return qs
+
+    def _clone(self, *args, **kwargs):
+        qs =  super(ReportAttachmentQuerySet, self)._clone(*args, **kwargs)
+        if hasattr(self, 'cast_to'):
+            qs.cast_to = self.cast_to
+        return qs
+
+    def iterator(self):
+        iter = super(ReportAttachmentQuerySet, self).iterator()
+        if not hasattr(self, 'cast_to'):
+            for obj in iter:
+                yield obj
+        for obj in iter:
+            if self.cast_to == 'file' and hasattr(obj, 'file'):
+                yield obj.reportfile
+            if self.cast_to == 'comment' and hasattr(obj, 'comment'):
+                yield obj.reportcomment
+
+
+class ReportAttachmentManager(models.Manager):
+    use_for_related_fields = True
+    def get_query_set(self):
+        return ReportAttachmentQuerySet(self.model)
 
 
 class ReportAttachment(UserTrackedModel):
@@ -637,6 +680,10 @@ class ReportAttachment(UserTrackedModel):
     )
 
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
+    report = models.ForeignKey(Report, related_name="attachments")
+
+    objects = ReportAttachmentManager()
+
     #is_validated = models.BooleanField(default=False)
     #is_visible = models.BooleanField(default=False)
     def get_security_level(self, security_level_as_int):
@@ -679,7 +726,6 @@ class ReportAttachment(UserTrackedModel):
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
-    report = models.ForeignKey(Report, related_name="comments")
 
 
 class ReportFile(ReportAttachment):
@@ -709,8 +755,8 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
-    report = models.ForeignKey(Report, related_name="files")
-    title = models.CharField(max_length=250)
+    title = models.CharField(max_length=250, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     file_creation_date= models.DateTimeField(null=True)
 
     def is_pdf(self):
@@ -723,6 +769,23 @@ class ReportFile(ReportAttachment):
         return self.file_type == ReportFile.IMAGE
     def is_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel()
+
+
+@receiver(pre_save, sender=ReportFile)
+def init_file_type(sender,instance,**kwargs):
+    if instance.file_type:
+        return
+
+    content_type = instance.file.file.content_type
+
+    if content_type == "application/pdf":
+        instance.file_type = ReportFile.PDF
+    elif content_type == 'application/msword' or content_type == 'application/vnd.oasis.opendocument.text' or content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        instance.file_type = ReportFile.WORD
+    elif content_type == 'image/png' or content_type == 'image/jpeg':
+        instance.file_type = ReportFile.IMAGE
+    elif content_type == 'application/vnd.ms-excel' or content_type == 'application/vnd.oasis.opendocument.spreadsheet':
+        instance.file_type = ReportFile.EXCEL
 
 
 @receiver(post_save, sender=ReportFile)
@@ -756,7 +819,7 @@ def notify_report_subscription(sender, instance, **kwargs):
         )
         notifiation.save()
 
-class ReportMainCategoryClass(models.Model):
+class ReportMainCategoryClass(UserTrackedModel):
     __metaclass__ = TransMeta
     help_text = """
     Manage the category container list (see the report form). Allow to group categories.
@@ -766,8 +829,7 @@ class ReportMainCategoryClass(models.Model):
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
     hint = models.ForeignKey('ReportCategoryHint', null=True)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
+
     def __unicode__(self):
         return self.name
 
@@ -791,7 +853,7 @@ class ReportMainCategoryClass(models.Model):
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportMainCategoryClass)
 
 
-class ReportSecondaryCategoryClass(models.Model):
+class ReportSecondaryCategoryClass(UserTrackedModel):
     __metaclass__ = TransMeta
     help_text = """
     Manage the category container list (see the report form). Allow to group categories.
@@ -800,8 +862,6 @@ class ReportSecondaryCategoryClass(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     def __unicode__(self):
         return self.name
 
@@ -826,7 +886,7 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportSe
 
 
 
-class ReportCategory(models.Model):
+class ReportCategory(UserTrackedModel):
     __metaclass__ = TransMeta
     help_text = """
     Manage the report categories list (see the report form).
@@ -836,8 +896,6 @@ class ReportCategory(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
     category_class = models.ForeignKey(ReportMainCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
@@ -993,9 +1051,9 @@ def send_notification(sender, instance, **kwargs):
 
     # if self.report.photo:
         # msg.attach_file(self.report.photo.file.name)
-    if isinstance(instance.related,Report):
-        for f in instance.related.files.all():
-            if f.file_type == ReportFile.IMAGE and f.is_public:
+    if isinstance(instance.related, Report):
+        for f in instance.related.files():
+            if f.file_type == ReportFile.IMAGE and f.is_visible:
                 # Open the file
                 fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
                 msgImage = MIMEImage(fp.read())

@@ -15,7 +15,7 @@ def home(request, location = None, error_msg =None):
         location = request.GET["q"]
 
     #wards = Ward.objects.all().order_by('name')
-    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
+    zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
     return render_to_response("home.html",
             {
                 "report_counts": ReportCountQuery('1 year'),

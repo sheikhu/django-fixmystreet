@@ -2,7 +2,7 @@ from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 from django.core import urlresolvers
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog
+from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog
 
 
 class FaqEntryAdmin(admin.ModelAdmin):
@@ -34,13 +34,22 @@ class NotificationsInline(admin.TabularInline):
     max_num=10
 
 
-class UserEventsInline(admin.TabularInline):
-    model = ReportEventLog
-    fk_name = "user"
-    fields = ("event_type", "event_at", "status_old", "status_new")
-    readonly_fields = ("event_at",)
+class NotificationsInline(admin.TabularInline):
+    model = ReportNotification
+    fk_name = "recipient"
+    fields = ("content_template", "success")
     extra=0
     max_num=10
+
+
+class AttachmentsInline(admin.TabularInline):
+    model = ReportAttachment
+    fk_name = "report"
+    fields = ("security_level", "created", "created_by")
+    readonly_fields = ("created", "created_by",)
+    extra=0
+    max_num=10
+
 
 class FMSUserAdmin(admin.ModelAdmin):
     list_display = ("leader", "manager", "agent", "applicant", "contractor")
@@ -79,6 +88,7 @@ class ReportAdmin(SimpleHistoryAdmin):
     #exclude = ['photo']
     readonly_fields = ('created', 'modified', 'created_by', 'modified_by')
     inlines = (
+        AttachmentsInline,
         ReportEventsInline,
     )
 
@@ -93,7 +103,7 @@ admin.site.register(ReportNotification, ReportNotificationAdmin)
 
 class ReportCategoryClassAdmin(admin.ModelAdmin):
     list_display = ('name',)
-    
+
 admin.site.register(ReportMainCategoryClass,ReportCategoryClassAdmin)
 
 
