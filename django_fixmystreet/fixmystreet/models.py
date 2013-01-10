@@ -380,10 +380,10 @@ class Report(UserTrackedModel):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def comments(self):
-        return self.attachments.filter(reportcomment=True)
+        return self.attachments.comments()
 
     def files(self):
-        return self.attachments.filter(reportfile=True)
+        return self.attachments.files()
 
     def to_full_JSON(self):
         """
@@ -662,6 +662,7 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
 
 
 class ReportAttachmentManager(models.Manager):
+    use_for_related_fields = True
     def get_query_set(self):
         return ReportAttachmentQuerySet(self.model)
 
@@ -1041,7 +1042,7 @@ def send_notification(sender, instance, **kwargs):
 
     # if self.report.photo:
         # msg.attach_file(self.report.photo.file.name)
-    if isinstance(instance.related,Report):
+    if isinstance(instance.related, Report):
         for f in instance.related.files():
             if f.file_type == ReportFile.IMAGE and f.is_visible:
                 # Open the file
