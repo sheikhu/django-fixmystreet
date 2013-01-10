@@ -27,9 +27,17 @@ class CSVEmitter(Emitter):
         writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
         # Write headers to CSV file
+        field_names = []
         headers = []
+        #Workaround to the fact that the first field never has quotes...
+        headers.append("")
+        field_names.append("")
         for field in Report._meta.fields:
-            headers.append(field.name)
+            if (field.name == 'id'):
+                headers.append('Ticket')
+            else:
+                headers.append(str(field.name))
+            field_names.append(str(field.name))
         writer.writerow(headers)
         counter = -1
         # Write data to CSV file
@@ -40,11 +48,9 @@ class CSVEmitter(Emitter):
             else:
                 current_report_id = self.data[counter].id
             row = []
-            for field in headers:
-                if field in headers:
-                    val = None
-                    if (field != 'id'):
-                        val = obj.get(field)
+            for field in field_names:
+                if field in field_names:
+                    val = obj.get(field)
                     if callable(val):
                         val = val()
                     if (val != None):
@@ -57,14 +63,19 @@ class CSVEmitter(Emitter):
                         row.append("")
             writer.writerow(row)
             #Append annexes (files)
+            #Get protocol
+            #if request.is_secure:
+            #  protocol = "https"
+            #else:
+			#  protocol = "http"
             try:
                 report_files = ReportFile.objects.filter(report__id = current_report_id)
                 file_counter = 0
                 for file_obj in report_files:
                     if file_counter == 0:
                         writer.writerow(['Files'])
-                        writer.writerow(['Filename', 'Creator', 'File Creation Date', 'File Import Date'])
-                    writer.writerow([file_obj.file.__str__(),file_obj.get_display_name(), file_obj.file_creation_date.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S')), file_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
+                        writer.writerow(['','Filename', 'Creator', 'File Creation Date', 'File Import Date'])
+                    writer.writerow(['','http://'+request.get_host()+'/media/'+file_obj.file.__str__(),file_obj.get_display_name(), file_obj.file_creation_date.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S')), file_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
                     file_counter = file_counter + 1
             except ReportFile.DoesNotExist:
                 print('error') 
@@ -75,8 +86,8 @@ class CSVEmitter(Emitter):
                 for comment_obj in report_comments:
                     if comment_counter == 0:
                         writer.writerow(['Comments'])
-                        writer.writerow(['Filename', 'Creator', 'File Import Date'])
-                    writer.writerow([comment_obj.text.__str__(),comment_obj.get_display_name(), comment_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
+                        writer.writerow(['','Comment', 'Creator', 'File Import Date'])
+                    writer.writerow(['',comment_obj.text.__str__(),comment_obj.get_display_name(), comment_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
                     comment_counter = comment_counter + 1
             except ReportComment.DoesNotExist:
                 print('error') 
@@ -253,7 +264,8 @@ class ReportHandler(BaseHandler):
     """A handler centralized for report exportation to files"""
     allowed_methods = ('GET')
     model = Report
-    #exclude = ('_state')
+    #useful to use the id key value
+    exclude = ()
 
     @classmethod
     def content_length(cls, blogpost):

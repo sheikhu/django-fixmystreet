@@ -2,6 +2,9 @@
 {% load tags i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
+    	{% block base %}
+
+	{% endblock %}
         <!-- <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/> -->
 	<title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
 

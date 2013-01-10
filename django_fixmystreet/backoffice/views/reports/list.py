@@ -44,7 +44,8 @@ def list(request, status):
         reports = reports.filter(contractor = connectedUser.organisation)
 
     #reports = reports.distance(pnt).order_by('distance')
-    reports = reports.distance(pnt).order_by('address', 'address_number')
+    #reports = reports.distance(pnt).order_by('address', 'address_number')
+    reports = reports.distance(pnt).order_by('-created')
     pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
     return render_to_response("pro/reports/list.html",
             {

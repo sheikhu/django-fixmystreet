@@ -37,21 +37,22 @@ class MailTest(TestCase):
 		self.client = Client()
 
 		self.sample_post = {
-			'x':'150056.538',
-			'y':'170907.56',
-			'address':'Avenue des Arts, 3',
-			'address_number':'3',
-			'postalcode':'1210',
-			'category':'1',
-			'secondary_category':'1',
-			'quality':'1',
-			'description':'test',
-			'citizen_email':self.citizen.email,
-			'citizen_firstname':self.citizen.first_name,
-			'citizen_lastname':self.citizen.last_name,
+			'report-x':'150056.538',
+			'report-y':'170907.56',
+			'report-address':'Avenue des Arts, 3',
+			'report-address_number':'3',
+			'report-postalcode':'1210',
+			'report-category':'1',
+			'report-secondary_category':'1',
+			'citizen-quality':'1',
+			'comment-text':'test',
+			'files-TOTAL_FORMS': 0,
+			'files-INITIAL_FORMS': 0,
+			'files-MAX_NUM_FORMS': 0,
+			'citizen-email':self.citizen.email,
+			'citizen-firstname':self.citizen.first_name,
+			'citizen-lastname':self.citizen.last_name,
 			'citizen_subscription':'on',
-			'secondary_category_copy':'1',
-			'photo':''
 		}
 
 	def testCreateReportMail(self):

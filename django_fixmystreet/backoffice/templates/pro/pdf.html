@@ -2,6 +2,10 @@
 
 {% load i18n tags %}
 
+{% block base %}
+<base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
+{% endblock %}
+
 <!-- ############################################################## -->
 <!-- #######################JAVASCRIPT IMPORTS #################### -->
 <!-- ############################################################## -->
@@ -47,6 +51,9 @@ header {
 	height: 100px;
 	width: auto;
 	background-color: white;
+}
+body {
+	width: 800px;
 }
 </style>
 {% endblock %}
@@ -298,7 +305,6 @@ header {
 <!-- ############################################################## -->
 <hr/>
 <h1>{% trans 'Report Files' %}</h1>
-
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
 {% if file_list %}
 <table>
@@ -338,7 +344,7 @@ header {
 		<td>{{file.created}}</td>
 	</tr>
 	<tr>
-		<td>{% trans 'By' %} {{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, {{file.created_by.fmsuser.telephone}}){% endif %}</td>
+		<td>{% trans 'By' %} {{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(mail:<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, tel:{{file.created_by.fmsuser.telephone}}){% endif %}</td>
 	</tr>
 	<tr>
 		<td><strong>{% trans 'City' %}</strong></td>

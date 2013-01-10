@@ -11,7 +11,6 @@ $(document).ready(function() {
         {
             $("#secondary_container").load("/ajax/categories/" + el_id);
 
-            selectCategory.val("");
             selectCategory.prop('disabled', false);
             selectCategory.find("option:not(:first)").hide();
             selectCategory.find("optgroup").hide();
