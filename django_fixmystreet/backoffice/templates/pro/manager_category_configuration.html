@@ -10,15 +10,16 @@
 <script>
 $(document).ready(function(){
 	
-	$("#dialog").dialog({
-    modal: true,
-    autoOpen:false,
-    width:'auto',
-    resizable: false
-});
-	$('#dialog').dialog('option', 'close', function(){
-		window.location.href='{% url category_gestionnaire_configuration %}';
-	});
+// 	$("#dialog").dialog({
+//     modal: true,
+//     autoOpen:false,
+//     width:'auto',
+//     resizable: false
+// });
+$("#dialog").hide();
+	// $('#dialog').dialog('option', 'close', function(){
+	// 	window.location.href='{% url category_gestionnaire_configuration %}';
+	// });
 
   $.each($(".matrixButton"),function(idx,value){
     if($(value).text().indexOf("No manager selected")!=-1){
@@ -42,6 +43,20 @@ function saveSelection(){
 }
 
 </script>
+{% if categories %}
+  <script>
+    $(function() {
+    $("#dialog").show();
+    $.each($("#dialog").find("select"),function(idx,value){
+      var catId =parseInt($(value).parent().parent().attr("id"));
+      catId = catId-1;
+      console.log()
+      var userIDForCat = {{categoryUserMapping}}[catId];
+      $(value).val(userIDForCat);
+    });
+    });
+  </script>
+  {% endif %}
 {% endblock %}
 
 
@@ -72,7 +87,7 @@ function saveSelection(){
   		{% endfor %}
   	</table>
   </div>
-  	<div id="dialog" title="{{firstCateg.name}} / {{secondCateg.name}}">
+  	<div id="dialog" class="popup" title="{{firstCateg.name}} / {{secondCateg.name}}">
     	<form action="">
     		<table style="padding:20px">
     			{% for cat in categories %}
@@ -89,23 +104,10 @@ function saveSelection(){
     			{% endfor %}
     		</table>
          
-        <a href="#" onclick="saveSelection();" class="saveFormButton" >Save</a>
+        <a href="#" onclick="saveSelection();" class="btn" >Save</a>
     	</form>
 	</div>
-	{% if categories %}
-	<script>
-		$(function() {
-		$("#dialog").dialog('open');
-    $.each($("#dialog").find("select"),function(idx,value){
-      var catId =parseInt($(value).parent().parent().attr("id"));
-      catId = catId-1;
-      console.log()
-      var userIDForCat = {{categoryUserMapping}}[catId];
-      $(value).val(userIDForCat);
-    });
-	  });
-	</script>
-	{% endif %}
+	
 </div>
 
 {% endblock %}

@@ -1338,7 +1338,13 @@ table.configTable td.firstItem {
 }
 
 
-
+#dialog.popup {
+    width: 50%;
+    position: fixed;
+    left: 50%;
+    margin-left: -25%;
+    z-index: 1;
+}
 
 
 table.reportActionButtons td {
