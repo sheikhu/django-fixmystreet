@@ -2,9 +2,15 @@ from django.shortcuts import render_to_response
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 @login_required(login_url='/pro/accounts/login/')
 def list(request, status):
+    if request.GET.get("page"):
+        page_number = int(request.GET.get("page"))
+    else:
+        page_number=1
+
     default_position = {
         'x': '148954.431',
         'y': '170458.371'
@@ -39,10 +45,16 @@ def list(request, status):
 
     #reports = reports.distance(pnt).order_by('distance')
     reports = reports.distance(pnt).order_by('address', 'address_number')
+    pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
+    print request
+    print page_number
+    print int((page_number-1)*settings.MAX_ITEMS_PAGE)
+    print int(page_number*settings.MAX_ITEMS_PAGE)
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,
-                "reports":reports,
+                "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
                 "status":status,
+                "pages_list":pages_list,
             },
             context_instance=RequestContext(request))

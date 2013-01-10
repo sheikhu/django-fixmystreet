@@ -181,7 +181,8 @@ def createUser(request, user_type):
                     print "not sent successfully"
 
                 messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
-                return HttpResponseRedirect('/pro/')
+                createform = FmsUserForm()
+                createform.initial['user_type'] = user_type
     else:        
         createform = FmsUserForm()
         #user_type is used when accessing the page the first time to preset the dropdown value        

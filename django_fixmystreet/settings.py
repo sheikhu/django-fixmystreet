@@ -37,6 +37,9 @@ DATE_FORMAT = "l, j F Y"
 # Max file upload size
 MAX_UPLOAD_SIZE = "821440"
 
+#Max number of items per pagination
+MAX_ITEMS_PAGE = 5
+
 USE_I18N = True
 REGISTRATION_OPEN = False
 ROOT_URLCONF = 'django_fixmystreet.urls'
