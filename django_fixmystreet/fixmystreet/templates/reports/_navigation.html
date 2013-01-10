@@ -15,7 +15,8 @@
 				<h5 class="report-title">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}</h5>
 			</td>
 			<td>
-				<h5>280 {% trans 'subscriptions' %}</h5>
+				<!--h5>280 {% trans 'subscriptions' %}</h5-->
+				<h5>({% trans 'Created at' %}: {{report.created}})</h5>
 			</td>
 			<td rowspan="2"><div class="next_image"></div></td>
 		</tr>
