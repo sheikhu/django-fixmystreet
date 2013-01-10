@@ -9,17 +9,6 @@
 
 <script>
 $(document).ready(function(){
-	
-// 	$("#dialog").dialog({
-//     modal: true,
-//     autoOpen:false,
-//     width:'auto',
-//     resizable: false
-// });
-$("#dialog").hide();
-	// $('#dialog').dialog('option', 'close', function(){
-	// 	window.location.href='{% url category_gestionnaire_configuration %}';
-	// });
 
   $.each($(".matrixButton"),function(idx,value){
     if($(value).text().indexOf("No manager selected")!=-1){
@@ -46,7 +35,6 @@ function saveSelection(){
 {% if categories %}
   <script>
     $(function() {
-    $("#dialog").show();
     $.each($("#dialog").find("select"),function(idx,value){
       var catId =parseInt($(value).parent().parent().attr("id"));
       catId = catId-1;
@@ -54,6 +42,7 @@ function saveSelection(){
       var userIDForCat = {{categoryUserMapping}}[catId];
       $(value).val(userIDForCat);
     });
+    $("#dialog").modal();
     });
   </script>
   {% endif %}
@@ -64,6 +53,35 @@ function saveSelection(){
 
 <div id="fullwidth">
   <h1>{% trans 'Configure gestionnaire categories' %}</h1>
+  <div id="dialog" role="dialog" class="modal hide fade" title="{{firstCateg.name}} / {{secondCateg.name}}">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3>{{firstCateg.name}} / {{secondCateg.name}}</h3>
+    </div>
+    <div class="modal-body">
+      <form action="">
+        <table style="padding:20px">
+          {% for cat in categories %}
+          <tr>
+            <td style="padding:5px;">{{cat.name}}</td>
+        <td id="{{cat.id}}">
+                                        <p><select name="manager" id="id_manager">
+                                                {% for choice in managerDropDown %}
+                                                        <option value="{{choice.0}}">{{choice.1}}</option>
+                                                {% endfor %}
+                                        </select></p>
+                                </td>
+      </tr>
+          {% endfor %}
+        </table>
+         </div>
+      </form>
+      <div class="modal-footer">
+        <a href="#" data-dismiss="modal" class="btn" >{% trans 'Cancel' %}</a>
+        <a href="#" onclick="saveSelection();" class="btn" >{% trans 'Save' %}</a>
+      </div>
+  </div>
+  
 
   <div id="configurationTable">
   	<table class="configTable">
@@ -87,26 +105,6 @@ function saveSelection(){
   		{% endfor %}
   	</table>
   </div>
-  	<div id="dialog" class="popup" title="{{firstCateg.name}} / {{secondCateg.name}}">
-    	<form action="">
-    		<table style="padding:20px">
-    			{% for cat in categories %}
-    			<tr>
-    				<td style="padding:5px;">{{cat.name}}</td>
-				<td id="{{cat.id}}">
-                                        <p><select name="manager" id="id_manager">
-                                                {% for choice in managerDropDown %}
-                                                        <option value="{{choice.0}}">{{choice.1}}</option>
-                                                {% endfor %}
-                                        </select></p>
-                                </td>
-			</tr>
-    			{% endfor %}
-    		</table>
-         
-        <a href="#" onclick="saveSelection();" class="btn" >Save</a>
-    	</form>
-	</div>
 	
 </div>
 

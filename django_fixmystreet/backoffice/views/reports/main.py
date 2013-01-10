@@ -1,10 +1,11 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, MarkAsDoneForm
 from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
+from django.conf import settings
 
 
 def new(request):
@@ -76,6 +77,10 @@ def subscription(request):
             context_instance=RequestContext(request))
 
 def show(request,slug, report_id):
+    if request.GET.get("page"):
+        page_number= int(request.GET.get("page"))
+    else :
+        page_number=1
     report = get_object_or_404(Report, id=report_id)
     files = ReportFile.objects.filter(report_id=report_id)
     comments = ReportComment.objects.filter(report_id=report_id)
@@ -87,10 +92,11 @@ def show(request,slug, report_id):
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
     reports = Report.objects.all()
+    pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
             {
-                "reports":reports,
+                "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
                 "fms_user": fms_user,
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
@@ -102,6 +108,8 @@ def show(request,slug, report_id):
                 "contractors":contractors,
                 "applicants":applicants,
                 "entities":entities,
-                "refuse_form": RefuseForm(instance=report)
+                "refuse_form": RefuseForm(instance=report),
+                "pages_list":pages_list,
+                "mark_as_done_form":MarkAsDoneForm(),
             },
             context_instance=RequestContext(request))

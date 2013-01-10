@@ -541,23 +541,6 @@ li img {
     display: none;
 }
 
-
-#divMarkAsDone {
-    width: 50%;
-    position: fixed;
-    left: 50%;
-    margin-left: -25%;
-    z-index: 1;
-}
-
-#divMarkAsDone table{
-    width: 100%;
-}
-#divMarkAsDone textarea{
-    width: 98%;
-}
-
-
 #create_user_form {
     width: 48%;
     border: 1px solid #DFDFDF;
@@ -753,6 +736,25 @@ li img {
     margin-top: 2px;
     margin-left: 20px;
     background:url("../images/next.png") 0 0;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+#nearby-reports .pagination_prev.active{
+    width:14px;
+    height:20px;
+    margin-top: 2px;
+    background:url("../images/prev.png") 5px -28px;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+#nearby-reports .pagination_next.active{
+    width:14px;
+    height:20px;
+    margin-top: 2px;
+    margin-left: 20px;
+    background:url("../images/next.png") 5px -28px;
     background-repeat: no-repeat;
     border: none;
 }
@@ -1344,6 +1346,18 @@ table.configTable td.firstItem {
     left: 50%;
     margin-left: -25%;
     z-index: 1;
+    background-color: white;
+    padding: 10px;
+    border:1px solid #FFF203;
+    border-radius: 8px;
+}
+
+#dialog_overlay {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:gray;
+    opacity:0.3;
 }
 
 

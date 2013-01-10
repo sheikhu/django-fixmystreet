@@ -46,10 +46,6 @@ def list(request, status):
     #reports = reports.distance(pnt).order_by('distance')
     reports = reports.distance(pnt).order_by('address', 'address_number')
     pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
-    print request
-    print page_number
-    print int((page_number-1)*settings.MAX_ITEMS_PAGE)
-    print int(page_number*settings.MAX_ITEMS_PAGE)
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,

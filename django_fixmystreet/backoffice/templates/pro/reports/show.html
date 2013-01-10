@@ -104,8 +104,35 @@ $(document).ready(function() {
     {% for report in reports %}
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
     {% endfor %}
+    // Add the active class to the active page number
+    $("#page_{{request.GET.page}}").addClass("active");
+    // Set the state of the arrow buttons (active or inactive)
+    if("{{request.GET.page}}"=="1"){
+        $(".pagination_prev").removeClass("active");
+    }
+    else{
+        $(".pagination_prev").addClass("active");
+    }
+    if("{{pages_list|last}}"=="{{request.GET.page}}"){
+        $(".pagination_next").removeClass("active");
+    }
+    else{
+        $(".pagination_next").addClass("active");
+    }
+    //Add onclick event for arrows
+    $(".pagination_next.active").bind("click",function(){
+        window.location = "{{report.get_absolute_url_pro}}?page="+(parseInt("{{request.GET.page}}")+1);
+    });
+    $(".pagination_prev.active").bind("click",function(){
+        window.location = "{{report.get_absolute_url_pro}}?page="+(parseInt("{{request.GET.page}}")-1);
+    });
 });
+function markAsDone(){
+    // $("#divMarkAsDone").show();
+    $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 
+    // window.location = '{% url report_update report.id %}?is_fixed=True';
+}
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
@@ -115,6 +142,19 @@ $(document).ready(function() {
 {{ block.super }}
 {% endblock %}
 {% block content %}
+    <div id="divMarkAsDone" class="modal hide fade" role="dialog">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+<form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_fix_pro report.id %}?is_fixed=True" method="post" >
+ 
+                {{ mark_as_done_form.as_p }}
+
+                <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
+
+                <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
+</form>
+</div>
+</div>
 <article id="map"></article>
 <div id="page_content_container">
 
@@ -145,7 +185,7 @@ $(document).ready(function() {
                     </td>
                     <td >
                         {% if report.is_markable_as_solved %} 
-                        <button onclick="window.location = '{% url report_fix_pro report.id %}'" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;">Mark as done</button>
+                        <a href="#divMarkAsDone" onclick="markAsDone();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" data-toggle="modal" >Mark as done</a>
                         {% endif %}
                     </td>
                     <td >
@@ -194,11 +234,11 @@ $(document).ready(function() {
                 {% endfor %}
                 </div>
                 <div class="pagination pagination-centered">
-                    <!-- TODO add pagination logic -->
                     <ul>
-                        <li class="disabled"><a class="pagination_prev"></a></li>
-                        <li class="active"><a >1</a></li>
-                        <li><a >2</a></li>
+                        <li><a class="pagination_prev"></a></li>
+                        {% for number in pages_list %}
+                        <li id="page_{{number}}" ><a href="{{report.get_absolute_url_pro}}?page={{number}}">{{number}}</a></li>
+                        {% endfor %}
                         <li><a class="pagination_next"></a></li>
                     </ul>
                 </div>
@@ -602,4 +642,5 @@ $(document).ready(function() {
     </form>
 -->
 	
+
 {% endblock %}

@@ -128,17 +128,29 @@ function showResults(type,li){
         <div id="search_results" class="search_results_home">
             <div id="list_created">
                 {% for report in reports_created %}
+                {% if not BACKOFFICE %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% else %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+                {% endif %}
                 {% endfor %}
             </div>
             <div id="list_in_progress">
                 {% for report in reports_in_progress %}
+                {% if not BACKOFFICE %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% else %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+                {% endif %}
                 {% endfor %}
             </div>
             <div id="list_closed">
                 {% for report in reports_closed %}
+                {% if not BACKOFFICE %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% else %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
