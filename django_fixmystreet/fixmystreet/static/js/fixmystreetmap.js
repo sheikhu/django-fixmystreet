@@ -255,10 +255,18 @@ if (!('fms' in window)) {
 		var self = this;
 		if(!this.markersLayer)
 		{
-			this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
+			console.log('create marker layer');
+			this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer");
 			this.map.addLayer(this.markersLayer);
-
-
+			//NEW APPROACH
+			/*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
+			marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
+				new OpenLayers.Icon("/static/images/pin-red-XS.png",32,16).clone());
+			this.markersLayer.addMarker(marker);
+			marker.events.register('click',marker,function(){
+				alert('ok');
+			});
+			this.map.addLayer(this.markersLayer);*/
 			/*
 			!WTF! from http://docs.openlayers.org/library/overlays.html:
 			As of OpenLayers 2.7, there is no support for selecting features from more than a single vector
@@ -268,22 +276,26 @@ if (!('fms' in window)) {
 
 
 
-			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
+/*			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
 				onSelect:function(feature,pixel){
 					var p = feature.geometry.components[0];
 					var point = {x:p.x,y:p.y};
 					//console.log(point,feature.attributes.report);
 					self.element.trigger('reportselected', [point, feature.attributes.report]);
 				}
-			});
-			this.map.addControl(selectFeature);
+				/*'callbacks':{
+                		'click':function(f){
+                			alert('ok')
+				}}*/			
+//			});
+//			this.map.addControl(selectFeature);
 
-			selectFeature.activate();
+//			selectFeature.activate();
 
-			/*
-			this.superControl.selectControl = selectFeature;
+			
+			//this.superControl.selectControl = selectFeature;
 
-			var events = new OpenLayers.Events(this.markersLayer, this.element[0], ['click']);
+			/*var events = new OpenLayers.Events(this.markersLayer, this.element[0], ['click']);
 			events.on({
 				'click':function(){
 					console.log('click');
@@ -292,14 +304,16 @@ if (!('fms' in window)) {
 			this.element.click(function(evt){
 				console.log('wow');
 
-			});
-			this.element.delegate('image', 'click', function(evt){
+			});*/
+			/*this.element.delegate('image', 'click', function(evt){
 				console.log('image',this);
-			});
-			*/
+			});*/
+			
 		}
+		console.log('add point');
 
-		var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
+		var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
+		var newMarker = new OpenLayers.Geometry.Collection([markerPoint]);
 		var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
 		/*if(index){
 			//make a copy
