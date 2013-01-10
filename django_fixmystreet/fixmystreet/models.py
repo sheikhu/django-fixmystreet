@@ -331,7 +331,7 @@ class Report(UserTrackedModel):
         return self.display_category()
 
     def display_category(self):
-        return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
+        return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
 
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
@@ -380,10 +380,10 @@ class Report(UserTrackedModel):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def comments(self):
-        return self.attachments.comments()
+        return self.attachments.get_query_set().comments()
 
     def files(self):
-        return self.attachments.files()
+        return self.attachments.get_query_set().files()
 
     def to_full_JSON(self):
         """
