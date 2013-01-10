@@ -220,9 +220,9 @@ $(document).ready(function() {
                <!-- Protect privacy from applicant and contractor when creator is a citizen -->
                {% if fms_user.can_see_confidential %}
                {% if report.citizen.last_name = ''%}
-               Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created|date}}</strong>
+               Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created}}</strong>
                {% else %}
-               {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+               {% blocktrans with by=report.citizen.last_name on=report.created mail=report.citizen.email %}
                Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
                {% endblocktrans %}
                (tel:{{report.citizen.fmsuser.telephone}})
@@ -234,7 +234,7 @@ $(document).ready(function() {
                {% endif %}
 
                {% else %}
-               {% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
+               {% blocktrans with by=report.created_by.username on=report.created mail=report.created_by.email %}
 
                Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
                {% endblocktrans %}
@@ -380,7 +380,7 @@ $(document).ready(function() {
                                 {% endif %}
                                 <div class="update_text">
                                     {{file.title}}:
-                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date creat=file.file_creation_date %}
+                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created creat=file.file_creation_date %}
                                     Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong> File Creation Date <strong>{{creat}}</strong>
                                     {% endblocktrans %}
                                 </div>
@@ -484,7 +484,7 @@ $(document).ready(function() {
                         <td class="annexesFirstTD">
                             <div class="report_update">
                                 <p>{{comment.text}}</p>
-                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created|date %}
+                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
                                 Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                                 {% endblocktrans %}
                             </div>

@@ -153,11 +153,11 @@ function markAsDone(){
 		<!-- ################### -->
 		<p class="author-sign">
 		{% if report.citizen %}
-	                {% blocktrans with on=report.created|date %}
+	                {% blocktrans with on=report.created %}
         	        	Posted on <strong>{{on}}</strong>
                 	{% endblocktrans %}
 	 	{% else %}
-                        {% blocktrans with by=report.created_by.username on=report.created|date mail=report.created_by.email %}
+                        {% blocktrans with by=report.created_by.username on=report.created mail=report.created_by.email %}
                         Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
                         {% endblocktrans %}
                         (tel:{{report.created_by.fmsuser.telephone}})
@@ -212,7 +212,7 @@ function markAsDone(){
 
                                 <div class="update_text">
                                     {{file.title}}:
-                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created|date %}
+                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created %}
                                     Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                                     {% endblocktrans %}
                                 </div>
@@ -268,7 +268,7 @@ function markAsDone(){
                     	<td class="annexesFirstTD">
                 		<div class="report_update">
                     			<p>{{comment.text}}</p>
-                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created|date %}
+                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
                                 Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                                 {% endblocktrans %}
                 		</div>
