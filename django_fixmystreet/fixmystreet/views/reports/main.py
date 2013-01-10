@@ -14,12 +14,9 @@ def new(request):
     pnt = dictToPoint(request.REQUEST)
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
-        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files')
-        print "file"
+        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
-        print "comment"
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
-        print "citizen"
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
             # this saves the update as part of the report.
@@ -40,7 +37,7 @@ def new(request):
                 report_file.save()
 
             if request.POST.get("citizen_subscription", False):
-                ReportSubscription(report=report, subscriber=report.citizen).save()
+                ReportSubscription(report=report, subscriber=report.created_by).save()
 
             if report:
                 return HttpResponseRedirect(report.get_absolute_url())
@@ -49,7 +46,7 @@ def new(request):
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
         }, prefix='report')
-        file_formset = ReportFileFormSet(prefix='files')
+        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
@@ -58,7 +55,7 @@ def new(request):
     return render_to_response("reports/new.html",
             {
                 "available_zips":ZipCode().get_usable_zipcodes(),
-                "category_classes":ReportMainCategoryClass.objects.all().prefetch_related('categories'),
+                "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,
                 "file_formset":file_formset,
                 "report_form": report_form,
