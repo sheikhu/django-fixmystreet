@@ -15,13 +15,13 @@
 /* QUERY READY INITIALIZATION */
 /******************************/
 $(function(){
-	// $('#map-bxl').fmsMap({
-	// 	origin:{
-	// 		x:{{ report.point.x }},
-	// 		y:{{ report.point.y }}
-	// 	}
-	// });
-	// $('#map-bxl').fmsMap('addReport', {{report.to_JSON|dict_to_json|safe}});
+    // $('#map-bxl').fmsMap({
+    //     origin:{
+    //         x:{{ report.point.x }},
+    //         y:{{ report.point.y }}
+    //     }
+    // });
+    // $('#map-bxl').fmsMap('addReport', {{report.to_JSON|dict_to_json|safe}});
     // $("#dialogMarkAsDone").dialog({
     //     modal: true,
     //     autoOpen:false,
@@ -87,6 +87,7 @@ function markAsDone(){
 {% block content %}
 
 
+
 <div id="divMarkAsDone" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -112,220 +113,197 @@ function markAsDone(){
     <!-- ########################### -->
     <!-- # DISPLAY REPORT CATEGORY # -->
     <!-- ########################### -->
-       
- 	<div style="float:right;margin-top:-23px">
-        	<table class="reportActionButtons">
-			<tr>
-				{% if report.is_in_progress %}
-				<td>
+
+     <div style="float:right;margin-top:-23px">
+            <table class="reportActionButtons">
+            <tr>
+                {% if report.is_in_progress %}
+                <td>
                     {% if not report.status == report.SOLVED %}
-					<a href="#divMarkAsDone" onclick="markAsDone();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" data-toggle="modal" >{% trans 'Mark as done' %}</a>
+                    <a href="#divMarkAsDone" onclick="markAsDone();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" data-toggle="modal" >{% trans 'Mark as done' %}</a>
                     {% else %}
                     <button onclick="" class="saveFormButton" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
                     <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
                     {% endif %}
-				</td>
-				{% endif %}
-			</tr>
-		</table>
-	</div>
+                </td>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
 </h1>
     {% endblock %}
 
-	<div class="overview_div_left">
-        <h1>{% trans "Report Ticket" %}: {{report.get_ticket_as_string}}</h1>
-		<!-- ######### -->
-		<!-- IS FIXED  -->
-		<!-- ######### -->
-		{% if report.is_fixed %}
-			<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
-		{% endif %}
 
-		<div id='report-body'>
+<div class="overview_div_left">
+    <h1>{% trans "Report Ticket" %}: {{ report.get_ticket_as_string }}</h1>
+    <!-- ######### -->
+    <!-- IS FIXED  -->
+    <!-- ######### -->
+    {% if report.is_created %}
+    <div class='is_fixed'>{% trans "This incident is not validated." %}</div>
+    {% endif %}
+    {% if report.is_closed %}
+    <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+    {% endif %}
 
-		<p>
-			{% if report.description %}
-                        	{{report.description|linebreaks}}
-                        {% endif %}			
-		</p>
+    <div id='report-body'>
+        <p>
+            {% if report.description %}
+                {{report.description|linebreaks}}
+            {% endif %}
+        </p>
+        <!-- ################### -->
+        <!-- REPORT CREATOR ZONE -->
+        <!-- ################### -->
+        <p class="author-sign">
+        {% if report.citizen %}
+                    {% blocktrans with on=report.created %}
+                        Posted on <strong>{{on}}</strong>
+                    {% endblocktrans %}
+         {% else %}
 
-		<!-- ################### -->
-		<!-- REPORT CREATOR ZONE -->
-		<!-- ################### -->
-		<p class="author-sign">
-		{% if report.citizen %}
-	                {% blocktrans with on=report.created %}
-        	        	Posted on <strong>{{on}}</strong>
-                	{% endblocktrans %}
-	 	{% else %}
                         {% blocktrans with by=report.created_by.username on=report.created mail=report.created_by.email %}
                         Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
                         {% endblocktrans %}
                         (tel:{{report.created_by.fmsuser.telephone}})
-		{% endif %}
-            </p>
-
-
-	<!-- ################## -->
-	<!-- REPORT STATUS ZONE -->
-	<!-- ################## -->
-            <table id='report-status'>
-                <tr>
-                    <th>{% trans "Location:" %}</th>
-                    <td>{{report.address}}, {{report.address_number}} ( {{report.responsible_entity.name}} ({{report.postalcode}}))</td>
-                </tr>
-                <tr>
-                    <th>{% trans "Category:" %}</th>
-                    <td>{{report.display_category}}</td>
-                </tr>
-            </table>
-
-
-	    <!-- ################# FILES ############### -->
-	    <!-- ################# FILES ############### -->
-	    <!-- ################# FILES ############### -->
-        <h4>{% trans "Photos and files" %}</h4>
-	    {% if report.active_files %}
-            
-            <div id="report_updates">
-                <table id="extraFilesTable">
-                    {% for file in report.active_files.all %}
-		    {% if file.is_public %} <!-- PUBLIC? -->
-                    <tr>
-                        <td class="annexesFirstTD">
-                    <div class="report_update">
-                        {% if file.file %}
-                                
-                                        <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-
-                                        {% if file.is_image %}
-                                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
-                                        {% endif %}
-                                        {% if file.is_pdf %}
-                                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
-                                        {% endif %}
-                                        {% if file.is_word %}
-       <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
-                                        {% endif %}
-                                        {% if file.is_excel %}
-                                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
-                                        {% endif %}
-
-                                <div class="update_text">
-                                    {{file.title}}:
-				    <br/>
-                                    {% trans 'Posted by' %}
-					{% if file.created_by %}
-						{{file.created_by.fmsuser.get_display_name}}
-					{% else %}
-						{% trans 'Anonymous' %}
-					{% endif %}
-				    <br/>
-				    {% trans 'Creation Date' %}
-                                    {% if file.file_creation_date != None%}
-					{{file.file_creation_date}}
-				    {% else %}
-					-
-				    {% endif %}
-				    <br/>
-				    {% trans 'on' %}
-					{{file.created}}
-                                </div>
-                        {% endif %}
-                    </div>
-                </td>
-		</tr>
-		{% endif %}
-		{% endfor %}
-        {% if report.is_in_progress %}
-		</table>
-        <!-- ############################################# -->
-        <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-        <!-- ############################################# -->
-        <div id="addFileDiv">
-        <a onclick="toggleFileForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add files" %}</a>
-            <form id="fileForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
-            <table id="report_form" class="form">
-                {{file_form.as_table}}
-                <tr>
-                            <td></td>
-                            <td>
-                                    <p style="float:left;">
-                                    <input type="hidden" name="form-type" value="file-form"/>
-                                    <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setFileCreationDate();setTimeout('toggleFileForm()',200);"/>
-                                    <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleFileForm();"/>
-                                    <input type="hidden" name="file_creation_date"/>
-                                </p>
-                            </td>
-                            </tr>
-            </table>
-            </form>
-        </div>
         {% endif %}
-       </div>
-	{% endif %}
+        </p>
 
 
+        <!-- ################## -->
+        <!-- REPORT STATUS ZONE -->
+        <!-- ################## -->
+        <table id='report-status'>
+            <tr>
+                <th>{% trans "Location:" %}</th>
+                    <td>{{report.address}}, {{report.address_number}} ( {{report.responsible_entity.name}} ({{report.postalcode}}))</td>
+            </tr>
+            <tr>
+                <th>{% trans "Category:" %}</th>
+                <td>{{report.display_category}}</td>
+            </tr>
+        </table>
 
 
+        <!-- ################# FILES ############### -->
+        <!-- ################# FILES ############### -->
+        <!-- ################# FILES ############### -->
+        {% if report.active_files %}
+        <h4>{% trans "Photos and files" %}</h4>
+        <div id="report_updates">
+            <table id="extraFilesTable">
+            {% for file in report.active_files.all %}
+                {% if file.is_public %} <!-- PUBLIC? -->
+                <tr>
+                    <td class="annexesFirstTD">
+                        <div class="report_update">
+                        {% if file.file %}
 
-	    <!-- ################# COMMENTS ############### -->
-	    <!-- ################# COMMENTS ############### -->
-	    <!-- ################# COMMENTS ############### -->
+                                <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
 
-        <h4>{% trans "Comments" %}</h4>
-	    {% if report.active_comments %}
-            <div id="report_updates">
-                <table class="extraCommentsTable">
-                {% for comment in report.active_comments.all %}
-		    {% if comment.is_public %}
-                	<tr>
-                    	<td class="annexesFirstTD">
-                		<div class="report_update">
-                    			<p>{{comment.text}}</p>
-                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
+                                {% if file.is_image %}
+                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
+                                {% endif %}
+                                {% if file.is_pdf %}
+                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
+                                {% endif %}
+                                {% if file.is_word %}
+                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+                                {% endif %}
+                                {% if file.is_excel %}
+                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
+                                {% endif %}
+
+                            <div class="update_text">
+                                {{file.title}}:
+                                {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created %}
                                 Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                                 {% endblocktrans %}
-                		</div>
-            		</td>
-			</tr>
-		    {% endif %}
-		{% endfor %}
-		</table>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </table>
+        </div>
+        {% endif %}
 
-	</div>
-	{% endif %}
+        <!-- ################# COMMENTS ############### -->
+        <!-- ################# COMMENTS ############### -->
+        <!-- ################# COMMENTS ############### -->
+        {% if report.active_comments %}
+        <h4>{% trans "Comments" %}</h4>
+        <div id="report_updates">
+            <table class="extraCommentsTable">
+            {% for comment in report.active_comments.all %}
+                {% if comment.is_public %}
+                <tr>
+                    <td class="annexesFirstTD">
+                        <div class="report_update">
+                            <p>{{comment.text}}</p>
+                            {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
+                            Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                            {% endblocktrans %}
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+    </div><!-- report-body -->
+
     {% if report.is_in_progress %}
+    <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
         <!-- ############################################# -->
         <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
         <!-- ############################################# -->
-        <div id="addCommmentDiv">
-            <a onclick="toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add comments" %}</a>
-                    
-            <form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
-            <table id="report_form" class="form">
-                {{comment_form.as_table}}
-                <tr>
-                            <td></td>
-                            <td>
-                                    <p style="float:left;">
-                                    <input type="hidden" name="form-type" value="comment-form"/>
-                                    <input type="submit" class='big_button' value="{% trans 'Add' %}" onclick="setTimeout('toggleCommentForm()',200);"/>
-                                    <input type="button" class='big_button' value="{% trans 'Cancel' %}" onclick="toggleCommentForm();"/>
-                                    </p>
-                            </td>
-                        </tr>
-            </table>
-            </form>
+        <fieldset>
+            <legend>Comment</legend>
+            {{ comment_form.text }}
+            {# comment_form.text.errors #}
+        </fieldset>
+        <fieldset>
+            <legend>Files</legend>
+            <div id="form-files">
+                {{ file_formset.management_form }}
+                {# file_formset.errors #}
             </div>
-          {% endif %}
-            <!-- If the status allow such interactions -->
-            <button onclick="window.location = '{% url report_pdf report.id 0 %}'" class="saveFormButton" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf public' %}</button>
-	    <div id="more-actions">
-                <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+            <p class="pull-right">
+                <button id="file-upload" class="btn">Add file</button>
+            </p>
+
+            <div id="file-form-template">
+                <img class="thumbnail" />
+                {{ file_formset.empty_form.reportattachment_ptr }}
+                {{ file_formset.empty_form.file }}
+                {{ file_formset.empty_form.description }}
             </div>
-		</div>
-	</div>
+        </fieldset>
+        <p>
+            <input type="submit" class='btn' value="{% trans 'Send' %}" />
+        </p>
+    </form>
+    {% endif %}
+
+
+        <!-- If the status allow such interactions -->
+        <p>
+            <a href="{% url report_pdf report.id 0 %}">
+                <i class="icon-download" /> </i>{% trans 'report pdf public' %}
+            </a>
+        </p>
+        <div id="more-actions">
+            <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
+        </div>
+    </div>
+</div>
+
+    {% if report.is_in_progress %}
     <div class="overview_div_right">
         <!-- ################ -->
         <!-- SUBSCRIBER BLOCK -->
@@ -338,6 +316,7 @@ function markAsDone(){
             </form>
         {% endif %}
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}

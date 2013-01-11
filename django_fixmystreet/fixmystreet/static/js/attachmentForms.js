@@ -46,18 +46,22 @@ $(document).ready(function() {
                 }
             }
 
-            var form = file_form_template.clone();
-            form.attr('id', '');
-            form.find(":input").each(function(index, input) {
+            var form_copy = file_form_template.clone();
+            file_form_template.attr('id', '');
+            file_form_template.find(":input").each(function(index, input) {
                 input.id = input.id.replace(/__prefix__/g, file_count);
                 input.name = input.name.replace(/__prefix__/g, file_count);
             })
-            form.find("label").each(function(index, label) {
+            file_form_template.find("label").each(function(index, label) {
                 $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
             })
-            $('#form-files').append(form);
+            $('#form-files').append(file_form_template);
+            $('#form-files').append(form_copy);
 
-            $(inputFile).val('');
+            file_form_template = form_copy;
+
+
+            //$(inputFile).val('');
             // inputFile.replaceWith(inputFile.val('').clone( true )); for IE8 complient
             file_count++;
             $("#id_files-TOTAL_FORMS").val(file_count);
