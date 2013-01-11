@@ -241,6 +241,7 @@ class ReportManager(models.GeoManager):
     def get_query_set(self):
         return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class')
 
+
 class Report(UserTrackedModel):
 
     #List of qualities
@@ -655,9 +656,9 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
             for obj in iter:
                 yield obj
         for obj in iter:
-            if self.cast_to == 'file' and hasattr(obj, 'file'):
+            if self.cast_to == 'file' and hasattr(obj, 'reportfile'):
                 yield obj.reportfile
-            if self.cast_to == 'comment' and hasattr(obj, 'comment'):
+            if self.cast_to == 'comment' and hasattr(obj, 'reportcomment'):
                 yield obj.reportcomment
 
 
