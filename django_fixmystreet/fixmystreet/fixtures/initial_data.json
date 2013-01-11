@@ -27,7 +27,6 @@
         "pk":20,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Region Brussels",
             "name_fr":"Region Bruxelloise",
             "name_nl":"Brusselse Gewest",
             "commune":false,
