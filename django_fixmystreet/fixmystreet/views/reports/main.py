@@ -27,7 +27,7 @@ def new(request):
             report.save()
 
             if request.POST["comment-text"]:
-                comment = comment_form.save(commit=False)
+                comment = comment_form.save(request.user,report,commit=False)
                 comment.report = report
                 comment.save()
 

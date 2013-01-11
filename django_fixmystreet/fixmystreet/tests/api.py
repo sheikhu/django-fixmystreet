@@ -94,6 +94,7 @@ class ApiTest(SampleFilesTestCase):
             "report_quality": "2",
             "report_description": "zazadescr",
             "report_address": "Avenue des emeutes",
+            "report_address_number":"2",
             "report_category_id": "2",
             "report_main_category_id": "2",
             "report_zipcode": "1000",
@@ -105,7 +106,7 @@ class ApiTest(SampleFilesTestCase):
         #Create a client to launch requests
         client = Client()
         #Get the request response
-        response = client.post(reverse('create_report_citizen'), params, follow=True)        
+        response = client.post(reverse('create_report_citizen'), params, follow=True)      
         #Test the http response code (200 = OK)
         self.assertEqual(response.status_code, 200)        
         #Test if the response if JSON structured.
