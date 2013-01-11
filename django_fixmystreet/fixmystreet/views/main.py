@@ -24,9 +24,9 @@ def home(request, location = None, error_msg =None):
                 'zipcodes': zipcodes,
                 'location':location,
                 'reports': Report.objects.all()[0:5],
-                'reports_created': Report.objects.filter(status=Report.CREATED)[0:5],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)[0:5],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED)[0:5],
+                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False)[0:5],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False)[0:5],
+                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False)[0:5],
                 'form':AuthenticationForm()
             },
             context_instance=RequestContext(request))

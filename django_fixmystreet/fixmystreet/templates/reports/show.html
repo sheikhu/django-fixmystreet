@@ -143,7 +143,11 @@ function markAsDone(){
 
 		<div id='report-body'>
 
-		<p>{{report.description|linebreaks}}</p>
+		<p>
+			{% if report.description %}
+                        	{{report.description|linebreaks}}
+                        {% endif %}			
+		</p>
 
 		<!-- ################### -->
 		<!-- REPORT CREATOR ZONE -->
@@ -168,7 +172,7 @@ function markAsDone(){
             <table id='report-status'>
                 <tr>
                     <th>{% trans "Location:" %}</th>
-                    <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
+                    <td>{{report.address}}, {{report.address_number}} ( {{report.responsible_entity.name}} ({{report.postalcode}}))</td>
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
@@ -209,9 +213,23 @@ function markAsDone(){
 
                                 <div class="update_text">
                                     {{file.title}}:
-                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created %}
-                                    Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                                    {% endblocktrans %}
+				    <br/>
+                                    {% trans 'Posted by' %}
+					{% if file.created_by %}
+						{{file.created_by.fmsuser.get_display_name}}
+					{% else %}
+						{% trans 'Anonymous' %}
+					{% endif %}
+				    <br/>
+				    {% trans 'Creation Date' %}
+                                    {% if file.file_creation_date != None%}
+					{{file.file_creation_date}}
+				    {% else %}
+					-
+				    {% endif %}
+				    <br/>
+				    {% trans 'on' %}
+					{{file.created}}
                                 </div>
                         {% endif %}
                     </div>
@@ -303,9 +321,6 @@ function markAsDone(){
           {% endif %}
             <!-- If the status allow such interactions -->
 	    <a onclick="window.location = '{% url report_pdf report.id 0 %}'" ><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
-             <div>
-                <a onclick="window.open('/export_file/reports/csv?id={{report.id}}')"><img src="{{STATIC_URL}}images/">  {% trans 'export csv' %}</a>
-            </div>
             <div id="more-actions">
                 <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
             </div>

@@ -264,7 +264,11 @@ function markAsDone(){
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
 		<div id='report-body'>
-			<p>{{report.description|linebreaks}}</p>
+			<p>
+				{% if report.description %}
+					{{report.description|linebreaks}}
+				{% endif %}
+			</p>
 			<p class="author-sign">
                {% if report.citizen %}
                <!-- Protect privacy from applicant and contractor when creator is a citizen -->
@@ -297,7 +301,7 @@ function markAsDone(){
             <table id='report-status'>
                 <tr>
                     <th>{% trans "Location:" %}</th>
-                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
+                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{ report.responsible_entity.name}} ({{report.postalcode}}))</td>
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
@@ -430,9 +434,23 @@ function markAsDone(){
                                 {% endif %}
                                 <div class="update_text">
                                     {{file.title}}:
-                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created creat=file.file_creation_date %}
-                                    Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong> File Creation Date <strong>{{creat}}</strong>
-                                    {% endblocktrans %}
+                                    <br/>
+                                    {% trans 'Posted by' %}
+                                        {% if file.created_by %}
+                                                {{file.created_by.fmsuser.get_display_name}}
+                                        {% else %}
+                                                {% trans 'Anonymous' %}
+                                        {% endif %}
+                                    <br/>
+				    {% trans 'Creation Date' %}
+                                    {% if file.file_creation_date != None%}
+                                        {{file.file_creation_date}}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+				    <br/>
+                                    {% trans 'on' %}
+                                        {{file.created}}
                                 </div>
                                 {% endif %}
                             </div>
