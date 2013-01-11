@@ -31,10 +31,12 @@ if (!('fms' in window)) {
 		markerStyle = Object.create(defaultMarkerStyle),
 		fixedMarkerStyle = Object.create(defaultMarkerStyle),
 		pendingMarkerStyle = Object.create(defaultMarkerStyle),
+		draggableMarkerStyle = Object.create(defaultMarkerStyle),
 
 		markerStyle.externalGraphic = "/static/images/pin-red-XS.png",
 		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XS.png",
 		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XS.png";
+		draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
 
 	/**
 	 * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
@@ -109,7 +111,7 @@ if (!('fms' in window)) {
 			this.draggableLayer.destroyFeatures();
 
 			this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
-			this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, this.options.markerStyle)]);
+			this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
 		}
 	};
 
@@ -145,12 +147,12 @@ if (!('fms' in window)) {
 
 			var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
 				onStart:function(){
-					self.element.trigger('markerdrag');
+					$(self.element).trigger('markerdrag');
 				},
 				onComplete:function(feature,pixel){
 					var p = feature.geometry.components[0];
 					self.selectedLocation = {x:p.x,y:p.y};
-					self.element.trigger('markermoved', self.selectedLocation, self.draggableMarker);
+					$(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
 					// reverse_geocode(point);
 				}
 			});
@@ -160,7 +162,7 @@ if (!('fms' in window)) {
 		}
 		this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
 
-		this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, this.options.markerStyle)]);
+		this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
 	};
 
 	fms.Map.prototype.getSelectedLocation = function()
