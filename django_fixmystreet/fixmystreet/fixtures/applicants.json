@@ -3,7 +3,6 @@
         "pk":100,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Alcatel-Lucent Bell/Base (en)",
             "name_fr":"Alcatel-Lucent Bell/Base (fr)",
             "name_nl":"Alcatel-Lucent Bell/Base (nl)",
             "commune":false,
@@ -16,7 +15,6 @@
         "pk":101,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Belgacom (en)",
             "name_fr":"Belgacom (fr)",
             "name_nl":"Belgacom (nl)",
             "commune":false,
@@ -29,7 +27,6 @@
         "pk":102,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Brutele (en)",
             "name_fr":"Brutele (fr)",
             "name_nl":"Brutele (nl)",
             "commune":false,
@@ -42,7 +39,6 @@
         "pk":103,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"BT (en)",
             "name_fr":"BT (fr)",
             "name_nl":"BT (nl)",
             "commune":false,
@@ -55,7 +51,6 @@
         "pk":104,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"CIRB-CIBG Mandat AM/TV Telindus - France Telecom (en)",
             "name_fr":"CIRB-CIBG Mandat AM/TV Telindus - France Telecom (fr)",
             "name_nl":"CIRB-CIBG Mandat AM/TV Telindus - France Telecom (nl)",
             "commune":false,
@@ -68,7 +63,6 @@
         "pk":105,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Coditel (en)",
             "name_fr":"Coditel (fr)",
             "name_nl":"Coditel (nl)",
             "commune":false,
@@ -81,7 +75,6 @@
         "pk":106,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Colt Technology Services N.V. (en)",
             "name_fr":"Colt Technology Services N.V. (fr)",
             "name_nl":"Colt Technology Services N.V. (nl)",
             "commune":false,
@@ -94,7 +87,6 @@
         "pk":107,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Dir. de l'Infra. des Transports Publics (en)",
             "name_fr":"Dir. de l'Infra. des Transports Publics (fr)",
             "name_nl":"Dir. Infra. van het Openbaar Vervoer (nl)",
             "commune":false,
@@ -107,7 +99,6 @@
         "pk":108,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Direction Gestion et Entretien des Voiries (en)",
             "name_fr":"Direction Gestion et Entretien des Voiries (fr)",
             "name_nl":"Directie Beheer en Onderhoud van de Wegen (nl)",
             "commune":false,
@@ -120,7 +111,6 @@
         "pk":109,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Direction Projets et Travaux d'Amenagement des Voiries (en)",
             "name_fr":"Direction Projets et Travaux d'Amenagement des Voiries (fr)",
             "name_nl":"Directie Projecten en Werken inzake Weginrichtingen (nl)",
             "commune":false,
@@ -133,7 +123,6 @@
         "pk":110,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Eandis (en)",
             "name_fr":"Eandis (fr)",
             "name_nl":"Eandis (nl)",
             "commune":false,
@@ -146,7 +135,6 @@
         "pk":111,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Elia (en)",
             "name_fr":"Elia (fr)",
             "name_nl":"Elia (nl)",
             "commune":false,
@@ -159,7 +147,6 @@
         "pk":112,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Eurofiber (en)",
             "name_fr":"Eurofiber (fr)",
             "name_nl":"Eurofiber (nl)",
             "commune":false,
@@ -172,7 +159,6 @@
         "pk":113,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Fluxys (en)",
             "name_fr":"Fluxys (fr)",
             "name_nl":"Fluxys (nl)",
             "commune":false,
@@ -185,7 +171,6 @@
         "pk":114,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"GC Pan European Crossing Belgium BVBA (en)",
             "name_fr":"GC Pan European Crossing Belgium BVBA (fr)",
             "name_nl":"GC Pan European Crossing Belgium BVBA (nl)",
             "commune":false,
@@ -198,7 +183,6 @@
         "pk":115,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"HYDROBRU (en)",
             "name_fr":"HYDROBRU (fr)",
             "name_nl":"HYDROBRU (nl)",
             "commune":false,
@@ -211,7 +195,6 @@
         "pk":116,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Interoute Belgium NV Mandat RD Engineering BVBA (en)",
             "name_fr":"Interoute Belgium NV Mandat RD Engineering BVBA (fr)",
             "name_nl":"Interoute Belgium NV Mandat RD Engineering BVBA (nl)",
             "commune":false,
@@ -224,7 +207,6 @@
         "pk":117,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"JCDecaux Billboard (en)",
             "name_fr":"JCDecaux Billboard (fr)",
             "name_nl":"JCDecaux Billboard (nl)",
             "commune":false,
@@ -237,7 +219,6 @@
         "pk":118,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Level 3 Communications, SA.NV (en)",
             "name_fr":"Level 3 Communications, SA.NV (fr)",
             "name_nl":"Level 3 Communications, SA.NV (nl)",
             "commune":false,
@@ -250,7 +231,6 @@
         "pk":119,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"M.E.T. - D.455 (en)",
             "name_fr":"M.E.T. - D.455 (fr)",
             "name_nl":"M.E.T. - D.455 (nl)",
             "commune":false,
@@ -263,7 +243,6 @@
         "pk":120,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Mobistar (en)",
             "name_fr":"Mobistar (fr)",
             "name_nl":"Mobistar (nl)",
             "commune":false,
@@ -276,7 +255,6 @@
         "pk":121,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"MOBISTAR ENTERPRISE SERVICES S.A. (en)",
             "name_fr":"MOBISTAR ENTERPRISE SERVICES S.A. (fr)",
             "name_nl":"MOBISTAR ENTERPRISE SERVICES S.A. (nl)",
             "commune":false,
@@ -289,7 +267,6 @@
         "pk":122,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Police Zone 5344 Schaerbeek-Evere Saint-Josse-ten-Noode (en)",
             "name_fr":"Police Zone 5344 Schaerbeek-Evere Saint-Josse-ten-Noode (fr)",
             "name_nl":"Police Zone 5344 Schaerbeek-Evere Saint-Josse-ten-Noode (nl)",
             "commune":false,
@@ -302,7 +279,6 @@
         "pk":123,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"S.T.I.B. - M.I.V.B. (en)",
             "name_fr":"S.T.I.B. - M.I.V.B. (fr)",
             "name_nl":"S.T.I.B. - M.I.V.B. (nl)",
             "commune":false,
@@ -315,7 +291,6 @@
         "pk":124,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Sibelga (en)",
             "name_fr":"Sibelga (fr)",
             "name_nl":"Sibelga (nl)",
             "commune":false,
@@ -328,7 +303,6 @@
         "pk":125,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Societe Bruxelloise de la Gestion d'Eau (en)",
             "name_fr":"Societe Bruxelloise de la Gestion d'Eau (fr)",
             "name_nl":"Brusselse Maatschappij voor het Water Beheer (nl)",
             "commune":false,
@@ -341,7 +315,6 @@
         "pk":126,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"SPF - FOD (en)",
             "name_fr":"SPF - FOD (fr)",
             "name_nl":"SPF - FOD (nl)",
             "commune":false,
@@ -354,7 +327,6 @@
         "pk":127,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"SYNTIGO - B-Telecom (en)",
             "name_fr":"SYNTIGO - B-Telecom (fr)",
             "name_nl":"SYNTIGO - B-Telecom (nl)",
             "commune":false,
@@ -367,7 +339,6 @@
         "pk":128,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Telenet N.V. (en)",
             "name_fr":"Telenet N.V. (fr)",
             "name_nl":"Telenet N.V. (nl)",
             "commune":false,
@@ -380,7 +351,6 @@
         "pk":129,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Verizon Belgium Luxembourg (en)",
             "name_fr":"Verizon Belgium Luxembourg (fr)",
             "name_nl":"Verizon Belgium Luxembourg (nl)",
             "commune":false,
@@ -393,7 +363,6 @@
         "pk":130,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"VIVAQUA (en)",
             "name_fr":"VIVAQUA (fr)",
             "name_nl":"VIVAQUA (nl)",
             "commune":false,
@@ -406,7 +375,6 @@
         "pk":131,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Vlaamse Overheid Agentschap Wegen en Verkeer - EMA (en)",
             "name_fr":"Vlaamse Overheid Agentschap Wegen en Verkeer - EMA (fr)",
             "name_nl":"Vlaamse Overheid Agentschap Wegen en Verkeer - EMA (nl)",
             "commune":false,
@@ -419,7 +387,6 @@
         "pk":132,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Volker Wessels Telecom Belgium NV Dienst Viatel (en)",
             "name_fr":"Volker Wessels Telecom Belgium NV Dienst Viatel (fr)",
             "name_nl":"Volker Wessels Telecom Belgium NV Dienst Viatel (nl)",
             "commune":false,
@@ -432,7 +399,6 @@
         "pk":133,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Wolu-TV (en)",
             "name_fr":"Wolu-TV (fr)",
             "name_nl":"Wolu-TV (nl)",
             "commune":false,

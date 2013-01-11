@@ -6,7 +6,6 @@
             "model_class":"fixmystreet.report",
             "model_field":"status",
             "label_nl":"Aangemaakt",
-            "label_en":"Created",
             "label_fr":"Créé",
             "code":"0"
         }
@@ -18,7 +17,6 @@
             "model_class":"fixmystreet.report",
             "model_field":"status",
             "label_nl":"In behandeling",
-            "label_en":"In progress",
             "label_fr":"En progres",
             "code":"1"
         }
@@ -30,7 +28,6 @@
             "model_class":"fixmystreet.report",
             "model_field":"status",
             "label_nl":"Afgehandeld",
-            "label_en":"Processed",
             "label_fr":"Ferme",
             "code":"3"
         }
@@ -43,7 +40,6 @@
             "model_field":"status",
             "label_nl":"Gestionnaire is toegekend",
             "label_fr":"Gestionnaire est assigné",
-            "label_en":"Manager is assigned",
             "code":"4"
         }
     },
@@ -55,7 +51,6 @@
             "model_field":"status",
             "label_nl":"Impetrant is verantwoordelijk",
             "label_fr":"Impetrant est responsable",
-            "label_en":"Impetrant is responsible",
             "code":"5"
         }
     },
@@ -67,7 +62,6 @@
             "model_field":"status",
             "label_nl":"Executeur de travaux is toegekend",
             "label_fr":"Executeur de travaux est assigné",
-            "label_en":"Contractor is assigned",
             "code":"6"
         }
     },
@@ -79,7 +73,6 @@
             "model_field":"status",
             "label_nl":"Opgelost",
             "label_fr":"Resolu",
-            "label_en":"Solved",
             "code":"7"
         }
     },
@@ -91,7 +84,6 @@
             "model_field":"status",
             "label_nl":"Verwijderd",
             "label_fr":"Suprimé",
-            "label_en":"Deleted",
             "code":"8"
         }
     },
@@ -103,7 +95,6 @@
             "model_field":"status",
             "label_nl":"Afgewezen",
             "label_fr":"Refusé",
-            "label_en":"Refused",
             "code":"9"
         }
     },
@@ -115,7 +106,6 @@
             "model_field":"file_type",
             "label_nl":"pdf",
             "label_fr":"pdf",
-            "label_en":"pdf",
             "code":"1"
         }
     },
@@ -127,7 +117,6 @@
             "model_field":"file_type",
             "label_nl":"word",
             "label_fr":"word",
-            "label_en":"word",
             "code":"2"
         }
     },
@@ -139,7 +128,6 @@
             "model_field":"file_type",
             "label_nl":"excel",
             "label_fr":"excel",
-            "label_en":"excel",
             "code":"3"
         }
     },
@@ -151,7 +139,6 @@
             "model_field":"file_type",
             "label_nl":"image",
             "label_fr":"image",
-            "label_en":"image",
             "code":"4"
         }
     },
@@ -163,7 +150,6 @@
             "model_field":"quality",
             "label_nl":"riverain",
             "label_fr":"riverain",
-            "label_en":"riverain",
             "code":"0"
         }
     },
@@ -175,7 +161,6 @@
             "model_field":"quality",
             "label_nl":"other",
             "label_fr":"other",
-            "label_en":"other",
             "code":"1"
         }
     },
@@ -187,7 +172,6 @@
             "model_field":"quality",
             "label_nl":"commercant",
             "label_fr":"commercant",
-            "label_en":"commercant",
             "code":"2"
         }
     },
@@ -199,7 +183,6 @@
             "model_field":"quality",
             "label_nl":"syndicate",
             "label_fr":"syndicate",
-            "label_en":"syndicate",
             "code":"3"
         }
     },
@@ -211,7 +194,6 @@
             "model_field":"quality",
             "label_nl":"association",
             "label_fr":"association",
-            "label_en":"association",
             "code":"4"
         }
     },
@@ -223,7 +205,6 @@
             "model_field":"type",
             "label_nl":"Agent",
             "label_fr":"Agent",
-            "label_en":"Agent",
             "code":"1"
         }
     },
@@ -235,7 +216,6 @@
             "model_field":"type",
             "label_nl":"Gestionnaire (nl)",
             "label_fr":"Gestionnaire",
-            "label_en":"Manager",
             "code":"2"
         }
     },
@@ -247,7 +227,6 @@
             "model_field":"type",
             "label_nl":"Entiteit",
             "label_fr":"Entité",
-            "label_en":"Entity",
             "code":"3"
         }
     },
@@ -259,7 +238,6 @@
             "model_field":"type",
             "label_nl":"Contractor (nl)",
             "label_fr":"Exécuteur de travaux",
-            "label_en":"Contractor",
             "code":"4"
         }
     },
@@ -271,7 +249,6 @@
             "model_field":"type",
             "label_nl":"Impetrant (nl)",
             "label_fr":"Impétrant",
-            "label_en":"Applicant",
             "code":"5"
         }
     }

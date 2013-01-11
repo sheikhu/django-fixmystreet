@@ -3,7 +3,6 @@
         "pk": 1, 
         "model": "fixmystreet.reportmaincategoryclass", 
         "fields": {
-            "name_en": "Trottoir (en)", 
             "name_nl": "Trottoir (nl)", 
             "name_fr": "Trottoir"
         }
@@ -12,7 +11,6 @@
         "pk": 2, 
         "model": "fixmystreet.reportmaincategoryclass", 
         "fields": {
-            "name_en": "Chaussee (en)",
             "name_nl": "Chaussee (nl)", 
             "name_fr": "Chaussee"
         }
@@ -21,7 +19,6 @@
         "pk": 3, 
         "model": "fixmystreet.reportmaincategoryclass", 
         "fields": {
-            "name_en": "Piste cyclable (en)", 
             "name_nl": "Piste cyclable (nl)", 
             "name_fr": "Piste cyclable"
         }
@@ -30,7 +27,6 @@
         "pk": 4, 
         "model": "fixmystreet.reportmaincategoryclass", 
         "fields": {
-            "name_en": "Espaces Verts (en)", 
             "name_nl": "Espaces Verts (nl)", 
             "name_fr": "Espaces Verts"
         }
@@ -39,7 +35,6 @@
         "pk": 5, 
         "model": "fixmystreet.reportmaincategoryclass", 
         "fields": {
-            "name_en": "Ponts et Tunnels (en)", 
             "name_nl": "Ponts et Tunnels (nl)", 
             "name_fr": "Ponts et Tunnels",
             "hint":1
@@ -50,7 +45,6 @@
         "pk": 1,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Revetements (en)",
             "name_nl": "Revetements (nl)",
             "name_fr": "Revetements"
         }
@@ -60,7 +54,6 @@
         "pk": 2,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Debris/Objets abandonnes (en)",
             "name_nl": "Debris/Objets abandonnes (nl)",
             "name_fr": "Debris/Objets abandonnes"
         }
@@ -70,7 +63,6 @@
         "pk": 3,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Recolte des eaux (en)",
             "name_nl": "Recolte des eaux (nl)",
             "name_fr": "Recolte des eaux"
         }
@@ -80,7 +72,6 @@
         "pk": 4,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Plantations (en)",
             "name_nl": "Plantations (nl)",
             "name_fr": "Plantations"
         }
@@ -90,7 +81,6 @@
         "pk": 5,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Signalisation et feux (en)",
             "name_nl": "Signalisation et feux (nl)",
             "name_fr": "Signalisation et feux"
         }
@@ -100,7 +90,6 @@
         "pk": 6,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Eclairage (en)",
             "name_nl": "Eclairage (nl)",
             "name_fr": "Eclairage"
         }
@@ -110,7 +99,6 @@
         "pk": 7,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Mobilier urbain/Potelet (en)",
             "name_nl": "Mobilier urbain/Potelet (nl)",
             "name_fr": "Mobilier urbain/Potelet"
         }
@@ -120,7 +108,6 @@
         "pk": 8,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_en": "Fontaines (en)",
             "name_nl": "Fontaines (nl)",
             "name_fr": "Fontaines"
         }
@@ -130,7 +117,6 @@
         "pk": 1,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Trou (en)",
             "name_fr": "Trou",
             "name_nl": "Trou (nl)",
             "category_class": 1,
@@ -143,7 +129,6 @@
         "pk": 2,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Revetement degrade (en)",
             "name_fr": "Revetement degrade",
             "name_nl": "Revetement degrade (nl)",
             "category_class": 1,
@@ -156,7 +141,6 @@
         "pk": 3,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Affaissement (en)",
             "name_fr": "Affaissement",
             "name_nl": "Affaissement (nl)",
             "category_class": 1,
@@ -169,7 +153,6 @@
         "pk": 4,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Dechets (en)",
             "name_fr": "Dechets",
             "name_nl": "Dechets (nl)",
             "category_class": 1,
@@ -182,7 +165,6 @@
         "pk": 5,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Materiaux (en)",
             "name_fr": "Materiaux",
             "name_nl": "Materiaux (nl)",
             "category_class": 1,
@@ -195,7 +177,6 @@
         "pk": 6,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Signalisation (en)",
             "name_fr": "Signalisation",
             "name_nl": "Signalisation (nl)",
             "category_class": 1,
@@ -208,7 +189,6 @@
         "pk": 7,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Objet (en)",
             "name_fr": "Objet",
             "name_nl": "Objet (nl)",
             "category_class": 1,
@@ -221,7 +201,6 @@
         "pk": 8,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Bouche (en)",
             "name_fr": "Bouche",
             "name_nl": "Bouche (nl)",
             "category_class": 1,
@@ -234,7 +213,6 @@
         "pk": 9,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 1,
@@ -247,7 +225,6 @@
         "pk": 10,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Branche cassee (en)",
             "name_fr": "Branche cassee",
             "name_nl": "Branche cassee (nl)",
             "category_class": 1,
@@ -260,7 +237,6 @@
         "pk": 11,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arbre dangereux (en)",
             "name_fr": "Arbre dangereux",
             "name_nl": "Arbre dangereux (nl)",
             "category_class": 1,
@@ -273,7 +249,6 @@
         "pk": 12,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Vegetation genante (en)",
             "name_fr": "Vegetation genante",
             "name_nl": "Vegetation genante (nl)",
             "category_class": 1,
@@ -286,7 +261,6 @@
         "pk": 13,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau abime (en)",
             "name_fr": "Panneau abime",
             "name_nl": "Panneau abime (nl)",
             "category_class": 1,
@@ -299,7 +273,6 @@
         "pk": 14,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau illisible (en)",
             "name_fr": "Panneau illisible",
             "name_nl": "Panneau illisible (nl)",
             "category_class": 1,
@@ -312,7 +285,6 @@
         "pk": 15,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Marquage efface (en)",
             "name_fr": "Marquage efface",
             "name_nl": "Marquage efface (nl)",
             "category_class": 1,
@@ -325,7 +297,6 @@
         "pk": 16,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Feu defectueux (en)",
             "name_fr": "Feu defectueux",
             "name_nl": "Feu defectueux (nl)",
             "category_class": 1,
@@ -338,7 +309,6 @@
         "pk": 17,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Abime (en)",
             "name_fr": "Abime",
             "name_nl": "Abime (nl)",
             "category_class": 1,
@@ -351,7 +321,6 @@
         "pk": 18,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 1,
@@ -364,7 +333,6 @@
         "pk": 19,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Eclairage Diurne (en)",
             "name_fr": "Eclairage Diurne",
             "name_nl": "Eclairage Diurne (nl)",
             "category_class": 1,
@@ -377,7 +345,6 @@
         "pk": 20,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 1,
@@ -390,7 +357,6 @@
         "pk": 21,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arrache (en)",
             "name_fr": "Arrache",
             "name_nl": "Arrache (nl)",
             "category_class": 1,
@@ -403,7 +369,6 @@
         "pk": 22,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Disparu (en)",
             "name_fr": "Disparu",
             "name_nl": "Disparu (nl)",
             "category_class": 1,
@@ -416,7 +381,6 @@
         "pk": 23,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 1,
@@ -429,7 +393,6 @@
         "pk": 24,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Debordement (en)",
             "name_fr": "Debordement",
             "name_nl": "Debordement (nl)",
             "category_class": 1,
@@ -442,7 +405,6 @@
         "pk": 25,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Fuite (en)",
             "name_fr": "Fuite",
             "name_nl": "Fuite (nl)",
             "category_class": 1,
@@ -455,7 +417,6 @@
         "pk": 26,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Trou (en)",
             "name_fr": "Trou",
             "name_nl": "Trou (nl)",
             "category_class": 2,
@@ -468,7 +429,6 @@
         "pk": 27,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Revetement degrade (en)",
             "name_fr": "Revetement degrade",
             "name_nl": "Revetement degrade (nl)",
             "category_class": 2,
@@ -481,7 +441,6 @@
         "pk": 28,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Affaissement (en)",
             "name_fr": "Affaissement",
             "name_nl": "Affaissement (nl)",
             "category_class": 2,
@@ -494,7 +453,6 @@
         "pk": 116,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Ralentisseur abime (en)",
             "name_fr": "Ralentisseur abime",
             "name_nl": "Ralentisseur abime (nl)",
             "category_class": 2,
@@ -507,7 +465,6 @@
         "pk": 29,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Dechets (en)",
             "name_fr": "Dechets",
             "name_nl": "Dechets (nl)",
             "category_class": 2,
@@ -520,7 +477,6 @@
         "pk": 30,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Materiaux (en)",
             "name_fr": "Materiaux",
             "name_nl": "Materiaux (nl)",
             "category_class": 2,
@@ -533,7 +489,6 @@
         "pk": 31,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Signalisation (en)",
             "name_fr": "Signalisation",
             "name_nl": "Signalisation (nl)",
             "category_class": 2,
@@ -546,7 +501,6 @@
         "pk": 32,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Objet (en)",
             "name_fr": "Objet",
             "name_nl": "Objet (nl)",
             "category_class": 2,
@@ -559,7 +513,6 @@
         "pk": 33,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Bouche (en)",
             "name_fr": "Bouche",
             "name_nl": "Bouche (nl)",
             "category_class": 2,
@@ -572,7 +525,6 @@
         "pk": 34,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 2,
@@ -585,7 +537,6 @@
         "pk": 117,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Bruyante (en)",
             "name_fr": "Bruyante",
             "name_nl": "Bruyante (nl)",
             "category_class": 2,
@@ -598,7 +549,6 @@
         "pk": 35,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Branche cassee (en)",
             "name_fr": "Branche cassee",
             "name_nl": "Branche cassee (nl)",
             "category_class": 2,
@@ -611,7 +561,6 @@
         "pk": 36,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arbre dangereux (en)",
             "name_fr": "Arbre dangereux",
             "name_nl": "Arbre dangereux (nl)",
             "category_class": 2,
@@ -624,7 +573,6 @@
         "pk": 37,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Vegetation genante (en)",
             "name_fr": "Vegetation genante",
             "name_nl": "Vegetation genante (nl)",
             "category_class": 2,
@@ -637,7 +585,6 @@
         "pk": 38,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau abime (en)",
             "name_fr": "Panneau abime",
             "name_nl": "Panneau abime (nl)",
             "category_class": 2,
@@ -650,7 +597,6 @@
         "pk": 39,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau illisible (en)",
             "name_fr": "Panneau illisible",
             "name_nl": "Panneau illisible (nl)",
             "category_class": 2,
@@ -663,7 +609,6 @@
         "pk": 40,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Marquage efface (en)",
             "name_fr": "Marquage efface",
             "name_nl": "Marquage efface (nl)",
             "category_class": 2,
@@ -676,7 +621,6 @@
         "pk": 41,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Feu defectueux (en)",
             "name_fr": "Feu defectueux",
             "name_nl": "Feu defectueux (nl)",
             "category_class": 2,
@@ -689,7 +633,6 @@
         "pk": 42,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Abime (en)",
             "name_fr": "Abime",
             "name_nl": "Abime (nl)",
             "category_class": 2,
@@ -702,7 +645,6 @@
         "pk": 43,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 2,
@@ -715,7 +657,6 @@
         "pk": 44,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Eclairage Diurne (en)",
             "name_fr": "Eclairage Diurne",
             "name_nl": "Eclairage Diurne (nl)",
             "category_class": 2,
@@ -728,7 +669,6 @@
         "pk": 45,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 2,
@@ -741,7 +681,6 @@
         "pk": 46,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arrache (en)",
             "name_fr": "Arrache",
             "name_nl": "Arrache (nl)",
             "category_class": 2,
@@ -754,7 +693,6 @@
         "pk": 47,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Disparu (en)",
             "name_fr": "Disparu",
             "name_nl": "Disparu (nl)",
             "category_class": 2,
@@ -767,7 +705,6 @@
         "pk": 48,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 2,
@@ -780,7 +717,6 @@
         "pk": 49,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Debordement (en)",
             "name_fr": "Debordement",
             "name_nl": "Debordement (nl)",
             "category_class": 2,
@@ -793,7 +729,6 @@
         "pk": 50,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Fuite (en)",
             "name_fr": "Fuite",
             "name_nl": "Fuite (nl)",
             "category_class": 2,
@@ -806,7 +741,6 @@
         "pk": 51,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Trou (en)",
             "name_fr": "Trou",
             "name_nl": "Trou (nl)",
             "category_class": 3,
@@ -819,7 +753,6 @@
         "pk": 52,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Revetement degrade (en)",
             "name_fr": "Revetement degrade",
             "name_nl": "Revetement degrade (nl)",
             "category_class": 3,
@@ -832,7 +765,6 @@
         "pk": 53,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Affaissement (en)",
             "name_fr": "Affaissement",
             "name_nl": "Affaissement (nl)",
             "category_class": 3,
@@ -845,7 +777,6 @@
         "pk": 54,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Dechets (en)",
             "name_fr": "Dechets",
             "name_nl": "Dechets (nl)",
             "category_class": 3,
@@ -858,7 +789,6 @@
         "pk": 55,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Materiaux (en)",
             "name_fr": "Materiaux",
             "name_nl": "Materiaux (nl)",
             "category_class": 3,
@@ -871,7 +801,6 @@
         "pk": 56,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Signalisation (en)",
             "name_fr": "Signalisation",
             "name_nl": "Signalisation (nl)",
             "category_class": 3,
@@ -884,7 +813,6 @@
         "pk": 57,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Objet (en)",
             "name_fr": "Objet",
             "name_nl": "Objet (nl)",
             "category_class": 3,
@@ -897,7 +825,6 @@
         "pk": 58,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Bouche (en)",
             "name_fr": "Bouche",
             "name_nl": "Bouche (nl)",
             "category_class": 3,
@@ -910,7 +837,6 @@
         "pk": 59,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 3,
@@ -923,7 +849,6 @@
         "pk": 60,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Branche cassee (en)",
             "name_fr": "Branche cassee",
             "name_nl": "Branche cassee (nl)",
             "category_class": 3,
@@ -936,7 +861,6 @@
         "pk": 61,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arbre dangereux (en)",
             "name_fr": "Arbre dangereux",
             "name_nl": "Arbre dangereux (nl)",
             "category_class": 3,
@@ -949,7 +873,6 @@
         "pk": 62,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Vegetation genante (en)",
             "name_fr": "Vegetation genante",
             "name_nl": "Vegetation genante (nl)",
             "category_class": 3,
@@ -962,7 +885,6 @@
         "pk": 63,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau abime (en)",
             "name_fr": "Panneau abime",
             "name_nl": "Panneau abime (nl)",
             "category_class": 3,
@@ -975,7 +897,6 @@
         "pk": 64,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau illisible (en)",
             "name_fr": "Panneau illisible",
             "name_nl": "Panneau illisible (nl)",
             "category_class": 3,
@@ -988,7 +909,6 @@
         "pk": 65,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Marquage efface (en)",
             "name_fr": "Marquage efface",
             "name_nl": "Marquage efface (nl)",
             "category_class": 3,
@@ -1001,7 +921,6 @@
         "pk": 66,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Feu defectueux (en)",
             "name_fr": "Feu defectueux",
             "name_nl": "Feu defectueux (nl)",
             "category_class": 3,
@@ -1014,7 +933,6 @@
         "pk": 67,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Abime (en)",
             "name_fr": "Abime",
             "name_nl": "Abime (nl)",
             "category_class": 3,
@@ -1027,7 +945,6 @@
         "pk": 68,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 3,
@@ -1040,7 +957,6 @@
         "pk": 69,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Eclairage Diurne (en)",
             "name_fr": "Eclairage Diurne",
             "name_nl": "Eclairage Diurne (nl)",
             "category_class": 3,
@@ -1053,7 +969,6 @@
         "pk": 70,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 3,
@@ -1066,7 +981,6 @@
         "pk": 71,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arrache (en)",
             "name_fr": "Arrache",
             "name_nl": "Arrache (nl)",
             "category_class": 3,
@@ -1079,7 +993,6 @@
         "pk": 72,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Disparu (en)",
             "name_fr": "Disparu",
             "name_nl": "Disparu (nl)",
             "category_class": 3,
@@ -1092,7 +1005,6 @@
         "pk": 73,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Trou (en)",
             "name_fr": "Trou",
             "name_nl": "Trou (nl)",
             "category_class": 4,
@@ -1105,7 +1017,6 @@
         "pk": 74,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Revetement degrade (en)",
             "name_fr": "Revetement degrade",
             "name_nl": "Revetement degrade (nl)",
             "category_class": 4,
@@ -1118,7 +1029,6 @@
         "pk": 75,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Affaissement (en)",
             "name_fr": "Affaissement",
             "name_nl": "Affaissement (nl)",
             "category_class": 4,
@@ -1131,7 +1041,6 @@
         "pk": 76,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Dechets (en)",
             "name_fr": "Dechets",
             "name_nl": "Dechets (nl)",
             "category_class": 4,
@@ -1144,7 +1053,6 @@
         "pk": 77,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Materiaux (en)",
             "name_fr": "Materiaux",
             "name_nl": "Materiaux (nl)",
             "category_class": 4,
@@ -1157,7 +1065,6 @@
         "pk": 78,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Signalisation (en)",
             "name_fr": "Signalisation",
             "name_nl": "Signalisation (nl)",
             "category_class": 4,
@@ -1170,7 +1077,6 @@
         "pk": 79,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Objet (en)",
             "name_fr": "Objet",
             "name_nl": "Objet (nl)",
             "category_class": 4,
@@ -1183,7 +1089,6 @@
         "pk": 80,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Bouche (en)",
             "name_fr": "Bouche",
             "name_nl": "Bouche (nl)",
             "category_class": 4,
@@ -1196,7 +1101,6 @@
         "pk": 81,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 4,
@@ -1209,7 +1113,6 @@
         "pk": 82,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Branche cassee (en)",
             "name_fr": "Branche cassee",
             "name_nl": "Branche cassee (nl)",
             "category_class": 4,
@@ -1222,7 +1125,6 @@
         "pk": 83,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arbre dangereux (en)",
             "name_fr": "Arbre dangereux",
             "name_nl": "Arbre dangereux (nl)",
             "category_class": 4,
@@ -1235,7 +1137,6 @@
         "pk": 84,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Vegetation genante (en)",
             "name_fr": "Vegetation genante",
             "name_nl": "Vegetation genante (nl)",
             "category_class": 4,
@@ -1248,7 +1149,6 @@
         "pk": 85,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau abime (en)",
             "name_fr": "Panneau abime",
             "name_nl": "Panneau abime (nl)",
             "category_class": 4,
@@ -1261,7 +1161,6 @@
         "pk": 86,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau illisible (en)",
             "name_fr": "Panneau illisible",
             "name_nl": "Panneau illisible (nl)",
             "category_class": 4,
@@ -1274,7 +1173,6 @@
         "pk": 87,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Marquage efface (en)",
             "name_fr": "Marquage efface",
             "name_nl": "Marquage efface (nl)",
             "category_class": 4,
@@ -1287,7 +1185,6 @@
         "pk": 88,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Feu defectueux (en)",
             "name_fr": "Feu defectueux",
             "name_nl": "Feu defectueux (nl)",
             "category_class": 4,
@@ -1300,7 +1197,6 @@
         "pk": 89,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Abime (en)",
             "name_fr": "Abime",
             "name_nl": "Abime (nl)",
             "category_class": 4,
@@ -1313,7 +1209,6 @@
         "pk": 90,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 4,
@@ -1326,7 +1221,6 @@
         "pk": 91,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Eclairage Diurne (en)",
             "name_fr": "Eclairage Diurne",
             "name_nl": "Eclairage Diurne (nl)",
             "category_class": 4,
@@ -1339,7 +1233,6 @@
         "pk": 92,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 4,
@@ -1352,7 +1245,6 @@
         "pk": 93,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arrache (en)",
             "name_fr": "Arrache",
             "name_nl": "Arrache (nl)",
             "category_class": 4,
@@ -1365,7 +1257,6 @@
         "pk": 94,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Disparu (en)",
             "name_fr": "Disparu",
             "name_nl": "Disparu (nl)",
             "category_class": 4,
@@ -1378,7 +1269,6 @@
         "pk": 95,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 4,
@@ -1391,7 +1281,6 @@
         "pk": 96,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Debordement (en)",
             "name_fr": "Debordement",
             "name_nl": "Debordement (nl)",
             "category_class": 4,
@@ -1404,7 +1293,6 @@
         "pk": 97,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Fuite (en)",
             "name_fr": "Fuite",
             "name_nl": "Fuite (nl)",
             "category_class": 4,
@@ -1417,7 +1305,6 @@
         "pk": 98,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Trou (en)",
             "name_fr": "Trou",
             "name_nl": "Trou (nl)",
             "category_class": 5,
@@ -1430,7 +1317,6 @@
         "pk":99,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Revetement degrade (en)",
             "name_fr": "Revetement degrade",
             "name_nl": "Revetement degrade (nl)",
             "category_class": 5,
@@ -1443,7 +1329,6 @@
         "pk": 100,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Affaissement (en)",
             "name_fr": "Affaissement",
             "name_nl": "Affaissement (nl)",
             "category_class": 5,
@@ -1456,7 +1341,6 @@
         "pk": 101,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Dechets (en)",
             "name_fr": "Dechets",
             "name_nl": "Dechets (nl)",
             "category_class": 5,
@@ -1469,7 +1353,6 @@
         "pk": 102,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Materiaux (en)",
             "name_fr": "Materiaux",
             "name_nl": "Materiaux (nl)",
             "category_class": 5,
@@ -1482,7 +1365,6 @@
         "pk": 103,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Signalisation (en)",
             "name_fr": "Signalisation",
             "name_nl": "Signalisation (nl)",
             "category_class": 5,
@@ -1495,7 +1377,6 @@
         "pk": 104,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Objet (en)",
             "name_fr": "Objet",
             "name_nl": "Objet (nl)",
             "category_class": 5,
@@ -1508,7 +1389,6 @@
         "pk": 105,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Bouche (en)",
             "name_fr": "Bouche",
             "name_nl": "Bouche (nl)",
             "category_class": 5,
@@ -1521,7 +1401,6 @@
         "pk": 106,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 5,
@@ -1534,7 +1413,6 @@
         "pk": 107,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau abime (en)",
             "name_fr": "Panneau abime",
             "name_nl": "Panneau abime (nl)",
             "category_class": 5,
@@ -1547,7 +1425,6 @@
         "pk": 108,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Panneau illisible (en)",
             "name_fr": "Panneau illisible",
             "name_nl": "Panneau illisible (nl)",
             "category_class": 5,
@@ -1560,7 +1437,6 @@
         "pk": 109,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Marquage efface (en)",
             "name_fr": "Marquage efface",
             "name_nl": "Marquage efface (nl)",
             "category_class": 5,
@@ -1573,7 +1449,6 @@
         "pk": 110,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Feu defectueux (en)",
             "name_fr": "Feu defectueux",
             "name_nl": "Feu defectueux (nl)",
             "category_class": 5,
@@ -1586,7 +1461,6 @@
         "pk": 111,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Abime (en)",
             "name_fr": "Abime",
             "name_nl": "Abime (nl)",
             "category_class": 5,
@@ -1599,7 +1473,6 @@
         "pk": 112,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Hors Service (en)",
             "name_fr": "Hors Service",
             "name_nl": "Hors Service (nl)",
             "category_class": 5,
@@ -1612,7 +1485,6 @@
         "pk": 113,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Eclairage Diurne (en)",
             "name_fr": "Eclairage Diurne",
             "name_nl": "Eclairage Diurne (nl)",
             "category_class": 5,
@@ -1625,7 +1497,6 @@
         "pk": 114,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Casse (en)",
             "name_fr": "Casse",
             "name_nl": "Casse (nl)",
             "category_class": 5,
@@ -1638,7 +1509,6 @@
         "pk": 115,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Arrache (en)",
             "name_fr": "Arrache",
             "name_nl": "Arrache (nl)",
             "category_class": 5,
@@ -1651,7 +1521,6 @@
         "pk": 116,
         "model": "fixmystreet.reportcategory",
         "fields": {
-            "name_en": "Disparu (en)",
             "name_fr": "Disparu",
             "name_nl": "Disparu (nl)",
             "category_class": 5,
@@ -1663,7 +1532,6 @@
         "pk": 1,
         "model": "fixmystreet.reportcategoryhint",
         "fields": {
-            "label_en": "This is a note to help user",
             "label_fr": "This is a note to help user",
             "label_nl": "This is a note to help user"
         }
@@ -1727,7 +1595,6 @@
         "pk":21,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Communal Agency Work (en)",
             "name_fr":"Communal Agency Work (fr)",
             "name_nl":"Communal Agency Work (nl)",
             "commune":false,
@@ -1741,7 +1608,6 @@
         "pk":22,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Waterwerven (en)",
             "name_fr":"Waterwerven (fr)",
             "name_nl":"Waterwerven (nl)",
             "commune":false,
@@ -1755,7 +1621,6 @@
         "pk":23,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Elia (en)",
             "name_fr":"Elia (fr)",
             "name_nl":"Elia (nl)",
             "commune":false,
@@ -1769,7 +1634,6 @@
         "pk":24,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Electrabel (en)",
             "name_fr":"Electrabel (fr)",
             "name_nl":"Electrabel (nl)",
             "commune":false,
