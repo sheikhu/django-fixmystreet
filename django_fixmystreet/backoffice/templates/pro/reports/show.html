@@ -254,7 +254,11 @@ function markAsDone(){
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
 		<div id='report-body'>
-			<p>{{report.description|linebreaks}}</p>
+			<p>
+				{% if report.description %}
+					{{report.description|linebreaks}}
+				{% endif %}
+			</p>
 			<p class="author-sign">
                {% if report.citizen %}
                <!-- Protect privacy from applicant and contractor when creator is a citizen -->

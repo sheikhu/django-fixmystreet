@@ -23,7 +23,7 @@ def new(request):
             citizen = citizen_form.save()
 
             report = report_form.save(commit=False)
-            report.created_by = citizen
+            report.citizen = citizen
             report.save()
 
             if request.POST["comment-text"]:

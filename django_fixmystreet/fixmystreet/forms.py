@@ -103,19 +103,23 @@ class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
-        fields = ('quality', 'email', 'lastname', 'subscription', 'telephone')
+        fields = ('quality', 'email', 'last_name', 'subscription', 'telephone')
 
     quality = forms.ChoiceField(choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
     #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
-    lastname = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
+    last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
     subscription = forms.BooleanField(required=False)
     telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
 
     def save(self):
         try:
-            instance = FMSUser.objects.get(email=self.cleaned_data["email"])
+            instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
+            del self.cleaned_data['subscription']
+            del self.cleaned_data['quality']
+            #For unique constraints
+            self.cleaned_data['username'] = self.cleaned_data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
 
         return instance
