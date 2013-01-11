@@ -287,7 +287,7 @@ function markAsDone(){
             <table id='report-status'>
                 <tr>
                     <th>{% trans "Location:" %}</th>
-                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.ward.name}})</td>
+                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{ report.responsible_entity.name}} ({{report.postalcode}}))</td>
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>

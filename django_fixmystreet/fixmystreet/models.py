@@ -680,6 +680,7 @@ class ReportAttachment(UserTrackedModel):
         (CONFIDENTIAL,_("Confidential"))
     )
 
+    #logical_deleted = models.BooleanField(default=False)
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
     report = models.ForeignKey(Report, related_name="attachments")
 
@@ -696,6 +697,10 @@ class ReportAttachment(UserTrackedModel):
         if (self.CONFIDENTIAL == security_level_as_int):
             return self.CONFIDENTIAL
 
+
+    #def is_deleted(self):
+    #    '''Returns true if the attachment is deleted'''
+    #    return self.logical_deleted
 
     def is_confidential_visible(self):
         '''visible when not confidential'''
@@ -1056,7 +1061,7 @@ def send_notification(sender, instance, **kwargs):
         if instance.related.files():
             for f in instance.related.files():
                 if f:
-                    if f.file_type == ReportFile.IMAGE and f.is_visible:
+                    if f.file_type == ReportFile.IMAGE and f.is_public:
                         # Open the file
                         fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
                         msgImage = MIMEImage(fp.read())

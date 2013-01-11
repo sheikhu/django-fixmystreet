@@ -64,21 +64,23 @@ body {
 <!-- ############################################################## -->
 <div id="map">
 </div>
+<hr/>
 <h1>{% trans 'Incident' %} ({{report.get_ticket_as_string}})</h1>
+
+
+
+
 <h2>{% trans 'Information '%}</h2>
 <table style="width:100%">
 	<tr>
-                <td>
-			&nbsp;
-		</td>	
 		<td>
 			<strong>
-				{% trans 'Street' %}
+				{% trans 'Address' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'City' %}
+				{% trans 'Geolocation' %}
 			</strong>
 		</td>
                 <td>
@@ -86,47 +88,66 @@ body {
 		</td>	
 	</tr>
 	<tr>
+		<td>
+			{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.responsible_entity.name}})
+		</td>	
+		<td>
+			L:{{report.point.x}} l:{{report.point.y}}
+		</td>	
                 <td>
 			&nbsp;
 		</td>	
+	</tr>
+	<tr>
 		<td>
-			{{report.address}}, {{report.address_number}}
+			<strong>
+				{% trans 'Report Category' %}
+			</strong>
 		</td>	
 		<td>
-			{{report.postalcode}} {{report.responsible_entity.name}}
+			<strong>
+				{% trans 'Report Creation Date' %}
+			</strong>
+		</td>
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.display_category}}
+		</td>	
+		<td>
+			{{report.created}}
 		</td>	
                 <td>
 			&nbsp;
 		</td>	
 	</tr>
 </table>
+
+
+
+
+
 <h2>{% trans 'Author'%}</h2>
 <table style="width:100%">
 	<tr>
 		<td>
 			<strong>
-				{% trans 'Report Creation Date' %}
+				{% if user.can_see_confidential %}
+					{% trans 'Name' %}
+				{% endif %}
 			</strong>
+		</td>	
+		<td>
+			&nbsp;
+		</td>	
+		<td>
+			&nbsp;
 		</td>
-		<td>
-			<strong>
-				{% if user.can_see_confidential %}
-					{% trans 'Report Author' %}
-				{% endif %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% if user.can_see_confidential %}
-					{% trans 'Report Contact Phone' %}
-				{% endif %}
-			</strong>
-		</td>	
 	</tr>
 	<tr>
-		<td>
-			{{report.created}}
-		</td>	
 		<td>
 			{% if user.can_see_confidential %}
 				{% if report.citizen %}
@@ -135,6 +156,43 @@ body {
 					{{report.created_by.fmsuser.get_display_name}}
 				{% endif %}
 			{% endif %}
+		</td>
+		<td>
+			&nbsp;
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% if user.can_see_confidential %}
+					{% trans 'Mail' %}
+				{% endif %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% if user.can_see_confidential %}
+					{% trans 'Phone' %}
+				{% endif %}
+			</strong>
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>
+ 			{% if report.citizen %}
+                                <!-- Protect citizen privacy -->
+                                {% if user.can_see_confidential %}
+                                        {% trans 'mail'%}:{{report.citizen.fmsuser.email}}
+                                {% endif %}
+                        {% else %}
+                                <a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
+                        {% endif %}
 		</td>
 		<td>
 			{% if user.can_see_confidential %}
@@ -152,25 +210,29 @@ body {
 					{% endif %}
 				{% endif %}
 			{% endif %}
-		</td>	
+		</td>
+		<td>
+			&nbsp;
+		</td>
 	</tr>
+
 </table>
+
+
+
+
+
 <h2>{% trans 'Manager'%}</h2>
 <table style="width:100%">
-
-</table>
-
-
-<table style="width:100%">
 	<tr>
 		<td>
 			<strong>
-				{% trans 'Report Category' %}
+				{% trans 'Name' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Report Responsible Manager' %}
+				{% trans 'Status' %}
 			</strong>
 		</td>
                 <td>
@@ -179,71 +241,36 @@ body {
 	</tr>
 	<tr>
 		<td>
-			{{report.display_category}}
+			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}
 		</td>	
-		<td>
-			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} (mail:<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.email}}</a>, tel:{{report.responsible_manager.telephone}})
-		</td>
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				FREE	
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'Report Geolocation' %}
-			</strong>
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			FREE
-		</td>	
-		<td>
-			L:{{report.point.x}} l:{{report.point.y}}
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Report Status' %}
-			</strong>
-		</td>
-		<td>
-			<strong>
-				{% if report.created_by or user.can_see_confidential %}
-					{% trans 'Report Contact Mail' %}
-				{% endif %}
-			</strong>
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
 		<td>
 			{{ report.get_status_display }}
+		</td>
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'Mail' %}
+			</strong>
+		</td>
+		<td>
+			<strong>
+				{% trans 'Phone' %}
+			</strong>
+		</td>	
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{% trans 'mail' %}:{{report.responsible_manager.email}}
 		</td>	
 		<td>
-			{% if report.citizen %}
-				<!-- Protect citizen privacy -->
-				{% if user.can_see_confidential %}
-					<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
-				{% endif %}
-			{% else %}
-				<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
-			{% endif %}
+			{% trans 'tel' %}:{{report.responsible_manager.telephone}}
 		</td>	
                 <td>
 			&nbsp;
@@ -255,13 +282,22 @@ body {
 <!-- ############################################################## -->
 <!-- ####################### HISTORY ############################## -->
 <!-- ############################################################## -->
+<hr/>
 <h1>{% trans 'Report History' %}</h1>
 {% if activity_list %}
-<table>
+<table width="100%">
 	{% for activity in activity_list %}
 	<tr>
+		<td colspan="2">
+			<li><strong>{{activity.event_at}}:</strong></li>
+		</td>
+	</tr>
+	<tr>
+		<td width="10%">
+			&nbsp;
+		</td>
 		<td>
-			<li><strong>{{activity.event_at}}:</strong> {{activity}}</li>
+			{{activity}}	
 		</td>
 	</tr>
 	{% endfor %}
@@ -276,10 +312,11 @@ body {
 <!-- ############################################################## -->
 <!-- ###################### COMMENTS ############################## -->
 <!-- ############################################################## -->
+<hr/>
 <h1>{% trans 'Report Comments' %}</h1>
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
 {% if comment_list %}
-<table>
+<table width="100%">
 	{% for comment in comment_list %}
 	<!-- If we asked for a public version -->
 	{% if not comment.is_citizen_visible and pro_version == "0" %}
@@ -288,29 +325,23 @@ body {
 		<!-- SKIP ROW if the current file annex is confidential -->
 	{% else %}
 	<tr>
-		<td colspan="2">
-			<strong>{% trans 'Comment title' %}</strong>
-		</td>
-		<td>
-			<strong>{% trans 'Creation Date' %}</strong>
-		</td>
-		<td>
-			<strong>{% trans 'Created By' %}</strong>
-		</td>
-	</tr>
+                <td colspan="2">
+                        <li>
+				<strong>{{comment.created}}:</strong> 
+				 {% if comment.created_by %}
+         		               {{comment.created_by.fmsuser.get_display_name}} (mail:{{comment.created_by.fmsuser.email}}</a>, tel:{{comment.created_by.fmsuser.telephone}})
+                        	{% else %}
+                        		{% trans 'Anonymous' %}
+                        	{% endif %}
+			</li>
+                </td>
+        </tr>	
 	<tr>
-		<td colspan="2">
+		<td width="5%">
+			&nbsp;
+		</td>
+		<td>
 			{{comment.text}}
-		</td>
-		<td>
-			{{comment.created}}
-		</td>
-		<td>
-			{% if comment.created_by %}
-			{{comment.created_by.fmsuser.get_display_name}} (<a href="mailto:{{comment.created_by.fmsuser.email}}">{{comment.created_by.fmsuser.email}}</a>, {{comment.created_by.fmsuser.telephone}})
-			{% else %}
-			{% trans 'label_pdf_comment_value_created_by_empty' %}
-			{% endif %}
 		</td>
 	</tr>
 	{% endif %}
@@ -333,7 +364,7 @@ body {
 <h1>{% trans 'Report Files' %}</h1>
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
 {% if file_list %}
-<table>
+<table width="100%">
 	{% for file in file_list %}
 	<!-- If we asked for a public version -->
 	{% if not file.is_citizen_visible and pro_version == "0" %}
@@ -341,8 +372,24 @@ body {
 	{% elif not file.is_confidential_visible and pro_version == "1" %}
 		<!-- SKIP ROW if the current file annex is confidential -->
 	{% else %}
+	<tr>
+                <td colspan="2">
+                        <li>
+                                <strong>{{file.created}}:</strong>
+                                 {% if file.created_by %}
+                                       {{file.created_by.fmsuser.get_display_name}} (mail:{{file.created_by.fmsuser.email}}</a>, tel:{{file.created_by.fmsuser.telephone}})
+                                {% else %}
+                                        {% trans 'Anonymous' %}
+                                {% endif %}
+                        </li>
+			<br/>
+                </td>
+        </tr>
         <tr>
-		<td rowspan="11">
+                <td width="5%">
+                        &nbsp;
+                </td>
+		<td rowspan="11" width="30%">
 			{% if file.file_type == 1 %}
 			<img width="256px" height="256px" src="{{STATIC_URL}}images/icon-pdf.png"/>
 			{% endif %}
@@ -358,34 +405,85 @@ body {
 		</td>
 	</tr>
 	<tr>
-		<td><strong>{% trans 'Creation Date' %}</strong></td>
-	</tr>
-	<tr>
-		<td>{{file.file_creation_date}}</td>
-	</tr>
-	<tr>
-		<td><strong>{% trans 'Publication Date' %}</strong></td>
-	</tr>
-	<tr>
-		<td>{{file.created}}</td>
-	</tr>
-	<tr>
-		<td>{% trans 'By' %} {{file.created_by.fmsuser.get_display_name}} {% if file.created_by %}(mail:<a href="mailto:{{file.created_by.fmsuser.email}}">{{file.created_by.fmsuser.email}}</a>, tel:{{file.created_by.fmsuser.telephone}}){% endif %}</td>
-	</tr>
-	<tr>
-		<td><strong>{% trans 'City' %}</strong></td>
-	</tr>
-	<tr>
-		<td>{{report.responsible_entity.name}}</td>
-	</tr>
-	<tr>
-		<td><strong>{% trans 'Image Name' %}</strong></td>
-	</tr>
-	<tr>
-		<td>{{file.title}}</td>
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			<strong>{% trans 'Creation Date' %}</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>
+			&nbsp;
+		</td>
+		<td>
+			{% if file.file_creation_date %}
+				{{file.file_creation_date}}
+			{% else %}
+				-
+			{% endif %}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			<strong>{% trans 'Publication Date' %}</strong>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			{{file.created}}
+			<strong>{% trans 'By' %}</strong> 
+			{% if file.created_by %}	
+				{{file.created_by.fmsuser.get_display_name}}
+				(mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
+			{% else %}
+				{% trans 'Anonymous '%}
+			{% endif %}
+		</td>
+	</tr>
+        <tr>
+                <td>
+                        &nbsp;
+                </td>
+                <td>
+			<strong>{% trans 'City' %}</strong>
+                </td>
+        </tr>
+        <tr>
+                <td>
+                        &nbsp;
+                </td>
+                <td>
+			{{report.responsible_entity.name}}
+                </td>
+        </tr>
+	<tr>
+                <td>
+                        &nbsp;
+                </td>
+                <td>
+			<strong>{% trans 'Image Name' %}</strong>
+		</td>
+	</tr>
+	<tr>
+                <td>
+                        &nbsp;
+                </td>
+                <td>
+			{{file.title}}
+		</td>
+	</tr>
+	<tr>
+                <td>
+                        &nbsp;
+                </td>
+                <td>
 			&nbsp;
 		</td>
 	</tr>
@@ -399,4 +497,5 @@ body {
 
 {% endif %}
 {% endif %}
+<hr/>
 {% endblock %}
