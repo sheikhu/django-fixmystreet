@@ -228,7 +228,7 @@ function markAsDone(){
         <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
         <!-- ############################################# -->
         <div id="addFileDiv">
-        <a onclick="toggleFileForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a file" %}</a>
+        <a onclick="toggleFileForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add files" %}</a>
             <form id="fileForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
             <table id="report_form" class="form">
                 {{file_form.as_table}}
@@ -285,7 +285,7 @@ function markAsDone(){
         <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
         <!-- ############################################# -->
         <div id="addCommmentDiv">
-            <a onclick="toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a comment" %}</a>
+            <a onclick="toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add comments" %}</a>
                     
             <form id="commentForm" enctype="multipart/form-data" action="{% url report_update report.id %}" method="post">
             <table id="report_form" class="form">

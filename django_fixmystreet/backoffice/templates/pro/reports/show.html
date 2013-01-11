@@ -434,7 +434,7 @@ $(document).ready(function() {
                 <!-- ############################################# -->
                 <div id="addFileDiv">
                     <a href="javascript:toggleFileForm();">
-                        <img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a file" %}
+                        <img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add files" %}
                     </a>
                     <form id="fileForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
                         <table id="report_form" class="form">
@@ -551,7 +551,7 @@ $(document).ready(function() {
             <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
             <!-- ############################################# -->
             <div id="addCommmentDiv">
-                <a href="javascript:toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add a comment" %}</a>
+                <a href="javascript:toggleCommentForm();"><img src="{{STATIC_URL}}images/plus-button.png">  {% trans "Add comments" %}</a>
                 <form id="commentForm" enctype="multipart/form-data" action="{% url report_update_pro report.id %}" method="post">
                     <table id="report_form" class="form">
                     {{comment_form.as_table}}                   
