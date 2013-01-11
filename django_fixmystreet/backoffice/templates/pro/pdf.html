@@ -89,7 +89,7 @@ body {
 	</tr>
 	<tr>
 		<td>
-			{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.responsible_entity.name}})
+			{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})
 		</td>	
 		<td>
 			L:{{report.point.x}} l:{{report.point.y}}
@@ -241,7 +241,7 @@ body {
 	</tr>
 	<tr>
 		<td>
-			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}
+			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})
 		</td>	
 		<td>
 			{{ report.get_status_display }}

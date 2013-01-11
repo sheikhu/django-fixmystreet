@@ -331,6 +331,9 @@ class Report(UserTrackedModel):
     def __unicode__(self):
         return self.display_category()
 
+    def get_address_city_name(self):
+        return ZipCode.objects.get(code=self.postalcode).name
+
     def display_category(self):
         return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
 
