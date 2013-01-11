@@ -464,7 +464,7 @@ msgstr ""
 #: templates/base.html:92
 #, fuzzy
 msgid "Reports assinged to me"
-msgstr "Rapports"
+msgstr "Incidents"
 
 #: templates/base.html:98
 msgid "Unpublished"
@@ -556,7 +556,7 @@ msgstr "Nous le rapporterons au service concerné en votre nom"
 
 #: templates/home.html:49 templates/reports/index.html:17
 msgid "Reports Filed"
-msgstr "Rapports"
+msgstr "Incidents"
 
 #: templates/home.html:50 templates/home.html.py:55 templates/home.html:60
 msgid "In the Last Year"
@@ -564,11 +564,11 @@ msgstr "Durant la dernière année"
 
 #: templates/home.html:54 templates/reports/index.html:21
 msgid "Reports Fixed"
-msgstr "Rapports résolus"
+msgstr "Incidents résolus"
 
 #: templates/home.html:59 templates/reports/index.html:25
 msgid "Reports Updated"
-msgstr "Rapports <span style='display:inline-block;'>mis à jour</span>"
+msgstr "Incidents <span style='display:inline-block;'>mis à jour</span>"
 
 #: templates/home.html:64 templates/reports/index.html:58
 msgid "As reported by Fix My Street users."
@@ -576,7 +576,7 @@ msgstr "Comme indiqué par les utilisateurs de Fix My Street."
 
 #: templates/home.html:69
 msgid "Recent Reports"
-msgstr "Derniers Rapports"
+msgstr "Derniers Incidents"
 
 #: templates/posters.html:4 templates/posters.html.py:8
 #, fuzzy
@@ -716,7 +716,7 @@ msgstr "L'équipe Fix My Street"
 #: templates/emails/report_show.html:2
 #, fuzzy
 msgid "Report overview:"
-msgstr "Rapports pour"
+msgstr "Incidents pour"
 
 #: templates/emails/report_show.html:4
 #: templates/emails/send_report_closed_to_subscribers/message.txt:8
@@ -1075,7 +1075,7 @@ msgstr ""
 #: templates/promotions/show.html:4 templates/reports/list.html:4
 #: templates/reports/list.html.py:15 templates/reports/list.html:37
 msgid "Reports for"
-msgstr "Rapports pour"
+msgstr "Incidents pour"
 
 #: templates/promotions/show.html:8
 #, fuzzy
@@ -1102,7 +1102,7 @@ msgstr ""
 
 #: templates/reports/index.html:13
 msgid "Top Reports"
-msgstr "Rapport classé"
+msgstr "Incident classé"
 
 #: templates/reports/index.html:31
 msgid "Rank"
@@ -1110,7 +1110,7 @@ msgstr "Classement"
 
 #: templates/reports/index.html:32
 msgid "Report"
-msgstr "Rapport"
+msgstr "Incident"
 
 #: templates/reports/index.html:33
 msgid "Number of Subscribers"
@@ -1118,7 +1118,7 @@ msgstr "Nombre d'abonnés"
 
 #: templates/reports/index.html:45
 msgid "Reports by wards"
-msgstr "Rapports par communes"
+msgstr "Incidents par communes"
 
 #: templates/reports/list.html:16
 msgid "Meta description for list page"
@@ -1144,7 +1144,7 @@ msgstr "Soumettre un rapport"
 
 #: templates/reports/new.html:53
 msgid "Nearby reports"
-msgstr "Rapports à proximité"
+msgstr "Incidents à proximité"
 
 #: templates/reports/new.html:63
 msgid "No problems have been reported in this area."
