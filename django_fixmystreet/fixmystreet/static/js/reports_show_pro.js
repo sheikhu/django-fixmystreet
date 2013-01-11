@@ -35,7 +35,7 @@ function showMap() {
 /* Refuse method is called when the gestionnaire decides to refuse a report */
 /****************************************************************************/
 function refuse(){
-    $("#dialog").dialog('open');
+    $("#divRefuse").modal();
     $('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 }
 

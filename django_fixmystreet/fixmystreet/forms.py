@@ -103,12 +103,12 @@ class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
-        fields = ('quality', 'email', 'lastname', 'subscription', 'telephone')
+        fields = ('quality', 'email', 'last_name', 'subscription', 'telephone')
 
     quality = forms.ChoiceField(choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
     #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
-    lastname = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
+    last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
     subscription = forms.BooleanField(required=False)
     telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
 
@@ -121,6 +121,7 @@ class CitizenForm(forms.Form):
         return instance
 
     def clean_email(self):
+        del self.cleaned_data['quality']
         email = self.cleaned_data['email']
         validate_email(email)
         return email

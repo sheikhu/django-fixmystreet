@@ -159,7 +159,6 @@ if (!('fms' in window)) {
 			dragControl.activate();
 		}
 		this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
-
 		this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, this.options.markerStyle)]);
 	};
 

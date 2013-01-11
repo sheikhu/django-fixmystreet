@@ -155,6 +155,16 @@ function markAsDone(){
 </form>
 </div>
 </div>
+<div id="divRefuse" class="modal hide fade" role="dialog">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+<form id="dialog" title="Please enter more information about rejecting the report" action="{% url report_refuse_pro report.id %}" method="post">
+        {{ refuse_form.as_p }}
+        <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
+        <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
+    </form>
+</div>
+</div>
 <article id="map"></article>
 <div id="page_content_container">
 
