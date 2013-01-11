@@ -202,7 +202,7 @@ function markAsDone(){
                                 <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
 
                                 {% if file.is_image %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-jpeg.png' width="48px" height="48px"/></a>
+                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.file.url}}' width="48px" height="48px"/></a>
                                 {% endif %}
                                 {% if file.is_pdf %}
                                         <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
@@ -215,10 +215,24 @@ function markAsDone(){
                                 {% endif %}
 
                             <div class="update_text">
-                                {{file.title}}:
-                                {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created %}
-                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                                {% endblocktrans %}
+				{{file.title}}
+				<br/>
+	                        <strong>{% trans 'Posted By' %}: </strong>
+        	                {% if file.created_by %}
+                	                {{file.created_by.fmsuser.get_display_name}}
+                        	        (mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
+                        	{% else %}
+                                	{% trans 'Anonymous '%}
+                        	{% endif %}
+				<br/>
+				{% trans 'On' %}: {{file.created}}
+                                {% if file.is_image %}
+					{% if file.file_creation_date %}
+						<br/>
+						{% trans 'Creation Date' %}:
+						{{file.file_creation_date}}
+  					{% endif %}
+  				{% endif %}
                             </div>
                         {% endif %}
                         </div>

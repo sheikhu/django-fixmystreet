@@ -27,7 +27,6 @@
         "pk":20,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_en":"Region Brussels",
             "name_fr":"Region Bruxelloise",
             "name_nl":"Brusselse Gewest",
             "commune":false,
@@ -253,7 +252,6 @@
             "commune": 1, 
             "name_fr": "Anderlecht", 
             "name_nl": "Anderlecht", 
-            "name_en": "Anderlecht", 
             "hide": false,
             "code": 1070
         }
@@ -265,7 +263,6 @@
             "commune": 2, 
             "name_fr": "Auderghem", 
             "name_nl": "Oudergem", 
-            "name_en": "Auderghem", 
             "hide": false,
             "code": 1160
         }
@@ -277,7 +274,6 @@
             "commune": 3, 
             "name_fr": "Berchem Ste Agathe", 
             "name_nl": "Sint-Agatha-Berchem", 
-            "name_en": "Berchem Ste Agathe", 
             "hide": false,
             "code": 1082
         }
@@ -289,7 +285,6 @@
             "commune": 4,
             "name_fr": "Bruxelles", 
             "name_nl": "Brussel", 
-            "name_en": "Brussels", 
             "hide": false,
             "code": 1000
         }
@@ -301,7 +296,6 @@
             "commune": 5, 
             "name_fr": "Etterbeek", 
             "name_nl": "Etterbeek", 
-            "name_en": "Etterbeek", 
             "hide": false,
             "code": 1040
         }
@@ -313,7 +307,6 @@
             "commune": 6, 
             "name_fr": "Evere", 
             "name_nl": "Evere", 
-            "name_en": "Evere", 
             "hide": false,
             "code": 1140
         }
@@ -325,7 +318,6 @@
             "commune": 7, 
             "name_fr": "Forest", 
             "name_nl": "Vorst", 
-            "name_en": "Forest", 
             "hide": false,
             "code": 1190
         }
@@ -337,7 +329,6 @@
             "commune": 8,
             "name_fr": "Ganshoren", 
             "name_nl": "Ganshoren", 
-            "name_en": "Ganshoren", 
             "hide": false,
             "code": 1083
         }
@@ -349,7 +340,6 @@
             "commune": 9, 
             "name_fr": "Ixelles", 
             "name_nl": "Elsene", 
-            "name_en": "Ixelles", 
             "hide": false,
             "code": 1050
         }
@@ -361,7 +351,6 @@
             "commune": 10, 
             "name_fr": "Jette", 
             "name_nl": "Jette", 
-            "name_en": "Jette", 
             "hide": false,
             "code": 1090
         }
@@ -373,7 +362,6 @@
             "commune": 11, 
             "name_fr": "Koekelberg", 
             "name_nl": "Koekelberg", 
-            "name_en": "Koekelberg", 
             "hide": false,
             "code": 1081
         }
@@ -385,7 +373,6 @@
             "commune": 12, 
             "name_fr": "Molenbeek St Jean", 
             "name_nl": "Sint-Jans-Molenbeek", 
-            "name_en": "Molenbeek St Jean", 
             "hide": false,
             "code": 1080
         }
@@ -397,7 +384,6 @@
             "commune": 13, 
             "name_fr": "Saint-Gilles", 
             "name_nl": "Sint-Gillis", 
-            "name_en": "Saint-Gilles", 
             "hide": false,
             "code": 1060
         }
@@ -409,7 +395,6 @@
             "commune": 14, 
             "name_fr": "Saint-Josse ten Noode", 
             "name_nl": "Sint-Joost-ten-Node", 
-            "name_en": "Saint-Josse ten Noode", 
             "hide": false,
             "code": 1210
         }
@@ -421,7 +406,6 @@
             "commune": 15, 
             "name_fr": "Schaerbeek", 
             "name_nl": "Schaarbeek", 
-            "name_en": "Schaerbeek", 
             "hide": false,
             "code": 1030
         }
@@ -433,7 +417,6 @@
             "commune": 16, 
             "name_fr": "Uccle", 
             "name_nl": "Ukkel", 
-            "name_en": "Uccle", 
             "hide": false,
             "code": 1180
         }
@@ -445,7 +428,6 @@
             "commune": 17, 
             "name_fr": "Watermael-Boisfort", 
             "name_nl": "Watermaal-Bosvoorde", 
-            "name_en": "Watermael-Boisfort", 
             "hide": false,
             "code": 1170
         }
@@ -457,7 +439,6 @@
             "commune": 18, 
             "name_fr": "Woluwe St Lambert", 
             "name_nl": "Sint-Lambrechts-Woluwe", 
-            "name_en": "Woluwe St Lambert", 
             "hide": false,
             "code": 1200
         }
@@ -469,7 +450,6 @@
             "commune": 19,
             "name_fr": "Woluwe St Pierre", 
             "name_nl": "Sint-Pieters-Woluwe", 
-            "name_en": "Woluwe St Pierre", 
             "hide": false,
             "code": 1150
         }
@@ -481,7 +461,6 @@
             "commune": 5,
             "name_fr": "Laeken", 
             "name_nl": "Laeken", 
-            "name_en": "Laeken", 
             "hide": false,
             "code": 1020
         }
@@ -493,7 +472,6 @@
             "commune": 5,
             "name_fr": "Neder-over-Heembeek", 
             "name_nl": "Neder-over-Heembeek", 
-            "name_en": "Neder-over-Heembeek", 
             "hide": false,
             "code": 1120
         }
@@ -505,7 +483,6 @@
             "commune": 5,
             "name_fr": "Haren", 
             "name_nl": "Haren", 
-            "name_en": "Haren", 
             "hide": false,
             "code": 1130
         }
@@ -517,7 +494,6 @@
             "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
-            "name_en": "", 
             "hide": true,
             "code": 1031
         }
@@ -529,7 +505,6 @@
             "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
-            "name_en": "", 
             "hide": true,
             "code": 1071
         }
@@ -541,7 +516,6 @@
             "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
-            "name_en": "", 
             "hide": true,
             "code": 1051
         }
@@ -553,7 +527,6 @@
             "commune": 4,
             "name_fr": "", 
             "name_nl": "", 
-            "name_en": "", 
             "hide": true,
             "code": 1041
         }
