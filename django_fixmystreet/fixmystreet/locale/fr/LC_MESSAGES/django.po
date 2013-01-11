@@ -442,7 +442,7 @@ msgstr "Région de Bruxelle Capital"
 
 #: templates/base.html:73
 msgid "Submit a Report"
-msgstr "Soumettre un incident"
+msgstr "Signaler un incident"
 
 #: templates/base.html:74
 msgid "View Reports"
@@ -455,7 +455,7 @@ msgstr "Contact"
 
 #: templates/base.html:82
 msgid "Submit a report"
-msgstr "Soumettre un incident"
+msgstr "Signaler un incident"
 
 #: templates/base.html:87
 msgid "My subscriptions"
@@ -1197,7 +1197,7 @@ msgstr "Envoyer"
 
 #: templates/reports/new.html:223
 msgid "Review reports"
-msgstr "Voir les incidents"
+msgstr "Voir tous les incidents"
 
 #: templates/reports/new.html:226
 msgid "To fill a new report"
