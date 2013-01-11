@@ -29,15 +29,18 @@ $(document).ready(function() {
             if(file.size == 0) {
                 alert('Filesize must be greater than 0');
                 $("#fileForm #id_file").val("");
+                return;
             }
             //TODO determine max file size
             else if(file.size > file_max_size) {
                 alert('File to large');
                 $("#fileForm #id_file").val("");
+                return;
             }
             else if(allowed_file_types.indexOf(file.type)==-1 ){
                 alert('The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls.');
                 $("#fileForm #id_file").val("");
+                return;
             }
             else {
                 var title = $("#fileForm #id_title").val();
@@ -58,15 +61,13 @@ $(document).ready(function() {
             $('#form-files').append(file_form_template);
             $('#form-files').append(form_copy);
 
-            file_form_template = form_copy;
-
+            AddFileToView(file_form_template, file);
 
             //$(inputFile).val('');
             // inputFile.replaceWith(inputFile.val('').clone( true )); for IE8 complient
+            file_form_template = form_copy;
             file_count++;
             $("#id_files-TOTAL_FORMS").val(file_count);
-
-            AddFileToView(form, file);
         }
     }
 
@@ -98,7 +99,7 @@ function AddFileToView(elem, file){
     } else {
         thumbnails = "/static/images/icon-file.png";
     }
-    console.log(type);
+
     if (FileReader && (type == "jpeg" || type == "png")) {
         img[0].file = file;
 

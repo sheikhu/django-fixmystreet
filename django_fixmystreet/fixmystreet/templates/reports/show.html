@@ -286,17 +286,17 @@ function markAsDone(){
             <div id="form-files">
                 {{ file_formset.management_form }}
                 {# file_formset.errors #}
+                <div id="file-form-template">
+                    <img class="thumbnail" />
+                    {{ file_formset.empty_form.reportattachment_ptr }}
+                    {{ file_formset.empty_form.file }}
+                    {{ file_formset.empty_form.description }}
+                </div>
             </div>
             <p class="pull-right">
                 <button id="file-upload" class="btn">Add file</button>
             </p>
 
-            <div id="file-form-template">
-                <img class="thumbnail" />
-                {{ file_formset.empty_form.reportattachment_ptr }}
-                {{ file_formset.empty_form.file }}
-                {{ file_formset.empty_form.description }}
-            </div>
         </fieldset>
         <p>
             <input type="submit" class='btn' value="{% trans 'Send' %}" />
@@ -315,7 +315,6 @@ function markAsDone(){
             <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
         </div>
     </div>
-</div>
 
     {% if report.is_in_progress %}
     <div class="overview_div_right">
@@ -331,6 +330,7 @@ function markAsDone(){
         {% endif %}
     </div>
     {% endif %}
+</div>
 </div>
 
 {% endblock %}

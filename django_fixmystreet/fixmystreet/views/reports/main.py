@@ -29,7 +29,7 @@ def new(request):
             report.save()
 
             if request.POST["comment-text"]:
-                comment = comment_form.save(request.user,report,commit=False)
+                comment = comment_form.save(commit=False)
                 comment.report = report
                 comment.save()
 
@@ -39,7 +39,7 @@ def new(request):
                 report_file.save()
 
             if request.POST.get("citizen_subscription", False):
-                ReportSubscription(report=report, subscriber=report.created_by).save()
+                ReportSubscription(report=report, subscriber=report.citizen).save()
 
             if report:
                 messages.add_message(request, messages.SUCCESS, _("You report has been created"))
