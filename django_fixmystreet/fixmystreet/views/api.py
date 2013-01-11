@@ -169,6 +169,7 @@ def create_report_citizen(request):
     data_main_category_id         = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
     data_address                  = request.POST.get('report_address')
+    data_address_number           = request.POST.get('report_address_number')
     data_zip                      = request.POST.get('report_zipcode')
     data_quality                  = request.POST.get('report_quality')
     data_x                        = request.POST.get('report_x')
@@ -192,6 +193,8 @@ def create_report_citizen(request):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')        
     if (data_address == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')        
+    if (data_address_number == None):
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS_NUMBER","request":request.POST}),mimetype='application/json')        
     if (data_zip == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')        
     if (data_quality == None):
@@ -226,6 +229,7 @@ def create_report_citizen(request):
         report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
         report.postalcode = data_zip
         report.address = data_address
+        report.address_number = data_address_number
         report.quality = data_quality
         report.private = False
         #Subscription is automatic.
@@ -247,6 +251,7 @@ def create_report_pro(request):
     data_main_category_id         = request.POST.get('report_main_category_id')
     data_description              = request.POST.get('report_description')
     data_address                  = request.POST.get('report_address')
+    data_address_number           = request.POST.get('report_address_number')
     data_zip                      = request.POST.get('report_zipcode')
     data_x                        = request.POST.get('report_x')
     data_y                        = request.POST.get('report_y')
@@ -267,6 +272,8 @@ def create_report_pro(request):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')        
     if (data_address == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')        
+    if (data_address_number == None):
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS_NUMBER","request":request.POST}),mimetype='application/json')        
     if (data_zip == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')        
     if (data_x == None):
@@ -307,6 +314,7 @@ def create_report_pro(request):
         report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
         report.postalcode = data_zip        
         report.address = data_address        
+        report.address_number = data_address_number
         report.private = True
         #Subscription is automatic.
         #Save given data        

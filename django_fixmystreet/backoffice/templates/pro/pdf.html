@@ -64,17 +64,21 @@ body {
 <!-- ############################################################## -->
 <div id="map">
 </div>
-<h1>{% trans 'Report Data' %}</h1>
+<h1>{% trans 'Incident' %} ({{report.get_ticket_as_string}})</h1>
+<h2>{% trans 'Information '%}</h2>
 <table style="width:100%">
 	<tr>
+                <td>
+			&nbsp;
+		</td>	
 		<td>
 			<strong>
-				{% trans 'Report Address' %}
+				{% trans 'Street' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Report City' %}
+				{% trans 'City' %}
 			</strong>
 		</td>
                 <td>
@@ -82,6 +86,9 @@ body {
 		</td>	
 	</tr>
 	<tr>
+                <td>
+			&nbsp;
+		</td>	
 		<td>
 			{{report.address}}, {{report.address_number}}
 		</td>	
@@ -92,6 +99,69 @@ body {
 			&nbsp;
 		</td>	
 	</tr>
+</table>
+<h2>{% trans 'Author'%}</h2>
+<table style="width:100%">
+	<tr>
+		<td>
+			<strong>
+				{% trans 'Report Creation Date' %}
+			</strong>
+		</td>
+		<td>
+			<strong>
+				{% if user.can_see_confidential %}
+					{% trans 'Report Author' %}
+				{% endif %}
+			</strong>
+		</td>	
+		<td>
+			<strong>
+				{% if user.can_see_confidential %}
+					{% trans 'Report Contact Phone' %}
+				{% endif %}
+			</strong>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			{{report.created}}
+		</td>	
+		<td>
+			{% if user.can_see_confidential %}
+				{% if report.citizen %}
+					{{report.citizen.fmsuser.get_display_name}}
+				{% else %}
+					{{report.created_by.fmsuser.get_display_name}}
+				{% endif %}
+			{% endif %}
+		</td>
+		<td>
+			{% if user.can_see_confidential %}
+				{% if report.citizen %}
+					{% if report.citizen.fmsuser.telephone %}
+						tel:{{report.citizen.fmsuser.telephone}}
+					{% else %}
+						-
+					{% endif %}
+				{% else %}
+					{% if report.created_by.fmsuser.telephone %}
+						tel:{{report.created_by.fmsuser.telephone}}
+					{% else %}
+						-
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		</td>	
+	</tr>
+</table>
+<h2>{% trans 'Manager'%}</h2>
+<table style="width:100%">
+
+</table>
+
+
+<table style="width:100%">
 	<tr>
 		<td>
 			<strong>
@@ -112,7 +182,7 @@ body {
 			{{report.display_category}}
 		</td>	
 		<td>
-			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} (<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.email}}</a>, {{report.responsible_manager.telephone}})
+			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} (mail:<a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.email}}</a>, tel:{{report.responsible_manager.telephone}})
 		</td>
                 <td>
 			&nbsp;
@@ -121,7 +191,7 @@ body {
 	<tr>
 		<td>
 			<strong>
-				{% trans 'Report Ticket' %}
+				FREE	
 			</strong>
 		</td>	
 		<td>
@@ -135,57 +205,13 @@ body {
 	</tr>
 	<tr>
 		<td>
-			{{report.get_ticket_as_string}}	
+			FREE
 		</td>	
 		<td>
 			L:{{report.point.x}} l:{{report.point.y}}
 		</td>	
                 <td>
 			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Report Creation Date' %}
-			</strong>
-		</td>
-		<td>
-			<strong>
-				{% if report.created_by or user.can_see_confidential %}
-					{% trans 'Report Author' %}
-				{% endif %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% if report.created_by or user.can_see_confidential %}
-					{% trans 'Report Contact Phone' %}
-				{% endif %}
-			</strong>
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			{{report.created}}
-		</td>	
-		<td>
-			{% if report.created_by %}
-			{{report.created_by.fmsuser.get_display_name}}
-			{% else %}
-				{% if user.can_see_confidential %}
-				{{report.citizen.fmsuser.get_display_name}}
-				{% endif %}
-			{% endif %}
-		</td>
-		<td>
-			{% if report.created_by %}
-			{{report.created_by.fmsuser.telephone}}
-			{% else %}
-				{% if user.can_see_confidential %}
-				{{report.citizen.fmsuser.telephone}}
-				{% endif %}
-			{% endif %}
 		</td>	
 	</tr>
 	<tr>
@@ -210,13 +236,13 @@ body {
 			{{ report.get_status_display }}
 		</td>	
 		<td>
-			{% if report.created_by %}
-			<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
-			{% else %}
-			<!-- Protect citizen privacy -->
+			{% if report.citizen %}
+				<!-- Protect citizen privacy -->
 				{% if user.can_see_confidential %}
-				<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
+					<a href="mailto:{{report.citizen.fmsuser.email}}">{{report.citizen.fmsuser.email}}</a>
 				{% endif %}
+			{% else %}
+				<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
 			{% endif %}
 		</td>	
                 <td>

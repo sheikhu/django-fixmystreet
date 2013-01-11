@@ -50,11 +50,11 @@ def reportPdf(request, report_id, pro_version):
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {
             'report' : report,
-            'file_list' : report.files.all(),
-            'comment_list' : report.comments.all(),
+            'file_list' : report.files(),
+            'comment_list' : report.comments(),
             'activity_list' : report.activities.all(),
             'pro_version' : pro_version
         }, context_instance=RequestContext(request))
     else:
-        return render_to_pdf("pro/pdf.html", {'report' : report,  'file_list' : report.files.all(), 'comment_list' : report.comments.all(), 'activity_list' : report.activities.all(), 'pro_version' : pro_version},
+        return render_to_pdf("pro/pdf.html", {'report' : report,  'file_list' : report.files(), 'comment_list' : report.comments(), 'activity_list' : report.activities.all(), 'pro_version' : pro_version},
                 context_instance=RequestContext(request))

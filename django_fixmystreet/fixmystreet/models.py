@@ -100,8 +100,8 @@ class FMSUser(User):
         return "#"+self.get_ticket_number()
 
     def get_display_name(self):
-        if (self.first_name == None and self.last_name == None):
-             return 'ANONYMOUS'
+        if ((self.first_name == None or self.first_name == "") and (self.last_name == None or self.last_name == "")):
+             return _('ANONYMOUS')
         else:
              return self.first_name+' '+self.last_name
 
