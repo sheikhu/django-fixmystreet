@@ -126,6 +126,15 @@ except ImportError:
     pass
 
 try:
+    __import__('django_pdb')
+    print "using django pdb"
+    INSTALLED_APPS += ('django_pdb', )
+    MIDDLEWARE_CLASSES += ('django_pdb.middleware.PdbMiddleware',)
+    INTERNAL_IPS = ('127.0.0.1',)
+except ImportError:
+    pass
+
+try:
     __import__('django_jenkins')
     INSTALLED_APPS += ('django_jenkins',)
     PROJECT_APPS = ('fixmystreet',)

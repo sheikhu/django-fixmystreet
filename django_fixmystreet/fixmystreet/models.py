@@ -655,7 +655,6 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
         if not hasattr(self, 'cast_to'):
             for obj in iter:
                 yield obj
-        print self.cast_to
         for obj in iter:
             if self.cast_to == 'file' and hasattr(obj, 'reportfile'):
                 yield obj.reportfile
