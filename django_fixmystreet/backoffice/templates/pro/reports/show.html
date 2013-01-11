@@ -420,9 +420,23 @@ function markAsDone(){
                                 {% endif %}
                                 <div class="update_text">
                                     {{file.title}}:
-                                    {% blocktrans with by=file.created_by.fmsuser.get_display_name on=file.created creat=file.file_creation_date %}
-                                    Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong> File Creation Date <strong>{{creat}}</strong>
-                                    {% endblocktrans %}
+                                    <br/>
+                                    {% trans 'Posted by' %}
+                                        {% if file.created_by %}
+                                                {{file.created_by.fmsuser.get_display_name}}
+                                        {% else %}
+                                                {% trans 'Anonymous' %}
+                                        {% endif %}
+                                    <br/>
+				    {% trans 'Creation Date' %}
+                                    {% if file.file_creation_date != None%}
+                                        {{file.file_creation_date}}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+				    <br/>
+                                    {% trans 'on' %}
+                                        {{file.created}}
                                 </div>
                                 {% endif %}
                             </div>
