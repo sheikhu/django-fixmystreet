@@ -751,7 +751,7 @@ class ReportFile(ReportAttachment):
     #   original_upload_to = field.upload_to
     #   field.upload_to = '%s/%s' % (field.upload_to, self.user.username)
     #   super(Patch, self)._save_FIELD_file(field, filename, raw_contents, save)
-    #   field.upload_to = original_upload_to
+    #field.upload_to = original_upload_to
     #def generate_filename(instance, old_filename):
     #    import pdb
     #    pdb.set_trace()
