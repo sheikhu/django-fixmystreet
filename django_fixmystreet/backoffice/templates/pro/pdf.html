@@ -101,12 +101,12 @@ body {
 	<tr>
 		<td>
 			<strong>
-				{% trans 'Report Category' %}
+				{% trans 'Category' %}
 			</strong>
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Report Creation Date' %}
+				{% trans 'Creation Date' %}
 			</strong>
 		</td>
                 <td>
@@ -283,7 +283,7 @@ body {
 <!-- ####################### HISTORY ############################## -->
 <!-- ############################################################## -->
 <hr/>
-<h1>{% trans 'Report History' %}</h1>
+<h1>{% trans 'History' %}</h1>
 {% if activity_list %}
 <table width="100%">
 	{% for activity in activity_list %}
@@ -313,7 +313,7 @@ body {
 <!-- ###################### COMMENTS ############################## -->
 <!-- ############################################################## -->
 <hr/>
-<h1>{% trans 'Report Comments' %}</h1>
+<h1>{% trans 'Comments' %}</h1>
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
 {% if comment_list %}
 <table width="100%">
@@ -322,7 +322,7 @@ body {
 	{% if not comment.is_citizen_visible and pro_version == "0" %}
 		<!-- SKIP ROW if the current file annex is confidential -->
 	{% elif not comment.is_confidential_visible and pro_version == "1" %}
-		<!-- SKIP ROW if the current file annex is confidential -->
+		
 	{% else %}
 	<tr>
                 <td colspan="2">
@@ -350,7 +350,7 @@ body {
 
 {% else %}
 
-<h3>{% trans 'No Report Comment' %}</h3>
+<h3>{% trans 'No Comment' %}</h3>
 
 {% endif %}
 {% endif %}
@@ -361,7 +361,7 @@ body {
 <!-- ####################### PHOTOS ############################### -->
 <!-- ############################################################## -->
 <hr/>
-<h1>{% trans 'Report Files' %}</h1>
+<h1>{% trans 'Files' %}</h1>
 {% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
 {% if file_list %}
 <table width="100%">
@@ -493,7 +493,7 @@ body {
 
 {% else %}
 
-<h3>{% trans 'No Report File' %}</h3>
+<h3>{% trans 'No File' %}</h3>
 
 {% endif %}
 {% endif %}
