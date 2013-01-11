@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils.translation import get_language, activate
 from django.conf import settings
-
+from django.contrib.auth.forms import AuthenticationForm
 from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, Report
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
@@ -25,7 +25,8 @@ def home(request, location = None, error_msg =None):
                 'reports': Report.objects.all()[0:5],
                 'reports_created': Report.objects.filter(status=Report.CREATED)[0:5],
                 'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)[0:5],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED)[0:5]
+                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED)[0:5],
+                'form':AuthenticationForm()
             },
             context_instance=RequestContext(request))
 
