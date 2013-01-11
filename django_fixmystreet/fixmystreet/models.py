@@ -1079,7 +1079,6 @@ def send_notification(sender, instance, **kwargs):
         instance.success = False
         instance.error_msg = str(e)
 
-
 class ReportEventLog(models.Model):
 
     # List of event types
