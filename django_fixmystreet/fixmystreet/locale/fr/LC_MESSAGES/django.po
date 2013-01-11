@@ -187,7 +187,7 @@ msgstr ""
 #: urls.py:44
 #, fuzzy
 msgid "^reports/$"
-msgstr "^rapports/"
+msgstr "^incidents/"
 
 #: urls.py:45
 msgid "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
@@ -442,11 +442,11 @@ msgstr "Région de Bruxelle Capital"
 
 #: templates/base.html:73
 msgid "Submit a Report"
-msgstr "Soumettre un rapport"
+msgstr "Soumettre un incident"
 
 #: templates/base.html:74
 msgid "View Reports"
-msgstr "Voir les rapports"
+msgstr "Voir les incidents"
 
 #: templates/base.html:76 templates/contact/new.html:4
 #: templates/contact/new.html.py:24
@@ -455,7 +455,7 @@ msgstr "Contact"
 
 #: templates/base.html:82
 msgid "Submit a report"
-msgstr "Soumettre un rapport"
+msgstr "Soumettre un incident"
 
 #: templates/base.html:87
 msgid "My subscriptions"
@@ -464,7 +464,7 @@ msgstr ""
 #: templates/base.html:92
 #, fuzzy
 msgid "Reports assinged to me"
-msgstr "Rapports"
+msgstr "Incidents"
 
 #: templates/base.html:98
 msgid "Unpublished"
@@ -556,7 +556,7 @@ msgstr "Nous le rapporterons au service concerné en votre nom"
 
 #: templates/home.html:49 templates/reports/index.html:17
 msgid "Reports Filed"
-msgstr "Rapports"
+msgstr "Incidents"
 
 #: templates/home.html:50 templates/home.html.py:55 templates/home.html:60
 msgid "In the Last Year"
@@ -564,11 +564,11 @@ msgstr "Durant la dernière année"
 
 #: templates/home.html:54 templates/reports/index.html:21
 msgid "Reports Fixed"
-msgstr "Rapports résolus"
+msgstr "Incidents résolus"
 
 #: templates/home.html:59 templates/reports/index.html:25
 msgid "Reports Updated"
-msgstr "Rapports <span style='display:inline-block;'>mis à jour</span>"
+msgstr "Incidents <span style='display:inline-block;'>mis à jour</span>"
 
 #: templates/home.html:64 templates/reports/index.html:58
 msgid "As reported by Fix My Street users."
@@ -576,7 +576,7 @@ msgstr "Comme indiqué par les utilisateurs de Fix My Street."
 
 #: templates/home.html:69
 msgid "Recent Reports"
-msgstr "Derniers Rapports"
+msgstr "Derniers Incidents"
 
 #: templates/posters.html:4 templates/posters.html.py:8
 #, fuzzy
@@ -716,7 +716,7 @@ msgstr "L'équipe Fix My Street"
 #: templates/emails/report_show.html:2
 #, fuzzy
 msgid "Report overview:"
-msgstr "Rapports pour"
+msgstr "Incidents pour"
 
 #: templates/emails/report_show.html:4
 #: templates/emails/send_report_closed_to_subscribers/message.txt:8
@@ -781,13 +781,13 @@ msgid ""
 "<p>To confirm your submission, please click on the following URL:</p>\n"
 msgstr ""
 "\n"
-"<p>Merci d'avoir soumis à <strong>Fix My Street</strong> le rapport "
+"<p>Merci d'avoir soumis à <strong>Fix My Street</strong> le 'incident "
 "concernant :</p>\n"
 "\n"
 "<h2>%(title)s</h2>\n"
 "<div>%(details)s</div>\n"
 "\n"
-"<p>Pour confirmer votre rapport, veuillez cliquer le lien suivant:</p>\n"
+"<p>Pour confirmer votre incident, veuillez cliquer le lien suivant:</p>\n"
 
 #: templates/emails/confirm_report/message.txt:4
 #, python-format
@@ -800,12 +800,12 @@ msgstr ""
 "\n"
 "Merci d'avoir signalé '%(title)s' à Fix My Street.\n"
 "\n"
-"Pour confirmer votre rapport, veuillez cliquer le lien suivant:\n"
+"Pour confirmer votre incident, veuillez cliquer le lien suivant:\n"
 
 #: templates/emails/confirm_report/subject.txt:1
 #, python-format
 msgid "Fix My Street: Please Confirm Report: %(title)s"
-msgstr "Fix My Street: Veuillez Confirmer votre rapport: %(title)s"
+msgstr "Fix My Street: Veuillez Confirmer votre incident: %(title)s"
 
 #: templates/emails/confirm_update/message.html:4
 #, python-format
@@ -849,7 +849,7 @@ msgstr "Fix My Street: Veuillez Confirmer votre mise à jour: %(title)s"
 
 #: templates/emails/flag_report/subject.txt:1
 msgid "FixMyStreet Report Flagged as Offensive"
-msgstr "FixMyStreet rapport signallé offensif"
+msgstr "FixMyStreet incident signallé offensif"
 
 #: templates/emails/report_update/message.html:5
 #, python-format
@@ -859,7 +859,7 @@ msgid ""
 "<p>was updated by %(author)s on %(date)s:</p>\n"
 msgstr ""
 "\n"
-"<p>Le rapport: <strong>%(title)s</strong></p>\n"
+"<p>L'incident: <strong>%(title)s</strong></p>\n"
 "<p>a été mis à jour par %(author)s le %(date)s:</p>\n"
 
 #: templates/emails/report_update/message.html:9
@@ -870,7 +870,7 @@ msgstr "Ce problème a été résolu."
 #: templates/emails/report_update/message.html:14
 #: templates/emails/report_update/message.txt:11
 msgid "For more information, see the full report at:"
-msgstr "Pour plus d'information, voir le rapport complet:"
+msgstr "Pour plus d'information, voir l'incident complet:"
 
 #: templates/emails/report_update/message.html:17
 msgid ""
@@ -892,7 +892,7 @@ msgid ""
 "was updated by %(author)s on %(date)s:\n"
 msgstr ""
 "\n"
-"Le rapport: '%(title)s' \n"
+"L'incident : '%(title)s' \n"
 "a été mis à jour par %(author)s le %(date)s:\n"
 
 #
@@ -986,7 +986,7 @@ msgstr ""
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
 #, fuzzy
 msgid "Fix My Street: New report created."
-msgstr "Fix My Street: Veuillez Confirmer votre rapport: %(title)s"
+msgstr "Fix My Street: Veuillez Confirmer votre incident: %(title)s"
 
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:9
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:18
@@ -1001,7 +1001,7 @@ msgstr ""
 #: templates/emails/send_report_fixed_to_gest_resp/subject.txt:1
 #, fuzzy
 msgid "Fix My Street: Report marked as fixed."
-msgstr "FixMyStreet rapport signallé offensif"
+msgstr "FixMyStreet incident signallé offensif"
 
 #: templates/emails/send_report_refused_to_creator/message.html:9
 #: templates/emails/send_report_refused_to_creator/message.html:19
@@ -1025,7 +1025,7 @@ msgstr ""
 #: templates/emails/send_report_refused_to_creator/subject.txt:1
 #, fuzzy
 msgid "Fix My Street: Your report has been refused."
-msgstr "FixMyStreet rapport signallé offensif"
+msgstr "FixMyStreet incident signallé offensif"
 
 #: templates/emails/send_subscription_to_subscriber/message.html:9
 #: templates/emails/send_subscription_to_subscriber/message.html:19
@@ -1041,7 +1041,7 @@ msgstr ""
 #: templates/emails/send_subscription_to_subscriber/subject.txt:1
 #: templates/emails/subscribe/subject.txt:1
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
-msgstr "Fix My Street: abonnement aux mises à jour du rapport"
+msgstr "Fix My Street: abonnement aux mises à jour de l'incidentt"
 
 #: templates/emails/subscribe/message.html:4
 #, python-format
@@ -1052,7 +1052,7 @@ msgid ""
 "<p>To confirm your subscription, please click on the following URL:</p>\n"
 msgstr ""
 "\n"
-"<p>Votre abonnement concernant le rapport <strong>%(title)s</strong> a été "
+"<p>Votre abonnement concernant l'incident <strong>%(title)s</strong> a été "
 "créé.</p>\n"
 "\n"
 "<p>Afin de finaliser la procédure d'abonnement, veillez cliquer sur le lien "
@@ -1067,7 +1067,7 @@ msgid ""
 "To confirm your subscription, please click on the following URL:\n"
 msgstr ""
 "\n"
-"Votre abonnement concernant le rapport '%(title)s' a été créé.\n"
+"Votre abonnement concernant l'incident '%(title)s' a été créé.\n"
 "\n"
 "Afin de finaliser la procédure d'abonnement, veillez cliquer sur le lien "
 "d'activation suivant:\n"
@@ -1075,12 +1075,12 @@ msgstr ""
 #: templates/promotions/show.html:4 templates/reports/list.html:4
 #: templates/reports/list.html.py:15 templates/reports/list.html:37
 msgid "Reports for"
-msgstr "Rapports pour"
+msgstr "Incidents pour"
 
 #: templates/promotions/show.html:8
 #, fuzzy
 msgid "First 100 Reports"
-msgstr "Soumettre un rapport"
+msgstr "Soumettre un incident"
 
 #: templates/promotions/show.html:9
 msgid ""
@@ -1094,7 +1094,7 @@ msgstr "résolus"
 #: templates/reports/index.html:4 templates/reports/index.html.py:7
 #: templates/reports/index.html:11
 msgid "All Reports"
-msgstr "Tous les rapports"
+msgstr "Tous les incidents"
 
 #: templates/reports/index.html:8
 msgid "Meta description for index page"
@@ -1102,7 +1102,7 @@ msgstr ""
 
 #: templates/reports/index.html:13
 msgid "Top Reports"
-msgstr "Rapport classé"
+msgstr "Incident classé"
 
 #: templates/reports/index.html:31
 msgid "Rank"
@@ -1110,7 +1110,7 @@ msgstr "Classement"
 
 #: templates/reports/index.html:32
 msgid "Report"
-msgstr "Rapport"
+msgstr "Incident"
 
 #: templates/reports/index.html:33
 msgid "Number of Subscribers"
@@ -1118,7 +1118,7 @@ msgstr "Nombre d'abonnés"
 
 #: templates/reports/index.html:45
 msgid "Reports by wards"
-msgstr "Rapports par communes"
+msgstr "Incidents par communes"
 
 #: templates/reports/list.html:16
 msgid "Meta description for list page"
@@ -1130,7 +1130,7 @@ msgstr "Aucun problème n'a été signalé."
 
 #: templates/reports/new.html:4 templates/reports/new.html.py:14
 msgid "New Report"
-msgstr "Nouveau rapport"
+msgstr "Nouvel incident"
 
 #: templates/reports/new.html:15
 msgid ""
@@ -1140,11 +1140,11 @@ msgstr ""
 
 #: templates/reports/new.html:48
 msgid "Submitting a report"
-msgstr "Soumettre un rapport"
+msgstr "Soumettre un incident"
 
 #: templates/reports/new.html:53
 msgid "Nearby reports"
-msgstr "Rapports à proximité"
+msgstr "Incidents à proximité"
 
 #: templates/reports/new.html:63
 msgid "No problems have been reported in this area."
@@ -1197,11 +1197,11 @@ msgstr "Envoyer"
 
 #: templates/reports/new.html:223
 msgid "Review reports"
-msgstr "Voir les rapports"
+msgstr "Voir les incidents"
 
 #: templates/reports/new.html:226
 msgid "To fill a new report"
-msgstr "Nouveau rapport"
+msgstr "Nouvel incident"
 
 #: templates/reports/new.html:228
 msgid "Drag me to the correct location on the map."
@@ -1209,7 +1209,7 @@ msgstr "Faites moi glisser sur la carte."
 
 #: templates/reports/new.html:232
 msgid "Zoom out to see more reports nearby."
-msgstr "Zoom en arrière pour voir d'autres rapports en proximité."
+msgstr "Zoom en arrière pour voir d'autres  incidents en proximité."
 
 #: templates/reports/new.html:234 views/ajax.py:18
 msgid "Please Note"

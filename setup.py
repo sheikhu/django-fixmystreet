@@ -18,7 +18,8 @@ install_requires = [
     'simple_history',
     'docutils',
     'django-registration',
-    'django-piston'
+    'django-piston',
+    'cc.gettext'
     # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
     ]
@@ -31,6 +32,8 @@ tests_require = [
 
 debug_require = [
     'django-debug-toolbar',
+    'ipython',
+    'django-pdb'
     ]
 
 setup(name='django-fixmystreet',

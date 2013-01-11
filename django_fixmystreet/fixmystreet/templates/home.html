@@ -30,12 +30,12 @@ $(function(){
         {% endif %}
     });
     {% for report in reports %}
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
+    	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
     {% endfor %}
+    
     $("#list_created").show();
     $("#list_closed").hide();
     $("#list_in_progress").hide();
-
 });
 
 function showResults(type,li){
@@ -63,6 +63,7 @@ function showResults(type,li){
 {% endblock %}
 
 {% block content %}
+    <div id="zaza"></div>
     <article id="map">
 
         <div id="instructions" class="block">
@@ -98,17 +99,17 @@ function showResults(type,li){
         <div class='counter'>
             <h3 class='number'>{{ report_counts.recent_new }}</h3>
             <span class='text'>{% trans "Reports Filed" %}</span>
-            <span class='qualifier'>{% trans "In the Last Year" %}</span>
-        </div>
-        <div class='counter'>
-            <h3 class='number'>{{ report_counts.recent_fixed }}</h3>
-            <span class='text'>{% trans "Reports Fixed" %}</span>
-            <span class='qualifier'>{% trans "In the Last Year" %}</span>
+            <span class='qualifier'>{% trans "In the 30 last days" %}</span>
         </div>
         <div class='counter'>
             <h3 class='number'>{{ report_counts.recent_updated }}</h3>
             <span class='text'>{% trans "Reports Updated" %}</span>
-            <span class='qualifier'>{% trans "In the Last Year" %}</span>
+            <span class='qualifier'>{% trans "In the 30 last days" %}</span>
+        </div>
+        <div class='counter'>
+            <h3 class='number'>{{ report_counts.recent_fixed }}</h3>
+            <span class='text'>{% trans "Reports Fixed" %}</span>
+            <span class='qualifier'>{% trans "In the 30 last days " %}</span>
         </div>
     </article>
 

@@ -257,7 +257,6 @@ if (!('fms' in window)) {
 		{
 			console.log('create marker layer');
 			this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer");
-			this.map.addLayer(this.markersLayer);
 			//NEW APPROACH
 			/*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
 			marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
@@ -273,11 +272,17 @@ if (!('fms' in window)) {
 			layer at a time. The layer which is currently being used for selection is the last one on which
 			the .activate() method of the attached select feature control was called.
 			*/
+			/*this.markersLayer.events.on({featureselected: function(event) {alert('ok');
+			    // should be event.xy, but it's not available currently
+			    //     var pixel = control.handlers.feature.evt.xy;
+			    //         var location = map.getLonLatFromPixel(pixel);
+			    //             alert("You clicked near " + location);
+	    		}});*/
+			this.map.addLayer(this.markersLayer);
 
 
-
-/*			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-				onSelect:function(feature,pixel){
+			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
+				onSelect:function(pixel){alert('ok');
 					var p = feature.geometry.components[0];
 					var point = {x:p.x,y:p.y};
 					//console.log(point,feature.attributes.report);
@@ -287,11 +292,10 @@ if (!('fms' in window)) {
                 		'click':function(f){
                 			alert('ok')
 				}}*/			
-//			});
-//			this.map.addControl(selectFeature);
+			});
 
-//			selectFeature.activate();
-
+			this.map.addControl(selectFeature);
+			selectFeature.activate();
 			
 			//this.superControl.selectControl = selectFeature;
 
