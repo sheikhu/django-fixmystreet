@@ -75,7 +75,10 @@ class CSVEmitter(Emitter):
                     if file_counter == 0:
                         writer.writerow(['Files'])
                         writer.writerow(['','Filename', 'Creator', 'File Creation Date', 'File Import Date'])
-                    writer.writerow(['','http://'+request.get_host()+'/media/'+file_obj.file.__str__(),file_obj.get_display_name(), file_obj.file_creation_date.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S')), file_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
+                    created_date = ""
+                    if (file_obj.file_creation_date):
+                        created_date = file_obj.file_creation_date.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))
+                    writer.writerow(['','http://'+request.get_host()+'/media/'+file_obj.file.__str__(),file_obj.get_display_name(), created_date, file_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
                     file_counter = file_counter + 1
             except ReportFile.DoesNotExist:
                 print('error') 

@@ -45,7 +45,7 @@ def new(request):
 
     return render_to_response("pro/reports/new.html",
             {
-                "available_zips":ZipCode().get_usable_zipcodes(),
+                "available_zips":ZipCode.objects.all(),
                 "report_form": report_form,
                 "pnt":pnt,
                 "reports":reports,

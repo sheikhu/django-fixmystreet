@@ -535,6 +535,13 @@ li img {
 
 #form-files img {
     max-width: 100px;
+    float: left;
+}
+
+#form-files textarea {
+    margin-left: 10px;
+    float: left;
+    width: auto;
 }
 
 #file-form-template {

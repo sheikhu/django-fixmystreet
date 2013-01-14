@@ -639,12 +639,12 @@ function markAsDone(){
             {% endif %}
             <div id="pdf_report">
             {% if report.responsible_manager.id == request.user.id or fms_user.leader or report.contractor == fms_user.organisation %}
-                <a onclick="window.location = '{% url report_pdf_pro report.id 1 %}'"><img src="{{STATIC_URL}}images/">  {% trans 'report pdf' %}</a>
-                <a onclick="window.location = '{% url report_pdf_pro report.id 0 %}'"><img src="{{STATIC_URL}}images/">  {% trans 'report pdf public' %}</a>
+		<button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="saveFormButton" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf' %}</button>
+		<button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="saveFormButton" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf public' %}</button>
             {% endif %}
-            </div>
-	    <div>
-	     <a onclick="window.open('/export_file/reports/csv?id={{report.id}}')"><img src="{{STATIC_URL}}images/">  {% trans 'export csv' %}</a>
+            {% if fms_user.manager or fms_user.leader %}
+		<button onclick="window.open('/export_file/reports/csv?id={{report.id}}')" class="saveFormButton" style="font-size: 0.8em;margin-top: 0px;">{% trans 'Export Csv' %}</button>
+            {% endif %}
 	    </div>
         </div>
     </div>

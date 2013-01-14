@@ -90,9 +90,6 @@ class FMSUser(User):
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
         report_ticket_id = str(self.id)
-        if (report_ticket_id.__len__() <= 8):
-            for i in range(8-(report_ticket_id.__len__())):
-                report_ticket_id = "0"+report_ticket_id;
         return report_ticket_id
 
     def get_ticket_as_string(self):
@@ -330,6 +327,9 @@ class Report(UserTrackedModel):
 
     def __unicode__(self):
         return self.display_category()
+
+    def get_address_city_name(self):
+        return ZipCode.objects.get(code=self.postalcode).name
 
     def display_category(self):
         return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name

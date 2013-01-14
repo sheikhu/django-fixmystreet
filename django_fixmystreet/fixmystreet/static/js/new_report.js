@@ -24,7 +24,7 @@ $(document).ready(function() {
 		markerMoved(point);
 	});
 
-    $map.bind('reportselected', function(evt, point, report){
+    fms.currentMap.bind('reportselected', function(evt, point, report){
     	window.location.assign('/reports/' + report.id);
     });
 

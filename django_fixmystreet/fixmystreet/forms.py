@@ -174,12 +174,8 @@ class ReportCommentForm(forms.ModelForm):
 
     text = forms.fields.CharField(widget=forms.Textarea)
 
-    def save(self, user, report, commit=True):
+    def save(self, commit=True):
         comment= super(ReportCommentForm,self).save(commit=False)
-        comment.report = report
-
-        #Add the creator
-        comment.creator = user
 
         if commit:
             comment.save()
