@@ -361,7 +361,7 @@ footer *{
 }
 
 .olMapViewport *:first-child {
-    z-index: -1 !important;
+    /*z-index: -1 !important;*/
 }
 
 .error-msg {
