@@ -284,11 +284,14 @@ if (!('fms' in window)) {
 
 
 			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-				onSelect:function(pixel){alert('ok');
-					var p = feature.geometry.components[0];
-					var point = {x:p.x,y:p.y};
+				onSelect:function(feature){
+					//Ticket web service
+					window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
+					//console.log(pixel.attributes.report.id);
+					//var p = feature.geometry.components[0];
+					//var point = {x:p.x,y:p.y};
 					//console.log(point,feature.attributes.report);
-					self.element.trigger('reportselected', [point, feature.attributes.report]);
+					//self.element.trigger('reportselected', [point, feature.attributes.report]);
 				}
 				/*'callbacks':{
                 		'click':function(f){
