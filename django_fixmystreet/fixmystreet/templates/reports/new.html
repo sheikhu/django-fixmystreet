@@ -24,7 +24,15 @@ $(function(){
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}});
     {% endfor %}
     fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
+
+    {% if report%}
+    show_confirmation_popup();
+    {% endif %}
 });
+
+function show_confirmation_popup(){
+    $("#confirmation_popup").modal();
+}
 
 var available_zipcodes = {
     {% for zip in available_zips %}
@@ -58,6 +66,21 @@ var categories = {
 {% endblock %}
 
 {% block content %}
+<div id="confirmation_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <a class="close" href="{{report.get_absolute_url}}" >&times;</a>
+        <h3>{% trans 'Submit an incident:' %}</h3>
+    </div>
+    <div class="modal-body">
+        <p><img src="" > {% trans 'Thank you! Your incident has been sent correctly to the system.' %}</p>
+        {% if report %}
+        <p><a href="{% url report_pdf report.id 0 %}" ><img src="" > {% trans 'Download a copy of the incident as a pdf' %}</a></p>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        <a href="{{report.get_absolute_url}}" class="btn"> {% trans 'Continue'%}</a>
+    </div>
+</div>
     <article id="map">
         <div id="cursor-instructions" class="block highlighted">
             {% trans "Drag me to change my location." %}

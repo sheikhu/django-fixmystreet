@@ -117,7 +117,7 @@ class CitizenForm(forms.Form):
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
             del self.cleaned_data['subscription']
-            del self.cleaned_data['quality']
+            # del self.cleaned_data['quality']
             #For unique constraints
             self.cleaned_data['username'] = self.cleaned_data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
@@ -172,7 +172,7 @@ class ReportCommentForm(forms.ModelForm):
         model = ReportComment
         fields = ('text',)
 
-    text = forms.fields.CharField(widget=forms.Textarea)
+    text = forms.fields.CharField(widget=forms.Textarea(attrs={'placeholder':_("Verify if a similar incident isn't reported yet.")}))
 
     def save(self, commit=True):
         comment= super(ReportCommentForm,self).save(commit=False)
