@@ -377,6 +377,11 @@ class Report(UserTrackedModel):
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
 
+    def thumbnail(self):
+        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE)
+        if (reportImages.__len__() > 0):
+            return reportImages[0].file.url
+
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
@@ -423,6 +428,12 @@ class Report(UserTrackedModel):
         if (self.close_date):
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
 
+        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE)
+        if (reportImages.__len__() > 0):
+            thumbValue = reportImages[0].file.url
+        else:
+            thumbValue = 'null'
+
         return {
             "id": self.id,
             "point": {
@@ -433,7 +444,8 @@ class Report(UserTrackedModel):
             "status_label": self.get_status_display(),
             "close_date": close_date_as_string,
             "private": self.private,
-            "valid": self.valid
+            "valid": self.valid,
+            "thumb": thumbValue 
         }
 
     def to_mobile_JSON(self):
