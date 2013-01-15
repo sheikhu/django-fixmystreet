@@ -182,6 +182,18 @@ function markAsDone(){
                 <th>{% trans "Category:" %}</th>
                 <td>{{report.display_category}}</td>
             </tr>
+            <tr>
+                <th>{% trans "Status:" %}</th>
+                {% if report.is_created%}
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-red-XS.png"></td>
+                {% endif %}
+                {% if report.is_in_progress%}
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-orange-XS.png"/></td>
+                {% endif %}
+                {% if report.is_closed%}
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-green-XS.png"></td>
+                {% endif %}
+            </tr>
         </table>
 
 
@@ -189,7 +201,8 @@ function markAsDone(){
         <!-- ################# FILES ############### -->
         <!-- ################# FILES ############### -->
         {% if report.active_files %}
-        <h4>{% trans "Photos and files" %}</h4>
+        <br/>
+	<h4>{% trans "Photos and files" %}</h4>
         <div id="report_updates">
             <table id="extraFilesTable">
             {% for file in report.active_files.all %}
@@ -248,7 +261,8 @@ function markAsDone(){
         <!-- ################# COMMENTS ############### -->
         <!-- ################# COMMENTS ############### -->
         {% if report.active_comments %}
-        <h4>{% trans "Comments" %}</h4>
+        <br/>
+	<h4>{% trans "Comments" %}</h4>
         <div id="report_updates">
             <table class="extraCommentsTable">
             {% for comment in report.active_comments.all %}

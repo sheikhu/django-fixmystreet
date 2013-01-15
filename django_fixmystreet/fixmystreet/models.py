@@ -363,10 +363,10 @@ class Report(UserTrackedModel):
         return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
     def active_comments(self):
-        return self.comments().filter(security_level=1)
+        return self.comments().filter(logical_deleted=False).filter(security_level=1)
 
     def active_files(self):
-        return self.files().filter(security_level=1)
+        return self.files().filter(logical_deleted=False).filter(security_level=1)
 
     def is_created(self):
         return self.status == Report.CREATED
@@ -378,18 +378,19 @@ class Report(UserTrackedModel):
         return self.status in Report.REPORT_STATUS_CLOSED
 
     def thumbnail(self):
-        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE)
-        if (reportImages.__len__() > 0):
-            return reportImages[0].file.url
+        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
+        if (not self.is_created()):
+            if (reportImages.__len__() > 0):
+                return reportImages[0].file.url
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def comments(self):
-        return self.attachments.get_query_set().comments()
+        return self.attachments.get_query_set().comments().filter(logical_deleted=False)
 
     def files(self):
-        return self.attachments.get_query_set().files()
+        return self.attachments.get_query_set().files().filter(logical_deleted=False)
 
     def to_full_JSON(self):
         """
@@ -692,7 +693,7 @@ class ReportAttachment(UserTrackedModel):
         (CONFIDENTIAL,_("Confidential"))
     )
 
-    #logical_deleted = models.BooleanField(default=False)
+    logical_deleted = models.BooleanField(default=False)
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
     report = models.ForeignKey(Report, related_name="attachments")
 
