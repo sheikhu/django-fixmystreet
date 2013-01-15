@@ -61,7 +61,7 @@
 
                         <form method="post" action="{% url login %}?next={% url home_pro %}" class="form-horizontal">
                             {% csrf_token %}
-                            {% include "_form_twbootstrap.html" with form=login_form %}
+                            {% include "_form_placeholder.html" with form=login_form %}
 
                             <input type="submit" value="login" class='btn'/>
                             <input type="hidden" name="next" value="{{ next }}" />

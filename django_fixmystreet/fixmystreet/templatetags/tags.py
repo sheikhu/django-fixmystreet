@@ -55,3 +55,8 @@ def hasAtLeastAManager(userId):
 @register.filter
 def classname(obj):
     return obj.__class__.__name__
+
+@register.simple_tag
+def input_placeholder(field):
+    field.field.widget.attrs["placeholder"] = field.label
+    return field

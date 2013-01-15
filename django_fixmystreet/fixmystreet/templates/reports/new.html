@@ -131,7 +131,7 @@ function toggleFormSteps(){
                     </div>
                     <fieldset>
                         <legend>{% trans "Incident category:" %}</legend>
-                        {% include "_form_twbootstrap.html" with form=report_form %}
+                        {% include "_form_horizontal.html" with form=report_form %}
                     </fieldset>
                     {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
                     <fieldset>
@@ -157,7 +157,7 @@ function toggleFormSteps(){
                         {# comment_form.text.errors #}
                     </fieldset>
                     {% endif %}
-                    
+
                 </div>
                 {% endblock %}
             <div id="user_information_form" class="overview_div_right">
@@ -169,7 +169,7 @@ function toggleFormSteps(){
                     {# If the status allow such interactions #}
                     <fieldset>
                         <legend>{% trans 'Contact information:' %}</legend>
-                        {% include "_form_twbootstrap.html" with form=citizen_form %}
+                        {% include "_form_horizontal.html" with form=citizen_form %}
                     </fieldset>
                 {% endif %}
             </div>
