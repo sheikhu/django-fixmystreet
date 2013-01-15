@@ -61,13 +61,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     "django.contrib.messages.context_processors.messages",
     'django_fixmystreet.fixmystreet.context_processor.domain',
-    'django_fixmystreet.fixmystreet.context_processor.environment'
+    'django_fixmystreet.fixmystreet.context_processor.environment',
+    'django_fixmystreet.fixmystreet.context_processor.login_form',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
