@@ -1930,5 +1930,31 @@
             "leader":true,
             "organisation":10
         }
+    },
+    {
+        "pk":159,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jose",
+            "last_name": "de la STIB",
+            "username": "stib",
+            "email": "thibaut@desany.eu",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":159,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":159,
+            "telephone":"023004050",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":21
+        }
     }
 ]

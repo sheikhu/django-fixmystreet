@@ -37,6 +37,58 @@
         }
     },
     {
+        "pk":21,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"STIB",
+            "name_nl":"MIVB",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":22,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"IBGE",
+            "name_nl":"BIM",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":23,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Bruxelles Proprete",
+            "name_nl":"Net Brussel",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":24,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Port de Bruxelles",
+            "name_nl":"Haven van Brussel",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
         "pk": 1, 
         "model": "fixmystreet.organisationentity", 
         "fields": {
@@ -64,8 +116,8 @@
         "fields": {
             "commune": true, 
             "dependency":20, 
-            "name_fr": "Berchem Ste Agathe",
-            "name_nl": "Berchem Ste Agathe",
+            "name_fr": "Berchem-Sainte-Agathe",
+            "name_nl": "Sint-Agatha-Berchem",
             "feature_id": "URB_A_MU.7300"
         }
     },
@@ -272,7 +324,7 @@
         "model": "fixmystreet.zipcode", 
         "fields": {
             "commune": 3, 
-            "name_fr": "Berchem Ste Agathe", 
+            "name_fr": "Berchem-Sainte-Agathe", 
             "name_nl": "Sint-Agatha-Berchem", 
             "hide": false,
             "code": 1082

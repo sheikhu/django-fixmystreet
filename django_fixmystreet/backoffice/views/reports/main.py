@@ -82,8 +82,8 @@ def show(request,slug, report_id):
     else :
         page_number=1
     report = get_object_or_404(Report, id=report_id)
-    files = ReportFile.objects.filter(report_id=report_id)
-    comments = ReportComment.objects.filter(report_id=report_id)
+    files = ReportFile.objects.filter(report_id=report_id).filter(logical_deleted=False)
+    comments = ReportComment.objects.filter(report_id=report_id).filter(logical_deleted=False)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
 

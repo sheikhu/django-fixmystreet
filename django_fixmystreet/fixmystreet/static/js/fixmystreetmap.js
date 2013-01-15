@@ -284,7 +284,44 @@ if (!('fms' in window)) {
 
 
 			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-				onSelect:function(feature){
+				callbacks: { 
+     				   click: function(feature){
+				   	window.location = "/report/search_ticket?report_id="+feature.attributes.report.id;
+				   }, 
+      				   over: function(feature){
+					domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+
+					var imageLink = "/static/images/no-photo.png";
+
+					if (feature.attributes.report.thumb != 'null') {
+						imageLink = feature.attributes.report.thumb;
+					}
+
+					$(domElementUsedToAnchorTooltip).qtip({
+						id: 'myMarkerTooltip',
+						content: {
+							text:"<img src='"+imageLink+"'/>"
+						},
+						position: {
+							my: "bottom center", // Use the corner...
+							at: "top center"
+						},
+						viewport: $(window),
+						show: {
+							event: false, // Don't specify a show event...
+							ready: true // ... but show the tooltip when ready
+						},
+						onHide: function(){
+					                $(this).qtip('destroy');
+					           },
+						style: {
+							classes: 'qtip-jtools'
+						}
+					});
+				   }
+    				}
+				/*onSelect:function(feature){
+					alert('olk');
 					//Ticket web service
 					window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
 					//console.log(pixel.attributes.report.id);
@@ -292,32 +329,11 @@ if (!('fms' in window)) {
 					//var point = {x:p.x,y:p.y};
 					//console.log(point,feature.attributes.report);
 					//self.element.trigger('reportselected', [point, feature.attributes.report]);
-				}
-				/*'callbacks':{
-                		'click':function(f){
-                			alert('ok')
-				}}*/			
+				}*/
 			});
 
 			this.map.addControl(selectFeature);
 			selectFeature.activate();
-			
-			//this.superControl.selectControl = selectFeature;
-
-			/*var events = new OpenLayers.Events(this.markersLayer, this.element[0], ['click']);
-			events.on({
-				'click':function(){
-					console.log('click');
-				}
-			});
-			this.element.click(function(evt){
-				console.log('wow');
-
-			});*/
-			/*this.element.delegate('image', 'click', function(evt){
-				console.log('image',this);
-			});*/
-			
 		}
 		console.log('add point');
 
