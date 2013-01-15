@@ -62,6 +62,7 @@ var categories = {
 function validate() {
     toggleFormSteps();
     $('#confirmation_edit_button').show();
+    $('#confirmation_button').removeAttr("disabled");
     // $("#confirmation_button").removeAttr("disabled");
     // $("#confirmation_button").attr("onclick","confirm();");
     $('#validate_report_popup').modal('hide');
