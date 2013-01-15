@@ -163,7 +163,8 @@ def create_report_citizen(request):
     """Create a citizens reports. Validation included."""
     data_email                       = request.POST.get('user_email')
     #data_firstname                   = request.POST.get('user_firstname')
-    data_firstname               = ''
+    data_phone			  = request.POST.get('user_phone')
+    data_firstname                = ''
     data_lastname                 = request.POST.get('user_lastname')
     data_category_id              = request.POST.get('report_category_id')
     data_main_category_id         = request.POST.get('report_main_category_id')
@@ -185,6 +186,9 @@ def create_report_citizen(request):
     #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_FIRSTNAME","request":request.POST}),mimetype='application/json')
     if (data_lastname == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_LASTNAME","request":request.POST}),mimetype='application/json')
+    if (data_phone == None):
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PHONE","request":request.POST}),mimetype='application/json')
+
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
     if (data_main_category_id == None):
@@ -214,7 +218,7 @@ def create_report_citizen(request):
         report.citizen = existingUser
     except FMSUser.DoesNotExist:
         #Add information about the citizen connected if it does not exist
-        report.citizen = FMSUser.objects.create(username=data_email, email=data_email, first_name=data_firstname, last_name=data_lastname, agent=False, contractor=False, manager=False, leader=False)
+        report.citizen = FMSUser.objects.create(username=data_email, telephone=data_phone, email=data_email, first_name=data_firstname, last_name=data_lastname, agent=False, contractor=False, manager=False, leader=False)
 
     #Assign values to the report.        
     try:
