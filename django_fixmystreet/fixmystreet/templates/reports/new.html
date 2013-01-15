@@ -33,6 +33,10 @@ $(function(){
     {% if report%}
     show_confirmation_popup();
     {% endif %}
+    {% if BACKOFFICE %}
+    $("#validate_form").css("margin-top","30px");
+    $(".report_step_number_2").css("bottom","10px");
+    {% endif %}
 });
 
 function show_confirmation_popup(){
@@ -80,8 +84,8 @@ function toggleFormSteps(){
 }
 
 </script>
-
 <script src="{{STATIC_URL}}js/new_report.js"></script>
+
 
 {% block specific_scripts %}
 <script src="{{STATIC_URL}}js/reportFormReview.js"></script>
@@ -108,7 +112,7 @@ function toggleFormSteps(){
                         <br/>
                         <a href="javascript:$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
                 </div>
-                {% block report_form %}
+                
                     <div class="control-group">
                         <span class="control-label">{% trans "Address" %}</span>
                         <div class="controls">
@@ -121,12 +125,14 @@ function toggleFormSteps(){
                         <div class="controls">
                             <span id="postcode-text"></span>
                         </div>
-
                     </div>
+                    {% block report_form %}
                     <fieldset>
                         <legend>{% trans "Incident category:" %}</legend>
                         {% include "_form_twbootstrap.html" with form=report_form %}
                     </fieldset>
+
+                    {% endblock %}
                     {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
                     <fieldset>
                         <legend>{% trans 'Files' %}</legend>
@@ -138,7 +144,7 @@ function toggleFormSteps(){
                                 <img class="thumbnail" />
                                 {{ file_formset.empty_form.reportattachment_ptr }}
                                 {{ file_formset.empty_form.file }}
-                                {{ file_formset.empty_form.description }}
+                                {{ file_formset.empty_form.title }}
                             </div>
                         </div>
                         <div class="file-upload-button">
@@ -153,7 +159,7 @@ function toggleFormSteps(){
                     {% endif %}
                     
                 </div>
-                {% endblock %}
+            {% if citizen_form %}
             <div id="user_information_form" class="overview_div_right">
                 <div class="report_step_number_2"></div>
                 <div class="inactive_overlay_form_overview"></div>
@@ -167,8 +173,13 @@ function toggleFormSteps(){
                     </fieldset>
                 {% endif %}
             </div>
+            {% endif %}
             <div id="validate_form" class="overview_div_right">
+                {% if not BACKOFFICE %}
                 <div class="report_step_number_3"></div>
+                {% else %}
+                <div class="report_step_number_2"></div>
+                {% endif %}
                 <div class="inactive_overlay_form_overview"></div>
                 <fieldset>
                     <legend>{% trans 'Validate' %}</legend>
@@ -178,7 +189,11 @@ function toggleFormSteps(){
                 </fieldset>
             </div>
             <div id="confirm_form" class="overview_div_right">
+                {% if not BACKOFFICE %}
                 <div class="report_step_number_4"></div>
+                {% else %}
+                <div class="report_step_number_3"></div>
+                {% endif %}
                 <div class="inactive_overlay_form_overview"></div>
                 <fieldset>
                     <legend>{% trans 'Confirm' %}</legend>
@@ -196,7 +211,11 @@ function toggleFormSteps(){
         </div>
         <div id="confirmation_popup" class="modal hide fade" role="dialog">
             <div class="modal-header">
+                {% if not BACKOFFICE %}
                 <a class="close" href="{{report.get_absolute_url}}" >&times;</a>
+                {% else %}
+                <a class="close" href="{{report.get_absolute_url_pro}}?page=1" >&times;</a>
+                {% endif %}
                 <h3>{% trans 'Submit an incident:' %}</h3>
             </div>
             <div class="modal-body">
@@ -206,7 +225,11 @@ function toggleFormSteps(){
                 {% endif %}
             </div>
             <div class="modal-footer">
+                {% if not BACKOFFICE%}
                 <a href="{{report.get_absolute_url}}" class="btn"> {% trans 'Continue'%}</a>
+                {% else %}
+                <a href="{{report.get_absolute_url_pro}}?page=1" class="btn"> {% trans 'Continue'%}</a>
+                {% endif %}
             </div>
         </div>
         <div id="validate_report_popup" class="modal hide fade" role="dialog">
