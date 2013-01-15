@@ -429,11 +429,11 @@ class Report(UserTrackedModel):
         if (self.close_date):
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
 
-        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE)
-        if (reportImages.__len__() > 0):
-            thumbValue = reportImages[0].file.url
-        else:
+        local_thumbnail = self.thumbnail()
+        if (local_thumbnail == None):
             thumbValue = 'null'
+        else:
+            thumbValue = local_thumbnail
 
         return {
             "id": self.id,
