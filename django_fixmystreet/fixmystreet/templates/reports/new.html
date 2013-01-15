@@ -99,6 +99,7 @@ function toggleFormSteps(){
         </div>
     </article>
     <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
+        {% csrf_token %}
         <div id="page_content_container">
             <div id="create_form_left" class="overview_div_left">
                 <div class="report_step_number_1">
