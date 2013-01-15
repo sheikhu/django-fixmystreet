@@ -774,8 +774,7 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
-    title = models.CharField(max_length=250, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date= models.DateTimeField(null=True)
 
     def is_pdf(self):

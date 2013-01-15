@@ -27,15 +27,19 @@ def new(request):
             report = report_form.save(commit=False)
             report.citizen = citizen
             report.save()
-
             if request.POST["comment-text"]:
                 comment = comment_form.save(commit=False)
+                comment.created_by = citizen 
                 comment.report = report
                 comment.save()
 
             files = file_formset.save(commit=False)
             for report_file in files:
                 report_file.report = report
+                report_file.created_by = citizen
+                #if no content the user the filename as description
+                if (report_file.title == ''):
+                    report_file.title = str(report_file.file.name)
                 report_file.save()
 
             if request.POST.get("citizen_subscription", False):
