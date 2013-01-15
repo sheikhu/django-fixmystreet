@@ -38,7 +38,7 @@ class ReportForm(forms.ModelForm):
         model = Report
 
     category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
-    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("Secondary category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
 
     # hidden inputs
     address = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -103,7 +103,7 @@ class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
-        fields = ('quality', 'email', 'last_name', 'subscription', 'telephone')
+        fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
     quality = forms.ChoiceField(choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))

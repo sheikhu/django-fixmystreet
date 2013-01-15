@@ -63,7 +63,7 @@ def new(request):
                 "report_form": report_form,
                 "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports
+                "reports":reports[0:5]
             },
             context_instance=RequestContext(request))
 

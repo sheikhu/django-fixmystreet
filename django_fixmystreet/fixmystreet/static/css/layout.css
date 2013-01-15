@@ -476,7 +476,7 @@ form.required-invalid .required-msg {
 	width: 30%;
 }
 
-#content h1 {
+/*#content h1 {
 	font-size: 1.5em;
 	font-weight: normal;
     color: #004990;
@@ -501,7 +501,7 @@ form.required-invalid .required-msg {
 	font-weight: bold;
 	margin: 4px 0 7px 0;
 	text-align:left;
-}
+}*/
 
 th {
 	font-weight: bold;
@@ -528,7 +528,7 @@ li img {
 #required-note {
     font-weight: bold;
     font-size: x-small;
-
+    margin-left: 40px;
 }
 
 #form-files input[type=file] {
@@ -537,13 +537,13 @@ li img {
 
 #form-files img {
     max-width: 100px;
-    float: left;
+    display: inline-block;
 }
 
 #form-files textarea {
     margin-left: 10px;
-    float: left;
     width: auto;
+    max-height: 110px;
 }
 
 #file-form-template {
@@ -560,6 +560,135 @@ li img {
     margin-top: 30px;
 }
 
+.report_step_number_1 {
+    position: relative;
+    left: -28px;
+    bottom: 29px;
+    height: 32px;
+    width: 32px;
+    background: url("../images/form-step-number-1.png") no-repeat center transparent;
+    background-size: 32px;
+    z-index: 3;
+}
+
+.report_step_number_2 {
+    position: relative;
+    left: -28px;
+    bottom: 29px;
+    height: 32px;
+    width: 32px;
+    background: url("../images/form-step-number-2.png") no-repeat center transparent;
+    background-size: 32px;
+    z-index: 3;
+}
+
+.report_step_number_3 {
+    position: relative;
+    left: -28px;
+    bottom: 10px;
+    height: 32px;
+    width: 32px;
+    background: url("../images/form-step-number-3.png") no-repeat center transparent;
+    background-size: 32px;
+    z-index: 3;
+}
+
+.report_step_number_4 {
+    position: relative;
+    left: -28px;
+    bottom: 10px;
+    height: 32px;
+    width: 32px;
+    background: url("../images/form-step-number-4.png") no-repeat center transparent;
+    background-size: 32px;
+    z-index: 3;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+    width: auto;
+}
+
+.form-horizontal .controls {
+    margin-left: 180px;
+}
+
+.form-horizontal .control-group{
+    float: left;
+    width: 100%;
+}
+
+.form-horizontal .help-block{
+    font-size: x-small;
+    margin-top: 10px;
+    margin-left: 40px;
+}
+
+.warning_information_form {
+    width: 45%;
+    padding: 15px;
+    margin-bottom: 40px;
+    float:right;
+}
+
+.form-horizontal fieldset legend{
+    border-bottom: none;
+    margin-bottom: 0px;
+}
+
+.file-upload-button {
+    margin-left: 20px;
+}
+
+#view_nearby_reports{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#report-form .btn{
+    float:right;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    background: #FFF203;
+}
+
+#report-form .btn.gray_left{
+    float: left;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    background: gray;
+    border: 1px solid #FFF203;
+    color: white;
+}
+
+#validate_form {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+#validate_form fieldset{
+    margin-top: -20px;
+}
+
+#confirm_form {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+#confirm_form fieldset{
+    margin-top: -20px;
+}
+
+.inactive_overlay_form_overview {
+    opacity:0.5;
+    position:absolute;
+    top:0; bottom:0; left:0; right:0;
+    display:block;
+    z-index:2;
+    background:gray;
+    border-radius: 8px;
+}
+
 /********* HOME LAYOUT ********/
 
 
@@ -568,7 +697,7 @@ li img {
 }
 
 #input-search.loading {
-    background:url("../images/ajax-loader.gif") no-repeat 98% center transparent;
+    background:url("../images/ajax-loader.gif") no-repeat 98% left transparent;
 }
 
 #input-search.loading::-webkit-search-cancel-button {
@@ -935,19 +1064,34 @@ input[type="button"].btn {
     width: 45%;
     border: 1px solid #DFDFDF;
     border-radius: 8px;
-    padding: 15px;
+    padding: 20px;
     box-shadow: 0px 0px 3px 3px #DFDFDF;
     margin-bottom: 10px;
     float:left;
+    position: relative;
 }
+
+.overview_div_left h1{
+   margin-left: 35px;
+   font-size: x-large;
+   margin-top: -30px;
+}
+
+.overview_div_right h1{
+   margin-left: 35px;
+   font-size: x-large;
+   margin-top: -30px;
+}
+
 .overview_div_right {
     width: 45%;
     border: 1px solid #DFDFDF;
     border-radius: 8px;
-    padding: 15px;
+    padding: 20px;
     box-shadow: 0px 0px 3px 3px #DFDFDF;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     float:right;
+    position: relative;
 }
 #addFileDiv {
     padding-bottom: 15px;
@@ -964,6 +1108,14 @@ table td.annexesFirstTD {
 table td.annexesChoiceBoxTD {
 }
 
+
+#create_form_left.overview_div_left {
+    margin-top: 30px;
+}
+
+#user_information_form.overview_div_right {
+    margin-top: 30px;
+}
 
 /********* REPORT TABLE LAYOUT ********/
 
