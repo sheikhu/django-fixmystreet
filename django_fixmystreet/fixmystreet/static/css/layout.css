@@ -335,6 +335,18 @@ footer *{
 
 /********* CONTENT LAYOUT ********/
 
+#baseline {
+    color: #949499;
+    background-color: #FFF203;
+    font-size: 18px;
+    margin:0;
+    padding: 4px 28px;
+}
+
+#baseline small {
+    font-size: 14px;
+}
+
 #content {
     min-height: 140px;
     width: 100%;

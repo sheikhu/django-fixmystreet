@@ -1,7 +1,8 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.forms.models import modelformset_factory
 from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, MarkAsDoneForm
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, MarkAsDoneForm, ReportFileForm
 from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
@@ -10,46 +11,50 @@ from django.conf import settings
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
+    ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
+    report = None
     if request.method == "POST":
-        report_form = ProReportForm(request.POST, request.FILES)
+        print request.POST
+        report_form = ProReportForm(request.POST, request.FILES, prefix='report')
+        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         # this checks update is_valid too
-        if report_form.is_valid():
+        if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
             # this saves the update as part of the report.
-            report = report_form.save(request.user)
-            SessionManager.saveComments(request.session, report)
-            SessionManager.saveFiles(request.session, report)
-            if report:
-                if request.backoffice:
-                    return HttpResponseRedirect(report.get_absolute_url_pro())
-                else:
-                    return HttpResponseRedirect(report.get_absolute_url())
-    else:
-        SessionManager.clearSession(request.session)
-        report_form = ProReportForm(initial={
-            'x': request.REQUEST.get('x'),
-            'y': request.REQUEST.get('y')
-        })
+            report = report_form.save()
+            
+            if request.POST["comment-text"]:
+                comment = comment_form.save(commit=False)
+                comment.created_by = FMSUser.objects.get(pk=request.user.id)
+                comment.report = report
+                comment.save()
 
-    #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
-    statusQ = request.REQUEST.get('status')
-    if statusQ == 'created':
-        reports = Report.objects.filter(status=Report.CREATED)
-    elif statusQ == 'in_progress':
-        reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-    elif statusQ == 'off':
-        reports = Report.objects.filter(status__in=Report.REPORT_STATUS_OFF)
-    else:
-        reports = Report.objects.all()
+            files = file_formset.save(commit=False)
+            for report_file in files:
+                report_file.report = report
+                report_file.created_by = FMSUser.objects.get(pk=request.user.id)
+                #if no content the user the filename as description
+                if (report_file.title == ''):
+                    report_file.title = str(report_file.file.name)
+                report_file.save()
 
-    reports = reports.distance(pnt).order_by('distance')
+    report_form = ProReportForm(initial={
+        'x': request.REQUEST.get('x'),
+        'y': request.REQUEST.get('y')
+    }, prefix='report')
 
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
+                "report":report,
                 "available_zips":ZipCode.objects.all(),
                 "report_form": report_form,
                 "pnt":pnt,
-                "reports":reports,
-                "file_upload_Form":FileUploadForm()
+                "reports":reports[0:5],
+                "file_formset":file_formset,
+                "comment_form":comment_form,
             },
             context_instance=RequestContext(request))
 

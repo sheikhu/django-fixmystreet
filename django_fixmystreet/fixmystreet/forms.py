@@ -72,9 +72,16 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'private')
+        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
 
-    private = forms.BooleanField(initial=True)
+    private = forms.BooleanField(initial=True,required=False)
+
+    def save (self,commit=True):
+        report= super(ProReportForm,self).save(commit=False)
+        report.private = self.cleaned_data['private']
+        if commit:
+            report.save();
+        return report
 
 
 qualities = list(Report.REPORT_QUALITY_CHOICES)

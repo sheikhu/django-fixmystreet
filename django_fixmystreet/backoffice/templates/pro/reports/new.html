@@ -4,19 +4,7 @@
 {% block title %}{% trans "New Report" %}{% endblock %}
 {% block specific_scripts %}
 <script>
-$(document).ready(function() {
-        var t = "{{pnt}}";
-        var point = t.split("(")[1].split(")")[0];
-        var x = point.split(" ")[0];
-        var y = point.split(" ")[1];
-        $('#id_x').val(x);
-        $('#id_y').val(y);
-        if(window.location.hash != '#form')
-        {
-            window.location.assign('#form');
-        }
-        retrieveAddress();
-    });
+    $("#id_is_private").attr("checked", "checked");
 </script>
 {% endblock %}
 
@@ -25,47 +13,9 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block report_form %}
-<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
-    <h2>
-        {% trans "Fill the report" %} 
-    </h2>
-    <table class='form'>
-        <tr>
-            <th></th>
-            <td id="required_note">{% trans "* This fields are required" %}</td>
-        </tr>
-        {{ report_form.as_table }}
-        <tr>
-            <td></td>
-            <td><div id='secondary_container'></div></td>
-        </tr>
-        <tr>
-            <td>
-                <select id="available_zipcodes" style="display:none">
-                    {% for zip in available_zips %}
-                    <option value="{{zip.code}}">
-                    </option>
-                    {% endfor %}
-                </select>
-                <span id="available_zipcodes_as_string" style="display:none">
-                    {% for zip in available_zips %}
-                    {{zip.code}}/{{zip.name}}
-                    {% endfor %}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td align="right">
-                <p>
-                    <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-                </p>
+   <fieldset>
+        <legend>{% trans "Incident category:" %}</legend>
+        {% include "_form_horizontal.html" with form=report_form %}            
+    </fieldset>
 
-            </td>
-        </tr>
-    </table>
-</form>
-<script>
-	$("#id_is_private").attr("checked", "checked");
-</script>
 {% endblock %}
