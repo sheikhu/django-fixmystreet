@@ -172,7 +172,7 @@ function toggleFormSteps(){
                     <legend>{% trans 'Validate' %}</legend>
                     {% trans 'Create an overview of the created incident report to validate your information.' %}
                     <br/>
-                    <a href="javascript:$('#validate_report_popup').modal();" class="btn"> {% trans 'Validate' %}</a>
+                    <a id="validate_form_button" href="javascript:$('#validate_report_popup').modal();" class="btn"> {% trans 'Validate' %}</a>
                 </fieldset>
             </div>
             <div id="confirm_form" class="overview_div_right">
