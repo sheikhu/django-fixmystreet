@@ -14,6 +14,7 @@ from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm,
 def new(request):
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
     pnt = dictToPoint(request.REQUEST)
+    report=None
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
         file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
@@ -45,22 +46,20 @@ def new(request):
             if request.POST.get("citizen_subscription", False):
                 ReportSubscription(report=report, subscriber=report.citizen).save()
 
-            if report:
-                messages.add_message(request, messages.SUCCESS, _("You report has been created"))
-                return HttpResponseRedirect(report.get_absolute_url())
-    else:
-        report_form = CitizenReportForm(initial={
-            'x': request.REQUEST.get('x'),
-            'y': request.REQUEST.get('y')
-        }, prefix='report')
-        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-        comment_form = ReportCommentForm(prefix='comment')
-        citizen_form = CitizenForm(prefix='citizen')
+
+    report_form = CitizenReportForm(initial={
+        'x': request.REQUEST.get('x'),
+        'y': request.REQUEST.get('y')
+    }, prefix='report')
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
+    citizen_form = CitizenForm(prefix='citizen')
 
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
 
     return render_to_response("reports/new.html",
             {
+                "report":report,
                 "available_zips":ZipCode().get_usable_zipcodes(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,
@@ -68,7 +67,7 @@ def new(request):
                 "report_form": report_form,
                 "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports
+                "reports":reports[0:5]
             },
             context_instance=RequestContext(request))
 

@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls.defaults import patterns, url
 from django.contrib.auth import views as auth_views
 from django.utils.translation import ugettext_lazy as _
 from django_fixmystreet.fixmystreet.models import FMSUser
@@ -11,8 +11,8 @@ urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
 
 urlpatterns += patterns('',
     # (r'^accounts/', include('registration.backends.simple.urls')),
-    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'},name='login'),
-    url(_(r'^accounts/change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'},name='password_change'),
+    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'}, name='login'),
+    url(_(r'^accounts/change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
     url(_(r'^logout/$'),
             auth_views.logout_then_login,
             {'login_url':'/pro/accounts/login/?next=/pro/'},

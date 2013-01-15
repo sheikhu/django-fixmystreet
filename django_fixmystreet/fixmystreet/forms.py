@@ -38,7 +38,7 @@ class ReportForm(forms.ModelForm):
         model = Report
 
     category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
-    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("Secondary category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
 
     # hidden inputs
     address = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -103,7 +103,7 @@ class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
-        fields = ('quality', 'email', 'last_name', 'subscription', 'telephone')
+        fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
     quality = forms.ChoiceField(choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
@@ -117,7 +117,7 @@ class CitizenForm(forms.Form):
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
             del self.cleaned_data['subscription']
-            del self.cleaned_data['quality']
+            # del self.cleaned_data['quality']
             #For unique constraints
             self.cleaned_data['username'] = self.cleaned_data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
@@ -125,6 +125,7 @@ class CitizenForm(forms.Form):
         return instance
 
     def clean_email(self):
+        del self.cleaned_data['quality']
         email = self.cleaned_data['email']
         validate_email(email)
         return email
@@ -173,7 +174,7 @@ class ReportCommentForm(forms.ModelForm):
         model = ReportComment
         fields = ('text',)
 
-    text = forms.fields.CharField(widget=forms.Textarea)
+    text = forms.fields.CharField(widget=forms.Textarea(attrs={'placeholder':_("Verify if a similar incident isn't reported yet.")}))
 
     def save(self, commit=True):
         comment= super(ReportCommentForm,self).save(commit=False)

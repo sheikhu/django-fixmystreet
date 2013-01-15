@@ -24,7 +24,7 @@ $(document).ready(function() {
 		markerMoved(point);
 	});
 
-    $map.bind('reportselected', function(evt, point, report){
+    $(fms.currentMap).bind('reportselected', function(evt, point, report){
     	window.location.assign('/reports/' + report.id);
     });
 
@@ -49,12 +49,14 @@ $(document).ready(function() {
 
 				if (!(postcode in available_zipcodes)) {
 	                //This commune does not participate to fixmystreet until now.
-	                $form.find(':submit').prop('disabled',true);
+	                $("#validate_form_button").attr("disabled","disabled");
+                    $("#validate_form_button").attr("onclick","return false;");
 	                alert(available_zipcodes_msg);
 	                return false;
 		        }
 
-    			$form.find(':submit').prop('disabled',false);
+    			$("#validate_form_button").removeAttr("disabled");
+                $("#validate_form_button").removeAttr("onclick");
     		}
     		else
     		{
