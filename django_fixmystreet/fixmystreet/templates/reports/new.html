@@ -100,7 +100,6 @@ function toggleFormSteps(){
                 </div>
                 <div class="inactive_overlay_form_overview">
                 </div>
-<<<<<<< HEAD
                 <h1>{% trans "Submitting a report" %}</h1>
                 <div id="required-note" >{% trans "* This fields are required" %}</div>
                 <div id="view_nearby_reports">
@@ -121,34 +120,7 @@ function toggleFormSteps(){
                         <div class="controls">
                             <span id="postcode-text"></span>
                         </div>
-=======
-            </div>
 
-            {% include "_form_twbootstrap.html" with form=report_form %}
-
-            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
-            {# If the status allow such interactions #}
-            <fieldset>
-                <legend>Informations</legend>
-                {% include "_form_twbootstrap.html" with form=citizen_form %}
-            </fieldset>
-            <fieldset>
-                <legend>Comment</legend>
-                {{ comment_form.text }}
-                {# comment_form.text.errors #}
-            </fieldset>
-            <fieldset>
-                <legend>Files</legend>
-                <div id="form-files">
-                    {{ file_formset.management_form }}
-                    {# file_formset.errors #}
-
-                    <div id="file-form-template">
-                        <img class="thumbnail" />
-                        {{ file_formset.empty_form.reportattachment_ptr }}
-                        {{ file_formset.empty_form.file }}
-                        {{ file_formset.empty_form.title }}
->>>>>>> 13827437516d2205b3ff8a990e2038d2d82237a6
                     </div>
                     <fieldset>
                         <legend>{% trans "Incident category:" %}</legend>
