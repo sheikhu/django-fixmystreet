@@ -152,7 +152,9 @@ class ReportFileForm(forms.ModelForm):
     required_css_class = 'required'
     class Meta:
         model = ReportFile
-        fields = ('reportattachment_ptr', 'file', 'title')
+        fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
+
+    file_creation_date = forms.CharField(widget=forms.HiddenInput())
 
     # description = forms.fields.CharField(widget=forms.Textarea)
 

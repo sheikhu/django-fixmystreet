@@ -35,7 +35,8 @@ FILE_UPLOAD_PERMISSIONS = 0644
 DATE_FORMAT = "l, j F Y"
 
 # Max file upload size
-MAX_UPLOAD_SIZE = "821440"
+#MAX_UPLOAD_SIZE = "821440"
+MAX_UPLOAD_SIZE = "15000000"
 
 #Max number of items per pagination
 MAX_ITEMS_PAGE = 5

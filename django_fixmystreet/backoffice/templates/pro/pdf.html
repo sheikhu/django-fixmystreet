@@ -65,7 +65,7 @@ body {
 <div id="map">
 </div>
 <hr/>
-<h1>{% trans 'Incident' %} ({{report.get_ticket_as_string}})</h1>
+<h1>{% trans 'Incident numero' %} : {{report.get_ticket_number}}</h1>
 
 
 
@@ -80,7 +80,7 @@ body {
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Geolocation' %}
+				{% trans 'Geolocation' %} (EPSG 31370)
 			</strong>
 		</td>
                 <td>
@@ -118,7 +118,7 @@ body {
 			{{report.display_category}}
 		</td>	
 		<td>
-			{{report.created}}
+			{{report.created|date:"d/m/Y H:m"}}
 		</td>	
                 <td>
 			&nbsp;
@@ -285,15 +285,7 @@ body {
 	{% for activity in activity_list %}
 	<tr>
 		<td colspan="2">
-			<li><strong>{{activity.event_at}}:</strong></li>
-		</td>
-	</tr>
-	<tr>
-		<td width="10%">
-			&nbsp;
-		</td>
-		<td>
-			{{activity}}	
+			<li><strong>{{activity.event_at|date:"d/m/Y H:m"}} : </strong>{{activity}}</li>
 		</td>
 	</tr>
 	{% endfor %}
@@ -323,7 +315,7 @@ body {
 	<tr>
                 <td colspan="2">
                         <li>
-				<strong>{{comment.created}}:</strong> 
+				<strong>{{comment.created|date:"d/m/Y H:m"}} : </strong> 
 				 {% if comment.created_by %}
          		               {{comment.created_by.fmsuser.get_display_name}} 
 					(<strong>{{comment.created_by.fmsuser.organisation.name}}</strong>,
@@ -374,7 +366,7 @@ body {
 	<tr>
                 <td colspan="2">
                         <li>
-                                <strong>{{file.created}}:</strong>
+                                <strong>{{file.created|date:"d/m/Y H:m"}} : </strong>
                                  {% if file.created_by %}
                                        {{file.created_by.fmsuser.get_display_name}} (mail:{{file.created_by.fmsuser.email}}</a>, tel:{{file.created_by.fmsuser.telephone}})
                                 {% else %}
@@ -408,7 +400,12 @@ body {
 			&nbsp;
 		</td>
 		<td>
-			<strong>{% trans 'Creation Date' %}</strong>
+			<strong>{% trans 'Creation Date' %} : </strong>
+                        {% if file.file_creation_date %}
+                                {{file.file_creation_date|date:"d/m/Y H:m"}}
+                        {% else %}
+                                -
+                        {% endif %}
 		</td>
 	</tr>
 	<tr>
@@ -416,11 +413,8 @@ body {
 			&nbsp;
 		</td>
 		<td>
-			{% if file.file_creation_date %}
-				{{file.file_creation_date}}
-			{% else %}
-				-
-			{% endif %}
+			<strong>{% trans 'Publication Date' %} : </strong>
+                        {{file.created|date:"d/m/Y H:m"}}
 		</td>
 	</tr>
 	<tr>
@@ -428,16 +422,7 @@ body {
 			&nbsp;
 		</td>
 		<td>
-			<strong>{% trans 'Publication Date' %}</strong>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-		<td>
-			{{file.created}}
-			<strong>{% trans 'By' %}</strong> 
+			<strong>{% trans 'By' %} : </strong> 
 			{% if file.created_by %}	
 				{{file.created_by.fmsuser.get_display_name}}
 				(mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
@@ -451,15 +436,8 @@ body {
                         &nbsp;
                 </td>
                 <td>
-			<strong>{% trans 'City' %}</strong>
-                </td>
-        </tr>
-        <tr>
-                <td>
-                        &nbsp;
-                </td>
-                <td>
-			{{report.responsible_entity.name}}
+			<strong>{% trans 'City' %} : </strong>
+                        {{report.responsible_entity.name}}
                 </td>
         </tr>
 	<tr>
@@ -467,7 +445,8 @@ body {
                         &nbsp;
                 </td>
                 <td>
-			<strong>{% trans 'Image Name' %}</strong>
+			<strong>{% trans 'Comment' %} : </strong>
+                        {{file.title}}
 		</td>
 	</tr>
 	<tr>
@@ -475,7 +454,7 @@ body {
                         &nbsp;
                 </td>
                 <td>
-			{{file.title}}
+                        &nbsp;
 		</td>
 	</tr>
 	<tr>
