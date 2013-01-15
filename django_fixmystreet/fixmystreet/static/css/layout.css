@@ -343,6 +343,10 @@ footer *{
     padding: 4px 28px;
 }
 
+#baseline small {
+    font-size: 14px;
+}
+
 #content {
     min-height: 140px;
     width: 100%;
