@@ -79,7 +79,7 @@ def show(request, slug, report_id):
         user_to_show = report.citizen
     else:
         user_to_show = report.created_by
-
+    
     if request.method == "POST":
         file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')

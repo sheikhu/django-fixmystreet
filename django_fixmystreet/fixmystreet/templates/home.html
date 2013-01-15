@@ -32,7 +32,7 @@ $(function(){
     {% for report in reports %}
     	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
     {% endfor %}
-    
+
     $("#list_created").show();
     $("#list_closed").hide();
     $("#list_in_progress").hide();
@@ -63,7 +63,7 @@ function showResults(type,li){
 {% endblock %}
 
 {% block header-banner %}
-	{% trans 'Report an incident (Hole, degradations, subsidence, invisible marks...)' %}
+    <h1 id="baseline">{% trans 'Report an incident' %} <small>({% trans 'Hole, degradations, subsidence, invisible marks...' %})</small></h1>
 {% endblock %}
 
 {% block content %}

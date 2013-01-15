@@ -35,7 +35,8 @@ FILE_UPLOAD_PERMISSIONS = 0644
 DATE_FORMAT = "l, j F Y"
 
 # Max file upload size
-MAX_UPLOAD_SIZE = "821440"
+#MAX_UPLOAD_SIZE = "821440"
+MAX_UPLOAD_SIZE = "15000000"
 
 #Max number of items per pagination
 MAX_ITEMS_PAGE = 5
@@ -61,13 +62,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     "django.contrib.messages.context_processors.messages",
     'django_fixmystreet.fixmystreet.context_processor.domain',
-    'django_fixmystreet.fixmystreet.context_processor.environment'
+    'django_fixmystreet.fixmystreet.context_processor.environment',
+    'django_fixmystreet.fixmystreet.context_processor.login_form',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',

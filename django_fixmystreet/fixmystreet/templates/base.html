@@ -44,17 +44,29 @@
                 {% endfor %}
 
                 <div id="login">
-                    <i class="icon-login"> </i>
                     {% if request.user.is_authenticated %}
-                    <a href="{% url auth_logout %}">Log out</a>
+                    <a href="{% url auth_logout %}">
+                        <i class="icon-login"> </i>Log out
+                    </a>
                     <span>Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})</span>
                     {% else %}
-                    <a href="{% url login %}?next={% url home_pro %}">Sign in</a>
-                    <form id="login-form" class="block highlighted form-horizontal">
-                        <input type="text" id="input-login" name="login" placeholder="Login...">
-                        <input type="password" id="input-password" name="password" placeholder="Password...">
-                        <button type="submit" class="btn">Sign in</button>
-                    </form>
+                    <a href="{% url login %}?next={% url home_pro %}">
+                        <i class="icon-login"> </i>Sign in
+                    </a>
+
+                    <div id="login-form" class="block highlighted">
+                        {% if form.errors %}
+                        <p>{% trans "Your username and password didn't match. Please try again." %}</p>
+                        {% endif %}
+
+                        <form method="post" action="{% url login %}?next={% url home_pro %}" class="form-horizontal">
+                            {% csrf_token %}
+                            {% include "_form_placeholder.html" with form=login_form %}
+
+                            <input type="submit" value="login" class='btn'/>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </form>
+                    </div>
                     {% endif %}
                 </div>
             </section>
@@ -261,7 +273,7 @@
         <footer>
             {% block content_third %}{% endblock %}
             <h5>
-		{% trans 'A initiative of Bruxelles Mobilite in collaboration with Communes and Brussels Partner Institutions'%}	
+		{% trans 'A initiative of Bruxelles Mobilite in collaboration with Communes and Brussels Partner Institutions'%}
 	    </h5>
 	    <br/>
             <div class="footer_left">
@@ -299,5 +311,5 @@
         {% endblock %}
 
     </body>
-    
+
 </html>

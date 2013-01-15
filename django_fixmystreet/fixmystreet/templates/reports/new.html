@@ -129,7 +129,7 @@ function toggleFormSteps(){
                     {% block report_form %}
                     <fieldset>
                         <legend>{% trans "Incident category:" %}</legend>
-                        {% include "_form_twbootstrap.html" with form=report_form %}
+                        {% include "_form_horizontal.html" with form=report_form %}
                     </fieldset>
 
                     {% endblock %}
@@ -145,6 +145,7 @@ function toggleFormSteps(){
                                 {{ file_formset.empty_form.reportattachment_ptr }}
                                 {{ file_formset.empty_form.file }}
                                 {{ file_formset.empty_form.title }}
+                                {{ file_formset.empty_form.file_creation_date }}
                             </div>
                         </div>
                         <div class="file-upload-button">
@@ -157,7 +158,7 @@ function toggleFormSteps(){
                         {# comment_form.text.errors #}
                     </fieldset>
                     {% endif %}
-                    
+
                 </div>
             {% if citizen_form %}
             <div id="user_information_form" class="overview_div_right">
@@ -169,7 +170,7 @@ function toggleFormSteps(){
                     {# If the status allow such interactions #}
                     <fieldset>
                         <legend>{% trans 'Contact information:' %}</legend>
-                        {% include "_form_twbootstrap.html" with form=citizen_form %}
+                        {% include "_form_horizontal.html" with form=citizen_form %}
                     </fieldset>
                 {% endif %}
             </div>
