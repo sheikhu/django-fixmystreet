@@ -84,16 +84,18 @@ class ProReportForm(ReportForm):
         return report
 
 
-qualities = list(Report.REPORT_QUALITY_CHOICES)
+qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
 qualities.insert(0, ('', _('Choose your quality')))
 
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
 
+    quality = forms.ChoiceField(choices=qualities)
+
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode')
+        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode', 'quality')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
@@ -112,7 +114,6 @@ class CitizenForm(forms.Form):
         model = FMSUser
         fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
-    quality = forms.ChoiceField(choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
     #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
     last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
@@ -124,7 +125,6 @@ class CitizenForm(forms.Form):
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
             del self.cleaned_data['subscription']
-            # del self.cleaned_data['quality']
             #For unique constraints
             self.cleaned_data['username'] = self.cleaned_data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
@@ -132,7 +132,6 @@ class CitizenForm(forms.Form):
         return instance
 
     def clean_email(self):
-        del self.cleaned_data['quality']
         email = self.cleaned_data['email']
         validate_email(email)
         return email
