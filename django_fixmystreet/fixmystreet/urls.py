@@ -3,6 +3,7 @@ from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestUpdatesByR
 from django.utils.translation import ugettext_lazy as _
 from piston.resource import Resource
 from django_fixmystreet.fixmystreet.export_piston import ReportHandler
+from django_fixmystreet.fixmystreet.views.api import CitizenReportHandler
 
 feeds = {
     'report': LatestReports,
@@ -73,6 +74,8 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
     url(_(r'^ajax/upload-file'),'uploadFile',name='report_upload_file'),
 )
 
+citizen_report_handler = Resource(CitizenReportHandler)
+
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     #next line to be deprecated...
     url(_(r'^api/reports/$'), 'reports_pro',name='api_reports'),
@@ -86,7 +89,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/login/$'),'login_user',name='login_user'),
     url(_(r'^api/load_categories/$'),'load_categories',name='load_categories'),
     url(_(r'^api/load_zipcodes/$'),'load_zipcodes',name='load_zipcodes'),
-    url(_(r'^api/create_report_citizen/$'),'create_report_citizen',name='create_report_citizen'),
+    url(_(r'^api/create_report_citizen/$'),citizen_report_handler,name='create_report_citizen'),
     url(_(r'^api/create_report_pro/$'),'create_report_pro',name='create_report_pro'),
     url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
 )
