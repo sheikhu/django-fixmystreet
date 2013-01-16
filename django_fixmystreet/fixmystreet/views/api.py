@@ -6,7 +6,10 @@ from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
 from django.contrib.auth import authenticate, login
 
+from piston.handler import BaseHandler
+
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode
+from django_fixmystreet.fixmystreet.forms import CitizenForm
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -18,22 +21,6 @@ def load_zipcodes(request):
 
 def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''
-        user_name = None
-        try:
-            user_name    = request.POST.get('user_name')
-        except ValueError:
-            #Catching malformed input request data
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_REQUEST","request":request.POST}),mimetype='application/json')
-        #Invalid request. Expected values are not present
-        if (user_name == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_PARAMETERS","request":request.POST}),mimetype='application/json')
-        
-        try:
-            #Search user
-            FMSUser.objects.filter(username=user_name).exists()
-        except ObjectDoesNotExist:
-            #The user has not the right to access the login section (Based user/pass combination
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_USER","username": user_name}),mimetype='application/json')
         all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
  
         #Right ! Logged in :-)
@@ -67,6 +54,7 @@ def login_user(request):
         
         #Right ! Logged in :-)
         return HttpResponse(user_object.toJSON(),mimetype='application/json')
+
 
 
 #Method used to retrieve nearest reports for pro
@@ -158,6 +146,34 @@ def reports_pro(request):
         'status':'success',
         'results':result
     })
+
+class ReportHandler(BaseHandler):
+    allowed_methods = ('POST')
+    model = Report
+    fields = (
+        'category',
+        'secondary_category',
+        'description',
+        'x',
+        'y',
+        'address',
+        'address_number',
+        'zipcode',
+        'quality',
+    )
+    def create(self, request):
+        try:
+            citizen = FMSUser.objects.get(email=request.POST.get('citizen-email'))
+        except FMSUser.DoesNotExist:
+            citizen_form = CitizenForm(request.POST, prefix='citizen')
+            if not citizen_form.is_valid():
+                raise ValidationException(citizen_form.errors)
+            citizen = citizen_form.save()
+        #Assign citizen
+        report.citizen = citizen
+
+        return super(self, ReportHandler).create(request)
+
 
 def create_report_citizen(request):
     """Create a citizens reports. Validation included."""
