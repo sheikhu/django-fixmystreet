@@ -64,11 +64,29 @@ class FMSUser(User):
         CONTRACTOR,
     )
 
+
+    #List of qualities
+    RESIDENT = 1
+    TRADE = 2
+    SYNDICATE = 3
+    ASSOCIATION = 4
+    OTHER = 5
+    REPORT_QUALITY_CHOICES = (
+        (RESIDENT,_("Resident")),
+        (OTHER,_("Other")),
+        (TRADE,_("Trade")),
+        (SYNDICATE,_("Syndicate")),
+        (ASSOCIATION,_("Association"))
+    )
+
+
     # user = models.OneToOneField(User)
 
     telephone = models.CharField(max_length=20,null=True)
     last_used_language = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
+    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
+
 
     agent = models.BooleanField(default=False)
     manager = models.BooleanField(default=False)
@@ -242,20 +260,6 @@ class ReportManager(models.GeoManager):
 
 class Report(UserTrackedModel):
 
-    #List of qualities
-    RESIDENT = 1
-    TRADE = 2
-    SYNDICATE = 3
-    ASSOCIATION = 4
-    OTHER = 5
-    REPORT_QUALITY_CHOICES = (
-        (RESIDENT,_("Resident")),
-        (OTHER,_("Other")),
-        (TRADE,_("Trade")),
-        (SYNDICATE,_("Syndicate")),
-        (ASSOCIATION,_("Association"))
-    )
-
     # List of status
     CREATED = 1
     REFUSED = 9
@@ -294,7 +298,7 @@ class Report(UserTrackedModel):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
-    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
+    quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     address_number = models.CharField(max_length=255, verbose_name=ugettext_lazy("Address Number"))
@@ -454,7 +458,7 @@ class Report(UserTrackedModel):
             "citizen": citizenValue,
             "private": self.private,
             "valid": self.valid,
-            "thumb": thumbValue 
+            "thumb": thumbValue
         }
 
     def to_mobile_JSON(self):
