@@ -162,32 +162,27 @@ class CitizenReportHandler(BaseHandler):
         'x',
         'y'
     )
+    exclude = ()
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
         try:
             citizen = FMSUser.objects.get(email=request.data.get('citizen-email'))
-            del request.data['citizen-email']
         except FMSUser.DoesNotExist:
             citizen_form = CitizenForm(request.data, prefix='citizen')
             if not citizen_form.is_valid():
                 raise ValidationError(str(citizen_form.errors))
             citizen = citizen_form.save()
 
-        point = dictToPoint(request.data)
-        del request.data['x']
-        del request.data['y']
-        category = ReportMainCategoryClass(request.data['category'])
-        secondary_category = ReportCategory(request.data['secondary_category'])
-        del request.data['category']
-        del request.data['secondary_category']
+        report_form = CitizenReportForm(request.data)
+        if not report_form.is_valid():
+            raise ValidationError(str(report_form.errors))
 
-        report = super(CitizenReportHandler, self).create(request)
-
+        report = report_form.save(commit=False)
         report.citizen = citizen
-        report.point = point
-        report.category = category
-        report.secondary_category = secondary_category
+        report.category = ReportMainCategoryClass(request.data['category'])
+        report.secondary_category = ReportCategory(request.data['secondary_category'])
+        report.save()
 
         return report
 
