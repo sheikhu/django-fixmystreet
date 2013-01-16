@@ -103,7 +103,7 @@ $(document).ready(function() {
         $('#id_public').attr("checked", "checked");
     {% endif %}
     {% for report in reports %}
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, true);
     {% endfor %}
     // Add the active class to the active page number
     $("#page_{{request.GET.page}}").addClass("active");

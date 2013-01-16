@@ -6,7 +6,7 @@ if (!('fms' in window)) {
 }
 
 (function(){
-	var     markerWidth = 30,
+	    var markerWidth = 30,
 		markerHeight = 40,
 		defaultMarkerStyle = {
 			pointRadius: markerHeight,
@@ -32,11 +32,19 @@ if (!('fms' in window)) {
 		fixedMarkerStyle = Object.create(defaultMarkerStyle),
 		pendingMarkerStyle = Object.create(defaultMarkerStyle),
 		draggableMarkerStyle = Object.create(defaultMarkerStyle),
+		fixedMarkerStyleReg = Object.create(defaultMarkerStyle),
+		pendingMarkerStyleReg = Object.create(defaultMarkerStyle),
+		defaultMarkerStyleReg = Object.create(defaultMarkerStyle),
 
 		markerStyle.externalGraphic = "/static/images/pin-red-XS.png",
 		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XS.png",
 		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XS.png";
-		draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
+		
+                defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-XS.png",
+		fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",
+		pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-XS.png";
+		
+                draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
 
 	/**
 	 * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
@@ -244,16 +252,19 @@ if (!('fms' in window)) {
 		});
 	};
 
+	fms.Map.prototype.addReport = function(report,index)
+        {
+		 fms.Map.prototype.addReport(report,index,false);
+	}
 
 	/**
 	 * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
-	 * @param x float define the position of the marker (in Lambert72 coordinate system)
-	 * @param y float define the position of the marker (in Lambert72 coordinate system)
-	 * @param fixed string define the style of the marker
+	 * @param report the report to add
+	 * @param index the report index
+	 * @param proVersion true if the application is running the pro version
 	 */
-	fms.Map.prototype.addReport = function(report,index)
+	fms.Map.prototype.addReport = function(report,index,proVersion)
 	{
-
 		var self = this;
 		if(!this.markersLayer)
 		{
@@ -335,50 +346,41 @@ if (!('fms' in window)) {
 			this.map.addControl(selectFeature);
 			selectFeature.activate();
 		}
-		console.log('add point');
-
+		
 		var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
 		var newMarker = new OpenLayers.Geometry.Collection([markerPoint]);
-		var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
-		/*if(index){
-			//make a copy
-			markerConf = $.extend({},markerConf,{
-				externalGraphic:'/static/images/marker/' + (report.is_closed?'green':'red') + '/marker' + index + '.png'
-			});
-		}*/
-                var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-		this.markersLayer.addFeatures(vectorOfMarkers);
-		/*var events = new OpenLayers.Events(newMarker, this.element[0], ['click']);
-		events.on({
-			'click':function()
-			{
-				console.log('click');
-			}
-		});
-		*/
+		
+		//Can be either orange, red or green and in the set of regional route or not.
+		var markerConf;
+		var self = this;
 
-		// http://openlayers.org/dev/examples/dynamic-text-layer.html
-        //function onFeatureSelect(evt) {
-            //feature = evt.feature;
-            //popup = new OpenLayers.Popup.FramedCloud("featurePopup",
-				//feature.geometry.getBounds().getCenterLonLat(),
-				//new OpenLayers.Size(100,100),
-				//"<h2>"+feature.attributes.title + "</h2>" +
-				//feature.attributes.description,
-				//null, true, onPopupClose);
-            //feature.popup = popup;
-            //popup.feature = feature;
-            //map.addPopup(popup, true);
-        //}
-        //function onFeatureUnselect(evt) {
-            //feature = evt.feature;
-            //if (feature.popup) {
-                //popup.feature = null;
-                //map.removePopup(feature.popup);
-                //feature.popup.destroy();
-                //feature.popup = null;
-            //}
-        //}
+		if (proVersion) {
+			console.log('pro version detected');
+			$.ajax({
+				url: "http://gis.irisnetlab.be/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:URB_A_SS&maxFeatures=1&outputFormat=json&bbox="+(report.point.x-20)+","+(report.point.y-20)+","+(report.point.x+20)+","+(report.point.y+20),
+				dataType: "json",
+				type: "POST",
+				success: function(responseData, textStatus, jqXHR) {	
+					if (responseData.features[0].properties.ADMINISTRATOR == null) {
+                		   		//NOT ROUTE REGIONALE
+		               	   		var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+					} else {
+                		   		//ROUTE REGIONALE
+		               	   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : pendingMarkerStyleReg;
+					}
+		                	var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+					self.markersLayer.addFeatures(vectorOfMarkers);
+				}
+			});
+		} else {
+			console.log('citizen version detected');
+			//Non pro version
+		        var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+		        var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+			self.markersLayer.addFeatures(vectorOfMarkers);
+		}
+
+
 	},
 
 	/**
