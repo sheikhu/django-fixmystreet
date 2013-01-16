@@ -682,7 +682,7 @@ msgstr "Incidents"
 
 #: templates/home.html:66
 msgid "Hole, degradations, subsidence, invisible marks..."
-msgstr ""
+msgstr "Trou, revêtement dégradé, affaissement, marquage effacé..."
 
 #: templates/home.html:73
 msgid "How to fill a report"
@@ -690,35 +690,35 @@ msgstr "Comment créer un rapport"
 
 #: templates/home.html:75
 msgid "Enter a street where you have located an incident"
-msgstr ""
+msgstr "Entrez l'adresse où vous avez constaté l'incident"
 
 #: templates/home.html:76
 msgid "Locate the incident on map"
-msgstr ""
+msgstr "Localiser l'incident sur la carte"
 
 #: templates/home.html:77
 msgid "Descibe the incident"
-msgstr ""
+msgstr "Décrivez l'incident"
 
 #: templates/home.html:78
 msgid "The incident will be sent to the right service"
-msgstr ""
+msgstr "Votre incident sera envoyé au service concerné"
 
 #: templates/home.html:79
 msgid "Subscribe an incident to be kept posted"
-msgstr ""
+msgstr "Abonnez-vous pour rester informé du suivi de l'incident"
 
 #: templates/home.html:85
 msgid "Enter the address where the incident is:"
-msgstr ""
+msgstr "Entrez l'adresse où se situe l'incident :"
 
 #: templates/home.html:86
 msgid "Street..."
-msgstr ""
+msgstr "Rue..."
 
 #: templates/home.html:88
 msgid "All communes..."
-msgstr ""
+msgstr "Toutes les communes"
 
 #: templates/home.html:93 templates/reports/list.html:90
 msgid "Search"

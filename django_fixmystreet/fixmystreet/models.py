@@ -1121,7 +1121,7 @@ class ReportEventLog(models.Model):
         REFUSE: _("Report refused by {user}"),
         CLOSE: _("Report closed by {user}"),
         SOLVE_REQUEST: _("Report pointed as done"),
-        MANAGER_ASSIGNED: _("Report as been assing to {related_new}"),
+        MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_new} to {related_old}"),
         PUBLISH: _("Report has been published by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
