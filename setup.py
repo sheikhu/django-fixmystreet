@@ -19,7 +19,6 @@ install_requires = [
     'docutils',
     'django-registration',
     'django-piston',
-    'cc.gettext'
     # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
     ]
