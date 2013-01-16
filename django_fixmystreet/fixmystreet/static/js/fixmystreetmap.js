@@ -35,6 +35,9 @@ if (!('fms' in window)) {
 		fixedMarkerStyleReg = Object.create(defaultMarkerStyle),
 		pendingMarkerStyleReg = Object.create(defaultMarkerStyle),
 		defaultMarkerStyleReg = Object.create(defaultMarkerStyle),
+		fixedMarkerStylePro = Object.create(defaultMarkerStyle),
+		pendingMarkerStylePro = Object.create(defaultMarkerStyle),
+		defaultMarkerStylePro = Object.create(defaultMarkerStyle),
 
 		markerStyle.externalGraphic = "/static/images/pin-red-XS.png",
 		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XS.png",
@@ -43,6 +46,10 @@ if (!('fms' in window)) {
                 defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-XS.png",
 		fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",
 		pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-XS.png";
+                
+		defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-XS.png",
+		fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-XS.png",
+		pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-XS.png";
 		
                 draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
 
@@ -363,7 +370,14 @@ if (!('fms' in window)) {
 				success: function(responseData, textStatus, jqXHR) {	
 					if (responseData.features[0].properties.ADMINISTRATOR == null) {
                 		   		//NOT ROUTE REGIONALE
-		               	   		var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+                		   		if (report.citizen == 'true') {
+							console.log('citizen report in pro section');
+		               	   			var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+						} else {
+							console.log(report.citizen);
+							console.log('pro report in pro section');
+		               	   			var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+						}
 					} else {
                 		   		//ROUTE REGIONALE
 		               	   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : pendingMarkerStyleReg;
@@ -375,7 +389,13 @@ if (!('fms' in window)) {
 		} else {
 			console.log('citizen version detected');
 			//Non pro version
-		        var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+			if (report.citizen == 'true') {
+				console.log('citizen report in citizen section');
+			        var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+			} else { 
+				console.log('pro report in citizen section');
+			        var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+			}
 		        var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
 			self.markersLayer.addFeatures(vectorOfMarkers);
 		}

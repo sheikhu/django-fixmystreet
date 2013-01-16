@@ -436,6 +436,12 @@ class Report(UserTrackedModel):
         else:
             thumbValue = local_thumbnail
 
+        local_citizen = self.citizen;
+        if (local_citizen == None):
+            citizenValue = 'false'
+        else:
+            citizenValue = 'true'
+
         return {
             "id": self.id,
             "point": {
@@ -445,6 +451,7 @@ class Report(UserTrackedModel):
             "status": self.status,
             "status_label": self.get_status_display(),
             "close_date": close_date_as_string,
+            "citizen": citizenValue,
             "private": self.private,
             "valid": self.valid,
             "thumb": thumbValue 
