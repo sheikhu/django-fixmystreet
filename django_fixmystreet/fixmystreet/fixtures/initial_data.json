@@ -95,7 +95,8 @@
             "commune": true, 
             "dependency":20, 
             "name_fr": "Anderlecht", 
-            "name_nl": "Anderlecht", 
+            "name_nl": "Anderlecht",
+            "phone": "02/558.08.00",
             "feature_id": "URB_A_MU.7100"
         }
     },
@@ -107,6 +108,7 @@
             "dependency":20, 
             "name_fr": "Auderghem",
             "name_nl": "Auderghem",
+            "phone": "02/676.48.11",
             "feature_id": "URB_A_MU.7200"
         }
     },
@@ -118,6 +120,7 @@
             "dependency":20, 
             "name_fr": "Berchem-Sainte-Agathe",
             "name_nl": "Sint-Agatha-Berchem",
+            "phone": "02/464.04.11",
             "feature_id": "URB_A_MU.7300"
         }
     },
@@ -129,6 +132,7 @@
             "dependency":20, 
             "name_fr": "Bruxelles",
             "name_nl": "Bruxelles",
+            "phone": "02/279.22.11",
             "feature_id": "URB_A_MU.7400"
         }
     }, 
@@ -140,6 +144,7 @@
             "dependency":20, 
             "name_fr": "Etterbeek",
             "name_nl": "Etterbeek",
+            "phone": "02/627.21.11",
             "feature_id": "URB_A_MU.7500"
         }
     }, 
@@ -151,6 +156,7 @@
             "dependency":20, 
             "name_fr": "Evere",
             "name_nl": "Evere",
+            "phone": "02/247.62.62",
             "feature_id": "URB_A_MU.7600"
         }
     }, 
@@ -162,6 +168,7 @@
             "dependency":20, 
             "name_fr": "Forest",
             "name_nl": "Forest",
+            "phone": "02/370.22.11",
             "feature_id": "URB_A_MU.7700"
         }
     }, 
@@ -173,6 +180,7 @@
             "dependency":20, 
             "name_fr": "Ganshoren",
             "name_nl": "Ganshoren",
+            "phone": "02/465.12.77",
             "feature_id": "URB_A_MU.7800"
         }
     }, 
@@ -184,6 +192,7 @@
             "dependency":20, 
             "name_fr": "Ixelles",
             "name_nl": "Ixelles",
+            "phone": "02/515.61.11",
             "feature_id": "URB_A_MU.7900"
         }
     }, 
@@ -195,6 +204,7 @@
             "dependency":20, 
             "name_fr": "Jette",
             "name_nl": "Jette",
+            "phone": "02/423.12.11",
             "feature_id": "URB_A_MU.8000"
         }
     },
@@ -206,6 +216,7 @@
             "dependency":20, 
             "name_fr": "Koekelberg",
             "name_nl": "Koekelberg",
+            "phone": "02/412.14.11",
             "feature_id": "URB_A_MU.8100"
         }
     }, 
@@ -217,6 +228,7 @@
             "dependency":20, 
             "name_fr": "Molenbeek St Jean",
             "name_nl": "Molenbeek St Jean",
+            "phone": "02/412.36.75",
             "feature_id": "URB_A_MU.8200"
         }
     }, 
@@ -228,6 +240,7 @@
             "dependency":20, 
             "name_fr": "Saint-Gilles",
             "name_nl": "Saint-Gilles",
+            "phone": "02/536.02.11",
             "feature_id": "URB_A_MU.8300"
         }
     }, 
@@ -239,6 +252,7 @@
             "dependency":20, 
             "name_fr": "Saint-Josse ten Noode",
             "name_nl": "Saint-Josse ten Noode",
+            "phone": "02/220.26.11",
             "feature_id": "URB_A_MU.8400"
         }
     }, 
@@ -250,6 +264,7 @@
             "dependency":20, 
             "name_fr": "Schaerbeek",
             "name_nl": "Schaerbeek",
+            "phone": "02/244.75.11",
             "feature_id": "URB_A_MU.8500"
         }
     },
@@ -261,6 +276,7 @@
             "dependency":20, 
             "name_fr": "Uccle",
             "name_nl": "Uccle",
+            "phone": "02/348.65.11",
             "feature_id": "URB_A_MU.8600"
         }
     }, 
@@ -272,6 +288,7 @@
             "dependency":20, 
             "name_fr": "Watermael-Boisfort",
             "name_nl": "Watermael-Boisfort",
+            "phone": "02/674.74.11",
             "feature_id": "URB_A_MU.8700"
         }
     }, 
@@ -283,6 +300,7 @@
             "dependency":20, 
             "name_fr": "Woluwe St Lambert",
             "name_nl": "Woluwe St Lambert",
+            "phone": "02/761.27.11",
             "feature_id": "URB_A_MU.8800"
         }
     }, 
@@ -294,6 +312,7 @@
             "dependency":20, 
             "name_fr": "Woluwe St Pierre",
             "name_nl": "Woluwe St Pierre",
+            "phone": "02/773.05.11",
             "feature_id": "URB_A_MU.8900"
         }
     },

@@ -7,9 +7,10 @@ from django.contrib.gis.geos import fromstr
 from django.contrib.auth import authenticate, login
 
 from piston.handler import BaseHandler
+from piston.utils import validate
 
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode
-from django_fixmystreet.fixmystreet.forms import CitizenForm
+from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -147,20 +148,21 @@ def reports_pro(request):
         'results':result
     })
 
-class ReportHandler(BaseHandler):
-    allowed_methods = ('POST')
+class CitizenReportHandler(BaseHandler):
+    allowed_methods = ('GET', 'POST')
     model = Report
     fields = (
         'category',
         'secondary_category',
         'description',
-        'x',
-        'y',
         'address',
         'address_number',
-        'zipcode',
+        'postalcode',
         'quality',
+        'x',
+        'y'
     )
+    @validate(CitizenReportForm, 'POST')
     def create(self, request):
         try:
             citizen = FMSUser.objects.get(email=request.POST.get('citizen-email'))
@@ -169,10 +171,13 @@ class ReportHandler(BaseHandler):
             if not citizen_form.is_valid():
                 raise ValidationException(citizen_form.errors)
             citizen = citizen_form.save()
+        
+        report = super(self, ReportHandler).create(request)
         #Assign citizen
+        import pdb;pdb.set_trace()
         report.citizen = citizen
-
-        return super(self, ReportHandler).create(request)
+        return report
+        
 
 
 def create_report_citizen(request):
@@ -350,7 +355,7 @@ def create_report_pro(request):
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''    
     #Test the submit content size (max 2MB)
-    if (int(request.META.get('CONTENT_LENGTH')) > 2000000):
+    if (int(request.META.get('CONTENT_LENGTH')) > 15000000):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_EXCEED_SIZE","request":request.POST}),mimetype='application/json')
     
     data_report_id = request.POST.get('report_id')
@@ -373,6 +378,7 @@ def create_report_photo(request):
         report_file.file_type = ReportFile.IMAGE
         report_file.file = data_file_content
         report_file.report = reference_report
+        report_file.file_creation_date = datetime.now()
         
         #Save given data        
         report_file.save()

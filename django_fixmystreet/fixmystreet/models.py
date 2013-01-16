@@ -184,6 +184,7 @@ class OrganisationEntity(UserTrackedModel):
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
+    phone = models.CharField(max_length=32)
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)

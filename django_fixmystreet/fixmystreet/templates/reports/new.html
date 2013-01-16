@@ -48,7 +48,7 @@ var available_zipcodes = {
     "{{zip.code}}": "{{zip.name}}"{% if not forloop.last %},{% endif %}
     {% endfor %}
 }
-var available_zipcodes_msg = "{% trans 'This commune does not participate' %} {% for zip in available_zips %}{{zip.name}}{% if not forloop.last %}, {% endif %}{% endfor %}"
+var available_zipcodes_msg = "{% trans 'This commune does not participate' %} {% for zip in available_zips %}{{zip.name}} (tel:{{zip.commune.phone}}){% if not forloop.last %}, {% endif %}{% endfor %}"
 
 var categories = {
     {% for category_class in category_classes %}
