@@ -163,8 +163,12 @@ body {
 	<tr>
 		<td>
 			<strong>
-				{% if pro_version == "1"}
-					{% if user.can_see_confidential %}
+				{% if user.can_see_confidential %}
+ 					{% if report.citizen %}
+						{% if pro_version == "1" %}
+							{% trans 'Mail' %}
+						{% endif %}
+					{% else %}
 						{% trans 'Mail' %}
 					{% endif %}
 				{% endif %}
@@ -172,8 +176,12 @@ body {
 		</td>	
 		<td>
 			<strong>
-				{% if pro_version == "1"}
-					{% if user.can_see_confidential %}
+				{% if user.can_see_confidential %}
+ 					{% if report.citizen %}
+						{% if pro_version == "1" %}
+							{% trans 'Phone' %}
+						{% endif %}
+					{% else %}
 						{% trans 'Phone' %}
 					{% endif %}
 				{% endif %}
@@ -187,8 +195,10 @@ body {
 		<td>
                         {% if user.can_see_confidential %}
  				{% if report.citizen %}
-                                <!-- Protect citizen privacy -->
-                                        {% trans 'mail'%}:{{report.citizen.fmsuser.email}}
+					{% if pro_version == "1" %}
+                               			<!-- Protect citizen privacy -->
+                                        	{% trans 'mail'%}:{{report.citizen.fmsuser.email}}
+                                	{% endif %}
                         	{% else %}
                                 	<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
                                 {% endif %}
@@ -197,10 +207,12 @@ body {
 		<td>
 			{% if user.can_see_confidential %}
 				{% if report.citizen %}
-					{% if report.citizen.fmsuser.telephone %}
-						tel:{{report.citizen.fmsuser.telephone}}
-					{% else %}
-						-
+					{% if pro_version == "1" %}
+						{% if report.citizen.fmsuser.telephone %}
+							tel:{{report.citizen.fmsuser.telephone}}
+						{% else %}
+							-
+						{% endif %}
 					{% endif %}
 				{% else %}
 					{% if report.created_by.fmsuser.telephone %}
