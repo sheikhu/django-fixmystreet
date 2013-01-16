@@ -80,14 +80,34 @@ var categories = {
 }
 function validate() {
     $("#validate").val("true");
-    $("#report-form").submit();
+    // Validate the current form
+    var $form = $("#report-form");
+    var valid = true;
+
+        $form.find('.required input, .required select, .required textarea').each(function(ind,input) {
+            var $input = $(input);
+            if(!$input.val()) {
+                valid = false;
+                $input.closest('.required').addClass('invalid');
+                console.log("not valid", $input);
+            } else {
+                $input.closest('.required').removeClass('invalid');
+            }
+        });
+
+        if(!valid) {
+
+            $form.find('.invalid input, .invalid select').first().focus();
+            $form.find('.required-error-msg').fadeIn();
+            $form.addClass('required-invalid');
+            $('#validate_report_popup').modal('hide');
+            return false;
+        }
     if($(".invalid").size()== 0){
         toggleFormSteps();
         $('#confirmation_edit_button').show();
         $('#confirmation_button').removeAttr("disabled");
     }
-    // $("#confirmation_button").removeAttr("disabled");
-    // $("#confirmation_button").attr("onclick","confirm();");
     $('#validate_report_popup').modal('hide');
 }
 

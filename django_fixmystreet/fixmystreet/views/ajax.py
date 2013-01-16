@@ -5,7 +5,7 @@ from django.template import Context, RequestContext
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportFile,ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, FMSUser
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django_fixmystreet.fixmystreet.forms import FileUploadForm
 import os
@@ -42,4 +42,3 @@ def uploadFile(request):
                 destination.write(chunk)
     hh = HttpResponse(content='True',mimetype='text/html')
     return hh
-

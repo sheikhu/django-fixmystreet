@@ -1,7 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.http import HttpResponse
 from django.forms.models import modelformset_factory
 from django.template import RequestContext
 from django.contrib import messages
@@ -23,7 +22,6 @@ def new(request):
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
-            if not request.POST["validate"]=="true":
                 # this saves the update as part of the report.
                 citizen = citizen_form.save()
 
@@ -47,22 +45,6 @@ def new(request):
 
                 if request.POST.get("citizen_subscription", False):
                     ReportSubscription(report=report, subscriber=report.citizen).save()
-            else :
-                reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
-                return render_to_response("reports/new.html",
-                {
-                    "report":report,
-                    "available_zips":ZipCode().get_usable_zipcodes(),
-                    "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
-                    "comment_form":comment_form,
-                    "file_formset":file_formset,
-                    "report_form": report_form,
-                    "citizen_form": citizen_form,
-                    "pnt":pnt,
-                    "reports":reports[0:5],
-                    "validate":"true"
-                },
-                context_instance=RequestContext(request))
 
 
     report_form = CitizenReportForm(initial={
@@ -78,7 +60,6 @@ def new(request):
     return render_to_response("reports/new.html",
             {
                 "report":report,
-                "all_zips":ZipCode.objects.filter(hide=False),
                 "available_zips":ZipCode().get_usable_zipcodes(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,
@@ -86,8 +67,7 @@ def new(request):
                 "report_form": report_form,
                 "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports[0:5],
-                "validate":"false"
+                "reports":reports[0:5]
             },
             context_instance=RequestContext(request))
 
