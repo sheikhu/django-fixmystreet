@@ -86,17 +86,23 @@ def show(request,slug, report_id):
         page_number= int(request.GET.get("page"))
     else :
         page_number=1
+    
     report = get_object_or_404(Report, id=report_id)
     files = ReportFile.objects.filter(report_id=report_id).filter(logical_deleted=False)
     comments = ReportComment.objects.filter(report_id=report_id).filter(logical_deleted=False)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
+    
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
-
-    entitiesHavingAManager = FMSUser.objects.filter(manager=True);
-    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingAManager)
+    fms_managers = FMSUser.objects.filter(manager=True).values_list('organisation', flat=True);
+    entitiesHavingManager = OrganisationEntity.objects.filter(id__in=fms_managers).values_list('pk', flat=True)  
+ 
+    region_institution = OrganisationEntity.objects.filter(region=True).filter(id__in=entitiesHavingManager)
+    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingManager)
+    
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
     reports = Report.objects.all()
+    
     pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
@@ -110,6 +116,7 @@ def show(request,slug, report_id):
                 "files":files,
                 "comments":comments,
                 "managers":managers,
+                "region_institution":region_institution,
                 "contractors":contractors,
                 "applicants":applicants,
                 "entities":entities,

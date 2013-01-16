@@ -329,14 +329,19 @@ function markAsDone(){
                     <th>{% trans "Responsible manager:" %}</th>
                     <td colspan="4">
                         <select id="report_responsible_manager_select">
-                           <optgroup label="Gestionnaires">
+                           <optgroup label="{% trans 'Gestionnaires' %}">
                             {% for manager in managers %}
                                 <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
                             {% endfor %}
                             </optgroup>
-                            <optgroup label="Entites">
+                            <optgroup label="{% trans 'Entites' %}">
                             {% for entity in entities %}
                                 <option value="entity_{{entity.id}}">{{entity.name}}</option>
+                            {% endfor %}
+                            </optgroup>
+                            <optgroup label="{% trans 'Organisms' %}">
+                            {% for institution in region_institution %}
+                                <option value="entity_{{institution.id}}">{{institution.name}}</option>
                             {% endfor %}
                             </optgroup>
                         </select>

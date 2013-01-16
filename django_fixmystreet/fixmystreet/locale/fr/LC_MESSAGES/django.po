@@ -1624,6 +1624,10 @@ msgstr ""
 msgid "You have subscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
+#: /templates/base.html:67
+msgid "Login"
+msgstr "Se connecter"
+
 #, fuzzy
 #~ msgid ""
 #~ "\n"
