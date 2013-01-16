@@ -625,7 +625,9 @@ def report_notify(sender, instance, **kwargs):
             ).save()
             ReportEventLog(
                 report=report,
-                event_type=ReportEventLog.ENTITY_CHANGED
+                event_type=ReportEventLog.ENTITY_CHANGED,
+                related_old = report.__former['responsible_manager'],
+                related_new = report.responsible_manager
             ).save()
 
         if report.__former['responsible_manager'] != report.responsible_manager:

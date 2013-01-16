@@ -89,8 +89,6 @@ def show(request,slug, report_id):
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
-        import pdb
-        pdb.set_trace()
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
             # this saves the update as part of the report.
             # citizen = citizen_form.save()
@@ -99,8 +97,6 @@ def show(request,slug, report_id):
                 comment.created_by = FMSUser.objects.get(pk=request.user.id)
                 comment.report = report
                 comment.save()
-            import pdb
-            pdb.set_trace()
             files = file_formset.save(commit=False)
             for report_file in files:
                 report_file.report = report
@@ -119,13 +115,18 @@ def show(request,slug, report_id):
         page_number=1
 
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
+    
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
+    fms_managers = FMSUser.objects.filter(manager=True).values_list('organisation', flat=True);
+    entitiesHavingManager = OrganisationEntity.objects.filter(id__in=fms_managers).values_list('pk', flat=True)  
 
-    entitiesHavingAManager = FMSUser.objects.filter(manager=True);
-    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingAManager)
+    region_institution = OrganisationEntity.objects.filter(region=True).filter(id__in=entitiesHavingManager)
+    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingManager)
+    
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
-    reports = Report.objects.all()
+    reports = Report.objects.all()   
+ 
     pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
@@ -136,6 +137,7 @@ def show(request,slug, report_id):
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
                 "comment_form": comment_form,
                 "file_formset":file_formset,
+                "region_institution":region_institution,
                 "managers":managers,
                 "contractors":contractors,
                 "applicants":applicants,
