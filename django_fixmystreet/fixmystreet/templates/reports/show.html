@@ -39,7 +39,7 @@ $(function(){
         }
     });
 
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }});
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1, false);
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];

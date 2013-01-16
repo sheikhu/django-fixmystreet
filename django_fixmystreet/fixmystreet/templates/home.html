@@ -29,8 +29,14 @@ $(function(){
         }
         {% endif %}
     });
+
+    var proVersion = false;
+    {% if BACKOFFICE %}
+	proVersion = true;
+    {% endif %}
+
     {% for report in reports %}
-    	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}});
+    	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, proVersion);
     {% endfor %}
 
     $("#list_created").show();
