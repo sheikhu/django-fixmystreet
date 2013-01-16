@@ -63,7 +63,7 @@ var available_zipcodes = {
     "{{zip.code}}": "{{zip.name}}"{% if not forloop.last %},{% endif %}
     {% endfor %}
 }
-var available_zipcodes_msg = "{% trans 'This commune does not participate' %} {% for zip in available_zips %}{{zip.name}}{% if not forloop.last %}, {% endif %}{% endfor %}"
+var available_zipcodes_msg = "{% trans 'This commune does not participate' %}.\n{% trans 'Please request your commune to join the initiative' %}:\n\n- {% trans 'Brussels Mobility' %}: (tel:0800/94.001)\n\n {% for zip in all_zips %}\n- {{zip.name}} (tel:{{zip.commune.phone}}){% if not forloop.last %}, {% endif %}{% endfor %}"
 
 var categories = {
     {% for category_class in category_classes %}

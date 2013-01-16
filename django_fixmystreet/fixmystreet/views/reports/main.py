@@ -78,6 +78,7 @@ def new(request):
     return render_to_response("reports/new.html",
             {
                 "report":report,
+                "all_zips":ZipCode.objects.filter(hide=False),
                 "available_zips":ZipCode().get_usable_zipcodes(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,

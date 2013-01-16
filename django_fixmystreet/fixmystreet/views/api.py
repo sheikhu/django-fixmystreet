@@ -6,7 +6,11 @@ from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
 from django.contrib.auth import authenticate, login
 
+from piston.handler import BaseHandler
+from piston.utils import validate
+
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode
+from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -18,22 +22,6 @@ def load_zipcodes(request):
 
 def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''
-        user_name = None
-        try:
-            user_name    = request.POST.get('user_name')
-        except ValueError:
-            #Catching malformed input request data
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_REQUEST","request":request.POST}),mimetype='application/json')
-        #Invalid request. Expected values are not present
-        if (user_name == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_PARAMETERS","request":request.POST}),mimetype='application/json')
-        
-        try:
-            #Search user
-            FMSUser.objects.filter(username=user_name).exists()
-        except ObjectDoesNotExist:
-            #The user has not the right to access the login section (Based user/pass combination
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_CATEGORY_INVALID_USER","username": user_name}),mimetype='application/json')
         all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
  
         #Right ! Logged in :-)
@@ -67,6 +55,7 @@ def login_user(request):
         
         #Right ! Logged in :-)
         return HttpResponse(user_object.toJSON(),mimetype='application/json')
+
 
 
 #Method used to retrieve nearest reports for pro
@@ -159,11 +148,44 @@ def reports_pro(request):
         'results':result
     })
 
+class CitizenReportHandler(BaseHandler):
+    allowed_methods = ('GET', 'POST')
+    model = Report
+    fields = (
+        'category',
+        'secondary_category',
+        'description',
+        'address',
+        'address_number',
+        'postalcode',
+        'quality',
+        'x',
+        'y'
+    )
+    @validate(CitizenReportForm, 'POST')
+    def create(self, request):
+        try:
+            citizen = FMSUser.objects.get(email=request.POST.get('citizen-email'))
+        except FMSUser.DoesNotExist:
+            citizen_form = CitizenForm(request.POST, prefix='citizen')
+            if not citizen_form.is_valid():
+                raise ValidationException(citizen_form.errors)
+            citizen = citizen_form.save()
+        
+        report = super(self, ReportHandler).create(request)
+        #Assign citizen
+        import pdb;pdb.set_trace()
+        report.citizen = citizen
+        return report
+        
+
+
 def create_report_citizen(request):
     """Create a citizens reports. Validation included."""
     data_email                       = request.POST.get('user_email')
     #data_firstname                   = request.POST.get('user_firstname')
-    data_firstname               = ''
+    data_phone			  = request.POST.get('user_phone')
+    data_firstname                = ''
     data_lastname                 = request.POST.get('user_lastname')
     data_category_id              = request.POST.get('report_category_id')
     data_main_category_id         = request.POST.get('report_main_category_id')
@@ -185,6 +207,9 @@ def create_report_citizen(request):
     #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_FIRSTNAME","request":request.POST}),mimetype='application/json')
     if (data_lastname == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_LASTNAME","request":request.POST}),mimetype='application/json')
+    if (data_phone == None):
+        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PHONE","request":request.POST}),mimetype='application/json')
+
     if (data_category_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
     if (data_main_category_id == None):
@@ -214,7 +239,7 @@ def create_report_citizen(request):
         report.citizen = existingUser
     except FMSUser.DoesNotExist:
         #Add information about the citizen connected if it does not exist
-        report.citizen = FMSUser.objects.create(username=data_email, email=data_email, first_name=data_firstname, last_name=data_lastname, agent=False, contractor=False, manager=False, leader=False)
+        report.citizen = FMSUser.objects.create(username=data_email, telephone=data_phone, email=data_email, first_name=data_firstname, last_name=data_lastname, agent=False, contractor=False, manager=False, leader=False)
 
     #Assign values to the report.        
     try:
@@ -330,7 +355,7 @@ def create_report_pro(request):
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''    
     #Test the submit content size (max 2MB)
-    if (int(request.META.get('CONTENT_LENGTH')) > 2000000):
+    if (int(request.META.get('CONTENT_LENGTH')) > 15000000):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_EXCEED_SIZE","request":request.POST}),mimetype='application/json')
     
     data_report_id = request.POST.get('report_id')
@@ -353,6 +378,7 @@ def create_report_photo(request):
         report_file.file_type = ReportFile.IMAGE
         report_file.file = data_file_content
         report_file.report = reference_report
+        report_file.file_creation_date = datetime.now()
         
         #Save given data        
         report_file.save()

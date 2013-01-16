@@ -91,6 +91,7 @@ class ApiTest(SampleFilesTestCase):
             "user_email": "test@test.com",
             "user_firstname": "Thibo",
             "user_lastname": "Bilbao",
+            "user_phone": "324324324",
             "report_quality": "2",
             "report_description": "zazadescr",
             "report_address": "Avenue des emeutes",
