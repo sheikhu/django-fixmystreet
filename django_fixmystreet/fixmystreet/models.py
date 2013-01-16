@@ -391,7 +391,9 @@ class Report(UserTrackedModel):
         return self.attachments.get_query_set().comments().filter(logical_deleted=False)
 
     def files(self):
-        return self.attachments.get_query_set().files().filter(logical_deleted=False)
+        # return self.attachments.get_query_set().files().filter(logical_deleted=False)
+        # ==> is wrong
+        return ReportFile.objects.filter(report_id=self.id)
 
     def to_full_JSON(self):
         """
