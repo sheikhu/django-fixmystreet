@@ -180,8 +180,8 @@ class CitizenReportHandler(BaseHandler):
 
         report = report_form.save(commit=False)
         report.citizen = citizen
-        report.category = ReportMainCategoryClass(request.data['category'])
-        report.secondary_category = ReportCategory(request.data['secondary_category'])
+        report.category = ReportMainCategoryClass(request.data['secondary_category'])
+        report.secondary_category = ReportCategory(request.data['category'])
         report.save()
 
         return report
