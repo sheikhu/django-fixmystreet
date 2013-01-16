@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.forms.models import modelformset_factory
 from django.template import RequestContext
 from django.contrib import messages
@@ -22,29 +23,46 @@ def new(request):
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
-            # this saves the update as part of the report.
-            citizen = citizen_form.save()
+            if not request.POST["validate"]=="true":
+                # this saves the update as part of the report.
+                citizen = citizen_form.save()
 
-            report = report_form.save(commit=False)
-            report.citizen = citizen
-            report.save()
-            if request.POST["comment-text"]:
-                comment = comment_form.save(commit=False)
-                comment.created_by = citizen 
-                comment.report = report
-                comment.save()
+                report = report_form.save(commit=False)
+                report.citizen = citizen
+                report.save()
+                if request.POST["comment-text"]:
+                    comment = comment_form.save(commit=False)
+                    comment.created_by = citizen 
+                    comment.report = report
+                    comment.save()
 
-            files = file_formset.save(commit=False)
-            for report_file in files:
-                report_file.report = report
-                report_file.created_by = citizen
-                #if no content the user the filename as description
-                if (report_file.title == ''):
-                    report_file.title = str(report_file.file.name)
-                report_file.save()
+                files = file_formset.save(commit=False)
+                for report_file in files:
+                    report_file.report = report
+                    report_file.created_by = citizen
+                    #if no content the user the filename as description
+                    if (report_file.title == ''):
+                        report_file.title = str(report_file.file.name)
+                    report_file.save()
 
-            if request.POST.get("citizen_subscription", False):
-                ReportSubscription(report=report, subscriber=report.citizen).save()
+                if request.POST.get("citizen_subscription", False):
+                    ReportSubscription(report=report, subscriber=report.citizen).save()
+            else :
+                reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+                return render_to_response("reports/new.html",
+                {
+                    "report":report,
+                    "available_zips":ZipCode().get_usable_zipcodes(),
+                    "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
+                    "comment_form":comment_form,
+                    "file_formset":file_formset,
+                    "report_form": report_form,
+                    "citizen_form": citizen_form,
+                    "pnt":pnt,
+                    "reports":reports[0:5],
+                    "validate":"true"
+                },
+                context_instance=RequestContext(request))
 
 
     report_form = CitizenReportForm(initial={
@@ -67,7 +85,8 @@ def new(request):
                 "report_form": report_form,
                 "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports[0:5]
+                "reports":reports[0:5],
+                "validate":"false"
             },
             context_instance=RequestContext(request))
 
@@ -95,9 +114,10 @@ def show(request, slug, report_id):
                 comment.save()
 
             for file_form in file_formset:
-                report_file = file_form.save(commit=False)
-                report_file.report = report
-                report_file.save()
+                if request.POST['files-__prefix__-file']:
+                    report_file = file_form.save(commit=False)
+                    report_file.report = report
+                    report_file.save()
 
             if request.POST.get("citizen_subscription", False):
                 ReportSubscription(report=report, subscriber=report.created_by).save()

@@ -20,23 +20,38 @@ def new(request):
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
-            # this saves the update as part of the report.
-            report = report_form.save()
-            
-            if request.POST["comment-text"]:
-                comment = comment_form.save(commit=False)
-                comment.created_by = FMSUser.objects.get(pk=request.user.id)
-                comment.report = report
-                comment.save()
+            if not request.POST["validate"]=="true":
+                # this saves the update as part of the report.
+                report = report_form.save()
+                
+                if request.POST["comment-text"]:
+                    comment = comment_form.save(commit=False)
+                    comment.created_by = FMSUser.objects.get(pk=request.user.id)
+                    comment.report = report
+                    comment.save()
 
-            files = file_formset.save(commit=False)
-            for report_file in files:
-                report_file.report = report
-                report_file.created_by = FMSUser.objects.get(pk=request.user.id)
-                #if no content the user the filename as description
-                if (report_file.title == ''):
-                    report_file.title = str(report_file.file.name)
-                report_file.save()
+                files = file_formset.save(commit=False)
+                for report_file in files:
+                    report_file.report = report
+                    report_file.created_by = FMSUser.objects.get(pk=request.user.id)
+                    #if no content the user the filename as description
+                    if (report_file.title == ''):
+                        report_file.title = str(report_file.file.name)
+                    report_file.save()
+            else :
+                reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+                return render_to_response("reports/new.html",
+                {
+                    "report":report,
+                    "available_zips":ZipCode.objects.all(),
+                    "report_form": report_form,
+                    "pnt":pnt,
+                    "reports":reports[0:5],
+                    "file_formset":file_formset,
+                    "comment_form":comment_form,
+                    "validate":"true"
+                },
+                context_instance=RequestContext(request))
 
     report_form = ProReportForm(initial={
         'x': request.REQUEST.get('x'),
@@ -55,6 +70,7 @@ def new(request):
                 "reports":reports[0:5],
                 "file_formset":file_formset,
                 "comment_form":comment_form,
+                "validate":"false"
             },
             context_instance=RequestContext(request))
 

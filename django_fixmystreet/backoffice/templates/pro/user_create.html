@@ -58,6 +58,7 @@
     <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
     <div>
       <form action="" method="POST">     
+        {% csrf_token %}
         <table>
           <tr>
           {{ createform.as_table }}

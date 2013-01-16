@@ -37,6 +37,21 @@ $(function(){
     $("#validate_form").css("margin-top","30px");
     $(".report_step_number_2").css("bottom","10px");
     {% endif %}
+
+    $("input:checkbox").bind("change",function(){
+        
+        if ($(this).attr("value")!="on"){
+            $(this).attr("value","on");
+        }
+        else {
+            if($(this).attr("checked")=="checked"){
+                $(this).attr("value","on");
+                return false;
+            }
+            $(this).attr("value","off");
+        }
+    });
+    
 });
 
 function show_confirmation_popup(){
@@ -64,16 +79,21 @@ var categories = {
     {% endfor %}
 }
 function validate() {
-    toggleFormSteps();
-    $('#confirmation_edit_button').show();
-    $('#confirmation_button').removeAttr("disabled");
+    $("#validate").val("true");
+    $("#report-form").submit();
+    if($(".invalid").size()== 0){
+        toggleFormSteps();
+        $('#confirmation_edit_button').show();
+        $('#confirmation_button').removeAttr("disabled");
+    }
     // $("#confirmation_button").removeAttr("disabled");
     // $("#confirmation_button").attr("onclick","confirm();");
     $('#validate_report_popup').modal('hide');
 }
 
 function confirm(){
-    $("#report_form_submit_button").click();
+    $("#validate").val("false");
+    // $("#report_form_submit_button").click();
 }
 
 function toggleFormSteps(){
@@ -83,12 +103,71 @@ function toggleFormSteps(){
     $("#confirm_form").find('.inactive_overlay_form_overview').toggle();
 }
 
+function createOverview(){
+    $("#validate_report_popup .modal-body").empty();
+    var overviewHtml = "";
+    $.each($("#report-form").find(".control-group"),function(idx,val){
+        overviewHtml += $(val).html();
+    });
+    overviewHtml+= "<div>Files</div>";
+    $.each($("#form-files").find("div"),function(idx,value){
+        if($(value).attr("id")!="file-form-template"){
+            overviewHtml+= $(value).html();
+        }
+    });
+    overviewHtml+= "<div>Comment</div>";
+    $("#validate_report_popup .modal-body").append(overviewHtml).append($("#id_comment-text").clone());
+    $("#validate_report_popup .modal-body .help-block").hide();
+    $.each($("#report-form").find("select"),function(idx,value){
+        var overview_select = $("#validate_report_popup").find("#"+$(value).attr("id"));
+        overview_select.val($(value).val());
+        overview_select.attr("disabled","disabled");
+    });
+    $.each($("#report-form").find("input"),function(idx,value){
+        if($(value).attr("type")!="hidden" && $(value).attr("type")!="file"){
+            if($(value).attr("type")=="checkbox"){
+                var overview_input = $("#validate_report_popup").find("#"+$(value).attr("id"));
+                overview_input.attr("checked",($(value).attr("value")=="on"));
+                overview_input.attr("disabled","disabled");
+            }
+            else{
+                var overview_input = $("#validate_report_popup").find("#"+$(value).attr("id"));
+                overview_input.val($(value).val());
+                overview_input.attr("disabled","disabled");
+            }
+            
+        }
+        else if ($(value).attr("type")!="file"){
+            $("#validate_report_popup").find("[type='file']").hide();
+        }
+        
+    });
+    $.each($("#report-form").find("textarea"),function(idx,value){
+        var overview_textarea = $("#validate_report_popup").find("#"+$(value).attr("id"));
+            overview_textarea.val($(value).val());
+            overview_textarea.attr("disabled","disabled");
+    });
+    $("#validate_report_popup").find("#id_comment-text").attr("disabled",'disabled');
+}
+
 </script>
 <script src="{{STATIC_URL}}js/new_report.js"></script>
 
 
 {% block specific_scripts %}
-<script src="{{STATIC_URL}}js/reportFormReview.js"></script>
+<script src="{{STATIC_URL}}js/reportFormReview.js"></script>`
+<script type="text/javascript">
+$(function(){
+    if("{{validate}}"=="true"){
+        if($(".invalid").size()== 0){
+            toggleFormSteps();
+            $('#confirmation_edit_button').show();
+            $('#confirmation_button').removeAttr("disabled");
+        }
+    }
+});
+
+</script>
 {% endblock %}
 {% endblock %}
 
@@ -100,6 +179,7 @@ function toggleFormSteps(){
     </article>
     <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
         {% csrf_token %}
+        <input id="validate" type="hidden" name="validate" maxlength="75">
         <div id="page_content_container">
             <div id="create_form_left" class="overview_div_left">
                 <div class="report_step_number_1">
@@ -186,7 +266,7 @@ function toggleFormSteps(){
                     <legend>{% trans 'Validate' %}</legend>
                     {% trans 'Create an overview of the created incident report to validate your information.' %}
                     <br/>
-                    <a id="validate_form_button" href="javascript:$('#validate_report_popup').modal();" class="btn"> {% trans 'Validate' %}</a>
+                    <a id="validate_form_button" href="javascript:createOverview();$('#validate_report_popup').modal();" class="btn"> {% trans 'Validate' %}</a>
                 </fieldset>
             </div>
             <div id="confirm_form" class="overview_div_right">
@@ -199,9 +279,9 @@ function toggleFormSteps(){
                 <fieldset>
                     <legend>{% trans 'Confirm' %}</legend>
                     <a id="confirmation_edit_button" href="javascript:toggleFormSteps();" class="btn gray_left"> {% trans 'Edit' %}</a>
-                    <!-- <a id="confirmation_button" href="" class="btn" onclick="return false;" disabled="disabled"> {% trans 'Confirm' %}</a> -->
                     <input id="confirmation_button" type="submit" class='btn' value="{% trans 'Confirm' %}" />
                 </fieldset>
+            </div>
             </div>
         </form>
         <div class="warning_information_form">
@@ -261,5 +341,5 @@ function toggleFormSteps(){
                 {% endif %}
             </div>
         </div>
-    </div>
+
 {% endblock %}
