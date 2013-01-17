@@ -301,16 +301,18 @@ function markAsDone(){
             <div id="form-files">
                 {{ file_formset.management_form }}
                 {# file_formset.errors #}
+
                 <div id="file-form-template">
                     <img class="thumbnail" />
                     {{ file_formset.empty_form.reportattachment_ptr }}
                     {{ file_formset.empty_form.file }}
-                    {{ file_formset.empty_form.description }}
+                    {{ file_formset.empty_form.title }}
+                    {{ file_formset.empty_form.file_creation_date }}
                 </div>
             </div>
-            <p class="pull-right">
-                <button id="file-upload" class="btn">Add file</button>
-            </p>
+            <div class="file-upload-button">
+                <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">Add file</a>
+            </div>
 
         </fieldset>
         <p>

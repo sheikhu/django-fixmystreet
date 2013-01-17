@@ -95,11 +95,13 @@ def show(request, slug, report_id):
                 comment.report = report
                 comment.save()
 
-            for file_form in file_formset:
-                if request.POST['files-__prefix__-file']:
-                    report_file = file_form.save(commit=False)
-                    report_file.report = report
-                    report_file.save()
+            files = file_formset.save(commit=False)
+            for report_file in files:
+                report_file.report = report
+                #if no content the user the filename as description
+                if (report_file.title == ''):
+                    report_file.title = str(report_file.file.name)
+                report_file.save()
 
             if request.POST.get("citizen_subscription", False):
                 ReportSubscription(report=report, subscriber=report.created_by).save()

@@ -935,7 +935,12 @@ input[type="submit"].btn {
 input[type="button"].btn {
     background: #FFF203;
 }
-
+button.btn{
+    background: #FFF203;
+}
+a.btn{
+    background: #FFF203;
+}
 
 /* second step: form */
 #id_address.loading {

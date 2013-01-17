@@ -13,7 +13,7 @@ $(document).ready(function() {
     /**********************************************************/
     $(document.body).delegate(":file", "change", fileSelected);
     $("#file-upload").click(function (evt) {
-	evt.preventDefault();
+        evt.preventDefault();
         file_form_template.find(":file").click();
     });
 });

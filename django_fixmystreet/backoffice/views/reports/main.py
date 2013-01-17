@@ -82,14 +82,38 @@ def subscription(request):
             context_instance=RequestContext(request))
 
 def show(request,slug, report_id):
+    ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
+    report = get_object_or_404(Report, id=report_id)
+    if request.method == "POST":
+        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+        # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+        # this checks update is_valid too
+        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
+            # this saves the update as part of the report.
+            # citizen = citizen_form.save()
+            if request.POST["comment-text"]:
+                comment = comment_form.save(commit=False)
+                comment.created_by = FMSUser.objects.get(pk=request.user.id)
+                comment.report = report
+                comment.save()
+            files = file_formset.save(commit=False)
+            for report_file in files:
+                report_file.report = report
+                report_file.created_by = FMSUser.objects.get(pk=request.user.id)
+                #if no content the user the filename as description
+                if (report_file.title == ''):
+                    report_file.title = str(report_file.file.name)
+                report_file.save()
+    
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
+
     if request.GET.get("page"):
         page_number= int(request.GET.get("page"))
     else :
         page_number=1
 
-    report = get_object_or_404(Report, id=report_id)
-    files = ReportFile.objects.filter(report_id=report_id).filter(logical_deleted=False)
-    comments = ReportComment.objects.filter(report_id=report_id).filter(logical_deleted=False)
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
     
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
@@ -111,10 +135,8 @@ def show(request,slug, report_id):
                 "fms_user": fms_user,
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "comment_form": ReportCommentForm(),
-                "file_form":ReportFileForm(),
-                "files":files,
-                "comments":comments,
+                "comment_form": comment_form,
+                "file_formset":file_formset,
                 "region_institution":region_institution,
                 "managers":managers,
                 "contractors":contractors,

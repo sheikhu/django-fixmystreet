@@ -72,6 +72,21 @@ $(document).ready(function() {
         window.location = "{% url report_list_pro status %}?page="+(parseInt("{{request.GET.page}}")-1);
     });
 });
+
+/**
+ * Method called when searching report per ticket number.
+ */
+function search_per_ticket() {
+        searchValue = $('#input-search').val();
+    //Block to search per ticket number
+    if (searchValue && searchValue.length > 0) {
+        valToSearch = searchValue;
+        //On this page character # is not required as the search zone is dedicated.
+        if (searchValue[0] == "#")
+            valToSearch = searchValue.substring(1);
+        window.location = "/report/search_ticket?report_id="+valToSearch;
+    }
+}
 </script>
 {% endblock %}
 
@@ -156,7 +171,7 @@ $(document).ready(function() {
             <p >{% trans "Search by entering a ticket number:" %}</p>
             <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
             <p style="float:right">
-                <input type="submit" class='btn' value="{% trans 'Search' %}" />
+                <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
             </p>
 		</div>
         <div id="go_to_submit_report">
