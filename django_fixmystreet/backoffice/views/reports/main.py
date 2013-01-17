@@ -64,7 +64,7 @@ def search_ticket(request):
     report_id = request.REQUEST.get('report_id')
     report = Report.objects.get(id=report_id)
 
-    return HttpResponseRedirect(report.get_absolute_url_pro())
+    return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
 
 def subscription(request):
     """

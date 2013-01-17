@@ -18,7 +18,7 @@ def accept( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -32,7 +32,7 @@ def refuse( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -43,7 +43,7 @@ def fixed( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -56,7 +56,7 @@ def close( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -76,7 +76,7 @@ def new( request, report_id ):
                 file_form.save(request.user, report)
 
         if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
         else:
             return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()
@@ -88,7 +88,7 @@ def switchPrivacy(request,report_id):
     report.private = ('true' == privacy)
     report.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -111,7 +111,7 @@ def changeManager(request,report_id):
                 break
 
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 def changeContractor(request,report_id):
@@ -131,7 +131,7 @@ def changeContractor(request,report_id):
 
     report.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -166,7 +166,7 @@ def acceptAndValidate(request, report_id):
         f.save()
     
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -186,7 +186,7 @@ def validateAll(request,report_id):
         f.save()
     
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -198,7 +198,7 @@ def updateComment(request,report_id):
 
     comment.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -210,7 +210,7 @@ def deleteComment(request,report_id):
     comment.save()
     
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -222,7 +222,7 @@ def updateFile(request,report_id):
 
     f.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -234,6 +234,6 @@ def deleteFile(request,report_id):
     f.save()
     
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
