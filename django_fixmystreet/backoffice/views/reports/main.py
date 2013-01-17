@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-
+import math
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
@@ -134,7 +134,7 @@ def show(request,slug, report_id):
     applicants = OrganisationEntity.objects.filter(applicant=True)
     reports = Report.objects.all()   
  
-    pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
+    pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",
             {
