@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-17 08:46+0100\n"
+"POT-Creation-Date: 2013-01-17 12:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: forms.py:14 forms.py:40 forms.py:41 forms.py:67
+#: forms.py:14 forms.py:40 forms.py:41 forms.py:68
 msgid "Select a Category"
 msgstr "Kies een Categorie"
 
-#: forms.py:40 forms.py:67
+#: forms.py:40 forms.py:68
 #, fuzzy
 msgid "category"
 msgstr "Categorie"
@@ -32,31 +32,31 @@ msgstr "Categorie"
 msgid "Secondary category"
 msgstr "Kies een Categorie"
 
-#: forms.py:88
+#: forms.py:89
 msgid "Choose your quality"
 msgstr ""
 
-#: forms.py:117 forms.py:148
+#: forms.py:118 forms.py:149
 msgid "Email"
 msgstr "Email"
 
-#: forms.py:119
+#: forms.py:120
 msgid "Identity"
 msgstr ""
 
-#: forms.py:121
+#: forms.py:122
 msgid "Tel."
 msgstr "Tel."
 
-#: forms.py:145 models.py:202 models.py:860 models.py:894 models.py:928
+#: forms.py:146 models.py:202 models.py:879 models.py:913 models.py:947
 msgid "Name"
 msgstr "Naam"
 
-#: forms.py:150
+#: forms.py:151
 msgid "Message"
 msgstr "Boodschap"
 
-#: forms.py:183
+#: forms.py:184
 msgid "Verify if a similar incident isn't reported yet."
 msgstr ""
 
@@ -85,7 +85,7 @@ msgstr "Geolocatie"
 msgid "ANONYMOUS"
 msgstr ""
 
-#: models.py:203 models.py:861 models.py:895 models.py:929
+#: models.py:203 models.py:880 models.py:914 models.py:948
 msgid "Slug"
 msgstr ""
 
@@ -134,123 +134,123 @@ msgstr "Geolocatie"
 msgid "Address Number"
 msgstr "Adres:"
 
-#: models.py:305
+#: models.py:306
 msgid "Postal Code"
 msgstr "Post code"
 
-#: models.py:307 models.py:308
+#: models.py:308 models.py:309
 msgid "Category"
 msgstr "Categorie"
 
-#: models.py:705
+#: models.py:724
 #, fuzzy
 msgid "Public"
 msgstr "Publiek?"
 
-#: models.py:706
+#: models.py:725
 msgid "Private"
 msgstr ""
 
-#: models.py:707
+#: models.py:726
 #, fuzzy
 msgid "Confidential"
 msgstr "Confidentieel?"
 
-#: models.py:931 models.py:932
+#: models.py:950 models.py:951
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1019 models.py:1271
+#: models.py:1038 models.py:1290
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1117
+#: models.py:1136
 #, fuzzy
 msgid "Refuse"
 msgstr "Afgewezen"
 
-#: models.py:1118
+#: models.py:1137
 msgid "Close"
 msgstr ""
 
-#: models.py:1119
+#: models.py:1138
 #, fuzzy
 msgid "Mark as Done"
 msgstr "Markeer als behandeld"
 
-#: models.py:1120
+#: models.py:1139
 #, fuzzy
 msgid "Manager assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1121
+#: models.py:1140
 #, fuzzy
 msgid "Manager changed"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1122
+#: models.py:1141
 #, fuzzy
 msgid "Publish"
 msgstr "Alles publiceren"
 
-#: models.py:1123
+#: models.py:1142
 #, fuzzy
 msgid "Organisation assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1124
+#: models.py:1143
 msgid "Organisation changed"
 msgstr ""
 
-#: models.py:1127
+#: models.py:1146
 #, fuzzy
 msgid "Report refused by {user}"
 msgstr "Rapporten per gemeente"
 
-#: models.py:1128
+#: models.py:1147
 #, fuzzy
 msgid "Report closed by {user}"
 msgstr "Rapporten per gemeente"
 
-#: models.py:1129
+#: models.py:1148
 #, fuzzy
 msgid "Report pointed as done"
 msgstr "Ingediende Rapporten"
 
-#: models.py:1130
+#: models.py:1149
 #, fuzzy
 msgid "Report as been assigned to {related_new}"
 msgstr "Ingediende Rapporten"
 
-#: models.py:1131
+#: models.py:1150
 msgid "Report as change manager from {related_new} to {related_old}"
 msgstr ""
 
-#: models.py:1132
+#: models.py:1151
 msgid "Report has been published by {user}"
 msgstr ""
 
-#: models.py:1133
+#: models.py:1152
 msgid "{related_new} is responsible for the report"
 msgstr ""
 
-#: models.py:1134
+#: models.py:1153
 msgid "{related_old} give responsibility to {related_new}"
 msgstr ""
 
-#: models.py:1230
+#: models.py:1249
 msgid "Question"
 msgstr "Vraag"
 
-#: models.py:1231
+#: models.py:1250
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1272
+#: models.py:1291
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1273
+#: models.py:1292
 msgid "Related model field"
 msgstr ""
 
@@ -672,7 +672,7 @@ msgid "Enter the address where the incident is:"
 msgstr ""
 
 #: templates/home.html:92
-msgid "Street..."
+msgid "Street, ticket number, ..."
 msgstr ""
 
 #: templates/home.html:94
@@ -819,12 +819,12 @@ msgstr ""
 msgid "We'd love to get your feedback"
 msgstr ""
 
-#: templates/contact/new.html:42 templates/reports/new.html:210
-#: templates/reports/new.html.py:268
+#: templates/contact/new.html:42 templates/reports/new.html:224
+#: templates/reports/new.html.py:282
 msgid "* This fields are required"
 msgstr "* Deze velden zijn verplicht"
 
-#: templates/contact/new.html:47 templates/reports/show.html:317
+#: templates/contact/new.html:47 templates/reports/show.html:319
 msgid "Send"
 msgstr "Doorsturen"
 
@@ -1209,21 +1209,21 @@ msgid ""
 " out of the first 100 confirmed reports were filed with the promotional code "
 msgstr ""
 
-#: templates/reports/_navigation.html:22
+#: templates/reports/_navigation.html:30
 #, fuzzy
 msgid "subscriptions"
 msgstr "^rapport/abonnement"
 
-#: templates/reports/_navigation.html:23
+#: templates/reports/_navigation.html:31
 #, fuzzy
 msgid "Created at"
 msgstr "Aangemaakt op:"
 
-#: templates/reports/_navigation.html:32
+#: templates/reports/_navigation.html:40
 msgid "responsible_entity"
 msgstr ""
 
-#: templates/reports/_navigation.html:38
+#: templates/reports/_navigation.html:46
 msgid "fixed"
 msgstr "opgelost"
 
@@ -1286,102 +1286,102 @@ msgid ""
 "service public en charge de le traiter."
 msgstr ""
 
-#: templates/reports/new.html:66
+#: templates/reports/new.html:79
 msgid "This commune does not participate"
 msgstr ""
 
-#: templates/reports/new.html:66
+#: templates/reports/new.html:79
 msgid "Please request your commune to join the initiative"
 msgstr ""
 
-#: templates/reports/new.html:66
+#: templates/reports/new.html:80
 msgid "Brussels Mobility"
 msgstr ""
 
-#: templates/reports/new.html:197
+#: templates/reports/new.html:211
 #, fuzzy
 msgid "Drag me to change my location."
 msgstr "Sleep me naar de correcte plaats op de kaart"
 
-#: templates/reports/new.html:209
+#: templates/reports/new.html:223
 msgid "Submitting a report"
 msgstr "Een rapport doorsturen"
 
-#: templates/reports/new.html:212
+#: templates/reports/new.html:226
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
 msgstr ""
 
-#: templates/reports/new.html:214
+#: templates/reports/new.html:228
 msgid "Verify"
 msgstr ""
 
-#: templates/reports/new.html:218
+#: templates/reports/new.html:232
 #, fuzzy
 msgid "Address"
 msgstr "Adres:"
 
-#: templates/reports/new.html:222
+#: templates/reports/new.html:236
 msgid "** To change the address, move the marker on the map above."
 msgstr ""
 
-#: templates/reports/new.html:225
+#: templates/reports/new.html:239
 #, fuzzy
 msgid "Commune"
 msgstr "Commentaar:"
 
-#: templates/reports/new.html:232
+#: templates/reports/new.html:246
 #, fuzzy
 msgid "Incident category:"
 msgstr "Categorie"
 
-#: templates/reports/new.html:239
+#: templates/reports/new.html:253
 #, fuzzy
 msgid "Files"
 msgstr "opgelost"
 
-#: templates/reports/new.html:257
+#: templates/reports/new.html:271
 #, fuzzy
 msgid "Comment"
 msgstr "Commentaar:"
 
-#: templates/reports/new.html:267
+#: templates/reports/new.html:281
 msgid "Personal information:"
 msgstr ""
 
-#: templates/reports/new.html:272
+#: templates/reports/new.html:286
 #, fuzzy
 msgid "Contact information:"
 msgstr "Aannemer/Impetrant"
 
-#: templates/reports/new.html:286 templates/reports/new.html.py:289
-#: templates/reports/new.html:344
+#: templates/reports/new.html:300 templates/reports/new.html.py:303
+#: templates/reports/new.html:358
 #, fuzzy
 msgid "Validate"
 msgstr "Alles bevestigen"
 
-#: templates/reports/new.html:287
+#: templates/reports/new.html:301
 msgid ""
 "Create an overview of the created incident report to validate your "
 "information."
 msgstr ""
 
-#: templates/reports/new.html:300 templates/reports/new.html.py:302
+#: templates/reports/new.html:314 templates/reports/new.html.py:316
 #: templates/reports/show.html:100
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: templates/reports/new.html:301
+#: templates/reports/new.html:315
 msgid "Edit"
 msgstr "Aanpassen"
 
-#: templates/reports/new.html:309
+#: templates/reports/new.html:323
 #, fuzzy
 msgid "Confidentiality:"
 msgstr "Confidentieel?"
 
-#: templates/reports/new.html:310
+#: templates/reports/new.html:324
 msgid ""
 "We garantee the confidentiality of all given information. Conform with law "
 "(see site  <a href=\"http://www.ejustice.just.fgov.be\">Monitoring Belgium</"
@@ -1389,33 +1389,33 @@ msgid ""
 "of them."
 msgstr ""
 
-#: templates/reports/new.html:320
+#: templates/reports/new.html:334
 #, fuzzy
 msgid "Submit an incident:"
 msgstr "Ingediende Rapporten"
 
-#: templates/reports/new.html:323
+#: templates/reports/new.html:337
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr ""
 
-#: templates/reports/new.html:325
+#: templates/reports/new.html:339
 msgid "Download a copy of the incident as a pdf"
 msgstr ""
 
-#: templates/reports/new.html:330 templates/reports/new.html.py:332
+#: templates/reports/new.html:344 templates/reports/new.html.py:346
 msgid "Continue"
 msgstr ""
 
-#: templates/reports/new.html:339
+#: templates/reports/new.html:353
 #, fuzzy
 msgid "Incident overview:"
 msgstr "Rapport overzicht:"
 
-#: templates/reports/new.html:350
+#: templates/reports/new.html:364
 msgid "Nearby incidents that are already submitted:"
 msgstr ""
 
-#: templates/reports/new.html:360
+#: templates/reports/new.html:374
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
@@ -1525,19 +1525,19 @@ msgid ""
 "                            "
 msgstr ""
 
-#: templates/reports/show.html:326
+#: templates/reports/show.html:328
 msgid "report pdf public"
 msgstr "Publiek PDF rapport"
 
-#: templates/reports/show.html:330
+#: templates/reports/show.html:332
 msgid "Offensive? Unsuitable? Tell us"
 msgstr "Beledigend? Ongepast? Contacteer ons"
 
-#: templates/reports/show.html:339
+#: templates/reports/show.html:341
 msgid "Subscribers:"
 msgstr "Abonnees"
 
-#: templates/reports/show.html:344
+#: templates/reports/show.html:346
 msgid "Subscribe"
 msgstr "Abonneer"
 
@@ -1562,7 +1562,7 @@ msgstr ""
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: views/reports/main.py:106
+#: views/reports/main.py:109
 msgid "You attachments has been sent"
 msgstr ""
 

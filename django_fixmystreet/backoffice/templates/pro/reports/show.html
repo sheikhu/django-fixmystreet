@@ -103,7 +103,7 @@ $(document).ready(function() {
         $('#id_public').attr("checked", "checked");
     {% endif %}
     {% for report in reports %}
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, true);
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
     // Add the active class to the active page number
     $("#page_{{request.GET.page}}").addClass("active");
@@ -254,17 +254,17 @@ function markAsDone(){
                     <td colspan="4">{{report.display_category}}</td>
                 </tr>
                 <tr>
-                    <th>{% trans "Status:" %} </th>
-                    {% if report.is_created%}
-                    	<td colspan="4">{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-red-XS.png"></td>
-		    {% endif %}
-                    {% if report.is_in_progress%}
-                    	<td colspan="4">{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-orange-XS.png"/></td>
-		    {% endif %}
-                    {% if report.is_closed%}
-                    	<td colspan="4">{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-green-XS.png"></td>
-		    {% endif %}
-                </tr>
+                	<th>{% trans "Status:" %}</th>
+			{% if report.is_created%}
+				<td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-red-XS.png"></td>
+			{% endif %}
+			{% if report.is_in_progress%}
+				<td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-orange-XS.png"/></td>
+			{% endif %}
+			{% if report.is_closed%}
+				<td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-green-XS.png"></td>
+			{% endif %}
+		</tr>
 
                 {% if report.is_in_progress  %}
                 {% if request.user.id == report.responsible_manager.id %}

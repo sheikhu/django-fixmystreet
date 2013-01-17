@@ -331,6 +331,12 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    def is_regional(self):
+        return self.address_regional == True
+
+    def is_pro(self):
+        return self.citizen == None
+    
     def __unicode__(self):
         return self.display_category()
 

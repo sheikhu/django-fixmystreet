@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms.models import modelformset_factory
 from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, MarkAsDoneForm, ReportFileForm
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, MarkAsDoneForm, ReportFileForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
@@ -50,6 +50,7 @@ def new(request):
             {
                 "report":report,
                 "available_zips":ZipCode.objects.all(),
+                "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "report_form": report_form,
                 "pnt":pnt,
                 "reports":reports[0:5],
