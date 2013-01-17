@@ -15,6 +15,8 @@ from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm,
 def new(request):
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
     pnt = dictToPoint(request.REQUEST)
+    import pdb
+    pdb.set_trace()
     report=None
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
@@ -44,7 +46,7 @@ def new(request):
                         report_file.title = str(report_file.file.name)
                     report_file.save()
 
-                if request.POST.get("citizen_subscription", False):
+                if request.POST["citizen-subscription"]=="on":
                     ReportSubscription(report=report, subscriber=report.citizen).save()
 
 
