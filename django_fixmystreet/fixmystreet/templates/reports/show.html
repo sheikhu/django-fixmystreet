@@ -39,7 +39,7 @@ $(function(){
         }
     });
 
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1, false);
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1, {% if BACKOFFICE %}true{%else%}false{%endif%});
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -135,7 +135,7 @@ function markAsDone(){
 
 
 <div class="overview_div_left">
-    <h2>{% trans "Report Ticket" %}: {{ report.get_ticket_as_string }}</h2>
+    <h2>{% trans "Report Ticket" %} {{ report.get_ticket_as_string }}</h2>
     <!-- ######### -->
     <!-- IS FIXED  -->
     <!-- ######### -->
@@ -185,13 +185,13 @@ function markAsDone(){
             <tr>
                 <th>{% trans "Status:" %}</th>
                 {% if report.is_created%}
-                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-red-XS.png"></td>
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-red-XS.png"></td>
                 {% endif %}
                 {% if report.is_in_progress%}
-                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-orange-XS.png"/></td>
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-orange-XS.png"/></td>
                 {% endif %}
                 {% if report.is_closed%}
-                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/pin-green-XS.png"></td>
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-green-XS.png"></td>
                 {% endif %}
             </tr>
         </table>

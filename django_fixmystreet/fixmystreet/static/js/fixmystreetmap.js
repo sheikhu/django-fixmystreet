@@ -259,11 +259,6 @@ if (!('fms' in window)) {
 		});
 	};
 
-	fms.Map.prototype.addReport = function(report,index)
-        {
-		 fms.Map.prototype.addReport(report,index,false);
-	}
-
 	/**
 	 * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
 	 * @param report the report to add
@@ -304,7 +299,7 @@ if (!('fms' in window)) {
 			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
 				callbacks: { 
      				   click: function(feature){
-				   	window.location = "/report/search_ticket?report_id="+feature.attributes.report.id;
+					window.location = ((proVersion)?"/pro":"")+"/report/search_ticket?report_id="+feature.attributes.report.id;
 				   }, 
       				   over: function(feature){
 					domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
@@ -363,29 +358,23 @@ if (!('fms' in window)) {
 
 		if (proVersion) {
 			console.log('pro version detected');
-			$.ajax({
-				url: "http://gis.irisnetlab.be/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:URB_A_SS&maxFeatures=1&outputFormat=json&bbox="+(report.point.x-20)+","+(report.point.y-20)+","+(report.point.x+20)+","+(report.point.y+20),
-				dataType: "json",
-				type: "POST",
-				success: function(responseData, textStatus, jqXHR) {	
-					if (responseData.features[0].properties.ADMINISTRATOR == null) {
-                		   		//NOT ROUTE REGIONALE
-                		   		if (report.citizen == 'true') {
-							console.log('citizen report in pro section');
-		               	   			var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
-						} else {
-							console.log(report.citizen);
-							console.log('pro report in pro section');
-		               	   			var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
-						}
-					} else {
-                		   		//ROUTE REGIONALE
-		               	   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : pendingMarkerStyleReg;
-					}
-		                	var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-					self.markersLayer.addFeatures(vectorOfMarkers);
+			if (false == report.address_regional) {
+                   		//NOT ROUTE REGIONALE
+                   		if (report.citizen == 'true') {
+					console.log('citizen report in pro section');
+		       			var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+				} else {
+					console.log(report.citizen);
+					console.log('pro report in pro section');
+		       			var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
 				}
-			});
+			} else {
+				console.log('regional report detected');
+                   		//ROUTE REGIONALE
+		   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : pendingMarkerStyleReg;
+			}
+		          	var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+				self.markersLayer.addFeatures(vectorOfMarkers);
 		} else {
 			console.log('citizen version detected');
 			//Non pro version

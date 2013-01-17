@@ -302,6 +302,7 @@ class Report(UserTrackedModel):
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     address_number = models.CharField(max_length=255, verbose_name=ugettext_lazy("Address Number"))
+    address_regional = models.BooleanField(default=False)
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"), blank=True)
@@ -330,6 +331,12 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    def is_regional(self):
+        return self.address_regional == True
+
+    def is_pro(self):
+        return self.citizen == None
+    
     def __unicode__(self):
         return self.display_category()
 
@@ -403,6 +410,13 @@ class Report(UserTrackedModel):
         """
         Method used to display the whole object content as JSON structure for website
         """
+
+        local_thumbnail = self.thumbnail()
+        if (local_thumbnail == None):
+            thumbValue = 'null'
+        else:
+            thumbValue = local_thumbnail
+
         return {
             "id": self.id,
             "point": {
@@ -424,7 +438,8 @@ class Report(UserTrackedModel):
             "responsible_manager": self.responsible_manager.username,
             "close_date":  str(self.close_date),
             "private": self.private,
-            "valid": self.valid
+            "valid": self.valid,
+            "thumb": thumbValue
         }
 
     def to_JSON(self):
@@ -455,6 +470,7 @@ class Report(UserTrackedModel):
                 "y": self.point.y,
             },
             "status": self.status,
+            "address_regional": self.address_regional,
             "status_label": self.get_status_display(),
             "close_date": close_date_as_string,
             "citizen": citizenValue,
@@ -492,6 +508,7 @@ class Report(UserTrackedModel):
             "s": self.status,
             "c_d": close_date_as_string,
             "pr": self.private,
+            "a_d": self.address_regional,
             "v": self.valid,
             "c": self.secondary_category.id,
             "m_c": self.secondary_category.category_class.id,
