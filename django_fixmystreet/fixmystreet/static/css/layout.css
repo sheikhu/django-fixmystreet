@@ -402,6 +402,11 @@ footer *{
     margin: 0 10px;
 }
 
+#statistics {
+    float:right;
+    margin: 0 10px;
+}
+
 .counter {
     background-color: #949499;
     border:#949499 2px solid;
@@ -430,7 +435,7 @@ footer *{
 #instructions, #search-form {
     position: absolute;
     top: 10%;
-    z-index: 10000;
+    z-index: 750;
 }
 
 #instructions ul li {
