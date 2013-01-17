@@ -63,7 +63,7 @@ $(document).ready(function() {
  		//Default False
                 $('#id_report-address_regional').val('False');
 		$.ajax({
-                	url: "http://gis.irisnetlab.be/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:URB_A_SS&maxFeatures=1&outputFormat=json&bbox="+(pointX-30)+","+(pointY-30)+","+(pointX+30)+","+(pointY+30),
+                	url: "http://gis.irisnet.be/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:URB_A_SS&maxFeatures=1&outputFormat=json&bbox="+(pointX-30)+","+(pointY-30)+","+(pointX+30)+","+(pointY+30),
                         dataType: "json",
                         type: "POST",
                         success: function(responseData, textStatus, jqXHR) {
