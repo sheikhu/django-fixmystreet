@@ -43,6 +43,7 @@ class ReportForm(forms.ModelForm):
     # hidden inputs
     address = forms.CharField(widget=forms.widgets.HiddenInput)
     address_number = forms.CharField(widget=forms.widgets.HiddenInput)
+    address_regional = forms.BooleanField(widget=forms.widgets.HiddenInput, required=False)
     postalcode = forms.CharField(widget=forms.widgets.HiddenInput)
     x = forms.CharField(widget=forms.widgets.HiddenInput)
     y = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -72,7 +73,7 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
+        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
 
     private = forms.BooleanField(initial=True,required=False)
 
@@ -95,7 +96,7 @@ class CitizenReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode', 'quality')
+        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode', 'quality')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)

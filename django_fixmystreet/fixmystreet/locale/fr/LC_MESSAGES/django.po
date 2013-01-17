@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-16 16:58+0100\n"
+"POT-Creation-Date: 2013-01-17 08:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Tel."
 msgstr "Tel."
 
-#: forms.py:145 models.py:202 models.py:858 models.py:892 models.py:926
+#: forms.py:145 models.py:202 models.py:860 models.py:894 models.py:928
 msgid "Name"
 msgstr "Votre nom"
 
@@ -82,7 +82,7 @@ msgstr "Association"
 msgid "ANONYMOUS"
 msgstr ""
 
-#: models.py:203 models.py:859 models.py:893 models.py:927
+#: models.py:203 models.py:861 models.py:895 models.py:929
 msgid "Slug"
 msgstr ""
 
@@ -138,113 +138,113 @@ msgstr "Code postal"
 msgid "Category"
 msgstr "Catégorie"
 
-#: models.py:703
+#: models.py:705
 msgid "Public"
 msgstr ""
 
-#: models.py:704
+#: models.py:706
 msgid "Private"
 msgstr ""
 
-#: models.py:705
+#: models.py:707
 msgid "Confidential"
 msgstr ""
 
-#: models.py:929 models.py:930
+#: models.py:931 models.py:932
 msgid "Category group"
 msgstr "Groupe catégorie:"
 
-#: models.py:1017 models.py:1269
+#: models.py:1019 models.py:1271
 msgid "Label"
 msgstr ""
 
-#: models.py:1115
+#: models.py:1117
 #, fuzzy
 msgid "Refuse"
 msgstr "Refusé"
 
-#: models.py:1116
+#: models.py:1118
 #, fuzzy
 msgid "Close"
 msgstr "Fermé"
 
-#: models.py:1117
+#: models.py:1119
 msgid "Mark as Done"
 msgstr ""
 
-#: models.py:1118
+#: models.py:1120
 #, fuzzy
 msgid "Manager assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1119
+#: models.py:1121
 #, fuzzy
 msgid "Manager changed"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1120
+#: models.py:1122
 #, fuzzy
 msgid "Publish"
 msgstr "Non publié"
 
-#: models.py:1121
+#: models.py:1123
 #, fuzzy
 msgid "Organisation assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1122
+#: models.py:1124
 msgid "Organisation changed"
 msgstr ""
 
-#: models.py:1125
+#: models.py:1127
 #, fuzzy
 msgid "Report refused by {user}"
 msgstr "Incidents par communes"
 
-#: models.py:1126
+#: models.py:1128
 #, fuzzy
 msgid "Report closed by {user}"
 msgstr "Incidents par communes"
 
-#: models.py:1127
+#: models.py:1129
 #, fuzzy
 msgid "Report pointed as done"
 msgstr "Incidents"
 
-#: models.py:1128
+#: models.py:1130
 #, fuzzy
 msgid "Report as been assigned to {related_new}"
 msgstr "Incidents"
 
-#: models.py:1129
+#: models.py:1131
 msgid "Report as change manager from {related_new} to {related_old}"
 msgstr ""
 
-#: models.py:1130
+#: models.py:1132
 msgid "Report has been published by {user}"
 msgstr ""
 
-#: models.py:1131
+#: models.py:1133
 msgid "{related_new} is responsible for the report"
 msgstr ""
 
-#: models.py:1132
+#: models.py:1134
 msgid "{related_old} give responsibility to {related_new}"
 msgstr ""
 
-#: models.py:1228
+#: models.py:1230
 msgid "Question"
 msgstr "Question"
 
-#: models.py:1229
+#: models.py:1231
 msgid "Answere"
 msgstr "Réponse"
 
-#: models.py:1270
+#: models.py:1272
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1271
+#: models.py:1273
 msgid "Related model field"
 msgstr ""
 
@@ -669,7 +669,7 @@ msgstr ""
 
 #: templates/base.html:282 templates/term_of_use.html:4
 msgid "Terms of Use"
-msgstr "Conditions d'utilistation"
+msgstr "Conditions d'utilisation"
 
 #: templates/home.html:8
 msgid "Meta description for home page"
@@ -1372,7 +1372,7 @@ msgstr "Aucun problème n'a été signalé."
 
 #: templates/reports/list.html:87
 msgid "Search by entering a ticket number:"
-msgstr ""
+msgstr "Recherchez par numéro de ticket"
 
 #: templates/reports/list.html:88
 msgid "Insert your ticket number here"
@@ -1546,7 +1546,7 @@ msgstr ""
 #: templates/reports/show.html:138
 #, fuzzy
 msgid "Report Ticket"
-msgstr "Incidents"
+msgstr "Fiche de l'incident"
 
 #: templates/reports/show.html:143
 msgid "This incident is not validated."
@@ -1592,7 +1592,7 @@ msgstr ""
 
 #: templates/reports/show.html:205
 msgid "Photos and files"
-msgstr ""
+msgstr "Ajoutez des photos ou fichiers"
 
 #: templates/reports/show.html:233
 #, fuzzy

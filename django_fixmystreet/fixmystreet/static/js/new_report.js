@@ -47,16 +47,32 @@ $(document).ready(function() {
                 $('#address-text').html(response.result.address.street.name+ ', ' + response.result.address.number);
                 $('#postcode-text').html(postcode);
 
-				if (!(postcode in available_zipcodes)) {
-	                //This commune does not participate to fixmystreet until now.
-	                $("#validate_form_button").attr("disabled","disabled");
+		if (!(postcode in available_zipcodes)) {
+	            //This commune does not participate to fixmystreet until now.
+	            $("#validate_form_button").attr("disabled","disabled");
                     $("#validate_form_button").attr("onclick","return false;");
-	                alert(available_zipcodes_msg);
+	                alert(zipcode_availability_msg_prefix+available_zipcodes_msg[postcode+""].name+"("+available_zipcodes_msg[postcode+""].phone+")"+"\n\n"+bxl_mobility_msg);
 	                return false;
-		        }
-
-    			$("#validate_form_button").removeAttr("disabled");
+	        }
+    		$("#validate_form_button").removeAttr("disabled");
                 $("#validate_form_button").removeAttr("onclick");
+
+		//Search if the address is on a regional road or not.
+		var pointX = $('#id_report-x').val();
+		var pointY = $('#id_report-y').val();
+ 		//Default False
+                $('#id_report-address_regional').val('False');
+		$.ajax({
+                	url: "http://gis.irisnetlab.be/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:URB_A_SS&maxFeatures=1&outputFormat=json&bbox="+(pointX-30)+","+(pointY-30)+","+(pointX+30)+","+(pointY+30),
+                        dataType: "json",
+                        type: "POST",
+                        success: function(responseData, textStatus, jqXHR) {
+                        	if (responseData.features[0].properties.ADMINISTRATOR != null) {
+					//ROUTE REGIONALE
+                                	$('#id_report-address_regional').val('True');
+				}
+			}
+		});
     		}
     		else
     		{

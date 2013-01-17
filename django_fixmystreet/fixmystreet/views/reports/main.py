@@ -61,6 +61,7 @@ def new(request):
             {
                 "report":report,
                 "available_zips":ZipCode().get_usable_zipcodes(),
+                "all_zips":ZipCode.objects.filter(hide=False),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,
                 "file_formset":file_formset,
