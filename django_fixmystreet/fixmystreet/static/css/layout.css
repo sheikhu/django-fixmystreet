@@ -153,7 +153,8 @@ header {
 }
 
 #login {
-    height: 16px;
+    /*height: 16px;*/
+    height:40px;
     width: auto;
     padding: 14px 20px;
     position: relative;
@@ -176,10 +177,51 @@ header {
 #login #login-form {
     display: none;
     position: absolute;
-    top: 40px;
-    right: 0;
-    z-index: 1;
+    /*top: 40px;*/
+    top:65px;
+    /*right: 0;*/
+    left:-55px;
+    z-index: 1000;
+    padding-top:20px;
 }
+
+.loginblock{
+    height:auto;
+    min-height:auto !important;
+}
+
+#login-form {
+	position: relative;
+	background: #FFDB00;
+	border: 2px solid #FFFFFF;
+}
+#login-form:after, #login-form:before {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+#login-form:after {
+	border-color: rgba(255, 219, 0, 0);
+	border-bottom-color: #FFDB00;
+	border-width: 30px;
+	left: 50%;
+	margin-left: -30px;
+}
+#login-form:before {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #FFFFFF;
+	border-width: 33px;
+	left: 50%;
+	margin-left: -33px;
+}
+
+
+
 
 #login:hover #login-form {
     display: block;
@@ -212,6 +254,7 @@ header nav {
     font-family:'dosismedium', Arial, sans-serif;
     font-size: 140%;
     clear: both;
+    margin-top:-24px;
 }
 
 header nav ul {

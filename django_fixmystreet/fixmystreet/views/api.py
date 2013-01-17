@@ -11,7 +11,7 @@ from piston.handler import BaseHandler
 from piston.utils import validate
 
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode, ReportComment
-from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm
+from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 
 
@@ -48,6 +48,8 @@ def login_user(request):
             if user_object.check_password(user_password) == False:
                 #Bad Password
                 return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_BAD_PASSWORD","username": user_name}),mimetype='application/json')
+            if not user_object.is_active:
+                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_USER_NOT_ACTIVE","username": user_name}),mimetype='application/json')
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),mimetype='application/json')
@@ -149,7 +151,77 @@ def reports_pro(request):
         'results':result
     })
 
+
+
+class ProReportHandler(BaseHandler):
+    '''This method is called by mobile to create pro reports'''
+    allowed_methods = ('POST')
+    model = Report
+    fields = (
+        'category',
+        'secondary_category',
+        'description',
+        'address',
+        'address_number',
+        'address_regional',
+        'postalcode',
+        'quality',
+        'x',
+        'y'
+    )
+    exclude = ()
+
+#    @validate(CitizenReportForm, 'POST')
+    def create(self, request):
+        '''Create pro report from mobile'''
+        '''Create a user if necessary'''
+        try:
+            existingUser = FMSUser.objects.get(username=request.data['user_name'])
+        except FMSUser.DoesNotExist:
+            #The user has not the right to create a report
+            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
+
+        #Login the user
+        user = authenticate(username=request.data['user_name'], password=request.data['user_p'])
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+            else:
+                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
+        else:
+            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
+        
+        #Create report self'''
+        report_form = ProReportForm(request.data)
+        if not report_form.is_valid():
+            raise ValidationError(str(report_form.errors))
+        report = report_form.save(commit=False)
+        
+        #Assign creator (as pro user)
+        report.created_by = existingUser
+        # Category
+        report.category = ReportMainCategoryClass(request.data['secondary_category'])
+        report.secondary_category = ReportCategory(request.data['category'])
+        # Address
+        report.private = True
+        #Save given data
+        report.save()
+
+        #Create the comment is a comment has been given'''
+        if (request.data['description'].__len__()>0):
+            report_comment = ReportComment()
+            report_comment.report = report
+            report_comment.text = request.data['description']
+            report_comment.created_by = existingUser
+            report_comment.created = datetime.now()
+            report_comment.save()
+
+        return report
+
+
+
 class CitizenReportHandler(BaseHandler):
+    '''This method is called by mobile to create citizen reports'''
     allowed_methods = ('POST')
     model = Report
     fields = (
@@ -291,89 +363,89 @@ class CitizenReportHandler(BaseHandler):
 #        'report_id': report.id
 #    })
 
-def create_report_pro(request):
-    '''This method is used to create citizens reports. Validation included.'''
-    data_username              = request.POST.get('user_name')
-    data_password              = request.POST.get('user_p')
-    data_category_id              = request.POST.get('report_category_id')
-    data_main_category_id         = request.POST.get('report_main_category_id')
-    data_description              = request.POST.get('report_description')
-    data_address                  = request.POST.get('report_address')
-    data_address_number           = request.POST.get('report_address_number')
-    data_zip                      = request.POST.get('report_zipcode')
-    data_x                        = request.POST.get('report_x')
-    data_y                        = request.POST.get('report_y')
+#def create_report_pro(request):
+#    '''This method is used to create citizens reports. Validation included.'''
+#    data_username              = request.POST.get('user_name')
+#    data_password              = request.POST.get('user_p')
+#    data_category_id              = request.POST.get('report_category_id')
+#    data_main_category_id         = request.POST.get('report_main_category_id')
+#    data_description              = request.POST.get('report_description')
+#    data_address                  = request.POST.get('report_address')
+#    data_address_number           = request.POST.get('report_address_number')
+#    data_zip                      = request.POST.get('report_zipcode')
+#    data_x                        = request.POST.get('report_x')
+#    data_y                        = request.POST.get('report_y')
     #data_subscription             = request.POST.get('report_subscription')
     #create a new object
-    report = Report()
+#    report = Report()
 
     #Verify that everything has been posted to create a citizen report.
-    if (data_username == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_USERNAME","request":request.POST}),mimetype='application/json')
+#    if (data_username == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_USERNAME","request":request.POST}),mimetype='application/json')
     #if (data_password == None):
     #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PASSWORD","request":request.POST}),mimetype='application/json')
-    if (data_category_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-    if (data_main_category_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-    if (data_description == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')
-    if (data_address == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')
-    if (data_address_number == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS_NUMBER","request":request.POST}),mimetype='application/json')
-    if (data_zip == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')
-    if (data_x == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')
-    if (data_y == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')
+#    if (data_category_id == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
+#    if (data_main_category_id == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')
+#    if (data_description == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')
+#    if (data_address == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')
+#    if (data_address_number == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS_NUMBER","request":request.POST}),mimetype='application/json')
+#    if (data_zip == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')
+#    if (data_x == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')
+#    if (data_y == None):
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')
 
     #Verify if the citizen profile exists
     #Create it if necessary and assign value to citizen attribute.
-    try:
-        existingUser = FMSUser.objects.get(username=data_username)
+#    try:
+#        existingUser = FMSUser.objects.get(username=data_username)
         #Assign creator (as pro user)
-        report.created_by = existingUser
-    except FMSUser.DoesNotExist:
+#        report.created_by = existingUser
+#    except FMSUser.DoesNotExist:
         #The user has not the right to create a report
-        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
+#        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
     #Login the user
-    user = authenticate(username=data_username, password=data_password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-        else:
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
-    else:
-        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
+#    user = authenticate(username=data_username, password=data_password)
+#    if user is not None:
+#        if user.is_active:
+#            login(request, user)
+#        else:
+#            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
+#    else:
+#        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
 
     #Assign values to the report.
-    try:
+#    try:
         # Status
-        report.status = Report.CREATED
+#        report.status = Report.CREATED
         # Category
-        report.category = ReportMainCategoryClass.objects.get(id=data_main_category_id)
-        report.secondary_category = ReportCategory.objects.get(id=data_category_id)
+#        report.category = ReportMainCategoryClass.objects.get(id=data_main_category_id)
+#        report.secondary_category = ReportCategory.objects.get(id=data_category_id)
         # Description
-        report.description = data_description
+#        report.description = data_description
         # Address
-        report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
-        report.postalcode = data_zip
-        report.address = data_address
-        report.address_number = data_address_number
-        report.private = True
+#        report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
+#        report.postalcode = data_zip
+#        report.address = data_address
+#        report.address_number = data_address_number
+#        report.private = True
         #Subscription is automatic.
         #Save given data
-        report.save()
-    except Exception as e:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST, "message": e.message}),mimetype='application/json')
+#        report.save()
+#    except Exception as e:
+#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST, "message": e.message}),mimetype='application/json')
 
     #Return the report ID
-    return JsonHttpResponse({
-        'report_id': report.id
-    })
+#    return JsonHttpResponse({
+#        'report_id': report.id
+#    })
 
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''
