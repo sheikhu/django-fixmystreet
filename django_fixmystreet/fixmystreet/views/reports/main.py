@@ -5,6 +5,7 @@ from django.forms.models import modelformset_factory
 from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
@@ -124,10 +125,14 @@ def show(request, slug, report_id):
             context_instance=RequestContext(request))
 
 def search_ticket(request):
-    report_id = request.REQUEST.get('report_id')
-    report = Report.objects.get(id=report_id)
+    try:
+        report_id = request.REQUEST.get('report_id')
+        report = Report.objects.get(id=report_id)
 
-    return HttpResponseRedirect(report.get_absolute_url())
+        return HttpResponseRedirect(report.get_absolute_url())
+    except:
+        messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
+        return HttpResponseRedirect(reverse('home'))
 
 def index(request, slug=None, commune_id=None):
     if commune_id:

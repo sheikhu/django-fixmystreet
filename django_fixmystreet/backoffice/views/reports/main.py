@@ -7,6 +7,9 @@ from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django.conf import settings
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 
 def new(request):
@@ -62,9 +65,12 @@ def new(request):
 
 def search_ticket(request):
     report_id = request.REQUEST.get('report_id')
-    report = Report.objects.get(id=report_id)
-
-    return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    try:
+        report = Report.objects.get(id=report_id)
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    except:
+        messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
+        return HttpResponseRedirect(reverse('home_pro'))
 
 def subscription(request):
     """
