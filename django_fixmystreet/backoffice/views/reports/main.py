@@ -94,10 +94,12 @@ def show(request,slug, report_id):
             # this saves the update as part of the report.
             # citizen = citizen_form.save()
             if request.POST["comment-text"]:
-                comment = comment_form.save(commit=False)
-                comment.created_by = FMSUser.objects.get(pk=request.user.id)
-                comment.report = report
-                comment.save()
+                if request.POST["comment-text"].__len__() > 0:
+                    comment = comment_form.save(commit=False)
+                    comment.created_by = FMSUser.objects.get(pk=request.user.id)
+                    comment.report = report
+                    comment.save()
+            
             files = file_formset.save(commit=False)
             for report_file in files:
                 report_file.report = report

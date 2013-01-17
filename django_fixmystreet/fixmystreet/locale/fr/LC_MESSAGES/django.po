@@ -678,7 +678,7 @@ msgstr ""
 #: templates/home.html:72 templates/reports/list.html:94
 #, fuzzy
 msgid "Report an incident"
-msgstr "Incidents"
+msgstr "Signaler un incident"
 
 #: templates/home.html:72
 msgid "Hole, degradations, subsidence, invisible marks..."
@@ -686,7 +686,7 @@ msgstr "Trou, revêtement dégradé, affaissement, marquage effacé..."
 
 #: templates/home.html:79
 msgid "How to fill a report"
-msgstr "Comment créer un rapport"
+msgstr "Comment signaler un incident"
 
 #: templates/home.html:81
 msgid "Enter a street where you have located an incident"
@@ -714,7 +714,7 @@ msgstr "Entrez l'adresse où se situe l'incident :"
 
 #: templates/home.html:92
 msgid "Street, ticket number, ..."
-msgstr ""
+msgstr "Rue et numéro ou numéro de ticket"
 
 #: templates/home.html:94
 msgid "All communes..."

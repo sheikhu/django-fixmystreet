@@ -114,20 +114,28 @@ a:hover, a:focus {
 }
 
 .block {
-    box-shadow: 10px 10px 5px #CCC;
+    /*box-shadow: 10px 10px 5px #CCC;*/
     border-radius: 10px;
     border: #FFF solid 2px;
-    padding: 10px;
+    padding: 3px 10px;
     background-color: #FFF;
-    border: #FFF203 solid 2px;
-    opacity:0.9;
+    /*border: #FFF203 solid 2px;*/
+    border:#FFDB00 solid 2px;
+    opacity:0.95;
+    height:200px;
 }
 
 .block.highlighted {
-    background-color: #FFF203;
+    /*background-color: #FFF203;*/
+    background-color:#FFDB00;
     border: #FFF solid 2px;
-    opacity:0.9;
-    height: auto;
+    opacity:0.95;
+    min-height: 200px;
+    height:auto;
+}
+
+.lead{
+    margin-bottom:18px;
 }
 
 /********* HEADER LAYOUT ********/
@@ -192,7 +200,8 @@ header .lang {
 }
 
 header .lang.selected, header .lang:hover, header .lang:focus {
-    background: #FFF203;
+    /*background: #FFF203;*/
+    background-color:#FFDB00;
     color:#949499;
 }
 
@@ -229,7 +238,8 @@ header nav li {
 
 header nav li a.active {
     color: #666;
-    border: #FFF203 solid 2px;
+    /*border: #FFF203 solid 2px;*/
+    border:#FFDB00 solid 2px;
     border-radius: 10px;
 }
 
@@ -336,15 +346,19 @@ footer *{
 /********* CONTENT LAYOUT ********/
 
 #baseline {
-    color: #949499;
-    background-color: #FFF203;
-    font-size: 18px;
+    /*color: #949499;*/
+    color:#333;
+    /*background-color: #FFF203;*/
+    background:#FFDB00;
+    /*font-size: 18px;*/
+    font-size:21px;
     margin:0;
     padding: 4px 28px;
 }
 
 #baseline small {
     font-size: 14px;
+    color:#333;
 }
 
 #content {
@@ -416,7 +430,8 @@ footer *{
 
 .counter h3 {
     font-size: 140%;
-    color:#FFF203;
+    /*color:#FFF203;*/
+    color:#FFDB00;
     padding-top:0;
 }
 
@@ -439,15 +454,24 @@ footer *{
 
 #instructions {
     width: 300px;
-    left: 200px;
+    /*left: 200px;*/
+    left:70px;
 }
 
 #search-form {
-    width: 455px;
-    left: 700px;
+    width: 635px;
+    /*left: 700px;*/
+    /*left:585px;*/
+    left:445px;
 }
 
+#search-form select#input-ward{
+    width:183px;
+}
 
+#search-form input#input-search{
+    width:327px;
+}
 
 /*********** FORMS ***********/
 
@@ -739,7 +763,8 @@ li img {
 }
 
 #recent_home_nav li.active a{
-    border-color: #FFF203;
+    /*border-color: #FFF203;*/
+    border-color:#FFDB00;
     border-width: 2px;
 }
 
@@ -796,13 +821,14 @@ li img {
 }
 
 #search_results .report{
-	display:block;
-	position:relative;
-	min-height:50px;
-	color:black;
-	text-decoration:none;
-	padding: 2px 4px;
-	border:2px solid #FAF028;
+    display:block;
+    position:relative;
+    min-height:50px;
+    color:black;
+    text-decoration:none;
+    padding: 2px 4px;
+    /*border:2px solid #FAF028;*/
+    border:2px solid #FFDB00;
     margin-left: 15px;
 }
 
@@ -930,7 +956,9 @@ li img {
 }
 
 input[type="submit"].btn {
-    background: #FFF203;
+    /*background: #FFF203;*/
+    background:#949499; 
+    color:#FFF;
 }
 input[type="button"].btn {
     background: #FFF203;
@@ -1415,7 +1443,10 @@ ul.circle_list li {
 
 ol li {
 	list-style-type:decimal;
-	margin-left:2.5em;
+	/*margin-left:2.5em;*/
+}
+#instructions ol li{
+    font-size:0.9em;
 }
 
 ul.info_links li {

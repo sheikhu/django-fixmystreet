@@ -21,11 +21,13 @@
         <header>
             {% if not BACKOFFICE %}
             <a href="{% url home%}">
-                <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
+                <!--img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}"-->
+                <img id="banner" src="{{ STATIC_URL }}images/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
             </a>
             {% else %}
             <a href="{% url home_pro %}">
-                <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
+                <!--img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}"-->
+                <img id="banner" src="{{ STATIC_URL }}images/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
             </a>
             {% endif %}
 
