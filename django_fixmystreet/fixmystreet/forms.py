@@ -85,14 +85,14 @@ class ProReportForm(ReportForm):
         return report
 
 
-qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
-qualities.insert(0, ('', _('Choose your quality')))
-
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
 
-    quality = forms.ChoiceField(choices=qualities)
+    quality = forms.ChoiceField(choices=FMSUser.REPORT_QUALITY_CHOICES)
+
+    def __init__(self, *args, **kwargs):
+        super(CitizenReportForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Report

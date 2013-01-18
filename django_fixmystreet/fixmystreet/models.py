@@ -6,7 +6,7 @@ import logging
 from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy,activate, ugettext as _
+from django.utils.translation import ugettext_lazy as _, activate, ugettext
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
@@ -73,6 +73,7 @@ class FMSUser(User):
     ASSOCIATION = 4
     OTHER = 5
     REPORT_QUALITY_CHOICES = (
+        ("",_("Select a quality")),
         (RESIDENT,_("Resident")),
         (OTHER,_("Other")),
         (TRADE,_("Trade")),
@@ -307,13 +308,13 @@ class Report(UserTrackedModel):
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
     quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
-    address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
-    address_number = models.CharField(max_length=255, verbose_name=ugettext_lazy("Address Number"))
+    address = models.CharField(max_length=255, verbose_name=_("Location"))
+    address_number = models.CharField(max_length=255, verbose_name=_("Address Number"))
     address_regional = models.BooleanField(default=False)
-    postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
+    postalcode = models.CharField(max_length=4, verbose_name=_("Postal Code"))
     description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"), blank=True)
-    secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=ugettext_lazy("Category"), blank=True)
+    category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=_("Category"), blank=True)
+    secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=_("Category"), blank=True)
 
     fixed_at = models.DateTimeField(null=True, blank=True)
 
