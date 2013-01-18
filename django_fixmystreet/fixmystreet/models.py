@@ -6,7 +6,7 @@ import logging
 from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy, ugettext as _
+from django.utils.translation import ugettext_lazy,activate, ugettext as _
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
@@ -20,6 +20,7 @@ from django.core import serializers
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
+from django.contrib.auth.signals import user_logged_in
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -252,6 +253,12 @@ class OrganisationEntity(UserTrackedModel):
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
+# @receiver(user_logged_in)
+# def lang(sender, **kwargs):
+#     lang_code = kwargs['user'].fmsuser.get_langage()
+#     kwargs['request'].session['django_language'] = lang_code.lower()
+#     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
+#     activate(lang_code.lower())
 
 class ReportManager(models.GeoManager):
     def get_query_set(self):

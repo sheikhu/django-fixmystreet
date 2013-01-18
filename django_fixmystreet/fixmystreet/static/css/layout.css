@@ -289,6 +289,7 @@ header nav li a.active {
 
 #users_sub_menu {
     margin-top: 6px;
+    text-align: center;
 }
 
 
@@ -774,6 +775,10 @@ li img {
     border-radius: 8px;
 }
 
+
+#validate_report_popup .thumbnail{
+    max-width: 100px;
+}
 /********* HOME LAYOUT ********/
 
 

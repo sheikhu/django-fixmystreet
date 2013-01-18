@@ -43,9 +43,9 @@ def new(request):
                     if (report_file.title == ''):
                         report_file.title = str(report_file.file.name)
                     report_file.save()
-
-                if request.POST["citizen-subscription"]=="on":
-                    ReportSubscription(report=report, subscriber=report.citizen).save()
+                if "citizen-subscription" in request.POST:
+                    if request.POST["citizen-subscription"]=="on":
+                        ReportSubscription(report=report, subscriber=report.citizen).save()
 
 
     report_form = CitizenReportForm(initial={

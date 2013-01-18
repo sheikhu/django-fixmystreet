@@ -109,20 +109,21 @@ function markAsDone(){
 <div id="page_content_container">
 
 {% block pageHeader %}
-<h1>
-    <!-- ########################### -->
-    <!-- # DISPLAY REPORT CATEGORY # -->
-    <!-- ########################### -->
 
-     <div style="float:right;margin-top:-23px">
+    {% endblock %}
+
+
+<div class="overview_div_left">
+    <h2>{% trans "Report Ticket" %} {{ report.get_ticket_as_string }}
+        <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
             <tr>
                 {% if report.is_in_progress %}
                 <td>
                     {% if not report.status == report.SOLVED %}
-                    <a href="#divMarkAsDone" onclick="markAsDone();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" data-toggle="modal" >{% trans 'Mark as done' %}</a>
+                    <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</a>
                     {% else %}
-                    <button onclick="" class="saveFormButton" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+                    <button onclick="" class="btn" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
                     <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
                     {% endif %}
                 </td>
@@ -130,12 +131,7 @@ function markAsDone(){
             </tr>
         </table>
     </div>
-</h1>
-    {% endblock %}
-
-
-<div class="overview_div_left">
-    <h2>{% trans "Report Ticket" %} {{ report.get_ticket_as_string }}</h2>
+    </h2>
     <!-- ######### -->
     <!-- IS FIXED  -->
     <!-- ######### -->
