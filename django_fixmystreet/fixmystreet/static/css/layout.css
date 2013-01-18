@@ -289,6 +289,7 @@ header nav li a.active {
 
 #users_sub_menu {
     margin-top: 6px;
+    text-align: center;
 }
 
 
@@ -774,6 +775,10 @@ li img {
     border-radius: 8px;
 }
 
+
+#validate_report_popup .thumbnail{
+    max-width: 100px;
+}
 /********* HOME LAYOUT ********/
 
 
@@ -936,6 +941,10 @@ li img {
     height:25px;
     background:url("../images/next.png") 0 0;
     float:right;
+    margin-top: -13px;
+    top: 50%;
+    position: absolute;
+    right: 1%;
 }
 
 #nearby-reports .pagination {
@@ -1634,4 +1643,11 @@ table.report_overview_table td{
 
 table.report_overview_table th{
 	padding:5px;
+}
+
+
+
+#divMarkAsDone {
+    width:260px;
+    margin-left: -130px;
 }

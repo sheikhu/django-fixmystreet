@@ -202,7 +202,6 @@ class ReportCountStatsPro(object):
         }
     def get_result(self):
         stats= self.get_stats()
-        print stats
         result = ['']*len(stats)
         for stat in stats:
             result[stats[stat]["order"]] = {"stat_value":ReportCountBetweenDates(stats[stat]["start_date"],stats[stat]["end_date"]),"stat_name":stat}
