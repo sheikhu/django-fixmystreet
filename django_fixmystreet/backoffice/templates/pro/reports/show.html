@@ -499,9 +499,11 @@ function markAsDone(){
                                 {% endblocktrans %}
                             </div>
 			    <div>
+                                {% if report.is_created %}
                                 <!-- Manager in charge only -->
                                 {% if request.user.id == report.responsible_manager.id %}
                                 	<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
+                                {% endif %}
                                 {% endif %}
                             </div>
                         </td>
