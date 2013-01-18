@@ -2,6 +2,8 @@
 from django.db import connection
 
 from django_fixmystreet.fixmystreet.models import Report
+from datetime import date as dt
+from datetime import timedelta
 
 class ReportCount(object):
     def __init__(self, interval):
@@ -162,4 +164,48 @@ class AllCityTotals(ReportCountQuery):
         if (self.index ==0 ):
             return( True )
         return( self.get_results()[self.index][7] != self.get_results()[self.index-1][7] )
+
+
+class ReportCountBetweenDates(SqlQuery):
+    def __init__(self, start_date,end_date):
+        SqlQuery.__init__(self)
+        self.sql = """ select 
+        count(case when (reports.created between '{start_date}' AND '{end_date}') AND reports.status = {unpublished} THEN 1 ELSE null end) as count_new,
+        count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' AND reports.status in ({progress}) THEN 1 ELSE null end) as count_in_progress,
+        count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' AND reports.status ={closed} THEN 1 ELSE null end) as count_closed,
+        count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' THEN 1 ELSE null end) as count_all 
+        from fixmystreet_report as reports;
+        """.format(start_date=str(start_date),end_date=str(end_date), progress=','.join([str(s) for s in Report.REPORT_STATUS_IN_PROGRESS]), closed=Report.PROCESSED, unpublished = Report.CREATED)
+
+    def get_count_new(self):
+        return self.get_results()[self.index][0]
+
+    def get_count_in_progress(self):
+        return self.get_results()[self.index][1]
+    
+    def get_count_closed(self):
+        return self.get_results()[self.index][2]
+    
+    def get_count_all(self):
+        return self.get_results()[self.index][3]
+
+class ReportCountStatsPro(object):
+
+    def get_stats(self):
+        today = dt.today()
+        return {
+            "seven_days":{"start_date":(today-timedelta(days=7)),"end_date":(today+timedelta(days=1)),"order":0},
+            "one_month":{"start_date":(today-timedelta(days=30)),"end_date":(today-timedelta(days=8)),"order":1},
+            "three_months":{"start_date":(today-timedelta(days=3*30)),"end_date":(today-timedelta(days=30)),"order":2},
+            "one_year":{"start_date":(today-timedelta(days=365)),"end_date":(today-timedelta(days=3*30)),"order":3},
+            "more_years":{"start_date":(today-timedelta(days=2*365)),"end_date":(today-timedelta(days=365)),"order":4}
+        }
+    def get_result(self):
+        stats= self.get_stats()
+        print stats
+        result = ['']*len(stats)
+        for stat in stats:
+            result[stats[stat]["order"]] = {"stat_value":ReportCountBetweenDates(stats[stat]["start_date"],stats[stat]["end_date"]),"stat_name":stat}
+        return result
+
 
