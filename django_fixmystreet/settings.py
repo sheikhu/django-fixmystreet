@@ -32,7 +32,8 @@ URBIS_URL = "http://gis.irisnet.be/"
 TIME_ZONE = 'Europe/Brussels'
 
 FILE_UPLOAD_PERMISSIONS = 0644
-DATE_FORMAT = "l, j F Y"
+DATE_FORMAT = "d-m-Y H:i"
+DATETIME_FORMAT = "d-m-Y H:i"
 
 # Max file upload size
 #MAX_UPLOAD_SIZE = "821440"

@@ -11,12 +11,22 @@ from datetime import datetime as dt
 import datetime
 
 def home(request, location = None, error_msg =None):
+    if request.user.is_authenticated() == True:
+        if (not request.LANGUAGE_CODE in ['fr', 'nl', 'en']):
+            local_lng = 'fr'
+        else:
+            local_lng = request.LANGUAGE_CODE
+        fromUrl = '/'+local_lng+'/pro/'
+        return HttpResponseRedirect(fromUrl)
+        
+    
     if request.GET.has_key('q'):
         location = request.GET["q"]
     last_30_days = dt.today() + datetime.timedelta(days=-30)
-    print last_30_days
+  
     #wards = Ward.objects.all().order_by('name')
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
+    
     return render_to_response("home.html",
             {
                 #"report_counts": ReportCountQuery('1 year'),

@@ -21,11 +21,13 @@
         <header>
             {% if not BACKOFFICE %}
             <a href="{% url home%}">
-                <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
+                <!--img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}"-->
+                <img id="banner" src="{{ STATIC_URL }}images/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
             </a>
             {% else %}
             <a href="{% url home_pro %}">
-                <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
+                <!--img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}"-->
+                <img id="banner" src="{{ STATIC_URL }}images/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
             </a>
             {% endif %}
 
@@ -51,10 +53,10 @@
                     <span>Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})</span>
                     {% else %}
                     <a href="{% url login %}?next={% url home_pro %}">
-                        <i class="icon-login"> </i>Sign in
+                        <i class="icon-login"> </i> {% trans 'Sign in' %}
                     </a>
 
-                    <div id="login-form" class="block highlighted">
+                    <div id="login-form" class="block highlighted loginblock">
                         {% if form.errors %}
                         <p>{% trans "Your username and password didn't match. Please try again." %}</p>
                         {% endif %}

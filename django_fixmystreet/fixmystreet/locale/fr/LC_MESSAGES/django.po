@@ -574,6 +574,10 @@ msgstr ""
 msgid "Login"
 msgstr "Se connecter"
 
+#: templates/base.html:56
+msgid "Sign in"
+msgstr "Accès réservé"
+
 #: templates/base.html:82 templates/base.html.py:105
 msgid "Submit a Report"
 msgstr "Signaler un incident"
@@ -678,7 +682,7 @@ msgstr ""
 #: templates/home.html:72 templates/reports/list.html:94
 #, fuzzy
 msgid "Report an incident"
-msgstr "Incidents"
+msgstr "Signaler un incident"
 
 #: templates/home.html:72
 msgid "Hole, degradations, subsidence, invisible marks..."
@@ -686,7 +690,7 @@ msgstr "Trou, revêtement dégradé, affaissement, marquage effacé..."
 
 #: templates/home.html:79
 msgid "How to fill a report"
-msgstr "Comment créer un rapport"
+msgstr "Comment signaler un incident"
 
 #: templates/home.html:81
 msgid "Enter a street where you have located an incident"
@@ -714,7 +718,7 @@ msgstr "Entrez l'adresse où se situe l'incident :"
 
 #: templates/home.html:92
 msgid "Street, ticket number, ..."
-msgstr ""
+msgstr "Rue et numéro ou numéro de ticket"
 
 #: templates/home.html:94
 msgid "All communes..."
@@ -753,7 +757,7 @@ msgstr "Comme indiqué par les utilisateurs de Fix My Street."
 
 #: templates/home.html:130
 msgid "Last modified reports:"
-msgstr ""
+msgstr "Les derniers incidents déclarés"
 
 #: templates/home.html:133
 msgid "Incidents signales"

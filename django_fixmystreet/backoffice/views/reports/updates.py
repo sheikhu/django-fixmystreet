@@ -39,6 +39,7 @@ def refuse( request, report_id ):
 def fixed( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     #Update the status
+    report_fixed_at = datetime.now()
     report.status = Report.SOLVED
     report.save()
     #Redirect to the report show page

@@ -219,18 +219,18 @@ function markAsDone(){
                {% if report.citizen %}
                <!-- Protect privacy from applicant and contractor when creator is a citizen -->
                {% if fms_user.can_see_confidential %}
-               {% if report.citizen.last_name = ''%}
-               Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created}}</strong>
+               	{% if report.citizen.last_name = ''%}
+               	  Posted by <strong><a href="mailto:{{report.citizen.email}}">{% trans 'ANONYMOUS' %}</a></strong> on <strong>{{report.created}}</strong>
+                {% else %}
+                 {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+                 Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+                 {% endblocktrans %}
+                 (tel:{{report.citizen.fmsuser.telephone}})
+                {% endif %}
                {% else %}
-               {% blocktrans with by=report.citizen.last_name on=report.created mail=report.citizen.email %}
-               Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
-               {% endblocktrans %}
-               (tel:{{report.citizen.fmsuser.telephone}})
-               {% endif %}
-               {% else %}
-               {% blocktrans with on=report.created|date %}
-               Posted on <strong>{{on}}</strong>
-               {% endblocktrans %}
+                {% blocktrans with on=report.created %}
+                Posted on <strong>{{on}}</strong>
+                {% endblocktrans %}
                {% endif %}
 
                {% else %}
@@ -254,19 +254,11 @@ function markAsDone(){
                     <td colspan="4">{{report.display_category}}</td>
                 </tr>
                 <tr>
-                	<th>{% trans "Status:" %}</th>
-			{% if report.is_created%}
-				<td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-red-XS.png"></td>
-			{% endif %}
-			{% if report.is_in_progress%}
-				<td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-orange-XS.png"/></td>
-			{% endif %}
-			{% if report.is_closed%}
-				<td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-green-XS.png"></td>
-			{% endif %}
+               	    <th>{% trans "Status:" %}</th>
+		    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
 		</tr>
 
-                {% if report.is_in_progress  %}
+                {% if report.is_in_progress %}
                 {% if request.user.id == report.responsible_manager.id %}
                 <!-- ############################### -->
                 <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->

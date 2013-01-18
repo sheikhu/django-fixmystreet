@@ -5,21 +5,10 @@
 <a href="{{ url }}?page=1" class="report">
 {% endif %}
 	<div class="left_search_result">
-                {% if report.is_regional %}
-			{% if BACKOFFICE %}
-				<img src="{{ STATIC_URL }}images/reg-pin-{% if report.is_created %}red{% elif report.is_in_progress %}orange{% else %}green{% endif %}-XS.png" class="report-counter"/>
-                	{% else %}
-				<img src="{{ STATIC_URL }}images/pin-{% if report.is_created %}red{% elif report.is_in_progress %}orange{% else %}green{% endif %}-XS.png" class="report-counter"/>
-			{% endif %}
-                {% else %}
-                	{% if report.is_pro %}
-				<img src="{{ STATIC_URL }}images/pro-pin-{% if report.is_created %}red{% elif report.is_in_progress %}orange{% else %}green{% endif %}-XS.png" class="report-counter"/>
-                	{% else %}
-				<img src="{{ STATIC_URL }}images/pin-{% if report.is_created %}red{% elif report.is_in_progress %}orange{% else %}green{% endif %}-XS.png" class="report-counter"/>
-			{% endif %}
-                {% endif %}
+		<img style="max-width:30px;" src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+		
 		{% if report.thumbnail %}
-		<img src="{{ report.thumbnail }}" class="report-preview" width="70px"/>
+		<img src="{{ report.thumbnail }}" class="report-preview" style="max-width:69px; max-height:62px"/>
 		{% else %}
 		<img src="{{ STATIC_URL }}images/no-photo.png" class="report-preview"/>
 		{% endif %}
