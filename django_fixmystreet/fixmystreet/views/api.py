@@ -209,8 +209,8 @@ class ProReportHandler(BaseHandler):
         #Assign creator (as pro user)
         report.created_by = existingUser
         # Category
-        report.category = ReportMainCategoryClass(request.data['secondary_category'])
-        report.secondary_category = ReportCategory(request.data['category'])
+        #report.category = ReportMainCategoryClass(request.data['secondary_category'])
+        #report.secondary_category = ReportCategory(request.data['category'])
         # Address
         report.private = True
         #Save given data
@@ -267,8 +267,8 @@ class CitizenReportHandler(BaseHandler):
 
         report = report_form.save(commit=False)
         report.citizen = citizen
-        report.category = ReportMainCategoryClass(request.data['secondary_category'])
-        report.secondary_category = ReportCategory(request.data['category'])
+        #report.category = ReportMainCategoryClass(request.data['secondary_category'])
+        #report.secondary_category = ReportCategory(request.data['category'])
         report.save()
 
         #Create the comment is a comment has been given'''

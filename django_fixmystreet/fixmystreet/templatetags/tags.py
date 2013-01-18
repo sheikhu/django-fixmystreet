@@ -40,7 +40,6 @@ def get_element_from_list(list, index):
     """
     return list[index]
 
-
 @register.filter
 def hasAtLeastAManager(userId):
     connectedUser  = FMSUser.objects.get(user_ptr_id=userId)
