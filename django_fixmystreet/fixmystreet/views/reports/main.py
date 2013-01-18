@@ -127,7 +127,7 @@ def show(request, slug, report_id):
 def search_ticket(request):
     try:
         report_id = request.REQUEST.get('report_id')
-        report = Report.objects.get(id=report_id)
+        report = Report.objects.filter(private=False).get(id=report_id)
 
         return HttpResponseRedirect(report.get_absolute_url())
     except:
