@@ -6,7 +6,7 @@ import logging
 from django.db.models.signals import pre_save, post_save, post_init
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy, ugettext as _
+from django.utils.translation import ugettext_lazy,activate, ugettext as _
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
@@ -20,6 +20,7 @@ from django.core import serializers
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
+from django.contrib.auth.signals import user_logged_in
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -64,11 +65,29 @@ class FMSUser(User):
         CONTRACTOR,
     )
 
+
+    #List of qualities
+    RESIDENT = 1
+    TRADE = 2
+    SYNDICATE = 3
+    ASSOCIATION = 4
+    OTHER = 5
+    REPORT_QUALITY_CHOICES = (
+        (RESIDENT,_("Resident")),
+        (OTHER,_("Other")),
+        (TRADE,_("Trade")),
+        (SYNDICATE,_("Syndicate")),
+        (ASSOCIATION,_("Association"))
+    )
+
+
     # user = models.OneToOneField(User)
 
     telephone = models.CharField(max_length=20,null=True)
     last_used_language = models.CharField(max_length=10,null=True)
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
+    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
+
 
     agent = models.BooleanField(default=False)
     manager = models.BooleanField(default=False)
@@ -184,6 +203,7 @@ class OrganisationEntity(UserTrackedModel):
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
+    phone = models.CharField(max_length=32)
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
@@ -233,6 +253,12 @@ class OrganisationEntity(UserTrackedModel):
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
+# @receiver(user_logged_in)
+# def lang(sender, **kwargs):
+#     lang_code = kwargs['user'].fmsuser.get_langage()
+#     kwargs['request'].session['django_language'] = lang_code.lower()
+#     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
+#     activate(lang_code.lower())
 
 class ReportManager(models.GeoManager):
     def get_query_set(self):
@@ -240,20 +266,6 @@ class ReportManager(models.GeoManager):
 
 
 class Report(UserTrackedModel):
-
-    #List of qualities
-    RESIDENT = 1
-    TRADE = 2
-    SYNDICATE = 3
-    ASSOCIATION = 4
-    OTHER = 5
-    REPORT_QUALITY_CHOICES = (
-        (RESIDENT,_("Resident")),
-        (OTHER,_("Other")),
-        (TRADE,_("Trade")),
-        (SYNDICATE,_("Syndicate")),
-        (ASSOCIATION,_("Association"))
-    )
 
     # List of status
     CREATED = 1
@@ -293,10 +305,11 @@ class Report(UserTrackedModel):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
-    quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
+    quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=ugettext_lazy("Location"))
     address_number = models.CharField(max_length=255, verbose_name=ugettext_lazy("Address Number"))
+    address_regional = models.BooleanField(default=False)
     postalcode = models.CharField(max_length=4, verbose_name=ugettext_lazy("Postal Code"))
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=ugettext_lazy("Category"), blank=True)
@@ -324,7 +337,35 @@ class Report(UserTrackedModel):
     objects = ReportManager()
 
     history = HistoricalRecords()
+    
+    def get_marker(self):
+        user = get_current_user()
 
+        marker_color = "green" #default color
+        if (self.is_in_progress()):
+            marker_color = "orange"
+        elif (self.is_created()):
+            marker_color = "red"
+
+        if user and user.is_authenticated():
+    	    if self.is_regional():
+                return "images/reg-pin-"+marker_color+"-XS.png"
+            elif self.is_pro():
+                return "images/pro-pin-"+marker_color+"-XS.png"
+            else:
+                return "images/pin-"+marker_color+"-XL.png"
+        else:
+            if self.is_pro():
+                return "images/pro-pin-"+marker_color+"-XS.png"
+            else:
+                return "images/pin-"+marker_color+"-XL.png"
+
+    def is_regional(self):
+        return self.address_regional == True
+
+    def is_pro(self):
+        return self.citizen == None
+    
     def __unicode__(self):
         return self.display_category()
 
@@ -363,10 +404,10 @@ class Report(UserTrackedModel):
         return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
     def active_comments(self):
-        return self.comments().filter(security_level=1)
+        return self.comments().filter(logical_deleted=False).filter(security_level=1)
 
     def active_files(self):
-        return self.files().filter(security_level=1)
+        return self.files().filter(logical_deleted=False).filter(security_level=1)
 
     def is_created(self):
         return self.status == Report.CREATED
@@ -377,19 +418,36 @@ class Report(UserTrackedModel):
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
 
+    def thumbnail(self):
+        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
+        if (not self.is_created()):
+            if (reportImages.__len__() > 0):
+                return reportImages[0].file.url
+
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
     def comments(self):
-        return self.attachments.get_query_set().comments()
+        # return self.attachments.get_query_set().comments().filter(logical_deleted=False)
+        # ==> is wrong
+        return ReportComment.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def files(self):
-        return self.attachments.get_query_set().files()
+        # return self.attachments.get_query_set().files().filter(logical_deleted=False)
+        # ==> is wrong
+        return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def to_full_JSON(self):
         """
         Method used to display the whole object content as JSON structure for website
         """
+
+        local_thumbnail = self.thumbnail()
+        if (local_thumbnail == None):
+            thumbValue = 'null'
+        else:
+            thumbValue = local_thumbnail
+
         return {
             "id": self.id,
             "point": {
@@ -411,7 +469,8 @@ class Report(UserTrackedModel):
             "responsible_manager": self.responsible_manager.username,
             "close_date":  str(self.close_date),
             "private": self.private,
-            "valid": self.valid
+            "valid": self.valid,
+            "thumb": thumbValue
         }
 
     def to_JSON(self):
@@ -423,6 +482,18 @@ class Report(UserTrackedModel):
         if (self.close_date):
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
 
+        local_thumbnail = self.thumbnail()
+        if (local_thumbnail == None):
+            thumbValue = 'null'
+        else:
+            thumbValue = local_thumbnail
+
+        local_citizen = self.citizen;
+        if (local_citizen == None):
+            citizenValue = 'false'
+        else:
+            citizenValue = 'true'
+
         return {
             "id": self.id,
             "point": {
@@ -430,10 +501,13 @@ class Report(UserTrackedModel):
                 "y": self.point.y,
             },
             "status": self.status,
+            "address_regional": self.address_regional,
             "status_label": self.get_status_display(),
             "close_date": close_date_as_string,
+            "citizen": citizenValue,
             "private": self.private,
-            "valid": self.valid
+            "valid": self.valid,
+            "thumb": thumbValue
         }
 
     def to_mobile_JSON(self):
@@ -446,6 +520,8 @@ class Report(UserTrackedModel):
         s = status
         c_d = close date
         pr = private flag
+        pro = pro report
+        reg = regional report
         v = valid flag
         c = main category id
         m_c = first category
@@ -465,6 +541,9 @@ class Report(UserTrackedModel):
             "s": self.status,
             "c_d": close_date_as_string,
             "pr": self.private,
+            "pro": self.is_pro(),
+            "reg": self.is_regional(),
+            "a_d": self.address_regional,
             "v": self.valid,
             "c": self.secondary_category.id,
             "m_c": self.secondary_category.category_class.id,
@@ -585,12 +664,13 @@ def report_notify(sender, instance, **kwargs):
                 related=report,
                 reply_to=report.responsible_manager.email
             ).save()
-            ReportNotification(
-                content_template='send_report_deassigned_to_app_contr',
-                recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
-                related=report,
-                reply_to=report.responsible_manager.email
-            ).save()
+            if report.__former['contractor']:
+                ReportNotification(
+                    content_template='send_report_deassigned_to_app_contr',
+                    recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
+                    related=report,
+                    reply_to=report.responsible_manager.email
+                ).save()
 
             ReportEventLog(
                 report=report,
@@ -598,7 +678,9 @@ def report_notify(sender, instance, **kwargs):
             ).save()
             ReportEventLog(
                 report=report,
-                event_type=ReportEventLog.ENTITY_CHANGED
+                event_type=ReportEventLog.ENTITY_CHANGED,
+                related_old = report.__former['responsible_manager'],
+                related_new = report.responsible_manager
             ).save()
 
         if report.__former['responsible_manager'] != report.responsible_manager:
@@ -680,7 +762,7 @@ class ReportAttachment(UserTrackedModel):
         (CONFIDENTIAL,_("Confidential"))
     )
 
-    #logical_deleted = models.BooleanField(default=False)
+    logical_deleted = models.BooleanField(default=False)
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
     report = models.ForeignKey(Report, related_name="attachments")
 
@@ -761,8 +843,7 @@ class ReportFile(ReportAttachment):
     file = models.FileField(upload_to="files")
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
-    title = models.CharField(max_length=250, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date= models.DateTimeField(null=True)
 
     def is_pdf(self):
@@ -1101,7 +1182,7 @@ class ReportEventLog(models.Model):
         REFUSE: _("Report refused by {user}"),
         CLOSE: _("Report closed by {user}"),
         SOLVE_REQUEST: _("Report pointed as done"),
-        MANAGER_ASSIGNED: _("Report as been assing to {related_new}"),
+        MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_new} to {related_old}"),
         PUBLISH: _("Report has been published by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),

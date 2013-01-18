@@ -89,6 +89,7 @@ class RefuseForm(forms.ModelForm):
 
 
 class FmsUserForm(UserCreationForm):
+    required_css_class = 'required'
     class Meta:
         model = User
         fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')

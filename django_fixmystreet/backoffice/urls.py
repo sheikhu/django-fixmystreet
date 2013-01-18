@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls.defaults import patterns, url
 from django.contrib.auth import views as auth_views
 from django.utils.translation import ugettext_lazy as _
 from django_fixmystreet.fixmystreet.models import FMSUser
@@ -11,8 +11,8 @@ urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
 
 urlpatterns += patterns('',
     # (r'^accounts/', include('registration.backends.simple.urls')),
-    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'},name='login'),
-    url(_(r'^accounts/change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'},name='password_change'),
+    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'}, name='login'),
+    url(_(r'^accounts/change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
     url(_(r'^logout/$'),
             auth_views.logout_then_login,
             {'login_url':'/pro/accounts/login/?next=/pro/'},
@@ -40,7 +40,9 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
     url(_(r'^report/(\d+)/close/'), 'close', name='report_close_pro'),
     url(_(r'^report/(\d+)/validateAll/'),'validateAll',name='report_validate_all_pro'),
     url(_(r'^report/(\d+)/updateFile'), 'updateFile', name='report_update_file'),
+    url(_(r'^report/(\d+)/deleteFile'), 'deleteFile', name='report_delete_file'),
     url(_(r'^report/(\d+)/updateComment'), 'updateComment', name='report_update_comment'),
+    url(_(r'^report/(\d+)/deleteComment'), 'deleteComment', name='report_delete_comment'),
     url(_(r'^report/(\d+)/fixed/'), 'fixed', name='report_fix_pro'),
     url(_(r'^report/(\d+)/changeManager/'), 'changeManager', name='report_change_manager_pro'),
     url(_(r'^report/(\d+)/changeContractor/'), 'changeContractor', name='report_change_contractor_pro'),

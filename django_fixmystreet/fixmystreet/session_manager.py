@@ -24,6 +24,7 @@ class SessionManager:
 			commentsData = session['comments']
 			for comment in commentsData:
 				c = ReportComment(text=comment['text'], report=report)
+                                c.created_by = report.created_by
 				c.save()
 			del session['comments']
 
@@ -41,6 +42,10 @@ class SessionManager:
 				if str(f['file']).endswith("xls"):
 					ftype = ReportFile.EXCEL
 				c = ReportFile(title=f['title'], file=f['file'], file_creation_date = f['file_creation_date'], file_type=ftype, report=report)
+                                #if no content the user the filename as description
+                                if (report_file.text == None):
+                                    report_file.text = str(report_file.file.name)
+                                c.created_by = report.created_by
 				c.save()
 			del session['files']
 

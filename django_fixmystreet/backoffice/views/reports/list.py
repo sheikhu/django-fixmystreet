@@ -3,6 +3,7 @@ from django_fixmystreet.fixmystreet.models import dictToPoint, Report
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+import math
 
 @login_required(login_url='/pro/accounts/login/')
 def list(request, status):
@@ -46,7 +47,7 @@ def list(request, status):
     #reports = reports.distance(pnt).order_by('distance')
     #reports = reports.distance(pnt).order_by('address', 'address_number')
     reports = reports.distance(pnt).order_by('-created')
-    pages_list = range(1,int((len(reports)/settings.MAX_ITEMS_PAGE)+2))
+    pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,

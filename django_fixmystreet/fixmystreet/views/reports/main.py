@@ -5,6 +5,7 @@ from django.forms.models import modelformset_factory
 from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
@@ -14,6 +15,7 @@ from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm,
 def new(request):
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
     pnt = dictToPoint(request.REQUEST)
+    report=None
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
         file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
@@ -21,50 +23,53 @@ def new(request):
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
-            # this saves the update as part of the report.
-            citizen = citizen_form.save()
+                # this saves the update as part of the report.
+                citizen = citizen_form.save()
 
-            report = report_form.save(commit=False)
-            report.citizen = citizen
-            report.save()
+                report = report_form.save(commit=False)
+                report.citizen = citizen
+                report.save()
+                if request.POST["comment-text"]:
+                    comment = comment_form.save(commit=False)
+                    comment.created_by = citizen 
+                    comment.report = report
+                    comment.save()
 
-            if request.POST["comment-text"]:
-                comment = comment_form.save(commit=False)
-                comment.report = report
-                comment.save()
+                files = file_formset.save(commit=False)
+                for report_file in files:
+                    report_file.report = report
+                    report_file.created_by = citizen
+                    #if no content the user the filename as description
+                    if (report_file.title == ''):
+                        report_file.title = str(report_file.file.name)
+                    report_file.save()
+                if "citizen-subscription" in request.POST:
+                    if request.POST["citizen-subscription"]=="on":
+                        ReportSubscription(report=report, subscriber=report.citizen).save()
 
-            files = file_formset.save(commit=False)
-            for report_file in files:
-                report_file.report = report
-                report_file.save()
 
-            if request.POST.get("citizen_subscription", False):
-                ReportSubscription(report=report, subscriber=report.citizen).save()
-
-            if report:
-                messages.add_message(request, messages.SUCCESS, _("You report has been created"))
-                return HttpResponseRedirect(report.get_absolute_url())
-    else:
-        report_form = CitizenReportForm(initial={
-            'x': request.REQUEST.get('x'),
-            'y': request.REQUEST.get('y')
-        }, prefix='report')
-        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-        comment_form = ReportCommentForm(prefix='comment')
-        citizen_form = CitizenForm(prefix='citizen')
+    report_form = CitizenReportForm(initial={
+        'x': request.REQUEST.get('x'),
+        'y': request.REQUEST.get('y')
+    }, prefix='report')
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
+    citizen_form = CitizenForm(prefix='citizen')
 
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
 
     return render_to_response("reports/new.html",
             {
+                "report":report,
                 "available_zips":ZipCode().get_usable_zipcodes(),
+                "all_zips":ZipCode.objects.filter(hide=False),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,
                 "file_formset":file_formset,
                 "report_form": report_form,
                 "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports
+                "reports":reports[0:5]
             },
             context_instance=RequestContext(request))
 
@@ -76,7 +81,7 @@ def show(request, slug, report_id):
         user_to_show = report.citizen
     else:
         user_to_show = report.created_by
-
+    
     if request.method == "POST":
         file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
@@ -91,9 +96,12 @@ def show(request, slug, report_id):
                 comment.report = report
                 comment.save()
 
-            for file_form in file_formset:
-                report_file = file_form.save(commit=False)
+            files = file_formset.save(commit=False)
+            for report_file in files:
                 report_file.report = report
+                #if no content the user the filename as description
+                if (report_file.title == ''):
+                    report_file.title = str(report_file.file.name)
                 report_file.save()
 
             if request.POST.get("citizen_subscription", False):
@@ -117,10 +125,14 @@ def show(request, slug, report_id):
             context_instance=RequestContext(request))
 
 def search_ticket(request):
-    report_id = request.REQUEST.get('report_id')
-    report = Report.objects.get(id=report_id)
+    try:
+        report_id = request.REQUEST.get('report_id')
+        report = Report.objects.filter(private=False).get(id=report_id)
 
-    return HttpResponseRedirect(report.get_absolute_url())
+        return HttpResponseRedirect(report.get_absolute_url())
+    except:
+        messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
+        return HttpResponseRedirect(reverse('home'))
 
 def index(request, slug=None, commune_id=None):
     if commune_id:

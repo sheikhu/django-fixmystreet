@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.db import transaction
 
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
-from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile
+from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm
 from django_fixmystreet.backoffice.forms import RefuseForm
 
@@ -18,7 +18,7 @@ def accept( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -32,18 +32,19 @@ def refuse( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
 def fixed( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     #Update the status
+    report_fixed_at = datetime.now()
     report.status = Report.SOLVED
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -56,7 +57,7 @@ def close( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -76,7 +77,7 @@ def new( request, report_id ):
                 file_form.save(request.user, report)
 
         if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
         else:
             return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()
@@ -88,7 +89,7 @@ def switchPrivacy(request,report_id):
     report.private = ('true' == privacy)
     report.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -111,7 +112,7 @@ def changeManager(request,report_id):
                 break
 
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 def changeContractor(request,report_id):
@@ -131,7 +132,7 @@ def changeContractor(request,report_id):
 
     report.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -154,33 +155,39 @@ def acceptAndValidate(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.MANAGER_ASSIGNED
     report.save()
+
     comments = ReportComment.objects.filter(report_id=report_id)
     for comment in comments:
-        comment.is_validated= True
+        comment.security_level = ReportAttachment.PUBLIC 
         comment.save()
+    
     files = ReportFile.objects.filter(report_id=report_id)
     for f in files:
-        f.is_validated = True
+        f.security_level = ReportAttachment.PUBLIC 
         f.save()
+    
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
 def validateAll(request,report_id):
+    '''Set all annexes to public'''
     report = get_object_or_404(Report, id=report_id)
+    
     comments = ReportComment.objects.filter(report_id=report_id)
     files = ReportFile.objects.filter(report_id=report_id)
+    
     for comment in comments:
-        comment.is_validated = True
-        comment.is_visible = True
-        comment.save()
+       comment.security_level = ReportAttachment.PUBLIC 
+       comment.save()
+    
     for f in files:
-        f.is_validated = True
-        f.is_visible = True
+        f.security_level = ReportAttachment.PUBLIC
         f.save()
+    
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -192,7 +199,19 @@ def updateComment(request,report_id):
 
     comment.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+def deleteComment(request,report_id):
+    """deleteComment is used to delete a comment (pro only)"""
+    report = get_object_or_404(Report,id=report_id)
+    comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
+    comment.logical_deleted = True
+    comment.save()
+    
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -204,6 +223,18 @@ def updateFile(request,report_id):
 
     f.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+def deleteFile(request,report_id):
+    """deleteFile is used to delete a file (pro only)"""
+    report = get_object_or_404(Report,id=report_id)
+    f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
+    f.logical_deleted = True
+    f.save()
+    
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())

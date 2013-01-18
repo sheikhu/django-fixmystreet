@@ -8,7 +8,7 @@
 <meta property="og:description" content="{% trans 'Meta description for index page' %}" />
 {% endblock %}
 {% block content %}
-	<h1>{% trans "All Reports" %} <a href='{% url feeds "city/1" %}'><img src="{{ STATIC_URL }}images/rss-big.png" /></a></h1>
+	<h1>{% trans "All Reports" %}</h1>
 	{% if top_problems %}
 	<h2>{% trans "Top Reports" %}</h2>
 	<div id='city-stat-group'>
@@ -47,8 +47,6 @@
 <table id="reports" width="100%">
 {% for commune in communes %}
 	<tr class="{% cycle 'row-odd' 'row-even' %}">
-	<td class="feeds"><a href='/feeds{{ commune.get_absolute_url }}'><img src="{{ STATIC_URL }}images/rss-small.png" /></a></td>
-	<!--<td>{{report_counts.number}}</td>-->
 	<td><a href='{{ commune.get_absolute_url }}'>{{ commune.name }}</a></td>
 
 	{% if report_counts.next %}{% endif %}

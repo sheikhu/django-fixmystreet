@@ -55,8 +55,10 @@
   <center>
   <div id="create_user_form">
     <h1>{% trans "Create user" %}</h1>
+    <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
     <div>
       <form action="" method="POST">     
+        {% csrf_token %}
         <table>
           <tr>
           {{ createform.as_table }}

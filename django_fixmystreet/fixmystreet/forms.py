@@ -38,11 +38,12 @@ class ReportForm(forms.ModelForm):
         model = Report
 
     category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
-    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("Secondary category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
 
     # hidden inputs
     address = forms.CharField(widget=forms.widgets.HiddenInput)
     address_number = forms.CharField(widget=forms.widgets.HiddenInput)
+    address_regional = forms.BooleanField(widget=forms.widgets.HiddenInput, required=False)
     postalcode = forms.CharField(widget=forms.widgets.HiddenInput)
     x = forms.CharField(widget=forms.widgets.HiddenInput)
     y = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -72,21 +73,30 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'private')
+        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
 
-    private = forms.BooleanField(initial=True)
+    private = forms.BooleanField(initial=True,required=False)
+
+    def save (self,commit=True):
+        report= super(ProReportForm,self).save(commit=False)
+        report.private = self.cleaned_data['private']
+        if commit:
+            report.save();
+        return report
 
 
-qualities = list(Report.REPORT_QUALITY_CHOICES)
+qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
 qualities.insert(0, ('', _('Choose your quality')))
 
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
 
+    quality = forms.ChoiceField(choices=qualities)
+
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode')
+        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode', 'quality')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
@@ -103,9 +113,8 @@ class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
-        fields = ('quality', 'email', 'last_name', 'subscription', 'telephone')
+        fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
-    quality = forms.ChoiceField(choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
     #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
     last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
@@ -117,7 +126,6 @@ class CitizenForm(forms.Form):
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
             del self.cleaned_data['subscription']
-            del self.cleaned_data['quality']
             #For unique constraints
             self.cleaned_data['username'] = self.cleaned_data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
@@ -152,7 +160,9 @@ class ReportFileForm(forms.ModelForm):
     required_css_class = 'required'
     class Meta:
         model = ReportFile
-        fields = ('reportattachment_ptr', 'file', 'description')
+        fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
+
+    file_creation_date = forms.CharField(widget=forms.HiddenInput())
 
     # description = forms.fields.CharField(widget=forms.Textarea)
 
@@ -171,7 +181,7 @@ class ReportCommentForm(forms.ModelForm):
         model = ReportComment
         fields = ('text',)
 
-    text = forms.fields.CharField(widget=forms.Textarea)
+    text = forms.fields.CharField(widget=forms.Textarea(attrs={'placeholder':_("Verify if a similar incident isn't reported yet.")}))
 
     def save(self, commit=True):
         comment= super(ReportCommentForm,self).save(commit=False)

@@ -3,7 +3,47 @@
 {% block script-search %}
     <script type="text/javascript">
     var NEXT_PAGE_URL = '{% url report_new_pro %}';
+     $(function(){
+     	{% if popup_reports%}
+     	$("#report_popup").modal();
+     	{% endif %}
+     });
     </script>
     <script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+
+{% endblock %}
+{% block content %}
+    {{ block.super }}
+{% endblock %}
+{% block statistics %}
+<article id="statistics">
+    <table>
+    	<tr>
+    		<th></th>
+    		<th>{% trans 'Unpublished' %}</th>
+    		<th>{% trans 'In progress' %}</th>
+    		<th>{% trans 'Closed' %}</th>
+    	</tr>
+    	{% for stat in stats %}
+    	<tr>
+    		<td>{% trans stat.stat_name %}</td>
+    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_name}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a></td>
+    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_name}}&stat_status=in_progress" >{{stat.stat_value.get_count_in_progress}}</a></td>
+    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_name}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
+    	</tr>
+    	{% endfor %}
+    </table>
+</article>
+<div id="report_popup" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h2>{% trans request.GET.stat_type %} {% trans request.GET.stat_status %}</h2>
+	</div>
+	<div id="search_results" class="modal-body">
+		{% for report in popup_reports %}
+		{% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+		{% endfor %}
+	</div>
+</div>
 {% endblock %}
 

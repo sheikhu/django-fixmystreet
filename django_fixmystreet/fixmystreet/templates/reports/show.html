@@ -39,7 +39,7 @@ $(function(){
         }
     });
 
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }});
+    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1, {% if BACKOFFICE %}true{%else%}false{%endif%});
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -92,7 +92,7 @@ function markAsDone(){
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post" >
-
+            {% csrf_token %}
             {{ mark_as_done_form.as_p }}
 
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
@@ -109,20 +109,21 @@ function markAsDone(){
 <div id="page_content_container">
 
 {% block pageHeader %}
-<h1>
-    <!-- ########################### -->
-    <!-- # DISPLAY REPORT CATEGORY # -->
-    <!-- ########################### -->
 
-     <div style="float:right;margin-top:-23px">
+    {% endblock %}
+
+
+<div class="overview_div_left">
+    <h2>{% trans "Report Ticket" %} {{ report.get_ticket_as_string }}
+        <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
             <tr>
                 {% if report.is_in_progress %}
                 <td>
                     {% if not report.status == report.SOLVED %}
-                    <a href="#divMarkAsDone" onclick="markAsDone();" class="saveFormButton" style="font-size: 0.4em;margin-top: 0px;width:100%;" data-toggle="modal" >{% trans 'Mark as done' %}</a>
+                    <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</a>
                     {% else %}
-                    <button onclick="" class="saveFormButton" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+                    <button onclick="" class="btn" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
                     <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
                     {% endif %}
                 </td>
@@ -130,12 +131,7 @@ function markAsDone(){
             </tr>
         </table>
     </div>
-</h1>
-    {% endblock %}
-
-
-<div class="overview_div_left">
-    <h1>{% trans "Report Ticket" %}: {{ report.get_ticket_as_string }}</h1>
+    </h2>
     <!-- ######### -->
     <!-- IS FIXED  -->
     <!-- ######### -->
@@ -182,6 +178,10 @@ function markAsDone(){
                 <th>{% trans "Category:" %}</th>
                 <td>{{report.display_category}}</td>
             </tr>
+            <tr>
+                <th>{% trans "Status:" %}</th>
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
+            </tr>
         </table>
 
 
@@ -189,7 +189,8 @@ function markAsDone(){
         <!-- ################# FILES ############### -->
         <!-- ################# FILES ############### -->
         {% if report.active_files %}
-        <h4>{% trans "Photos and files" %}</h4>
+        <br/>
+	<h4>{% trans "Photos and files" %}</h4>
         <div id="report_updates">
             <table id="extraFilesTable">
             {% for file in report.active_files.all %}
@@ -248,7 +249,8 @@ function markAsDone(){
         <!-- ################# COMMENTS ############### -->
         <!-- ################# COMMENTS ############### -->
         {% if report.active_comments %}
-        <h4>{% trans "Comments" %}</h4>
+        <br/>
+	<h4>{% trans "Comments" %}</h4>
         <div id="report_updates">
             <table class="extraCommentsTable">
             {% for comment in report.active_comments.all %}
@@ -273,6 +275,7 @@ function markAsDone(){
 
     {% if report.is_in_progress %}
     <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
+        {% csrf_token %}
         <!-- ############################################# -->
         <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
         <!-- ############################################# -->
@@ -286,16 +289,18 @@ function markAsDone(){
             <div id="form-files">
                 {{ file_formset.management_form }}
                 {# file_formset.errors #}
+
                 <div id="file-form-template">
                     <img class="thumbnail" />
                     {{ file_formset.empty_form.reportattachment_ptr }}
                     {{ file_formset.empty_form.file }}
-                    {{ file_formset.empty_form.description }}
+                    {{ file_formset.empty_form.title }}
+                    {{ file_formset.empty_form.file_creation_date }}
                 </div>
             </div>
-            <p class="pull-right">
-                <button id="file-upload" class="btn">Add file</button>
-            </p>
+            <div class="file-upload-button">
+                <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">Add file</a>
+            </div>
 
         </fieldset>
         <p>
@@ -324,6 +329,7 @@ function markAsDone(){
         {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
         {% if not report.is_closed and not subscribed %}
             <form action="{% url subscribe report.id %}">
+                {% csrf_token %}
                 <p class="required"><input type="text" value="" placeholder="Your Email" name="citizen_email" /></p>
                 <input type="submit" class="btn" value="{% trans "Subscribe" %}" />
             </form>

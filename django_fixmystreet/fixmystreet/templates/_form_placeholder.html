@@ -1,0 +1,12 @@
+{% load tags %}
+{% for field in form.hidden_fields %}
+    {{ field }}
+{% endfor %}
+{% for field in form %}
+    {% if not field.is_hidden %}
+    <p>
+    {% input_placeholder field %}
+    {{ field.errors }}
+    </p>
+    {% endif %}
+{% endfor %}

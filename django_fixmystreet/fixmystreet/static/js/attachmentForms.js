@@ -1,7 +1,7 @@
 
 
 var allowed_file_types = ["image/png","image/jpeg","application/pdf","application/msword","application/vnd.ms-excel","application/vnd.oasis.opendocument.text","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.oasis.opendocument.spreadsheet"];
-var file_max_size = 100000; // 100 kB
+var file_max_size = 15000000; // 15MB
 
 var file_form_template = $("#file-form-template");
 var file_count = 0;
@@ -23,7 +23,7 @@ $(document).ready(function() {
 /********************************************************************************************/
     function fileSelected(evt) {
         var inputFile = evt.currentTarget;
-
+        
         var file = inputFile.files[0];
         if (file) {
             if(file.size == 0) {
@@ -61,6 +61,15 @@ $(document).ready(function() {
             $('#form-files').append(file_form_template);
             $('#form-files').append(form_copy);
 
+            //Append file creation date
+            var fileDate = new Date(file.lastModifiedDate);
+            day = fileDate.getDate();
+            month = fileDate.getMonth()+1;
+            year = fileDate.getFullYear();
+            hour = fileDate.getHours();
+            minute = fileDate.getMinutes();
+	    console.log(year); 
+	    file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
             AddFileToView(file_form_template, file);
 
             //$(inputFile).val('');
@@ -82,7 +91,7 @@ function AddFileToView(elem, file){
     if (title == ""){
         title = file.name;
     }
-    var file_creation_date = new Date(""+file.lastModifiedDate);
+    
 
     var thumbnails = "", img = elem.find("img");
     if (type == "pdf"){
