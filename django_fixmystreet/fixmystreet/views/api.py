@@ -4,7 +4,7 @@ from django.utils import simplejson
 from django.db.models import Q
 from datetime import datetime, timedelta
 from django.contrib.gis.geos import fromstr
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from  django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from piston.handler import BaseHandler
@@ -25,6 +25,12 @@ def load_categories(request):
         all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
         #Right ! 
         return HttpResponse(ReportCategory.listToJSON(all_categories), mimetype='application/json')
+
+def logout_user(request):
+        '''logout_user is a method used by the mobiles to disconnect a user from the application'''
+        logout(request);
+        #Right ! Logged in :-)
+        return HttpResponse({},mimetype='application/json')
 
 def login_user(request):
         '''login_user is a method used by the mobiles to connect a user to the application'''
@@ -53,6 +59,10 @@ def login_user(request):
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),mimetype='application/json')
+        
+        #Login the user (for internal correct usage)
+        user = authenticate(username=user_name, password=user_password)
+        login(request, user)
 
         #Right ! Logged in :-)
         return HttpResponse(user_object.toJSON(),mimetype='application/json')
@@ -125,7 +135,6 @@ def reports_pro_mobile(request):
     result = []
 
     for i,report in enumerate(reports):
-        print report.status
         result.append(report.to_mobile_JSON())
 
     return JsonHttpResponse({
@@ -167,7 +176,8 @@ class ProReportHandler(BaseHandler):
         'postalcode',
         'quality',
         'x',
-        'y'
+        'y',
+        'id'
     )
     exclude = ()
 
@@ -190,7 +200,6 @@ class ProReportHandler(BaseHandler):
                 return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
         else:
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
-        
         #Create report self'''
         report_form = ProReportForm(request.data)
         if not report_form.is_valid():
@@ -206,7 +215,7 @@ class ProReportHandler(BaseHandler):
         report.private = True
         #Save given data
         report.save()
-
+        
         #Create the comment is a comment has been given'''
         if (request.data['description'].__len__()>0):
             report_comment = ReportComment()
@@ -234,7 +243,8 @@ class CitizenReportHandler(BaseHandler):
         'postalcode',
         'quality',
         'x',
-        'y'
+        'y',
+        'id'
     )
     exclude = ()
 
@@ -242,7 +252,6 @@ class CitizenReportHandler(BaseHandler):
     def create(self, request):
         '''Create citizen report from mobile'''
         '''Create a user if necessary'''
-        
         try:
             citizen = FMSUser.objects.get(email=request.data.get('citizen-email'))
         except FMSUser.DoesNotExist:
@@ -455,7 +464,7 @@ def create_report_photo(request):
 
     data_report_id = request.POST.get('report_id')
     data_file_content = request.FILES.get('report_file')
-
+    
     report_file = ReportFile()
     #Verify that everything has been posted to create a citizen report.
     if (data_report_id == None):
@@ -474,7 +483,11 @@ def create_report_photo(request):
         report_file.file = data_file_content
         report_file.report = reference_report
         report_file.file_creation_date = datetime.now()
-
+        #Either posted by a citizen or a pro...
+        if (reference_report.citizen):
+            report_file.created_by = reference_report.citizen
+        else:
+            report_file.created_by = reference_report.created_by
         #Save given data
         report_file.save()
     except Exception:

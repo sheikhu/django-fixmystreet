@@ -53,7 +53,7 @@
                     <span>Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})</span>
                     {% else %}
                     <a href="{% url login %}?next={% url home_pro %}">
-                        <i class="icon-login"> </i>Sign in
+                        <i class="icon-login"> </i> {% trans 'Sign in' %}
                     </a>
 
                     <div id="login-form" class="block highlighted loginblock">
