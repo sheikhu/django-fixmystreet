@@ -10,7 +10,7 @@ if (!('fms' in window)) {
 		markerHeight = 40,
 		defaultMarkerStyle = {
 			pointRadius: markerHeight,
-			externalGraphic: STATIC_URL + "images/pin-red-XS.png",
+			externalGraphic: STATIC_URL + "images/pin-red-XL.png",
 			graphicXOffset: -markerWidth/2,
 			graphicYOffset: -markerHeight,
 			graphicHeight: markerHeight,
@@ -39,9 +39,9 @@ if (!('fms' in window)) {
 		pendingMarkerStylePro = Object.create(defaultMarkerStyle),
 		defaultMarkerStylePro = Object.create(defaultMarkerStyle),
 
-		markerStyle.externalGraphic = "/static/images/pin-red-XS.png",
-		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XS.png",
-		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XS.png";
+		markerStyle.externalGraphic = "/static/images/pin-red-XL.png",
+		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XL.png",
+		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XL.png";
 		
                 defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-XS.png",
 		fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",

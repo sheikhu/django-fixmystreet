@@ -184,15 +184,7 @@ function markAsDone(){
             </tr>
             <tr>
                 <th>{% trans "Status:" %}</th>
-                {% if report.is_created%}
-                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-red-XS.png"></td>
-                {% endif %}
-                {% if report.is_in_progress%}
-                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-orange-XS.png"/></td>
-                {% endif %}
-                {% if report.is_closed%}
-                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}images/{% if report.is_regional %}{% if BACKOFFICE %}reg-{%endif%}{%elif report.is_pro %}pro-{%endif%}pin-green-XS.png"></td>
-                {% endif %}
+                    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
             </tr>
         </table>
 
