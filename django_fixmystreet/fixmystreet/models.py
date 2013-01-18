@@ -520,6 +520,8 @@ class Report(UserTrackedModel):
         s = status
         c_d = close date
         pr = private flag
+        pro = pro report
+        reg = regional report
         v = valid flag
         c = main category id
         m_c = first category
@@ -539,6 +541,8 @@ class Report(UserTrackedModel):
             "s": self.status,
             "c_d": close_date_as_string,
             "pr": self.private,
+            "pro": self.is_pro(),
+            "reg": self.is_regional(),
             "a_d": self.address_regional,
             "v": self.valid,
             "c": self.secondary_category.id,
