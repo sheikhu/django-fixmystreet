@@ -620,6 +620,14 @@ def report_notify(sender, instance, **kwargs):
 
             elif report.__former['status'] == Report.CREATED:
                 # created => in progress: published by manager
+                for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
+
                 ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.PUBLISH
@@ -651,11 +659,19 @@ def report_notify(sender, instance, **kwargs):
                         related=report,
                         reply_to=report.responsible_manager.email
                     ).save()
-
-                    ReportEventLog(
-                        report=report,
-                        event_type=ReportEventLog.SOLVE_REQUEST
+                print 'test'
+                for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
                     ).save()
+
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.SOLVE_REQUEST
+                ).save()
 
         if report.__former['contractor']!= report.contractor:
             ReportNotification(

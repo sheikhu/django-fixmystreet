@@ -143,13 +143,13 @@ function createOverview(){
     $.each($("#report-form").find(".control-group"),function(idx,val){
         overviewHtml += $(val).html();
     });
-    overviewHtml+= "<div>Files</div>";
+    overviewHtml+= "<div>{% trans 'Files' %}</div>";
     $.each($("#form-files").find("div"),function(idx,value){
         if($(value).attr("id")!="file-form-template"){
             overviewHtml+= $(value).html();
         }
     });
-    overviewHtml+= "<div>Comment</div>";
+    overviewHtml+= "<div>{% trans 'Comment' %}</div>";
     $("#validate_report_popup .modal-body").append(overviewHtml).append($("#id_comment-text").clone());
     $("#validate_report_popup .modal-body .help-block").hide();
     $.each($("#report-form").find("select"),function(idx,value){
@@ -264,7 +264,7 @@ $(function(){
                             </div>
                         </div>
                         <div class="file-upload-button">
-                            <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">Add file</a>
+                            <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
                         </div>
                     </fieldset>
                     <fieldset>
@@ -297,7 +297,7 @@ $(function(){
                 {% endif %}
                 <div class="inactive_overlay_form_overview"></div>
                 <fieldset>
-                    <legend>{% trans 'Validate' %}</legend>
+                    <legend>{% trans 'Validate:' %}</legend>
                     {% trans 'Create an overview of the created incident report to validate your information.' %}
                     <br/>
                     <a id="validate_form_button" href="javascript:createOverview();$('#validate_report_popup').modal();" class="btn"> {% trans 'Validate' %}</a>
@@ -311,19 +311,20 @@ $(function(){
                 {% endif %}
                 <div class="inactive_overlay_form_overview"></div>
                 <fieldset>
-                    <legend>{% trans 'Confirm' %}</legend>
+                    <legend>{% trans 'Confirm:' %}</legend>
                     <a id="confirmation_edit_button" href="javascript:toggleFormSteps();" class="btn gray_left"> {% trans 'Edit' %}</a>
                     <input id="confirmation_button" type="submit" class='btn' value="{% trans 'Confirm' %}" />
                 </fieldset>
             </div>
             </div>
-        </form>
-        <div class="warning_information_form">
+            <div class="warning_information_form">
             <fieldset>
                     <legend>{% trans 'Confidentiality:' %}</legend>
                     <span>{% trans 'We garantee the confidentiality of all given information. Conform with law (see site  <a href="http://www.ejustice.just.fgov.be">Monitoring Belgium</a>), you have a read acces to your data and also a modify and deletion right of them.' %}</span>
                 </fieldset>
         </div>
+        </form>
+        
         <div id="confirmation_popup" class="modal hide fade" role="dialog">
             <div class="modal-header">
                 {% if not BACKOFFICE %}

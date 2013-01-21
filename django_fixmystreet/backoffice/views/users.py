@@ -156,13 +156,11 @@ def createUser(request, user_type):
                 try:
                     subject = render_to_string('emails/send_created_to_user/subject.txt', data)
                 except TemplateDoesNotExist:
-                    # instance.error_msg = "No subject"
-                    print 'template does not exist'
+                    messages.add_message(request, messages.ERROR, _("No subject"))
                 try:
                     text    = render_to_string('emails/send_created_to_user/message.txt', data)
                 except TemplateDoesNotExist:
-                    # instance.error_msg = "No content"
-                    print "template does not exist"
+                    messages.add_message(request, messages.ERROR, _("No email body present"))
 
                 try:
                     html    = render_to_string('emails/send_created_to_user/message.html', data)
@@ -178,7 +176,7 @@ def createUser(request, user_type):
                 try:
                     msg.send()
                 except SMTPException as e:
-                    print "not sent successfully"
+                    messages.add_message(request, messages.ERROR, _("Mail failed to send"))
 
                 messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
                 createform = FmsUserForm()

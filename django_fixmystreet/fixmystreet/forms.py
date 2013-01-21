@@ -92,11 +92,11 @@ qualities.insert(0, ('', _('Choose your quality')))
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
 
-    quality = forms.ChoiceField(choices=qualities)
+    
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode', 'quality')
+        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
@@ -115,10 +115,11 @@ class CitizenForm(forms.Form):
         model = FMSUser
         fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
+    quality = forms.ChoiceField(label=ugettext_lazy('Quality'),choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
     #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
     last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
-    subscription = forms.BooleanField(required=False)
+    subscription = forms.BooleanField(label=ugettext_lazy('Subscription'),required=False)
     telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
 
     def save(self):
