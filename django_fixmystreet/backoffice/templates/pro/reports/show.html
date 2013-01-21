@@ -403,9 +403,9 @@ function markAsDone(){
                                         {{file.created}}
                                 </div>
 				<div>
-					{% if report.is_created %}
+			                {% if request.user.id == report.responsible_manager.id %}
+						{% if report.is_created or report.is_in_progress  %}
 						<!-- Manager in charge only -->
-			                	{% if request.user.id == report.responsible_manager.id %}
 							<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>		
 						{% endif %}
 					{% endif %}

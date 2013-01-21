@@ -15,9 +15,38 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
 from django.contrib.auth.models import User
+import PIL.Image as PIL
 
 import transmeta
 from stdimage import StdImageField
+
+def resize_image(filePath):
+    '''This method is used to resize the given image'''
+    img = PIL.open(filePath)
+    #apply rotation if necessary
+    exifs = get_exifs(img)
+    if('Orientation' in exifs):
+        orientation = exifs['Orientation']
+
+        if(orientation == 3 or orientation == 4):
+            img = img.rotate(180)
+        elif(orientation == 5 or orientation == 6):
+            img = img.rotate(-90)
+        elif(orientation == 7 or orientation == 8):
+            img = img.rotate(90)
+
+        if(orientation == 2 or orientation == 4 or orientation == 5 or orientation == 7):
+            img = ImageOps.mirror(img)
+
+        img.save(filePath)
+    #Resize to max 800/600
+    img.thumbnail((800,600), PIL.ANTIALIAS)
+    img.save(filePath)
+    #img.thumbnail((80,60), PIL.ANTIALIAS)
+    #pathElements = filePath.split('.')
+    #pathElementsLength = pathElements.__len__()
+    #thumbPath = filePath.replace('.'+pathElements[pathElementsLength-1], '-thumb.'+ pathElements[pathElementsLength-1])
+    #img.save(thumbPath)
 
 def ssl_required(view_func):
     """Decorator makes sure URL is accessed over https."""

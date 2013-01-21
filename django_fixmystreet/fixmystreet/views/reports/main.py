@@ -41,7 +41,7 @@ def new(request):
                     report_file.created_by = citizen
                     #if no content the user the filename as description
                     if (report_file.title == ''):
-                        report_file.title = str(report_file.file.name)
+                        report_file.title = str(report_file.name)
                     report_file.save()
                 if "citizen-subscription" in request.POST:
                     if request.POST["citizen-subscription"]=="on":

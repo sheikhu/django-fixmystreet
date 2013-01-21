@@ -85,14 +85,9 @@ class ProReportForm(ReportForm):
         return report
 
 
-qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
-qualities.insert(0, ('', _('Choose your quality')))
-
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
-
-    
 
     class Meta:
         model = Report

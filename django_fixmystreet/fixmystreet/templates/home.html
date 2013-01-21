@@ -86,7 +86,7 @@ function showResults(type,li){
             </ol>
         </div>
 
-        <form id='search-form' class="block highlighted form-inline">
+        <form id='search-form' class="block highlighted form-inline search-form">
             {% csrf_token %}
             <p class="lead">{% trans "Enter the address where the incident is:" %}</p>
             <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number, Ticket number...' %}" />

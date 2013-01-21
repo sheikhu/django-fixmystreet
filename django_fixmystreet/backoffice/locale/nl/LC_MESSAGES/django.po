@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-17 12:15+0100\n"
+"POT-Creation-Date: 2013-01-18 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,6 +173,19 @@ msgstr "Paswoord vergeten?"
 msgid "Error"
 msgstr ""
 
+#: templates/pro/home.html:23 templates/pro/reports/list.html:107
+#, fuzzy
+msgid "Unpublished"
+msgstr "Publiceer"
+
+#: templates/pro/home.html:24 templates/pro/reports/list.html:110
+msgid "In progress"
+msgstr "In behandeling"
+
+#: templates/pro/home.html:25 templates/pro/reports/list.html:113
+msgid "Closed"
+msgstr ""
+
 #: templates/pro/login.html:11
 msgid "Your username and password didn't match. Please try again."
 msgstr "Uw gebruikersnaam en paswoord kloppen niet. Probeer opnieuw."
@@ -218,8 +231,8 @@ msgstr "Geolocatie"
 msgid "Category"
 msgstr "Categorie"
 
-#: templates/pro/pdf.html:109 templates/pro/pdf.html.py:419
-#: templates/pro/reports/show.html:403
+#: templates/pro/pdf.html:109 templates/pro/pdf.html.py:414
+#: templates/pro/reports/show.html:395
 #, fuzzy
 msgid "Creation Date"
 msgstr "Aangemaakt op:"
@@ -242,15 +255,15 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: templates/pro/pdf.html:200 templates/pro/pdf.html.py:282
-#, fuzzy
-msgid "mail"
-msgstr "Email"
-
 #: templates/pro/pdf.html:247
 #, fuzzy
 msgid "Status"
 msgstr "Status:"
+
+#: templates/pro/pdf.html:282
+#, fuzzy
+msgid "mail"
+msgstr "Email"
 
 #: templates/pro/pdf.html:285
 msgid "tel"
@@ -265,47 +278,47 @@ msgstr "Geschiedenis"
 msgid "No Report History"
 msgstr "Ingediende Rapporten"
 
-#: templates/pro/pdf.html:320 templates/pro/reports/show.html:473
+#: templates/pro/pdf.html:320 templates/pro/reports/show.html:465
 #, fuzzy
 msgid "Comments"
 msgstr "Commentaar:"
 
-#: templates/pro/pdf.html:341 templates/pro/pdf.html.py:389
-#: templates/pro/reports/show.html:400
+#: templates/pro/pdf.html:340 templates/pro/pdf.html.py:386
+#: templates/pro/reports/show.html:392
 msgid "Anonymous"
 msgstr ""
 
-#: templates/pro/pdf.html:360
+#: templates/pro/pdf.html:358
 #, fuzzy
 msgid "No Comment"
 msgstr "Commentaar:"
 
-#: templates/pro/pdf.html:371
+#: templates/pro/pdf.html:369
 msgid "Files"
 msgstr ""
 
-#: templates/pro/pdf.html:432
+#: templates/pro/pdf.html:427
 msgid "Publication Date"
 msgstr ""
 
-#: templates/pro/pdf.html:441
+#: templates/pro/pdf.html:436
 msgid "By"
 msgstr ""
 
-#: templates/pro/pdf.html:446
+#: templates/pro/pdf.html:441
 msgid "Anonymous "
 msgstr ""
 
-#: templates/pro/pdf.html:455
+#: templates/pro/pdf.html:450
 msgid "City"
 msgstr ""
 
-#: templates/pro/pdf.html:464
+#: templates/pro/pdf.html:459
 #, fuzzy
 msgid "Comment"
 msgstr "Commentaar:"
 
-#: templates/pro/pdf.html:490
+#: templates/pro/pdf.html:485
 msgid "No File"
 msgstr ""
 
@@ -382,19 +395,6 @@ msgstr ""
 msgid "All reports"
 msgstr "Alle Rapporten"
 
-#: templates/pro/reports/list.html:107
-#, fuzzy
-msgid "Unpublished"
-msgstr "Publiceer"
-
-#: templates/pro/reports/list.html:110
-msgid "In progress"
-msgstr "In behandeling"
-
-#: templates/pro/reports/list.html:113
-msgid "Closed"
-msgstr ""
-
 #: templates/pro/reports/list.html:122 templates/pro/reports/show.html:186
 #, fuzzy
 msgid "create_report"
@@ -459,17 +459,17 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"               Posted by <strong><a href=\"mailto:%(mail)s\">%(by)s</a></"
+"                 Posted by <strong><a href=\"mailto:%(mail)s\">%(by)s</a></"
 "strong> on <strong>%(on)s</strong>\n"
-"               "
+"                 "
 msgstr ""
 
 #: templates/pro/reports/show.html:231
 #, python-format
 msgid ""
 "\n"
-"               Posted on <strong>%(on)s</strong>\n"
-"               "
+"                Posted on <strong>%(on)s</strong>\n"
+"                "
 msgstr ""
 
 #: templates/pro/reports/show.html:237
@@ -494,76 +494,76 @@ msgstr "Categorie:"
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/pro/reports/show.html:275 templates/pro/reports/show.html:338
+#: templates/pro/reports/show.html:267 templates/pro/reports/show.html:330
 msgid "Responsible manager:"
 msgstr "Verantwoordelijke beheerder:"
 
-#: templates/pro/reports/show.html:278
+#: templates/pro/reports/show.html:270
 #, fuzzy
 msgid "Gestionnaires"
 msgstr "Beheerder"
 
-#: templates/pro/reports/show.html:283
+#: templates/pro/reports/show.html:275
 msgid "Entites"
 msgstr ""
 
-#: templates/pro/reports/show.html:288
+#: templates/pro/reports/show.html:280
 msgid "Organisms"
 msgstr ""
 
-#: templates/pro/reports/show.html:300 templates/pro/reports/show.html:345
+#: templates/pro/reports/show.html:292 templates/pro/reports/show.html:337
 msgid "Contractor/Impetrant:"
 msgstr "Aannemer/Impetrant"
 
-#: templates/pro/reports/show.html:303
+#: templates/pro/reports/show.html:295
 msgid "Select a contractor/impetrant"
 msgstr "Selecteer een aannemer/impetrant"
 
-#: templates/pro/reports/show.html:322 templates/pro/reports/show.html:365
-#: templates/pro/reports/show.html:482
+#: templates/pro/reports/show.html:314 templates/pro/reports/show.html:357
+#: templates/pro/reports/show.html:474
 msgid "Private?"
 msgstr ""
 
-#: templates/pro/reports/show.html:326
+#: templates/pro/reports/show.html:318
 msgid "Private"
 msgstr ""
 
-#: templates/pro/reports/show.html:330
+#: templates/pro/reports/show.html:322
 #, fuzzy
 msgid "Public"
 msgstr "Publiek?"
 
-#: templates/pro/reports/show.html:356
+#: templates/pro/reports/show.html:348
 msgid "Photos and files"
 msgstr ""
 
-#: templates/pro/reports/show.html:364 templates/pro/reports/show.html:481
+#: templates/pro/reports/show.html:356 templates/pro/reports/show.html:473
 msgid "Public?"
 msgstr "Publiek?"
 
-#: templates/pro/reports/show.html:369 templates/pro/reports/show.html:486
+#: templates/pro/reports/show.html:361 templates/pro/reports/show.html:478
 msgid "Confidentiel?"
 msgstr "Confidentieel?"
 
-#: templates/pro/reports/show.html:396
+#: templates/pro/reports/show.html:388
 #, fuzzy
 msgid "Posted by"
 msgstr "Poster"
 
-#: templates/pro/reports/show.html:410
+#: templates/pro/reports/show.html:402
 msgid "on"
 msgstr ""
 
-#: templates/pro/reports/show.html:417
+#: templates/pro/reports/show.html:409
 #, fuzzy
 msgid "delete file"
 msgstr "Extra bestanden"
 
-#: templates/pro/reports/show.html:417
+#: templates/pro/reports/show.html:409
 msgid "Please confirm file deletion"
 msgstr ""
 
-#: templates/pro/reports/show.html:497
+#: templates/pro/reports/show.html:489
 #, python-format
 msgid ""
 "\n"
@@ -572,44 +572,44 @@ msgid ""
 "                                "
 msgstr ""
 
-#: templates/pro/reports/show.html:504
+#: templates/pro/reports/show.html:497
 #, fuzzy
 msgid "delete comment"
 msgstr "Extra commentaren"
 
-#: templates/pro/reports/show.html:504
+#: templates/pro/reports/show.html:497
 msgid "Please confirm comment deletion"
 msgstr ""
 
-#: templates/pro/reports/show.html:596
+#: templates/pro/reports/show.html:590
 msgid "Send"
 msgstr "Doorsturen"
 
-#: templates/pro/reports/show.html:616
+#: templates/pro/reports/show.html:610
 msgid "Validate all"
 msgstr "Alles bevestigen"
 
-#: templates/pro/reports/show.html:623
+#: templates/pro/reports/show.html:617
 msgid "Publish"
 msgstr "Publiceer"
 
-#: templates/pro/reports/show.html:624
+#: templates/pro/reports/show.html:618
 msgid "Reject"
 msgstr "Afkeuren"
 
-#: templates/pro/reports/show.html:625
+#: templates/pro/reports/show.html:619
 msgid "Publish All"
 msgstr "Alles publiceren"
 
-#: templates/pro/reports/show.html:631
+#: templates/pro/reports/show.html:625
 msgid "report pdf"
 msgstr "PDF rapport"
 
-#: templates/pro/reports/show.html:632
+#: templates/pro/reports/show.html:626
 msgid "report pdf public"
 msgstr "Publiek PDF rapport"
 
-#: templates/pro/reports/show.html:635
+#: templates/pro/reports/show.html:629
 msgid "Export Csv"
 msgstr ""
 
@@ -617,6 +617,10 @@ msgstr ""
 #, fuzzy
 msgid "User has been created successfully"
 msgstr "U bent succesvol geabonneerd voor updates"
+
+#: views/reports/main.py:72
+msgid "No incident found with this ticket number"
+msgstr ""
 
 #: views/reports/subscribers.py:13
 msgid "You have subscribed from updates successfully"
