@@ -114,7 +114,7 @@ function markAsDone(){
 
 
 <div class="overview_div_left">
-    <h2>{% trans "Report Ticket" %} {{ report.get_ticket_as_string }}
+    <h2>
         <div style="float:right;margin-top:-23px">
             <table class="reportActionButtons">
             <tr>
@@ -136,7 +136,7 @@ function markAsDone(){
     <!-- IS FIXED  -->
     <!-- ######### -->
     {% if report.is_created %}
-    <div class='is_fixed'>{% trans "This incident is not validated." %}</div>
+    <div class='is_fixed'>{% trans "Report Ticket" %} {{ report.get_ticket_number }} {% trans "This incident is not validated." %}</div>
     {% endif %}
     {% if report.is_closed %}
     <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
