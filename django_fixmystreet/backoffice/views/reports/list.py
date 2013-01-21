@@ -107,7 +107,10 @@ def listfilter(request):
     if (connectedUser.contractor == True):
         reports = reports.filter(contractor = connectedUser.organisation)
 
-    reports = reports.distance(pnt).order_by('address', 'address_number')
+    #Order by address number as an int
+    reports = reports.extra(
+    select={'address_number_as_int': 'CAST(address_number AS INTEGER)'}
+).distance(pnt).order_by('address', 'address_number_as_int')
    
  
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
