@@ -810,6 +810,14 @@ li img {
     background-color: white;
 }
 
+#proposal a.selected {
+    padding: 3px 5px;
+    border:#949499 2px solid;
+    border-radius: 10px;
+    color:#333;
+    background-color: #FCDB07;
+}
+
 #recent_home_nav li{
     list-style: none;
     margin: 0;
@@ -997,6 +1005,21 @@ li img {
     border: none;
 }
 
+#search_by_commune_or_address {
+    border-radius: 5px;
+    border: 1px solid #FFF203;
+    background: #B9B9BC;
+    display: table;
+    padding: 10px;
+    float:right;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-xlarge {
+    width:98%;
+}
+
 
 #search_by_ticket_nr {
     border-radius: 5px;
@@ -1005,6 +1028,7 @@ li img {
     display: table;
     padding: 10px;
     float:right;
+    width:100%;
 }
 
 #search_by_ticket_nr .input_search_ticket{

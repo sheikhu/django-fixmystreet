@@ -3,6 +3,8 @@
 {% block title %}{% blocktrans %}{{status}} Reports{%endblocktrans%}{% endblock %}
 {% block script %}
 {{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+
 <script>
 
 $(document).ready(function() {
@@ -77,7 +79,7 @@ $(document).ready(function() {
  * Method called when searching report per ticket number.
  */
 function search_per_ticket() {
-        searchValue = $('#input-search').val();
+    searchValue = $('#input-search').val();
     //Block to search per ticket number
     if (searchValue && searchValue.length > 0) {
         valToSearch = searchValue;
@@ -86,6 +88,101 @@ function search_per_ticket() {
             valToSearch = searchValue.substring(1);
         window.location = "/pro/report/search_ticket?report_id="+valToSearch;
     }
+}
+
+/**
+ * Activate the rayon or not
+ */
+function activateRayon() {
+	var rayonActivated = $('#rayonCheckbox').attr('checked');
+	
+        if (rayonActivated == 'checked') {
+		$('#rayon').prop('disabled',null);
+	} else {
+		$('#rayon').prop('disabled','disabled');
+	}
+}
+
+/**
+ * Method used to filter report on list
+ */
+function applyFilterReports() {
+    var selectedFilterElements = $('#proposal').find('a.selected');
+    if (selectedFilterElements.length > 0) {
+        var valueX = $(selectedFilterElements).attr('x'); 
+        var valueY = $(selectedFilterElements).attr('y');
+        var valueStreet = $(selectedFilterElements).attr('street');
+        var valueStreetNumber = $(selectedFilterElements).attr('streetNumber');
+        var valueRayon = $('#rayon').val();
+        var rayonChecked = $('#rayonCheckbox').attr('checked');
+        if (rayonChecked) {
+   		window.location="/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon;
+   	console.log("/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
+	} else {
+   		window.location="/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber;
+   	console.log("/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber);
+	}
+    }
+}
+
+/**
+ * Highlight street selection
+ */
+function highlightFilterSelection(id) {
+    $('#proposal').find('a').removeClass('selected');
+    $('#result-'+id).addClass('selected');
+}
+
+/**
+ * When filtering reports
+ */
+function filterReports() {
+	event.preventDefault();
+        searchValue = $('#input-commune-search').val();
+        var proposal = $('#proposal');
+        $(proposal).children().remove();
+        wardValue = $('#input-ward').val();
+        if (!searchValue) { return; }
+        $.ajax({
+           url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
+           dataType:'jsonp',
+           data:{
+              json:'{"language": "' + LANGUAGE_CODE + '",' +
+                      '"address": {' +
+                         '"street": {' +
+                             '"name": "' + searchValue.replace("\"","\\\"") + '",' +
+                             '"postcode": "' + wardValue.replace("\"","\\\"") + '"' +
+                           '},"number": ""' +
+                      '}}'
+           }
+        }).success(function(response){
+         if(response.status == 'success' && response.result.length > 0) {
+              $(proposal).empty();
+              var counter = 1;
+              for(var i in response.result) {
+                  var street = response.result[i].address.street;
+                  var streetNumber = response.result[i].address.number;
+                  var pos = response.result[i].point;
+                  //$('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.municipality + ')</a>')
+                  $('<a id="result-'+counter+'" x="'+pos.x+'" y="'+pos.y+'" street="'+street.name+'" streetNumber="'+streetNumber+'" class="street button" href="javascript:highlightFilterSelection(\''+counter+'\')">' + street.name + (streetNumber!=""?", "+streetNumber:"") +' (' + street.postCode+' ' +street.municipality + ')</a>')
+                  .appendTo($(proposal))
+                  .wrap('<li />');
+                  counter++;
+              }
+         }
+         else
+         {
+            $(searchValue).removeClass('loading');
+            if(response.status == "noresult" || response.status == "success")
+            {
+              $(proposal).html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
+            }
+            else
+            {
+              $(proposal).html('<p class="error-msg">' + response.status + '</p>').slideDown();
+            }
+         }
+	});
 }
 </script>
 {% endblock %}
@@ -166,14 +263,38 @@ function search_per_ticket() {
 		</form>
 	</div>
 	<div id="rightcol">
-		<div id="search_by_ticket_nr">
+	<div id="search_by_commune_or_address">
+            <!-- TODO create logic behind searching -->
+            <p>{% trans "Search by commune or address:" %}</p>
+            {% csrf_token %}
+            <input id="input-commune-search" class="input-xlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
+            <select id="input-ward" class="input-medium">
+                <option value="">{% trans "All communes..." %}</option>
+                {% for zip in zipcodes %}
+                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                {% endfor %}
+            </select>
+	    &nbsp;&nbsp;
+            <input class="btn" type="button" id="filterReports" value="{% trans 'Search' %}" onclick="javascript:filterReports()">
+            <ul id="proposal" class="inline"> </ul>
+            <p>{% trans "Within a distance of" %}</p>
+            <input id="rayonCheckbox" type="checkbox" value="1" name="checkbox" onclick="javascript:activateRayon()">
+            <select id="rayon" class="input-large" disabled="disabled">
+                <option value="50">50m</option>
+                <option value="100">100m</option>
+                <option value="200">200m</option>
+            </select>
+	    &nbsp;&nbsp;
+            <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer' %}" onclick="javascript:applyFilterReports()">
+	</div>
+	<div id="search_by_ticket_nr">
             <!-- TODO create logic behind searching -->
             <p >{% trans "Search by entering a ticket number:" %}</p>
             <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
             <p style="float:right">
                 <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
             </p>
-		</div>
+	</div>
         <div id="go_to_submit_report">
             <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/pro/'"/>
         </div>

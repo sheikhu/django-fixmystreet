@@ -2,16 +2,14 @@ $(function(){
 
     var $searchTerm = $('#input-search');
     var $searchWard = $('#input-ward');
-    var $searchForm = $('#search-form');
+    var $searchForm = $('.search-form');
     var $searchButton = $('#search-form :submit');
-	var $proposal = $('#proposal');
+    var $proposal = $('#proposal');
 
 
     $searchForm.submit(function(event){
 		event.preventDefault();
-
 		var searchValue = $searchTerm.val();
-
 		//If search a ticket then redirect
 		if (searchValue && searchValue.length > 0 && searchValue[0] == "#") {
 			window.location = "report/search_ticket?report_id="+searchValue.substring(1);
@@ -22,7 +20,6 @@ $(function(){
 
 			$searchTerm.addClass('loading');
 			$searchButton.prop('disabled',true);
-
 			$.ajax({
 				url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
 				dataType:'jsonp',
