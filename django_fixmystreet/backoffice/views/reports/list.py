@@ -87,8 +87,13 @@ def listfilter(request):
     if (not value_rayon == None):
         if (not value_street_number == ""):
             #update point to use with rayon
-            the_unique_report_with_number = reports.filter(address__contains=value_street).filter(address_number=value_street_number)[0]
-            reports = reports.distance(the_unique_report_with_number.point).filter(point__distance_lte=(the_unique_report_with_number.point,int(value_rayon)))
+            unique_report_result = reports.filter(address__contains=value_street).filter(address_number=value_street_number)
+            if unique_report_result.__len__() == 0:
+                #no result then use the given point
+                the_unique_report_with_number_point = pnt 
+            else:
+                the_unique_report_with_number_point = unique_report_result[0].point
+            reports = reports.distance(the_unique_report_with_number_point).filter(point__distance_lte=(the_unique_report_with_number_point,int(value_rayon)))
         else:
             #Use the default position as the street number has not been given
             reports = reports.distance(pnt).filter(point__distance_lte=(pnt,int(value_rayon))) 
