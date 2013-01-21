@@ -227,14 +227,12 @@ $(function(){
                         <br/>
                         <a href="javascript:$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
                 </div>
-                
-                    <div class="control-group">
-                        <span class="control-label">{% trans "Address" %}</span>
-                        <div class="controls">
-                            <span id="address-text"></span>
-                        </div>
+                    <fieldset>
+                        <legend>{% trans "Address" %}    <span id="address-text"></span>
+                        </legend>
                         <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
-                    </div>
+                    </fieldset>
+                    
                     <div class="control-group">
                         <span class="control-label">{% trans "Commune" %}</span>
                         <div class="controls">

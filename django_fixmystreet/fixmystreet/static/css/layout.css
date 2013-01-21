@@ -706,9 +706,9 @@ li img {
 }
 
 .form-horizontal .help-block{
-    font-size: x-small;
+    font-size: small;
     margin-top: 10px;
-    margin-left: 40px;
+    font-family: dosis-medium, arial, sans-serif;
 }
 
 .warning_information_form {
@@ -725,6 +725,10 @@ li img {
 
 .file-upload-button {
     margin-left: 20px;
+}
+
+.file-upload-button a img{
+    /*margin-left: 20px;*/
 }
 
 #view_nearby_reports{
@@ -1055,6 +1059,10 @@ button.btn{
 }
 a.btn{
     background: #FFF203;
+}
+
+legend span {
+    font-size: 17px;
 }
 
 /* second step: form */
