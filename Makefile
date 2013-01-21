@@ -13,6 +13,7 @@ RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
 DBNAME        = fixmystreet
+DBUSER        = postgres
 
 
 bootstrap.py:
@@ -61,12 +62,12 @@ rpm:
 
 
 createdb:
-	createdb $(DBNAME) -U $(USER) -T template_postgis
+	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
 	$(BIN_DIR)/django syncdb --migrate --noinput
 	$(BIN_DIR)/django loaddata bootstrap list_items applicants
 
 dropdb:
-	dropdb $(DBNAME) -U $(USER)
+	dropdb $(DBNAME) -U $(DBUSER)
 
 # for scratching another db call:
 # $ make DBNAME=my_fms_db_name scratchdb
