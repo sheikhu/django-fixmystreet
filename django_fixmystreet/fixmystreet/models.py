@@ -907,9 +907,9 @@ def move_file(sender,instance,**kwargs):
         new_destination = save_file_to_server(instance.file,file_type_string,extension,len(ReportFile.objects.filter(report_id=instance.report_id)), instance.report.id)
         instance.file = new_destination
         instance.save()
-        if instance.file_type == ReportFile.IMAGE:
+        #if instance.file_type == ReportFile.IMAGE:
             #Resize the image
-            resize_image(instance.file.path)
+        #    resize_image(instance.file.path)
 
 
 class ReportSubscription(models.Model):
