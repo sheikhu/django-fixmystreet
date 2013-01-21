@@ -23,6 +23,8 @@ from stdimage import StdImageField
 def resize_image(filePath):
     '''This method is used to resize the given image'''
     img = PIL.open(filePath)
+    if img.mode != "RGB":
+        img = img.convert("RGB")
     #apply rotation if necessary
     exifs = get_exifs(img)
     if('Orientation' in exifs):
