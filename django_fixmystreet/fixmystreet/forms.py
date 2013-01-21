@@ -104,13 +104,16 @@ class CitizenReportForm(ReportForm):
 
         return report
 
+qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
+qualities.insert(0, ('', _('Choose your quality')))
+
 class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
         fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
-    quality = forms.ChoiceField(label=ugettext_lazy('Quality'),choices=FMSUser.REPORT_QUALITY_CHOICES)
+    quality = forms.ChoiceField(label=ugettext_lazy('Quality'),choices=qualities)
     email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
     #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
     last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
