@@ -93,6 +93,7 @@ class ApiTest(SampleFilesTestCase):
           "postalcode":"1000",
           "address": "eeee2",
           "address_number":"122",
+          "address_regional":"True",
           "quality":"2",
           "description": "mydescr",
           "category":"2",
