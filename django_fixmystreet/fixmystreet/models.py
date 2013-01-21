@@ -24,7 +24,7 @@ from django.contrib.auth.signals import user_logged_in
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta, resize_image
 from django_extensions.db.models import TimeStampedModel
 
 
@@ -842,10 +842,17 @@ class ReportFile(ReportAttachment):
     #    filename = old_filename+'_'+str(time.time()) + extension
     #    return 'files/' + filename
     file = models.FileField(upload_to="files")
+    #image = FixStdImageField(upload_to="files", blank=True, size=(800, 600), thumbnail_size=(66, 50))
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date= models.DateTimeField(null=True)
+
+    #def file(self):
+    #    if (self.attach == None):
+    #        return self.image
+    #    else:
+    #        return self.attach
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
@@ -884,6 +891,9 @@ def move_file(sender,instance,**kwargs):
         new_destination = save_file_to_server(instance.file,file_type_string,extension,len(ReportFile.objects.filter(report_id=instance.report_id)), instance.report.id)
         instance.file = new_destination
         instance.save()
+        if instance.file_type == ReportFile.IMAGE:
+            #Resize the image
+            resize_image(instance.file.path)
 
 
 class ReportSubscription(models.Model):
