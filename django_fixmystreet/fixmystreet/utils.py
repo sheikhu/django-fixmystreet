@@ -23,8 +23,8 @@ from stdimage import StdImageField
 def resize_image(filePath):
     '''This method is used to resize the given image'''
     img = PIL.open(filePath)
-    if img.mode != "RGB":
-        img = img.convert("RGB")
+    #if img.mode != "RGB":
+    #    img = img.convert("RGB")
     #apply rotation if necessary
     exifs = get_exifs(img)
     if('Orientation' in exifs):
@@ -42,8 +42,17 @@ def resize_image(filePath):
 
         img.save(filePath)
     #Resize to max 800/600
-    img.thumbnail((800,600), PIL.ANTIALIAS)
-    img.save(filePath)
+    #img.thumbnail((800,600), PIL.ANTIALIAS)
+    img.thumbnail((800,600))
+
+    #Default
+    fileType = "PNG"
+    if (img.format == "JPEG"):
+        fileType = "JPEG"
+    else:
+        #force handling of transparency
+        img.convert('RGBA')
+    img.save(filePath, fileType)
     #img.thumbnail((80,60), PIL.ANTIALIAS)
     #pathElements = filePath.split('.')
     #pathElementsLength = pathElements.__len__()
