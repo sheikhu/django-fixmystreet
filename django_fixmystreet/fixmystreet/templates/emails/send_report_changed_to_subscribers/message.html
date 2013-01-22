@@ -1,0 +1,23 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+{% get_available_languages as languages %}
+
+{% block content %}
+{% get_language_info for "nl" as langNL %}
+{% get_language_info for "fr" as langFR %}
+{% language langFR.code %}
+{% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
+<p>The report of type {{reportType}} created at {{date}} has changed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
+{% endblocktrans %}
+{% include "emails/report_show.html" with report=related %}
+{% endlanguage %}
+<br/>
+-------------------------------------------------
+<br/>
+{% language langNL.code %}
+{% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
+<p>The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
+{% endblocktrans %}
+{% include "emails/report_show.html" with report=related %}
+{% endlanguage %}
+{% endblock %}
