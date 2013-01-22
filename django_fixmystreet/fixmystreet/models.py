@@ -601,7 +601,8 @@ def report_notify(sender, instance, **kwargs):
 
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.REFUSE
+                    event_type=ReportEventLog.REFUSE,
+                    user=report.responsible_manager,
                 ).save()
 
             elif report.status == Report.PROCESSED:
