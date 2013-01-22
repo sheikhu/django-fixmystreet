@@ -87,8 +87,13 @@ def listfilter(request):
     if (not value_rayon == None):
         if (not value_street_number == ""):
             #update point to use with rayon
-            the_unique_report_with_number = reports.filter(address__contains=value_street).filter(address_number=value_street_number)[0]
-            reports = reports.distance(the_unique_report_with_number.point).filter(point__distance_lte=(the_unique_report_with_number.point,int(value_rayon)))
+            unique_report_result = reports.filter(address__contains=value_street).filter(address_number=value_street_number)
+            if unique_report_result.__len__() == 0:
+                #no result then use the given point
+                the_unique_report_with_number_point = pnt 
+            else:
+                the_unique_report_with_number_point = unique_report_result[0].point
+            reports = reports.distance(the_unique_report_with_number_point).filter(point__distance_lte=(the_unique_report_with_number_point,int(value_rayon)))
         else:
             #Use the default position as the street number has not been given
             reports = reports.distance(pnt).filter(point__distance_lte=(pnt,int(value_rayon))) 
@@ -102,7 +107,10 @@ def listfilter(request):
     if (connectedUser.contractor == True):
         reports = reports.filter(contractor = connectedUser.organisation)
 
-    reports = reports.distance(pnt).order_by('address', 'address_number')
+    #Order by address number as an int
+    reports = reports.extra(
+    select={'address_number_as_int': 'CAST(address_number AS INTEGER)'}
+).distance(pnt).order_by('address', 'address_number_as_int')
    
  
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
