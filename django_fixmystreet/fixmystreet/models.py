@@ -695,13 +695,20 @@ def report_notify(sender, instance, **kwargs):
                         related=report,
                         reply_to=report.responsible_manager.email,
                     ).save()
-
-            ReportEventLog(
-                report=report,
-                event_type=ReportEventLog.ENTITY_CHANGED,
-                related_old = report.__former['contractor'],
-                related_new = report.contractor
-            ).save()
+            if report.__former['contractor']:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.ENTITY_CHANGED,
+                    related_old = report.__former['contractor'],
+                    related_new = report.contractor
+                ).save()
+            else:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.ENTITY_CHANGED,
+                    related_old = report.__former['contractor'],
+                    related_new = report.contractor
+                ).save()
 
         if report.__former['responsible_manager'] != report.responsible_manager:
             ReportNotification(

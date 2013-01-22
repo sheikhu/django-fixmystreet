@@ -130,6 +130,7 @@ a:hover, a:focus {
     background-color:#FFDB00;
     border: #FFF solid 2px;
     opacity:0.95;
+    min-height: 200px;
     height:auto;
 }
 
