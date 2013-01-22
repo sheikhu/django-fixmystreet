@@ -4,6 +4,7 @@ from django.db import connection
 from django_fixmystreet.fixmystreet.models import Report
 from datetime import date as dt
 from datetime import timedelta
+from django.utils.translation import ugettext_lazy as _
 
 class ReportCount(object):
     def __init__(self, interval):
@@ -204,7 +205,7 @@ class ReportCountStatsPro(object):
         stats= self.get_stats()
         result = ['']*len(stats)
         for stat in stats:
-            result[stats[stat]["order"]] = {"stat_value":ReportCountBetweenDates(stats[stat]["start_date"],stats[stat]["end_date"]),"stat_name":stat}
+            result[stats[stat]["order"]] = {"stat_value":ReportCountBetweenDates(stats[stat]["start_date"],stats[stat]["end_date"]),"stat_name":_(stat),"stat_key":stat}
         return result
 
 

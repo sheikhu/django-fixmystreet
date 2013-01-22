@@ -9,7 +9,9 @@ from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, Report
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 from datetime import datetime as dt
 import datetime
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def home(request, location = None, error_msg =None):
     if request.user.is_authenticated() == True:
         #Default language

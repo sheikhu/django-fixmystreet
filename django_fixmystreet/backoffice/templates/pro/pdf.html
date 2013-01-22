@@ -391,7 +391,7 @@ body {
                 <td width="5%">
                         &nbsp;
                 </td>
-		<td rowspan="8" width="30%">
+		<td >
 			{% if file.file_type == 1 %}
 			<a href="{{file.file.url}}"><img width="128px" height="128px" src="{{STATIC_URL}}images/icon-pdf.png"/></a>
 			{% endif %}
@@ -402,7 +402,7 @@ body {
 			<a href="{{file.file.url}}"><img width="128px" height="128px" src="{{STATIC_URL}}images/icon-excel.png"/></a>
 			{% endif %}
 			{% if file.file_type == 4 %}
-			<a href="{{file.file.url}}"><img style="max-width:128px;max-height:128px;" src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/></a>
+			<a href="{{file.file.url}}"><img src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/></a>
 			{% endif %}
 		</td>
 	</tr>
