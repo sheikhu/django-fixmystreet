@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import get_language, activate
 from django_fixmystreet.fixmystreet.models import ZipCode, Report
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery, ReportCountStatsPro
+from django.core.urlresolvers import reverse
 
 
 def home(request, location = None, error_msg =None):
@@ -13,6 +14,16 @@ def home(request, location = None, error_msg =None):
     #     fromUrl = '/'+request.user.fmsuser.last_used_language.lower()+'/pro/'
     #     return HttpResponseRedirect(fromUrl)
     #wards = Ward.objects.all().order_by('name')
+
+    #Default language
+    if (not request.LANGUAGE_CODE in ['fr', 'nl', 'en']):
+        local_lng = 'fr'
+    else:
+        local_lng = request.LANGUAGE_CODE
+    #Redirect to pro section: list of reports if the user has the role manager 
+    #if (request.user.fmsuser.manager):
+    #    fromUrl = reverse('report_list_pro', args=['all'])
+    #    return HttpResponseRedirect(fromUrl)
 
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
     statsObject = ReportCountStatsPro()

@@ -69,12 +69,14 @@ fms.currentMap = new fms.Map('map', {
   <h1>{% trans request.GET.userType %}</h1>
 
   	<div id="leftcol">
-                <div id='search_results'>
-                  <div class="report" onclick="window.location.href='{% url create_agent %}'">
-                    <h3>
-                      + {% trans 'Create a new user' %}
-                    </h3>
-                  </div>
+                <div id='search_results'> 
+                  {% if not request.user.fmsuser.contractor %}
+                  	<div class="report" onclick="window.location.href='{% url create_agent %}'">
+                    	<h3>
+                      		+ {% trans 'Create a new user' %}
+                    	</h3>
+                  	</div>
+                  {% endif %}
       {% if users %}
                 {% for user in users %}
                 	<div class="report" onclick="window.location.href='{% url usersEdit %}?userType={{request.GET.userType}}&userId={{user.id}}'">

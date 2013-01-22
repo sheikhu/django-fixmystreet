@@ -313,12 +313,12 @@ function markAsDone(){
         <!-- If the status allow such interactions -->
         <p>
             <a href="{% url report_pdf report.id 0 %}">
-                <i class="icon-download" /> </i>{% trans 'report pdf public' %}
+                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf public' %}
             </a>
         </p>
-        <div id="more-actions">
+        <!--div id="more-actions">
             <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-        </div>
+        </div-->
     </div>
 
     {% if report.is_in_progress %}

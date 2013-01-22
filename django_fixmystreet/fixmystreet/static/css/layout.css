@@ -369,19 +369,36 @@ ul.leftPane {
 footer{
     height: 110px;
     vertical-align: bottom;
+    padding:0 0 0 30px;
 }
 footer *{
-    vertical-align: bottom;
+    /*vertical-align: bottom;*/
     color: #949499;
 }
 
 
 .footer_left{
     float: left;
+    padding-top:35px;
+}
+.footer_left a:link, .footer_left a:visited{
+    /*color:#0A00BE;*/
+    font-size:12px;
+    font-weight:bold;
+    text-decoration:none;
+}
+.footer_left a:active, .footer_left a:focus, .footer_left a:hover{
+    /*color:#0A00BE;*/
+    font-size:12px;
+    font-weight:bold;
+    text-decoration:underline;
 }
 
 .footer_right{
     float:right;
+}
+.footer_left{
+    vertical-align:bottom;
 }
 
 #legal-notice {
@@ -419,6 +436,15 @@ footer *{
     font-family: dosisbold, Arial, sans-serif;
     display: table;
     width: 100%;
+}
+.nav-tabs > li > a{
+    border-width:2px;
+}
+.nav-tabs > li > a:hover{
+    border-width:2px;
+    background:#949499;
+    border-color:#949499;
+    color:#FFF;
 }
 
 #map {
@@ -460,6 +486,13 @@ footer *{
 #counters {
     float: right;
     margin: 0 10px;
+    width:390px;
+}
+#counters h5{
+    clear:both;
+    margin-top:134px;
+    text-align:right;
+    color:#949499;
 }
 
 #statistics {
@@ -473,17 +506,33 @@ footer *{
     border-bottom-left-radius:10px;
     border-bottom-right-radius:10px;
     height: 130px;
-    width: 120px;
+    /*width: 120px;*/
+    width:117px;
     text-align: center;
     padding-top:0;
-    display: inline-block;
+    /*display: inline-block;*/
+    display:block;
+    float:left;
+    margin-left:10px;
+}
+.counter:first-child{
+    margin-left:6px;
 }
 
 .counter h3 {
-    font-size: 140%;
+    font-size: 275%;
     /*color:#FFF203;*/
     color:#FFDB00;
     padding-top:0;
+}
+.counter .text{
+    color:#FFDB00;
+    font-size:20px;
+    display:block;
+}
+.counter .qualifier{
+    color:#FFF;
+    font-size:11px;
 }
 
 #recent-reports {
@@ -739,7 +788,8 @@ li img {
 #report-form .btn{
     margin-top: 15px;
     margin-bottom: 20px;
-    background: #FFF203;
+    /*background: #FFF203;*/
+    background:#FFDB00;
     border-radius: 15px;
     min-width: 100px;
     border: 1px solid black;
@@ -906,7 +956,8 @@ li img {
 }
 
 #search_results .report:hover{
-	border:2px solid black;
+    /*border:2px solid black;*/
+    background:#EEE;
 }
 
 #search_results .report-counter{
@@ -1052,6 +1103,11 @@ input[type="submit"].btn {
     /*background: #FFF203;*/
     background:#949499; 
     color:#FFF;
+}
+#confirm_form input[type="submit"].btn{
+    background:#FFDB00;
+    color:#000;
+    font-family:dosisbold, Arial, sans-serif;
 }
 input[type="button"].btn {
     background: #FFF203;
@@ -1685,4 +1741,14 @@ table.report_overview_table th{
 #divMarkAsDone {
     width:260px;
     margin-left: -130px;
+}
+
+
+.download-pdf{
+    background:transparent url('/static/images/download-pdf.png') top left no-repeat;
+    width:41px;
+    height:38px;
+    display:inline-block;
+    margin-right:9px;
+    vertical-align:middle;
 }

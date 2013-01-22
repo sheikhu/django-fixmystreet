@@ -682,7 +682,7 @@ msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
 msgstr ""
-"Une initiative de Bruxelles Mobilité en collaboration avec les communes et "
+"Une initiative de <a href='http://www.bruxelles.irisnet.be/a-propos-de-la-region/le-ministere-de-la-region-de-bruxelles-capitale/mobilite' target='_blank'>Bruxelles Mobilité</a> en collaboration avec les communes et "
 "les institutions bruxelloises partenaires"
 
 #: templates/base.html:283
@@ -703,7 +703,7 @@ msgstr "Signaler un incident"
 
 #: templates/home.html:72
 msgid "Hole, degradations, subsidence, invisible marks..."
-msgstr "Trou, revêtement dégradé, affaissement, marquage effacé..."
+msgstr "trou, revêtement dégradé, affaissement, marquage effacé..."
 
 #: templates/home.html:79
 msgid "How to fill a report"
@@ -747,7 +747,7 @@ msgstr "Rechercher"
 
 #: templates/home.html:112 templates/reports/index.html:17
 msgid "Reports Filed"
-msgstr "Incidents enregistreés"
+msgstr "Incidents enregistrés"
 
 #: templates/home.html:113 templates/home.html.py:118
 msgid "In the 30 last days"
@@ -787,7 +787,7 @@ msgstr "Incidents cloturés"
 
 #: templates/home.html:175
 msgid "Download the fix my street mobile application for your smartphone:"
-msgstr "Téléchargez l'application Fix My Street sur votre smartphone"
+msgstr "Téléchargez l'application fix my sreet sur votre smartphone"
 
 #: templates/contact/new.html:26
 msgid ""
@@ -1305,7 +1305,7 @@ msgstr "Incidents par communes"
 
 #: templates/reports/index.html:56
 msgid "As reported by Fix My Street users."
-msgstr "Comme indiqué par les utilisateurs de Fix My Street."
+msgstr "Comme indiqué par les utilisateurs de fix my street."
 
 #: templates/reports/list.html:4 templates/reports/list.html.py:13
 #: templates/reports/list.html:72
@@ -1596,7 +1596,7 @@ msgstr "Télécharger une copie de l'incident sous format pdf."
 
 #: templates/reports/show.html:320
 msgid "Offensive? Unsuitable? Tell us"
-msgstr "Abus ? Inapproprié ? Avertissez-nous."
+msgstr "Signaler un abus"
 
 #: templates/reports/show.html:329
 msgid "Subscribers:"
