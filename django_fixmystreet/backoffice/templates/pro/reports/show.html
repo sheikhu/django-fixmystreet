@@ -182,9 +182,9 @@ function markAsDone(){
     <div id="nearby-reports" style="float:left;max-width:45%;">
             {% if reports %}
                 <div id='search_results'>
-                <!-- <a id="create_report_fastlink" href="/pro/" class="report">
+                <a id="create_report_fastlink" href="/pro/" class="report">
                    <h3 class="report-title">{% trans "create_report" %}</h3>
-                </a> -->
+                </a>
                 {% for report in reports %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                 {% endfor %}
