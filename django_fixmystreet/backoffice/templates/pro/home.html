@@ -26,10 +26,10 @@
     	</tr>
     	{% for stat in stats %}
     	<tr>
-    		<td>{% trans stat.stat_name %}</td>
-    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_name}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a></td>
-    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_name}}&stat_status=in_progress" >{{stat.stat_value.get_count_in_progress}}</a></td>
-    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_name}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
+    		<td>{{ stat.stat_name }}</td>
+    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a></td>
+    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >{{stat.stat_value.get_count_in_progress}}</a></td>
+    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
     	</tr>
     	{% endfor %}
     </table>

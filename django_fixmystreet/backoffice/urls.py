@@ -11,11 +11,11 @@ urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
 
 urlpatterns += patterns('',
     # (r'^accounts/', include('registration.backends.simple.urls')),
-    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'pro/login.html'}, name='login'),
+    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'home.html'}, name='login'),
     url(_(r'^accounts/change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
     url(_(r'^logout/$'),
             auth_views.logout_then_login,
-            {'login_url':'/pro/accounts/login/?next=/pro/'},
+            {'login_url':'/'},
             name='auth_logout'
     ),
 )

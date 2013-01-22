@@ -590,7 +590,6 @@ def report_notify(sender, instance, **kwargs):
     """
     report = instance
     if not kwargs['raw']:
-
         if report.__former['status'] != report.status:
             if report.status == Report.REFUSED:
                 ReportNotification(
@@ -616,7 +615,8 @@ def report_notify(sender, instance, **kwargs):
 
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.CLOSE
+                    event_type=ReportEventLog.CLOSE,
+                    user=report.responsible_manager
                 ).save()
 
             elif report.__former['status'] == Report.CREATED:
@@ -631,7 +631,8 @@ def report_notify(sender, instance, **kwargs):
 
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.PUBLISH
+                    event_type=ReportEventLog.PUBLISH,
+                    user=report.responsible_manager
                 ).save()
 
             elif report.status == Report.SOLVED:
@@ -640,11 +641,11 @@ def report_notify(sender, instance, **kwargs):
                     recipient=report.responsible_manager,
                     related=report,
                 ).save()
-
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.ENTITY_ASSIGNED
+                    event_type=ReportEventLog.SOLVE_REQUEST
                 ).save()
+                
 
             elif report.status == Report.APPLICANT_RESPONSIBLE or report.status == Report.CONTRACTOR_ASSIGNED:
                 ReportNotification(
@@ -660,7 +661,6 @@ def report_notify(sender, instance, **kwargs):
                         related=report,
                         reply_to=report.responsible_manager.email
                     ).save()
-                print 'test'
                 for subscription in report.subscriptions.all():
                     ReportNotification(
                         content_template='send_report_changed_to_subscribers',
@@ -668,10 +668,10 @@ def report_notify(sender, instance, **kwargs):
                         related=report,
                         reply_to=report.responsible_manager.email,
                     ).save()
-
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.SOLVE_REQUEST
+                    event_type=ReportEventLog.ENTITY_ASSIGNED,
+                    related_new=report.contrator
                 ).save()
 
         if report.__former['contractor']!= report.contractor:
@@ -688,16 +688,19 @@ def report_notify(sender, instance, **kwargs):
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
+            for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
 
             ReportEventLog(
                 report=report,
-                event_type=ReportEventLog.SOLVE_REQUEST
-            ).save()
-            ReportEventLog(
-                report=report,
                 event_type=ReportEventLog.ENTITY_CHANGED,
-                related_old = report.__former['responsible_manager'],
-                related_new = report.responsible_manager
+                related_old = report.__former['contractor'],
+                related_new = report.contractor
             ).save()
 
         if report.__former['responsible_manager'] != report.responsible_manager:
@@ -706,7 +709,13 @@ def report_notify(sender, instance, **kwargs):
                 recipient=report.responsible_manager,
                 related=report,
             ).save()
-
+            for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
             l = ReportEventLog()
             l.report = report
             l.event_type = ReportEventLog.MANAGER_CHANGED if report.__former['responsible_manager'] else ReportEventLog.MANAGER_ASSIGNED
@@ -715,6 +724,13 @@ def report_notify(sender, instance, **kwargs):
             l.save()
 
         if report.__former['responsible_entity'] != report.responsible_entity:
+            for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
             l = ReportEventLog()
             l.report = report
             l.event_type = ReportEventLog.ENTITY_CHANGED if report.__former['responsible_entity'] else ReportEventLog.ENTITY_ASSIGNED
@@ -1210,7 +1226,7 @@ class ReportEventLog(models.Model):
         CLOSE: _("Report closed by {user}"),
         SOLVE_REQUEST: _("Report pointed as done"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
-        MANAGER_CHANGED: _("Report as change manager from {related_new} to {related_old}"),
+        MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
         PUBLISH: _("Report has been published by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
