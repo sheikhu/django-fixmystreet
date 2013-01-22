@@ -251,6 +251,8 @@ $(function(){
                     {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
                     <fieldset>
                         <legend>{% trans 'Files' %}</legend>
+			<div id="required-note">{% trans 'Optimal File Size (800X600)'%}</div>
+                        <div id="required-note">{% trans 'Supported formats' %}: jpeg, png, pdf, word, excel</div>
                         <div id="form-files">
                             {{ file_formset.management_form }}
                             {# file_formset.errors #}
