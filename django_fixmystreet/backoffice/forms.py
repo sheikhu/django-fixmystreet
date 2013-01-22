@@ -95,7 +95,7 @@ class FmsUserForm(UserCreationForm):
         fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')
 
     telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    is_active = forms.BooleanField(required=False)
+    is_active = forms.BooleanField(required=False, label=ugettext_lazy('Activate user?'))
     user_type = forms.ChoiceField(label=ugettext_lazy("User type"),required=True, choices=(
         ("agent", _("Agent")),
         ("manager", _("Manager")),
