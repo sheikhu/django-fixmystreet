@@ -209,6 +209,9 @@ $(function(){
 
 {% block content %}
     <article id="map">
+        <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
+            <a class="olControlZoomIn olButton"></a>
+        </div>
         <div id="cursor-instructions" class="block highlighted">
             {% trans "Drag me to change my location." %}
         </div>

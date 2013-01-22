@@ -130,6 +130,13 @@ if (!('fms' in window)) {
 		}
 	};
 
+        /* Center on the current draggable marker */
+        fms.Map.prototype.centerOnDraggableMarker = function()
+	{
+                currentDraggableMarkerPoint = this.draggableMarker.components[0];
+		this.map.centerLayerContainer(new OpenLayers.LonLat(currentDraggableMarkerPoint.x, currentDraggableMarkerPoint.y));
+	};
+
 	fms.Map.prototype.center = function()
 	{
 		this.map.centerLayerContainer(new OpenLayers.LonLat(this.selectedLocation.x, this.selectedLocation.y));

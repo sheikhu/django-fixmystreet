@@ -458,6 +458,29 @@ footer *{
     max-width: none;
 }
 
+#map-center-icon {
+	display: block;
+	margin: 1px;
+	padding: 0;
+	color: white;
+	font-size: 18px;
+	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	height: 22px;
+	width: 22px;
+	line-height: 19px;
+        background: rgba(0, 60, 136, 0.5)  url('/static/images/center.png') center center  no-repeat;
+	filter: alpha(opacity=80);
+        position: absolute;
+	top: 60px;
+	left: 8px;
+	border-radius: 4px;
+	padding: 2px;
+        z-index: 1004;
+}
+
 .olMapViewport *:first-child {
     /*z-index: -1 !important;*/
 }
