@@ -107,6 +107,8 @@ function activateRayon() {
  * Method used to filter report on list
  */
 function applyFilterReports() {
+    $("#search_by_commune_or_address_section_results").hide();
+    $("#search_by_commune_or_address_section_distance").hide();
     var selectedFilterElements = $('#proposal').find('a.selected');
     if (selectedFilterElements.length > 0) {
         var valueX = $(selectedFilterElements).attr('x'); 
@@ -131,6 +133,7 @@ function applyFilterReports() {
 function highlightFilterSelection(id) {
     $('#proposal').find('a').removeClass('selected');
     $('#result-'+id).addClass('selected');
+    $("#search_by_commune_or_address_section_distance").show();
 }
 
 /**
@@ -138,9 +141,12 @@ function highlightFilterSelection(id) {
  */
 function filterReports() {
 	event.preventDefault();
+        //Hide distance section
+        $("#search_by_commune_or_address_section_distance").hide();
         searchValue = $('#input-commune-search').val();
         var proposal = $('#proposal');
         $(proposal).children().remove();
+        $("#search_by_commune_or_address_section_results").show();
         wardValue = $('#input-ward').val();
         if (!searchValue) { return; }
         $.ajax({
@@ -264,8 +270,9 @@ function filterReports() {
 	</div>
 	<div id="rightcol">
 	<div id="search_by_commune_or_address">
+	    <div id="search_by_commune_or_address_section_street">
             <!-- TODO create logic behind searching -->
-            <p>{% trans "Search by commune or address:" %}</p>
+            <p>1. {% trans "Search by commune or address:" %}</p>
             {% csrf_token %}
             <input id="input-commune-search" class="input-xlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
             <select id="input-ward" class="input-medium">
@@ -275,8 +282,14 @@ function filterReports() {
                 {% endfor %}
             </select>
 	    &nbsp;&nbsp;
-            <input class="btn" type="button" id="filterReports" value="{% trans 'Search' %}" onclick="javascript:filterReports()">
-            <ul id="proposal" class="inline"> </ul>
+            <input class="btn" type="button" id="filterReports" value="{% trans 'Search street' %}" onclick="javascript:filterReports()">
+            <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer list' %}" onclick="javascript:applyFilterReports()">
+            <div id="search_by_commune_or_address_section_results" style="display:none">
+              <p>2. {% trans "Results" %}</p>
+              <ul id="proposal" class="inline"> </ul>
+	    </div>
+            </div>
+            <div id="search_by_commune_or_address_section_distance" style="display:none">
             <p>{% trans "Within a distance of" %}</p>
             <input id="rayonCheckbox" type="checkbox" value="1" name="checkbox" onclick="javascript:activateRayon()">
             <select id="rayon" class="input-large" disabled="disabled">
@@ -284,8 +297,7 @@ function filterReports() {
                 <option value="100">100m</option>
                 <option value="200">200m</option>
             </select>
-	    &nbsp;&nbsp;
-            <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer' %}" onclick="javascript:applyFilterReports()">
+	    </div>
 	</div>
 	<div id="search_by_ticket_nr">
             <!-- TODO create logic behind searching -->

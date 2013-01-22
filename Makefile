@@ -15,7 +15,6 @@ RPM_INPUTS_FILE = rpm-include-files
 DBNAME        = fixmystreet
 DBUSER        = postgres
 
-
 bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
 	mkdir $(LIBS_DIR)

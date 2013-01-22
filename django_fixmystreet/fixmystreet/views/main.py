@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def home(request, location = None, error_msg =None):
     if request.user.is_authenticated() == True:
+        #Default language
         if (not request.LANGUAGE_CODE in ['fr', 'nl', 'en']):
             local_lng = 'fr'
         else:

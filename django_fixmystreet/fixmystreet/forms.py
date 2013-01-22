@@ -162,8 +162,7 @@ class ReportFileForm(forms.ModelForm):
         fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
 
     file_creation_date = forms.CharField(widget=forms.HiddenInput())
-
-    # description = forms.fields.CharField(widget=forms.Textarea)
+    title = forms.CharField ( widget=forms.widgets.Textarea(attrs={'rows':1, 'cols':40}) )
 
     def clean_file(self):
         file = self.cleaned_data['file']

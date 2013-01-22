@@ -85,34 +85,34 @@ class ApiTest(SampleFilesTestCase):
             raise e
         """
         
-    #def testCreateReportCitizen(self):
+    def testCreateReportCitizen(self):
         #Parameters to save the report in database.
-    #    params = {
-    #      "x":"1231",
-    #      "y":"1231",
-    #      "postalcode":"1000",
-    #      "address": "eeee2",
-    #      "address_number":"122",
-    #      "address_regional":"True",
-    #      "quality":"2",
-    #      "description": "mydescr",
-    #      "category":"2",
-    #      "secondary_category":"2",
-    #      "citizen-email":"aegrergreg@azazrfazfe.be",
-    #      "citizen-lastname":"aegrergreg@azazrfazfe.be",
-    #      "citizen-telephone":"012345"
-    #    }
-        
+        params = {
+          "x":"1231",
+          "y":"1231",
+          "postalcode":"1000",
+          "address": "eeee2",
+          "address_number":"122",
+          "address_regional":"True",
+          "quality":"2",
+          "description": "mydescr",
+          "category":"2",
+          "secondary_category":"2",
+          "citizen-email":"aegrergreg@azazrfazfe.be",
+          "citizen-lastname":"aegrergreg@azazrfazfe.be",
+          "citizen-telephone":"012345"
+        }
+       
         #Create a client to launch requests
-    #    client = Client()
+        client = Client()
         #Get the request response
-    #    response = client.post(reverse('create_report_citizen'), params, follow=True)      
+        response = client.post(reverse('create_report_citizen'), params, follow=True)      
         #Test the http response code (200 = OK)
-    #    self.assertEqual(response.status_code, 200)        
+        self.assertEqual(response.status_code, 200)        
         #Test if the response if JSON structured.
-    #    self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
+        self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
         #Load the response data as JSON object
-    #    result = simplejson.loads(response.content)
+        result = simplejson.loads(response.content)
     
     #def testCreateReportPro(self):
         #Parameters to save the report in database.
