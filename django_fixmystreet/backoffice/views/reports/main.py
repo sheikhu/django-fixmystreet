@@ -65,8 +65,11 @@ def new(request):
             context_instance=RequestContext(request))
 
 
-def report_prepare(request):
-    return HttpResponseRedirect(reverse('home'))
+def report_prepare_pro(request):
+    '''Used to redirect the user to welcome without processing home view controller method. This controller method contain a few redirection logic'''
+    return render_to_response("pro/home.html",
+            {},
+            context_instance=RequestContext(request)) 
 
 def search_ticket(request):
     report_id = request.REQUEST.get('report_id')

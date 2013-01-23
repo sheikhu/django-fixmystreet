@@ -71,6 +71,11 @@ def new(request):
             },
             context_instance=RequestContext(request))
 
+def report_prepare(request):
+    '''Used to redirect pro users when clicking home. See backoffice version'''
+    return render_to_response("pro/home.html",
+            {},
+            context_instance=RequestContext(request))
 
 def show(request, slug, report_id):
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
