@@ -297,6 +297,7 @@ body {
 <hr/>
 <h1>{% trans 'History' %}</h1>
 {% if activity_list %}
+{% if pro_version == "1" %}
 <table width="100%">
 	{% for activity in activity_list %}
 	<tr>
@@ -306,6 +307,19 @@ body {
 	</tr>
 	{% endfor %}
 </table>
+{% else %}
+<table width="100%">
+	{% for activity in activity_list %}
+	{% if activity.is_public_visible %}
+	<tr>
+		<td colspan="2">
+			<strong>- {{activity.event_at|date}} : </strong>{{activity}}
+		</td>
+	</tr>
+	{% endif %}
+	{% endfor %}
+</table>
+{% endif %}
 
 {% else %}
 
