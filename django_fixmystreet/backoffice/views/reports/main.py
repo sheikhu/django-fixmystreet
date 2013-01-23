@@ -12,6 +12,11 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 import math
 
+from datetime import datetime as dt
+import datetime
+from django.utils.translation import get_language
+from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
+
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
@@ -65,11 +70,37 @@ def new(request):
             context_instance=RequestContext(request))
 
 
-def report_prepare_pro(request):
+def report_prepare_pro(request, location = None, error_msg = None):
     '''Used to redirect the user to welcome without processing home view controller method. This controller method contain a few redirection logic'''
+    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
+    statsObject = ReportCountStatsPro()
+    stats_result = statsObject.get_result()
+    stats = statsObject.get_stats()
+    popup_reports = []
+    if "stat_type" in request.GET:
+        start_date = stats[str(request.GET["stat_type"])]["start_date"]
+        end_date = stats[str(request.GET["stat_type"])]["end_date"]
+        if str(request.GET["stat_status"]) == 'unpublished':
+            popup_reports = Report.objects.filter(status=Report.CREATED).filter(created__gt=str(start_date)).filter(created__lt=str(end_date))
+        elif str(request.GET["stat_status"])== 'in_progress':
+            popup_reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(created__gt=str(start_date)).filter(created__lt=str(end_date))
+        else:
+            popup_reports = Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(created__gt=str(start_date)).filter(created__lt=str(end_date))
+
     return render_to_response("pro/home.html",
-            {},
-            context_instance=RequestContext(request)) 
+            {
+                "report_counts": ReportCountQuery('1 year'),
+                'search_error': error_msg,
+                'zipcodes': zipcodes,
+                'location':location,
+                'reports':Report.objects.all(),
+                'reports_created': Report.objects.filter(status=Report.CREATED).order_by('-modified')[0:5],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).order_by('-modified')[0:5],
+                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).order_by('-modified')[0:5],
+                'stats':stats_result,
+                'popup_reports':popup_reports,
+            },
+            context_instance=RequestContext(request))
 
 def search_ticket(request):
     report_id = request.REQUEST.get('report_id')
