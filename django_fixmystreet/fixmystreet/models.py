@@ -647,20 +647,14 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
                 
 
-            elif report.status == Report.APPLICANT_RESPONSIBLE or report.status == Report.CONTRACTOR_ASSIGNED:
+            elif report.status == Report.APPLICANT_RESPONSIBLE:
+                #Applicant responsible
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
                     recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
-                if report.__former['contractor']:
-                    ReportNotification(
-                        content_template='send_report_deassigned_to_app_contr',
-                        recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
-                        related=report,
-                        reply_to=report.responsible_manager.email
-                    ).save()
                 for subscription in report.subscriptions.all():
                     ReportNotification(
                         content_template='send_report_changed_to_subscribers',
@@ -670,11 +664,34 @@ def report_notify(sender, instance, **kwargs):
                     ).save()
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.ENTITY_ASSIGNED,
-                    related_new=report.contrator
+                    event_type=ReportEventLog.APPLICANT_ASSIGNED,
+                    related_new=report.contractor
+                ).save()
+
+
+            elif report.status == Report.CONTRACTOR_ASSIGNED:
+                #Contractor assigned
+                ReportNotification(
+                    content_template='send_report_assigned_to_app_contr',
+                    recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                    related=report,
+                    reply_to=report.responsible_manager.email
+                ).save()
+                for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.CONTRACTOR_ASSIGNED,
+                    related_new=report.contractor
                 ).save()
 
         if report.__former['contractor']!= report.contractor:
+            print report.contractor.id
             ReportNotification(
                 content_template='send_report_assigned_to_app_contr',
                 recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
@@ -696,19 +713,27 @@ def report_notify(sender, instance, **kwargs):
                         reply_to=report.responsible_manager.email,
                     ).save()
             if report.__former['contractor']:
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.ENTITY_CHANGED,
-                    related_old = report.__former['contractor'],
-                    related_new = report.contractor
-                ).save()
-            else:
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.ENTITY_CHANGED,
-                    related_old = report.__former['contractor'],
-                    related_new = report.contractor
-                ).save()
+                if report.__former['status']==Report.CONTRACTOR_ASSIGNED and report.status == Report.CONTRACTOR_ASSIGNED:
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.CONTRACTOR_CHANGED,
+                        related_old = report.__former['contractor'],
+                        related_new = report.contractor
+                    ).save()
+                elif report.__former['status']==Report.APPLICANT_RESPONSIBLE and report.status == Report.APPLICANT_RESPONSIBLE:
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.APPLICANT_CHANGED,
+                        related_old = report.__former['contractor'],
+                        related_new = report.contractor
+                    ).save()
+                else:
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.APPLICANT_CONTRACTOR_CHANGE,
+                        related_old = report.__former['contractor'],
+                        related_new = report.contractor
+                    ).save()
 
         if report.__former['responsible_manager'] != report.responsible_manager:
             ReportNotification(
@@ -1218,6 +1243,11 @@ class ReportEventLog(models.Model):
     PUBLISH = 6
     ENTITY_ASSIGNED = 7
     ENTITY_CHANGED = 8
+    CONTRACTOR_ASSIGNED = 9
+    CONTRACTOR_CHANGED = 10
+    APPLICANT_ASSIGNED =11
+    APPLICANT_CHANGED = 12
+    APPLICANT_CONTRACTOR_CHANGE = 13
     EVENT_TYPE_CHOICES = (
         (REFUSE,_("Refuse")),
         (CLOSE,_("Close")),
@@ -1227,6 +1257,11 @@ class ReportEventLog(models.Model):
         (PUBLISH,_("Publish")),
         (ENTITY_ASSIGNED, _('Organisation assinged')),
         (ENTITY_CHANGED, _('Organisation changed')),
+        (CONTRACTOR_ASSIGNED,_('Contractor assinged')),
+        (CONTRACTOR_CHANGED,_('Contractor changed')),
+        (APPLICANT_ASSIGNED,_('Applicant assinged')),
+        (APPLICANT_CHANGED,_('Applicant changed')),
+        (APPLICANT_CONTRACTOR_CHANGE,_('Applicant contractor changed')),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1237,7 +1272,15 @@ class ReportEventLog(models.Model):
         PUBLISH: _("Report has been published by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
+        APPLICANT_ASSIGNED:_('Applicant {related_new} is responsible for the report'),
+        APPLICANT_CHANGED:_('Applicant changed from {related_old} to {related_new}'),
+        CONTRACTOR_ASSIGNED:_('Contractor {related_new} is responsible for the report'),
+        CONTRACTOR_CHANGED:_('Contractor changed from {related_old} to {related_new}'),
+        APPLICANT_CONTRACTOR_CHANGE:_('Applicant contractor change from {related_old} to {related_new}'),
     }
+
+    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, SOLVE_REQUEST, MANAGER_ASSIGNED, MANAGER_CHANGED, PUBLISH, ENTITY_ASSIGNED, ENTITY_CHANGED)
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (APPLICANT_ASSIGNED, APPLICANT_CHANGED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, APPLICANT_CONTRACTOR_CHANGE)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 
@@ -1264,6 +1307,11 @@ class ReportEventLog(models.Model):
             related_old=self.related_old,
             related_new=self.related_new
         )
+    def is_public_visible(self):
+        return self.event_type in ReportEventLog.PUBLIC_VISIBLE_TYPES
+
+    def is_pro_visible(self):
+        return self.event_type in ReportEventLog.PRO_VISIBLE_TYPES
 
 
 @receiver(pre_save, sender=ReportEventLog)
