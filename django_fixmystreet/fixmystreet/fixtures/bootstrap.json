@@ -1582,58 +1582,6 @@
         }
     },
     {
-        "pk":21,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_fr":"Communal Agency Work (fr)",
-            "name_nl":"Communal Agency Work (nl)",
-            "commune":false,
-            "region":false,
-            "subcontractor":true,
-            "applicant":false,
-            "dependency":1
-        }
-    },
-    {
-        "pk":22,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_fr":"Waterwerven (fr)",
-            "name_nl":"Waterwerven (nl)",
-            "commune":false,
-            "region":false,
-            "subcontractor":true,
-            "applicant":false,
-            "dependency":1
-        }
-    },
-    {
-        "pk":23,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_fr":"Elia (fr)",
-            "name_nl":"Elia (nl)",
-            "commune":false,
-            "region":false,
-            "subcontractor":false,
-            "applicant":true,
-            "dependency":1
-        }
-    },
-    {
-        "pk":24,
-        "model":"fixmystreet.organisationentity",
-        "fields":{
-            "name_fr":"Electrabel (fr)",
-            "name_nl":"Electrabel (nl)",
-            "commune":false,
-            "region":false,
-            "subcontractor":false,
-            "applicant":true,
-            "dependency":1
-        }
-    },
-    {
         "pk": 1,
         "model": "auth.user",
         "fields": {
@@ -2009,5 +1957,330 @@
             "leader":false,
             "organisation":15
         }
-    } 
+    },
+    {
+        "pk": 18,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Bruxelles",
+            "last_name": "Entity",
+            "username": "bruxellesEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":18,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":18,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":4
+        }
+    },
+    {
+        "pk": 19,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Evere",
+            "last_name": "Entity",
+            "username": "evereEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":19,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":19,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":6
+        }
+    },
+    {
+        "pk": 20,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Schaerbeek",
+            "last_name": "Entity",
+            "username": "schaerbeekEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":20,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":20,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":15
+        }
+    },
+    {
+        "pk": 21,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Ixelles",
+            "last_name": "Entity",
+            "username": "ixellesEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":21,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":21,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 22,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Auderghem",
+            "last_name": "Entity",
+            "username": "auderghemEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":22,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":22,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":2
+        }
+    },
+    {
+        "pk": 23,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Berchem",
+            "last_name": "Entity",
+            "username": "berchemEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":23,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":23,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":3
+        }
+    },
+    {
+        "pk": 24,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "StGilles",
+            "last_name": "Entity",
+            "username": "stgillesEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":24,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":24,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":13
+        }
+    },
+    {
+        "pk": 25,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "WolumeStLambert",
+            "last_name": "Entity",
+            "username": "wolumeStLambertEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":25,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":25,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":18
+        }
+    },
+    {
+        "pk": 26,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Koekelberg",
+            "last_name": "Entity",
+            "username": "koekelbergEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":26,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":26,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":11
+        }
+    },
+    {
+        "pk": 27,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "STIB",
+            "last_name": "Entity",
+            "username": "stibEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":27,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":27,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":21
+        }
+    },
+    {
+        "pk": 28,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "bruxellesMobilité",
+            "last_name": "Entity",
+            "username": "bruxellesMobilitéEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":28,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":28,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":25
+        }
+    },
+    {
+        "pk": 29,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "IBGE",
+            "last_name": "Entity",
+            "username": "ibgeEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":29,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":29,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":22
+        }
+    },
+    {
+        "pk": 30,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "BruxellesPropreté",
+            "last_name": "Entity",
+            "username": "bruxellesPropretéEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true
+        }
+    },
+    {
+        "pk":30,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":30,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":23
+        }
+    }
 ]

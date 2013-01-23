@@ -38,9 +38,9 @@ def home(request, location = None, error_msg =None):
                 'zipcodes': zipcodes,
                 'location':location,
                 'reports': Report.objects.all()[0:5],
-                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False).filter(modified__gt=last_30_days)[0:5],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False).filter(modified__gt=last_30_days)[0:5],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(modified__gt=last_30_days)[0:5],
+                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
+                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
             },
             context_instance=RequestContext(request))
 
