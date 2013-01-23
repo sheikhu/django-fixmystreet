@@ -75,7 +75,7 @@ class ProReportForm(ReportForm):
         model = Report
         fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
 
-    private = forms.BooleanField(initial=True,required=False)
+    private = forms.BooleanField(initial=True,required=False, label=ugettext_lazy("Private Report"))
 
     def save (self,commit=True):
         report= super(ProReportForm,self).save(commit=False)
