@@ -247,7 +247,7 @@ function markAsDone(){
             <table id='report-status'>
                 <tr>
                     <th>{% trans "Location:" %}</th>
-                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{ report.responsible_entity.name}} ({{report.postalcode}}))</td>
+                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</td>
                 </tr>
                 <tr>
                     <th>{% trans "Category:" %}</th>
@@ -257,6 +257,13 @@ function markAsDone(){
                	    <th>{% trans "Status:" %}</th>
 		    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
 		</tr>
+
+                {% if not report.is_in_progress%}
+		<tr>
+                    <th>{% trans "Responsible:" %}</th>
+                    <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
+            </tr>
+                {% endif %}
 
                 {% if report.is_in_progress %}
                 {% if request.user.id == report.responsible_manager.id %}
@@ -311,7 +318,7 @@ function markAsDone(){
                 <!-- ################################# -->
                 <tr>
                   <th>
-                     <label for="id_is_private">{% trans "Private?" %}</label>			
+                     {% trans "Private report" %}?
                  </th>
                  <td colspan="2">
                      <input type="radio" id="id_private" name="public_private">
