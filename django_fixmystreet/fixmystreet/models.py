@@ -262,7 +262,7 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 class ReportManager(models.GeoManager):
     def get_query_set(self):
-        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class')
+        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity')
 
 
 class Report(UserTrackedModel):
@@ -283,6 +283,7 @@ class Report(UserTrackedModel):
     REPORT_STATUS_SETTABLE_TO_SOLVED = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
+    REPORT_STATUS_ASSIGNED    = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
     REPORT_STATUS_OFF         = (DELETED)
 
@@ -344,6 +345,9 @@ class Report(UserTrackedModel):
         marker_color = "green" #default color
         if (self.is_in_progress()):
             marker_color = "orange"
+            if user and user.is_authenticated():    
+                if self.status in Report.REPORT_STATUS_ASSIGNED:
+                    marker_color = "orange-executed" 
         elif (self.is_created()):
             marker_color = "red"
 
@@ -551,10 +555,12 @@ class Report(UserTrackedModel):
         }
 
 
-@receiver(post_init, sender=Report)
+@receiver(pre_save, sender=Report)
 def track_former_value(sender, instance, **kwargs):
     """Save former data to compare with new data and track changed values"""
-    instance.__former = dict((field.name, getattr(instance, field.name)) for field in Report._meta.fields)
+    if instance.id:
+        former_report = Report.objects.get(id=instance.id)
+        instance.__former = dict((field.name, getattr(former_report, field.name)) for field in Report._meta.fields)
 
 
 @receiver(pre_save,sender=Report)

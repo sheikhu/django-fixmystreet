@@ -41,9 +41,13 @@ def resize_image(filePath):
             img = ImageOps.mirror(img)
 
         img.save(filePath)
-    #Resize to max 800/600
-    #img.thumbnail((800,600), PIL.ANTIALIAS)
-    img.thumbnail((800,600))
+    
+    #Default resize for fms images
+    if (img.size[0] > img.size[1]):
+        img.thumbnail((1200, 800))
+    else:
+        img.thumbnail((800,1200))
+        
 
     #Default
     fileType = "PNG"

@@ -125,7 +125,6 @@ try:
     print "using debug toolbar"
     INSTALLED_APPS += ('debug_toolbar', )
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-    INTERNAL_IPS = ('127.0.0.1',)
 except ImportError:
     pass
 
@@ -134,7 +133,6 @@ try:
     print "using django pdb"
     INSTALLED_APPS += ('django_pdb', )
     MIDDLEWARE_CLASSES += ('django_pdb.middleware.PdbMiddleware',)
-    INTERNAL_IPS = ('127.0.0.1',)
 except ImportError:
     pass
 
