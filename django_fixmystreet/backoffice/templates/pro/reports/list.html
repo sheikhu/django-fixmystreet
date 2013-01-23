@@ -93,7 +93,7 @@ function search_per_ticket() {
 /**
  * Activate the rayon or not
  */
-function activateRayon() {
+/*function activateRayon() {
 	var rayonActivated = $('#rayonCheckbox').attr('checked');
 	
         if (rayonActivated == 'checked') {
@@ -101,7 +101,7 @@ function activateRayon() {
 	} else {
 		$('#rayon').prop('disabled','disabled');
 	}
-}
+}*/
 
 /**
  * Method used to filter report on list
@@ -116,7 +116,7 @@ function applyFilterReports() {
         var valueStreet = $(selectedFilterElements).attr('street');
         var valueStreetNumber = $(selectedFilterElements).attr('streetNumber');
         var valueRayon = $('#rayon').val();
-        var rayonChecked = $('#rayonCheckbox').attr('checked');
+        var rayonChecked = valueRayon != "";
         if (rayonChecked) {
    		window.location="/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon;
    	console.log("/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
@@ -143,7 +143,11 @@ function filterReports() {
 	event.preventDefault();
         //Hide distance section
         $("#search_by_commune_or_address_section_distance").hide();
+
+        //Do not search when field is empty
         searchValue = $('#input-commune-search').val();
+        if (searchValue == "") return false;
+
         var proposal = $('#proposal');
         $(proposal).children().remove();
         $("#search_by_commune_or_address_section_results").show();
@@ -164,7 +168,7 @@ function filterReports() {
         }).success(function(response){
          if(response.status == 'success' && response.result.length > 0) {
               $(proposal).empty();
-              var counter = 1;
+              var counter = 0;
               for(var i in response.result) {
                   var street = response.result[i].address.street;
                   var streetNumber = response.result[i].address.number;
@@ -175,6 +179,10 @@ function filterReports() {
                   .wrap('<li />');
                   counter++;
               }
+              //If only 1 result the select it automatically
+              if  (counter == 1) {
+		highlightFilterSelection('0');
+	      }
          }
          else
          {
@@ -273,39 +281,41 @@ function filterReports() {
 	    <div id="search_by_commune_or_address_section_street">
             <!-- TODO create logic behind searching -->
             <p>1. {% trans "Search by commune or address:" %}</p>
+            <div class="input-append">
+    		<input type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" class="span3" id="input-commune-search">
+    		<button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
+  	    </div>
             {% csrf_token %}
-            <input id="input-commune-search" class="input-xlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
-            <select id="input-ward" class="input-medium">
+            <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
                 <option value="">{% trans "All communes..." %}</option>
                 {% for zip in zipcodes %}
                     <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
                 {% endfor %}
             </select>
 	    &nbsp;&nbsp;
-            <input class="btn" type="button" id="filterReports" value="{% trans 'Search street' %}" onclick="javascript:filterReports()">
-            <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer list' %}" onclick="javascript:applyFilterReports()">
             <div id="search_by_commune_or_address_section_results" style="display:none">
               <p>2. {% trans "Results" %}</p>
               <ul id="proposal" class="inline"> </ul>
 	    </div>
             </div>
             <div id="search_by_commune_or_address_section_distance" style="display:none">
-            <p>{% trans "Within a distance of" %}</p>
-            <input id="rayonCheckbox" type="checkbox" value="1" name="checkbox" onclick="javascript:activateRayon()">
-            <select id="rayon" class="input-large" disabled="disabled">
+            <p>3. {% trans "Within a distance of" %} ({% trans 'Optional' %})</p>
+            <select id="rayon" class="input-large">
+                <option value="">{% trans 'All'%}</option>
                 <option value="50">50m</option>
                 <option value="100">100m</option>
                 <option value="200">200m</option>
             </select>
+            <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer list of reports' %}" onclick="javascript:applyFilterReports()">
 	    </div>
 	</div>
 	<div id="search_by_ticket_nr">
             <!-- TODO create logic behind searching -->
             <p >{% trans "Search by entering a ticket number:" %}</p>
-            <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
-            <p style="float:right">
-                <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
-            </p>
+            <div class="input-append">
+		<input id="input-search" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" class="span3" id="input-commune-search">
+	<button type="button" class="btn" onclick="javascript:search_per_ticket()" id="filterReports">{% trans 'Search' %}</button>
+</div>
 	</div>
         <div id="go_to_submit_report">
             <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/pro/'"/>
