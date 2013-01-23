@@ -674,7 +674,7 @@ def report_notify(sender, instance, **kwargs):
                 #Contractor assigned
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
-                    recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
+                    recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
