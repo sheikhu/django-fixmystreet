@@ -108,17 +108,29 @@ function showResults(type,li){
     <article id="counters">
         <div class='counter'>
             <h3 class='number'>{{ report_counts.recent_new }}</h3>
-            <span class='text'>{% trans "Reports Filed" %}</span>
+            {% if report_counts.recent_new <= 1 %}
+            	<span class='text'>{% trans "Report Filed" %}</span>
+            {% else %}
+            	<span class='text'>{% trans "Reports Filed" %}</span>
+            {% endif %}
             <span class='qualifier'>{% trans "In the 30 last days" %} *</span>
         </div>
         <div class='counter'>
             <h3 class='number'>{{ report_counts.recent_updated }}</h3>
-            <span class='text'>{% trans "Reports Updated" %}</span>
+            {% if report_counts.recent_updated <= 1 %}
+            	<span class='text'>{% trans "Report Updated" %}</span>
+            {% else %}
+            	<span class='text'>{% trans "Reports Updated" %}</span>
+            {% endif %}
             <span class='qualifier'>{% trans "In the 30 last days" %} *</span>
         </div>
         <div class='counter'>
             <h3 class='number'>{{ report_counts.recent_fixed }}</h3>
-            <span class='text'>{% trans "Reports Fixed" %}</span>
+            {% if report_counts.recent_fixed <= 1 %}
+            	<span class='text'>{% trans "Report Fixed" %}</span>
+            {% else %}
+            	<span class='text'>{% trans "Reports Fixed" %}</span>
+            {% endif %}
             <span class='qualifier'>{% trans "In the 30 last days " %} *</span>
         </div>
 	<br/>

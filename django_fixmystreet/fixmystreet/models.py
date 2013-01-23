@@ -73,12 +73,11 @@ class FMSUser(User):
     ASSOCIATION = 4
     OTHER = 5
     REPORT_QUALITY_CHOICES = (
-        ("",_("Select a quality")),
         (RESIDENT,_("Resident")),
-        (OTHER,_("Other")),
         (TRADE,_("Trade")),
         (SYNDICATE,_("Syndicate")),
-        (ASSOCIATION,_("Association"))
+        (ASSOCIATION,_("Association")),
+        (OTHER,_("Other"))
     )
 
 
