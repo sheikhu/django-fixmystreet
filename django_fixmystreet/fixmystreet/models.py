@@ -561,6 +561,9 @@ def track_former_value(sender, instance, **kwargs):
     if instance.id:
         former_report = Report.objects.get(id=instance.id)
         instance.__former = dict((field.name, getattr(former_report, field.name)) for field in Report._meta.fields)
+    else:
+        instance.__former = dict((field.name, getattr(Report(), field.name)) for field in Report._meta.fields)
+    
 
 
 @receiver(pre_save,sender=Report)
@@ -697,7 +700,6 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
         if report.__former['contractor']!= report.contractor:
-            print report.contractor.id
             ReportNotification(
                 content_template='send_report_assigned_to_app_contr',
                 recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
@@ -741,6 +743,7 @@ def report_notify(sender, instance, **kwargs):
                         related_new = report.contractor
                     ).save()
 
+        #Report Creation
         if report.__former['responsible_manager'] != report.responsible_manager:
             ReportNotification(
                 content_template='send_report_creation_to_gest_resp',

@@ -65,6 +65,9 @@ def new(request):
             context_instance=RequestContext(request))
 
 
+def report_prepare(request):
+    return HttpResponseRedirect(reverse('home'))
+
 def search_ticket(request):
     report_id = request.REQUEST.get('report_id')
     try:
