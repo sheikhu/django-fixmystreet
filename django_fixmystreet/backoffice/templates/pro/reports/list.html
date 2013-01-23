@@ -221,6 +221,9 @@ function filterReports() {
     			<a href="{% url report_list_pro 'in_progress' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span></a>
     		</li>
     		<li>
+    			<a href="{% url report_list_pro 'in_progress_and_assigned' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span></a>
+    		</li>
+    		<li>
     			<a href="{% url report_list_pro 'closed' %}?page=1"><img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span></a>
     		</li>
     	</ul>

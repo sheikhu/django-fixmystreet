@@ -162,7 +162,7 @@ class ReportFileForm(forms.ModelForm):
         fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
 
     file_creation_date = forms.CharField(widget=forms.HiddenInput())
-    title = forms.CharField ( widget=forms.widgets.Textarea(attrs={'rows':1, 'cols':40}) )
+    title = forms.CharField ( widget=forms.widgets.Textarea(attrs={'rows':1, 'cols':40}), required=False )
 
     def clean_file(self):
         file = self.cleaned_data['file']
@@ -170,8 +170,10 @@ class ReportFileForm(forms.ModelForm):
             raise forms.ValidationError("File is too large")
         #else:
          #   raise forms.ValidationError(_('File type is not supported'))
+        
+        #if self.fields.get('title').label == '':
+        #    self.fields.get('title').label = "zaza"
         return file
-
 
 class ReportCommentForm(forms.ModelForm):
     required_css_class = 'required'

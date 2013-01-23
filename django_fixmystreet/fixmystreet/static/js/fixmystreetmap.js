@@ -31,25 +31,31 @@ if (!('fms' in window)) {
 		markerStyle = Object.create(defaultMarkerStyle),
 		fixedMarkerStyle = Object.create(defaultMarkerStyle),
 		pendingMarkerStyle = Object.create(defaultMarkerStyle),
+		pendingExecutedMarkerStyle = Object.create(defaultMarkerStyle),
 		draggableMarkerStyle = Object.create(defaultMarkerStyle),
 		fixedMarkerStyleReg = Object.create(defaultMarkerStyle),
 		pendingMarkerStyleReg = Object.create(defaultMarkerStyle),
+		pendingExecutedMarkerStyleReg = Object.create(defaultMarkerStyle),
 		defaultMarkerStyleReg = Object.create(defaultMarkerStyle),
 		fixedMarkerStylePro = Object.create(defaultMarkerStyle),
 		pendingMarkerStylePro = Object.create(defaultMarkerStyle),
+		pendingExecutedMarkerStylePro = Object.create(defaultMarkerStyle),
 		defaultMarkerStylePro = Object.create(defaultMarkerStyle),
 
 		markerStyle.externalGraphic = "/static/images/pin-red-XL.png",
 		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XL.png",
 		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XL.png";
+		pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-XL.png";
 		
                 defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-XS.png",
 		fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",
 		pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-XS.png";
+		pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-XS.png";
                 
 		defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-XS.png",
 		fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-XS.png",
 		pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-XS.png";
+		pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-XS.png";
 		
                 draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
 
@@ -369,16 +375,16 @@ if (!('fms' in window)) {
                    		//NOT ROUTE REGIONALE
                    		if (report.citizen == 'true') {
 					console.log('citizen report in pro section');
-		       			var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+		       			var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
 				} else {
 					console.log(report.citizen);
 					console.log('pro report in pro section');
-		       			var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+		       			var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
 				}
 			} else {
 				console.log('regional report detected');
                    		//ROUTE REGIONALE
-		   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : pendingMarkerStyleReg;
+		   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
 			}
 		          	var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
 				self.markersLayer.addFeatures(vectorOfMarkers);

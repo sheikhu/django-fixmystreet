@@ -36,6 +36,8 @@ def list(request, status):
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status=Report.CREATED)
     elif status == 'in_progress':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+    elif status == 'in_progress_and_assigned':
+    	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_ASSIGNED)
     elif status == 'closed':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
     else: # all
