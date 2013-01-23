@@ -89,6 +89,19 @@
         }
     },
     {
+        "pk":25,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Bruxelles Mobilité",
+            "name_nl":"Mobiliteit Brussel",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
         "pk": 1, 
         "model": "fixmystreet.organisationentity", 
         "fields": {
