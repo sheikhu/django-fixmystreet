@@ -262,7 +262,7 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 class ReportManager(models.GeoManager):
     def get_query_set(self):
-        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity')
+        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'contractor', 'responsible_manager', 'citizen')
 
 
 class Report(UserTrackedModel):
