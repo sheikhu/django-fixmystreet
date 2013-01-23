@@ -35,16 +35,17 @@ $(document).ready(function() {
     	$form.find(':submit').prop('disabled',true);
     	$('#address-text').addClass('loading');
 
-    	fms.currentMap.getSelectedAddress(function(response) {
+    	fms.currentMap.getSelectedAddressNL(function(response) {
     		$('#address-text').removeClass('loading');
 
     		if(response.status == 'success') {
                 var postcode = response.result.address.street.postCode;
     			$('#id_report-postalcode').val(postcode);
-    			$('#id_report-address').val(response.result.address.street.name);
+    			$('#id_report-address_nl').val(response.result.address.street.name);
     			$('#id_report-address_number').val(response.result.address.number);
-
-                $('#address-text').html(response.result.address.street.name+ ', ' + response.result.address.number);
+                if(fms.currentMap.options.apiLang == "nl"){
+                    $('#address-text').html(response.result.address.street.name+ ', ' + response.result.address.number);
+                }
                 $('#postcode-text').html(postcode);
 
 		if (!(postcode in available_zipcodes)) {
@@ -85,6 +86,13 @@ $(document).ready(function() {
     			$('#id_report-address').after('<p class="error-msg">' + msg + '</p>');
     		}
     	});
+
+        fms.currentMap.getSelectedAddressFR(function(response) {
+            $('#id_report-address_fr').val(response.result.address.street.name);
+            if(fms.currentMap.options.apiLang == "fr"){
+                    $('#address-text').html(response.result.address.street.name+ ', ' + response.result.address.number);
+            }
+        });
     }
 });
 

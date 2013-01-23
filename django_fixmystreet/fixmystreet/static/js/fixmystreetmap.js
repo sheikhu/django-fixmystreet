@@ -198,7 +198,7 @@ if (!('fms' in window)) {
 		return this.selectedLocation;
 	};
 
-	fms.Map.prototype.getSelectedAddress = function(callback)
+	fms.Map.prototype.getSelectedAddressNL = function(callback)
 	{
 		var self = this;
 		$.ajax({
@@ -206,60 +206,40 @@ if (!('fms' in window)) {
 			type:'POST',
 			dataType:'jsonp',
 			data:{json: '{\
-				"language": "' + this.options.apiLang + '",\
+				"language": "' + "nl" + '",\
 				"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
 			}'},
 			success:function(response)
 			{
 				self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
 				self.map.addLayer(self.markersLayer);
-
-
-				/*
-				!WTF! from http://docs.openlayers.org/library/overlays.html:
-				As of OpenLayers 2.7, there is no support for selecting features from more than a single vector
-				layer at a time. The layer which is currently being used for selection is the last one on which
-				the .activate() method of the attached select feature control was called.
-				*/
-
-				// var selectFeature = new OpenLayers.Control.SelectFeature(self.markersLayer,{
-				// 	onSelect:function(feature,pixel){
-				// 		var p = feature.geometry.components[0];
-				// 		var point = {x:p.x,y:p.y};
-				// 		//console.log(point,feature.attributes.report);
-				// 		self.element.trigger('reportselected', [point, feature.attributes.report]);
-				// 	}
-				// });
-				// self.map.addControl(selectFeature);
-
-				// selectFeature.activate();
-
-				/*
-				this.superControl.selectControl = selectFeature;
-
-				var events = new OpenLayers.Events(this.markersLayer, this.element[0], ['click']);
-				events.on({
-					'click':function(){
-						console.log('click');
-					}
+				callback(response);
+			},
+			error:function()
+			{
+				callback({
+					error:true,
+					status:"Unexpected error"
 				});
-				this.element.click(function(evt){
-					console.log('wow');
+			}
+		});
+	};
 
-				});
-				this.element.delegate('image', 'click', function(evt){
-					console.log('image',this);
-				});
-				*/
-
-				// var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(report.point.x,report.point.y)]);
-				// var markerConf = report.status==3 ? fixedMarkerStyle : pendingMarkerStyle;
-				// if(index){
-				// 	//make a copy
-				// 	markerConf = $.extend({},markerConf,{
-				// 		externalGraphic:'/static/images/marker/' + (report.is_fixed?'green':'red') + '/marker' + index + '.png'
-				// 	});
-				// }
+	fms.Map.prototype.getSelectedAddressFR = function(callback)
+	{
+		var self = this;
+		$.ajax({
+			url: this.options.localizeUrl,
+			type:'POST',
+			dataType:'jsonp',
+			data:{json: '{\
+				"language": "' + "fr" + '",\
+				"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
+			}'},
+			success:function(response)
+			{
+				self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
+				self.map.addLayer(self.markersLayer);
 				callback(response);
 			},
 			error:function()

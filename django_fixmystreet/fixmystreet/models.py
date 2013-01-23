@@ -266,6 +266,7 @@ class ReportManager(models.GeoManager):
 
 
 class Report(UserTrackedModel):
+    __metaclass__ = TransMeta
 
     # List of status
     CREATED = 1
@@ -553,6 +554,8 @@ class Report(UserTrackedModel):
             "m_c": self.secondary_category.category_class.id,
             "s_c": self.secondary_category.secondary_category_class.id
         }
+    class Meta:
+        translate=('address',)
 
 
 @receiver(pre_save, sender=Report)
@@ -589,7 +592,6 @@ def report_assign_responsible(sender, instance, **kwargs):
         #     for currentCategory in userCategories:
         #         if (currentCategory == instance.secondary_category):
         #            instance.responsible_manager = currentUser
-
 
 @receiver(post_save, sender=Report)
 def report_notify(sender, instance, **kwargs):
