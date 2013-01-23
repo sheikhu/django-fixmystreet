@@ -561,7 +561,7 @@ class Report(UserTrackedModel):
 @receiver(pre_save, sender=Report)
 def track_former_value(sender, instance, **kwargs):
     """Save former data to compare with new data and track changed values"""
-    if instance.id:
+    if instance.id and not kwargs['raw']:
         former_report = Report.objects.get(id=instance.id)
         instance.__former = dict((field.name, getattr(former_report, field.name)) for field in Report._meta.fields)
     else:
