@@ -39,7 +39,8 @@ class MailTest(TestCase):
 		self.sample_post = {
 			'report-x':'150056.538',
 			'report-y':'170907.56',
-			'report-address':'Avenue des Arts, 3',
+			'report-address_fr':'Avenue des Arts, 3',
+			'report-address_nl':'Kunstlaan, 3',
 			'report-address_number':'3',
 			'report-postalcode':'1210',
 			'report-category':'1',

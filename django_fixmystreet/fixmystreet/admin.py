@@ -17,7 +17,7 @@ class ReportsInline(admin.TabularInline):
     extra=0
     max_num=10
 
-    fields = ("status", "address", "address_number", "postalcode", "secondary_category", "admin_url")
+    fields = ("status", "address_nl","address_fr", "address_number", "postalcode", "secondary_category", "admin_url")
     readonly_fields = ("admin_url",)
 
     def admin_url(self, o):

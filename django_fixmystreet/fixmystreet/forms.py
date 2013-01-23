@@ -41,7 +41,8 @@ class ReportForm(forms.ModelForm):
     secondary_category = forms.ModelChoiceField(label=ugettext_lazy("Secondary category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
 
     # hidden inputs
-    address = forms.CharField(widget=forms.widgets.HiddenInput)
+    address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
+    address_fr = forms.CharField(widget=forms.widgets.HiddenInput)
     address_number = forms.CharField(widget=forms.widgets.HiddenInput)
     address_regional = forms.BooleanField(widget=forms.widgets.HiddenInput, required=False)
     postalcode = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -73,7 +74,7 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
+        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
 
     private = forms.BooleanField(initial=True,required=False, label=ugettext_lazy("Private Report"))
 
@@ -91,7 +92,7 @@ class CitizenReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode')
+        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
