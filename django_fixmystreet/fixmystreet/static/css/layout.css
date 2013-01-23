@@ -1777,8 +1777,9 @@ table.report_overview_table th{
 }
 
 #messages {
+    left:1%;
     position: fixed;
-    right: 0px;
     z-index: 1000000;
-    top:40px;
+    bottom:0px;
+    width: 94%;
 }
