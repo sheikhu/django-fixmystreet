@@ -20,7 +20,7 @@ $(function(){
 
 			$searchTerm.addClass('loading');
 			$searchButton.prop('disabled',true);
-			$.ajax({
+                        $.ajax({
 				url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
 				dataType:'jsonp',
 				data:{
