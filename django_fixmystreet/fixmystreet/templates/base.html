@@ -266,7 +266,14 @@
             {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-                <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p>
+                <!-- <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p> -->
+                <div id="messages" class="alert alert-block alert-{% if message.tags %}{{ message.tags }}{% endif %} fade in">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4 class="alert-heading">{% if message.tags %}{{ message.tags }}{% endif %}</h4>
+                    <p>
+                        {{ message }}
+                    </p>
+                </div>
                 {% endfor %}
             </div>
             {% endif %}

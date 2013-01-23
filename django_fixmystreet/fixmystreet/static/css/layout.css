@@ -1775,3 +1775,10 @@ table.report_overview_table th{
     margin-right:9px;
     vertical-align:middle;
 }
+
+#messages {
+    position: fixed;
+    right: 0px;
+    z-index: 1000000;
+    top:40px;
+}
