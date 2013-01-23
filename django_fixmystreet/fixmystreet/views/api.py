@@ -13,7 +13,7 @@ from piston.utils import validate
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode, ReportComment
 from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
-
+from django.views.decorators.csrf import csrf_exempt
 
 def load_zipcodes(request):
         '''load_zipcodes is a method used by the mobiles to retrieve all usable zipcodes'''
@@ -32,6 +32,7 @@ def logout_user(request):
         #Right ! Logged in :-)
         return HttpResponse({},mimetype='application/json')
 
+@csrf_exempt
 def login_user(request):
         '''login_user is a method used by the mobiles to connect a user to the application'''
         user_name = None
@@ -179,7 +180,7 @@ class ProReportHandler(BaseHandler):
         'y',
         'id'
     )
-    exclude = ()
+    include = ('id')
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
@@ -246,7 +247,7 @@ class CitizenReportHandler(BaseHandler):
         'y',
         'id'
     )
-    exclude = ()
+    include = ('id')
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
