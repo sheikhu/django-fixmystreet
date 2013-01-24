@@ -97,6 +97,7 @@ class MailTest(TestCase):
 		#The last one must be sent to the citizen (= the closing report mail)
 		self.assertTrue(self.citizen.email in mail.outbox[2].to)
 
+
 	def testRefuseReportMail(self):
 		#Send a post request filling in the form to create a report
 		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
@@ -160,3 +161,4 @@ class MailTest(TestCase):
 		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 		#Again 4 mails have been sent, the extra mark as done request will not send an extra email to the responsible manager
 		self.assertEquals(len(mail.outbox),4)
+

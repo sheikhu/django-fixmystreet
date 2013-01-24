@@ -1,12 +1,11 @@
 from django.utils import simplejson
-from datetime import datetime as dt
 from smtplib import SMTPException
 import logging
 
-from django.db.models.signals import pre_save, post_save, post_init
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _, activate, ugettext
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
@@ -20,7 +19,6 @@ from django.core import serializers
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
-from django.contrib.auth.signals import user_logged_in
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -106,9 +104,9 @@ class FMSUser(User):
 
     # http://scottbarnham.com/blog/2008/08/21/extending-the-django-user-model-with-inheritance/
     # must extends UserTrackedModel
-    cteated = models.DateTimeField(auto_now_add=True, null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, editable=False)
     created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
-    modified = models.DateTimeField(auto_now=True, null=True)
+    modified = models.DateTimeField(auto_now=True, null=True, editable=False)
     modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
     def save(self, *args, **kwargs):
@@ -360,19 +358,19 @@ class Report(UserTrackedModel):
     objects = ReportManager()
 
     history = HistoricalRecords()
-    
+
     def get_applicant_contact_persons(self):
         return FMSUser.objects.filter(organisation__id = self.contractor.id)
-    
+
     def get_marker(self):
         user = get_current_user()
 
         marker_color = "green" #default color
         if (self.is_in_progress()):
             marker_color = "orange"
-            if user and user.is_authenticated():    
+            if user and user.is_authenticated():
                 if not self.contractor == None:
-                    marker_color = "orange-executed" 
+                    marker_color = "orange-executed"
         elif (self.is_created()):
             marker_color = "red"
 
@@ -394,7 +392,7 @@ class Report(UserTrackedModel):
 
     def is_pro(self):
         return self.citizen == None
-    
+
     def __unicode__(self):
         return self.display_category()
 
@@ -590,7 +588,7 @@ def track_former_value(sender, instance, **kwargs):
         instance.__former = dict((field.name, getattr(former_report, field.name)) for field in Report._meta.fields)
     else:
         instance.__former = dict((field.name, getattr(Report(), field.name)) for field in Report._meta.fields)
-    
+
 
 
 @receiver(pre_save,sender=Report)
@@ -680,7 +678,7 @@ def report_notify(sender, instance, **kwargs):
                     report=report,
                     event_type=ReportEventLog.SOLVE_REQUEST
                 ).save()
-                
+
 
             elif report.status == Report.APPLICANT_RESPONSIBLE:
                 #Applicant responsible
