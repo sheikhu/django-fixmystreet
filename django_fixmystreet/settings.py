@@ -4,7 +4,7 @@ import logging
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
-LOGIN_REQUIRED_URLS = '^/(.*)/pro/'
+LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 
 LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
 ADD_THIS_KEY = os.environ['ADD_THIS_KEY'] if 'ADD_THIS_KEY' in os.environ else ''

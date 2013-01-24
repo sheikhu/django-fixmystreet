@@ -1,77 +1,52 @@
 {% extends "pro/base.html" %}
-{% load i18n %}
-{% load tags %}
+{% load i18n tags %}
+
 {% block script %}
 {{ block.super }}
+{% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
 <script type="text/javascript">
     $(function(){
-      {% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
-      $.each($("#id_user_type").find("option"),function(idx,value){
-        if (value.value != "agent"){
-          $(value).remove();
-        }
-      });;
-      {% endif %}
-      fms.currentMap = new fms.Map('map', {
-        apiLang:     LANGUAGE_CODE,
-        localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    URBIS_URL + '/geoserver/wms'
+        $.each($("#id_user_type").find("option"),function(idx,value){
+            if (value.value != "agent"){
+                $(value).remove();
+            }
+        });
     });
-    }
-    );
 </script>
-<script type="text/javascript">
-  document.getElementById('id_is_active').checked=true
-</script>
+{% endif %}
 {% endblock %}
+
 {% block title %} {% trans "Create user" %} {% endblock %}
 
 {% block content %}
-<!--script type="text/javascript">
-   function uncheckRolesWhenClickingOtherCheckboxThanContractor() {
-	var checkContractor = document.getElementById("contractorRadio");
-	if (checkContractor)
-		checkContractor.checked = false;
-   }
-   function uncheckRoleWhenClickingContractor() {
-	var checkContractor = document.getElementById("contractorRadio");
-	if (checkContractor.checked == true) {
-		var checkRadio = document.getElementById("agentRadio");
-		var checkManager = document.getElementById("managerRadio");
-                if (checkRadio) {
-			checkRadio.checked=false;
-		}
-                if (checkManager) {
-			checkManager.checked=false;
-		}
-	}
-   }
-</script-->
-
-
-<article id="map"></article>
-
-<div id="page_content_container">
-  <center>
-  <div id="create_user_form">
+<div id="user_type_filter">
+    <ul>
+        <li>
+                <a class="{% ifequal user_type 'users' %}active{% endifequal %}"         href="{% url list_users user_type='users' %}">
+                        <img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px" > <span id="users">{% trans "Collaborators in" %} {{ request.user.fmsuser.get_organisation.name }}</span>
+                </a>
+        </li>
+        <li>
+                <a class="{% ifequal user_type 'agents' %}active{% endifequal %}"         href="{% url list_users user_type='agents' %}">
+                        <img src="{{STATIC_URL}}images/agent.png"> <span id="agent">{% trans "Agents" %}</span>
+                </a>
+        </li>
+        <li>
+                <a class="{% ifequal user_type 'managers' %}active{% endifequal %}"         href="{% url list_users user_type='managers' %}">
+                        <img src="{{STATIC_URL}}images/manager.png"> <span id="manager">{% trans "Managers" %}</span>
+                </a>
+        </li>
+    </ul>
+</div>
+<form action="" method="POST" class="form-centered form-horizontal">
+    {% csrf_token %}
     <h1>{% trans "Create user" %}</h1>
     <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
-    <div>
-      <form action="" method="POST">     
-        {% csrf_token %}
-        <table>
-          <tr>
-          {{ createform.as_table }}
-        </tr>
-        <tr>
-          <td colspan="2">
-            <input type="submit" value="Submit" class="btn" style="float:right;"/>
-          </td>
-        </tr>
-        </table>
-      </form>
+    {% include "_form_horizontal.html" with form=user_form %}
+    <div class="control-group">
+        <div class="controls">
+           <input type="submit" value="Submit" class="btn"/>
+        </div>
     </div>
-  </div>
-</center>
-</div>
+</form>
 {% endblock %}

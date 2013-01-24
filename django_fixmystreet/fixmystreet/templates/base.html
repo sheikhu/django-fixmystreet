@@ -111,10 +111,39 @@
                             {% trans "View Reports" %}
                         </a>
                     </li>
-                    <li id="users_menu_item">
-                        <a class="{% ifequal 'users' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=users">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle {% ifequal 'users' menu %}active{% endifequal %}" data-toggle="dropdown" href="{% url list_users %}">
                             {% trans "Users" %}
+                            <b class="caret"></b>
                         </a>
+                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li>
+                                <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url list_users %}">
+                                    {% trans "Users" %}
+                                </a>
+                            </li>
+                            {% if request.fmsuser.leader %}
+                            <li>
+                                <a class="{% ifequal 'contractorOverview' menu %}active{% endifequal %}"     href="{% url list_contractors %}">
+                                    {% trans "Contractors" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if request.fmsuser.leader %}
+                                {% if request.user.id|hasAtLeastAManager %}
+                                <li>
+                                    <a class="{% ifequal 'users_manager_dispatching' menu %}active{% endifequal %}"  href="{% url category_gestionnaire_configuration %}">
+                                        {% trans "Managers dispatching" %}
+                                    </a>
+                                </li>
+                                {% endif %}
+                            {% endif %}
+                            <li>
+                                <a class="{% ifequal 'users_change_password' menu %}active{% endifequal %}"     href="{% url password_change %}">
+                                    {% trans "Change your password" %}
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url about %}">
@@ -128,133 +157,7 @@
                     </li>
                 </ul>
                 <ul id="users_sub_menu" style="visibility:hidden">
-                    {% get_active_menu %}
-                    <li>
-                        <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"     href="{% url usersOverview %}?userType=users">
-                            {% trans "Overview" %}
-                        </a>
-                    </li>
-                    {% if request.fmsuser.leader or request.fmsuser.manager %}
-                    <li>
-                        <a class="{% ifequal 'users_create_agent' menu %}active{% endifequal %}"     href="{% url create_agent %}">
-                            {% trans "Create user" %}
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% if request.fmsuser.leader %}
-                        {% if request.user.id|hasAtLeastAManager %}
-                        <li>
-                            <a class="{% ifequal 'users_manager_dispatching' menu %}active{% endifequal %}"  href="{% url category_gestionnaire_configuration %}">
-                                {% trans "Managers dispatching" %}
-                            </a>
-                        </li>
-                        {% endif %}
-                    {% endif %}
-                    <li>
-                        <a class="{% ifequal 'users_change_password' menu %}active{% endifequal %}"     href="{% url password_change %}">
-                            {% trans "Change your password" %}
-                        </a>
-                    </li>
                 </ul>
-
-
-                <!--<ul class='leftPane' id="leftMenuPanePro">
-                    <li>
-                        <a id='createMenu' class='category' href="{% url home_pro %}">
-                            {% trans "Submit a report" %}
-                        </a>
-                    </li>
-                    <li>
-                        <a id="subscriptionMenuItem" class='category' href="{% url report_subscription_pro %}?subscription=1">
-                            {% trans "My subscriptions" %} <span class="category_number">{{request.user.fmsuser.get_number_of_subscriptions}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="allMenuItem" class='category positionable' href="{% url report_list_pro 'all' %}">
-                            {% trans "Reports assinged to me" %} <span class="category_number">{{request.user.fmsuser.organisation.get_total_number_of_reports}}</span>
-                        </a>
-                    </li>
-                    {% if not request.fmsuser.contractor %}
-                    <li>
-                        <a id='createdMenuItem' class='subcategory positionable' href="{% url report_list_pro 'created' %}">
-                            {% trans "Unpublished" %} <span class="category_number">{{request.user.fmsuser.get_number_of_created_reports}}</span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    <li>
-                        <a id='progressMenuItem' class='subcategory positionable' href="{% url report_list_pro 'in_progress' %}">
-                            {% trans "In progress" %} <span class="category_number">{{request.user.fmsuser.get_number_of_in_progress_reports}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id='closedMenuItem' class='subcategory positionable' href="{% url report_list_pro 'closed' %}">
-                            {% trans "Closed" %} <span class="category_number">{{request.user.fmsuser.get_number_of_closed_reports}} </span>
-                        </a>
-                    </li>
-                    {% if not request.fmsuser.contractor %}
-                    <li>
-                        <a class='category' href="{% url usersOverview %}?userType=users">
-                            {% trans "Colaborators in " %}
-                            {{ request.user.fmsuser.get_organisation.name }} <span class="category_number">{{request.user.fmsuser.organisation.get_total_number_of_users}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class='subcategory' href="{% url usersOverview %}?userType=agent">
-                            {% trans "Agents" %} <span class="category_number">{{request.user.fmsuser.organisation.get_number_of_agents}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class='subcategory' href="{% url usersOverview %}?userType=manager">
-                            {% trans "Manager" %} <p class="category_number">{{request.user.fmsuser.organisation.get_number_of_managers}}</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class='subcategory' href="{% url usersOverview %}?userType=contractor">
-                            {% trans "Contractors" %} <span class="category_number">{{request.user.fmsuser.organisation.get_number_of_contractors}}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class='subcategory' href="{% url usersOverview %}?userType=impetrant">
-                            {% trans "Applicant" %} <span class="category_number">{{request.user.fmsuser.organisation.get_number_of_impetrants}}</span>
-                        </a>
-                    </li>
-                    {% if request.fmsuser.leader %}
-                        {% if request.user.id|hasAtLeastAManager %}
-                        <li>
-                            <a class='category' href="{% url category_gestionnaire_configuration %}">
-                                {% trans "Managers dispatching" %}
-                            </a>
-                        </li>
-                        {% endif %}
-                    {% endif %}
-                    {% endif %}
-                    {% if request.fmsuser.leader %}
-                        <li>
-                            <a id='createUserMenuItem' class='category' href="{% url create_contractor %}">
-                                {% trans "Create new contractor" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if request.fmsuser.leader %}
-                        <li>
-                            <a id='createUserMenuItem' class='category' href="{% url create_manager %}">
-                                {% trans "Create new manager" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if request.fmsuser.leader or request.fmsuser.manager %}
-                        <li>
-                            <a id='createUserMenuItem' class='category' href="{% url create_agent %}">
-                                {% trans "Create new agent" %}
-                            </a>
-                        </li>
-                    {% endif %}
-                        <li>
-                            <a class='category' href="{% url password_change %}">
-                                {% trans "Change your password" %}
-                            </a>
-                        </li>
-                </ul>-->
                 {% endif %}
             </nav>
             {% endblock %}
@@ -262,7 +165,8 @@
 
         <section id="content">
             {% block header-banner %}
-	    {% endblock %}
+            {% endblock %}
+
             {% if messages %}
             <div class="messages">
                 {% for message in messages %}

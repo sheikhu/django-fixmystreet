@@ -5,7 +5,7 @@ LIBS_DIR      = libs
 
 USER          = fixmystreet
 GROUP         = fixmystreet
-SOURCE_URL    = https://github.com/CIRB/Monitoring-Des-Quartiers
+SOURCE_URL    = https://github.com/CIRB/django-fixmystreet
 
 RPM_VERSION   = test
 RPM_NAME      = fixmystreet

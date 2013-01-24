@@ -6,22 +6,18 @@
 {% for field in form %}
     {% if not field.is_hidden %}
     <div class="control-group{% if field.field.required %} required{% endif %}">
-    {% if field.field.widget|classname == "Textarea" %}
-        <label for="id_{{ field.html_name }}">{{ field.label }}</label>
-        {{ field }}
-    {% else %}
-    	{% if field.field.widget|classname == "CheckboxInput" %}
-  		<legend>{% trans 'Subscribe' %}</legend>
-        {% endif %}
-        <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
-        <div class="controls">
+        {% if field.field.widget|classname == "Textarea" %}
+            <label for="id_{{ field.html_name }}">{{ field.label }}</label>
             {{ field }}
-    	    {% if field.field.widget|classname == "CheckboxInput" %}
-	    	{% trans 'Subscription and report follow-up' %}
-    	    {% endif%}
-        </div>
-    {% endif %}
-    {{ field.errors }}
+            {{ field.errors }}
+        {% else %}
+            <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+                {% input_class field 'input-block-level' %}
+                <span class="help-block">{{ field.help_text }}</span>
+                {{ field.errors }}
+            </div>
+        {% endif %}
     </div>
     {% endif %}
 {% endfor %}
