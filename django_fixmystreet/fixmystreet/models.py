@@ -216,6 +216,7 @@ class OrganisationEntity(UserTrackedModel):
     class Meta:
         translate = ('name', 'slug')
 
+
     def get_absolute_url(self):
         return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
 
@@ -262,7 +263,7 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 class ReportManager(models.GeoManager):
     def get_query_set(self):
-        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'contractor', 'responsible_manager', 'citizen')
+        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'responsible_manager', 'citizen', 'contractor')
 
 
 class Report(UserTrackedModel):
@@ -340,6 +341,9 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
     
+    def get_applicant_contact_persons(self):
+        return FMSUser.objects.filter(organisation__id = self.contractor.id)
+    
     def get_marker(self):
         user = get_current_user()
 
@@ -347,7 +351,7 @@ class Report(UserTrackedModel):
         if (self.is_in_progress()):
             marker_color = "orange"
             if user and user.is_authenticated():    
-                if self.status in Report.REPORT_STATUS_ASSIGNED:
+                if not self.contractor == None:
                     marker_color = "orange-executed" 
         elif (self.is_created()):
             marker_color = "red"
@@ -561,7 +565,7 @@ class Report(UserTrackedModel):
 @receiver(pre_save, sender=Report)
 def track_former_value(sender, instance, **kwargs):
     """Save former data to compare with new data and track changed values"""
-    if instance.id:
+    if instance.id and not kwargs['raw']:
         former_report = Report.objects.get(id=instance.id)
         instance.__former = dict((field.name, getattr(former_report, field.name)) for field in Report._meta.fields)
     else:
@@ -1098,12 +1102,9 @@ class ReportCategory(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            #d['n_en'] = getattr(current_element, 'name_en')
-            #d['n_fr'] = getattr(current_element, 'name_fr')
-            #d['n_nl'] = getattr(current_element, 'name_nl')
-            d['n_en'] = getattr(current_element, 'name')
-            d['n_fr'] = getattr(current_element, 'name')
-            d['n_nl'] = getattr(current_element, 'name')
+            d['n_en'] = getattr(current_element, 'name_en')
+            d['n_fr'] = getattr(current_element, 'name_fr')
+            d['n_nl'] = getattr(current_element, 'name_nl')
             d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
 
             is_it_public = getattr(current_element, 'public')
@@ -1114,31 +1115,31 @@ class ReportCategory(UserTrackedModel):
 
             #Optimize data transfered removing duplicates on main class names
             #m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
-            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name')
+            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
             if is_it_public or not prev_d['m_c_n_en'] == m_c_n_en_value:
                 prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
             #m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
-            m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name')
+            m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
             if is_it_public or not prev_d['m_c_n_fr'] == m_c_n_fr_value:
                 prev_d['m_c_n_fr'] = d['m_c_n_fr'] = m_c_n_fr_value
 
             #m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
-            m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name')
+            m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
             if is_it_public or not prev_d['m_c_n_nl'] == m_c_n_nl_value:
                 prev_d['m_c_n_nl'] = d['m_c_n_nl'] = m_c_n_nl_value
             d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
 
             #Optimize data transfered removing duplicates on main class names
             #s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
-            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name')
+            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
             if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
                 prev_d['s_c_n_en'] = d['s_c_n_en'] = s_c_n_en_value
             #s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
-            s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name')
+            s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_fr'] == s_c_n_fr_value:
                 prev_d['s_c_n_fr'] = d['s_c_n_fr'] = s_c_n_fr_value
             #s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
-            s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name')
+            s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
                 prev_d['s_c_n_nl'] = d['s_c_n_nl'] = s_c_n_nl_value
 

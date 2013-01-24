@@ -12,7 +12,11 @@ $(function(){
 		var searchValue = $searchTerm.val();
 		//If search a ticket then redirect
 		if (searchValue && searchValue.length > 0 && searchValue[0] == "#") {
-			window.location = "report/search_ticket?report_id="+searchValue.substring(1);
+                        if (window.location.href.indexOf('pro') != -1) {
+				window.location = "/pro/report/search_ticket_pro?report_id="+searchValue.substring(1);
+			} else {
+				window.location = "/report/search_ticket?report_id="+searchValue.substring(1);
+			}
 		} else {
 			$proposal.slideUp();
 

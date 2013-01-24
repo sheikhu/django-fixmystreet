@@ -37,12 +37,15 @@ def list(request, status):
     elif status == 'in_progress':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif status == 'in_progress_and_assigned':
-    	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_ASSIGNED)
+    	reports = Report.objects.filter(responsible_entity=user_organisation).filter(contractor__isnull=False)
     elif status == 'closed':
     	reports = Report.objects.filter(responsible_entity=user_organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
     else: # all
         reports = Report.objects.filter(responsible_entity=user_organisation).all()
 
+    #If the manager is connected then filter on manager
+    if (connectedUser.manager == True):
+    	reports = reports.filter(responsible_manager=connectedUser);
     #if the user is an executeur de travaux then display only report where He is responsible
     if (connectedUser.contractor == True):
         reports = reports.filter(contractor = connectedUser.organisation)

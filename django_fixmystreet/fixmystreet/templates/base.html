@@ -282,6 +282,7 @@
 
         <footer>
             {% block content_third %}{% endblock %}
+            <div style="clear:both;"></div>
             <h5>
 		{% trans 'A initiative of Bruxelles Mobilite in collaboration with Communes and Brussels Partner Institutions'%}
 	    </h5>
@@ -313,6 +314,7 @@
         <script type="text/javascript" src="{{ STATIC_URL }}lib/proj4js/engine/proj4js-compressed.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}lib/proj4js/defs/EPSG31370.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}lib/OpenLayers-2.12/OpenLayers.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/geolocation.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/fixmystreetmap.js"></script>
         {% endblock %}
 

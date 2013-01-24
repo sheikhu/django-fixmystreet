@@ -68,10 +68,10 @@ $(document).ready(function() {
     }
     //Add onclick event for arrows
     $(".pagination_next.active").bind("click",function(){
-        window.location = getUrlForPageNumber(parseInt("{{request.GET.page}}")+1);
+        getUrlForPageNumber(parseInt("{{request.GET.page}}")+1);
     });
     $(".pagination_prev.active").bind("click",function(){
-        window.location = getUrlForPageNumber(parseInt("{{request.GET.page}}")-1);
+        getUrlForPageNumber(parseInt("{{request.GET.page}}")-1);
     });
 });
 
@@ -84,7 +84,7 @@ function getUrlForPageNumber(number) {
     else {
         url += "?page="+number;
     }
-    return url;
+    window.location= url;
 }
 
 /**
@@ -98,7 +98,7 @@ function search_per_ticket() {
         //On this page character # is not required as the search zone is dedicated.
         if (searchValue[0] == "#")
             valToSearch = searchValue.substring(1);
-        window.location = "/pro/report/search_ticket?report_id="+valToSearch;
+        window.location = "/pro/report/search_ticket_pro?report_id="+valToSearch;
     }
 }
 

@@ -576,8 +576,8 @@ msgstr ""
 
 #: templates/pro/reports/show.html:321
 #, fuzzy
-msgid "Private report"
-msgstr "Envoyer"
+msgid "Set as private report"
+msgstr "Souhaitez vous rendre ce dossier public"
 
 #: templates/pro/reports/show.html:325
 msgid "Private"
@@ -651,7 +651,7 @@ msgstr "Tout valider"
 
 #: templates/pro/reports/show.html:624
 msgid "Publish"
-msgstr "Publier"
+msgstr "Approuver"
 
 #: templates/pro/reports/show.html:625
 msgid "Reject"

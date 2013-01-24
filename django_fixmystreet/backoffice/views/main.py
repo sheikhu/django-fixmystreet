@@ -23,7 +23,7 @@ def home(request, location = None, error_msg =None):
 
     #Redirect to pro section: list of reports if the user has the role manager
     if (request.user.fmsuser.manager):
-        fromUrl = reverse('report_list_pro', args=['all'])
+        fromUrl = reverse('report_list_pro', args=['all'])+'?page=1'
         return HttpResponseRedirect(fromUrl)
 
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())

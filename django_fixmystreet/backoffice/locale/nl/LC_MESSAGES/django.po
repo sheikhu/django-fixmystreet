@@ -584,7 +584,7 @@ msgstr "Selecteer een aannemer/impetrant"
 
 #: templates/pro/reports/show.html:321
 #, fuzzy
-msgid "Private report"
+msgid "Set as private report"
 msgstr "^gebruikeraanmaken"
 
 #: templates/pro/reports/show.html:325
@@ -658,7 +658,7 @@ msgstr "Alles bevestigen"
 
 #: templates/pro/reports/show.html:624
 msgid "Publish"
-msgstr "Publiceer"
+msgstr "Goedkeuren"
 
 #: templates/pro/reports/show.html:625
 msgid "Reject"
