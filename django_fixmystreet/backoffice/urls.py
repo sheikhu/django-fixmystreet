@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 from django.contrib.auth import views as auth_views
 from django.utils.translation import ugettext_lazy as _
-from django_fixmystreet.fixmystreet.models import FMSUser
 
 # from django_fixmystreet.backoffice.views.users import CreateUser
 
@@ -23,29 +22,29 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show_pro'),
-    url(_(r'^report/new'), 'new',name='report_new_pro'),
-    url(_(r'^report/subscription'), 'subscription',name='report_subscription_pro'),
-    url(_(r'^report/search_ticket_pro'), 'search_ticket_pro',name='search_ticket_pro'),
-    url(_(r'^report/prepare_pro'), 'report_prepare_pro',name='report_prepare_pro'),
+    url(_(r'^report/new$'), 'new',name='report_new_pro'),
+    url(_(r'^report/subscription$'), 'subscription',name='report_subscription_pro'),
+    url(_(r'^report/search_ticket_pro$'), 'search_ticket_pro',name='search_ticket_pro'),
+    url(_(r'^report/prepare_pro$'), 'report_prepare_pro',name='report_prepare_pro'),
 )
 
 urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.list',
     url(_(r'^report/list/(.+)'), 'list',name='report_list_pro'),
-    url(_(r'^report/listfilter/'), 'listfilter',name='report_filter_list_pro'),
+    url(_(r'^report/listfilter/$'), 'listfilter',name='report_filter_list_pro'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
-    url(_(r'^report/(\d+)/update/'), 'new', name='report_update_pro'),
-    url(_(r'^report/(\d+)/accept/'), 'accept', name='report_accept_pro'),
-    url(_(r'^report/(\d+)/refuse/'), 'refuse', name='report_refuse_pro'),
-    url(_(r'^report/(\d+)/fixed/'), 'fixed', name='report_fix_pro'),
-    url(_(r'^report/(\d+)/close/'), 'close', name='report_close_pro'),
-    url(_(r'^report/(\d+)/validateAll/'),'validateAll',name='report_validate_all_pro'),
-    url(_(r'^report/(\d+)/updateFile'), 'updateFile', name='report_update_file'),
-    url(_(r'^report/(\d+)/deleteFile'), 'deleteFile', name='report_delete_file'),
-    url(_(r'^report/(\d+)/updateComment'), 'updateComment', name='report_update_comment'),
-    url(_(r'^report/(\d+)/deleteComment'), 'deleteComment', name='report_delete_comment'),
-    url(_(r'^report/(\d+)/fixed/'), 'fixed', name='report_fix_pro'),
+    url(_(r'^report/(\d+)/update/$'), 'new', name='report_update_pro'),
+    url(_(r'^report/(\d+)/accept/$'), 'accept', name='report_accept_pro'),
+    url(_(r'^report/(\d+)/refuse/$'), 'refuse', name='report_refuse_pro'),
+    url(_(r'^report/(\d+)/fixed/$'), 'fixed', name='report_fix_pro'),
+    url(_(r'^report/(\d+)/close/$'), 'close', name='report_close_pro'),
+    url(_(r'^report/(\d+)/validateAll/$'),'validateAll',name='report_validate_all_pro'),
+    url(_(r'^report/(\d+)/updateFile$'), 'updateFile', name='report_update_file'),
+    url(_(r'^report/(\d+)/deleteFile$'), 'deleteFile', name='report_delete_file'),
+    url(_(r'^report/(\d+)/updateComment$'), 'updateComment', name='report_update_comment'),
+    url(_(r'^report/(\d+)/deleteComment$'), 'deleteComment', name='report_delete_comment'),
+    url(_(r'^report/(\d+)/fixed/$'), 'fixed', name='report_fix_pro'),
     url(_(r'^report/(\d+)/changeManager/'), 'changeManager', name='report_change_manager_pro'),
     url(_(r'^report/(\d+)/changeContractor/'), 'changeContractor', name='report_change_contractor_pro'),
     url(_(r'^report/(\d+)/switchPrivacy/'), 'switchPrivacy', name='report_change_switch_privacy'),
@@ -74,11 +73,23 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
-    url(r'users/overview/delete','deleteUser',name="userDelete"),
-    url(r'users/overview/edit','edit',name='usersEdit'),
-    url(r'users/overview/save','saveChanges',name="userSave"),
-    url(r'users/overview','show',name='usersOverview'),
-    url(r'^create-contractor', 'createUser', {'user_type': FMSUser.CONTRACTOR}, name='create_contractor'),
-    url(r'^create-manager', 'createUser', {'user_type': FMSUser.MANAGER}, name='create_manager'),
-    url(r'^create-agent','createUser', {'user_type': FMSUser.AGENT}, name='create_agent'),
+    url(r'^users/$',    'list_users', {'user_type': 'users'},    name='list_users'),
+    url(r'^agents/$',   'list_users', {'user_type': 'agents'},   name='list_users'),
+    url(r'^managers/$', 'list_users', {'user_type': 'managers'}, name='list_users'),
+    url(r'^contractors/$', 'list_contractors', name='list_contractors'),
+
+    url(r'^users/(?P<user_id>\d+)/$',    'list_users', {'user_type': 'users'},    name='edit_user'),
+    url(r'^agents/(?P<user_id>\d+)/$',   'list_users', {'user_type': 'agents'},   name='edit_user'),
+    url(r'^managers/(?P<user_id>\d+)/$', 'list_users', {'user_type': 'managers'}, name='edit_user'),
+    url(r'^contractors/(?P<contractor_id>\d+)/$', 'list_contractors', name='edit_contractor'),
+
+    url(r'^users/create$',   'create_user', {'user_type': 'users'},     name='create_user'),
+    url(r'^agents/create$',  'create_user', {'user_type': 'agents'},    name='create_user'),
+    url(r'^managers/create$','create_user', {'user_type': 'managers'},  name='create_user'),
+    url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
+
+    url(r'^users/(?P<user_id>\d+)/delete$',    'delete_user', {'user_type': 'users'},    name="delete_user"),
+    url(r'^agents/(?P<user_id>\d+)/delete$',   'delete_user', {'user_type': 'agents'},   name="delete_user"),
+    url(r'^managers/(?P<user_id>\d+)/delete$', 'delete_user', {'user_type': 'managers'}, name="delete_user"),
+    url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
 )

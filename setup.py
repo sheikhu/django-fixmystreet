@@ -13,7 +13,6 @@ install_requires = [
     'django-transmeta',
     'django-stdimage',
     'south',
-    'django-nose',
     'django-extensions',
     'simple_history',
     'docutils',
@@ -24,6 +23,7 @@ install_requires = [
     ]
 
 tests_require = [
+    'django-nose',
     'django-jenkins',
     'coverage',
     'pyflakes'

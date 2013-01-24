@@ -15,7 +15,7 @@
         {% endif %}
         <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
         <div class="controls">
-            {{ field }}
+            {% input_class field 'input-block-level' %}
     	    {% if field.field.widget|classname == "CheckboxInput" %}
 	    	{% trans 'Subscription and report follow-up' %}
     	    {% endif%}

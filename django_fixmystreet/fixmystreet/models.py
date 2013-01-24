@@ -99,9 +99,29 @@ class FMSUser(User):
     logical_deleted = models.BooleanField(default=False)
 
     categories = models.ManyToManyField('ReportCategory', related_name='type')
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True)
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True) # organisation that can be responsible of reports
+    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True) # list of contractors/services that user work with
 
-    # history = HistoricalRecords()
+    history = HistoricalRecords()
+
+    # http://scottbarnham.com/blog/2008/08/21/extending-the-django-user-model-with-inheritance/
+    # must extends UserTrackedModel
+    cteated = models.DateTimeField(auto_now_add=True, null=True)
+    created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
+    modified = models.DateTimeField(auto_now=True, null=True)
+    modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
+
+    def save(self, *args, **kwargs):
+        user = get_current_user()
+        if user and user.is_authenticated():
+            self.modified_by = user
+            if not self.id:
+                self.created_by = user
+            self._history_user = user # used by simple_history
+        else:
+            self.modified_by = None
+
+        super(FMSUser, self).save(*args, **kwargs)
 
     def display_category(self):
         return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
@@ -124,7 +144,7 @@ class FMSUser(User):
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
-             return self.organisation.dependency
+            return " / ".join(self.work_for.all())
         else:
              return self.organisation
 

@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.core.validators import validate_email
 from django.conf import settings
+from  django.core.exceptions import ValidationError
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 
@@ -125,18 +126,18 @@ class CitizenForm(forms.Form):
         try:
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
-            del self.cleaned_data['subscription']
+            data = self.cleaned_data.copy()
+            del data['subscription']
             #For unique constraints
-            self.cleaned_data['username'] = self.cleaned_data['email']
+            data['username'] = data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
+            instance.is_active = False
 
         return instance
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        validate_email(email)
-        return email
-
+    def validate_unique(self):
+        """ disable unique validation, save will retrieve existing instance """
+        pass
 
 class ContactForm(forms.Form):
     required_css_class = 'required'
@@ -168,7 +169,7 @@ class ReportFileForm(forms.ModelForm):
     def clean_file(self):
         file = self.cleaned_data['file']
         if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
-            raise forms.ValidationError("File is too large")
+            raise ValidationError("File is too large")
         #else:
          #   raise forms.ValidationError(_('File type is not supported'))
         

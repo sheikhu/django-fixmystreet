@@ -1,194 +1,186 @@
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from django.template import RequestContext
-from django.contrib import messages
-from django.utils.translation import ugettext as _
-
-from django_fixmystreet.backoffice.forms import UserEditForm, FmsUserForm
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, ReportNotification
-
-from django.contrib.sites.models import Site
-from django.template import TemplateDoesNotExist
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
+import logging
 from smtplib import SMTPException
 
-def show(request):
-    user = request.fmsuser
-    userType = request.REQUEST.get("userType")
-    currentOrganisationId = user.organisation.id
-    users = []
-    if userType == 'users':
-        #Get organisations dependants from the current organisation id
-        dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
-        allOrganisation = list(dependantOrganisations)
-        allOrganisation.append(currentOrganisationId)
-        users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
-    if userType == 'agent':
-        users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(agent = True)
-    if userType == 'contractor':
-        dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
-        allOrganisation = list(dependantOrganisations)
-        users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
-        users = users.filter(contractor=True)
-    if userType == 'applicant':
-        users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(applicant=True)
-    if userType == 'manager':
-        users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.template import RequestContext
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+
+from django_fixmystreet.backoffice.forms import FmsUserForm, AgentForm, ContractorForm, ContractorUserForm
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
+
+
+
+
+logger = logging.getLogger(__name__)
+
+def list_users(request, user_id=None, user_type='users'):
+    params = dict()
+    params['user_type'] = user_type
+    currentOrganisation = request.fmsuser.organisation
+    users = FMSUser.objects.filter(organisation=currentOrganisation)
+    if user_id:
+        user_to_edit = FMSUser.objects.get(id=user_id)
+        params['can_edit'] = (((user_to_edit.manager or user_to_edit.agent) and request.fmsuser.leader) or ((user_to_edit.agent) and request.fmsuser.manager))
+
+        if request.method == "POST" and params['can_edit']:
+            user_form = FmsUserForm(request.POST, instance=user_to_edit)
+            if user_form.is_valid():
+                user_form.save()
+                messages.add_message(request, messages.SUCCESS, _("User has been saved successfully"))
+                return HttpResponseRedirect('')
+        else:
+            user_form = FmsUserForm(instance=user_to_edit)
+
+        params['user_form'] = user_form
+
+
+    if user_type == 'agents':
+        users = users.filter(agent = True, manager=False)
+    elif user_type == 'managers':
         users = users.filter(manager=True)
-    
+
     users = users.filter(logical_deleted = False)
-    
-    return render_to_response("pro/users_overview.html",{
-        "users":users,
-    },context_instance=RequestContext(request))
+
+    params['users'] = users
+
+    return render_to_response("pro/users_overview.html", params, context_instance=RequestContext(request))
 
 
-def edit(request):
-    userType = request.REQUEST.get("userType")
-    #Get user connected
-    user = request.fmsuser
-    
-    currentOrganisationId = user.organisation.id
-    users = []
-    if userType == 'users':
-        #Get organisations dependants from the current organisation id
-        dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
-        allOrganisation = list(dependantOrganisations)
-        allOrganisation.append(currentOrganisationId)
-        users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
-    if userType == 'agent':
-        users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(agent = True)
-    if userType == 'contractor':
-        dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = currentOrganisationId)
-        allOrganisation = list(dependantOrganisations)
-        users = FMSUser.objects.filter(organisation_id__in=allOrganisation)
-        users = users.filter(contractor=True)
-    if userType == 'impetrant':
-        users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(applicant=True)
-    if userType == 'manager':
-        users = FMSUser.objects.filter(organisation_id=currentOrganisationId)
-        users = users.filter(manager=True)
-    #Filter deleted users
-    users = users.filter(logical_deleted = False)
-    #Get used to edit
-    user_to_edit = FMSUser.objects.get(pk=int(request.REQUEST.get('userId')))
-
-    connectedUser = request.fmsuser
-    canEditGivenUser = (((user_to_edit.manager or user_to_edit.agent) and connectedUser.leader) or ((user_to_edit.agent) and connectedUser.manager))
-    return render_to_response("pro/users_overview.html",{
-                        "users":users,
-                        "canEditGivenUser":canEditGivenUser,
-                        "editForm":UserEditForm(instance=user_to_edit)
-                        },context_instance=RequestContext(request))
-
-
-def saveChanges(request):
-    userEditForm = UserEditForm(request.POST)
-    userEditForm.save(request.REQUEST.get('userId'))
-    return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
-
-
-def deleteUser(request):
-    # todo set active = false
-    user_to_delete = FMSUser.objects.get(id=request.REQUEST.get('userId'))
-    user_to_delete.logical_deleted = True
-    user_to_delete.is_active = False
-    user_to_delete.save()
-    #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
-    return HttpResponseRedirect('/pro/users/overview?userType='+request.REQUEST.get('userType'))
-
-def createUser(request, user_type):
-    connectedUser = request.fmsuser    
-    isManager = connectedUser.manager    
+def create_user(request, user_type='users'):
+    isManager = request.fmsuser.manager
     #a boolean value to tell the ui if the user can edit the given form content
     if request.method == "POST":
-        #try:
-        #   import pdb
-        #   pdb.set_trace()
-        #   user_type = simplejson.loads(request.body).get('user_type')
-        #except ValueError as e:
-        user_type = request.POST.get("user_type")
-        createform = FmsUserForm(request.POST)
-        if createform.is_valid():
-            createdOrganisationEntity = -1;    
-            #Also create the organisation too            
-            if (user_type == FMSUser.CONTRACTOR):
-                createdOrganisationEntity = OrganisationEntity()
-                createdOrganisationEntity.name_nl = request.POST.get('first_name')+"/"+request.POST.get('last_name')
-                createdOrganisationEntity.name_fr = request.POST.get('first_name')+"/"+request.POST.get('last_name')
-                createdOrganisationEntity.name_en = request.POST.get('first_name')+"/"+request.POST.get('last_name')
-                createdOrganisationEntity.region = False
-                createdOrganisationEntity.commune = False
-                createdOrganisationEntity.subcontractor = True
-                createdOrganisationEntity.applicant = False
-                createdOrganisationEntity.dependency_id = connectedUser.organisation.id
-                createdOrganisationEntity.save()
-            
-            createdUser = createform.save(connectedUser, createdOrganisationEntity, user_type)
+        user_form = AgentForm(request.POST)
+        if user_form.is_valid():
+            try:
+                user = user_form.save(commit=False)
+                user.organisation = request.fmsuser.organisation
+                user.save()
+                user_form.notify_user(user)
+                if user:
+                    messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
+                    return HttpResponseRedirect('')
+            except SMTPException as e:
+                logger.error("email not sent successfully: {0}".format(e))
+                messages.add_message(request, messages.ERROR, _("An error occurd during the email sending"))
 
-            if createdUser:
-                # notification = ReportNotification(
-                #     content_template='send_created_to_user',
-                #     recipient=createdUser,
-                #     related=createdUser,
-                # )
-                # notification.save()
-                    # data={
-                        # "password":request.POST.get('password1')
-                    # })
+    else:
+        user_form = AgentForm(initial={'user_type': 'manager' if user_type=='managers' else 'agent'})
 
-                #Send directly an email to the created user (do not use the reportnotification class because then the password is saved in plain text in the DB)
-                recipients = (createdUser.email,)
-
-                data = {
-                    "user": createdUser,
-                    "password":request.POST.get('password1'),
-                    "SITE_URL": Site.objects.get_current().domain
-                }
-
-                subject, html, text = '', '', ''
-                try:
-                    subject = render_to_string('emails/send_created_to_user/subject.txt', data)
-                except TemplateDoesNotExist:
-                    messages.add_message(request, messages.ERROR, _("No subject"))
-                try:
-                    text    = render_to_string('emails/send_created_to_user/message.txt', data)
-                except TemplateDoesNotExist:
-                    messages.add_message(request, messages.ERROR, _("No email body present"))
-
-                try:
-                    html    = render_to_string('emails/send_created_to_user/message.html', data)
-                except TemplateDoesNotExist:
-                    pass
-
-                subject = subject.rstrip(' \n\t').lstrip(' \n\t')
-
-                msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":connectedUser.email})
-
-                if html:
-                    msg.attach_alternative(html, "text/html")
-                try:
-                    msg.send()
-                except SMTPException as e:
-                    messages.add_message(request, messages.ERROR, _("Mail failed to send"))
-
-                messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
-                createform = FmsUserForm()
-                createform.initial['user_type'] = user_type
-    else:        
-        createform = FmsUserForm()
-        #user_type is used when accessing the page the first time to preset the dropdown value        
-        createform.initial['user_type'] = user_type        
-    
     return render_to_response("pro/user_create.html",
             {
-                "createform":createform,
+                "user_form":user_form,
                 "isManager":isManager
             },
             context_instance=RequestContext(request))
+
+
+def delete_user(request, user_id, user_type='users'):
+    # todo set active = false
+
+    user_to_delete = FMSUser.objects.get(id=user_id, organisation=request.fmsuser.organisation)
+
+    can_edit = (((user_to_delete.manager or user_to_delete.agent) and request.fmsuser.leader) or ((user_to_delete.agent) and request.fmsuser.manager))
+    if not can_edit:
+        return HttpResponseForbidden()
+
+    user_to_delete.logical_deleted = True
+    user_to_delete.is_active = False
+    user_to_delete.agent = False
+    user_to_delete.manager = False
+    user_to_delete.save()
+    #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
+    return HttpResponseRedirect(reverse('list_users', kwargs={'user_type': user_type}))
+
+
+def list_contractors(request, contractor_id=None):
+    currentOrganisation = request.fmsuser.organisation
+    params = dict()
+    contractors = OrganisationEntity.objects.filter(dependency=currentOrganisation, subcontractor=True)
+
+    if contractor_id:
+        contractor_to_edit = OrganisationEntity.objects.get(id=contractor_id, subcontractor=True)
+        user_to_edit = contractor_to_edit.workers.all()[0]
+        params['can_edit'] = request.fmsuser.leader or request.fmsuser.manager
+
+        if request.method == "POST" and params['can_edit']:
+            contractor_form = ContractorForm(request.POST, instance=contractor_to_edit)
+            user_form = FmsUserForm(request.POST, instance=user_to_edit)
+            if contractor_form.is_valid() and user_form.is_valid():
+                contractor = contractor_form.save(request.fmsuser.organisation)
+                user = user_form.save()
+                user.work_for.add(contractor)
+
+                messages.add_message(request, messages.SUCCESS, _("Contractor has been saved successfully"))
+                return HttpResponseRedirect('')
+        else:
+            contractor_form = ContractorForm(instance=contractor_to_edit)
+            user_form = FmsUserForm(instance=user_to_edit)
+
+        params['contractor_form'] = contractor_form
+        params['user_form'] = user_form
+
+    params["contractors"] = contractors
+    return render_to_response("pro/contractors_overview.html", params, context_instance=RequestContext(request))
+
+
+def create_contractor(request):
+    isManager = request.fmsuser.manager
+    # a boolean value to tell the ui if the user can edit the given form content
+    if request.method == "POST":
+        contractor_form = ContractorForm(request.POST, prefix="entity")
+        user_form = ContractorUserForm(request.POST, prefix="user")
+        if contractor_form.is_valid() and user_form.is_valid():
+
+            try:
+                contractor = contractor_form.save(request.fmsuser.organisation)
+                user = user_form.save()
+                user.work_for.add(contractor)
+
+                if user_form.instance_retrived:
+                    messages.add_message(request, messages.SUCCESS, _("Contractor has been linked with existing user {0}").format(user.get_full_name()))
+                    return HttpResponseRedirect('')
+                elif user:
+                    messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
+                    return HttpResponseRedirect('')
+            except SMTPException as e:
+                logger.error("email not sent successfully: {0}".format(e))
+                messages.add_message(request, messages.ERROR, _("An error occurd during the email sending"))
+
+    else:
+        contractor_form = ContractorForm(prefix="entity")
+        user_form = ContractorUserForm(prefix="user")
+
+    return render_to_response("pro/contractor_create.html",
+>>>>>>> contractor creation
+            {
+                "contractor_form": contractor_form,
+                "user_form": user_form,
+                "isManager": isManager
+            },
+            context_instance=RequestContext(request))
+
+def delete_contractor(request, contractor_id):
+    # todo set active = false
+    contractor = OrganisationEntity.objects.get(id=contractor_id, dependency=request.fmsuser.organisation, subcontractor=True)
+
+    can_edit = request.fmsuser.leader or request.fmsuser.manager
+    if can_edit:
+        return HttpResponseForbidden()
+
+    for user in contractor.team.all():
+        user.work_for.remove(contractor)
+        if user.work_for.count() == 0:
+            user.contractor = False
+            if not user.agent and not user.manager:
+                user.logical_deleted = True
+                user.is_active = False
+        user.save()
+
+    contractor.delete()
+
+    #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
+    return HttpResponseRedirect(reverse('list_contractors'))

@@ -1,41 +1,41 @@
 [
     {
-        "pk": 1, 
-        "model": "fixmystreet.reportmaincategoryclass", 
+        "pk": 1,
+        "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Stoep", 
+            "name_nl": "Stoep",
             "name_fr": "Trottoir"
         }
-    }, 
+    },
     {
-        "pk": 2, 
-        "model": "fixmystreet.reportmaincategoryclass", 
+        "pk": 2,
+        "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Straat", 
+            "name_nl": "Straat",
             "name_fr": "Chaussée"
         }
-    }, 
+    },
     {
-        "pk": 3, 
-        "model": "fixmystreet.reportmaincategoryclass", 
+        "pk": 3,
+        "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Fietspad", 
+            "name_nl": "Fietspad",
             "name_fr": "Piste cyclable"
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "fixmystreet.reportmaincategoryclass", 
+        "pk": 4,
+        "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Groene ruimten", 
+            "name_nl": "Groene ruimten",
             "name_fr": "Espaces verts"
         }
-    }, 
+    },
     {
-        "pk": 5, 
-        "model": "fixmystreet.reportmaincategoryclass", 
+        "pk": 5,
+        "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Bruggen en tunnels", 
+            "name_nl": "Bruggen en tunnels",
             "name_fr": "Ponts et tunnels",
             "hint":1
         }
@@ -58,7 +58,7 @@
             "name_fr": "Débris/Objets abandonnés"
         }
     },
-    
+
     {
         "pk": 3,
         "model": "fixmystreet.reportsecondarycategoryclass",
@@ -67,7 +67,7 @@
             "name_fr": "Récolte des eaux"
         }
     },
-    
+
     {
         "pk": 4,
         "model": "fixmystreet.reportsecondarycategoryclass",
@@ -76,7 +76,7 @@
             "name_fr": "Plantations"
         }
     },
-    
+
     {
         "pk": 5,
         "model": "fixmystreet.reportsecondarycategoryclass",
@@ -85,7 +85,7 @@
             "name_fr": "Signalisation et feux"
         }
     },
-    
+
     {
         "pk": 6,
         "model": "fixmystreet.reportsecondarycategoryclass",
@@ -94,7 +94,7 @@
             "name_fr": "Eclairage"
         }
     },
- 
+
      {
         "pk": 7,
         "model": "fixmystreet.reportsecondarycategoryclass",
@@ -448,7 +448,7 @@
             "public": true
         }
     },
-    
+
     {
         "pk": 116,
         "model": "fixmystreet.reportcategory",
@@ -532,7 +532,7 @@
             "public": false
         }
     },
-    
+
     {
         "pk": 117,
         "model": "fixmystreet.reportcategory",
@@ -1537,8 +1537,8 @@
         }
     },
     {
-        "pk": 1, 
-        "model": "fixmystreet.faqentry", 
+        "pk": 1,
+        "model": "fixmystreet.faqentry",
         "fields": {
             "q_fr": "Qui g\u00e8re ce site ?",
             "order": 2,
@@ -1546,38 +1546,38 @@
         }
     },
     {
-        "pk": 2, 
-        "model": "fixmystreet.faqentry", 
+        "pk": 2,
+        "model": "fixmystreet.faqentry",
         "fields": {
-            "q_fr": "Pourquoi ma commune n'est-elle pas reprise ?", 
-            "order": 3, 
+            "q_fr": "Pourquoi ma commune n'est-elle pas reprise ?",
+            "order": 3,
             "a_fr": "<p>FixMyStreet Bruxelles couvre toutes les communes de la R\u00e9gion de Bruxelles-Capitale et toutes les communes de la R\u00e9gion y sont reprises.</p>"
         }
-    }, 
+    },
     {
-        "pk": 3, 
-        "model": "fixmystreet.faqentry", 
+        "pk": 3,
+        "model": "fixmystreet.faqentry",
         "fields": {
-            "q_fr": "Supprimer-vous le contenu ill\u00e9gal ou stupide ?", 
-            "order": 4, 
+            "q_fr": "Supprimer-vous le contenu ill\u00e9gal ou stupide ?",
+            "order": 4,
             "a_fr": "<p>FixMyStreet Bruxelles n'est pas responsable pour le contenu et la pr\u00e9cision des documents soumis par les utilisateurs. Tous les rapports sont accept\u00e9s avec l'assomption qu'ils ne contiennent pas de contenu ill\u00e9gal, et nous nous r\u00e9servons le droit de supprimer tout les rapports ou les mises \u00e0 jour que nous consid\u00e9rons comme \u00e9tant inappropri\u00e9s une fois averti par un utilisateur du site."
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "fixmystreet.faqentry", 
+        "pk": 4,
+        "model": "fixmystreet.faqentry",
         "fields": {
-            "q_fr": "Qui peut voir mon adresse email ?", 
-            "order": 5, 
+            "q_fr": "Qui peut voir mon adresse email ?",
+            "order": 5,
             "a_fr": "<p>Si vous soumettez un rapport, nous transmettons vos coordonn\u00e9es et les d\u00e9tails du probl\u00e8me au contact responsable (communal, r\u00e9gional ou autre) de l’endroit où vous avez localis\u00e9 le probl\u00e8me. Lorsque vous envoyez un rapport ou une mise \u00e0 jour, votre nom est affich\u00e9 sur le site, mais pas votre adresse email.</p><p>Jamais nous ne communiquerons votre adresse email \u00e0 quiconque, \u00e0 moins que nous y soyons oblig\u00e9 par la loi.</p>"
         }
     },
     {
-        "pk": 5, 
-        "model": "fixmystreet.faqentry", 
+        "pk": 5,
+        "model": "fixmystreet.faqentry",
         "fields": {
-            "q_fr": "Allez-vous envoyer du spam \u00e0 mon adresse email ?", 
-            "order": 6, 
+            "q_fr": "Allez-vous envoyer du spam \u00e0 mon adresse email ?",
+            "order": 6,
             "a_fr": "<p>Jamais. Nous vous enverrons un email si quelqu'un signale  une mise \u00e0 jour sur un probl\u00e8me que vous avez signal\u00e9, ou auquel vous avez souscrit un abonnement.</p>"
         }
     },
@@ -1728,7 +1728,7 @@
             "last_used_language":"NL",
             "agent":true,
             "manager":true,
-            "leader":false,
+            "leader":true,
             "organisation":9
         }
     },

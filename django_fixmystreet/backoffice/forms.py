@@ -1,78 +1,28 @@
 
+import logging
+
 from django import forms
-from django.contrib.auth.forms import UserChangeForm
-from django.utils.translation import ugettext_lazy
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.template import TemplateDoesNotExist
+from django.core.validators import validate_email
+from django.conf import settings
+
+from django_fixmystreet.fixmystreet.models import FMSUser, Report, OrganisationEntity
 
 
-from django_fixmystreet.fixmystreet.models import FMSUser, Report
 
-
-# TODO replace ALL this class by this single line: forms.ModelChoiceField(queryset=FMSUser.objects.filter(manager=True, organisation=connectedUser.organisation).order_by('last_name', 'first_name'), empty_label=None, widget=forms.RadioSelect)
-class ManagersChoiceField(forms.fields.ChoiceField):
-
-    def __init__(self, connectedUser, *args, **kwargs):
-        choices = []
-        managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
-        managers = managers.filter(organisation=connectedUser.organisation)
-
-        for manager in managers:
-            choices.append((manager.pk,manager.last_name+" "+manager.first_name))
-
-        super(ManagersChoiceField,self).__init__(choices,*args,**kwargs)
-
-    def refreshChoices(self, connectedUser):
-        choices = []
-        currentUserOrganisation = FMSUser.objects.get(pk=connectedUser.id).organisation
-        managers = FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name')
-        managers = managers.filter(organisation_id=currentUserOrganisation.id)
-
-        for manager in managers:
-            choices.append((manager.pk,manager.last_name+" "+manager.first_name))
-        super(ManagersChoiceField, self)._set_choices(choices)
-
-    def clean(self, value):
-        super(ManagersChoiceField,self).clean(value)
-        try:
-            model = FMSUser.objects.get(pk=value)
-        except FMSUser.DoesNotExist:
-            raise ValidationError(self.error_messages['invalid_choice'])
-        return model
+logger = logging.getLogger(__name__)
 
 
 class ManagersListForm(forms.Form):
-    def __init__(self, connectedUser,  *args, **kwargs):
+    def __init__(self, user,  *args, **kwargs):
+        self.manager = forms.ModelChoiceField(queryset=FMSUser.objects.filter(manager=True, organisation=user.organisation).order_by('last_name', 'first_name'))
+
         super(ManagersListForm, self).__init__(*args, **kwargs)
-        self.manager = ManagersChoiceField(connectedUser, label="")
 
-
-    def refreshChoices(self, connectedUser):
-        self.manager.refreshChoices(connectedUser)
-
-
-
-class UserEditForm(UserChangeForm):
-    class Meta:
-        model = FMSUser
-        fields = ('first_name','last_name',"username",'email','telephone','is_active')
-
-    telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    is_active = forms.BooleanField(required=True)
-
-    def save(self,userID, commit=True):
-        fmsuser = FMSUser.objects.filter(user_ptr_id=userID)
-        fmsuser.update(first_name = self.data["first_name"])
-        fmsuser.update(last_name = self.data["last_name"])
-        fmsuser.update(email = self.data["email"])
-        fmsuser.update(telephone = self.data["telephone"])
-        if (self.data.__contains__('is_active')):
-            isActive = True
-        else:
-            isActive = False
-        fmsuser.update(is_active=isActive)
-        return fmsuser;
 
 
 class RefuseForm(forms.ModelForm):
@@ -88,46 +38,141 @@ class RefuseForm(forms.ModelForm):
         return report
 
 
-class FmsUserForm(UserCreationForm):
+class FmsUserForm(forms.ModelForm):
     required_css_class = 'required'
     class Meta:
-        model = User
-        fields = ('user_type','first_name','last_name','email','telephone','username','password1','password2','is_active')
+        model = FMSUser
+        fields = ('first_name','last_name','telephone','email','is_active')
 
-    telephone = forms.CharField(max_length="20",widget=forms.TextInput(attrs={ 'class': 'required' }),label=ugettext_lazy('Tel.'))
-    is_active = forms.BooleanField(required=False, label=ugettext_lazy('Activate user?'))
-    user_type = forms.ChoiceField(label=ugettext_lazy("User type"),required=True, choices=(
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True, label=_('Email'))
+    telephone = forms.CharField(max_length="20")
+    is_active = forms.BooleanField(required=False, initial=True, help_text="only active users can login.", label="Active")
+
+
+class FmsUserCreateForm(FmsUserForm):
+    required_css_class = 'required'
+    class Meta:
+        model = FMSUser
+        fields = ('first_name','last_name','telephone','email','password1','password2','is_active')
+
+    password1 = forms.CharField(widget=forms.PasswordInput(), label="Password" )
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Repeat Password" )
+
+    def save(self, commit=True):
+        user = self.retrive_user()
+        if not user:
+            user = super(FmsUserCreateForm,self).save(commit=False)
+            user.lastUsedLanguage = "EN"
+
+        if not user.password:
+            user.set_password(self.cleaned_data["password1"])
+            user.is_active = True
+
+        if not user.username:
+            user.username = self.cleaned_data["email"]
+
+        self.promote(user)
+
+        if commit:
+            user.save()
+            self.notify_user(user)
+        return user
+
+    def validate_unique(self):
+        """ disable unique validation, save will retrieve existing instance """
+        pass
+
+    def retrive_user(self):
+        try:
+            user = FMSUser.objects.get(email=self.cleaned_data['email'])
+            self.instance_retrived = True
+            return user
+        except FMSUser.DoesNotExist:
+            self.instance_retrived = False
+            return None
+
+    def promote(self, user):
+        """ set flags for user role, must be extends """
+        pass
+
+    def notify_user(self, user):
+        """
+        Send directly an email to the created user
+        (do not use the reportnotification class because then the password is saved in plain text in the DB)
+        """
+        recipients = (user.email,)
+
+        data = {
+            "user": user,
+            "password":self.cleaned_data['password1'],
+            "SITE_URL": Site.objects.get_current().domain
+        }
+
+        # MAIL SENDING...
+        subject, html, text = '', '', ''
+        try:
+            subject = render_to_string('emails/send_created_to_user/subject.txt', data)
+        except TemplateDoesNotExist:
+            logger.error('template {0} does not exist'.format('emails/send_created_to_user/subject.txt'))
+        try:
+            text    = render_to_string('emails/send_created_to_user/message.txt', data)
+        except TemplateDoesNotExist:
+            logger.error('template {0} does not exist'.format('emails/send_created_to_user/message.txt'))
+
+        try:
+            html    = render_to_string('emails/send_created_to_user/message.html', data)
+        except TemplateDoesNotExist:
+            logger.info('template {0} does not exist'.format('emails/send_created_to_user/message.html'))
+
+        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+
+        msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":user.created_by.email})
+        if html:
+            msg.attach_alternative(html, "text/html")
+
+        msg.send()
+        # MAIL SENDED
+
+
+class AgentForm(FmsUserCreateForm):
+    class Meta:
+        model = FMSUser
+        fields = ('user_type','first_name','last_name','telephone','email','password1','password2','is_active')
+
+    user_type = forms.ChoiceField(label=_("User type"),required=True, choices=(
         ("agent", _("Agent")),
         ("manager", _("Manager")),
-        ("contractor", _("Contractor")),
     ))
 
-    def save(self, userID, contractorOrganisation, user_type, commit=True):
-        user = super(FmsUserForm,self).save(commit=False)
-        fmsuser = FMSUser()
-        user.fmsuser = fmsuser
-        fmsuser.username = self.cleaned_data["username"]
-        fmsuser.set_password(self.cleaned_data["password1"])
-        fmsuser.first_name=self.cleaned_data["first_name"]
-        fmsuser.last_name=self.cleaned_data["last_name"]
-        fmsuser.email=self.cleaned_data["email"]
-        fmsuser.telephone= self.cleaned_data['telephone']
-        fmsuser.lastUsedLanguage="EN"
 
-        if (self.data.__contains__('is_active')):
-               isActive = True
-        else:
-               isActive = False
-        fmsuser.is_active = isActive
+    def promote(self, user):
+        user.agent = (self.cleaned_data['user_type'] == FMSUser.AGENT or self.cleaned_data['user_type'] == FMSUser.MANAGER) #All gestionnaires are also agents
+        user.manager = (self.cleaned_data['user_type'] == FMSUser.MANAGER)
 
-        #In V1 all leaders are created in DB on application launch (in other words by sql queries)
-        fmsuser.agent = (user_type == FMSUser.AGENT or user_type == FMSUser.MANAGER) #All gestionnaires are also agents
-        fmsuser.manager = (user_type == FMSUser.MANAGER)
-        fmsuser.contractor = (user_type == FMSUser.CONTRACTOR)
-        currentUser = FMSUser.objects.get(user_ptr_id=userID)
-        if (fmsuser.contractor):
-             fmsuser.organisation = contractorOrganisation
-        else:
-             fmsuser.organisation = currentUser.organisation
-        fmsuser.save()
-        return fmsuser;
+
+class ContractorUserForm(FmsUserCreateForm):
+
+    def promote(self, user):
+        user.contractor = True
+
+class ContractorForm(forms.ModelForm):
+    required_css_class = 'required'
+    class Meta:
+        model = OrganisationEntity
+        fields = ('name_fr', 'name_nl', 'telephone')
+
+    name_fr = forms.CharField()
+    name_nl = forms.CharField()
+    telephone = forms.CharField(required=False)
+
+    def save(self, organisation, commit=True):
+        contractor = super(ContractorForm, self).save(commit=False)
+        contractor.subcontractor = True
+        contractor.dependency = organisation
+
+        if commit:
+            contractor.save()
+        return contractor
+

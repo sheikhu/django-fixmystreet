@@ -20,7 +20,7 @@ class LoginRequiredMiddleware:
     """
     def process_request(self, request):
         request.backoffice = False
-        if re.compile('^/(.*)/pro/').search(request.path_info):
+        if re.compile(settings.LOGIN_REQUIRED_URL).search(request.path_info):
             if request.user.is_authenticated():
                 request.backoffice = True
             else:

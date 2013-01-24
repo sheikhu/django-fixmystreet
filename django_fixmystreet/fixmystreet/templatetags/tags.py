@@ -11,7 +11,7 @@ register = template.Library()
 MENU_DEFS = [
     ('submit', ['home','report_new','report_new_pro','home_pro']),
     ('view', ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report','report_show_pro','report_list_pro']),
-    ('users',['usersOverview']),
+    ('users',['list_users', 'edit_user', 'create_contractor', 'category_gestionnaire_configuration', 'password_change']),
     ('about',  ['about', 'terms_of_use']),
     ('contact', ['contact'])
 ]
@@ -58,4 +58,15 @@ def classname(obj):
 @register.simple_tag
 def input_placeholder(field):
     field.field.widget.attrs["placeholder"] = field.label
+    return field
+
+@register.simple_tag
+def input_class(field, css_class):
+
+    if "class" in field.field.widget.attrs:
+        field.field.widget.attrs["class"] += " "
+        field.field.widget.attrs["class"] += css_class
+    else:
+        field.field.widget.attrs["class"] = css_class
+
     return field
