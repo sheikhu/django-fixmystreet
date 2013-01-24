@@ -47,6 +47,9 @@ class UserTrackedModel(TimeStampedModel):
         abstract = True
 
 
+User._meta.get_field_by_name('email')[0]._unique = True
+User._meta.get_field_by_name('email')[0].null = True
+
 class FMSUser(User):
     AGENT        = "agent"
     MANAGER      = "manager"
@@ -202,8 +205,6 @@ class FMSUser(User):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
         return subscriptions.count()
 
-User._meta.get_field_by_name('email')[0]._unique = True
-User._meta.get_field_by_name('email')[0].null = True
 
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
