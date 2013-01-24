@@ -155,7 +155,6 @@ def create_contractor(request):
         user_form = ContractorUserForm(prefix="user")
 
     return render_to_response("pro/contractor_create.html",
->>>>>>> contractor creation
             {
                 "contractor_form": contractor_form,
                 "user_form": user_form,
