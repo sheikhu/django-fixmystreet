@@ -112,13 +112,13 @@
                         </a>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle {% ifequal 'users' menu %}active{% endifequal %}" data-toggle="dropdown" href="{% url list_users %}">
+                        <a class="dropdown-toggle {% ifequal 'users' menu %}active{% endifequal %}" data-toggle="dropdown" href="{% url list_users user_type='users' %}">
                             {% trans "Users" %}
                             <b class="caret"></b>
                         </a>
                          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             <li>
-                                <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url list_users %}">
+                                <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url list_users user_type='users' %}">
                                     {% trans "Users" %}
                                 </a>
                             </li>
@@ -227,7 +227,7 @@
             {% if messages %}
                 $(function(){
                     setTimeout(function(){$('.alert').alert('close')},10000);
-                    
+
                 });
                 {% endif %}
                 </script>

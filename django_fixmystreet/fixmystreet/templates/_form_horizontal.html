@@ -1,5 +1,5 @@
-{% load tags %}
-{% load i18n %}
+{% load tags i18n %}
+
 {% for field in form.hidden_fields %}
     {{ field }}
 {% endfor %}
@@ -9,12 +9,19 @@
         {% if field.field.widget|classname == "Textarea" %}
             <label for="id_{{ field.html_name }}">{{ field.label }}</label>
             {{ field }}
+            <span class="help-block">{{ field.help_text }}</span>
+            {{ field.errors }}
+        {% elif field.field.widget|classname == "CheckboxInput" %}
+            <p>{{ field.label }}</p>
+            <label  class="checkbox">{{ field }} {{ field.help_text }}</label>
             {{ field.errors }}
         {% else %}
             <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
                 {% input_class field 'input-block-level' %}
+                {% if field.help_text %}
                 <span class="help-block">{{ field.help_text }}</span>
+                {% endif %}
                 {{ field.errors }}
             </div>
         {% endif %}
