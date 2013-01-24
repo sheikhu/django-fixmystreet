@@ -34,7 +34,6 @@ $(document).ready(function() {
 			}
 		});
 	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
-
 });
 </script>
 {% endblock %}
@@ -113,12 +112,38 @@ body {
 			&nbsp;
 		</td>	
 	</tr>
+
 	<tr>
 		<td>
 			{{report.display_category}}
 		</td>	
 		<td>
 			{{report.created|date}}
+		</td>	
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'Geolocation' %} (WGS84)
+			</strong>
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	
+	<tr>
+		<td id="wgs84">
+			
+		</td>	
+		<td>
+			&nbsp;
 		</td>	
                 <td>
 			&nbsp;
@@ -256,7 +281,15 @@ body {
 			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})
 		</td>	
 		<td>
+			{% if report.status == 4 or report.status == 6%}
+			{{ report.get_status_display }} for {{report.responsible_manager.organisation.name}}
+			{% else %}
+			{% if report.status == 5%}
+			{{ report.get_status_display }}: {{report.contractor.name}}
+			{% else %}
 			{{ report.get_status_display }}
+			{% endif %}
+			{% endif %}
 		</td>
                 <td>
 			&nbsp;
@@ -302,7 +335,7 @@ body {
 	{% for activity in activity_list %}
 	<tr>
 		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : </strong>{{activity}}
+			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
 		</td>
 	</tr>
 	{% endfor %}
@@ -313,7 +346,7 @@ body {
 	{% if activity.is_public_visible %}
 	<tr>
 		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : </strong>{{activity}}
+			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
 		</td>
 	</tr>
 	{% endif %}

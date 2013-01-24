@@ -1280,7 +1280,7 @@ class ReportEventLog(models.Model):
         SOLVE_REQUEST: _("Report pointed as done"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
-        PUBLISH: _("Report has been published by {user}"),
+        PUBLISH: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
         APPLICANT_ASSIGNED:_('Applicant {related_new} is responsible for the report'),
@@ -1290,8 +1290,8 @@ class ReportEventLog(models.Model):
         APPLICANT_CONTRACTOR_CHANGE:_('Applicant contractor change from {related_old} to {related_new}'),
     }
 
-    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, SOLVE_REQUEST, MANAGER_ASSIGNED, MANAGER_CHANGED, PUBLISH, ENTITY_ASSIGNED, ENTITY_CHANGED)
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (APPLICANT_ASSIGNED, APPLICANT_CHANGED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, APPLICANT_CONTRACTOR_CHANGE)
+    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, SOLVE_REQUEST, PUBLISH,APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, ENTITY_CHANGED)
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, APPLICANT_CONTRACTOR_CHANGE, MANAGER_ASSIGNED, MANAGER_CHANGED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 

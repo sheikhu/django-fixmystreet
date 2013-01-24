@@ -89,7 +89,11 @@ def listfilter(request):
     if (not value_rayon == None):
         if (not value_street_number == ""):
             #update point to use with rayon
-            unique_report_result = reports.filter(address__contains=value_street).filter(address_number=value_street_number)
+            if request.LANGUAGE_CODE == 'nl':
+                unique_report_result = reports.filter(address_nl__contains=value_street).filter(address_number=value_street_number)
+            else:
+                unique_report_result = reports.filter(address_fr__contains=value_street).filter(address_number=value_street_number)
+
             if unique_report_result.__len__() == 0:
                 #no result then use the given point
                 the_unique_report_with_number_point = pnt 
@@ -101,7 +105,11 @@ def listfilter(request):
             reports = reports.distance(pnt).filter(point__distance_lte=(pnt,int(value_rayon))) 
     #if the numer is given then filter on it
     else:
-        reports = reports.filter(address__contains=value_street)
+        if request.LANGUAGE_CODE == 'nl':
+            reports = reports.filter(address_nl__contains=value_street)
+        else:
+            reports = reports.filter(address_fr__contains=value_street)
+        
         if (not value_street_number == ""):
             reports = reports.filter(address_number=value_street_number)
 
@@ -110,10 +118,14 @@ def listfilter(request):
         reports = reports.filter(contractor = connectedUser.organisation)
 
     #Order by address number as an int
-    reports = reports.extra(
-    select={'address_number_as_int': 'CAST(address_number AS INTEGER)'}
-).distance(pnt).order_by('address', 'address_number_as_int')
-   
+    if request.LANGUAGE_CODE=='nl':
+        reports = reports.extra(
+            select={'address_number_as_int': 'CAST(address_number AS INTEGER)'}
+        ).distance(pnt).order_by('address_nl', 'address_number_as_int')
+    else:
+        reports = reports.extra(
+            select={'address_number_as_int': 'CAST(address_number AS INTEGER)'}
+        ).distance(pnt).order_by('address_fr', 'address_number_as_int')
  
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())

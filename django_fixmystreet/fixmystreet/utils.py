@@ -149,15 +149,15 @@ def render_to_pdf(*args, **kwargs):
     html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
-
     cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10 \
             --encoding utf-8 \
             --footer-font-size 8 \
             --footer-left '{0}' \
-            --footer-center '' \
-            --footer-right '[page]/[toPage]' {1} {2}
+            --footer-center 'Incident: {1}' \
+            --footer-right '[page]/[toPage]' {2} {3}
             """.format(
                 datetime.date.today().strftime("%d/%m/%y"),
+                args[1]['report'].get_ticket_number(),
                 html_tmp_file_path,
                 pdf_tmp_file_path
             )
