@@ -26,6 +26,7 @@ def load_categories(request):
         #Right ! 
         return HttpResponse(ReportCategory.listToJSON(all_categories), mimetype='application/json')
 
+@csrf_exempt
 def logout_user(request):
         '''logout_user is a method used by the mobiles to disconnect a user from the application'''
         logout(request);
