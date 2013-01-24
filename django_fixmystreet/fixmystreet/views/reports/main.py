@@ -154,7 +154,7 @@ def search_ticket(request):
         report_id = request.REQUEST.get('report_id')
         report = Report.objects.filter(private=False).get(id=report_id)
 
-        return HttpResponseRedirect(report.get_absolute_url())
+        return HttpResponseRedirect(report.get_absolute_url()+"?page=1")
     except:
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home'))
@@ -169,7 +169,7 @@ def index(request, slug=None, commune_id=None):
             "entity":entity,
         }, context_instance=RequestContext(request))
 
-    communes = OrganisationEntity.objects.filter(commune=True)
+    communes = OrganisationEntity.objects.filter(commune=True).order_by('name_' + get_language())
     return render_to_response("reports/index.html", {
         "communes": communes
     }, context_instance=RequestContext(request))

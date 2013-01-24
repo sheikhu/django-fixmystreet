@@ -204,7 +204,7 @@ function markAsDone(){
         </div>
 	<div class="overview_div" style="float:right;max-width:45%;">   
         <h1>
-            {% trans "Report Ticket" %}: {{report.get_ticket_as_string}}
+            {% trans "Report Ticket" %} {{report.get_ticket_number}}
         </h1> 
 		{% if report.markedAsFinished %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
@@ -318,7 +318,7 @@ function markAsDone(){
                 <!-- ################################# -->
                 <tr>
                   <th>
-                     {% trans "Private report" %}?
+                     {% trans "Set as private report" %}?
                  </th>
                  <td colspan="2">
                      <input type="radio" id="id_private" name="public_private">

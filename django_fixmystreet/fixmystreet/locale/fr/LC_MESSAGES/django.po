@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-24 09:07+0100\n"
+"POT-Creation-Date: 2013-01-24 11:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,23 +148,23 @@ msgstr "Catégorie"
 
 #: models.py:836
 msgid "Public"
-msgstr ""
+msgstr "Public"
 
 #: models.py:837
 msgid "Private"
-msgstr ""
+msgstr "Privé"
 
 #: models.py:838
 msgid "Confidential"
-msgstr ""
+msgstr "Confidentiel"
 
 #: models.py:1072 models.py:1073
 msgid "Category group"
-msgstr "Groupe catégorie:"
+msgstr "Groupe categorie"
 
 #: models.py:1157 models.py:1432
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: models.py:1260
 #, fuzzy
@@ -178,7 +178,7 @@ msgstr "Fermé"
 
 #: models.py:1262
 msgid "Mark as Done"
-msgstr ""
+msgstr "Marquer comme résolu"
 
 #: models.py:1263
 #, fuzzy
@@ -483,7 +483,7 @@ msgstr ""
 msgid "^export_file/reports/((?P<emitter_format>.+))/"
 msgstr ""
 
-#: templates/_form_horizontal.html:14 templates/reports/show.html:341
+#: templates/_form_horizontal.html:14 templates/reports/show.html:343
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
@@ -658,7 +658,7 @@ msgstr "Signaler un incident"
 
 #: templates/base.html:88 templates/base.html.py:111
 msgid "View Reports"
-msgstr "Voir les incidents"
+msgstr "Voir tous les incidents"
 
 #: templates/base.html:98 templates/base.html.py:126
 #: templates/contact/new.html:4 templates/contact/new.html.py:23
@@ -973,7 +973,7 @@ msgstr "N’hésitez pas à nous laisser vos commentaires sur ce site"
 msgid "* This fields are required"
 msgstr "* Ces champs sont obligatoires"
 
-#: templates/contact/new.html:47 templates/reports/show.html:314
+#: templates/contact/new.html:47 templates/reports/show.html:316
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1507,7 +1507,7 @@ msgid ""
 "service public en charge de le traiter."
 msgstr ""
 
-#: templates/reports/new.html:61
+#: templates/reports/new.html:61 templates/reports/show.html:44
 #, fuzzy
 msgid "Your file description"
 msgstr "Question"
@@ -1612,7 +1612,7 @@ msgstr "Confirmer:"
 msgid "Edit"
 msgstr "modifier"
 
-#: templates/reports/new.html:328 templates/reports/show.html:100
+#: templates/reports/new.html:328 templates/reports/show.html:102
 msgid "Confirm"
 msgstr "confirmer"
 
@@ -1642,28 +1642,32 @@ msgstr "Enregistrement de l'incident:"
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné."
 
-#: templates/reports/new.html:352
+#: templates/reports/new.html:351
+msgid "A mail containing the link report has been sent."
+msgstr ""
+
+#: templates/reports/new.html:353
 msgid "Download a copy of the incident as a pdf"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: templates/reports/new.html:357 templates/reports/new.html.py:359
+#: templates/reports/new.html:358 templates/reports/new.html.py:360
 msgid "Continue"
 msgstr "continuer"
 
-#: templates/reports/new.html:366
+#: templates/reports/new.html:367
 msgid "Incident overview:"
 msgstr "Aperçu de votre rapport d'incident:"
 
-#: templates/reports/new.html:371
+#: templates/reports/new.html:372
 #, fuzzy
 msgid "Return to incident"
 msgstr "Signaler un incident"
 
-#: templates/reports/new.html:377
+#: templates/reports/new.html:378
 msgid "Nearby incidents that are already submitted:"
 msgstr "Incidents déjà signalé à proximité:"
 
-#: templates/reports/new.html:387
+#: templates/reports/new.html:388
 msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
@@ -1683,31 +1687,31 @@ msgid ""
 "traiter. "
 msgstr ""
 
-#: templates/reports/show.html:98
+#: templates/reports/show.html:100
 msgid "Cancel"
 msgstr ""
 
-#: templates/reports/show.html:124 templates/reports/show.html.py:126
+#: templates/reports/show.html:126 templates/reports/show.html.py:128
 msgid "Mark as done"
 msgstr ""
 
-#: templates/reports/show.html:127
+#: templates/reports/show.html:129
 msgid "This report is already marked as done"
 msgstr ""
 
-#: templates/reports/show.html:139 templates/reports/show.html.py:142
+#: templates/reports/show.html:141 templates/reports/show.html.py:144
 msgid "Report Ticket"
 msgstr "Incident n°: "
 
-#: templates/reports/show.html:139
+#: templates/reports/show.html:141
 msgid "This incident is not validated."
 msgstr "est en cours de validation"
 
-#: templates/reports/show.html:142
+#: templates/reports/show.html:144
 msgid "This incident has been closed."
 msgstr "a été résolu."
 
-#: templates/reports/show.html:156
+#: templates/reports/show.html:158
 #, python-format
 msgid ""
 "\n"
@@ -1717,7 +1721,7 @@ msgstr ""
 "\n"
 "Signalé le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:161
+#: templates/reports/show.html:163
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1728,50 +1732,50 @@ msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:174
+#: templates/reports/show.html:176
 msgid "Location:"
 msgstr "Adresse:"
 
-#: templates/reports/show.html:178
+#: templates/reports/show.html:180
 msgid "Category:"
 msgstr "Catégorie:"
 
-#: templates/reports/show.html:182
+#: templates/reports/show.html:184
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/reports/show.html:186
+#: templates/reports/show.html:188
 #, fuzzy
 msgid "Responsible:"
 msgstr "Commune responsable"
 
-#: templates/reports/show.html:200
+#: templates/reports/show.html:202
 msgid "Photos and files"
 msgstr "Ajoutez des photos ou fichiers"
 
-#: templates/reports/show.html:228
+#: templates/reports/show.html:230
 #, fuzzy
 msgid "Posted By"
 msgstr "Signalé par"
 
-#: templates/reports/show.html:233
+#: templates/reports/show.html:235
 msgid "Anonymous "
 msgstr ""
 
-#: templates/reports/show.html:236
+#: templates/reports/show.html:238
 msgid "On"
 msgstr ""
 
-#: templates/reports/show.html:240
+#: templates/reports/show.html:242
 #, fuzzy
 msgid "Creation Date"
 msgstr "Créé"
 
-#: templates/reports/show.html:260
+#: templates/reports/show.html:262
 msgid "Comments"
 msgstr ""
 
-#: templates/reports/show.html:269
+#: templates/reports/show.html:271
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1782,15 +1786,15 @@ msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:323
+#: templates/reports/show.html:325
 msgid "report pdf public"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: templates/reports/show.html:327
+#: templates/reports/show.html:329
 msgid "Offensive? Unsuitable? Tell us"
 msgstr "Signaler un abus"
 
-#: templates/reports/show.html:336
+#: templates/reports/show.html:338
 msgid "Subscribers:"
 msgstr "Abonnés:"
 

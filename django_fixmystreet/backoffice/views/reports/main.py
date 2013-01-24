@@ -102,7 +102,7 @@ def report_prepare_pro(request, location = None, error_msg = None):
             },
             context_instance=RequestContext(request))
 
-def search_ticket(request):
+def search_ticket_pro(request):
     report_id = request.REQUEST.get('report_id')
     try:
         report = Report.objects.get(id=report_id)

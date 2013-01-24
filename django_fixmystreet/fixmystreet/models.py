@@ -216,6 +216,7 @@ class OrganisationEntity(UserTrackedModel):
     class Meta:
         translate = ('name', 'slug')
 
+
     def get_absolute_url(self):
         return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
 
@@ -262,7 +263,7 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 class ReportManager(models.GeoManager):
     def get_query_set(self):
-        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'contractor', 'responsible_manager', 'citizen')
+        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'responsible_manager', 'citizen', 'contractor')
 
 
 class Report(UserTrackedModel):
@@ -340,6 +341,9 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
     
+    def get_applicant_contact_persons(self):
+        return FMSUser.objects.filter(organisation__id = self.contractor.id)
+    
     def get_marker(self):
         user = get_current_user()
 
@@ -347,7 +351,7 @@ class Report(UserTrackedModel):
         if (self.is_in_progress()):
             marker_color = "orange"
             if user and user.is_authenticated():    
-                if self.status in Report.REPORT_STATUS_ASSIGNED:
+                if not self.contractor == None:
                     marker_color = "orange-executed" 
         elif (self.is_created()):
             marker_color = "red"
