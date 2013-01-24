@@ -59,7 +59,8 @@ def create_user(request, user_type='users'):
                 user = user_form.save(commit=False)
                 user.organisation = request.fmsuser.organisation
                 user.save()
-                user_form.notify_user(user)
+                if not user_form.instance_retrived
+                    user_form.notify_user(user)
                 if user:
                     messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
                     return HttpResponseRedirect('')

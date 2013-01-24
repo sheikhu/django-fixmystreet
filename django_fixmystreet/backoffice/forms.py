@@ -77,7 +77,8 @@ class FmsUserCreateForm(FmsUserForm):
 
         if commit:
             user.save()
-            self.notify_user(user)
+            if not self.instance_retrived:
+                self.notify_user(user)
         return user
 
     def validate_unique(self):
