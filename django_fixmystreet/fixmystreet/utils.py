@@ -206,6 +206,7 @@ class CurrentUserMiddleware:
 
     def process_response(self, request, response):
         set_current_user(None)
+        return response
 
 
 def save_file_to_server(file_name, file_type, file_extension,file_index,report_id):
