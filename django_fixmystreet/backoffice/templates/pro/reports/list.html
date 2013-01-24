@@ -98,7 +98,7 @@ function search_per_ticket() {
         //On this page character # is not required as the search zone is dedicated.
         if (searchValue[0] == "#")
             valToSearch = searchValue.substring(1);
-        window.location = "/pro/report/search_ticket_pro?report_id="+valToSearch;
+        window.location = "{% url search_ticket_pro %}?report_id="+valToSearch;
     }
 }
 

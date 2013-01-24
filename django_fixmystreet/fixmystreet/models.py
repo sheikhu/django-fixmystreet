@@ -450,7 +450,8 @@ class Report(UserTrackedModel):
         reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
         if (not self.is_created()):
             if (reportImages.__len__() > 0):
-                return reportImages[0].file.url
+                if not reportImages[0].is_private():
+                    return reportImages[0].file.url
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
@@ -1121,7 +1122,7 @@ class ReportCategory(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['n_en'] = getattr(current_element, 'name_en')
+            d['n_en'] = getattr(current_element, 'name_fr')
             d['n_fr'] = getattr(current_element, 'name_fr')
             d['n_nl'] = getattr(current_element, 'name_nl')
             d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
