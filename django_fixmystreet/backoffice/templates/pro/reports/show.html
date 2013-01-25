@@ -387,6 +387,14 @@ function markAsDone(){
                     <tr>
                         <td class="annexesFirstTD">
                             <div class="report_update">
+				<div class="delete-icon">
+			                {% if request.user.id == report.responsible_manager.id %}
+						{% if report.is_created or report.is_in_progress  %}
+						<!-- Manager in charge only -->
+							<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>
+						{% endif %}
+					{% endif %}
+				</div>
                         	{% if file.file %}
                                 <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
                                 {% if file.is_image %}
@@ -421,14 +429,6 @@ function markAsDone(){
                                     {% trans 'on' %}
                                         {{file.created}}
                                 </div>
-				<div>
-			                {% if request.user.id == report.responsible_manager.id %}
-						{% if report.is_created or report.is_in_progress  %}
-						<!-- Manager in charge only -->
-							<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>
-						{% endif %}
-					{% endif %}
-				</div>
                                 {% endif %}
                             </div>
                         </td>
@@ -504,18 +504,18 @@ function markAsDone(){
                     <tr>
                         <td class="annexesFirstTD">
                             <div class="report_update">
-                                <p>{{comment.text}}</p>
-                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
-                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                                {% endblocktrans %}
-                            </div>
-			    <div>
+			    <div class="delete-icon">
 			        {% if request.user.id == report.responsible_manager.id %}
 				{% if report.is_created or report.is_in_progress  %}
                                 <!-- Manager in charge only -->
                                 	<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
                                 {% endif %}
                                 {% endif %}
+                            </div>
+                                <p>{{comment.text}}</p>
+                                {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
+                                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+                                {% endblocktrans %}
                             </div>
                         </td>
                         {% if report.is_in_progress  %}

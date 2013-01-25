@@ -24,10 +24,6 @@ def new(request):
         file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
 
-        #Copy filename to empty titles
-
-        import pdb
-        pdb.set_trace()
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
             # this saves the update as part of the report.

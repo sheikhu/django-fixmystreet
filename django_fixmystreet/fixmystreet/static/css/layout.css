@@ -547,6 +547,12 @@ footer *{
     width:327px;
 }
 
+.delete-icon {
+    position: relative;
+    top: 35px;
+    left: 215px;
+}
+
 /*********** FORMS ***********/
 
 .required label {
