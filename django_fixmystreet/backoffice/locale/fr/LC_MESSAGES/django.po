@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 10:58+0100\n"
+"POT-Creation-Date: 2013-01-25 12:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,12 +227,12 @@ msgid "Contractors"
 msgstr "Executeur de travaux/Impetrant"
 
 #: templates/pro/contractors_overview.html:44
-#: templates/pro/users_overview.html:59 templates/pro/reports/list.html:286
+#: templates/pro/users_overview.html:64 templates/pro/reports/list.html:286
 msgid "Submit"
 msgstr "Envoyer"
 
 #: templates/pro/contractors_overview.html:45
-#: templates/pro/users_overview.html:60 templates/pro/users_overview.html:61
+#: templates/pro/users_overview.html:65 templates/pro/users_overview.html:66
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -390,49 +390,49 @@ msgstr "Commentaires"
 msgid "No File"
 msgstr ""
 
-#: templates/pro/user_create.html:26 templates/pro/users_overview.html:30
+#: templates/pro/user_create.html:26 templates/pro/users_overview.html:35
 msgid "Collaborators in"
 msgstr ""
 
-#: templates/pro/user_create.html:31 templates/pro/users_overview.html:35
+#: templates/pro/user_create.html:31 templates/pro/users_overview.html:40
 msgid "Agents"
 msgstr ""
 
-#: templates/pro/user_create.html:36 templates/pro/users_overview.html:40
+#: templates/pro/user_create.html:36 templates/pro/users_overview.html:45
 msgid "Managers"
 msgstr ""
 
-#: templates/pro/users_overview.html:21
+#: templates/pro/users_overview.html:26
 #, fuzzy
 msgid "User overview"
 msgstr "Voir les utilisateurs"
 
-#: templates/pro/users_overview.html:53
+#: templates/pro/users_overview.html:58
 msgid "Users"
 msgstr ""
 
-#: templates/pro/users_overview.html:72
+#: templates/pro/users_overview.html:77
 #, fuzzy
 msgid "Create a new user"
 msgstr "Créer un utilisateur"
 
-#: templates/pro/users_overview.html:83
+#: templates/pro/users_overview.html:88
 msgid "ENTITE"
 msgstr ""
 
-#: templates/pro/users_overview.html:84
+#: templates/pro/users_overview.html:89
 msgid "GESTIONNAIRE"
 msgstr ""
 
-#: templates/pro/users_overview.html:85
+#: templates/pro/users_overview.html:90
 msgid "AGENT"
 msgstr ""
 
-#: templates/pro/users_overview.html:86
+#: templates/pro/users_overview.html:91
 msgid "EXECUTEUR DE TRAVAUX"
 msgstr ""
 
-#: templates/pro/users_overview.html:87
+#: templates/pro/users_overview.html:92
 msgid "Applicant"
 msgstr ""
 
@@ -618,7 +618,6 @@ msgid "Select a contractor/impetrant"
 msgstr ""
 
 #: templates/pro/reports/show.html:321
-#, fuzzy
 msgid "Set as private report"
 msgstr "Souhaitez vous rendre ce dossier public"
 
@@ -627,7 +626,6 @@ msgid "Private"
 msgstr ""
 
 #: templates/pro/reports/show.html:329
-#, fuzzy
 msgid "Public"
 msgstr "Public?"
 

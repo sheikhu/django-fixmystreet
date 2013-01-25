@@ -340,10 +340,18 @@ function markAsDone(){
 
                  </td>
                 </tr>
-                <tr>
-                    <th>{% trans "Contractor/Impetrant:" %}</th>
-                    <td>{{report.contractor.name}}</td>
-                </tr>
+                {% if report.contractor %}
+                	<tr>
+                    		<th>{% trans "Contractor/Impetrant:" %}</th>
+                    		<td>{{report.contractor.name}}</td>
+                	</tr>
+		 	<!--{% for contact_person in report.get_applicant_contact_persons %}
+                                 {{contact_person.firstname}}
+                                 {{contact_person.last_name}}
+                                {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
+                         <br/>
+                        {% endfor %}-->
+                {% endif %}
                 {% endif %}
                 {% endif %}
             </table>
@@ -498,9 +506,9 @@ function markAsDone(){
                                 {% endblocktrans %}
                             </div>
 			    <div>
-                                {% if report.is_created %}
+			        {% if request.user.id == report.responsible_manager.id %}
+				{% if report.is_created or report.is_in_progress  %}
                                 <!-- Manager in charge only -->
-                                {% if request.user.id == report.responsible_manager.id %}
                                 	<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
                                 {% endif %}
                                 {% endif %}

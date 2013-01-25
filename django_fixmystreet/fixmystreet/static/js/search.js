@@ -19,9 +19,9 @@ $(function(){
 				currentLng = 'fr'
                         }
                         if (window.location.href.indexOf('pro') != -1) {
-				window.location = "/"+currentLng+"/pro/report/search_ticket_pro?report_id="+searchValue.substring(1);
+				window.location = "/"+currentLng+"/pro/report/search_ticket_pro?report_id="+searchValue;
 			} else {
-				window.location = "/"+currentLng+"/report/search_ticket?report_id="+searchValue.substring(1);
+				window.location = "/"+currentLng+"/report/search_ticket?report_id="+searchValue;
 			}
 		}
     });

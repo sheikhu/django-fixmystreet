@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 10:58+0100\n"
+"POT-Creation-Date: 2013-01-25 12:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -691,7 +691,8 @@ msgid "Enter the address where the incident is:"
 msgstr "Vul het adres van het incident in:"
 
 #: templates/home.html:91
-msgid "Street name, Street number, Ticket number..."
+#, fuzzy
+msgid "Street name, Street number..."
 msgstr "Straat naam, huisnummer, incident nummer"
 
 #: templates/home.html:93
@@ -702,62 +703,76 @@ msgstr "Alle gemeenten..."
 msgid "Search"
 msgstr "Zoek"
 
-#: templates/home.html:112
+#: templates/home.html:105
+#, fuzzy
+msgid "Enter the report ticket:"
+msgstr "Vul het adres van het incident in:"
+
+#: templates/home.html:106
+msgid "Ticket number..."
+msgstr ""
+
+#: templates/home.html:107
+#, fuzzy
+msgid "Access Ticket"
+msgstr "Incident"
+
+#: templates/home.html:119
 #, fuzzy
 msgid "Report Filed"
 msgstr "Ingediende Rapporten"
 
-#: templates/home.html:114 templates/reports/index.html:17
+#: templates/home.html:121 templates/reports/index.html:17
 msgid "Reports Filed"
 msgstr "Ingediende Rapporten"
 
-#: templates/home.html:116 templates/home.html.py:125
+#: templates/home.html:123 templates/home.html.py:132
 msgid "In the 30 last days"
 msgstr "in de laatste 30 dagen"
 
-#: templates/home.html:121
+#: templates/home.html:128
 #, fuzzy
 msgid "Report Updated"
 msgstr "Bijgewerkte Rapporten"
 
-#: templates/home.html:123 templates/reports/index.html:25
+#: templates/home.html:130 templates/reports/index.html:25
 msgid "Reports Updated"
 msgstr "Bijgewerkte Rapporten"
 
-#: templates/home.html:130
+#: templates/home.html:137
 #, fuzzy
 msgid "Report Fixed"
 msgstr "Opgeloste Rapporten"
 
-#: templates/home.html:132 templates/reports/index.html:21
+#: templates/home.html:139 templates/reports/index.html:21
 msgid "Reports Fixed"
 msgstr "Opgeloste Rapporten"
 
-#: templates/home.html:134
+#: templates/home.html:141
 msgid "In the 30 last days "
 msgstr "in de laatste 30 dagen"
 
-#: templates/home.html:137
+#: templates/home.html:144
 msgid "As reported by Fixmystreet users"
 msgstr "Gerapporteerd door Fix My Street gebruikers"
 
-#: templates/home.html:142
+#: templates/home.html:149
 msgid "Last modified reports:"
 msgstr "Laatste aangepaste rapporten"
 
-#: templates/home.html:145
+#: templates/home.html:152
 msgid "Incidents signales"
 msgstr "Ingediende incidenten"
 
-#: templates/home.html:148
+#: templates/home.html:155
 msgid "Incidents mis a jour"
 msgstr "Bijgewerkte incidenten"
 
-#: templates/home.html:151
+#: templates/home.html:158
 msgid "Incidents clotures"
 msgstr "Gesloten incidenten"
 
-#: templates/home.html:186
+#: templates/home.html:193
 msgid "Download the fix my street mobile application for your smartphone:"
 msgstr "Download de Fix My Street mobiele applicatie voor uw smartphone:"
 
