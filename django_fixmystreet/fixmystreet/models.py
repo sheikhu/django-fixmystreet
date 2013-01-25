@@ -1036,7 +1036,7 @@ class ReportMainCategoryClass(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['name_en'] = getattr(current_element, 'name_en')
+            d['name_en'] = getattr(current_element, 'name_fr')
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
@@ -1068,7 +1068,7 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['name_en'] = getattr(current_element, 'name_en')
+            d['name_en'] = getattr(current_element, 'name_fr')
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
@@ -1135,7 +1135,7 @@ class ReportCategory(UserTrackedModel):
 
             #Optimize data transfered removing duplicates on main class names
             #m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
-            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
+            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
             if is_it_public or not prev_d['m_c_n_en'] == m_c_n_en_value:
                 prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
             #m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
@@ -1151,7 +1151,7 @@ class ReportCategory(UserTrackedModel):
 
             #Optimize data transfered removing duplicates on main class names
             #s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
-            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
+            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
                 prev_d['s_c_n_en'] = d['s_c_n_en'] = s_c_n_en_value
             #s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
