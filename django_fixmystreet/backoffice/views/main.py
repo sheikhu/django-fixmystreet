@@ -8,11 +8,10 @@ from django.core.urlresolvers import reverse
 
 
 def home(request, location = None, error_msg =None):
-    # if not request.LANGUAGE_CODE == request.user.fmsuser.last_used_language.lower():
-    #     activate(request.user.fmsuser.last_used_language.lower())
-    #     request.LANGUAGE_CODE = request.user.fmsuser.last_used_language.lower()
-    #     fromUrl = '/'+request.user.fmsuser.last_used_language.lower()+'/pro/'
-    #     return HttpResponseRedirect(fromUrl)
+    if not request.LANGUAGE_CODE == request.user.fmsuser.last_used_language.lower():
+        activate(request.user.fmsuser.last_used_language.lower())
+        request.LANGUAGE_CODE = request.user.fmsuser.last_used_language.lower()
+        return HttpResponseRedirect(reverse("home_pro"))
     #wards = Ward.objects.all().order_by('name')
 
     #Default language
