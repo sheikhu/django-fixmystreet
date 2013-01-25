@@ -470,7 +470,8 @@ footer *{
 
 #statistics {
     float:right;
-    margin: 0 10px;
+    /*margin: 0 10px;*/
+    margin:50px 10px 0 130px;
 }
 
 .counter {

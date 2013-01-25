@@ -59,7 +59,8 @@ def new(request):
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
-        reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+    
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("reports/new.html",
             {
                 "report":report,
