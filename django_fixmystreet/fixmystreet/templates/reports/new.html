@@ -148,13 +148,13 @@ function createOverview(){
     $.each($("#report-form").find(".control-group"),function(idx,val){
         overviewHtml += $(val).html();
     });
-    overviewHtml+= "<div>{% trans 'Files' %}</div>";
+    overviewHtml+= "<div><label class='control-label'>{% trans 'Files' %}</label></div>";
     $.each($("#form-files").find("div"),function(idx,value){
         if($(value).attr("id")!="file-form-template"){
             overviewHtml+= $(value).html();
         }
     });
-    overviewHtml+= "<div>{% trans 'Comment' %}</div>";
+    overviewHtml+= "<div><label class='control-label'>{% trans 'Comment' %}</label></div>";
     $("#validate_report_popup .modal-body").append(overviewHtml).append($("#id_comment-text").clone());
     $("#validate_report_popup .modal-body .help-block").hide();
     $.each($("#report-form").find("select"),function(idx,value){
