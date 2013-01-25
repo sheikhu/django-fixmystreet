@@ -1380,6 +1380,7 @@ class ZipCode(models.Model):
         for current_element in self.get_usable_zipcodes():
             d = {}
             d['c'] = getattr(current_element, 'code')
+            d['p'] = getattr(current_element.commune, 'phone')
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
 
