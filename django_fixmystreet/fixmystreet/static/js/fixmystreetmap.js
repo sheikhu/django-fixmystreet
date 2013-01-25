@@ -270,7 +270,7 @@ if (!('fms' in window)) {
                          over: function(feature){
                     domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-                    var imageLink = "/static/images/no-photo.png";
+                    var imageLink = "/static/images/no-photo-yellow-line.png";
 
                     if (feature.attributes.report.thumb != 'null') {
                         imageLink = feature.attributes.report.thumb;
