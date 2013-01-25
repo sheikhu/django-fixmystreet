@@ -303,7 +303,7 @@ header nav li a.active,
 }
 
 #incident_filter li span.selected{
-    border-bottom: #FFF203 solid 2px;
+    border-bottom: #FFDB00 solid 2px;
 }
 
 #user_type_filter li span.selected{
@@ -1050,8 +1050,12 @@ li img {
     color:#FFF;
 }
 
-#search_by_commune_or_address .input-append + button{
+#search_by_commune_or_address #filterReports{
     margin-left:10px;
+}
+
+#search_by_commune_or_address #input-ward{
+    width:185px;
 }
 
 
