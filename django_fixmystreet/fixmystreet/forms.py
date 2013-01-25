@@ -126,10 +126,10 @@ class CitizenForm(forms.Form):
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
             data = self.cleaned_data.copy()
-            del self.cleaned_data['subscription']
+            del data['subscription']
             #For unique constraints
             data['username'] = data['email']
-            instance = FMSUser.objects.create(**self.cleaned_data)
+            instance = FMSUser.objects.create(**data)
             instance.is_active = False
 
         return instance

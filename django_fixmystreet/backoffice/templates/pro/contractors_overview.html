@@ -7,10 +7,9 @@
 <script>
     function disableFormFields() {
         $.each($(":input"),function(idx,value){
-            $(value).attr("disabled","disabled");
+            $(value).pro("disabled", true);
         });
-        $(":submit").hide();
-        $(".helptext").hide();
+        $("form :submit, form .btn, .helptext").hide();
     }
     {% if not can_edit %}
     disableFormFields();
@@ -47,7 +46,7 @@
     </div>
     {%endif%}
 
-    <div id="{% if contractor_form %}rightcol{% else %}leftcol{% endif %}">
+    <div id="{% if contractor_form %}rightcol{% else %}leftcol{% endif %}" class="list_contractors">
         <div id='search_results'>
             <a class="report" href="{% url create_contractor %}">
                 <h3>+ {% trans 'Create a new contractor' %}</h3>

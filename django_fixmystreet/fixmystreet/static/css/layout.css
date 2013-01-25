@@ -137,6 +137,9 @@ a:hover, a:focus {
 .lead{
     margin-bottom:18px;
 }
+#ticket-div-section .lead{
+    margin-top:30px;
+}
 
 /********* HEADER LAYOUT ********/
 
@@ -467,7 +470,8 @@ footer *{
 
 #statistics {
     float:right;
-    margin: 0 10px;
+    /*margin: 0 10px;*/
+    margin:50px 10px 0 130px;
 }
 
 .counter {
@@ -1100,16 +1104,27 @@ input[type="submit"].btn {
     color:#000;
     font-family:dosisbold, Arial, sans-serif;
 }
-input[type="button"].btn {
-    /*background: #FFF203;*/
+
+.btn {
     background:#FFDB00;
 }
-button.btn{
-    /*background: #FFF203;*/
-    background:#FFDB00;
-}
-a.btn{
-    background: #FFF203;
+
+
+.btn-danger {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #da4f49;
+    *background-color: #bd362f;
+    background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
+    background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
+    background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
+    background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
+    background-repeat: repeat-x;
+    border-color: #bd362f #bd362f #802420;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 legend span {
@@ -1475,6 +1490,23 @@ blockquote {
 
 #user_type_filter li.active span {
     border-bottom: #FFF203 solid 2px;
+}
+
+#leftcol.list_users img, #leftcol.list_contractors img{
+    float:left;
+    margin-right:20px;
+    margin-left:12px;
+}
+#leftcol.list_users a:first-child img, #leftcol.list_contractors a:first-child img{
+    margin-left:0;
+}
+#leftcol.list_users p, #leftcol.list_contractors p{
+    margin:0;
+}
+.btn.change_pwd{
+    margin-left:250px;
+    background:#FFDB00 !important;
+    color:#666 !important;
 }
 
 

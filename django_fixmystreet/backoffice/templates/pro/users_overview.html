@@ -7,10 +7,9 @@
 <script>
     function disableFormFields() {
         $.each($(":input"),function(idx,value){
-            $(value).attr("disabled","disabled");
+            $(value).prop("disabled", true);
         });
-        $(":submit").hide();
-        $(".helptext").hide();
+        $("form :submit, form .btn, .helptext").hide();
     }
     {% if not can_edit %}
     disableFormFields();
@@ -70,11 +69,11 @@
     </div>
     {% endif %}
 
-    <div id="{% if user_form %}rightcol{% else %}leftcol{% endif %}">
+    <div id="{% if user_form %}rightcol{% else %}leftcol{% endif %}" class="list_users">
         <div id='search_results'>
             {% if request.fmsuser.leader or request.fmsuser.manager %}
             <a class="report" href="{% url create_user user_type=user_type %}">
-                <h3>+ {% trans 'Create a new user' %}</h3>
+                <h3><img src="{{STATIC_URL}}/images/create-new-user.png" alt"{% trans 'Create a new user' %} /> {% trans 'Create a new user' %}</h3>
             </a>
             {% endif %}
             {% for user in users %}

@@ -85,7 +85,7 @@ class FMSUser(User):
     # user = models.OneToOneField(User)
 
     telephone = models.CharField(max_length=20,null=True)
-    last_used_language = models.CharField(max_length=10,null=True)
+    last_used_language = models.CharField(max_length=10,null=True,default="FR")
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
 
@@ -204,7 +204,6 @@ class FMSUser(User):
     def get_number_of_subscriptions(self):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
         return subscriptions.count()
-
 
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
@@ -359,9 +358,6 @@ class Report(UserTrackedModel):
     objects = ReportManager()
 
     history = HistoricalRecords()
-
-    def get_applicant_contact_persons(self):
-        return FMSUser.objects.filter(organisation__id = self.contractor.id)
 
     def get_marker(self):
         user = get_current_user()
@@ -735,7 +731,7 @@ def report_notify(sender, instance, **kwargs):
             if report.__former['contractor']:
                 ReportNotification(
                     content_template='send_report_deassigned_to_app_contr',
-                    recipient=FMSUser.objects.filter(organisation_id=report.__former['contractor'].id)[0],
+                    recipient=report.__former['contractor'].workers.all()[0],
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
@@ -1404,12 +1400,11 @@ class ZipCode(models.Model):
     objects = ZipCodeManager()
     participates = ParticipateZipCodeManager()
 
-    """"
-    code rejected user ZipCode.participates.all() instead
     def get_usable_zipcodes(self):
-        allManagers = FMSUser.objects.filter(manager=True)
-        allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
-        return allCommunesHavingManagers.filter(hide=False)
+        allCommunesHavingManagers = ZipCode.participates.all().filter(hide=False)
+        #allManagers = FMSUser.objects.filter(manager=True)
+        #allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
+        return allCommunesHavingManagers
 
     def get_usable_zipcodes_to_mobile_json(self):
         list_of_elements_as_json = []
@@ -1419,7 +1414,6 @@ class ZipCode(models.Model):
             d['p'] = getattr(current_element.commune, 'phone')
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
-    """
 
 
 

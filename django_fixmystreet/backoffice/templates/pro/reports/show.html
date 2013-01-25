@@ -17,7 +17,7 @@ $(function(){
         value = this;
         if($(value).attr('name')=="public_private"){
             window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
-        } 
+        }
         else{
         var vals = $(value).attr("id").split("_");
         if(vals[0].indexOf("public")!=-1){
@@ -173,9 +173,9 @@ function markAsDone(){
 	<!-- ########################### -->
 	<!-- # DISPLAY REPORT CATEGORY # -->
 	<!-- ########################### -->
-         
+
         <div style="float:right;margin-top:-23px">
-            
+
         </div>
     </h1>
 {% endblock %}
@@ -202,10 +202,10 @@ function markAsDone(){
                 <p>{% trans "No problems have been reported in this area." %}</p>
             {% endif %}
         </div>
-	<div class="overview_div" style="float:right;max-width:45%;">   
+	<div class="overview_div" style="float:right;max-width:45%;">
         <h1>
             {% trans "Report Ticket" %} {{report.get_ticket_number}}
-        </h1> 
+        </h1>
 		{% if report.markedAsFinished %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
@@ -266,85 +266,97 @@ function markAsDone(){
                 {% endif %}
 
                 {% if report.is_in_progress %}
-                {% if request.user.id == report.responsible_manager.id %}
-                <!-- ############################### -->
-                <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
-                <!-- ############################### -->
-                <tr>
-                    <th>{% trans "Responsible manager:" %}</th>
-                    <td colspan="4">
-                        <select id="report_responsible_manager_select">
-                           <optgroup label="{% trans 'Gestionnaires' %}">
-                            {% for manager in managers %}
-                                <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
-                            {% endfor %}
-                            </optgroup>
-                            <optgroup label="{% trans 'Entites' %}">
-                            {% for entity in entities %}
-                                <option value="entity_{{entity.id}}">{{entity.name}}</option>
-                            {% endfor %}
-                            </optgroup>
-                            <optgroup label="{% trans 'Organisms' %}">
-                            {% for institution in region_institution %}
-                                <option value="entity_{{institution.id}}">{{institution.name}}</option>
-                            {% endfor %}
-                            </optgroup>
-                        </select>
-                    </td>
-                </tr>
-                <!-- ################################# -->
-                <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
-                <!-- ################################# -->
-                <tr>
-                    <th>{% trans "Contractor/Impetrant:" %}</th>
-                    <td colspan="4">
-                        <select id="report_responsible_impetrant_contractor_select">
-                            <option value="-1">{% trans 'Select a contractor/impetrant' %}</option>
-                                <optgroup label="Executeur de travaux">
-                                {% for organisation in contractors %}
-                                <option value="{{organisation.id}}">{{organisation.name}}</option>
-                                {% endfor %}
-                            </optgroup>
-                            <optgroup label="Impetrants">
-                            {% for applicant in applicants %}
-                                <option value="{{applicant.id}}">{{applicant.name_fr}}</option>
-                            {% endfor %}
-                            </optgroup>
-                        </select>
-                    </td>
-                </tr>
-                <!-- ################################# -->
-                <!-- # PUBLIC OR PRIVATE CHECKBOX    # -->
-                <!-- ################################# -->
-                <tr>
-                  <th>
-                     {% trans "Set as private report" %}?
-                 </th>
-                 <td colspan="2">
-                     <input type="radio" id="id_private" name="public_private">
-                     {% trans "Private" %}
-                 </td>
-                 <td colspan="2">
-                     <input type="radio" id="id_public" name="public_private">
-                     {% trans "Public" %}
-                 </td>
-                </tr>
-                {% else %}
-                <!-- ########################################################### -->
-                <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
-                <!-- ########################################################### -->
-                <tr>
-                    <th>{% trans "Responsible manager:" %}</th>
-                    <td>
-                     <a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</a> ({{report.responsible_entity.name}})
+                    {% if request.user.id == report.responsible_manager.id %}
+                        <!-- ############################### -->
+                        <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
+                        <!-- ############################### -->
+                        <tr>
+                            <th>{% trans "Responsible manager:" %}</th>
+                            <td colspan="4">
+                                <select id="report_responsible_manager_select">
+                                   <optgroup label="{% trans 'Gestionnaires' %}">
+                                    {% for manager in managers %}
+                                        <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="{% trans 'Entites' %}">
+                                    {% for entity in entities %}
+                                        <option value="entity_{{entity.id}}">{{entity.name}}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="{% trans 'Organisms' %}">
+                                    {% for institution in region_institution %}
+                                        <option value="entity_{{institution.id}}">{{institution.name}}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- ################################# -->
+                        <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
+                        <!-- ################################# -->
+                        <tr>
+                            <th>{% trans "Contractor/Applicant:" %}</th>
+                            <td colspan="4">
+                                <select id="report_responsible_impetrant_contractor_select">
+                                    <option value="-1">{% trans 'Select a contractor/applicant' %}</option>
+                                        <optgroup label="Executeur de travaux">
+                                        {% for organisation in contractors %}
+                                        <option value="{{organisation.id}}">{{ organisation.name }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="Impetrants">
+                                    {% for applicant in applicants %}
+                                        <option value="{{applicant.id}}">{{ applicant.name }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- ################################# -->
+                        <!-- # PUBLIC OR PRIVATE CHECKBOX    # -->
+                        <!-- ################################# -->
+                        <tr>
+                            <th>
+                                 {% trans "Set as private report" %}?
+                            </th>
+                            <td colspan="2">
+                                <input type="radio" id="id_private" name="public_private">
+                                {% trans "Private" %}
+                            </td>
+                            <td colspan="2">
+                                <input type="radio" id="id_public" name="public_private">
+                                {% trans "Public" %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <!-- ########################################################### -->
+                        <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
+                        <!-- ########################################################### -->
+                        <tr>
+                            <th>{% trans "Responsible manager:" %}</th>
+                            <td>
+                             <a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}}</a> ({{report.responsible_entity.name}})
 
-                 </td>
-                </tr>
-                <tr>
-                    <th>{% trans "Contractor/Impetrant:" %}</th>
-                    <td>{{report.contractor.name}}</td>
-                </tr>
-                {% endif %}
+                         </td>
+                        </tr>
+                        {% if report.contractor %}
+                        <tr>
+                            <th>{% trans "Contractor/Applicant:" %}</th>
+                            <td>
+                                {{report.contractor.name}}
+
+                                {% for contact_person in report.contractor.workers.all %}
+                                    {{contact_person.firstname}}
+                                    {{contact_person.last_name}}
+                                    {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
+                                     <br/>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endif %}
+
+                    {% endif %}
                 {% endif %}
             </table>
             <!-- ########################## -->
@@ -356,9 +368,9 @@ function markAsDone(){
             <div id="report_updates">
                 <table id="extraFilesTable">
                     <th></th>
-                    <!-- If the status allow such interactions -->      
-                    {% if report.is_in_progress %} 
-                    <!--If the current user is the responsible manager--> 
+                    <!-- If the status allow such interactions -->
+                    {% if report.is_in_progress %}
+                    <!--If the current user is the responsible manager-->
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Public?' %}</th>
                     <th>{% trans 'Private?' %}</th>
@@ -413,14 +425,14 @@ function markAsDone(){
 			                {% if request.user.id == report.responsible_manager.id %}
 						{% if report.is_created or report.is_in_progress  %}
 						<!-- Manager in charge only -->
-							<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>		
+							<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>
 						{% endif %}
 					{% endif %}
 				</div>
                                 {% endif %}
                             </div>
                         </td>
-                        <!-- If the status allow such interactions -->      
+                        <!-- If the status allow such interactions -->
                         {% if report.is_in_progress  %}
                         <!--If the current user is the responsible manager-->
                         {% if report.responsible_manager.id == request.user.id %}
@@ -443,15 +455,15 @@ function markAsDone(){
                         {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                         <td class="annexesChoiceBoxTD">
                         {% if file.is_confidential %}
-                            <input 	type="radio" 
-						name="file_security_level_{{file.id}}" 
-						id="confidential_filesecuritylevel_{{file.id}}" 
+                            <input 	type="radio"
+						name="file_security_level_{{file.id}}"
+						id="confidential_filesecuritylevel_{{file.id}}"
 						value="{{file.CONFIDENTIAL}}"
 						checked="checked">
                         {% else %}
-                            <input 	type="radio" 
-						name="file_security_level_{{file.id}}" 
-						id="confidential_filesecuritylevel_{{file.id}}" 
+                            <input 	type="radio"
+						name="file_security_level_{{file.id}}"
+						id="confidential_filesecuritylevel_{{file.id}}"
 						value="{{file.CONFIDENTIAL}}">
                         {% endif %}
                         </td>
@@ -467,15 +479,15 @@ function markAsDone(){
             <!-- # DISPLAY COMMENTS SECTION  # -->
             <!-- ############################# -->
             <br/>
-	    
+
             {% if report.comments %}
             <h4>{% trans "Comments" %}</h4>
             <div id="report_updates">
                 <table class="extraCommentsTable">
                     <th></th>
-                    <!-- If the status allow such interactions -->      
+                    <!-- If the status allow such interactions -->
                     {% if report.is_in_progress %}
-                    <!--If the current user is the responsible manager--> 
+                    <!--If the current user is the responsible manager-->
                     {% if report.responsible_manager.id == request.user.id %}
                     <th>{% trans 'Public?' %}</th>
                     <th>{% trans 'Private?' %}</th>
@@ -498,9 +510,9 @@ function markAsDone(){
                                 {% endblocktrans %}
                             </div>
 			    <div>
-                                {% if report.is_created %}
+			        {% if request.user.id == report.responsible_manager.id %}
+				{% if report.is_created or report.is_in_progress  %}
                                 <!-- Manager in charge only -->
-                                {% if request.user.id == report.responsible_manager.id %}
                                 	<img src="{{STATIC_URL}}images/delete-icon.png" width='48px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
                                 {% endif %}
                                 {% endif %}
@@ -511,29 +523,29 @@ function markAsDone(){
             			{% if report.responsible_manager.id == request.user.id %}
                				<td class="annexesChoiceBoxTD">
                				{% if comment.is_public %}
-                                     	<input 	type="radio" 
-						name="comment_security_level_{{comment.id}}" 
-						id="public_commentsecuritylevel_{{comment.id}}" 
+                                     	<input 	type="radio"
+						name="comment_security_level_{{comment.id}}"
+						id="public_commentsecuritylevel_{{comment.id}}"
 						value="{{comment.PUBLIC}}"
 						checked="checked">
                   			{% else %}
-                                     	<input 	type="radio" 
-						name="comment_security_level_{{comment.id}}" 
-						id="public_commentsecuritylevel_{{comment.id}}" 
+                                     	<input 	type="radio"
+						name="comment_security_level_{{comment.id}}"
+						id="public_commentsecuritylevel_{{comment.id}}"
 						value="{{comment.PUBLIC}}">
                    			{% endif %}
                				</td>
                				<td class="annexesChoiceBoxTD">
                				{% if comment.is_private %}
-                                     	<input 	type="radio" 
-						name="comment_security_level_{{comment.id}}" 
-						id="private_commentsecuritylevel_{{comment.id}}" 
+                                     	<input 	type="radio"
+						name="comment_security_level_{{comment.id}}"
+						id="private_commentsecuritylevel_{{comment.id}}"
 						value="{{comment.PRIVATE}}"
 						checked="checked">
                   			{% else %}
-                                     	<input 	type="radio" 
-						name="comment_security_level_{{comment.id}}" 
-						id="private_commentsecuritylevel_{{comment.id}}" 
+                                     	<input 	type="radio"
+						name="comment_security_level_{{comment.id}}"
+						id="private_commentsecuritylevel_{{comment.id}}"
 						value="{{comment.PRIVATE}}">
                    			{% endif %}
                				</td>
@@ -542,15 +554,15 @@ function markAsDone(){
                     		{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 			<td class="annexesChoiceBoxTD">
                				{% if comment.is_confidential %}
-                                     	<input 	type="radio" 
-						name="comment_security_level_{{comment.id}}" 
-						id="confidential_commentsecuritylevel_{{comment.id}}" 
+                                     	<input 	type="radio"
+						name="comment_security_level_{{comment.id}}"
+						id="confidential_commentsecuritylevel_{{comment.id}}"
 						value="{{comment.CONFIDENTIAL}}"
 						checked="checked">
                   			{% else %}
-                                     	<input 	type="radio" 
-						name="comment_security_level_{{comment.id}}" 
-						id="confidential_commentsecuritylevel_{{comment.id}}" 
+                                     	<input 	type="radio"
+						name="comment_security_level_{{comment.id}}"
+						id="confidential_commentsecuritylevel_{{comment.id}}"
 						value="{{comment.CONFIDENTIAL}}">
                    			{% endif %}
                 			</td>
@@ -607,20 +619,20 @@ function markAsDone(){
                 <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
                 <!-- ############################################# -->
                 {% if report.is_in_progress %}
-                    {% if not fms_user.contractor %} 
+                    {% if not fms_user.contractor %}
                         <button onclick="window.location = '{% url report_close_pro report.id %}'" class="btn">Cloturer</button>
                     {% endif %}
-                    {% if report.is_markable_as_solved %} 
+                    {% if report.is_markable_as_solved %}
                         <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >Mark as done</button>
                     {% endif %}
-                    {% if not fms_user.contractor %} 
+                    {% if not fms_user.contractor %}
                         <button class="btn" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
                             {% endif %}
                     {% endif %}
                     <!-- ######################################### -->
                     <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
                     <!-- ######################################### -->
-                    {% if report.is_created %} 
+                    {% if report.is_created %}
                         <button onclick="window.location = '{% url report_accept_pro report.id %}'" class="btn" >{% trans 'Publish' %}</button>
                         <button onclick="refuse();" class="btn">{% trans 'Reject' %}</button>
                         <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="btn">{% trans 'Publish All' %}</button>
@@ -636,7 +648,7 @@ function markAsDone(){
                     <button onclick="window.open('/export_file/reports/csv?id={{report.id}}')" class="btn" style="font-size: 0.8em;margin-top: 0px;">{% trans 'Export Csv' %}</button>
                 {% endif %}
             </div>
-        
+
         </div>
     </div>
 {% endblock %}

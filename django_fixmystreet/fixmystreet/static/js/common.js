@@ -71,3 +71,14 @@ function updateMenuEntries(x,y) {
     });
         //End update menu
 }
+
+function getCurrentLanguage() {
+	//Get current language
+	var currentLng = 'en';
+	if (window.location.href.indexOf('/nl/') != -1) {
+	    currentLng = 'nl';
+	} else if (window.location.href.indexOf('/fr/') != -1) {
+	    currentLng = 'fr'
+	}
+	return currentLng;
+}

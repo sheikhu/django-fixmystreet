@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 10:58+0100\n"
+"POT-Creation-Date: 2013-01-25 12:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:49
-#, fuzzy
 msgid "Email"
 msgstr "Email"
 
@@ -181,9 +180,8 @@ msgid "Sign in"
 msgstr "Aanmelden"
 
 #: templates/pro/change_password.html:8
-#, fuzzy
 msgid "Change password"
-msgstr "Paswoord vergeten?"
+msgstr "Wachtwoord aanpassen?"
 
 #: templates/pro/change_password.html:11
 msgid "Error"
@@ -230,12 +228,12 @@ msgid "Contractors"
 msgstr "Aannemer"
 
 #: templates/pro/contractors_overview.html:44
-#: templates/pro/users_overview.html:59 templates/pro/reports/list.html:286
+#: templates/pro/users_overview.html:64 templates/pro/reports/list.html:286
 msgid "Submit"
 msgstr "Doorsturen"
 
 #: templates/pro/contractors_overview.html:45
-#: templates/pro/users_overview.html:60 templates/pro/users_overview.html:61
+#: templates/pro/users_overview.html:65 templates/pro/users_overview.html:66
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -289,12 +287,10 @@ msgid "Information "
 msgstr "Geolocatie"
 
 #: templates/pro/pdf.html:80
-#, fuzzy
 msgid "Address"
 msgstr "Adres:"
 
 #: templates/pro/pdf.html:85 templates/pro/pdf.html.py:111
-#, fuzzy
 msgid "Geolocation"
 msgstr "Geolocatie"
 
@@ -308,7 +304,6 @@ msgstr "Categorie"
 
 #: templates/pro/pdf.html:133 templates/pro/pdf.html.py:464
 #: templates/pro/reports/show.html:402
-#, fuzzy
 msgid "Creation Date"
 msgstr "Aangemaakt op:"
 
@@ -331,12 +326,10 @@ msgid "Phone"
 msgstr ""
 
 #: templates/pro/pdf.html:275
-#, fuzzy
 msgid "Status"
 msgstr "Status:"
 
 #: templates/pro/pdf.html:318
-#, fuzzy
 msgid "mail"
 msgstr "Email"
 
@@ -397,51 +390,49 @@ msgstr "Commentaar:"
 msgid "No File"
 msgstr ""
 
-#: templates/pro/user_create.html:26 templates/pro/users_overview.html:30
+#: templates/pro/user_create.html:26 templates/pro/users_overview.html:35
 msgid "Collaborators in"
 msgstr ""
 
-#: templates/pro/user_create.html:31 templates/pro/users_overview.html:35
-#, fuzzy
+#: templates/pro/user_create.html:31 templates/pro/users_overview.html:40
 msgid "Agents"
-msgstr "Agent"
+msgstr "Agents"
 
-#: templates/pro/user_create.html:36 templates/pro/users_overview.html:40
+#: templates/pro/user_create.html:36 templates/pro/users_overview.html:45
 msgid "Managers"
 msgstr ""
 
-#: templates/pro/users_overview.html:21
+#: templates/pro/users_overview.html:26
 #, fuzzy
 msgid "User overview"
 msgstr "Overzicht gebruikers"
 
-#: templates/pro/users_overview.html:53
+#: templates/pro/users_overview.html:58
 #, fuzzy
 msgid "Users"
 msgstr "Posters"
 
-#: templates/pro/users_overview.html:72
-#, fuzzy
+#: templates/pro/users_overview.html:77
 msgid "Create a new user"
 msgstr "Gebruiker aanmaken"
 
-#: templates/pro/users_overview.html:83
+#: templates/pro/users_overview.html:88
 msgid "ENTITE"
 msgstr ""
 
-#: templates/pro/users_overview.html:84
+#: templates/pro/users_overview.html:89
 msgid "GESTIONNAIRE"
 msgstr ""
 
-#: templates/pro/users_overview.html:85
+#: templates/pro/users_overview.html:90
 msgid "AGENT"
 msgstr ""
 
-#: templates/pro/users_overview.html:86
+#: templates/pro/users_overview.html:91
 msgid "EXECUTEUR DE TRAVAUX"
 msgstr ""
 
-#: templates/pro/users_overview.html:87
+#: templates/pro/users_overview.html:92
 msgid "Applicant"
 msgstr ""
 
@@ -455,14 +446,12 @@ msgid "Filter the incidents by:"
 msgstr ""
 
 #: templates/pro/reports/list.html:227
-#, fuzzy
 msgid "All reports"
 msgstr "Alle Rapporten"
 
 #: templates/pro/reports/list.html:236
-#, fuzzy
 msgid "In progress and assigned"
-msgstr "In behandeling"
+msgstr "In behandeling en toegewezen"
 
 #: templates/pro/reports/list.html:248 templates/pro/reports/show.html:186
 #, fuzzy
