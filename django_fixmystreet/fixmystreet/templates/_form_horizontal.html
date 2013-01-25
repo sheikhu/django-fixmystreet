@@ -11,10 +11,15 @@
             {{ field }}
             <span class="help-block">{{ field.help_text }}</span>
             {{ field.errors }}
-        {% elif field.field.widget|classname == "CheckboxInput" %}
+        {% elif field.field.widget|classname == "CheckboxInput" and field.help_text %}
             <p>{{ field.label }}</p>
             <label  class="checkbox">{{ field }} {{ field.help_text }}</label>
             {{ field.errors }}
+        {% elif field.field.widget|classname == "CheckboxInput" %}
+            <div class="controls">
+                <label  class="checkbox">{{ field }} {{ field.label }}</label>
+                {{ field.errors }}
+            </div>
         {% else %}
             <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">

@@ -50,9 +50,9 @@
                     <a href="{% url auth_logout %}">
                         <i class="icon-login"> </i>Log out
                     </a>
-                    <span>Connected: {{ request.user.get_full_name }} ({{request.user.fmsuser.get_organisation.name}})</span>
+                    <span>Connected: {{ request.user.get_full_name }} ({{ request.fmsuser.get_organisation }})</span>
                     {% else %}
-                    <a href="javascript:void(0);">
+                    <a href="#">
                         <i class="icon-login"> </i> {% trans 'Sign in' %}
                     </a>
 

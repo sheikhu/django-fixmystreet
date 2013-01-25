@@ -28,29 +28,29 @@ def new(request):
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
-                # this saves the update as part of the report.
-                citizen = citizen_form.save()
+            # this saves the update as part of the report.
+            citizen = citizen_form.save()
 
-                report = report_form.save(commit=False)
-                report.citizen = citizen
-                report.save()
-                if request.POST["comment-text"]:
-                    comment = comment_form.save(commit=False)
-                    comment.created_by = citizen 
-                    comment.report = report
-                    comment.save()
+            report = report_form.save(commit=False)
+            report.citizen = citizen
+            report.save()
+            if request.POST["comment-text"]:
+                comment = comment_form.save(commit=False)
+                comment.created_by = citizen
+                comment.report = report
+                comment.save()
 
-                files = file_formset.save(commit=False)
-                for report_file in files:
-                    report_file.report = report
-                    report_file.created_by = citizen
-                    #if no content the user the filename as description
-                    if (report_file.title == ''):
-                        report_file.title = str(report_file.file.name)
-                    report_file.save()
-                if "citizen-subscription" in request.POST:
-                    if request.POST["citizen-subscription"]=="on":
-                        ReportSubscription(report=report, subscriber=report.citizen).save()
+            files = file_formset.save(commit=False)
+            for report_file in files:
+                report_file.report = report
+                report_file.created_by = citizen
+                #if no content the user the filename as description
+                if (report_file.title == ''):
+                    report_file.title = str(report_file.file.name)
+                report_file.save()
+            if "citizen-subscription" in request.POST:
+                if request.POST["citizen-subscription"]=="on":
+                    ReportSubscription(report=report, subscriber=report.citizen).save()
 
 
     report_form = CitizenReportForm(initial={
@@ -64,8 +64,8 @@ def new(request):
     return render_to_response("reports/new.html",
             {
                 "report":report,
-                "available_zips":ZipCode().get_usable_zipcodes(),
-                "all_zips":ZipCode.objects.filter(hide=False),
+                "available_zips":ZipCode.objects,
+                "all_zips":ZipCode.objects.all(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "comment_form":comment_form,
                 "file_formset":file_formset,
@@ -106,7 +106,7 @@ def show(request, slug, report_id):
         user_to_show = report.citizen
     else:
         user_to_show = report.created_by
-    
+
     if request.method == "POST":
         file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')

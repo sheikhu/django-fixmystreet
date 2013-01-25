@@ -145,7 +145,7 @@ class FMSUser(User):
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
-            return " / ".join(self.work_for.all())
+            return ", ".join([str(o) for o in self.work_for.all()])
         else:
              return self.organisation
 
@@ -686,7 +686,7 @@ def report_notify(sender, instance, **kwargs):
                 #Applicant responsible
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
-                    recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                    recipient=report.contractor.workers.all()[0],
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
@@ -708,7 +708,7 @@ def report_notify(sender, instance, **kwargs):
                 #Contractor assigned
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
-                    recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                    recipient=report.contractor.workers.all()[0],
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
@@ -728,7 +728,7 @@ def report_notify(sender, instance, **kwargs):
         if report.__former['contractor']!= report.contractor:
             ReportNotification(
                 content_template='send_report_assigned_to_app_contr',
-                recipient=FMSUser.objects.filter(organisation_id=report.contractor.id)[0],
+                recipient=report.contractor.workers.all()[0],
                 related=report,
                 reply_to=report.responsible_manager.email
             ).save()
@@ -1264,6 +1264,7 @@ def send_notification(sender, instance, **kwargs):
         instance.success = False
         instance.error_msg = str(e)
 
+
 class ReportEventLog(models.Model):
 
     # List of event types
@@ -1382,6 +1383,16 @@ def eventlog_init_values(sender, instance, **kwargs):
     # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
 
 
+class ZipCodeManager(models.Manager):
+    def get_query_set(self):
+        return super(ZipCodeManager, self).get_query_set().select_related('commune').annotate(team_count=models.Count('commune__team'))
+
+
+class ParticipateZipCodeManager(ZipCodeManager):
+    def get_query_set(self):
+        return super(ParticipateZipCodeManager, self).get_query_set().filter(team_count__gt=0)
+
+
 class ZipCode(models.Model):
     __metaclass__ = TransMeta
 
@@ -1390,6 +1401,11 @@ class ZipCode(models.Model):
     name = models.CharField(max_length=100)
     hide = models.BooleanField()
 
+    objects = ZipCodeManager()
+    participates = ParticipateZipCodeManager()
+
+    """"
+    code rejected user ZipCode.participates.all() instead
     def get_usable_zipcodes(self):
         allManagers = FMSUser.objects.filter(manager=True)
         allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
@@ -1403,6 +1419,7 @@ class ZipCode(models.Model):
             d['p'] = getattr(current_element.commune, 'phone')
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
+    """
 
 
 

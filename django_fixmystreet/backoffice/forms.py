@@ -7,7 +7,6 @@ from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.template import TemplateDoesNotExist
-from django.core.validators import validate_email
 from django.conf import settings
 
 from django_fixmystreet.fixmystreet.models import FMSUser, Report, OrganisationEntity
