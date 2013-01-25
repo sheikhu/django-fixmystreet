@@ -297,9 +297,7 @@ function filterReports() {
             <!-- TODO create logic behind searching -->
             <p>1. {% trans "Search by commune or address:" %}</p>
             <div class="input-append">
-    		<input type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" class="span3" id="input-commune-search">
-    		<button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
-  	    </div>
+    		<input type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" class="span5" id="input-commune-search"><br /><br />
             {% csrf_token %}
             <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
                 <option value="">{% trans "All communes..." %}</option>
@@ -308,7 +306,10 @@ function filterReports() {
                 {% endfor %}
             </select>
 	    &nbsp;&nbsp;
-            <div id="search_by_commune_or_address_section_results" style="display:none">
+
+    		<button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
+  	    </div>
+                        <div id="search_by_commune_or_address_section_results" style="display:none">
               <p>2. {% trans "Results" %}</p>
               <ul id="proposal" class="inline"> </ul>
 	    </div>

@@ -458,6 +458,7 @@ class CitizenReportHandler(BaseHandler):
 #        'report_id': report.id
 #    })
 
+@csrf_exempt
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''
     #Test the submit content size (max 2MB)
