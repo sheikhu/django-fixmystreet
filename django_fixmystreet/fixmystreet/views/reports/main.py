@@ -51,16 +51,15 @@ def new(request):
             if "citizen-subscription" in request.POST:
                 if request.POST["citizen-subscription"]=="on":
                     ReportSubscription(report=report, subscriber=report.citizen).save()
-
-
-    report_form = CitizenReportForm(initial={
-        'x': request.REQUEST.get('x'),
-        'y': request.REQUEST.get('y')
-    }, prefix='report')
-    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-    comment_form = ReportCommentForm(prefix='comment')
-    citizen_form = CitizenForm(prefix='citizen')
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+    else:
+        report_form = CitizenReportForm(initial={
+            'x': request.REQUEST.get('x'),
+            'y': request.REQUEST.get('y')
+        }, prefix='report')
+        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(prefix='comment')
+        citizen_form = CitizenForm(prefix='citizen')
+        reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("reports/new.html",
             {
                 "report":report,

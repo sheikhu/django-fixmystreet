@@ -32,7 +32,7 @@ $(document).ready(function() {
 
     function retrieveAddress() {
         var languages = ['fr', 'nl'],
-            currLang = fms.currentMap.options.apiLang;
+        currLang = fms.currentMap.options.apiLang;
 
         $form.find('button, :submit').prop('disabled', true);
         $('#address-text').addClass('loading');
@@ -51,8 +51,9 @@ $(document).ready(function() {
             } else if(response.status == 'success') {
 
                 $form.find('button, :submit').prop('disabled', false);
-
-                fillAdressField(lang, address);
+ 
+                fillAdressField(currLang, address);
+                fillI18nAdressField(currLang, address);
 
                 //Search if the address is on a regional road or not.
                 var pointX = $('#id_report-x').val();
@@ -73,11 +74,16 @@ $(document).ready(function() {
                     }
                 });
 
+                //Does not work. Fill in the wrong input zone
                 for (var i in languages) {
+                    console.log(i);
                     if (languages[i] != currLang) {
-                        fms.currentMap.getSelectedAddress(languages[i], function(lang, response) {
+                        console.log(languages[i]);
+                        fms.currentMap.getSelectedAddress(languages[i], function(langSecond, response) {
+                            var address = response.result.address;
+                            console.log('callback='+langSecond);
                             if(response.status == 'success') {
-                                fillI18nAdressField(lang, address);
+                                fillI18nAdressField(langSecond, address);
                             }
                         });
                     }

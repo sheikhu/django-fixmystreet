@@ -271,11 +271,11 @@ msgstr "Configuration des catégories des gestionnaires"
 #: templates/pro/manager_category_configuration.html:80
 #: templates/pro/reports/show.html:152 templates/pro/reports/show.html:163
 msgid "Cancel"
-msgstr ""
+msgstr "Annuer"
 
 #: templates/pro/manager_category_configuration.html:81
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: templates/pro/pdf.html:70
 msgid "Incident numero"

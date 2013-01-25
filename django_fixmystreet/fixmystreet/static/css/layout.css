@@ -137,6 +137,9 @@ a:hover, a:focus {
 .lead{
     margin-bottom:18px;
 }
+#ticket-div-section .lead{
+    margin-top:30px;
+}
 
 /********* HEADER LAYOUT ********/
 
@@ -1470,6 +1473,23 @@ blockquote {
 
 #user_type_filter li.active span {
     border-bottom: #FFF203 solid 2px;
+}
+
+#leftcol.list_users img, #leftcol.list_contractors img{
+    float:left;
+    margin-right:20px;
+    margin-left:12px;
+}
+#leftcol.list_users a:first-child img, #leftcol.list_contractors a:first-child img{
+    margin-left:0;
+}
+#leftcol.list_users p, #leftcol.list_contractors p{
+    margin:0;
+}
+.btn.change_pwd{
+    margin-left:250px;
+    background:#FFDB00 !important;
+    color:#666 !important;
 }
 
 

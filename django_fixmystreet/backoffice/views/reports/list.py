@@ -128,7 +128,6 @@ def listfilter(request):
     else:
         reports = reports.order_by('address_fr', 'address_number_as_int')
 
-
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
 
