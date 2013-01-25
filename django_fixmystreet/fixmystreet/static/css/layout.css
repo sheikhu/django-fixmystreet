@@ -306,6 +306,10 @@ header nav li a.active,
     border-bottom: #FFF203 solid 2px;
 }
 
+#user_type_filter li span.selected{
+    border-bottom: #FFF203 solid 2px;
+}
+
 /********* FOOTER LAYOUT ********/
 
 footer{
