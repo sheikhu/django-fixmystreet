@@ -7,10 +7,9 @@
 <script>
     function disableFormFields() {
         $.each($(":input"),function(idx,value){
-            $(value).attr("disabled","disabled");
+            $(value).pro("disabled", true);
         });
-        $(":submit").hide();
-        $(".helptext").hide();
+        $("form :submit, form .btn, .helptext").hide();
     }
     {% if not can_edit %}
     disableFormFields();

@@ -117,11 +117,13 @@
                             <b class="caret"></b>
                         </a>
                          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
                             <li>
                                 <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url list_users user_type='users' %}">
                                     {% trans "Users" %}
                                 </a>
                             </li>
+                            {% endif %}
                             {% if request.fmsuser.leader %}
                             <li>
                                 <a class="{% ifequal 'contractorOverview' menu %}active{% endifequal %}"     href="{% url list_contractors %}">
