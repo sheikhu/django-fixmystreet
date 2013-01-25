@@ -68,12 +68,24 @@ $(document).ready(function() {
     }
     //Add onclick event for arrows
     $(".pagination_next.active").bind("click",function(){
-        window.location = "{% url report_list_pro status %}?page="+(parseInt("{{request.GET.page}}")+1);
+        getUrlForPageNumber(parseInt("{{request.GET.page}}")+1);
     });
     $(".pagination_prev.active").bind("click",function(){
-        window.location = "{% url report_list_pro status %}?page="+(parseInt("{{request.GET.page}}")-1);
+        getUrlForPageNumber(parseInt("{{request.GET.page}}")-1);
     });
 });
+
+function getUrlForPageNumber(number) {
+    var url = "{{request.get_full_path}}";
+    if(url.indexOf("page=")!=-1){
+        var list = url.split("page=");
+        url = list[0] + "page="+ number;
+    }
+    else {
+        url += "?page="+number;
+    }
+    window.location= url;
+}
 
 /**
  * Method called when searching report per ticket number.
@@ -86,7 +98,7 @@ function search_per_ticket() {
         //On this page character # is not required as the search zone is dedicated.
         if (searchValue[0] == "#")
             valToSearch = searchValue.substring(1);
-        window.location = "/pro/report/search_ticket_pro?report_id="+valToSearch;
+        window.location = "{% url search_ticket_pro %}?report_id="+valToSearch;
     }
 }
 
@@ -118,11 +130,11 @@ function applyFilterReports() {
         var valueRayon = $('#rayon').val();
         var rayonChecked = valueRayon != "";
         if (rayonChecked) {
-   		window.location="/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon;
-   	console.log("/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
+   		window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
+   	console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
 	} else {
-   		window.location="/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber;
-   	console.log("/pro/report/listfilter?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber);
+   		window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
+   	console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber)+"&page=1";
 	}
     }
 }
@@ -243,7 +255,7 @@ function filterReports() {
                 	<ul>
                 		<li><a class="pagination_prev"></a></li>
                         {% for number in pages_list %}
-                		<li id="page_{{number}}" ><a href="{% url report_list_pro status %}?page={{number}}">{{number}}</a></li>
+                		<li id="page_{{number}}" ><a href="javascript:getUrlForPageNumber({{number}});">{{number}}</a></li>
                         {% endfor %}
                 		<li><a class="pagination_next"></a></li>
                 	</ul>

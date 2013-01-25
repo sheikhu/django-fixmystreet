@@ -1,12 +1,11 @@
 from django.utils import simplejson
-from datetime import datetime as dt
 from smtplib import SMTPException
 import logging
 
-from django.db.models.signals import pre_save, post_save, post_init
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _, activate, ugettext
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
@@ -20,7 +19,6 @@ from django.core import serializers
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
-from django.contrib.auth.signals import user_logged_in
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -48,6 +46,9 @@ class UserTrackedModel(TimeStampedModel):
     class Meta:
         abstract = True
 
+
+User._meta.get_field_by_name('email')[0]._unique = True
+User._meta.get_field_by_name('email')[0].null = True
 
 class FMSUser(User):
     AGENT        = "agent"
@@ -99,9 +100,29 @@ class FMSUser(User):
     logical_deleted = models.BooleanField(default=False)
 
     categories = models.ManyToManyField('ReportCategory', related_name='type')
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True)
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True) # organisation that can be responsible of reports
+    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True) # list of contractors/services that user work with
 
-    # history = HistoricalRecords()
+    history = HistoricalRecords()
+
+    # http://scottbarnham.com/blog/2008/08/21/extending-the-django-user-model-with-inheritance/
+    # must extends UserTrackedModel
+    created = models.DateTimeField(auto_now_add=True, null=True, editable=False)
+    created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
+    modified = models.DateTimeField(auto_now=True, null=True, editable=False)
+    modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
+
+    def save(self, *args, **kwargs):
+        user = get_current_user()
+        if user and user.is_authenticated():
+            self.modified_by = user
+            if not self.id:
+                self.created_by = user
+            self._history_user = user # used by simple_history
+        else:
+            self.modified_by = None
+
+        super(FMSUser, self).save(*args, **kwargs)
 
     def display_category(self):
         return self.category.name+" / "+self.secondary_category.secondary_category_class.name+" : "+self.secondary_category.name
@@ -124,7 +145,7 @@ class FMSUser(User):
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True:
-             return self.organisation.dependency
+            return " / ".join(self.work_for.all())
         else:
              return self.organisation
 
@@ -184,8 +205,6 @@ class FMSUser(User):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
         return subscriptions.count()
 
-User._meta.get_field_by_name('email')[0]._unique = True
-User._meta.get_field_by_name('email')[0].null = True
 
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
@@ -340,19 +359,19 @@ class Report(UserTrackedModel):
     objects = ReportManager()
 
     history = HistoricalRecords()
-    
+
     def get_applicant_contact_persons(self):
         return FMSUser.objects.filter(organisation__id = self.contractor.id)
-    
+
     def get_marker(self):
         user = get_current_user()
 
         marker_color = "green" #default color
         if (self.is_in_progress()):
             marker_color = "orange"
-            if user and user.is_authenticated():    
+            if user and user.is_authenticated():
                 if not self.contractor == None:
-                    marker_color = "orange-executed" 
+                    marker_color = "orange-executed"
         elif (self.is_created()):
             marker_color = "red"
 
@@ -374,7 +393,7 @@ class Report(UserTrackedModel):
 
     def is_pro(self):
         return self.citizen == None
-    
+
     def __unicode__(self):
         return self.display_category()
 
@@ -431,7 +450,8 @@ class Report(UserTrackedModel):
         reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
         if (not self.is_created()):
             if (reportImages.__len__() > 0):
-                return reportImages[0].file.url
+                if not reportImages[0].is_private():
+                    return reportImages[0].file.url
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
@@ -570,7 +590,7 @@ def track_former_value(sender, instance, **kwargs):
         instance.__former = dict((field.name, getattr(former_report, field.name)) for field in Report._meta.fields)
     else:
         instance.__former = dict((field.name, getattr(Report(), field.name)) for field in Report._meta.fields)
-    
+
 
 
 @receiver(pre_save,sender=Report)
@@ -660,7 +680,7 @@ def report_notify(sender, instance, **kwargs):
                     report=report,
                     event_type=ReportEventLog.SOLVE_REQUEST
                 ).save()
-                
+
 
             elif report.status == Report.APPLICANT_RESPONSIBLE:
                 #Applicant responsible
@@ -1102,7 +1122,7 @@ class ReportCategory(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['n_en'] = getattr(current_element, 'name_en')
+            d['n_en'] = getattr(current_element, 'name_fr')
             d['n_fr'] = getattr(current_element, 'name_fr')
             d['n_nl'] = getattr(current_element, 'name_nl')
             d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
@@ -1281,7 +1301,7 @@ class ReportEventLog(models.Model):
         SOLVE_REQUEST: _("Report pointed as done"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
-        PUBLISH: _("Report has been published by {user}"),
+        PUBLISH: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
         APPLICANT_ASSIGNED:_('Applicant {related_new} is responsible for the report'),
@@ -1291,8 +1311,8 @@ class ReportEventLog(models.Model):
         APPLICANT_CONTRACTOR_CHANGE:_('Applicant contractor change from {related_old} to {related_new}'),
     }
 
-    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, SOLVE_REQUEST, MANAGER_ASSIGNED, MANAGER_CHANGED, PUBLISH, ENTITY_ASSIGNED, ENTITY_CHANGED)
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (APPLICANT_ASSIGNED, APPLICANT_CHANGED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, APPLICANT_CONTRACTOR_CHANGE)
+    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, SOLVE_REQUEST, PUBLISH,APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, ENTITY_CHANGED)
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, APPLICANT_CONTRACTOR_CHANGE, MANAGER_ASSIGNED, MANAGER_CHANGED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 

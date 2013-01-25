@@ -1,0 +1,35 @@
+{% extends "pro/base.html" %}
+{% load i18n tags %}
+
+{% block title %} {% trans "Create user" %} {% endblock %}
+
+{% block content %}
+<div id="user_type_filter">
+    <ul>
+        <li>
+            <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"         href="{% url list_contractors %}">
+                <img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px" > <span id="users">{% trans "Contractors in" %} {{ request.fmsuser.organisation.name }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<form action="" method="POST" class="form-centered form-horizontal">
+    <h1>{% trans "Create contractor" %}</h1>
+    <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
+    {% csrf_token %}
+    <fieldset>
+        <legend>{% trans "Contractor" %}</legend>
+        {% include "_form_horizontal.html" with form=contractor_form %}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans "User" %}</legend>
+        {% include "_form_horizontal.html" with form=user_form %}
+    </fieldset>
+    <div class="control-group">
+        <div class="controls">
+           <input type="submit" value="Submit" class="btn"/>
+        </div>
+    </div>
+</form>
+{% endblock %}

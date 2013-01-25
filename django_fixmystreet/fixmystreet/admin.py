@@ -51,8 +51,8 @@ class AttachmentsInline(admin.TabularInline):
     max_num=10
 
 
-class FMSUserAdmin(admin.ModelAdmin):
-    list_display = ("leader", "manager", "agent", "applicant", "contractor")
+class FMSUserAdmin(SimpleHistoryAdmin):
+    list_display = ("get_full_name", "leader", "manager", "agent", "applicant", "contractor")
     inlines = (
         ReportsInline,
         # NotificationsInline,

@@ -2,16 +2,16 @@
 from django import forms
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from django.utils.translation import ugettext_lazy, ugettext as _
-from django.core.validators import validate_email
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from  django.core.exceptions import ValidationError
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 
 
 def secondaryCategoryChoices(show_private):
     choices = []
-    choices.append(('', ugettext_lazy("Select a Category")))
+    choices.append(('', _("Select a Category")))
     category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all()
 
     for category_class in category_classes:
@@ -37,8 +37,8 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
 
-    category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
-    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("Secondary category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
+    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
 
     # hidden inputs
     address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -66,7 +66,7 @@ class ReportForm(forms.ModelForm):
 
 #Used by pro version
 class ProReportForm(ReportForm):
-    secondary_category = forms.ModelChoiceField(label=ugettext_lazy("category"), empty_label=ugettext_lazy("Select a Category"), queryset=ReportCategory.objects.all())
+    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.all())
 
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
@@ -76,7 +76,7 @@ class ProReportForm(ReportForm):
         model = Report
         fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
 
-    private = forms.BooleanField(initial=True,required=False, label=ugettext_lazy("Private Report"))
+    private = forms.BooleanField(initial=True,required=False, label=_("Private Report"))
 
     def save (self,commit=True):
         report= super(ProReportForm,self).save(commit=False)
@@ -114,41 +114,41 @@ class CitizenForm(forms.Form):
         model = FMSUser
         fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
 
-    last_name = forms.CharField(max_length="30", label=ugettext_lazy('Identity'), required=False)
-    telephone = forms.CharField(max_length="20",label=ugettext_lazy('Tel.'), required=False)
-    email = forms.EmailField(max_length="75",label=ugettext_lazy('Email'))
-    quality = forms.ChoiceField(label=ugettext_lazy('Quality'),choices=qualities)
-    #citizen_firstname = forms.CharField(max_length="30", label=ugettext_lazy('Firstname'))
-    subscription = forms.BooleanField(label='',required=False)
+    last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
+    telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
+    email = forms.EmailField(max_length="75", label=_('Email'))
+    quality = forms.ChoiceField(label=_('Quality'), choices=qualities)
+    #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
+    subscription = forms.BooleanField(label=_('Subscription'), help_text=_('Subscription and report follow-up'), required=False)
 
     def save(self):
         try:
             instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
         except FMSUser.DoesNotExist:
-            del self.cleaned_data['subscription']
+            data = self.cleaned_data.copy()
+            del data['subscription']
             #For unique constraints
-            self.cleaned_data['username'] = self.cleaned_data['email']
+            data['username'] = data['email']
             instance = FMSUser.objects.create(**self.cleaned_data)
+            instance.is_active = False
 
         return instance
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        validate_email(email)
-        return email
-
+    def validate_unique(self):
+        """ disable unique validation, save will retrieve existing instance """
+        pass
 
 class ContactForm(forms.Form):
     required_css_class = 'required'
 
     name = forms.CharField(max_length=100,
                            widget=forms.TextInput(attrs={ 'class': 'required' }),
-                           label=ugettext_lazy('Name'))
+                           label=_('Name'))
     email = forms.EmailField(widget=forms.TextInput(attrs=dict({ 'class': 'required' },
                                                                maxlength=200)),
-                             label=ugettext_lazy('Email'))
+                             label=_('Email'))
     body = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'required' }),
-                              label=ugettext_lazy('Message'))
+                              label=_('Message'))
 
     def save(self, fail_silently=False):
         message = render_to_string("emails/contact/message.txt", self.cleaned_data )
@@ -168,10 +168,10 @@ class ReportFileForm(forms.ModelForm):
     def clean_file(self):
         file = self.cleaned_data['file']
         if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
-            raise forms.ValidationError("File is too large")
+            raise ValidationError("File is too large")
         #else:
          #   raise forms.ValidationError(_('File type is not supported'))
-        
+
         #if self.fields.get('title').label == '':
         #    self.fields.get('title').label = "zaza"
         return file

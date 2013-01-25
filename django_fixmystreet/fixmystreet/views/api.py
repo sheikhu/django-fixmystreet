@@ -133,7 +133,7 @@ def reports_pro_mobile(request):
     #Max 1 month in the past
     timestamp_from = datetime.now().date() - timedelta(days=31)
     #Max 20 reports
-    reports = Report.objects.distance(pnt).order_by('distance')
+    reports = Report.objects.distance(pnt).order_by('distance')[:30]
     result = []
 
     for i,report in enumerate(reports):

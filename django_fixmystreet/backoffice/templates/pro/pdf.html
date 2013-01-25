@@ -14,6 +14,7 @@
 <script type="text/javascript" src="{{STATIC_URL}}OpenLayers-2.11/OpenLayers.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/geolocation.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/fixmystreetmap.js"></script>
 
 <!-- ############################################################## -->
@@ -34,7 +35,8 @@ $(document).ready(function() {
 			}
 		});
 	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
-
+	var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
+	document.getElementById("wgs84").innerHTML="L: " + res.x + " l: "+res.y;
 });
 </script>
 {% endblock %}
@@ -80,7 +82,7 @@ body {
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Geolocation' %} (EPSG 31370)
+				{% trans 'Geolocation' %} ({% trans 'Lambert 72 Belgium'%})
 			</strong>
 		</td>
                 <td>
@@ -106,19 +108,45 @@ body {
 		</td>	
 		<td>
 			<strong>
-				{% trans 'Creation Date' %}
+				{% trans 'Geolocation' %} (WGS84)
 			</strong>
 		</td>
                 <td>
 			&nbsp;
 		</td>	
 	</tr>
+
 	<tr>
 		<td>
 			{{report.display_category}}
 		</td>	
+		<td id="wgs84">
+			
+		</td>	
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	<tr>
+		<td>
+			<strong>
+				{% trans 'Creation Date' %}
+			</strong>
+		</td>	
+		<td>
+			&nbsp;
+		</td>
+                <td>
+			&nbsp;
+		</td>	
+	</tr>
+	
+	<tr>
 		<td>
 			{{report.created|date}}
+		</td>	
+		<td>
+			&nbsp;
 		</td>	
                 <td>
 			&nbsp;
@@ -256,7 +284,15 @@ body {
 			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})
 		</td>	
 		<td>
+			{% if report.status == 4 or report.status == 6%}
+			{{ report.get_status_display }} for {{report.responsible_manager.organisation.name}}
+			{% else %}
+			{% if report.status == 5%}
+			{{ report.get_status_display }}: {{report.contractor.name}}
+			{% else %}
 			{{ report.get_status_display }}
+			{% endif %}
+			{% endif %}
 		</td>
                 <td>
 			&nbsp;
@@ -302,7 +338,7 @@ body {
 	{% for activity in activity_list %}
 	<tr>
 		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : </strong>{{activity}}
+			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
 		</td>
 	</tr>
 	{% endfor %}
@@ -313,7 +349,7 @@ body {
 	{% if activity.is_public_visible %}
 	<tr>
 		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : </strong>{{activity}}
+			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
 		</td>
 	</tr>
 	{% endif %}

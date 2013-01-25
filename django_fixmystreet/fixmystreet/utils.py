@@ -1,7 +1,6 @@
 import json
 import tempfile
 import datetime
-import time
 import os
 import logging
 import shutil
@@ -10,7 +9,6 @@ from threading import local
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
-from django.template import RequestContext
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
@@ -41,13 +39,13 @@ def resize_image(filePath):
             img = ImageOps.mirror(img)
 
         img.save(filePath)
-    
+
     #Default resize for fms images
     if (img.size[0] > img.size[1]):
         img.thumbnail((1200, 800))
     else:
         img.thumbnail((800,1200))
-        
+
 
     #Default
     fileType = "PNG"
@@ -149,15 +147,15 @@ def render_to_pdf(*args, **kwargs):
     html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
-
     cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10 \
             --encoding utf-8 \
             --footer-font-size 8 \
             --footer-left '{0}' \
-            --footer-center '' \
-            --footer-right '[page]/[toPage]' {1} {2}
+            --footer-center 'Incident: {1}' \
+            --footer-right '[page]/[toPage]' {2} {3}
             """.format(
                 datetime.date.today().strftime("%d/%m/%y"),
+                args[1]['report'].get_ticket_number(),
                 html_tmp_file_path,
                 pdf_tmp_file_path
             )
@@ -205,6 +203,10 @@ def get_current_user():
 class CurrentUserMiddleware:
     def process_request(self, request):
         set_current_user(getattr(request, 'fmsuser', None))
+
+    def process_response(self, request, response):
+        set_current_user(None)
+        return response
 
 
 def save_file_to_server(file_name, file_type, file_extension,file_index,report_id):

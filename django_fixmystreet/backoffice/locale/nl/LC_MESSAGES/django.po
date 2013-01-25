@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 08:55+0100\n"
+"POT-Creation-Date: 2013-01-24 11:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:61 forms.py:97
@@ -73,7 +73,7 @@ msgstr "^rapport/abonnement"
 
 #: urls.py:28
 #, fuzzy
-msgid "^report/search_ticket_pro"
+msgid "^report/search_ticket"
 msgstr "areport/(\\d+)/aanvaarden/"
 
 #: urls.py:29
@@ -246,7 +246,7 @@ msgstr "Geolocatie"
 msgid "Category"
 msgstr "Categorie"
 
-#: templates/pro/pdf.html:109 templates/pro/pdf.html.py:428
+#: templates/pro/pdf.html:109 templates/pro/pdf.html.py:436
 #: templates/pro/reports/show.html:402
 #, fuzzy
 msgid "Creation Date"
@@ -261,12 +261,12 @@ msgid "Name"
 msgstr "Naam"
 
 #: templates/pro/pdf.html:169 templates/pro/pdf.html.py:172
-#: templates/pro/pdf.html:268
+#: templates/pro/pdf.html:276
 msgid "Mail"
 msgstr ""
 
 #: templates/pro/pdf.html:182 templates/pro/pdf.html.py:185
-#: templates/pro/pdf.html:273
+#: templates/pro/pdf.html:281
 msgid "Phone"
 msgstr ""
 
@@ -275,65 +275,65 @@ msgstr ""
 msgid "Status"
 msgstr "Status:"
 
-#: templates/pro/pdf.html:282
+#: templates/pro/pdf.html:290
 #, fuzzy
 msgid "mail"
 msgstr "Email"
 
-#: templates/pro/pdf.html:285
+#: templates/pro/pdf.html:293
 msgid "tel"
 msgstr ""
 
-#: templates/pro/pdf.html:298
+#: templates/pro/pdf.html:306
 msgid "History"
 msgstr "Geschiedenis"
 
-#: templates/pro/pdf.html:326
+#: templates/pro/pdf.html:334
 #, fuzzy
 msgid "No Report History"
 msgstr "Ingediende Rapporten"
 
-#: templates/pro/pdf.html:334 templates/pro/reports/show.html:472
+#: templates/pro/pdf.html:342 templates/pro/reports/show.html:472
 #, fuzzy
 msgid "Comments"
 msgstr "Commentaar:"
 
-#: templates/pro/pdf.html:354 templates/pro/pdf.html.py:400
+#: templates/pro/pdf.html:362 templates/pro/pdf.html.py:408
 #: templates/pro/reports/show.html:399
 msgid "Anonymous"
 msgstr ""
 
-#: templates/pro/pdf.html:372
+#: templates/pro/pdf.html:380
 #, fuzzy
 msgid "No Comment"
 msgstr "Commentaar:"
 
-#: templates/pro/pdf.html:383
+#: templates/pro/pdf.html:391
 msgid "Files"
 msgstr ""
 
-#: templates/pro/pdf.html:441
+#: templates/pro/pdf.html:449
 msgid "Publication Date"
 msgstr ""
 
-#: templates/pro/pdf.html:450
+#: templates/pro/pdf.html:458
 msgid "By"
 msgstr ""
 
-#: templates/pro/pdf.html:455
+#: templates/pro/pdf.html:463
 msgid "Anonymous "
 msgstr ""
 
-#: templates/pro/pdf.html:464
+#: templates/pro/pdf.html:472
 msgid "City"
 msgstr ""
 
-#: templates/pro/pdf.html:473
+#: templates/pro/pdf.html:481
 #, fuzzy
 msgid "Comment"
 msgstr "Commentaar:"
 
-#: templates/pro/pdf.html:499
+#: templates/pro/pdf.html:507
 msgid "No File"
 msgstr ""
 
