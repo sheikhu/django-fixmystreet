@@ -1245,13 +1245,13 @@ def send_notification(sender, instance, **kwargs):
         if instance.related.files():
             for f in instance.related.files():
                 if f:
-                    if f.file_type == ReportFile.IMAGE and f.is_public:
+                    if f.file_type == ReportFile.IMAGE and f.is_public():
                         # Open the file
                         fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
                         msgImage = MIMEImage(fp.read())
                         fp.close()
                         # Define the image's ID to reference to it
-                        msgImage.add_header('Content-ID', '<image'+str(f.id)+'>')
+                        msgImage.add_header('Content-ID', '<image'+str(f.reportattachment_ptr_id)+'>')
                         msg.attach(msgImage)
     try:
         msg.send()

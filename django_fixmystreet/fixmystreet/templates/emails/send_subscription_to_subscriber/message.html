@@ -6,7 +6,7 @@
 {% get_language_info for "nl" as langNL %}
 {% get_language_info for "fr" as langFR %}
 {% language langFR.code %}
-{% blocktrans with reportType=related.category.name date=related.created|date url=related.get_absolute_url %}
+{% blocktrans with reportType=related.display_category date=related.created|date url=related.get_absolute_url %}
 <p>You are now subscribed to the report with type {{reportType}}, created at {{date}}. You can consult the report at {{SITE_URL}}{{url}}.</p>
 <p>You can unsubscribe yourself by clicking the following link: {{SITE_URL}}{{url}}</p>
 {% endblocktrans %}
@@ -16,7 +16,7 @@
 -------------------------------------------------
 <br/>
 {% language langNL.code %}
-{% blocktrans with reportType=related.category.name date=related.created|date url=related.get_absolute_url %}
+{% blocktrans with reportType=related.display_category date=related.created|date url=related.get_absolute_url %}
 <p>You are now subscribed to the report with type {{reportType}}, created at {{date}}. You can consult the report at {{SITE_URL}}{{url}}.</p>
 <p>You can unsubscribe yourself by clicking the following link: {{SITE_URL}}{{url}}</p>
 {% endblocktrans %}
