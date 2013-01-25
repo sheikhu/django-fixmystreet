@@ -66,14 +66,14 @@ function show_confirmation_popup(){
     $("#confirmation_popup").modal();
 }
 
-var msg_prefix =  "{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}\n\n";
-var bxl_mobility_msg = "\n\n{% trans 'Brussels Mobility (tel:0800/94.001)' %}";
+var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
+var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
 var zipcodes = new Object();
 
 {% for zip in all_zips %}
     zipcodes[{{zip.code}}] = new Object();
     zipcodes[{{zip.code}}].participation = {% if zip.team_count > 0 %}true{% else %}false{% endif %};
-    zipcodes[{{zip.code}}].msg = msg_prefix + "{{ zip.name }} ({{zip.commune.phone}})" + bxl_mobility_msg;
+    zipcodes[{{zip.code}}].msg = msg_prefix + "<p>{{ zip.commune.name }} ({{zip.commune.phone}})</p>" + bxl_mobility_msg;
     zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
 {% endfor %}
 
@@ -235,16 +235,12 @@ $(function(){
                         <br/>
                         <button onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
                 </div>
-                    <fieldset>
-                        <legend>{% trans "Address" %}    <span id="address-text"></span>
-                        </legend>
-                        <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
-                    </fieldset>
 
                     <div class="control-group">
-                        <span class="control-label">{% trans "Commune" %}</span>
+                        <span class="control-label">{% trans "Address" %}</span>
                         <div class="controls">
-                            <span id="postcode-text"></span>
+                            <span id="address-text"></span>
+                            <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
                         </div>
                     </div>
                     {% block report_form %}
