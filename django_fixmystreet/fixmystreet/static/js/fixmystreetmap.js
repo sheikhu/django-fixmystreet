@@ -1,120 +1,120 @@
 // required : -http://openlayers.org/dev/OpenLayers.js
-//			  -http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js
+//              -http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js
 
 if (!('fms' in window)) {
-	window.fms = {}
+    window.fms = {}
 }
 
 (function(){
-	    var markerWidth = 30,
-		markerHeight = 40,
-		defaultMarkerStyle = {
-			pointRadius: markerHeight,
-			externalGraphic: STATIC_URL + "images/pin-red-XL.png",
-			graphicXOffset: -markerWidth/2,
-			graphicYOffset: -markerHeight,
-			graphicHeight: markerHeight,
-			graphicWidth: markerWidth
-		}
-		areaStyle = {
-			strokeColor: "#004990",
-			strokeOpacity: 1,
-			strokeWidth: 2,
-			fillColor: "#517EB5",
-			fillOpacity: 0.6
-		},
-		apiRootUrl = "/api/",
-		localizeUrl = "/api/locate/",
-		urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
-		apiLang = "fr",
-		showControl = true,
-		markerStyle = Object.create(defaultMarkerStyle),
-		fixedMarkerStyle = Object.create(defaultMarkerStyle),
-		pendingMarkerStyle = Object.create(defaultMarkerStyle),
-		pendingExecutedMarkerStyle = Object.create(defaultMarkerStyle),
-		draggableMarkerStyle = Object.create(defaultMarkerStyle),
-		fixedMarkerStyleReg = Object.create(defaultMarkerStyle),
-		pendingMarkerStyleReg = Object.create(defaultMarkerStyle),
-		pendingExecutedMarkerStyleReg = Object.create(defaultMarkerStyle),
-		defaultMarkerStyleReg = Object.create(defaultMarkerStyle),
-		fixedMarkerStylePro = Object.create(defaultMarkerStyle),
-		pendingMarkerStylePro = Object.create(defaultMarkerStyle),
-		pendingExecutedMarkerStylePro = Object.create(defaultMarkerStyle),
-		defaultMarkerStylePro = Object.create(defaultMarkerStyle),
+        var markerWidth = 30,
+        markerHeight = 40,
+        defaultMarkerStyle = {
+            pointRadius: markerHeight,
+            externalGraphic: STATIC_URL + "images/pin-red-XL.png",
+            graphicXOffset: -markerWidth/2,
+            graphicYOffset: -markerHeight,
+            graphicHeight: markerHeight,
+            graphicWidth: markerWidth
+        }
+        areaStyle = {
+            strokeColor: "#004990",
+            strokeOpacity: 1,
+            strokeWidth: 2,
+            fillColor: "#517EB5",
+            fillOpacity: 0.6
+        },
+        apiRootUrl = "/api/",
+        localizeUrl = "/api/locate/",
+        urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
+        apiLang = "fr",
+        showControl = true,
+        markerStyle = Object.create(defaultMarkerStyle),
+        fixedMarkerStyle = Object.create(defaultMarkerStyle),
+        pendingMarkerStyle = Object.create(defaultMarkerStyle),
+        pendingExecutedMarkerStyle = Object.create(defaultMarkerStyle),
+        draggableMarkerStyle = Object.create(defaultMarkerStyle),
+        fixedMarkerStyleReg = Object.create(defaultMarkerStyle),
+        pendingMarkerStyleReg = Object.create(defaultMarkerStyle),
+        pendingExecutedMarkerStyleReg = Object.create(defaultMarkerStyle),
+        defaultMarkerStyleReg = Object.create(defaultMarkerStyle),
+        fixedMarkerStylePro = Object.create(defaultMarkerStyle),
+        pendingMarkerStylePro = Object.create(defaultMarkerStyle),
+        pendingExecutedMarkerStylePro = Object.create(defaultMarkerStyle),
+        defaultMarkerStylePro = Object.create(defaultMarkerStyle),
 
-		markerStyle.externalGraphic = "/static/images/pin-red-XL.png",
-		fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XL.png",
-		pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XL.png";
-		pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-XL.png";
-		
+        markerStyle.externalGraphic = "/static/images/pin-red-XL.png",
+        fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XL.png",
+        pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XL.png";
+        pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-XL.png";
+
                 defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-XS.png",
-		fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",
-		pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-XS.png";
-		pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-XS.png";
-                
-		defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-XS.png",
-		fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-XS.png",
-		pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-XS.png";
-		pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-XS.png";
-		
+        fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",
+        pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-XS.png";
+        pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-XS.png";
+
+        defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-XS.png",
+        fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-XS.png",
+        pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-XS.png";
+        pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-XS.png";
+
                 draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
 
-	/**
-	 * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
-	 * the whole map is displayed. Must be called before each other function.
-	 * @param x float define the center of the map (in Lambert72 coordinate system)
-	 * @param y float define the center of the map (in Lambert72 coordinate system)
-	 */
-	fms.Map = function (elementOrId, options) {
-		this.options = options;
+    /**
+     * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
+     * the whole map is displayed. Must be called before each other function.
+     * @param x float define the center of the map (in Lambert72 coordinate system)
+     * @param y float define the center of the map (in Lambert72 coordinate system)
+     */
+    fms.Map = function (elementOrId, options) {
+        this.options = options;
 
-		this.element = typeof elementOrId == 'string' ? document.getElementById(elementOrId) : elementOrId;
-		this.id = this.element.id;
+        this.element = typeof elementOrId == 'string' ? document.getElementById(elementOrId) : elementOrId;
+        this.id = this.element.id;
 
-		var x = null, y = null, self = this;
-		if(this.options.origin) {
-			x = this.options.origin.x;
-			y = this.options.origin.y;
-		}
-		this.map = new OpenLayers.Map(this.id, {
-			maxExtent: new OpenLayers.Bounds(133736.38890635, 160293.01359269, 167103.47196451, 182838.33998333),
-			maxResolution:46,
-			units: 'm',
-			projection: "EPSG:31370",
-			controls: [
-				new OpenLayers.Control.TouchNavigation(
-            				{dragPanOptions: {enableKinetic: true}}
-        			),
-				new OpenLayers.Control.Zoom({
-				
-				}),
-			],	
-		});
+        var x = null, y = null, self = this;
+        if(this.options.origin) {
+            x = this.options.origin.x;
+            y = this.options.origin.y;
+        }
+        this.map = new OpenLayers.Map(this.id, {
+            maxExtent: new OpenLayers.Bounds(133736.38890635, 160293.01359269, 167103.47196451, 182838.33998333),
+            maxResolution:46,
+            units: 'm',
+            projection: "EPSG:31370",
+            controls: [
+                new OpenLayers.Control.TouchNavigation(
+                            {dragPanOptions: {enableKinetic: true}}
+                    ),
+                new OpenLayers.Control.Zoom({
 
-		// this.map.events.on({
-		// 	movestart:function(){
-		// 		self.element.trigger('movestart');
-		// 	},
-		// 	zoomend:function(){
-		// 		self.element.trigger('zoomend');
-		// 	}
-		// });
+                }),
+            ],
+        });
 
-		var wms = new OpenLayers.Layer.WMS(
-			"Bruxelles",
-			this.options.urbisUrl,
-			{ layers: 'urbis' + LANGUAGE_CODE.toUpperCase() }
-		);
-		wms.setZIndex(-100);
-		this.map.addLayer(wms);
+        // this.map.events.on({
+        //     movestart:function(){
+        //         self.element.trigger('movestart');
+        //     },
+        //     zoomend:function(){
+        //         self.element.trigger('zoomend');
+        //     }
+        // });
 
-		if(x && y) {
-			this.map.setCenter(new OpenLayers.LonLat(x,y));
-			this.map.zoomTo(6);
-		} else {
-			this.map.zoomToMaxExtent();
-		}
-	};
+        var wms = new OpenLayers.Layer.WMS(
+            "Bruxelles",
+            this.options.urbisUrl,
+            { layers: 'urbis' + LANGUAGE_CODE.toUpperCase() }
+        );
+        wms.setZIndex(-100);
+        this.map.addLayer(wms);
+
+        if(x && y) {
+            this.map.setCenter(new OpenLayers.LonLat(x,y));
+            this.map.zoomTo(6);
+        } else {
+            this.map.zoomToMaxExtent();
+        }
+    };
 
     fms.Map.prototype.reset = function(){
         this.map.removeLayer(this.draggableLayer);
@@ -123,293 +123,266 @@ if (!('fms' in window)) {
         delete this.markersLayer;
     };
 
-	fms.Map.prototype.setCenter = function(x,y)
-	{
-		this.map.setCenter(new OpenLayers.LonLat(x,y));
-		if(this.draggableMarker)
-		{
-			this.selectedLocation = {x:x,y:y};
-			this.draggableLayer.destroyFeatures();
+    fms.Map.prototype.setCenter = function(x,y)
+    {
+        this.map.setCenter(new OpenLayers.LonLat(x,y));
+        if(this.draggableMarker)
+        {
+            this.selectedLocation = {x:x,y:y};
+            this.draggableLayer.destroyFeatures();
 
-			this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
-			this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
-		}
-	};
+            this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
+            this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
+        }
+    };
 
         /* Center on the current draggable marker */
         fms.Map.prototype.centerOnDraggableMarker = function()
-	{
+    {
                 currentDraggableMarkerPoint = this.draggableMarker.components[0];
-		this.map.centerLayerContainer(new OpenLayers.LonLat(currentDraggableMarkerPoint.x, currentDraggableMarkerPoint.y));
-	};
+        this.map.centerLayerContainer(new OpenLayers.LonLat(currentDraggableMarkerPoint.x, currentDraggableMarkerPoint.y));
+    };
 
-	fms.Map.prototype.center = function()
-	{
-		this.map.centerLayerContainer(new OpenLayers.LonLat(this.selectedLocation.x, this.selectedLocation.y));
-	};
+    fms.Map.prototype.center = function()
+    {
+        this.map.centerLayerContainer(new OpenLayers.LonLat(this.selectedLocation.x, this.selectedLocation.y));
+    };
 
-	fms.Map.prototype.zoomIn = function()
-	{
-		this.map.zoomIn();
-	};
+    fms.Map.prototype.zoomIn = function()
+    {
+        this.map.zoomIn();
+    };
 
-	fms.Map.prototype.zoomOut = function()
-	{
-		this.map.zoomOut();
-	};
+    fms.Map.prototype.zoomOut = function()
+    {
+        this.map.zoomOut();
+    };
 
-	/**
-	 * Add a draggable marker to the current map. Send a "markermoved" event to
-	 * the map element when the marker move.
-	 * @param x float define the position of the marker (in Lambert72 coordinate system)
-	 * @param y float define the position of the marker (in Lambert72 coordinate system)
-	 */
-	fms.Map.prototype.addDraggableMarker = function(x,y)
-	{
-		var self = this;
-		this.selectedLocation = {x:x,y:y};
-		if(!this.draggableLayer)
-		{
-			this.draggableLayer = new OpenLayers.Layer.Vector( "Dragable Layer" );
-			this.map.addLayer(this.draggableLayer);
+    /**
+     * Add a draggable marker to the current map. Send a "markermoved" event to
+     * the map element when the marker move.
+     * @param x float define the position of the marker (in Lambert72 coordinate system)
+     * @param y float define the position of the marker (in Lambert72 coordinate system)
+     */
+    fms.Map.prototype.addDraggableMarker = function(x,y)
+    {
+        var self = this;
+        this.selectedLocation = {x:x,y:y};
+        if(!this.draggableLayer)
+        {
+            this.draggableLayer = new OpenLayers.Layer.Vector( "Dragable Layer" );
+            this.map.addLayer(this.draggableLayer);
 
-			var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
-				onStart:function(){
-					$(self.element).trigger('markerdrag');
-				},
-				onComplete:function(feature,pixel){
-					var p = feature.geometry.components[0];
-					self.selectedLocation = {x:p.x,y:p.y};
-					$(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
-					// reverse_geocode(point);
-				}
-			});
-			this.map.addControl(dragControl);
-			//this.superControl.dragControl = dragControl;
-			dragControl.activate();
-		}
-		this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
+            var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
+                onStart:function(){
+                    $(self.element).trigger('markerdrag');
+                },
+                onComplete:function(feature,pixel){
+                    var p = feature.geometry.components[0];
+                    self.selectedLocation = {x:p.x,y:p.y};
+                    $(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
+                    // reverse_geocode(point);
+                }
+            });
+            this.map.addControl(dragControl);
+            //this.superControl.dragControl = dragControl;
+            dragControl.activate();
+        }
+        this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
 
-		this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
-	};
+        this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
+    };
 
-	fms.Map.prototype.getSelectedLocation = function()
-	{
-		return this.selectedLocation;
-	};
+    fms.Map.prototype.getSelectedLocation = function()
+    {
+        return this.selectedLocation;
+    };
 
-	fms.Map.prototype.getSelectedAddressNL = function(callback)
-	{
-		var self = this;
-		$.ajax({
-			url: this.options.localizeUrl,
-			type:'POST',
-			dataType:'jsonp',
-			data:{json: '{\
-				"language": "' + "nl" + '",\
-				"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
-			}'},
-			success:function(response)
-			{
-				self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
-				self.map.addLayer(self.markersLayer);
-				callback(response);
-			},
-			error:function()
-			{
-				callback({
-					error:true,
-					status:"Unexpected error"
-				});
-			}
-		});
-	};
+    fms.Map.prototype.getSelectedAddress = function(language, callback)
+    {
+        var self = this;
+        $.ajax({
+            url: this.options.localizeUrl,
+            type:'POST',
+            dataType:'jsonp',
+            data:{json: '{\
+                "language": "' + language + '",\
+                "point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
+            }'},
+            success:function(response)
+            {
+                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
+                self.map.addLayer(self.markersLayer);
+                callback(language, response);
+            },
+            error:function()
+            {
+                callback(language, {
+                    error:true,
+                    status:"Unexpected error"
+                });
+            }
+        });
+    };
 
-	fms.Map.prototype.getSelectedAddressFR = function(callback)
-	{
-		var self = this;
-		$.ajax({
-			url: this.options.localizeUrl,
-			type:'POST',
-			dataType:'jsonp',
-			data:{json: '{\
-				"language": "' + "fr" + '",\
-				"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
-			}'},
-			success:function(response)
-			{
-				self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
-				self.map.addLayer(self.markersLayer);
-				callback(response);
-			},
-			error:function()
-			{
-				callback({
-					error:true,
-					status:"Unexpected error"
-				});
-			}
-		});
-	};
-
-	/**
-	 * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
-	 * @param report the report to add
-	 * @param index the report index
-	 * @param proVersion true if the application is running the pro version
-	 */
-	fms.Map.prototype.addReport = function(report,index,proVersion)
-	{
-		var self = this;
-		if(!this.markersLayer)
-		{
-			console.log('create marker layer');
-			this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer");
-			//NEW APPROACH
-			/*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
-			marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
-				new OpenLayers.Icon("/static/images/pin-red-XS.png",32,16).clone());
-			this.markersLayer.addMarker(marker);
-			marker.events.register('click',marker,function(){
-				alert('ok');
-			});
-			this.map.addLayer(this.markersLayer);*/
-			/*
-			!WTF! from http://docs.openlayers.org/library/overlays.html:
-			As of OpenLayers 2.7, there is no support for selecting features from more than a single vector
-			layer at a time. The layer which is currently being used for selection is the last one on which
-			the .activate() method of the attached select feature control was called.
-			*/
-			/*this.markersLayer.events.on({featureselected: function(event) {alert('ok');
-			    // should be event.xy, but it's not available currently
-			    //     var pixel = control.handlers.feature.evt.xy;
-			    //         var location = map.getLonLatFromPixel(pixel);
-			    //             alert("You clicked near " + location);
-	    		}});*/
-			this.map.addLayer(this.markersLayer);
+    /**
+     * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
+     * @param report the report to add
+     * @param index the report index
+     * @param proVersion true if the application is running the pro version
+     */
+    fms.Map.prototype.addReport = function(report,index,proVersion)
+    {
+        var self = this;
+        if(!this.markersLayer)
+        {
+            console.log('create marker layer');
+            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer");
+            //NEW APPROACH
+            /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
+            marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
+                new OpenLayers.Icon("/static/images/pin-red-XS.png",32,16).clone());
+            this.markersLayer.addMarker(marker);
+            marker.events.register('click',marker,function(){
+                alert('ok');
+            });
+            this.map.addLayer(this.markersLayer);*/
+            /*
+            !WTF! from http://docs.openlayers.org/library/overlays.html:
+            As of OpenLayers 2.7, there is no support for selecting features from more than a single vector
+            layer at a time. The layer which is currently being used for selection is the last one on which
+            the .activate() method of the attached select feature control was called.
+            */
+            /*this.markersLayer.events.on({featureselected: function(event) {alert('ok');
+                // should be event.xy, but it's not available currently
+                //     var pixel = control.handlers.feature.evt.xy;
+                //         var location = map.getLonLatFromPixel(pixel);
+                //             alert("You clicked near " + location);
+                }});*/
+            this.map.addLayer(this.markersLayer);
 
 
-			var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-				callbacks: { 
-     				   click: function(feature){
-					window.location = ((proVersion)?"/pro":"")+"/report/search_ticket?report_id="+feature.attributes.report.id;
-				   }, 
-      				   over: function(feature){
-					domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+            var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
+                callbacks: {
+                        click: function(feature){
+                    window.location = ((proVersion)?"/pro":"")+"/report/search_ticket?report_id="+feature.attributes.report.id;
+                   },
+                         over: function(feature){
+                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-					var imageLink = "/static/images/no-photo.png";
+                    var imageLink = "/static/images/no-photo.png";
 
-					if (feature.attributes.report.thumb != 'null') {
-						imageLink = feature.attributes.report.thumb;
-					}
+                    if (feature.attributes.report.thumb != 'null') {
+                        imageLink = feature.attributes.report.thumb;
+                    }
 
-					$(domElementUsedToAnchorTooltip).qtip({
-						id: 'myMarkerTooltip',
-						content: {
-							text:"<img src='"+imageLink+"'/>"
-						},
-						position: {
-							my: "bottom center", // Use the corner...
-							at: "top center"
-						},
-						viewport: $(window),
-						show: {
-							event: false, // Don't specify a show event...
-							ready: true // ... but show the tooltip when ready
-						},
-						onHide: function(){
-					                $(this).qtip('destroy');
-					           },
-						style: {
-							classes: 'qtip-jtools'
-						}
-					});
-				   }
-    				}
-				/*onSelect:function(feature){
-					alert('olk');
-					//Ticket web service
-					window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
-					//console.log(pixel.attributes.report.id);
-					//var p = feature.geometry.components[0];
-					//var point = {x:p.x,y:p.y};
-					//console.log(point,feature.attributes.report);
-					//self.element.trigger('reportselected', [point, feature.attributes.report]);
-				}*/
-			});
+                    $(domElementUsedToAnchorTooltip).qtip({
+                        id: 'myMarkerTooltip',
+                        content: {
+                            text:"<img src='"+imageLink+"'/>"
+                        },
+                        position: {
+                            my: "bottom center", // Use the corner...
+                            at: "top center"
+                        },
+                        viewport: $(window),
+                        show: {
+                            event: false, // Don't specify a show event...
+                            ready: true // ... but show the tooltip when ready
+                        },
+                        onHide: function(){
+                                    $(this).qtip('destroy');
+                               },
+                        style: {
+                            classes: 'qtip-jtools'
+                        }
+                    });
+                   }
+                    }
+                /*onSelect:function(feature){
+                    alert('olk');
+                    //Ticket web service
+                    window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
+                    //console.log(pixel.attributes.report.id);
+                    //var p = feature.geometry.components[0];
+                    //var point = {x:p.x,y:p.y};
+                    //console.log(point,feature.attributes.report);
+                    //self.element.trigger('reportselected', [point, feature.attributes.report]);
+                }*/
+            });
 
-			this.map.addControl(selectFeature);
-			selectFeature.activate();
-		}
-		
-		var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
-		var newMarker = new OpenLayers.Geometry.Collection([markerPoint]);
-		
-		//Can be either orange, red or green and in the set of regional route or not.
-		var markerConf;
-		var self = this;
+            this.map.addControl(selectFeature);
+            selectFeature.activate();
+        }
 
-		if (proVersion) {
-			console.log('pro version detected');
-			if (false == report.address_regional) {
-                   		//NOT ROUTE REGIONALE
-                   		if (report.citizen == 'true') {
-					console.log('citizen report in pro section');
-		       			var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
-				} else {
-					console.log(report.citizen);
-					console.log('pro report in pro section');
-		       			var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
-				}
-			} else {
-				console.log('regional report detected');
-                   		//ROUTE REGIONALE
-		   		var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
-			}
-		          	var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-				self.markersLayer.addFeatures(vectorOfMarkers);
-		} else {
-			console.log('citizen version detected');
-			//Non pro version
-			if (report.citizen == 'true') {
-				console.log('citizen report in citizen section');
-			        var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
-			} else { 
-				console.log('pro report in citizen section');
-			        var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
-			}
-		        var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-			self.markersLayer.addFeatures(vectorOfMarkers);
-		}
+        var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
+        var newMarker = new OpenLayers.Geometry.Collection([markerPoint]);
+
+        //Can be either orange, red or green and in the set of regional route or not.
+        var markerConf;
+        var self = this;
+
+        if (proVersion) {
+            console.log('pro version detected');
+            if (false == report.address_regional) {
+                           //NOT ROUTE REGIONALE
+                           if (report.citizen == 'true') {
+                    console.log('citizen report in pro section');
+                           var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
+                } else {
+                    console.log(report.citizen);
+                    console.log('pro report in pro section');
+                           var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
+                }
+            } else {
+                console.log('regional report detected');
+                           //ROUTE REGIONALE
+                   var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
+            }
+                      var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+                self.markersLayer.addFeatures(vectorOfMarkers);
+        } else {
+            console.log('citizen version detected');
+            //Non pro version
+            if (report.citizen == 'true') {
+                console.log('citizen report in citizen section');
+                    var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+            } else {
+                console.log('pro report in citizen section');
+                    var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+            }
+                var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+            self.markersLayer.addFeatures(vectorOfMarkers);
+        }
 
 
-	},
+    },
 
-	/**
-	 * Add a simple indiocator to the current map.
-	 * @param pnt object define the x, y position of the marker (in Lambert72 coordinate system)
-	 */
-	fms.Map.prototype.addIndicator = function(pnt)
-	{
-		var self = this;
-		if(!this.indicatorsLayer)
-		{
-			this.indicatorsLayer = new OpenLayers.Layer.Vector( "Indicators Layer" );
-			this.map.addLayer(this.indicatorsLayer);
-		}
+    /**
+     * Add a simple indiocator to the current map.
+     * @param pnt object define the x, y position of the marker (in Lambert72 coordinate system)
+     */
+    fms.Map.prototype.addIndicator = function(pnt)
+    {
+        var self = this;
+        if(!this.indicatorsLayer)
+        {
+            this.indicatorsLayer = new OpenLayers.Layer.Vector( "Indicators Layer" );
+            this.map.addLayer(this.indicatorsLayer);
+        }
 
-		var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(pnt.x, pnt.y)]);
+        var newMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(pnt.x, pnt.y)]);
 
-		var markerConf = this.options.markerStyle;
-		this.indicatorsLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {}, markerConf)]);
-	};
+        var markerConf = this.options.markerStyle;
+        this.indicatorsLayer.addFeatures([new OpenLayers.Feature.Vector(newMarker, {}, markerConf)]);
+    };
 
-	/**
-	 * Add a shape to the current map.
-	 * @param geometry a standart shape json object.
-	 */
-	fms.Map.prototype.highlightArea = function(featureId)
-	{
+    /**
+     * Add a shape to the current map.
+     * @param geometry a standart shape json object.
+     */
+    fms.Map.prototype.highlightArea = function(featureId)
+    {
         //municipalities layer
         var municipalities = new OpenLayers.Layer.WMS(
             "Municipalities",
@@ -418,25 +391,25 @@ if (!('fms' in window)) {
             {singleTile: true, ratio: 1.25, isBaseLayer: false}
         );
         this.map.addLayer(municipalities);
-	};
+    };
 
-	/**
-	 * Private function, add a polygon to the current map
-	 */
-	fms.Map.prototype._addPolygon = function(polygon,layer){
-		for(var j in polygon){
-			var area = polygon[j];
-			var points = [];
-			for(var i in area){
-				var p = area[i];
-				points.push(new OpenLayers.Geometry.Point(p[0],p[1]));
-			}
+    /**
+     * Private function, add a polygon to the current map
+     */
+    fms.Map.prototype._addPolygon = function(polygon,layer){
+        for(var j in polygon){
+            var area = polygon[j];
+            var points = [];
+            for(var i in area){
+                var p = area[i];
+                points.push(new OpenLayers.Geometry.Point(p[0],p[1]));
+            }
 
-			var ring = new OpenLayers.Geometry.LinearRing(points);
-			var polygon = new OpenLayers.Feature.Vector(ring,null,areaStyle);
-			layer.addFeatures(polygon);
-		}
-	};
+            var ring = new OpenLayers.Geometry.LinearRing(points);
+            var polygon = new OpenLayers.Feature.Vector(ring,null,areaStyle);
+            layer.addFeatures(polygon);
+        }
+    };
 
 
 }());

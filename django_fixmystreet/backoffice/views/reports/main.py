@@ -1,19 +1,17 @@
+import math
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms.models import modelformset_factory
-from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, ReportComment, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, FileUploadForm, MarkAsDoneForm, ReportFileForm, ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
-from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-import math
 
-from datetime import datetime as dt
-import datetime
 from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 
@@ -32,7 +30,7 @@ def new(request):
         if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
             # this saves the update as part of the report.
             report = report_form.save()
-            
+
             if request.POST["comment-text"]:
                 comment = comment_form.save(commit=False)
                 comment.created_by = FMSUser.objects.get(pk=request.user.id)
@@ -59,7 +57,7 @@ def new(request):
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,
-                "available_zips":ZipCode.objects.all(),
+                "all_zips":ZipCode.objects.all(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "report_form": report_form,
                 "pnt":pnt,
@@ -144,7 +142,7 @@ def show(request,slug, report_id):
                     comment.created_by = FMSUser.objects.get(pk=request.user.id)
                     comment.report = report
                     comment.save()
-            
+
             files = file_formset.save(commit=False)
             for report_file in files:
                 report_file.report = report
@@ -153,7 +151,7 @@ def show(request,slug, report_id):
                 if (report_file.title == ''):
                     report_file.title = str(report_file.file.name)
                 report_file.save()
-    
+
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
@@ -163,18 +161,18 @@ def show(request,slug, report_id):
         page_number=1
 
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
-    
+
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
     fms_managers = FMSUser.objects.filter(manager=True).values_list('organisation', flat=True);
-    entitiesHavingManager = OrganisationEntity.objects.filter(id__in=fms_managers).values_list('pk', flat=True)  
+    entitiesHavingManager = OrganisationEntity.objects.filter(id__in=fms_managers).values_list('pk', flat=True)
 
     region_institution = OrganisationEntity.objects.filter(region=True).filter(id__in=entitiesHavingManager)
     entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingManager)
-    
+
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
-    reports = Report.objects.all()   
- 
+    reports = Report.objects.all()
+
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     fms_user = FMSUser.objects.get(pk=request.user.id)
     return render_to_response("pro/reports/show.html",

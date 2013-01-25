@@ -69,7 +69,7 @@ $(function(){
 						{
 							var street = response.result[i].address.street;
 							var pos = response.result[i].point;
-							$('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.municipality + ')</a>')
+							$('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.postCode + ' ' + street.municipality + ')</a>')
 								.appendTo($proposal)
 								.wrap('<li />');
 						}
