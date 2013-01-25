@@ -899,10 +899,12 @@ li img {
     position: absolute;
     top: 50px;
     left: 50%;
-    width: 100px;
+    /*width: 100px;*/
+    width:129px;
     margin-left: 50px;
     margin: auto;
     z-index: 1000;
+    min-height:42px !important;
 }
 
 #back {
@@ -1034,14 +1036,24 @@ li img {
 
 #search_by_commune_or_address {
     border-radius: 5px;
-    border: 1px solid #FFF203;
-    background: #B9B9BC;
+    border: 1px solid #B9B9BC;
+    background: #FFDB00;
     display: table;
     padding: 10px;
     float:right;
     width: 100%;
     margin-bottom: 10px;
 }
+
+#search_by_commune_or_address button.btn{
+    background:#B9B9BC;
+    color:#FFF;
+}
+
+#search_by_commune_or_address .input-append + button{
+    margin-left:10px;
+}
+
 
 .input-xlarge {
     width:98%;
@@ -1721,3 +1733,4 @@ table.report_overview_table th{
     bottom:0px;
     width: 94%;
 }
+
