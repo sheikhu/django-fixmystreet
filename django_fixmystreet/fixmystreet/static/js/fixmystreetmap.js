@@ -265,7 +265,7 @@ if (!('fms' in window)) {
             var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 callbacks: {
                         click: function(feature){
-                    window.location = ((proVersion)?"/pro":"")+"/report/search_ticket?report_id="+feature.attributes.report.id;
+                    window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
                    },
                          over: function(feature){
                     domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
