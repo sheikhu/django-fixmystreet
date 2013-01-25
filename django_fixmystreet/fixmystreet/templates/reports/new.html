@@ -43,7 +43,7 @@ $(function(){
     $("#validate_form").css("margin-top","30px");
     $(".report_step_number_2").css("bottom","10px");
     {% endif %}
-
+    $("input:checkbox").attr("value","off");
     $("input:checkbox").bind("change",function(){
         
         if ($(this).attr("value")!="on"){

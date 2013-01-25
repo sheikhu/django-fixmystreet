@@ -15,6 +15,11 @@
     {% if not can_edit %}
     disableFormFields();
     {% endif %}
+    $(document).ready(function(){
+        var list = window.location.href.split("/");
+        var el = list[list.length-2];
+        $("#user_type_filter").find("span[id$="+el+"]").addClass("selected");
+    });
 </script>
 {% endblock %}
 
@@ -26,18 +31,18 @@
     <div id="user_type_filter">
         <ul>
             <li>
-                    <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"         href="{% url list_users user_type='users' %}">
+                    <a class="{% ifequal 'users_all' menu %}active{% endifequal %}" href="{% url list_users user_type='users' %}">
                             <img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px" > <span id="users">{% trans "Collaborators in" %} {{ request.user.fmsuser.get_organisation.name }}</span>
                     </a>
             </li>
             <li>
-                    <a class="{% ifequal 'users_agent' menu %}active{% endifequal %}"         href="{% url list_users user_type='agents' %}">
-                            <img src="{{STATIC_URL}}images/agent.png"> <span id="agent">{% trans "Agents" %}</span>
+                    <a class="{% ifequal 'users_agent' menu %}active{% endifequal %}" href="{% url list_users user_type='agents' %}">
+                            <img src="{{STATIC_URL}}images/agent.png"> <span id="agents">{% trans "Agents" %}</span>
                     </a>
             </li>
             <li>
-                    <a class="{% ifequal 'users_manager' menu %}active{% endifequal %}"         href="{% url list_users user_type='managers' %}">
-                            <img src="{{STATIC_URL}}images/manager.png"> <span id="manager">{% trans "Managers" %}</span>
+                    <a class="{% ifequal 'users_manager' menu %}active{% endifequal %}" href="{% url list_users user_type='managers' %}">
+                            <img src="{{STATIC_URL}}images/manager.png"> <span id="managers">{% trans "Managers" %}</span>
                     </a>
             </li>
         </ul>
