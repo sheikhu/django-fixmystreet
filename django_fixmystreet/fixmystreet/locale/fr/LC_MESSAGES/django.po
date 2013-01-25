@@ -1502,8 +1502,9 @@ msgstr "Soumettre un incident"
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
-msgstr ""
-"Avant de signaler un incident, vérifiez qu'il n'a pas déjà été constaté."
+msgstr "Si un rapport existe déjà, vous pouvez vous abonner en allant dans les détails d'un rapport"
+
+# "Avant de signaler un incident, vérifiez qu'il n'a pas déjà été constaté."
 
 #: templates/reports/new.html:240
 msgid "Verify"

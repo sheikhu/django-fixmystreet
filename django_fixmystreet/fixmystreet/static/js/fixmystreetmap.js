@@ -136,11 +136,11 @@ if (!('fms' in window)) {
         }
     };
 
-        /* Center on the current draggable marker */
-        fms.Map.prototype.centerOnDraggableMarker = function()
+    /* Center on the current draggable marker */
+    fms.Map.prototype.centerOnDraggableMarker = function()
     {
-                currentDraggableMarkerPoint = this.draggableMarker.components[0];
-        this.map.centerLayerContainer(new OpenLayers.LonLat(currentDraggableMarkerPoint.x, currentDraggableMarkerPoint.y));
+        currentDraggableMarkerPoint = this.draggableMarker.components[0];
+        this.map.panTo(new OpenLayers.LonLat(currentDraggableMarkerPoint.x, currentDraggableMarkerPoint.y));
     };
 
     fms.Map.prototype.center = function()
