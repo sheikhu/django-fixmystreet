@@ -299,7 +299,7 @@ header nav li a.active,
 }
 
 #incident_filter li span:hover{
-    border-bottom: #FFF203 solid 2px;
+    border-bottom: #FFDB00 solid 2px;
 }
 
 #incident_filter li span.selected{
@@ -985,7 +985,8 @@ li img {
 }
 
 #nearby-reports .pagination li.active a{
-    background: #FFF203;
+    background: #FFDB00;
+    color:#666;
 }
 
 #nearby-reports .pagination li a{
@@ -1091,10 +1092,12 @@ input[type="submit"].btn {
     font-family:dosisbold, Arial, sans-serif;
 }
 input[type="button"].btn {
-    background: #FFF203;
+    /*background: #FFF203;*/
+    background:#FFDB00;
 }
 button.btn{
-    background: #FFF203;
+    /*background: #FFF203;*/
+    background:#FFDB00;
 }
 a.btn{
     background: #FFF203;

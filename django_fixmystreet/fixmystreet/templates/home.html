@@ -88,7 +88,7 @@ function showResults(type,li){
         <form id='search-form' class="block highlighted form-inline search-form">
             {% csrf_token %}
             <p class="lead">{% trans "Enter the address where the incident is:" %}</p>
-            <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number, Ticket number...' %}" />
+            <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
             <select id="input-ward" class="input-medium" name="ward" onchange="document.getElementById('widget-search-button').click()">
                 <option value="">{% trans "All communes..." %}</option>
                 {% for zip in zipcodes %}
@@ -96,9 +96,16 @@ function showResults(type,li){
                 {% endfor %}
             </select>
             <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Search' %}">
-
-
             <ul id="proposal" class="inline"> </ul>
+
+            <br/>
+
+	    <div id="ticket-div-section">
+            <!-- Search per ticket -->
+            <p class="lead">{% trans "Enter the report ticket:" %}</p>
+            <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
+            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" onclick="return false" value="{% trans 'Access Ticket' %}">
+	    </div>
 
         </form>
     </article>

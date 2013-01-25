@@ -3,24 +3,39 @@ $(function(){
     var $searchTerm = $('#input-search');
     var $searchWard = $('#input-ward');
     var $searchForm = $('.search-form');
-    var $searchButton = $('#search-form :submit');
+    var $searchButton = $('#widget-search-button');
+    var $searchTicketButton = $('#widget-search-ticket-button');
     var $proposal = $('#proposal');
+    
+    $searchTicketButton.click(function(event){
+		var searchValue = $('#input-ticket-search').val();
+		
+                if (searchValue && searchValue.length > 0) {
+                        //Get current language
+                        var currentLng = 'en';
+                        if (window.location.href.indexOf('/nl/') != -1) {
+				currentLng = 'nl';
+			} else if (window.location.href.indexOf('/fr/') != -1) {
+				currentLng = 'fr'
+                        }
+                        if (window.location.href.indexOf('pro') != -1) {
+				window.location = "/"+currentLng+"/pro/report/search_ticket_pro?report_id="+searchValue.substring(1);
+			} else {
+				window.location = "/"+currentLng+"/report/search_ticket?report_id="+searchValue.substring(1);
+			}
+		}
+    });
 
 
     $searchForm.submit(function(event){
 		event.preventDefault();
 		var searchValue = $searchTerm.val();
-		//If search a ticket then redirect
-		if (searchValue && searchValue.length > 0 && searchValue[0] == "#") {
-                        if (window.location.href.indexOf('pro') != -1) {
-				window.location = "/pro/report/search_ticket_pro?report_id="+searchValue.substring(1);
-			} else {
-				window.location = "/report/search_ticket?report_id="+searchValue.substring(1);
-			}
-		} else {
 			$proposal.slideUp();
 
-			if (!$searchTerm.val()) { return; }
+			if (!$searchTerm.val()) { 
+				$("#ticket-div-section").show();
+				return; 
+			}
 
 			$searchTerm.addClass('loading');
 			$searchButton.prop('disabled',true);
@@ -39,6 +54,7 @@ $(function(){
 			}).success(function(response){
 				if(response.status == 'success' && response.result.length > 0)
 				{
+					$("#ticket-div-section").hide();
 					if(response.result.length == 1)
 					{
 						var pos = response.result[0].point;
@@ -62,6 +78,7 @@ $(function(){
 				}
 				else
 				{
+					$("#ticket-div-section").show();
 					$searchTerm.removeClass('loading');
 					$searchButton.prop('disabled',false);
 					if(response.status == "noresult" || response.status == "success")
@@ -81,7 +98,6 @@ $(function(){
 
 				$proposal.html('<p class="error-msg">Unexpected error.</p>').slideDown();
 			});
-		}
     });
 
     $searchForm.submit();
