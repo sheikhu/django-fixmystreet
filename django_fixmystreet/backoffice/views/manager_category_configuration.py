@@ -70,7 +70,6 @@ def update(request):
     #Return the dropdown form to select managers from
     #Return the category user mapping so that the shown selection boxes contain the current selected managers
     managersForm = ManagersListForm(request.fmsuser)
-    managersForm.refreshChoices(request.user)
 
     mainCategory = ReportMainCategoryClass.objects.get(id=request.REQUEST.get('main'))
     secondCategory = ReportSecondaryCategoryClass.objects.get(id=request.REQUEST.get('second'))
