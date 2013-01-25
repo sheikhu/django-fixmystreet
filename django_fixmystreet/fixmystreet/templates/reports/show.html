@@ -184,21 +184,20 @@ function markAsDone(){
                 <th>{% trans "Status:" %}</th>
                 <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
             </tr>
-            {% if not report.contractor == None %}
-              <tr>
-               <th>{% trans "Applicant:" %}</th>
-               <td>
-			{{report.contractor.name}}
-			<br/>
-                        {% for contact_person in report.get_applicant_contact_persons %}
-				 {{contact_person.firstname}}
-				 {{contact_person.last_name}} 
-				{% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
-			 <br/>
-                        {% endfor %}
-	       </td>
-              </tr>
-            {% else %}    
+            {% if report.contractor %}
+            <tr>
+                <th>{% trans "Applicant:" %}</th>
+                <td>
+                    {{report.contractor.name}}
+                    <br/>
+                    {% for contact_person in report.contractor.worlers.all %}
+                        {{ contact_person.get_full_name }}
+                        {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
+                        <br/>
+                    {% endfor %}
+               </td>
+            </tr>
+            {% else %}
               <tr>
                <th>{% trans "Responsible:" %}</th>
                <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>

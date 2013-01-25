@@ -359,9 +359,6 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
-    def get_applicant_contact_persons(self):
-        return FMSUser.objects.filter(organisation__id = self.contractor.id)
-
     def get_marker(self):
         user = get_current_user()
 
