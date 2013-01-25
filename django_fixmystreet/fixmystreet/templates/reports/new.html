@@ -159,8 +159,16 @@ function createOverview(){
     $("#validate_report_popup .modal-body .help-block").hide();
     $.each($("#report-form").find("select"),function(idx,value){
         var overview_select = $("#validate_report_popup").find("#"+$(value).attr("id"));
-        overview_select.val($(value).val());
-        overview_select.attr("disabled","disabled");
+        if(overview_select.find('option[value="'+$(value).val()+'"]').parent().is("optgroup")){
+            overview_select.before("<i>"+overview_select.find('option[value="'+$(value).val()+'"]').parent().attr("label")+": </i>");
+        }
+        var vals = [];
+        $.each(overview_select.find('option'),function(i, el) { 
+            vals[$(el).val()]=el.text; });
+        overview_select.after("<i>"+vals[$(value).val()]+'</i>');
+        overview_select.remove();
+        // overview_select.val($(value).val());
+        // overview_select.attr("disabled","disabled");
     });
     $.each($("#report-form").find("input"),function(idx,value){
         if($(value).attr("type")!="hidden" && $(value).attr("type")!="file"){
@@ -171,8 +179,10 @@ function createOverview(){
             }
             else{
                 var overview_input = $("#validate_report_popup").find("#"+$(value).attr("id"));
-                overview_input.val($(value).val());
-                overview_input.attr("disabled","disabled");
+                overview_input.after("<i>"+$(value).val()+"</i>");
+                overview_input.remove();
+                // overview_input.val($(value).val());
+                // overview_input.attr("disabled","disabled");
             }
 
         }
@@ -183,8 +193,10 @@ function createOverview(){
     });
     $.each($("#report-form").find("textarea"),function(idx,value){
         var overview_textarea = $("#validate_report_popup").find("#"+$(value).attr("id"));
-            overview_textarea.val($(value).val());
-            overview_textarea.attr("disabled","disabled");
+        overview_textarea.after("<i>"+$(value).val()+"</i>");
+        overview_textarea.remove();
+            // overview_textarea.val($(value).val());
+            // overview_textarea.attr("disabled","disabled");
     });
     $("#validate_report_popup").find("#id_comment-text").attr("disabled",'disabled');
 }
@@ -233,7 +245,7 @@ $(function(){
                 <div id="view_nearby_reports">
                         {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
                         <br/>
-                        <button onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
+                        <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
                 </div>
 
                     <div class="control-group">

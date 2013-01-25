@@ -310,6 +310,7 @@ header nav li a.active,
     border-bottom: #FFF203 solid 2px;
 }
 
+
 /********* FOOTER LAYOUT ********/
 
 footer{
@@ -805,6 +806,10 @@ li img {
 #validate_report_popup .thumbnail{
     max-width: 100px;
 }
+#validate_report_popup label{
+    font-weight: bold;
+}
+
 /********* HOME LAYOUT ********/
 
 
