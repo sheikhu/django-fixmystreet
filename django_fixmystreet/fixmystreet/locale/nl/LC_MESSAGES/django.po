@@ -198,7 +198,7 @@ msgstr "Beheerder is toegekend"
 
 #: models.py:1286
 msgid "Publish"
-msgstr "Alles publiceren"
+msgstr "Publiceren"
 
 #: models.py:1287
 msgid "Organisation assinged"
@@ -730,7 +730,6 @@ msgid "Reports Updated"
 msgstr "Bijgewerkte Rapporten"
 
 #: templates/home.html:137
-#, fuzzy
 msgid "Report Fixed"
 msgstr "Opgeloste Rapporten"
 

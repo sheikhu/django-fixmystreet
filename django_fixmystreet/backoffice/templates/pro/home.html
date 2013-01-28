@@ -10,11 +10,12 @@
      });
     </script>
     <script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
-
 {% endblock %}
+
 {% block content %}
     {{ block.super }}
 {% endblock %}
+
 {% block statistics %}
 <article id="statistics">
     <table>
@@ -27,9 +28,9 @@
     	{% for stat in stats %}
     	<tr>
     		<td>{{ stat.stat_name }}</td>
-    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a></td>
-    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >{{stat.stat_value.get_count_in_progress}}</a></td>
-    		<td><a href="{% url home_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
+    		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a></td>
+    		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >{{stat.stat_value.get_count_in_progress}}</a></td>
+    		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
     	</tr>
     	{% endfor %}
     </table>

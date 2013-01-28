@@ -25,7 +25,7 @@ class LoginRequiredMiddleware:
                 request.backoffice = True
             else:
                 if request.path_info != reverse("login"):
-                    return HttpResponseRedirect('{0}?next={1}'.format(reverse("login"), request.path))
+                    return HttpResponseRedirect('{0}?next={1}'.format(reverse("home"), request.path))
 
 
 class LoadUserMiddleware:
