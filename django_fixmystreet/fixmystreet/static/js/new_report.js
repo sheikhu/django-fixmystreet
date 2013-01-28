@@ -78,7 +78,6 @@ $(document).ready(function() {
                 for (var i in languages) {
                     console.log(i);
                     if (languages[i] != currLang) {
-                        console.log(languages[i]);
                         fms.currentMap.getSelectedAddress(languages[i], function(langSecond, response) {
                             var address = response.result.address;
                             console.log('callback='+langSecond);

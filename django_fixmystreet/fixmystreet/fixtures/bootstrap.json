@@ -1542,7 +1542,7 @@
         "fields": {
             "q_fr": "Qui g\u00e8re ce site ?",
             "order": 2,
-            "a_fr": "<a href='http://www.cirb.irisnet.be' style='float:left;'><img src='/media/images/CIRB-CIBG.gif'/></a><p>FixMyStreet Bruxelles est maintenu par le CIRB Centre d’Informatique pour la R\u00e9gion Bruxelloise (<a href='http://www.cirb.irisnet.be'>www.cirb.irisnet.be</a>).</p><p>L'id\u00e9e originale a \u00e9t\u00e9 inspir\u00e9 par <a href='http://mysociety.org'>MySociety's </a> <a href='http://fixmystreet.org'>FixMyStreet</a>, et adapt\u00e9e pour Bruxelles par le CIRB.</p><p>Le projet a \u00e9t\u00e9 r\u00e9alis\u00e9 \u00e0 partir du code open source du projet <a href='http://fixmystreet.ca'>fixmystreet.ca</a> de <a href='http://visiblegovernment.ca'>visiblegovernment.ca</a>.</p>"
+            "a_fr": "<a target='_blank' href='http://www.cirb.irisnet.be' style='float:left;'><img src='/media/images/CIRB-CIBG.gif'/></a><p>FixMyStreet Bruxelles est maintenu par le CIRB Centre d’Informatique pour la R\u00e9gion Bruxelloise (<a target='_blank' href='http://www.cirb.irisnet.be'>www.cirb.irisnet.be</a>).</p><p>L'id\u00e9e originale a \u00e9t\u00e9 inspir\u00e9 par <a target='_blank' href='http://mysociety.org'>MySociety's </a> <a target='_blank' href='http://fixmystreet.org'>FixMyStreet</a>, et adapt\u00e9e pour Bruxelles par le CIRB.</p><p>Le projet a \u00e9t\u00e9 r\u00e9alis\u00e9 \u00e0 partir du code open source du projet <a href='http://fixmystreet.ca' target='_blank'>fixmystreet.ca</a> de <a href='http://visiblegovernment.ca' target='_blank'>visiblegovernment.ca</a>.</p>"
         }
     },
     {
