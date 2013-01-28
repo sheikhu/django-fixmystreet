@@ -1098,8 +1098,8 @@ msgstr "Mis à jour"
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<p> Please activate yourself first by clicking the following link: %(url)s/</"
-"p>\n"
+"<!--p> Please activate yourself first by clicking the following link: %(url)"
+"s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
@@ -1281,7 +1281,7 @@ msgstr ""
 #: templates/emails/send_subscription_to_subscriber/subject.txt:1
 #: templates/emails/subscribe/subject.txt:1
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
-msgstr "Fix My Street: abonnement aux mises à jour de l'incidentt"
+msgstr "Fix My Street: abonnement aux mises à jour de l'incident"
 
 #: templates/emails/subscribe/message.html:4
 #, python-format
@@ -1706,35 +1706,20 @@ msgstr "Aucun rapport pour ce numéro de ticket"
 msgid "You have subscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
-#, fuzzy
-#~ msgid "Posters"
-#~ msgstr "Signalé par"
+#~ msgid "seven_days"
+#~ msgstr "< 7j"
 
-#, fuzzy
-#~ msgid "Poster"
-#~ msgstr "Signalé par"
+#~ msgid "one_month"
+#~ msgstr "8j - 1m"
 
-#, fuzzy
-#~ msgid "Fix My Street Admin"
-#~ msgstr "Fix My Street:"
+#~ msgid "three_months"
+#~ msgstr "1m - 3m"
 
-#, fuzzy
-#~ msgid "Fix My Street Administration"
-#~ msgstr "Fix My Street:"
+#~ msgid "one_year"
+#~ msgstr "3m - 1y"
 
-#, fuzzy
-#~ msgid "Add"
-#~ msgstr "Adresse:"
-
-#~ msgid "Login with Facebook"
-#~ msgstr "S'authentifier avec Facebook"
-
-#~ msgid "Login with Google"
-#~ msgstr "S'authentifier avec Google"
-
-#, fuzzy
-#~ msgid "First 100 Reports"
-#~ msgstr "Soumettre un incident"
+#~ msgid "more_years"
+#~ msgstr "> 1y"
 
 #~ msgid "Commune"
 #~ msgstr "Commune:"
@@ -1765,21 +1750,6 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #, fuzzy
 #~ msgid "Select a quality"
 #~ msgstr "Choisissez une catégorie"
-
-#~ msgid "seven_days"
-#~ msgstr "< 7j"
-
-#~ msgid "one_month"
-#~ msgstr "8j - 1m"
-
-#~ msgid "three_months"
-#~ msgstr "1m - 3m"
-
-#~ msgid "one_year"
-#~ msgstr "3m - 1y"
-
-#~ msgid "more_years"
-#~ msgstr "> 1y"
 
 #~ msgid "Validate"
 #~ msgstr "valider"

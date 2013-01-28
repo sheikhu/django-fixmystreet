@@ -7,7 +7,7 @@
 {% get_language_info for "fr" as langFR %}
 {% language langFR.code %}
 {% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
-<p>The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
+<p>The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at <a href="http://{{SITE_URL}}/report/{{reportId}}">http://{{SITE_URL}}/report/{{reportId}}</a>.</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" with report=related %}
 {% endlanguage %}
@@ -16,7 +16,7 @@
 <br/>
 {% language langNL.code %}
 {% blocktrans with reportType=related.category.name date=related.created|date reportId=related.id %}
-<p>The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.</p>
+<p>The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at <a href="http://{{SITE_URL}}/report/{{reportId}}">http://{{SITE_URL}}/report/{{reportId}}</a>.</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" with report=related %}
 {% endlanguage %}

@@ -1247,7 +1247,8 @@ def send_notification(sender, instance, **kwargs):
                 if f:
                     if f.file_type == ReportFile.IMAGE and f.is_public():
                         # Open the file
-                        fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
+                        #fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
+                        fp = open(f.file.path, 'rb')
                         msgImage = MIMEImage(fp.read())
                         fp.close()
                         # Define the image's ID to reference to it

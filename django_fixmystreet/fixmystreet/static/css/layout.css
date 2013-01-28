@@ -377,12 +377,12 @@ footer *{
 #content {
     min-height: 140px;
     width: 100%;
-    padding: 10px 0;
+    /*padding: 10px 0;*/
 }
 
 #page_content_container {
-    padding-left: 20px;
-    padding-right: 20px;
+    /*padding-left: 20px;
+    padding-right: 20px;*/
     font-family: dosisbold, Arial, sans-serif;
     display: table;
     width: 100%;

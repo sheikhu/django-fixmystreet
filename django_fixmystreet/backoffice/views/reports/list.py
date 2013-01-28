@@ -36,6 +36,7 @@ def list(request, status):
     if (connectedUser.manager == True):
         reports = reports.filter(responsible_manager=connectedUser);
 
+
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
 
     if status == 'created':
@@ -43,7 +44,7 @@ def list(request, status):
     elif status == 'in_progress':
         reports = reports.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif status == 'in_progress_and_assigned':
-        reports = reports.filter(contractor__isnull=False)
+        reports = reports.filter(contractor__isnull=False).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif status == 'closed':
         reports = reports.filter(status__in=Report.REPORT_STATUS_CLOSED)
     # else: # all
