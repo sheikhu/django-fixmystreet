@@ -14,27 +14,27 @@
 <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 <script>
 $(function(){
-	defaultX = 148838.00741428943
-	defaultY = 171086.0720425099
+    defaultX = 148838.00741428943
+    defaultY = 171086.0720425099
 
-        {% if reports.0 %}
-		defaultX = {{reports.0.point.x}}
-		defaultY = {{reports.0.point.y}}
-	{% endif %}
+    {% if reports.0 %}
+        defaultX = {{reports.0.point.x}}
+        defaultY = {{reports.0.point.y}}
+    {% endif %}
 
 
-	// $('#map-bxl').fmsMap();
+    // $('#map-bxl').fmsMap();
  //    $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
 
-	// {% for report in reports %}
-	// $('#map-bxl').fmsMap('addReport',  {{ report.to_JSON|dict_to_json|safe }}, {{ forloop.counter }});
-	// {% endfor %}
+    // {% for report in reports %}
+    // $('#map-bxl').fmsMap('addReport',  {{ report.to_JSON|dict_to_json|safe }}, {{ forloop.counter }});
+    // {% endfor %}
 
-	// $('#map-bxl').bind('reportselected',function(evt, point, report){
-	// 	window.location.assign('{{report.get_absolute_url}}');
-	// });
+    // $('#map-bxl').bind('reportselected',function(evt, point, report){
+    //     window.location.assign('{{report.get_absolute_url}}');
+    // });
 
-	fms.currentMap = new fms.Map('map', {
+    fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
         urbisUrl:    URBIS_URL + '/geoserver/wms',
@@ -54,46 +54,48 @@ $(function(){
  */
 function search_per_ticket() {
         searchValue = $('#input-search').val();
-	//Block to search per ticket number
-	if (searchValue && searchValue.length > 0) {
-		valToSearch = searchValue;
-		//On this page character # is not required as the search zone is dedicated.
-		if (searchValue[0] == "#")
-			valToSearch = searchValue.substring(1);
-		window.location = "/report/search_ticket?report_id="+valToSearch;
-	}
+    //Block to search per ticket number
+    if (searchValue && searchValue.length > 0) {
+        valToSearch = searchValue;
+        //On this page character # is not required as the search zone is dedicated.
+        if (searchValue[0] == "#")
+            valToSearch = searchValue.substring(1);
+        window.location = "/report/search_ticket?report_id="+valToSearch;
+    }
 }
 </script>
 {% endblock %}
 
-{% block content %}
+{% block map %}
 <article id="map"></article>
-	<div id="fullwidth">
-        <h1>{% trans "Reports for" %} {{entity.name}}</h1>
-		<div id='leftcol'>
+{% endblock %}
 
-			{% if not reports %}
-			<p>{% trans "No problems have been reported." %}</p>
-			{% endif %}
-			<div id="search_results">
-				{% for report in reports %}
-                    {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-                {% endfor %}
+{% block content %}
+    <div class="row">
+        <h1>{% trans "Reports for" %} {{entity.name}}</h1>
+
+        {% if not reports %}
+        <div class='span6'>{% trans "No problems have been reported." %}</div>
+        {% else %}
+        <div id="search_results" class='span6'>
+            {% for report in reports %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class='span6'>
+            <div id="search_by_ticket_nr">
+                <!-- TODO create logic behind searching -->
+                <p >{% trans "Search by entering a ticket number:" %}</p>
+                <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
+                <p style="float:right">
+                    <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
+                </p>
             </div>
- 	    </div>
-		<div id='rightcol'>
-		<div id="search_by_ticket_nr">
-            		<!-- TODO create logic behind searching -->
-            		<p >{% trans "Search by entering a ticket number:" %}</p>
-            		<input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
-            		<p style="float:right">
-                		<input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
-            		</p>
-	    	</div>
-        	<div id="go_to_submit_report">
-            	<input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
-        	</div>
-	   </div>
-	</div>
-	<br/ style="clear:both;">
+            <div id="go_to_submit_report">
+                <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
+            </div>
+       </div>
+    </div>
 {% endblock %}

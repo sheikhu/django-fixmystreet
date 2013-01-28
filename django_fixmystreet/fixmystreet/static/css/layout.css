@@ -377,7 +377,7 @@ footer *{
 
 #content {
     min-height: 140px;
-    width: 100%;
+    /*width: 100%;*/
     /*padding: 10px 0;*/
 }
 
@@ -744,10 +744,8 @@ li img {
 }
 
 .warning_information_form {
-    width: 45%;
     padding: 15px;
     margin-bottom: 40px;
-    float:right;
 }
 
 .form-horizontal fieldset legend{
@@ -909,9 +907,6 @@ li img {
 
 /********* REPORT FORM LAYOUT ********/
 
-#report-form {
-    padding: 10px;
-}
 /* first step: instruction */
 #cursor-instructions {
     position: absolute;
@@ -944,7 +939,7 @@ li img {
     margin-left: 15px;
 }
 
-#search_results .report:hover{
+#search_results .report:focus, #search_results .report:hover, #search_results .report.active{
     /*border:2px solid black;*/
     background:#EEE;
 }
@@ -1266,48 +1261,30 @@ legend span {
     color:green;
 }
 
-.overview_div {
-    width: 48%;
+.bordered-box {
     border: 1px solid #DFDFDF;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0px 0px 3px 3px #DFDFDF;
+    margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.overview_div_left {
-    width: 45%;
-    border: 1px solid #DFDFDF;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0px 0px 3px 3px #DFDFDF;
-    margin-bottom: 10px;
-    float:left;
     position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
-.overview_div_left h1{
+.bordered-box h1{
    margin-left: 35px;
    font-size: x-large;
    margin-top: -30px;
 }
 
-.overview_div_right h1{
-   margin-left: 35px;
-   font-size: x-large;
-   margin-top: -30px;
-}
-
+.overview_div_left,
 .overview_div_right {
-    width: 45%;
-    border: 1px solid #DFDFDF;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0px 0px 3px 3px #DFDFDF;
     margin-bottom: 40px;
-    float:right;
-    position: relative;
+    padding: 20px;
 }
+
 #addFileDiv {
     padding-bottom: 15px;
 }

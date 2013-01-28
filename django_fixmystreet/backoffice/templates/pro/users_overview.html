@@ -26,7 +26,7 @@
 
 {% block content %}
 
-<div id='page_content_container'>
+<div class="row">
     <div id="user_type_filter">
         <ul>
             <li>
@@ -47,8 +47,36 @@
         </ul>
     </div>
 
+    <div class="list_users{% if user_form %} span4{% endif %}">
+        <div id='search_results'>
+            {% if request.fmsuser.leader or request.fmsuser.manager %}
+            <a class="report" href="{% url create_user user_type=user_type %}">
+                <h3><img src="{{STATIC_URL}}/images/create-new-user.png" alt"{% trans 'Create a new user' %}" /> {% trans 'Create a new user' %}</h3>
+            </a>
+            {% endif %}
+            {% for user in users %}
+            <a class="report {% if user_form.instance == user %}active{% endif %}" href="{% url edit_user user_id=user.id user_type=user_type %}">
+                <div class="left_search_result">
+                    <img src="{{ STATIC_URL }}images/{{ user.get_user_type }}.png"/>
+                </div>
+                <div class="right_search_result">
+                    {{ user.get_full_name }} / {{ user.telephone }}<br/>
+                    (
+                        {% if user.leader %}{% trans 'ENTITE' %}{% endif %}
+                        {% if user.manager %}{% trans 'GESTIONNAIRE' %}{% endif %}
+                        {% if user.agent %}{% trans 'AGENT' %}{% endif %}
+                        {% if user.contractor %}{% trans 'EXECUTEUR DE TRAVAUX' %}{% endif %}
+                        {% if user.applicant %}{% trans 'Applicant' %}{% endif %}
+                    )
+                </div>
+                <div class="next_image"></div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
     {% if user_form %}
-    <div id="leftcol">
+    <div class="span8">
         <form action="" method="POST" class="form-horizontal">
             <h1>
                 {%if user_form %}
@@ -68,34 +96,6 @@
         </form>
     </div>
     {% endif %}
-
-    <div id="{% if user_form %}rightcol{% else %}leftcol{% endif %}" class="list_users">
-        <div id='search_results'>
-            {% if request.fmsuser.leader or request.fmsuser.manager %}
-            <a class="report" href="{% url create_user user_type=user_type %}">
-                <h3><img src="{{STATIC_URL}}/images/create-new-user.png" alt"{% trans 'Create a new user' %} /> {% trans 'Create a new user' %}</h3>
-            </a>
-            {% endif %}
-            {% for user in users %}
-            <a class="report" href="{% url edit_user user_id=user.id user_type=user_type %}">
-                <p>
-                    <img src="{{ STATIC_URL }}images/{{ user.get_user_type }}.png"/>
-                    {{ user.get_full_name }} / {{ user.telephone }}
-                </p>
-                <p/>
-                    (
-                        {% if user.leader %}{% trans 'ENTITE' %}{% endif %}
-                        {% if user.manager %}{% trans 'GESTIONNAIRE' %}{% endif %}
-                        {% if user.agent %}{% trans 'AGENT' %}{% endif %}
-                        {% if user.contractor %}{% trans 'EXECUTEUR DE TRAVAUX' %}{% endif %}
-                        {% if user.applicant %}{% trans 'Applicant' %}{% endif %}
-                    )
-                </p>
-
-            </a>
-            {% endfor %}
-        </div>
-    </div>
 </div>
 
 
