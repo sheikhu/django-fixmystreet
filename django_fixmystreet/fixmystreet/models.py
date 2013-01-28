@@ -732,7 +732,7 @@ def report_notify(sender, instance, **kwargs):
             for recipient in report.contractor.workers.all():
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
-                    recipient=recipient
+                    recipient=recipient,
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()

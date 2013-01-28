@@ -634,7 +634,7 @@ function markAsDone(){
                 {% endif %}
             </div>
             <div id="pdf_report">
-                {% if report.responsible_manager.id == request.user.id or fms_user.leader or report.contractor == fms_user.organisation %}
+                {% if report.responsible_manager.id == request.user.id or fms_user.leader or fms_user.contractor %}
                     <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="btn" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf' %}</button>
                     <button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="btn" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf public' %}</button>
                 {% endif %}
