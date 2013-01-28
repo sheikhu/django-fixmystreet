@@ -68,7 +68,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -151,7 +150,7 @@ except ImportError:
 
 
 
-if ENVIRONMENT=="local" or ENVIRONMENT=="jenkins" or ENVIRONMENT=="dev" or ENVIRONMENT=="staging":
+if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     DEBUG = True
 
 else:
@@ -165,9 +164,9 @@ if ENVIRONMENT=="local":
         filemode = 'w'
     )
 
-if ENVIRONMENT=="dev" or ENVIRONMENT=="local" or ENVIRONMENT=="jenkins":
+if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     SITE_ID = 3
-    LANGUAGES +=  ('en', gettext('English')),
+    LANGUAGES += ('en', gettext('English')),
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2
