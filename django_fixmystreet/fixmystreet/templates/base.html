@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 {% load tags i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
@@ -7,7 +7,9 @@
 	{% endblock %}
         <!-- <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/> -->
 	<title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
-
+        <!--[if lt IE 9]>
+        <script src="{{ STATIC_URL }}lib/html5shiv.js"></script>
+        <![endif]-->
         {% block css %}
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap-responsive.min.css" />
