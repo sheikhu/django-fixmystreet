@@ -685,12 +685,13 @@ def report_notify(sender, instance, **kwargs):
 
             elif report.status == Report.APPLICANT_RESPONSIBLE:
                 #Applicant responsible
-                ReportNotification(
-                    content_template='send_report_assigned_to_app_contr',
-                    recipient=report.contractor.workers.all()[0],
-                    related=report,
-                    reply_to=report.responsible_manager.email
-                ).save()
+                for recipient in report.contractor.workers.all():
+                    ReportNotification(
+                        content_template='send_report_assigned_to_app_contr',
+                        recipient=recipient,
+                        related=report,
+                        reply_to=report.responsible_manager.email
+                    ).save()
                 for subscription in report.subscriptions.all():
                     ReportNotification(
                         content_template='send_report_changed_to_subscribers',
@@ -707,12 +708,13 @@ def report_notify(sender, instance, **kwargs):
 
             elif report.status == Report.CONTRACTOR_ASSIGNED:
                 #Contractor assigned
-                ReportNotification(
-                    content_template='send_report_assigned_to_app_contr',
-                    recipient=report.contractor.workers.all()[0],
-                    related=report,
-                    reply_to=report.responsible_manager.email
-                ).save()
+                for recipient in report.contractor.workers.all():
+                    ReportNotification(
+                        content_template='send_report_assigned_to_app_contr',
+                        recipient=recipient,
+                        related=report,
+                        reply_to=report.responsible_manager.email
+                    ).save()
                 for subscription in report.subscriptions.all():
                     ReportNotification(
                         content_template='send_report_changed_to_subscribers',
@@ -727,19 +729,21 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
         if report.__former['contractor']!= report.contractor:
-            ReportNotification(
-                content_template='send_report_assigned_to_app_contr',
-                recipient=report.contractor.workers.all()[0],
-                related=report,
-                reply_to=report.responsible_manager.email
-            ).save()
-            if report.__former['contractor']:
+            for recipient in report.contractor.workers.all():
                 ReportNotification(
-                    content_template='send_report_deassigned_to_app_contr',
-                    recipient=report.__former['contractor'].workers.all()[0],
+                    content_template='send_report_assigned_to_app_contr',
+                    recipient=recipient
                     related=report,
                     reply_to=report.responsible_manager.email
                 ).save()
+            if report.__former['contractor']:
+                for recipient in report.__former['contractor'].workers.all():
+                    ReportNotification(
+                        content_template='send_report_deassigned_to_app_contr',
+                        recipient=recipient,
+                        related=report,
+                        reply_to=report.responsible_manager.email
+                    ).save()
             for subscription in report.subscriptions.all():
                     ReportNotification(
                         content_template='send_report_changed_to_subscribers',
