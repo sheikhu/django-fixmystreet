@@ -190,7 +190,7 @@ function markAsDone(){
                 <td>
                     {{report.contractor.name}}
                     <br/>
-                    {% for contact_person in report.contractor.worlers.all %}
+                    {% for contact_person in report.contractor.workers.all %}
                         {{ contact_person.get_full_name }}
                         {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
                         <br/>

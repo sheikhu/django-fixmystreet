@@ -345,10 +345,9 @@ function markAsDone(){
                             <th>{% trans "Contractor/Applicant:" %}</th>
                             <td>
                                 {{report.contractor.name}}
-
+                                <br/>
                                 {% for contact_person in report.contractor.workers.all %}
-                                    {{contact_person.firstname}}
-                                    {{contact_person.last_name}}
+                                    {{ contact_person.get_full_name }}
                                     {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
                                      <br/>
                                 {% endfor %}
