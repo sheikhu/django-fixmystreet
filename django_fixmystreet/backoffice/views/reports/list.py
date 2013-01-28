@@ -36,6 +36,7 @@ def list(request, status):
     if (connectedUser.manager == True):
         reports = reports.filter(responsible_manager=connectedUser);
 
+
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
 
     if status == 'created':

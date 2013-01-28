@@ -1350,7 +1350,7 @@ msgstr ""
 #: templates/emails/send_subscription_to_subscriber/subject.txt:1
 #: templates/emails/subscribe/subject.txt:1
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
-msgstr "Fix My Street: abonnement aux mises à jour de l'incidentt"
+msgstr "Fix My Street: abonnement aux mises à jour de l'incident"
 
 #: templates/emails/subscribe/message.html:4
 #, python-format
@@ -1785,6 +1785,31 @@ msgstr "Aucun rapport pour ce numéro de ticket"
 msgid "You have subscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
+#: 
+msgid "seven_days"
+msgstr "< 7j"
+
+#:
+msgid "one_month"
+msgstr "8j - 1m"
+
+#:
+msgid "three_months"
+msgstr "1m - 3m"
+#:
+msgid "one_year"
+msgstr "3m - 1y"
+
+#:
+msgid "more_years"
+msgstr "> 1y"
+
+
+
+
+
+
+
 #~ msgid "Commune"
 #~ msgstr "Commune:"
 
@@ -1814,21 +1839,6 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #, fuzzy
 #~ msgid "Select a quality"
 #~ msgstr "Choisissez une catégorie"
-
-#~ msgid "seven_days"
-#~ msgstr "< 7j"
-
-#~ msgid "one_month"
-#~ msgstr "8j - 1m"
-
-#~ msgid "three_months"
-#~ msgstr "1m - 3m"
-
-#~ msgid "one_year"
-#~ msgstr "3m - 1y"
-
-#~ msgid "more_years"
-#~ msgstr "> 1y"
 
 #~ msgid "Validate"
 #~ msgstr "valider"
