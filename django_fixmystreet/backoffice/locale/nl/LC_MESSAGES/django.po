@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-28 14:45+0100\n"
+"POT-Creation-Date: 2013-01-28 17:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:48
@@ -239,7 +239,6 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: templates/pro/contractors_overview.html:52
-#, fuzzy
 msgid "Create a new contractor"
 msgstr "Gebruiker aanmaken"
 
@@ -568,8 +567,8 @@ msgid ""
 "                 "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
-"%(on)s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
+"s</strong>"
 
 #: templates/pro/reports/show.html:231
 #, python-format
@@ -589,8 +588,8 @@ msgid ""
 "               "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
-"%(on)s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
+"s</strong>"
 
 #: templates/pro/reports/show.html:249
 msgid "Location:"
@@ -721,6 +720,10 @@ msgstr "Afkeuren"
 #: templates/pro/reports/show.html:634
 msgid "Publish All"
 msgstr "Alles publiceren"
+
+#: templates/pro/reports/show.html:639
+msgid "Mark as done"
+msgstr "Markeer als behandeld"
 
 #: templates/pro/reports/show.html:645
 msgid "report pdf"
@@ -1187,9 +1190,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "Review reports"
 #~ msgstr "Rapporten bekijken"
-
-#~ msgid "Mark as done"
-#~ msgstr "Markeer als behandeld"
 
 #~ msgid "New Problems"
 #~ msgstr "Nieuwe problemen"

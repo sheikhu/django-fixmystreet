@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-28 14:45+0100\n"
+"POT-Creation-Date: 2013-01-28 17:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: forms.py:48
 msgid "Email"
@@ -241,12 +241,10 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: templates/pro/contractors_overview.html:52
-#, fuzzy
 msgid "Create a new contractor"
-msgstr "Créer un utilisateur"
+msgstr "Creer un executeur de travaux"
 
 #: templates/pro/home.html:23 templates/pro/reports/list.html:243
-#, fuzzy
 msgid "Unpublished"
 msgstr "Non publiés"
 
@@ -416,7 +414,6 @@ msgid "Users"
 msgstr ""
 
 #: templates/pro/users_overview.html:76
-#, fuzzy
 msgid "Create a new user"
 msgstr "Créer un utilisateur"
 
@@ -446,29 +443,24 @@ msgid "%(status)s Reports"
 msgstr "%(status)s Rapports"
 
 #: templates/pro/reports/list.html:220 templates/pro/reports/list.html:240
-#, fuzzy
 msgid "All reports"
-msgstr "Tous les incidentsr"
+msgstr "Tous les incidents"
 
 #: templates/pro/reports/list.html:223
-#, fuzzy
 msgid "Created reports"
 msgstr "Signaler un incident"
 
 #: templates/pro/reports/list.html:226
-#, fuzzy
 msgid "In progress reports"
 msgstr "En cours de traitement"
 
 #: templates/pro/reports/list.html:229
-#, fuzzy
 msgid "In progress and assigned reports"
 msgstr "En cours de traitement et assignés"
 
 #: templates/pro/reports/list.html:232
-#, fuzzy
 msgid "Closed reports"
-msgstr "Tous les incidentsr"
+msgstr "Tous les incidents"
 
 #: templates/pro/reports/list.html:237
 msgid "Filter the incidents by:"
@@ -523,7 +515,6 @@ msgid "All"
 msgstr "Tous"
 
 #: templates/pro/reports/list.html:338
-#, fuzzy
 msgid "Filtrer list of reports"
 msgstr "Filtrer la liste des incidents"
 
@@ -541,7 +532,7 @@ msgstr "Chercher"
 
 #: templates/pro/reports/list.html:350
 msgid "Report an incident"
-msgstr ""
+msgstr "Créer un incident"
 
 #: templates/pro/reports/new.html:4
 msgid "New Report"
@@ -726,6 +717,10 @@ msgstr "Rejeter"
 #: templates/pro/reports/show.html:634
 msgid "Publish All"
 msgstr "Tout publier"
+
+#: templates/pro/reports/show.html:639
+msgid "Mark as done"
+msgstr ""
 
 #: templates/pro/reports/show.html:645
 msgid "report pdf"

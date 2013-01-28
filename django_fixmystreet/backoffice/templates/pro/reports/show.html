@@ -255,7 +255,7 @@ function markAsDone(){
                 </tr>
                 <tr>
                	    <th>{% trans "Status:" %}</th>
-		    <td>{{ report.get_status_display }}<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
+		    <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
 		</tr>
 
                 {% if not report.is_in_progress%}
@@ -636,7 +636,7 @@ function markAsDone(){
                 {% endif %}
                 {% if report.is_in_progress %}
                     {% if report.is_markable_as_solved %}
-                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >Mark as done</button>
+                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</button>
                     {% endif %}
                 {% endif %}
             </div>
