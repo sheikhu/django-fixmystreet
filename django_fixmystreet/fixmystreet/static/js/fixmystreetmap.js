@@ -5,6 +5,20 @@ if (!('fms' in window)) {
     window.fms = {}
 }
 
+function cloneObj (obj) {
+    if('create' in Object) {
+        return Object.create(obj);
+    } else {
+        var target = {};
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                target[i] = obj[i];
+            }
+        }
+        return target;
+    }
+}
+
 (function(){
         var markerWidth = 30,
         markerHeight = 40,
@@ -28,19 +42,19 @@ if (!('fms' in window)) {
         urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
         apiLang = "fr",
         showControl = true,
-        markerStyle = Object.create(defaultMarkerStyle),
-        fixedMarkerStyle = Object.create(defaultMarkerStyle),
-        pendingMarkerStyle = Object.create(defaultMarkerStyle),
-        pendingExecutedMarkerStyle = Object.create(defaultMarkerStyle),
-        draggableMarkerStyle = Object.create(defaultMarkerStyle),
-        fixedMarkerStyleReg = Object.create(defaultMarkerStyle),
-        pendingMarkerStyleReg = Object.create(defaultMarkerStyle),
-        pendingExecutedMarkerStyleReg = Object.create(defaultMarkerStyle),
-        defaultMarkerStyleReg = Object.create(defaultMarkerStyle),
-        fixedMarkerStylePro = Object.create(defaultMarkerStyle),
-        pendingMarkerStylePro = Object.create(defaultMarkerStyle),
-        pendingExecutedMarkerStylePro = Object.create(defaultMarkerStyle),
-        defaultMarkerStylePro = Object.create(defaultMarkerStyle),
+        markerStyle = cloneObj(defaultMarkerStyle),
+        fixedMarkerStyle = cloneObj(defaultMarkerStyle),
+        pendingMarkerStyle = cloneObj(defaultMarkerStyle),
+        pendingExecutedMarkerStyle = cloneObj(defaultMarkerStyle),
+        draggableMarkerStyle = cloneObj(defaultMarkerStyle),
+        fixedMarkerStyleReg = cloneObj(defaultMarkerStyle),
+        pendingMarkerStyleReg = cloneObj(defaultMarkerStyle),
+        pendingExecutedMarkerStyleReg = cloneObj(defaultMarkerStyle),
+        defaultMarkerStyleReg = cloneObj(defaultMarkerStyle),
+        fixedMarkerStylePro = cloneObj(defaultMarkerStyle),
+        pendingMarkerStylePro = cloneObj(defaultMarkerStyle),
+        pendingExecutedMarkerStylePro = cloneObj(defaultMarkerStyle),
+        defaultMarkerStylePro = cloneObj(defaultMarkerStyle),
 
         markerStyle.externalGraphic = "/static/images/pin-red-XL.png",
         fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XL.png",
@@ -87,8 +101,8 @@ if (!('fms' in window)) {
                     ),
                 new OpenLayers.Control.Zoom({
 
-                }),
-            ],
+                })
+            ]
         });
 
         // this.map.events.on({
