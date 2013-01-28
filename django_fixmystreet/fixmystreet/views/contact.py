@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 
+from django.views.decorators.csrf import csrf_exempt
+
 from django_fixmystreet.fixmystreet.forms import ContactForm
 
 def thanks(request): 
