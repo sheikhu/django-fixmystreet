@@ -186,6 +186,7 @@ header {
     left:-55px;
     z-index: 1000;
     padding-top:20px;
+    min-height: 100px;
 }
 
 .loginblock{
@@ -1779,10 +1780,61 @@ table.report_overview_table th{
 }
 
 #messages {
-    left:1%;
     position: fixed;
     z-index: 1000000;
-    bottom:0px;
-    width: 94%;
+    bottom: 0px;
+    right: 20px;
+    /*width:94%;*/
+}
+
+.alert {
+    position: relative;
+    padding: 0;
+    text-shadow: none;
+    /*text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);*/
+    color: black;
+    overflow: hidden;
+}
+
+.alert-heading {
+    float: left;
+    display: block;
+    color: white;
+    min-width: 120px;
+    padding: 3px 8px;
+}
+
+.alert-message {
+    float: left;
+    display: block;
+    padding: 3px 28px 3px 8px;
+}
+
+.alert .close {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    opacity: 0.5;
+}
+.alert .close:hover {
+    opacity: 0.8;
+}
+
+.alert-error .alert-heading {
+    background: red;
+}
+
+.alert-success .alert-heading {
+    background: green;
+}
+
+.alert-error {
+    /*color: red;*/
+    border: red 3px solid;
+}
+
+
+.alert-success {
+    border: green 3px solid;
 }
 

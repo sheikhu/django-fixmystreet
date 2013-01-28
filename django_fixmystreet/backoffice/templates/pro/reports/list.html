@@ -216,7 +216,21 @@ function filterReports() {
 <article id="map">
 </article>
 <div id="page_content_container">
-    <h1>{% blocktrans %}{{status}} Reports{%endblocktrans%}</h1>
+    {% if status == "all" %}
+    <h1>{% trans 'All reports' %}</h1>
+    {% endif %}
+    {% if status == "created" %}
+    <h1>{% trans 'Created reports' %}</h1>
+    {% endif %}
+    {% if status == "in_progress" %}
+    <h1>{% trans 'In progress reports' %}</h1>
+    {% endif %}
+    {% if status == "in_progress_and_assigned" %}
+    <h1>{% trans 'In progress and assigned reports' %}</h1>
+    {% endif %}
+    {% if status == "closed" %}
+    <h1>{% trans 'Closed reports' %}</h1>
+    {% endif %}
     <div id="incident_filter">
     	<ul>
     		<li>

@@ -8,18 +8,6 @@ urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
     url(_(r'^$'), 'home',name='home_pro'),
 )
 
-urlpatterns += patterns('',
-    # (r'^accounts/', include('registration.backends.simple.urls')),
-    url(_(r'^accounts/login/$'), 'django.contrib.auth.views.login', {'template_name': 'home.html'}, name='login'),
-    url(_(r'^accounts/change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
-    url(_(r'^logout/$'),
-            auth_views.logout_then_login,
-            {'login_url':'/'},
-            name='auth_logout'
-    ),
-)
-
-
 urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show_pro'),
     url(_(r'^report/new$'), 'new',name='report_new_pro'),
@@ -73,6 +61,12 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
+    # (r'^accounts/', include('registration.backends.simple.urls')),
+    url(_(r'^login/$'), 'login_view', name='login'),
+    url(_(r'^logout/$'),'logout_view', name='logout'),
+    url(_(r'^change_password/$'), 'change_password', name='password_change'),
+    #url(_(r'^change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
+
     url(r'^users/$',    'list_users', {'user_type': 'users'},    name='list_users'),
     url(r'^agents/$',   'list_users', {'user_type': 'agents'},   name='list_users'),
     url(r'^managers/$', 'list_users', {'user_type': 'managers'}, name='list_users'),
