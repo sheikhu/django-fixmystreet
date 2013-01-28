@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2013-01-28 17:57+0100\n"
+=======
+"POT-Creation-Date: 2013-01-28 17:03+0100\n"
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -239,7 +243,15 @@ msgstr "Envoyer"
 msgid "Delete"
 msgstr "Supprimer"
 
+<<<<<<< HEAD
 #: templates/pro/home.html:24 templates/pro/reports/list.html:190
+=======
+#: templates/pro/contractors_overview.html:52
+msgid "Create a new contractor"
+msgstr "Creer un executeur de travaux"
+
+#: templates/pro/home.html:23 templates/pro/reports/list.html:243
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Unpublished"
 msgstr "Non publiés"
 
@@ -404,7 +416,15 @@ msgstr ""
 msgid "User overview"
 msgstr "Voir les utilisateurs"
 
+<<<<<<< HEAD
 #: templates/pro/users_overview.html:54
+=======
+#: templates/pro/users_overview.html:57
+msgid "Users"
+msgstr ""
+
+#: templates/pro/users_overview.html:76
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Create a new user"
 msgstr "Créer un utilisateur"
 
@@ -437,6 +457,7 @@ msgstr ""
 msgid "%(status)s Reports"
 msgstr "%(status)s Rapports"
 
+<<<<<<< HEAD
 #: templates/pro/reports/list.html:167 templates/pro/reports/list.html:187
 msgid "All reports"
 msgstr "Tous les incidents"
@@ -454,6 +475,25 @@ msgid "In progress and assigned reports"
 msgstr "En cours de traitement et assignés"
 
 #: templates/pro/reports/list.html:179
+=======
+#: templates/pro/reports/list.html:220 templates/pro/reports/list.html:240
+msgid "All reports"
+msgstr "Tous les incidents"
+
+#: templates/pro/reports/list.html:223
+msgid "Created reports"
+msgstr "Signaler un incident"
+
+#: templates/pro/reports/list.html:226
+msgid "In progress reports"
+msgstr "En cours de traitement"
+
+#: templates/pro/reports/list.html:229
+msgid "In progress and assigned reports"
+msgstr "En cours de traitement et assignés"
+
+#: templates/pro/reports/list.html:232
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Closed reports"
 msgstr "Tous les incidents"
 
@@ -509,7 +549,11 @@ msgstr "Facultatif"
 msgid "All"
 msgstr "Tous"
 
+<<<<<<< HEAD
 #: templates/pro/reports/list.html:285
+=======
+#: templates/pro/reports/list.html:338
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Filtrer list of reports"
 msgstr "Filtrer la liste des incidents"
 
@@ -713,11 +757,19 @@ msgstr "Rejeter"
 msgid "Publish All"
 msgstr "Tout publier"
 
+<<<<<<< HEAD
 #: templates/pro/reports/show.html:632
 msgid "Mark as done"
 msgstr ""
 
 #: templates/pro/reports/show.html:638
+=======
+#: templates/pro/reports/show.html:639
+msgid "Mark as done"
+msgstr ""
+
+#: templates/pro/reports/show.html:645
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "report pdf"
 msgstr "Rapport PDF"
 

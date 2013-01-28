@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2013-01-28 17:57+0100\n"
+=======
+"POT-Creation-Date: 2013-01-28 17:03+0100\n"
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -490,7 +494,11 @@ msgstr "^rapporten/$"
 msgid "^export_file/reports/((?P<emitter_format>.+))/"
 msgstr ""
 
+<<<<<<< HEAD
 #: templates/about.html:4 templates/base.html:95 templates/base.html.py:154
+=======
+#: templates/about.html:4 templates/base.html:89 templates/base.html.py:148
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 #: templates/faq/show.html:3 templates/faq/show.html.py:7
 msgid "About"
 msgstr "Over ons"
@@ -580,6 +588,11 @@ msgstr "Fix My Street Beheer"
 msgid "Log out"
 msgstr "Aanmelden"
 
+#: templates/base.html:53
+#, fuzzy
+msgid "Connected"
+msgstr "Aangemaakt"
+
 #: templates/base.html:56
 #, fuzzy
 msgid "Connected"
@@ -589,15 +602,24 @@ msgstr "Aangemaakt"
 msgid "Sign in"
 msgstr "Aanmelden"
 
+<<<<<<< HEAD
 #: templates/base.html:64
 msgid "An error occurred when login. Please try again."
 msgstr ""
 
 #: templates/base.html:72
+=======
+#: templates/base.html:61
+msgid "An error occurred when login. Please try again."
+msgstr ""
+
+#: templates/base.html:66
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 #, fuzzy
 msgid "Login"
 msgstr "Aanmelden"
 
+<<<<<<< HEAD
 #: templates/base.html:86 templates/base.html.py:109
 msgid "Submit a Report"
 msgstr "Een rapport doorsturen"
@@ -607,10 +629,22 @@ msgid "View Reports"
 msgstr "Toon rapporten"
 
 #: templates/base.html:100 templates/base.html.py:159
+=======
+#: templates/base.html:80 templates/base.html.py:103
+msgid "Submit a Report"
+msgstr "Een rapport doorsturen"
+
+#: templates/base.html:84 templates/base.html.py:107
+msgid "View Reports"
+msgstr "Toon rapporten"
+
+#: templates/base.html:94 templates/base.html.py:153
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 #: templates/contact/new.html:4 templates/contact/new.html.py:23
 msgid "Contact Us"
 msgstr "Contacteer ons"
 
+<<<<<<< HEAD
 #: templates/base.html:118
 msgid "Configuration"
 msgstr "Configuratie"
@@ -632,6 +666,29 @@ msgid "Change your password"
 msgstr "Paswoord wijzigen"
 
 #: templates/base.html:197
+=======
+#: templates/base.html:112
+msgid "Configuration"
+msgstr "Configuratie"
+
+#: templates/base.html:119
+msgid "Users"
+msgstr "Gebruikers"
+
+#: templates/base.html:126
+msgid "Contractors"
+msgstr "Aannemers"
+
+#: templates/base.html:134
+msgid "Managers dispatching"
+msgstr "Toekenning verantwoordelijke managers"
+
+#: templates/base.html:141
+msgid "Change your password"
+msgstr "Paswoord wijzigen"
+
+#: templates/base.html:189
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
@@ -639,11 +696,19 @@ msgstr ""
 "Een intiatief van Brussel Mobiliteit in samenwerking met de gemeenten en de "
 "brusselse partner instellingen"
 
+<<<<<<< HEAD
 #: templates/base.html:200
 msgid "Copyright 2011, CIRB"
 msgstr "Created by CIRB, 2013"
 
 #: templates/base.html:201 templates/term_of_use.html:4
+=======
+#: templates/base.html:192
+msgid "Copyright 2011, CIRB"
+msgstr "Created by CIRB, 2013"
+
+#: templates/base.html:193 templates/term_of_use.html:4
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Terms of Use"
 msgstr "Voorwaarden"
 
@@ -1272,7 +1337,11 @@ msgid ""
 msgstr ""
 
 #: templates/promotions/show.html:4 templates/reports/list.html:4
+<<<<<<< HEAD
 #: templates/reports/list.html.py:13 templates/reports/list.html:75
+=======
+#: templates/reports/list.html.py:13 templates/reports/list.html:72
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Reports for"
 msgstr "Incidenten voor"
 
@@ -1645,11 +1714,19 @@ msgstr "Beledigend? Ongepast? Contacteer ons"
 msgid "Subscribers:"
 msgstr "Abonnees"
 
+<<<<<<< HEAD
 #: templates/reports/show.html:345
 msgid "Your email"
 msgstr "Uw email"
 
 #: templates/reports/show.html:346
+=======
+#: templates/reports/show.html:357
+msgid "Your email"
+msgstr "Uw email"
+
+#: templates/reports/show.html:358
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Subscribe"
 msgstr "Abonneer"
 

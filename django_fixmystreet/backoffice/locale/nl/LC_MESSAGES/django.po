@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2013-01-28 17:57+0100\n"
+=======
+"POT-Creation-Date: 2013-01-28 17:03+0100\n"
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -238,7 +242,15 @@ msgstr "Doorsturen"
 msgid "Delete"
 msgstr "Verwijderen"
 
+<<<<<<< HEAD
 #: templates/pro/home.html:24 templates/pro/reports/list.html:190
+=======
+#: templates/pro/contractors_overview.html:52
+msgid "Create a new contractor"
+msgstr "Gebruiker aanmaken"
+
+#: templates/pro/home.html:23 templates/pro/reports/list.html:243
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Unpublished"
 msgstr "Gepubliceerd"
 
@@ -717,11 +729,19 @@ msgstr "Afkeuren"
 msgid "Publish All"
 msgstr "Alles publiceren"
 
+<<<<<<< HEAD
 #: templates/pro/reports/show.html:632
 msgid "Mark as done"
 msgstr "Markeer als behandeld"
 
 #: templates/pro/reports/show.html:638
+=======
+#: templates/pro/reports/show.html:639
+msgid "Mark as done"
+msgstr "Markeer als behandeld"
+
+#: templates/pro/reports/show.html:645
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "report pdf"
 msgstr "PDF rapport"
 

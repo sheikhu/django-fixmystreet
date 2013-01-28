@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2013-01-28 17:57+0100\n"
+=======
+"POT-Creation-Date: 2013-01-28 17:03+0100\n"
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -494,7 +498,11 @@ msgstr ""
 msgid "^export_file/reports/((?P<emitter_format>.+))/"
 msgstr ""
 
+<<<<<<< HEAD
 #: templates/about.html:4 templates/base.html:95 templates/base.html.py:154
+=======
+#: templates/about.html:4 templates/base.html:89 templates/base.html.py:148
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 #: templates/faq/show.html:3 templates/faq/show.html.py:7
 msgid "About"
 msgstr "A propos"
@@ -647,6 +655,11 @@ msgstr "Fix My Street:"
 msgid "Log out"
 msgstr "Se connecter"
 
+#: templates/base.html:53
+#, fuzzy
+msgid "Connected"
+msgstr "Créé"
+
 #: templates/base.html:56
 #, fuzzy
 msgid "Connected"
@@ -656,6 +669,7 @@ msgstr "Créé"
 msgid "Sign in"
 msgstr "Accès réservé"
 
+<<<<<<< HEAD
 #: templates/base.html:64
 msgid "An error occurred when login. Please try again."
 msgstr ""
@@ -673,10 +687,30 @@ msgid "View Reports"
 msgstr "Voir tous les incidents"
 
 #: templates/base.html:100 templates/base.html.py:159
+=======
+#: templates/base.html:61
+msgid "An error occurred when login. Please try again."
+msgstr ""
+
+#: templates/base.html:66
+msgid "Login"
+msgstr "Se connecter"
+
+#: templates/base.html:80 templates/base.html.py:103
+msgid "Submit a Report"
+msgstr "Signaler un incident"
+
+#: templates/base.html:84 templates/base.html.py:107
+msgid "View Reports"
+msgstr "Voir tous les incidents"
+
+#: templates/base.html:94 templates/base.html.py:153
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 #: templates/contact/new.html:4 templates/contact/new.html.py:23
 msgid "Contact Us"
 msgstr "Contact"
 
+<<<<<<< HEAD
 #: templates/base.html:118
 msgid "Configuration"
 msgstr "Configuration"
@@ -698,6 +732,29 @@ msgid "Change your password"
 msgstr "Modifier le mot de passe"
 
 #: templates/base.html:197
+=======
+#: templates/base.html:112
+msgid "Configuration"
+msgstr "Configuration"
+
+#: templates/base.html:119
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: templates/base.html:126
+msgid "Contractors"
+msgstr "Exécuteur de travaux"
+
+#: templates/base.html:134
+msgid "Managers dispatching"
+msgstr "Dispatching"
+
+#: templates/base.html:141
+msgid "Change your password"
+msgstr "Modifier le mot de passe"
+
+#: templates/base.html:189
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
@@ -707,11 +764,19 @@ msgstr ""
 "target='_blank'>Bruxelles Mobilité</a> en collaboration avec les communes et "
 "les institutions bruxelloises partenaires"
 
+<<<<<<< HEAD
 #: templates/base.html:200
 msgid "Copyright 2011, CIRB"
 msgstr "Created by CIRB, 2013"
 
 #: templates/base.html:201 templates/term_of_use.html:4
+=======
+#: templates/base.html:192
+msgid "Copyright 2011, CIRB"
+msgstr "Created by CIRB, 2013"
+
+#: templates/base.html:193 templates/term_of_use.html:4
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
@@ -768,7 +833,11 @@ msgstr "Toutes les communes"
 msgid "Search"
 msgstr "Rechercher"
 
+<<<<<<< HEAD
 #: templates/home.html:104
+=======
+#: templates/home.html:105
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Enter the report ticket:"
 msgstr "Entrez le numéro d'incident:"
 
@@ -776,11 +845,19 @@ msgstr "Entrez le numéro d'incident:"
 msgid "Ticket number..."
 msgstr "Numéro de l'incident"
 
+<<<<<<< HEAD
 #: templates/home.html:106
 msgid "Access Ticket"
 msgstr "Accéder àl' incident"
 
 #: templates/home.html:120
+=======
+#: templates/home.html:107
+msgid "Access Ticket"
+msgstr "Accéder àl' incident"
+
+#: templates/home.html:119
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Report Filed"
 msgstr "Incident enregistré"
 
@@ -1399,7 +1476,11 @@ msgstr ""
 "d'activation suivant:\n"
 
 #: templates/promotions/show.html:4 templates/reports/list.html:4
+<<<<<<< HEAD
 #: templates/reports/list.html.py:13 templates/reports/list.html:75
+=======
+#: templates/reports/list.html.py:13 templates/reports/list.html:72
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Reports for"
 msgstr "Incidents pour"
 
@@ -1568,11 +1649,19 @@ msgstr "Données personnelles:"
 msgid "Contact information:"
 msgstr "Vos coordonnées:"
 
+<<<<<<< HEAD
 #: templates/reports/new.html:317
 msgid "Visualize:"
 msgstr "Valider"
 
 #: templates/reports/new.html:318
+=======
+#: templates/reports/new.html:316
+msgid "Visualize:"
+msgstr "Valider"
+
+#: templates/reports/new.html:317
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Visualize an overview of the created incident report."
 msgstr ""
 "Créer un aperçu de la fiche d'incident créée en validant vos informations."
@@ -1635,7 +1724,11 @@ msgstr "continuer"
 msgid "Incident overview:"
 msgstr "Aperçu de votre rapport d'incident:"
 
+<<<<<<< HEAD
 #: templates/reports/new.html:377
+=======
+#: templates/reports/new.html:376
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Return to incident"
 msgstr "Signaler un incident"
 
@@ -1725,7 +1818,11 @@ msgstr "Status:"
 msgid "Applicant:"
 msgstr "Impétrant"
 
+<<<<<<< HEAD
 #: templates/reports/show.html:190
+=======
+#: templates/reports/show.html:202
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Responsible:"
 msgstr "Responsable:"
 
@@ -1778,11 +1875,19 @@ msgstr "Signaler un abus"
 msgid "Subscribers:"
 msgstr "Abonnés:"
 
+<<<<<<< HEAD
 #: templates/reports/show.html:345
 msgid "Your email"
 msgstr "Votre email"
 
 #: templates/reports/show.html:346
+=======
+#: templates/reports/show.html:357
+msgid "Your email"
+msgstr "Votre email"
+
+#: templates/reports/show.html:358
+>>>>>>> 3de339780af8d784162114e63ebbdf367f080c85
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
