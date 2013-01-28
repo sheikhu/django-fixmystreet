@@ -186,6 +186,7 @@ header {
     left:-55px;
     z-index: 1000;
     padding-top:20px;
+    min-height: 100px;
 }
 
 .loginblock{
