@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 17:45+0100\n"
+"POT-Creation-Date: 2013-01-28 10:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #: forms.py:48
 msgid "Email"
@@ -687,31 +687,31 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: templates/pro/reports/show.html:629
+#: templates/pro/reports/show.html:626
 msgid "Validate all"
 msgstr "Tout valider"
 
-#: templates/pro/reports/show.html:636
+#: templates/pro/reports/show.html:633
 msgid "Publish"
 msgstr "Approuver"
 
-#: templates/pro/reports/show.html:637
+#: templates/pro/reports/show.html:634
 msgid "Reject"
 msgstr "Rejeter"
 
-#: templates/pro/reports/show.html:638
+#: templates/pro/reports/show.html:635
 msgid "Publish All"
 msgstr "Tout publier"
 
-#: templates/pro/reports/show.html:644
+#: templates/pro/reports/show.html:646
 msgid "report pdf"
 msgstr "Rapport PDF"
 
-#: templates/pro/reports/show.html:645
+#: templates/pro/reports/show.html:647
 msgid "report pdf public"
 msgstr ""
 
-#: templates/pro/reports/show.html:648
+#: templates/pro/reports/show.html:650
 msgid "Export Csv"
 msgstr ""
 

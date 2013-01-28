@@ -622,9 +622,6 @@ function markAsDone(){
                     {% if not fms_user.contractor %}
                         <button onclick="window.location = '{% url report_close_pro report.id %}'" class="btn">Cloturer</button>
                     {% endif %}
-                    {% if report.is_markable_as_solved %}
-                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >Mark as done</button>
-                    {% endif %}
                     {% if not fms_user.contractor %}
                         <button class="btn" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
                             {% endif %}
@@ -636,6 +633,11 @@ function markAsDone(){
                         <button onclick="window.location = '{% url report_accept_pro report.id %}'" class="btn" >{% trans 'Publish' %}</button>
                         <button onclick="refuse();" class="btn">{% trans 'Reject' %}</button>
                         <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="btn">{% trans 'Publish All' %}</button>
+                    {% endif %}
+                {% endif %}
+                {% if report.is_in_progress %}
+                    {% if report.is_markable_as_solved %}
+                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >Mark as done</button>
                     {% endif %}
                 {% endif %}
             </div>

@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 17:45+0100\n"
+"POT-Creation-Date: 2013-01-28 10:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:48
@@ -24,7 +24,7 @@ msgstr "Email"
 
 #: forms.py:144
 msgid "User type"
-msgstr ""
+msgstr "Gebruikerstype"
 
 #: forms.py:145
 msgid "Agent"
@@ -185,7 +185,7 @@ msgstr "Wachtwoord aanpassen?"
 
 #: templates/pro/change_password.html:11
 msgid "Error"
-msgstr ""
+msgstr "Fout"
 
 #: templates/pro/contractor_create.html:4 templates/pro/user_create.html:19
 #: templates/pro/user_create.html.py:43
@@ -193,12 +193,10 @@ msgid "Create user"
 msgstr "Gebruiker aanmaken"
 
 #: templates/pro/contractor_create.html:11
-#, fuzzy
 msgid "Contractors in"
 msgstr "Aannemer"
 
 #: templates/pro/contractor_create.html:18
-#, fuzzy
 msgid "Create contractor"
 msgstr "Aannemer"
 
@@ -214,7 +212,6 @@ msgstr "Aannemer"
 
 #: templates/pro/contractor_create.html:26
 #: templates/pro/contractors_overview.html:40
-#, fuzzy
 msgid "User"
 msgstr "Gebruikersnaam:"
 
@@ -223,7 +220,6 @@ msgid "User overview:"
 msgstr "Overzicht gebruikers"
 
 #: templates/pro/contractors_overview.html:30
-#, fuzzy
 msgid "Contractors"
 msgstr "Aannemer"
 
@@ -243,9 +239,8 @@ msgid "Create a new contractor"
 msgstr "Gebruiker aanmaken"
 
 #: templates/pro/home.html:23 templates/pro/reports/list.html:230
-#, fuzzy
 msgid "Unpublished"
-msgstr "Publiceer"
+msgstr "Gepubliceerd"
 
 #: templates/pro/home.html:24 templates/pro/reports/list.html:233
 msgid "In progress"
@@ -253,7 +248,7 @@ msgstr "In behandeling"
 
 #: templates/pro/home.html:25 templates/pro/reports/list.html:239
 msgid "Closed"
-msgstr ""
+msgstr "Gesloten"
 
 #: templates/pro/login.html:11
 msgid "Your username and password didn't match. Please try again."
@@ -392,11 +387,11 @@ msgstr "Geen bestand"
 
 #: templates/pro/user_create.html:26 templates/pro/users_overview.html:34
 msgid "Collaborators in"
-msgstr ""
+msgstr "Medewerkers in"
 
 #: templates/pro/user_create.html:31 templates/pro/users_overview.html:39
 msgid "Agents"
-msgstr "Agents"
+msgstr "Agenten"
 
 #: templates/pro/user_create.html:36 templates/pro/users_overview.html:44
 msgid "Managers"
@@ -408,9 +403,8 @@ msgid "User overview"
 msgstr "Overzicht gebruikers"
 
 #: templates/pro/users_overview.html:57
-#, fuzzy
 msgid "Users"
-msgstr "Posters"
+msgstr "Gebruikers"
 
 #: templates/pro/users_overview.html:76
 msgid "Create a new user"
@@ -443,7 +437,7 @@ msgstr ""
 
 #: templates/pro/reports/list.html:224
 msgid "Filter the incidents by:"
-msgstr ""
+msgstr "Filter de incidenten door:"
 
 #: templates/pro/reports/list.html:227
 msgid "All reports"
@@ -454,9 +448,8 @@ msgid "In progress and assigned"
 msgstr "In behandeling en toegewezen"
 
 #: templates/pro/reports/list.html:248 templates/pro/reports/show.html:186
-#, fuzzy
 msgid "create_report"
-msgstr "^gebruikeraanmaken"
+msgstr "Rapporteer een nieuw incident"
 
 #: templates/pro/reports/list.html:264 templates/pro/reports/show.html:202
 msgid "No problems have been reported in this area."
@@ -479,9 +472,8 @@ msgid "All communes..."
 msgstr "Alle gemeenten"
 
 #: templates/pro/reports/list.html:310
-#, fuzzy
 msgid "Search street"
-msgstr "Zoek"
+msgstr "Zoek straat"
 
 #: templates/pro/reports/list.html:313
 msgid "Results"
@@ -489,7 +481,7 @@ msgstr "Resultaten"
 
 #: templates/pro/reports/list.html:318
 msgid "Within a distance of"
-msgstr ""
+msgstr "Binnen een afstand van"
 
 #: templates/pro/reports/list.html:318
 msgid "Optional"
@@ -500,13 +492,12 @@ msgid "All"
 msgstr "Alle"
 
 #: templates/pro/reports/list.html:325
-#, fuzzy
 msgid "Filtrer list of reports"
-msgstr "Vul het rapport in"
+msgstr "Filter rapportenlijst"
 
 #: templates/pro/reports/list.html:330
 msgid "Search by entering a ticket number:"
-msgstr "Zoek op ticket:"
+msgstr "Zoek op incident nummer:"
 
 #: templates/pro/reports/list.html:332
 msgid "Insert your ticket number here"
@@ -555,6 +546,9 @@ msgid ""
 "strong> on <strong>%(on)s</strong>\n"
 "                 "
 msgstr ""
+"\n"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:231
 #, python-format
@@ -573,6 +567,9 @@ msgid ""
 "strong> on <strong>%(on)s</strong>\n"
 "               "
 msgstr ""
+"\n"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:249
 msgid "Location:"
@@ -688,31 +685,31 @@ msgstr ""
 msgid "Send"
 msgstr "Doorsturen"
 
-#: templates/pro/reports/show.html:629
+#: templates/pro/reports/show.html:626
 msgid "Validate all"
 msgstr "Alles bevestigen"
 
-#: templates/pro/reports/show.html:636
+#: templates/pro/reports/show.html:633
 msgid "Publish"
 msgstr "Goedkeuren"
 
-#: templates/pro/reports/show.html:637
+#: templates/pro/reports/show.html:634
 msgid "Reject"
 msgstr "Afkeuren"
 
-#: templates/pro/reports/show.html:638
+#: templates/pro/reports/show.html:635
 msgid "Publish All"
 msgstr "Alles publiceren"
 
-#: templates/pro/reports/show.html:644
+#: templates/pro/reports/show.html:646
 msgid "report pdf"
 msgstr "PDF rapport"
 
-#: templates/pro/reports/show.html:645
+#: templates/pro/reports/show.html:647
 msgid "report pdf public"
 msgstr "Publiek PDF rapport"
 
-#: templates/pro/reports/show.html:648
+#: templates/pro/reports/show.html:650
 msgid "Export Csv"
 msgstr "Export Csv"
 
@@ -1157,3 +1154,18 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "report"
 #~ msgstr "rapport"
+
+msgid "seven_days"
+msgstr "< 7 dagen"
+
+msgid "one_month"
+msgstr "8 dagen - 1 maand"
+
+msgid "three_months"
+msgstr "1 maand - 3 maanden"
+
+msgid "one_year"
+msgstr "3 maanden - 1 jaar"
+
+msgid "more_years"
+msgstr "> 1 jaar"

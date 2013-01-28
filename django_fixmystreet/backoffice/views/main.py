@@ -13,7 +13,6 @@ def home(request, location = None, error_msg =None):
         request.LANGUAGE_CODE = request.user.fmsuser.last_used_language.lower()
         return HttpResponseRedirect(reverse("home_pro"))
     #wards = Ward.objects.all().order_by('name')
-
     #Default language
     if (not request.LANGUAGE_CODE in ['fr', 'nl', 'en']):
         local_lng = 'fr'
