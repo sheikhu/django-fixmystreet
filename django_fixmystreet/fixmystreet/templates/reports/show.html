@@ -86,10 +86,12 @@ function markAsDone(){
     }
 </style>
 {% endblock %}
+
+{% block map %}
+<article id="map"></article>
+{% endblock %}
+
 {% block content %}
-
-
-
 <div id="divMarkAsDone" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -104,36 +106,22 @@ function markAsDone(){
     </div>
 </div>
 
-<article id="map"></article>
 <!-- ######################### -->
 <!-- # MAIN CONTENT DEFINITION -->
 <!-- ######################### -->
-<div id="page_content_container">
+<div class="row">
 
-{% block pageHeader %}
-
-    {% endblock %}
-
-
-<div class="overview_div_left">
-    <h2>
-        <div style="float:right;margin-top:-23px">
-            <table class="reportActionButtons">
-            <tr>
-                {% if report.is_in_progress %}
-                <td>
-                    {% if not report.status == report.SOLVED %}
-                    <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</a>
-                    {% else %}
-                    <button onclick="" class="btn" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
-                    <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
-                    {% endif %}
-                </td>
-                {% endif %}
-            </tr>
-        </table>
+<div class="span6 bordered-box overview_div_left">
+    <div class="pull-right">
+        {% if report.is_in_progress %}
+            {% if not report.status == report.SOLVED %}
+            <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</a>
+            {% else %}
+            <button onclick="" class="btn" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
+            <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
+            {% endif %}
+        {% endif %}
     </div>
-    </h2>
     <!-- ######### -->
     <!-- IS FIXED  -->
     <!-- ######### -->
@@ -346,7 +334,7 @@ function markAsDone(){
     </div>
 
     {% if report.is_in_progress %}
-    <div class="overview_div_right">
+    <div class="span6 bordered-box overview_div_right">
         <!-- ################ -->
         <!-- SUBSCRIBER BLOCK -->
         <!-- ################ -->

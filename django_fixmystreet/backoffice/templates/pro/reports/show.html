@@ -142,8 +142,13 @@ function markAsDone(){
 {% block css %}
 {{ block.super }}
 {% endblock %}
+
+{% block map %}
+<article id="map"></article>
+{% endblock %}
+
 {% block content %}
-    <div id="divMarkAsDone" class="modal hide fade" role="dialog">
+<div id="divMarkAsDone" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_fix_pro report.id %}?is_fixed=True" method="post" >
@@ -165,21 +170,9 @@ function markAsDone(){
         </form>
     </div>
 </div>
-<article id="map"></article>
-<div id="page_content_container">
 
-{% block pageHeader %}
-    <h1>
-	<!-- ########################### -->
-	<!-- # DISPLAY REPORT CATEGORY # -->
-	<!-- ########################### -->
-
-        <div style="float:right;margin-top:-23px">
-
-        </div>
-    </h1>
-{% endblock %}
-    <div id="nearby-reports" style="float:left;max-width:45%;">
+<div class="row">
+    <div id="nearby-reports" class="span6">
             {% if reports %}
                 <div id='search_results'>
                 <a id="create_report_fastlink" href="/pro/" class="report">
@@ -202,7 +195,7 @@ function markAsDone(){
                 <p>{% trans "No problems have been reported in this area." %}</p>
             {% endif %}
         </div>
-	<div class="overview_div" style="float:right;max-width:45%;">
+	<div  class="span6 bordered-box overview_div_right">
         <h1>
             {% trans "Report Ticket" %} {{report.get_ticket_number}}
         </h1>

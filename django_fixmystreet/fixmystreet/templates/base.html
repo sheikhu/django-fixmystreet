@@ -10,6 +10,7 @@
 
         {% block css %}
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.qtip.min.css" />
 
@@ -35,7 +36,7 @@
              <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
             {% endifequal %}
 
-	    {% block lng %}
+            {% block lng %}
             <section>
                 {% get_available_languages as LANGUAGES %}
                 {% for l in LANGUAGES %}
@@ -63,6 +64,9 @@
 
                         <form method="post" action="{% url login %}" class="form-horizontal">
                             {% include "_form_placeholder.html" with form=login_form %}
+                            {% if request.REQUEST.next %}
+                                <input type="hidden" name="next" value="{{ request.REQUEST.next }}" />
+                            {% endif %}
                             <input type="submit" value="{% trans 'Login' %}" class='btn'/>
                         </form>
                     </div>
@@ -161,10 +165,12 @@
             {% endblock %}
         </header>
 
-        <section id="content">
-            {% block header-banner %}
-            {% endblock %}
+        {% block header-banner %}
+        {% endblock %}
+        {% block map %}
+        {% endblock %}
 
+        <section id="content" class="container">
             {% if messages %}
             <div id="messages">
                 {% for message in messages %}

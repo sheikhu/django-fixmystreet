@@ -1,53 +1,15 @@
-{% extends "pro/base.html" %}
+{% extends "reports/list.html" %}
 {% load i18n tags %}
 {% block title %}{% blocktrans %}{{status}} Reports{%endblocktrans%}{% endblock %}
 {% block script %}
 {{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
-
 <script>
 
 $(document).ready(function() {
-
-	var $form = $('#report_form');
-	var $map = $('#map-bxl');
-
-	// $map.fmsMap({
-	// 	apiLang:'{{ LANGUAGE_CODE }}',
- //        localizeUrl: 'http://{{ SERVICE_GIS }}/urbis/Rest/Localize/getaddressfromxy',
- //        urbisUrl: 'http://{{ GEOSERVER }}/geoserver/wms',
- //        origin:{
-	// 		x:{{ pnt.x }},
-	// 		y:{{ pnt.y }}
-	// 	}
-	// });
-	// {% for report in reports %}
-	// $map.fmsMap('addReport', {{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}});
-	// {% endfor %}
-	// $map.fmsMap('addIndicator',{'x':{{ pnt.x }}, 'y':{{ pnt.y }}});
-
-	// $map.bind('reportselected',function(evt, point, report){
-	// 	window.location.assign('{{ report.get_absolute_url_pro }}');
-	// });
-
-	fms.currentMap = new fms.Map('map', {
-        apiLang:     LANGUAGE_CODE,
-        localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    URBIS_URL + '/geoserver/wms',
-        {% if reports.0 %}
-        origin:{
-            x:{{ reports.0.point.x }},
-            y:{{ reports.0.point.y }}
-        }
-        {% endif %}
-    });
-    {% for report in reports %}
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
-    {% endfor %}
-
-	/*Hide the edition form*/
-	$('#report_form').hide();
-	$('#nearby-reports').show();
+    var $form = $('#report_form');
+    /*Hide the edition form*/
+    $('#report_form').hide();
+    $('#nearby-reports').show();
 
     //Highlight the selected filter
     $("#incident_filter").find("span[id$="+window.location.href.substr(window.location.href.lastIndexOf('/') + 1).toString().split("?")[0]+"]").addClass("selected");
@@ -87,32 +49,19 @@ function getUrlForPageNumber(number) {
     window.location= url;
 }
 
-/**
- * Method called when searching report per ticket number.
- */
-function search_per_ticket() {
-    searchValue = $('#input-search').val();
-    //Block to search per ticket number
-    if (searchValue && searchValue.length > 0) {
-        valToSearch = searchValue;
-        //On this page character # is not required as the search zone is dedicated.
-        if (searchValue[0] == "#")
-            valToSearch = searchValue.substring(1);
-        window.location = "{% url search_ticket_pro %}?report_id="+valToSearch;
-    }
-}
+
 
 /**
  * Activate the rayon or not
  */
 /*function activateRayon() {
-	var rayonActivated = $('#rayonCheckbox').attr('checked');
-	
+    var rayonActivated = $('#rayonCheckbox').attr('checked');
+
         if (rayonActivated == 'checked') {
-		$('#rayon').prop('disabled',null);
-	} else {
-		$('#rayon').prop('disabled','disabled');
-	}
+        $('#rayon').prop('disabled',null);
+    } else {
+        $('#rayon').prop('disabled','disabled');
+    }
 }*/
 
 /**
@@ -123,19 +72,19 @@ function applyFilterReports() {
     $("#search_by_commune_or_address_section_distance").hide();
     var selectedFilterElements = $('#proposal').find('a.selected');
     if (selectedFilterElements.length > 0) {
-        var valueX = $(selectedFilterElements).attr('x'); 
+        var valueX = $(selectedFilterElements).attr('x');
         var valueY = $(selectedFilterElements).attr('y');
         var valueStreet = $(selectedFilterElements).attr('street');
         var valueStreetNumber = $(selectedFilterElements).attr('streetNumber');
         var valueRayon = $('#rayon').val();
         var rayonChecked = valueRayon != "";
         if (rayonChecked) {
-   		window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
-   	console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
-	} else {
-   		window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
-   	console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber)+"&page=1";
-	}
+           window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
+       console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
+    } else {
+           window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
+       console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber)+"&page=1";
+    }
     }
 }
 
@@ -192,8 +141,8 @@ function filterReports() {
               }
               //If only 1 result the select it automatically
               if  (counter == 1) {
-		highlightFilterSelection('0');
-	      }
+        highlightFilterSelection('0');
+          }
          }
          else
          {
@@ -207,15 +156,13 @@ function filterReports() {
               $(proposal).html('<p class="error-msg">' + response.status + '</p>').slideDown();
             }
          }
-	});
+    });
 }
 </script>
 {% endblock %}
 
 {% block content %}
-<article id="map">
-</article>
-<div id="page_content_container">
+<div class="row">
     {% if status == "all" %}
     <h1>{% trans 'All reports' %}</h1>
     {% endif %}
@@ -232,29 +179,29 @@ function filterReports() {
     <h1>{% trans 'Closed reports' %}</h1>
     {% endif %}
     <div id="incident_filter">
-    	<ul>
-    		<li>
-    			{% trans 'Filter the incidents by:' %}
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'all' %}?page=1"><img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px"> <span id="all">{% trans 'All reports' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'created'%}?page=1"><img src="{{STATIC_URL}}images/pin-red-L.png"> <span id="created">{% trans 'Unpublished' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'in_progress' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'in_progress_and_assigned' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'closed' %}?page=1"><img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span></a>
-    		</li>
-    	</ul>
+        <ul>
+            <li>
+                {% trans 'Filter the incidents by:' %}
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'all' %}?page=1"><img src="{{STATIC_URL}}images/pin-fixmystreet-XL.png" width="40px" height="54px"> <span id="all">{% trans 'All reports' %}</span></a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'created'%}?page=1"><img src="{{STATIC_URL}}images/pin-red-L.png"> <span id="created">{% trans 'Unpublished' %}</span></a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'in_progress' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span></a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'in_progress_and_assigned' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span></a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'closed' %}?page=1"><img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span></a>
+            </li>
+        </ul>
     </div>
-	<div id="leftcol">
-		<div id="nearby-reports">
+    <div class="span6">
+        <div id="nearby-reports">
             {% if reports %}
                 <div id='search_results'>
                 <a id="create_report_fastlink" href="/pro/" class="report">
@@ -265,91 +212,91 @@ function filterReports() {
                 {% endfor %}
                 </div>
                 <div class="pagination pagination-centered">
-                	<ul>
-                		<li><a class="pagination_prev"></a></li>
+                    <ul>
+                        <li><a class="pagination_prev"></a></li>
                         {% for number in pages_list %}
-                		<li id="page_{{number}}" ><a href="javascript:getUrlForPageNumber({{number}});">{{number}}</a></li>
+                        <li id="page_{{number}}" ><a href="javascript:getUrlForPageNumber({{number}});">{{number}}</a></li>
                         {% endfor %}
-                		<li><a class="pagination_next"></a></li>
-                	</ul>
+                        <li><a class="pagination_next"></a></li>
+                    </ul>
                 </div>
             {% else %}
                 <p>{% trans "No problems have been reported in this area." %}</p>
             {% endif %}
-		</div>
+        </div>
 
-		<form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
+        <form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
             <h2>
                 {% trans "Fill the report" %}
             </h2>
-			<table class='form'>
-				<tr>
-					<th></th>
-					<td id="required_note">{% trans "* This fields are required" %}</td>
-				</tr>
-				{{ report_form.as_table }}
-				<tr>
-					<td></td>
-					<td><div id='secondary_container'></div></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td align="right">
+            <table class='form'>
+                <tr>
+                    <th></th>
+                    <td id="required_note">{% trans "* This fields are required" %}</td>
+                </tr>
+                {{ report_form.as_table }}
+                <tr>
+                    <td></td>
+                    <td><div id='secondary_container'></div></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="right">
                         <p>
                             <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
                         </p>
 
                     </td>
-				</tr>
-			</table>
-		</form>
-	</div>
-	<div id="rightcol">
-	<div id="search_by_commune_or_address">
-	    <div id="search_by_commune_or_address_section_street">
-            <!-- TODO create logic behind searching -->
-            <p>1. {% trans "Search by commune or address:" %}</p>
-            <div class="input-append">
-    		<input type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" class="span5" id="input-commune-search"><br /><br />
-            {% csrf_token %}
-            <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
-                <option value="">{% trans "All communes..." %}</option>
-                {% for zip in zipcodes %}
-                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                {% endfor %}
-            </select>
-	    &nbsp;&nbsp;
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="span6">
+        <div id="search_by_commune_or_address">
+            <div id="search_by_commune_or_address_section_street">
+                <!-- TODO create logic behind searching -->
+                <p>1. {% trans "Search by commune or address:" %}</p>
+                <div class="input-append">
+                <input type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" class="span5" id="input-commune-search"><br /><br />
+                {% csrf_token %}
+                <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
+                    <option value="">{% trans "All communes..." %}</option>
+                    {% for zip in zipcodes %}
+                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                    {% endfor %}
+                </select>
+            &nbsp;&nbsp;
 
-    		<button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
-  	    </div>
-                        <div id="search_by_commune_or_address_section_results" style="display:none">
-              <p>2. {% trans "Results" %}</p>
-              <ul id="proposal" class="inline"> </ul>
-	    </div>
+                <button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
+              </div>
+                            <div id="search_by_commune_or_address_section_results" style="display:none">
+                  <p>2. {% trans "Results" %}</p>
+                  <ul id="proposal" class="inline"> </ul>
             </div>
-            <div id="search_by_commune_or_address_section_distance" style="display:none">
-            <p>3. {% trans "Within a distance of" %} ({% trans 'Optional' %})</p>
-            <select id="rayon" class="input-large">
-                <option value="">{% trans 'All'%}</option>
-                <option value="50">50m</option>
-                <option value="100">100m</option>
-                <option value="200">200m</option>
-            </select>
-            <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer list of reports' %}" onclick="javascript:applyFilterReports()">
-	    </div>
-	</div>
-	<div id="search_by_ticket_nr">
-            <!-- TODO create logic behind searching -->
-            <p >{% trans "Search by entering a ticket number:" %}</p>
-            <div class="input-append">
-		<input id="input-search" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" class="span3" id="input-commune-search">
-	<button type="button" class="btn" onclick="javascript:search_per_ticket()" id="filterReports">{% trans 'Search' %}</button>
-</div>
-	</div>
+                </div>
+                <div id="search_by_commune_or_address_section_distance" style="display:none">
+                <p>3. {% trans "Within a distance of" %} ({% trans 'Optional' %})</p>
+                <select id="rayon" class="input-large">
+                    <option value="">{% trans 'All'%}</option>
+                    <option value="50">50m</option>
+                    <option value="100">100m</option>
+                    <option value="200">200m</option>
+                </select>
+                <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer list of reports' %}" onclick="javascript:applyFilterReports()">
+            </div>
+        </div>
+        <div id="search_by_ticket_nr">
+                <!-- TODO create logic behind searching -->
+                <p >{% trans "Search by entering a ticket number:" %}</p>
+                <div class="input-append">
+            <input id="input-search" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" class="span3" id="input-commune-search">
+        <button type="button" class="btn" onclick="javascript:search_per_ticket()" id="filterReports">{% trans 'Search' %}</button>
+    </div>
+    </div>
         <div id="go_to_submit_report">
             <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/pro/'"/>
         </div>
-            
-	</div>
+
+    </div>
 </div>
 {% endblock %}

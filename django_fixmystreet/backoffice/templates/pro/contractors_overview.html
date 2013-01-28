@@ -20,18 +20,33 @@
 {% block title %}{% trans "User overview:"%}{%if editForm %}: {{editForm.username.value}}{%endif%}{% endblock %}
 
 {% block content %}
-<div id='page_content_container'>
+<div class='row'>
+    <div class="list_contractors{% if user_form %} span4{% endif %}">
+        <div id='search_results'>
+            <a class="report" href="{% url create_contractor %}">
+                <h3>+ {% trans 'Create a new contractor' %}</h3>
+            </a>
+
+            {% for contractor in contractors %}
+            <a class="report" href="{% url edit_contractor contractor.id %}">
+                <div class="left_search_result">
+                    <img src="{{ STATIC_URL }}images/contractor.png" />
+                </div>
+                <div class="right_search_result">
+                    {{ contractor.name }}
+                </div>
+                <div class="next_image"></div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
 
     {% if contractor_form %}
-    <h1>
-        {%if user_form %}
-            <a href="mailto:{{ user_form.instance.email }}">{{ contractor_form.instance.name }} - {{ user_form.instance.get_full_name }}</a>
-        {% else %}
-            {% trans "Contractors" %}
-        {% endif %}
-    </h1>
-    <div id="leftcol">
+    <div class="span8">
         <form action="" method="POST" class="form-horizontal">
+            <h1>
+                <a href="mailto:{{ user_form.instance.email }}">{{ contractor_form.instance.name }} - {{ user_form.instance.get_full_name }}</a>
+            </h1>
             <fieldset>
                 <legend>{% trans "Contractor" %}</legend>
                 {% include "_form_horizontal.html" with form=contractor_form %}
@@ -45,24 +60,6 @@
         </form>
     </div>
     {%endif%}
-
-    <div id="{% if contractor_form %}rightcol{% else %}leftcol{% endif %}" class="list_contractors">
-        <div id='search_results'>
-            <a class="report" href="{% url create_contractor %}">
-                <h3>+ {% trans 'Create a new contractor' %}</h3>
-            </a>
-
-            {% for contractor in contractors %}
-            <a class="report" href="{% url edit_contractor contractor.id %}">
-                <p>
-                    <img src="{{ STATIC_URL }}images/contractor.png"/>
-                    {{ contractor.name }}
-                </p>
-            </a>
-            {% endfor %}
-        </div>
-
-    </div>
 </div>
 
 

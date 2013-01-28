@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
+
 {% block script %}
 {{ block.super }}
 
@@ -163,7 +164,7 @@ function createOverview(){
             overview_select.before("<i>"+overview_select.find('option[value="'+$(value).val()+'"]').parent().attr("label")+": </i>");
         }
         var vals = [];
-        $.each(overview_select.find('option'),function(i, el) { 
+        $.each(overview_select.find('option'),function(i, el) {
             vals[$(el).val()]=el.text; });
         overview_select.after("<i>"+vals[$(value).val()]+'</i>');
         overview_select.remove();
@@ -200,9 +201,9 @@ function createOverview(){
     });
     $("#validate_report_popup").find("#id_comment-text").attr("disabled",'disabled');
 }
-
 </script>
 <script src="{{STATIC_URL}}js/new_report.js"></script>
+{% endblock %}
 
 
 {% block specific_scripts %}
@@ -220,126 +221,126 @@ $(function(){
 
 </script>
 {% endblock %}
+
+{% block map %}
+<article id="map">
+    <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
+        <a class="olControlZoomIn olButton"></a>
+    </div>
+    <div id="cursor-instructions" class="block highlighted dragmeblock">
+        {% trans "Drag me to change my location." %}
+    </div>
+</article>
 {% endblock %}
 
 {% block content %}
-    <article id="map">
-        <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
-            <a class="olControlZoomIn olButton"></a>
+<form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal row">
+    {% csrf_token %}
+    <input id="validate" type="hidden" name="validate" maxlength="75">
+    <div id="create_form_left" class="span6 bordered-box overview_div_left">
+        <div class="report_step_number_1"></div>
+        <div class="inactive_overlay_form_overview"></div>
+        <h1>{% trans "Submitting a report" %}</h1>
+        <div id="required-note" >{% trans "* This fields are required" %}</div>
+        <div id="view_nearby_reports">
+            {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
+            <br/>
+            <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
         </div>
-        <div id="cursor-instructions" class="block highlighted dragmeblock">
-            {% trans "Drag me to change my location." %}
-        </div>
-    </article>
-    <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-        {% csrf_token %}
-        <input id="validate" type="hidden" name="validate" maxlength="75">
-        <div id="page_content_container">
-            <div id="create_form_left" class="overview_div_left">
-                <div class="report_step_number_1">
-                </div>
-                <div class="inactive_overlay_form_overview">
-                </div>
-                <h1>{% trans "Submitting a report" %}</h1>
-                <div id="required-note" >{% trans "* This fields are required" %}</div>
-                <div id="view_nearby_reports">
-                        {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
-                        <br/>
-                        <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
-                </div>
 
-                    <div class="control-group">
-                        <span class="control-label">{% trans "Address" %}</span>
-                        <div class="controls">
-                            <span id="address-text"></span>
-                            <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
-                        </div>
-                    </div>
-                    {% block report_form %}
-                    <fieldset>
-                        <legend>{% trans "Incident category:" %}</legend>
-                        {% include "_form_horizontal.html" with form=report_form %}
-                    </fieldset>
-
-                    {% endblock %}
-                    {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
-                    <fieldset>
-                        <legend>{% trans 'Files' %}</legend>
-                        <div id="required-note">{% trans 'Optimal File Size (1200X800)'%}</div>
-                        <div id="required-note">{% trans 'Supported formats' %}: jpeg, png, pdf, word, excel</div>
-                        <div id="form-files">
-                            {{ file_formset.management_form }}
-                            {# file_formset.errors #}
-
-                            <div id="file-form-template">
-                                <img class="thumbnail" />
-                                {{ file_formset.empty_form.reportattachment_ptr }}
-                                {{ file_formset.empty_form.file }}
-                                {{ file_formset.empty_form.title }}
-                                {{ file_formset.empty_form.file_creation_date }}
-                            </div>
-                        </div>
-                        <div class="file-upload-button">
-                            <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">    {% trans 'Add file' %}</a>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>{% trans 'Comment' %}</legend>
-                        {{ comment_form.text }}
-                        {# comment_form.text.errors #}
-                    </fieldset>
-                    {% endif %}
-                </div>
-            {% if citizen_form %}
-            <div id="user_information_form" class="overview_div_right">
-                <div class="report_step_number_2"></div>
-                <div class="inactive_overlay_form_overview"></div>
-                <h1>{% trans 'Personal information:' %}</h1>
-                <div id="required-note" >{% trans "* This fields are required" %}</div>
-                {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
-                    {# If the status allow such interactions #}
-                    <fieldset>
-                        <legend>{% trans 'Contact information:' %}</legend>
-                        {% include "_form_horizontal.html" with form=citizen_form %}
-                    </fieldset>
-                {% endif %}
+        <div class="control-group">
+            <span class="control-label">{% trans "Address" %}</span>
+            <div class="controls">
+                <span id="address-text"></span>
+                <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
             </div>
+        </div>
+        {% block report_form %}
+        <fieldset>
+            <legend>{% trans "Incident category:" %}</legend>
+            {% include "_form_horizontal.html" with form=report_form %}
+        </fieldset>
+
+        {% endblock %}
+        {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
+        <fieldset>
+            <legend>{% trans 'Files' %}</legend>
+            <div id="required-note">{% trans 'Optimal File Size (1200X800)'%}</div>
+            <div id="required-note">{% trans 'Supported formats' %}: jpeg, png, pdf, word, excel</div>
+            <div id="form-files">
+                {{ file_formset.management_form }}
+                {# file_formset.errors #}
+
+                <div id="file-form-template">
+                    <img class="thumbnail" />
+                    {{ file_formset.empty_form.reportattachment_ptr }}
+                    {{ file_formset.empty_form.file }}
+                    {{ file_formset.empty_form.title }}
+                    {{ file_formset.empty_form.file_creation_date }}
+                </div>
+            </div>
+            <div class="file-upload-button">
+                <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">    {% trans 'Add file' %}</a>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{% trans 'Comment' %}</legend>
+            {{ comment_form.text }}
+            {# comment_form.text.errors #}
+        </fieldset>
+        {% endif %}
+    </div>
+    <div class="span6">
+        {% if citizen_form %}
+        <div id="user_information_form" class="bordered-box overview_div_right">
+            <div class="report_step_number_2"></div>
+            <div class="inactive_overlay_form_overview"></div>
+            <h1>{% trans 'Personal information:' %}</h1>
+            <div id="required-note" >{% trans "* This fields are required" %}</div>
+            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
+                {# If the status allow such interactions #}
+                <fieldset>
+                    <legend>{% trans 'Contact information:' %}</legend>
+                    {% include "_form_horizontal.html" with form=citizen_form %}
+                </fieldset>
             {% endif %}
-            <div id="validate_form" class="overview_div_right">
-                {% if not BACKOFFICE %}
-                <div class="report_step_number_3"></div>
-                {% else %}
-                <div class="report_step_number_2"></div>
-                {% endif %}
-                <div class="inactive_overlay_form_overview"></div>
-                <fieldset>
-                    <legend>{% trans 'Visualize:' %}</legend>
-                    {% trans 'Visualize an overview of the created incident report.' %}
-                    <br/>
-                    <a id="validate_form_button" onclick="createOverview();$('#validate_report_popup').modal();" class="btn"> {% trans 'Visualize' %}</a>
-                </fieldset>
-            </div>
-            <div id="confirm_form" class="overview_div_right">
-                {% if not BACKOFFICE %}
-                <div class="report_step_number_4"></div>
-                {% else %}
-                <div class="report_step_number_3"></div>
-                {% endif %}
-                <div class="inactive_overlay_form_overview"></div>
-                <fieldset>
-                    <legend>{% trans 'Confirm:' %}</legend>
-                    <!--a id="confirmation_edit_button" href="javascript:toggleFormSteps();" class="btn gray_left"> {% trans 'Edit' %}</a-->
-                    <input id="confirmation_button" type="submit" class='btn' value="{% trans 'Confirm' %}" />
-                </fieldset>
-            </div>
-            </div>
-            <div class="warning_information_form">
-            <fieldset>
-                    <legend>{% trans 'Confidentiality:' %}</legend>
-                    <span>{% trans 'We garantee the confidentiality of all given information. Conform with law (see site  <a href="http://www.ejustice.just.fgov.be">Monitoring Belgium</a>), you have a read acces to your data and also a modify and deletion right of them.' %}</span>
-                </fieldset>
         </div>
-        </form>
+        {% endif %}
+        <div id="validate_form" class="bordered-box overview_div_right">
+            {% if not BACKOFFICE %}
+            <div class="report_step_number_3"></div>
+            {% else %}
+            <div class="report_step_number_2"></div>
+            {% endif %}
+            <div class="inactive_overlay_form_overview"></div>
+            <fieldset>
+                <legend>{% trans 'Visualize:' %}</legend>
+                {% trans 'Visualize an overview of the created incident report.' %}
+                <br/>
+                <a id="validate_form_button" onclick="createOverview();$('#validate_report_popup').modal();" class="btn"> {% trans 'Visualize' %}</a>
+            </fieldset>
+        </div>
+        <div id="confirm_form" class="bordered-box overview_div_right">
+            {% if not BACKOFFICE %}
+            <div class="report_step_number_4"></div>
+            {% else %}
+            <div class="report_step_number_3"></div>
+            {% endif %}
+            <div class="inactive_overlay_form_overview"></div>
+            <fieldset>
+                <legend>{% trans 'Confirm:' %}</legend>
+                <!--a id="confirmation_edit_button" href="javascript:toggleFormSteps();" class="btn gray_left"> {% trans 'Edit' %}</a-->
+                <input id="confirmation_button" type="submit" class='btn' value="{% trans 'Confirm' %}" />
+            </fieldset>
+        </div>
+        <div class="warning_information_form">
+            <fieldset>
+                <legend>{% trans 'Confidentiality:' %}</legend>
+                <span>{% trans 'We garantee the confidentiality of all given information. Conform with law (see site  <a href="http://www.ejustice.just.fgov.be">Monitoring Belgium</a>), you have a read acces to your data and also a modify and deletion right of them.' %}</span>
+            </fieldset>
+        </div>
+    </div>
+</form>
 
         <div id="confirmation_popup" class="modal hide fade" role="dialog">
             <div class="modal-header">
