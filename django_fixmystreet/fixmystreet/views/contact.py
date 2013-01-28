@@ -8,6 +8,7 @@ def thanks(request):
      return render_to_response("contact/thanks.html", {},
                 context_instance=RequestContext(request))
 
+@csrf_exempt
 def new(request):
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
