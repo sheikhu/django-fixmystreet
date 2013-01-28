@@ -1212,9 +1212,15 @@ def send_notification(sender, instance, **kwargs):
         reply_to = instance.reply_to
     recipients = (instance.recipient.email,)
 
+    if instance.recipient.is_pro():
+        mail_url = instance.related.get_absolute_url_pro()
+    else:
+        mail_url = instance.related.get_absolute_url()
+
     data = {
         "related": instance.related,
-        "SITE_URL": Site.objects.get_current().domain
+        "SITE_URL": Site.objects.get_current().domain,
+        "mail_url": mail_url
     }
 
     subject, html, text = '', '', ''

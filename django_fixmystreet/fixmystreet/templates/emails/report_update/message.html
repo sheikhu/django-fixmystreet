@@ -12,7 +12,7 @@
 </div>
 
 <p>{% trans "For more information, see the full report at:" %}</p>
-<p><a href="http://{{ SITE_URL }}{{ update.report.get_absolute_url }}">http://{{ SITE_URL }}{{ update.report.get_absolute_url }}</a></p>
+<p><a href="http://{{ SITE_URL }}{{mail_url}}">http://{{ SITE_URL }}{{ mail_url }}</a></p>
 {% if unsubscribe_url %}
 {% blocktrans %}
 <p>You are receiving this email because you subscribed to updates for this report

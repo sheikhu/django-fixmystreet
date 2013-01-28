@@ -1,28 +1,32 @@
 {% load i18n %}
-<h2>{% trans 'Report overview:' %}</h2>
-
-<p>{% trans 'Address:'%} {{report.address}}</p>
-<p>{% trans 'Postal code:'%} {{report.postalcode}}</p>
-<p>{% trans 'Type:'%} {{report.display_category}}</p>
-<p>{% trans 'Creator:'%} 
+<hr/>
+<h2><u>{% trans 'Report overview:' %}</u></h2>
+<p><strong>{% trans 'Address:'%}</strong> {{report.address}}</p>
+<p><strong>{% trans 'Postal code:'%}</strong> {{report.postalcode}}</p>
+<p><strong>{% trans 'Type:'%}</strong> {{report.display_category}}</p>
+<p><strong>{% trans 'Creator:'%}</strong>
 	{% if report.created_by %}
 	{{report.created_by.username}}
 	{% else %}
 	{{report.citizen.username}}
 	{% endif %}
 </p>
-<p>{% trans 'Created at:'%} {{report.created|date}}</p>
+<p><strong>{% trans 'Created at:'%}</strong> {{report.created|date}}</p>
 {% if report.comments.all %}
-<h3> {% trans 'Extra comments'%} </h3>
+
+<hr/>
+<h3><u>{% trans 'Extra comments'%}</u></h3>
 {% for  comment in report.comments.all %}
-<p>{% trans 'Comment:' %} {{comment.text}}</p>
+<p><strong>{% trans 'Comment:' %}</strong> {{comment.text}}</p>
 {% endfor %}
 {% endif %}
 {% if report.files.all %}
-<h3> {% trans 'Extra files'%} </h3>
-{% for  file in report.files.all %}
+
+<hr/>
+<h3><u>{% trans 'Extra files'%}</u></h3>
+{% for file in report.files.all %}
 {% if file.is_public %}
-<p>{% trans 'Title:'%} {{file.title}}</p>
+<p><strong>{% trans 'Title:'%}</strong> {{file.title}}</p>
 {% if file.file_type == 4 %}
 <p><img src="cid:image{{file.reportattachment_ptr_id}}"></p>
 {% endif %}

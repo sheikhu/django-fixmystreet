@@ -6,7 +6,7 @@
 {% get_language_info for "nl" as langNL %}
 {% get_language_info for "fr" as langFR %}
 {% language langFR.code %}
-{% blocktrans with reportType=related.display_category date=related.created|date reportId=related.id url=related.get_absolute_url_pro %}
+{% blocktrans with reportType=related.display_category date=related.created|date reportId=related.id url=mail_url %}
 <p>A report of type {{reportType}} created at {{date}} is assigned to you. If you want to see the content of the report, click the following link: <a href="http://{{SITE_URL}}{{url}}">http://{{SITE_URL}}{{url}}</a> .</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" with report=related %}
@@ -15,7 +15,7 @@
 -------------------------------------------------
 <br/>
 {% language langNL.code %}
-{% blocktrans with reportType=related.display_category date=related.created|date reportId=related.id url=related.get_absolute_url_pro %}
+{% blocktrans with reportType=related.display_category date=related.created|date reportId=related.id url=mail_url %}
 <p>A report of type {{reportType}} created at {{date}} is assigned to you. If you want to see the content of the report, click the following link: <a href="http://{{SITE_URL}}{{url}}">http://{{SITE_URL}}{{url}}</a> .</p>
 {% endblocktrans %}
 {% include "emails/report_show.html" with report=related %}
