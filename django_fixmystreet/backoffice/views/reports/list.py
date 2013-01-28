@@ -45,7 +45,7 @@ def list(request, status):
     elif status == 'in_progress_and_assigned':
         reports = reports.filter(contractor__isnull=False).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     elif status == 'closed':
-        reports = Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED)
+        reports = reports.filter(status__in=Report.REPORT_STATUS_CLOSED)
     # else: # all
 
     #reports = reports.distance(pnt).order_by('distance')

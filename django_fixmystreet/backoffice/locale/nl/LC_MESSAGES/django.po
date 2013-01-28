@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 17:24+0100\n"
+"POT-Creation-Date: 2013-01-25 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -303,7 +303,7 @@ msgid "Category"
 msgstr "Categorie"
 
 #: templates/pro/pdf.html:133 templates/pro/pdf.html.py:464
-#: templates/pro/reports/show.html:414
+#: templates/pro/reports/show.html:422
 msgid "Creation Date"
 msgstr "Aangemaakt op:"
 
@@ -352,7 +352,7 @@ msgid "Comments"
 msgstr "Commentaar:"
 
 #: templates/pro/pdf.html:390 templates/pro/pdf.html.py:436
-#: templates/pro/reports/show.html:411
+#: templates/pro/reports/show.html:419
 msgid "Anonymous"
 msgstr ""
 
@@ -648,25 +648,34 @@ msgstr "Privaat?"
 msgid "Confidentiel?"
 msgstr "Confidentieel?"
 
-#: templates/pro/reports/show.html:407
-#, fuzzy
-msgid "Posted by"
-msgstr "Poster"
-
-#: templates/pro/reports/show.html:421
-msgid "on"
-msgstr "om"
-
-#: templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:394
 #, fuzzy
 msgid "delete file"
 msgstr "Extra bestanden"
 
-#: templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:394
 msgid "Please confirm file deletion"
 msgstr "Bevestig je bestand verwijdering"
 
-#: templates/pro/reports/show.html:508
+#: templates/pro/reports/show.html:415
+#, fuzzy
+msgid "Posted by"
+msgstr "Poster"
+
+#: templates/pro/reports/show.html:429
+msgid "on"
+msgstr "om"
+
+#: templates/pro/reports/show.html:511
+#, fuzzy
+msgid "delete comment"
+msgstr "Extra commentaren"
+
+#: templates/pro/reports/show.html:511
+msgid "Please confirm comment deletion"
+msgstr "Bevestig je commentaar verwijdering"
+
+#: templates/pro/reports/show.html:516
 #, python-format
 msgid ""
 "\n"
@@ -674,15 +683,6 @@ msgid ""
 "%(on)s</strong>\n"
 "                                "
 msgstr ""
-
-#: templates/pro/reports/show.html:516
-#, fuzzy
-msgid "delete comment"
-msgstr "Extra commentaren"
-
-#: templates/pro/reports/show.html:516
-msgid "Please confirm comment deletion"
-msgstr "Bevestig je commentaar verwijdering"
 
 #: templates/pro/reports/show.html:609
 msgid "Send"
@@ -739,7 +739,7 @@ msgstr "U bent succesvol geabonneerd voor updates"
 msgid "Contractor has been linked with existing user {0}"
 msgstr ""
 
-#: views/reports/main.py:111
+#: views/reports/main.py:107
 msgid "No incident found with this ticket number"
 msgstr "Geen report gevonden voor dit ticket nummer"
 

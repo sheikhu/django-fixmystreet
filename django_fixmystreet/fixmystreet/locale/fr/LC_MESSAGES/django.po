@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 17:24+0100\n"
+"POT-Creation-Date: 2013-01-25 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -979,39 +979,33 @@ msgid "Postal code:"
 msgstr "Code postal"
 
 #: templates/emails/report_show.html:6
-#: templates/emails/send_report_closed_to_subscribers/message.txt:10
-#, fuzzy
-msgid "Description:"
-msgstr "Question"
-
-#: templates/emails/report_show.html:7
 #: templates/emails/send_report_closed_to_subscribers/message.txt:11
 msgid "Type:"
 msgstr ""
 
-#: templates/emails/report_show.html:8
+#: templates/emails/report_show.html:7
 #: templates/emails/send_report_closed_to_subscribers/message.txt:12
 msgid "Creator:"
 msgstr ""
 
-#: templates/emails/report_show.html:15
+#: templates/emails/report_show.html:14
 #: templates/emails/send_report_closed_to_subscribers/message.txt:19
 msgid "Created at:"
 msgstr ""
 
-#: templates/emails/report_show.html:17
+#: templates/emails/report_show.html:16
 msgid "Extra comments"
 msgstr ""
 
-#: templates/emails/report_show.html:19
+#: templates/emails/report_show.html:18
 msgid "Comment:"
 msgstr ""
 
-#: templates/emails/report_show.html:23
+#: templates/emails/report_show.html:22
 msgid "Extra files"
 msgstr ""
 
-#: templates/emails/report_show.html:26
+#: templates/emails/report_show.html:25
 msgid "Title:"
 msgstr ""
 
@@ -1202,7 +1196,7 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to see the content of the report, click the follwing link: %"
-"(SITE_URL)s/report/%(reportId)s .</p>\n"
+"(SITE_URL)s%(url)s .</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_assigned_to_app_contr/subject.txt:1
@@ -1249,20 +1243,35 @@ msgid ""
 "Report overview:\n"
 msgstr ""
 
+#: templates/emails/send_report_closed_to_subscribers/message.txt:10
+#, fuzzy
+msgid "Description:"
+msgstr "Question"
+
 #: templates/emails/send_report_closed_to_subscribers/subject.txt:1
 #, fuzzy
 msgid "Fix My Street: Report closed."
 msgstr "Fix My Street Bruxelles"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:9
+#, python-format
+msgid ""
+"\n"
+"<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
+"If you want to accept this report, click the following link: %(SITE_URL)s/fr/"
+"pro/report/%(reportId)s/accept. If you want to see the content of the "
+"report, click the follwing link: %(SITE_URL)s%(url)s .(A mail is "
+"automatically sent to the creator of this report.) </p>\n"
+msgstr ""
+
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
 #, python-format
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
-"If you want to accept this report, click the following link: %(SITE_URL)s/"
-"report/%(reportId)s/accept. If you want to see the content of the report, "
-"click the follwing link: %(SITE_URL)s/report/%(reportId)s .(A mail is "
+"If you want to accept this report, click the following link: %(SITE_URL)s/nl/"
+"pro/report/%(reportId)s/accept. If you want to see the content of the "
+"report, click the follwing link: %(SITE_URL)s%(url)s .(A mail is "
 "automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 
@@ -1291,8 +1300,7 @@ msgstr "Fix My Street Bruxelles"
 msgid ""
 "\n"
 "<p>The report with type %(reportType)s created at %(date)s is marked as "
-"fixed. You can consult the report at %(SITE_URL)s/pro/report/%(reportId)s.</"
-"p>\n"
+"fixed. You can consult the report at %(SITE_URL)s%(url)s.</p>\n"
 "<p> The user gave the following motivation for marking the report as done:</"
 "p>\n"
 "%(motivation)s\n"

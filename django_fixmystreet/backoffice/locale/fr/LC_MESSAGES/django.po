@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 17:24+0100\n"
+"POT-Creation-Date: 2013-01-25 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -304,7 +304,7 @@ msgid "Category"
 msgstr "Catégorie:"
 
 #: templates/pro/pdf.html:133 templates/pro/pdf.html.py:464
-#: templates/pro/reports/show.html:414
+#: templates/pro/reports/show.html:422
 msgid "Creation Date"
 msgstr ""
 
@@ -353,7 +353,7 @@ msgid "Comments"
 msgstr "Commentaires"
 
 #: templates/pro/pdf.html:390 templates/pro/pdf.html.py:436
-#: templates/pro/reports/show.html:411
+#: templates/pro/reports/show.html:419
 msgid "Anonymous"
 msgstr ""
 
@@ -646,24 +646,33 @@ msgstr ""
 msgid "Confidentiel?"
 msgstr "Confidentiel?"
 
-#: templates/pro/reports/show.html:407
-msgid "Posted by"
-msgstr ""
-
-#: templates/pro/reports/show.html:421
-msgid "on"
-msgstr ""
-
-#: templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:394
 #, fuzzy
 msgid "delete file"
 msgstr "Fichiers"
 
-#: templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:394
 msgid "Please confirm file deletion"
 msgstr ""
 
-#: templates/pro/reports/show.html:508
+#: templates/pro/reports/show.html:415
+msgid "Posted by"
+msgstr ""
+
+#: templates/pro/reports/show.html:429
+msgid "on"
+msgstr ""
+
+#: templates/pro/reports/show.html:511
+#, fuzzy
+msgid "delete comment"
+msgstr "Commentaires"
+
+#: templates/pro/reports/show.html:511
+msgid "Please confirm comment deletion"
+msgstr ""
+
+#: templates/pro/reports/show.html:516
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -673,15 +682,6 @@ msgid ""
 msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
-
-#: templates/pro/reports/show.html:516
-#, fuzzy
-msgid "delete comment"
-msgstr "Commentaires"
-
-#: templates/pro/reports/show.html:516
-msgid "Please confirm comment deletion"
-msgstr ""
 
 #: templates/pro/reports/show.html:609
 msgid "Send"
@@ -738,7 +738,7 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 msgid "Contractor has been linked with existing user {0}"
 msgstr ""
 
-#: views/reports/main.py:111
+#: views/reports/main.py:107
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
