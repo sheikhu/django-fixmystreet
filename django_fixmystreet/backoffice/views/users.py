@@ -5,16 +5,53 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template import RequestContext
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 from django_fixmystreet.backoffice.forms import FmsUserForm, AgentForm, ContractorForm, ContractorUserForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
 
-
-
-
 logger = logging.getLogger(__name__)
+
+
+
+def login_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            messages.add_message(request, messages.SUCCESS, _("You are logged in successfully"))
+            if 'next' in request.REQUEST:
+                return HttpResponseRedirect(request.REQUEST['next'])
+            else:
+                return HttpResponseRedirect(reverse('home_pro'))
+        else:
+            messages.add_message(request, messages.ERROR, _("Your account has been disabled."))
+            return HttpResponseRedirect(reverse('home'))
+    else:
+        messages.add_message(request, messages.ERROR, _("Your username and password didn't match. Please try again."))
+        return HttpResponseRedirect(reverse('home'))
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+
+
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.fmsuser, request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('')
+    else:
+        form = PasswordChangeForm(request.fmsuser)
+    return render_to_response('pro/change_password.html', {'form': form}, context_instance=RequestContext(request))
+
 
 def list_users(request, user_id=None, user_type='users'):
     params = dict()
@@ -86,13 +123,16 @@ def delete_user(request, user_id, user_type='users'):
 
     can_edit = (((user_to_delete.manager or user_to_delete.agent) and request.fmsuser.leader) or ((user_to_delete.agent) and request.fmsuser.manager))
     if not can_edit:
-        return HttpResponseForbidden()
+        messages.add_message(request, messages.ERROR, _("You can not delete this user"))
+        return HttpResponseRedirect(reverse('list_users', kwargs={'user_type': user_type}))
 
     user_to_delete.logical_deleted = True
     user_to_delete.is_active = False
     user_to_delete.agent = False
     user_to_delete.manager = False
     user_to_delete.save()
+    messages.add_message(request, messages.SUCCESS, _("User deleted successfully"))
+
     #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
     return HttpResponseRedirect(reverse('list_users', kwargs={'user_type': user_type}))
 
@@ -168,8 +208,9 @@ def delete_contractor(request, contractor_id):
     contractor = OrganisationEntity.objects.get(id=contractor_id, dependency=request.fmsuser.organisation, subcontractor=True)
 
     can_edit = request.fmsuser.leader or request.fmsuser.manager
-    if can_edit:
-        return HttpResponseForbidden()
+    if not can_edit:
+        messages.add_message(request, messages.ERROR, _("You can not delete this contractor"))
+        return HttpResponseRedirect(reverse('list_contractors'))
 
     for user in contractor.team.all():
         user.work_for.remove(contractor)
@@ -181,6 +222,7 @@ def delete_contractor(request, contractor_id):
         user.save()
 
     contractor.delete()
+    messages.add_message(request, messages.SUCCESS, _("Contractor deleted successfully"))
 
     #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
     return HttpResponseRedirect(reverse('list_contractors'))
