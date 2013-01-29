@@ -46,7 +46,28 @@ $(function(){
     {% for report in reports %}
     	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
-
+    // Add the active class to the active page number
+    $("#page_{{request.GET.page}}").addClass("active");
+    // Set the state of the arrow buttons (active or inactive)
+    if("{{request.GET.page}}"=="1"){
+        $(".pagination_prev").removeClass("active");
+    }
+    else{
+        $(".pagination_prev").addClass("active");
+    }
+    if("{{pages_list|last}}"=="{{request.GET.page}}"){
+        $(".pagination_next").removeClass("active");
+    }
+    else{
+        $(".pagination_next").addClass("active");
+    }
+    //Add onclick event for arrows
+    $(".pagination_next.active").bind("click",function(){
+        getUrlForPageNumber(parseInt("{{request.GET.page}}")+1);
+    });
+    $(".pagination_prev.active").bind("click",function(){
+        getUrlForPageNumber(parseInt("{{request.GET.page}}")-1);
+    });
 });
 
 /**
@@ -62,6 +83,21 @@ function search_per_ticket() {
             valToSearch = searchValue.substring(1);
         window.location = "/report/search_ticket?report_id="+valToSearch;
     }
+}
+
+function getUrlForPageNumber(number) {
+    var url = "{{request.get_full_path}}";
+    if(url.indexOf("page=")!=-1){
+        var list = url.split("page=");
+        url1= list[0].replace(/\&amp;/g,'&');
+        url1 = url1.replace("amp;","");
+        url = url1 + "page="+ number;
+    }
+    else {
+        url += "?page="+number;
+    }
+
+    window.location= url;
 }
 </script>
 {% endblock %}
@@ -86,30 +122,40 @@ function search_per_ticket() {
 	  </ul>
 	</div>
 
-        <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
-
+    <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
+    <div id="nearby-reports">
         {% if not reports %}
-        <div class='span6'>{% trans "No problems have been reported." %}</div>
+            <div class='span6'>{% trans "No problems have been reported." %}</div>
         {% else %}
-        <div id="search_results" class='span6'>
-            {% for report in reports %}
-                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-            {% endfor %}
-        </div>
+            <div id="search_results" class='span6'>
+                {% for report in reports %}
+                    {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+                {% endfor %}
+        
+                <div class="pagination pagination-centered">
+                    <ul>
+                        <li><a class="pagination_prev"></a></li>
+                        {% for number in pages_list %}
+                            <li id="page_{{number}}" ><a href="javascript:getUrlForPageNumber({{number}});">{{number}}</a></li>
+                        {% endfor %}
+                        <li><a class="pagination_next"></a></li>
+                    </ul>
+                </div>
+            </div>
         {% endif %}
-
-        <div class='span6'>
-            <div id="search_by_ticket_nr">
-                <!-- TODO create logic behind searching -->
-                <p >{% trans "Search by entering a ticket number:" %}</p>
-                <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
-                <p style="float:right">
-                    <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
-                </p>
-            </div>
-            <div id="go_to_submit_report">
-                <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
-            </div>
-       </div>
     </div>
+
+    <div class='span6'>
+        <div id="search_by_ticket_nr">
+            <p >{% trans "Search by entering a ticket number:" %}</p>
+            <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
+            <p style="float:right">
+                <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
+            </p>
+        </div>
+        <div id="go_to_submit_report">
+            <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
+        </div>
+   </div>
+</div>
 {% endblock %}

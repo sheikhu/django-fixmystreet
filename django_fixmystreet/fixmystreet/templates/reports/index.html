@@ -47,7 +47,7 @@
 <table id="reports" width="100%">
 {% for commune in communes %}
 	<tr class="{% cycle 'row-odd' 'row-even' %}">
-	<td><a href='{{ commune.get_absolute_url }}'>{{ commune.name }}</a></td>
+	<td><a href='{{ commune.get_absolute_url }}?page=1'>{{ commune.name }}</a></td>
 
 	{% if report_counts.next %}{% endif %}
 	</tr>

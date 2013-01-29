@@ -10,7 +10,8 @@ from datetime import datetime as dt
 import datetime
 from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
-
+from django.conf import settings
+import math
 
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
@@ -161,12 +162,19 @@ def search_ticket(request):
 
 def index(request, slug=None, commune_id=None):
     if commune_id:
+        if request.GET.get("page"):
+            page_number = int(request.GET.get("page"))
+        else:
+            page_number=1
         entity = OrganisationEntity.objects.get(id=commune_id)
+        reports = entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('-created')
+        pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
         return render_to_response("reports/list.html", {
             #"reports": entity.reports_in_charge.order_by('address').filter(Q(private=False, status__in=Report.REPORT_STATUS_IN_PROGRESS) | Q(private=False, status__in=Report.CREATED, citizen__isnull=False)).all(),
             #"reports": entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('address', 'address_number'),
-            "reports": entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('-created'),
+            "reports": reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
             "entity":entity,
+            "pages_list":pages_list,
         }, context_instance=RequestContext(request))
 
     communes = OrganisationEntity.objects.filter(commune=True).order_by('name_' + get_language())
