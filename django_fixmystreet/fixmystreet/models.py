@@ -24,7 +24,7 @@ from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta, resize_image
 from django_extensions.db.models import TimeStampedModel
-
+import re
 
 
 class UserTrackedModel(TimeStampedModel):
@@ -330,6 +330,7 @@ class Report(UserTrackedModel):
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=_("Location"))
     address_number = models.CharField(max_length=255, verbose_name=_("Address Number"))
+    address_number_as_int = models.IntegerField(max_length=255)
     address_regional = models.BooleanField(default=False)
     postalcode = models.CharField(max_length=4, verbose_name=_("Postal Code"))
     description = models.TextField(null=True, blank=True)
@@ -596,6 +597,11 @@ def track_former_value(sender, instance, **kwargs):
 
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
+    #Store the street number as int for further filtering (as somtimes the street number is 19H ...)
+    non_decimal = re.compile(r'[^\d]+')
+    value_processed = non_decimal.sub('', instance.address_number)
+    instance.address_number_as_int = int(value_processed)
+
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
         #When created by pro a creator exists otherwise a citizen object

@@ -119,11 +119,6 @@ def listfilter(request):
     if (connectedUser.contractor == True):
         reports = reports.filter(contractor = connectedUser.organisation)
 
-    #Order by address number as an int
-    reports = reports.extra(
-        select={'address_number_as_int': 'CAST(address_number AS INTEGER)'}
-    ).distance(pnt)
-
     if request.LANGUAGE_CODE=='nl':
         reports = reports.order_by('address_nl', 'address_number_as_int')
     else:
