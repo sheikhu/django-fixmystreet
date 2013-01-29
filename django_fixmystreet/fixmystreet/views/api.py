@@ -188,7 +188,7 @@ class ProReportHandler(BaseHandler):
         '''Create pro report from mobile'''
         '''Create a user if necessary'''
         try:
-            existingUser = FMSUser.objects.get(username=request.data['user_name'])
+            existingUser = FMSUser.objects.get(username=request.data.get('user_name'))
         except FMSUser.DoesNotExist:
             #The user has not the right to create a report
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
@@ -196,7 +196,7 @@ class ProReportHandler(BaseHandler):
         #Login the user
         user = authenticate(username=request.data['user_name'], password=request.data['user_p'])
         if user is not None:
-            if user.is_active:
+            if user.is_active == True:
                 login(request, user)
             else:
                 return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')

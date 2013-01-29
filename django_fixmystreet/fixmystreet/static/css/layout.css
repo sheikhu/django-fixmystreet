@@ -731,6 +731,9 @@ li img {
 .form-horizontal .controls {
     margin-left: 180px;
 }
+*+html .form_horizontal .controls{
+    display:inline;
+}
 
 .form-horizontal .control-group{
     float: left;
