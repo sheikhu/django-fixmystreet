@@ -24,7 +24,7 @@ function cloneObj (obj) {
         markerHeight = 40,
         defaultMarkerStyle = {
             pointRadius: markerHeight,
-            externalGraphic: STATIC_URL + "images/pin-red-XL.png",
+            externalGraphic: STATIC_URL + "images/pin-red-L.png",
             graphicXOffset: -markerWidth/2,
             graphicYOffset: -markerHeight,
             graphicHeight: markerHeight,
@@ -56,22 +56,22 @@ function cloneObj (obj) {
         pendingExecutedMarkerStylePro = cloneObj(defaultMarkerStyle),
         defaultMarkerStylePro = cloneObj(defaultMarkerStyle),
 
-        markerStyle.externalGraphic = "/static/images/pin-red-XL.png",
-        fixedMarkerStyle.externalGraphic = "/static/images/pin-green-XL.png",
-        pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-XL.png";
-        pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-XL.png";
+        markerStyle.externalGraphic = "/static/images/pin-red-L.png",
+        fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png",
+        pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-L.png";
+        pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-L.png";
 
-                defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-XS.png",
-        fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-XS.png",
-        pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-XS.png";
-        pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-XS.png";
+        defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-L.png",
+        fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-L.png",
+        pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-L.png";
+        pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-L.png";
 
-        defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-XS.png",
-        fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-XS.png",
-        pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-XS.png";
-        pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-XS.png";
+        defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-L.png",
+        fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-L.png",
+        pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-L.png";
+        pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-L.png";
 
-                draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-XL.png";
+        draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-L.png";
 
     /**
      * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
