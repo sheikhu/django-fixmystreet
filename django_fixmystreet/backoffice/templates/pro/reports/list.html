@@ -176,22 +176,24 @@ function filterReports() {
 
 {% block content %}
 <div class="row">
+    <h1 class="span12">
     {% if status == "all" %}
-    <h1>{% trans 'All reports' %}</h1>
+    {% trans 'All reports' %}
     {% endif %}
     {% if status == "created" %}
-    <h1>{% trans 'Created reports' %}</h1>
+    {% trans 'Created reports' %}
     {% endif %}
     {% if status == "in_progress" %}
-    <h1>{% trans 'In progress reports' %}</h1>
+    {% trans 'In progress reports' %}
     {% endif %}
     {% if status == "in_progress_and_assigned" %}
-    <h1>{% trans 'In progress and assigned reports' %}</h1>
+    {% trans 'In progress and assigned reports' %}
     {% endif %}
     {% if status == "closed" %}
-    <h1>{% trans 'Closed reports' %}</h1>
+    {% trans 'Closed reports' %}
     {% endif %}
-    <div id="incident_filter">
+    </h1>
+    <div id="incident_filter" class="span12">
     	<ul>
     		<li>
     			{% trans 'Filter the incidents by:' %}

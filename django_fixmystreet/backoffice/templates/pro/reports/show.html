@@ -178,8 +178,12 @@ function markAsDone(){
                 <a id="create_report_fastlink" href="/pro/" class="report">
                    <h3 class="report-title">{% trans "create_report" %}</h3>
                 </a>
-                {% for report in reports %}
-                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+                {% for r in reports %}
+                    {% ifequal r report %}
+                    {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=1 %}
+                    {% else %}
+                    {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=0 %}
+                    {% endifequal %}
                 {% endfor %}
                 </div>
                 <div class="pagination pagination-centered">
@@ -602,29 +606,29 @@ function markAsDone(){
                     </p>
                 </form>
             {% endif %}
-            <div>
-            <!-- ################################################### -->
-            <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
-            <!-- ################################################### -->
-            {% if report.responsible_manager.id == request.user.id or report.contractor == fms_user.organisation %}
-                <!-- ############################################# -->
-                <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
-                <!-- ############################################# -->
-                {% if report.is_in_progress %}
-                    {% if not fms_user.contractor %}
-                        <button onclick="window.location = '{% url report_close_pro report.id %}'" class="btn">Cloturer</button>
-                    {% endif %}
-                    {% if not fms_user.contractor %}
-                        <button class="btn" onclick="window.location = '{% url report_validate_all_pro report.id %}'" >{% trans 'Validate all' %}</button>
-                            {% endif %}
+            <p>
+                <!-- ################################################### -->
+                <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
+                <!-- ################################################### -->
+                {% if report.responsible_manager.id == request.user.id or report.contractor == fms_user.organisation %}
+                    <!-- ############################################# -->
+                    <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
+                    <!-- ############################################# -->
+                    {% if report.is_in_progress %}
+                        {% if not fms_user.contractor %}
+                            <a href="{% url report_close_pro report.id %}" class="btn">Cloturer</a>
+                        {% endif %}
+                        {% if not fms_user.contractor %}
+                            <a class="btn" href="{% url report_validate_all_pro report.id %}" >{% trans 'Validate all' %}</a>
+                        {% endif %}
                     {% endif %}
                     <!-- ######################################### -->
                     <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
                     <!-- ######################################### -->
                     {% if report.is_created %}
-                        <button onclick="window.location = '{% url report_accept_pro report.id %}'" class="btn" >{% trans 'Publish' %}</button>
+                        <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Publish' %}</a>
                         <button onclick="refuse();" class="btn">{% trans 'Reject' %}</button>
-                        <button onclick="window.location = '{% url report_accept_and_validate report.id %}'" class="btn">{% trans 'Publish All' %}</button>
+                        <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish All' %}</a>
                     {% endif %}
                 {% endif %}
                 {% if report.is_in_progress %}
@@ -632,14 +636,14 @@ function markAsDone(){
                         <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</button>
                     {% endif %}
                 {% endif %}
-            </div>
+            </p>
             <div id="pdf_report">
                 {% if report.responsible_manager.id == request.user.id or fms_user.leader or fms_user.contractor %}
-                    <button onclick="window.location = '{% url report_pdf_pro report.id 1 %}'" class="btn" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf' %}</button>
-                    <button onclick="window.location = '{% url report_pdf_pro report.id 0 %}'" class="btn" style="font-size: 0.8em;margin-top: 0px;">{% trans 'report pdf public' %}</button>
+                    <p><a href="{% url report_pdf_pro report.id 1 %}">{% trans 'report pdf' %}</a></p>
+                    <p><a href="{% url report_pdf_pro report.id 0 %}">{% trans 'report pdf public' %}</a></p>
                 {% endif %}
                 {% if fms_user.manager or fms_user.leader %}
-                    <button onclick="window.open('/export_file/reports/csv?id={{report.id}}')" class="btn" style="font-size: 0.8em;margin-top: 0px;">{% trans 'Export Csv' %}</button>
+                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
                 {% endif %}
             </div>
 

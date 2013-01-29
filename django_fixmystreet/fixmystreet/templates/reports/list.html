@@ -72,7 +72,7 @@ function search_per_ticket() {
 
 {% block content %}
     <div class="row">
-        <h1>{% trans "Reports for" %} {{entity.name}}</h1>
+        <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
 
         {% if not reports %}
         <div class='span6'>{% trans "No problems have been reported." %}</div>
