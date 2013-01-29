@@ -55,12 +55,12 @@ class NotificationTest(TestCase):
     def testReportResponsibleAssignment(self):
         '''Test the assignment of a responsible when creating a report'''
         #When a responsible_manager is defined responsible_entity is not recomputed
-        new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser,responsible_entity=self.commune2)
+        new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser,responsible_entity=self.commune2, address='my address', address_number='6h')
         new_report.save()
         #Expected should be that the responsible_entity is 4 (Brussels) ==> but it is not recomputed so it remains commune2 
         self.assertTrue(new_report.responsible_entity==self.commune2)
         #When no responsible_manager is defined then the commune must be assigned and the responsible_entity
-        new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000)
+        new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000, address='my address', address_number='6h')
         new_report.save()
         self.assertTrue(new_report.responsible_entity!=None)
 

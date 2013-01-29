@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-29 16:06+0100\n"
+"POT-Creation-Date: 2013-01-29 16:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -180,15 +180,15 @@ msgstr "S'identifier"
 
 #: templates/pro/change_password.html:8
 msgid "Change password"
-msgstr ""
+msgstr "Changer le mot de passe"
 
 #: templates/pro/change_password.html:10
 msgid "Validation error"
-msgstr ""
+msgstr "Erreur de validation"
 
 #: templates/pro/change_password.html:14
 msgid "Change"
-msgstr ""
+msgstr "Changer"
 
 #: templates/pro/contractor_create.html:4 templates/pro/user_create.html:19
 #: templates/pro/user_create.html.py:43
@@ -201,9 +201,8 @@ msgid "Contractors in"
 msgstr "Executeur de travaux/Impetrant"
 
 #: templates/pro/contractor_create.html:18
-#, fuzzy
 msgid "Create contractor"
-msgstr "Executeur de travaux/Impetrant"
+msgstr "Créer un exécuteur de travaux/Impetrant"
 
 #: templates/pro/contractor_create.html:19 templates/pro/user_create.html:44
 #: templates/pro/reports/list.html:250
@@ -212,14 +211,13 @@ msgstr "* Ces champs sont requis"
 
 #: templates/pro/contractor_create.html:22
 #: templates/pro/contractors_overview.html:51
-#, fuzzy
 msgid "Contractor"
 msgstr "Executeur de travaux/Impetrant"
 
 #: templates/pro/contractor_create.html:26
 #: templates/pro/contractors_overview.html:55
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #: templates/pro/contractors_overview.html:20
 msgid "User overview:"
@@ -276,76 +274,72 @@ msgstr "Enregistrer"
 
 #: templates/pro/pdf.html:70
 msgid "Incident numero"
-msgstr ""
+msgstr "Numéro d'incident"
 
 #: templates/pro/pdf.html:75
 msgid "Information "
-msgstr ""
+msgstr "Information"
 
 #: templates/pro/pdf.html:80
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: templates/pro/pdf.html:85 templates/pro/pdf.html.py:111
-#, fuzzy
 msgid "Geolocation"
-msgstr "Adresse:"
+msgstr "Géolocalisation:"
 
 #: templates/pro/pdf.html:85
 msgid "Lambert 72 Belgium"
-msgstr ""
+msgstr "Lambert 72 Belgique"
 
 #: templates/pro/pdf.html:106
-#, fuzzy
 msgid "Category"
 msgstr "Catégorie:"
 
 #: templates/pro/pdf.html:133 templates/pro/pdf.html.py:464
 #: templates/pro/reports/show.html:418
 msgid "Creation Date"
-msgstr ""
+msgstr "Date de Création"
 
 #: templates/pro/pdf.html:161
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 #: templates/pro/pdf.html:166 templates/pro/pdf.html.py:270
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: templates/pro/pdf.html:197 templates/pro/pdf.html.py:200
 #: templates/pro/pdf.html:304
 msgid "Mail"
-msgstr ""
+msgstr "Email"
 
 #: templates/pro/pdf.html:210 templates/pro/pdf.html.py:213
 #: templates/pro/pdf.html:309
 msgid "Phone"
-msgstr ""
+msgstr "Telephone"
 
 #: templates/pro/pdf.html:275
-#, fuzzy
 msgid "Status"
 msgstr "Statut:"
 
 #: templates/pro/pdf.html:318
 msgid "mail"
-msgstr ""
+msgstr "email"
 
 #: templates/pro/pdf.html:321
 msgid "tel"
-msgstr ""
+msgstr "tel"
 
 #: templates/pro/pdf.html:334
 msgid "History"
-msgstr ""
+msgstr "Historique"
 
 #: templates/pro/pdf.html:362
 msgid "No Report History"
-msgstr ""
+msgstr "Pas d'historique"
 
 #: templates/pro/pdf.html:370 templates/pro/reports/show.html:480
-#, fuzzy
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -356,36 +350,35 @@ msgstr ""
 
 #: templates/pro/pdf.html:408
 msgid "No Comment"
-msgstr ""
+msgstr "Pas de commentaire"
 
 #: templates/pro/pdf.html:419
 msgid "Files"
-msgstr ""
+msgstr "Fichiers"
 
 #: templates/pro/pdf.html:477
 msgid "Publication Date"
-msgstr ""
+msgstr "Date de publication"
 
 #: templates/pro/pdf.html:486
 msgid "By"
-msgstr ""
+msgstr "par"
 
 #: templates/pro/pdf.html:491
 msgid "Anonymous "
-msgstr ""
+msgstr "Anonyme "
 
 #: templates/pro/pdf.html:500
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: templates/pro/pdf.html:509
-#, fuzzy
 msgid "Comment"
 msgstr "Commentaires"
 
 #: templates/pro/pdf.html:535
 msgid "No File"
-msgstr ""
+msgstr "Pas de fichier"
 
 #: templates/pro/user_create.html:26 templates/pro/users_overview.html:34
 msgid "Collaborators in"
@@ -393,14 +386,13 @@ msgstr ""
 
 #: templates/pro/user_create.html:31 templates/pro/users_overview.html:39
 msgid "Agents"
-msgstr ""
+msgstr "Agents"
 
 #: templates/pro/user_create.html:36 templates/pro/users_overview.html:44
 msgid "Managers"
-msgstr ""
+msgstr "Gestionnaires"
 
 #: templates/pro/users_overview.html:25
-#, fuzzy
 msgid "User overview"
 msgstr "Voir les utilisateurs"
 
@@ -535,7 +527,7 @@ msgstr "Nouveau rapport"
 
 #: templates/pro/reports/new.html:12
 msgid "Incident category:"
-msgstr ""
+msgstr "Catégorie d'incident"
 
 #: templates/pro/reports/show.html:158 templates/pro/reports/show.html:169
 msgid "Confirm"
@@ -543,7 +535,7 @@ msgstr "Confirmer"
 
 #: templates/pro/reports/show.html:204
 msgid "Report Ticket"
-msgstr ""
+msgstr "Ticket"
 
 #: templates/pro/reports/show.html:207
 msgid "This problem has been fixed."
@@ -551,7 +543,7 @@ msgstr "Ce problème a été résolu."
 
 #: templates/pro/reports/show.html:220
 msgid "ANONYMOUS"
-msgstr ""
+msgstr "Anonyme"
 
 #: templates/pro/reports/show.html:222
 #, fuzzy, python-format
@@ -599,7 +591,6 @@ msgid "Status:"
 msgstr "Statut:"
 
 #: templates/pro/reports/show.html:260
-#, fuzzy
 msgid "Responsible:"
 msgstr "Gestionnaire responsable:"
 
@@ -609,24 +600,23 @@ msgstr "Gestionnaire responsable:"
 
 #: templates/pro/reports/show.html:274
 msgid "Gestionnaires"
-msgstr ""
+msgstr "Gestionnaires"
 
 #: templates/pro/reports/show.html:279
 msgid "Entites"
-msgstr ""
+msgstr "Entités"
 
 #: templates/pro/reports/show.html:284
 msgid "Organisms"
-msgstr ""
+msgstr "Organismes"
 
 #: templates/pro/reports/show.html:296 templates/pro/reports/show.html:342
-#, fuzzy
 msgid "Contractor/Applicant:"
 msgstr "Executeur de travaux/Impetrant"
 
 #: templates/pro/reports/show.html:299
 msgid "Select a contractor/applicant"
-msgstr ""
+msgstr "Choisir un exécuteur de travaux / impétrant"
 
 #: templates/pro/reports/show.html:318
 msgid "Set as private report"
@@ -642,7 +632,7 @@ msgstr "Public?"
 
 #: templates/pro/reports/show.html:363
 msgid "Photos and files"
-msgstr ""
+msgstr "Photos et fichiers"
 
 #: templates/pro/reports/show.html:371 templates/pro/reports/show.html:488
 msgid "Public?"
@@ -650,16 +640,15 @@ msgstr "Public?"
 
 #: templates/pro/reports/show.html:372 templates/pro/reports/show.html:489
 msgid "Private?"
-msgstr ""
+msgstr "Prive?"
 
 #: templates/pro/reports/show.html:376 templates/pro/reports/show.html:493
 msgid "Confidentiel?"
 msgstr "Confidentiel?"
 
 #: templates/pro/reports/show.html:390
-#, fuzzy
 msgid "delete file"
-msgstr "Fichiers"
+msgstr "Supprimer le fichier"
 
 #: templates/pro/reports/show.html:390
 msgid "Please confirm file deletion"
@@ -667,16 +656,15 @@ msgstr "Confirmer la suppression du ficher"
 
 #: templates/pro/reports/show.html:411
 msgid "Posted by"
-msgstr ""
+msgstr "Posté par"
 
 #: templates/pro/reports/show.html:425
 msgid "on"
-msgstr ""
+msgstr "a"
 
 #: templates/pro/reports/show.html:507
-#, fuzzy
 msgid "delete comment"
-msgstr "Commentaires"
+msgstr "Supprimer le commentaire"
 
 #: templates/pro/reports/show.html:507
 msgid "Please confirm comment deletion"
@@ -735,7 +723,7 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 
 #: views/users.py:33
 msgid "Your account has been disabled."
-msgstr ""
+msgstr "Votre compte est desactivé"
 
 #: views/users.py:69
 msgid "User has been saved successfully"
@@ -747,32 +735,29 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 
 #: views/users.py:106 views/users.py:192
 msgid "An error occurd during the email sending"
-msgstr ""
+msgstr "Une erreur s'est produire pendant l'envoi de mail"
 
 #: views/users.py:126
 msgid "You can not delete this user"
-msgstr ""
+msgstr "Vous ne pouvez pas supprimer cet utilisateur"
 
 #: views/users.py:134
-#, fuzzy
 msgid "User deleted successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
 #: views/users.py:158
-#, fuzzy
 msgid "Contractor has been saved successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
 #: views/users.py:185
 msgid "Contractor has been linked with existing user {0}"
-msgstr ""
+msgstr "L'executeur de travaux a été lié avec un utilisateur existant"
 
 #: views/users.py:212
 msgid "You can not delete this contractor"
-msgstr ""
+msgstr "Vous ne pouvez supprimer cet exécuteur de travaux"
 
 #: views/users.py:225
-#, fuzzy
 msgid "Contractor deleted successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 

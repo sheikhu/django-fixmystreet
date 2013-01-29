@@ -1383,7 +1383,8 @@ table td.annexesChoiceBoxTD {
 }
 
 .row-odd {
-	background: #D5E5F6;
+    /*background: #D5E5F6;*/
+    background:#FFDB00;
 }
 
 .table-stat {
