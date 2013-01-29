@@ -2,11 +2,6 @@
 {% load i18n %}
 {% load tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
-{% block specific_scripts %}
-<script>
-    $("#id_is_private").attr("checked", "checked");
-</script>
-{% endblock %}
 
 {% block content %}
     {{ block.super }}
@@ -15,7 +10,7 @@
 {% block report_form %}
    <fieldset>
         <legend>{% trans "Incident category:" %}</legend>
-        {% include "_form_horizontal.html" with form=report_form %}            
+        {% include "_form_horizontal.html" with form=report_form %}
     </fieldset>
 
 {% endblock %}

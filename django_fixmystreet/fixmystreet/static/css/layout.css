@@ -637,13 +637,13 @@ li img {
 
 
 
-.form-horizontal textarea {
+/*.form-horizontal textarea {
 	width: 100%;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 }
-
+*/
 #required-note {
     font-weight: bold;
     font-size: x-small;
@@ -677,6 +677,21 @@ li img {
     box-shadow: 0px 0px 3px 3px #DFDFDF;
     margin: 30px auto 10px;
     overflow: hidden;
+}
+
+.report-step-number {
+    display: block;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    height: 32px;
+    width: 32px;
+    color: #333;
+    background: #FFDB00;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    z-index: 3;
 }
 
 .report_step_number_1 {
@@ -725,7 +740,6 @@ li img {
 
 .form-horizontal .control-label {
     text-align: left;
-    width: auto;
 }
 
 .form-horizontal .controls {
@@ -740,7 +754,7 @@ li img {
     width: 100%;
 }
 
-.form-horizontal .help-block{
+.form-horizontal .help-block {
     font-size: small;
     margin-top: 10px;
     font-family: dosis-medium, arial, sans-serif;
@@ -788,22 +802,10 @@ li img {
     color: white;
 }
 
-#validate_form {
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-#validate_form fieldset{
-    margin-top: -20px;
-}
-
+#validate_form,
 #confirm_form {
     padding-top: 0px;
     padding-bottom: 0px;
-}
-
-#confirm_form fieldset{
-    margin-top: -20px;
 }
 
 .inactive_overlay_form_overview {
@@ -939,7 +941,6 @@ li img {
     padding: 2px 4px;
     /*border:2px solid #FAF028;*/
     border:2px solid #FFDB00;
-    margin-left: 15px;
 }
 
 #search_results .report:focus, #search_results .report:hover, #search_results .report.active{
@@ -975,18 +976,14 @@ li img {
     height: 100%;
 }
 
-#search_results .right_search_result {
-    display: table;
-}
-
-#search_results .right_search_result table{
-    width: 100%;
-}
-#search_results .right_search_result h4{
+#search_results .center_search_result {
+    float: left;
+    width: 40%;
     min-width: 200px;
 }
-#search_results .right_search_result td{
-    padding-right: 10px;
+
+#search_results .right_search_result {
+    margin-right: 20px;
 }
 
 #search_results .next_image{
@@ -1279,7 +1276,6 @@ legend span {
 .bordered-box h1{
    margin-left: 35px;
    font-size: x-large;
-   margin-top: -30px;
 }
 
 .overview_div_left,
