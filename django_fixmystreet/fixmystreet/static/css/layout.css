@@ -548,10 +548,18 @@ footer *{
     width:327px;
 }
 
-.delete-icon {
+.delete-file-icon {
     position: relative;
     top: 12px;
-    left: 225px;
+    left: -12px;
+    width: 24px;
+    max-width: 24px;
+}
+
+.delete-comment-icon {
+    position: relative;
+    top: 12px;
+    left: -12px;
     width: 24px;
     max-width: 24px;
 }

@@ -383,7 +383,7 @@ function markAsDone(){
                     <tr>
                         <td class="annexesFirstTD">
                             <div class="report_update">
-				<div class="delete-icon">
+				<div class="delete-file-icon">
 			                {% if request.user.id == report.responsible_manager.id %}
 						{% if report.is_created or report.is_in_progress  %}
 						<!-- Manager in charge only -->
@@ -500,7 +500,7 @@ function markAsDone(){
                     <tr>
                         <td class="annexesFirstTD">
                             <div class="report_update">
-			    <div class="delete-icon">
+			    <div class="delete-comment-icon">
 			        {% if request.user.id == report.responsible_manager.id %}
 				{% if report.is_created or report.is_in_progress  %}
                                 <!-- Manager in charge only -->
