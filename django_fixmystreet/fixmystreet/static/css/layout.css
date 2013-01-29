@@ -637,13 +637,13 @@ li img {
 
 
 
-.form-horizontal textarea {
+/*.form-horizontal textarea {
 	width: 100%;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 }
-
+*/
 #required-note {
     font-weight: bold;
     font-size: x-small;
@@ -726,10 +726,6 @@ li img {
 .form-horizontal .control-label {
     text-align: left;
     width: auto;
-}
-
-.form-horizontal .controls {
-    margin-left: 180px;
 }
 
 .form-horizontal .control-group{
