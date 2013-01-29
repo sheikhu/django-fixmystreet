@@ -918,7 +918,7 @@ class ReportAttachment(UserTrackedModel):
 
     def get_display_name(self):
         if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
-             return 'ANONYMOUS'
+             return _('ANONYMOUS')
         else:
              return self.created_by.first_name+' '+self.created_by.last_name
 

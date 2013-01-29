@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-29 16:15+0100\n"
+"POT-Creation-Date: 2013-01-29 18:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,7 +95,7 @@ msgstr "Geolocatie"
 msgid "Other"
 msgstr "Andere"
 
-#: models.py:141
+#: models.py:141 models.py:921
 msgid "ANONYMOUS"
 msgstr "ANONIEM"
 
@@ -111,7 +111,7 @@ msgstr "Aangemaakt"
 msgid "Refused"
 msgstr "Afgewezen"
 
-#: models.py:315 models.py:316 templates/reports/list.html:81
+#: models.py:315 models.py:316 templates/reports/list.html:117
 msgid "In progress"
 msgstr "In behandeling"
 
@@ -571,12 +571,10 @@ msgstr "Fix My Street Brussel"
 
 #: templates/base.html:27 templates/base.html.py:28 templates/base.html:32
 #: templates/base.html.py:33
-#, fuzzy
 msgid "Fix My Street"
-msgstr "Fix My Street Beheer"
+msgstr "Fix My Street"
 
 #: templates/base.html:54
-#, fuzzy
 msgid "Log out"
 msgstr "Aanmelden"
 
@@ -645,7 +643,7 @@ msgstr "Voorwaarden"
 msgid "Meta description for home page"
 msgstr ""
 
-#: templates/home.html:72 templates/reports/list.html:111
+#: templates/home.html:72 templates/reports/list.html:157
 msgid "Report an incident"
 msgstr "Meld een incident"
 
@@ -686,15 +684,14 @@ msgid "Enter the address where the incident is:"
 msgstr "Vul het adres van het incident in:"
 
 #: templates/home.html:90
-#, fuzzy
 msgid "Street name, Street number..."
-msgstr "Straat naam, huisnummer, incident nummer"
+msgstr "Straat naam, Straat nummer..."
 
 #: templates/home.html:92
 msgid "All communes..."
 msgstr "Alle gemeenten..."
 
-#: templates/home.html:97 templates/reports/list.html:107
+#: templates/home.html:97 templates/reports/list.html:153
 msgid "Search"
 msgstr "Zoek"
 
@@ -830,7 +827,6 @@ msgid "Forgot password?"
 msgstr "Paswoord vergeten?"
 
 #: templates/admin/login.html:73
-#, fuzzy
 msgid "Log in"
 msgstr "Aanmelden"
 
@@ -859,7 +855,7 @@ msgstr ""
 msgid "* This fields are required"
 msgstr "* Deze velden zijn verplicht"
 
-#: templates/contact/new.html:47 templates/reports/show.html:319
+#: templates/contact/new.html:47 templates/reports/show.html:321
 msgid "Send"
 msgstr "Doorsturen"
 
@@ -1036,12 +1032,10 @@ msgid ""
 msgstr ""
 
 #: templates/emails/report_update/subject.txt:1
-#, fuzzy
 msgid "Fix My Street:"
-msgstr "Fix My Street Beheer"
+msgstr "Fix My Street:"
 
 #: templates/emails/report_update/subject.txt:1
-#, fuzzy
 msgid "Fixed"
 msgstr "opgelost"
 
@@ -1266,7 +1260,7 @@ msgid ""
 msgstr ""
 
 #: templates/promotions/show.html:4 templates/reports/list.html:4
-#: templates/reports/list.html.py:13 templates/reports/list.html:89
+#: templates/reports/list.html.py:13 templates/reports/list.html:125
 msgid "Reports for"
 msgstr "Incidenten voor"
 
@@ -1334,25 +1328,23 @@ msgstr "Gerapporteerd door Fix My Street gebruikers"
 msgid "Meta description for list page"
 msgstr ""
 
-#: templates/reports/list.html:78
-#, fuzzy
+#: templates/reports/list.html:114
 msgid "Unpublished"
-msgstr "Publiceer"
+msgstr "Niet gepubliceerd"
 
-#: templates/reports/list.html:84
-#, fuzzy
+#: templates/reports/list.html:120
 msgid "Closed"
-msgstr "Afsluiten"
+msgstr "Afgesloten"
 
-#: templates/reports/list.html:92
+#: templates/reports/list.html:128
 msgid "No problems have been reported."
 msgstr "Geen problemen zijn gerapporteerd"
 
-#: templates/reports/list.html:104
+#: templates/reports/list.html:150
 msgid "Search by entering a ticket number:"
-msgstr ""
+msgstr "Rapport nummer zoeken"
 
-#: templates/reports/list.html:105
+#: templates/reports/list.html:151
 msgid "Insert your ticket number here"
 msgstr "Vul hier een incident nummer in"
 
@@ -1367,9 +1359,8 @@ msgid ""
 msgstr ""
 
 #: templates/reports/new.html:62 templates/reports/show.html:44
-#, fuzzy
 msgid "Your file description"
-msgstr "Vraag"
+msgstr "Bestand beschrijving"
 
 #: templates/reports/new.html:70
 msgid ""
@@ -1380,11 +1371,11 @@ msgstr ""
 "deelnemen aan dit initiatief."
 
 #: templates/reports/new.html:71
-#, fuzzy
 msgid "Brussels Mobility (tel:0800/94.001)"
-msgstr "Brussels Mobility"
+msgstr "Brussel Mobiliteit (tel:0800/94.001)"
 
 #: templates/reports/new.html:152 templates/reports/new.html.py:268
+#: templates/reports/show.html:302
 msgid "Files"
 msgstr "Foto's en bestanden"
 
@@ -1432,7 +1423,7 @@ msgstr "Geoptimisserde filesize (1200X800)"
 msgid "Supported formats"
 msgstr "Gesupporteerde formaten"
 
-#: templates/reports/new.html:284
+#: templates/reports/new.html:284 templates/reports/show.html:316
 msgid "Add file"
 msgstr "Voeg een bestand toe"
 
@@ -1539,27 +1530,27 @@ msgstr ""
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: templates/reports/show.html:118 templates/reports/show.html.py:120
-msgid "Mark as done"
-msgstr "Markeer als behandeld"
-
-#: templates/reports/show.html:121
-msgid "This report is already marked as done"
-msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
-
-#: templates/reports/show.html:129 templates/reports/show.html.py:132
+#: templates/reports/show.html:115
 msgid "Report Ticket"
 msgstr "Incident"
 
-#: templates/reports/show.html:129
+#: templates/reports/show.html:119 templates/reports/show.html.py:121
+msgid "Mark as done"
+msgstr "Markeer als behandeld"
+
+#: templates/reports/show.html:122
+msgid "This report is already marked as done"
+msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
+
+#: templates/reports/show.html:131
 msgid "This incident is not validated."
 msgstr "is niet gevalideerd."
 
-#: templates/reports/show.html:132
+#: templates/reports/show.html:134
 msgid "This incident has been closed."
 msgstr "is opgelost"
 
-#: templates/reports/show.html:146
+#: templates/reports/show.html:148
 #, python-format
 msgid ""
 "\n"
@@ -1569,66 +1560,64 @@ msgstr ""
 "\n"
 "Gepost op <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:151
-#, python-format
+#: templates/reports/show.html:153
+#, fuzzy, python-format
 msgid ""
 "\n"
-"                        Posted by <strong><a href=\"mailto:%(mail)s\">%(by)"
-"s</a></strong> on <strong>%(on)s</strong>\n"
+"                        Posted by <strong><a href='mailto:%(mail)s'>%(by)s</"
+"a></strong> on <strong>%(on)s</strong>\n"
 "                        "
 msgstr ""
 "\n"
 "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
 "s</strong>"
 
-#: templates/reports/show.html:164
+#: templates/reports/show.html:166
 msgid "Location:"
 msgstr "Adres:"
 
-#: templates/reports/show.html:168
+#: templates/reports/show.html:170
 msgid "Category:"
 msgstr "Categorie:"
 
-#: templates/reports/show.html:172
+#: templates/reports/show.html:174
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/reports/show.html:177
+#: templates/reports/show.html:179
 #, fuzzy
 msgid "Applicant:"
 msgstr "Beheerder is toegekend"
 
-#: templates/reports/show.html:190
+#: templates/reports/show.html:192
 msgid "Responsible:"
 msgstr "Verantwoordelijke beheerder:"
 
-#: templates/reports/show.html:205
+#: templates/reports/show.html:207
 msgid "Photos and files"
 msgstr "Foto's en bestanden: "
 
-#: templates/reports/show.html:233
-#, fuzzy
+#: templates/reports/show.html:235
 msgid "Posted By"
-msgstr "Poster"
+msgstr "Gepost door"
 
-#: templates/reports/show.html:238
-#, fuzzy
+#: templates/reports/show.html:240
 msgid "Anonymous "
 msgstr "Anoniem"
 
-#: templates/reports/show.html:241
+#: templates/reports/show.html:243
 msgid "On"
 msgstr "Om"
 
-#: templates/reports/show.html:245
+#: templates/reports/show.html:247
 msgid "Creation Date"
 msgstr "Aangemaakt op:"
 
-#: templates/reports/show.html:265
+#: templates/reports/show.html:267 templates/reports/show.html.py:297
 msgid "Comments"
 msgstr "Commentaar:"
 
-#: templates/reports/show.html:274
+#: templates/reports/show.html:276
 #, python-format
 msgid ""
 "\n"
@@ -1636,24 +1625,28 @@ msgid ""
 "(on)s</strong>\n"
 "                            "
 msgstr ""
+"\n"
+"                            Gepost door <strong>%(by)s</strong> op <strong>%"
+"(on)s</strong>\n"
+" "
 
-#: templates/reports/show.html:328
+#: templates/reports/show.html:330
 msgid "report pdf public"
 msgstr "Download een kopie van het incident als pdf."
 
-#: templates/reports/show.html:332
+#: templates/reports/show.html:334
 msgid "Offensive? Unsuitable? Tell us"
 msgstr "Beledigend? Ongepast? Contacteer ons"
 
-#: templates/reports/show.html:341
+#: templates/reports/show.html:343
 msgid "Subscribers:"
 msgstr "Abonnees"
 
-#: templates/reports/show.html:345
+#: templates/reports/show.html:347
 msgid "Your email"
 msgstr "Uw email"
 
-#: templates/reports/show.html:346
+#: templates/reports/show.html:348
 msgid "Subscribe"
 msgstr "Abonneer"
 
@@ -1661,11 +1654,11 @@ msgstr "Abonneer"
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: views/reports/main.py:135
+#: views/reports/main.py:136
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
 
-#: views/reports/main.py:159
+#: views/reports/main.py:160
 msgid "No incident found with this ticket number"
 msgstr "Geen report gevonden voor dit ticket number"
 
