@@ -68,8 +68,10 @@ def list(request, status):
 
 @login_required(login_url='/pro/accounts/login/')
 def listfilter(request):
-    #default set on page 1
-    page_number=1
+    if request.GET.get("page"):
+        page_number = int(request.GET.get("page"))
+    else:
+        page_number=1
     #Get location
     pnt = dictToPoint(request.REQUEST)
     #Get street
@@ -126,7 +128,6 @@ def listfilter(request):
 
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
-
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,
