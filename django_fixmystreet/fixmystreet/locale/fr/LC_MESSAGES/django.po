@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-28 17:03+0100\n"
+"POT-Creation-Date: 2013-01-29 16:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgstr ""
 "Je souhaite suivre l'évolution de l'incident et recevoir des notifications "
 "par mail."
 
-#: forms.py:146 models.py:221 models.py:1021 models.py:1055 models.py:1089
+#: forms.py:146 models.py:221 models.py:1036 models.py:1070 models.py:1104
 msgid "Name"
 msgstr "Votre nom"
 
@@ -100,7 +100,7 @@ msgstr "Autres"
 msgid "ANONYMOUS"
 msgstr ""
 
-#: models.py:222 models.py:1022 models.py:1056 models.py:1090
+#: models.py:222 models.py:1037 models.py:1071 models.py:1105
 msgid "Slug"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr "Créé"
 msgid "Refused"
 msgstr "Refusé"
 
-#: models.py:315 models.py:316
+#: models.py:315 models.py:316 templates/reports/list.html:81
 msgid "In progress"
 msgstr "En cours de traitement"
 
@@ -148,168 +148,168 @@ msgstr "Adresse"
 msgid "Address Number"
 msgstr ""
 
-#: models.py:334
+#: models.py:335
 msgid "Postal Code"
 msgstr "Code postal"
 
-#: models.py:336 models.py:337
+#: models.py:337 models.py:338
 msgid "Category"
 msgstr "Catégorie"
 
-#: models.py:856
+#: models.py:871
 msgid "Public"
 msgstr "Public"
 
-#: models.py:857
+#: models.py:872
 msgid "Private"
 msgstr "Privé"
 
-#: models.py:858
+#: models.py:873
 msgid "Confidential"
 msgstr "Confidentiel"
 
-#: models.py:1092 models.py:1093
+#: models.py:1107 models.py:1108
 msgid "Category group"
 msgstr "Groupe categorie"
 
-#: models.py:1177 models.py:1475
+#: models.py:1192 models.py:1490
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1288
+#: models.py:1303
 #, fuzzy
 msgid "Refuse"
 msgstr "Refusé"
 
-#: models.py:1289
+#: models.py:1304
 #, fuzzy
 msgid "Close"
 msgstr "Fermé"
 
-#: models.py:1290
+#: models.py:1305
 msgid "Mark as Done"
 msgstr "Marquer comme résolu"
 
-#: models.py:1291
+#: models.py:1306
 #, fuzzy
 msgid "Manager assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1292
+#: models.py:1307
 #, fuzzy
 msgid "Manager changed"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1293
+#: models.py:1308
 #, fuzzy
 msgid "Publish"
 msgstr "Non publiés"
 
-#: models.py:1294
+#: models.py:1309
 #, fuzzy
 msgid "Organisation assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1295
-msgid "Organisation changed"
-msgstr ""
-
-#: models.py:1296
-#, fuzzy
-msgid "Contractor assinged"
-msgstr "Un exécuteur de travaux est assigné"
-
-#: models.py:1297
-#, fuzzy
-msgid "Contractor changed"
-msgstr "Un exécuteur de travaux est assigné"
-
-#: models.py:1298
-#, fuzzy
-msgid "Applicant assinged"
-msgstr "Un impétrant est assigné"
-
-#: models.py:1299
-#, fuzzy
-msgid "Applicant changed"
-msgstr "Impétrant"
-
-#: models.py:1300
-msgid "Applicant contractor changed"
-msgstr ""
-
-#: models.py:1303
-#, fuzzy
-msgid "Report refused by {user}"
-msgstr "Incidents par communes"
-
-#: models.py:1304
-#, fuzzy
-msgid "Report closed by {user}"
-msgstr "Incidents par communes"
-
-#: models.py:1305
-#, fuzzy
-msgid "Report pointed as done"
-msgstr "Incidents"
-
-#: models.py:1306
-#, fuzzy
-msgid "Report as been assigned to {related_new}"
-msgstr "Incidents"
-
-#: models.py:1307
-#, fuzzy
-msgid "Report as change manager from {related_old} to {related_new}"
-msgstr "Incidents"
-
-#: models.py:1308
-#, fuzzy
-msgid "Report has been approved by {user}"
-msgstr "Incidents par communes"
-
-#: models.py:1309
-msgid "{related_new} is responsible for the report"
-msgstr ""
-
 #: models.py:1310
-msgid "{related_old} give responsibility to {related_new}"
+msgid "Organisation changed"
 msgstr ""
 
 #: models.py:1311
 #, fuzzy
+msgid "Contractor assinged"
+msgstr "Un exécuteur de travaux est assigné"
+
+#: models.py:1312
+#, fuzzy
+msgid "Contractor changed"
+msgstr "Un exécuteur de travaux est assigné"
+
+#: models.py:1313
+#, fuzzy
+msgid "Applicant assinged"
+msgstr "Un impétrant est assigné"
+
+#: models.py:1314
+#, fuzzy
+msgid "Applicant changed"
+msgstr "Impétrant"
+
+#: models.py:1315
+msgid "Applicant contractor changed"
+msgstr ""
+
+#: models.py:1318
+#, fuzzy
+msgid "Report refused by {user}"
+msgstr "Incidents par communes"
+
+#: models.py:1319
+#, fuzzy
+msgid "Report closed by {user}"
+msgstr "Incidents par communes"
+
+#: models.py:1320
+#, fuzzy
+msgid "Report pointed as done"
+msgstr "Incidents"
+
+#: models.py:1321
+#, fuzzy
+msgid "Report as been assigned to {related_new}"
+msgstr "Incidents"
+
+#: models.py:1322
+#, fuzzy
+msgid "Report as change manager from {related_old} to {related_new}"
+msgstr "Incidents"
+
+#: models.py:1323
+#, fuzzy
+msgid "Report has been approved by {user}"
+msgstr "Incidents par communes"
+
+#: models.py:1324
+msgid "{related_new} is responsible for the report"
+msgstr ""
+
+#: models.py:1325
+msgid "{related_old} give responsibility to {related_new}"
+msgstr ""
+
+#: models.py:1326
+#, fuzzy
 msgid "Applicant {related_new} is responsible for the report"
 msgstr "Un impétrant est assigné"
 
-#: models.py:1312
+#: models.py:1327
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr ""
 
-#: models.py:1313
+#: models.py:1328
 msgid "Contractor {related_new} is responsible for the report"
 msgstr ""
 
-#: models.py:1314
+#: models.py:1329
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr ""
 
-#: models.py:1315
+#: models.py:1330
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr ""
 
-#: models.py:1434
+#: models.py:1449
 msgid "Question"
 msgstr "Question"
 
-#: models.py:1435
+#: models.py:1450
 msgid "Answere"
 msgstr "Réponse"
 
-#: models.py:1476
+#: models.py:1491
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1477
+#: models.py:1492
 msgid "Related model field"
 msgstr ""
 
@@ -494,7 +494,7 @@ msgstr ""
 msgid "^export_file/reports/((?P<emitter_format>.+))/"
 msgstr ""
 
-#: templates/about.html:4 templates/base.html:89 templates/base.html.py:148
+#: templates/about.html:4 templates/base.html:95 templates/base.html.py:154
 #: templates/faq/show.html:3 templates/faq/show.html.py:7
 msgid "About"
 msgstr "A propos"
@@ -647,13 +647,7 @@ msgstr "Fix My Street:"
 msgid "Log out"
 msgstr "Se connecter"
 
-#: templates/base.html:53
-#, fuzzy
-msgid "Connected"
-msgstr "Créé"
-
 #: templates/base.html:56
-#, fuzzy
 msgid "Connected"
 msgstr "Créé"
 
@@ -661,49 +655,44 @@ msgstr "Créé"
 msgid "Sign in"
 msgstr "Accès réservé"
 
-#: templates/base.html:100 templates/base.html.py:159
-#: templates/base.html:61
+#: templates/base.html:64
 msgid "An error occurred when login. Please try again."
 msgstr ""
 
-#: templates/base.html:66
+#: templates/base.html:72
 msgid "Login"
 msgstr "Se connecter"
 
-#: templates/base.html:80 templates/base.html.py:103
+#: templates/base.html:86 templates/base.html.py:109
 msgid "Submit a Report"
 msgstr "Signaler un incident"
 
-#: templates/base.html:84 templates/base.html.py:107
+#: templates/base.html:90 templates/base.html.py:113
 msgid "View Reports"
 msgstr "Voir tous les incidents"
 
-#: templates/base.html:94 templates/base.html.py:153
+#: templates/base.html:100 templates/base.html.py:159
 #: templates/contact/new.html:4 templates/contact/new.html.py:23
 msgid "Contact Us"
 msgstr "Contact"
 
-#: templates/base.html:112
-msgid "Configuration"
-msgstr "Configuration"
-
-#: templates/base.html:119
+#: templates/base.html:118 templates/base.html.py:125
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: templates/base.html:126
+#: templates/base.html:132
 msgid "Contractors"
 msgstr "Exécuteur de travaux"
 
-#: templates/base.html:134
+#: templates/base.html:140
 msgid "Managers dispatching"
 msgstr "Dispatching"
 
-#: templates/base.html:141
+#: templates/base.html:147
 msgid "Change your password"
 msgstr "Modifier le mot de passe"
 
-#: templates/base.html:189
+#: templates/base.html:197
 msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
@@ -713,12 +702,11 @@ msgstr ""
 "target='_blank'>Bruxelles Mobilité</a> en collaboration avec les communes et "
 "les institutions bruxelloises partenaires"
 
-#: templates/base.html:201 templates/term_of_use.html:4
-#: templates/base.html:192
+#: templates/base.html:200
 msgid "Copyright 2011, CIRB"
 msgstr "Created by CIRB, 2013"
 
-#: templates/base.html:193 templates/term_of_use.html:4
+#: templates/base.html:201 templates/term_of_use.html:4
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
@@ -726,7 +714,7 @@ msgstr "Conditions d'utilisation"
 msgid "Meta description for home page"
 msgstr ""
 
-#: templates/home.html:72 templates/reports/list.html:97
+#: templates/home.html:72 templates/reports/list.html:111
 msgid "Report an incident"
 msgstr "Signaler un incident"
 
@@ -771,11 +759,11 @@ msgstr "Rue et numéro ou numéro d'incident"
 msgid "All communes..."
 msgstr "Toutes les communes"
 
-#: templates/home.html:97 templates/reports/list.html:93
+#: templates/home.html:97 templates/reports/list.html:107
 msgid "Search"
 msgstr "Rechercher"
 
-#: templates/home.html:105
+#: templates/home.html:104
 msgid "Enter the report ticket:"
 msgstr "Entrez le numéro d'incident:"
 
@@ -783,11 +771,11 @@ msgstr "Entrez le numéro d'incident:"
 msgid "Ticket number..."
 msgstr "Numéro de l'incident"
 
-#: templates/home.html:107
+#: templates/home.html:106
 msgid "Access Ticket"
 msgstr "Accéder àl' incident"
 
-#: templates/home.html:119
+#: templates/home.html:120
 msgid "Report Filed"
 msgstr "Incident enregistré"
 
@@ -943,8 +931,8 @@ msgstr ""
 msgid "We'd love to get your feedback"
 msgstr "N’hésitez pas à nous laisser vos commentaires sur ce site"
 
-#: templates/contact/new.html:42 templates/reports/new.html:244
-#: templates/reports/new.html.py:299
+#: templates/contact/new.html:42 templates/reports/new.html:245
+#: templates/reports/new.html.py:300
 msgid "* This fields are required"
 msgstr "* Ces champs sont obligatoires"
 
@@ -1406,7 +1394,7 @@ msgstr ""
 "d'activation suivant:\n"
 
 #: templates/promotions/show.html:4 templates/reports/list.html:4
-#: templates/reports/list.html.py:13 templates/reports/list.html:75
+#: templates/reports/list.html.py:13 templates/reports/list.html:89
 msgid "Reports for"
 msgstr "Incidents pour"
 
@@ -1420,19 +1408,19 @@ msgid ""
 " out of the first 100 confirmed reports were filed with the promotional code "
 msgstr ""
 
-#: templates/reports/_navigation.html:23
+#: templates/reports/_navigation.html:18
 msgid "subscriptions"
 msgstr "Questions"
 
-#: templates/reports/_navigation.html:24
+#: templates/reports/_navigation.html:19
 msgid "Created at"
 msgstr "Créé"
 
-#: templates/reports/_navigation.html:33
+#: templates/reports/_navigation.html:20
 msgid "responsible_entity"
 msgstr "Commune responsable"
 
-#: templates/reports/_navigation.html:39
+#: templates/reports/_navigation.html:23
 msgid "fixed"
 msgstr "résolus"
 
@@ -1474,14 +1462,22 @@ msgid "Meta description for list page"
 msgstr ""
 
 #: templates/reports/list.html:78
+msgid "Unpublished"
+msgstr "Non publié"
+
+#: templates/reports/list.html:84
+msgid "Closed"
+msgstr "Fermé"
+
+#: templates/reports/list.html:92
 msgid "No problems have been reported."
 msgstr "Aucun problème n'a été signalé."
 
-#: templates/reports/list.html:90
+#: templates/reports/list.html:104
 msgid "Search by entering a ticket number:"
 msgstr "Recherchez par numéro de ticket"
 
-#: templates/reports/list.html:91
+#: templates/reports/list.html:105
 msgid "Insert your ticket number here"
 msgstr ""
 
@@ -1512,11 +1508,11 @@ msgstr ""
 msgid "Brussels Mobility (tel:0800/94.001)"
 msgstr ""
 
-#: templates/reports/new.html:152 templates/reports/new.html.py:267
+#: templates/reports/new.html:152 templates/reports/new.html.py:268
 msgid "Files"
 msgstr "Photos et fichiers:"
 
-#: templates/reports/new.html:158 templates/reports/new.html.py:287
+#: templates/reports/new.html:158 templates/reports/new.html.py:288
 msgid "Comment"
 msgstr "Commentaire:"
 
@@ -1524,11 +1520,11 @@ msgstr "Commentaire:"
 msgid "Drag me to change my location."
 msgstr "Merci de positionner l'icône sur la carte"
 
-#: templates/reports/new.html:243
+#: templates/reports/new.html:244
 msgid "Submitting a report"
 msgstr "Soumettre un incident"
 
-#: templates/reports/new.html:246
+#: templates/reports/new.html:247
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
@@ -1537,74 +1533,74 @@ msgstr ""
 "détails d'un rapport"
 
 # "Avant de signaler un incident, vérifiez qu'il n'a pas déjà été constaté."
-#: templates/reports/new.html:248
+#: templates/reports/new.html:249
 msgid "Verify"
 msgstr "vérifier"
 
-#: templates/reports/new.html:252
+#: templates/reports/new.html:253
 msgid "Address"
 msgstr "Adresse:"
 
-#: templates/reports/new.html:255
+#: templates/reports/new.html:256
 msgid "** To change the address, move the marker on the map above."
 msgstr ""
 "Pour modifier l'adresse, changer la position de l'icône sur la carte ou "
 "refaire une recherche."
 
-#: templates/reports/new.html:260
+#: templates/reports/new.html:261
 msgid "Incident category:"
 msgstr "Type d'incident:"
 
-#: templates/reports/new.html:268
+#: templates/reports/new.html:269
 msgid "Optimal File Size (1200X800)"
 msgstr "Taille de fichier optimale (1200X800)"
 
-#: templates/reports/new.html:269
+#: templates/reports/new.html:270
 msgid "Supported formats"
 msgstr "Formats de fichier supportés"
 
-#: templates/reports/new.html:283
+#: templates/reports/new.html:284
 msgid "Add file"
 msgstr "Ajoutez des photos"
 
-#: templates/reports/new.html:298
+#: templates/reports/new.html:299
 msgid "Personal information:"
 msgstr "Données personnelles:"
 
-#: templates/reports/new.html:303
+#: templates/reports/new.html:304
 msgid "Contact information:"
 msgstr "Vos coordonnées:"
 
-#: templates/reports/new.html:316
+#: templates/reports/new.html:318
 msgid "Visualize:"
 msgstr "Valider"
 
-#: templates/reports/new.html:317
+#: templates/reports/new.html:319
 msgid "Visualize an overview of the created incident report."
 msgstr ""
 "Créer un aperçu de la fiche d'incident créée en validant vos informations."
 
-#: templates/reports/new.html:320
+#: templates/reports/new.html:321
 msgid "Visualize"
 msgstr "Valider"
 
-#: templates/reports/new.html:331
+#: templates/reports/new.html:332
 msgid "Confirm:"
 msgstr "Confirmer:"
 
-#: templates/reports/new.html:332
+#: templates/reports/new.html:333
 msgid "Edit"
 msgstr "modifier"
 
-#: templates/reports/new.html:333 templates/reports/show.html:104
+#: templates/reports/new.html:334 templates/reports/show.html:104
 msgid "Confirm"
 msgstr "confirmer"
 
-#: templates/reports/new.html:338
+#: templates/reports/new.html:339
 msgid "Confidentiality:"
 msgstr "Confidentialité:"
 
-#: templates/reports/new.html:339
+#: templates/reports/new.html:340
 msgid ""
 "We garantee the confidentiality of all given information. Conform with law "
 "(see site  <a href=\"http://www.ejustice.just.fgov.be\">Monitoring Belgium</"
@@ -1618,39 +1614,39 @@ msgstr ""
 "disposez d'un droit d'accès aux données vous concernant, ainsi qu'un droit "
 "de modification et de suppression de celles-ci."
 
-#: templates/reports/new.html:352
+#: templates/reports/new.html:353
 msgid "Submit an incident:"
 msgstr "Enregistrement de l'incident:"
 
-#: templates/reports/new.html:355
+#: templates/reports/new.html:356
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné."
 
-#: templates/reports/new.html:356
+#: templates/reports/new.html:357
 msgid "A mail containing the link report has been sent."
 msgstr "Un mail contenant les informations du rapport vous a éeté envoyé"
 
-#: templates/reports/new.html:358
+#: templates/reports/new.html:359
 msgid "Download a copy of the incident as a pdf"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: templates/reports/new.html:363 templates/reports/new.html.py:365
+#: templates/reports/new.html:364 templates/reports/new.html.py:366
 msgid "Continue"
 msgstr "continuer"
 
-#: templates/reports/new.html:372
+#: templates/reports/new.html:373
 msgid "Incident overview:"
 msgstr "Aperçu de votre rapport d'incident:"
 
-#: templates/reports/new.html:376
+#: templates/reports/new.html:378
 msgid "Return to incident"
 msgstr "Signaler un incident"
 
-#: templates/reports/new.html:383
+#: templates/reports/new.html:384
 msgid "Nearby incidents that are already submitted:"
 msgstr "Incidents déjà signalé à proximité:"
 
-#: templates/reports/new.html:393
+#: templates/reports/new.html:394
 msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
@@ -1732,7 +1728,7 @@ msgstr "Status:"
 msgid "Applicant:"
 msgstr "Impétrant"
 
-#: templates/reports/show.html:202
+#: templates/reports/show.html:190
 msgid "Responsible:"
 msgstr "Responsable:"
 
@@ -1785,11 +1781,11 @@ msgstr "Signaler un abus"
 msgid "Subscribers:"
 msgstr "Abonnés:"
 
-#: templates/reports/show.html:357
+#: templates/reports/show.html:345
 msgid "Your email"
 msgstr "Votre email"
 
-#: templates/reports/show.html:358
+#: templates/reports/show.html:346
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
@@ -1813,6 +1809,9 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #, fuzzy
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+#~ msgid "Configuration"
+#~ msgstr "Configuration"
 
 #~ msgid "seven_days"
 #~ msgstr "< 7j"
@@ -1842,12 +1841,6 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #, fuzzy
 #~ msgid "Reports assinged to me"
 #~ msgstr "Incidents"
-
-#~ msgid "Unpublished"
-#~ msgstr "Non publié"
-
-#~ msgid "Closed"
-#~ msgstr "Fermé"
 
 #~ msgid "Manager"
 #~ msgstr "Gestionnaire"

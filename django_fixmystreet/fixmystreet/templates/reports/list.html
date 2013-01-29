@@ -72,6 +72,20 @@ function search_per_ticket() {
 
 {% block content %}
     <div class="row">
+        <div id="incident_filter" class="span12">
+	  <ul>
+		<li>
+			<img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Unpublished' %}</span>
+		</li>
+		<li>
+			<img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'In progress' %}</span>
+		</li>
+		<li>
+			<img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Closed' %}</span>
+		</li>
+	  </ul>
+	</div>
+
         <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
 
         {% if not reports %}
