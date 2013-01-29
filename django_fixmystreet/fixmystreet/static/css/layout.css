@@ -679,6 +679,21 @@ li img {
     overflow: hidden;
 }
 
+.report-step-number {
+    display: block;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    height: 32px;
+    width: 32px;
+    color: #333;
+    background: #FFDB00;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    z-index: 3;
+}
+
 .report_step_number_1 {
     position: relative;
     left: -28px;
@@ -725,15 +740,9 @@ li img {
 
 .form-horizontal .control-label {
     text-align: left;
-    width: auto;
 }
 
-.form-horizontal .control-group{
-    float: left;
-    width: 100%;
-}
-
-.form-horizontal .help-block{
+.form-horizontal .help-block {
     font-size: small;
     margin-top: 10px;
     font-family: dosis-medium, arial, sans-serif;
@@ -781,22 +790,10 @@ li img {
     color: white;
 }
 
-#validate_form {
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-#validate_form fieldset{
-    margin-top: -20px;
-}
-
+#validate_form,
 #confirm_form {
     padding-top: 0px;
     padding-bottom: 0px;
-}
-
-#confirm_form fieldset{
-    margin-top: -20px;
 }
 
 .inactive_overlay_form_overview {
@@ -1272,7 +1269,6 @@ legend span {
 .bordered-box h1{
    margin-left: 35px;
    font-size: x-large;
-   margin-top: -30px;
 }
 
 .overview_div_left,

@@ -239,7 +239,7 @@ $(function(){
     <input id="validate" type="hidden" name="validate" maxlength="75">
     <div id="create_form_left" class="span6">
         <div id="create_form_left" class="bordered-box overview_div_left">
-            <div class="report_step_number_1"></div>
+            <span class="report-step-number img-circle">1</span>
             <div class="inactive_overlay_form_overview"></div>
             <h1>{% trans "Submitting a report" %}</h1>
             <div id="required-note" >{% trans "* This fields are required" %}</div>
@@ -294,7 +294,7 @@ $(function(){
     <div class="span6">
         {% if citizen_form %}
         <div id="user_information_form" class="bordered-box overview_div_right">
-            <div class="report_step_number_2"></div>
+            <span class="report-step-number img-circle">2</span>
             <div class="inactive_overlay_form_overview"></div>
             <h1>{% trans 'Personal information:' %}</h1>
             <div id="required-note" >{% trans "* This fields are required" %}</div>
@@ -309,9 +309,9 @@ $(function(){
         {% endif %}
         <div id="validate_form" class="bordered-box overview_div_right">
             {% if not BACKOFFICE %}
-            <div class="report_step_number_3"></div>
+            <span class="report-step-number img-circle">3</span>
             {% else %}
-            <div class="report_step_number_2"></div>
+            <span class="report-step-number img-circle">2</span>
             {% endif %}
             <div class="inactive_overlay_form_overview"></div>
             <fieldset>
@@ -323,9 +323,9 @@ $(function(){
         </div>
         <div id="confirm_form" class="bordered-box overview_div_right">
             {% if not BACKOFFICE %}
-            <div class="report_step_number_4"></div>
+            <span class="report-step-number img-circle">4</span>
             {% else %}
-            <div class="report_step_number_3"></div>
+            <span class="report-step-number img-circle">3</span>
             {% endif %}
             <div class="inactive_overlay_form_overview"></div>
             <fieldset>
