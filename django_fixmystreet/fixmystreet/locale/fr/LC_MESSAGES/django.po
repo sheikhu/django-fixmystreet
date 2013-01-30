@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-30 15:41+0100\n"
+"POT-Creation-Date: 2013-01-30 16:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #: forms.py:14 forms.py:40 forms.py:41 forms.py:69
 msgid "Select a Category"
@@ -172,140 +172,141 @@ msgstr "Confidentiel"
 msgid "Category group"
 msgstr "Groupe categorie"
 
-#: models.py:1197 models.py:1495
+#: models.py:1194 models.py:1498
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1308
+#: models.py:1311
 #, fuzzy
 msgid "Refuse"
 msgstr "Refusé"
 
-#: models.py:1309
+#: models.py:1312
 #, fuzzy
 msgid "Close"
 msgstr "Fermé"
 
-#: models.py:1310
+#: models.py:1313
 msgid "Mark as Done"
 msgstr "Marquer comme résolu"
 
-#: models.py:1311
+#: models.py:1314
 #, fuzzy
 msgid "Manager assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1312
+#: models.py:1315
 #, fuzzy
 msgid "Manager changed"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1313
+#: models.py:1316
 #, fuzzy
 msgid "Publish"
 msgstr "Non publiés"
 
-#: models.py:1314
+#: models.py:1317
 #, fuzzy
 msgid "Organisation assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1315
+#: models.py:1318
 msgid "Organisation changed"
 msgstr ""
 
-#: models.py:1316
+#: models.py:1319
 #, fuzzy
 msgid "Contractor assinged"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: models.py:1317
+#: models.py:1320
 #, fuzzy
 msgid "Contractor changed"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: models.py:1318
+#: models.py:1321
 #, fuzzy
 msgid "Applicant assinged"
 msgstr "Un impétrant est assigné"
 
-#: models.py:1319
+#: models.py:1322
 #, fuzzy
 msgid "Applicant changed"
 msgstr "Impétrant"
 
-#: models.py:1320
+#: models.py:1323
 msgid "Applicant contractor changed"
 msgstr ""
 
-#: models.py:1323
+#: models.py:1326
 msgid "Report refused by {user}"
 msgstr "L'incident est refusé par {user}"
 
-#: models.py:1324
+#: models.py:1327
 msgid "Report closed by {user}"
 msgstr "L'incident est cloturer par {user}"
 
-#: models.py:1325
+#: models.py:1328
 #, fuzzy
 msgid "Report pointed as done"
 msgstr "Incidents"
 
-#: models.py:1326
+#: models.py:1329
 msgid "Report as been assigned to {related_new}"
 msgstr "L'incident est assigné à {related_new}"
 
-#: models.py:1327
+#: models.py:1330
 msgid "Report as change manager from {related_old} to {related_new}"
 msgstr "L'incident a changé de gestionnaire de {related_old} par {related_new}"
 
-#: models.py:1328
+#: models.py:1331
 msgid "Report has been approved by {user}"
 msgstr "L'incident est approuvé par {user}"
 
-#: models.py:1329
+#: models.py:1332
 msgid "{related_new} is responsible for the report"
 msgstr "{related_new} est responsable pour l'incident"
 
-#: models.py:1330
+#: models.py:1333
 msgid "{related_old} give responsibility to {related_new}"
 msgstr "{related_old} a donné la responsabilité a {related_new}"
 
-#: models.py:1331
+#: models.py:1334
 msgid "Applicant {related_new} is responsible for the report"
 msgstr "Impetrant {related_new} est responsable pour l'incident"
 
-#: models.py:1332
+#: models.py:1335
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Impetrant a changé de {related_old} par {related_new}"
 
-#: models.py:1333
+#: models.py:1336
 msgid "Contractor {related_new} is responsible for the report"
 msgstr "Executeur de travaux {related_new} est responsable pour l'incident"
 
-#: models.py:1334
+#: models.py:1337
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Executeur de travaux a changé de {related_old} par {related_new}"
 
-#: models.py:1335
+#: models.py:1338
+
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr ""
 "Changement impetrant - executeur de travaux de {related_old} par "
 "{related_new}"
 
-#: models.py:1454
+#: models.py:1457
 msgid "Question"
 msgstr "Question"
 
-#: models.py:1455
+#: models.py:1458
 msgid "Answere"
 msgstr "Réponse"
 
-#: models.py:1496
+#: models.py:1499
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1497
+#: models.py:1500
 msgid "Related model field"
 msgstr ""
 
@@ -624,7 +625,6 @@ msgstr ""
 "        "
 
 #: templates/base.html:9 templates/home.html:7
-#: templates/admin/change_form.html:19
 msgid "Home"
 msgstr "Page d'accueil"
 
@@ -826,79 +826,6 @@ msgstr "Incidents cloturés"
 #: templates/home.html:194
 msgid "Download the fix my street mobile application for your smartphone:"
 msgstr "Téléchargez l'application fix my sreet sur votre smartphone"
-
-#: templates/posters.html:4 templates/posters.html.py:8
-#, fuzzy
-msgid "Posters"
-msgstr "Signalé par"
-
-#: templates/posters.html:10
-msgid ""
-"\n"
-"Help spread the word.  The more people who know about fixmystreet.ca, the "
-"more \n"
-"useful it will be.  Share your report on Twitter or Facebook, \n"
-"or hang a poster at a university or neighbourhood coffee shop.\n"
-msgstr ""
-
-#: templates/posters.html:17
-#, fuzzy
-msgid "Poster"
-msgstr "Signalé par"
-
-#: templates/admin/base_site.html:4
-#, fuzzy
-msgid "Fix My Street Admin"
-msgstr "Fix My Street:"
-
-#: templates/admin/base_site.html:15
-#, fuzzy
-msgid "Fix My Street Administration"
-msgstr "Fix My Street:"
-
-#: templates/admin/change_form.html:22
-#, fuzzy
-msgid "Add"
-msgstr "Adresse:"
-
-#: templates/admin/change_form.html:32
-msgid "History"
-msgstr ""
-
-#: templates/admin/change_form.html:33
-msgid "View on site"
-msgstr ""
-
-#: templates/admin/change_form.html:44
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/admin/login.html:58
-msgid "Login with Facebook"
-msgstr ""
-
-#: templates/admin/login.html:59
-msgid "Login with Google"
-msgstr ""
-
-#: templates/admin/login.html:64
-msgid "Username:"
-msgstr ""
-
-#: templates/admin/login.html:67
-msgid "Password:"
-msgstr ""
-
-#: templates/admin/login.html:70
-msgid "Forgot password?"
-msgstr ""
-
-#: templates/admin/login.html:73
-#, fuzzy
-msgid "Log in"
-msgstr "Se connecter"
 
 #: templates/contact/new.html:26
 msgid ""
@@ -1166,8 +1093,8 @@ msgstr "Mis à jour"
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<!--p> Please activate yourself first by clicking the following link: %(url)"
-"s/</p-->\n"
+"<!--p> Please activate yourself first by clicking the following link: "
+"%(url)s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
@@ -1208,8 +1135,8 @@ msgstr "Fix My Street: Veuillez Confirmer votre incident: %(title)s"
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s has changed. You "
-"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
-"(SITE_URL)s%(url)s</a>.</p>\n"
+"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
+"%(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:18
@@ -1217,8 +1144,8 @@ msgstr ""
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is changed. You can "
-"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
-"(SITE_URL)s%(url)s</a>.</p>\n"
+"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
+"%(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/subject.txt:1
@@ -1261,14 +1188,15 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
-"s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
-"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
-"automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
+"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the "
+"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
+"mail is automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
+
 "\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
 "s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
 "rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
@@ -1280,10 +1208,10 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
-"s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
-"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
-"automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://"
+"%(SITE_URL)s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the "
+"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
+"mail is automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
@@ -1372,24 +1300,24 @@ msgid "Fix My Street: Your report has been refused."
 msgstr "FixMyStreet: l'incident signalé a été refusé"
 
 #: templates/emails/send_subscription_to_subscriber/message.html:9
-#: templates/emails/send_subscription_to_subscriber/message.html:19
+#: templates/emails/send_subscription_to_subscriber/message.html:21
 #, python-format
 msgid ""
 "\n"
 "<p>You are now subscribed to the report with type %(reportType)s, created at "
 "%(date)s. You can consult the report at <a href=\"http://%(SITE_URL)s%(url)s"
 "\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
-"<!--p>You can unsubscribe yourself by clicking the following link: <a href="
-"\"http://%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a></p-->\n"
 msgstr ""
 "\n"
 "<p>Vous avez souscrit un abonnement a ce rapport de type %(reportType)s, "
 "créé le %(date)s. Vous pouvez consulter le rapport en cliquant sur le lien "
 "suivant: <a href=\"http://%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</"
 "a>.</p>\n"
-"<!--p>Vous pouvez également vous désinscrire en cliquant sur le lien "
-"suivant: <a href=\"http://%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</"
-"a></p-->\n"
+
+#: templates/emails/send_subscription_to_subscriber/message.html:13
+#: templates/emails/send_subscription_to_subscriber/message.html:25
+msgid "You can unsubscribe yourself by clicking the following link:"
+msgstr "Vous pouvez également vous désinscrire en cliquant sur le lien suivant:"
 
 #: templates/emails/send_subscription_to_subscriber/subject.txt:1
 #: templates/emails/subscribe/subject.txt:1
@@ -1425,20 +1353,6 @@ msgstr ""
 "Afin de finaliser la procédure d'abonnement, veillez cliquer sur le lien "
 "d'activation suivant:\n"
 
-#: templates/promotions/show.html:4 templates/reports/list.html:4
-#: templates/reports/list.html.py:13 templates/reports/list.html:125
-msgid "Reports for"
-msgstr "Incidents pour"
-
-#: templates/promotions/show.html:8
-#, fuzzy
-msgid "First 100 Reports"
-msgstr "Signaler un incident"
-
-#: templates/promotions/show.html:9
-msgid ""
-" out of the first 100 confirmed reports were filed with the promotional code "
-msgstr ""
 
 #: templates/reports/_navigation.html:20
 msgid "subscriptions"
@@ -1492,6 +1406,11 @@ msgstr "Incidents par communes"
 #: templates/reports/index.html:56
 msgid "As reported by Fix My Street users."
 msgstr "Comme indiqué par les utilisateurs de fix my street."
+
+#: templates/reports/list.html:4 templates/reports/list.html.py:13
+#: templates/reports/list.html:125
+msgid "Reports for"
+msgstr "Incidents pour"
 
 #: templates/reports/list.html:14
 msgid "Meta description for list page"
@@ -1795,8 +1714,8 @@ msgstr "Commentaires"
 #, python-format
 msgid ""
 "\n"
-"                            Posted by <strong>%(by)s</strong> on <strong>%"
-"(on)s</strong>\n"
+"                            Posted by <strong>%(by)s</strong> on <strong>"
+"%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -1841,6 +1760,34 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+#, fuzzy
+#~ msgid "Posters"
+#~ msgstr "Signalé par"
+
+#, fuzzy
+#~ msgid "Poster"
+#~ msgstr "Signalé par"
+
+#, fuzzy
+#~ msgid "Fix My Street Admin"
+#~ msgstr "Fix My Street:"
+
+#, fuzzy
+#~ msgid "Fix My Street Administration"
+#~ msgstr "Fix My Street:"
+
+#, fuzzy
+#~ msgid "Add"
+#~ msgstr "Adresse:"
+
+#, fuzzy
+#~ msgid "Log in"
+#~ msgstr "Se connecter"
+
+#, fuzzy
+#~ msgid "First 100 Reports"
+#~ msgstr "Signaler un incident"
 
 #~ msgid "Configuration"
 #~ msgstr "Configuration"

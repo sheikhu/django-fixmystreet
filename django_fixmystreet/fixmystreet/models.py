@@ -1226,7 +1226,6 @@ def send_notification(sender, instance, **kwargs):
         instance.error_msg = "No email recipient"
         instance.success = False
         return
-
     reply_to = settings.DEFAULT_FROM_EMAIL
     if instance.reply_to:
         reply_to = instance.reply_to
@@ -1236,12 +1235,19 @@ def send_notification(sender, instance, **kwargs):
         mail_url = instance.related.get_absolute_url_pro()
     else:
         mail_url = instance.related.get_absolute_url()
-
     data = {
         "related": instance.related,
         "SITE_URL": Site.objects.get_current().domain,
         "mail_url": mail_url
     }
+    if instance.recipient.is_pro():
+        if instance.content_template == "send_subscription_to_subscriber":
+            data = {
+                "related": instance.related,
+                "SITE_URL": Site.objects.get_current().domain,
+                "mail_url": mail_url,
+                "unsubscribe_url":reverse("unsubscribe_pro",args=[instance.related.id])
+            }
 
     subject, html, text = '', '', ''
     try:
