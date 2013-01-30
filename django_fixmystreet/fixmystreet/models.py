@@ -49,6 +49,8 @@ class UserTrackedModel(TimeStampedModel):
 
 User._meta.get_field_by_name('email')[0]._unique = True
 User._meta.get_field_by_name('email')[0].null = True
+User._meta.get_field_by_name('email')[0].max_length=75
+User._meta.get_field_by_name('username')[0].max_length=75
 
 class FMSUser(User):
     AGENT        = "agent"
