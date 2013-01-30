@@ -18,7 +18,75 @@
 
 {% block statistics %}
 <article id="statistics">
-    <table>
+    <div class='pro-counter'>
+       <span class='text'>{% trans 'Unpublished' %}</span>
+	<table align="center">
+	{% for stat in stats %}
+	<tr>
+	<td>
+       	<span class='qualifier'>
+        {{ stat.stat_name }}:
+        </span>
+	</td>
+	<td>
+        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >
+       	<span class='qualifier'>
+		{{stat.stat_value.get_count_new}}
+        </span>
+	</a>
+	</td>
+	</tr>
+	{% endfor %}
+	</table>
+       </span>
+    </div>
+    <div class='pro-counter'>
+       <span class='text'>{% trans 'In progress' %}</span>
+       <span class='qualifier'>
+	<table align="center">
+	{% for stat in stats %}
+        <tr>
+        <td>
+       	<span class='qualifier'>
+        {{ stat.stat_name }}:
+        </span>
+        </td>
+        <td>
+        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >
+       	<span class='qualifier'>
+		{{stat.stat_value.get_count_in_progress}}
+        </span>
+	</a>
+        </td>
+        </tr>
+        {% endfor %}
+	</table>
+       </span>
+    </div>
+    <div class='pro-counter'>
+       <span class='text'>{% trans 'Closed' %}</span>
+       <span class='qualifier'>
+        <table align="center">
+        {% for stat in stats %}
+        <tr>
+        <td>
+       	<span class='qualifier'>
+        {{ stat.stat_name }}:
+        </span>
+        </td>
+        <td>
+        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >
+       	<span class='qualifier'>
+		{{stat.stat_value.get_count_closed}}	
+        </span>
+	</a>
+        </td>
+        </tr>
+        {% endfor %}
+        </table>
+       </span>
+    </div>
+    <!--table>
     	<tr>
     		<th></th>
     		<th>{% trans 'Unpublished' %}</th>
@@ -33,7 +101,7 @@
     		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
     	</tr>
     	{% endfor %}
-    </table>
+    </table-->
 </article>
 <div id="report_popup" class="modal hide fade">
 	<div class="modal-header">
