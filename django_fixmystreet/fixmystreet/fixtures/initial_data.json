@@ -143,8 +143,8 @@
         "fields": {
             "commune": true, 
             "dependency":20, 
-            "name_fr": "Bruxelles",
-            "name_nl": "Bruxelles",
+            "name_fr": "Ville de Bruxelles",
+            "name_nl": "Brussel Stad",
             "phone": "02/279.22.11",
             "feature_id": "URB_A_MU.7400"
         }
@@ -204,7 +204,7 @@
             "commune": true, 
             "dependency":20, 
             "name_fr": "Ixelles",
-            "name_nl": "Ixelles",
+            "name_nl": "Elsene",
             "phone": "02/515.61.11",
             "feature_id": "URB_A_MU.7900"
         }
@@ -367,8 +367,8 @@
         "model": "fixmystreet.zipcode", 
         "fields": {
             "commune": 4,
-            "name_fr": "Bruxelles", 
-            "name_nl": "Brussel", 
+            "name_fr": "Ville de Bruxelles", 
+            "name_nl": "Brussel Stad", 
             "hide": false,
             "code": 1000
         }

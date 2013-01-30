@@ -2,6 +2,7 @@
 import logging
 
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
@@ -11,7 +12,10 @@ from django.conf import settings
 
 from django_fixmystreet.fixmystreet.models import FMSUser, Report, OrganisationEntity
 
-
+#Increase username size
+AuthenticationForm.base_fields['username'].max_length = 150
+AuthenticationForm.base_fields['username'].widget.attrs['maxlength'] = 150
+AuthenticationForm.base_fields['username'].validators[0].limit_value = 150
 
 logger = logging.getLogger(__name__)
 

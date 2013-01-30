@@ -112,6 +112,7 @@ function markAsDone(){
 <div class="row">
 
 <div class="span6 bordered-box overview_div_left">
+    <h1>{% trans "Report Ticket" %} {{ report.get_ticket_number }}</h1>
     <div class="pull-right">
         {% if report.is_in_progress %}
             {% if not report.status == report.SOLVED %}
@@ -125,11 +126,12 @@ function markAsDone(){
     <!-- ######### -->
     <!-- IS FIXED  -->
     <!-- ######### -->
+    
     {% if report.is_created %}
-    <div class='is_fixed'>{% trans "Report Ticket" %} {{ report.get_ticket_number }} {% trans "This incident is not validated." %}</div>
+    <div class='is_fixed'>{% trans "This incident is not validated." %}</div>
     {% endif %}
     {% if report.is_closed %}
-    <div class='is_fixed'>{% trans "Report Ticket" %} {{ report.get_ticket_number }} {% trans "This incident has been closed." %}</div>
+    <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
     {% endif %}
 
     <div id='report-body'>
@@ -149,7 +151,7 @@ function markAsDone(){
          {% else %}
 
                         {% blocktrans with by=report.created_by.username on=report.created mail=report.created_by.email %}
-                        Posted by <strong><a href="mailto:{{mail}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+                        Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
                         {% endblocktrans %}
                         (tel:{{report.created_by.fmsuser.telephone}})
         {% endif %}
@@ -232,7 +234,7 @@ function markAsDone(){
 				<br/>
 	                        <strong>{% trans 'Posted By' %}: </strong>
         	                {% if file.created_by %}
-                	                {{file.created_by.fmsuser.get_display_name}}
+                	                {{file.get_display_name}}
                         	        (mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
                         	{% else %}
                                 	{% trans 'Anonymous '%}
@@ -271,7 +273,7 @@ function markAsDone(){
                     <td class="annexesFirstTD">
                         <div class="report_update">
                             <p>{{comment.text}}</p>
-                            {% blocktrans with by=comment.created_by.fmsuser.get_display_name on=comment.created %}
+                            {% blocktrans with by=comment.get_display_name on=comment.created %}
                             Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                             {% endblocktrans %}
                         </div>
@@ -292,12 +294,12 @@ function markAsDone(){
         <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
         <!-- ############################################# -->
         <fieldset>
-            <legend>Comment</legend>
+            <legend>{% trans 'Comments' %}</legend>
             {{ comment_form.text }}
             {# comment_form.text.errors #}
         </fieldset>
         <fieldset>
-            <legend>Files</legend>
+            <legend>{% trans 'Files' %}</legend>
             <div id="form-files">
                 {{ file_formset.management_form }}
                 {# file_formset.errors #}
@@ -311,7 +313,7 @@ function markAsDone(){
                 </div>
             </div>
             <div class="file-upload-button">
-                <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">Add file</a>
+                <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
             </div>
 
         </fieldset>

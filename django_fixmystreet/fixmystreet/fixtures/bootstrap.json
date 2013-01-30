@@ -2203,6 +2203,266 @@
         }
     },
     {
+        "pk": 32,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Anderlecht",
+            "last_name": "Entity",
+            "username": "anderlechtEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"anderlecht@bru.be"
+        }
+    },
+    {
+        "pk":32,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":32,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":1
+        }
+    },
+    {
+        "pk": 33,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Etterbeek",
+            "last_name": "Entity",
+            "username": "etterbeekEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"etterbeek@bru.be"
+        }
+    },
+    {
+        "pk":33,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":33,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":5
+        }
+    },
+    {
+        "pk": 34,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Forest",
+            "last_name": "Entity",
+            "username": "forestEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"forest@bru.be"
+        }
+    },
+    {
+        "pk":34,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":34,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":7
+        }
+    },
+    {
+        "pk": 35,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Ganshoren",
+            "last_name": "Entity",
+            "username": "ganshorenEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"ganshoren@bru.be"
+        }
+    },
+    {
+        "pk":35,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":35,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":8
+        }
+    },
+    {
+        "pk": 36,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jette",
+            "last_name": "Entity",
+            "username": "jetteEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"jette@bru.be"
+        }
+    },
+    {
+        "pk":36,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":36,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":10
+        }
+    },
+    {
+        "pk": 37,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Molenbeek",
+            "last_name": "Entity",
+            "username": "molenbeekEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"molenbeek@bru.be"
+        }
+    },
+    {
+        "pk":37,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":37,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":12
+        }
+    },
+    {
+        "pk": 38,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "stJosse",
+            "last_name": "Entity",
+            "username": "stjosseEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"stjosse@bru.be"
+        }
+    },
+    {
+        "pk":38,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":38,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":14
+        }
+    },
+    {
+        "pk": 39,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Uccle",
+            "last_name": "Entity",
+            "username": "uccleEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"uccle@bru.be"
+        }
+    },
+    {
+        "pk":39,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":39,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":16
+        }
+    },
+    {
+        "pk": 40,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Boisfort",
+            "last_name": "Entity",
+            "username": "boisfortEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"boisfort@bru.be"
+        }
+    },
+    {
+        "pk":40,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":40,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":17
+        }
+    },
+    {
+        "pk": 41,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "WoluweStPierre",
+            "last_name": "Entity",
+            "username": "wolumeStPierreEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"woluwestpierre@bru.be"
+        }
+    },
+    {
+        "pk":41,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":41,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":19
+        }
+    },
+    {
         "pk": 27,
         "model": "auth.user",
         "fields": {
@@ -2234,7 +2494,7 @@
         "fields": {
             "first_name": "bruxellesMobilité",
             "last_name": "Entity",
-            "username": "bruxellesMobilitéEntity",
+            "username": "bruxellesMobiliteEntity",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true,
@@ -2286,7 +2546,7 @@
         "fields": {
             "first_name": "BruxellesPropreté",
             "last_name": "Entity",
-            "username": "bruxellesPropretéEntity",
+            "username": "bruxellesPropreteEntity",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true,
@@ -2304,6 +2564,709 @@
             "manager":false,
             "leader":true,
             "organisation":23
+        }
+    },
+    {
+
+        "pk": 31,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Port de Bruxelles",
+            "last_name": "Entity",
+            "username": "portDeBruxellesEntity",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"portdebruxelles@bru.be"
+        }
+    },
+    {
+        "pk":31,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":31,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":24
+        }
+    },
+    {
+        "pk": 42,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thierry",
+            "last_name": "Varet",
+            "username": "tvaret@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"tvaret@mrbc.irisnet.be"
+        }
+    },
+    {
+        "pk":42,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":42,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":25
+        }
+    },
+    {
+        "pk": 43,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Marc",
+            "last_name": "Degraer",
+            "username": "mdegraer@mrbc.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"mdegraer@mrbc.irisnet.be"
+        }
+    },
+    {
+        "pk":43,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":43,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":25
+        }
+    },
+    {
+        "pk": 44,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Daniel",
+            "last_name": "Delvaux",
+            "username": "travaux.publics@1082berchem.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"travaux.publics@1082berchem.irisnet.be"
+        }
+    },
+    {
+        "pk":44,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":44,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":3
+        }
+    },
+    {
+        "pk": 45,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Mohamed",
+            "last_name": "El Mossaoui",
+            "username": "melmossaoui@1082berchem.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"melmossaoui@1082berchem.irisnet.be"
+        }
+    },
+    {
+        "pk":45,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":45,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":3
+        }
+    },
+    {
+        "pk": 46,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Stephane",
+            "last_name": "Vanderbeck",
+            "username": "svanderbeck@auderghem.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"svanderbeck@auderghem.be"
+        }
+    },
+    {
+        "pk":46,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":46,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":2
+        }
+    },
+    {
+        "pk": 47,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thibault",
+            "last_name": "Delforge",
+            "username": "t.delforge@auderghem.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"t.delforge@auderghem.be"
+        }
+    },
+    {
+        "pk":47,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":47,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":2
+        }
+    },
+    {
+        "pk": 48,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Anne",
+            "last_name": "de Canniere",
+            "username": "adecanniere@stgilles.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"adecanniere@stgilles.irisnet.be"
+        }
+    },
+    {
+        "pk":48,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":48,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":13
+        }
+    },
+    {
+        "pk": 49,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Anne",
+            "last_name": "Filosof",
+            "username": "afilosof@stgilles.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"afilosof@stgilles.irisnet.be"
+        }
+    },
+    {
+        "pk":49,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":49,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":13
+        }
+    },
+    {
+        "pk": 50,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Patricia",
+            "last_name": "Vandyck",
+            "username": "pvandyck@stgilles.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"pvandyck@stgilles.irisnet.be"
+        }
+    },
+    {
+        "pk":50,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":50,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":13
+        }
+    },
+    {
+        "pk": 51,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jean-Luc",
+            "last_name": "Theys",
+            "username": "jeanluc.theys@ixelles.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"jeanluc.theys@ixelles.be"
+        }
+    },
+    {
+        "pk":51,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":51,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 52,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jean-Michel",
+            "last_name": "Theys",
+            "username": "jeanmichel.theys@ixelles.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"jeanmichel.theys@ixelles.be"
+        }
+    },
+    {
+        "pk":52,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":52,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 53,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Christophe",
+            "last_name": "Laurent",
+            "username": "christophe.laurent@ixelles.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"christophe.laurent@ixelles.be"
+        }
+    },
+    {
+        "pk":53,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":53,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 54,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Antoine",
+            "last_name": "Desir",
+            "username": "antoine.desir@ixelles.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"antoine.desir@ixelles.be"
+        }
+    },
+    {
+        "pk":54,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":54,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 55,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Brigitte",
+            "last_name": "Vervaet",
+            "username": "brigitte.vervaet@ixelles.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"brigitte.vervaet@ixelles.be"
+        }
+    },
+    {
+        "pk":55,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":55,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 56,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Olivier",
+            "last_name": "De Klerck",
+            "username": "olivier.deklerck@ixelles.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"olivier.deklerck@ixelles.be"
+        }
+    },
+    {
+        "pk":56,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":56,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":9
+        }
+    },
+    {
+        "pk": 57,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Dirk",
+            "last_name": "Uytterhoeven",
+            "username": "d.uytterhoeven@woluwe1200.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"d.uytterhoeven@woluwe1200.be"
+        }
+    },
+    {
+        "pk":57,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":57,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":18
+        }
+    },
+    {
+        "pk": 58,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Patrick",
+            "last_name": "Frankignoul",
+            "username": "pfrankignoul@woluwe1200.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"pfrankignoul@woluwe1200.be"
+        }
+    },
+    {
+        "pk":58,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":58,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":18
+        }
+    },
+    {
+        "pk": 59,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Mounia",
+            "last_name": "Benyahia",
+            "username": "mbenyahia@woluwe1200.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"mbenyahia@woluwe1200.be"
+        }
+    },
+    {
+        "pk":59,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":59,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":18
+        }
+    },
+    {
+        "pk": 60,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Ahmet",
+            "last_name": "Ak",
+            "username": "aak@evere.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"aak@evere.irisnet.be"
+        }
+    },
+    {
+        "pk":60,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":60,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":6
+        }
+    },
+    {
+        "pk": 61,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Claude",
+            "last_name": "Maertens",
+            "username": "cmaertens@evere.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"cmaertens@evere.irisnet.be"
+        }
+    },
+    {
+        "pk":61,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":61,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":6
+        }
+    },
+    {
+        "pk": 62,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Paul",
+            "last_name": "Van Gelder",
+            "username": "paul.vangelder@brucity.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"paul.vangelder@brucity.be"
+        }
+    },
+    {
+        "pk":62,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":62,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":4
+        }
+    },
+    {
+        "pk": 63,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Eric",
+            "last_name": "Mercier",
+            "username": "eric.mercier@brucity.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"eric.mercier@brucity.be"
+        }
+    },
+    {
+        "pk":63,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":63,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":4
+        }
+    },
+    {
+        "pk": 64,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Hugo",
+            "last_name": "Stegen",
+            "username": "Hugo.Stegen@brucity.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"Hugo.Stegen@brucity.be"
+        }
+    },
+    {
+        "pk":64,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":64,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":4
+        }
+    },
+    {
+        "pk": 65,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Andy",
+            "last_name": "Demesmaeker",
+            "username": "ademesmaeker@koekelberg.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"ademesmaeker@koekelberg.irisnet.be"
+        }
+    },
+    {
+        "pk":65,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":65,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":11
+        }
+    },
+    {
+        "pk": 66,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Yves",
+            "last_name": "Vannederghem",
+            "username": "yvannederghem@koekelberg.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"yvannederghem@koekelberg.irisnet.be"
+        }
+    },
+    {
+        "pk":66,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":66,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":11
+        }
+    },
+    {
+        "pk": 67,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Terry",
+            "last_name": "Verhaegen",
+            "username": "tverhaegen@koekelberg.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"tverhaegen@koekelberg.irisnet.be"
+        }
+    },
+    {
+        "pk":67,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":67,
+            "telephone":"123456789",
+            "last_used_language":"FR",
+            "agent":false,
+            "manager":true,
+            "leader":false,
+            "organisation":11
         }
     }
 ]

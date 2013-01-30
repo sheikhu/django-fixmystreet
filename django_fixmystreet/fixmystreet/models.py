@@ -49,6 +49,8 @@ class UserTrackedModel(TimeStampedModel):
 
 User._meta.get_field_by_name('email')[0]._unique = True
 User._meta.get_field_by_name('email')[0].null = True
+User._meta.get_field_by_name('email')[0].max_length=75
+User._meta.get_field_by_name('username')[0].max_length=75
 
 class FMSUser(User):
     AGENT        = "agent"
@@ -918,7 +920,7 @@ class ReportAttachment(UserTrackedModel):
 
     def get_display_name(self):
         if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
-             return 'ANONYMOUS'
+             return _('ANONYMOUS')
         else:
              return self.created_by.first_name+' '+self.created_by.last_name
 

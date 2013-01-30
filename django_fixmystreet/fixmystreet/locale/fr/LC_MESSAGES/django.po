@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-29 16:15+0100\n"
+"POT-Creation-Date: 2013-01-29 18:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,7 +96,7 @@ msgstr "Association"
 msgid "Other"
 msgstr "Autres"
 
-#: models.py:141
+#: models.py:141 models.py:921
 msgid "ANONYMOUS"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr "Créé"
 msgid "Refused"
 msgstr "Refusé"
 
-#: models.py:315 models.py:316 templates/reports/list.html:81
+#: models.py:315 models.py:316 templates/reports/list.html:117
 msgid "In progress"
 msgstr "En cours de traitement"
 
@@ -708,7 +708,7 @@ msgstr "Conditions d'utilisation"
 msgid "Meta description for home page"
 msgstr ""
 
-#: templates/home.html:72 templates/reports/list.html:111
+#: templates/home.html:72 templates/reports/list.html:157
 msgid "Report an incident"
 msgstr "Signaler un incident"
 
@@ -753,7 +753,7 @@ msgstr "Rue et numéro ou numéro d'incident"
 msgid "All communes..."
 msgstr "Toutes les communes"
 
-#: templates/home.html:97 templates/reports/list.html:107
+#: templates/home.html:97 templates/reports/list.html:153
 msgid "Search"
 msgstr "Rechercher"
 
@@ -930,7 +930,7 @@ msgstr "N’hésitez pas à nous laisser vos commentaires sur ce site"
 msgid "* This fields are required"
 msgstr "* Ces champs sont obligatoires"
 
-#: templates/contact/new.html:47 templates/reports/show.html:319
+#: templates/contact/new.html:47 templates/reports/show.html:321
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1388,7 +1388,7 @@ msgstr ""
 "d'activation suivant:\n"
 
 #: templates/promotions/show.html:4 templates/reports/list.html:4
-#: templates/reports/list.html.py:13 templates/reports/list.html:89
+#: templates/reports/list.html.py:13 templates/reports/list.html:125
 msgid "Reports for"
 msgstr "Incidents pour"
 
@@ -1455,23 +1455,23 @@ msgstr "Comme indiqué par les utilisateurs de fix my street."
 msgid "Meta description for list page"
 msgstr ""
 
-#: templates/reports/list.html:78
+#: templates/reports/list.html:114
 msgid "Unpublished"
 msgstr "Non publié"
 
-#: templates/reports/list.html:84
+#: templates/reports/list.html:120
 msgid "Closed"
 msgstr "Fermé"
 
-#: templates/reports/list.html:92
+#: templates/reports/list.html:128
 msgid "No problems have been reported."
 msgstr "Aucun problème n'a été signalé."
 
-#: templates/reports/list.html:104
+#: templates/reports/list.html:150
 msgid "Search by entering a ticket number:"
 msgstr "Recherchez par numéro de ticket"
 
-#: templates/reports/list.html:105
+#: templates/reports/list.html:151
 msgid "Insert your ticket number here"
 msgstr ""
 
@@ -1486,9 +1486,8 @@ msgid ""
 msgstr ""
 
 #: templates/reports/new.html:62 templates/reports/show.html:44
-#, fuzzy
 msgid "Your file description"
-msgstr "Question"
+msgstr "Votre description de fichier"
 
 #: templates/reports/new.html:70
 msgid ""
@@ -1500,9 +1499,10 @@ msgstr ""
 
 #: templates/reports/new.html:71
 msgid "Brussels Mobility (tel:0800/94.001)"
-msgstr ""
+msgstr "Bruxelles Mobilité (tel:0800/94.001)"
 
 #: templates/reports/new.html:152 templates/reports/new.html.py:268
+#: templates/reports/show.html:302
 msgid "Files"
 msgstr "Photos et fichiers:"
 
@@ -1553,7 +1553,7 @@ msgstr "Taille de fichier optimale (1200X800)"
 msgid "Supported formats"
 msgstr "Formats de fichier supportés"
 
-#: templates/reports/new.html:284
+#: templates/reports/new.html:284 templates/reports/show.html:316
 msgid "Add file"
 msgstr "Ajoutez des photos"
 
@@ -1662,29 +1662,29 @@ msgstr ""
 
 #: templates/reports/show.html:102
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
-#: templates/reports/show.html:118 templates/reports/show.html.py:120
-msgid "Mark as done"
-msgstr "Signaler comme terminé"
-
-#: templates/reports/show.html:121
-msgid "This report is already marked as done"
-msgstr ""
-
-#: templates/reports/show.html:129 templates/reports/show.html.py:132
+#: templates/reports/show.html:115
 msgid "Report Ticket"
 msgstr "Incident n°: "
 
-#: templates/reports/show.html:129
+#: templates/reports/show.html:119 templates/reports/show.html.py:121
+msgid "Mark as done"
+msgstr "Signaler comme terminé"
+
+#: templates/reports/show.html:122
+msgid "This report is already marked as done"
+msgstr "Ce rapport est déja marqué comme terminé"
+
+#: templates/reports/show.html:131
 msgid "This incident is not validated."
 msgstr "est en cours de validation"
 
-#: templates/reports/show.html:132
+#: templates/reports/show.html:134
 msgid "This incident has been closed."
 msgstr "a été résolu."
 
-#: templates/reports/show.html:146
+#: templates/reports/show.html:148
 #, python-format
 msgid ""
 "\n"
@@ -1694,66 +1694,63 @@ msgstr ""
 "\n"
 "Signalé le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:151
+#: templates/reports/show.html:153
 #, fuzzy, python-format
 msgid ""
 "\n"
-"                        Posted by <strong><a href=\"mailto:%(mail)s\">%(by)"
-"s</a></strong> on <strong>%(on)s</strong>\n"
+"                        Posted by <strong><a href='mailto:%(mail)s'>%(by)s</"
+"a></strong> on <strong>%(on)s</strong>\n"
 "                        "
 msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:164
+#: templates/reports/show.html:166
 msgid "Location:"
 msgstr "Adresse:"
 
-#: templates/reports/show.html:168
+#: templates/reports/show.html:170
 msgid "Category:"
 msgstr "Catégorie:"
 
-#: templates/reports/show.html:172
+#: templates/reports/show.html:174
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/reports/show.html:177
-#, fuzzy
+#: templates/reports/show.html:179
 msgid "Applicant:"
 msgstr "Impétrant"
 
-#: templates/reports/show.html:190
+#: templates/reports/show.html:192
 msgid "Responsible:"
 msgstr "Responsable:"
 
-#: templates/reports/show.html:205
+#: templates/reports/show.html:207
 msgid "Photos and files"
 msgstr "Ajoutez des photos ou fichiers"
 
-#: templates/reports/show.html:233
-#, fuzzy
+#: templates/reports/show.html:235
 msgid "Posted By"
 msgstr "Signalé par"
 
-#: templates/reports/show.html:238
+#: templates/reports/show.html:240
 msgid "Anonymous "
 msgstr ""
 
-#: templates/reports/show.html:241
+#: templates/reports/show.html:243
 msgid "On"
-msgstr ""
+msgstr "a"
 
-#: templates/reports/show.html:245
-#, fuzzy
+#: templates/reports/show.html:247
 msgid "Creation Date"
 msgstr "Créé"
 
-#: templates/reports/show.html:265
+#: templates/reports/show.html:267 templates/reports/show.html.py:297
 msgid "Comments"
-msgstr ""
+msgstr "Commentaires"
 
-#: templates/reports/show.html:274
-#, fuzzy, python-format
+#: templates/reports/show.html:276
+#, python-format
 msgid ""
 "\n"
 "                            Posted by <strong>%(by)s</strong> on <strong>%"
@@ -1763,23 +1760,23 @@ msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/reports/show.html:328
+#: templates/reports/show.html:330
 msgid "report pdf public"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: templates/reports/show.html:332
+#: templates/reports/show.html:334
 msgid "Offensive? Unsuitable? Tell us"
 msgstr "Signaler un abus"
 
-#: templates/reports/show.html:341
+#: templates/reports/show.html:343
 msgid "Subscribers:"
 msgstr "Abonnés:"
 
-#: templates/reports/show.html:345
+#: templates/reports/show.html:347
 msgid "Your email"
 msgstr "Votre email"
 
-#: templates/reports/show.html:346
+#: templates/reports/show.html:348
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
@@ -1787,11 +1784,11 @@ msgstr "Abonnez-vous"
 msgid "Please Note"
 msgstr "Notez"
 
-#: views/reports/main.py:135
+#: views/reports/main.py:136
 msgid "You attachments has been sent"
 msgstr ""
 
-#: views/reports/main.py:159
+#: views/reports/main.py:160
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
@@ -1800,7 +1797,6 @@ msgid "You have subscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
-#, fuzzy
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
 
