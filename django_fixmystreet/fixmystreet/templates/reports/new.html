@@ -242,20 +242,23 @@ $(function(){
             <span class="report-step-number img-circle">1</span>
             <div class="inactive_overlay_form_overview"></div>
             <h1>{% trans "Submitting a report" %}</h1>
-            <div id="required-note" >{% trans "* This fields are required" %}</div>
-            <div id="view_nearby_reports">
-                {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
-                <br/>
-                <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
-            </div>
-
-            <div class="control-group">
-                <span class="control-label">{% trans "Address" %}</span>
-                <div class="controls">
-                    <span id="address-text"></span>
-                    <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
+            <fieldset>
+                <div id="required-note" >{% trans "* This fields are required" %}</div>
+                <div id="view_nearby_reports">
+                    {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
+                    <br/>
+                    <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
                 </div>
-            </div>
+
+                <div class="control-group">
+                    <span class="control-label">{% trans "Address" %}</span>
+                    <div class="controls">
+                        <span id="address-text"></span>
+                        <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
+                    </div>
+                </div>
+            </fieldset>
+
             {% block report_form %}
             <fieldset>
                 <legend>{% trans "Incident category:" %}</legend>

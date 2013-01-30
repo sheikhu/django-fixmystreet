@@ -54,14 +54,27 @@ class FmsUserForm(forms.ModelForm):
     is_active = forms.BooleanField(required=False, initial=True, help_text="only active users can login.", label="Active")
 
 
+
+
 class FmsUserCreateForm(FmsUserForm):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
         fields = ('first_name','last_name','telephone','email','password1','password2','is_active')
 
+    error_messages = {
+        'password_mismatch': _("The two password fields didn't match."),
+    }
+
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Password" )
     password2 = forms.CharField(widget=forms.PasswordInput(), label="Repeat Password" )
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1", "")
+        password2 = self.cleaned_data["password2"]
+        if password1 != password2:
+            raise forms.ValidationError(self.error_messages['password_mismatch'])
+        return password2
 
     def save(self, commit=True):
         user = self.retrive_user()
