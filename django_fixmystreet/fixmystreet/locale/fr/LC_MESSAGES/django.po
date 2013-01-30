@@ -64,7 +64,7 @@ msgstr ""
 "Je souhaite suivre l'évolution de l'incident et recevoir des notifications "
 "par mail."
 
-#: forms.py:146 models.py:223 models.py:1038 models.py:1072 models.py:1106
+#: forms.py:146 models.py:223 models.py:1041 models.py:1075 models.py:1109
 msgid "Name"
 msgstr "Votre nom"
 
@@ -96,11 +96,11 @@ msgstr "Association"
 msgid "Other"
 msgstr "Autres"
 
-#: models.py:143 models.py:923
+#: models.py:143 models.py:926
 msgid "ANONYMOUS"
 msgstr ""
 
-#: models.py:224 models.py:1039 models.py:1073 models.py:1107
+#: models.py:224 models.py:1042 models.py:1076 models.py:1110
 msgid "Slug"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgstr "Refusé"
 
 #: models.py:317 models.py:318 templates/reports/list.html:117
 msgid "In progress"
-msgstr "En cours de traitement"
+msgstr "Incidents mis a jour"
 
 #: models.py:319
 msgid "Manager is assigned"
@@ -156,19 +156,19 @@ msgstr "Code postal"
 msgid "Category"
 msgstr "Catégorie"
 
-#: models.py:873
+#: models.py:876
 msgid "Public"
 msgstr "Public"
 
-#: models.py:874
+#: models.py:877
 msgid "Private"
 msgstr "Privé"
 
-#: models.py:875
+#: models.py:878
 msgid "Confidential"
 msgstr "Confidentiel"
 
-#: models.py:1109 models.py:1110
+#: models.py:1112 models.py:1113
 msgid "Category group"
 msgstr "Groupe categorie"
 
@@ -288,6 +288,7 @@ msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Executeur de travaux a changé de {related_old} par {related_new}"
 
 #: models.py:1338
+
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr ""
 "Changement impetrant - executeur de travaux de {related_old} par "
@@ -505,8 +506,8 @@ msgstr "A propos de Fix My Street Bruxelles"
 msgid ""
 "\n"
 "        <h2>Contact</h2>\n"
-"        <a target=\"_blank\" href='http://www.cirb.irisnet.be' style='float:"
-"left;'><img src='/media/images/CIRB-CIBG.gif'/></a>\n"
+"        <!--a target=\"_blank\" href='http://www.cirb.irisnet.be' "
+"style='float:left;'><img src='/media/images/CIRB-CIBG.gif'/></a-->\n"
 "        <p>\n"
 "        CIRB<br/>\n"
 "        21, avenue des Arts<br/>\n"
@@ -1195,10 +1196,11 @@ msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le "
-"contenu du rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s"
-"%(url)s .(Un mail est automatiquement envoyé au createur du rapport.) </p>\n"
+
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
+"rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
+"est automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
 #, python-format
@@ -1214,10 +1216,10 @@ msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le "
-"contenu du rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s"
-"%(url)s .(Un mail est automatiquement envoyé au createur du rapport.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
+"rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
+"est automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
 msgid "Fix My Street: New report created."
@@ -1351,19 +1353,24 @@ msgstr ""
 "Afin de finaliser la procédure d'abonnement, veillez cliquer sur le lien "
 "d'activation suivant:\n"
 
-#: templates/reports/_navigation.html:18
+
+#: templates/reports/_navigation.html:20
 msgid "subscriptions"
 msgstr "Questions"
 
-#: templates/reports/_navigation.html:19
+#: templates/reports/_navigation.html:21
 msgid "Created at"
 msgstr "Créé"
 
-#: templates/reports/_navigation.html:20
+#: templates/reports/_navigation.html:22
 msgid "responsible_entity"
 msgstr "Traité par"
 
-#: templates/reports/_navigation.html:23
+#: templates/reports/_navigation.html:24
+msgid "Subscriptions"
+msgstr "abonné(s)"
+
+#: templates/reports/_navigation.html:28
 msgid "fixed"
 msgstr "résolus"
 
@@ -1411,11 +1418,11 @@ msgstr ""
 
 #: templates/reports/list.html:114
 msgid "Unpublished"
-msgstr "Non publié"
+msgstr "Incidents signalés"
 
 #: templates/reports/list.html:120
 msgid "Closed"
-msgstr "Fermé"
+msgstr "Incidents cloturés"
 
 #: templates/reports/list.html:128
 msgid "No problems have been reported."
@@ -1423,11 +1430,11 @@ msgstr "Aucun problème n'a été signalé."
 
 #: templates/reports/list.html:150
 msgid "Search by entering a ticket number:"
-msgstr "Recherchez par numéro de ticket"
+msgstr "Faire une recherche par numéro de ticket"
 
 #: templates/reports/list.html:151
 msgid "Insert your ticket number here"
-msgstr ""
+msgstr "Inserer le numéro de ticket de l'incident"
 
 #: templates/reports/new.html:3 templates/reports/new.html.py:11
 msgid "New Report"
@@ -1716,7 +1723,7 @@ msgstr ""
 
 #: templates/reports/show.html:330
 msgid "report pdf public"
-msgstr "Télécharger une copie de l'incident sous format pdf."
+msgstr "Télécharger une copie publique de l'incident sous format pdf."
 
 #: templates/reports/show.html:334
 msgid "Offensive? Unsuitable? Tell us"

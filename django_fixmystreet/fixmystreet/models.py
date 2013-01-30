@@ -101,9 +101,9 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
-    categories = models.ManyToManyField('ReportCategory', related_name='type')
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True) # organisation that can be responsible of reports
-    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True) # list of contractors/services that user work with
+    categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True) # organisation that can be responsible of reports
+    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True) # list of contractors/services that user work with
 
     history = HistoricalRecords()
 
@@ -398,6 +398,9 @@ class Report(UserTrackedModel):
 
     def get_address_city_name(self):
         return ZipCode.objects.get(code=self.postalcode).name
+    
+    def get_number_of_subscription(self):
+        return self.subscriptions.all().__len__()
 
     def display_category(self):
         return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name

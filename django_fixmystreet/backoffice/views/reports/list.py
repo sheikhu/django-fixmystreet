@@ -26,7 +26,7 @@ def list(request, status):
     connectedUser = request.fmsuser
 
     #if the user is an contractor then user the dependent organisation id
-    if (connectedUser.contractor == True):
+    if (connectedUser.contractor == True or connectedUser.applicant == True):
         #if the user is an contractor then display only report where He is responsible
         reports = Report.objects.filter(contractor__in = connectedUser.work_for.all())
     else:
