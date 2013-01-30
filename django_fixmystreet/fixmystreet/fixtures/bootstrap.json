@@ -81,7 +81,7 @@
         "pk": 5,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_nl": "Signalisatie et lichten",
+            "name_nl": "Signalisatie en lichten",
             "name_fr": "Signalisation et feux"
         }
     },
