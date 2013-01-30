@@ -1111,11 +1111,11 @@
         "fields": {
             "first_name": "Stephane",
             "last_name": "Vanderbeck",
-            "username": "svanderbeck@auderghem.be",
+            "username": "s.vanderbeck@auderghem.be",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true,
-            "email":"svanderbeck@auderghem.be"
+            "email":"s.vanderbeck@auderghem.be"
         }
     },
     {
@@ -1423,11 +1423,11 @@
         "fields": {
             "first_name": "Patrick",
             "last_name": "Frankignoul",
-            "username": "pfrankignoul@woluwe1200.be",
+            "username": "p.frankignoul@woluwe1200.be",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true,
-            "email":"pfrankignoul@woluwe1200.be"
+            "email":"p.frankignoul@woluwe1200.be"
         }
     },
     {
@@ -1449,11 +1449,11 @@
         "fields": {
             "first_name": "Mounia",
             "last_name": "Benyahia",
-            "username": "mbenyahia@woluwe1200.be",
+            "username": "m.benyahia@woluwe1200.be",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
             "is_superuser": true,
-            "email":"mbenyahia@woluwe1200.be"
+            "email":"m.benyahia@woluwe1200.be"
         }
     },
     {

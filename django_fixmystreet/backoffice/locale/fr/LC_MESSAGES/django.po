@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-30 12:49+0100\n"
+"POT-Creation-Date: 2013-01-30 15:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,17 +237,20 @@ msgstr "Envoyer"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/pro/home.html:24 templates/pro/reports/list.html:208
+#: templates/pro/home.html:22 templates/pro/home.html.py:92
+#: templates/pro/reports/list.html:208
 msgid "Unpublished"
-msgstr "Non publiés"
+msgstr "Incidents signalés"
 
-#: templates/pro/home.html:25 templates/pro/reports/list.html:211
+#: templates/pro/home.html:44 templates/pro/home.html.py:93
+#: templates/pro/reports/list.html:211
 msgid "In progress"
-msgstr "En cours de traitement"
+msgstr "Incidents mis a jour"
 
-#: templates/pro/home.html:26 templates/pro/reports/list.html:217
+#: templates/pro/home.html:67 templates/pro/home.html.py:94
+#: templates/pro/reports/list.html:217
 msgid "Closed"
-msgstr "Fermés"
+msgstr "Incidents cloturés"
 
 #: templates/pro/login.html:11 views/users.py:36
 msgid "Your username and password didn't match. Please try again."
@@ -431,7 +434,7 @@ msgstr "%(status)s Rapports"
 
 #: templates/pro/reports/list.html:184 templates/pro/reports/list.html:205
 msgid "All reports"
-msgstr "Tous les incidents"
+msgstr "Voir tous les incidents"
 
 #: templates/pro/reports/list.html:187
 msgid "Created reports"
@@ -439,11 +442,11 @@ msgstr "Signaler un incident"
 
 #: templates/pro/reports/list.html:190
 msgid "In progress reports"
-msgstr "En cours de traitement"
+msgstr "Incidents  mis a jour"
 
 #: templates/pro/reports/list.html:193
 msgid "In progress and assigned reports"
-msgstr "En cours de traitement et assignés"
+msgstr "Incidents mis a jour et assignés"
 
 #: templates/pro/reports/list.html:196
 msgid "Closed reports"
@@ -455,7 +458,7 @@ msgstr "Filtrer les incidents par :"
 
 #: templates/pro/reports/list.html:214
 msgid "In progress and assigned"
-msgstr "En cours de traitement et assignés"
+msgstr "Incidents mis a jour et assignés"
 
 #: templates/pro/reports/list.html:226 templates/pro/reports/show.html:179
 msgid "create_report"
@@ -471,7 +474,7 @@ msgstr "Envoyer"
 
 #: templates/pro/reports/list.html:276
 msgid "Search by commune or address:"
-msgstr "Chercher par commune ou par adresse"
+msgstr "Faire une recherche par commune ou sur une adresse"
 
 #: templates/pro/reports/list.html:278
 msgid "Street name, Street number..."
@@ -554,7 +557,7 @@ msgid "on"
 msgstr "a"
 
 #: templates/pro/reports/show.html:222
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "                 Posted by <strong><a href='mailto:%(mail)s'>%(by)s</a></"
@@ -562,7 +565,8 @@ msgid ""
 "                 "
 msgstr ""
 "\n"
-"Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
+"Signalé par <strong><a href='mailto:%(mail)s'>%(by)s</a></strong> le <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:228
 #, python-format
@@ -575,7 +579,7 @@ msgstr ""
 "Signalé le <strong>%(on)s</strong>"
 
 #: templates/pro/reports/show.html:234
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "\n"
@@ -584,7 +588,8 @@ msgid ""
 "               "
 msgstr ""
 "\n"
-"Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
+"Signalé par <strong><a href='mailto:%(mail)s'>%(by)s</a></strong> le <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:246
 msgid "Location:"
@@ -671,7 +676,7 @@ msgid "Please confirm comment deletion"
 msgstr "Confirmer la suppression du commentaire"
 
 #: templates/pro/reports/show.html:508
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "                                Posted by <strong>%(by)s</strong> on <strong>"
@@ -711,7 +716,7 @@ msgstr "Signaler comme cloturé"
 
 #: templates/pro/reports/show.html:638
 msgid "report pdf"
-msgstr "Rapport PDF"
+msgstr "Telecharger une copie pro de l'incident sous format pdf."
 
 #: templates/pro/reports/show.html:639
 msgid "report pdf public"
