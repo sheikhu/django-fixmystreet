@@ -239,14 +239,12 @@ msgid "Applicant contractor changed"
 msgstr ""
 
 #: models.py:1318
-#, fuzzy
 msgid "Report refused by {user}"
-msgstr "Incidents par communes"
+msgstr "L'incident est refusé par {user}"
 
 #: models.py:1319
-#, fuzzy
 msgid "Report closed by {user}"
-msgstr "Incidents par communes"
+msgstr "L'incident est cloturer par {user}"
 
 #: models.py:1320
 #, fuzzy
@@ -254,48 +252,44 @@ msgid "Report pointed as done"
 msgstr "Incidents"
 
 #: models.py:1321
-#, fuzzy
 msgid "Report as been assigned to {related_new}"
-msgstr "Incidents"
+msgstr "L'incident est assigné à {related_new}"
 
 #: models.py:1322
-#, fuzzy
 msgid "Report as change manager from {related_old} to {related_new}"
-msgstr "Incidents"
+msgstr "L'incident a changé de gestionnaire de {related_old} par {related_new}"
 
 #: models.py:1323
-#, fuzzy
 msgid "Report has been approved by {user}"
-msgstr "Incidents par communes"
+msgstr "L'incident est approuvé par {user}"
 
 #: models.py:1324
 msgid "{related_new} is responsible for the report"
-msgstr ""
+msgstr "{related_new} est responsable pour l'incident"
 
 #: models.py:1325
 msgid "{related_old} give responsibility to {related_new}"
-msgstr ""
+msgstr "{related_old} a donné la responsabilité a {related_new}"
 
 #: models.py:1326
-#, fuzzy
 msgid "Applicant {related_new} is responsible for the report"
-msgstr "Un impétrant est assigné"
+msgstr "Impetrant {related_new} est responsable pour l'incident"
 
 #: models.py:1327
 msgid "Applicant changed from {related_old} to {related_new}"
-msgstr ""
+msgstr "Impetrant a changé de {related_old} par {related_new}"
 
 #: models.py:1328
 msgid "Contractor {related_new} is responsible for the report"
-msgstr ""
+msgstr "Executeur de travaux {related_new} est responsable pour l'incident"
 
 #: models.py:1329
 msgid "Contractor changed from {related_old} to {related_new}"
-msgstr ""
+msgstr "Executeur de travaux a changé de {related_old} par {related_new}"
 
 #: models.py:1330
 msgid "Applicant contractor change from {related_old} to {related_new}"
-msgstr ""
+msgstr "Changement impetrant - executeur de travaux de {related_old} par {related_new}"
 
 #: models.py:1449
 msgid "Question"
@@ -1418,7 +1412,7 @@ msgstr "Créé"
 
 #: templates/reports/_navigation.html:20
 msgid "responsible_entity"
-msgstr "Commune responsable"
+msgstr "Traité par"
 
 #: templates/reports/_navigation.html:23
 msgid "fixed"

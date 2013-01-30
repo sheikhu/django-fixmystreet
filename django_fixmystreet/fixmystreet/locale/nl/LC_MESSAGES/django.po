@@ -233,9 +233,8 @@ msgid "Applicant contractor changed"
 msgstr "Applicant contractor aangepast"
 
 #: models.py:1318
-#, fuzzy
 msgid "Report refused by {user}"
-msgstr "Rapporten per gemeente"
+msgstr "Incident afgewezen door {user}"
 
 #: models.py:1319
 #, fuzzy
@@ -248,36 +247,32 @@ msgid "Report pointed as done"
 msgstr "Ingediende Rapporten"
 
 #: models.py:1321
-#, fuzzy
 msgid "Report as been assigned to {related_new}"
-msgstr "Ingediende Rapporten"
+msgstr "Incident is toegewezen aan {related_new}"
 
 #: models.py:1322
-#, fuzzy
 msgid "Report as change manager from {related_old} to {related_new}"
-msgstr "Ingediende Rapporten"
+msgstr "Verantwoordelijke verandert van {related_od} naar {related_new}"
 
 #: models.py:1323
-#, fuzzy
 msgid "Report has been approved by {user}"
-msgstr "Rapporten per gemeente"
+msgstr "Incident is geaccepteerd door {user}"
 
 #: models.py:1324
 msgid "{related_new} is responsible for the report"
-msgstr ""
+msgstr "{related_new} is verantwoordelijk voor het incident"
 
 #: models.py:1325
 msgid "{related_old} give responsibility to {related_new}"
-msgstr ""
+msgstr "{related_old} geeft de verantwoordelijkheid door aan {related_new}"
 
 #: models.py:1326
-#, fuzzy
 msgid "Applicant {related_new} is responsible for the report"
-msgstr "Aannemer is verantwoordelijk"
+msgstr "Aannemer {related_new} is verantwoordelijk voor het incident"
 
 #: models.py:1327
 msgid "Applicant changed from {related_old} to {related_new}"
-msgstr "Applicant verandert van {related_old} tot {related_new}"
+msgstr "Aannemer verandert van {related_old} naar {related_new}"
 
 #: models.py:1328
 msgid "Contractor {related_new} is responsible for the report"
@@ -285,7 +280,7 @@ msgstr "Contractor {related_new} is verantwoordelijk voor het report"
 
 #: models.py:1329
 msgid "Contractor changed from {related_old} to {related_new}"
-msgstr "Contractor verandert van {related_old} to {related_new}"
+msgstr "Contractor verandert van {related_old} naar {related_new}"
 
 #: models.py:1330
 msgid "Applicant contractor change from {related_old} to {related_new}"
@@ -1291,7 +1286,7 @@ msgstr "Aangemaakt op:"
 
 #: templates/reports/_navigation.html:20
 msgid "responsible_entity"
-msgstr "Verantwoordelijke gemeente"
+msgstr "Behandeld door"
 
 #: templates/reports/_navigation.html:23
 msgid "fixed"
