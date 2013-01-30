@@ -1676,7 +1676,8 @@
             "username": "tdesany",
             "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
             "is_staff": true,
-            "is_superuser": true
+            "is_superuser": true,
+            "email": "csc@desany.eu"
         }
     },
     {

@@ -10,7 +10,7 @@ from  django.core.exceptions import ValidationError, ObjectDoesNotExist
 from piston.handler import BaseHandler
 from piston.utils import validate
 
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode, ReportComment
+from django_fixmystreet.fixmystreet.models import ReportSubscription, Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode, ReportComment
 from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -227,6 +227,15 @@ class ProReportHandler(BaseHandler):
             report_comment.created = datetime.now()
             report_comment.save()
 
+        #Automatic subscribe when creating a report using mobile device
+        ReportSubscription(report=report, subscriber=report.created_by).save()        
+
+        #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
+        report.organisation = None
+        report.categories = None
+        report.work_for = None
+        report.created_by = None
+        report.modified_by = None
         return report
 
 
@@ -282,7 +291,16 @@ class CitizenReportHandler(BaseHandler):
             report_comment.created = datetime.now()
             report_comment.save()
 
-        return report
+        #Automatic subscribe when creating a report using mobile device
+        ReportSubscription(report=report, subscriber=report.citizen).save()        
+       
+        #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
+        report.organisation = None
+        report.categories = None
+        report.work_for = None
+        report.created_by = None
+        report.modified_by = None
+        return report 
 
 
 

@@ -1,7 +1,7 @@
 {% load i18n %}
 <hr/>
 <h2><u>{% trans 'Report overview:' %}</u></h2>
-<p><strong>{% trans 'Address:'%}</strong> {{report.address}}</p>
+<p><strong>{% trans 'Address:'%}</strong> {{report.address}}, {{report.address_number}}</p>
 <p><strong>{% trans 'Postal code:'%}</strong> {{report.postalcode}}</p>
 <p><strong>{% trans 'Type:'%}</strong> {{report.display_category}}</p>
 <p><strong>{% trans 'Creator:'%}</strong>
