@@ -178,7 +178,7 @@ function markAsDone(){
             <tr>
                 <th>{% trans "Applicant:" %}</th>
                 <td>
-                    {{report.contractor.name}}
+                    {{report.contractor.name}} (tel:{{report.contractor.phone}})
                     <br/>
                     {% for contact_person in report.contractor.workers.all %}
                         {{ contact_person.get_full_name }}
