@@ -17,7 +17,7 @@
 </script>
 {% endblock %}
 
-{% block title %}{% trans "User overview:"%}{%if editForm %}: {{editForm.username.value}}{%endif%}{% endblock %}
+{% block title %}{% trans "Contractors"%}{%if contractor_form %}: {{ contractor_form.instance.name }}{% endif %}{% endblock %}
 
 {% block content %}
 <div class='row'>
@@ -28,7 +28,7 @@
             </a>
 
             {% for contractor in contractors %}
-            <a class="report" href="{% url edit_contractor contractor.id %}">
+            <a class="report{% if contractor_form.instance == contractor %} active{% endif %}" href="{% url edit_contractor contractor.id %}">
                 <div class="left_search_result">
                     <img src="{{ STATIC_URL }}images/contractor.png" />
                 </div>

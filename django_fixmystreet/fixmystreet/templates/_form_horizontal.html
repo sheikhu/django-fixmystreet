@@ -12,7 +12,7 @@
             <span class="help-block">{{ field.help_text }}</span>
             {{ field.errors }}
         {% elif field.field.widget|classname == "CheckboxInput" and field.help_text %}
-            <p>{{ field.label }}</p>
+            <label for="id_{{ field.html_name }}">{{ field.label }}</label>
             <label  class="checkbox">{{ field }} {{ field.help_text }}</label>
             {{ field.errors }}
         {% elif field.field.widget|classname == "CheckboxInput" %}

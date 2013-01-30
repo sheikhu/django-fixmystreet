@@ -63,7 +63,7 @@ rpm:
 createdb:
 	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
 	$(BIN_DIR)/django syncdb --migrate --noinput
-	$(BIN_DIR)/django loaddata bootstrap list_items applicants
+	$(BIN_DIR)/django loaddata bootstrap list_items applicants staging_data
 
 dropdb:
 	dropdb $(DBNAME) -U $(DBUSER)
