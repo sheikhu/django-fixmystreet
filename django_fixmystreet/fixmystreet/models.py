@@ -101,9 +101,9 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
-    categories = models.ManyToManyField('ReportCategory', related_name='type')
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True) # organisation that can be responsible of reports
-    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True) # list of contractors/services that user work with
+    categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True) # organisation that can be responsible of reports
+    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True) # list of contractors/services that user work with
 
     history = HistoricalRecords()
 
