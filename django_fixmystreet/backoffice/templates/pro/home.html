@@ -29,7 +29,11 @@
         </span>
 	</td>
 	<td>
-        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a>
+        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >
+       	<span class='qualifier'>
+		{{stat.stat_value.get_count_new}}
+        </span>
+	</a>
 	</td>
 	</tr>
 	{% endfor %}
@@ -43,10 +47,16 @@
 	{% for stat in stats %}
         <tr>
         <td>
+       	<span class='qualifier'>
         {{ stat.stat_name }}:
+        </span>
         </td>
         <td>
-        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_in_progress}}</a>
+        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >
+       	<span class='qualifier'>
+		{{stat.stat_value.get_count_in_progress}}
+        </span>
+	</a>
         </td>
         </tr>
         {% endfor %}
@@ -60,10 +70,16 @@
         {% for stat in stats %}
         <tr>
         <td>
+       	<span class='qualifier'>
         {{ stat.stat_name }}:
+        </span>
         </td>
         <td>
-        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_closed}}</a>
+        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >
+       	<span class='qualifier'>
+		{{stat.stat_value.get_count_closed}}	
+        </span>
+	</a>
         </td>
         </tr>
         {% endfor %}
