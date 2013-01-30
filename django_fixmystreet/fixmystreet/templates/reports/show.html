@@ -174,7 +174,7 @@ function markAsDone(){
                 <th>{% trans "Status:" %}</th>
                 <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
             </tr>
-            {% if report.contractor %}
+            {% if not report.contractor == None and report.contractor.applicant %}
             <tr>
                 <th>{% trans "Applicant:" %}</th>
                 <td>
