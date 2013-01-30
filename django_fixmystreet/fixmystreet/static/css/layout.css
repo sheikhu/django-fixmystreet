@@ -1011,7 +1011,7 @@ li img {
     float:left;
     height: 100%;
     width: 20%;
-    max-width: 20%;
+    max-width: 140px;
 }
 
 #search_results .list_data {
@@ -1032,6 +1032,10 @@ li img {
 }
 
 #search_results .right_search_result {
+    margin-right: 20px;
+}
+
+#search_results .right_list_search_result {
     margin-right: 20px;
     width: 20%;
     max-width: 20%;

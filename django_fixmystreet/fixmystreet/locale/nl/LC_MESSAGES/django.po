@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-30 15:17+0100\n"
+"POT-Creation-Date: 2013-01-30 15:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -499,8 +499,8 @@ msgstr "Over FixMyStreet Brussels"
 msgid ""
 "\n"
 "        <h2>Contact</h2>\n"
-"        <a target=\"_blank\" href='http://www.cirb.irisnet.be' style='float:"
-"left;'><img src='/media/images/CIRB-CIBG.gif'/></a>\n"
+"        <!--a target=\"_blank\" href='http://www.cirb.irisnet.be' "
+"style='float:left;'><img src='/media/images/CIRB-CIBG.gif'/></a-->\n"
 "        <p>\n"
 "        CIRB<br/>\n"
 "        21, avenue des Arts<br/>\n"
@@ -845,8 +845,8 @@ msgstr ""
 msgid "We'd love to get your feedback"
 msgstr ""
 
-#: templates/contact/new.html:42 templates/reports/new.html:245
-#: templates/reports/new.html.py:300
+#: templates/contact/new.html:42 templates/reports/new.html:246
+#: templates/reports/new.html.py:303
 msgid "* This fields are required"
 msgstr "* Deze velden zijn verplicht"
 
@@ -1455,12 +1455,12 @@ msgstr ""
 msgid "Brussels Mobility (tel:0800/94.001)"
 msgstr "Brussel Mobiliteit (tel:0800/94.001)"
 
-#: templates/reports/new.html:152 templates/reports/new.html.py:268
+#: templates/reports/new.html:152 templates/reports/new.html.py:271
 #: templates/reports/show.html:302
 msgid "Files"
 msgstr "Foto's en bestanden"
 
-#: templates/reports/new.html:158 templates/reports/new.html.py:288
+#: templates/reports/new.html:158 templates/reports/new.html.py:291
 msgid "Comment"
 msgstr "Commentaar:"
 
@@ -1472,7 +1472,7 @@ msgstr "Bedankt om het icoon te plaatsen op de kaart"
 msgid "Submitting a report"
 msgstr "Een rapport doorsturen:"
 
-#: templates/reports/new.html:247
+#: templates/reports/new.html:248
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
@@ -1480,71 +1480,71 @@ msgstr ""
 "Alvorens een incident te rapporteren, kijk even na of het incident nog niet "
 "gerapporteerd is."
 
-#: templates/reports/new.html:249
+#: templates/reports/new.html:250
 msgid "Verify"
 msgstr "verifiëren"
 
-#: templates/reports/new.html:253
+#: templates/reports/new.html:254
 msgid "Address"
 msgstr "Adres:"
 
-#: templates/reports/new.html:256
+#: templates/reports/new.html:257
 msgid "** To change the address, move the marker on the map above."
 msgstr "Om het adres aan te passen, verplaats het icoon op de kaart hierboven."
 
-#: templates/reports/new.html:261
+#: templates/reports/new.html:264
 msgid "Incident category:"
 msgstr "Incident type:"
 
-#: templates/reports/new.html:269
+#: templates/reports/new.html:272
 msgid "Optimal File Size (1200X800)"
 msgstr "Geoptimaliseerde  bestandsgrootte (1200X800)"
 
-#: templates/reports/new.html:270
+#: templates/reports/new.html:273
 msgid "Supported formats"
 msgstr "Ondersteunde formaten"
 
-#: templates/reports/new.html:284 templates/reports/show.html:316
+#: templates/reports/new.html:287 templates/reports/show.html:316
 msgid "Add file"
 msgstr "Voeg een bestand toe"
 
-#: templates/reports/new.html:299
+#: templates/reports/new.html:302
 msgid "Personal information:"
 msgstr "Persoonlijke gegevens:"
 
-#: templates/reports/new.html:304
+#: templates/reports/new.html:307
 msgid "Contact information:"
 msgstr "Contact gegevens:"
 
-#: templates/reports/new.html:318
+#: templates/reports/new.html:321
 msgid "Visualize:"
 msgstr "Toon overzicht"
 
-#: templates/reports/new.html:319
+#: templates/reports/new.html:322
 msgid "Visualize an overview of the created incident report."
 msgstr "Toon een overzicht van het ingevulde rapport."
 
-#: templates/reports/new.html:321
+#: templates/reports/new.html:324
 msgid "Visualize"
 msgstr "Overzicht"
 
-#: templates/reports/new.html:332
+#: templates/reports/new.html:335
 msgid "Confirm:"
 msgstr "Bevestigen:"
 
-#: templates/reports/new.html:333
+#: templates/reports/new.html:336
 msgid "Edit"
 msgstr "Aanpassen"
 
-#: templates/reports/new.html:334 templates/reports/show.html:104
+#: templates/reports/new.html:337 templates/reports/show.html:104
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: templates/reports/new.html:339
+#: templates/reports/new.html:342
 msgid "Confidentiality:"
 msgstr "Vertrouwelijkheid:"
 
-#: templates/reports/new.html:340
+#: templates/reports/new.html:343
 msgid ""
 "We garantee the confidentiality of all given information. Conform with law "
 "(see site  <a href=\"http://www.ejustice.just.fgov.be\">Monitoring Belgium</"
@@ -1556,39 +1556,39 @@ msgstr ""
 "België</a>, u hebt altijd een lees recht op de informatie alsook een "
 "aanpassing en verwijder recht. "
 
-#: templates/reports/new.html:353
+#: templates/reports/new.html:356
 msgid "Submit an incident:"
 msgstr "Een rapport doorsturen:"
 
-#: templates/reports/new.html:356
+#: templates/reports/new.html:359
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Bedankt ! Het incident is correct naar het systeem verstuurd."
 
-#: templates/reports/new.html:357
+#: templates/reports/new.html:360
 msgid "A mail containing the link report has been sent."
 msgstr "Een email met report details werd opgestuurd."
 
-#: templates/reports/new.html:359
+#: templates/reports/new.html:362
 msgid "Download a copy of the incident as a pdf"
 msgstr "Download een kopie van het incident als pdf."
 
-#: templates/reports/new.html:364 templates/reports/new.html.py:366
+#: templates/reports/new.html:367 templates/reports/new.html.py:369
 msgid "Continue"
 msgstr "ga verder"
 
-#: templates/reports/new.html:373
+#: templates/reports/new.html:376
 msgid "Incident overview:"
 msgstr "Overzicht van het ingevulde incident rapport:"
 
-#: templates/reports/new.html:378
+#: templates/reports/new.html:381
 msgid "Return to incident"
 msgstr "Ga terug naar het incident rapport"
 
-#: templates/reports/new.html:384
+#: templates/reports/new.html:387
 msgid "Nearby incidents that are already submitted:"
 msgstr "Nabijgelegen incidenten die reeds gesignaleerd zijn:"
 
-#: templates/reports/new.html:394
+#: templates/reports/new.html:397
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
