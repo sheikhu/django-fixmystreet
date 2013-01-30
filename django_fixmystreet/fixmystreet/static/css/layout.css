@@ -1458,6 +1458,11 @@ table td.annexesChoiceBoxTD {
 	padding-bottom: 20px;
 }
 
+#report-subscription {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
 /********* CONTACT LAYOUT ********/
 
 #contact_us_indications {
