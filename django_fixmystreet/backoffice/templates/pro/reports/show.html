@@ -634,7 +634,7 @@ function markAsDone(){
                     <!-- ############################################# -->
                     {% if report.is_in_progress %}
                         {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn">Cloturer</a>
+                            <a href="{% url report_close_pro report.id %}" class="btn">{% trans 'Close' %}</a>
                         {% endif %}
                         {% if not fms_user.contractor %}
                             <a class="btn" href="{% url report_validate_all_pro report.id %}" >{% trans 'Validate all' %}</a>
