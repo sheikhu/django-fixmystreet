@@ -63,15 +63,6 @@ class FmsUserCreateForm(FmsUserForm):
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Password" )
     password2 = forms.CharField(widget=forms.PasswordInput(), label="Repeat Password" )
 
-    def clean(self,*args, **kwargs):
-        self.clean_password()
-
-    def clean_password(self):
-        '''Snippet from Djanggo website: http://djangosnippets.org/snippets/191/'''
-        if self.data['password1'] != self.data['password2']:
-            raise forms.ValidationError('Passwords are not the same')
-        return self.data['password1']
-
     def save(self, commit=True):
         user = self.retrive_user()
         if not user:
