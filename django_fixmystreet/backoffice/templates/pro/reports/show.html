@@ -90,6 +90,22 @@ $("#report_responsible_impetrant_contractor_select").bind("change",function(even
 $("#id_is_private").bind("click",function(event){
         window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_is_private").is(":checked");
 });
+{% if subscribed %}
+$("#id_pro-subscription").attr("value","on").prop('checked', true);
+{% else %}
+$("#id_pro-subscription").attr("value","off");
+{% endif %}
+
+$("#id_pro-subscription").change(function(){
+    if($(this).attr("value")== "on"){
+        $(this).attr("value","off");
+        $.ajax("{% url unsubscribe_pro report.id %}")
+    }
+    else{
+        $(this).attr("value","on");
+        $.ajax("{% url subscribe_pro report.id %}");
+    }
+});
 
 });
 /* When JQUERY is ready*/
@@ -602,6 +618,12 @@ function markAsDone(){
                     </p>
                 </form>
             {% endif %}
+            <div id="report-subscription">
+                <div class="control-group">
+                    <p>{% trans "Subscription" %}</p>
+                    <label class="checkbox"><input type="checkbox" name="pro-subscription" id="id_pro-subscription"> {% trans "Subscription and report follow-up" %}</label>
+                </div>
+            </div>
             <p>
                 <!-- ################################################### -->
                 <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
