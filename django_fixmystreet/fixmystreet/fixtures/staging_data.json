@@ -1702,5 +1702,109 @@
             "leader":true,
             "organisation":4
         }
+    },
+    {
+        "pk": 69,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Thierry",
+            "last_name": "Castrique",
+            "username": "tcastrique@schaerbeek.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"tcastrique@schaerbeek.irisnet.be"
+        }
+    },
+    {
+        "pk":69,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":69,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":false,
+            "manager":false,
+            "leader":true,
+            "organisation":15
+        }
+    },
+    {
+        "pk": 70,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Roger",
+            "last_name": "Van Zeebroeck",
+            "username": "rvanzeebroeck@schaerbeek.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"rvanzeebroeck@schaerbeek.irisnet.be"
+        }
+    },
+    {
+        "pk":70,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":70,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":true,
+            "manager":false,
+            "leader":false,
+            "organisation":15
+        }
+    },
+    {
+        "pk": 71,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jean",
+            "last_name": "Vereecken",
+            "username": "jvereecken@schaerbeek.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"jvereecken@schaerbeek.irisnet.be"
+        }
+    },
+    {
+        "pk":71,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":71,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":15
+        }
+    },
+    {
+        "pk": 72,
+        "model": "auth.user",
+        "fields": {
+            "first_name": "Jacques",
+            "last_name": "Bouillon",
+            "username": "jbouillon@schaerbeek.irisnet.be",
+            "password": "pbkdf2_sha256$10000$25rhVrjO5v94$hMupY1IKgfJqvwl8lTH7oVODnBtgaMlqafPXRKceW3g=",
+            "is_staff": true,
+            "is_superuser": true,
+            "email":"jbouillon@schaerbeek.irisnet.be"
+        }
+    },
+    {
+        "pk":72,
+        "model":"fixmystreet.fmsuser",
+        "fields":{
+            "user_ptr":72,
+            "telephone":"123456789",
+            "last_used_language":"NL",
+            "agent":true,
+            "manager":true,
+            "leader":false,
+            "organisation":15
+        }
     }
 ]
