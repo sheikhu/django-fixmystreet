@@ -51,7 +51,19 @@ def new(request):
 
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+
+    #if the user is an contractor then user the dependent organisation id
+    if (connectedUser.contractor == True or connectedUser.applicant == True):
+        #if the user is an contractor then display only report where He is responsible
+        reports = Report.objects.filter(contractor__in = connectedUser.work_for.all())
+    else:
+        reports = Report.objects.filter(responsible_entity = connectedUser.organisation)
+
+    #If the manager is connected then filter on manager
+    if (connectedUser.manager == True):
+        reports = reports.filter(responsible_manager=connectedUser);
+
+    reports = reports.distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,
@@ -169,7 +181,21 @@ def show(request,slug, report_id):
 
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
-    reports = Report.objects.all()
+    
+    connectedUser = request.fmsuser
+
+    #if the user is an contractor then user the dependent organisation id
+    if (connectedUser.contractor == True or connectedUser.applicant == True):
+        #if the user is an contractor then display only report where He is responsible
+        reports = Report.objects.filter(contractor__in = connectedUser.work_for.all())
+    else:
+        reports = Report.objects.filter(responsible_entity = connectedUser.organisation)
+
+    #If the manager is connected then filter on manager
+    if (connectedUser.manager == True):
+        reports = reports.filter(responsible_manager=connectedUser);
+
+    reports = reports.order_by('-created')
 
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     fms_user = FMSUser.objects.get(pk=request.user.id)
