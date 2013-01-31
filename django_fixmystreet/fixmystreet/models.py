@@ -147,7 +147,7 @@ class FMSUser(User):
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
-        if self.contractor == True:
+        if self.contractor == True or self.applicant == True:
             return ", ".join([str(o) for o in self.work_for.all()])
         else:
              return self.organisation
