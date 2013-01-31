@@ -718,9 +718,8 @@ msgid "Send"
 msgstr "Doorsturen"
 
 #: templates/pro/reports/show.html:623
-#, fuzzy
 msgid "Subscription"
-msgstr "Vraag"
+msgstr "Abonnement"
 
 #: templates/pro/reports/show.html:624
 #, fuzzy
@@ -769,11 +768,11 @@ msgstr "U account is inactief"
 
 #: views/users.py:69
 msgid "User has been saved successfully"
-msgstr "U bent succesvol geabonneerd voor updates"
+msgstr "De gebruiker is succesvol bewaard"
 
 #: views/users.py:102 views/users.py:188
 msgid "User has been created successfully"
-msgstr "U bent succesvol geabonneerd voor updates"
+msgstr "De gebruiker is succesvol aangemaakt"
 
 #: views/users.py:106 views/users.py:192
 msgid "An error occurd during the email sending"
@@ -781,28 +780,27 @@ msgstr "Fout op email opsturing"
 
 #: views/users.py:126
 msgid "You can not delete this user"
-msgstr "U mag dit gebruiker niet verwijderen"
+msgstr "U mag deze gebruiker niet verwijderen"
 
 #: views/users.py:134
 msgid "User deleted successfully"
-msgstr "U bent succesvol geabonneerd voor updates"
+msgstr "Gebruiker is succesvol verwijderd"
 
 #: views/users.py:158
 msgid "Contractor has been saved successfully"
-msgstr "U bent succesvol geabonneerd voor updates"
+msgstr "Contractor is succesvol bewaard"
 
 #: views/users.py:185
 msgid "Contractor has been linked with existing user {0}"
-msgstr ""
+msgstr "Contractor is verbonden met de bestaande gebruiker {0}"
 
 #: views/users.py:212
 msgid "You can not delete this contractor"
-msgstr "U mag dit contractor niet verwijderen"
+msgstr "U mag deze contractor niet verwijderen"
 
 #: views/users.py:225
-#, fuzzy
 msgid "Contractor deleted successfully"
-msgstr "U bent succesvol geabonneerd voor updates"
+msgstr "Contractor succesvol verwijderd"
 
 #: views/reports/main.py:107
 msgid "No incident found with this ticket number"

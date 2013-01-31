@@ -222,7 +222,7 @@ function filterReports() {
         <div id="nearby-reports">
             {% if reports %}
                 <div id='search_results'>
-                <a id="create_report_fastlink" href="/pro/" class="report">
+                <a id="create_report_fastlink" href="{% url report_prepare_pro %}" class="report">
                    <h3 class="report-title">{% trans "create_report" %}</h3>
                 </a>
                 {% for report in reports %}
