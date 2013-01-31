@@ -1151,7 +1151,7 @@
             "user_ptr":47,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            ":false,
             "manager":false,
             "leader":true,
             "organisation":2
@@ -1619,9 +1619,9 @@
             "user_ptr":65,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
-            "manager":false,
-            "leader":true,
+            "agent":true,
+            "manager":true,
+            "leader":false,
             "organisation":11
         }
     },
@@ -1645,9 +1645,9 @@
             "user_ptr":66,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":true,
-            "manager":true,
-            "leader":false,
+            "agent":false,
+            "manager":false,
+            "leader":true,
             "organisation":11
         }
     },
