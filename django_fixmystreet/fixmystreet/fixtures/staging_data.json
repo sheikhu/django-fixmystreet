@@ -1047,7 +1047,7 @@
             "user_ptr":43,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":25
@@ -1125,7 +1125,7 @@
             "user_ptr":46,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":2
@@ -1203,7 +1203,7 @@
             "user_ptr":49,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":13
@@ -1229,7 +1229,7 @@
             "user_ptr":50,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":13
@@ -1281,7 +1281,7 @@
             "user_ptr":52,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":9
@@ -1307,7 +1307,7 @@
             "user_ptr":53,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":9
@@ -1333,7 +1333,7 @@
             "user_ptr":54,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":9
@@ -1360,7 +1360,7 @@
             "telephone":"123456789",
             "last_used_language":"FR",
             "agent":true,
-            "manager":false,
+            "manager":true,
             "leader":false,
             "organisation":9
         }
@@ -1385,7 +1385,7 @@
             "user_ptr":56,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":9
@@ -1411,8 +1411,8 @@
             "user_ptr":57,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
-            "manager":false,
+            "agent":true,
+            "manager":true,
             "leader":true,
             "organisation":18
         }
@@ -1437,7 +1437,7 @@
             "user_ptr":58,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":18
@@ -1463,7 +1463,7 @@
             "user_ptr":59,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":18
@@ -1489,9 +1489,9 @@
             "user_ptr":60,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":false,
-            "leader":true,
+            "leader":false,
             "organisation":6
         }
     },
@@ -1516,8 +1516,8 @@
             "telephone":"123456789",
             "last_used_language":"FR",
             "agent":false,
-            "manager":true,
-            "leader":false,
+            "manager":false,
+            "leader":true,
             "organisation":6
         }
     },
@@ -1567,7 +1567,7 @@
             "user_ptr":63,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":4
@@ -1593,7 +1593,7 @@
             "user_ptr":64,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":4
@@ -1645,7 +1645,7 @@
             "user_ptr":66,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":11
@@ -1671,7 +1671,7 @@
             "user_ptr":67,
             "telephone":"123456789",
             "last_used_language":"FR",
-            "agent":false,
+            "agent":true,
             "manager":true,
             "leader":false,
             "organisation":11
