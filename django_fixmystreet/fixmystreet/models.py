@@ -1,6 +1,8 @@
 from django.utils import simplejson
 from smtplib import SMTPException
 import logging
+import re
+import datetime
 
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
@@ -24,7 +26,6 @@ from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta, resize_image
 from django_extensions.db.models import TimeStampedModel
-import re
 
 
 class UserTrackedModel(TimeStampedModel):
@@ -281,9 +282,44 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 #     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
 #     activate(lang_code.lower())
 
+
+class ReportQuerySet(models.query.GeoQuerySet):
+
+    def public(self):
+        return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
+
+    def own(self, user):
+        if user.contractor or user.applicant:
+            return self.filter(contractor__in=user.work_for)
+        else:
+            return self.filter(responsible_manager=user)
+
+    def shared(self, organisation):
+        if organisation.contractor or organisation.applicant:
+            return self.filter(responsible_entity=organisation)
+        else:
+            return self.filter(contractor=organisation)
+
+    def pending(self):
+        return self.filter(status=Report.CREATED)
+
+    def in_progress(self):
+        return self.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+
+    def assigned(self):
+        return self.filter(status__in=Report.REPORT_STATUS_ASSIGNED)
+
+    def closed(self):
+        return self.filter(status__in=Report.REPORT_STATUS_CLOSED)
+
+
+
 class ReportManager(models.GeoManager):
+
     def get_query_set(self):
-        return super(ReportManager, self).get_query_set().select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'responsible_manager', 'citizen', 'contractor')
+        return ReportQuerySet(self.model) \
+                .exclude(status=Report.SOLVED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+                .select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'responsible_manager', 'citizen', 'contractor')
 
 
 class Report(UserTrackedModel):
@@ -398,7 +434,7 @@ class Report(UserTrackedModel):
 
     def get_address_city_name(self):
         return ZipCode.objects.get(code=self.postalcode).name
-    
+
     def get_number_of_subscription(self):
         return self.subscriptions.all().__len__()
 
@@ -1334,9 +1370,9 @@ class ReportEventLog(models.Model):
         PUBLISH: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
-        APPLICANT_ASSIGNED:_('Applicant {related_new} is responsible for the report'),
+        APPLICANT_ASSIGNED:_('Applicant {related_new} is assigned to the report'),
         APPLICANT_CHANGED:_('Applicant changed from {related_old} to {related_new}'),
-        CONTRACTOR_ASSIGNED:_('Contractor {related_new} is responsible for the report'),
+        CONTRACTOR_ASSIGNED:_('Contractor {related_new} is assigned to the report'),
         CONTRACTOR_CHANGED:_('Contractor changed from {related_old} to {related_new}'),
         APPLICANT_CONTRACTOR_CHANGE:_('Applicant contractor change from {related_old} to {related_new}'),
     }
@@ -1364,7 +1400,7 @@ class ReportEventLog(models.Model):
 
     def __unicode__(self):
         return self.EVENT_TYPE_TEXT[self.event_type].format(
-            user=self.user,
+            user=(self.user.get_full_name() if self.user else None),
             organisation=self.organisation,
             related_old=self.related_old,
             related_new=self.related_new
