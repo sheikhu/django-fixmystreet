@@ -52,6 +52,8 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
+    connectedUser = request.fmsuser
+
     #if the user is an contractor then user the dependent organisation id
     if (connectedUser.contractor == True or connectedUser.applicant == True):
         #if the user is an contractor then display only report where He is responsible
