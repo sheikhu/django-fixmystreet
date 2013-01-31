@@ -10,7 +10,7 @@
 <p>You are now subscribed to the report with type {{reportType}}, created at {{date}}. You can consult the report at <a href="http://{{SITE_URL}}{{url}}">http://{{SITE_URL}}{{url}}</a>.</p>
 {% endblocktrans %}
 {% if unsubscribe_url %}
-<p>{% trans 'You can unsubscribe yourself by clicking the following link:' %} <a href="http://{{SITE_URL}}{{url2}}">http://{{SITE_URL}}{{unsubscribe_url}}</a></p>
+<p>{% trans 'You can unsubscribe yourself by clicking the following link:' %} <a href="http://{{SITE_URL}}{{unsubscribe_url}}">http://{{SITE_URL}}{{unsubscribe_url}}</a></p>
 {% endif %}
 {% include "emails/report_show.html" with report=related %}
 {% endlanguage %}
@@ -22,7 +22,7 @@
 <p>You are now subscribed to the report with type {{reportType}}, created at {{date}}. You can consult the report at <a href="http://{{SITE_URL}}{{url}}">http://{{SITE_URL}}{{url}}</a>.</p>
 {% endblocktrans %}
 {% if unsubscribe_url %}
-<p>{% trans 'You can unsubscribe yourself by clicking the following link:' %} <a href="http://{{SITE_URL}}{{url2}}">http://{{SITE_URL}}{{unsubscribe_url}}</a></p>
+<p>{% trans 'You can unsubscribe yourself by clicking the following link:' %} <a href="http://{{SITE_URL}}{{unsubscribe_url}}">http://{{SITE_URL}}{{unsubscribe_url}}</a></p>
 {% endif %}
 {% include "emails/report_show.html" with report=related %}
 {% endlanguage %}
