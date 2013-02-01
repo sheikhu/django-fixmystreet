@@ -46,12 +46,12 @@ $(document).ready(function() {
 
                 fillAdressField(lang, address);
                 //This commune does not participate to fixmystreet until now.
-                $form.prepend('<div class="text-error">' + zipcodes[String(address.street.postCode)].msg + '</div>');
+                $form.prepend('<div class="text-error span12">' + zipcodes[String(address.street.postCode)].msg + '</div>');
 
             } else if(response.status == 'success') {
 
                 $form.find('button, :submit').prop('disabled', false);
- 
+
                 fillAdressField(currLang, address);
                 fillI18nAdressField(currLang, address);
 
