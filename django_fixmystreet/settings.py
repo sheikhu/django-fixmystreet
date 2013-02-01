@@ -40,7 +40,7 @@ DATETIME_FORMAT = "d-m-Y H:i"
 MAX_UPLOAD_SIZE = "15000000"
 
 #Max number of items per pagination
-MAX_ITEMS_PAGE = 5
+MAX_ITEMS_PAGE = 10
 
 USE_I18N = True
 REGISTRATION_OPEN = False
