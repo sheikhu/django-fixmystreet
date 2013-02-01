@@ -141,6 +141,8 @@ def subscription(request):
             context_instance=RequestContext(request))
 
 def show(request,slug, report_id):
+    page_number = int(request.GET.get("page", 1))
+
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
     report = get_object_or_404(Report, id=report_id)
     if request.method == "POST":
@@ -172,11 +174,6 @@ def show(request,slug, report_id):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    if request.GET.get("page"):
-        page_number= int(request.GET.get("page"))
-    else :
-        page_number=1
-
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
 
     managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
@@ -188,7 +185,7 @@ def show(request,slug, report_id):
 
     contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
-    
+
     connectedUser = request.fmsuser
 
     #if the user is an contractor then user the dependent organisation id
@@ -222,5 +219,6 @@ def show(request,slug, report_id):
                 "refuse_form": RefuseForm(instance=report),
                 "pages_list":pages_list,
                 "mark_as_done_form":MarkAsDoneForm(),
+                "page_number": page_number,
             },
             context_instance=RequestContext(request))

@@ -21,7 +21,7 @@ $(function(){
         else{
         var vals = $(value).attr("id").split("_");
         if(vals[0].indexOf("public")!=-1){
-        	// Public checkbox changed
+            // Public checkbox changed
                 if(vals[1].indexOf("file")!=-1){
                     //TODO handle public bool of file with id vals[2]
                     window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=1';
@@ -114,34 +114,13 @@ $(document).ready(function() {
     $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
     /*Set the checked value*/
     {% if report.private %}
-    	$('#id_private').attr("checked", "checked");
+        $('#id_private').attr("checked", "checked");
     {% else %}
         $('#id_public').attr("checked", "checked");
     {% endif %}
     {% for report in reports %}
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
-    // Add the active class to the active page number
-    $("#page_{{request.GET.page}}").addClass("active");
-    // Set the state of the arrow buttons (active or inactive)
-    if("{{request.GET.page}}"=="1"){
-        $(".pagination_prev").removeClass("active");
-    }
-    else{
-        $(".pagination_prev").addClass("active");
-    }
-    if("{{pages_list|last}}"=="{{request.GET.page}}"){
-        $(".pagination_next").removeClass("active");
-    }
-    else{
-        $(".pagination_next").addClass("active");
-    }
-    //Add onclick event for arrows
-    $(".pagination_next.active").bind("click",function(){
-        window.location = "{{report.get_absolute_url_pro}}?page="+(parseInt("{{request.GET.page}}")+1);
-    });
-    $(".pagination_prev.active").bind("click",function(){
-        window.location = "{{report.get_absolute_url_pro}}?page="+(parseInt("{{request.GET.page}}")-1);
     });
 });
 function markAsDone(){
@@ -188,7 +167,11 @@ function markAsDone(){
 </div>
 
 <div class="row">
+    <h1 class="span12">
+        {% trans "Report Ticket" %} {{ report.get_ticket_number }}
+    </h1>
     <div id="nearby-reports" class="span6">
+<<<<<<< HEAD
             {% if reports %}
                 <div id='search_results'>
                 <a id="create_report_fastlink" href="/pro/" class="report">
@@ -236,24 +219,60 @@ function markAsDone(){
                {% if fms_user.can_see_confidential %}
                	{% if report.citizen.last_name = ''%}
                	  {% trans 'Posted by' %} <strong><a href='mailto:{{report.citizen.email}}'>{% trans 'ANONYMOUS' %}</a></strong> {% trans 'on'%} <strong>{{report.created}}</strong>
+=======
+        {% if reports %}
+        <div id='search_results'>
+            <a id="create_report_fastlink" href="/pro/" class="report">
+               <h3 class="report-title">{% trans "create_report" %}</h3>
+            </a>
+            {% for r in reports %}
+                {% ifequal r report %}
+                {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=1 %}
+>>>>>>> layout + paginator
                 {% else %}
-                 {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
-                 Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
-                 {% endblocktrans %}
-                 (tel:{{report.citizen.fmsuser.telephone}})
+                {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=0 %}
+                {% endifequal %}
+            {% endfor %}
+            {% include "_paginator.html" %}
+        </div>
+        {% else %}
+            <p>{% trans "No problems have been reported in this area." %}</p>
+        {% endif %}
+    </div>
+    <div  class="span6 bordered-box">
+        {% if report.markedAsFinished %}
+        <div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
+        {% endif %}
+        <div id='report-body'>
+            <p>
+                {% if report.description %}
+                    {{report.description|linebreaks}}
                 {% endif %}
+            </p>
+            <p class="author-sign">
+                {% if report.citizen %}
+                    <!-- Protect privacy from applicant and contractor when creator is a citizen -->
+                    {% if fms_user.can_see_confidential %}
+                        {% if report.citizen.last_name = ''%}
+                            {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+                                Posted by <strong><a href='mailto:{{mail}}'>ANONYMOUS</a></strong> on <strong>{{on}}</strong>
+                            {% endblocktrans %}
+                        {% else %}
+                            {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
+                                Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
+                            {% endblocktrans %}
+                            (tel:{{report.citizen.fmsuser.telephone}})
+                        {% endif %}
+                    {% else %}
+                        {% blocktrans with on=report.created %}
+                            Posted on <strong>{{on}}</strong>
+                        {% endblocktrans %}
+                   {% endif %}
                {% else %}
-                {% blocktrans with on=report.created %}
-                Posted on <strong>{{on}}</strong>
-                {% endblocktrans %}
-               {% endif %}
-
-               {% else %}
-               {% blocktrans with by=report.created_by.username on=report.created mail=report.created_by.email %}
-
-               Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
-               {% endblocktrans %}
-               (tel:{{report.created_by.fmsuser.telephone}})
+                   {% blocktrans with by=report.created_by.get_full_name on=report.created mail=report.created_by.email %}
+                        Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
+                   {% endblocktrans %}
+                   (tel:{{report.created_by.fmsuser.telephone}})
                {% endif %}
             </p>
             <!-- ################## -->
@@ -269,12 +288,12 @@ function markAsDone(){
                     <td colspan="4">{{report.display_category}}</td>
                 </tr>
                 <tr>
-               	    <th>{% trans "Status:" %}</th>
-		    <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
-		</tr>
+                       <th>{% trans "Status:" %}</th>
+            <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
+        </tr>
 
                 {% if not report.is_in_progress%}
-		<tr>
+        <tr>
                     <th>{% trans "Responsible:" %}</th>
                     <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
             </tr>
@@ -377,7 +396,11 @@ function markAsDone(){
             <!-- # DISPLAY FILES SECTION  # -->
             <!-- ########################## -->
             {% if report.files %}
+<<<<<<< HEAD
             <hr/>
+=======
+        <br/>
+>>>>>>> layout + paginator
             <h4>{% trans "Photos and files" %}</h4>
             <div id="report_updates">
                 <table id="extraFilesTable">
@@ -401,41 +424,45 @@ function markAsDone(){
                     <tr>
                         <td class="annexesFirstTD">
                             <div class="report_update">
-				<div class="delete-file-icon">
-			                {% if request.user.id == report.responsible_manager.id %}
-						{% if report.is_created or report.is_in_progress  %}
-						<!-- Manager in charge only -->
-							<img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>
-						{% endif %}
-					{% endif %}
-				</div>
-                        	{% if file.file %}
+                <div class="delete-file-icon">
+                            {% if request.user.id == report.responsible_manager.id %}
+                        {% if report.is_created or report.is_in_progress  %}
+                        <!-- Manager in charge only -->
+                            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                            {% if file.file %}
                                 <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
                                 {% if file.is_image %}
+<<<<<<< HEAD
                                 	<a href="{{ file.image.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.image.thumbnail.url}}'/></a>
+=======
+                                    <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.file.url}}' width="48px" height="48px"/></a>
+>>>>>>> layout + paginator
                                 {% endif %}
                                 {% if file.is_pdf %}
-	                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
+                                    <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
                                 {% endif %}
                                 {% if file.is_word %}
-        	                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+                                    <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
                                 {% endif %}
                                 {% if file.is_excel %}
-                	                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
+                                    <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
                                 {% endif %}
                                 <div class="update_text">
                                     {{file.title}}
                                     <br/>
                                     {% trans 'Posted by' %}
-                                    	{{file.get_display_name}}
+                                        {{file.get_display_name}}
                                     <br/>
-				    {% trans 'Creation Date' %}
+                    {% trans 'Creation Date' %}
                                     {% if file.file_creation_date != None%}
                                         {{file.file_creation_date}}
                                     {% else %}
                                         -
                                     {% endif %}
-				    <br/>
+                    <br/>
                                     {% trans 'on' %}
                                         {{file.created}}
                                 </div>
@@ -448,30 +475,30 @@ function markAsDone(){
                         {% if report.responsible_manager.id == request.user.id %}
                         <td class="annexesChoiceBoxTD">
                             {% if file.is_public %}
-                            <input 	type="radio" name="file_security_level_{{file.id}}" id="public_filesecuritylevel_{{file.id}}" value="{{file.PUBLIC}}"checked="checked">
+                            <input     type="radio" name="file_security_level_{{file.id}}" id="public_filesecuritylevel_{{file.id}}" value="{{file.PUBLIC}}"checked="checked">
                             {% else %}
-                            <input 	type="radio" name="file_security_level_{{file.id}}" id="public_filesecuritylevel_{{file.id}}" value="{{file.PUBLIC}}">
+                            <input     type="radio" name="file_security_level_{{file.id}}" id="public_filesecuritylevel_{{file.id}}" value="{{file.PUBLIC}}">
                             {% endif %}
                         </td>
                         <td class="annexesChoiceBoxTD">
                         {% if file.is_private %}
-                            <input 	type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}" checked="checked">
+                            <input     type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}" checked="checked">
                         {% else %}
-                        <input 	type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}">
+                        <input     type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}">
                         {% endif %}
                         </td>
                         <td class="annexesChoiceBoxTD">
                         {% if file.is_confidential %}
-                            <input 	type="radio"
-						name="file_security_level_{{file.id}}"
-						id="confidential_filesecuritylevel_{{file.id}}"
-						value="{{file.CONFIDENTIAL}}"
-						checked="checked">
+                            <input     type="radio"
+                        name="file_security_level_{{file.id}}"
+                        id="confidential_filesecuritylevel_{{file.id}}"
+                        value="{{file.CONFIDENTIAL}}"
+                        checked="checked">
                         {% else %}
-                            <input 	type="radio"
-						name="file_security_level_{{file.id}}"
-						id="confidential_filesecuritylevel_{{file.id}}"
-						value="{{file.CONFIDENTIAL}}">
+                            <input     type="radio"
+                        name="file_security_level_{{file.id}}"
+                        id="confidential_filesecuritylevel_{{file.id}}"
+                        value="{{file.CONFIDENTIAL}}">
                         {% endif %}
                         </td>
                     {% endif %}
@@ -511,11 +538,11 @@ function markAsDone(){
                     <tr>
                         <td class="annexesFirstTD">
                             <div class="report_update">
-			    <div class="delete-comment-icon">
-			        {% if request.user.id == report.responsible_manager.id %}
-				{% if report.is_created or report.is_in_progress  %}
+                <div class="delete-comment-icon">
+                    {% if request.user.id == report.responsible_manager.id %}
+                {% if report.is_created or report.is_in_progress  %}
                                 <!-- Manager in charge only -->
-                                	<img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
+                                    <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
                                 {% endif %}
                                 {% endif %}
                             </div>
@@ -526,51 +553,51 @@ function markAsDone(){
                             </div>
                         </td>
                         {% if report.is_in_progress  %}
-            			<!--If the current user is the responsible manager-->
-            			{% if report.responsible_manager.id == request.user.id %}
-               				<td class="annexesChoiceBoxTD">
-               				{% if comment.is_public %}
-                                     	<input 	type="radio"
-						name="comment_security_level_{{comment.id}}"
-						id="public_commentsecuritylevel_{{comment.id}}"
-						value="{{comment.PUBLIC}}"
-						checked="checked">
-                  			{% else %}
-                                     	<input 	type="radio"
-						name="comment_security_level_{{comment.id}}"
-						id="public_commentsecuritylevel_{{comment.id}}"
-						value="{{comment.PUBLIC}}">
-                   			{% endif %}
-               				</td>
-               				<td class="annexesChoiceBoxTD">
-               				{% if comment.is_private %}
-                                     	<input 	type="radio"
-						name="comment_security_level_{{comment.id}}"
-						id="private_commentsecuritylevel_{{comment.id}}"
-						value="{{comment.PRIVATE}}"
-						checked="checked">
-                  			{% else %}
-                                     	<input 	type="radio"
-						name="comment_security_level_{{comment.id}}"
-						id="private_commentsecuritylevel_{{comment.id}}"
-						value="{{comment.PRIVATE}}">
-                   			{% endif %}
-               				</td>
-                			<td class="annexesChoiceBoxTD">
-               				{% if comment.is_confidential %}
-                                     	<input 	type="radio"
-						name="comment_security_level_{{comment.id}}"
-						id="confidential_commentsecuritylevel_{{comment.id}}"
-						value="{{comment.CONFIDENTIAL}}"
-						checked="checked">
-                  			{% else %}
-                                     	<input 	type="radio"
-						name="comment_security_level_{{comment.id}}"
-						id="confidential_commentsecuritylevel_{{comment.id}}"
-						value="{{comment.CONFIDENTIAL}}">
-                   			{% endif %}
-                			</td>
-            			{% endif %}
+                        <!--If the current user is the responsible manager-->
+                        {% if report.responsible_manager.id == request.user.id %}
+                               <td class="annexesChoiceBoxTD">
+                               {% if comment.is_public %}
+                                         <input     type="radio"
+                        name="comment_security_level_{{comment.id}}"
+                        id="public_commentsecuritylevel_{{comment.id}}"
+                        value="{{comment.PUBLIC}}"
+                        checked="checked">
+                              {% else %}
+                                         <input     type="radio"
+                        name="comment_security_level_{{comment.id}}"
+                        id="public_commentsecuritylevel_{{comment.id}}"
+                        value="{{comment.PUBLIC}}">
+                               {% endif %}
+                               </td>
+                               <td class="annexesChoiceBoxTD">
+                               {% if comment.is_private %}
+                                         <input     type="radio"
+                        name="comment_security_level_{{comment.id}}"
+                        id="private_commentsecuritylevel_{{comment.id}}"
+                        value="{{comment.PRIVATE}}"
+                        checked="checked">
+                              {% else %}
+                                         <input     type="radio"
+                        name="comment_security_level_{{comment.id}}"
+                        id="private_commentsecuritylevel_{{comment.id}}"
+                        value="{{comment.PRIVATE}}">
+                               {% endif %}
+                               </td>
+                            <td class="annexesChoiceBoxTD">
+                               {% if comment.is_confidential %}
+                                         <input     type="radio"
+                        name="comment_security_level_{{comment.id}}"
+                        id="confidential_commentsecuritylevel_{{comment.id}}"
+                        value="{{comment.CONFIDENTIAL}}"
+                        checked="checked">
+                              {% else %}
+                                         <input     type="radio"
+                        name="comment_security_level_{{comment.id}}"
+                        id="confidential_commentsecuritylevel_{{comment.id}}"
+                        value="{{comment.CONFIDENTIAL}}">
+                               {% endif %}
+                            </td>
+                        {% endif %}
                             {% endif %}
                     </tr>
                     {% endif %}
@@ -636,10 +663,10 @@ function markAsDone(){
                     <!-- ############################################# -->
                     {% if report.is_in_progress %}
                         {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn">{% trans 'Close Report' %}</a>
+                            <a href="{% url report_validate_all_pro report.id %}" class="btn" >{% trans 'Validate all' %}</a>
                         {% endif %}
                         {% if not fms_user.contractor %}
-                            <a class="btn" href="{% url report_validate_all_pro report.id %}" >{% trans 'Validate all' %}</a>
+                            <a href="{% url report_close_pro report.id %}" class="btn pull-right btn-warning">{% trans 'Close Report' %}</a>
                         {% endif %}
                     {% endif %}
                     <!-- ######################################### -->
@@ -647,8 +674,8 @@ function markAsDone(){
                     <!-- ######################################### -->
                     {% if report.is_created %}
                         <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Publish' %}</a>
-                        <button onclick="refuse();" class="btn">{% trans 'Reject' %}</button>
                         <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish All' %}</a>
+                        <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
                     {% endif %}
                 {% endif %}
                 {% if report.is_in_progress %}
