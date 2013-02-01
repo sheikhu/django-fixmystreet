@@ -449,8 +449,8 @@ class Report(UserTrackedModel):
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
         report_ticket_id = str(self.id)
-        if (report_ticket_id.__len__() <= 8):
-            for i in range(8-(report_ticket_id.__len__())):
+        if (report_ticket_id.__len__() <= 6):
+            for i in range(6-(report_ticket_id.__len__())):
                 report_ticket_id = "0"+report_ticket_id;
         return report_ticket_id
 

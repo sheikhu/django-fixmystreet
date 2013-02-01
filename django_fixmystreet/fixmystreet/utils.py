@@ -165,7 +165,7 @@ def render_to_pdf(*args, **kwargs):
 
     pdf_tmp_file = file(pdf_tmp_file_path, "r")
     response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=%s_%s.pdf' %(u"export", datetime.date.today().isoformat())
+    response['Content-Disposition'] = 'attachment; filename=%s%s.pdf' %(u"export-incident-"+str((args[1]['report']).id)+"-date-", datetime.date.today().isoformat())
     pdf_tmp_file.close()
     return response
 

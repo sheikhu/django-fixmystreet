@@ -5,7 +5,10 @@ import datetime
 import StringIO
 
 from piston.handler import BaseHandler
+from datetime import date
 
+from django.http import HttpResponse
+from django.utils.encoding import smart_str, smart_unicode
 from django_fixmystreet.fixmystreet.models import Report, ReportComment, ReportFile
 
 ##################
@@ -17,13 +20,19 @@ class TextEmitter(Emitter):
 
 class CSVEmitter(Emitter):
     def render(self, request):
-        output = StringIO.StringIO()
+        #Access the Report. Today only used for single Report export.
         seria = []
         #Test if multiple record received...
         if (self.construct().__class__ == list):
             seria.extend(self.construct())
         else:
             seria.insert(0,self.construct())
+        
+        #Set the response attributes
+        response = HttpResponse()
+        response['Content-Disposition'] = 'attachment; filename=export-incident-'+str(seria[0].get('id'))+'-date-'+str(date.today().isoformat())+'.csv'
+
+        output = StringIO.StringIO()
         writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
         # Write headers to CSV file
@@ -36,8 +45,8 @@ class CSVEmitter(Emitter):
             if (field.name == 'id'):
                 headers.append('Ticket')
             else:
-                headers.append(str(field.name))
-            field_names.append(str(field.name))
+                headers.append(smart_str(field.name, encoding='utf-8'))
+            field_names.append(smart_str(field.name, encoding='utf-8'))
         writer.writerow(headers)
         counter = -1
         # Write data to CSV file
@@ -90,7 +99,7 @@ class CSVEmitter(Emitter):
                     if comment_counter == 0:
                         writer.writerow(['Comments'])
                         writer.writerow(['','Comment', 'Creator', 'File Import Date'])
-                    writer.writerow(['',comment_obj.text.__str__(),comment_obj.get_display_name(), comment_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
+                    writer.writerow(['',smart_str(comment_obj.text, encoding='utf-8'),comment_obj.get_display_name(), comment_obj.created.strftime("%s %s" % ('%Y-%m-%d', '%H:%M:%S'))])
                     comment_counter = comment_counter + 1
             except ReportComment.DoesNotExist:
                 print('error') 
@@ -250,7 +259,11 @@ class CSVEmitter(Emitter):
         #    row.append('')
 
         #csvWriter.writerow([x.encode('utf-8') for x in row])
-        return output.getvalue()
+        pdf = output.getvalue()
+        output.close()
+        response.write(pdf)
+        return response
+
 
 
 ######################
