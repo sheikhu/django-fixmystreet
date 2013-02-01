@@ -293,17 +293,17 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def public(self):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
-    def own(self, user):
+    def responsible(self, user):
         if user.contractor or user.applicant:
             return self.filter(contractor__in=user.work_for)
         else:
             return self.filter(responsible_manager=user)
 
-    def shared(self, organisation):
-        if organisation.contractor or organisation.applicant:
-            return self.filter(responsible_entity=organisation)
-        else:
+    def from_entity(self, organisation):
+        if organisation.subcontractor or organisation.applicant:
             return self.filter(contractor=organisation)
+        else:
+            return self.filter(responsible_entity=organisation)
 
     def pending(self):
         return self.filter(status=Report.CREATED)
@@ -312,10 +312,13 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
 
     def assigned(self):
-        return self.filter(status__in=Report.REPORT_STATUS_ASSIGNED)
+        return self.filter(contractor__isnull=False)
 
     def closed(self):
         return self.filter(status__in=Report.REPORT_STATUS_CLOSED)
+
+    def subscribed(self, user):
+        return self.filter(subscriptions__subscriber=user)
 
 
 

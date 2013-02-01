@@ -8,10 +8,8 @@ import math
 
 @login_required(login_url='/pro/accounts/login/')
 def list(request, status):
-    if request.GET.get("page"):
-        page_number = int(request.GET.get("page"))
-    else:
-        page_number=1
+    page_number = int(request.GET.get("page", 1))
+    ownership = request.GET.get("ownership", "entity")
 
     default_position = {
         'x': '148954.431',
@@ -25,28 +23,31 @@ def list(request, status):
 
     connectedUser = request.fmsuser
 
+    reports = Report.objects.all()
     #if the user is an contractor then user the dependent organisation id
     if (connectedUser.contractor == True or connectedUser.applicant == True):
         #if the user is an contractor then display only report where He is responsible
-        reports = Report.objects.filter(contractor__in = connectedUser.work_for.all())
+        reports = reports.filter(contractor__in = connectedUser.work_for.all())
     else:
-        reports = Report.objects.filter(responsible_entity = connectedUser.organisation)
-
-    #If the manager is connected then filter on manager
-    if (connectedUser.manager == True):
-        reports = reports.filter(responsible_manager=connectedUser);
+        #If the manager is connected then filter on manager
+        if (ownership == "responsible"):
+            reports = reports.responsible(connectedUser)
+        elif (ownership == "subscribed"):
+            reports = reports.subscribed(connectedUser)
+        else: # entity
+            reports = reports.from_entity(connectedUser.organisation)
 
 
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
 
     if status == 'created':
-        reports = reports.filter(status=Report.CREATED)
+        reports = reports.pending()
     elif status == 'in_progress':
-        reports = reports.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        reports = reports.in_progress()
     elif status == 'in_progress_and_assigned':
-        reports = reports.filter(contractor__isnull=False).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        reports = reports.in_progress().assigned()
     elif status == 'closed':
-        reports = reports.filter(status__in=Report.REPORT_STATUS_CLOSED)
+        reports = reports.closed()
     # else: # all
 
     #reports = reports.distance(pnt).order_by('distance')
@@ -62,6 +63,9 @@ def list(request, status):
                 "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
                 "status":status,
                 "pages_list":pages_list,
+                "ownership": ownership,
+                "page_number": page_number,
+                "status": status
             },
             context_instance=RequestContext(request))
 
