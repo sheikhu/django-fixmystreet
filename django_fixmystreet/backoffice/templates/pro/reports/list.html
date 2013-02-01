@@ -214,9 +214,9 @@ function highlightFilterSelection(id) {
     <div class="span8">
         {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
         <p class="btn-group pull-right">
-            <a href="{% url report_list_pro status %}?ownership=responsible" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">Responsible</a>
-            <a href="{% url report_list_pro status %}?ownership=entity" class="btn{% ifequal ownership 'entity' %} active{% endifequal %}">Entity</a>
-            <a href="{% url report_list_pro status %}?ownership=subscribed" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">Subscribed</a>
+            <a href="{% url report_list_pro status %}?ownership=responsible" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">{% trans 'My Reports' %}</a>
+            <a href="{% url report_list_pro status %}?ownership=entity" class="btn{% ifequal ownership 'entity' %} active{% endifequal %}">{% trans 'All Reports' %}</a>
+            <a href="{% url report_list_pro status %}?ownership=subscribed" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">{% trans 'My Subscriptions' %}</a>
         </p>
         {% endif %}
         {% if reports %}

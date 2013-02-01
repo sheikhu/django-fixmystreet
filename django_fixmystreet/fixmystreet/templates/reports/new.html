@@ -175,7 +175,7 @@ function createOverview(){
         if($(value).attr("type")!="hidden" && $(value).attr("type")!="file"){
             if($(value).attr("type")=="checkbox"){
                 var overview_input = $("#validate_report_popup").find("#"+$(value).attr("id"));
-                overview_input.attr("checked",($(value).attr("value")=="on"));
+                overview_input.attr("checked",($(value).attr("checked")=="checked"));
                 overview_input.attr("disabled","disabled");
             }
             else{

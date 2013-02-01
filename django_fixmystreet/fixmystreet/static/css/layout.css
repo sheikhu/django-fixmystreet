@@ -1140,7 +1140,7 @@ li img {
 input[type="submit"].btn {
     /*background: #FFF203;*/
     background:#949499;
-    color:#FFF;
+    color:#000;
 }
 #confirm_form input[type="submit"].btn{
     background:#FFDB00;

@@ -216,9 +216,11 @@ function markAsDone(){
             {% endif %}
         </div>
 	<div  class="span6 bordered-box overview_div_right">
+        <hr/>
         <h1>
             {% trans "Report Ticket" %} {{report.get_ticket_number}}
         </h1>
+        <hr/>
 		{% if report.markedAsFinished %}
 		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
 		{% endif %}
@@ -375,7 +377,7 @@ function markAsDone(){
             <!-- # DISPLAY FILES SECTION  # -->
             <!-- ########################## -->
             {% if report.files %}
-	    <br/>
+            <hr/>
             <h4>{% trans "Photos and files" %}</h4>
             <div id="report_updates">
                 <table id="extraFilesTable">
@@ -483,7 +485,7 @@ function markAsDone(){
             <!-- ############################# -->
             <!-- # DISPLAY COMMENTS SECTION  # -->
             <!-- ############################# -->
-            <br/>
+            <hr/>
 
             {% if report.comments %}
             <h4>{% trans "Comments" %}</h4>
@@ -577,6 +579,7 @@ function markAsDone(){
             </div>
             {% endif %}
 
+            <hr/>
             {% if report.is_in_progress %}
                 <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
                     {% csrf_token %}
@@ -587,7 +590,11 @@ function markAsDone(){
                         <legend>{% trans "Comments" %}</legend>
                         {{ comment_form.text }}
                         {# comment_form.text.errors #}
+                    	<p style="text-align:right">
+                        	<input type="submit" class='btn' value="{% trans 'Save Comment' %}" />
+                    	</p>
                     </fieldset>
+            	    <hr/>
                     <fieldset>
                         <legend>{% trans "Files" %}</legend>
                         <div id="form-files">
@@ -607,11 +614,12 @@ function markAsDone(){
                         </div>
 
                     </fieldset>
-                    <p>
-                        <input type="submit" class='btn' value="{% trans 'Send' %}" />
+                    <p style="text-align:right">
+                        <input type="submit" class='btn' value="{% trans 'Save Photo' %}" />
                     </p>
                 </form>
             {% endif %}
+            <hr/>
             <div id="report-subscription">
                 <div class="control-group">
                     <p>{% trans "Subscription" %}</p>
@@ -628,7 +636,7 @@ function markAsDone(){
                     <!-- ############################################# -->
                     {% if report.is_in_progress %}
                         {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn">{% trans 'Close' %}</a>
+                            <a href="{% url report_close_pro report.id %}" class="btn">{% trans 'Close Report' %}</a>
                         {% endif %}
                         {% if not fms_user.contractor %}
                             <a class="btn" href="{% url report_validate_all_pro report.id %}" >{% trans 'Validate all' %}</a>
