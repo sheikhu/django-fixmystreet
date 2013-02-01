@@ -17,9 +17,15 @@ $(document).ready(function(){
   });
 
   /*Hide empty selection zones*/
-  $('#54').hide();
-  $('#38').hide();
-  $('#58').hide();
+  if($("#54").is("button")){
+    $('#54').hide();
+  }
+  if($("#38").is("button")){
+    $('#38').hide();
+  }
+  if($("#58").is("button")){
+    $('#58').hide();
+  }
 });
 function saveSelection(){
   var url='{% url saveSelection %}?';

@@ -116,7 +116,7 @@ function markAsDone(){
     <div class="pull-right">
         {% if report.is_in_progress %}
             {% if not report.status == report.SOLVED %}
-            <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</a>
+            <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
             {% else %}
             <button onclick="" class="btn" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
             <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
@@ -313,12 +313,12 @@ function markAsDone(){
                 </div>
             </div>
             <div class="file-upload-button">
-                <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
+                <a id="file-upload" title="{% trans 'Add a file to this incident' %}"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
             </div>
 
         </fieldset>
         <p>
-            <input type="submit" class='btn' value="{% trans 'Send' %}" />
+            <input type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
         </p>
     </form>
     {% endif %}
@@ -326,7 +326,7 @@ function markAsDone(){
 
         <!-- If the status allow such interactions -->
         <p>
-            <a href="{% url report_pdf report.id 0 %}">
+            <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf public' %}
             </a>
         </p>

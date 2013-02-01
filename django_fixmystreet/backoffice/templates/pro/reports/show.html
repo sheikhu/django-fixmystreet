@@ -603,12 +603,12 @@ function markAsDone(){
                             </div>
                         </div>
                         <div class="file-upload-button">
-                            <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">{% trans "Add File" %}</a>
+                            <a id="file-upload" title="{% trans 'Add a file to this incident' %}" ><img src="{{STATIC_URL}}images/plus-button.png" >{% trans "Add File" %}</a>
                         </div>
 
                     </fieldset>
                     <p>
-                        <input type="submit" class='btn' value="{% trans 'Send' %}" />
+                        <input type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit the added files or entered comments by pressing this button' %}" />
                     </p>
                 </form>
             {% endif %}
@@ -628,34 +628,34 @@ function markAsDone(){
                     <!-- ############################################# -->
                     {% if report.is_in_progress %}
                         {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn">{% trans 'Close' %}</a>
+                            <a href="{% url report_close_pro report.id %}" class="btn" title="{% trans 'Close this report to finalize the management' %}">{% trans 'Close' %}</a>
                         {% endif %}
                         {% if not fms_user.contractor %}
-                            <a class="btn" href="{% url report_validate_all_pro report.id %}" >{% trans 'Validate all' %}</a>
+                            <a class="btn" href="{% url report_validate_all_pro report.id %}" title="{% trans 'Make all comments and files public.' %}">{% trans 'Validate all' %}</a>
                         {% endif %}
                     {% endif %}
                     <!-- ######################################### -->
                     <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
                     <!-- ######################################### -->
                     {% if report.is_created %}
-                        <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Publish' %}</a>
-                        <button onclick="refuse();" class="btn">{% trans 'Reject' %}</button>
-                        <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish All' %}</a>
+                        <a href="{% url report_accept_pro report.id %}" class="btn" title="{% trans 'Accept this incident.' %}" >{% trans 'Publish' %}</a>
+                        <button onclick="refuse();" class="btn" title="{% trans 'Reject this incident' %}" >{% trans 'Reject' %}</button>
+                        <a href="{% url report_accept_and_validate report.id %}" class="btn" title="{% trans 'Accept this incident and make all comments and files public.' %}">{% trans 'Publish All' %}</a>
                     {% endif %}
                 {% endif %}
                 {% if report.is_in_progress %}
                     {% if report.is_markable_as_solved %}
-                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</button>
+                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that this incident has been solved. An email will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</button>
                     {% endif %}
                 {% endif %}
             </p>
             <div id="pdf_report">
                 {% if report.responsible_manager.id == request.user.id or fms_user.leader or fms_user.contractor %}
-                    <p><a href="{% url report_pdf_pro report.id 1 %}">{% trans 'report pdf' %}</a></p>
-                    <p><a href="{% url report_pdf_pro report.id 0 %}">{% trans 'report pdf public' %}</a></p>
+                    <p><a href="{% url report_pdf_pro report.id 1 %}" title="{% trans 'Download the pro version of the pdf report' %}" >{% trans 'report pdf' %}</a></p>
+                    <p><a href="{% url report_pdf_pro report.id 0 %}" title="{% trans 'Download the public version of the pdf report' %}">{% trans 'report pdf public' %}</a></p>
                 {% endif %}
                 {% if fms_user.manager or fms_user.leader %}
-                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
+                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank" title="{% trans 'Export the content of this incident to a csv file' %}">{% trans 'Export Csv' %}</a></p>
                 {% endif %}
             </div>
 
