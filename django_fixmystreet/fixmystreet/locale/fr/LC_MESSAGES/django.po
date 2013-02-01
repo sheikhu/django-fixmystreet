@@ -1712,16 +1712,14 @@ msgstr ""
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
 #: templates/reports/show.html:316
-#, fuzzy
 msgid "Add a file to this incident"
-msgstr "Envoyer"
+msgstr "Ajouter un fichier a l'incident"
 
 #: templates/reports/show.html:321
 msgid "Submit all added files and comments by pressing this button"
 msgstr ""
 
 #: templates/reports/show.html:329
-#, fuzzy
 msgid "Download a pdf report of this incident"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 

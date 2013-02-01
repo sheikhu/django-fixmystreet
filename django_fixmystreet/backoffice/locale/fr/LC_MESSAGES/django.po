@@ -709,12 +709,11 @@ msgstr "Sauvegarder le commentaire"
 
 #: templates/pro/reports/show.html:563
 msgid "Submit the added comments"
-msgstr ""
+msgstr "Sauvegarder le commentaire"
 
 #: templates/pro/reports/show.html:582
-#, fuzzy
 msgid "Add a file to this incident"
-msgstr "Ajouter un fichier"
+msgstr "Ajouter les fichiers attachés"
 
 #: templates/pro/reports/show.html:582
 msgid "Add File"
@@ -726,7 +725,7 @@ msgstr "Sauvegarder les photos"
 
 #: templates/pro/reports/show.html:588
 msgid "Submit the added photos "
-msgstr ""
+msgstr "Soumettre les pieces attachées"
 
 #: templates/pro/reports/show.html:595
 msgid "Subscription"
@@ -738,7 +737,7 @@ msgstr ""
 
 #: templates/pro/reports/show.html:609
 msgid "Close this report to finalize the management"
-msgstr ""
+msgstr "Cloturer définitivement l'incident"
 
 #: templates/pro/reports/show.html:609
 msgid "Close"
@@ -746,16 +745,15 @@ msgstr "Cloturer définitivement"
 
 #: templates/pro/reports/show.html:612
 msgid "Make all comments and files public."
-msgstr ""
+msgstr "Rendre toutes les pieces attachées et commentaires publics"
 
 #: templates/pro/reports/show.html:612
 msgid "Validate all"
 msgstr "Rendre photos et commentaires publics"
 
 #: templates/pro/reports/show.html:621
-#, fuzzy
 msgid "Accept the incident"
-msgstr "Créer un incident"
+msgstr "Accepter l'incident"
 
 #: templates/pro/reports/show.html:621
 msgid "Publish"
@@ -763,16 +761,15 @@ msgstr "Approuver"
 
 #: templates/pro/reports/show.html:622
 msgid "Make all files and comments public"
-msgstr ""
+msgstr "Rendre tous les fichiers et commentaires publics"
 
 #: templates/pro/reports/show.html:622
 msgid "Publish All"
 msgstr "Tout publier"
 
 #: templates/pro/reports/show.html:623
-#, fuzzy
 msgid "Reject the incident"
-msgstr "Créer un incident"
+msgstr "Rejeter l'incident"
 
 #: templates/pro/reports/show.html:623
 msgid "Reject"
@@ -782,7 +779,7 @@ msgstr "Rejeter"
 msgid ""
 "Indicate that this incident has been solved. An email will be send to the "
 "responsible manager."
-msgstr ""
+msgstr "Indiquer l'incident comme realisé. Un mail sera envoyé au gestionnaire de l'incident."
 
 #: templates/pro/reports/show.html:628
 msgid "Mark as done"
@@ -790,7 +787,7 @@ msgstr "Signaler comme cloturé"
 
 #: templates/pro/reports/show.html:634
 msgid "Download the pro version of the pdf report"
-msgstr ""
+msgstr "Télécharger une version pro de l'incident sous format pdf"
 
 #: templates/pro/reports/show.html:634
 msgid "report pdf"
@@ -798,7 +795,7 @@ msgstr "Telecharger une copie pro de l'incident sous format pdf."
 
 #: templates/pro/reports/show.html:635
 msgid "Download the public version of the pdf report"
-msgstr ""
+msgstr "Télécharger une version publique de l'incident sous format pdf"
 
 #: templates/pro/reports/show.html:635
 msgid "report pdf public"
@@ -806,7 +803,7 @@ msgstr "Rapport PDF public"
 
 #: templates/pro/reports/show.html:638
 msgid "Export the content of this incident to a csv file"
-msgstr ""
+msgstr "Exporter l'incident sous format Excel"
 
 #: templates/pro/reports/show.html:638
 msgid "Export Csv"

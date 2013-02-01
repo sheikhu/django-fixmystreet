@@ -31,6 +31,7 @@ class CSVEmitter(Emitter):
         #Set the response attributes
         response = HttpResponse()
         response['Content-Disposition'] = 'attachment; filename=export-incident-'+str(seria[0].get('id'))+'-date-'+str(date.today().isoformat())+'.csv'
+        response['charset'] = 'utf-8'
 
         output = StringIO.StringIO()
         writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
@@ -43,10 +44,10 @@ class CSVEmitter(Emitter):
         field_names.append("")
         for field in Report._meta.fields:
             if (field.name == 'id'):
-                headers.append('Ticket')
+                headers.append('Incident number')
             else:
-                headers.append(smart_str(field.name, encoding='utf-8'))
-            field_names.append(smart_str(field.name, encoding='utf-8'))
+                headers.append(field.name)
+            field_names.append(field.name)
         writer.writerow(headers)
         counter = -1
         # Write data to CSV file
