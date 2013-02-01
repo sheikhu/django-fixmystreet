@@ -4,33 +4,8 @@
 {% block script %}
 {{ block.super }}
 <script>
-
-var pageNumber = {{ page_number }},
-    status = "{{ status }}";
-
 $(document).ready(function() {
     var $form = $('#report_form');
-    /*Hide the edition form*/
-    $('#report_form').hide();
-    $('#nearby-reports').show();
-
-    //Add onclick event for arrows
-    $(".pagination_next.active").click(function(evt) {
-        evt.preventDefault();
-        getUrlForPageNumber(pageNumber + 1);
-    });
-    $(".pagination_prev.active").click(function(evt) {
-        evt.preventDefault();
-        getUrlForPageNumber(pageNumber - 1);
-    });
-    $(".pagination").delegate("a:not(.active)", "click", function(evt) {
-        evt.preventDefault();
-        var page = $(this).data("page");
-        if(page) {
-            getUrlForPageNumber(page);
-        }
-    });
-
 
     /**
      * Method used to filter report on list
@@ -110,26 +85,6 @@ $(document).ready(function() {
         });
     });
 });
-
-function getUrlForPageNumber(number) {
-    var url = window.location.href;
-    if(url.indexOf("page=")!=-1){
-
-        var list = url.split("page=");
-        url1= list[0].replace(/\&amp;/g,'&');
-        url1 = url1.replace("amp;","");
-        url = url1 + "page="+ number;
-
-    } else if(url.indexOf("?")!=-1) {
-        url += "&page="+number;
-    } else {
-        url += "?page="+number;
-    }
-
-    window.location= url;
-}
-
-
 /**
  * Activate the rayon or not
  */
@@ -214,9 +169,9 @@ function highlightFilterSelection(id) {
     <div class="span8">
         {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
         <p class="btn-group pull-right">
-            <a href="{% url report_list_pro status %}?ownership=responsible" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">Responsible</a>
-            <a href="{% url report_list_pro status %}?ownership=entity" class="btn{% ifequal ownership 'entity' %} active{% endifequal %}">Entity</a>
-            <a href="{% url report_list_pro status %}?ownership=subscribed" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">Subscribed</a>
+            <a href="{% url report_list_pro status %}?ownership=responsible" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">{% trans 'My Reports' %}</a>
+            <a href="{% url report_list_pro status %}?ownership=entity" class="btn{% ifequal ownership 'entity' %} active{% endifequal %}">{% trans 'All Reports' %}</a>
+            <a href="{% url report_list_pro status %}?ownership=subscribed" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">{% trans 'My Subscriptions' %}</a>
         </p>
         {% endif %}
         {% if reports %}
@@ -227,23 +182,7 @@ function highlightFilterSelection(id) {
                 {% for report in reports %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                 {% endfor %}
-                {% if pages_list|length > 1 %}
-                <div class="pagination pagination-centered">
-                    <ul>
-                        <li>
-                            <a class="pagination_prev"{% if page_number != 1 %} class="active"{% endif %}></a>
-                        </li>
-                        {% for number in pages_list %}
-                        <li>
-                            <a{% if page_number == number %} class="active"{% endif %} data-page="{{ number }}">{{ number }}</a>
-                        </li>
-                        {% endfor %}
-                        <li>
-                            <a class="pagination_next" {% if page_number != pages_list|last %} class="active"{% endif %}></a>
-                        </li>
-                    </ul>
-                </div>
-                {% endif %}
+                {% include "_paginator.html" %}
             </div>
         {% else %}
             <p>{% trans "No problems have been reported in this area." %}</p>
@@ -254,8 +193,8 @@ function highlightFilterSelection(id) {
             <form id="search-street">
                 <!-- TODO create logic behind searching -->
                 <p>1. {% trans "Search by commune or address:" %}</p>
-                <div>
-                    <input type="search" class="input-block-level" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" id="input-commune-search" style="box-sizing:border-box;"><br /><br />
+                <input type="search" class="input-block-level" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" id="input-commune-search" style="box-sizing:border-box;">
+                <div class="form-search">
                     <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
                         <option value="">{% trans "All communes..." %}</option>
                         {% for zip in zipcodes %}
@@ -263,7 +202,7 @@ function highlightFilterSelection(id) {
                         {% endfor %}
                     </select>
 
-                    <button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
+                    <input type="submit" class="btn" id="filterReports" value="{% trans 'Search street' %}"/>
                 </div>
                 <div id="search_by_commune_or_address_section_results" style="display:none">
                     <p>2. {% trans "Results" %}</p>
@@ -272,7 +211,7 @@ function highlightFilterSelection(id) {
             </form>
             <form id="search-by-address" style="display:none">
                 <p>3. {% trans "Within a distance of" %} ({% trans 'Optional' %})</p>
-                <select id="rayon" class="input-large">
+                <select id="rayon" class="input-block-level">
                     <option value="">{% trans 'All'%}</option>
                     <option value="50">50m</option>
                     <option value="100">100m</option>
@@ -284,9 +223,9 @@ function highlightFilterSelection(id) {
         <form action="{% url search_ticket_pro %}" id="search_by_ticket_nr">
             <!-- TODO create logic behind searching -->
             <p >{% trans "Search by entering a ticket number:" %}</p>
-            <div class="input-append input-block-level">
-                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Insert your ticket number here' %}" class="" id="input-commune-search">
-                <input type="submit" class="btn" id="filterReports">{% trans 'Search' %}</button>
+            <div class="input-append">
+                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Insert your ticket number here' %}">
+                <input type="submit" class="btn" id="filterReports" value="{% trans 'Search' %}"/>
             </div>
         </form>
         <div id="go_to_submit_report">
