@@ -60,7 +60,7 @@ def new(request):
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
-    
+
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("reports/new.html",
             {
@@ -155,7 +155,7 @@ def search_ticket(request):
         report_id = request.REQUEST.get('report_id')
         report = Report.objects.filter(private=False).get(id=report_id)
 
-        return HttpResponseRedirect(report.get_absolute_url()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url())
     except:
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home'))
