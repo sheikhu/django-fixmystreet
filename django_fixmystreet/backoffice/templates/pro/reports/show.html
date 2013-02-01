@@ -458,9 +458,6 @@ function markAsDone(){
                         <input 	type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}">
                         {% endif %}
                         </td>
-                        {% endif %}
-                        <!--If the current user is the responsible manager or the creator of the report-->
-                        {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                         <td class="annexesChoiceBoxTD">
                         {% if file.is_confidential %}
                             <input 	type="radio"
@@ -557,9 +554,6 @@ function markAsDone(){
 						value="{{comment.PRIVATE}}">
                    			{% endif %}
                				</td>
-            			{% endif %}
-                    		<!--If the current user is the responsible manager or the creator of the report-->
-                    		{% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
                 			<td class="annexesChoiceBoxTD">
                				{% if comment.is_confidential %}
                                      	<input 	type="radio"
@@ -574,7 +568,7 @@ function markAsDone(){
 						value="{{comment.CONFIDENTIAL}}">
                    			{% endif %}
                 			</td>
-                            {% endif %}
+            			{% endif %}
                             {% endif %}
                     </tr>
                     {% endif %}
