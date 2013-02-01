@@ -5,120 +5,60 @@
 {{ block.super }}
 <script>
 
+var pageNumber = {{ page_number }},
+    status = "{{ status }}";
+
 $(document).ready(function() {
     var $form = $('#report_form');
     /*Hide the edition form*/
     $('#report_form').hide();
     $('#nearby-reports').show();
 
-    //Highlight the selected filter
-    $("#incident_filter").find("span[id$="+window.location.href.substr(window.location.href.lastIndexOf('/') + 1).toString().split("?")[0]+"]").addClass("selected");
-    // Add the active class to the active page number
-    $("#page_{{request.GET.page}}").addClass("active");
-    // Set the state of the arrow buttons (active or inactive)
-    if("{{request.GET.page}}"=="1"){
-        $(".pagination_prev").removeClass("active");
-    }
-    else{
-        $(".pagination_prev").addClass("active");
-    }
-    if("{{pages_list|last}}"=="{{request.GET.page}}"){
-        $(".pagination_next").removeClass("active");
-    }
-    else{
-        $(".pagination_next").addClass("active");
-    }
     //Add onclick event for arrows
-    $(".pagination_next.active").bind("click",function(){
-        getUrlForPageNumber(parseInt("{{request.GET.page}}")+1);
+    $(".pagination_next.active").click(function(evt) {
+        evt.preventDefault();
+        getUrlForPageNumber(pageNumber + 1);
     });
-    $(".pagination_prev.active").bind("click",function(){
-        getUrlForPageNumber(parseInt("{{request.GET.page}}")-1);
+    $(".pagination_prev.active").click(function(evt) {
+        evt.preventDefault();
+        getUrlForPageNumber(pageNumber - 1);
     });
-});
+    $(".pagination").delegate("a:not(.active)", "click", function(evt) {
+        evt.preventDefault();
+        var page = $(this).data("page");
+        if(page) {
+            getUrlForPageNumber(page);
+        }
+    });
 
-function getUrlForPageNumber(number) {
-    var url = "{{request.get_full_path}}";
-    if(url.indexOf("page=")!=-1){
-        var list = url.split("page=");
-        url1= list[0].replace(/\&amp;/g,'&');
-        url1 = url1.replace("amp;","");
-        url = url1 + "page="+ number;
-    }
-    else {
-        url += "?page="+number;
-    }
 
-    window.location= url;
-}
-
-/**
- * Method called when searching report per ticket number.
- */
-function search_per_ticket() {
-    searchValue = $('#input-search').val();
-    //Block to search per ticket number
-    if (searchValue && searchValue.length > 0) {
-        valToSearch = searchValue;
-        //On this page character # is not required as the search zone is dedicated.
-        if (searchValue[0] == "#")
-            valToSearch = searchValue.substring(1);
-        window.location = "{% url search_ticket_pro %}?report_id="+valToSearch;
-    }
-}
-
-/**
- * Activate the rayon or not
- */
-/*function activateRayon() {
-    var rayonActivated = $('#rayonCheckbox').attr('checked');
-
-        if (rayonActivated == 'checked') {
-        $('#rayon').prop('disabled',null);
-    } else {
-        $('#rayon').prop('disabled','disabled');
-    }
-}*/
-
-/**
- * Method used to filter report on list
- */
-function applyFilterReports() {
-    $("#search_by_commune_or_address_section_results").hide();
-    $("#search_by_commune_or_address_section_distance").hide();
-    var selectedFilterElements = $('#proposal').find('a.selected');
-    if (selectedFilterElements.length > 0) {
-        var valueX = $(selectedFilterElements).attr('x');
-        var valueY = $(selectedFilterElements).attr('y');
-        var valueStreet = $(selectedFilterElements).attr('street');
-        var valueStreetNumber = $(selectedFilterElements).attr('streetNumber');
-        var valueRayon = $('#rayon').val();
-        var rayonChecked = valueRayon != "";
-        if (rayonChecked) {
-           window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
-       console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon);
-    } else {
-           window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
-       console.log("{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber)+"&page=1";
-    }
-    }
-}
-
-/**
- * Highlight street selection
- */
-function highlightFilterSelection(id) {
-    $('#proposal').find('a').removeClass('selected');
-    $('#result-'+id).addClass('selected');
-    $("#search_by_commune_or_address_section_distance").show();
-}
-
-/**
- * When filtering reports
- */
-function filterReports() {
-        //Hide distance section
+    /**
+     * Method used to filter report on list
+     */
+    $('#search-by-address').submit(function applyFilterReports(evt) {
+        evt.preventDefault();
+        $("#search_by_commune_or_address_section_results").hide();
         $("#search_by_commune_or_address_section_distance").hide();
+        var selectedFilterElements = $('#proposal').find('a.selected');
+        if (selectedFilterElements.length > 0) {
+            var valueX = $(selectedFilterElements).attr('x');
+            var valueY = $(selectedFilterElements).attr('y');
+            var valueStreet = $(selectedFilterElements).attr('street');
+            var valueStreetNumber = $(selectedFilterElements).attr('streetNumber');
+            var valueRayon = $('#rayon').val();
+            var rayonChecked = valueRayon != "";
+            if (rayonChecked) {
+                window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
+            } else {
+                window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
+            }
+        }
+    });
+
+    $('#search-street').submit(function filterReports(evt) {
+        evt.preventDefault();
+        //Hide distance section
+        $("#search-by-address").hide();
 
         //Do not search when field is empty
         searchValue = $('#input-commune-search').val();
@@ -141,39 +81,82 @@ function filterReports() {
                            '},"number": ""' +
                       '}}'
            }
-        }).success(function(response){
-         if(response.status == 'success' && response.result.length > 0) {
-              $(proposal).empty();
-              var counter = 0;
-              for(var i in response.result) {
-                  var street = response.result[i].address.street;
-                  var streetNumber = response.result[i].address.number;
-                  var pos = response.result[i].point;
-                  //$('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.municipality + ')</a>')
-                  $('<a id="result-'+counter+'" x="'+pos.x+'" y="'+pos.y+'" street="'+street.name+'" streetNumber="'+streetNumber+'" class="street button" href="javascript:highlightFilterSelection(\''+counter+'\')">' + street.name + (streetNumber!=""?", "+streetNumber:"") +' (' + street.postCode+' ' +street.municipality + ')</a>')
-                  .appendTo($(proposal))
-                  .wrap('<li />');
-                  counter++;
-              }
-              //If only 1 result the select it automatically
-              if  (counter == 1) {
-        highlightFilterSelection('0');
-          }
-         }
-         else
-         {
-            $(searchValue).removeClass('loading');
-            if(response.status == "noresult" || response.status == "success")
-            {
-              $(proposal).html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
-            }
-            else
-            {
-              $(proposal).html('<p class="error-msg">' + response.status + '</p>').slideDown();
-            }
-         }
+        }).success(function(response) {
+            if(response.status == 'success' && response.result.length > 0) {
+                $(proposal).empty();
+                var counter = 0;
+                for(var i in response.result) {
+                    var street = response.result[i].address.street;
+                    var streetNumber = response.result[i].address.number;
+                    var pos = response.result[i].point;
+                    //$('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.municipality + ')</a>')
+                    $('<a id="result-'+counter+'" x="'+pos.x+'" y="'+pos.y+'" street="'+street.name+'" streetNumber="'+streetNumber+'" class="street button" href="javascript:highlightFilterSelection(\''+counter+'\')">' + street.name + (streetNumber!=""?", "+streetNumber:"") +' (' + street.postCode+' ' +street.municipality + ')</a>')
+                            .appendTo($(proposal))
+                            .wrap('<li />');
+                    counter++;
+                }
+                //If only 1 result the select it automatically
+                if (counter == 1) {
+                    highlightFilterSelection('0');
+                }
+            } else {
+                $(searchValue).removeClass('loading');
+                if(response.status == "noresult" || response.status == "success") {
+                    $(proposal).html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
+                } else {
+                    $(proposal).html('<p class="error-msg">' + response.status + '</p>').slideDown();
+                }
+             }
+        });
     });
+});
+
+function getUrlForPageNumber(number) {
+    var url = window.location.href;
+    if(url.indexOf("page=")!=-1){
+
+        var list = url.split("page=");
+        url1= list[0].replace(/\&amp;/g,'&');
+        url1 = url1.replace("amp;","");
+        url = url1 + "page="+ number;
+
+    } else if(url.indexOf("?")!=-1) {
+        url += "&page="+number;
+    } else {
+        url += "?page="+number;
+    }
+
+    window.location= url;
 }
+
+
+/**
+ * Activate the rayon or not
+ */
+/*function activateRayon() {
+    var rayonActivated = $('#rayonCheckbox').attr('checked');
+
+        if (rayonActivated == 'checked') {
+        $('#rayon').prop('disabled',null);
+    } else {
+        $('#rayon').prop('disabled','disabled');
+    }
+}*/
+
+
+/**
+ * Highlight street selection
+ */
+function highlightFilterSelection(id) {
+    $('#proposal').find('a').removeClass('selected');
+    $('#result-'+id).addClass('selected');
+    $("#search-by-address").show();
+}
+
+/**
+ * When filtering reports
+ */
+
 </script>
 {% endblock %}
 
@@ -197,102 +180,97 @@ function filterReports() {
     {% endif %}
     </h1>
     <div id="incident_filter" class="span12">
-    	<ul>
-    		<li>
-    			{% trans 'Filter the incidents by:' %}
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'all' %}?page=1"><img src="{{STATIC_URL}}images/pin-fixmystreet-L.png" width="40px" height="54px"> <span id="all">{% trans 'All reports' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'created'%}?page=1"><img src="{{STATIC_URL}}images/pin-red-L.png"> <span id="created">{% trans 'Unpublished' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'in_progress' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'in_progress_and_assigned' %}?page=1"><img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span></a>
-    		</li>
-    		<li>
-    			<a href="{% url report_list_pro 'closed' %}?page=1"><img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span></a>
-    		</li>
-    	</ul>
+        <ul>
+            <li>
+                {% trans 'Filter the incidents by:' %}
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'all' %}" {% ifequal status 'all' %} class="active"{% endifequal %}>
+                    <img src="{{STATIC_URL}}images/pin-fixmystreet-L.png" width="40px" height="54px"> <span id="all">{% trans 'All reports' %}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'created'%}" {% ifequal status 'created' %} class="active"{% endifequal %}>
+                    <img src="{{STATIC_URL}}images/pin-red-L.png"> <span id="created">{% trans 'Unpublished' %}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'in_progress' %}" {% ifequal status 'in_progress' %} class="active"{% endifequal %}>
+                    <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'in_progress_and_assigned' %}" {% ifequal status 'in_progress_and_assigned' %} class="active"{% endifequal %}>
+                    <img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url report_list_pro 'closed' %}" {% ifequal status 'closed' %} class="active"{% endifequal %}>
+                    <img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span>
+                </a>
+            </li>
+        </ul>
     </div>
-    <div class="span6">
-        <div id="nearby-reports">
-            {% if reports %}
-                <div id='search_results'>
+    <div class="span8">
+        {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
+        <p class="btn-group pull-right">
+            <a href="{% url report_list_pro status %}?ownership=responsible" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">Responsible</a>
+            <a href="{% url report_list_pro status %}?ownership=entity" class="btn{% ifequal ownership 'entity' %} active{% endifequal %}">Entity</a>
+            <a href="{% url report_list_pro status %}?ownership=subscribed" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">Subscribed</a>
+        </p>
+        {% endif %}
+        {% if reports %}
+            <div id='search_results' style="clear: both;">
                 <a id="create_report_fastlink" href="{% url report_prepare_pro %}" class="report">
                    <h3 class="report-title">{% trans "create_report" %}</h3>
                 </a>
                 {% for report in reports %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                 {% endfor %}
-                </div>
+                {% if pages_list|length > 1 %}
                 <div class="pagination pagination-centered">
                     <ul>
-                        <li><a class="pagination_prev"></a></li>
+                        <li>
+                            <a class="pagination_prev"{% if page_number != 1 %} class="active"{% endif %}></a>
+                        </li>
                         {% for number in pages_list %}
-                        <li id="page_{{number}}" ><a href="javascript:getUrlForPageNumber({{number}});">{{number}}</a></li>
+                        <li>
+                            <a{% if page_number == number %} class="active"{% endif %} data-page="{{ number }}">{{ number }}</a>
+                        </li>
                         {% endfor %}
-                        <li><a class="pagination_next"></a></li>
+                        <li>
+                            <a class="pagination_next" {% if page_number != pages_list|last %} class="active"{% endif %}></a>
+                        </li>
                     </ul>
                 </div>
-            {% else %}
-                <p>{% trans "No problems have been reported in this area." %}</p>
-            {% endif %}
-        </div>
-
-        <form enctype="multipart/form-data" method="post" action="" id='report_form' style="display:none;">
-            <h2>
-                {% trans "Fill the report" %}
-            </h2>
-            <table class='form'>
-                <tr>
-                    <th></th>
-                    <td id="required_note">{% trans "* This fields are required" %}</td>
-                </tr>
-                {{ report_form.as_table }}
-                <tr>
-                    <td></td>
-                    <td><div id='secondary_container'></div></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td align="right">
-                        <p>
-                            <input type="submit" class='big_button' value="{% trans 'Submit' %}" />
-                        </p>
-
-                    </td>
-                </tr>
-            </table>
-        </form>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>{% trans "No problems have been reported in this area." %}</p>
+        {% endif %}
     </div>
-    <div class="span6">
+    <div class="span4">
         <div id="search_by_commune_or_address">
-            <div id="search_by_commune_or_address_section_street">
+            <form id="search-street">
                 <!-- TODO create logic behind searching -->
                 <p>1. {% trans "Search by commune or address:" %}</p>
-                <div class="input-append">
-                <input class="span3" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" class="span5" id="input-commune-search"><br /><br />
-                {% csrf_token %}
-                <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
-                    <option value="">{% trans "All communes..." %}</option>
-                    {% for zip in zipcodes %}
-                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                    {% endfor %}
-                </select>
-            &nbsp;&nbsp;
+                <div>
+                    <input type="search" class="input-block-level" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" id="input-commune-search" style="box-sizing:border-box;"><br /><br />
+                    <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
+                        <option value="">{% trans "All communes..." %}</option>
+                        {% for zip in zipcodes %}
+                            <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                        {% endfor %}
+                    </select>
 
-                <button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
-              </div>
-                            <div id="search_by_commune_or_address_section_results" style="display:none">
-                  <p>2. {% trans "Results" %}</p>
-                  <ul id="proposal" class="inline"> </ul>
-            </div>
+                    <button type="button" class="btn" onclick="javascript:filterReports()" id="filterReports">{% trans 'Search street' %}</button>
                 </div>
-                <div id="search_by_commune_or_address_section_distance" style="display:none">
+                <div id="search_by_commune_or_address_section_results" style="display:none">
+                    <p>2. {% trans "Results" %}</p>
+                    <ul id="proposal" class="inline"> </ul>
+                </div>
+            </form>
+            <form id="search-by-address" style="display:none">
                 <p>3. {% trans "Within a distance of" %} ({% trans 'Optional' %})</p>
                 <select id="rayon" class="input-large">
                     <option value="">{% trans 'All'%}</option>
@@ -300,21 +278,20 @@ function filterReports() {
                     <option value="100">100m</option>
                     <option value="200">200m</option>
                 </select>
-                <input class="btn" type="button" id="applyFilter" value="{% trans 'Filtrer list of reports' %}" onclick="javascript:applyFilterReports()">
+                <input class="btn" type="submit" id="applyFilter" value="{% trans 'Filtrer list of reports' %}">
+            </form>
+        </div>
+        <form action="{% url search_ticket_pro %}" id="search_by_ticket_nr">
+            <!-- TODO create logic behind searching -->
+            <p >{% trans "Search by entering a ticket number:" %}</p>
+            <div class="input-append input-block-level">
+                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Insert your ticket number here' %}" class="" id="input-commune-search">
+                <input type="submit" class="btn" id="filterReports">{% trans 'Search' %}</button>
             </div>
-        </div>
-        <div id="search_by_ticket_nr">
-                <!-- TODO create logic behind searching -->
-                <p >{% trans "Search by entering a ticket number:" %}</p>
-                <div class="input-append">
-            <input id="input-search" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" class="span3" id="input-commune-search">
-        <button type="button" class="btn" onclick="javascript:search_per_ticket()" id="filterReports">{% trans 'Search' %}</button>
-    </div>
-    </div>
+        </form>
         <div id="go_to_submit_report">
-            <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/pro/'"/>
+            <a class="btn" href="{% url home_pro %}">{% trans 'Report an incident' %}</a>
         </div>
-
     </div>
 </div>
 {% endblock %}

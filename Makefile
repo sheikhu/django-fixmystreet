@@ -13,7 +13,7 @@ RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
 DBNAME        = fixmystreet
-DBUSER        = postgres
+DBUSER        = fixmystreet
 
 bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py

@@ -40,7 +40,7 @@ DATETIME_FORMAT = "d-m-Y H:i"
 MAX_UPLOAD_SIZE = "15000000"
 
 #Max number of items per pagination
-MAX_ITEMS_PAGE = 5
+MAX_ITEMS_PAGE = 10
 
 USE_I18N = True
 REGISTRATION_OPEN = False
@@ -156,13 +156,46 @@ if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
 else:
     DEBUG = False
 
-if ENVIRONMENT=="local":
-    logging.basicConfig(
-        level = logging.DEBUG,
-        format = '%(asctime)s %(levelname)s %(message)s',
-        filename = os.path.join(PROJECT_PATH, 'fixmystreet.log'),
-        filemode = 'w'
-    )
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django_fixmystreet': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
+
 
 if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     SITE_ID = 3

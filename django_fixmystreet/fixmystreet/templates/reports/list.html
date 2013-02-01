@@ -44,7 +44,7 @@ $(function(){
         }
     });
     {% for report in reports %}
-    	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
+            fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
     // Add the active class to the active page number
     $("#page_{{request.GET.page}}").addClass("active");
@@ -107,20 +107,20 @@ function getUrlForPageNumber(number) {
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div id="incident_filter" class="span12">
-	  <ul>
-		<li>
-			<img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Unpublished' %}</span>
-		</li>
-		<li>
-			<img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'In progress' %}</span>
-		</li>
-		<li>
-			<img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Closed' %}</span>
-		</li>
-	  </ul>
-	</div>
+<div class="row">
+    <div id="incident_filter" class="span12">
+        <ul>
+            <li>
+                    <img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Unpublished' %}</span>
+            </li>
+            <li>
+                    <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'In progress' %}</span>
+            </li>
+            <li>
+                    <img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Closed' %}</span>
+            </li>
+        </ul>
+    </div>
 
     <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
     <div id="nearby-reports">
@@ -131,7 +131,7 @@ function getUrlForPageNumber(number) {
                 {% for report in reports %}
                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
                 {% endfor %}
-        
+
                 <div class="pagination pagination-centered">
                     <ul>
                         <li><a class="pagination_prev"></a></li>

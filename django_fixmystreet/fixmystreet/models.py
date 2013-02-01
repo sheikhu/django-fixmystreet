@@ -148,7 +148,7 @@ class FMSUser(User):
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
-        if self.contractor == True:
+        if self.contractor == True or self.applicant == True:
             return ", ".join([str(o) for o in self.work_for.all()])
         else:
              return self.organisation
@@ -216,6 +216,9 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     if (instance.manager == True):
        #if we have just created the first one, then apply all type to him
        if instance.organisation.team.filter(manager=True).count() == 1:
+          #Activate the organisation
+          instance.organisation.active = True
+          instance.organisation.save()
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
@@ -225,6 +228,8 @@ class OrganisationEntity(UserTrackedModel):
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
+    active = models.BooleanField(default=False)
+    
     phone = models.CharField(max_length=32)
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
@@ -289,17 +294,17 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def public(self):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
-    def own(self, user):
+    def responsible(self, user):
         if user.contractor or user.applicant:
             return self.filter(contractor__in=user.work_for)
         else:
             return self.filter(responsible_manager=user)
 
-    def shared(self, organisation):
-        if organisation.contractor or organisation.applicant:
-            return self.filter(responsible_entity=organisation)
-        else:
+    def from_entity(self, organisation):
+        if organisation.subcontractor or organisation.applicant:
             return self.filter(contractor=organisation)
+        else:
+            return self.filter(responsible_entity=organisation)
 
     def pending(self):
         return self.filter(status=Report.CREATED)
@@ -308,10 +313,13 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
 
     def assigned(self):
-        return self.filter(status__in=Report.REPORT_STATUS_ASSIGNED)
+        return self.filter(contractor__isnull=False)
 
     def closed(self):
         return self.filter(status__in=Report.REPORT_STATUS_CLOSED)
+
+    def subscribed(self, user):
+        return self.filter(subscriptions__subscriber=user)
 
 
 
@@ -445,8 +453,8 @@ class Report(UserTrackedModel):
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
         report_ticket_id = str(self.id)
-        if (report_ticket_id.__len__() <= 8):
-            for i in range(8-(report_ticket_id.__len__())):
+        if (report_ticket_id.__len__() <= 6):
+            for i in range(6-(report_ticket_id.__len__())):
                 report_ticket_id = "0"+report_ticket_id;
         return report_ticket_id
 
@@ -1461,12 +1469,12 @@ def eventlog_init_values(sender, instance, **kwargs):
 
 class ZipCodeManager(models.Manager):
     def get_query_set(self):
-        return super(ZipCodeManager, self).get_query_set().select_related('commune').annotate(team_count=models.Count('commune__team'))
+        return super(ZipCodeManager, self).get_query_set().select_related('commune')
 
 
 class ParticipateZipCodeManager(ZipCodeManager):
     def get_query_set(self):
-        return super(ParticipateZipCodeManager, self).get_query_set().filter(team_count__gt=0)
+        return super(ParticipateZipCodeManager, self).get_query_set().filter(commune__active=True)
 
 
 class ZipCode(models.Model):

@@ -306,16 +306,10 @@ header nav li a.active,
     margin-left: 0px;
 }
 
-#incident_filter li span:hover{
+#incident_filter a:hover span,
+#incident_filter a.active span,
+#user_type_filter li span.selected {
     border-bottom: #FFDB00 solid 2px;
-}
-
-#incident_filter li span.selected{
-    border-bottom: #FFDB00 solid 2px;
-}
-
-#user_type_filter li span.selected{
-    border-bottom: #FFF203 solid 2px;
 }
 
 
@@ -1056,55 +1050,41 @@ li img {
     right: 1%;
 }
 
-#nearby-reports .pagination {
+#search_results .pagination {
     margin-left: 15px;
 }
 
-#nearby-reports .pagination li.active a{
+#search_results .pagination a.active {
     background: #FFDB00;
     color:#666;
 }
 
-#nearby-reports .pagination li a{
+#search_results .pagination a {
     border: none;
 }
 
-#nearby-reports .pagination_prev{
+#search_results .pagination_prev,
+#search_results .pagination_next {
     width:14px;
     height:20px;
     margin-top: 2px;
-    background:url("../images/prev.png") 0 0;
     background-repeat: no-repeat;
+    background-position: 5px 0;
+    background-color: transparent !important;
     border: none;
 }
 
-#nearby-reports .pagination_next{
-    width:14px;
-    height:20px;
-    margin-top: 2px;
-    margin-left: 20px;
-    background:url("../images/next.png") 0 0;
-    background-repeat: no-repeat;
-    border: none;
+#search_results .pagination_prev.active,
+#search_results .pagination_next.active {
+    background-position: 5px -28px;
+
 }
 
-#nearby-reports .pagination_prev.active{
-    width:14px;
-    height:20px;
-    margin-top: 2px;
-    background:url("../images/prev.png") 5px -28px;
-    background-repeat: no-repeat;
-    border: none;
+#search_results .pagination_prev {
+    background-image: url("../images/prev.png");
 }
-
-#nearby-reports .pagination_next.active{
-    width:14px;
-    height:20px;
-    margin-top: 2px;
-    margin-left: 20px;
-    background:url("../images/next.png") 5px -28px;
-    background-repeat: no-repeat;
-    border: none;
+#search_results .pagination_next {
+    background-image: url("../images/next.png");
 }
 
 #search_by_commune_or_address {
