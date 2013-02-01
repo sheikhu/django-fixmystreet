@@ -41,7 +41,7 @@ $(function(){
 
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1, {% if BACKOFFICE %}true{%else%}false{%endif%});
 
-    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}")
+    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -126,7 +126,7 @@ function markAsDone(){
     <!-- ######### -->
     <!-- IS FIXED  -->
     <!-- ######### -->
-    
+
     {% if report.is_created %}
     <div class='is_fixed'>{% trans "This incident is not validated." %}</div>
     {% endif %}

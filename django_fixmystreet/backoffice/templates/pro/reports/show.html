@@ -14,98 +14,68 @@ $(function(){
     /* Prepare iphone toogle button look and feel */
     /**********************************************/
     $("input[type=radio]").bind("click",function(){
-        value = this;
-        if($(value).attr('name')=="public_private"){
-            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
+        var id = $(this).data('attachmentId');
+        var type = $(this).data('type');
+        var level = $(this).val();
+        if(type == "file"){
+            //TODO handle public bool of file with id vals[2]
+            window.location = '{% url report_update_file report.id %}?fileId='+id+'&updateType='+level;
+        } else {
+            //TODO handle public bool of comment with id vals[2]
+            window.location = '{% url report_update_comment report.id %}?commentId='+id+'&updateType='+level;
+        }
+    });
+
+    /***************************/
+    /* Set the current manager */
+    /***************************/
+    $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+
+    /*************************************************************/
+    /* Implement method when changing manager using the dropdown */
+    /*************************************************************/
+    $("#report_responsible_manager_select").bind("change",function(event){
+        var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
+        if (r==true){
+            window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
         }
         else{
-        var vals = $(value).attr("id").split("_");
-        if(vals[0].indexOf("public")!=-1){
-            // Public checkbox changed
-                if(vals[1].indexOf("file")!=-1){
-                    //TODO handle public bool of file with id vals[2]
-                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=1';
-                }
-                else{
-                    //TODO handle public bool of comment with id vals[2]
-                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=1';
-                }
+            $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
         }
-        else if (vals[0].indexOf("private")!=-1) {
-                //Confidential checkbox changed
-                if(vals[1].indexOf("file")!=-1){
-                    //TODO handle Confidential bool of file with id vals[2]
-                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=2';
-                }
-                else{
-                    //TODO handle Confidential bool of comment with id vals[2]
-                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=2';
-                }
+    });
+    /******************************/
+    /* Set the current contractor */
+    /******************************/
+    $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
+
+    /****************************************************************/
+    /* Implement method when changing contractor using the dropdown */
+    /****************************************************************/
+    $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
+                window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+            });
+    /****************************************************************/
+    /* Implement method when clicking private/public checkbox       */
+    /****************************************************************/
+    $("#id_is_private").bind("click",function(event){
+            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_is_private").is(":checked");
+    });
+    {% if subscribed %}
+    $("#id_pro-subscription").attr("value","on").prop('checked', true);
+    {% else %}
+    $("#id_pro-subscription").attr("value","off");
+    {% endif %}
+
+    $("#id_pro-subscription").change(function(){
+        if($(this).attr("value")== "on"){
+            $(this).attr("value","off");
+            $.ajax("{% url unsubscribe_pro report.id %}")
         }
-        else {
-                //Confidential checkbox changed
-                if(vals[1].indexOf("file")!=-1){
-                    //TODO handle Confidential bool of file with id vals[2]
-                    window.location = '{% url report_update_file report.id %}?fileId='+vals[2]+'&updateType=3';
-                }
-                else{
-                    //TODO handle Confidential bool of comment with id vals[2]
-                    window.location = '{% url report_update_comment report.id %}?commentId='+vals[2]+'&updateType=3';
-                }
-            }
+        else{
+            $(this).attr("value","on");
+            $.ajax("{% url subscribe_pro report.id %}");
         }
-         });
-
-/***************************/
-/* Set the current manager */
-/***************************/
-$("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
-
-/*************************************************************/
-/* Implement method when changing manager using the dropdown */
-/*************************************************************/
-$("#report_responsible_manager_select").bind("change",function(event){
-    var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
-    if (r==true){
-        window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
-    }
-    else{
-        $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
-    }
-});
-/******************************/
-/* Set the current contractor */
-/******************************/
-$("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
-
-/****************************************************************/
-/* Implement method when changing contractor using the dropdown */
-/****************************************************************/
-$("#report_responsible_impetrant_contractor_select").bind("change",function(event){
-            window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
-        });
-/****************************************************************/
-/* Implement method when clicking private/public checkbox       */
-/****************************************************************/
-$("#id_is_private").bind("click",function(event){
-        window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_is_private").is(":checked");
-});
-{% if subscribed %}
-$("#id_pro-subscription").attr("value","on").prop('checked', true);
-{% else %}
-$("#id_pro-subscription").attr("value","off");
-{% endif %}
-
-$("#id_pro-subscription").change(function(){
-    if($(this).attr("value")== "on"){
-        $(this).attr("value","off");
-        $.ajax("{% url unsubscribe_pro report.id %}")
-    }
-    else{
-        $(this).attr("value","on");
-        $.ajax("{% url subscribe_pro report.id %}");
-    }
-});
+    });
 
 });
 /* When JQUERY is ready*/
@@ -121,7 +91,6 @@ $(document).ready(function() {
     {% for report in reports %}
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
-    });
 });
 function markAsDone(){
     // $("#divMarkAsDone").show();
@@ -344,56 +313,90 @@ function markAsDone(){
             </table>
         </div>
 
+        <div class="bordered-box"/>
+            <div id="report-subscription">
+                <div class="control-group">
+                    <p>{% trans "Subscription" %}</p>
+                    <label class="checkbox"><input type="checkbox" name="pro-subscription" id="id_pro-subscription"> {% trans "Subscription and report follow-up" %}</label>
+                </div>
+            </div>
+            <div>
+                <!-- ################################################### -->
+                <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
+                <!-- ################################################### -->
+                {% if report.responsible_manager.id == request.user.id or report.contractor == fms_user.organisation %}
+                    <!-- ############################################# -->
+                    <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
+                    <!-- ############################################# -->
+                    {% if report.is_in_progress %}
+                        {% if not fms_user.contractor %}
+                            <a href="{% url report_close_pro report.id %}" class="btn pull-right btn-warning">{% trans 'Close Report' %}</a>
+                        {% endif %}
+                    {% endif %}
+                    <!-- ######################################### -->
+                    <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
+                    <!-- ######################################### -->
+                    {% if report.is_created %}
+                        <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Publish' %}</a>
+                        <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish All' %}</a>
+                        <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
+                    {% endif %}
+                {% endif %}
+                {% if report.is_in_progress %}
+                    {% if report.is_markable_as_solved %}
+                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Mark as done' %}</button>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div id="pdf_report">
+                {% if report.responsible_manager.id == request.user.id or fms_user.leader or fms_user.contractor %}
+                    <p><a href="{% url report_pdf_pro report.id 1 %}">{% trans 'report pdf' %}</a></p>
+                    <p><a href="{% url report_pdf_pro report.id 0 %}">{% trans 'report pdf public' %}</a></p>
+                {% endif %}
+                {% if fms_user.manager or fms_user.leader %}
+                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
+                {% endif %}
+            </div>
+        </div>
+
         {% if report.files or report.comments %}
             <!-- ########################## -->
             <!-- # DISPLAY FILES SECTION  # -->
             <!-- ########################## -->
             <div class="bordered-box"/>
+            {% if report.is_in_progress %}
+                {% if not fms_user.contractor %}
+                    <a href="{% url report_validate_all_pro report.id %}" class="btn pull-right" >{% trans 'Validate all' %}</a>
+                {% endif %}
+            {% endif %}
             {% if report.files %}
                 <h4>{% trans "Photos and files" %}</h4>
                 <div id="report_updates">
-                    <table id="extraFilesTable">
-                        <th></th>
-                        <!-- If the status allow such interactions -->
-                        {% if report.is_in_progress %}
-                        <!--If the current user is the responsible manager-->
-                        {% if report.responsible_manager.id == request.user.id %}
-                        <th>{% trans 'Public?' %}</th>
-                        <th>{% trans 'Private?' %}</th>
-                        {% endif %}
-                        <!--If the current user is the responsible manager or the creator of the report-->
-                        {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
-                        <th> {% trans 'Confidentiel?' %} </th>
-                        {% endif %}
-                        {% endif %}
-                        {% for file in report.files.all %}
+                    {% for file in report.files.all %}
                         {% if file.is_confidential and not fms_user.can_see_confidential %}
                         <!-- Skip -->
                         {% else %}
-                        <tr>
-                            <td class="annexesFirstTD">
-                                <div class="report_update">
-                                <div class="delete-file-icon">
-                                            {% if request.user.id == report.responsible_manager.id %}
-                                        {% if report.is_created or report.is_in_progress  %}
-                                        <!-- Manager in charge only -->
-                                            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" onclick="if (confirm('{% trans 'Please confirm file deletion' %}')) window.location = '{% url report_delete_file report.id %}?fileId={{file.id}}'"/>
-                                        {% endif %}
+                            <div class="report_update">
+                                {% if request.user.id == report.responsible_manager.id %}
+                                    {% if report.is_created or report.is_in_progress  %}
+                                    <!-- Manager in charge only -->
+                                    <a class="pull-right" onclick="return confirm('{% trans 'Please confirm file deletion' %}')" href="{% url report_delete_file report.id %}?fileId={{file.id}}">
+                                        <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
+                                    </a>
                                     {% endif %}
-                                </div>
+                                {% endif %}
                                 {% if file.file %}
-                                    <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
                                     {% if file.is_image %}
-                                        <a href="{{ file.image.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.image.thumbnail.url}}'/></a>
+                                        <a href="{{ file.image.url }}" class="view-image"><img src='{{file.image.url}}'/></a>
                                     {% endif %}
                                     {% if file.is_pdf %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
+                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
                                     {% endif %}
                                     {% if file.is_word %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
                                     {% endif %}
                                     {% if file.is_excel %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
+                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
                                     {% endif %}
                                     <div class="update_text">
                                         {{file.title}}
@@ -411,47 +414,28 @@ function markAsDone(){
                                         {% trans 'on' %}
                                             {{file.created}}
                                     </div>
-                                    {% endif %}
-                                </div>
-                            </td>
-                            <!-- If the status allow such interactions -->
-                            {% if report.is_in_progress  %}
-                            <!--If the current user is the responsible manager-->
-                            {% if report.responsible_manager.id == request.user.id %}
-                            <td class="annexesChoiceBoxTD">
-                                {% if file.is_public %}
-                                <input     type="radio" name="file_security_level_{{file.id}}" id="public_filesecuritylevel_{{file.id}}" value="{{file.PUBLIC}}"checked="checked">
-                                {% else %}
-                                <input     type="radio" name="file_security_level_{{file.id}}" id="public_filesecuritylevel_{{file.id}}" value="{{file.PUBLIC}}">
                                 {% endif %}
-                            </td>
-                            <td class="annexesChoiceBoxTD">
-                            {% if file.is_private %}
-                                <input     type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}" checked="checked">
-                            {% else %}
-                            <input     type="radio" name="file_security_level_{{file.id}}" id="private_filesecuritylevel_{{file.id}}" value="{{file.PRIVATE}}">
-                            {% endif %}
-                            </td>
-                            <td class="annexesChoiceBoxTD">
-                            {% if file.is_confidential %}
-                                <input     type="radio"
-                            name="file_security_level_{{file.id}}"
-                            id="confidential_filesecuritylevel_{{file.id}}"
-                            value="{{file.CONFIDENTIAL}}"
-                            checked="checked">
-                            {% else %}
-                                <input     type="radio"
-                            name="file_security_level_{{file.id}}"
-                            id="confidential_filesecuritylevel_{{file.id}}"
-                            value="{{file.CONFIDENTIAL}}">
-                            {% endif %}
-                            </td>
+                                <!-- If the status allow such interactions -->
+                                {% if report.is_in_progress  %}
+                                    <!--If the current user is the responsible manager-->
+                                    {% if report.responsible_manager.id == request.user.id %}
+                                    <ul>
+                                        <li><label>
+                                            <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.PUBLIC}}"{% if file.is_public %} checked="checked"{% endif %}> {% trans "Public" %}
+                                        </label></li>
+
+                                        <li><label>
+                                            <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.PRIVATE}}"{% if file.is_private %} checked="checked"{% endif %}> {% trans "Private" %}
+                                        </label></li>
+                                        <li><label>
+                                            <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.CONFIDENTIAL}}"{% if file.is_confidential %} checked="checked"{% endif %}> {% trans "Confidential" %}
+                                        </label></li>
+                                    </ul>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         {% endif %}
-                    {% endif %}
-                    </tr>
-                    {% endif %}
                     {% endfor %}
-                    </table>
                 </div>
                 {% endif %}
                 <!-- ############################# -->
@@ -461,92 +445,46 @@ function markAsDone(){
                 {% if report.comments %}
                 <h4>{% trans "Comments" %}</h4>
                 <div id="report_updates">
-                    <table class="extraCommentsTable">
-                        <th></th>
-                        <!-- If the status allow such interactions -->
-                        {% if report.is_in_progress %}
-                        <!--If the current user is the responsible manager-->
-                        {% if report.responsible_manager.id == request.user.id %}
-                        <th>{% trans 'Public?' %}</th>
-                        <th>{% trans 'Private?' %}</th>
-                        {% endif %}
-                        <!--If the current user is the responsible manager or the creator of the report-->
-                        {% if report.responsible_manager.id == request.user.id or report.created_by.id == request.user.id %}
-                        <th> {% trans 'Confidentiel?' %} </th>
-                        {% endif %}
-                        {% endif %}
-                        {% for comment in report.comments %}
+                    {% for comment in report.comments %}
                         {% if comment.is_confidential and not fms_user.can_see_confidential %}
                         <!-- Skip -->
                         {% else %}
-                        <tr>
-                            <td class="annexesFirstTD">
-                                <div class="report_update">
-                                    <div class="delete-comment-icon">
-                                        {% if request.user.id == report.responsible_manager.id %}
-                                            {% if report.is_created or report.is_in_progress  %}
-                                                <!-- Manager in charge only -->
-                                                <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}" onclick="if (confirm('{% trans 'Please confirm comment deletion' %}')) window.location = '{% url report_delete_comment report.id %}?commentId={{comment.id}}'"/>
-                                            {% endif %}
-                                        {% endif %}
-                                    </div>
-                                    <p>{{comment.text}}</p>
+                            <div class="report_update">
+                                {% if request.user.id == report.responsible_manager.id %}
+                                    {% if report.is_created or report.is_in_progress  %}
+                                        <!-- Manager in charge only -->
+                                        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm file deletion' %}')" href="{% url report_delete_file report.id %}?fileId={{file.id}}">
+                                            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="update_text">
+                                    <p>{{ comment.text }}</p>
                                     {% blocktrans with by=comment.get_display_name on=comment.created %}
                                     Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
                                     {% endblocktrans %}
                                 </div>
-                            </td>
-                            {% if report.is_in_progress  %}
-                            <!--If the current user is the responsible manager-->
-                            {% if report.responsible_manager.id == request.user.id %}
-                                   <td class="annexesChoiceBoxTD">
-                                   {% if comment.is_public %}
-                                             <input     type="radio"
-                            name="comment_security_level_{{comment.id}}"
-                            id="public_commentsecuritylevel_{{comment.id}}"
-                            value="{{comment.PUBLIC}}"
-                            checked="checked">
-                                  {% else %}
-                                             <input     type="radio"
-                            name="comment_security_level_{{comment.id}}"
-                            id="public_commentsecuritylevel_{{comment.id}}"
-                            value="{{comment.PUBLIC}}">
-                                   {% endif %}
-                                   </td>
-                                   <td class="annexesChoiceBoxTD">
-                                   {% if comment.is_private %}
-                                             <input     type="radio"
-                            name="comment_security_level_{{comment.id}}"
-                            id="private_commentsecuritylevel_{{comment.id}}"
-                            value="{{comment.PRIVATE}}"
-                            checked="checked">
-                                  {% else %}
-                                             <input     type="radio"
-                            name="comment_security_level_{{comment.id}}"
-                            id="private_commentsecuritylevel_{{comment.id}}"
-                            value="{{comment.PRIVATE}}">
-                                   {% endif %}
-                                   </td>
-                                <td class="annexesChoiceBoxTD">
-                                   {% if comment.is_confidential %}
-                                             <input     type="radio"
-                            name="comment_security_level_{{comment.id}}"
-                            id="confidential_commentsecuritylevel_{{comment.id}}"
-                            value="{{comment.CONFIDENTIAL}}"
-                            checked="checked">
-                                  {% else %}
-                                             <input     type="radio"
-                            name="comment_security_level_{{comment.id}}"
-                            id="confidential_commentsecuritylevel_{{comment.id}}"
-                            value="{{comment.CONFIDENTIAL}}">
-                                   {% endif %}
-                                </td>
-                            {% endif %}
+                                <!-- If the status allow such interactions -->
+                                {% if report.is_in_progress  %}
+                                    <!--If the current user is the responsible manager-->
+                                    {% if report.responsible_manager.id == request.user.id %}
+                                    <ul>
+                                        <li><label>
+                                            <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.PUBLIC}}"{% if comment.is_public %} checked="checked"{% endif %}> {% trans "Public" %}
+                                        </label></li>
+
+                                        <li><label>
+                                            <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.PRIVATE}}"{% if comment.is_private %} checked="checked"{% endif %}> {% trans "Private" %}
+                                        </label></li>
+                                        <li><label>
+                                            <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.CONFIDENTIAL}}"{% if comment.is_confidential %} checked="checked"{% endif %}> {% trans "Confidential" %}
+                                        </label></li>
+                                    </ul>
+                                    {% endif %}
                                 {% endif %}
-                        </tr>
+                            </div>
                         {% endif %}
-                        {% endfor %}
-                    </table>
+                    {% endfor %}
                 </div>
                 {% endif %}
             </div>
@@ -589,55 +527,5 @@ function markAsDone(){
                 </form>
             </div>
         {% endif %}
-        <div class="bordered-box"/>
-            <div id="report-subscription">
-                <div class="control-group">
-                    <p>{% trans "Subscription" %}</p>
-                    <label class="checkbox"><input type="checkbox" name="pro-subscription" id="id_pro-subscription"> {% trans "Subscription and report follow-up" %}</label>
-                </div>
-            </div>
-            <div>
-                <!-- ################################################### -->
-                <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
-                <!-- ################################################### -->
-                {% if report.responsible_manager.id == request.user.id or report.contractor == fms_user.organisation %}
-                    <!-- ############################################# -->
-                    <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
-                    <!-- ############################################# -->
-                    {% if report.is_in_progress %}
-                        {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn" title="{% trans 'Close this report to finalize the management' %}">{% trans 'Close' %}</a>
-                        {% endif %}
-                        {% if not fms_user.contractor %}
-                            <a class="btn" href="{% url report_validate_all_pro report.id %}" title="{% trans 'Make all comments and files public.' %}">{% trans 'Validate all' %}</a>
-
-                        {% endif %}
-                    {% endif %}
-                    <!-- ######################################### -->
-                    <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
-                    <!-- ######################################### -->
-                    {% if report.is_created %}
-
-                        <a href="{% url report_accept_pro report.id %}" class="btn" title="{% trans 'Accept the incident' %}">{% trans 'Publish' %}</a>
-                        <a href="{% url report_accept_and_validate report.id %}" class="btn" title="{% trans 'Make all files and comments public' %}">{% trans 'Publish All' %}</a>
-                        <button onclick="refuse();" class="btn pull-right btn-danger" title="{% trans 'Reject the incident' %}">{% trans 'Reject' %}</button>
-                    {% endif %}
-                {% endif %}
-                {% if report.is_in_progress %}
-                    {% if report.is_markable_as_solved %}
-                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that this incident has been solved. An email will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</button>
-                    {% endif %}
-                {% endif %}
-            </div>
-            <div id="pdf_report">
-                {% if report.responsible_manager.id == request.user.id or fms_user.leader or fms_user.contractor %}
-                    <p><a href="{% url report_pdf_pro report.id 1 %}" title="{% trans 'Download the pro version of the pdf report' %}" >{% trans 'report pdf' %}</a></p>
-                    <p><a href="{% url report_pdf_pro report.id 0 %}" title="{% trans 'Download the public version of the pdf report' %}">{% trans 'report pdf public' %}</a></p>
-                {% endif %}
-                {% if fms_user.manager or fms_user.leader %}
-                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank" title="{% trans 'Export the content of this incident to a csv file' %}">{% trans 'Export Csv' %}</a></p>
-                {% endif %}
-            </div>
-        </div>
     </div>
 {% endblock %}

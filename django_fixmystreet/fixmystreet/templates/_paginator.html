@@ -1,0 +1,17 @@
+{% if pages_list|length > 1 %}
+<div class="pagination pagination-centered">
+    <ul>
+        <li>
+            <a class="pagination_prev{% if page_number == 1 %} disabled{% endif %}"></a>
+        </li>
+        {% for number in pages_list %}
+        <li>
+            <a{% if page_number == number %} class="active"{% endif %} data-page="{{ number }}">{{ number }}</a>
+        </li>
+        {% endfor %}
+        <li>
+            <a class="pagination_next{% if page_number == pages_list|last %} disabled{% endif %}"></a>
+        </li>
+    </ul>
+</div>
+{% endif %}

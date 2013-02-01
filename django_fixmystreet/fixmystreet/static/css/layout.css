@@ -368,7 +368,7 @@ footer *{
 }
 
 #content {
-    min-height: 140px;
+    min-height: 350px;
     /*width: 100%;*/
     /*padding: 10px 0;*/
 }
@@ -566,21 +566,6 @@ footer *{
     width:327px;
 }
 
-.delete-file-icon {
-    position: relative;
-    top: 12px;
-    left: -12px;
-    width: 24px;
-    max-width: 24px;
-}
-
-.delete-comment-icon {
-    position: relative;
-    top: 12px;
-    left: -12px;
-    width: 24px;
-    max-width: 24px;
-}
 
 /*********** FORMS ***********/
 
@@ -717,50 +702,6 @@ li img {
     text-align: center;
     vertical-align: middle;
     line-height: 32px;
-    z-index: 3;
-}
-
-.report_step_number_1 {
-    position: relative;
-    left: -28px;
-    bottom: 29px;
-    height: 32px;
-    width: 32px;
-    background: url("../images/form-step-number-1.png") no-repeat center transparent;
-    background-size: 32px;
-    z-index: 3;
-}
-
-.report_step_number_2 {
-    position: relative;
-    left: -28px;
-    bottom: 29px;
-    height: 32px;
-    width: 32px;
-    background: url("../images/form-step-number-2.png") no-repeat center transparent;
-    background-size: 32px;
-    z-index: 3;
-}
-
-.report_step_number_3 {
-    position: relative;
-    left: -28px;
-    bottom: 10px;
-    height: 32px;
-    width: 32px;
-    background: url("../images/form-step-number-3.png") no-repeat center transparent;
-    background-size: 32px;
-    z-index: 3;
-}
-
-.report_step_number_4 {
-    position: relative;
-    left: -28px;
-    bottom: 10px;
-    height: 32px;
-    width: 32px;
-    background: url("../images/form-step-number-4.png") no-repeat center transparent;
-    background-size: 32px;
     z-index: 3;
 }
 
@@ -1287,28 +1228,40 @@ legend span {
 }
 
 .report_update {
-	padding-top: .5em;
-}
-
-.report_update a{
-    float:left;
-    margin-right: 10px;
-}
-
-.report_update p{
+    padding-top: .5em;
     border: 1px solid gray;
     border-radius: 8px;
+    margin: 10px 0;
+}
+
+.report_update .view-image {
+    clear: both;
+    text-align: center;
+    width: 100%;
+    display: block;
     padding: 5px;
-    min-height: 60px;
-    margin-right: 45px;
+    box-sizing: border-box;
+    -mox-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+
+
+.report_update ul {
+    padding: 0;
+    margin: 10px 0;
+    text-align: center;
+}
+.report_update li {
+    list-style: none;
+    display: inline-block;
+    width: 25%;
 }
 
 .report_update .update_text {
-    float: right;
-    max-width: 340px;
+    clear: both;
     margin-right: 15px;
-    border: 1px solid gray;
-    padding: 2px;
+    padding: 10px;
 }
 
 .report_update .fixed_msg {
