@@ -21,6 +21,7 @@ from django.core import serializers
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
+import os
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
@@ -491,10 +492,10 @@ class Report(UserTrackedModel):
             if (reportImages.__len__() > 0):
                 if user and user.is_authenticated():
                     if not reportImages[0].is_confidential():
-                        return reportImages[0].file.url
+                        return reportImages[0].image.url
                 else:
                     if reportImages[0].is_public():
-                        return reportImages[0].file.url
+                        return reportImages[0].image.url
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
@@ -992,13 +993,23 @@ class ReportFile(ReportAttachment):
     #    extension = os.path.splitext(old_filename)[1]
     #    filename = old_filename+'_'+str(time.time()) + extension
     #    return 'files/' + filename
-    file = models.FileField(upload_to="files")
-    #image = FixStdImageField(upload_to="files", blank=True, size=(800, 600), thumbnail_size=(66, 50))
+    def move_to(instance, filename):
+        if hasattr(instance,'title'):
+            if not instance.title.replace(".","") in filename:
+                path ="files/{0}/{1}/{2}/{3}_{4}".format(instance.report.created.year,instance.report.created.month,instance.report.id,instance.title.replace(".",""),filename)
+            else:
+                path ="files/{0}/{1}/{2}/{3}".format(instance.report.created.year,instance.report.created.month,instance.report.id,filename)
+        else:
+            path ="files/{0}/{1}/{2}/{3}".format(instance.report.created.year,instance.report.created.month,instance.report.id,filename)
+        return path
+    file = models.FileField(upload_to="files",blank=True)
+    image = FixStdImageField(upload_to=move_to, blank=True, size=(800, 600), thumbnail_size=(66, 50))
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date= models.DateTimeField(null=True)
-
+    
+    
     #def file(self):
     #    if (self.attach == None):
     #        return self.image
@@ -1041,10 +1052,10 @@ def move_file(sender,instance,**kwargs):
         extension = {1:'pdf',2:'doc',3:'xls',4:'jpg'}[instance.file_type]
         new_destination = save_file_to_server(instance.file,file_type_string,extension,len(ReportFile.objects.filter(report_id=instance.report_id)), instance.report.id)
         instance.file = new_destination
-        instance.save()
         if instance.file_type == ReportFile.IMAGE:
             #Resize the image
             resize_image(instance.file.path)
+        instance.save()
 
 
 class ReportSubscription(models.Model):

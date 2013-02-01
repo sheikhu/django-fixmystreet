@@ -410,7 +410,7 @@ function markAsDone(){
                         	{% if file.file %}
                                 <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
                                 {% if file.is_image %}
-                                	<a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.file.url}}' width="48px" height="48px"/></a>
+                                	<a href="{{ file.image.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.image.thumbnail.url}}'/></a>
                                 {% endif %}
                                 {% if file.is_pdf %}
 	                                <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
