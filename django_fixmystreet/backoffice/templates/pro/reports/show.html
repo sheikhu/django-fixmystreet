@@ -171,55 +171,6 @@ function markAsDone(){
         {% trans "Report Ticket" %} {{ report.get_ticket_number }}
     </h1>
     <div id="nearby-reports" class="span6">
-<<<<<<< HEAD
-            {% if reports %}
-                <div id='search_results'>
-                <a id="create_report_fastlink" href="/pro/" class="report">
-                   <h3 class="report-title">{% trans "create_report" %}</h3>
-                </a>
-                {% for r in reports %}
-                    {% ifequal r report %}
-                    {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=1 %}
-                    {% else %}
-                    {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=0 %}
-                    {% endifequal %}
-                {% endfor %}
-                </div>
-                <div class="pagination pagination-centered">
-                    <ul>
-                        <li><a class="pagination_prev"></a></li>
-                        {% for number in pages_list %}
-                        <li id="page_{{number}}" ><a href="{{report.get_absolute_url_pro}}?page={{number}}">{{number}}</a></li>
-                        {% endfor %}
-                        <li><a class="pagination_next"></a></li>
-                    </ul>
-                </div>
-            {% else %}
-                <p>{% trans "No problems have been reported in this area." %}</p>
-            {% endif %}
-        </div>
-	<div  class="span6 bordered-box overview_div_right">
-        <hr/>
-        <h1>
-            {% trans "Report Ticket" %} {{report.get_ticket_number}}
-        </h1>
-        <hr/>
-		{% if report.markedAsFinished %}
-		<div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
-		{% endif %}
-		<div id='report-body'>
-			<p>
-				{% if report.description %}
-					{{report.description|linebreaks}}
-				{% endif %}
-			</p>
-			<p class="author-sign">
-               {% if report.citizen %}
-               <!-- Protect privacy from applicant and contractor when creator is a citizen -->
-               {% if fms_user.can_see_confidential %}
-               	{% if report.citizen.last_name = ''%}
-               	  {% trans 'Posted by' %} <strong><a href='mailto:{{report.citizen.email}}'>{% trans 'ANONYMOUS' %}</a></strong> {% trans 'on'%} <strong>{{report.created}}</strong>
-=======
         {% if reports %}
         <div id='search_results'>
             <a id="create_report_fastlink" href="/pro/" class="report">
@@ -228,7 +179,6 @@ function markAsDone(){
             {% for r in reports %}
                 {% ifequal r report %}
                 {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=1 %}
->>>>>>> layout + paginator
                 {% else %}
                 {% include "reports/_navigation.html" with report=r url=r.get_absolute_url_pro active=0 %}
                 {% endifequal %}
@@ -396,11 +346,7 @@ function markAsDone(){
             <!-- # DISPLAY FILES SECTION  # -->
             <!-- ########################## -->
             {% if report.files %}
-<<<<<<< HEAD
             <hr/>
-=======
-        <br/>
->>>>>>> layout + paginator
             <h4>{% trans "Photos and files" %}</h4>
             <div id="report_updates">
                 <table id="extraFilesTable">
@@ -435,11 +381,7 @@ function markAsDone(){
                             {% if file.file %}
                                 <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
                                 {% if file.is_image %}
-<<<<<<< HEAD
-                                	<a href="{{ file.image.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.image.thumbnail.url}}'/></a>
-=======
-                                    <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.file.url}}' width="48px" height="48px"/></a>
->>>>>>> layout + paginator
+                                    <a href="{{ file.image.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.image.thumbnail.url}}'/></a>
                                 {% endif %}
                                 {% if file.is_pdf %}
                                     <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
