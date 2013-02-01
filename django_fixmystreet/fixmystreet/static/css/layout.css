@@ -91,18 +91,12 @@
 
 /********* STYLE *********/
 
-h1, h2, h3, h4, h5 {
-    font-family: dosisbold, Arial, sans-serif;
-    color: #4D4D4D;
+h1, h2, h3, h4, h5, p, span {
+    font-family: dosisbold, Arial, sans-serif !important;
 }
 
-p {
-    font-family: dosisbold, Arial, sans-serif;
+h1, h2, h3, h4, h5, p {
     color: #4D4D4D;
-}
-
-span {
-    font-family: dosisbold, Arial, sans-serif;
 }
 
 a {
@@ -1330,6 +1324,7 @@ legend span {
     position: relative;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+    overflow: hidden;
 }
 
 .bordered-box h1{

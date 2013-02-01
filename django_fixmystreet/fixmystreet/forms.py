@@ -182,7 +182,7 @@ class ReportCommentForm(forms.ModelForm):
         model = ReportComment
         fields = ('text',)
 
-    text = forms.fields.CharField(widget=forms.Textarea(attrs={'placeholder':_("Add a comment, please.")}))
+    text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder':_("Add a comment, please.")}))
 
     def save(self, commit=True):
         comment= super(ReportCommentForm,self).save(commit=False)
