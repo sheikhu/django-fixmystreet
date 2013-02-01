@@ -14,8 +14,8 @@
 <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 <script>
 $(function(){
-    defaultX = 148838.00741428943
-    defaultY = 171086.0720425099
+    var defaultX = 148838.00741428943;
+    var defaultY = 171086.0720425099;
 
     {% if reports.0 %}
         defaultX = {{reports.0.point.x}}
@@ -46,28 +46,6 @@ $(function(){
     {% for report in reports %}
             fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
-    // Add the active class to the active page number
-    $("#page_{{request.GET.page}}").addClass("active");
-    // Set the state of the arrow buttons (active or inactive)
-    if("{{request.GET.page}}"=="1"){
-        $(".pagination_prev").removeClass("active");
-    }
-    else{
-        $(".pagination_prev").addClass("active");
-    }
-    if("{{pages_list|last}}"=="{{request.GET.page}}"){
-        $(".pagination_next").removeClass("active");
-    }
-    else{
-        $(".pagination_next").addClass("active");
-    }
-    //Add onclick event for arrows
-    $(".pagination_next.active").bind("click",function(){
-        getUrlForPageNumber(parseInt("{{request.GET.page}}")+1);
-    });
-    $(".pagination_prev.active").bind("click",function(){
-        getUrlForPageNumber(parseInt("{{request.GET.page}}")-1);
-    });
 });
 
 /**
@@ -85,20 +63,7 @@ function search_per_ticket() {
     }
 }
 
-function getUrlForPageNumber(number) {
-    var url = "{{request.get_full_path}}";
-    if(url.indexOf("page=")!=-1){
-        var list = url.split("page=");
-        url1= list[0].replace(/\&amp;/g,'&');
-        url1 = url1.replace("amp;","");
-        url = url1 + "page="+ number;
-    }
-    else {
-        url += "?page="+number;
-    }
 
-    window.location= url;
-}
 </script>
 {% endblock %}
 
@@ -123,27 +88,16 @@ function getUrlForPageNumber(number) {
     </div>
 
     <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
-    <div id="nearby-reports">
-        {% if not reports %}
-            <div class='span6'>{% trans "No problems have been reported." %}</div>
-        {% else %}
-            <div id="search_results" class='span6'>
-                {% for report in reports %}
-                    {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-                {% endfor %}
-
-                <div class="pagination pagination-centered">
-                    <ul>
-                        <li><a class="pagination_prev"></a></li>
-                        {% for number in pages_list %}
-                            <li id="page_{{number}}" ><a href="javascript:getUrlForPageNumber({{number}});">{{number}}</a></li>
-                        {% endfor %}
-                        <li><a class="pagination_next"></a></li>
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
+    {% if not reports %}
+    <div class='span6'>{% trans "No problems have been reported." %}</div>
+    {% else %}
+    <div id="search_results" class='span6'>
+        {% for report in reports %}
+            {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+        {% endfor %}
+        {% include "_paginator.html" %}
     </div>
+    {% endif %}
 
     <div class='span6'>
         <div id="search_by_ticket_nr">

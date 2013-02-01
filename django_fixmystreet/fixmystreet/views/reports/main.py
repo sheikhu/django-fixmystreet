@@ -166,10 +166,8 @@ def search_ticket(request):
 
 def index(request, slug=None, commune_id=None):
     if commune_id:
-        if request.GET.get("page"):
-            page_number = int(request.GET.get("page"))
-        else:
-            page_number=1
+        page_number = int(request.GET.get("page", 1))
+
         entity = OrganisationEntity.objects.get(id=commune_id)
         reports = entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('-created')
         pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
@@ -179,6 +177,7 @@ def index(request, slug=None, commune_id=None):
             "reports": reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
             "entity":entity,
             "pages_list":pages_list,
+            "page_number": page_number,
         }, context_instance=RequestContext(request))
 
     communes = OrganisationEntity.objects.filter(commune=True).order_by('name_' + get_language())

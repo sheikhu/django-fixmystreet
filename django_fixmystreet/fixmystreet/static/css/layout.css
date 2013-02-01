@@ -1057,10 +1057,12 @@ li img {
 #search_results .pagination a.active {
     background: #FFDB00;
     color:#666;
+    cursor: auto;
 }
 
 #search_results .pagination a {
     border: none;
+    cursor: pointer;
 }
 
 #search_results .pagination_prev,
@@ -1069,15 +1071,15 @@ li img {
     height:20px;
     margin-top: 2px;
     background-repeat: no-repeat;
-    background-position: 5px 0;
+    background-position: 5px -28px;
     background-color: transparent !important;
     border: none;
 }
 
-#search_results .pagination_prev.active,
-#search_results .pagination_next.active {
-    background-position: 5px -28px;
-
+#search_results .pagination_prev.disabled,
+#search_results .pagination_next.disabled {
+    background-position: 5px 0;
+    cursor: auto;
 }
 
 #search_results .pagination_prev {
@@ -1169,6 +1171,25 @@ input[type="submit"].btn {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
+
+
+.btn-warning {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #faa732;
+    *background-color: #f89406;
+    background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+    background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+    background-image: -o-linear-gradient(top, #fbb450, #f89406);
+    background-image: linear-gradient(to bottom, #fbb450, #f89406);
+    background-repeat: repeat-x;
+    border-color: #f89406 #f89406 #ad6704;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450', endColorstr='#fff89406', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
 
 legend span {
     font-size: 17px;
@@ -1305,7 +1326,6 @@ legend span {
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0px 0px 3px 3px #DFDFDF;
-    margin-top: 10px;
     margin-bottom: 10px;
     position: relative;
     box-sizing: border-box;

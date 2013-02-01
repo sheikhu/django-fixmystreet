@@ -60,6 +60,25 @@ $(document).ready(function(){
     //     $("#users_sub_menu").css("visibility","visible");
     // }
 
+    // Add the active class to the active page number
+    var paginator = $(".pagination");
+    if (paginator.length) {
+        $(".pagination_next:not(.disabled)").click(function(evt) {
+            evt.preventDefault();
+            getUrlForPageNumber(pageNumber + 1);
+        });
+        $(".pagination_prev:not(.disabled)").click(function(evt) {
+            evt.preventDefault();
+            getUrlForPageNumber(pageNumber - 1);
+        });
+        paginator.delegate("a:not(.active)", "click", function(evt) {
+            evt.preventDefault();
+            var page = $(this).data("page");
+            if(page) {
+                getUrlForPageNumber(page);
+            }
+        });
+    }
 });
 
 function updateMenuEntries(x,y) {
@@ -81,4 +100,23 @@ function getCurrentLanguage() {
 	    currentLng = 'fr'
 	}
 	return currentLng;
+}
+
+
+function getUrlForPageNumber(number) {
+    var url = window.location.href;
+    if(url.indexOf("page=")!=-1){
+
+        var list = url.split("page=");
+        url1= list[0].replace(/\&amp;/g,'&');
+        url1 = url1.replace("amp;","");
+        url = url1 + "page="+ number;
+
+    } else if(url.indexOf("?")!=-1) {
+        url += "&page="+number;
+    } else {
+        url += "?page="+number;
+    }
+
+    window.location = url;
 }
