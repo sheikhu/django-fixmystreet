@@ -16,6 +16,7 @@ import math
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
 
+from django.core.files import File
 
 
 def new(request):
@@ -49,6 +50,8 @@ def new(request):
                 if (report_file.title == ''):
                     report_file.title = str(report_file.file.name)
                 report_file.save()
+                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
+
             if "citizen-subscription" in request.POST:
                 if request.POST["citizen-subscription"]=="on":
                     ReportSubscription(report=report, subscriber=report.citizen).save()
@@ -129,6 +132,7 @@ def show(request, slug, report_id):
                 if (report_file.title == ''):
                     report_file.title = str(report_file.file.name)
                 report_file.save()
+                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
 
             if request.POST.get("citizen_subscription", False):
                 ReportSubscription(report=report, subscriber=report.created_by).save()

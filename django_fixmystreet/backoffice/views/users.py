@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 from django_fixmystreet.backoffice.forms import FmsUserForm, AgentForm, ContractorForm, ContractorUserForm
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, Report
 
 logger = logging.getLogger(__name__)
 

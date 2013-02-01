@@ -15,6 +15,8 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 
+from django.core.files import File
+
 def new(request):
     pnt = dictToPoint(request.REQUEST)
     ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
@@ -43,6 +45,7 @@ def new(request):
                 if (report_file.title == ''):
                     report_file.title = str(report_file.file.name)
                 report_file.save()
+                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
 
     report_form = ProReportForm(initial={
         'x': request.REQUEST.get('x'),
@@ -163,6 +166,8 @@ def show(request,slug, report_id):
                 if (report_file.title == ''):
                     report_file.title = str(report_file.file.name)
                 report_file.save()
+                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
+
 
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
