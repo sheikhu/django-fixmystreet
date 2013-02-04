@@ -2,7 +2,7 @@ import math
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.forms.models import modelformset_factory
+from django.forms.models import inlineformset_factory
 from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import  RefuseForm
@@ -15,45 +15,39 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 
-from django.core.files import File
 
 def new(request):
     pnt = dictToPoint(request.REQUEST)
-    ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
+    ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = None
     if request.method == "POST":
         report_form = ProReportForm(request.POST, request.FILES, prefix='report')
-        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
 
         # this checks update is_valid too
-        if report_form.is_valid() and file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
+        if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
             # this saves the update as part of the report.
-            report = report_form.save()
+            report = report_form.save(commit=False)
 
-            if request.POST["comment-text"]:
-                comment = comment_form.save(commit=False)
-                comment.created_by = FMSUser.objects.get(pk=request.user.id)
-                comment.report = report
-                comment.save()
+            file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
+            if file_formset.is_valid():
+                report.save()
 
-            files = file_formset.save(commit=False)
-            for report_file in files:
-                report_file.report = report
-                report_file.created_by = FMSUser.objects.get(pk=request.user.id)
-                #if no content the user the filename as description
-                if (report_file.title == ''):
-                    report_file.title = str(report_file.file.name)
-                report_file.save()
-                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
+                if request.POST["comment-text"]:
+                    comment = comment_form.save(commit=False)
+                    comment.report = report
+                    comment.save()
 
-    report_form = ProReportForm(initial={
-        'x': request.REQUEST.get('x'),
-        'y': request.REQUEST.get('y')
-    }, prefix='report')
+                file_formset.save()
 
-    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-    comment_form = ReportCommentForm(prefix='comment')
+    else:
+        report_form = ProReportForm(initial={
+            'x': request.REQUEST.get('x'),
+            'y': request.REQUEST.get('y')
+        }, prefix='report')
+
+        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(prefix='comment')
 
     connectedUser = request.fmsuser
 
@@ -141,38 +135,30 @@ def subscription(request):
             context_instance=RequestContext(request))
 
 def show(request,slug, report_id):
-    page_number = int(request.GET.get("page", 1))
+    ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
-    ReportFileFormSet = modelformset_factory(ReportFile, form=ReportFileForm, extra=0)
+    page_number = int(request.GET.get("page", 1))
     report = get_object_or_404(Report, id=report_id)
+
     if request.method == "POST":
-        file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
+        file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
             # this saves the update as part of the report.
             # citizen = citizen_form.save()
-            if request.POST["comment-text"]:
-                if request.POST["comment-text"].__len__() > 0:
+            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
                     comment = comment_form.save(commit=False)
                     comment.created_by = FMSUser.objects.get(pk=request.user.id)
                     comment.report = report
                     comment.save()
 
-            files = file_formset.save(commit=False)
-            for report_file in files:
-                report_file.report = report
-                report_file.created_by = FMSUser.objects.get(pk=request.user.id)
-                #if no content the user the filename as description
-                if (report_file.title == ''):
-                    report_file.title = str(report_file.file.name)
-                report_file.save()
-                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
+            file_formset.save()
 
-
-    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-    comment_form = ReportCommentForm(prefix='comment')
+    else:
+        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(prefix='comment')
 
     organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
 

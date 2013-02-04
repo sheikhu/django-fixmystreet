@@ -1,14 +1,12 @@
+import os
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import Context, RequestContext
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import ReportFile,ReportCategory, ReportMainCategoryClass, ReportSecondaryCategoryClass, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
-from django_fixmystreet.fixmystreet.forms import FileUploadForm
-import os
+
 
 def report_category_note(request, id):
     cat = ReportMainCategoryClass.objects.get(id=id)
@@ -22,13 +20,13 @@ def report_category_note(request, id):
 def create_comment(request):
 	SessionManager.createComment(request.POST.get('title'), request.POST.get('text'), request.session)
 	hh = HttpResponse(content='True', mimetype='text/html')
-	return hh 
+	return hh
 
 def create_file(request):
     print request.POST
     SessionManager.createFile(request.POST.get('title'), request.POST.get('file'), request.POST.get("file_creation_date"), request.session)
     hh = HttpResponse(content='True', mimetype='text/html')
-    return hh 
+    return hh
 
 def uploadFile(request):
     for file_code in request.FILES:

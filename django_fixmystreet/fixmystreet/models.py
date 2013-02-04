@@ -17,15 +17,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from django.core import serializers
+from django.template.defaultfilters import slugify
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
-import os
 
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, save_file_to_server, autoslug_transmeta, resize_image
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta
 from django_extensions.db.models import TimeStampedModel
 
 
@@ -229,7 +228,7 @@ class OrganisationEntity(UserTrackedModel):
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
 
     active = models.BooleanField(default=False)
-    
+
     phone = models.CharField(max_length=32)
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
@@ -1002,22 +1001,21 @@ class ReportFile(ReportAttachment):
     #    filename = old_filename+'_'+str(time.time()) + extension
     #    return 'files/' + filename
     def move_to(instance, filename):
-        if hasattr(instance,'title'):
-            if not instance.title.replace(".","") in filename:
-                path ="files/{0}/{1}/{2}/{3}_{4}".format(instance.report.created.year,instance.report.created.month,instance.report.id,instance.title.replace(".",""),filename)
-            else:
-                path ="files/{0}/{1}/{2}/{3}".format(instance.report.created.year,instance.report.created.month,instance.report.id,filename)
-        else:
-            path ="files/{0}/{1}/{2}/{3}".format(instance.report.created.year,instance.report.created.month,instance.report.id,filename)
+        path = unicode("files/{0}/{1:02d}/{2:02d}/{3}").format(
+            instance.report.created.year,
+            instance.report.created.month,
+            instance.report.id,
+            unicode(filename))
         return path
-    file = models.FileField(upload_to="files",blank=True)
+
+    file = models.FileField(upload_to=move_to, blank=True)
     image = FixStdImageField(upload_to=move_to, blank=True, size=(800, 600), thumbnail_size=(66, 50))
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date= models.DateTimeField(null=True)
-    
-    
+
+
     #def file(self):
     #    if (self.attach == None):
     #        return self.image
@@ -1051,19 +1049,6 @@ def init_file_type(sender,instance,**kwargs):
         instance.file_type = ReportFile.IMAGE
     elif content_type == 'application/vnd.ms-excel' or content_type == 'application/vnd.oasis.opendocument.spreadsheet':
         instance.file_type = ReportFile.EXCEL
-
-
-@receiver(post_save, sender=ReportFile)
-def move_file(sender,instance,**kwargs):
-    if kwargs['created']:
-        file_type_string =ReportFile.attachment_type[instance.file_type-1][1]
-        extension = {1:'pdf',2:'doc',3:'xls',4:'jpg'}[instance.file_type]
-        new_destination = save_file_to_server(instance.file,file_type_string,extension,len(ReportFile.objects.filter(report_id=instance.report_id)), instance.report.id)
-        instance.file = new_destination
-        if instance.file_type == ReportFile.IMAGE:
-            #Resize the image
-            resize_image(instance.file.path)
-        instance.save()
 
 
 class ReportSubscription(models.Model):
@@ -1569,44 +1554,3 @@ def dictToPoint(data):
     py = data.get('y')
 
     return fromstr("POINT(" + px + " " + py + ")", srid=31370)
-
-
-
-def exportUsers():
-    XMLSerializer = serializers.get_serializer("xml")
-    xml_serializer = XMLSerializer()
-    with open("backup/pro/users.xml", "w") as out:
-        xml_serializer.serialize(FMSUser.objects.all(), stream=out)
-
-
-def exportReportsOfEntity(entityId):
-    # TODO loop over all reports to get files and comments (Structure result data in correct manner)
-    #define xml object serializer
-    XMLSerializer = serializers.get_serializer("xml")
-    xml_serializer = XMLSerializer()
-    #Get reports
-    data1 = Report.objects.filter(commune=entityId)
-    #Starting tag
-    d="<Reports>"
-    #For each found report
-    for report in data1:
-        d = d+ "<Report>"
-        #Get the info of the report
-        d1= xml_serializer.serialize(Report.objects.filter(id=report.id),fields=('id','category', 'description', 'created_at', 'updated', 'status'))
-        #Get comments of the report
-        data2 = Comment.objects.filter(report_id=data1[0].id)
-        d2 = xml_serializer.serialize(data2,fields=('title','text'))
-        #Get files of the report
-        data3 = File.objects.filter(report_id=data1[0].id)
-        d3 = xml_serializer.serialize(data3,fields=('title','file'))
-        #Concat serialized data
-        d = d+ d1+"<Comments>"+d2+"</Comments><Files>"+d3+"</Files>"
-        d = d + "</Report>"
-    #Add closing tag
-    d = d+"</Reports>"
-    #open/create file to save data to
-    f =  open("backup/pro/reportsOfEntity.xml","w")
-    #write data to file
-    f.write(d)
-    #close file stream
-    f.close()

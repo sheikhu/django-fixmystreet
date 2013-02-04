@@ -1,6 +1,5 @@
 # Django settings for fixmystreet project.
 import os, sys
-import logging
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 

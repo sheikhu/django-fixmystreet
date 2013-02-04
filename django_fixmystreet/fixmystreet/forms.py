@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from  django.core.exceptions import ValidationError
+from django.core.files import File
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 
@@ -176,6 +177,19 @@ class ReportFileForm(forms.ModelForm):
         #    self.fields.get('title').label = "zaza"
         return file
 
+    def save(self, commit=True):
+        report_file = super(ReportFileForm,self).save(commit=False)
+
+        if (report_file.title == ''):
+            report_file.title = report_file.file.name
+
+        report_file.image.save(report_file.file.name, report_file.file)
+
+        if commit:
+            report_file.save()
+        return report_file
+
+
 class ReportCommentForm(forms.ModelForm):
     required_css_class = 'required'
     class Meta:
@@ -184,17 +198,6 @@ class ReportCommentForm(forms.ModelForm):
 
     text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder':_("Add a comment, please.")}))
 
-    def save(self, commit=True):
-        comment= super(ReportCommentForm,self).save(commit=False)
-
-        if commit:
-            comment.save()
-        return comment
-
-
-class FileUploadForm(forms.Form):
-    title = forms.CharField(max_length=50,required=False)
-    file  = forms.FileField()
 
 class MarkAsDoneForm(forms.ModelForm):
     class Meta:
