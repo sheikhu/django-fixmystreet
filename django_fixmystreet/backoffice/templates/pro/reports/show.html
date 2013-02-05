@@ -461,7 +461,7 @@ function close(){
                                 {% if request.user.id == report.responsible_manager.id %}
                                     {% if report.is_created or report.is_in_progress  %}
                                         <!-- Manager in charge only -->
-                                        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm file deletion' %}')" href="{% url report_delete_file report.id %}?fileId={{file.id}}">
+                                        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm file deletion' %}')" href="{% url report_delete_comment report.id %}?commentId={{comment.id}}">
                                             <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
                                         </a>
                                     {% endif %}

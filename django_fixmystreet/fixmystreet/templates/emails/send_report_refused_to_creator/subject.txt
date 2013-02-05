@@ -1,1 +1,1 @@
-{% load i18n %}{% trans "Fix My Street: Your report has been refused." %}
+{% load i18n %}{% trans "Fix My Street: Your report has been refused." %} ({{related.get_ticket_number}})

@@ -1,1 +1,1 @@
-{% load i18n %}{% trans "Fix My Street: Report marked as fixed." %}
+{% load i18n %}{% trans "Fix My Street: Report marked as fixed." %}({{related.get_ticket_number}})

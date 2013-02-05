@@ -1,1 +1,1 @@
-{% load i18n %}{% trans "Fix My Street: Subscribe to Fix My Street Report Updates" %}
+{% load i18n %}{% trans "Fix My Street: Subscribe to Fix My Street Report Updates." %} ({{related.get_ticket_number}})
