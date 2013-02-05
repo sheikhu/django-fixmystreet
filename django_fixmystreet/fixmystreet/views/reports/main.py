@@ -47,6 +47,7 @@ def new(request):
                 files = file_formset.save(commit=False)
                 for report_file in files:
                     report_file.created_by = citizen
+                    #report_file.report = report
                     report_file.save()
 
                 if "citizen-subscription" in request.POST:

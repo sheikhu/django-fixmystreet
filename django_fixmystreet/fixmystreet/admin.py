@@ -17,8 +17,8 @@ class ReportsInline(admin.TabularInline):
     extra=0
     max_num=10
 
-    fields = ("status", "address_nl","address_fr", "address_number", "postalcode", "secondary_category", "admin_url")
-    readonly_fields = ("admin_url",)
+    fields = ("status", "address_fr", "address_number", "responsible_entity", "admin_url")
+    readonly_fields = ("status", "address_fr", "address_number", "responsible_entity", "admin_url",)
 
     def admin_url(self, o):
         return "<a href='{0}'>admin</a>".format(urlresolvers.reverse('admin:fixmystreet_report_change', args=(o.id,)))
@@ -30,14 +30,16 @@ class NotificationsInline(admin.TabularInline):
     model = ReportNotification
     fk_name = "recipient"
     fields = ("content_template", "success")
+    readonly_fields = ("content_template", "success")
     extra=0
     max_num=10
 
 
-class NotificationsInline(admin.TabularInline):
-    model = ReportNotification
-    fk_name = "recipient"
-    fields = ("content_template", "success")
+class UserEventsInline(admin.TabularInline):
+    model = ReportEventLog
+    fk_name = "user"
+    fields = ("event_type", "event_at", "status_old", "status_new")
+    readonly_fields = ("event_type", "event_at", "status_old", "status_new")
     extra=0
     max_num=10
 
@@ -46,20 +48,21 @@ class AttachmentsInline(admin.TabularInline):
     model = ReportAttachment
     fk_name = "report"
     fields = ("security_level", "created", "created_by")
-    readonly_fields = ("created", "created_by",)
+    readonly_fields = ("security_level", "created", "created_by")
     extra=0
     max_num=10
 
 
 class FMSUserAdmin(SimpleHistoryAdmin):
-    list_display = ("get_full_name", "leader", "manager", "agent", "applicant", "contractor")
+    list_display = ("get_full_name", "username", "leader", "manager", "agent", "applicant", "contractor")
     inlines = (
         ReportsInline,
-        # NotificationsInline,
-        # UserEventsInline
+        NotificationsInline,
+        UserEventsInline
     )
-    # search_fields = ("username", "email", "first_name", "last_name")
-    # list_filter = ("leader", "manager", "agent", "impetrant", "contractor")
+    readonly_fields = ("created", "created_by", "modified", "modified_by")
+    search_fields = ("username", "email", "first_name", "last_name")
+    list_filter = ("leader", "manager", "agent", "applicant", "contractor")
 
 admin.site.register(FMSUser,FMSUserAdmin)
 

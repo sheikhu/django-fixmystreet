@@ -1009,7 +1009,7 @@ class ReportFile(ReportAttachment):
         return path
 
     file = models.FileField(upload_to=move_to, blank=True)
-    image = FixStdImageField(upload_to=move_to, blank=True, size=(800, 600), thumbnail_size=(66, 50))
+    image = FixStdImageField(upload_to=move_to, blank=True, size=(1200, 800), thumbnail_size=(66, 50))
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
@@ -1050,7 +1050,9 @@ def init_file_type(sender,instance,**kwargs):
     elif content_type == 'application/vnd.ms-excel' or content_type == 'application/vnd.oasis.opendocument.spreadsheet':
         instance.file_type = ReportFile.EXCEL
 
-
+    if instance.file_type == ReportFile.IMAGE:
+        instance.image.save(instance.file.name, instance.file, save=False)
+ 
 class ReportSubscription(models.Model):
     """
     Report Subscribers are notified when there's an update to an existing report.
