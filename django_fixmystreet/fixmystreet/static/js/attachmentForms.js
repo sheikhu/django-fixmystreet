@@ -23,8 +23,15 @@ $(document).ready(function() {
 /********************************************************************************************/
     function fileSelected(evt) {
         var inputFile = evt.currentTarget;
+
+        var file;
+        //Internet Explorer 8 and older
+        if (typeof inputFile.files=='undefined') {
+		file = inputFile[0];
+	} else {
+        	file = inputFile.files[0];
+	}
         
-        var file = inputFile.files[0];
         if (file) {
             if(file.size == 0) {
                 alert('Filesize must be greater than 0');
@@ -92,7 +99,6 @@ function AddFileToView(elem, file){
         title = file.name;
     }
     
-
     var thumbnails = "", img = elem.find("img");
     if (type == "pdf"){
         thumbnails = "/static/images/icon-pdf.png";
