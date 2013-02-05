@@ -168,8 +168,9 @@ class ReportFileForm(forms.ModelForm):
 
     def clean_file(self):
         file = self.cleaned_data['file']
-        if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
-            raise ValidationError("File is too large")
+        if (file):
+            if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
+                raise ValidationError("File is too large")
         #else:
          #   raise forms.ValidationError(_('File type is not supported'))
 

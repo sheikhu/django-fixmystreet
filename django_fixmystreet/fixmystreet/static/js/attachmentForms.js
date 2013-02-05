@@ -27,7 +27,22 @@ $(document).ready(function() {
         var file;
         //Internet Explorer 8 and older
         if (typeof inputFile.files=='undefined') {
-		file = inputFile[0];
+		var form_copy = file_form_template.clone();
+            	form_copy.attr('id', '');
+            	form_copy.find(":input").each(function(index, input) {
+                	input.id = input.id.replace(/__prefix__/g, file_count);
+                	input.name = input.name.replace(/__prefix__/g, file_count);
+            	})
+            	form_copy.find("label").each(function(index, label) {
+                	$(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
+            	})
+            	$('#form-files').append(form_copy);
+                form_copy.find("img").attr('src',"/static/images/icon-generic.png");
+                form_copy.find("img").file = evt.target.value;
+
+		//file = inputFile[0];
+            	file_count++;
+            	$("#id_files-TOTAL_FORMS").val(file_count);
 	} else {
         	file = inputFile.files[0];
 	}
