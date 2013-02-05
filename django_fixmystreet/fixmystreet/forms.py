@@ -56,7 +56,7 @@ class ReportForm(forms.ModelForm):
 
     def save(self, commit=True):
         report = super(ReportForm, self).save(commit=False)
-
+        
         report.point = dictToPoint(self.cleaned_data)
         report.status = Report.CREATED
         # report.address = self.cleaned_data["address"].split(", ")[0]
@@ -183,10 +183,9 @@ class ReportFileForm(forms.ModelForm):
         if (report_file.title == ''):
             report_file.title = report_file.file.name
 
-        report_file.image.save(report_file.file.name, report_file.file)
-
         if commit:
             report_file.save()
+
         return report_file
 
 
