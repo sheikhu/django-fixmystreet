@@ -24,7 +24,29 @@ $(document).ready(function() {
     function fileSelected(evt) {
         var inputFile = evt.currentTarget;
 
-        var file = inputFile.files[0];
+        var file;
+        //Internet Explorer 8 and older
+        if (typeof inputFile.files=='undefined') {
+		var form_copy = file_form_template.clone();
+            	form_copy.attr('id', '');
+            	form_copy.find(":input").each(function(index, input) {
+                	input.id = input.id.replace(/__prefix__/g, file_count);
+                	input.name = input.name.replace(/__prefix__/g, file_count);
+            	})
+            	form_copy.find("label").each(function(index, label) {
+                	$(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
+            	})
+            	$('#form-files').append(form_copy);
+                form_copy.find("img").attr('src',"/static/images/icon-generic.png");
+                form_copy.find("img").file = evt.target.value;
+
+		//file = inputFile[0];
+            	file_count++;
+            	$("#id_files-TOTAL_FORMS").val(file_count);
+	} else {
+        	file = inputFile.files[0];
+	}
+        
         if (file) {
             if(file.size == 0) {
                 alert('Filesize must be greater than 0');
@@ -91,8 +113,7 @@ function AddFileToView(elem, file){
     if (title == ""){
         title = file.name;
     }
-
-
+    
     var thumbnails = "", img = elem.find("img");
     if (type == "pdf"){
         thumbnails = "/static/images/icon-pdf.png";
