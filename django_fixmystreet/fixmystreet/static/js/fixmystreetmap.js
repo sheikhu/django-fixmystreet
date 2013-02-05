@@ -203,8 +203,9 @@ function cloneObj (obj) {
             dragControl.activate();
         }
         this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
-
-        this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
+        this.dragfeature = new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle);
+        console.log(this.dragfeature);
+        this.draggableLayer.addFeatures([this.dragfeature]);
 
         this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
     };
@@ -284,6 +285,8 @@ function cloneObj (obj) {
                     window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
                    },
                          over: function(feature){
+                    if(feature.layer.name != "Dragable Layer"){
+                        
                     domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
                     var imageLink = "/static/images/no-photo-yellow-line.png";
@@ -313,6 +316,7 @@ function cloneObj (obj) {
                             classes: 'qtip-jtools'
                         }
                     });
+                    }
                    }
                     }
                 /*onSelect:function(feature){
