@@ -63,7 +63,7 @@
         "pk": 3,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_nl": "Récolte des eaux (nl)",
+            "name_nl": "Rioolput",
             "name_fr": "Récolte des eaux"
         }
     },
@@ -99,7 +99,7 @@
         "pk": 7,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_nl": "Mobilier urbain/Potelet (nl)",
+            "name_nl": "Wegmeubilair/Paaltje",
             "name_fr": "Mobilier urbain/potelet"
         }
     },
@@ -202,7 +202,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Bouche",
-            "name_nl": "Bouche (nl)",
+            "name_nl": "Verstopt",
             "category_class": 1,
             "secondary_category_class": 3,
             "public": false
@@ -358,7 +358,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Arraché",
-            "name_nl": "Arrache (nl)",
+            "name_nl": "Gebroken",
             "category_class": 1,
             "secondary_category_class": 7,
             "public": false
@@ -514,7 +514,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Bouché",
-            "name_nl": "Bouche (nl)",
+            "name_nl": "Verstopt",
             "category_class": 2,
             "secondary_category_class": 3,
             "public": false
@@ -682,7 +682,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Arraché",
-            "name_nl": "Arrache (nl)",
+            "name_nl": "Gebroken",
             "category_class": 2,
             "secondary_category_class": 7,
             "public": false
@@ -826,7 +826,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Bouche",
-            "name_nl": "Bouche (nl)",
+            "name_nl": "Verstopt",
             "category_class": 3,
             "secondary_category_class": 3,
             "public": false
@@ -982,7 +982,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Arraché",
-            "name_nl": "Arrache (nl)",
+            "name_nl": "Gebroken",
             "category_class": 3,
             "secondary_category_class": 7,
             "public": false
@@ -1090,7 +1090,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Bouché",
-            "name_nl": "Bouche (nl)",
+            "name_nl": "Verstopt",
             "category_class": 4,
             "secondary_category_class": 3,
             "public": false
@@ -1246,7 +1246,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Arraché",
-            "name_nl": "Arrache (nl)",
+            "name_nl": "Gebroken",
             "category_class": 4,
             "secondary_category_class": 7,
             "public": false
@@ -1390,7 +1390,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Bouché",
-            "name_nl": "Bouche (nl)",
+            "name_nl": "Verstopt",
             "category_class": 5,
             "secondary_category_class": 3,
             "public": false
@@ -1510,7 +1510,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Arraché",
-            "name_nl": "Arrache (nl)",
+            "name_nl": "Gebroken",
             "category_class": 5,
             "secondary_category_class": 7,
             "public": false
