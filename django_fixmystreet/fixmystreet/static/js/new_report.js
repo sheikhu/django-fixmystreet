@@ -76,11 +76,9 @@ $(document).ready(function() {
 
                 //Does not work. Fill in the wrong input zone
                 for (var i in languages) {
-                    console.log(i);
                     if (languages[i] != currLang) {
                         fms.currentMap.getSelectedAddress(languages[i], function(langSecond, response) {
                             var address = response.result.address;
-                            console.log('callback='+langSecond);
                             if(response.status == 'success') {
                                 fillI18nAdressField(langSecond, address);
                             }

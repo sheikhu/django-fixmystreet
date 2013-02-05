@@ -44,7 +44,6 @@ function saveSelection(){
     $.each($("#dialog").find("select"),function(idx,value){
       var catId =parseInt($(value).parent().parent().attr("id"));
       catId = catId-1;
-      console.log()
       var userIDForCat = {{categoryUserMapping}}[catId];
       $(value).val(userIDForCat);
     });
@@ -87,7 +86,7 @@ function saveSelection(){
         <a href="#" onclick="saveSelection();" class="btn" >{% trans 'Save' %}</a>
       </div>
   </div>
-  
+
 
   <div id="configurationTable">
   	<table class="configTable">
@@ -101,17 +100,17 @@ function saveSelection(){
   			<tr>
   				<td class="firstItem">{{secondCat.name}}</td>
   				{% for m in maincategories %}
-  				<td> 
+  				<td>
             <button id="{{m.id}}{{secondCat.id}}" class="matrixButton" onclick='window.location.href="{% url gestionnaire_selection_dialog %}?main={{m.id}}&second={{secondCat.id}}"'>
               {{currentSelectedList|get_element_from_list:forloop.counter0|get_element_from_list:forloop.parentloop.counter0}}
-            </button> 
+            </button>
           </td>
   				{% endfor %}
   			</tr>
   		{% endfor %}
   	</table>
   </div>
-	
+
 </div>
 
 {% endblock %}
