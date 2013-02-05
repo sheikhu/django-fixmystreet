@@ -35,7 +35,6 @@ $(document).ready(function(){
             if(!$input.val()) {
                 valid = false;
                 $input.closest('.required').addClass('invalid');
-                console.log("not valid", $input);
             } else {
                 $input.closest('.required').removeClass('invalid');
             }

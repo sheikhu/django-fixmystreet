@@ -23,7 +23,7 @@ $(document).ready(function() {
 /********************************************************************************************/
     function fileSelected(evt) {
         var inputFile = evt.currentTarget;
-        
+
         var file = inputFile.files[0];
         if (file) {
             if(file.size == 0) {
@@ -68,8 +68,8 @@ $(document).ready(function() {
             year = fileDate.getFullYear();
             hour = fileDate.getHours();
             minute = fileDate.getMinutes();
-	    console.log(year); 
-	    file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+
+        file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
             AddFileToView(file_form_template, file);
 
             //$(inputFile).val('');
@@ -91,7 +91,7 @@ function AddFileToView(elem, file){
     if (title == ""){
         title = file.name;
     }
-    
+
 
     var thumbnails = "", img = elem.find("img");
     if (type == "pdf"){
