@@ -252,7 +252,6 @@ function cloneObj (obj) {
         var self = this;
         if(!this.markersLayer)
         {
-            console.log('create marker layer');
             this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer");
             //NEW APPROACH
             /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
@@ -285,7 +284,7 @@ function cloneObj (obj) {
                    },
                          over: function(feature){
                     if(feature.layer.name != "Dragable Layer"){
-                        
+
                     domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
                     var imageLink = "/static/images/no-photo-yellow-line.png";
@@ -342,35 +341,27 @@ function cloneObj (obj) {
         var self = this;
 
         if (proVersion) {
-            console.log('pro version detected');
             if (false == report.address_regional) {
-                           //NOT ROUTE REGIONALE
-                           if (report.citizen == 'true') {
-                    console.log('citizen report in pro section');
-                           var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
+                //NOT ROUTE REGIONALE
+                if (report.citizen == 'true') {
+                    var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
                 } else {
-                    console.log(report.citizen);
-                    console.log('pro report in pro section');
-                           var markerConf = (report.status == 3 ||report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
+                   var markerConf = (report.status == 3 ||report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
                 }
             } else {
-                console.log('regional report detected');
-                           //ROUTE REGIONALE
-                   var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
-            }
-                      var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-                self.markersLayer.addFeatures(vectorOfMarkers);
-        } else {
-            console.log('citizen version detected');
-            //Non pro version
-            if (report.citizen == 'true') {
-                console.log('citizen report in citizen section');
-                    var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
-            } else {
-                console.log('pro report in citizen section');
-                    var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+               //ROUTE REGIONALE
+               var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
             }
                 var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+                self.markersLayer.addFeatures(vectorOfMarkers);
+        } else {
+            //Non pro version
+            if (report.citizen == 'true') {
+                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+            } else {
+                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+            }
+            var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
             self.markersLayer.addFeatures(vectorOfMarkers);
         }
 

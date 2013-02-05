@@ -2,11 +2,11 @@
 {% load tags i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-    	{% block base %}
+    {% block base %}
 
-	{% endblock %}
+    {% endblock %}
         <!-- <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/> -->
-	<title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
+    <title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
         <!--[if lt IE 9]>
         <script src="{{ STATIC_URL }}lib/html5shiv.js"></script>
         <![endif]-->
@@ -206,7 +206,7 @@
                             <div class="span2"><a target="_blank" href="https://www.google.com/intl/en/chrome/browser/">Google Chrome (20+)</a></div>
                             </div>
                         </center>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
@@ -233,11 +233,11 @@
         </div>
         {% block script %}
         <script type="text/javascript">
-	    //Test if console.log exists (does not exists on ie8 and <) tips to avoid console.log to block js on those env.
+            //Test if console.log exists (does not exists on ie8 and <) tips to avoid console.log to block js on those env.
             if (typeof console=='undefined') {
-	    	window.console = new Object();
-		window.console.log = function(msg) {/*Does nothing*/}
-	    }
+                window.console = new Object();
+                window.console.log = function(msg) {/*Does nothing*/};
+            }
 
             var URBIS_URL = '{{ URBIS_URL }}';
             var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
@@ -273,7 +273,6 @@
         </script>
         <script type="text/javascript">
             $(function(){
-                console.log($.browser);
                 if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 9)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 17) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 20) {
                     $('#browser_support_popup').modal();
                 }
