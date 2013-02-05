@@ -90,8 +90,8 @@ $(document).ready(function() {
             year = fileDate.getFullYear();
             hour = fileDate.getHours();
             minute = fileDate.getMinutes();
-	    console.log(year); 
-	    file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+
+        file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
             AddFileToView(file_form_template, file);
 
             //$(inputFile).val('');

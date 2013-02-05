@@ -203,8 +203,10 @@ function cloneObj (obj) {
             dragControl.activate();
         }
         this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
+        this.dragfeature = new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle);
+        this.draggableLayer.addFeatures([this.dragfeature]);
 
-        this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
+        this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
     };
 
     fms.Map.prototype.getSelectedLocation = function()
@@ -276,12 +278,14 @@ function cloneObj (obj) {
             this.map.addLayer(this.markersLayer);
 
 
-            var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
+            this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 callbacks: {
                         click: function(feature){
                     window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
                    },
                          over: function(feature){
+                    if(feature.layer.name != "Dragable Layer"){
+                        
                     domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
                     var imageLink = "/static/images/no-photo-yellow-line.png";
@@ -311,6 +315,7 @@ function cloneObj (obj) {
                             classes: 'qtip-jtools'
                         }
                     });
+                    }
                    }
                     }
                 /*onSelect:function(feature){
@@ -325,8 +330,8 @@ function cloneObj (obj) {
                 }*/
             });
 
-            this.map.addControl(selectFeature);
-            selectFeature.activate();
+            this.map.addControl(this.selectFeature);
+            this.selectFeature.activate();
         }
 
         var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);

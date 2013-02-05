@@ -6,10 +6,10 @@ $(function(){
     var $searchButton = $('#widget-search-button');
     var $searchTicketButton = $('#widget-search-ticket-button');
     var $proposal = $('#proposal');
-    
+
     $searchTicketButton.click(function(event){
 		var searchValue = $('#input-ticket-search').val();
-		
+
                 if (searchValue && searchValue.length > 0) {
                         //Get current language
                         var currentLng = 'en';
@@ -32,9 +32,9 @@ $(function(){
 		var searchValue = $searchTerm.val();
 			$proposal.slideUp();
 
-			if (!$searchTerm.val()) { 
+			if (!$searchTerm.val()) {
 				$("#ticket-div-section").show();
-				return; 
+				return;
 			}
 
 			$searchTerm.addClass('loading');
@@ -91,8 +91,6 @@ $(function(){
 					}
 				}
 			}).error(function(xhr,msg,error){
-				console.log(arguments);
-				console.log(error.message);
 				$searchTerm.removeClass('loading');
 				$searchButton.prop('disabled',false);
 

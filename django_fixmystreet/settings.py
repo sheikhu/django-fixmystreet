@@ -95,6 +95,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
+    'django_fixmystreet.monitoring',
     'piston',
 )
 

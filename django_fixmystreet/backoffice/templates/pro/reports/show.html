@@ -99,6 +99,13 @@ function markAsDone(){
 
     // window.location = '{% url report_update report.id %}?is_fixed=True';
 }
+
+function close(){
+    var r=confirm("Are you sure you want to close this report?");
+    if (r==true){
+        window.location = "{% url report_close_pro report.id %}";
+    }
+}
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
@@ -331,7 +338,7 @@ function markAsDone(){
                     <!-- ############################################# -->
                     {% if report.is_in_progress %}
                         {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn pull-right btn-warning">{% trans 'Close Report' %}</a>
+                            <a href="javascript:close();" class="btn pull-right btn-warning">{% trans 'Close Report' %}</a>
                         {% endif %}
                     {% endif %}
                     <!-- ######################################### -->
