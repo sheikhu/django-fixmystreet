@@ -101,7 +101,7 @@ function AddFileToView(elem, file){
         thumbnails = "/static/images/icon-word.jpg";
     }
     else if(type == "vnd.ms-excel"){
-        thumbnails = "/static/images/icon-xls.png";
+        thumbnails = "/static/images/icon-excel.png";
     }
     else if (type == "vnd.openxmlformats-officedocument.wordprocessingml.document"){
         thumbnails = "/static/images/icon-word.jpg";

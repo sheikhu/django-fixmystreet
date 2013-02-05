@@ -9,6 +9,7 @@
 <script type="text/javascript">
 
 var URL_REPORT_REFUSE = "{% url report_refuse_pro report.id %}";
+
 $(function(){
  /**********************************************/
     /* Prepare iphone toogle button look and feel */
@@ -97,6 +98,13 @@ function markAsDone(){
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 
     // window.location = '{% url report_update report.id %}?is_fixed=True';
+}
+
+function close(){
+    var r=confirm("Are you sure you want to close this report?");
+    if (r==true){
+        window.location = "{% url report_close_pro report.id %}";
+    }
 }
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
@@ -330,7 +338,7 @@ function markAsDone(){
                     <!-- ############################################# -->
                     {% if report.is_in_progress %}
                         {% if not fms_user.contractor %}
-                            <a href="{% url report_close_pro report.id %}" class="btn pull-right btn-warning">{% trans 'Close Report' %}</a>
+                            <a href="javascript:close();" class="btn pull-right btn-warning">{% trans 'Close Report' %}</a>
                         {% endif %}
                     {% endif %}
                     <!-- ######################################### -->
@@ -354,7 +362,7 @@ function markAsDone(){
                     <p><a href="{% url report_pdf_pro report.id 0 %}">{% trans 'report pdf public' %}</a></p>
                 {% endif %}
                 {% if fms_user.manager or fms_user.leader %}
-                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
+                    <p><a href="/export_file/reports/csv/?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
                 {% endif %}
             </div>
         </div>
@@ -393,7 +401,7 @@ function markAsDone(){
                                         <a href="{{ file.file.url }}"><img src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
                                     {% endif %}
                                     {% if file.is_word %}
-                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-doc.png' width="48px" height="48px"/></a>
+                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-word.png' width="48px" height="48px"/></a>
                                     {% endif %}
                                     {% if file.is_excel %}
                                         <a href="{{ file.file.url }}"><img src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>

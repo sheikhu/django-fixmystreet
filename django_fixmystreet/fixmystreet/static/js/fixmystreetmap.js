@@ -205,6 +205,8 @@ function cloneObj (obj) {
         this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
 
         this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
+
+        this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
     };
 
     fms.Map.prototype.getSelectedLocation = function()
@@ -275,7 +277,7 @@ function cloneObj (obj) {
             this.map.addLayer(this.markersLayer);
 
 
-            var selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
+            this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 callbacks: {
                         click: function(feature){
                     window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
@@ -324,8 +326,8 @@ function cloneObj (obj) {
                 }*/
             });
 
-            this.map.addControl(selectFeature);
-            selectFeature.activate();
+            this.map.addControl(this.selectFeature);
+            this.selectFeature.activate();
         }
 
         var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
@@ -339,22 +341,22 @@ function cloneObj (obj) {
             if (false == report.address_regional) {
                 //NOT ROUTE REGIONALE
                 if (report.citizen == 'true') {
-                    var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
+                    var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
                 } else {
-                    var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
+                    var markerConf = (report.status == 3 ||report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
                 }
             } else {
                 //ROUTE REGIONALE
-               var markerConf = report.status == 3 ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
+                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
             }
-                      var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-                self.markersLayer.addFeatures(vectorOfMarkers);
+            var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+            self.markersLayer.addFeatures(vectorOfMarkers);
         } else {
             //Non pro version
             if (report.citizen == 'true') {
-                var markerConf = report.status == 3 ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
             } else {
-                var markerConf = report.status == 3 ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
             }
             var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
             self.markersLayer.addFeatures(vectorOfMarkers);

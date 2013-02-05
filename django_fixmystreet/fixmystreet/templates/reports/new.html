@@ -96,7 +96,6 @@ function validate() {
     // Validate the current form
     var $form = $("#report-form");
     var valid = true;
-
         $form.find('.required input, .required select, .required textarea').each(function(ind,input) {
             var $input = $(input);
             if(!$input.val()) {
@@ -106,9 +105,7 @@ function validate() {
                 $input.closest('.required').removeClass('invalid');
             }
         });
-
         if(!valid) {
-
             $form.find('.invalid input, .invalid select').first().focus();
             $form.find('.required-error-msg').fadeIn();
             $form.addClass('required-invalid');

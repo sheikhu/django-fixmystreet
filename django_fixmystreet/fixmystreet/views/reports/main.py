@@ -47,6 +47,7 @@ def new(request):
                 files = file_formset.save(commit=False)
                 for report_file in files:
                     report_file.created_by = citizen
+                    #report_file.report = report
                     report_file.save()
 
                 if "citizen-subscription" in request.POST:
@@ -57,9 +58,9 @@ def new(request):
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
         }, prefix='report')
-        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-        comment_form = ReportCommentForm(prefix='comment')
-        citizen_form = CitizenForm(prefix='citizen')
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
+    citizen_form = CitizenForm(prefix='citizen')
 
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("reports/new.html",

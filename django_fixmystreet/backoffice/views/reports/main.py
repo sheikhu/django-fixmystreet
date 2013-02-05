@@ -29,7 +29,7 @@ def new(request):
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
-            file_formset = ReportFileFormSet(request.POST, request.FILES, prefix='files', queryset=ReportFile.objects.none())
+            file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
             if file_formset.is_valid():
                 report.save()
 
@@ -37,7 +37,6 @@ def new(request):
                     comment = comment_form.save(commit=False)
                     comment.report = report
                     comment.save()
-
                 file_formset.save()
 
     else:
@@ -46,8 +45,8 @@ def new(request):
             'y': request.REQUEST.get('y')
         }, prefix='report')
 
-        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-        comment_form = ReportCommentForm(prefix='comment')
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
 
     connectedUser = request.fmsuser
 
