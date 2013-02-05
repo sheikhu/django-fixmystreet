@@ -45,8 +45,8 @@ def new(request):
             'y': request.REQUEST.get('y')
         }, prefix='report')
 
-        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-        comment_form = ReportCommentForm(prefix='comment')
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+    comment_form = ReportCommentForm(prefix='comment')
 
     connectedUser = request.fmsuser
 

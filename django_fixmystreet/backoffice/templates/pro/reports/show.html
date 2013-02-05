@@ -9,6 +9,7 @@
 <script type="text/javascript">
 
 var URL_REPORT_REFUSE = "{% url report_refuse_pro report.id %}";
+
 $(function(){
  /**********************************************/
     /* Prepare iphone toogle button look and feel */
@@ -361,7 +362,7 @@ function close(){
                     <p><a href="{% url report_pdf_pro report.id 0 %}">{% trans 'report pdf public' %}</a></p>
                 {% endif %}
                 {% if fms_user.manager or fms_user.leader %}
-                    <p><a href="/export_file/reports/csv?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
+                    <p><a href="/export_file/reports/csv/?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
                 {% endif %}
             </div>
         </div>

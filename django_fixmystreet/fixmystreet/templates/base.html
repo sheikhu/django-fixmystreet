@@ -208,6 +208,12 @@
         </div>
         {% block script %}
         <script type="text/javascript">
+	    //Test if console.log exists (does not exists on ie8 and <) tips to avoid console.log to block js on those env.
+            if (typeof console=='undefined') {
+	    	window.console = new Object();
+		window.console.log = function(msg) {/*Does nothing*/}
+	    }
+
             var URBIS_URL = '{{ URBIS_URL }}';
             var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
             if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') {
