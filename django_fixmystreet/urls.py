@@ -18,6 +18,7 @@ urlpatterns += patterns('',
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', admin.site.urls),
+    (r'^monitoring/', include('django_fixmystreet.monitoring.urls')),
 )
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'
