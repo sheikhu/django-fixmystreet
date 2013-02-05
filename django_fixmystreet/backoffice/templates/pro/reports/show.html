@@ -21,7 +21,7 @@ $(function(){
         if(type == "file"){
             //TODO handle public bool of file with id vals[2]
             window.location = '{% url report_update_file report.id %}?fileId='+id+'&updateType='+level;
-        } else {
+        } else if (type == "comment"){
             //TODO handle public bool of comment with id vals[2]
             window.location = '{% url report_update_comment report.id %}?commentId='+id+'&updateType='+level;
         }
@@ -58,8 +58,11 @@ $(function(){
     /****************************************************************/
     /* Implement method when clicking private/public checkbox       */
     /****************************************************************/
-    $("#id_is_private").bind("click",function(event){
-            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_is_private").is(":checked");
+    $("#id_private").bind("click",function(event){
+            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
+    });
+    $("#id_public").bind("click",function(event){
+            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
     });
     {% if subscribed %}
     $("#id_pro-subscription").attr("value","on").prop('checked', true);
@@ -461,8 +464,8 @@ function close(){
                                 {% if request.user.id == report.responsible_manager.id %}
                                     {% if report.is_created or report.is_in_progress  %}
                                         <!-- Manager in charge only -->
-                                        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm file deletion' %}')" href="{% url report_delete_file report.id %}?fileId={{file.id}}">
-                                            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
+                                        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm comment deletion' %}')" href="{% url report_delete_comment report.id %}?commentId={{comment.id}}">
+                                            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}"/>
                                         </a>
                                     {% endif %}
                                 {% endif %}
