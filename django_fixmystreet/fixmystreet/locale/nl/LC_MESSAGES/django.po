@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 12:02+0100\n"
+"POT-Creation-Date: 2013-02-06 14:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -260,7 +260,6 @@ msgid "{related_old} give responsibility to {related_new}"
 msgstr "{related_old} geeft de verantwoordelijkheid door aan {related_new}"
 
 #: models.py:1379
-#, fuzzy
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Aannemer {related_new} is verantwoordelijk voor het incident"
 
@@ -269,7 +268,6 @@ msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Aannemer verandert van {related_old} naar {related_new}"
 
 #: models.py:1381
-#, fuzzy
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Contractor {related_new} is verantwoordelijk voor het report"
 
@@ -1683,9 +1681,8 @@ msgid "Status:"
 msgstr "Status:"
 
 #: templates/reports/show.html:179
-#, fuzzy
 msgid "Applicant:"
-msgstr "Beheerder is toegekend"
+msgstr "Applicant:"
 
 #: templates/reports/show.html:192
 msgid "Responsible:"

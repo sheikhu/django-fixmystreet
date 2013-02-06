@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 12:02+0100\n"
+"POT-Creation-Date: 2013-02-06 14:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -489,7 +489,7 @@ msgid "About FixMyStreet Brussels"
 msgstr "A propos de Fix My Street Bruxelles"
 
 #: templates/about.html:15
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "        <h2>Contact</h2>\n"
@@ -622,9 +622,8 @@ msgstr "Fix My Street Bruxelles"
 
 #: templates/base.html:28 templates/base.html.py:29 templates/base.html:33
 #: templates/base.html.py:34
-#, fuzzy
 msgid "Fix My Street"
-msgstr "Fix My Street:"
+msgstr "Fix My Street"
 
 #: templates/base.html:55
 msgid "Log out"
@@ -841,24 +840,20 @@ msgid ""
 msgstr ""
 
 #: templates/posters.html:17
-#, fuzzy
 msgid "Poster"
-msgstr "Signalé par"
+msgstr "Signaler"
 
 #: templates/admin/base_site.html:4
-#, fuzzy
 msgid "Fix My Street Admin"
-msgstr "Fix My Street:"
+msgstr "Fix My Street Administrateur"
 
 #: templates/admin/base_site.html:15
-#, fuzzy
 msgid "Fix My Street Administration"
-msgstr "Fix My Street:"
+msgstr "Fix My Street Administration"
 
 #: templates/admin/change_form.html:22
-#, fuzzy
 msgid "Add"
-msgstr "Adresse:"
+msgstr "Ajouter"
 
 #: templates/admin/change_form.html:32
 msgid "History"
@@ -866,7 +861,7 @@ msgstr "Historique"
 
 #: templates/admin/change_form.html:33
 msgid "View on site"
-msgstr ""
+msgstr "Vu sur site"
 
 #: templates/admin/change_form.html:44
 msgid "Please correct the error below."
@@ -1197,9 +1192,8 @@ msgid ""
 msgstr ""
 
 #: templates/emails/send_report_assigned_to_app_contr/subject.txt:1
-#, fuzzy
 msgid "Fix My Street: New report assigned to you."
-msgstr "Fix My Street: Veuillez Confirmer votre incident: %(title)s"
+msgstr "Fix My Street: Un nouveau rapport vous a été assigné"
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:9
 #, python-format
@@ -1243,9 +1237,8 @@ msgid ""
 msgstr ""
 
 #: templates/emails/send_report_closed_to_subscribers/message.txt:10
-#, fuzzy
 msgid "Description:"
-msgstr "Question"
+msgstr "Description:"
 
 #: templates/emails/send_report_closed_to_subscribers/subject.txt:1
 msgid "Fix My Street: Report closed."
@@ -1687,9 +1680,8 @@ msgstr "Aucun problème n'a été signalé."
 
 #: templates/reports/show.html:3 templates/reports/show.html.py:9
 #: templates/reports/show.html:10
-#, fuzzy
 msgid "in"
-msgstr "Astuce"
+msgstr "dans"
 
 #: templates/reports/show.html:10
 msgid "Signalez tout type d incident :"
@@ -1738,7 +1730,7 @@ msgstr ""
 "Signalé le <strong>%(on)s</strong>"
 
 #: templates/reports/show.html:153
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "                        Posted by <strong><a href='mailto:%(mail)s'>%(by)s</"
@@ -1746,7 +1738,8 @@ msgid ""
 "                        "
 msgstr ""
 "\n"
-"Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
+"Signale par <strong><a href=\"mailto:%(mail)s\">%(by)s</a></strong> le "
+"<strong>%(on)s</strong>"
 
 #: templates/reports/show.html:166
 msgid "Location:"
