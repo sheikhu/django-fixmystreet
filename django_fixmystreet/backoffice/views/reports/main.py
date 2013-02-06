@@ -205,5 +205,6 @@ def show(request,slug, report_id):
                 "pages_list":pages_list,
                 "mark_as_done_form":MarkAsDoneForm(),
                 "page_number": page_number,
+                'activity_list' : report.activities.all(),
             },
             context_instance=RequestContext(request))

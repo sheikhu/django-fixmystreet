@@ -812,6 +812,9 @@ msgstr "Vous êtes abonné aux mises à jour"
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
 
+msgid "Show history"
+msgstr "Montrer l'historique de l'incident."
+
 #~ msgid "Public?"
 #~ msgstr "Public?"
 

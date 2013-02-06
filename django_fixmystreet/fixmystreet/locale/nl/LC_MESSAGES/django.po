@@ -236,9 +236,8 @@ msgid "Report closed by {user}"
 msgstr "Rapport afgesloten door {user}"
 
 #: models.py:1373
-#, fuzzy
 msgid "Report pointed as done"
-msgstr "Ingediende Rapporten"
+msgstr "Incident aangegeven als behandeld"
 
 #: models.py:1374
 msgid "Report as been assigned to {related_new}"

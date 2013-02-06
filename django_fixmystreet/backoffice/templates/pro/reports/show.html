@@ -109,6 +109,10 @@ function close(){
         window.location = "{% url report_close_pro report.id %}";
     }
 }
+
+function showHistory(){
+    $("#history_popup").modal();
+}
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
@@ -145,7 +149,26 @@ function close(){
         </form>
     </div>
 </div>
-
+<div id="history_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h1>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h1>
+    </div>
+    <div class="modal-body">
+        <table width="100%">
+        {% for activity in activity_list %}
+            <tr>
+                <td colspan="2">
+                    <strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <div class="modal-footer">
+        <input type="button" class="btn"  value="{% trans 'Return to incident'%}" data-dismiss="modal" aria-hidden="true"/>
+    </div>
+</div>
 <div class="row">
     <h1 class="span12">
         {% trans "Report Ticket" %} {{ report.get_ticket_number }}
@@ -367,6 +390,7 @@ function close(){
                 {% if fms_user.manager or fms_user.leader %}
                     <p><a href="/export_file/reports/csv/?id={{report.id}}" target="_blank">{% trans 'Export Csv' %}</a></p>
                 {% endif %}
+                <p><a href="javascript:showHistory();">{% trans 'Show history' %}</a></p>
             </div>
         </div>
 

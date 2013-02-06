@@ -746,6 +746,9 @@ msgstr "Bevestig je commentaar verwijdering"
 msgid "delete comment"
 msgstr "Commentaar verwijderen"
 
+msgid "Show history"
+msgstr "Toon de geschiedenis van dit incident"
+
 #: templates/pro/reports/show.html:474
 #, fuzzy, python-format
 msgid ""
