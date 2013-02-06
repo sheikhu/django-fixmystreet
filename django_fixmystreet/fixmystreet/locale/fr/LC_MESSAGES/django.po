@@ -1112,7 +1112,7 @@ msgstr ""
 
 #: templates/emails/send_created_to_user/subject.txt:1
 msgid "Fix My Street: A user has been created for you"
-msgstr ""
+msgstr "Fix My Street: Un utilisateur a été créé pour vous"
 
 #: templates/emails/send_report_assigned_to_app_contr/message.html:9
 #: templates/emails/send_report_assigned_to_app_contr/message.html:18
@@ -1148,9 +1148,8 @@ msgid ""
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/subject.txt:1
-#, fuzzy
 msgid "Fix My Street: Report changed."
-msgstr "Fix My Street Bruxelles"
+msgstr "Rapport a changé"
 
 #: templates/emails/send_report_closed_to_subscribers/message.html:9
 #: templates/emails/send_report_closed_to_subscribers/message.html:18
@@ -1177,9 +1176,8 @@ msgid "Description:"
 msgstr "Question"
 
 #: templates/emails/send_report_closed_to_subscribers/subject.txt:1
-#, fuzzy
 msgid "Fix My Street: Report closed."
-msgstr "Fix My Street Bruxelles"
+msgstr "Rapport fermé"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:9
 #, python-format
@@ -1221,7 +1219,7 @@ msgstr ""
 
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
 msgid "Fix My Street: New report created."
-msgstr "Fix My Street: Nouveau rapport créé"
+msgstr "Nouveau rapport créé"
 
 #: templates/emails/send_report_deassigned_to_app_contr/message.html:9
 #: templates/emails/send_report_deassigned_to_app_contr/message.html:18
@@ -1236,9 +1234,8 @@ msgstr ""
 "Vous ne pourrez plus éditer ce rapport. </p>\n"
 
 #: templates/emails/send_report_deassigned_to_app_contr/subject.txt:1
-#, fuzzy
 msgid "Fix My Street: Report deassigned."
-msgstr "Fix My Street Bruxelles"
+msgstr "Rapport deassigné"
 
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:9
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:20
@@ -1262,7 +1259,7 @@ msgstr ""
 
 #: templates/emails/send_report_fixed_to_gest_resp/subject.txt:1
 msgid "Fix My Street: Report marked as fixed."
-msgstr "FixMyStreet: l'incident est signalé comme résolu"
+msgstr "L'incident est signalé comme résolu"
 
 #: templates/emails/send_report_refused_to_creator/message.html:9
 #: templates/emails/send_report_refused_to_creator/message.html:19
@@ -1295,7 +1292,7 @@ msgstr ""
 
 #: templates/emails/send_report_refused_to_creator/subject.txt:1
 msgid "Fix My Street: Your report has been refused."
-msgstr "FixMyStreet: l'incident signalé a été refusé"
+msgstr "L'incident signalé a été refusé"
 
 #: templates/emails/send_subscription_to_subscriber/message.html:9
 #: templates/emails/send_subscription_to_subscriber/message.html:21
@@ -1319,9 +1316,8 @@ msgstr ""
 "Vous pouvez également vous désinscrire en cliquant sur le lien suivant:"
 
 #: templates/emails/send_subscription_to_subscriber/subject.txt:1
-#, fuzzy
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates."
-msgstr "Fix My Street: abonnement aux mises à jour de l'incident"
+msgstr "Abonnement aux mises à jour de l'incident"
 
 #: templates/emails/subscribe/message.html:4
 #, python-format
@@ -1354,7 +1350,7 @@ msgstr ""
 
 #: templates/emails/subscribe/subject.txt:1
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
-msgstr "Fix My Street: abonnement aux mises à jour de l'incident"
+msgstr "Abonnement aux mises à jour de l'incident"
 
 #: templates/reports/_navigation.html:20
 msgid "subscriptions"

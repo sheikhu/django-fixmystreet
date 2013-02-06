@@ -1,1 +1,1 @@
-{% load i18n %}{% trans "Fix My Street: New report created." %} ({{related.get_ticket_number}})
+{% load i18n %}{{related.address}} {{related.address_number}}, {{related.postalcode}} {{related.get_address_city_name}} (Incident n°: {{related.get_ticket_number}}): {% trans "Fix My Street: New report created." %}

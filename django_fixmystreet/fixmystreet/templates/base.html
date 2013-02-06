@@ -277,6 +277,10 @@
                 if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 9)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 17) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 20) {
                     $('#browser_support_popup').modal();
                 }
+                // If on iphone ==> redirect to mobile page
+                // if(navigator.platform.indexOf("iPhone") != -1){
+                //     window.location="{{request.get_full_path}}../static/iphone_download.html";
+                // }
             });
         </script>
         {% endblock %}
