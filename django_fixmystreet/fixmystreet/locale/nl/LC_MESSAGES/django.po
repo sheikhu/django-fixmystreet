@@ -8,293 +8,293 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-01 16:35+0100\n"
+"POT-Creation-Date: 2013-02-06 11:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: forms.py:14 forms.py:40 forms.py:41 forms.py:69
+#: forms.py:15 forms.py:41 forms.py:42 forms.py:70
 msgid "Select a Category"
 msgstr "Kies een Categorie"
 
-#: forms.py:40 forms.py:69
+#: forms.py:41 forms.py:70
 msgid "category"
 msgstr "categorie:"
 
-#: forms.py:41
+#: forms.py:42
 msgid "Secondary category"
 msgstr "subcategorie"
 
-#: forms.py:79
+#: forms.py:80
 msgid "Private Report"
 msgstr "Privé rapport"
 
-#: forms.py:109
+#: forms.py:110
 msgid "Choose your quality"
 msgstr "Kies een occupatie"
 
-#: forms.py:117
+#: forms.py:118
 msgid "Identity"
 msgstr "naam:"
 
-#: forms.py:118
+#: forms.py:119
 msgid "Tel."
 msgstr "tel. :"
 
-#: forms.py:119 forms.py:149
+#: forms.py:120 forms.py:150
 msgid "Email"
 msgstr "email"
 
-#: forms.py:120
+#: forms.py:121
 msgid "Quality"
 msgstr "occupatie"
 
-#: forms.py:122
+#: forms.py:123
 msgid "Subscription"
 msgstr "Zich abonneren:"
 
-#: forms.py:122
+#: forms.py:123
 #, fuzzy
 msgid "Subscription and report follow-up"
 msgstr "Een rapport doorsturen:"
 
-#: forms.py:146 models.py:228 models.py:1096 models.py:1130 models.py:1164
+#: forms.py:147 models.py:227 models.py:1083 models.py:1117 models.py:1151
 msgid "Name"
 msgstr "naam"
 
-#: forms.py:151
+#: forms.py:152
 msgid "Message"
 msgstr "Boodschap"
 
-#: forms.py:185
+#: forms.py:199
 msgid "Add a comment, please."
 msgstr "Voeg een commentaar toe aan dit rapport"
 
-#: models.py:81
+#: models.py:80
 msgid "Resident"
 msgstr "Bewoner"
 
-#: models.py:82
+#: models.py:81
 msgid "Trade"
 msgstr "Verkoper"
 
-#: models.py:83
+#: models.py:82
 msgid "Syndicate"
 msgstr "Syndicaat"
 
-#: models.py:84
+#: models.py:83
 msgid "Association"
 msgstr "Geolocatie"
 
-#: models.py:85
+#: models.py:84
 msgid "Other"
 msgstr "Andere"
 
-#: models.py:145 models.py:971
+#: models.py:144 models.py:970
 msgid "ANONYMOUS"
 msgstr "ANONIEM"
 
-#: models.py:229 models.py:1097 models.py:1131 models.py:1165
+#: models.py:228 models.py:1084 models.py:1118 models.py:1152
 msgid "Slug"
 msgstr ""
 
-#: models.py:358 models.py:359
+#: models.py:357 models.py:358
 msgid "Created"
 msgstr "Aangemaakt"
 
-#: models.py:360
+#: models.py:359
 msgid "Refused"
 msgstr "Afgewezen"
 
-#: models.py:362 models.py:363 templates/reports/list.html:82
+#: models.py:361 models.py:362 templates/reports/list.html:82
 msgid "In progress"
 msgstr "In behandeling"
 
-#: models.py:364
+#: models.py:363
 msgid "Manager is assigned"
 msgstr "Beheerder is toegekend"
 
-#: models.py:365
+#: models.py:364
 msgid "Applicant is responsible"
 msgstr "Aannemer is verantwoordelijk"
 
-#: models.py:366
+#: models.py:365
 msgid "Contractor is assigned"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:367
+#: models.py:366
 msgid "Solved"
 msgstr "Opgelost"
 
-#: models.py:369 models.py:370
+#: models.py:368 models.py:369
 msgid "Processed"
 msgstr "Behandeld"
 
-#: models.py:371
+#: models.py:370
 msgid "Deleted"
 msgstr "Verwijderd"
 
-#: models.py:378
+#: models.py:377
 msgid "Location"
 msgstr "Geolocatie"
 
-#: models.py:379
+#: models.py:378
 msgid "Address Number"
 msgstr "Adres nummer"
 
-#: models.py:382
+#: models.py:381
 msgid "Postal Code"
 msgstr "Postcode"
 
-#: models.py:384 models.py:385
+#: models.py:383 models.py:384
 msgid "Category"
 msgstr "Categorie"
 
-#: models.py:921
+#: models.py:920
 msgid "Public"
 msgstr "Publiek"
 
-#: models.py:922
+#: models.py:921
 msgid "Private"
 msgstr "Privaat"
 
-#: models.py:923
+#: models.py:922
 msgid "Confidential"
 msgstr "Confidentieel"
 
-#: models.py:1167 models.py:1168
+#: models.py:1154 models.py:1155
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1252 models.py:1556
+#: models.py:1239 models.py:1543
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1369
+#: models.py:1356
 msgid "Refuse"
 msgstr "Afgewezen"
 
-#: models.py:1370
+#: models.py:1357
 msgid "Close"
 msgstr "Afsluiten"
 
-#: models.py:1371
+#: models.py:1358
 msgid "Mark as Done"
 msgstr "Markeer als behandeld"
 
-#: models.py:1372
+#: models.py:1359
 msgid "Manager assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1373
+#: models.py:1360
 msgid "Manager changed"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1374
+#: models.py:1361
 msgid "Publish"
 msgstr "Publiceren"
 
-#: models.py:1375
+#: models.py:1362
 msgid "Organisation assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1376
+#: models.py:1363
 msgid "Organisation changed"
 msgstr "Organisatie aangepast"
 
-#: models.py:1377
+#: models.py:1364
 msgid "Contractor assinged"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:1378
+#: models.py:1365
 msgid "Contractor changed"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:1379
+#: models.py:1366
 msgid "Applicant assinged"
 msgstr "Aannemer is verantwoordelijk"
 
-#: models.py:1380
+#: models.py:1367
 msgid "Applicant changed"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1381
+#: models.py:1368
 msgid "Applicant contractor changed"
 msgstr "Applicant contractor aangepast"
 
-#: models.py:1384
+#: models.py:1371
 msgid "Report refused by {user}"
 msgstr "Incident afgewezen door {user}"
 
-#: models.py:1385
+#: models.py:1372
 msgid "Report closed by {user}"
 msgstr "Rapport afgesloten door {user}"
 
-#: models.py:1386
+#: models.py:1373
 #, fuzzy
 msgid "Report pointed as done"
 msgstr "Ingediende Rapporten"
 
-#: models.py:1387
+#: models.py:1374
 msgid "Report as been assigned to {related_new}"
 msgstr "Incident is toegewezen aan {related_new}"
 
-#: models.py:1388
+#: models.py:1375
 msgid "Report as change manager from {related_old} to {related_new}"
 msgstr "Verantwoordelijke verandert van {related_od} naar {related_new}"
 
-#: models.py:1389
+#: models.py:1376
 msgid "Report has been approved by {user}"
 msgstr "Incident is geaccepteerd door {user}"
 
-#: models.py:1390
+#: models.py:1377
 msgid "{related_new} is responsible for the report"
 msgstr "{related_new} is verantwoordelijk voor het incident"
 
-#: models.py:1391
+#: models.py:1378
 msgid "{related_old} give responsibility to {related_new}"
 msgstr "{related_old} geeft de verantwoordelijkheid door aan {related_new}"
 
-#: models.py:1392
+#: models.py:1379
 #, fuzzy
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Aannemer {related_new} is verantwoordelijk voor het incident"
 
-#: models.py:1393
+#: models.py:1380
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Aannemer verandert van {related_old} naar {related_new}"
 
-#: models.py:1394
+#: models.py:1381
 #, fuzzy
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Contractor {related_new} is verantwoordelijk voor het report"
 
-#: models.py:1395
+#: models.py:1382
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Contractor verandert van {related_old} naar {related_new}"
 
-#: models.py:1396
+#: models.py:1383
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr "Applicant contractor verandert van {related_old} tot {related_new}"
 
-#: models.py:1515
+#: models.py:1502
 msgid "Question"
 msgstr "Vraag"
 
-#: models.py:1516
+#: models.py:1503
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1557
+#: models.py:1544
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1558
+#: models.py:1545
 msgid "Related model field"
 msgstr ""
 
@@ -552,6 +552,7 @@ msgid ""
 msgstr ""
 
 #: templates/base.html:9 templates/home.html:7
+#: templates/admin/change_form.html:19
 msgid "Home"
 msgstr "Home"
 
@@ -753,6 +754,73 @@ msgstr "Gesloten incidenten"
 msgid "Download the fix my street mobile application for your smartphone:"
 msgstr "Download de Fix My Street mobiele applicatie voor uw smartphone:"
 
+#: templates/posters.html:4 templates/posters.html.py:8
+msgid "Posters"
+msgstr "Posters"
+
+#: templates/posters.html:10
+msgid ""
+"\n"
+"Help spread the word.  The more people who know about fixmystreet.ca, the "
+"more \n"
+"useful it will be.  Share your report on Twitter or Facebook, \n"
+"or hang a poster at a university or neighbourhood coffee shop.\n"
+msgstr ""
+
+#: templates/posters.html:17
+msgid "Poster"
+msgstr "Poster"
+
+#: templates/admin/base_site.html:4
+msgid "Fix My Street Admin"
+msgstr "Fix My Street Beheer"
+
+#: templates/admin/base_site.html:15
+msgid "Fix My Street Administration"
+msgstr "Fix My Street Administratie"
+
+#: templates/admin/change_form.html:22
+msgid "Add"
+msgstr "Toevoegen"
+
+#: templates/admin/change_form.html:32
+msgid "History"
+msgstr "Geschiedenis"
+
+#: templates/admin/change_form.html:33
+msgid "View on site"
+msgstr "Bekijk op de website"
+
+#: templates/admin/change_form.html:44
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/login.html:58
+msgid "Login with Facebook"
+msgstr ""
+
+#: templates/admin/login.html:59
+msgid "Login with Google"
+msgstr ""
+
+#: templates/admin/login.html:64
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+#: templates/admin/login.html:67
+msgid "Password:"
+msgstr "Paswoord:"
+
+#: templates/admin/login.html:70
+msgid "Forgot password?"
+msgstr "Paswoord vergeten?"
+
+#: templates/admin/login.html:73
+msgid "Log in"
+msgstr "Aanmelden"
+
 #: templates/contact/new.html:26
 msgid ""
 "\n"
@@ -773,8 +841,8 @@ msgstr ""
 msgid "We'd love to get your feedback"
 msgstr ""
 
-#: templates/contact/new.html:42 templates/reports/new.html:246
-#: templates/reports/new.html.py:303
+#: templates/contact/new.html:42 templates/reports/new.html:241
+#: templates/reports/new.html.py:298
 msgid "* This fields are required"
 msgstr "* Deze velden zijn verplicht"
 
@@ -973,16 +1041,16 @@ msgstr "Bijgewerkte Rapporten"
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<!--p> Please activate yourself first by clicking the following link: "
-"%(url)s/</p-->\n"
+"<!--p> Please activate yourself first by clicking the following link: %(url)"
+"s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
 msgstr ""
 "\n"
 "<p>De gebruiker %(firstname)s %(lastname)s is aangemaakt voor u.</p>\n"
-"<!--p> U moet de gebruiker activeren door op de volgende link te klikken: "
-"%(url)s/</p-->\n"
+"<!--p> U moet de gebruiker activeren door op de volgende link te klikken: %"
+"(url)s/</p-->\n"
 "<h2>Gebruikersinformatie:</h2>\n"
 "<p> Gebruikersnaam: %(username)s</p>\n"
 "<p> Paswoord: %(password)s</p>\n"
@@ -1021,8 +1089,8 @@ msgstr ""
 "\n"
 "<p>Een incident van het type %(reportType)s, aangemaakt op %(date)s is aan u "
 "toegewezen. Als u de inhoud van het incident wil bekijken, klik dan op de "
-"volgende link: <a href=\"http://%(SITE_URL)s%(url)s\">http://%(SITE_URL)s"
-"%(url)s</a> .</p>\n"
+"volgende link: <a href=\"http://%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%"
+"(url)s</a> .</p>\n"
 
 #: templates/emails/send_report_assigned_to_app_contr/subject.txt:1
 msgid "Fix My Street: New report assigned to you."
@@ -1033,26 +1101,26 @@ msgstr "Fix My Street: Een nieuw incident is aan u toegewezen."
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s has changed. You "
-"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 "\n"
 "<p>Een incident van het type %(reportType)s aangemaakt op %(date)s is "
-"aangepast. U kan de inhoud van het incident bijken op <a href=\"http://"
-"%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
+"aangepast. U kan de inhoud van het incident bijken op <a href=\"http://%"
+"(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:18
 #, python-format
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is changed. You can "
-"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 "\n"
 "<p>Een incident van het type %(reportType)s aangemaakt op %(date)s is "
-"aangepast. U kan de inhoud van het incident bekijken op <a href=\"http://"
-"%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
+"aangepast. U kan de inhoud van het incident bekijken op <a href=\"http://%"
+"(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_report_changed_to_subscribers/subject.txt:1
 msgid "Fix My Street: Report changed."
@@ -1082,8 +1150,8 @@ msgid ""
 msgstr ""
 "\n"
 "Een incident van het type %(reportType)s aangemaakt op %(date)s is nu "
-"aangegeven als gesloten. Ukan de inhoud van het incident bekijken op "
-"%(SITE_URL)s/report/%(reportId)s.\n"
+"aangegeven als gesloten. Ukan de inhoud van het incident bekijken op %"
+"(SITE_URL)s/report/%(reportId)s.\n"
 "Incident overzicht:\n"
 
 #: templates/emails/send_report_closed_to_subscribers/message.txt:10
@@ -1100,19 +1168,19 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the "
-"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
-"mail is automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
+"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
+"automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Een incident van het type %(reportType)s aangemaakt op %(date)s is aan u "
 "toegewezen. Indien u het incident wil accepteren, klik dan op de volgende "
 "link: <a href=\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept"
 "\">http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Indien u de "
-"inhoud van het incident wil bekijken, klik dan op de volgende link: "
-"%(SITE_URL)s%(url)s .(Een email is automatisch gestuurd naar de maker van "
-"dit incident.) </p>\n"
+"inhoud van het incident wil bekijken, klik dan op de volgende link: %"
+"(SITE_URL)s%(url)s .(Een email is automatisch gestuurd naar de maker van dit "
+"incident.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
 #, python-format
@@ -1120,18 +1188,18 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the "
-"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
-"mail is automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
+"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
+"automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Een incident van het type %(reportType)s aangemaakt op %(date)s is aan u "
 "toegewezen. Indien u het incident wil accepteren, klik dan op de volgende "
 "link: <a href=\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept"
 "\">http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept</a>. Indien u de "
-"inhoud van het incident wil bekijken, klik dan op de volgende link: "
-"%(SITE_URL)s%(url)s .(Een email is automatisch verstuurd naar de maker van "
+"inhoud van het incident wil bekijken, klik dan op de volgende link: %"
+"(SITE_URL)s%(url)s .(Een email is automatisch verstuurd naar de maker van "
 "dit incident.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
@@ -1225,8 +1293,8 @@ msgid ""
 msgstr ""
 "\n"
 "<p>Een incident van het type %(reportType)s aangemaakt op %(date)s is "
-"aangepast. U kan de inhoud van het incident bekijken op <a href=\"http://"
-"%(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
+"aangepast. U kan de inhoud van het incident bekijken op <a href=\"http://%"
+"(SITE_URL)s%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_subscription_to_subscriber/message.html:13
 #: templates/emails/send_subscription_to_subscriber/message.html:25
@@ -1266,6 +1334,21 @@ msgstr ""
 "Danku voor het volgen van het incident '%(title)s'.\n"
 "\n"
 "\n"
+
+#: templates/promotions/show.html:4 templates/reports/list.html:4
+#: templates/reports/list.html.py:13 templates/reports/list.html:90
+msgid "Reports for"
+msgstr "Incidenten voor"
+
+#: templates/promotions/show.html:8
+#, fuzzy
+msgid "First 100 Reports"
+msgstr "Een rapport doorsturen"
+
+#: templates/promotions/show.html:9
+msgid ""
+" out of the first 100 confirmed reports were filed with the promotional code "
+msgstr ""
 
 #: templates/reports/_navigation.html:20
 #, fuzzy
@@ -1321,11 +1404,6 @@ msgstr "Rapporten per gemeente"
 msgid "As reported by Fix My Street users."
 msgstr "Gerapporteerd door Fix My Street gebruikers"
 
-#: templates/reports/list.html:4 templates/reports/list.html.py:13
-#: templates/reports/list.html:90
-msgid "Reports for"
-msgstr "Incidenten voor"
-
 #: templates/reports/list.html:14
 msgid "Meta description for list page"
 msgstr ""
@@ -1376,24 +1454,24 @@ msgstr ""
 msgid "Brussels Mobility (tel:0800/94.001)"
 msgstr "Brussel Mobiliteit (tel:0800/94.001)"
 
-#: templates/reports/new.html:152 templates/reports/new.html.py:271
+#: templates/reports/new.html:148 templates/reports/new.html.py:266
 #: templates/reports/show.html:302
 msgid "Files"
 msgstr "Foto's en bestanden"
 
-#: templates/reports/new.html:158 templates/reports/new.html.py:291
+#: templates/reports/new.html:154 templates/reports/new.html.py:286
 msgid "Comment"
 msgstr "Commentaar:"
 
-#: templates/reports/new.html:231
+#: templates/reports/new.html:227
 msgid "Drag me to change my location."
 msgstr "Bedankt om het icoon te plaatsen op de kaart"
 
-#: templates/reports/new.html:244
+#: templates/reports/new.html:239
 msgid "Submitting a report"
 msgstr "Een rapport doorsturen:"
 
-#: templates/reports/new.html:248
+#: templates/reports/new.html:243
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
@@ -1401,71 +1479,71 @@ msgstr ""
 "Alvorens een incident te rapporteren, kijk even na of het incident nog niet "
 "gerapporteerd is."
 
-#: templates/reports/new.html:250
+#: templates/reports/new.html:245
 msgid "Verify"
 msgstr "verifiëren"
 
-#: templates/reports/new.html:254
+#: templates/reports/new.html:249
 msgid "Address"
 msgstr "Adres:"
 
-#: templates/reports/new.html:257
+#: templates/reports/new.html:252
 msgid "** To change the address, move the marker on the map above."
 msgstr "Om het adres aan te passen, verplaats het icoon op de kaart hierboven."
 
-#: templates/reports/new.html:264
+#: templates/reports/new.html:259
 msgid "Incident category:"
 msgstr "Incident type:"
 
-#: templates/reports/new.html:272
+#: templates/reports/new.html:267
 msgid "Optimal File Size (1200X800)"
 msgstr "Geoptimaliseerde  bestandsgrootte (1200X800)"
 
-#: templates/reports/new.html:273
+#: templates/reports/new.html:268
 msgid "Supported formats"
 msgstr "Ondersteunde formaten"
 
-#: templates/reports/new.html:287 templates/reports/show.html:316
+#: templates/reports/new.html:282 templates/reports/show.html:316
 msgid "Add file"
 msgstr "Voeg een bestand toe"
 
-#: templates/reports/new.html:302
+#: templates/reports/new.html:297
 msgid "Personal information:"
 msgstr "Persoonlijke gegevens:"
 
-#: templates/reports/new.html:307
+#: templates/reports/new.html:302
 msgid "Contact information:"
 msgstr "Contact gegevens:"
 
-#: templates/reports/new.html:321
+#: templates/reports/new.html:316
 msgid "Visualize:"
 msgstr "Toon overzicht"
 
-#: templates/reports/new.html:322
+#: templates/reports/new.html:317
 msgid "Visualize an overview of the created incident report."
 msgstr "Toon een overzicht van het ingevulde rapport."
 
-#: templates/reports/new.html:324
+#: templates/reports/new.html:319
 msgid "Visualize"
 msgstr "Overzicht"
 
-#: templates/reports/new.html:335
+#: templates/reports/new.html:330
 msgid "Confirm:"
 msgstr "Bevestigen:"
 
-#: templates/reports/new.html:336
+#: templates/reports/new.html:331
 msgid "Edit"
 msgstr "Aanpassen"
 
-#: templates/reports/new.html:337 templates/reports/show.html:104
+#: templates/reports/new.html:332 templates/reports/show.html:104
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: templates/reports/new.html:342
+#: templates/reports/new.html:337
 msgid "Confidentiality:"
 msgstr "Vertrouwelijkheid:"
 
-#: templates/reports/new.html:343
+#: templates/reports/new.html:338
 msgid ""
 "We garantee the confidentiality of all given information. Conform with law "
 "(see site  <a href=\"http://www.ejustice.just.fgov.be\">Monitoring Belgium</"
@@ -1473,43 +1551,44 @@ msgid ""
 "of them."
 msgstr ""
 "Wij garanderen de vertrouwelijkheid van alle gegeven informatie. Conform met "
-"de wet ( zie site <a href=\"http://www.ejustice.just.fgov.be\">Monitoring "
+"de wet ( zie site <a href=\"http://www.ejustice.just.fgov.be/cgi_loi/"
+"change_lg.pl?language=nl&la=N&cn=1992120832&table_name=wet\"> Monitoring "
 "België</a>, u hebt altijd een lees recht op de informatie alsook een "
 "aanpassing en verwijder recht. "
 
-#: templates/reports/new.html:356
+#: templates/reports/new.html:351
 msgid "Submit an incident:"
 msgstr "Een rapport doorsturen:"
 
-#: templates/reports/new.html:359
+#: templates/reports/new.html:354
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Bedankt ! Het incident is correct naar het systeem verstuurd."
 
-#: templates/reports/new.html:360
+#: templates/reports/new.html:355
 msgid "A mail containing the link report has been sent."
 msgstr "Een email met report details werd opgestuurd."
 
-#: templates/reports/new.html:362
+#: templates/reports/new.html:357
 msgid "Download a copy of the incident as a pdf"
 msgstr "Download een kopie van het incident als pdf."
 
-#: templates/reports/new.html:367 templates/reports/new.html.py:369
+#: templates/reports/new.html:362 templates/reports/new.html.py:364
 msgid "Continue"
 msgstr "ga verder"
 
-#: templates/reports/new.html:376
+#: templates/reports/new.html:371
 msgid "Incident overview:"
 msgstr "Overzicht van het ingevulde incident rapport:"
 
-#: templates/reports/new.html:381
+#: templates/reports/new.html:376
 msgid "Return to incident"
 msgstr "Ga terug naar het incident rapport"
 
-#: templates/reports/new.html:387
+#: templates/reports/new.html:382
 msgid "Nearby incidents that are already submitted:"
 msgstr "Nabijgelegen incidenten die reeds gesignaleerd zijn:"
 
-#: templates/reports/new.html:397
+#: templates/reports/new.html:392
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
@@ -1540,7 +1619,9 @@ msgstr "Incident"
 msgid ""
 "Indicate that the incident is fixed. By pressing this button a mail will be "
 "send to the responsible manager."
-msgstr "Signaleer dat dit incident opgelost is. Door op deze knop te klikken zal een mail worden gestuurd naar de verantwoordelijke van dit incident."
+msgstr ""
+"Signaleer dat dit incident opgelost is. Door op deze knop te klikken zal een "
+"mail worden gestuurd naar de verantwoordelijke van dit incident."
 
 #: templates/reports/show.html:119 templates/reports/show.html.py:121
 msgid "Mark as done"
@@ -1577,8 +1658,8 @@ msgid ""
 "                        "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
-"%(on)s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
+"s</strong>"
 
 #: templates/reports/show.html:166
 msgid "Location:"
@@ -1629,13 +1710,13 @@ msgstr "Commentaar:"
 #, python-format
 msgid ""
 "\n"
-"                            Posted by <strong>%(by)s</strong> on <strong>"
-"%(on)s</strong>\n"
+"                            Posted by <strong>%(by)s</strong> on <strong>%"
+"(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
-"                            Gepost door <strong>%(by)s</strong> op <strong>"
-"%(on)s</strong>\n"
+"                            Gepost door <strong>%(by)s</strong> op <strong>%"
+"(on)s</strong>\n"
 " "
 
 #: templates/reports/show.html:316
@@ -1670,15 +1751,15 @@ msgstr "Uw email"
 msgid "Subscribe"
 msgstr "Abonneer"
 
-#: views/ajax.py:18
+#: views/ajax.py:16
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: views/reports/main.py:140
+#: views/reports/main.py:131
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
 
-#: views/reports/main.py:164
+#: views/reports/main.py:155
 msgid "No incident found with this ticket number"
 msgstr "Geen incident gevonden met dit nummer"
 
@@ -1690,55 +1771,18 @@ msgstr "U bent succesvol geabonneerd voor updates"
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
 
-#~ msgid "Posters"
-#~ msgstr "Posters"
-
-#~ msgid "Poster"
-#~ msgstr "Poster"
-
-#~ msgid "Fix My Street Admin"
-#~ msgstr "Fix My Street Beheer"
-
-#~ msgid "Fix My Street Administration"
-#~ msgstr "Fix My Street Administratie"
-
-#~ msgid "Add"
-#~ msgstr "Toevoegen"
-
-#~ msgid "History"
-#~ msgstr "Geschiedenis"
-
-#~ msgid "View on site"
-#~ msgstr "Bekijk op de website"
-
-#~ msgid "Username:"
-#~ msgstr "Gebruikersnaam:"
-
-#~ msgid "Password:"
-#~ msgstr "Paswoord:"
-
-#~ msgid "Forgot password?"
-#~ msgstr "Paswoord vergeten?"
-
-#~ msgid "Log in"
-#~ msgstr "Aanmelden"
-
-#, fuzzy
-#~ msgid "First 100 Reports"
-#~ msgstr "Een rapport doorsturen"
-
 #~ msgid ""
 #~ "\n"
 #~ "<p>You are now subscribed to the report with type %(reportType)s, created "
-#~ "at %(date)s. You can consult the report at <a href=\"http://%(SITE_URL)s"
-#~ "%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
+#~ "at %(date)s. You can consult the report at <a href=\"http://%(SITE_URL)s%"
+#~ "(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
 #~ "<p>You can unsubscribe yourself by clicking the following link: <a href="
 #~ "\"http://%(SITE_URL)s%(url2)s\">http://%(SITE_URL)s%(url2)s</a></p>\n"
 #~ msgstr ""
 #~ "\n"
-#~ "<p>U bent nu geabonneerd voor het rapport van type %(reportType)s, op "
-#~ "%(date)s. U kan het rapport raadplegen via: <a href=\"http://%(SITE_URL)s"
-#~ "%(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
+#~ "<p>U bent nu geabonneerd voor het rapport van type %(reportType)s, op %"
+#~ "(date)s. U kan het rapport raadplegen via: <a href=\"http://%(SITE_URL)s%"
+#~ "(url)s\">http://%(SITE_URL)s%(url)s</a>.</p>\n"
 #~ "<p>U kan zich uitschrijven door op de volgende link te klikken: <a href="
 #~ "\"http://%(SITE_URL)s%(url2)s\">http://%(SITE_URL)s%(url2)s</a></p>\n"
 
