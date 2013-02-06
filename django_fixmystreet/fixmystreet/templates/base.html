@@ -187,6 +187,31 @@
                 </div>
                 {% endif %}
                 {% block content %}{% endblock %}
+                <div id="browser_support_popup" class="modal hide fade" role="dialog">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h1>{% trans 'Browser not supported' %}</h1>
+                    </div>
+                    <div class="modal-body">
+                        <h4>{% trans 'Please download one of the supported browsers below before continuing on the website.' %}</h4>
+                            <center>
+                            <div class="row">
+                            <div class="span2"><a target="_blank" href="http://www.mozilla.org/en-US/firefox/new/"><img src="{{STATIC_URL}}images/firefox.png"></a></div>
+                            <div class="span2"><a target="_blank" href="http://windows.microsoft.com/en-US/internet-explorer/download-ie"><img src="{{STATIC_URL}}images/internet_explorer.png"></a></div>
+                            <div class="span2"><a target="_blank" href="https://www.google.com/intl/en/chrome/browser/"><img src="{{STATIC_URL}}images/chrome.jpeg"></a></div>
+                            </div>
+                            <div class="row">
+                            <div class="span2"><a target="_blank" href="http://www.mozilla.org/en-US/firefox/new/">Firefox (17+)</a></div>
+                            <div class="span2"><a target="_blank" href="http://windows.microsoft.com/en-US/internet-explorer/download-ie">Internet Explorer (9+)</a></div>
+                            <div class="span2"><a target="_blank" href="https://www.google.com/intl/en/chrome/browser/">Google Chrome (20+)</a></div>
+                            </div>
+                        </center>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
+                    </div>
+                </div>
             </section>
 
             <footer>
@@ -245,6 +270,14 @@
                 },10000);
             });
             {% endif %}
+        </script>
+        <script type="text/javascript">
+            $(function(){
+                console.log($.browser);
+                if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 9)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 17) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 20) {
+                    $('#browser_support_popup').modal();
+                }
+            });
         </script>
         {% endblock %}
 

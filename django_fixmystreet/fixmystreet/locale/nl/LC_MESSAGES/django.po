@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 11:24+0100\n"
+"POT-Creation-Date: 2013-02-06 12:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -614,7 +614,21 @@ msgstr "Toekenning verantwoordelijke managers"
 msgid "Change your password"
 msgstr "Paswoord wijzigen"
 
+#: templates/base.html:193
+msgid "Browser not supported"
+msgstr "Browser wordt niet ondersteund"
+
 #: templates/base.html:196
+msgid ""
+"Please download one of the supported browsers below before continuing on the "
+"website."
+msgstr "Download een van de onderstaande browsers alvorens verder te gaan."
+
+#: templates/base.html:212 templates/reports/show.html:102
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: templates/base.html:221
 msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
@@ -622,11 +636,11 @@ msgstr ""
 "Een intiatief van Brussel Mobiliteit in samenwerking met de gemeenten en de "
 "brusselse partner instellingen"
 
-#: templates/base.html:199
+#: templates/base.html:224
 msgid "Copyright 2011, CIRB"
 msgstr "Created by CIRB, 2013"
 
-#: templates/base.html:200 templates/term_of_use.html:4
+#: templates/base.html:225 templates/term_of_use.html:4
 msgid "Terms of Use"
 msgstr "Voorwaarden"
 
@@ -1304,8 +1318,8 @@ msgstr ""
 "link te klikken:"
 
 #: templates/emails/send_subscription_to_subscriber/subject.txt:1
-#: templates/emails/subscribe/subject.txt:1
-msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
+#, fuzzy
+msgid "Fix My Street: Subscribe to Fix My Street Report Updates."
 msgstr "Fix My Street: Geabonneerd voor Fix My Street incident updates."
 
 #: templates/emails/subscribe/message.html:4
@@ -1334,6 +1348,10 @@ msgstr ""
 "Danku voor het volgen van het incident '%(title)s'.\n"
 "\n"
 "\n"
+
+#: templates/emails/subscribe/subject.txt:1
+msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
+msgstr "Fix My Street: Geabonneerd voor Fix My Street incident updates."
 
 #: templates/promotions/show.html:4 templates/reports/list.html:4
 #: templates/reports/list.html.py:13 templates/reports/list.html:90
@@ -1606,10 +1624,6 @@ msgid ""
 "sur FixMyStreet qui identifiera alors le service public en charge de le "
 "traiter. "
 msgstr ""
-
-#: templates/reports/show.html:102
-msgid "Cancel"
-msgstr "Annuleren"
 
 #: templates/reports/show.html:115
 msgid "Report Ticket"
