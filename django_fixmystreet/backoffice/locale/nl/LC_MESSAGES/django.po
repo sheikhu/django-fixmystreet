@@ -739,11 +739,11 @@ msgstr "Gepost door"
 
 #: templates/pro/reports/show.html:447
 msgid "file creation Date"
-msgstr "(Gemaakt datum)"
+msgstr "(Creatie datum)"
 
 #: templates/pro/reports/show.html:450
 msgid "file publication date"
-msgstr "(Gepost datum)"
+msgstr "(Publicatie datum)"
 
 #: templates/pro/reports/show.html:466 templates/pro/reports/show.html:515
 msgid "Confidential"
