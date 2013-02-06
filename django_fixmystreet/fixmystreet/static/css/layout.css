@@ -1752,7 +1752,18 @@ table.report_overview_table th{
 	padding:5px;
 }
 
+#browser_support_popup .span1{
+    text-align: center;
+}
 
+#browser_support_popup img{
+    width: 56px;
+    height: 56px;
+}
+
+#browser_support_popup a{
+    width: 65px;
+}
 
 #divMarkAsDone {
     width:260px;
