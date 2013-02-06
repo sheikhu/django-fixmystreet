@@ -431,7 +431,9 @@ body {
                 <td colspan="3">
                       <strong>- {{file.created|date}} : </strong>
                        {% if file.created_by %}
-                             {{file.created_by.fmsuser.get_display_name}} (mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
+                             {{file.created_by.fmsuser.get_display_name}} (<strong>{{file.created_by.fmsuser.organisation.name}}</strong>,
+                                 <strong>mail:</strong>{{file.created_by.fmsuser.email}},
+                                 <strong>tel:</strong>{{file.created_by.fmsuser.telephone}})
                        {% else %}
                              {% trans 'Anonymous' %}
                        {% endif %}

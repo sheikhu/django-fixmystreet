@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 09:07+0100\n"
+"POT-Creation-Date: 2013-02-06 12:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: forms.py:15 forms.py:41 forms.py:42 forms.py:70
 msgid "Select a Category"
@@ -612,6 +612,7 @@ msgstr ""
 "        "
 
 #: templates/base.html:9 templates/home.html:7
+#: templates/admin/change_form.html:19
 msgid "Home"
 msgstr "Page d'accueil"
 
@@ -684,11 +685,11 @@ msgid ""
 "website."
 msgstr "Veuillez télécharger un des navigateurs proposé ci-dessous."
 
-#: templates/base.html:204 templates/reports/show.html:102
+#: templates/base.html:212 templates/reports/show.html:102
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/base.html:213
+#: templates/base.html:221
 msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
@@ -698,11 +699,11 @@ msgstr ""
 "target='_blank'>Bruxelles Mobilité</a> en collaboration avec les communes et "
 "les institutions bruxelloises partenaires"
 
-#: templates/base.html:216
+#: templates/base.html:224
 msgid "Copyright 2011, CIRB"
 msgstr "Created by CIRB, 2013"
 
-#: templates/base.html:217 templates/term_of_use.html:4
+#: templates/base.html:225 templates/term_of_use.html:4
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
@@ -825,6 +826,77 @@ msgstr "Incidents cloturés"
 #: templates/home.html:194
 msgid "Download the fix my street mobile application for your smartphone:"
 msgstr "Téléchargez l'application fix my sreet sur votre smartphone"
+
+#: templates/posters.html:4 templates/posters.html.py:8
+msgid "Posters"
+msgstr "Signalé par"
+
+#: templates/posters.html:10
+msgid ""
+"\n"
+"Help spread the word.  The more people who know about fixmystreet.ca, the "
+"more \n"
+"useful it will be.  Share your report on Twitter or Facebook, \n"
+"or hang a poster at a university or neighbourhood coffee shop.\n"
+msgstr ""
+
+#: templates/posters.html:17
+#, fuzzy
+msgid "Poster"
+msgstr "Signalé par"
+
+#: templates/admin/base_site.html:4
+#, fuzzy
+msgid "Fix My Street Admin"
+msgstr "Fix My Street:"
+
+#: templates/admin/base_site.html:15
+#, fuzzy
+msgid "Fix My Street Administration"
+msgstr "Fix My Street:"
+
+#: templates/admin/change_form.html:22
+#, fuzzy
+msgid "Add"
+msgstr "Adresse:"
+
+#: templates/admin/change_form.html:32
+msgid "History"
+msgstr "Historique"
+
+#: templates/admin/change_form.html:33
+msgid "View on site"
+msgstr ""
+
+#: templates/admin/change_form.html:44
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/login.html:58
+msgid "Login with Facebook"
+msgstr ""
+
+#: templates/admin/login.html:59
+msgid "Login with Google"
+msgstr ""
+
+#: templates/admin/login.html:64
+msgid "Username:"
+msgstr "Ideitifiant"
+
+#: templates/admin/login.html:67
+msgid "Password:"
+msgstr "Mot de passe"
+
+#: templates/admin/login.html:70
+msgid "Forgot password?"
+msgstr "Mot de passe oublié?"
+
+#: templates/admin/login.html:73
+msgid "Log in"
+msgstr "Se connecter"
 
 #: templates/contact/new.html:26
 msgid ""
@@ -1092,8 +1164,8 @@ msgstr "Mis à jour"
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<!--p> Please activate yourself first by clicking the following link: "
-"%(url)s/</p-->\n"
+"<!--p> Please activate yourself first by clicking the following link: %(url)"
+"s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
@@ -1134,8 +1206,8 @@ msgstr "Fix My Street: Veuillez Confirmer votre incident: %(title)s"
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s has changed. You "
-"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:18
@@ -1143,8 +1215,8 @@ msgstr ""
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is changed. You can "
-"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/subject.txt:1
@@ -1185,18 +1257,18 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the "
-"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
-"mail is automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
+"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
+"automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le "
-"contenu du rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s"
-"%(url)s .(Un mail est automatiquement envoyé au createur du rapport.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
+"rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
+"est automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
 #, python-format
@@ -1204,18 +1276,18 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the "
-"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
-"mail is automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
+"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
+"automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
-"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le "
-"contenu du rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s"
-"%(url)s .(Un mail est automatiquement envoyé au createur du rapport.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
+"s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
+"rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
+"est automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
 msgid "Fix My Street: New report created."
@@ -1352,6 +1424,21 @@ msgstr ""
 msgid "Fix My Street: Subscribe to Fix My Street Report Updates"
 msgstr "Abonnement aux mises à jour de l'incident"
 
+#: templates/promotions/show.html:4 templates/reports/list.html:4
+#: templates/reports/list.html.py:13 templates/reports/list.html:90
+msgid "Reports for"
+msgstr "Incidents pour"
+
+#: templates/promotions/show.html:8
+#, fuzzy
+msgid "First 100 Reports"
+msgstr "Signaler un incident"
+
+#: templates/promotions/show.html:9
+msgid ""
+" out of the first 100 confirmed reports were filed with the promotional code "
+msgstr ""
+
 #: templates/reports/_navigation.html:20
 msgid "subscriptions"
 msgstr "Questions"
@@ -1404,11 +1491,6 @@ msgstr "Incidents par communes"
 #: templates/reports/index.html:56
 msgid "As reported by Fix My Street users."
 msgstr "Comme indiqué par les utilisateurs de fix my street."
-
-#: templates/reports/list.html:4 templates/reports/list.html.py:13
-#: templates/reports/list.html:90
-msgid "Reports for"
-msgstr "Incidents pour"
 
 #: templates/reports/list.html:14
 msgid "Meta description for list page"
@@ -1714,8 +1796,8 @@ msgstr "Commentaires"
 #, python-format
 msgid ""
 "\n"
-"                            Posted by <strong>%(by)s</strong> on <strong>"
-"%(on)s</strong>\n"
+"                            Posted by <strong>%(by)s</strong> on <strong>%"
+"(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -1772,44 +1854,6 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
-
-#~ msgid "Posters"
-#~ msgstr "Signalé par"
-
-#, fuzzy
-#~ msgid "Poster"
-#~ msgstr "Signalé par"
-
-#, fuzzy
-#~ msgid "Fix My Street Admin"
-#~ msgstr "Fix My Street:"
-
-#, fuzzy
-#~ msgid "Fix My Street Administration"
-#~ msgstr "Fix My Street:"
-
-#, fuzzy
-#~ msgid "Add"
-#~ msgstr "Adresse:"
-
-#~ msgid "History"
-#~ msgstr "Historique"
-
-#~ msgid "Username:"
-#~ msgstr "Ideitifiant"
-
-#~ msgid "Password:"
-#~ msgstr "Mot de passe"
-
-#~ msgid "Forgot password?"
-#~ msgstr "Mot de passe oublié?"
-
-#~ msgid "Log in"
-#~ msgstr "Se connecter"
-
-#, fuzzy
-#~ msgid "First 100 Reports"
-#~ msgstr "Signaler un incident"
 
 #~ msgid "Configuration"
 #~ msgstr "Configuration"

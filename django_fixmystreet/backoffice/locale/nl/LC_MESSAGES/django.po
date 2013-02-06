@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-05 13:12+0100\n"
+"POT-Creation-Date: 2013-02-06 12:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:36
@@ -227,6 +227,13 @@ msgstr "Aannemer"
 msgid "User"
 msgstr "Gebruikersnaam:"
 
+#: templates/pro/contractor_create.html:31
+#: templates/pro/manager_category_configuration.html:86
+#: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
+#: templates/pro/reports/show.html:536
+msgid "Save"
+msgstr "Bewaren"
+
 #: templates/pro/contractors_overview.html:20
 msgid "Contractors"
 msgstr "Aannemer"
@@ -267,20 +274,14 @@ msgstr "Uw gebruikersnaam en paswoord kloppen niet. Probeer opnieuw."
 msgid "Default manager configuration"
 msgstr "Standaard beheerder configuratie"
 
-#: templates/pro/manager_category_configuration.html:61
+#: templates/pro/manager_category_configuration.html:60
 msgid "Configure gestionnaire categories"
 msgstr "Configureer de beheerder categorieën"
 
-#: templates/pro/manager_category_configuration.html:86
-#: templates/pro/reports/show.html:128 templates/pro/reports/show.html:139
+#: templates/pro/manager_category_configuration.html:85
+#: templates/pro/reports/show.html:132 templates/pro/reports/show.html:143
 msgid "Cancel"
 msgstr "Annuleren"
-
-#: templates/pro/manager_category_configuration.html:87
-#: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
-#: templates/pro/reports/show.html:532
-msgid "Save"
-msgstr "Bewaren"
 
 #: templates/pro/pdf.html:70
 msgid "Incident numero"
@@ -308,7 +309,7 @@ msgid "Category"
 msgstr "Categorie"
 
 #: templates/pro/pdf.html:133 templates/pro/pdf.html.py:464
-#: templates/pro/reports/show.html:414
+#: templates/pro/reports/show.html:418
 msgid "Creation Date"
 msgstr "Aangemaakt op:"
 
@@ -350,8 +351,8 @@ msgstr "Geschiedenis"
 msgid "No Report History"
 msgstr "Geen History"
 
-#: templates/pro/pdf.html:370 templates/pro/reports/show.html:453
-#: templates/pro/reports/show.html:510
+#: templates/pro/pdf.html:370 templates/pro/reports/show.html:457
+#: templates/pro/reports/show.html:514
 msgid "Comments"
 msgstr "Commentaren"
 
@@ -481,11 +482,11 @@ msgstr "Alle incidenten"
 msgid "My Subscriptions"
 msgstr "Mijn abonnementen"
 
-#: templates/pro/reports/list.html:180 templates/pro/reports/show.html:153
+#: templates/pro/reports/list.html:180 templates/pro/reports/show.html:157
 msgid "create_report"
 msgstr "Rapporteer een nieuw incident"
 
-#: templates/pro/reports/list.html:188 templates/pro/reports/show.html:165
+#: templates/pro/reports/list.html:188 templates/pro/reports/show.html:169
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
@@ -551,44 +552,44 @@ msgstr "Nieuw rapport"
 msgid "Incident category:"
 msgstr "Categorie"
 
-#: templates/pro/reports/show.html:129 templates/pro/reports/show.html:140
+#: templates/pro/reports/show.html:133 templates/pro/reports/show.html:144
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: templates/pro/reports/show.html:147
+#: templates/pro/reports/show.html:151
 #, fuzzy
 msgid "Report Ticket"
 msgstr "Ingediende Rapporten"
 
-#: templates/pro/reports/show.html:171
+#: templates/pro/reports/show.html:175
 msgid "This problem has been fixed."
 msgstr "Dit probleem is opgelost"
-
-#: templates/pro/reports/show.html:183
-#, python-format
-msgid ""
-"\n"
-"                                Posted by <strong><a href='mailto:"
-"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
-"                            "
-msgstr ""
-"\n"
-"Gepost door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>"
-"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:187
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)s'>"
-"%(by)s</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)"
+"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
-"%(on)s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>%(on)"
+"s</strong>"
 
-#: templates/pro/reports/show.html:193
+#: templates/pro/reports/show.html:191
+#, python-format
+msgid ""
+"\n"
+"                                Posted by <strong><a href='mailto:%(mail)s'>%"
+"(by)s</a></strong> on <strong>%(on)s</strong>\n"
+"                            "
+msgstr ""
+"\n"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
+"s</strong>"
+
+#: templates/pro/reports/show.html:197
 #, python-format
 msgid ""
 "\n"
@@ -599,7 +600,7 @@ msgstr ""
 "                Gepost op <strong>%(on)s</strong>\n"
 "                "
 
-#: templates/pro/reports/show.html:198
+#: templates/pro/reports/show.html:202
 #, python-format
 msgid ""
 "\n"
@@ -608,136 +609,144 @@ msgid ""
 "                   "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
-"%(on)s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
+"s</strong>"
 
-#: templates/pro/reports/show.html:209
+#: templates/pro/reports/show.html:213
 msgid "Location:"
 msgstr "Adres:"
 
-#: templates/pro/reports/show.html:213
+#: templates/pro/reports/show.html:217
 msgid "Category:"
 msgstr "Categorie:"
 
-#: templates/pro/reports/show.html:217
+#: templates/pro/reports/show.html:221
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/pro/reports/show.html:223
+#: templates/pro/reports/show.html:227
 #, fuzzy
 msgid "Responsible:"
 msgstr "Verantwoordelijke beheerder:"
 
-#: templates/pro/reports/show.html:234 templates/pro/reports/show.html:297
+#: templates/pro/reports/show.html:238 templates/pro/reports/show.html:301
 msgid "Responsible manager:"
 msgstr "Verantwoordelijke beheerder:"
 
-#: templates/pro/reports/show.html:237
+#: templates/pro/reports/show.html:241
 #, fuzzy
 msgid "Gestionnaires"
 msgstr "Beheerder"
 
-#: templates/pro/reports/show.html:242
+#: templates/pro/reports/show.html:246
 msgid "Entites"
 msgstr "Entiteiten"
 
-#: templates/pro/reports/show.html:247
+#: templates/pro/reports/show.html:251
 msgid "Organisms"
 msgstr ""
 
-#: templates/pro/reports/show.html:259 templates/pro/reports/show.html:305
+#: templates/pro/reports/show.html:263 templates/pro/reports/show.html:309
 msgid "Contractor/Applicant:"
 msgstr "Aannemer/Impetrant"
 
-#: templates/pro/reports/show.html:262
+#: templates/pro/reports/show.html:266
 msgid "Select a contractor/applicant"
 msgstr "Selecteer een aannemer/impetrant"
 
-#: templates/pro/reports/show.html:281
+#: templates/pro/reports/show.html:285
 msgid "Set as private report"
 msgstr "Zichtbaarheid van dit incident"
 
-#: templates/pro/reports/show.html:285 templates/pro/reports/show.html:435
-#: templates/pro/reports/show.html:484
+#: templates/pro/reports/show.html:289 templates/pro/reports/show.html:439
+#: templates/pro/reports/show.html:488
 msgid "Private"
 msgstr "Privaat"
 
-#: templates/pro/reports/show.html:289 templates/pro/reports/show.html:431
-#: templates/pro/reports/show.html:480
+#: templates/pro/reports/show.html:293 templates/pro/reports/show.html:435
+#: templates/pro/reports/show.html:484
 msgid "Public"
 msgstr "Publiek"
 
-#: templates/pro/reports/show.html:326
+#: templates/pro/reports/show.html:330
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: templates/pro/reports/show.html:327
+#: templates/pro/reports/show.html:331
 msgid "Subscription and report follow-up"
 msgstr "Abonneer op dit incident en volg alle aanpassingen."
 
-#: templates/pro/reports/show.html:340
+#: templates/pro/reports/show.html:344
 msgid "Close Report"
 msgstr "Incident definitief afsluiten"
 
-#: templates/pro/reports/show.html:347
+#: templates/pro/reports/show.html:351
 msgid "Publish"
 msgstr "Goedkeuren"
 
-#: templates/pro/reports/show.html:348
+#: templates/pro/reports/show.html:352
 msgid "Publish All"
 msgstr "Alles publiceren"
 
-#: templates/pro/reports/show.html:349
+#: templates/pro/reports/show.html:353
 msgid "Reject"
 msgstr "Afkeuren"
 
-#: templates/pro/reports/show.html:354
+#: templates/pro/reports/show.html:358
 msgid "Mark as done"
 msgstr "Markeer als behandeld"
 
-#: templates/pro/reports/show.html:360
+#: templates/pro/reports/show.html:364
 msgid "report pdf"
 msgstr "Download een pro kopie van het incident als pdf."
 
-#: templates/pro/reports/show.html:361
+#: templates/pro/reports/show.html:365
 msgid "report pdf public"
 msgstr "Publiek PDF rapport"
 
-#: templates/pro/reports/show.html:364
+#: templates/pro/reports/show.html:368
 msgid "Export Csv"
 msgstr "Export incident naar Excel"
 
-#: templates/pro/reports/show.html:376
+#: templates/pro/reports/show.html:380
 msgid "Validate all"
 msgstr "Alle fotos en commentaren publiceren"
 
-#: templates/pro/reports/show.html:380
+#: templates/pro/reports/show.html:384
 msgid "Photos and files"
 msgstr "Fotos en bestanden"
 
-#: templates/pro/reports/show.html:390 templates/pro/reports/show.html:463
+#: templates/pro/reports/show.html:394
 msgid "Please confirm file deletion"
 msgstr "Bevestig je bestand verwijdering"
 
-#: templates/pro/reports/show.html:391 templates/pro/reports/show.html:464
+#: templates/pro/reports/show.html:395
 #, fuzzy
 msgid "delete file"
 msgstr "Extra bestanden"
 
-#: templates/pro/reports/show.html:411
+#: templates/pro/reports/show.html:415
 msgid "Posted by"
 msgstr "Gepost door"
 
-#: templates/pro/reports/show.html:421
+#: templates/pro/reports/show.html:425
 msgid "on"
 msgstr "om"
 
-#: templates/pro/reports/show.html:438 templates/pro/reports/show.html:487
+#: templates/pro/reports/show.html:442 templates/pro/reports/show.html:491
 #, fuzzy
 msgid "Confidential"
 msgstr "Confidentieel?"
 
-#: templates/pro/reports/show.html:470
+#: templates/pro/reports/show.html:467
+msgid "Please confirm comment deletion"
+msgstr "Bevestig je commentaar verwijdering"
+
+#: templates/pro/reports/show.html:468
+msgid "delete comment"
+msgstr "Commentaar verwijderen"
+
+#: templates/pro/reports/show.html:474
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -750,11 +759,11 @@ msgstr ""
 "<strong>%(on)s</strong>\n"
 "                                "
 
-#: templates/pro/reports/show.html:526
+#: templates/pro/reports/show.html:530
 msgid "Add a file to this incident"
 msgstr "Voeg een bestand toe aan dit rapport"
 
-#: templates/pro/reports/show.html:526
+#: templates/pro/reports/show.html:530
 msgid "Add File"
 msgstr "Bestand toevoegen"
 
@@ -820,12 +829,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 #~ msgid "Private?"
 #~ msgstr "Privaat?"
 
-#~ msgid "delete comment"
-#~ msgstr "Commentaar verwijderen"
-
-#~ msgid "Please confirm comment deletion"
-#~ msgstr "Bevestig je commentaar verwijdering"
-
 #~ msgid "Save Comment"
 #~ msgstr "Commentaar bewaren"
 
@@ -880,8 +883,8 @@ msgstr "U bent succesvol afgemeld voor updates"
 #~ "               "
 #~ msgstr ""
 #~ "\n"
-#~ "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
-#~ "%(on)s</strong>"
+#~ "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%"
+#~ "(on)s</strong>"
 
 #~ msgid "Save Incident"
 #~ msgstr "Sauvegarder"
