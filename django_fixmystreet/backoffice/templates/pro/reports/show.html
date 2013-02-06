@@ -436,18 +436,18 @@ function showHistory(){
                                     <div class="update_text">
                                         {{file.title}}
                                         <br/>
-                                        {% trans 'Posted by' %}
+                                        <span class="update_light_text">{% trans 'Posted by' %}</span>
                                             {{file.get_display_name}}
                                         <br/>
-                                        {% trans 'Creation Date' %}
                                         {% if file.file_creation_date != None%}
                                             {{file.file_creation_date}}
                                         {% else %}
                                             -
                                         {% endif %}
+                                        <span class="update_light_text">{% trans 'file creation Date' %}</span>
                                         <br/>
-                                        {% trans 'on' %}
-                                            {{file.created}}
+                                        {{file.created}}
+                                        <span class="update_light_text">{% trans 'file publication date' %}</span>
                                     </div>
                                 {% endif %}
                                 <!-- If the status allow such interactions -->

@@ -1264,6 +1264,10 @@ legend span {
     padding: 10px;
 }
 
+.report_update .update_light_text {
+    font-family: Arial, sans-serif !important;
+}
+
 .report_update .fixed_msg {
     color:green;
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 14:10+0100\n"
+"POT-Creation-Date: 2013-02-06 14:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -309,7 +309,6 @@ msgid "Category"
 msgstr "Categorie"
 
 #: templates/pro/pdf.html:133 templates/pro/pdf.html.py:466
-#: templates/pro/reports/show.html:442
 msgid "Creation Date"
 msgstr "Aangemaakt op:"
 
@@ -738,9 +737,13 @@ msgstr "Bestand verwijderen"
 msgid "Posted by"
 msgstr "Gepost door"
 
-#: templates/pro/reports/show.html:449
-msgid "on"
-msgstr "om"
+#: templates/pro/reports/show.html:447
+msgid "file creation Date"
+msgstr "(Gemaakt datum)"
+
+#: templates/pro/reports/show.html:450
+msgid "file publication date"
+msgstr "(Gepost datum)"
 
 #: templates/pro/reports/show.html:466 templates/pro/reports/show.html:515
 msgid "Confidential"
@@ -830,6 +833,9 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "on"
+#~ msgstr "om"
 
 #~ msgid "Public?"
 #~ msgstr "Publiek?"
