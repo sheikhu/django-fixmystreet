@@ -1,8 +1,9 @@
 # Django settings for fixmystreet project.
 import os, sys
+import subprocess
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-VERSION = open('VERSION').read()
+VERSION = subprocess.check_output('{0} setup.py --version'.format(sys.executable), shell=True)
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 

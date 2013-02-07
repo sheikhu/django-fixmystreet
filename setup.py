@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = open('VERSION').read()
+version = '0.2.3'
 
 long_description = '\n\n'.join([
     open('README.md').read(),
