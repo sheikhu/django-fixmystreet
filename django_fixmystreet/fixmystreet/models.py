@@ -149,7 +149,7 @@ class FMSUser(User):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True or self.applicant == True:
             return ", ".join([str(o) for o in self.work_for.all()])
-        else:
+        elif self.organisation:
              return self.organisation
 
     def is_pro(self):
@@ -1052,7 +1052,7 @@ def init_file_type(sender,instance,**kwargs):
 
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name, instance.file, save=False)
- 
+
 class ReportSubscription(models.Model):
     """
     Report Subscribers are notified when there's an update to an existing report.
