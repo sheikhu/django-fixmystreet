@@ -3,7 +3,9 @@ import os, sys
 import subprocess
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-VERSION = subprocess.check_output('{0} setup.py --version'.format(sys.executable), shell=True)
+proc = subprocess.Popen('{0} setup.py --version'.format(sys.executable), stdout=subprocess.PIPE, shell=True)
+(out, err) = proc.communicate()
+VERSION = out
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 
