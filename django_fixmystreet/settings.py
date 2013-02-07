@@ -3,7 +3,7 @@ import os, sys
 import subprocess
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-proc = subprocess.Popen('{0} setup.py --version'.format(sys.executable), stdout=subprocess.PIPE, shell=True)
+proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
 VERSION = out
 
