@@ -2,6 +2,7 @@
 import os, sys
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+VERSION = open('VERSION').read()
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 

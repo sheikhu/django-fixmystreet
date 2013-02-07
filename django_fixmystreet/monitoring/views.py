@@ -4,7 +4,6 @@ import sys
 import time
 import logging
 import urllib2
-import pkg_resources
 
 from django.views.decorators.cache import never_cache
 from django.conf import settings
@@ -27,7 +26,7 @@ class Monitoring:
     check_django_version.label = "Django version : %s"
 
     def check_app_version(self):
-        return (0, pkg_resources.require("django-fixmystreet")[0].version)
+        return (0, settings.VERSION)
     check_app_version.label = "App version %s"
 
     def check_uptime(self):
