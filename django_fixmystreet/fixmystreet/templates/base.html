@@ -35,10 +35,6 @@
                 </a>
                 {% endif %}
 
-                {% ifequal ENVIRONMENT "staging" %}
-                 <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
-                {% endifequal %}
-
                 {% block lng %}
                 <section>
                     {% get_available_languages as LANGUAGES %}
@@ -77,6 +73,14 @@
                     </div>
                 </section>
                 {% endblock %}
+
+                {% if ENVIRONMENT == "staging" %}
+                    <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 56px; left: 184px;" />
+                {% endif %}
+                {% if ENVIRONMENT == "staging" or ENVIRONMENT == "dev" or ENVIRONMENT == "local" %}
+                    <strong style="position: absolute; bottom: 0; left: 0;">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
+                {% endif %}
+
                 {% block nav %}
                 <nav>
                     {% if not BACKOFFICE %}

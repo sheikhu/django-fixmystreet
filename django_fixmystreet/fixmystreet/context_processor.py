@@ -2,6 +2,7 @@
 from django.contrib.sites.models import Site
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
+import pkg_resources
 
 
 def domain(request):
@@ -13,6 +14,7 @@ def domain(request):
 
 def environment(request):
     return {
+        'APP_VERSION': pkg_resources.require("django-fixmystreet")[0].version,
         'ENVIRONMENT': getattr(settings, 'ENVIRONMENT'),
         'BACKOFFICE': request.backoffice
     }

@@ -28,7 +28,7 @@ class Monitoring:
 
     def check_app_version(self):
         return (0, pkg_resources.require("django-fixmystreet")[0].version)
-    check_app_version.label = "revision %s"
+    check_app_version.label = "App version %s"
 
     def check_uptime(self):
         process = os.popen("/usr/bin/uptime","r")

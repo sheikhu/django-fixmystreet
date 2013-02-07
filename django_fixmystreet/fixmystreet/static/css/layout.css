@@ -140,6 +140,7 @@ a:hover, a:focus {
 /********* HEADER LAYOUT ********/
 
 header {
+    position:relative;
     height: 150px;
     width: auto;
     background-color: #FFF;

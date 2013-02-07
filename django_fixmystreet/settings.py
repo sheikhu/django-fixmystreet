@@ -152,7 +152,6 @@ except ImportError:
 
 if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     DEBUG = True
-
 else:
     DEBUG = False
 
