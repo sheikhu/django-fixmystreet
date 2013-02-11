@@ -205,8 +205,9 @@ function cloneObj (obj) {
         this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
         this.dragfeature = new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle);
         this.draggableLayer.addFeatures([this.dragfeature]);
-
-        this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
+        if(this.selectFeature) {
+            this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
+        }
     };
 
     fms.Map.prototype.getSelectedLocation = function()
