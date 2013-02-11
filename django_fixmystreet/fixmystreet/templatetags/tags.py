@@ -40,16 +40,19 @@ def get_element_from_list(list, index):
     """
     return list[index]
 
+
+# TODO move it to model and fix it
 @register.filter
 def hasAtLeastAManager(userId):
-    connectedUser  = FMSUser.objects.get(user_ptr_id=userId)
-    connectedOrganisation = connectedUser.organisation
-    organisationId = connectedOrganisation.id
+    connectedUser  = FMSUser.objects.get(id=userId)
+    organisation = connectedUser.organisation
+    if not organisation:
+        return False
     #if the user is an executeur de travaux then user the dependent organisation id
-    if (connectedUser.contractor == True):
-        organisationId = connectedOrganisation.dependency.id
+    if connectedUser.contractor == True and organisation.dependency:
+        organisation = organisation.dependency
 
-    return FMSUser.objects.filter(organisation_id=organisationId).filter(manager=True).exists()
+    return organisation.team.filter(manager=True).exists()
 
 @register.filter
 def classname(obj):
