@@ -221,6 +221,12 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
 
+@receiver(pre_save, sender=FMSUser)
+def populate_username(sender, instance, **kwargs):
+    """populate username with email"""
+    if instance.email and instance.username != instance.email and instance.is_active:
+       instance.username = instance.email
+
 
 class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta

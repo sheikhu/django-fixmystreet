@@ -75,7 +75,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
         NotificationsInline,
         UserEventsInline
     )
-    readonly_fields = ("created", "created_by", "modified", "modified_by", "password")
+    readonly_fields = ("created", "created_by", "modified", "modified_by", "password", "username")
     search_fields = ("username", "email", "first_name", "last_name")
     list_filter = ("leader", "manager", "agent", "applicant", "contractor")
 
