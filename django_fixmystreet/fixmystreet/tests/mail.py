@@ -14,7 +14,6 @@ class MailTest(TestCase):
 		self.citizen = FMSUser(
 			telephone="0123456789",
 			last_used_language="fr",
-			username="citizen",
 			first_name="citizen",
 			last_name="citizen",
 			email="citizen@a.com"
@@ -23,7 +22,6 @@ class MailTest(TestCase):
 		self.manager = FMSUser(
 			telephone="0123456789",
 			last_used_language="fr",
-			username="manager",
 			password='test',
 			first_name="manager",
 			last_name="manager",
@@ -78,7 +76,7 @@ class MailTest(TestCase):
 		# report_id = resolve(response.redirect_chain[-1][0]).kwargs['report_id']
 		report_id = 1
 		#Login to access the pro page to create a user
-		self.client.login(username='manager', password='test')
+		self.client.login(username='manager@a.com', password='test')
 
 		#Accept the created report
 		response = self.client.get(reverse('report_accept_pro', args=[report_id]), follow=True)
@@ -106,7 +104,7 @@ class MailTest(TestCase):
 
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
 		#Login to access the pro page to create a user
-		self.client.login(username='manager', password='test')
+		self.client.login(username='manager@a.com', password='test')
 		#Refuse the created report
 		response = self.client.post('/en/pro/report/1/refuse/',{'refusal_motivation':'more info'}, follow=True)
 		self.assertEquals(response.status_code, 200)
@@ -140,7 +138,7 @@ class MailTest(TestCase):
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
 
 		#Login to access the pro page
-		self.client.login(username='manager', password='test')
+		self.client.login(username='manager@a.com', password='test')
 		#Publish the created report
 		response = self.client.post('/en/pro/report/1/accept/', follow=True)
 		self.assertEquals(response.status_code, 200)
