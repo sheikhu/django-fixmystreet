@@ -35,7 +35,7 @@ msgstr "Rapport privé"
 
 #: forms.py:110
 msgid "Choose your quality"
-msgstr "Choisissez une qualitée"
+msgstr "Choisissez une qualité"
 
 #: forms.py:118
 msgid "Identity"

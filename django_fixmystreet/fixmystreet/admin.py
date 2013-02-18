@@ -5,7 +5,6 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.translation import ugettext_lazy as _
@@ -17,8 +16,8 @@ from django.conf.urls.defaults import patterns
 from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog
 
 
-admin.site.unregister(User)
-admin.site.unregister(Group)
+#admin.site.unregister(User)
+#admin.site.unregister(Group)
 
 class FaqEntryAdmin(admin.ModelAdmin):
     list_display = ('q', 'order')
@@ -132,7 +131,7 @@ admin.site.register(FMSUser,FMSUserAdmin)
 
 class OrganisationEntityAdmin(SimpleHistoryAdmin):
     list_display = ("name", "commune", "region", "applicant", "subcontractor")
-    search_fields = ("name",)
+    search_fields = ("name_fr", "name_nl",)
     list_filter = ("commune", "region", "applicant", "subcontractor")
 
 admin.site.register(OrganisationEntity,OrganisationEntityAdmin)

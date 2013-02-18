@@ -1,8 +1,9 @@
 import logging
 from smtplib import SMTPException
 
+from django.db.models import Q
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -11,7 +12,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 from django_fixmystreet.backoffice.forms import FmsUserForm, AgentForm, ContractorForm, ContractorUserForm
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser, Report
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ def login_view(request):
         if user.is_active:
             login(request, user)
             messages.add_message(request, messages.SUCCESS, _("You are logged in successfully"))
+            logger.info('login user {1} ({0})'.format(user.id, user.username))
             if 'next' in request.REQUEST:
                 return HttpResponseRedirect(request.REQUEST['next'])
             else:
@@ -38,6 +40,7 @@ def login_view(request):
 
 
 def logout_view(request):
+    logger.info('logout user {1} ({0})'.format(request.user.id, request.user.username))
     logout(request)
     return HttpResponseRedirect(reverse('home'))
 
@@ -75,9 +78,11 @@ def list_users(request, user_id=None, user_type='users'):
 
 
     if user_type == 'agents':
-        users = users.filter(agent = True, manager=False)
+        users = users.filter(agent=True, manager=False)
     elif user_type == 'managers':
         users = users.filter(manager=True)
+    else:
+        users = users.filter(Q(agent=True) | Q(manager=True) | Q(leader=True))
 
     users = users.filter(logical_deleted = False)
 

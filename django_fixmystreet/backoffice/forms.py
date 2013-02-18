@@ -83,6 +83,9 @@ class FmsUserCreateForm(FmsUserForm):
             user = super(FmsUserCreateForm,self).save(commit=False)
             user.lastUsedLanguage = "EN"
 
+        if not user.logical_deleted:
+            user.logical_deleted = False
+
         if not user.password:
             user.set_password(self.cleaned_data["password1"])
             user.is_active = True
