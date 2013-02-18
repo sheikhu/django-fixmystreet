@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 14:22+0100\n"
+"POT-Creation-Date: 2013-02-18 17:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:36
@@ -30,15 +30,15 @@ msgstr "Email"
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: forms.py:162
+#: forms.py:165
 msgid "User type"
 msgstr "Gebruikerstype"
 
-#: forms.py:163
+#: forms.py:166
 msgid "Agent"
 msgstr "Agent"
 
-#: forms.py:164 templates/pro/pdf.html:265
+#: forms.py:167 templates/pro/pdf.html:265
 msgid "Manager"
 msgstr "Manager"
 
@@ -228,6 +228,7 @@ msgid "User"
 msgstr "Gebruikersnaam:"
 
 #: templates/pro/contractor_create.html:31
+#: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
 #: templates/pro/reports/show.html:560
@@ -241,10 +242,6 @@ msgstr "Aannemer"
 #: templates/pro/contractors_overview.html:27
 msgid "Create a new contractor"
 msgstr "Gebruiker aanmaken"
-
-#: templates/pro/contractors_overview.html:58
-msgid "Submit"
-msgstr "Doorsturen"
 
 #: templates/pro/contractors_overview.html:59
 #: templates/pro/users_overview.html:92 templates/pro/users_overview.html:93
@@ -266,7 +263,7 @@ msgstr "In behandeling"
 msgid "Closed"
 msgstr "Gesloten"
 
-#: templates/pro/login.html:11 views/users.py:36
+#: templates/pro/login.html:11 views/users.py:38
 msgid "Your username and password didn't match. Please try again."
 msgstr "Uw gebruikersnaam en paswoord kloppen niet. Probeer opnieuw."
 
@@ -576,25 +573,25 @@ msgstr "Dit probleem is opgelost"
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)"
-"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:"
+"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>%(on)"
-"s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:214
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)s'>%"
-"(by)s</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)s'>"
+"%(by)s</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
-"s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:220
 #, python-format
@@ -616,8 +613,8 @@ msgid ""
 "                   "
 msgstr ""
 "\n"
-"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
-"s</strong>"
+"Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:236
 msgid "Location:"
@@ -778,47 +775,47 @@ msgstr "Voeg een bestand toe aan dit rapport"
 msgid "Add File"
 msgstr "Bestand toevoegen"
 
-#: views/users.py:27
+#: views/users.py:28
 msgid "You are logged in successfully"
 msgstr "U bent succesvol geabonneerd voor updates"
 
-#: views/users.py:33
+#: views/users.py:35
 msgid "Your account has been disabled."
 msgstr "U account is inactief"
 
-#: views/users.py:69
+#: views/users.py:72
 msgid "User has been saved successfully"
 msgstr "De gebruiker is succesvol bewaard"
 
-#: views/users.py:102 views/users.py:188
+#: views/users.py:107 views/users.py:193
 msgid "User has been created successfully"
 msgstr "De gebruiker is succesvol aangemaakt"
 
-#: views/users.py:106 views/users.py:192
+#: views/users.py:111 views/users.py:197
 msgid "An error occurd during the email sending"
 msgstr "Fout op email opsturing"
 
-#: views/users.py:126
+#: views/users.py:131
 msgid "You can not delete this user"
 msgstr "U mag deze gebruiker niet verwijderen"
 
-#: views/users.py:134
+#: views/users.py:139
 msgid "User deleted successfully"
 msgstr "Gebruiker is succesvol verwijderd"
 
-#: views/users.py:158
+#: views/users.py:163
 msgid "Contractor has been saved successfully"
 msgstr "Contractor is succesvol bewaard"
 
-#: views/users.py:185
+#: views/users.py:190
 msgid "Contractor has been linked with existing user {0}"
 msgstr "Contractor is verbonden met de bestaande gebruiker {0}"
 
-#: views/users.py:212
+#: views/users.py:217
 msgid "You can not delete this contractor"
 msgstr "U mag deze contractor niet verwijderen"
 
-#: views/users.py:225
+#: views/users.py:230
 msgid "Contractor deleted successfully"
 msgstr "Contractor succesvol verwijderd"
 
@@ -833,6 +830,9 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "Submit"
+#~ msgstr "Doorsturen"
 
 #~ msgid "on"
 #~ msgstr "om"
@@ -894,8 +894,8 @@ msgstr "U bent succesvol afgemeld voor updates"
 #~ "               "
 #~ msgstr ""
 #~ "\n"
-#~ "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%"
-#~ "(on)s</strong>"
+#~ "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+#~ "%(on)s</strong>"
 
 #~ msgid "Save Incident"
 #~ msgstr "Sauvegarder"

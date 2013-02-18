@@ -8,14 +8,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 14:22+0100\n"
+"POT-Creation-Date: 2013-02-18 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
+
+#: admin.py:100
+msgid "Password changed successfully."
+msgstr ""
+
+#: admin.py:110
+#, fuzzy, python-format
+msgid "Change password: %s"
+msgstr "Modifier le mot de passe"
 
 #: forms.py:15 forms.py:41 forms.py:42 forms.py:70
 msgid "Select a Category"
@@ -63,7 +72,7 @@ msgstr ""
 "Je souhaite suivre l'évolution de l'incident et recevoir des notifications "
 "par mail."
 
-#: forms.py:147 models.py:227 models.py:1083 models.py:1117 models.py:1151
+#: forms.py:147 models.py:233 models.py:1089 models.py:1123 models.py:1157
 msgid "Name"
 msgstr "Votre nom"
 
@@ -95,205 +104,205 @@ msgstr "Association"
 msgid "Other"
 msgstr "Autres"
 
-#: models.py:144 models.py:970
+#: models.py:144 models.py:976
 msgid "ANONYMOUS"
 msgstr "Anonyme"
 
-#: models.py:228 models.py:1084 models.py:1118 models.py:1152
+#: models.py:234 models.py:1090 models.py:1124 models.py:1158
 msgid "Slug"
 msgstr ""
 
-#: models.py:357 models.py:358
+#: models.py:363 models.py:364
 msgid "Created"
 msgstr "Créé"
 
-#: models.py:359
+#: models.py:365
 msgid "Refused"
 msgstr "Refusé"
 
-#: models.py:361 models.py:362 templates/reports/list.html:82
+#: models.py:367 models.py:368 templates/reports/list.html:82
 msgid "In progress"
 msgstr "Incidents mis a jour"
 
-#: models.py:363
+#: models.py:369
 msgid "Manager is assigned"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:364
+#: models.py:370
 msgid "Applicant is responsible"
 msgstr "Un impétrant est assigné"
 
-#: models.py:365
+#: models.py:371
 msgid "Contractor is assigned"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: models.py:366
+#: models.py:372
 msgid "Solved"
 msgstr "Résolu"
 
-#: models.py:368 models.py:369
+#: models.py:374 models.py:375
 msgid "Processed"
 msgstr "Fermé"
 
-#: models.py:370
+#: models.py:376
 msgid "Deleted"
 msgstr "Effacé"
 
-#: models.py:377
+#: models.py:383
 msgid "Location"
 msgstr "Adresse"
 
-#: models.py:378
+#: models.py:384
 msgid "Address Number"
 msgstr ""
 
-#: models.py:381
+#: models.py:387
 msgid "Postal Code"
 msgstr "Code postal"
 
-#: models.py:383 models.py:384
+#: models.py:389 models.py:390
 msgid "Category"
 msgstr "Catégorie"
 
-#: models.py:920
+#: models.py:926
 msgid "Public"
 msgstr "Public"
 
-#: models.py:921
+#: models.py:927
 msgid "Private"
 msgstr "Privé"
 
-#: models.py:922
+#: models.py:928
 msgid "Confidential"
 msgstr "Confidentiel"
 
-#: models.py:1154 models.py:1155
+#: models.py:1160 models.py:1161
 msgid "Category group"
 msgstr "Groupe categorie"
 
-#: models.py:1239 models.py:1543
+#: models.py:1245 models.py:1549
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1356
+#: models.py:1362
 msgid "Refuse"
 msgstr "Refusé"
 
-#: models.py:1357
+#: models.py:1363
 msgid "Close"
 msgstr "Fermé"
 
-#: models.py:1358
+#: models.py:1364
 msgid "Mark as Done"
 msgstr "Marquer comme résolu"
 
-#: models.py:1359
+#: models.py:1365
 msgid "Manager assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1360
+#: models.py:1366
 msgid "Manager changed"
 msgstr "Le gestionnaire est changé"
 
-#: models.py:1361
+#: models.py:1367
 msgid "Publish"
 msgstr "Publier"
 
-#: models.py:1362
+#: models.py:1368
 msgid "Organisation assinged"
 msgstr "Une organisation est assignée"
 
-#: models.py:1363
+#: models.py:1369
 msgid "Organisation changed"
 msgstr ""
 
-#: models.py:1364
+#: models.py:1370
 msgid "Contractor assinged"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: models.py:1365
+#: models.py:1371
 msgid "Contractor changed"
 msgstr "L'exécuteur de travaux est modifié"
 
-#: models.py:1366
+#: models.py:1372
 msgid "Applicant assinged"
 msgstr "Un impétrant est assigné"
 
-#: models.py:1367
+#: models.py:1373
 msgid "Applicant changed"
 msgstr "Impétrant modifié"
 
-#: models.py:1368
+#: models.py:1374
 msgid "Applicant contractor changed"
 msgstr "Exécuteur de travaux modifié"
 
-#: models.py:1371
+#: models.py:1377
 msgid "Report refused by {user}"
 msgstr "L'incident est refusé par {user}"
 
-#: models.py:1372
+#: models.py:1378
 msgid "Report closed by {user}"
 msgstr "L'incident est cloturer par {user}"
 
-#: models.py:1373
+#: models.py:1379
 msgid "Report pointed as done"
 msgstr "Incident marqué comme cloturé"
 
-#: models.py:1374
+#: models.py:1380
 msgid "Report as been assigned to {related_new}"
 msgstr "L'incident est assigné à {related_new}"
 
-#: models.py:1375
+#: models.py:1381
 msgid "Report as change manager from {related_old} to {related_new}"
 msgstr "L'incident a changé de gestionnaire de {related_old} par {related_new}"
 
-#: models.py:1376
+#: models.py:1382
 msgid "Report has been approved by {user}"
 msgstr "L'incident est approuvé par {user}"
 
-#: models.py:1377
+#: models.py:1383
 msgid "{related_new} is responsible for the report"
 msgstr "{related_new} est responsable pour l'incident"
 
-#: models.py:1378
+#: models.py:1384
 msgid "{related_old} give responsibility to {related_new}"
 msgstr "{related_old} a donné la responsabilité a {related_new}"
 
-#: models.py:1379
+#: models.py:1385
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Impétrant {related_new} est responsable pour l'incident"
 
-#: models.py:1380
+#: models.py:1386
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Impetrant a changé de {related_old} par {related_new}"
 
-#: models.py:1381
+#: models.py:1387
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Executeur de travaux {related_new} est responsable pour l'incident"
 
-#: models.py:1382
+#: models.py:1388
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Executeur de travaux a changé de {related_old} par {related_new}"
 
-#: models.py:1383
+#: models.py:1389
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr ""
 "Changement impetrant - executeur de travaux de {related_old} par "
 "{related_new}"
 
-#: models.py:1502
+#: models.py:1508
 msgid "Question"
 msgstr "Question"
 
-#: models.py:1503
+#: models.py:1509
 msgid "Answere"
 msgstr "Réponse"
 
-#: models.py:1544
+#: models.py:1550
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1545
+#: models.py:1551
 msgid "Related model field"
 msgstr ""
 
@@ -478,7 +487,7 @@ msgstr ""
 msgid "^export_file/reports/((?P<emitter_format>.+))/"
 msgstr ""
 
-#: templates/about.html:4 templates/base.html:96 templates/base.html.py:155
+#: templates/about.html:4 templates/base.html:100 templates/base.html.py:159
 #: templates/faq/show.html:3 templates/faq/show.html.py:7
 msgid "About"
 msgstr "A propos"
@@ -625,70 +634,70 @@ msgstr "Fix My Street Bruxelles"
 msgid "Fix My Street"
 msgstr "Fix My Street"
 
-#: templates/base.html:55
+#: templates/base.html:51
 msgid "Log out"
 msgstr "Se déconnecter"
 
-#: templates/base.html:57
+#: templates/base.html:53
 msgid "Connected"
 msgstr "Connecté"
 
-#: templates/base.html:60
+#: templates/base.html:56
 msgid "Sign in"
 msgstr "Accès réservé"
 
-#: templates/base.html:65
+#: templates/base.html:61
 msgid "An error occurred when login. Please try again."
 msgstr "Une erreur est survenue lors de votre identification"
 
-#: templates/base.html:73
+#: templates/base.html:69
 msgid "Login"
 msgstr "Se connecter"
 
-#: templates/base.html:87 templates/base.html.py:110
+#: templates/base.html:91 templates/base.html.py:114
 msgid "Submit a Report"
 msgstr "Signaler un incident"
 
-#: templates/base.html:91 templates/base.html.py:114
+#: templates/base.html:95 templates/base.html.py:118
 msgid "View Reports"
 msgstr "Voir tous les incidents"
 
-#: templates/base.html:101 templates/base.html.py:160
+#: templates/base.html:105 templates/base.html.py:164
 #: templates/contact/new.html:4 templates/contact/new.html.py:23
 msgid "Contact Us"
 msgstr "Contact"
 
-#: templates/base.html:119 templates/base.html.py:126
+#: templates/base.html:123 templates/base.html.py:130
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: templates/base.html:133
+#: templates/base.html:137
 msgid "Contractors"
 msgstr "Exécuteur de travaux"
 
-#: templates/base.html:141
+#: templates/base.html:145
 msgid "Managers dispatching"
 msgstr "Dispatching"
 
-#: templates/base.html:148
+#: templates/base.html:152
 msgid "Change your password"
 msgstr "Modifier le mot de passe"
 
-#: templates/base.html:193
+#: templates/base.html:197
 msgid "Browser not supported"
 msgstr "Navigateur non supporté"
 
-#: templates/base.html:196
+#: templates/base.html:200
 msgid ""
 "Please download one of the supported browsers below before continuing on the "
 "website."
 msgstr "Veuillez télécharger un des navigateurs proposé ci-dessous."
 
-#: templates/base.html:212 templates/reports/show.html:102
+#: templates/base.html:216 templates/reports/show.html:102
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/base.html:221
+#: templates/base.html:225
 msgid ""
 "A initiative of Bruxelles Mobilite in collaboration with Communes and "
 "Brussels Partner Institutions"
@@ -698,11 +707,11 @@ msgstr ""
 "target='_blank'>Bruxelles Mobilité</a> en collaboration avec les communes et "
 "les institutions bruxelloises partenaires"
 
-#: templates/base.html:224
+#: templates/base.html:228
 msgid "Copyright 2011, CIRB"
 msgstr "Created by CIRB, 2013"
 
-#: templates/base.html:225 templates/term_of_use.html:4
+#: templates/base.html:229 templates/term_of_use.html:4
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
@@ -856,10 +865,12 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: templates/admin/change_form.html:32
+#: templates/admin/fixmystreet/fmsuser/change_form.html:9
 msgid "History"
 msgstr "Historique"
 
 #: templates/admin/change_form.html:33
+#: templates/admin/fixmystreet/fmsuser/change_form.html:12
 msgid "View on site"
 msgstr "Vu sur site"
 
@@ -1159,8 +1170,8 @@ msgstr "Mis à jour"
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<!--p> Please activate yourself first by clicking the following link: %(url)"
-"s/</p-->\n"
+"<!--p> Please activate yourself first by clicking the following link: "
+"%(url)s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
@@ -1200,8 +1211,8 @@ msgstr "Fix My Street: Un nouveau rapport vous a été assigné"
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s has changed. You "
-"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
-"(SITE_URL)s%(url)s</a>.</p>\n"
+"can consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
+"%(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:18
@@ -1209,8 +1220,8 @@ msgstr ""
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is changed. You can "
-"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://%"
-"(SITE_URL)s%(url)s</a>.</p>\n"
+"consult the report at <a href=\"http://%(SITE_URL)s%(url)s\">http://"
+"%(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 
 #: templates/emails/send_report_changed_to_subscribers/subject.txt:1
@@ -1250,18 +1261,18 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
-"s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
-"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
-"automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
+"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. If you want to see the "
+"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
+"mail is automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
-"s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
-"rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
-"est automatiquement envoyé au createur du rapport.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
+"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le "
+"contenu du rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s"
+"%(url)s .(Un mail est automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
 #, python-format
@@ -1269,18 +1280,18 @@ msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
 "If you want to accept this report, click the following link: <a href="
-"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
-"s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the content of "
-"the report, click the following link: %(SITE_URL)s%(url)s .(A mail is "
-"automatically sent to the creator of this report.) </p>\n"
+"\"http://%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">http://"
+"%(SITE_URL)s/nl/pro/report/%(reportId)s/accept</a>. If you want to see the "
+"content of the report, click the following link: %(SITE_URL)s%(url)s .(A "
+"mail is automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
 "Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://%(SITE_URL)"
-"s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du "
-"rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail "
-"est automatiquement envoyé au createur du rapport.) </p>\n"
+"\"http://%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">http://"
+"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept</a>. Si vous désirez voir le "
+"contenu du rapport, veuillez cliquer sur le lien suivant: %(SITE_URL)s"
+"%(url)s .(Un mail est automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
 msgid "Fix My Street: New report created."
@@ -1789,8 +1800,8 @@ msgstr "Commentaires"
 #, python-format
 msgid ""
 "\n"
-"                            Posted by <strong>%(by)s</strong> on <strong>%"
-"(on)s</strong>\n"
+"                            Posted by <strong>%(by)s</strong> on <strong>"
+"%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"

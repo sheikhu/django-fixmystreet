@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-06 14:22+0100\n"
+"POT-Creation-Date: 2013-02-18 17:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 
 #: forms.py:36
 msgid "Refusal motivation"
@@ -29,15 +29,15 @@ msgstr ""
 msgid "The two password fields didn't match."
 msgstr "Les mots de passe sont différents"
 
-#: forms.py:162
+#: forms.py:165
 msgid "User type"
 msgstr "Type d'utilisateur"
 
-#: forms.py:163
+#: forms.py:166
 msgid "Agent"
 msgstr "Agent"
 
-#: forms.py:164 templates/pro/pdf.html:265
+#: forms.py:167 templates/pro/pdf.html:265
 msgid "Manager"
 msgstr "Gestionnaire"
 
@@ -226,6 +226,7 @@ msgid "User"
 msgstr "Utilisateur"
 
 #: templates/pro/contractor_create.html:31
+#: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
 #: templates/pro/reports/show.html:560
@@ -239,10 +240,6 @@ msgstr "Executeur de travaux"
 #: templates/pro/contractors_overview.html:27
 msgid "Create a new contractor"
 msgstr "Créer un executeur de travaux"
-
-#: templates/pro/contractors_overview.html:58
-msgid "Submit"
-msgstr "Envoyer"
 
 #: templates/pro/contractors_overview.html:59
 #: templates/pro/users_overview.html:92 templates/pro/users_overview.html:93
@@ -264,7 +261,7 @@ msgstr "Incidents mis a jour"
 msgid "Closed"
 msgstr "Incidents cloturés"
 
-#: templates/pro/login.html:11 views/users.py:36
+#: templates/pro/login.html:11 views/users.py:38
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Votre nom d'utilisateur ou mot de passe ne correspond pas. Veuillez "
@@ -573,8 +570,8 @@ msgstr "Ce problème a été résolu."
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)"
-"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:"
+"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -585,8 +582,8 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)s'>%"
-"(by)s</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)s'>"
+"%(by)s</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -772,47 +769,47 @@ msgstr "Ajouter les fichiers attachés"
 msgid "Add File"
 msgstr "Ajouter fichier"
 
-#: views/users.py:27
+#: views/users.py:28
 msgid "You are logged in successfully"
 msgstr "Vous êtes correctement identifié"
 
-#: views/users.py:33
+#: views/users.py:35
 msgid "Your account has been disabled."
 msgstr "Votre compte est desactivé"
 
-#: views/users.py:69
+#: views/users.py:72
 msgid "User has been saved successfully"
 msgstr "L'utilisateur a été correctement enregistré"
 
-#: views/users.py:102 views/users.py:188
+#: views/users.py:107 views/users.py:193
 msgid "User has been created successfully"
 msgstr "L'utilisateur a été correctement créé"
 
-#: views/users.py:106 views/users.py:192
+#: views/users.py:111 views/users.py:197
 msgid "An error occurd during the email sending"
 msgstr "Une erreur s'est produire pendant l'envoi de mail"
 
-#: views/users.py:126
+#: views/users.py:131
 msgid "You can not delete this user"
 msgstr "Vous ne pouvez pas supprimer cet utilisateur"
 
-#: views/users.py:134
+#: views/users.py:139
 msgid "User deleted successfully"
 msgstr "L'utilisateur a été correctement supprimé"
 
-#: views/users.py:158
+#: views/users.py:163
 msgid "Contractor has been saved successfully"
 msgstr "L'exécuteur de travaux a été correctement enregistré"
 
-#: views/users.py:185
+#: views/users.py:190
 msgid "Contractor has been linked with existing user {0}"
 msgstr "L'exécuteur de travaux a été lié avec un utilisateur existant"
 
-#: views/users.py:212
+#: views/users.py:217
 msgid "You can not delete this contractor"
 msgstr "Vous ne pouvez supprimer cet exécuteur de travaux"
 
-#: views/users.py:225
+#: views/users.py:230
 msgid "Contractor deleted successfully"
 msgstr "L'exécuteur de travaux a été correctement supprimé"
 
@@ -827,6 +824,9 @@ msgstr "Vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "Submit"
+#~ msgstr "Envoyer"
 
 #~ msgid "on"
 #~ msgstr "a"
