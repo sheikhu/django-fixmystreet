@@ -30,11 +30,11 @@ def list(request, status):
         reports = reports.filter(contractor__in = connectedUser.work_for.all())
     else:
         #If the manager is connected then filter on manager
-        if (ownership == "responsible"):
+        if ownership == "responsible":
             reports = reports.responsible(connectedUser)
-        elif (ownership == "subscribed"):
+        elif ownership == "subscribed":
             reports = reports.subscribed(connectedUser)
-        else: # entity
+        elif connectedUser.organisation: # ownership == entity
             reports = reports.from_entity(connectedUser.organisation)
 
 
