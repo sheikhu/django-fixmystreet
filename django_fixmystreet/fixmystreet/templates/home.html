@@ -74,7 +74,7 @@ function showResults(type,li){
 {% block map %}
      <article id="map">
         <div id="instructions" class="block">
-            <p class="lead">{% trans "How to fill a report" %}</p>
+            <h2>{% trans "How to fill a report" %}</h2>
             <ol>
                 <li>{% trans "Enter a street where you have located an incident" %}</li>
                 <li>{% trans "Locate the incident on map" %}</li>
@@ -85,26 +85,26 @@ function showResults(type,li){
         </div>
 
         <form id='search-form' class="block highlighted form-inline search-form">
-            {% csrf_token %}
-            <p class="lead">{% trans "Enter the address where the incident is:" %}</p>
-            <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
-            <select id="input-ward" class="input-medium" name="ward" onchange="document.getElementById('widget-search-button').click()">
-                <option value="">{% trans "All communes..." %}</option>
-                {% for zip in zipcodes %}
-                    <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                {% endfor %}
-            </select>
-            <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Search' %}">
-            <ul id="proposal" class="inline"> </ul>
+            <div id="address-search-div">
+                <h2>{% trans "Enter the address where the incident is:" %}</h2>
+                <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
+                <select id="input-ward" class="input-medium" name="ward" onchange="document.getElementById('widget-search-button').click()">
+                    <option value="">{% trans "All communes..." %}</option>
+                    {% for zip in zipcodes %}
+                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                    {% endfor %}
+                </select>
+                <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Search' %}">
+                <ul id="proposal" class="inline hide"> </ul>
+            </div>
 
-            <br/>
 
-        <div id="ticket-div-section">
-            <!-- Search per ticket -->
-            <p class="lead">{% trans "Enter the report ticket:" %}</p>
-            <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" onclick="return false" value="{% trans 'Access Ticket' %}">
-        </div>
+            <div id="ticket-div-section">
+                <!-- Search per ticket -->
+                <h2>{% trans "Enter the report ticket:" %}</h2>
+                <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
+                <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" onclick="return false" value="{% trans 'Access Ticket' %}">
+            </div>
 
         </form>
     </article>

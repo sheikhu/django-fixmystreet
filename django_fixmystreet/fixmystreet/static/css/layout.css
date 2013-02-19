@@ -120,6 +120,10 @@ a:hover, a:focus {
     opacity:0.95;
     height:200px;
 }
+.block h2 {
+    line-height: 20px;
+    font-size: 18px;
+}
 
 .block.highlighted {
     /*background-color: #FFF203;*/
