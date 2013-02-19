@@ -1286,7 +1286,6 @@ legend span {
     position: relative;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    overflow: hidden;
 }
 
 .bordered-box h1{
