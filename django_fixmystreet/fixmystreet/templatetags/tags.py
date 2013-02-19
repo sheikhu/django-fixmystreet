@@ -73,3 +73,10 @@ def input_class(field, css_class):
         field.field.widget.attrs["class"] = css_class
 
     return field
+
+
+@register.inclusion_tag('ga.html')
+def ga_script():
+    return {
+        'code': settings.GA_CODE
+    }
