@@ -157,7 +157,8 @@ function createOverview(){
     });
 
     $("#form-files").children("div:not(#file-form-template)").each(function(idx,value){
-        filesBody.append($(value).clone());
+        filesBody.append($(value).find("img").clone());
+        filesBody.append("<i>"+$(value).find("textarea").val()+"</i>");
     });
     if (filesBody.children().length == 0) {
         filesBody.append("<i>-</i>");
