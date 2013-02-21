@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-version = '0.2.10'
+version = '0.2.11.dev0'
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 long_description = '\n\n'.join([
