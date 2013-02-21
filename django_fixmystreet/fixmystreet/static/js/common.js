@@ -25,29 +25,11 @@ $(document).ready(function(){
         }
     }
 
+
     /* form validation */
     $("form").submit(function(evt) {
-        var $form = $(this);
-        var valid = true;
-
-        $form.find('.required input, .required select, .required textarea').each(function(ind,input) {
-            var $input = $(input);
-            if(!$input.val()) {
-                valid = false;
-                $input.closest('.required').addClass('invalid');
-            } else {
-                $input.closest('.required').removeClass('invalid');
-            }
-        });
-
-        if(!valid) {
+        if (!validateForm($(this))) {
             evt.preventDefault();
-
-            $form.find('.invalid input, .invalid select').first().focus();
-            $form.find('.required-error-msg').fadeIn();
-            $form.addClass('required-invalid');
-
-            return false;
         }
     });
 
@@ -80,6 +62,29 @@ $(document).ready(function(){
     }
 });
 
+
+function validateForm(form) {
+    var valid = true;
+
+    form.find('.required input, .required select, .required textarea').each(function(ind,input) {
+        var $input = $(input);
+        if(!$input.val()) {
+            valid = false;
+            $input.closest('.required').addClass('invalid');
+        } else {
+            $input.closest('.required').removeClass('invalid');
+        }
+    });
+
+    if(!valid) {
+        form.find('.invalid input, .invalid select').first().focus();
+        form.find('.required-error-msg').fadeIn();
+        form.addClass('required-invalid');
+
+        return false;
+    }
+    return true;
+}
 function updateMenuEntries(x,y) {
     //Update the left menu coordinates
     var currentHref;

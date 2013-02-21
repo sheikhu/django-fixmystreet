@@ -499,10 +499,10 @@ class Report(UserTrackedModel):
         return self.status in Report.REPORT_STATUS_CLOSED
 
     def thumbnail(self):
-        user = get_current_user()
-        reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
-        if (not self.is_created()):
-            if (reportImages.__len__() > 0):
+        if not self.is_created():
+            user = get_current_user()
+            reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
+            if reportImages.exists():
                 if user and user.is_authenticated():
                     if not reportImages[0].is_confidential():
                         return reportImages[0].image.url

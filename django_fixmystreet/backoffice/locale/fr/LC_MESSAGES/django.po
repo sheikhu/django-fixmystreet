@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-18 17:46+0100\n"
+"POT-Creation-Date: 2013-02-20 18:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -446,7 +446,7 @@ msgstr "Signaler un incident"
 
 #: templates/pro/reports/list.html:128
 msgid "In progress reports"
-msgstr "Incidents  mis a jour"
+msgstr "Incidents mis a jour"
 
 #: templates/pro/reports/list.html:131
 msgid "In progress and assigned reports"
@@ -485,8 +485,8 @@ msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
 #: templates/pro/reports/list.html:195
-msgid "Search by commune or address:"
-msgstr "Faire une recherche par commune ou sur une adresse"
+msgid "Search address:"
+msgstr "Faire une recherche par adresse"
 
 #: templates/pro/reports/list.html:196
 msgid "Street name, Street number..."
@@ -500,39 +500,31 @@ msgstr "Toutes les communes..."
 msgid "Search street"
 msgstr "Chercher la rue"
 
-#: templates/pro/reports/list.html:208
-msgid "Results"
-msgstr "Résultats"
+#: templates/pro/reports/list.html:212
+msgid "within a radius of:"
+msgstr "dans un rayon de:"
 
-#: templates/pro/reports/list.html:213
-msgid "Within a distance of"
-msgstr "A une distance de"
+#: templates/pro/reports/list.html:214
+msgid "No limit"
+msgstr "Pas de limite"
 
-#: templates/pro/reports/list.html:213
-msgid "Optional"
-msgstr "Facultatif"
-
-#: templates/pro/reports/list.html:215
-msgid "All"
-msgstr "Tous"
-
-#: templates/pro/reports/list.html:220
+#: templates/pro/reports/list.html:219
 msgid "Filtrer list of reports"
 msgstr "Filtrer la liste des incidents"
 
-#: templates/pro/reports/list.html:225
-msgid "Search by entering a ticket number:"
+#: templates/pro/reports/list.html:224
+msgid "Search by ticket number:"
 msgstr "Chercher par numéro d'incident"
 
-#: templates/pro/reports/list.html:227
-msgid "Insert your ticket number here"
+#: templates/pro/reports/list.html:226
+msgid "Ticket number"
 msgstr "Numéro d'incident"
 
-#: templates/pro/reports/list.html:228
+#: templates/pro/reports/list.html:227
 msgid "Search"
 msgstr "Chercher"
 
-#: templates/pro/reports/list.html:232
+#: templates/pro/reports/list.html:231
 msgid "Report an incident"
 msgstr "Créer un incident"
 
@@ -824,6 +816,18 @@ msgstr "Vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "Insert your ticket number here"
+#~ msgstr "Numéro d'incident"
+
+#~ msgid "Results"
+#~ msgstr "Résultats"
+
+#~ msgid "Optional"
+#~ msgstr "Facultatif"
+
+#~ msgid "All"
+#~ msgstr "Tous"
 
 #~ msgid "Submit"
 #~ msgstr "Envoyer"

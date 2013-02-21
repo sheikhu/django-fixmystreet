@@ -189,10 +189,10 @@ function highlightFilterSelection(id) {
         {% endif %}
     </div>
     <div class="span4">
-        <div id="search_by_commune_or_address">
+        <div id="search_by_commune_or_address" class="block highlighted">
             <form id="search-street">
                 <!-- TODO create logic behind searching -->
-                <p>1. {% trans "Search by commune or address:" %}</p>
+                <h2>{% trans "Search address:" %}</h2>
                 <input type="search" class="input-block-level" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" id="input-commune-search" style="box-sizing:border-box;">
                 <div class="form-search">
                     <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
@@ -205,14 +205,13 @@ function highlightFilterSelection(id) {
                     <input type="submit" class="btn" id="filterReports" value="{% trans 'Search street' %}"/>
                 </div>
                 <div id="search_by_commune_or_address_section_results" style="display:none">
-                    <p>2. {% trans "Results" %}</p>
                     <ul id="proposal" class="inline"> </ul>
                 </div>
             </form>
             <form id="search-by-address" style="display:none">
-                <p>3. {% trans "Within a distance of" %} ({% trans 'Optional' %})</p>
+                <p>{% trans "within a radius of:" %}</p>
                 <select id="rayon" class="input-block-level">
-                    <option value="">{% trans 'All'%}</option>
+                    <option value="">{% trans 'No limit'%}</option>
                     <option value="50">50m</option>
                     <option value="100">100m</option>
                     <option value="200">200m</option>
@@ -220,11 +219,11 @@ function highlightFilterSelection(id) {
                 <input class="btn" type="submit" id="applyFilter" value="{% trans 'Filtrer list of reports' %}">
             </form>
         </div>
-        <form action="{% url search_ticket_pro %}" id="search_by_ticket_nr">
+        <form action="{% url search_ticket_pro %}" class="block highlighted" id="search_by_ticket_nr">
             <!-- TODO create logic behind searching -->
-            <p >{% trans "Search by entering a ticket number:" %}</p>
-            <div class="input-append">
-                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Insert your ticket number here' %}">
+            <h2>{% trans "Search by ticket number:" %}</h2>
+            <div class="form-search">
+                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Ticket number' %}">
                 <input type="submit" class="btn" id="filterReports" value="{% trans 'Search' %}"/>
             </div>
         </form>

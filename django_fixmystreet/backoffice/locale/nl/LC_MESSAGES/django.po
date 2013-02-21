@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-18 17:46+0100\n"
+"POT-Creation-Date: 2013-02-20 18:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -487,7 +487,8 @@ msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
 #: templates/pro/reports/list.html:195
-msgid "Search by commune or address:"
+#, fuzzy
+msgid "Search address:"
 msgstr "Zoeken op gemeente of adres"
 
 #: templates/pro/reports/list.html:196
@@ -502,39 +503,34 @@ msgstr "Alle gemeenten"
 msgid "Search street"
 msgstr "Zoek straat"
 
-#: templates/pro/reports/list.html:208
-msgid "Results"
-msgstr "Resultaten"
-
-#: templates/pro/reports/list.html:213
-msgid "Within a distance of"
+#: templates/pro/reports/list.html:212
+#, fuzzy
+msgid "within a radius of:"
 msgstr "Binnen een afstand van"
 
-#: templates/pro/reports/list.html:213
-msgid "Optional"
-msgstr "Optioneel"
+#: templates/pro/reports/list.html:214
+msgid "No limit"
+msgstr ""
 
-#: templates/pro/reports/list.html:215
-msgid "All"
-msgstr "Alle"
-
-#: templates/pro/reports/list.html:220
+#: templates/pro/reports/list.html:219
 msgid "Filtrer list of reports"
 msgstr "Filter rapportenlijst"
 
-#: templates/pro/reports/list.html:225
-msgid "Search by entering a ticket number:"
+#: templates/pro/reports/list.html:224
+#, fuzzy
+msgid "Search by ticket number:"
+msgstr "Zoek op incident nummer:"
+
+#: templates/pro/reports/list.html:226
+#, fuzzy
+msgid "Ticket number"
 msgstr "Zoek op incident nummer:"
 
 #: templates/pro/reports/list.html:227
-msgid "Insert your ticket number here"
-msgstr "Vul je ticket in"
-
-#: templates/pro/reports/list.html:228
 msgid "Search"
 msgstr "Zoek"
 
-#: templates/pro/reports/list.html:232
+#: templates/pro/reports/list.html:231
 #, fuzzy
 msgid "Report an incident"
 msgstr "Ingediende Rapporten"
@@ -830,6 +826,18 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "Insert your ticket number here"
+#~ msgstr "Vul je ticket in"
+
+#~ msgid "Results"
+#~ msgstr "Resultaten"
+
+#~ msgid "Optional"
+#~ msgstr "Optioneel"
+
+#~ msgid "All"
+#~ msgstr "Alle"
 
 #~ msgid "Submit"
 #~ msgstr "Doorsturen"

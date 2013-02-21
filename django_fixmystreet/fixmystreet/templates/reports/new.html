@@ -2,20 +2,22 @@
 {% load i18n tags %}
 {% block title %}{% trans "New Report" %}{% endblock %}
 
+{% block meta %}
+<meta property="og:title" content="{% trans 'New Report' %}" />
+<meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur fix my street qui identifiera alors le service public en charge de le traiter.' %}" />
+
+{% endblock %}
 {% block script %}
 {{ block.super }}
-
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
-
-<meta property="og:title" content="{% trans 'New Report' %}" />
-<meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur FixMyStreet qui identifiera alors le service public en charge de le traiter.' %}" />
+<script src="{{STATIC_URL}}js/new_report.js"></script>
 <script>
 $(function(){
-    $("#user_information_form").find('.inactive_overlay_form_overview').hide();
-    $("#create_form_left").find('.inactive_overlay_form_overview').hide();
-    $("#validate_form").find('.inactive_overlay_form_overview').hide();
-    $("#confirm_form").find('.inactive_overlay_form_overview').show();
+    // $("#user_information_form").find('.inactive_overlay_form_overview').hide();
+    // $("#create_form_left").find('.inactive_overlay_form_overview').hide();
+    // $("#validate_form").find('.inactive_overlay_form_overview').hide();
+
     $("#confirmation_edit_button").hide();
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
@@ -27,22 +29,18 @@ $(function(){
         }
     });
 
-    var proVersion = false;
-    {% if BACKOFFICE %}
-       proVersion = true;
-    {% endif %}
+    var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
 
     {% for report in reports %}
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}}, proVersion);
     {% endfor %}
     fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
 
-    {% if report%}
-    show_confirmation_popup();
-    {% endif %}
-    {% if BACKOFFICE %}
-    $("#validate_form").css("margin-top","30px");
-    $(".report_step_number_2").css("bottom","10px");
+    retrieveAddress();
+
+
+    {% if report %}
+    $("#confirmation_popup").modal();
     {% endif %}
     $("input:checkbox").attr("value","off");
     $("input:checkbox").bind("change",function(){
@@ -59,13 +57,20 @@ $(function(){
         }
     });
 
-    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}")
+    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
 
+    $('#validate_button').click(function(evt) {
+        evt.preventDefault();
+        if (validateForm($("#report-form"))) {
+            createOverview();
+            $('#validate_report_popup').modal();
+        }
+    });
+    $('#confirm_button').click(function(evt) {
+        evt.preventDefault();
+        $('#report-form').submit();
+    });
 });
-
-function show_confirmation_popup(){
-    $("#confirmation_popup").modal();
-}
 
 var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
 var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
@@ -91,131 +96,12 @@ var categories = {
         }{% if not forloop.last %},{% endif %}
     {% endfor %}
 }
-function validate() {
-    $("#validate").val("true");
-    // Validate the current form
-    var $form = $("#report-form");
-    var valid = true;
-        $form.find('.required input, .required select, .required textarea').each(function(ind,input) {
-            var $input = $(input);
-            if(!$input.val()) {
-                valid = false;
-                $input.closest('.required').addClass('invalid');
-            } else {
-                $input.closest('.required').removeClass('invalid');
-            }
-        });
-        if(!valid) {
-            $form.find('.invalid input, .invalid select').first().focus();
-            $form.find('.required-error-msg').fadeIn();
-            $form.addClass('required-invalid');
-            $('#validate_report_popup').modal('hide');
-            return false;
-        }
-    if($(".invalid").size()== 0){
-        //toggleFormSteps();
-        $("#confirm_form").find('.inactive_overlay_form_overview').removeClass('inactive_overlay_form_overview');
-        $('#confirmation_edit_button').show();
-        $('#confirmation_button').removeAttr("disabled");
-    }
-    $('#validate_report_popup').modal('hide');
-}
 
-function confirm(){
-    $("#validate").val("false");
-    // $("#report_form_submit_button").click();
-}
-
-/**
- * Deprecated. To remove...
- */
-function toggleFormSteps(){
-    $("#user_information_form").find('.inactive_overlay_form_overview').toggle();
-    $("#create_form_left").find('.inactive_overlay_form_overview').toggle();
-    $("#validate_form").find('.inactive_overlay_form_overview').toggle();
-    $("#confirm_form").find('.inactive_overlay_form_overview').toggle();
-}
-
-/**
- * Create the overview popup content
- */
-function createOverview(){
-    $("#validate_report_popup .modal-body").empty();
-    var overviewHtml = "";
-    $.each($("#report-form").find(".control-group"),function(idx,val){
-        overviewHtml += $(val).html();
-    });
-    overviewHtml+= "<div><label class='control-label'>{% trans 'Files' %}</label></div>";
-    $.each($("#form-files").find("div"),function(idx,value){
-        if($(value).attr("id")!="file-form-template"){
-            overviewHtml+= $(value).html();
-        }
-    });
-    overviewHtml+= "<div><label class='control-label'>{% trans 'Comment' %}</label></div>";
-    $("#validate_report_popup .modal-body").append(overviewHtml).append($("#id_comment-text").clone());
-    $("#validate_report_popup .modal-body .help-block").hide();
-    $.each($("#report-form").find("select"),function(idx,value){
-        var overview_select = $("#validate_report_popup").find("#"+$(value).attr("id"));
-        if(overview_select.find('option[value="'+$(value).val()+'"]').parent().is("optgroup")){
-            overview_select.before("<i>"+overview_select.find('option[value="'+$(value).val()+'"]').parent().attr("label")+": </i>");
-        }
-        var vals = [];
-        $.each(overview_select.find('option'),function(i, el) {
-            vals[$(el).val()]=el.text; });
-        overview_select.after("<i>"+vals[$(value).val()]+'</i>');
-        overview_select.remove();
-        // overview_select.val($(value).val());
-        // overview_select.attr("disabled","disabled");
-    });
-    $.each($("#report-form").find("input"),function(idx,value){
-        if($(value).attr("type")!="hidden" && $(value).attr("type")!="file"){
-            if($(value).attr("type")=="checkbox"){
-                var overview_input = $("#validate_report_popup").find("#"+$(value).attr("id"));
-                overview_input.attr("checked",($(value).attr("checked")=="checked"));
-                overview_input.attr("disabled","disabled");
-            }
-            else{
-                var overview_input = $("#validate_report_popup").find("#"+$(value).attr("id"));
-                overview_input.after("<i>"+$(value).val()+"</i>");
-                overview_input.remove();
-                // overview_input.val($(value).val());
-                // overview_input.attr("disabled","disabled");
-            }
-
-        }
-        else if ($(value).attr("type")!="file"){
-            $("#validate_report_popup").find("[type='file']").hide();
-        }
-
-    });
-    $.each($("#report-form").find("textarea"),function(idx,value){
-        var overview_textarea = $("#validate_report_popup").find("#"+$(value).attr("id"));
-        overview_textarea.after("<i>"+$(value).val()+"</i>");
-        overview_textarea.remove();
-            // overview_textarea.val($(value).val());
-            // overview_textarea.attr("disabled","disabled");
-    });
-    $("#validate_report_popup").find("#id_comment-text").attr("disabled",'disabled');
-}
 </script>
-<script src="{{STATIC_URL}}js/new_report.js"></script>
 {% endblock %}
-
 
 {% block specific_scripts %}
 <script src="{{STATIC_URL}}js/reportFormReview.js"></script>`
-<script type="text/javascript">
-$(function(){
-    if("{{validate}}"=="true"){
-        if($(".invalid").size()== 0){
-            toggleFormSteps();
-            $('#confirmation_edit_button').show();
-            $('#confirmation_button').removeAttr("disabled");
-        }
-    }
-});
-
-</script>
 {% endblock %}
 
 {% block map %}
@@ -231,11 +117,10 @@ $(function(){
 
 {% block content %}
 <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal row">
-    <input id="validate" type="hidden" name="validate" maxlength="75">
-    <div id="create_form_left" class="span6">
-        <div id="create_form_left" class="bordered-box overview_div_left">
+    <div class="span6" style="margin-top: 30px;">
+        <div id="create_form_left" class="bordered-box">
             <span class="report-step-number img-circle">1</span>
-            <div class="inactive_overlay_form_overview"></div>
+            <!-- <div class="inactive_overlay_form_overview"></div> -->
             <h1>{% trans "Submitting a report" %}</h1>
             <fieldset>
                 <div id="required-note" >{% trans "* This fields are required" %}</div>
@@ -246,7 +131,7 @@ $(function(){
                 </div>
 
                 <div class="control-group">
-                    <span class="control-label">{% trans "Address" %}</span>
+                    <label class="control-label">{% trans "Address" %}</label>
                     <div class="controls">
                         <span id="address-text"></span>
                         <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
@@ -261,7 +146,6 @@ $(function(){
             </fieldset>
 
             {% endblock %}
-            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
             <fieldset>
                 <legend>{% trans 'Files' %}</legend>
                 <div id="required-note">{% trans 'Optimal File Size (1200X800)'%}</div>
@@ -286,23 +170,20 @@ $(function(){
                 <legend>{% trans 'Comment' %}</legend>
                 {% include "_form_horizontal.html" with form=comment_form %}
             </fieldset>
-            {% endif %}
         </div>
     </div>
-    <div class="span6">
+    <div class="span6" style="margin-top: 30px;">
         {% if citizen_form %}
         <div id="user_information_form" class="bordered-box overview_div_right">
             <span class="report-step-number img-circle">2</span>
-            <div class="inactive_overlay_form_overview"></div>
+            <!-- <div class="inactive_overlay_form_overview"></div> -->
             <h1>{% trans 'Personal information:' %}</h1>
             <div id="required-note" >{% trans "* This fields are required" %}</div>
-            {% if report.status.code != '3' and report.status.code != '8' and report.status.code != '9' %}
-                {# If the status allow such interactions #}
-                <fieldset>
-                    <legend>{% trans 'Contact information:' %}</legend>
-                    {% include "_form_horizontal.html" with form=citizen_form %}
-                </fieldset>
-            {% endif %}
+
+            <fieldset>
+                <legend>{% trans 'Contact information:' %}</legend>
+                {% include "_form_horizontal.html" with form=citizen_form %}
+            </fieldset>
         </div>
         {% endif %}
         <div id="validate_form" class="bordered-box overview_div_right">
@@ -311,25 +192,12 @@ $(function(){
             {% else %}
             <span class="report-step-number img-circle">2</span>
             {% endif %}
-            <div class="inactive_overlay_form_overview"></div>
+            <!-- <div class="inactive_overlay_form_overview"></div> -->
             <fieldset>
-                <legend>{% trans 'Visualize:' %}</legend>
+                <legend>{% trans 'Summary:' %}</legend>
                 {% trans 'Visualize an overview of the created incident report.' %}
                 <br/>
-                <a id="validate_form_button" onclick="createOverview();$('#validate_report_popup').modal();" class="btn"> {% trans 'Visualize' %}</a>
-            </fieldset>
-        </div>
-        <div id="confirm_form" class="bordered-box overview_div_right">
-            {% if not BACKOFFICE %}
-            <span class="report-step-number img-circle">4</span>
-            {% else %}
-            <span class="report-step-number img-circle">3</span>
-            {% endif %}
-            <div class="inactive_overlay_form_overview"></div>
-            <fieldset>
-                <legend>{% trans 'Confirm:' %}</legend>
-                <!--a id="confirmation_edit_button" href="javascript:toggleFormSteps();" class="btn gray_left"> {% trans 'Edit' %}</a-->
-                <input id="confirmation_button" type="submit" class='btn' value="{% trans 'Confirm' %}" />
+                <button id="validate_button" class="btn"> {% trans 'Summary' %}</button>
             </fieldset>
         </div>
         <div class="warning_information_form">
@@ -341,57 +209,66 @@ $(function(){
     </div>
 </form>
 
-        <div id="confirmation_popup" class="modal hide fade" role="dialog">
-            <div class="modal-header">
-                {% if not BACKOFFICE %}
-                <a class="close" href="{{report.get_absolute_url}}" >&times;</a>
-                {% else %}
-                <a class="close" href="{{report.get_absolute_url_pro}}?page=1" >&times;</a>
-                {% endif %}
-                <h3>{% trans 'Submit an incident:' %}</h3>
-            </div>
-            <div class="modal-body">
-                <p><img src="" > {% trans 'Thank you! Your incident has been sent correctly to the system.' %}</p>
-                <p>{% trans 'A mail containing the link report has been sent.' %}</p>
-                {% if report %}
-                <p><i class="download-pdf"> </i><a href="{% url report_pdf report.id 0 %}" ><img src="" > {% trans 'Download a copy of the incident as a pdf' %}</a></p>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                {% if not BACKOFFICE%}
-                <a href="{{report.get_absolute_url}}" class="btn"> {% trans 'Continue'%}</a>
-                {% else %}
-                <a href="{{report.get_absolute_url_pro}}?page=1" class="btn"> {% trans 'Continue'%}</a>
-                {% endif %}
-            </div>
+<div id="confirmation_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        {% if not BACKOFFICE %}
+        <a class="close" href="{{report.get_absolute_url}}" >&times;</a>
+        {% else %}
+        <a class="close" href="{{report.get_absolute_url_pro}}?page=1" >&times;</a>
+        {% endif %}
+        <h3>{% trans 'Submit an incident:' %}</h3>
+    </div>
+    <div class="modal-body">
+        <p><img src="" > {% trans 'Thank you! Your incident has been sent correctly to the system.' %}</p>
+        <p>{% trans 'A mail containing the link report has been sent.' %}</p>
+        {% if report %}
+        <p><i class="download-pdf"> </i><a href="{% url report_pdf report.id 0 %}" ><img src="" > {% trans 'Download a copy of the incident as a pdf' %}</a></p>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        {% if not BACKOFFICE%}
+        <a href="{{report.get_absolute_url}}" class="btn"> {% trans 'Continue'%}</a>
+        {% else %}
+        <a href="{{report.get_absolute_url_pro}}?page=1" class="btn"> {% trans 'Continue'%}</a>
+        {% endif %}
+    </div>
+</div>
+<div id="validate_report_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
+        <h3>{% trans 'Incident overview:' %}</h3>
+    </div>
+    <div class="modal-body">
+        <div id="report-overview"></div>
+
+        <label class='control-label'>{% trans 'Files' %}</label>
+        <div id="files-overview">
         </div>
-        <div id="validate_report_popup" class="modal hide fade" role="dialog">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
-                <h3>{% trans 'Incident overview:' %}</h3>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <a onclick='javascript:validate();' class="btn"> {% trans 'Return to incident' %}</a>
-            </div>
+
+        <label class='control-label'>{% trans 'Comment' %}</label>
+        <div id="comment-overview">
         </div>
-        <div id="nearby_reports_popup" class="modal hide fade" role="dialog">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
-                <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
-            </div>
-            <div class="modal-body">
-                {% if reports %}
-                <div id='search_results'>
-                    {% for report in reports %}
-                        {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-                    {% endfor %}
-                </div>
-                {% else %}
-                    <p>{% trans "No problems have been reported in this area." %}</p>
-                {% endif %}
-            </div>
+    </div>
+    <div class="modal-footer">
+        <button id="confirm_button" type="submit" class='btn'>{% trans 'Confirm' %}</button>
+    </div>
+</div>
+<div id="nearby_reports_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
+        <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
+    </div>
+    <div class="modal-body">
+        {% if reports %}
+        <div id='search_results'>
+            {% for report in reports %}
+                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
+            {% endfor %}
         </div>
+        {% else %}
+            <p>{% trans "No problems have been reported in this area." %}</p>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}
