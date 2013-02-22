@@ -1,5 +1,597 @@
 [
     {
+        "pk":20,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Region Bruxelloise",
+            "name_nl":"Brusselse Gewest",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":21,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"STIB",
+            "name_nl":"MIVB",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":22,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"IBGE",
+            "name_nl":"BIM",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":23,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Bruxelles Proprete",
+            "name_nl":"Net Brussel",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":24,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Port de Bruxelles",
+            "name_nl":"Haven van Brussel",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk":25,
+        "model":"fixmystreet.organisationentity",
+        "fields":{
+            "name_fr":"Bruxelles Mobilité",
+            "name_nl":"Mobiliteit Brussel",
+            "commune":false,
+            "region":true,
+            "subcontractor":false,
+            "applicant":false,
+            "dependency":null
+        }
+    },
+    {
+        "pk": 1,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Anderlecht",
+            "name_nl": "Anderlecht",
+            "phone": "02/558.08.00",
+            "feature_id": "URB_A_MU.7100"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Auderghem",
+            "name_nl": "Auderghem",
+            "phone": "02/676.48.11",
+            "feature_id": "URB_A_MU.7200"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Berchem-Sainte-Agathe",
+            "name_nl": "Sint-Agatha-Berchem",
+            "phone": "02/464.04.11",
+            "feature_id": "URB_A_MU.7300"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Ville de Bruxelles",
+            "name_nl": "Brussel Stad",
+            "phone": "02/279.22.11",
+            "feature_id": "URB_A_MU.7400"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Etterbeek",
+            "name_nl": "Etterbeek",
+            "phone": "02/627.21.11",
+            "feature_id": "URB_A_MU.7500"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Evere",
+            "name_nl": "Evere",
+            "phone": "02/247.62.62",
+            "feature_id": "URB_A_MU.7600"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Forest",
+            "name_nl": "Forest",
+            "phone": "02/370.22.11",
+            "feature_id": "URB_A_MU.7700"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Ganshoren",
+            "name_nl": "Ganshoren",
+            "phone": "02/465.12.77",
+            "feature_id": "URB_A_MU.7800"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Ixelles",
+            "name_nl": "Elsene",
+            "phone": "02/515.61.11",
+            "feature_id": "URB_A_MU.7900"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Jette",
+            "name_nl": "Jette",
+            "phone": "02/423.12.11",
+            "feature_id": "URB_A_MU.8000"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Koekelberg",
+            "name_nl": "Koekelberg",
+            "phone": "02/412.14.11",
+            "feature_id": "URB_A_MU.8100"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Molenbeek St Jean",
+            "name_nl": "Molenbeek St Jean",
+            "phone": "02/412.36.75",
+            "feature_id": "URB_A_MU.8200"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Saint-Gilles",
+            "name_nl": "Saint-Gilles",
+            "phone": "02/536.02.11",
+            "feature_id": "URB_A_MU.8300"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Saint-Josse ten Noode",
+            "name_nl": "Saint-Josse ten Noode",
+            "phone": "02/220.26.11",
+            "feature_id": "URB_A_MU.8400"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Schaerbeek",
+            "name_nl": "Schaerbeek",
+            "phone": "02/244.75.11",
+            "feature_id": "URB_A_MU.8500"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Uccle",
+            "name_nl": "Uccle",
+            "phone": "02/348.65.11",
+            "feature_id": "URB_A_MU.8600"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Watermael-Boisfort",
+            "name_nl": "Watermael-Boisfort",
+            "phone": "02/674.74.11",
+            "feature_id": "URB_A_MU.8700"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Woluwe St Lambert",
+            "name_nl": "Woluwe St Lambert",
+            "phone": "02/761.27.11",
+            "feature_id": "URB_A_MU.8800"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "fixmystreet.organisationentity",
+        "fields": {
+            "commune": true,
+            "dependency":20,
+            "name_fr": "Woluwe St Pierre",
+            "name_nl": "Woluwe St Pierre",
+            "phone": "02/773.05.11",
+            "feature_id": "URB_A_MU.8900"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 1,
+            "name_fr": "Anderlecht",
+            "name_nl": "Anderlecht",
+            "hide": false,
+            "code": 1070
+        }
+    },
+    {
+        "pk": 2,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 2,
+            "name_fr": "Auderghem",
+            "name_nl": "Oudergem",
+            "hide": false,
+            "code": 1160
+        }
+    },
+    {
+        "pk": 3,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 3,
+            "name_fr": "Berchem-Sainte-Agathe",
+            "name_nl": "Sint-Agatha-Berchem",
+            "hide": false,
+            "code": 1082
+        }
+    },
+    {
+        "pk": 4,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "Ville de Bruxelles",
+            "name_nl": "Brussel Stad",
+            "hide": false,
+            "code": 1000
+        }
+    },
+    {
+        "pk": 5,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 5,
+            "name_fr": "Etterbeek",
+            "name_nl": "Etterbeek",
+            "hide": false,
+            "code": 1040
+        }
+    },
+    {
+        "pk": 6,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 6,
+            "name_fr": "Evere",
+            "name_nl": "Evere",
+            "hide": false,
+            "code": 1140
+        }
+    },
+    {
+        "pk": 7,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 7,
+            "name_fr": "Forest",
+            "name_nl": "Vorst",
+            "hide": false,
+            "code": 1190
+        }
+    },
+    {
+        "pk": 8,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 8,
+            "name_fr": "Ganshoren",
+            "name_nl": "Ganshoren",
+            "hide": false,
+            "code": 1083
+        }
+    },
+    {
+        "pk": 9,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 9,
+            "name_fr": "Ixelles",
+            "name_nl": "Elsene",
+            "hide": false,
+            "code": 1050
+        }
+    },
+    {
+        "pk": 10,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 10,
+            "name_fr": "Jette",
+            "name_nl": "Jette",
+            "hide": false,
+            "code": 1090
+        }
+    },
+    {
+        "pk": 11,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 11,
+            "name_fr": "Koekelberg",
+            "name_nl": "Koekelberg",
+            "hide": false,
+            "code": 1081
+        }
+    },
+    {
+        "pk": 12,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 12,
+            "name_fr": "Molenbeek St Jean",
+            "name_nl": "Sint-Jans-Molenbeek",
+            "hide": false,
+            "code": 1080
+        }
+    },
+    {
+        "pk": 13,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 13,
+            "name_fr": "Saint-Gilles",
+            "name_nl": "Sint-Gillis",
+            "hide": false,
+            "code": 1060
+        }
+    },
+    {
+        "pk": 14,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 14,
+            "name_fr": "Saint-Josse ten Noode",
+            "name_nl": "Sint-Joost-ten-Node",
+            "hide": false,
+            "code": 1210
+        }
+    },
+    {
+        "pk": 15,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 15,
+            "name_fr": "Schaerbeek",
+            "name_nl": "Schaarbeek",
+            "hide": false,
+            "code": 1030
+        }
+    },
+    {
+        "pk": 16,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 16,
+            "name_fr": "Uccle",
+            "name_nl": "Ukkel",
+            "hide": false,
+            "code": 1180
+        }
+    },
+    {
+        "pk": 17,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 17,
+            "name_fr": "Watermael-Boisfort",
+            "name_nl": "Watermaal-Bosvoorde",
+            "hide": false,
+            "code": 1170
+        }
+    },
+    {
+        "pk": 18,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 18,
+            "name_fr": "Woluwe St Lambert",
+            "name_nl": "Sint-Lambrechts-Woluwe",
+            "hide": false,
+            "code": 1200
+        }
+    },
+    {
+        "pk": 19,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 19,
+            "name_fr": "Woluwe St Pierre",
+            "name_nl": "Sint-Pieters-Woluwe",
+            "hide": false,
+            "code": 1150
+        }
+    },
+    {
+        "pk": 20,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 5,
+            "name_fr": "Laeken",
+            "name_nl": "Laeken",
+            "hide": false,
+            "code": 1020
+        }
+    },
+    {
+        "pk": 21,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 5,
+            "name_fr": "Neder-over-Heembeek",
+            "name_nl": "Neder-over-Heembeek",
+            "hide": false,
+            "code": 1120
+        }
+    },
+    {
+        "pk": 22,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 5,
+            "name_fr": "Haren",
+            "name_nl": "Haren",
+            "hide": false,
+            "code": 1130
+        }
+    },
+    {
+        "pk": 23,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1031
+        }
+    },
+    {
+        "pk": 24,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1071
+        }
+    },
+    {
+        "pk": 25,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1051
+        }
+    },
+    {
+        "pk": 26,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1041
+        }
+    },
+    {
         "pk": 1,
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {

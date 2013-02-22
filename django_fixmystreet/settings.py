@@ -50,6 +50,11 @@ REGISTRATION_OPEN = False
 ROOT_URLCONF = 'django_fixmystreet.urls'
 AUTH_PROFILE_MODULE = "django_fixmystreet.fixmystreet.FMSUser"
 
+SOUTH_LOGGING_ON = True
+SOUTH_LOGGING_FILE = os.path.join(PROJECT_PATH,"south.log")
+
+
+
 gettext = lambda s: s
 LANGUAGES = (
 #  ('en', gettext('English')),
