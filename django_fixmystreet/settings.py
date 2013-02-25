@@ -72,7 +72,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     'django_fixmystreet.fixmystreet.context_processor.domain',
     'django_fixmystreet.fixmystreet.context_processor.environment',
-    'django_fixmystreet.fixmystreet.context_processor.login_form',
 )
 
 MIDDLEWARE_CLASSES = (

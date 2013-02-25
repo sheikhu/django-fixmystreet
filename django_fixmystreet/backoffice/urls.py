@@ -61,7 +61,6 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     # (r'^accounts/', include('registration.backends.simple.urls')),
-    url(_(r'^login/$'), 'login_view', name='login'),
     url(_(r'^logout/$'),'logout_view', name='logout'),
     url(_(r'^change-password/$'), 'change_password', name='password_change'),
     #url(_(r'^change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),

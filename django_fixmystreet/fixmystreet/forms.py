@@ -5,7 +5,9 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from  django.core.exceptions import ValidationError
-from django.core.files import File
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
+
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 
@@ -56,7 +58,7 @@ class ReportForm(forms.ModelForm):
 
     def save(self, commit=True):
         report = super(ReportForm, self).save(commit=False)
-        
+
         report.point = dictToPoint(self.cleaned_data)
         report.status = Report.CREATED
         # report.address = self.cleaned_data["address"].split(", ")[0]
@@ -210,3 +212,33 @@ class MarkAsDoneForm(forms.ModelForm):
         if commit:
             report.save()
         return report
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label=_("Username"))
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+
+    error_messages = {
+        'invalid_login': _("Please enter a correct username and password. "
+                           "Note that both fields are case-sensitive."),
+        'no_cookies': _("Your Web browser doesn't appear to have cookies "
+                        "enabled. Cookies are required for logging in."),
+        'inactive': _("This account is inactive."),
+    }
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            self.user = authenticate(username=username,
+                                     password=password)
+            if self.user is None:
+                raise forms.ValidationError(
+                    self.error_messages['invalid_login'])
+            elif not self.user.is_active:
+                raise forms.ValidationError(self.error_messages['inactive'])
+
+        return self.cleaned_data
+
+

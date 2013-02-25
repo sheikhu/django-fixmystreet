@@ -53,23 +53,9 @@
                         </a>
                         <span>{% trans 'Connected' %}: {{ request.user.get_full_name }} ({{ request.fmsuser.get_organisation }})</span>
                         {% else %}
-                        <a href="#">
+                        <a href="{% url login %}">
                             <i class="icon-login"> </i> {% trans 'Sign in' %}
                         </a>
-
-                        <div id="login-form" class="block highlighted loginblock">
-                            {% if form.errors %}
-                            <p class="error">{% trans "An error occurred when login. Please try again." %}</p>
-                            {% endif %}
-
-                            <form method="post" action="{% url login %}" class="form-horizontal">
-                                {% include "_form_placeholder.html" with form=login_form %}
-                                {% if request.REQUEST.next %}
-                                    <input type="hidden" name="next" value="{{ request.REQUEST.next }}" />
-                                {% endif %}
-                                <input type="submit" value="{% trans 'Login' %}" class='btn'/>
-                            </form>
-                        </div>
                         {% endif %}
                     </div>
                 </section>

@@ -6,12 +6,14 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
+from django.utils import translation
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 from django_fixmystreet.backoffice.forms import FmsUserForm, AgentForm, ContractorForm, ContractorUserForm
+from django_fixmystreet.fixmystreet.forms import LoginForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
 
 logger = logging.getLogger(__name__)
@@ -19,24 +21,23 @@ logger = logging.getLogger(__name__)
 
 
 def login_view(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.user
             login(request, user)
             messages.add_message(request, messages.SUCCESS, _("You are logged in successfully"))
             logger.info('login user {1} ({0})'.format(user.id, user.username))
-            if 'next' in request.REQUEST:
+            if 'next' in request.REQUEST and request.REQUEST['next'] and request.REQUEST['next'] != reverse('login'):
                 return HttpResponseRedirect(request.REQUEST['next'])
             else:
+                translation.activate(user.fmsuser.last_used_language)
                 return HttpResponseRedirect(reverse('home_pro'))
-        else:
-            messages.add_message(request, messages.ERROR, _("Your account has been disabled."))
-            return HttpResponseRedirect(reverse('home'))
     else:
-        messages.add_message(request, messages.ERROR, _("Your username and password didn't match. Please try again."))
-        return HttpResponseRedirect(reverse('home'))
+        form = LoginForm()
+    return render_to_response("pro/login.html", {
+        "form": form
+    }, context_instance=RequestContext(request))
 
 
 def logout_view(request):

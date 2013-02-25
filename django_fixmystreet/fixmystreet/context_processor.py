@@ -1,7 +1,6 @@
 
 from django.contrib.sites.models import Site
 from django.conf import settings
-from django.contrib.auth.forms import AuthenticationForm
 
 
 def domain(request):
@@ -19,10 +18,5 @@ def environment(request):
         'BACKOFFICE': request.backoffice
     }
 
-
-def login_form(request):
-    return {
-        'login_form': AuthenticationForm()
-    }
 
 

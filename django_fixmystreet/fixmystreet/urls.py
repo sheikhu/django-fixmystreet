@@ -24,7 +24,11 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.main',
     url(_(r'^posters/$'), 'posters',name='posters'),
     url(_(r'^terms-of-use/$'), 'terms_of_use',name='terms_of_use'),
     url(_(r'^update-language/'),'update_current_language',name="update_current_language"),
+)
 
+
+urlpatterns += patterns('django_fixmystreet.backoffice.views.users',
+    url(_(r'^login/$'), 'login_view', name='login'),
 )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
@@ -32,7 +36,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
 )
 
 # urlpatterns += patterns('django_fixmystreet.fixmystreet.views.wards',
-    # (r'^communes/$', cities.show, {"city_id":1}, 'bxl_wards'), 
+    # (r'^communes/$', cities.show, {"city_id":1}, 'bxl_wards'),
     # url(r'^commune/(\d+)', 'show',name='ward_show'),
 # )
 
@@ -41,9 +45,9 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
 #)
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
-    url(_(r'^reports/$'), 'index',name='report_index'),	
-    url(_(r'^reports/(?P<slug>.*)/(?P<commune_id>\d+)$'), 'index',name='report_commune_index'),       
-    url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show'),     
+    url(_(r'^reports/$'), 'index',name='report_index'),
+    url(_(r'^reports/(?P<slug>.*)/(?P<commune_id>\d+)$'), 'index',name='report_commune_index'),
+    url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show'),
     url(_(r'^report/search_ticket'), 'search_ticket',name='search_ticket'),
     url(_(r'^report/new'), 'new',name='report_new'),
     url(_(r'^report/prepare'), 'report_prepare',name='report_prepare'),
@@ -88,7 +92,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/reports/citizen/nearest/$'), 'near_reports_citizen',name='api_reports'),
     url(_(r'^api/reports/pro/nearest/$'), 'near_reports_pro',name='api_reports'),
     url(_(r'^api/reports/citizen/$'), 'reports_citizen',name='api_reports'),
-    url(_(r'^api/reports/pro/$'), 'reports_pro',name='api_reports'),	
+    url(_(r'^api/reports/pro/$'), 'reports_pro',name='api_reports'),
     #url(_(r'^api/report/new/$'), 'create_report',name='api_report_new'),
     url(_(r'^api/login/$'),'login_user',name='login_user'),
     url(_(r'^api/logout/$'),'logout_user',name='logout_user'),
