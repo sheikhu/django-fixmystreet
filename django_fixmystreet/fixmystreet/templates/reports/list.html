@@ -48,21 +48,6 @@ $(function(){
     {% endfor %}
 });
 
-/**
- * Method called when searching report per ticket number.
- */
-function search_per_ticket() {
-        searchValue = $('#input-search').val();
-    //Block to search per ticket number
-    if (searchValue && searchValue.length > 0) {
-        valToSearch = searchValue;
-        //On this page character # is not required as the search zone is dedicated.
-        if (searchValue[0] == "#")
-            valToSearch = searchValue.substring(1);
-        window.location = "/report/search_ticket?report_id="+valToSearch;
-    }
-}
-
 
 </script>
 {% endblock %}
@@ -88,24 +73,24 @@ function search_per_ticket() {
     </div>
 
     <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
+    <div id="search_results" class='span8'>
     {% if not reports %}
-    <div class='span6'>{% trans "No problems have been reported." %}</div>
+        {% trans "No problems have been reported." %}
     {% else %}
-    <div id="search_results" class='span6'>
         {% for report in reports %}
             {% include "reports/_navigation.html" with url=report.get_absolute_url %}
         {% endfor %}
         {% include "_paginator.html" %}
-    </div>
     {% endif %}
+    </div>
 
-    <div class='span6'>
-        <div id="search_by_ticket_nr">
-            <p >{% trans "Search by entering a ticket number:" %}</p>
-            <input id="input-search" class="input_search_ticket" type="search" name="search_ticket" placeholder="{% trans 'Insert your ticket number here' %}" />
-            <p style="float:right">
-                <input type="button" onclick="javascript:search_per_ticket()" class='btn' value="{% trans 'Search' %}" />
-            </p>
+    <div class='span4'>
+        <form action="{% url search_ticket %}" class="block highlighted" id="search_by_ticket_nr">
+            <h2>{% trans "Search by ticket number:" %}</h2>
+            <div class="form-search">
+                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Ticket number' %}">
+                <input type="submit" class="btn" id="filterReports" value="{% trans 'Search' %}"/>
+            </div>
         </div>
         <div id="go_to_submit_report">
             <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>

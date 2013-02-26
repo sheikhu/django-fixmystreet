@@ -35,7 +35,7 @@ def list(request, status):
         elif ownership == "subscribed":
             reports = reports.subscribed(connectedUser)
         elif connectedUser.organisation: # ownership == entity
-            reports = reports.from_entity(connectedUser.organisation)
+            reports = reports.entity_responsible(connectedUser.organisation)
 
 
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]

@@ -12,12 +12,12 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
+from django.contrib.gis.db.models import Q
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from django.template.defaultfilters import slugify
 from django.conf import settings
 from django.http import Http404
 from email.MIMEImage import MIMEImage
@@ -305,11 +305,14 @@ class ReportQuerySet(models.query.GeoQuerySet):
         else:
             return self.filter(responsible_manager=user)
 
-    def from_entity(self, organisation):
+    def entity_responsible(self, organisation):
         if organisation.subcontractor or organisation.applicant:
             return self.filter(contractor=organisation)
         else:
             return self.filter(responsible_entity=organisation)
+
+    def entity_territory(self, organisation):
+        return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode_set.all()])
 
     def pending(self):
         return self.filter(status=Report.CREATED)
@@ -403,7 +406,7 @@ class Report(UserTrackedModel):
     responsible_manager_validated = models.BooleanField(default=False)
 
     valid = models.BooleanField(default=False)
-    private = models.BooleanField(default=True)
+    private = models.BooleanField(default=False)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
@@ -522,6 +525,20 @@ class Report(UserTrackedModel):
         # return self.attachments.get_query_set().files().filter(logical_deleted=False)
         # ==> is wrong
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
+
+    def territorial_entity(self):
+        return OrganisationEntity.objects.filter(zipcode__code=self.postalcode)[0]
+
+    def subscribe_author(self):
+        if self.id:
+            self.create_subscriber(self.created_by or self.citizen)
+        else:
+            # if not already created, waiting for post_save
+            self.subscribe_author = True
+
+    def create_subscriber(self, user):
+        if not self.subscriptions.filter(subscriber=user).exists():
+            self.subscriptions.add(ReportSubscription(subscriber=user))
 
     def to_full_JSON(self):
         """
@@ -842,6 +859,7 @@ def report_notify(sender, instance, **kwargs):
                 recipient=report.responsible_manager,
                 related=report,
             ).save()
+            ReportSubscription(report=instance, subscriber=report.responsible_manager).save()
             for subscription in report.subscriptions.all():
                     ReportNotification(
                         content_template='send_report_changed_to_subscribers',
@@ -872,12 +890,11 @@ def report_notify(sender, instance, **kwargs):
             l.save()
 
 
-# @receiver(post_save,sender=Report)
-# def report_subscribe_author(sender, instance, **kwargs):
-#     """signal on a report to register author as subscriber to his own report"""
-#     if kwargs['created'] and not kwargs['raw']:
-#         if instance.created_by:
-#             ReportSubscription(report=instance, subscriber=instance.created_by.fmsuser).save()
+@receiver(post_save,sender=Report)
+def report_subscribe_author(sender, instance, **kwargs):
+    """signal on a report to register author as subscriber to his own report"""
+    if hasattr(instance, 'subscribe_author') and instance.subscribe_author:
+        instance.create_subscriber(instance.created_by or instance.citizen)
 
 
 

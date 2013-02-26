@@ -4,20 +4,14 @@
 {% block title %}{% trans 'Sign in' %} {% endblock %}
 
 {% block content %}
-	<div id="fullwidth">
-        <h1>{% trans 'Sign in' %}</h1>
-		<div>
-			{% if form.non_field_errors %}
-			{{ form.non_field_errors }}
-			{% endif %}
+<form method="post" action="" class="form-centered">
+    <h1>{% trans 'Sign in' %}</h1>
+	{% if form.non_field_errors %}
+	{{ form.non_field_errors }}
+	{% endif %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+	{% include "_form_horizontal.html" with form=form %}
 
-			<form method="post" action="">
-                <input type="hidden" name="next" value="{{ request.GET.next }}" />
-				{% include "_form_horizontal.html" with form=form %}
-
-				<input type="submit" value="login" class='big_button'/>
-			</form>
-		</div>
-	</div>
-	<br/ style="clear:both;">
+	<input type="submit" value="login" class='big_button'/>
+</form>
 {% endblock %}

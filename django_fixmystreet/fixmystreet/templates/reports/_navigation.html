@@ -14,7 +14,7 @@
 		<!--h5 class="report-title">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}</h5>
 		<p class="report-address">{{ report.address }}, {{report.address_number}}</p-->
 		<p class="list_data">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}
-		<br/>{{ report.address }}, {{report.address_number}}</p>
+		<br/>{{ report.address }}, {{report.address_number}} ({{ report.postalcode }} {{ report.territorial_entity.name }})</p>
 	</div>
 	<div class="right_list_search_result">
 		<!--h5>280 {% trans 'subscriptions' %}</h5-->

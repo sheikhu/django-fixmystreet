@@ -5,11 +5,10 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from  django.core.exceptions import ValidationError
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 
-
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, \
+                ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser, ReportSubscription
 
 
 def secondaryCategoryChoices(show_private):
@@ -42,6 +41,7 @@ class ReportForm(forms.ModelForm):
 
     category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
     secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    subscription = forms.BooleanField(label=_('Subscription'), initial=True, help_text=_('Subscription and report follow-up'), required=False)
 
     # hidden inputs
     address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -63,13 +63,19 @@ class ReportForm(forms.ModelForm):
         report.status = Report.CREATED
         # report.address = self.cleaned_data["address"].split(", ")[0]
         # report.address_number = self.cleaned_data["address_number"]
+
         if commit:
             report.save()
+
+        if self.cleaned_data['subscription']:
+            report.subscribe_author()
+
         return report
 
 #Used by pro version
 class ProReportForm(ReportForm):
     secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.all())
+    private = forms.BooleanField(initial=True, required=False, label=_("Private Report"))
 
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
@@ -77,9 +83,8 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private')
+        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private', 'subscription')
 
-    private = forms.BooleanField(initial=True,required=False, label=_("Private Report"))
 
     def save (self,commit=True):
         report= super(ProReportForm,self).save(commit=False)
@@ -95,7 +100,7 @@ class CitizenReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode')
+        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode', 'subscription')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
@@ -115,14 +120,13 @@ class CitizenForm(forms.Form):
     required_css_class = 'required'
     class Meta:
         model = FMSUser
-        fields = ('last_name', 'telephone', 'email', 'quality', 'subscription')
+        fields = ('last_name', 'telephone', 'email', 'quality')
 
     last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
     email = forms.EmailField(max_length="75", label=_('Email'))
     quality = forms.ChoiceField(label=_('Quality'), choices=qualities)
     #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
-    subscription = forms.BooleanField(label=_('Subscription'), help_text=_('Subscription and report follow-up'), required=False)
 
     def save(self):
         try:

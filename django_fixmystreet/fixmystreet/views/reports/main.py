@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms.models import inlineformset_factory
@@ -50,9 +49,6 @@ def new(request):
                     #report_file.report = report
                     report_file.save()
 
-                if "citizen-subscription" in request.POST:
-                    if request.POST["citizen-subscription"]=="on":
-                        ReportSubscription(report=report, subscriber=report.citizen).save()
     else:
         report_form = CitizenReportForm(initial={
             'x': request.REQUEST.get('x'),
@@ -78,6 +74,7 @@ def new(request):
             },
             context_instance=RequestContext(request))
 
+
 def report_prepare(request, location = None, error_msg = None):
     '''Used to redirect pro users when clicking home. See backoffice version'''
     if request.GET.has_key('q'):
@@ -100,6 +97,7 @@ def report_prepare(request, location = None, error_msg = None):
                 'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
             },
             context_instance=RequestContext(request))
+
 
 def show(request, slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
@@ -145,6 +143,7 @@ def show(request, slug, report_id):
             },
             context_instance=RequestContext(request))
 
+
 def search_ticket(request):
     try:
         report_id = request.REQUEST.get('report_id')
@@ -155,13 +154,16 @@ def search_ticket(request):
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home'))
 
+
 def index(request, slug=None, commune_id=None):
     if commune_id:
         page_number = int(request.GET.get("page", 1))
 
         entity = OrganisationEntity.objects.get(id=commune_id)
-        reports = entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('-created')
+        reports = Report.objects.all().entity_territory(entity).public().order_by('-created')
+
         pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
+
         return render_to_response("reports/list.html", {
             #"reports": entity.reports_in_charge.order_by('address').filter(Q(private=False, status__in=Report.REPORT_STATUS_IN_PROGRESS) | Q(private=False, status__in=Report.CREATED, citizen__isnull=False)).all(),
             #"reports": entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('address', 'address_number'),

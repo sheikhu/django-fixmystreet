@@ -5,7 +5,15 @@ Changelog of django-fixmystreet
 0.2.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Separated login page.
+
+- Automatic subscription for managers.
+
+- Add subscribe checkbox in pro create report form.
+
+- Citizen list of report is now selected by postal code (not by responsible).
+
+⁻ Citizen "search by ticket" layout fix.
 
 
 0.2.11 (2013-02-21)
