@@ -6,11 +6,16 @@ Changelog of django-fixmystreet
 ------------------
 
 - Review of report buttons and publishing behavior.
-  "signaler comme terminé" => "Accompli"
+  "signaler comme terminé" => "Résolu"
   "Fermer définitivement l'incident" => "Cloturé"
   "Publier" => "Accepter"
   "Tout publier" => "Publier"
   "Rendre photos et commentaire public" => "Tout publier"
+  color of button close: orange => green
+
+- History cofusing label fixed
+  "Incident marqué comme cloturé" => "Incident signalé comme résolu"
+
 
 0.3.0 (2013-02-28)
 ------------------

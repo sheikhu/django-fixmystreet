@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 17:31+0100\n"
+"POT-Creation-Date: 2013-02-28 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -664,7 +664,7 @@ msgstr ""
 
 #: templates/pro/reports/show.html:371
 msgid "Close"
-msgstr "Cloturé"
+msgstr "Cloturer"
 
 #: templates/pro/reports/show.html:378
 msgid "Accept"
@@ -679,8 +679,8 @@ msgid "Reject"
 msgstr "Rejeter"
 
 #: templates/pro/reports/show.html:385
-msgid "Complete"
-msgstr "Accompli"
+msgid "Solved"
+msgstr "Résolu"
 
 #: templates/pro/reports/show.html:391
 msgid "report pdf"

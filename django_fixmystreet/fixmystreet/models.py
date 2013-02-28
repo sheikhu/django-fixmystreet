@@ -1419,7 +1419,7 @@ class ReportEventLog(models.Model):
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
         CLOSE: _("Report closed by {user}"),
-        SOLVE_REQUEST: _("Report pointed as done"),
+        SOLVE_REQUEST: _("Report pointed as solved"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
         PUBLISH: _("Report has been approved by {user}"),

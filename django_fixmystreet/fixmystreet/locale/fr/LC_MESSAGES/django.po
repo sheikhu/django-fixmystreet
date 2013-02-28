@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 17:31+0100\n"
+"POT-Creation-Date: 2013-02-28 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -217,7 +217,7 @@ msgstr "Refusé"
 
 #: models.py:1406
 msgid "Close"
-msgstr "Fermé"
+msgstr "Cloturer"
 
 #: models.py:1407
 msgid "Mark as Done"
@@ -272,8 +272,9 @@ msgid "Report closed by {user}"
 msgstr "L'incident est cloturer par {user}"
 
 #: models.py:1422
-msgid "Report pointed as done"
-msgstr "Incident marqué comme cloturé"
+#, fuzzy
+msgid "Report pointed as solved"
+msgstr "Incident signalé comme résolu"
 
 #: models.py:1423
 msgid "Report as been assigned to {related_new}"

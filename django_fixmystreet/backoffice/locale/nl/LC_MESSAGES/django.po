@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 17:31+0100\n"
+"POT-Creation-Date: 2013-02-28 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -689,8 +689,8 @@ msgid "Reject"
 msgstr "Afkeuren"
 
 #: templates/pro/reports/show.html:385
-msgid "Complete"
-msgstr ""
+msgid "Solved"
+msgstr "Opgelost"
 
 #: templates/pro/reports/show.html:391
 msgid "report pdf"
@@ -1131,9 +1131,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "Contractor is assigned"
 #~ msgstr "Aannemer is toegewezen"
-
-#~ msgid "Solved"
-#~ msgstr "Opgelost"
 
 #~ msgid "Processed"
 #~ msgstr "Behandeld"
