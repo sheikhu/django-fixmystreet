@@ -68,7 +68,7 @@ class AttachmentsInline(admin.TabularInline):
 
 
 class FMSUserAdmin(SimpleHistoryAdmin):
-    list_display = ("get_full_name", "username", "leader", "manager", "agent", "applicant", "contractor")
+    list_display = ("get_full_name", "username", "organisation", "leader", "manager", "agent", "applicant", "contractor")
     inlines = (
         ReportsInline,
         NotificationsInline,
@@ -148,7 +148,7 @@ class ReportEventsInline(admin.TabularInline):
 
 
 class ReportAdmin(SimpleHistoryAdmin):
-    list_display = ('responsible_entity', 'created', 'modified', 'category', 'secondary_category')
+    list_display = ('id', 'responsible_entity', 'created', 'modified', 'category', 'secondary_category')
     ordering = ['modified']
     #exclude = ['photo']
     readonly_fields = ('created', 'modified', 'created_by', 'modified_by')

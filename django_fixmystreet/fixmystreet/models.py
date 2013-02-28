@@ -12,7 +12,6 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models import Q
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.template import TemplateDoesNotExist
@@ -668,12 +667,17 @@ def track_former_value(sender, instance, **kwargs):
 
 
 @receiver(pre_save,sender=Report)
-def report_assign_responsible(sender, instance, **kwargs):
-    #Store the street number as int for further filtering (as somtimes the street number is 19H ...)
+def init_street_number_as_int(sender, instance, **kwargs):
+    """
+    Store the street number as int for further filtering (as somtimes the street number is 19H ...)
+    """
     non_decimal = re.compile(r'[^\d]+')
     value_processed = non_decimal.sub('', instance.address_number)
     instance.address_number_as_int = int(value_processed)
 
+
+@receiver(pre_save,sender=Report)
+def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
         #When created by pro a creator exists otherwise a citizen object
@@ -690,11 +694,7 @@ def report_assign_responsible(sender, instance, **kwargs):
             instance.responsible_manager = users[0]
         else:
             logging.error("no responsible")
-        # for currentUser in userCandidates:
-        #     userCategories = currentUser.categories.all()
-        #     for currentCategory in userCategories:
-        #         if (currentCategory == instance.secondary_category):
-        #            instance.responsible_manager = currentUser
+
 
 @receiver(post_save, sender=Report)
 def report_notify(sender, instance, **kwargs):
@@ -735,13 +735,14 @@ def report_notify(sender, instance, **kwargs):
 
             elif report.__former['status'] == Report.CREATED:
                 # created => in progress: published by manager
-                for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
+                # for subscription in report.subscriptions.all():
+                ReportNotification(
+                    content_template='send_report_changed_to_subscribers',
+                    recipient=report.created_by or report.citizen,
+                    # recipient=subscription.subscriber,
+                    related=report,
+                    reply_to=report.responsible_manager.email,
+                ).save()
 
                 ReportEventLog(
                     report=report,
@@ -852,42 +853,67 @@ def report_notify(sender, instance, **kwargs):
                         related_new = report.contractor
                     ).save()
 
-        #Report Creation
+
+
+        if report.__former['responsible_entity'] != report.responsible_entity:
+
+            if report.__former['responsible_entity']:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.ENTITY_CHANGED,
+                    related_old=report.__former['responsible_entity'],
+                    related_new=report.responsible_entity
+                ).save()
+
+                for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='send_report_changed_to_subscribers',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
+            else:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.ENTITY_ASSIGNED,
+                    related_new=report.responsible_entity
+                ).save()
+
         if report.__former['responsible_manager'] != report.responsible_manager:
+
             ReportNotification(
                 content_template='send_report_creation_to_gest_resp',
                 recipient=report.responsible_manager,
                 related=report,
             ).save()
-            ReportSubscription(report=instance, subscriber=report.responsible_manager).save()
-            for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
-            l = ReportEventLog()
-            l.report = report
-            l.event_type = ReportEventLog.MANAGER_CHANGED if report.__former['responsible_manager'] else ReportEventLog.MANAGER_ASSIGNED
-            l.related_old = report.__former['responsible_manager']
-            l.related_new = report.responsible_manager
-            l.save()
 
-        if report.__former['responsible_entity'] != report.responsible_entity:
-            for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
+            # automatic subscription for new responsible manager
+            subscription = ReportSubscription(report=instance, subscriber=report.responsible_manager)
+            subscription.notify_creation = False # don't send notification for subscription
+            subscription.save()
+
+            if report.__former['responsible_entity'] == report.responsible_entity: # avoid double log when entity change
+                if report.__former['responsible_manager']:
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.MANAGER_CHANGED,
+                        related_old=report.__former['responsible_manager'],
+                        related_new=report.responsible_manager
                     ).save()
-            l = ReportEventLog()
-            l.report = report
-            l.event_type = ReportEventLog.ENTITY_CHANGED if report.__former['responsible_entity'] else ReportEventLog.ENTITY_ASSIGNED
-            l.related_old = report.__former['responsible_entity']
-            l.related_new = report.responsible_entity
-            l.save()
+
+                    for subscription in report.subscriptions.all():
+                        ReportNotification(
+                            content_template='send_report_changed_to_subscribers',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_manager.email,
+                        ).save()
+                else:
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.MANAGER_ASSIGNED,
+                        related_new=report.responsible_manager
+                    ).save()
 
 
 @receiver(post_save,sender=Report)
@@ -1087,7 +1113,7 @@ class ReportSubscription(models.Model):
 
 @receiver(post_save,sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
-    if not kwargs['raw'] and kwargs['created']:
+    if not kwargs['raw'] and kwargs['created'] and (not hasattr(instance, 'notify_creation') or instance.notify_creation):
         report = instance.report
         notifiation = ReportNotification(
             content_template='send_subscription_to_subscriber',

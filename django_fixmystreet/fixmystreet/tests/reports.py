@@ -15,14 +15,19 @@ class NotificationTest(TestCase):
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
         #Create a FMSUser
-        self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr")
-        self.fmsuser.save()
-        self.commune = OrganisationEntity(name='test ward')
-        self.commune2 = OrganisationEntity(name="second")
-        self.commune2.save()
+        self.etterbeek = OrganisationEntity.objects.get(id=5) # postal code = 1040 Etterbeek
+        self.etterbeek.save()
+        self.bxl = OrganisationEntity.objects.get(id=4) # postal code = 1000 Bxl
+        self.bxl.save()
+        self.manager_etterbeek = FMSUser(email="manager@etterbeek.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.etterbeek)
+        self.manager_etterbeek.save()
+        self.manager_bxl = FMSUser(email="manager@bxl.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.bxl)
+        self.manager_bxl.save()
+        self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")
+        self.citizen.save()
 
     def testReportFileType(self):
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.manager_bxl)
 
         reportFile = ReportFile(file_type=ReportFile.PDF, report = new_report)
         self.assertTrue(reportFile.is_pdf())
@@ -55,91 +60,35 @@ class NotificationTest(TestCase):
     def testReportResponsibleAssignment(self):
         '''Test the assignment of a responsible when creating a report'''
         #When a responsible_manager is defined responsible_entity is not recomputed
-        new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser,responsible_entity=self.commune2, address='my address', address_number='6h')
+        new_report = Report(
+            status=Report.CREATED,
+            secondary_category=self.secondary_category,
+            category=self.category,
+            description='Just a test',
+            postalcode = 1000,
+            address='my address',
+            address_number='6h',
+            created_by=self.manager_etterbeek
+        )
         new_report.save()
-        #Expected should be that the responsible_entity is 4 (Brussels) ==> but it is not recomputed so it remains commune2 
-        self.assertTrue(new_report.responsible_entity==self.commune2)
-        #When no responsible_manager is defined then the commune must be assigned and the responsible_entity
-        new_report = Report(status=Report.CREATED, secondary_category=self.secondary_category, category=self.category, description='Just a test', postalcode = 1000, address='my address', address_number='6h')
+        # when created by pro report is under responsibility of etterbeek, not bxl
+        self.assertEquals(new_report.responsible_entity, self.etterbeek)
+        self.assertEquals(new_report.responsible_manager, self.manager_etterbeek)
+
+        new_report = Report(
+            status=Report.CREATED,
+            secondary_category=self.secondary_category,
+            category=self.category,
+            description='Just a test',
+            postalcode = 1000,
+            address='my address',
+            address_number='6h',
+            citizen=self.citizen
+        )
         new_report.save()
-        self.assertTrue(new_report.responsible_entity!=None)
-
-    #@skip("to conform")
-    #def testToCouncillor(self):
-    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-    #    self.report.save()
-
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-    #    self.assertEquals(len(mail.outbox), 1)
-    #    self.assertEquals(len(mail.outbox[0].to), 1)
-    #    self.assertEquals(mail.outbox[0].to, [self.councillor.email])
-
-    #    rule = NotificationRule(rule=NotificationRule.TO_COUNCILLOR, ward=self.ward, councillor=self.councillor2)
-    #    rule.save()
-
-    #    self.report = Report(ward=self.ward, category=self.category, title='Just a second test', author=self.user)
-    #    self.report.save()
-
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
-    #    self.assertEquals(len(mail.outbox), 3)
-    #    self.assertEquals(len(mail.outbox[1].to), 1)
-    #    self.assertEquals(len(mail.outbox[2].to), 1)
-    #    self.assertTrue(self.councillor2.email in mail.outbox[1].to or self.councillor2.email in mail.outbox[2].to)
-    #    self.assertTrue(self.councillor.email in mail.outbox[1].to or self.councillor.email in mail.outbox[2].to)
-
-    #@skip("to conform")
-    #def testMatchingCategoryClass(self):
-    #    rule = NotificationRule(rule=NotificationRule.MATCHING_CATEGORY_CLASS, ward=self.ward, category_class=self.categoryclass, councillor=self.councillor2)
-    #    rule.save()
-
-    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-    #    self.report.save()
-
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
-    #    self.assertEquals(len(mail.outbox), 2)
-    #    self.assertEquals(len(mail.outbox[0].to), 1)
-    #    self.assertEquals(len(mail.outbox[1].to), 1)
-    #    self.assertEquals(mail.outbox[0].to, [self.councillor.email])
-    #    self.assertEquals(mail.outbox[1].to, [self.councillor2.email])
-
-    #    self.report2 = Report(ward=self.ward, category=self.not_category, title='Just a second test', author=self.user)
-    #    self.report2.save()
-
-    #    self.assertFalse(ReportNotification.objects.filter(report=self.report2,to_councillor=self.councillor2).exists())
-    #    self.assertEquals(len(mail.outbox), 3)
-    #    self.assertEquals(len(mail.outbox[2].to), 1)
-    #    self.assertEquals(mail.outbox[2].to, [self.councillor.email])
-
-
-    #@skip("to conform")
-    #def testNotMatchingCategoryClass(self):
-    #    rule = NotificationRule(rule=NotificationRule.NOT_MATCHING_CATEGORY_CLASS, ward = self.ward, category_class = self.categoryclass, councillor=self.councillor2)
-    #    rule.save()
-
-    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-    #    self.report.save()
-
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor).exists())
-    #    self.assertFalse(ReportNotification.objects.filter(report=self.report,to_councillor=self.councillor2).exists())
-    #    self.assertEquals(len(mail.outbox), 1)
-    #    self.assertEquals(mail.outbox[0].to, [self.councillor.email])
-
-    #    self.report2 = Report(ward=self.ward, category=self.not_category, title='Just a second test', author=self.user)
-    #    self.report2.save()
-
-    #    self.assertTrue(ReportNotification.objects.filter(report=self.report2,to_councillor=self.councillor2).exists())
-    #    self.assertEquals(len(mail.outbox), 3)
-    #    self.assertEquals(mail.outbox[1].to, [self.councillor.email])
-    #    self.assertEquals(mail.outbox[2].to, [self.councillor2.email])
-
-    #@skip("to conform")
-    #def testSubscrciber(self):
-    #    self.report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-    #    self.report.save()
-
-    #    self.assertTrue(ReportSubscription.objects.filter(report=self.report,subscriber=self.user).exists())
+        # when created by citizen, postalcode used for resonsible
+        self.assertEquals(new_report.responsible_entity, self.bxl)
+        self.assertEquals(new_report.responsible_manager, self.manager_bxl)
 
 
 class PhotosTest(TestCase):

@@ -20,12 +20,12 @@ install_requires = [
     'docutils',
     'django-registration',
     'django-piston',
+    # 'django-nose'
     # 'django-simple-history',
     # 'lizard-ui >= 4.0b5'
     ]
 
 tests_require = [
-    'django-nose',
     'django-jenkins',
     'coverage',
     'pyflakes'

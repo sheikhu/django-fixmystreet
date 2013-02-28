@@ -15,6 +15,12 @@ Changelog of django-fixmystreet
 
 ⁻ Citizen "search by ticket" layout fix.
 
+- Report list restore postalcode & city name.
+
+- Fix domain name in mails.
+
+- remove participation constraint on create report pro.
+
 
 0.2.11 (2013-02-21)
 -------------------

@@ -135,6 +135,10 @@ try:
 except ImportError:
     pass
 
+# INSTALLED_APPS += ('django_nose', )
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+# NOSE_PLUGINS = ['django_fixmystreet.fixmystreet.tests.TestDiscoveryPlugin']
+
 try:
     __import__('django_pdb')
     print "using django pdb"
@@ -150,6 +154,7 @@ try:
     JENKINS_TASKS = (
         'django_jenkins.tasks.with_coverage',
         'django_jenkins.tasks.django_tests',
+        # 'django_jenkins.nose_runner.CINoseTestSuiteRunner',
         'django_jenkins.tasks.run_pyflakes',
         #'django_jenkins.tasks.run_graphmodels',
     )

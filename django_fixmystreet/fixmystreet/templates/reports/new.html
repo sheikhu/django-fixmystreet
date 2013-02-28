@@ -72,16 +72,6 @@ $(function(){
     });
 });
 
-var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
-var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
-var zipcodes = new Object();
-
-{% for zip in all_zips %}
-    zipcodes[{{zip.code}}] = new Object();
-    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].msg = msg_prefix + "<p>{{ zip.commune.name }} ({{zip.commune.phone}})</p>" + bxl_mobility_msg;
-    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-{% endfor %}
 
 var categories = {
     {% for category_class in category_classes %}
@@ -101,7 +91,18 @@ var categories = {
 {% endblock %}
 
 {% block specific_scripts %}
-<script src="{{STATIC_URL}}js/reportFormReview.js"></script>`
+<script>
+var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
+var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
+var zipcodes = new Object();
+
+{% for zip in all_zips %}
+    zipcodes[{{zip.code}}] = new Object();
+    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+    zipcodes[{{zip.code}}].msg = msg_prefix + "<p>{{ zip.commune.name }} ({{zip.commune.phone}})</p>" + bxl_mobility_msg;
+    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+{% endfor %}
+</script>
 {% endblock %}
 
 {% block map %}
