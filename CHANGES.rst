@@ -16,6 +16,8 @@ Changelog of django-fixmystreet
 - History cofusing label fixed
   "Incident marqué comme cloturé" => "Incident signalé comme résolu"
 
+- Show privacy on attachment
+
 
 0.3.0 (2013-02-28)
 ------------------

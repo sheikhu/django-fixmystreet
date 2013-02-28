@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 17:45+0100\n"
+"POT-Creation-Date: 2013-02-28 18:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -232,7 +232,7 @@ msgstr "Gebruikersnaam:"
 #: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
-#: templates/pro/reports/show.html:564
+#: templates/pro/reports/show.html:569
 msgid "Save"
 msgstr "Bewaren"
 
@@ -346,7 +346,7 @@ msgid "No Report History"
 msgstr "Geen History"
 
 #: templates/pro/pdf.html:370 templates/pro/reports/show.html:485
-#: templates/pro/reports/show.html:542
+#: templates/pro/reports/show.html:547
 msgid "Comments"
 msgstr "Commentaren"
 
@@ -655,12 +655,12 @@ msgid "Set as private report"
 msgstr "Zichtbaarheid van dit incident"
 
 #: templates/pro/reports/show.html:312 templates/pro/reports/show.html:467
-#: templates/pro/reports/show.html:516
+#: templates/pro/reports/show.html:522
 msgid "Private"
 msgstr "Privaat"
 
 #: templates/pro/reports/show.html:316 templates/pro/reports/show.html:463
-#: templates/pro/reports/show.html:512
+#: templates/pro/reports/show.html:518
 msgid "Public"
 msgstr "Publiek"
 
@@ -737,7 +737,7 @@ msgstr "(Creatie datum)"
 msgid "file publication date"
 msgstr "(Publicatie datum)"
 
-#: templates/pro/reports/show.html:470 templates/pro/reports/show.html:519
+#: templates/pro/reports/show.html:470 templates/pro/reports/show.html:525
 msgid "Confidential"
 msgstr "Confidentieel"
 
@@ -762,11 +762,21 @@ msgstr ""
 "<strong>%(on)s</strong>\n"
 "                                "
 
-#: templates/pro/reports/show.html:558
+#: templates/pro/reports/show.html:509
+#, fuzzy
+msgid "private"
+msgstr "Privaat"
+
+#: templates/pro/reports/show.html:512
+#, fuzzy
+msgid "confidential"
+msgstr "Confidentieel"
+
+#: templates/pro/reports/show.html:563
 msgid "Add a file to this incident"
 msgstr "Voeg een bestand toe aan dit rapport"
 
-#: templates/pro/reports/show.html:558
+#: templates/pro/reports/show.html:563
 msgid "Add File"
 msgstr "Bestand toevoegen"
 

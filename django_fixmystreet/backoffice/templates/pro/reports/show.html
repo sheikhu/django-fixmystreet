@@ -455,9 +455,7 @@ function showHistory(){
                                     </div>
                                 {% endif %}
                                 <!-- If the status allow such interactions -->
-                                {% if report.is_in_progress  %}
-                                    <!--If the current user is the responsible manager-->
-                                    {% if report.responsible_manager.id == request.user.id %}
+                                {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
                                     <ul>
                                         <li><label>
                                             <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.PUBLIC}}"{% if file.is_public %} checked="checked"{% endif %}> {% trans "Public" %}
@@ -470,6 +468,11 @@ function showHistory(){
                                             <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.CONFIDENTIAL}}"{% if file.is_confidential %} checked="checked"{% endif %}> {% trans "Confidential" %}
                                         </label></li>
                                     </ul>
+                                {% else %}
+                                    {% if file.security_level == file.PRIVATE %}
+                                        {% trans "private" %}
+                                    {% elif file.security_level == file.CONFIDENTIAL %}
+                                        {% trans "confidential" %}
                                     {% endif %}
                                 {% endif %}
                             </div>
@@ -504,9 +507,7 @@ function showHistory(){
                                     {% endblocktrans %}
                                 </div>
                                 <!-- If the status allow such interactions -->
-                                {% if report.is_in_progress  %}
-                                    <!--If the current user is the responsible manager-->
-                                    {% if report.responsible_manager.id == request.user.id %}
+                                {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
                                     <ul>
                                         <li><label>
                                             <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.PUBLIC}}"{% if comment.is_public %} checked="checked"{% endif %}> {% trans "Public" %}
@@ -519,6 +520,11 @@ function showHistory(){
                                             <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.CONFIDENTIAL}}"{% if comment.is_confidential %} checked="checked"{% endif %}> {% trans "Confidential" %}
                                         </label></li>
                                     </ul>
+                                {% else %}
+                                    {% if comment.security_level == comment.PRIVATE %}
+                                        {% trans "private" %}
+                                    {% elif comment.security_level == comment.CONFIDENTIAL %}
+                                        {% trans "confidential" %}
                                     {% endif %}
                                 {% endif %}
                             </div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 17:45+0100\n"
+"POT-Creation-Date: 2013-02-28 18:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -230,7 +230,7 @@ msgstr "Utilisateur"
 #: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
-#: templates/pro/reports/show.html:564
+#: templates/pro/reports/show.html:569
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -343,7 +343,7 @@ msgid "No Report History"
 msgstr "Pas d'historique"
 
 #: templates/pro/pdf.html:370 templates/pro/reports/show.html:485
-#: templates/pro/reports/show.html:542
+#: templates/pro/reports/show.html:547
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -645,12 +645,12 @@ msgid "Set as private report"
 msgstr "Souhaitez vous rendre ce dossier public"
 
 #: templates/pro/reports/show.html:312 templates/pro/reports/show.html:467
-#: templates/pro/reports/show.html:516
+#: templates/pro/reports/show.html:522
 msgid "Private"
 msgstr "privé"
 
 #: templates/pro/reports/show.html:316 templates/pro/reports/show.html:463
-#: templates/pro/reports/show.html:512
+#: templates/pro/reports/show.html:518
 msgid "Public"
 msgstr "Public"
 
@@ -726,7 +726,7 @@ msgstr "(Date de création du fichier)"
 msgid "file publication date"
 msgstr "(Date de publication du fichier)"
 
-#: templates/pro/reports/show.html:470 templates/pro/reports/show.html:519
+#: templates/pro/reports/show.html:470 templates/pro/reports/show.html:525
 msgid "Confidential"
 msgstr "Confidentiel"
 
@@ -749,11 +749,21 @@ msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/pro/reports/show.html:558
+#: templates/pro/reports/show.html:509
+#, fuzzy
+msgid "private"
+msgstr "privé"
+
+#: templates/pro/reports/show.html:512
+#, fuzzy
+msgid "confidential"
+msgstr "Confidentiel"
+
+#: templates/pro/reports/show.html:563
 msgid "Add a file to this incident"
 msgstr "Ajouter les fichiers attachés"
 
-#: templates/pro/reports/show.html:558
+#: templates/pro/reports/show.html:563
 msgid "Add File"
 msgstr "Ajouter fichier"
 
