@@ -239,7 +239,7 @@ class OrganisationEntity(UserTrackedModel):
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
-    dependency = models.ForeignKey('OrganisationEntity', related_name='parent', null=True, blank=True)
+    dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
     feature_id = models.CharField(max_length=25, null=True, blank=True)
 
     history = HistoricalRecords()

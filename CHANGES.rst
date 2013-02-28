@@ -5,8 +5,12 @@ Changelog of django-fixmystreet
 0.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Review of report buttons and publishing behavior.
+  "signaler comme terminé" => "Accompli"
+  "Fermer définitivement l'incident" => "Cloturé"
+  "Publier" => "Accepter"
+  "Tout publier" => "Publier"
+  "Rendre photos et commentaire public" => "Tout publier"
 
 0.3.0 (2013-02-28)
 ------------------

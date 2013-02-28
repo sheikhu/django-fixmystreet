@@ -18,7 +18,7 @@ def accept( request, report_id ):
         #Update the status and persist to the database
         report.status = Report.MANAGER_ASSIGNED
         report.save()
-    
+
     #Redirect to the report show page
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
@@ -27,7 +27,7 @@ def accept( request, report_id ):
 
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
-    
+
     #Test if the report is created...
     if report.status == Report.CREATED:
         #Update the status
@@ -36,7 +36,7 @@ def refuse( request, report_id ):
         #Save the refusal motivation in the database
         report.refusal_motivation = form.data.POST.get('refusal_motivation')
         report.save()
-    
+
     #Redirect to the report show page
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
@@ -46,7 +46,7 @@ def refuse( request, report_id ):
 def fixed( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     #Update the status
-    report_fixed_at = datetime.now()
+    report.fixed_at = datetime.now()
     report.status = Report.SOLVED
     report.save()
     #Redirect to the report show page
@@ -84,7 +84,7 @@ def new( request, report_id ):
             file_form = ReportFileForm(request.POST,request.FILES)
             if file_form.is_valid:
                 report_file = file_form.save(request.user, report)
-                report_file.image.save(report_file.title,File(open(report_file.file.url[1:])))
+                report_file.image.save(report_file.title, File(open(report_file.file.url[1:])))
 
         if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
@@ -164,18 +164,19 @@ def reportPdf(request, report_id, pro_version):
 def acceptAndValidate(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.MANAGER_ASSIGNED
+    report.private = False
     report.save()
 
     comments = ReportComment.objects.filter(report_id=report_id)
     for comment in comments:
-        comment.security_level = ReportAttachment.PUBLIC 
+        comment.security_level = ReportAttachment.PUBLIC
         comment.save()
-    
+
     files = ReportFile.objects.filter(report_id=report_id)
     for f in files:
-        f.security_level = ReportAttachment.PUBLIC 
+        f.security_level = ReportAttachment.PUBLIC
         f.save()
-    
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
@@ -184,18 +185,18 @@ def acceptAndValidate(request, report_id):
 def validateAll(request,report_id):
     '''Set all annexes to public'''
     report = get_object_or_404(Report, id=report_id)
-    
+
     comments = ReportComment.objects.filter(report_id=report_id)
     files = ReportFile.objects.filter(report_id=report_id)
-    
+
     for comment in comments:
-       comment.security_level = ReportAttachment.PUBLIC 
+       comment.security_level = ReportAttachment.PUBLIC
        comment.save()
-    
+
     for f in files:
         f.security_level = ReportAttachment.PUBLIC
         f.save()
-    
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
@@ -219,7 +220,7 @@ def deleteComment(request,report_id):
     comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
     comment.logical_deleted = True
     comment.save()
-    
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
@@ -243,7 +244,7 @@ def deleteFile(request,report_id):
     f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
     f.logical_deleted = True
     f.save()
-    
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:

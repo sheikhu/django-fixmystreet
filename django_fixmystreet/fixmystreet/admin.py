@@ -129,10 +129,21 @@ class FMSUserAdmin(SimpleHistoryAdmin):
 admin.site.register(FMSUser,FMSUserAdmin)
 
 
+class OrgaUsersInline(admin.TabularInline):
+    model = FMSUser
+    fk_name = "organisation"
+    fields = ("get_full_name", "username", "leader", "manager", "agent")
+    readonly_fields = ("get_full_name", "username", "leader", "manager", "agent")
+    extra=0
+    max_num=10
+
 class OrganisationEntityAdmin(SimpleHistoryAdmin):
-    list_display = ("name", "commune", "region", "applicant", "subcontractor")
+    list_display = ("name", "commune", "region", "applicant", "subcontractor", "active")
     search_fields = ("name_fr", "name_nl",)
     list_filter = ("commune", "region", "applicant", "subcontractor")
+    inlines = (
+        OrgaUsersInline,
+    )
 
 admin.site.register(OrganisationEntity,OrganisationEntityAdmin)
 

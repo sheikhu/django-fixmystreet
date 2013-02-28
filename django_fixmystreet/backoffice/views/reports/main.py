@@ -133,6 +133,15 @@ def subscription(request):
             },
             context_instance=RequestContext(request))
 
+def delete(request,slug, report_id):
+    report = get_object_or_404(Report, id=report_id, responsible_manager=request.fmsuser)
+    report.status = Report.DELETED
+    report.save()
+    messages.add_message(request, messages.ERROR, _("Report successfully deleted"))
+    return HttpResponseRedirect(reverse('home_pro'))
+
+
+
 def show(request,slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
@@ -159,39 +168,37 @@ def show(request,slug, report_id):
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
 
-    organisationId = FMSUser.objects.get(pk=request.user.id).organisation_id
+    organisation = request.fmsuser.organisation
 
-    managers = FMSUser.objects.filter(organisation_id = organisationId).filter(manager=True)
-    fms_managers = FMSUser.objects.filter(manager=True).values_list('organisation', flat=True);
-    entitiesHavingManager = OrganisationEntity.objects.filter(id__in=fms_managers).values_list('pk', flat=True)
+    managers = FMSUser.objects.filter(organisation_id = organisation).filter(manager=True)
 
-    region_institution = OrganisationEntity.objects.filter(region=True).filter(id__in=entitiesHavingManager)
-    entities = OrganisationEntity.objects.exclude(pk=organisationId).filter(commune=True).filter(id__in=entitiesHavingManager)
+    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
+    entities = OrganisationEntity.objects.exclude(pk=organisation.id).filter(commune=True).filter(active=True)
 
-    contractors = OrganisationEntity.objects.filter(dependency_id=organisationId).filter(subcontractor=True)
+    contractors = organisation.associates.filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
 
     connectedUser = request.fmsuser
 
+    reports = Report.objects.all().order_by('-created')
     #if the user is an contractor then user the dependent organisation id
     if (connectedUser.contractor == True or connectedUser.applicant == True):
         #if the user is an contractor then display only report where He is responsible
-        reports = Report.objects.filter(contractor__in = connectedUser.work_for.all())
+        reports = reports.filter(contractor__in=connectedUser.work_for.all())
     else:
-        reports = Report.objects.filter(responsible_entity = connectedUser.organisation)
+        #If the manager is connected then filter on manager
+        if (connectedUser.manager == True):
+            reports = reports.filter(responsible_manager=connectedUser);
+        else:
+            reports = reports.filter(responsible_entity=connectedUser.organisation)
 
-    #If the manager is connected then filter on manager
-    if (connectedUser.manager == True):
-        reports = reports.filter(responsible_manager=connectedUser);
-
-    reports = reports.order_by('-created')
 
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
-    fms_user = FMSUser.objects.get(pk=request.user.id)
+
     return render_to_response("pro/reports/show.html",
             {
                 "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
-                "fms_user": fms_user,
+                "fms_user": request.fmsuser,
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
                 "comment_form": comment_form,
