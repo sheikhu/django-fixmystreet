@@ -1,16 +1,9 @@
-from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.db import IntegrityError
-from django.utils.translation import ugettext, get_language as _
-from django.utils.translation import get_language
-from django.core import mail
-from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import Report, ReportSubscription, FMSUser, ReportComment, ReportFile
-from django_fixmystreet.fixmystreet.session_manager import SessionManager
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
+from django_fixmystreet.fixmystreet.models import FMSUser
 
 class ReportViewsTest(SampleFilesTestCase):
     fixtures = ['bootstrap']
@@ -19,6 +12,13 @@ class ReportViewsTest(SampleFilesTestCase):
         self.user = User.objects.create_user(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
         self.user.save()
         self.client = Client()
+        self.citizen = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            first_name="citizen",
+            last_name="citizen",
+            email="citizen@a.com"
+        )
 
     def test_home(self):
         """Tests the new report view."""
@@ -28,24 +28,24 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertTrue('zipcodes' in response.context)
         #Are the zipcodes well loaded from DB??
         self.assertTrue(len(response.context['zipcodes']) > 0)
-    
+
     def test_about(self):
         """Tests the about view."""
         response = self.client.get(reverse('about'), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('faq_entries' in response.context)
-    
+
     def test_term_of_use(self):
         """Tests the term of use view."""
         response = self.client.get(reverse('terms_of_use'), follow=True)
         self.assertEqual(response.status_code, 200)
-    
+
     def test_posters_languages(self):
         """Tests the posters view."""
         response = self.client.get(reverse('posters'), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('languages' in response.context)
-        
+
         frFound = False
         nlFound = False
 
@@ -55,7 +55,7 @@ class ReportViewsTest(SampleFilesTestCase):
              if current[0] == 'nl':
                   nlFound = True
         self.assertTrue(frFound and nlFound)
-    
+
     def test_new_report(self):
         """Tests the new report page."""
         url = reverse('report_new')
@@ -72,21 +72,32 @@ class ReportViewsTest(SampleFilesTestCase):
 
     def test_create_report(self):
         """Tests the creation of a report and test the view of it."""
-        return # this commune does not participate ???
-        self.client.login(username='test1', password='test')
+        #self.client.login(username='test1', password='test')
         url = reverse('report_new')
+
         response = self.client.post(url, {
-            'x': '148360',
-            'y': '171177',
-            'title': 'Just a test',
-            'address': 'Av des arts',
-            'category': 1,
-            'secondary_category': 1,
-            'postalcode': '1000'
+            'report-x':'150056.538',
+            'report-y':'170907.56',
+            'report-address_fr':'Avenue des Arts, 3',
+            'report-address_nl':'Kunstlaan, 3',
+            'report-address_number':'3',
+            'report-postalcode':'1210',
+            'report-category':'1',
+            'report-secondary_category':'1',
+            'report-subscription':'on',
+            'citizen-quality':'1',
+            'comment-text':'test',
+            'files-TOTAL_FORMS': 0,
+            'files-INITIAL_FORMS': 0,
+            'files-MAX_NUM_FORMS': 0,
+            'citizen-email':self.citizen.email,
+            'citizen-firstname':self.citizen.first_name,
+            'citizen-lastname':self.citizen.last_name,
         }, follow=True)
+
         self.assertEqual(response.status_code, 200)
 
-        self.assertIn('report', report.context)
+        self.assertIn('report', response.context)
         report = response.context['report']
         self.assertRedirects(response, reverse('report_show', args=[report.id]))
         self.assertContains(response, report.postalcode)

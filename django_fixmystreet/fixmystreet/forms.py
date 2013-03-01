@@ -8,7 +8,7 @@ from  django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, \
-                ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser, ReportSubscription
+                ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
 
 
 def secondaryCategoryChoices(show_private):

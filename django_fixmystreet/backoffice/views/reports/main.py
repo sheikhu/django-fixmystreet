@@ -176,8 +176,10 @@ def show(request,slug, report_id):
     entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
     if organisation:
         entities.exclude(pk=organisation.id)
+        contractors = organisation.associates.filter(subcontractor=True)
+    else:
+        contractors = OrganisationEntity.objects.filter(subcontractor=True)
 
-    contractors = organisation.associates.filter(subcontractor=True)
     applicants = OrganisationEntity.objects.filter(applicant=True)
 
     connectedUser = request.fmsuser
