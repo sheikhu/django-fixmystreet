@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 18:01+0100\n"
+"POT-Creation-Date: 2013-03-01 13:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -232,7 +232,7 @@ msgstr "Gebruikersnaam:"
 #: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
-#: templates/pro/reports/show.html:569
+#: templates/pro/reports/show.html:574
 msgid "Save"
 msgstr "Bewaren"
 
@@ -345,8 +345,8 @@ msgstr "Geschiedenis"
 msgid "No Report History"
 msgstr "Geen History"
 
-#: templates/pro/pdf.html:370 templates/pro/reports/show.html:485
-#: templates/pro/reports/show.html:547
+#: templates/pro/pdf.html:370 templates/pro/reports/show.html:489
+#: templates/pro/reports/show.html:552
 msgid "Comments"
 msgstr "Commentaren"
 
@@ -654,13 +654,13 @@ msgstr "Selecteer een aannemer/impetrant"
 msgid "Set as private report"
 msgstr "Zichtbaarheid van dit incident"
 
-#: templates/pro/reports/show.html:312 templates/pro/reports/show.html:467
-#: templates/pro/reports/show.html:522
+#: templates/pro/reports/show.html:312 templates/pro/reports/show.html:465
+#: templates/pro/reports/show.html:520
 msgid "Private"
 msgstr "Privaat"
 
-#: templates/pro/reports/show.html:316 templates/pro/reports/show.html:463
-#: templates/pro/reports/show.html:518
+#: templates/pro/reports/show.html:316 templates/pro/reports/show.html:460
+#: templates/pro/reports/show.html:515
 msgid "Public"
 msgstr "Publiek"
 
@@ -692,13 +692,14 @@ msgstr "Afkeuren"
 msgid "Solved"
 msgstr "Opgelost"
 
-#: templates/pro/reports/show.html:391
-msgid "report pdf"
-msgstr "Download een pro kopie van het incident als pdf."
+#: templates/pro/reports/show.html:390
+msgid "report pdf public"
+msgstr "Download publiek PDF"
 
 #: templates/pro/reports/show.html:392
-msgid "report pdf public"
-msgstr "Publiek PDF rapport"
+#, fuzzy
+msgid "report pdf pro"
+msgstr "Download pro PDF."
 
 #: templates/pro/reports/show.html:395
 msgid "Export Csv"
@@ -708,48 +709,58 @@ msgstr "Export incident naar Excel"
 msgid "Show history"
 msgstr "Toon de geschiedenis van dit incident"
 
-#: templates/pro/reports/show.html:408
+#: templates/pro/reports/show.html:407
 #, fuzzy
 msgid "Publish all"
 msgstr "Alles publiceren"
 
-#: templates/pro/reports/show.html:412
+#: templates/pro/reports/show.html:410
 msgid "Photos and files"
 msgstr "Fotos en bestanden"
 
-#: templates/pro/reports/show.html:422
+#: templates/pro/reports/show.html:420
 msgid "Please confirm file deletion"
 msgstr "Bevestig je bestand verwijdering"
 
-#: templates/pro/reports/show.html:423
+#: templates/pro/reports/show.html:421
 msgid "delete file"
 msgstr "Bestand verwijderen"
 
-#: templates/pro/reports/show.html:443
+#: templates/pro/reports/show.html:441
 msgid "Posted by"
 msgstr "Gepost door"
 
-#: templates/pro/reports/show.html:451
+#: templates/pro/reports/show.html:449
 msgid "file creation Date"
 msgstr "(Creatie datum)"
 
-#: templates/pro/reports/show.html:454
+#: templates/pro/reports/show.html:452
 msgid "file publication date"
 msgstr "(Publicatie datum)"
 
-#: templates/pro/reports/show.html:470 templates/pro/reports/show.html:525
+#: templates/pro/reports/show.html:469 templates/pro/reports/show.html:524
 msgid "Confidential"
 msgstr "Confidentieel"
 
-#: templates/pro/reports/show.html:495
+#: templates/pro/reports/show.html:474 templates/pro/reports/show.html:529
+#, fuzzy
+msgid "private"
+msgstr "Privaat"
+
+#: templates/pro/reports/show.html:476 templates/pro/reports/show.html:531
+#, fuzzy
+msgid "confidential"
+msgstr "Confidentieel"
+
+#: templates/pro/reports/show.html:499
 msgid "Please confirm comment deletion"
 msgstr "Bevestig je commentaar verwijdering"
 
-#: templates/pro/reports/show.html:496
+#: templates/pro/reports/show.html:500
 msgid "delete comment"
 msgstr "Commentaar verwijderen"
 
-#: templates/pro/reports/show.html:502
+#: templates/pro/reports/show.html:506
 #, python-format
 msgid ""
 "\n"
@@ -762,21 +773,11 @@ msgstr ""
 "<strong>%(on)s</strong>\n"
 "                                "
 
-#: templates/pro/reports/show.html:509
-#, fuzzy
-msgid "private"
-msgstr "Privaat"
-
-#: templates/pro/reports/show.html:512
-#, fuzzy
-msgid "confidential"
-msgstr "Confidentieel"
-
-#: templates/pro/reports/show.html:563
+#: templates/pro/reports/show.html:568
 msgid "Add a file to this incident"
 msgstr "Voeg een bestand toe aan dit rapport"
 
-#: templates/pro/reports/show.html:563
+#: templates/pro/reports/show.html:568
 msgid "Add File"
 msgstr "Bestand toevoegen"
 

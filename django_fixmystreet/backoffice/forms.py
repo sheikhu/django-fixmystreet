@@ -55,8 +55,6 @@ class FmsUserForm(forms.ModelForm):
     is_active = forms.BooleanField(required=False, initial=True, help_text="only active users can login.", label="Active")
 
 
-
-
 class FmsUserCreateForm(FmsUserForm):
     required_css_class = 'required'
     class Meta:
@@ -128,7 +126,7 @@ class FmsUserCreateForm(FmsUserForm):
         data = {
             "user": user,
             "password":self.cleaned_data['password1'],
-            "SITE_URL": Site.objects.get_current().domain
+            "SITE_URL": 'http://{0}'.format(Site.objects.get_current().domain),
         }
 
         # MAIL SENDING...

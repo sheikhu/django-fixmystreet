@@ -15,6 +15,7 @@ from django.utils.translation import activate, deactivate
 from django.contrib.auth.models import User
 import PIL.Image as PIL
 
+from south.modelsinspector import add_introspection_rules
 import transmeta
 from stdimage import StdImageField
 
@@ -138,6 +139,19 @@ class FixStdImageField(StdImageField):
         post_save.connect(self.fix_exif_data, sender=cls)
         super(FixStdImageField, self).contribute_to_class(cls, name)
 
+
+add_introspection_rules(
+    [
+        (
+            (FixStdImageField, ),
+            [],
+            {
+                "verbose_name": ["verbose_name", {"default": None}],
+                "name":         ["name",         {"default": None}],
+            },
+        ),
+    ],
+    ["^django_fixmystreet.fixmystreet.utils.FixStdImageField",])
 
 def render_to_pdf(*args, **kwargs):
     tmpfolder = tempfile.mkdtemp()

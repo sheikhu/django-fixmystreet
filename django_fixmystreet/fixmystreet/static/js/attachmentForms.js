@@ -83,15 +83,20 @@ $(document).ready(function() {
             $('#form-files').append(file_form_template);
             $('#form-files').append(form_copy);
 
-            //Append file creation date
-            var fileDate = new Date(file.lastModifiedDate);
+            if(file.lastModifiedDate) {
+                //Append file creation date
+                var fileDate = new Date(file.lastModifiedDate);
+            } else {
+                var fileDate = new Date(file.lastModifiedDate);
+            }
             day = fileDate.getDate();
             month = fileDate.getMonth()+1;
             year = fileDate.getFullYear();
             hour = fileDate.getHours();
             minute = fileDate.getMinutes();
 
-        file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+            file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+
             AddFileToView(file_form_template, file);
 
             //$(inputFile).val('');

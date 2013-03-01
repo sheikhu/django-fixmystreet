@@ -1,7 +1,7 @@
 {% load i18n %}<html>
     <body style="margin: 0; padding: 20px 50px;">
 		<div style=" padding: 15px 8px;">
-			<p style="margin-bottom:30px;">{% block hello %}{% blocktrans with name=update.author %}Hello {{ name }},{% endblocktrans %}{% endblock %}</p>
+			<p style="margin-bottom:30px;">{% block hello %}{% blocktrans with name=recipient.get_full_name %}Hello {{ name }},{% endblocktrans %}{% endblock %}</p>
 
 			{% block content %}{% endblock %}
 			{% block thanks %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 18:01+0100\n"
+"POT-Creation-Date: 2013-03-01 13:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1835,8 +1835,8 @@ msgid "Download a pdf report of this incident"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
 #: templates/reports/show.html:330
-msgid "report pdf public"
-msgstr "Télécharger une copie publique de l'incident sous format pdf."
+msgid "report pdf"
+msgstr "Telecharger le PDF."
 
 #: templates/reports/show.html:334
 msgid "Offensive? Unsuitable? Tell us"

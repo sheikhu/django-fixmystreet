@@ -1062,7 +1062,7 @@ class ReportFile(ReportAttachment):
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
-    file_creation_date= models.DateTimeField(null=True)
+    file_creation_date= models.DateTimeField(blank=True, null=True, default=None)
 
 
     #def file(self):
@@ -1327,18 +1327,13 @@ def send_notification(sender, instance, **kwargs):
     else:
         mail_url = instance.related.get_absolute_url()
     data = {
+        "recipient": instance.recipient,
         "related": instance.related,
-        "SITE_URL": Site.objects.get_current().domain,
+        "SITE_URL": "http://{0}".format(Site.objects.get_current().domain),
         "mail_url": mail_url
     }
-    if instance.recipient.is_pro():
-        if instance.content_template == "send_subscription_to_subscriber":
-            data = {
-                "related": instance.related,
-                "SITE_URL": Site.objects.get_current().domain,
-                "mail_url": mail_url,
-                "unsubscribe_url":reverse("unsubscribe_pro",args=[instance.related.id])
-            }
+    if instance.recipient.is_active and instance.content_template == "send_subscription_to_subscriber":
+        data ["unsubscribe_url"] = reverse("unsubscribe_pro",args=[instance.related.id])
 
     subject, html, text = '', '', ''
     try:

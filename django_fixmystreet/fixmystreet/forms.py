@@ -157,7 +157,7 @@ class ContactForm(forms.Form):
                               label=_('Message'))
 
     def save(self, fail_silently=False):
-        message = render_to_string("emails/contact/message.txt", self.cleaned_data )
+        message = render_to_string("emails/contact/message.txt", self.cleaned_data)
         send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message,
                    settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
 
@@ -168,8 +168,8 @@ class ReportFileForm(forms.ModelForm):
         model = ReportFile
         fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
 
-    file_creation_date = forms.CharField(widget=forms.HiddenInput())
-    title = forms.CharField ( widget=forms.widgets.Textarea(attrs={'rows':1, 'cols':40}), required=False )
+    file_creation_date = forms.CharField(widget=forms.HiddenInput(), required=False)
+    title = forms.CharField ( widget=forms.widgets.Textarea(attrs={'rows':1, 'cols':40}), required=False)
 
     def clean_file(self):
         file = self.cleaned_data['file']

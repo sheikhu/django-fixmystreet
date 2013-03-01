@@ -7,7 +7,7 @@
 {% get_language_info for "fr" as langFR %}
 {% language langFR.code %}
 {% blocktrans with reportType=related.display_category date=related.created|date reportId=related.id motivation=related.mark_as_done_motivation url=mail_url %}
-<p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at <a href="http://{{SITE_URL}}{{url}}">http://{{SITE_URL}}{{url}}</a>.</p>
+<p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at <a href="{{SITE_URL}}{{url}}">{{SITE_URL}}{{url}}</a>.</p>
 <p> The user gave the following motivation for marking the report as done:</p>
 {{motivation}}
 {% endblocktrans %}
@@ -18,7 +18,7 @@
 <br/>
 {% language langNL.code %}
 {% blocktrans with reportType=related.display_category date=related.created|date reportId=related.id motivation=related.mark_as_done_motivation url=mail_url %}
-<p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at <a href="http://{{SITE_URL}}{{url}}">http://{{SITE_URL}}{{url}}</a>.</p>
+<p>The report with type {{reportType}} created at {{date}} is marked as fixed. You can consult the report at <a href="{{SITE_URL}}{{url}}">{{SITE_URL}}{{url}}</a>.</p>
 <p> The user gave the following motivation for marking the report as done:</p>
 {{motivation}}
 {% endblocktrans %}

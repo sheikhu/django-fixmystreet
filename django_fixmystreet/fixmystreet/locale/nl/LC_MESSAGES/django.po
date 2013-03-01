@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-28 18:01+0100\n"
+"POT-Creation-Date: 2013-03-01 13:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1765,8 +1765,8 @@ msgid "Download a pdf report of this incident"
 msgstr "Download een kopie van het incident als pdf."
 
 #: templates/reports/show.html:330
-msgid "report pdf public"
-msgstr "Download een publieke kopie van het incident als pdf."
+msgid "report pdf"
+msgstr "PDF rapport"
 
 #: templates/reports/show.html:334
 msgid "Offensive? Unsuitable? Tell us"
@@ -1803,6 +1803,9 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "report pdf public"
+#~ msgstr "Download een publieke kopie van het incident als pdf."
 
 #~ msgid "An error occurred when login. Please try again."
 #~ msgstr "Login fout. Probeer opnieuw"
@@ -2043,9 +2046,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "Reject"
 #~ msgstr "Afkeuren"
-
-#~ msgid "report pdf"
-#~ msgstr "PDF rapport"
 
 #~ msgid "You've subscribed for updates"
 #~ msgstr "U bent geabonneerd voor updates"

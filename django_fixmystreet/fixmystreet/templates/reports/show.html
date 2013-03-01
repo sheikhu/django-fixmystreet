@@ -302,7 +302,9 @@ function markAsDone(){
             <legend>{% trans 'Files' %}</legend>
             <div id="form-files">
                 {{ file_formset.management_form }}
-                {# file_formset.errors #}
+                {% if file_formset.errors %}
+                    {{ file_formset.errors }}
+                {% endif %}
 
                 <div id="file-form-template">
                     <img class="thumbnail" />
@@ -327,7 +329,7 @@ function markAsDone(){
         <!-- If the status allow such interactions -->
         <p>
             <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
-                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf public' %}
+                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' %}
             </a>
         </p>
         <!--div id="more-actions">

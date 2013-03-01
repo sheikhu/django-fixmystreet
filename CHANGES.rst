@@ -11,7 +11,10 @@ Changelog of django-fixmystreet
 0.3.3 (2013-03-01)
 ------------------
 
-- Nothing changed yet.
+- applicant/contractor can export pdf
+
+- applicant/contractor can not "publish all"
+
 
 
 0.3.2 (2013-03-01)
@@ -34,7 +37,7 @@ Changelog of django-fixmystreet
 - History cofusing label fixed
   "Incident marqué comme cloturé" => "Incident signalé comme résolu"
 
-- Show privacy on attachment
+- Show privacy label on attachment when privacy not editable
 
 
 0.3.0 (2013-02-28)
