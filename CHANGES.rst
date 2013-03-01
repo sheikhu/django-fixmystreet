@@ -2,7 +2,7 @@ Changelog of django-fixmystreet
 ===================================================
 
 
-0.3.1 (unreleased)
+0.3.1 (2013-03-01)
 ------------------
 
 - Review of report buttons and publishing behavior.
