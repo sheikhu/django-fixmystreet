@@ -15,6 +15,7 @@ Changelog of django-fixmystreet
 
 - applicant/contractor can not "publish all"
 
+- FireFox 10 complient
 
 
 0.3.2 (2013-03-01)

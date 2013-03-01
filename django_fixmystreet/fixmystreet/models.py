@@ -1062,7 +1062,7 @@ class ReportFile(ReportAttachment):
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
-    file_creation_date= models.DateTimeField(blank=True, null=True, default=None)
+    file_creation_date= models.DateTimeField(blank=False, null=True)
 
 
     #def file(self):

@@ -183,6 +183,15 @@ class ReportFileForm(forms.ModelForm):
         #    self.fields.get('title').label = "zaza"
         return file
 
+    def clean_file_creation_date(self):
+        file_creation_date = self.cleaned_data.get('file_creation_date')
+
+        if not file_creation_date:
+            # this is not None if user left the <input/> empty
+            return None
+
+        return file_creation_date
+
     def save(self, commit=True):
         report_file = super(ReportFileForm,self).save(commit=False)
 
