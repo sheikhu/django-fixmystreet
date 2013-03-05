@@ -668,12 +668,6 @@ li img {
     color: white;
 }
 
-#validate_form,
-#confirm_form {
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
 .inactive_overlay_form_overview {
     opacity:0.5;
     position:absolute;
