@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-05 15:33+0100\n"
+"POT-Creation-Date: 2013-03-05 15:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,12 +85,10 @@ msgid "Add a comment, please."
 msgstr "Veuillez ajouter un commentaire."
 
 #: forms.py:230
-#, fuzzy
 msgid "Username"
 msgstr "Ideitifiant"
 
 #: forms.py:231
-#, fuzzy
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -822,7 +820,7 @@ msgstr "Les derniers incidents:"
 #: templates/home.html:180
 #, fuzzy
 msgid "Download Fix My Street for your smartphone:"
-msgstr "Téléchargez l'application fix my sreet sur votre smartphone"
+msgstr "Téléchargez Fix My Street sur votre smartphone:"
 
 #: templates/posters.html:4 templates/posters.html.py:8
 msgid "Posters"
@@ -1381,7 +1379,7 @@ msgstr "L'incident signalé a été refusé"
 
 #: templates/emails/send_subscription_to_subscriber/message.html:9
 #: templates/emails/send_subscription_to_subscriber/message.html:21
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>You are now subscribed to the report with type %(reportType)s, created at "
