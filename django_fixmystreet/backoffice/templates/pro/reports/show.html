@@ -413,70 +413,7 @@ function showHistory(){
                         {% if file.is_confidential and not fms_user.can_see_confidential %}
                         <!-- Skip -->
                         {% else %}
-                            <div class="report_update">
-                                {% if request.user.id == report.responsible_manager.id %}
-                                    {% if report.is_created or report.is_in_progress  %}
-                                    <!-- Manager in charge only -->
-                                    <a class="pull-right" onclick="return confirm('{% trans 'Please confirm file deletion' %}')" href="{% url report_delete_file report.id %}?fileId={{file.id}}">
-                                        <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
-                                    </a>
-                                    {% endif %}
-                                {% endif %}
-                                {% if file.file %}
-                                    {% if file.is_image %}
-                                        <a href="{{ file.image.url }}" class="view-image"><img src='{{file.image.url}}'/></a>
-                                    {% endif %}
-                                    {% if file.is_pdf %}
-                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
-                                    {% endif %}
-                                    {% if file.is_word %}
-                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-word.png' width="48px" height="48px"/></a>
-                                    {% endif %}
-                                    {% if file.is_excel %}
-                                        <a href="{{ file.file.url }}"><img src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
-                                    {% endif %}
-                                    <div class="update_text">
-                                        {{file.title}}
-                                        <br/>
-                                        <span class="update_light_text">{% trans 'Posted by' %}</span>
-                                            {{file.get_display_name}}
-                                        <br/>
-                                        {% if file.file_creation_date != None%}
-                                            {{file.file_creation_date}}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                        <span class="update_light_text">{% trans 'file creation Date' %}</span>
-                                        <br/>
-                                        {{file.created}}
-                                        <span class="update_light_text">{% trans 'file publication date' %}</span>
-                                    </div>
-                                {% endif %}
-                                <!-- If the status allow such interactions -->
-                                {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
-                                    <ul>
-                                        <li><label>
-                                            <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.PUBLIC}}"{% if file.is_public %} checked="checked"{% endif %}>
-                                            {% trans "Public" %}
-                                        </label></li>
-
-                                        <li><label>
-                                            <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.PRIVATE}}"{% if file.is_private %} checked="checked"{% endif %}>
-                                            {% trans "Private" %}
-                                        </label></li>
-                                        <li><label>
-                                            <input type="radio" name="file_security_level_{{file.id}}" data-type="file" data-attachment-id="{{file.id}}" value="{{file.CONFIDENTIAL}}"{% if file.is_confidential %} checked="checked"{% endif %}>
-                                            {% trans "Confidential" %}
-                                        </label></li>
-                                    </ul>
-                                {% else %}
-                                    {% if file.security_level == file.PRIVATE %}
-                                        {% trans "private" %}
-                                    {% elif file.security_level == file.CONFIDENTIAL %}
-                                        {% trans "confidential" %}
-                                    {% endif %}
-                                {% endif %}
-                            </div>
+                            {% include "reports/_file.html" %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -492,46 +429,7 @@ function showHistory(){
                         {% if comment.is_confidential and not fms_user.can_see_confidential %}
                         <!-- Skip -->
                         {% else %}
-                            <div class="report_update">
-                                {% if request.user.id == report.responsible_manager.id %}
-                                    {% if report.is_created or report.is_in_progress  %}
-                                        <!-- Manager in charge only -->
-                                        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm comment deletion' %}')" href="{% url report_delete_comment report.id %}?commentId={{comment.id}}">
-                                            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete comment' %}" title="{% trans 'delete comment'%}"/>
-                                        </a>
-                                    {% endif %}
-                                {% endif %}
-                                <div class="update_text">
-                                    <p>{{ comment.text }}</p>
-                                    {% blocktrans with by=comment.get_display_name on=comment.created %}
-                                    Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                                    {% endblocktrans %}
-                                </div>
-                                <!-- If the status allow such interactions -->
-                                {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
-                                    <ul>
-                                        <li><label>
-                                            <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.PUBLIC}}"{% if comment.is_public %} checked="checked"{% endif %}>
-                                            {% trans "Public" %}
-                                        </label></li>
-
-                                        <li><label>
-                                            <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.PRIVATE}}"{% if comment.is_private %} checked="checked"{% endif %}>
-                                            {% trans "Private" %}
-                                        </label></li>
-                                        <li><label>
-                                            <input type="radio" name="comment_security_level_{{comment.id}}" data-type="comment" data-attachment-id="{{comment.id}}" value="{{comment.CONFIDENTIAL}}"{% if comment.is_confidential %} checked="checked"{% endif %}>
-                                            {% trans "Confidential" %}
-                                        </label></li>
-                                    </ul>
-                                {% else %}
-                                    {% if comment.security_level == comment.PRIVATE %}
-                                        {% trans "private" %}
-                                    {% elif comment.security_level == comment.CONFIDENTIAL %}
-                                        {% trans "confidential" %}
-                                    {% endif %}
-                                {% endif %}
-                            </div>
+                            {% include "reports/_comment.html" %}
                         {% endif %}
                     {% endfor %}
                 </div>

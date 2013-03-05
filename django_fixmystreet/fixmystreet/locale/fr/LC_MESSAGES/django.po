@@ -82,7 +82,7 @@ msgstr "Message"
 
 #: forms.py:204
 msgid "Add a comment, please."
-msgstr "Veuillez ajouter un commentaire."
+msgstr "Veuillez ajouter un commentaire. (Ce commentaire serait validé avant publication)"
 
 #: forms.py:221
 #, fuzzy
@@ -1607,7 +1607,7 @@ msgstr "Type d'incident:"
 #: templates/reports/new.html:151 templates/reports/new.html.py:245
 #: templates/reports/show.html:302
 msgid "Files"
-msgstr "Photos et fichiers:"
+msgstr "Photos et fichiers"
 
 #: templates/reports/new.html:152
 msgid "Optimal File Size (1200X800)"
@@ -1717,7 +1717,7 @@ msgstr ""
 
 #: templates/reports/show.html:115
 msgid "Report Ticket"
-msgstr "Incident n°: "
+msgstr "Incident n° "
 
 #: templates/reports/show.html:119
 msgid ""
@@ -1765,7 +1765,7 @@ msgstr ""
 
 #: templates/reports/show.html:166
 msgid "Location:"
-msgstr "Adresse:"
+msgstr "Localisation:"
 
 #: templates/reports/show.html:170
 msgid "Category:"
@@ -1873,6 +1873,10 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+msgid "In_progress"
+msgstr "En cours de traitement"
+
 
 #~ msgid "An error occurred when login. Please try again."
 #~ msgstr "Une erreur est survenue lors de votre identification"
