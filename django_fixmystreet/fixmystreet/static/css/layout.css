@@ -624,9 +624,39 @@ li img {
     margin-bottom: 20px;
     /*background: #FFF203;*/
     background:#FFDB00;
-    border-radius: 15px;
+    border-radius: 4px;
     min-width: 100px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+}
+
+#citizen-subscription-form .btn{
+    margin-top: 15px;
+    margin-bottom: 20px;
+    /*background: #FFF203;*/
+    background:#FFDB00;
+    border-radius: 4px;
+    min-width: 100px;
+    /*border: 1px solid black;*/
+}
+
+#citizen-subscription-form .btn:hover{
+    margin-top: 15px;
+    margin-bottom: 20px;
+    /*background: #FFF203;*/
+    background:#E6E6E6;
+    border-radius: 4px;
+    min-width: 100px;
+    /*border: 1px solid black;*/
+}
+
+#report-form .btn:hover{
+    margin-top: 15px;
+    margin-bottom: 20px;
+    /*background: #FFF203;*/
+    background:#E6E6E6;
+    border-radius: 4px;
+    min-width: 100px;
+    /*border: 1px solid black;*/
 }
 
 #report-form .btn.gray_left{
@@ -1048,10 +1078,13 @@ legend span {
 
 .author-sign {
     text-align:left;
+    font-family: dosismedium, Arial, sans-serif !important;
 }
 
 .author-sign strong {
     display:inline-block;
+    font-family: dosisbold, Arial, sans-serif !important;
+    font-size: initial;
 }
 
 #report-status th {
@@ -1069,6 +1102,25 @@ legend span {
 	text-align: right;
     margin-top: 10px;
 }
+
+.is_created {
+    width:100%;
+    padding: 5px;
+    margin-bottom: 1em;
+    text-align: center;
+    position: relative;
+    background-color: #FAC8C8;
+    border: solid 2px #C1262D;
+    border-radius:5px;
+    color: #222222;
+}
+
+.is_created p {
+    color: #222222;
+    text-align: left;
+    margin: 1em;
+}
+
 
 .is_fixed {
     width:100%;
@@ -1152,7 +1204,7 @@ legend span {
 }
 
 .bordered-box h1{
-   margin-left: 35px;
+   margin-left: 0px;
    font-size: x-large;
 }
 

@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
 "POT-Creation-Date: 2013-03-05 15:53+0100\n"
-=======
-"POT-Creation-Date: 2013-03-05 15:55+0100\n"
->>>>>>> fb355956d579398b9cf437c5a85802a018d1725d
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,7 +86,7 @@ msgstr "Message"
 
 #: forms.py:213
 msgid "Add a comment, please."
-msgstr "Veuillez ajouter un commentaire."
+msgstr "Veuillez ajouter un commentaire. (Ce commentaire serait validé avant publication)"
 
 #: forms.py:230
 msgid "Username"
@@ -1246,7 +1242,7 @@ msgstr ""
 "suivant: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_report_closed_to_subscribers/message.txt:4
-#, python-format
+#, python-format, fuzzy
 msgid ""
 "\n"
 "The report of type %(reportType)s created at %(date)s is now marked as "
@@ -1609,9 +1605,16 @@ msgstr ""
 msgid "Incident category:"
 msgstr "Type d'incident:"
 
+<<<<<<< HEAD
 #: templates/reports/new.html:151
 msgid "Supported formats"
 msgstr "Formats de fichier supportés"
+=======
+#: templates/reports/new.html:151 templates/reports/new.html.py:245
+#: templates/reports/show.html:302
+msgid "Files"
+msgstr "Photos et fichiers"
+>>>>>>> cd7bea7d7b032a636144b0dd301af14a0d18cb99
 
 #: templates/reports/new.html:151
 msgid "Optimal File Size (1200X800)"
@@ -1722,7 +1725,7 @@ msgstr ""
 
 #: templates/reports/show.html:115
 msgid "Report Ticket"
-msgstr "Incident n°: "
+msgstr "Incident n° "
 
 #: templates/reports/show.html:119
 msgid ""
@@ -1770,7 +1773,7 @@ msgstr ""
 
 #: templates/reports/show.html:166
 msgid "Location:"
-msgstr "Adresse:"
+msgstr "Localisation:"
 
 #: templates/reports/show.html:170
 msgid "Category:"
@@ -1884,6 +1887,10 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+
+msgid "In_progress"
+msgstr "En traitement"
 
 #~ msgid "As reported by fixmystreet users"
 #~ msgstr "Comme indiqué par les utilisateurs de fix my street."

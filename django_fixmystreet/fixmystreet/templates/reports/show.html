@@ -15,19 +15,6 @@
 /* QUERY READY INITIALIZATION */
 /******************************/
 $(function(){
-    // $('#map-bxl').fmsMap({
-    //     origin:{
-    //         x:{{ report.point.x }},
-    //         y:{{ report.point.y }}
-    //     }
-    // });
-    // $('#map-bxl').fmsMap('addReport', {{report.to_JSON|dict_to_json|safe}});
-    // $("#dialogMarkAsDone").dialog({
-    //     modal: true,
-    //     autoOpen:false,
-    //     width:'auto',
-    //     resizable: false
-    // });
     $("#divMarkAsDone").hide();
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
@@ -54,8 +41,6 @@ function setFileCreationDate(){
 function markAsDone(){
     // $("#divMarkAsDone").show();
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
-
-    // window.location = '{% url report_update report.id %}?is_fixed=True';
 }
 </script>
 {% endblock %}
@@ -111,248 +96,184 @@ function markAsDone(){
 <!-- ######################### -->
 <div class="row">
 
-<div class="span6 bordered-box overview_div_left">
-    <h1>{% trans "Report Ticket" %} {{ report.get_ticket_number }}</h1>
-    <div class="pull-right">
-        {% if report.is_in_progress %}
-            {% if not report.status == report.SOLVED %}
-            <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
-            {% else %}
-            <button onclick="" class="btn" disabled style="font-size: 0.4em;margin-top: 0px;width:100%;">{% trans 'Mark as done' %}</button>
-            <p style="font-size: 0.3em">{% trans 'This report is already marked as done' %}</p>
-            {% endif %}
-        {% endif %}
-    </div>
-    <!-- ######### -->
-    <!-- IS FIXED  -->
-    <!-- ######### -->
+    <div class="span6">
+        <div class="bordered-box">
+            <div class="row-fluid">
+                <div class="span6" >
+                    <h1>{% trans "Report Ticket" %} {{ report.get_ticket_number }}</h1>
+                </div>
+                <div class="span6" >
+                    
+                        {% if report.is_in_progress %}
+                            {% if not report.status == report.SOLVED %}
+                            <a style="float:right;" href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
+                            {% else %}
+                            <button style="float:right;" onclick="" class="btn" disabled>{% trans 'Mark as done' %}</button>
+                            <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>
+                            {% endif %}
+                        {% endif %}
+                    
+                </div>
+            </div>
+    
+            <!-- ######### -->
+            <!-- IS FIXED  -->
+            <!-- ######### -->
 
-    {% if report.is_created %}
-    <div class='is_fixed'>{% trans "This incident is not validated." %}</div>
-    {% endif %}
-    {% if report.is_closed %}
-    <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
-    {% endif %}
-
-    <div id='report-body'>
-        <p>
-            {% if report.description %}
-                {{report.description|linebreaks}}
+            {% if report.is_created %}
+            <div class='is_created'>{% trans "This incident is not validated." %}</div>
             {% endif %}
-        </p>
-        <!-- ################### -->
-        <!-- REPORT CREATOR ZONE -->
-        <!-- ################### -->
-        <p class="author-sign">
-        {% if report.citizen %}
+            {% if report.is_closed %}
+            <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+            {% endif %}
+
+            <div id='report-body'>
+                <p>
+                    {% if report.description %}
+                        {{report.description|linebreaks}}
+                    {% endif %}
+                </p>
+                <!-- ################### -->
+                <!-- REPORT CREATOR ZONE -->
+                <!-- ################### -->
+                <p class="author-sign">
                     {% blocktrans with on=report.created %}
                         Posted on <strong>{{on}}</strong>
                     {% endblocktrans %}
-         {% else %}
-
-                        {% blocktrans with by=report.created_by.username on=report.created mail=report.created_by.email %}
-                        Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
-                        {% endblocktrans %}
-                        (tel:{{report.created_by.fmsuser.telephone}})
-        {% endif %}
-        </p>
+                </p>
 
 
-        <!-- ################## -->
-        <!-- REPORT STATUS ZONE -->
-        <!-- ################## -->
-        <table id='report-status'>
-            <tr>
-                <th>{% trans "Location:" %}</th>
-                <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</td>
-            </tr>
-            <tr>
-                <th>{% trans "Category:" %}</th>
-                <td>{{report.display_category}}</td>
-            </tr>
-            <tr>
-                <th>{% trans "Status:" %}</th>
-                <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
-            </tr>
-            {% if not report.contractor == None and report.contractor.applicant %}
-            <tr>
-                <th>{% trans "Applicant:" %}</th>
-                <td>
-                    {{report.contractor.name}} (tel:{{report.contractor.phone}})
-                    <br/>
-                    {% for contact_person in report.contractor.workers.all %}
-                        {{ contact_person.get_full_name }}
-                        {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
-                        <br/>
-                    {% endfor %}
-               </td>
-            </tr>
-            {% else %}
-              <tr>
-               <th>{% trans "Responsible:" %}</th>
-               <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
-              </tr>
-            {% endif %}
-            <tr>
-		<td>&nbsp;</td>
-	    </tr>
-        </table>
-
-
-        <!-- ################# FILES ############### -->
-        <!-- ################# FILES ############### -->
-        <!-- ################# FILES ############### -->
-        {% if report.active_files %}
-        <br/>
-	<h4>{% trans "Photos and files" %}</h4>
-        <div id="report_updates">
-            <table id="extraFilesTable">
-            {% for file in report.active_files.all %}
-                {% if file.is_public %} <!-- PUBLIC? -->
-                <tr>
-                    <td class="annexesFirstTD">
-                        <div class="report_update">
-                        {% if file.file %}
-
-                                <!--img style="max-width:390px;max-heigth:390px" src='{{ file.file.url }}'/-->
-
-                                {% if file.is_image %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='{{file.file.url}}' width="48px" height="48px"/></a>
-                                {% endif %}
-                                {% if file.is_pdf %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-pdf.png' width="48px" height="48px"/></a>
-                                {% endif %}
-                                {% if file.is_word %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-word.png' width="48px" height="48px"/></a>
-                                {% endif %}
-                                {% if file.is_excel %}
-                                        <a href="{{ file.file.url }}" ><img style="max-width:390px;max-heigth:390px" src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
-                                {% endif %}
-
-                            <div class="update_text">
-				{{file.title}}
-				<br/>
-	                        <strong>{% trans 'Posted By' %}: </strong>
-        	                {% if file.created_by %}
-                	                {{file.get_display_name}}
-                        	        (mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
-                        	{% else %}
-                                	{% trans 'Anonymous '%}
-                        	{% endif %}
-				<br/>
-				{% trans 'On' %}: {{file.created}}
-                                {% if file.is_image %}
-					{% if file.file_creation_date %}
-						<br/>
-						{% trans 'Creation Date' %}:
-						{{file.file_creation_date}}
-  					{% endif %}
-  				{% endif %}
-                            </div>
+                <!-- ################## -->
+                <!-- REPORT STATUS ZONE -->
+                <!-- ################## -->
+                <table id='report-status'>
+                    <tr>
+                        <th>{% trans "Location:" %}</th>
+                        <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans "Category:" %}</th>
+                        <td>{{report.display_category}}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans "Status:" %}</th>
+                        {% if report.is_in_progress %}
+                        <td>{% trans "In_progress" %}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
+                        {% else %}
+                        <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
                         {% endif %}
-                        </div>
-                    </td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-            </table>
-        </div>
-        {% endif %}
-
-        <!-- ################# COMMENTS ############### -->
-        <!-- ################# COMMENTS ############### -->
-        <!-- ################# COMMENTS ############### -->
-        {% if report.active_comments %}
-        <br/>
-	<h4>{% trans "Comments" %}</h4>
-        <div id="report_updates">
-            <table class="extraCommentsTable">
-            {% for comment in report.active_comments.all %}
-                {% if comment.is_public %}
-                <tr>
-                    <td class="annexesFirstTD">
-                        <div class="report_update">
-                            <p>{{comment.text}}</p>
-                            {% blocktrans with by=comment.get_display_name on=comment.created %}
-                            Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-                            {% endblocktrans %}
-                        </div>
-                    </td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-            </table>
-        </div>
-        {% endif %}
-
-    </div><!-- report-body -->
-
-    {% if report.is_in_progress %}
-    <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-        {% csrf_token %}
-        <!-- ############################################# -->
-        <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-        <!-- ############################################# -->
-        <fieldset>
-            <legend>{% trans 'Comments' %}</legend>
-            {{ comment_form.text }}
-            {# comment_form.text.errors #}
-        </fieldset>
-        <fieldset>
-            <legend>{% trans 'Files' %}</legend>
-            <div id="form-files">
-                {{ file_formset.management_form }}
-                {% if file_formset.errors %}
-                    {{ file_formset.errors }}
-                {% endif %}
-
-                <div id="file-form-template">
-                    <img class="thumbnail" />
-                    {{ file_formset.empty_form.reportattachment_ptr }}
-                    {{ file_formset.empty_form.file }}
-                    {{ file_formset.empty_form.title }}
-                    {{ file_formset.empty_form.file_creation_date }}
-                </div>
-            </div>
-            <div class="file-upload-button">
-                <a id="file-upload" title="{% trans 'Add a file to this incident' %}"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
-            </div>
-
-        </fieldset>
-        <p>
-            <input type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
-        </p>
-    </form>
-    {% endif %}
-
-
-        <!-- If the status allow such interactions -->
-        <p>
-            <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
+                    </tr>
+                    <tr>
+                       <th>{% trans "Responsible:" %}</th>
+                       <td>{{report.responsible_manager.organisation.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </div> <!-- report-body -->
+            <p>
+                <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' %}
-            </a>
-        </p>
-        <!--div id="more-actions">
-            <p><a href='{% url flag_report report.id %}'>{% trans "Offensive? Unsuitable? Tell us" %}</a></p>
-        </div-->
-    </div>
+                </a>
+            </p>
+        </div> <!-- Bordered-box-->
+    
+        <!-- ################# FILES ############### -->
+        <!-- ################# FILES ############### -->
+        <!-- ################# FILES ############### -->
+        {% if report.active_files or report.active_comments %}
+        <div class="bordered-box">
+            {% if report.active_files %}
+                <br/>
+                <h4>{% trans 'Files' %}</h4>
+                <div id="report_updates">
+                    <table id="extraFilesTable">
+                    {% for file in report.active_files.all %}
+                        {% if file.is_public %}
+                            {% include "reports/_file.html" %}
+                        {% endif %}
+                    {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+
+            <!-- ################# COMMENTS ############### -->
+            <!-- ################# COMMENTS ############### -->
+            <!-- ################# COMMENTS ############### -->
+            {% if report.active_comments %}
+                <br/>
+                <h4>{% trans "Comments" %}</h4>
+                <div id="report_updates">
+                    <table class="extraCommentsTable">
+                    {% for comment in report.active_comments.all %}
+                        {% if comment.is_public %}
+                            {% include "reports/_comment.html" %}
+                        {% endif %}
+                    {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+        </div> <!-- Bordered-box -->
+        {% endif %}
+    
+    </div> <!-- span6 -->
 
     {% if report.is_in_progress %}
-    <div class="span6 bordered-box overview_div_right">
-        <!-- ################ -->
-        <!-- SUBSCRIBER BLOCK -->
-        <!-- ################ -->
-        {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
-        {% if not report.is_closed and not subscribed %}
-            <form action="{% url subscribe report.id %}">
+    <div class="span6">
+        <div class="bordered-box">
+            <!-- ################ -->
+            <!-- SUBSCRIBER BLOCK -->
+            <!-- ################ -->
+            {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+            {% if not report.is_closed and not subscribed %}
+                <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
+                    {% csrf_token %}
+                    <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
+                    <p>
+                        <input type="submit" class="btn" value="{% trans 'Subscribe' %}" />
+                    </p>
+                </form>
+            {% endif %}
+        </div> <!-- bordered-box -->
+        <div class="bordered-box">
+            <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
                 {% csrf_token %}
-                <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
-                <input type="submit" class="btn" value="{% trans "Subscribe" %}" />
-            </form>
-        {% endif %}
-    </div>
-    {% endif %}
-</div>
-</div>
+                <!-- ############################################# -->
+                <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
+                <!-- ############################################# -->
+                <fieldset>
+                    <legend>{% trans 'Comments' %}</legend>
+                    {{ comment_form.text }}
+                    {# comment_form.text.errors #}
+                </fieldset>
+                <fieldset>
+                    <legend>{% trans 'Files' %}</legend>
+                    <div id="form-files">
+                        {{ file_formset.management_form }}
+                        {% if file_formset.errors %}
+                            {{ file_formset.errors }}
+                        {% endif %}
 
+                        <div id="file-form-template">
+                            <img class="thumbnail" />
+                            {{ file_formset.empty_form.reportattachment_ptr }}
+                            {{ file_formset.empty_form.file }}
+                            {{ file_formset.empty_form.title }}
+                            {{ file_formset.empty_form.file_creation_date }}
+                        </div>
+                    </div>
+                    <div class="file-upload-button">
+                        <a id="file-upload" title="{% trans 'Add a file to this incident' %}"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
+                    </div>
+
+                </fieldset>
+                <p>
+                    <input type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
+                </p>
+            </form> <!-- report-form-->
+        </div> <!-- bordered-box-->
+    </div> <!-- span6 -->
+    {% endif %}
+</div> <!-- row -->
 {% endblock %}
