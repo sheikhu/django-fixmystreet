@@ -40,7 +40,7 @@ class ReportForm(forms.ModelForm):
         model = Report
 
     category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
-    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.filter(public=True))
     subscription = forms.BooleanField(label=_('Subscription'), initial=True, help_text=_('Subscription and report follow-up'), required=False)
 
     # hidden inputs
@@ -74,7 +74,7 @@ class ReportForm(forms.ModelForm):
 
 #Used by pro version
 class ProReportForm(ReportForm):
-    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.all())
+    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.all())
     private = forms.BooleanField(initial=True, required=False, label=_("Private Report"))
 
     def __init__(self, *args, **kwargs):

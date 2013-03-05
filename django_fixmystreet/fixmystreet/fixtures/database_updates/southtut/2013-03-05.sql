@@ -17,3 +17,8 @@ update fixmystreet_organisationentity set name_fr='Woluwe Saint Lambert', name_n
 update fixmystreet_organisationentity set name_fr='Uccle', name_nl='Ukkel' where phone = '02/348.65.11';
 update fixmystreet_organisationentity set name_fr='Watermael-Boitsfort', name_nl='Watermaal-Bosvoorde' where phone = '02/674.74.11';
 update fixmystreet_organisationentity set name_fr='Woluwe Saint Pierre', name_nl='Sint-Pieters-Woluwe' where phone = '02/773.05.11';
+
+update fixmystreet_listitem set label_fr='syndic d''immeuble', label_nl='gebouw Beheerder' where model_field='quality' and code = '3';
+update fixmystreet_listitem set label_fr='autre', label_nl='andere' where model_field='quality' and code = '1';
+
+update fixmystreet_reportsecondarycategoryclass set name_fr='Revêtement' where name_nl='Beschadigingen';

@@ -148,9 +148,7 @@ var zipcodes = new Object();
 
             {% endblock %}
             <fieldset>
-                <legend>{% trans 'Files' %}</legend>
-                <div id="required-note">{% trans 'Optimal File Size (1200X800)'%}</div>
-                <div id="required-note">{% trans 'Supported formats' %}: jpeg, png, pdf, word, excel</div>
+                <legend><img src="{{STATIC_URL}}images/info_icon.png" width="32px" title="{% trans 'Supported formats' %}: jpeg, png, pdf, word, excel\n{% trans 'Optimal File Size (1200X800)'%}"/>&nbsp;&nbsp;{% trans 'Files' %}</legend>
                 <div id="form-files">
                     {{ file_formset.management_form }}
                     {# file_formset.errors #}
@@ -195,12 +193,12 @@ var zipcodes = new Object();
             {% endif %}
             <!-- <div class="inactive_overlay_form_overview"></div> -->
             <fieldset>
-                <legend>{% trans 'Summary:' %}</legend>
-                {% trans 'Visualize an overview of the created incident report.' %}
-                <br/>
-                <button id="validate_button" class="btn"> {% trans 'Summary' %}</button>
+                <legend>{% trans 'Subscription' %}</legend>
             </fieldset>
         </div>
+        <div id="validate_form" style="text-align:right">
+        	<button id="validate_button" class="btn"> {% trans 'Send' %}</button>
+	</div>
         <div class="warning_information_form">
             <fieldset>
                 <legend>{% trans 'Confidentiality:' %}</legend>

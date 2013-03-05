@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-05 14:29+0100\n"
+"POT-Creation-Date: 2013-03-05 15:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Change password: %s"
 msgstr "Modifier le mot de passe"
 
-#: forms.py:16 forms.py:42 forms.py:43 forms.py:77
+#: forms.py:16 forms.py:42
 msgid "Select a Category"
 msgstr "Choisissez une catégorie"
 
@@ -37,6 +37,10 @@ msgstr "catégorie:"
 #: forms.py:43
 msgid "Secondary category"
 msgstr "sous-catégorie:"
+
+#: forms.py:43 forms.py:77
+msgid "Select a secondary Category"
+msgstr "Choisissez une sous-catégorie"
 
 #: forms.py:44
 msgid "Subscription"
@@ -113,7 +117,7 @@ msgstr "est en cours de validation"
 
 #: models.py:79
 msgid "Resident"
-msgstr "Résident"
+msgstr "Riverain"
 
 #: models.py:80
 msgid "Trade"
@@ -121,7 +125,7 @@ msgstr "Commerçant"
 
 #: models.py:81
 msgid "Syndicate"
-msgstr "Syndicat"
+msgstr "Syndic d'immeuble"
 
 #: models.py:82
 msgid "Association"
@@ -129,7 +133,7 @@ msgstr "Association"
 
 #: models.py:83
 msgid "Other"
-msgstr "Autres"
+msgstr "Autre"
 
 #: models.py:143 models.py:1019
 msgid "ANONYMOUS"
@@ -717,7 +721,7 @@ msgid ""
 "website."
 msgstr "Veuillez télécharger un des navigateurs proposé ci-dessous."
 
-#: templates/base.html:203 templates/reports/new.html:255
+#: templates/base.html:203 templates/reports/new.html:253
 #: templates/reports/show.html:102
 msgid "Cancel"
 msgstr "Annuler"
@@ -953,7 +957,7 @@ msgstr ""
 "            "
 
 #: templates/contact/new.html:20 templates/reports/new.html:127
-#: templates/reports/new.html.py:182
+#: templates/reports/new.html.py:180
 msgid "* This fields are required"
 msgstr "* Ces champs sont obligatoires"
 
@@ -1533,11 +1537,11 @@ msgstr "Nombre d'abonnés"
 msgid "Reports by wards"
 msgstr "Incidents par commune"
 
-#: templates/reports/index.html:61
+#: templates/reports/index.html:62
 msgid "Does not participate to FixMyStreet yet"
 msgstr "Ne participe pas encore à Fix My Street"
 
-#: templates/reports/index.html:68
+#: templates/reports/index.html:70
 msgid "As reported by Fix My Street users."
 msgstr "Comme indiqué par les utilisateurs de fix my street."
 
@@ -1599,15 +1603,13 @@ msgstr "Merci de positionner l'icône sur la carte"
 
 #: templates/reports/new.html:125
 msgid "Submitting a report"
-msgstr "Soumettre un incident"
+msgstr "Signaler un incident"
 
 #: templates/reports/new.html:129
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
-msgstr ""
-"Si un rapport existe déjà, vous pouvez vous abonner en allant dans les "
-"détails d'un rapport"
+msgstr "Si un rapport existe déjà vous pouvez vous y abonner"
 
 # "Avant de signaler un incident, vérifiez qu'il n'a pas déjà été constaté."
 #: templates/reports/new.html:131
@@ -1628,53 +1630,53 @@ msgstr ""
 msgid "Incident category:"
 msgstr "Type d'incident:"
 
-#: templates/reports/new.html:151 templates/reports/new.html.py:245
+#: templates/reports/new.html:151
+msgid "Supported formats"
+msgstr "Formats de fichier supportés"
+
+#: templates/reports/new.html:151
+msgid "Optimal File Size (1200X800)"
+msgstr "Taille de fichier optimale (1200X800)"
+
+#: templates/reports/new.html:151 templates/reports/new.html.py:243
 #: templates/reports/show.html:302
 msgid "Files"
 msgstr "Photos et fichiers:"
 
-#: templates/reports/new.html:152
-msgid "Optimal File Size (1200X800)"
-msgstr "Taille de fichier optimale (1200X800)"
-
-#: templates/reports/new.html:153
-msgid "Supported formats"
-msgstr "Formats de fichier supportés"
-
-#: templates/reports/new.html:167 templates/reports/show.html:318
+#: templates/reports/new.html:165 templates/reports/show.html:318
 msgid "Add file"
 msgstr "Ajoutez des photos"
 
-#: templates/reports/new.html:171 templates/reports/new.html.py:249
+#: templates/reports/new.html:169 templates/reports/new.html.py:247
 msgid "Comment"
 msgstr "Commentaire:"
 
-#: templates/reports/new.html:181
+#: templates/reports/new.html:179
 msgid "Personal information:"
-msgstr "Données personnelles:"
+msgstr "Coordonnées:"
 
-#: templates/reports/new.html:185
+#: templates/reports/new.html:183
 msgid "Contact information:"
 msgstr "Vos coordonnées:"
 
-#: templates/reports/new.html:198
+#: templates/reports/new.html:196
 msgid "Summary:"
 msgstr "Aperçu:"
 
-#: templates/reports/new.html:199
+#: templates/reports/new.html:197
 msgid "Visualize an overview of the created incident report."
 msgstr ""
 "Créer un aperçu de la fiche d'incident créée en validant vos informations."
 
-#: templates/reports/new.html:201
+#: templates/reports/new.html:199
 msgid "Summary"
 msgstr "Aperçu"
 
-#: templates/reports/new.html:206
+#: templates/reports/new.html:204
 msgid "Confidentiality:"
 msgstr "Confidentialité:"
 
-#: templates/reports/new.html:207
+#: templates/reports/new.html:205
 msgid ""
 "We garantee the confidentiality of all given information. Conform with law "
 "(see site  <a href=\"http://www.ejustice.just.fgov.be\">Monitoring Belgium</"
@@ -1688,39 +1690,39 @@ msgstr ""
 "disposez d'un droit d'accès aux données vous concernant, ainsi qu'un droit "
 "de modification et de suppression de celles-ci."
 
-#: templates/reports/new.html:220
+#: templates/reports/new.html:218
 msgid "Submit an incident:"
 msgstr "Enregistrement de l'incident:"
 
-#: templates/reports/new.html:223
+#: templates/reports/new.html:221
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné."
 
-#: templates/reports/new.html:224
+#: templates/reports/new.html:222
 msgid "A mail containing the link report has been sent."
 msgstr "Un mail contenant les informations du rapport vous a éeté envoyé"
 
-#: templates/reports/new.html:226
+#: templates/reports/new.html:224
 msgid "Download a copy of the incident as a pdf"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: templates/reports/new.html:231 templates/reports/new.html.py:233
+#: templates/reports/new.html:229 templates/reports/new.html.py:231
 msgid "Continue"
 msgstr "continuer"
 
-#: templates/reports/new.html:240
+#: templates/reports/new.html:238
 msgid "Incident overview:"
 msgstr "Aperçu de votre rapport d'incident:"
 
-#: templates/reports/new.html:254 templates/reports/show.html:104
+#: templates/reports/new.html:252 templates/reports/show.html:104
 msgid "Confirm"
 msgstr "confirmer"
 
-#: templates/reports/new.html:261
+#: templates/reports/new.html:259
 msgid "Nearby incidents that are already submitted:"
 msgstr "Incidents déjà signalé à proximité:"
 
-#: templates/reports/new.html:271
+#: templates/reports/new.html:269
 msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
@@ -1890,7 +1892,7 @@ msgstr ""
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
-#: views/reports/main.py:168
+#: views/reports/main.py:169
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
 "Ne participe pas encore à Fix My Street. Pour signaler un incident, merci de "
