@@ -5,31 +5,6 @@
 {% endfor %}
 {% for field in form %}
     {% if not field.is_hidden %}
-    <div class="control-group{% if field.field.required %} required{% endif %}">
-        {% if field.field.widget|classname == "Textarea" %}
-            <label for="id_{{ field.html_name }}">{{ field.label }}</label>
-            {% input_class field 'input-block-level' %}
-            <span class="help-block">{{ field.help_text }}</span>
-            {{ field.errors }}
-        {% elif field.field.widget|classname == "CheckboxInput" and field.help_text %}
-            <label for="id_{{ field.html_name }}">{{ field.label }}</label>
-            <label  class="checkbox">{{ field }} {{ field.help_text }}</label>
-            {{ field.errors }}
-        {% elif field.field.widget|classname == "CheckboxInput" %}
-            <div class="controls">
-                <label  class="checkbox">{{ field }} {{ field.label }}</label>
-                {{ field.errors }}
-            </div>
-        {% else %}
-            <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
-            <div class="controls">
-                {% input_class field 'input-block-level' %}
-                {% if field.help_text %}
-                <span class="help-block">{{ field.help_text }}</span>
-                {% endif %}
-                {{ field.errors }}
-            </div>
-        {% endif %}
-    </div>
+        {% include "_field_horizontal.html" with field=field %}
     {% endif %}
 {% endfor %}

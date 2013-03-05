@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-05 15:52+0100\n"
+"POT-Creation-Date: 2013-03-05 15:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1534,9 +1534,8 @@ msgid "No problems have been reported."
 msgstr "Aucun incident n'a été signalé"
 
 #: templates/reports/list.html:89
-#, fuzzy
 msgid "Search by ticket number:"
-msgstr "Faire une recherche par numéro de ticket"
+msgstr "Recherche par numéro de ticket:"
 
 #: templates/reports/list.html:91
 #, fuzzy

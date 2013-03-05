@@ -41,7 +41,7 @@ class ReportForm(forms.ModelForm):
 
     category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
     secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
-    subscription = forms.BooleanField(label=_('Subscription'), initial=True, help_text=_('Subscription and report follow-up'), required=False)
+    subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
 
     # hidden inputs
     address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
