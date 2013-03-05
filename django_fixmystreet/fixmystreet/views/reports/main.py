@@ -64,7 +64,7 @@ def new(request):
                 "report":report,
                 "available_zips":ZipCode.objects,
                 "all_zips":ZipCode.objects.all(),
-                "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
+                "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all().order_by('name_'+ get_language()),
                 "comment_form":comment_form,
                 "file_formset":file_formset,
                 "report_form": report_form,
