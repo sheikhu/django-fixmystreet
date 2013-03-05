@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-05 15:28+0100\n"
+"POT-Creation-Date: 2013-03-05 15:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1171,7 +1171,7 @@ msgid "Fix My Street: Report closed."
 msgstr "Incident gesloten"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:9
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
@@ -1192,7 +1192,7 @@ msgstr ""
 "</p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
@@ -1235,7 +1235,7 @@ msgstr "Incident is niet langer onder uw toezicht."
 
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:9
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:20
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>The report with type %(reportType)s created at %(date)s is marked as "
@@ -1291,7 +1291,7 @@ msgstr "Uw incident is afgewezen."
 
 #: templates/emails/send_subscription_to_subscriber/message.html:9
 #: templates/emails/send_subscription_to_subscriber/message.html:21
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>You are now subscribed to the report with type %(reportType)s, created at "
