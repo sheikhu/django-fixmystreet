@@ -46,13 +46,27 @@
 	<div id="city_all_problems" style="clear:both">
 <table id="reports" width="100%">
 {% for commune in communes %}
-	<tr class="{% cycle 'row-odd' 'row-even' %}">
-	<td><a href='{{ commune.get_absolute_url }}?page=1'>{{ commune.name }}</a></td>
-
-	{% if report_counts.next %}{% endif %}
-	</tr>
+		<tr class="{% cycle 'row-odd' 'row-even' %}">
+			<td>	
+				{% if commune.active %}
+					<a href='{{ commune.get_absolute_url }}?page=1'>
+					<span>
+						{{ commune.name }}
+					</span>
+					</a>
+				{% else %}
+					<a href='{{ commune.get_absolute_url }}?exception=true&phone={{commune.phone}}'>
+					<span style="color:DarkGray">
+						{{ commune.name }}
+						&nbsp;
+						({% trans "Does not participate to FixMyStreet yet" %})
+					</span>
+					</a>
+				{% endif %}	
+			</td>
+		</tr>
 {% endfor %}
 </table>
-<div class="fix-disclaimer"><p>*{% trans "As reported by Fix My Street users." %}</p></div>
+<!--div class="fix-disclaimer"><p>*{% trans "As reported by Fix My Street users." %}</p></div-->
 	</div>
 {% endblock %}

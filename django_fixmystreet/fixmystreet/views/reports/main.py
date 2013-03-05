@@ -161,21 +161,27 @@ def search_ticket(request):
 
 def index(request, slug=None, commune_id=None):
     if commune_id:
-        page_number = int(request.GET.get("page", 1))
+        exception = request.GET.get("exception")
+        commune_phone = request.GET.get("phone")
 
-        entity = OrganisationEntity.objects.get(id=commune_id)
-        reports = Report.objects.all().entity_territory(entity).public().order_by('-created')
+        if exception!=None and exception=='true':
+            #Exception parameter is used to show error message for communes not participating...
+            error_message = _("Does not participate to FixMyStreet yet with details")+' '+commune_phone
+            messages.add_message(request, messages.ERROR, error_message)
+        else:
+            page_number = int(request.GET.get("page", 1))
 
-        pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
+            entity = OrganisationEntity.objects.get(id=commune_id)
+            reports = Report.objects.all().entity_territory(entity).public().order_by('-created')
 
-        return render_to_response("reports/list.html", {
-            #"reports": entity.reports_in_charge.order_by('address').filter(Q(private=False, status__in=Report.REPORT_STATUS_IN_PROGRESS) | Q(private=False, status__in=Report.CREATED, citizen__isnull=False)).all(),
-            #"reports": entity.reports_in_charge.filter(private=False).filter((Q(status__in=Report.REPORT_STATUS_IN_PROGRESS)) | (Q(status=Report.CREATED, citizen__isnull=False))).order_by('address', 'address_number'),
-            "reports": reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
-            "entity":entity,
-            "pages_list":pages_list,
-            "page_number": page_number,
-        }, context_instance=RequestContext(request))
+            pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
+
+            return render_to_response("reports/list.html", {
+                "reports": reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
+                "entity":entity,
+                "pages_list":pages_list,
+                "page_number": page_number,
+            }, context_instance=RequestContext(request))
 
     communes = OrganisationEntity.objects.filter(commune=True).order_by('name_' + get_language())
     return render_to_response("reports/index.html", {

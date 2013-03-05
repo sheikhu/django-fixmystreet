@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-01 13:35+0100\n"
+"POT-Creation-Date: 2013-03-05 14:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: forms.py:36
 msgid "Refusal motivation"
@@ -25,19 +25,19 @@ msgstr "Motivation de refus:"
 msgid "Email"
 msgstr ""
 
-#: forms.py:67
+#: forms.py:65
 msgid "The two password fields didn't match."
 msgstr "Les mots de passe sont différents"
 
-#: forms.py:165
+#: forms.py:163
 msgid "User type"
 msgstr "Type d'utilisateur"
 
-#: forms.py:166
+#: forms.py:164
 msgid "Agent"
 msgstr "Agent"
 
-#: forms.py:167 templates/pro/pdf.html:265
+#: forms.py:165 templates/pro/pdf.html:265
 msgid "Manager"
 msgstr "Gestionnaire"
 
@@ -230,7 +230,7 @@ msgstr "Utilisateur"
 #: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
-#: templates/pro/reports/show.html:574
+#: templates/pro/reports/show.html:576
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -306,7 +306,7 @@ msgstr "Date de Création"
 
 #: templates/pro/pdf.html:161
 msgid "Author"
-msgstr "Auteur"
+msgstr "Signalé par"
 
 #: templates/pro/pdf.html:166 templates/pro/pdf.html.py:270
 msgid "Name"
@@ -558,8 +558,8 @@ msgstr "Ce problème a été résolu."
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:"
-"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)"
+"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -570,8 +570,8 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)s'>"
-"%(by)s</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)s'>%"
+"(by)s</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -759,11 +759,11 @@ msgstr ""
 "\n"
 "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
-#: templates/pro/reports/show.html:568
+#: templates/pro/reports/show.html:570
 msgid "Add a file to this incident"
 msgstr "Ajouter les fichiers attachés"
 
-#: templates/pro/reports/show.html:568
+#: templates/pro/reports/show.html:570
 msgid "Add File"
 msgstr "Ajouter fichier"
 
