@@ -115,34 +115,20 @@ function showResults(type,li){
     {% block statistics %}
     <article id="counters">
         <div class='counter'>
-            <h3 class='number'>{{ report_counts.recent_new }}</h3>
-            {% if report_counts.recent_new <= 1 %}
-            	<span class='text'>{% trans "Report Filed" %}</span>
-            {% else %}
-            	<span class='text'>{% trans "Reports Filed" %}</span>
-            {% endif %}
-            <span class='qualifier'>{% trans "In the 30 last days" %} *</span>
+            <p class='number lead'>{{ report_counts.recent_new }}</p>
+            <p class='text'>{% trans "Created" %}</p>
+            <p class='qualifier'>{% trans "In the 30 last days" %}</p>
         </div>
         <div class='counter'>
-            <h3 class='number'>{{ report_counts.recent_updated }}</h3>
-            {% if report_counts.recent_updated <= 1 %}
-            	<span class='text'>{% trans "Report Updated" %}</span>
-            {% else %}
-            	<span class='text'>{% trans "Reports Updated" %}</span>
-            {% endif %}
-            <span class='qualifier'>{% trans "In the 30 last days" %} *</span>
+            <p class='number lead'>{{ report_counts.recent_updated }}</p>
+            <p class='text'>{% trans "In progress" %}</p>
+            <p class='qualifier'>{% trans "In the 30 last days" %}</p>
         </div>
         <div class='counter'>
-            <h3 class='number'>{{ report_counts.recent_fixed }}</h3>
-            {% if report_counts.recent_fixed <= 1 %}
-            	<span class='text'>{% trans "Report Fixed" %}</span>
-            {% else %}
-            	<span class='text'>{% trans "Reports Fixed" %}</span>
-            {% endif %}
-            <span class='qualifier'>{% trans "In the 30 last days " %} *</span>
+            <p class='number lead'>{{ report_counts.recent_fixed }}</p>
+            <p class='text'>{% trans "Processed" %}</p>
+            <p class='qualifier'>{% trans "In the 30 last days " %}</p>
         </div>
-	<br/>
-        <h5>* {% trans 'As reported by fixmystreet users' %}</h5>
     </article>
 {% endblock %}
 
@@ -150,13 +136,13 @@ function showResults(type,li){
         <h4>{% trans 'Last modified reports:' %}</h4>
         <ul id="recent_home_nav" class="nav nav-tabs">
             <li class="active">
-                <a onclick="showResults('created',$(this).parent());">{% trans "Incidents signales" %}</a>
+                <a onclick="showResults('created',$(this).parent());">{% trans "Created" %}</a>
             </li>
             <li>
-                <a onclick="showResults('in_progress',$(this).parent());">{% trans "Incidents mis a jour" %}</a>
+                <a onclick="showResults('in_progress',$(this).parent());">{% trans "In progress" %}</a>
             </li>
             <li>
-                <a onclick="showResults('closed',$(this).parent());">{% trans "Incidents clotures" %}</a>
+                <a onclick="showResults('closed',$(this).parent());">{% trans "Processed" %}</a>
             </li>
         </ul>
         <div id="search_results" class="search_results_home">
@@ -191,9 +177,9 @@ function showResults(type,li){
     </article>
 
     <article id="home_download_mobile">
-        <p>{% trans 'Download the fix my street mobile application for your smartphone:' %}</p>
-        <img src="{{STATIC_URL}}images/app-store.png">
-        <img src="{{STATIC_URL}}images/google-play.png">
+        <p>{% trans 'Download Fix My Street for your smartphone:' %}</p>
+        <img src="{{STATIC_URL}}images/app-store.png" alt="App Store">
+        <img src="{{STATIC_URL}}images/google-play.png" alt="Google Play" class="pull-right">
     </article>
 </div>
 {% endblock %}

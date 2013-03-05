@@ -123,7 +123,6 @@ var zipcodes = new Object();
             <span class="report-step-number img-circle">1</span>
             <!-- <div class="inactive_overlay_form_overview"></div> -->
             <h1>{% trans "Submitting a report" %}</h1>
-            <fieldset>
                 <div id="required-note" >{% trans "* This fields are required" %}</div>
                 <div id="view_nearby_reports">
                     {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
@@ -131,8 +130,9 @@ var zipcodes = new Object();
                     <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
                 </div>
 
+            <fieldset>
+                <legend>{% trans "Location:" %}</legend>
                 <div class="control-group">
-                    <label class="control-label">{% trans "Address" %}</label>
                     <div class="controls">
                         <span id="address-text"></span>
                         <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
@@ -143,7 +143,11 @@ var zipcodes = new Object();
             {% block report_form %}
             <fieldset>
                 <legend>{% trans "Incident category:" %}</legend>
-                {% include "_form_horizontal.html" with form=report_form %}
+                {% for field in report_form.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+                {% include "_field_horizontal.html" with field=report_form.category %}
+                {% include "_field_horizontal.html" with field=report_form.secondary_category %}
             </fieldset>
 
             {% endblock %}
@@ -175,9 +179,6 @@ var zipcodes = new Object();
         {% if citizen_form %}
         <div id="user_information_form" class="bordered-box overview_div_right">
             <span class="report-step-number img-circle">2</span>
-            <!-- <div class="inactive_overlay_form_overview"></div> -->
-            <h1>{% trans 'Personal information:' %}</h1>
-            <div id="required-note" >{% trans "* This fields are required" %}</div>
 
             <fieldset>
                 <legend>{% trans 'Contact information:' %}</legend>
@@ -194,6 +195,7 @@ var zipcodes = new Object();
             <!-- <div class="inactive_overlay_form_overview"></div> -->
             <fieldset>
                 <legend>{% trans 'Subscription' %}</legend>
+                {% include "_field_horizontal.html" with field=report_form.subscription %}
             </fieldset>
         </div>
         <div id="validate_form" style="text-align:right">
