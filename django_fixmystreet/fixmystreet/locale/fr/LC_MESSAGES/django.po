@@ -818,7 +818,6 @@ msgid "Last modified reports:"
 msgstr "Les derniers incidents:"
 
 #: templates/home.html:180
-#, fuzzy
 msgid "Download Fix My Street for your smartphone:"
 msgstr "Téléchargez Fix My Street sur votre smartphone:"
 
@@ -1177,7 +1176,7 @@ msgstr "Fix My Street: Un utilisateur a été créé pour vous"
 
 #: templates/emails/send_report_assigned_to_app_contr/message.html:9
 #: templates/emails/send_report_assigned_to_app_contr/message.html:18
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
@@ -1195,7 +1194,7 @@ msgid "Fix My Street: New report assigned to you."
 msgstr "Fix My Street: Un nouveau rapport vous a été assigné"
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:9
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s has changed. You "
@@ -1208,7 +1207,7 @@ msgstr ""
 "suivant: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_report_changed_to_subscribers/message.html:18
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is changed. You can "
@@ -1226,7 +1225,7 @@ msgstr "Rapport a changé"
 
 #: templates/emails/send_report_closed_to_subscribers/message.html:9
 #: templates/emails/send_report_closed_to_subscribers/message.html:18
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is now marked as "
@@ -1239,7 +1238,7 @@ msgstr ""
 "suivant: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_report_closed_to_subscribers/message.txt:4
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "The report of type %(reportType)s created at %(date)s is now marked as "
@@ -1260,7 +1259,7 @@ msgid "Fix My Street: Report closed."
 msgstr "Rapport fermé"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:9
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
@@ -1280,7 +1279,7 @@ msgstr ""
 "automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
@@ -1322,7 +1321,7 @@ msgstr "Rapport deassigné"
 
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:9
 #: templates/emails/send_report_fixed_to_gest_resp/message.html:20
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<p>The report with type %(reportType)s created at %(date)s is marked as "
