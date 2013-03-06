@@ -96,7 +96,7 @@
             "commune": true,
             "dependency":20,
             "name_fr": "Auderghem",
-            "name_nl": "Auderghem",
+            "name_nl": "Oudergem",
             "phone": "02/676.48.11",
             "feature_id": "URB_A_MU.7200"
         }
@@ -119,7 +119,7 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Ville de Bruxelles",
+            "name_fr": "Bruxelles-ville",
             "name_nl": "Brussel Stad",
             "phone": "02/279.22.11",
             "feature_id": "URB_A_MU.7400"
@@ -156,7 +156,7 @@
             "commune": true,
             "dependency":20,
             "name_fr": "Forest",
-            "name_nl": "Forest",
+            "name_nl": "Vorst",
             "phone": "02/370.22.11",
             "feature_id": "URB_A_MU.7700"
         }
@@ -215,8 +215,8 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Molenbeek St Jean",
-            "name_nl": "Molenbeek St Jean",
+            "name_fr": "Molenbeek Saint Jean",
+            "name_nl": "Sint-Jans-Molenbeek",
             "phone": "02/412.36.75",
             "feature_id": "URB_A_MU.8200"
         }
@@ -228,7 +228,7 @@
             "commune": true,
             "dependency":20,
             "name_fr": "Saint-Gilles",
-            "name_nl": "Saint-Gilles",
+            "name_nl": "Sint-Gillis",
             "phone": "02/536.02.11",
             "feature_id": "URB_A_MU.8300"
         }
@@ -239,8 +239,8 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Saint-Josse ten Noode",
-            "name_nl": "Saint-Josse ten Noode",
+            "name_fr": "Saint-Josse-ten-Noode",
+            "name_nl": "Sint-Joost-ten-Node",
             "phone": "02/220.26.11",
             "feature_id": "URB_A_MU.8400"
         }
@@ -252,7 +252,7 @@
             "commune": true,
             "dependency":20,
             "name_fr": "Schaerbeek",
-            "name_nl": "Schaerbeek",
+            "name_nl": "Schaarbeek",
             "phone": "02/244.75.11",
             "feature_id": "URB_A_MU.8500"
         }
@@ -264,7 +264,7 @@
             "commune": true,
             "dependency":20,
             "name_fr": "Uccle",
-            "name_nl": "Uccle",
+            "name_nl": "Ukkel",
             "phone": "02/348.65.11",
             "feature_id": "URB_A_MU.8600"
         }
@@ -275,8 +275,8 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Watermael-Boisfort",
-            "name_nl": "Watermael-Boisfort",
+            "name_fr": "Watermael-Boitsfort",
+            "name_nl": "Watermaal-Bosvoorde",
             "phone": "02/674.74.11",
             "feature_id": "URB_A_MU.8700"
         }
@@ -287,8 +287,8 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Woluwe St Lambert",
-            "name_nl": "Woluwe St Lambert",
+            "name_fr": "Woluwe Saint Lambert",
+            "name_nl": "Sint-Lambrechts-Woluwe",
             "phone": "02/761.27.11",
             "feature_id": "URB_A_MU.8800"
         }
@@ -299,8 +299,8 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Woluwe St Pierre",
-            "name_nl": "Woluwe St Pierre",
+            "name_fr": "Woluwe Saint Pierre",
+            "name_nl": "Sint-Pieters-Woluwe",
             "phone": "02/773.05.11",
             "feature_id": "URB_A_MU.8900"
         }
@@ -343,7 +343,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 4,
-            "name_fr": "Ville de Bruxelles",
+            "name_fr": "Bruxelles-ville",
             "name_nl": "Brussel Stad",
             "hide": false,
             "code": 1000
@@ -431,7 +431,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 12,
-            "name_fr": "Molenbeek St Jean",
+            "name_fr": "Molenbeek Saint Jean",
             "name_nl": "Sint-Jans-Molenbeek",
             "hide": false,
             "code": 1080
@@ -453,7 +453,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 14,
-            "name_fr": "Saint-Josse ten Noode",
+            "name_fr": "Saint-Josse-ten-Noode",
             "name_nl": "Sint-Joost-ten-Node",
             "hide": false,
             "code": 1210
@@ -486,7 +486,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 17,
-            "name_fr": "Watermael-Boisfort",
+            "name_fr": "Watermael-Boitsfort",
             "name_nl": "Watermaal-Bosvoorde",
             "hide": false,
             "code": 1170
@@ -497,7 +497,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 18,
-            "name_fr": "Woluwe St Lambert",
+            "name_fr": "Woluwe Saint Lambert",
             "name_nl": "Sint-Lambrechts-Woluwe",
             "hide": false,
             "code": 1200
@@ -508,7 +508,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 19,
-            "name_fr": "Woluwe St Pierre",
+            "name_fr": "Woluwe Saint Pierre",
             "name_nl": "Sint-Pieters-Woluwe",
             "hide": false,
             "code": 1150
@@ -638,7 +638,7 @@
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
             "name_nl": "Beschadigingen",
-            "name_fr": "Revêtements"
+            "name_fr": "Revêtement"
         }
     },
 
