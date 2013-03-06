@@ -1605,25 +1605,18 @@ msgstr ""
 msgid "Incident category:"
 msgstr "Type d'incident:"
 
-<<<<<<< HEAD
 #: templates/reports/new.html:151
 msgid "Supported formats"
 msgstr "Formats de fichier supportés"
-=======
+
 #: templates/reports/new.html:151 templates/reports/new.html.py:245
 #: templates/reports/show.html:302
 msgid "Files"
 msgstr "Photos et fichiers"
->>>>>>> cd7bea7d7b032a636144b0dd301af14a0d18cb99
 
 #: templates/reports/new.html:151
 msgid "Optimal File Size (1200X800)"
 msgstr "Taille de fichier optimale (1200X800)"
-
-#: templates/reports/new.html:151 templates/reports/new.html.py:243
-#: templates/reports/show.html:302
-msgid "Files"
-msgstr "Photos et fichiers:"
 
 #: templates/reports/new.html:165 templates/reports/show.html:318
 msgid "Add file"
