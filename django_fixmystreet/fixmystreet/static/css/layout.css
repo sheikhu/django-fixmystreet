@@ -952,9 +952,16 @@ li img {
 
 input[type="submit"].btn {
     /*background: #FFF203;*/
-    background:#949499;
+    background:#E6E6E6;
     color:#000;
 }
+
+input[type="submit"].btn:hover {
+    /*background: #FFF203;*/
+    background:#F0F0F0;
+    color:#000;
+}
+
 #confirm_form input[type="submit"].btn{
     background:#FFDB00;
     color:#000;
@@ -964,6 +971,7 @@ input[type="submit"].btn {
 .btn {
     background:#FFDB00;
 }
+
 
 
 .btn-danger {
