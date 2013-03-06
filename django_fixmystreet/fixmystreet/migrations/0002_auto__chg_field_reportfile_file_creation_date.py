@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from south.db import db
 from south.v2 import SchemaMigration
+from django.core.management import call_command
 
 
 class Migration(SchemaMigration):
@@ -9,11 +10,20 @@ class Migration(SchemaMigration):
 
         # Changing field 'ReportFile.file_creation_date'
         db.alter_column('fixmystreet_reportfile', 'file_creation_date', self.gf('django.db.models.fields.DateTimeField')(null=True))
+        call_command("loaddata", "bootstrap.json")
+        db.execute("""
+            UPDATE fixmystreet_organisationentity o
+                SET active = true
+                    WHERE exists (
+                        SELECT * FROM fixmystreet_fmsuser
+                        WHERE manager=true AND organisation_id=o.id
+                    );
+        """)
 
     def backwards(self, orm):
 
-        # Changing field 'ReportFile.file_creation_date'
-        db.alter_column('fixmystreet_reportfile', 'file_creation_date', self.gf('django.db.models.fields.DateTimeField')(default=None))
+        # User chose to not deal with backwards NULL issues for 'ReportFile.file_creation_date'
+        raise RuntimeError("Cannot reverse this migration. 'ReportFile.file_creation_date' and its values cannot be restored.")
 
     models = {
         'auth.group': {
@@ -304,7 +314,7 @@ class Migration(SchemaMigration):
         'fixmystreet.reportfile': {
             'Meta': {'object_name': 'ReportFile', '_ormbases': ['fixmystreet.ReportAttachment']},
             'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
-            'file_creation_date': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'file_creation_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'file_type': ('django.db.models.fields.IntegerField', [], {}),
             'image': ('django_fixmystreet.fixmystreet.utils.FixStdImageField', [], {'max_length': '100', 'name': "'image'", 'blank': 'True'}),
             'reportattachment_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['fixmystreet.ReportAttachment']", 'unique': 'True', 'primary_key': 'True'}),

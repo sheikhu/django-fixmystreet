@@ -4,8 +4,9 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from  django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
+from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, \
                 ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
@@ -14,12 +15,12 @@ from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Repor
 def secondaryCategoryChoices(show_private):
     choices = []
     choices.append(('', _("Select a Category")))
-    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all()
+    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_'+ get_language())
 
     for category_class in category_classes:
         values = []
 
-        categories = category_class.categories.all()
+        categories = category_class.categories.all().order_by('name_'+ get_language())
         if not show_private:
             categories = categories.filter(public=True)
 
@@ -39,8 +40,8 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
 
-    category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all())
-    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True))
+    category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()))
+    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_'+ get_language()))
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
 
     # hidden inputs
@@ -54,6 +55,8 @@ class ReportForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
+        #Ensure the good sortering when switching language.
+        self.fields['category'].choices = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_'+ get_language())).choices
         self.fields['secondary_category'].choices = secondaryCategoryChoices(False)
 
     def save(self, commit=True):
@@ -74,7 +77,7 @@ class ReportForm(forms.ModelForm):
 
 #Used by pro version
 class ProReportForm(ReportForm):
-    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.all())
+    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.all().order_by('name_'+ get_language()))
     private = forms.BooleanField(initial=True, required=False, label=_("Private Report"))
 
     def __init__(self, *args, **kwargs):
