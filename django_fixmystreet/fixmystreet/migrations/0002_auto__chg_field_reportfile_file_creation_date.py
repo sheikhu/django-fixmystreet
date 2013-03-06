@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
-from django.db import models
+from django.core.management import call_command
 
 
 class Migration(SchemaMigration):
@@ -11,6 +10,15 @@ class Migration(SchemaMigration):
 
         # Changing field 'ReportFile.file_creation_date'
         db.alter_column('fixmystreet_reportfile', 'file_creation_date', self.gf('django.db.models.fields.DateTimeField')(null=True))
+        call_command("loaddata", "bootstrap.json")
+        db.execute("""
+            UPDATE fixmystreet_organisationentity o
+                SET active = true
+                    WHERE exists (
+                        SELECT * FROM fixmystreet_fmsuser
+                        WHERE manager=true AND organisation_id=o.id
+                    );
+        """)
 
     def backwards(self, orm):
 

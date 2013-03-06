@@ -132,10 +132,8 @@ var zipcodes = new Object();
             <fieldset>
                 <legend>{% trans "Location:" %}</legend>
                 <div class="control-group">
-                    <div class="controls">
-                        <span id="address-text"></span>
-                        <span class="help-block"> {% trans '** To change the address, move the marker on the map above.' %}
-                    </div>
+                    <span id="address-text"></span>
+                    <span class="help-block">{% trans '** To change the address, move the marker on the map above.' %}</span>
                 </div>
             </fieldset>
 
@@ -156,7 +154,7 @@ var zipcodes = new Object();
                     {{ file_formset.management_form }}
                     {# file_formset.errors #}
 
-                    <div id="file-form-template">
+                    <div id="file-form-template" class="control-group">
                         <img class="thumbnail" />
                         {{ file_formset.empty_form.reportattachment_ptr }}
                         {{ file_formset.empty_form.file }}
@@ -170,7 +168,7 @@ var zipcodes = new Object();
                 </div>
             </fieldset>
             <fieldset>
-                <legend>{% trans 'Comment' %}</legend>
+                <legend>{% trans 'Comment:' %}</legend>
                 {% include "_form_horizontal.html" with form=comment_form %}
             </fieldset>
         </div>
@@ -194,7 +192,7 @@ var zipcodes = new Object();
             {% endif %}
             <!-- <div class="inactive_overlay_form_overview"></div> -->
             <fieldset>
-                <legend>{% trans 'Subscription' %}</legend>
+                <legend>{% trans 'Subscription:' %}</legend>
                 {% include "_field_horizontal.html" with field=report_form.subscription %}
             </fieldset>
             <div id="required-note" >{% trans "* This fields are required" %}</div>
@@ -240,14 +238,6 @@ var zipcodes = new Object();
     </div>
     <div class="modal-body">
         <div id="report-overview"></div>
-
-        <label class='control-label'>{% trans 'Files' %}</label>
-        <div id="files-overview">
-        </div>
-
-        <label class='control-label'>{% trans 'Comment' %}</label>
-        <div id="comment-overview">
-        </div>
     </div>
     <div class="modal-footer">
         <button id="confirm_button" class='btn'>{% trans 'Confirm' %}</button>
