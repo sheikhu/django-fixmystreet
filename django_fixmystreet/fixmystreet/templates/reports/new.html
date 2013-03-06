@@ -151,7 +151,7 @@ var zipcodes = new Object();
 
             {% endblock %}
             <fieldset>
-                <legend><img src="{{STATIC_URL}}images/info_icon.png" width="32px" title="{% trans 'Supported formats' %}:&#10;jpeg, png, pdf, word, excel&#10;&#10;{% trans 'Optimal File Size (1200X800)'%}"/>&nbsp;&nbsp;{% trans 'Files' %}</legend>
+                <legend>{% trans 'Photos:' %}</legend>
                 <div id="form-files">
                     {{ file_formset.management_form }}
                     {# file_formset.errors #}
@@ -165,7 +165,8 @@ var zipcodes = new Object();
                     </div>
                 </div>
                 <div class="file-upload-button">
-                    <a id="file-upload"><img src="{{STATIC_URL}}images/plus-button.png">    {% trans 'Add file' %}</a>
+                    <button id="file-upload" class="btn">{% trans 'Add photo' %}</button>
+                    <img src="{{STATIC_URL}}images/info_icon.png" width="32px" title="{% trans 'Supported formats' %}: jpeg, png, pdf, word, excel\n{% trans 'Optimal File Size (1200X800)'%}"/>
                 </div>
             </fieldset>
             <fieldset>

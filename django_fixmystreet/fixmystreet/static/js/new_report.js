@@ -128,45 +128,41 @@ function createOverview(){
     filesBody.empty();
     commentBody.empty();
 
-    $("#report-form").find(".control-group").each(function(idx,val){
-        reportBody.append($(val).find('label').clone());
-        var input = $(val).find('select,input,textarea');
+    $("#report-form").find("fieldset").each(function(idx,fieldset){
+        reportBody.append($("<h4/>").text($(fieldset).find('legend').text()));
+        $(fieldset).find(".control-group").each(function(idx,val){
+            reportBody.append($("<strong/>").text($(val).find('label').text()));
+            var input = $(val).find('select,input,textarea');
 
-        if (input.length == 0) {
-            reportBody.append($(val).find('.controls').clone());
-        } else if (input.is("select")) {
+            if (input.length == 0) {
+                reportBody.append($(val).find('.controls').clone());
+            } else if (input.is("select")) {
 
-            if(input.find(":selected").parent().is("optgroup")){
-                reportBody.append("<i>"+input.find(":selected").parent().attr("label")+": </i>");
+                if(input.find(":selected").parent().is("optgroup")){
+                    reportBody.append(overviewLine(input.find(":selected").parent().attr("label")));
+                }
+                reportBody.append(overviewLine(input.find(":selected").text()));
+
+            } else if (input.is("input")) {
+
+                var type = input.attr("type");
+                if(type != "hidden" && type != "file" && type != "checkbox") { // checkboxes are in label
+                    reportBody.append(overviewLine(input.val()));
+                } else if (type == "file") {
+                    reportBody.append($(val).find("img").clone());
+                    reportBody.append(overviewLine($(val).find("textarea").val()));
+                }
+
+            } else if (input.is("textarea")) {
+                reportBody.append(overviewLine(input.val()));
             }
-            reportBody.append("<i>"+input.find(":selected").text()+'</i>');
-
-        } else if (input.is("input")) {
-
-            var type = input.attr("type");
-            if(type != "hidden" && type != "file" && type != "checkbox") { // checkboxes are in label
-                reportBody.append("<i>"+input.val()+"</i>");
-            //} else if ($(value).attr("type")!="file") {
-                //$("#validate_report_popup").find("[type='file']").hide();
-            }
-
-        //} else if (input.is("textarea")) {
-            // comment, do nothing here
-        }
-        reportBody.find('checkbox').prop('disabled', true);
+            reportBody.append("<br/>");
+        });
     });
-
-    $("#form-files").children("div:not(#file-form-template)").each(function(idx,value){
-        filesBody.append($(value).find("img").clone());
-        filesBody.append("<i>"+$(value).find("textarea").val()+"</i>");
-    });
-    if (filesBody.children().length == 0) {
-        filesBody.append("<i>-</i>");
-    }
-
-    commentBody.append("<i>"+$("#id_comment-text").val()+"</i>");
-    if (commentBody.text().length == 0) {
-        commentBody.append("<i>-</i>");
-    }
+    reportBody.find(':checkbox').prop('disabled', true);
     reportBody.find(".help-block").hide();
+}
+
+function overviewLine(value) {
+    return "<i>" + (value || "-") + "</i>"
 }
