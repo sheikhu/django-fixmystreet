@@ -1680,6 +1680,13 @@ table.report_overview_table th{
     margin-left: -130px;
 }
 
+#divMarkAsDone input[type=button] {
+    background: #E6E6E6;
+}
+
+#divMarkAsDone input[type=submit] {
+    background: #FFDB00;
+}
 
 .download-pdf{
     background:transparent url('/static/images/download-pdf.png') top left no-repeat;
