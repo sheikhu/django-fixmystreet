@@ -22,3 +22,6 @@ update fixmystreet_listitem set label_fr='syndic d''immeuble', label_nl='gebouw 
 update fixmystreet_listitem set label_fr='autre', label_nl='andere' where model_field='quality' and code = '1';
 
 update fixmystreet_reportsecondarycategoryclass set name_fr='Revêtement' where name_nl='Beschadigingen';
+
+INSERT INTO south_migrationhistory(app_name, migration, applied)
+    VALUES ('fixmystreet','0001_initial','2013-03-06 09:04:17.015097+01');
