@@ -144,7 +144,7 @@ function createOverview(){
 
             if (input.length == 0) {
                 if($(control).find("span").length != 0){
-                    reportBody.append("<br>").append($(control).find("span"));
+                    reportBody.append("<br>").append($(control).find("span").clone());
                 }
                 else{
                     reportBody.append($(control).children().clone());
