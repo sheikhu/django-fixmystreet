@@ -1756,3 +1756,8 @@ table.report_overview_table th{
     border: green 3px solid;
 }
 
+.file-upload-button .popover-content p{
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+

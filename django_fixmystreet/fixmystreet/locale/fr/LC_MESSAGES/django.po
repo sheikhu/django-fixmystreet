@@ -1736,7 +1736,7 @@ msgstr "Ce rapport est déja marqué comme terminé"
 
 #: templates/reports/show.html:131
 msgid "This incident is not validated."
-msgstr "est en cours de validation"
+msgstr "L'incident est en cours de validation"
 
 #: templates/reports/show.html:134
 msgid "This incident has been closed."
@@ -1870,7 +1870,7 @@ msgstr "Aucun rapport pour ce numéro de ticket"
 #: views/reports/main.py:169
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
-"Ne participe pas encore à Fix My Street. Pour signaler un incident, merci de "
+"Cette commune ne participe pas encore à Fix My Street. Pour signaler un incident, merci de "
 "contacter directement votre administration communale au numéro"
 
 #: views/reports/subscribers.py:26 views/reports/subscribers.py:29
@@ -1888,6 +1888,24 @@ msgstr "En traitement"
 
 msgid "Warning"
 msgstr "Attention"
+
+msgid "1- Supported formats"
+msgstr "- Format supportés"
+
+msgid "2- Optimal resolution: 1200 x 800."
+msgstr "- Résolution optimale : 1200 x 800"
+
+msgid "3- The photo must contain the environment of the incident"
+msgstr "- La photo doit permettre de replacer l’incident dans son contexte"
+
+msgid "4- Please do not include people's faces and car registration plates."
+msgstr "- Les visages et plaques d’immatriculations ne peuvent pas être identifiables"
+
+msgid "Recommendations"
+msgstr "Recommandations"
+
+msgid "Close dialog"
+msgstr "Fermer"
 
 #~ msgid "As reported by fixmystreet users"
 #~ msgstr "Comme indiqué par les utilisateurs de fix my street."
