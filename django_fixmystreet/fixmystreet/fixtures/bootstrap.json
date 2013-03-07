@@ -343,8 +343,8 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 4,
-            "name_fr": "Bruxelles-ville",
-            "name_nl": "Brussel Stad",
+            "name_fr": "Bruxelles-Ville",
+            "name_nl": "Brussel-Stad",
             "hide": false,
             "code": 1000
         }
@@ -431,7 +431,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 12,
-            "name_fr": "Molenbeek Saint Jean",
+            "name_fr": "Molenbeek-Saint-Jean",
             "name_nl": "Sint-Jans-Molenbeek",
             "hide": false,
             "code": 1080
@@ -497,7 +497,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 18,
-            "name_fr": "Woluwe Saint Lambert",
+            "name_fr": "Woluwe-Saint-Lambert",
             "name_nl": "Sint-Lambrechts-Woluwe",
             "hide": false,
             "code": 1200
@@ -508,7 +508,7 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 19,
-            "name_fr": "Woluwe Saint Pierre",
+            "name_fr": "Woluwe-Saint-Pierre",
             "name_nl": "Sint-Pieters-Woluwe",
             "hide": false,
             "code": 1150

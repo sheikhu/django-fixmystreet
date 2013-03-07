@@ -14,7 +14,7 @@ from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Repor
 
 def secondaryCategoryChoices(show_private):
     choices = []
-    choices.append(('', _("Select a Category")))
+    choices.append(('', _("Select a secondary Category")))
     category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_'+ get_language())
 
     for category_class in category_classes:
@@ -41,7 +41,7 @@ class ReportForm(forms.ModelForm):
         model = Report
 
     category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()))
-    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_'+ get_language()))
+    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_'+ get_language()))
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
 
     # hidden inputs
