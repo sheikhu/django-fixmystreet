@@ -95,25 +95,20 @@ function markAsDone(){
 <!-- # MAIN CONTENT DEFINITION -->
 <!-- ######################### -->
 <div class="row">
-
+    <h1 class="span12">
+    {% if report.is_in_progress %}
+        <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
+    {% else %}
+        <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
+    {% endif %}
+    {% trans "Report Ticket" %} {{ report.get_ticket_number }}
+    </h1>
     <div class="span6">
         <div class="bordered-box">
             <div class="row-fluid">
-                <div class="span6" >
+                <!--div class="span6" >
                     <h1>{% trans "Report Ticket" %} {{ report.get_ticket_number }}</h1>
-                </div>
-                <div class="span6" >
-                    
-                        {% if report.is_in_progress %}
-                            {% if not report.status == report.SOLVED %}
-                            <a style="float:right;" href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
-                            {% else %}
-                            <button style="float:right;" onclick="" class="btn" disabled>{% trans 'Mark as done' %}</button>
-                            <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>
-                            {% endif %}
-                        {% endif %}
-                    
-                </div>
+                </div-->
             </div>
     
             <!-- ######### -->
@@ -122,6 +117,9 @@ function markAsDone(){
 
             {% if report.is_created %}
             <div class='is_created'>{% trans "This incident is not validated." %}</div>
+            {% endif %}
+            {% if report.is_in_progress %}
+            <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
             {% endif %}
             {% if report.is_closed %}
             <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
@@ -148,23 +146,23 @@ function markAsDone(){
                 <!-- ################## -->
                 <table id='report-status'>
                     <tr>
-                        <th>{% trans "Location:" %}</th>
+                        <th><strong>{% trans "Location:" %}</strong></th>
                         <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</td>
                     </tr>
                     <tr>
-                        <th>{% trans "Category:" %}</th>
+                        <th><strong>{% trans "Category:" %}</strong></th>
                         <td>{{report.display_category}}</td>
                     </tr>
                     <tr>
-                        <th>{% trans "Status:" %}</th>
+                        <th><strong>{% trans "Status:" %}</strong></th>
                         {% if report.is_in_progress %}
-                        <td>{% trans "In_progress" %}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
+                        <td>{% trans "In_progress" %}&nbsp;&nbsp;</td>
                         {% else %}
-                        <td>{{ report.get_status_display }}&nbsp;&nbsp;<img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;"></td>
+                        <td>{{ report.get_status_display }}&nbsp;&nbsp;</td>
                         {% endif %}
                     </tr>
                     <tr>
-                       <th>{% trans "Responsible:" %}</th>
+                       <th><strong>{% trans "Responsible:" %}</strong></th>
                        <td>{{report.responsible_manager.organisation.name}}</td>
                     </tr>
                     <tr>
@@ -185,7 +183,6 @@ function markAsDone(){
         {% if report.active_files or report.active_comments %}
         <div class="bordered-box">
             {% if report.active_files %}
-                <br/>
                 <h4>{% trans 'Files' %}</h4>
                 <div id="report_updates">
                     <table id="extraFilesTable">
@@ -221,21 +218,6 @@ function markAsDone(){
 
     {% if report.is_in_progress %}
     <div class="span6">
-        <div class="bordered-box">
-            <!-- ################ -->
-            <!-- SUBSCRIBER BLOCK -->
-            <!-- ################ -->
-            {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
-            {% if not report.is_closed and not subscribed %}
-                <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
-                    {% csrf_token %}
-                    <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
-                    <p>
-                        <input type="submit" class="btn" value="{% trans 'Subscribe' %}" />
-                    </p>
-                </form>
-            {% endif %}
-        </div> <!-- bordered-box -->
         <div class="bordered-box">
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
                 {% csrf_token %}
@@ -273,6 +255,35 @@ function markAsDone(){
                 </p>
             </form> <!-- report-form-->
         </div> <!-- bordered-box-->
+        <div class="bordered-box">
+            <!-- ################ -->
+            <!-- SUBSCRIBER BLOCK -->
+            <!-- ################ -->
+            {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+            {% if not report.is_closed and not subscribed %}
+                <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
+                    {% csrf_token %}
+                    <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
+                    <p>
+                        <input type="submit" class="btn" value="{% trans 'Subscribe' %}" />
+                    </p>
+                </form>
+            {% endif %}
+
+             <div>
+                 {% if report.is_in_progress %}
+                     {% if not report.status == report.SOLVED %}
+                          <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
+                     {% else %}
+                         <button style="float:right;" onclick="" class="btn" disabled>{% trans 'Mark as done' %}</button>
+                         <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>
+                     {% endif %}
+                 {% endif %}
+             </div>
+
+
+        </div> <!-- bordered-box -->
+
     </div> <!-- span6 -->
     {% endif %}
 </div> <!-- row -->

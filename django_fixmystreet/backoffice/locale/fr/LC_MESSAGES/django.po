@@ -8,18 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2013-03-05 15:53+0100\n"
-=======
-"POT-Creation-Date: 2013-03-05 15:55+0100\n"
->>>>>>> fb355956d579398b9cf437c5a85802a018d1725d
+"POT-Creation-Date: 2013-03-07 16:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: forms.py:36
 msgid "Refusal motivation"
@@ -41,7 +37,7 @@ msgstr "Type d'utilisateur"
 msgid "Agent"
 msgstr "Agent"
 
-#: forms.py:165 templates/pro/pdf.html:265
+#: forms.py:165 templates/pro/pdf.html:266
 msgid "Manager"
 msgstr "Gestionnaire"
 
@@ -234,7 +230,7 @@ msgstr "Utilisateur"
 #: templates/pro/contractors_overview.html:58
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
-#: templates/pro/reports/show.html:576
+#: templates/pro/reports/show.html:481
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -248,7 +244,7 @@ msgstr "Créer un executeur de travaux"
 
 #: templates/pro/contractors_overview.html:59
 #: templates/pro/users_overview.html:92 templates/pro/users_overview.html:93
-#: templates/pro/reports/show.html:368
+#: templates/pro/reports/show.html:375
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -276,7 +272,7 @@ msgid "Configure gestionnaire categories"
 msgstr "Configuration des catégories des gestionnaires"
 
 #: templates/pro/manager_category_configuration.html:85
-#: templates/pro/reports/show.html:136 templates/pro/reports/show.html:147
+#: templates/pro/reports/show.html:143 templates/pro/reports/show.html:154
 msgid "Cancel"
 msgstr "Annuer"
 
@@ -304,7 +300,7 @@ msgstr "Lambert 72 Belgique"
 msgid "Category"
 msgstr "Catégorie:"
 
-#: templates/pro/pdf.html:133 templates/pro/pdf.html.py:466
+#: templates/pro/pdf.html:133 templates/pro/pdf.html.py:486
 msgid "Creation Date"
 msgstr "Date de Création"
 
@@ -312,78 +308,83 @@ msgstr "Date de Création"
 msgid "Author"
 msgstr "Signalé par"
 
-#: templates/pro/pdf.html:166 templates/pro/pdf.html.py:270
+#: templates/pro/pdf.html:166 templates/pro/pdf.html.py:274
 msgid "Name"
 msgstr "Nom"
 
-#: templates/pro/pdf.html:197 templates/pro/pdf.html.py:200
-#: templates/pro/pdf.html:304
+#: templates/pro/pdf.html:198 templates/pro/pdf.html.py:201
+#: templates/pro/pdf.html:313
 msgid "Mail"
 msgstr "Email"
 
-#: templates/pro/pdf.html:210 templates/pro/pdf.html.py:213
-#: templates/pro/pdf.html:309
+#: templates/pro/pdf.html:211 templates/pro/pdf.html.py:214
+#: templates/pro/pdf.html:318
 msgid "Phone"
 msgstr "Telephone"
 
-#: templates/pro/pdf.html:275
+#: templates/pro/pdf.html:268
+#, fuzzy
+msgid "Commune"
+msgstr "Commentaires"
+
+#: templates/pro/pdf.html:279
 msgid "Status"
 msgstr "Statut:"
 
-#: templates/pro/pdf.html:318
+#: templates/pro/pdf.html:327
 msgid "mail"
 msgstr "email"
 
-#: templates/pro/pdf.html:321
+#: templates/pro/pdf.html:330
 msgid "tel"
 msgstr "tel"
 
-#: templates/pro/pdf.html:334 templates/pro/reports/show.html:155
+#: templates/pro/pdf.html:344 templates/pro/reports/show.html:162
 msgid "History"
 msgstr "Historique"
 
-#: templates/pro/pdf.html:362
+#: templates/pro/pdf.html:372
 msgid "No Report History"
 msgstr "Pas d'historique"
 
-#: templates/pro/pdf.html:370 templates/pro/reports/show.html:489
-#: templates/pro/reports/show.html:552
+#: templates/pro/pdf.html:380 templates/pro/reports/show.html:433
+#: templates/pro/reports/show.html:457
 msgid "Comments"
 msgstr "Commentaires"
 
-#: templates/pro/pdf.html:390 templates/pro/pdf.html.py:438
+#: templates/pro/pdf.html:403 templates/pro/pdf.html.py:455
 msgid "Anonymous"
 msgstr ""
 
-#: templates/pro/pdf.html:408
+#: templates/pro/pdf.html:424
 msgid "No Comment"
 msgstr "Pas de commentaire"
 
-#: templates/pro/pdf.html:419
+#: templates/pro/pdf.html:435
 msgid "Files"
 msgstr "Fichiers"
 
-#: templates/pro/pdf.html:479
+#: templates/pro/pdf.html:499
 msgid "Publication Date"
 msgstr "Date de publication"
 
-#: templates/pro/pdf.html:488
+#: templates/pro/pdf.html:510
 msgid "By"
 msgstr "par"
 
-#: templates/pro/pdf.html:493
+#: templates/pro/pdf.html:515
 msgid "Anonymous "
 msgstr "Anonyme "
 
-#: templates/pro/pdf.html:502
+#: templates/pro/pdf.html:526
 msgid "City"
 msgstr "Ville"
 
-#: templates/pro/pdf.html:511
+#: templates/pro/pdf.html:535
 msgid "Comment"
 msgstr "Commentaires"
 
-#: templates/pro/pdf.html:537
+#: templates/pro/pdf.html:561
 msgid "No File"
 msgstr "Pas de fichier"
 
@@ -476,11 +477,11 @@ msgstr "Tous les incidents"
 msgid "My Subscriptions"
 msgstr "Mes abonnements"
 
-#: templates/pro/reports/list.html:180 templates/pro/reports/show.html:180
+#: templates/pro/reports/list.html:180 templates/pro/reports/show.html:187
 msgid "create_report"
 msgstr "Signaler un incident"
 
-#: templates/pro/reports/list.html:188 templates/pro/reports/show.html:192
+#: templates/pro/reports/list.html:188 templates/pro/reports/show.html:199
 msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
@@ -536,53 +537,53 @@ msgstr "Nouveau rapport"
 msgid "Incident category:"
 msgstr "Catégorie d'incident"
 
-#: templates/pro/reports/show.html:137 templates/pro/reports/show.html:148
+#: templates/pro/reports/show.html:144 templates/pro/reports/show.html:155
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: templates/pro/reports/show.html:155
+#: templates/pro/reports/show.html:162
 #, fuzzy
 msgid "incident "
 msgstr "Numéro d'incident"
 
-#: templates/pro/reports/show.html:169
+#: templates/pro/reports/show.html:176
 #, fuzzy
 msgid "Return to incident"
 msgstr "Rejeter l'incident"
 
-#: templates/pro/reports/show.html:174
+#: templates/pro/reports/show.html:181
 msgid "Report Ticket"
 msgstr "Ticket"
 
-#: templates/pro/reports/show.html:198
+#: templates/pro/reports/show.html:205
 msgid "This problem has been fixed."
 msgstr "Ce problème a été résolu."
 
-#: templates/pro/reports/show.html:210
+#: templates/pro/reports/show.html:217
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:"
-"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)"
+"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
 "Signalé par <strong><a href='mailto:%(mail)s'>Anonyme</a></strong> le "
 "<strong>%(on)s</strong>"
 
-#: templates/pro/reports/show.html:214
+#: templates/pro/reports/show.html:221
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)s'>"
-"%(by)s</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)s'>%"
+"(by)s</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
 "Signalé par <strong><a href='mailto:%(mail)s'>%(by)s</a></strong> le <strong>"
 "%(on)s</strong>"
 
-#: templates/pro/reports/show.html:220
+#: templates/pro/reports/show.html:227
 #, python-format
 msgid ""
 "\n"
@@ -592,7 +593,7 @@ msgstr ""
 "\n"
 "Signalé le <strong>%(on)s</strong>"
 
-#: templates/pro/reports/show.html:225
+#: templates/pro/reports/show.html:232
 #, python-format
 msgid ""
 "\n"
@@ -604,170 +605,115 @@ msgstr ""
 "Signalé par <strong><a href='mailto:%(mail)s'>%(by)s</a></strong> le <strong>"
 "%(on)s</strong>"
 
-#: templates/pro/reports/show.html:236
+#: templates/pro/reports/show.html:243
 msgid "Location:"
 msgstr "Adresse:"
 
-#: templates/pro/reports/show.html:240
+#: templates/pro/reports/show.html:247
 msgid "Category:"
 msgstr "Catégorie:"
 
-#: templates/pro/reports/show.html:244
+#: templates/pro/reports/show.html:251
 msgid "Status:"
 msgstr "Statut:"
 
-#: templates/pro/reports/show.html:250
+#: templates/pro/reports/show.html:257
 msgid "Responsible:"
 msgstr "Gestionnaire responsable:"
 
-#: templates/pro/reports/show.html:261 templates/pro/reports/show.html:324
+#: templates/pro/reports/show.html:268 templates/pro/reports/show.html:331
 msgid "Responsible manager:"
 msgstr "Gestionnaire responsable:"
 
-#: templates/pro/reports/show.html:264
+#: templates/pro/reports/show.html:271
 msgid "Gestionnaires"
 msgstr "Gestionnaires"
 
-#: templates/pro/reports/show.html:269
+#: templates/pro/reports/show.html:276
 msgid "Entites"
 msgstr "Entités"
 
-#: templates/pro/reports/show.html:274
+#: templates/pro/reports/show.html:281
 msgid "Organisms"
 msgstr "Organismes"
 
-#: templates/pro/reports/show.html:286 templates/pro/reports/show.html:332
+#: templates/pro/reports/show.html:293 templates/pro/reports/show.html:339
 msgid "Contractor/Applicant:"
 msgstr "Executeur de travaux/Impetrant"
 
-#: templates/pro/reports/show.html:289
+#: templates/pro/reports/show.html:296
 msgid "Select a contractor/applicant"
 msgstr "Choisir un exécuteur de travaux / impétrant"
 
-#: templates/pro/reports/show.html:308
+#: templates/pro/reports/show.html:315
 msgid "Set as private report"
 msgstr "Souhaitez vous rendre ce dossier public"
 
-#: templates/pro/reports/show.html:312 templates/pro/reports/show.html:465
-#: templates/pro/reports/show.html:520
+#: templates/pro/reports/show.html:319
 msgid "Private"
 msgstr "privé"
 
-#: templates/pro/reports/show.html:316 templates/pro/reports/show.html:460
-#: templates/pro/reports/show.html:515
+#: templates/pro/reports/show.html:323
 msgid "Public"
 msgstr "Public"
 
-#: templates/pro/reports/show.html:354
+#: templates/pro/reports/show.html:361
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: templates/pro/reports/show.html:355
+#: templates/pro/reports/show.html:362
 msgid "Subscription and report follow-up"
 msgstr ""
 
-#: templates/pro/reports/show.html:371
+#: templates/pro/reports/show.html:378
 msgid "Close"
 msgstr "Cloturer"
 
-#: templates/pro/reports/show.html:378
+#: templates/pro/reports/show.html:385
 msgid "Accept"
 msgstr "Accepter"
 
-#: templates/pro/reports/show.html:379
+#: templates/pro/reports/show.html:386
 msgid "Publish"
 msgstr "Publier"
 
-#: templates/pro/reports/show.html:380
+#: templates/pro/reports/show.html:387
 msgid "Reject"
 msgstr "Rejeter"
 
-#: templates/pro/reports/show.html:385
+#: templates/pro/reports/show.html:392
 msgid "Solved"
 msgstr "Résolu"
 
-#: templates/pro/reports/show.html:390
+#: templates/pro/reports/show.html:397
 msgid "report pdf public"
 msgstr "Telecharger le PDF public."
 
-#: templates/pro/reports/show.html:392
+#: templates/pro/reports/show.html:399
 msgid "report pdf pro"
 msgstr "Telecharger le PDF pro."
 
-#: templates/pro/reports/show.html:395
+#: templates/pro/reports/show.html:402
 msgid "Export Csv"
 msgstr "Exporter l'incident vers Excel"
 
-#: templates/pro/reports/show.html:397
+#: templates/pro/reports/show.html:404
 msgid "Show history"
 msgstr "Montrer l'historique de l'incident."
 
-#: templates/pro/reports/show.html:407
+#: templates/pro/reports/show.html:414
 msgid "Publish all"
 msgstr "Tout publier"
 
-#: templates/pro/reports/show.html:410
+#: templates/pro/reports/show.html:417
 msgid "Photos and files"
 msgstr "Photos et fichiers"
 
-#: templates/pro/reports/show.html:420
-msgid "Please confirm file deletion"
-msgstr "Confirmer la suppression du ficher"
-
-#: templates/pro/reports/show.html:421
-msgid "delete file"
-msgstr "Supprimer le fichier"
-
-#: templates/pro/reports/show.html:441
-msgid "Posted by"
-msgstr "Posté par"
-
-#: templates/pro/reports/show.html:449
-msgid "file creation Date"
-msgstr "(Date de création du fichier)"
-
-#: templates/pro/reports/show.html:452
-msgid "file publication date"
-msgstr "(Date de publication du fichier)"
-
-#: templates/pro/reports/show.html:469 templates/pro/reports/show.html:524
-msgid "Confidential"
-msgstr "Confidentiel"
-
-#: templates/pro/reports/show.html:474 templates/pro/reports/show.html:529
-#, fuzzy
-msgid "private"
-msgstr "privé"
-
-#: templates/pro/reports/show.html:476 templates/pro/reports/show.html:531
-#, fuzzy
-msgid "confidential"
-msgstr "Confidentiel"
-
-#: templates/pro/reports/show.html:499
-msgid "Please confirm comment deletion"
-msgstr "Confirmer la suppression du commentaire"
-
-#: templates/pro/reports/show.html:500
-msgid "delete comment"
-msgstr "Supprimer le commentaire"
-
-#: templates/pro/reports/show.html:506
-#, python-format
-msgid ""
-"\n"
-"                                    Posted by <strong>%(by)s</strong> on "
-"<strong>%(on)s</strong>\n"
-"                                    "
-msgstr ""
-"\n"
-"Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
-
-#: templates/pro/reports/show.html:570
+#: templates/pro/reports/show.html:475
 msgid "Add a file to this incident"
 msgstr "Ajouter les fichiers attachés"
 
-#: templates/pro/reports/show.html:570
+#: templates/pro/reports/show.html:475
 msgid "Add File"
 msgstr "Ajouter fichier"
 
@@ -827,6 +773,47 @@ msgstr "Vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "Please confirm file deletion"
+#~ msgstr "Confirmer la suppression du ficher"
+
+#~ msgid "delete file"
+#~ msgstr "Supprimer le fichier"
+
+#~ msgid "Posted by"
+#~ msgstr "Posté par"
+
+#~ msgid "file creation Date"
+#~ msgstr "(Date de création du fichier)"
+
+#~ msgid "file publication date"
+#~ msgstr "(Date de publication du fichier)"
+
+#~ msgid "Confidential"
+#~ msgstr "Confidentiel"
+
+#, fuzzy
+#~ msgid "private"
+#~ msgstr "privé"
+
+#, fuzzy
+#~ msgid "confidential"
+#~ msgstr "Confidentiel"
+
+#~ msgid "Please confirm comment deletion"
+#~ msgstr "Confirmer la suppression du commentaire"
+
+#~ msgid "delete comment"
+#~ msgstr "Supprimer le commentaire"
+
+#~ msgid ""
+#~ "\n"
+#~ "                                    Posted by <strong>%(by)s</strong> on "
+#~ "<strong>%(on)s</strong>\n"
+#~ "                                    "
+#~ msgstr ""
+#~ "\n"
+#~ "Signalé par <strong>%(by)s</strong> le <strong>%(on)s</strong>"
 
 #~ msgid "Your username and password didn't match. Please try again."
 #~ msgstr ""
