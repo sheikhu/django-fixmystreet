@@ -43,7 +43,7 @@ msgid "Select a secondary Category"
 msgstr "Choisissez une sous-catégorie"
 
 #: forms.py:44
-msgid "Subscription"
+msgid "Subscription:"
 msgstr "S'abonner:"
 
 #: forms.py:44
@@ -86,7 +86,7 @@ msgstr "Message"
 
 #: forms.py:213
 msgid "Add a comment, please."
-msgstr "Veuillez ajouter un commentaire. (Ce commentaire serait validé avant publication)"
+msgstr "Veuillez ajouter un commentaire. (Ce commentaire sera validé avant publication)"
 
 #: forms.py:230
 msgid "Username"
@@ -144,7 +144,7 @@ msgstr ""
 #: models.py:365 models.py:366 templates/home.html:119
 #: templates/home.html.py:139
 msgid "Created"
-msgstr "Signalé"
+msgstr "Signalés"
 
 #: models.py:367
 msgid "Refused"
@@ -174,7 +174,7 @@ msgstr "Résolu"
 #: models.py:376 models.py:377 templates/home.html:129
 #: templates/home.html.py:145
 msgid "Processed"
-msgstr "Clôturé"
+msgstr "Clôturés"
 
 #: models.py:378
 msgid "Deleted"
@@ -1884,6 +1884,10 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 
 msgid "In_progress"
 msgstr "En traitement"
+
+
+msgid "Warning"
+msgstr "Attention"
 
 #~ msgid "As reported by fixmystreet users"
 #~ msgstr "Comme indiqué par les utilisateurs de fix my street."

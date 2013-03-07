@@ -8,6 +8,19 @@
 <meta property="og:description" content="{% trans 'Meta description for index page' %}" />
 {% endblock %}
 {% block content %}
+
+<div id="nonparticipatingcommune" class="modal hide fade" role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>{% trans "Warning" %}!</h3>
+	</div>
+    <div class="modal-body">
+        <p>{% trans "Does not participate to FixMyStreet yet with details"%} <span id="phone"></span></p>
+    </div>
+    <div class="modal-footer">
+    	<button class="btn" data-dismiss="modal" aria-hidden="true"> {% trans "Close" %}</button>
+    </div>
+</div>
 	<h1>{% trans "All Reports" %}</h1>
 	{% if top_problems %}
 	<h2>{% trans "Top Reports" %}</h2>
@@ -57,7 +70,7 @@
 					</strong>
 					</a>
 				{% else %}
-					<a href='{{ commune.get_absolute_url }}?exception=true&phone={{commune.phone}}'>
+					<a href='#nonparticipatingcommune' data-toggle="modal" onclick="$('#phone').html('{{commune.phone}}')">
 					<span style="color:#757475">
 						{{ commune.name }}
 						&nbsp;
