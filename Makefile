@@ -30,8 +30,12 @@ install: $(BIN_DIR)/buildout
 	$(BIN_DIR)/buildout -Nvt 5
 
 init:
-	$(BIN_DIR)/django syncdb --migrate --noinput
+	$(BIN_DIR)/django migrate fixmystreet 0001 --fake
+	$(BIN_DIR)/django migrate fixmystreet
 	$(BIN_DIR)/django collectstatic --noinput
+
+schemamigration:
+	$(BIN_DIR)/django schemamigration fixmystreet --auto
 
 html-doc:
 	bin/sphinx-apidoc -fF -o doc/source/gen django_fixmystreet
@@ -62,7 +66,7 @@ rpm:
 
 createdb:
 	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
-	$(BIN_DIR)/django syncdb --migrate --noinput
+	$(BIN_DIR)/django migrate fixmystreet
 	$(BIN_DIR)/django loaddata bootstrap list_items applicants staging_data
 
 dropdb:

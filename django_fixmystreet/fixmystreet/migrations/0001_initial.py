@@ -1,14 +1,451 @@
 # -*- coding: utf-8 -*-
+import datetime
+from south.db import db
 from south.v2 import SchemaMigration
+from django.db import models
 
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        pass
+        # Adding model 'HistoricalFMSUser'
+        db.create_table('fixmystreet_historicalfmsuser', (
+            ('user_ptr_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(db_index=True, blank=True)),
+            ('username', self.gf('django.db.models.fields.CharField')(max_length=75, db_index=True)),
+            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
+            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
+            ('email', self.gf('django.db.models.fields.EmailField')(db_index=True, max_length=75, null=True, blank=True)),
+            ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('is_staff', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('is_superuser', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+            ('date_joined', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+            ('telephone', self.gf('django.db.models.fields.CharField')(max_length=20, null=True)),
+            ('last_used_language', self.gf('django.db.models.fields.CharField')(default='FR', max_length=10, null=True)),
+            ('quality', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('agent', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('manager', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('leader', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('applicant', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('contractor', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('logical_deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('organisation_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('created_by_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('modified_by_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('history_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('history_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('history_user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True)),
+            ('history_type', self.gf('django.db.models.fields.CharField')(max_length=1)),
+        ))
+        db.send_create_signal('fixmystreet', ['HistoricalFMSUser'])
+
+        # Adding model 'FMSUser'
+        db.create_table('fixmystreet_fmsuser', (
+            ('user_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, primary_key=True)),
+            ('telephone', self.gf('django.db.models.fields.CharField')(max_length=20, null=True)),
+            ('last_used_language', self.gf('django.db.models.fields.CharField')(default='FR', max_length=10, null=True)),
+            ('quality', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('agent', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('manager', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('leader', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('applicant', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('contractor', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('logical_deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('organisation', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='team', null=True, to=orm['fixmystreet.OrganisationEntity'])),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, null=True, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='fmsuser_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, null=True, blank=True)),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='fmsuser_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+        ))
+        db.send_create_signal('fixmystreet', ['FMSUser'])
+
+        # Adding M2M table for field categories on 'FMSUser'
+        db.create_table('fixmystreet_fmsuser_categories', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('fmsuser', models.ForeignKey(orm['fixmystreet.fmsuser'], null=False)),
+            ('reportcategory', models.ForeignKey(orm['fixmystreet.reportcategory'], null=False))
+        ))
+        db.create_unique('fixmystreet_fmsuser_categories', ['fmsuser_id', 'reportcategory_id'])
+
+        # Adding M2M table for field work_for on 'FMSUser'
+        db.create_table('fixmystreet_fmsuser_work_for', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('fmsuser', models.ForeignKey(orm['fixmystreet.fmsuser'], null=False)),
+            ('organisationentity', models.ForeignKey(orm['fixmystreet.organisationentity'], null=False))
+        ))
+        db.create_unique('fixmystreet_fmsuser_work_for', ['fmsuser_id', 'organisationentity_id'])
+
+        # Adding model 'HistoricalOrganisationEntity'
+        db.create_table('fixmystreet_historicalorganisationentity', (
+            ('id', self.gf('django.db.models.fields.IntegerField')(db_index=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('modified_by_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('name_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('slug_nl', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('slug_en', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('slug_fr', self.gf('django.db.models.fields.SlugField')(max_length=100)),
+            ('active', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('phone', self.gf('django.db.models.fields.CharField')(max_length=32)),
+            ('commune', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('region', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('subcontractor', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('applicant', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('dependency_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('feature_id', self.gf('django.db.models.fields.CharField')(max_length=25, null=True, blank=True)),
+            ('history_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('history_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('history_user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True)),
+            ('history_type', self.gf('django.db.models.fields.CharField')(max_length=1)),
+        ))
+        db.send_create_signal('fixmystreet', ['HistoricalOrganisationEntity'])
+
+        # Adding model 'OrganisationEntity'
+        db.create_table('fixmystreet_organisationentity', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='organisationentity_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='organisationentity_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('name_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('slug_fr', self.gf('django.db.models.fields.SlugField')(max_length=100)),
+            ('slug_nl', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('slug_en', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('active', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('phone', self.gf('django.db.models.fields.CharField')(max_length=32)),
+            ('commune', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('region', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('subcontractor', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('applicant', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('dependency', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='associates', null=True, to=orm['fixmystreet.OrganisationEntity'])),
+            ('feature_id', self.gf('django.db.models.fields.CharField')(max_length=25, null=True, blank=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['OrganisationEntity'])
+
+        # Adding model 'HistoricalReport'
+        db.create_table('fixmystreet_historicalreport', (
+            ('id', self.gf('django.db.models.fields.IntegerField')(db_index=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('modified_by_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('quality', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('point', self.gf('django.contrib.gis.db.models.fields.PointField')(srid=31370, null=True, blank=True)),
+            ('address_en', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('address_fr', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('address_nl', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('address_number', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('address_number_as_int', self.gf('django.db.models.fields.IntegerField')(max_length=255)),
+            ('address_regional', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('postalcode', self.gf('django.db.models.fields.CharField')(max_length=4)),
+            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('category_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('secondary_category_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('fixed_at', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('hash_code', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('citizen_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('refusal_motivation', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('mark_as_done_motivation', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('responsible_entity_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('contractor_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('responsible_manager_id', self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True)),
+            ('responsible_manager_validated', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('valid', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('private', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('photo', self.gf('django.db.models.fields.TextField')(max_length=100, blank=True)),
+            ('close_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('history_id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('history_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('history_user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True)),
+            ('history_type', self.gf('django.db.models.fields.CharField')(max_length=1)),
+        ))
+        db.send_create_signal('fixmystreet', ['HistoricalReport'])
+
+        # Adding model 'Report'
+        db.create_table('fixmystreet_report', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='report_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='report_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('quality', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('point', self.gf('django.contrib.gis.db.models.fields.PointField')(srid=31370, null=True, blank=True)),
+            ('address_fr', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('address_nl', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('address_en', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('address_number', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('address_number_as_int', self.gf('django.db.models.fields.IntegerField')(max_length=255)),
+            ('address_regional', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('postalcode', self.gf('django.db.models.fields.CharField')(max_length=4)),
+            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.ReportMainCategoryClass'], null=True, blank=True)),
+            ('secondary_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.ReportCategory'], null=True, blank=True)),
+            ('fixed_at', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('hash_code', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('citizen', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='citizen_reports', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('refusal_motivation', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('mark_as_done_motivation', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('responsible_entity', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='reports_in_charge', null=True, to=orm['fixmystreet.OrganisationEntity'])),
+            ('contractor', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='assigned_reports', null=True, to=orm['fixmystreet.OrganisationEntity'])),
+            ('responsible_manager', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='reports_in_charge', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('responsible_manager_validated', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('valid', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('private', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('photo', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('close_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['Report'])
+
+        # Adding model 'ReportAttachment'
+        db.create_table('fixmystreet_reportattachment', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportattachment_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportattachment_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('logical_deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('security_level', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('report', self.gf('django.db.models.fields.related.ForeignKey')(related_name='attachments', to=orm['fixmystreet.Report'])),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportAttachment'])
+
+        # Adding model 'ReportComment'
+        db.create_table('fixmystreet_reportcomment', (
+            ('reportattachment_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['fixmystreet.ReportAttachment'], unique=True, primary_key=True)),
+            ('text', self.gf('django.db.models.fields.TextField')()),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportComment'])
+
+        # Adding model 'ReportFile'
+        db.create_table('fixmystreet_reportfile', (
+            ('reportattachment_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['fixmystreet.ReportAttachment'], unique=True, primary_key=True)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('image', self.gf('django_fixmystreet.fixmystreet.utils.FixStdImageField')(max_length=100, name='image', blank=True)),
+            ('file_type', self.gf('django.db.models.fields.IntegerField')()),
+            ('title', self.gf('django.db.models.fields.TextField')(max_length=250, null=True, blank=True)),
+            ('file_creation_date', self.gf('django.db.models.fields.DateTimeField')()),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportFile'])
+
+        # Adding model 'ReportSubscription'
+        db.create_table('fixmystreet_reportsubscription', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('report', self.gf('django.db.models.fields.related.ForeignKey')(related_name='subscriptions', to=orm['fixmystreet.Report'])),
+            ('subscriber', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.FMSUser'])),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportSubscription'])
+
+        # Adding unique constraint on 'ReportSubscription', fields ['report', 'subscriber']
+        db.create_unique('fixmystreet_reportsubscription', ['report_id', 'subscriber_id'])
+
+        # Adding model 'ReportMainCategoryClass'
+        db.create_table('fixmystreet_reportmaincategoryclass', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportmaincategoryclass_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportmaincategoryclass_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('name_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('slug_fr', self.gf('django.db.models.fields.SlugField')(max_length=100)),
+            ('slug_nl', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('slug_en', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('hint', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.ReportCategoryHint'], null=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportMainCategoryClass'])
+
+        # Adding model 'ReportSecondaryCategoryClass'
+        db.create_table('fixmystreet_reportsecondarycategoryclass', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportsecondarycategoryclass_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportsecondarycategoryclass_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('name_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('slug_fr', self.gf('django.db.models.fields.SlugField')(max_length=100)),
+            ('slug_nl', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('slug_en', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportSecondaryCategoryClass'])
+
+        # Adding model 'ReportCategory'
+        db.create_table('fixmystreet_reportcategory', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportcategory_created', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reportcategory_modified', null=True, to=orm['fixmystreet.FMSUser'])),
+            ('name_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('slug_fr', self.gf('django.db.models.fields.SlugField')(max_length=100)),
+            ('slug_nl', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('slug_en', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True)),
+            ('category_class', self.gf('django.db.models.fields.related.ForeignKey')(related_name='categories', to=orm['fixmystreet.ReportMainCategoryClass'])),
+            ('secondary_category_class', self.gf('django.db.models.fields.related.ForeignKey')(related_name='categories', to=orm['fixmystreet.ReportSecondaryCategoryClass'])),
+            ('public', self.gf('django.db.models.fields.BooleanField')(default=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportCategory'])
+
+        # Adding model 'ReportCategoryHint'
+        db.create_table('fixmystreet_reportcategoryhint', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('label_fr', self.gf('django.db.models.fields.TextField')()),
+            ('label_nl', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('label_en', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportCategoryHint'])
+
+        # Adding model 'ReportNotification'
+        db.create_table('fixmystreet_reportnotification', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('recipient', self.gf('django.db.models.fields.related.ForeignKey')(related_name='notifications', to=orm['fixmystreet.FMSUser'])),
+            ('sent_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('success', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('error_msg', self.gf('django.db.models.fields.TextField')()),
+            ('content_template', self.gf('django.db.models.fields.CharField')(max_length=40)),
+            ('reply_to', self.gf('django.db.models.fields.CharField')(max_length=200, null=True)),
+            ('related_content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('related_object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportNotification'])
+
+        # Adding model 'ReportEventLog'
+        db.create_table('fixmystreet_reporteventlog', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('event_type', self.gf('django.db.models.fields.IntegerField')()),
+            ('report', self.gf('django.db.models.fields.related.ForeignKey')(related_name='activities', to=orm['fixmystreet.Report'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='activities', null=True, to=orm['auth.User'])),
+            ('organisation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='activities', to=orm['fixmystreet.OrganisationEntity'])),
+            ('event_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('status_old', self.gf('django.db.models.fields.IntegerField')(null=True)),
+            ('status_new', self.gf('django.db.models.fields.IntegerField')(null=True)),
+            ('related_old_id', self.gf('django.db.models.fields.PositiveIntegerField')(null=True)),
+            ('related_new_id', self.gf('django.db.models.fields.PositiveIntegerField')(null=True)),
+            ('related_content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'], null=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['ReportEventLog'])
+
+        # Adding model 'ZipCode'
+        db.create_table('fixmystreet_zipcode', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('commune', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.OrganisationEntity'])),
+            ('code', self.gf('django.db.models.fields.CharField')(max_length=4)),
+            ('name_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('hide', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal('fixmystreet', ['ZipCode'])
+
+        # Adding model 'FaqEntry'
+        db.create_table('fixmystreet_faqentry', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('q_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('q_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('q_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('a_fr', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('a_nl', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('a_en', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, null=True, blank=True)),
+            ('order', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+        ))
+        db.send_create_signal('fixmystreet', ['FaqEntry'])
+
+        # Adding model 'ListItem'
+        db.create_table('fixmystreet_listitem', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('label_fr', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('label_nl', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('label_en', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('model_class', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('model_field', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('code', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal('fixmystreet', ['ListItem'])
+
 
     def backwards(self, orm):
-        pass
+        # Removing unique constraint on 'ReportSubscription', fields ['report', 'subscriber']
+        db.delete_unique('fixmystreet_reportsubscription', ['report_id', 'subscriber_id'])
+
+        # Deleting model 'HistoricalFMSUser'
+        db.delete_table('fixmystreet_historicalfmsuser')
+
+        # Deleting model 'FMSUser'
+        db.delete_table('fixmystreet_fmsuser')
+
+        # Removing M2M table for field categories on 'FMSUser'
+        db.delete_table('fixmystreet_fmsuser_categories')
+
+        # Removing M2M table for field work_for on 'FMSUser'
+        db.delete_table('fixmystreet_fmsuser_work_for')
+
+        # Deleting model 'HistoricalOrganisationEntity'
+        db.delete_table('fixmystreet_historicalorganisationentity')
+
+        # Deleting model 'OrganisationEntity'
+        db.delete_table('fixmystreet_organisationentity')
+
+        # Deleting model 'HistoricalReport'
+        db.delete_table('fixmystreet_historicalreport')
+
+        # Deleting model 'Report'
+        db.delete_table('fixmystreet_report')
+
+        # Deleting model 'ReportAttachment'
+        db.delete_table('fixmystreet_reportattachment')
+
+        # Deleting model 'ReportComment'
+        db.delete_table('fixmystreet_reportcomment')
+
+        # Deleting model 'ReportFile'
+        db.delete_table('fixmystreet_reportfile')
+
+        # Deleting model 'ReportSubscription'
+        db.delete_table('fixmystreet_reportsubscription')
+
+        # Deleting model 'ReportMainCategoryClass'
+        db.delete_table('fixmystreet_reportmaincategoryclass')
+
+        # Deleting model 'ReportSecondaryCategoryClass'
+        db.delete_table('fixmystreet_reportsecondarycategoryclass')
+
+        # Deleting model 'ReportCategory'
+        db.delete_table('fixmystreet_reportcategory')
+
+        # Deleting model 'ReportCategoryHint'
+        db.delete_table('fixmystreet_reportcategoryhint')
+
+        # Deleting model 'ReportNotification'
+        db.delete_table('fixmystreet_reportnotification')
+
+        # Deleting model 'ReportEventLog'
+        db.delete_table('fixmystreet_reporteventlog')
+
+        # Deleting model 'ZipCode'
+        db.delete_table('fixmystreet_zipcode')
+
+        # Deleting model 'FaqEntry'
+        db.delete_table('fixmystreet_faqentry')
+
+        # Deleting model 'ListItem'
+        db.delete_table('fixmystreet_listitem')
+
 
     models = {
         'auth.group': {
@@ -299,7 +736,7 @@ class Migration(SchemaMigration):
         'fixmystreet.reportfile': {
             'Meta': {'object_name': 'ReportFile', '_ormbases': ['fixmystreet.ReportAttachment']},
             'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
-            'file_creation_date': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
+            'file_creation_date': ('django.db.models.fields.DateTimeField', [], {}),
             'file_type': ('django.db.models.fields.IntegerField', [], {}),
             'image': ('django_fixmystreet.fixmystreet.utils.FixStdImageField', [], {'max_length': '100', 'name': "'image'", 'blank': 'True'}),
             'reportattachment_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['fixmystreet.ReportAttachment']", 'unique': 'True', 'primary_key': 'True'}),

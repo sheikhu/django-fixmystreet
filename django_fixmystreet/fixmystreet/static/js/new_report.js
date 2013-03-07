@@ -128,45 +128,55 @@ function createOverview(){
     filesBody.empty();
     commentBody.empty();
 
-    $("#report-form").find(".control-group").each(function(idx,val){
-        reportBody.append($(val).find('label').clone());
-        var input = $(val).find('select,input,textarea');
+    $("#report-form").find("fieldset").each(function(idx,fieldset){
+        reportBody.append($("<h4/>").text($(fieldset).find('legend').text()));
+        $(fieldset).find(".control-group").each(function(idx, control){
 
-        if (input.length == 0) {
-            reportBody.append($(val).find('.controls').clone());
-        } else if (input.is("select")) {
-
-            if(input.find(":selected").parent().is("optgroup")){
-                reportBody.append("<i>"+input.find(":selected").parent().attr("label")+": </i>");
-            }
-            reportBody.append("<i>"+input.find(":selected").text()+'</i>');
-
-        } else if (input.is("input")) {
-
-            var type = input.attr("type");
-            if(type != "hidden" && type != "file" && type != "checkbox") { // checkboxes are in label
-                reportBody.append("<i>"+input.val()+"</i>");
-            //} else if ($(value).attr("type")!="file") {
-                //$("#validate_report_popup").find("[type='file']").hide();
+            if ($(control).find('label').text()) {
+                reportBody.append($("<strong/>").text($(control).find('label').text() + " "));
+                reportBody.append();
             }
 
-        //} else if (input.is("textarea")) {
-            // comment, do nothing here
-        }
-        reportBody.find('checkbox').prop('disabled', true);
-    });
+            var input = $(control).find('select,input,textarea');
 
-    $("#form-files").children("div:not(#file-form-template)").each(function(idx,value){
-        filesBody.append($(value).find("img").clone());
-        filesBody.append("<i>"+$(value).find("textarea").val()+"</i>");
-    });
-    if (filesBody.children().length == 0) {
-        filesBody.append("<i>-</i>");
-    }
+            if (input.length == 0) {
+                reportBody.append($(control).children().clone());
+            } else if (input.is("select")) {
 
-    commentBody.append("<i>"+$("#id_comment-text").val()+"</i>");
-    if (commentBody.text().length == 0) {
-        commentBody.append("<i>-</i>");
-    }
+                if(input.find(":selected").parent().is("optgroup")){
+                    reportBody.append(overviewLine(input.find(":selected").parent().attr("label")));
+                }
+                reportBody.append(overviewLine(input.find(":selected").text()));
+
+            } else if (input.is(":file")) {
+                if(control.id == "file-form-template") {
+                    if (reportBody.find("img").length == 0) {
+                        reportBody.append(overviewLine());
+                    } else {
+                        return; // continue, do not insert <br/>
+                    }
+                } else {
+                    reportBody.append($(control).find("img").clone().css({'float': 'left'}));
+                    reportBody.append(overviewLine($(control).find("textarea").val()));
+                }
+
+            } else if (input.is(":checkbox")) {
+                reportBody.append(overviewLine(input.clone().prop('disabled', true)));
+            } else if (input.is("input")) {
+
+                if(input.attr("type") != "hidden") {
+                    reportBody.append(overviewLine(input.val()));
+                }
+
+            } else if (input.is("textarea")) {
+                reportBody.append(overviewLine(input.val()));
+            }
+            reportBody.append("<br style='clear: left;'/>");
+        });
+    });
     reportBody.find(".help-block").hide();
+}
+
+function overviewLine(value) {
+    return $("<i/>").append(value || "-");
 }

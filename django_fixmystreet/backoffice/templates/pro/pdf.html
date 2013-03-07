@@ -157,7 +157,7 @@ body {
 
 
 
-
+{% if user.can_see_confidential %}
 <h2>{% trans 'Author'%}</h2>
 <table style="width:100%">
 	<tr>
@@ -175,6 +175,7 @@ body {
 	</tr>
 	<tr>
 		<td>
+			
 			{% if report.citizen %}
 				{{report.citizen.fmsuser.get_display_name}}
 			{% else %}
@@ -258,11 +259,14 @@ body {
 
 </table>
 
+{% endif %}
 
 
-
-
+{% if pro_version == "1" %}
 <h2>{% trans 'Manager'%}</h2>
+{% else %}
+<h2>{% trans 'Commune' %}</h2>
+{% endif %}
 <table style="width:100%">
 	<tr>
 		<td>
@@ -281,7 +285,11 @@ body {
 	</tr>
 	<tr>
 		<td>
+			{% if pro_version == "1" %}
 			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})
+			{% else %}
+			{{report.responsible_manager.organisation.name}}
+			{% endif %}
 		</td>	
 		<td>
 			{% if report.status == 4 or report.status == 6%}
@@ -298,6 +306,7 @@ body {
 			&nbsp;
 		</td>	
 	</tr>
+	{% if pro_version == "1" %}
 	<tr>
 		<td>
 			<strong>
@@ -324,6 +333,7 @@ body {
 			&nbsp;
 		</td>	
 	</tr>
+	{% endif %}
 </table>
 
 
@@ -349,7 +359,7 @@ body {
 	{% if activity.is_public_visible %}
 	<tr>
 		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
+			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity.get_public_activity_text}}
 		</td>
 	</tr>
 	{% endif %}
@@ -380,14 +390,20 @@ body {
 	{% else %}
 	<tr>
                 <td colspan="2">
-			<strong>- {{comment.created|date}} : </strong> 
-			 {% if comment.created_by %}
+                	{% if pro_version == "1" %}
+					<strong>- {{comment.created|date}} : </strong> 
+			 			{% if comment.created_by %}
+			 	
          	               {{comment.created_by.fmsuser.get_display_name}} 
 				(<strong>{{comment.created_by.fmsuser.organisation.name}}</strong>,
 				 <strong>mail:</strong>{{comment.created_by.fmsuser.email}}, 
 				 <strong>tel:</strong>{{comment.created_by.fmsuser.telephone}})
+				 
                        	{% else %}
                        		{% trans 'Anonymous' %}
+                       	{% endif %}
+                       	{% else %}
+                       	<strong>- {{comment.created|date}}</strong> 
                        	{% endif %}
                 </td>
         </tr>	
@@ -429,6 +445,7 @@ body {
 	{% else %}
 	<tr>
                 <td colspan="3">
+                	{% if pro_version == "1" %}
                       <strong>- {{file.created|date}} : </strong>
                        {% if file.created_by %}
                              {{file.created_by.fmsuser.get_display_name}} (<strong>{{file.created_by.fmsuser.organisation.name}}</strong>,
@@ -436,6 +453,9 @@ body {
                                  <strong>tel:</strong>{{file.created_by.fmsuser.telephone}})
                        {% else %}
                              {% trans 'Anonymous' %}
+                       {% endif %}
+                       {% else %}
+                       <strong>- {{file.created|date}}  </strong>
                        {% endif %}
                 </td>
         </tr>
@@ -480,10 +500,12 @@ body {
                         {{file.created|date}}
 		</td>
 	</tr>
+	{% if pro_version == "1" %}
 	<tr>
 		<td>
 			&nbsp;
 		</td>
+		
 		<td>
 			<strong>{% trans 'By' %} : </strong> 
 			{% if file.created_by %}	
@@ -493,7 +515,9 @@ body {
 				{% trans 'Anonymous '%}
 			{% endif %}
 		</td>
+		
 	</tr>
+	{% endif %}
         <tr>
                 <td>
                         &nbsp;

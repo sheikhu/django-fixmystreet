@@ -20,14 +20,17 @@ class Monitoring:
     STATUS = ("OK","INFO","WARNING","KO")
     STATUS_CODE = {"OK": 200, "INFRA": 413, "APP": 414}
 
+
     def check_django_version(self):
         import django
         return (0, ".".join(map(lambda n: str(n), django.VERSION)))
     check_django_version.label = "Django version : %s"
 
+
     def check_app_version(self):
         return (0, settings.VERSION)
     check_app_version.label = "App version %s"
+
 
     def check_uptime(self):
         process = os.popen("/usr/bin/uptime","r")
@@ -36,12 +39,14 @@ class Monitoring:
         return (0, uptime)
     check_uptime.label = "Uptime: %s"
 
+
     def check_db_connection(self):
         from django.db import connection
         connection.cursor()
         return (0, )
     check_db_connection.label = "Database connection %s"
     check_db_connection.status_type = 'INFRA'
+
 
     def check_db_timing(self):
         from django.contrib.auth.models import User
@@ -62,6 +67,7 @@ class Monitoring:
     check_db_timing.label = "Database access speed %s"
     check_db_timing.status_type = 'INFO'
 
+
     def check_db_count(self):
         from django.contrib.auth.models import User
         userscount = User.objects.count()
@@ -73,6 +79,7 @@ class Monitoring:
     check_db_count.label = "Database records ... %s"
     check_db_count.status_type = 'INFO'
 
+
     def check_permissions(self):
         if not access(settings.MEDIA_ROOT,os.R_OK):
             return (3, "cannot be read")
@@ -83,6 +90,7 @@ class Monitoring:
         return (0, "read/write ok")
     check_permissions.label = "/static directory %s"
     check_permissions.status_type = 'APP'
+
 
     def check_charge(self):
         load = os.getloadavg()
@@ -120,60 +128,6 @@ class Monitoring:
     check_freespace.label = "free space on /static directory %s%%"
     check_freespace.status_type = 'INFO'
 
-    def check_geoloc(self):
-        geoloc_url = urljoin(settings.URBIS_URL, "services/urbis/Rest/Localize/getaddresses?language=fr&address=arts")
-        status, _ = self._long_request(geoloc_url)
-        if status == 200:
-            return (0, "up")
-        else:
-            return (3, "down. {url:s} returns {code:d}".format(url=geoloc_url,
-                                                               code=status))
-    check_geoloc.label = "geolocalization service %s"
-    check_geoloc.status_type = 'INFRA'
-
-    def check_urbis(self):
-        """Check that URBIS service can be reached by web server."""
-        urbis_url = urljoin(settings.URBIS_URL, "geoserver/web/")
-        status, _ = self._long_request(urbis_url)
-        if status == 200:
-            return (0, "up")
-        else:
-            return (3, "down. {url:s} returns {code:d}".format(url=urbis_url,
-                                                               code=status))
-    check_urbis.label = "GIS service %s"
-    check_urbis.status_type = 'INFRA'
-
-    def check_gis_wfs(self):
-        wfs_tile_url = urljoin(settings.URBIS_URL, "geoserver/wfs")
-        payload = """
-        <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-         <wfs:Query typeName="mobility:STIB_STOP_GEO" xmlns:feature="http://mobility.irisnet.be">
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-           <ogc:BBOX><ogc:PropertyName>GEOM</ogc:PropertyName>
-            <gml:Box xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:31370">
-             <gml:coordinates decimal="." cs="," ts=" ">148304.80590127,167310.50503766 151728.52108203,169395.42587418</gml:coordinates>
-            </gml:Box>
-           </ogc:BBOX>
-          </ogc:Filter>
-         </wfs:Query>
-        </wfs:GetFeature>""".strip()
-        req = urllib2.Request(wfs_tile_url, data=payload)
-        req.add_header('Content-Type', 'text/xml')
-        logger.info("Reach WFS server at %s with %s" % (wfs_tile_url, req.get_method()))
-        try:
-            handle = urllib2.urlopen(req)
-            if handle.code != 200:
-                return (3, "has errors (status %s)" % handle.code)
-            content = handle.read()
-            if 'wfs:FeatureCollection' not in content:
-                return (3, "reponse is bad (%s...)" % content[:300].replace("\n", "").replace(" ", ""))
-
-            return (0, "available")
-        except Exception, e:
-            logger.exception(e)
-        return (3, "not available")
-    check_gis_wfs.label = "GIS WFS STIB layer %s"
-    check_gis_wfs.status_type = 'INFRA'
 
 
     def __init__(self):

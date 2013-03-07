@@ -1455,6 +1455,15 @@ class ReportEventLog(models.Model):
             related_old=self.related_old,
             related_new=self.related_new
         )
+
+    def get_public_activity_text (self):
+        return self.EVENT_TYPE_TEXT[self.event_type].format(
+            user=(self.user.fmsuser.organisation if self.user else None),
+            organisation=self.organisation,
+            related_old=self.related_old,
+            related_new=self.related_new
+        )
+
     def is_public_visible(self):
         return self.event_type in ReportEventLog.PUBLIC_VISIBLE_TYPES
 

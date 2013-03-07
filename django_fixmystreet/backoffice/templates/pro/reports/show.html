@@ -53,8 +53,15 @@ $(function(){
     /* Implement method when changing contractor using the dropdown */
     /****************************************************************/
     $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
-                window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
-            });
+
+        var r=confirm("Are you sure you want to change the contractor/applicant?");
+        if (r==true){
+            window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+        }
+        else{
+            $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
+        }
+    });
     /****************************************************************/
     /* Implement method when clicking private/public checkbox       */
     /****************************************************************/
