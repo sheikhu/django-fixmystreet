@@ -174,16 +174,17 @@ var zipcodes = new Object();
                     </div>
                 </div>
                 <div class="file-upload-button">
+                    <button id="file-upload" class="btn">{% trans 'Add photo' %}</button>
                     <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
+                        data-trigger="hover"
                         title="{% trans 'Recommendations'%}">
-                        <img src="{{STATIC_URL}}images/info_icon.png" width="32px"/>
+                        <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
                     </a>
                     <div id="photo-recommendations" class="hide">
                         <p>{% trans '1- Supported formats' %}: jpeg, png.</p>
                         <p>{% trans '2- If your connection is slow, 1200X800 is recommended.'%}</p>
                     </div>
-                    <button id="file-upload" class="btn">{% trans 'Add photo' %}</button>
                 </div>
             </fieldset>
             <fieldset>
