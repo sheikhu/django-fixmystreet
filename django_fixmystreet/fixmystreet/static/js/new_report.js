@@ -129,22 +129,30 @@ function createOverview(){
     commentBody.empty();
 
     $("#report-form").find("fieldset").each(function(idx,fieldset){
+        reportBody = $('#report-overview')
+        reportBody.append("<div id="+idx+" class='bordered-box'>");
+        reportBody = $("#"+idx);
         reportBody.append($("<h4/>").text($(fieldset).find('legend').text()));
         $(fieldset).find(".control-group").each(function(idx, control){
 
             if ($(control).find('label').text()) {
                 reportBody.append($("<strong/>").text($(control).find('label').text() + " "));
-                reportBody.append();
+                // reportBody.append();
             }
 
             var input = $(control).find('select,input,textarea');
 
             if (input.length == 0) {
-                reportBody.append($(control).children().clone());
+                if($(control).find("span").length != 0){
+                    reportBody.append("<br>").append($(control).find("span"));
+                }
+                else{
+                    reportBody.append($(control).children().clone());
+                }
             } else if (input.is("select")) {
 
                 if(input.find(":selected").parent().is("optgroup")){
-                    reportBody.append(overviewLine(input.find(":selected").parent().attr("label")));
+                    reportBody.append(overviewLine(input.find(":selected").parent().attr("label")+"/"));
                 }
                 reportBody.append(overviewLine(input.find(":selected").text()));
 
@@ -171,6 +179,7 @@ function createOverview(){
             } else if (input.is("textarea")) {
                 reportBody.append(overviewLine(input.val()));
             }
+            reportBody.append("</div>");
             reportBody.append("<br style='clear: left;'/>");
         });
     });
@@ -178,5 +187,6 @@ function createOverview(){
 }
 
 function overviewLine(value) {
-    return $("<i/>").append(value || "-");
+    // return $("<i/>").append(value || "-");
+    return value || "-";
 }

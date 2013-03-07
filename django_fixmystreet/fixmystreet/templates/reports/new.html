@@ -144,8 +144,11 @@ var categories = {
 
             <fieldset>
                 <div class="control-group required">
-                    <label class="control-label" for="address-text">{% trans "Location:" %}
-                        <a href="#" style="margin: 0px 0 20px; display: inline-block; vertical-align: top;"
+                    <label class="control-label" for="address-text">{% trans "Location:" %}</label>
+                    <div class="controls">
+                        <span id="address-text"></span>
+                    </div>
+                    <a href="#" style="margin-top:-20px;margin-left:-60px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
                         data-trigger="hover"
                         title="{% trans 'Location:'%}">
@@ -154,10 +157,7 @@ var categories = {
                     <div id="location-recommendations" class="hide">
                         {% trans '** To change the address, move the marker on the map above.' %}
                     </div>
-                    </label>
-                    <div class="controls">
-                        <span id="address-text"></span>
-                    </div>
+                    
                 </div>
             </fieldset>
 
