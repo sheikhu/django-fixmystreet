@@ -1761,3 +1761,7 @@ table.report_overview_table th{
     margin-bottom: 4px;
 }
 
+.popover-content{
+    font-weight:normal; 
+}
+

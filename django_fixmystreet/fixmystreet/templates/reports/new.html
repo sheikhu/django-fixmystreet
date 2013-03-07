@@ -9,6 +9,21 @@
 
 {% block script %}
 {{ block.super }}
+{% block specific_scripts %}
+<script>
+var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
+var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
+var zipcodes = new Object();
+
+{% for zip in all_zips %}
+    zipcodes[{{zip.code}}] = new Object();
+    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+    zipcodes[{{zip.code}}].msg = msg_prefix + "<p>{{ zip.commune.name }} ({{zip.commune.phone}})</p>" + bxl_mobility_msg;
+    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+{% endfor %}
+</script>
+{% endblock %}
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
 <script src="{{STATIC_URL}}js/new_report.js"></script>
@@ -101,20 +116,7 @@ var categories = {
 </script>
 {% endblock %}
 
-{% block specific_scripts %}
-<script>
-var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
-var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
-var zipcodes = new Object();
 
-{% for zip in all_zips %}
-    zipcodes[{{zip.code}}] = new Object();
-    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].msg = msg_prefix + "<p>{{ zip.commune.name }} ({{zip.commune.phone}})</p>" + bxl_mobility_msg;
-    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-{% endfor %}
-</script>
-{% endblock %}
 
 {% block map %}
 <article id="map">
@@ -141,10 +143,21 @@ var zipcodes = new Object();
                 </div>
 
             <fieldset>
-                <legend>{% trans "Location:" %}</legend>
-                <div class="control-group">
-                    <span id="address-text"></span>
-                    <span class="help-block">{% trans '** To change the address, move the marker on the map above.' %}</span>
+                <div class="control-group required">
+                    <label class="control-label" for="address-text">{% trans "Location:" %}
+                        <a href="#" style="margin: 0px 0 20px; display: inline-block; vertical-align: top;"
+                        data-toggle="popover"
+                        data-trigger="hover"
+                        title="{% trans 'Location:'%}">
+                        <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
+                    </a>
+                    <div id="location-recommendations" class="hide">
+                        {% trans '** To change the address, move the marker on the map above.' %}
+                    </div>
+                    </label>
+                    <div class="controls">
+                        <span id="address-text"></span>
+                    </div>
                 </div>
             </fieldset>
 

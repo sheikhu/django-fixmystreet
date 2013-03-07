@@ -31,7 +31,7 @@ $(document).ready(function() {
 
 
 function fillAdressField(lang, address) {
-    $('#address-text').html(address.number + ' ' + address.street.name+ ' ' + address.street.postCode); // urbis must return the full text municipality
+    $('#address-text').html(address.number + ' ' + address.street.name+ ', ' + address.street.postCode + " " + zipcodes[address.street.postCode].commune); // urbis must return the full text municipality
     $('#id_report-postalcode').val(address.street.postCode);
     $('#id_report-address_number').val(address.number);
 }
