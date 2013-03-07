@@ -50,13 +50,15 @@
 			<td>	
 				{% if commune.active %}
 					<a href='{{ commune.get_absolute_url }}?page=1'>
-					<span>
-						{{ commune.name }}
-					</span>
+					<strong>
+						<span>
+							{{ commune.name }}
+						</span>
+					</strong>
 					</a>
 				{% else %}
 					<a href='{{ commune.get_absolute_url }}?exception=true&phone={{commune.phone}}'>
-					<span style="color:DarkGray">
+					<span style="color:#757475">
 						{{ commune.name }}
 						&nbsp;
 						({% trans "Does not participate to FixMyStreet yet" %})
