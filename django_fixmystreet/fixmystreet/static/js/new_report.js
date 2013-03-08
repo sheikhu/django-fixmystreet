@@ -63,8 +63,12 @@ function retrieveAddress() {
         if (typeof window.zipcodes != 'undefined' && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
 
             fillAdressField(lang, address);
+
+            $('#phone').html(zipcodes[String(address.street.postCode)].phone)
+
             //This commune does not participate to fixmystreet until now.
-            $form.prepend('<div class="text-error span12">' + zipcodes[String(address.street.postCode)].msg + '</div>');
+            $('#nonparticipatingcommune').modal();
+            $('#address-text').after('<p class="text-error">' + $('#nonparticipatingcommune .modal-body p').html() + '</p>');
 
         } else if(response.status == 'success') {
 

@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}{% trans "All Reports" %}{% endblock %}
-{% block script %}
+{% block meta %}
 {{block.super}}
 <meta property="og:title" content="{% trans 'All Reports' %}" />
 <meta property="og:description" content="{% trans 'Meta description for index page' %}" />
@@ -71,9 +71,9 @@
 					</a>
 				{% else %}
 					<a href='#nonparticipatingcommune' data-toggle="modal" onclick="$('#phone').html('{{commune.phone}}')">
-					<span style="color:#757475">
-						{{ commune.name }}
-					</span>
+						<span style="color:#757475">
+							{{ commune.name }}
+						</span>
 					</a>
 				{% endif %}
 			</td>
