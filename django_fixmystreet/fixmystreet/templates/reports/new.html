@@ -9,10 +9,10 @@
 
 {% block script %}
 {{ block.super }}
-{% block specific_scripts %}
 <script>
 var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
 var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
+
 var zipcodes = new Object();
 
 {% for zip in all_zips %}
@@ -23,6 +23,7 @@ var zipcodes = new Object();
     zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
 {% endfor %}
 </script>
+{% block specific_scripts %}
 {% endblock %}
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
