@@ -645,8 +645,22 @@ li img {
     min-width: 100px;
     /*border: 1px solid black;*/
 }
+#citizen-subscription-form{
+    margin:10px 0 0 0;
+}
+#citizen-subscription-form p{
+    float:left;
+}
+#subscribe-incident-show-report{
+    margin:0 !important;
+    float:right;
+}
+#mark-as-done-show-report{
+    float:right;
+}
 #send-comment-show-report{
     margin-bottom:0 !important;
+    float:right;
 }
 
 #citizen-subscription-form .btn:hover{
@@ -1748,6 +1762,14 @@ table.report_overview_table th{
     background:transparent url('/static/images/download-pdf.png') top left no-repeat;
     width:41px;
     height:38px;
+    display:inline-block;
+    margin-right:9px;
+    vertical-align:middle;
+}
+.history-incident{
+    background:transparent url('/static/images/history.png') top left no-repeat;
+    width:41px;
+    height:41px;
     display:inline-block;
     margin-right:9px;
     vertical-align:middle;

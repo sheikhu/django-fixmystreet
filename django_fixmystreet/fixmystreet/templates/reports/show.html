@@ -190,7 +190,15 @@ $("[data-toggle=popover]")
                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' %}
                 </a>
             </p>
-        </div> <!-- Bordered-box-->
+            {% if report.is_created %}
+            {% else %}
+            <p>
+                <a href="#" title="{% trans 'History' %}">
+                <!--i class="icon-download" /--><i class="history-incident"> </i>{% trans 'History incident' %}
+                </a>
+            </p>
+            {% endif %}
+       </div> <!-- Bordered-box-->
 
         <!-- ################# FILES ############### -->
         <!-- ################# FILES ############### -->
@@ -239,6 +247,7 @@ $("[data-toggle=popover]")
 
                 <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
             </form> <!-- report-form-->
+            <div style="clear:both;"></div>
         </div> <!-- bordered-box-->
         <div class="bordered-box">
             <!-- ################ -->
@@ -253,10 +262,10 @@ $("[data-toggle=popover]")
                         <input id="subscribe-incident-show-report" type="submit" class="btn" value="{% trans 'Subscribe' %}" />
                 </form>
             {% endif %}
+            <div style="clear:both;"></div>
          </div> <!-- bordered-box -->
          <div class="bordered-box">
-             <h4>{% trans "Mark this incident as done"  %}</h4>
-             <p>{% trans "You think this incident is close. Indicate it!" %}</p>
+             <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>
                  {% if report.is_in_progress %}
                      {% if not report.status == report.SOLVED %}
@@ -266,6 +275,7 @@ $("[data-toggle=popover]")
                          <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>
                      {% endif %}
                  {% endif %}
+                 <div style="clear:both;"></div>
              </div>
 
 

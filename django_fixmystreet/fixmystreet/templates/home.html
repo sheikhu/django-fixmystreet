@@ -116,17 +116,17 @@ function showResults(type,li){
     <article id="counters">
         <div class='counter'>
             <p class='number lead'>{{ report_counts.recent_new }}</p>
-            <p class='text'>{% trans "Created" %}</p>
+            <p class='text'>{% trans "30 Created" %}</p>
             <p class='qualifier'>{% trans "In the 30 last days" %}</p>
         </div>
         <div class='counter'>
             <p class='number lead'>{{ report_counts.recent_updated }}</p>
-            <p class='text'>{% trans "In progress" %}</p>
+            <p class='text'>{% trans "30 In progress" %}</p>
             <p class='qualifier'>{% trans "In the 30 last days" %}</p>
         </div>
         <div class='counter'>
             <p class='number lead'>{{ report_counts.recent_fixed }}</p>
-            <p class='text'>{% trans "Processed" %}</p>
+            <p class='text'>{% trans "30 Processed" %}</p>
             <p class='qualifier'>{% trans "In the 30 last days " %}</p>
         </div>
     </article>
@@ -136,13 +136,13 @@ function showResults(type,li){
         <h4>{% trans 'Last modified reports:' %}</h4>
         <ul id="recent_home_nav" class="nav nav-tabs">
             <li class="active">
-                <a onclick="showResults('created',$(this).parent());">{% trans "Created" %}</a>
+                <a onclick="showResults('created',$(this).parent());">{% trans "Report Created" %}</a>
             </li>
             <li>
-                <a onclick="showResults('in_progress',$(this).parent());">{% trans "In progress" %}</a>
+                <a onclick="showResults('in_progress',$(this).parent());">{% trans "Report In progress" %}</a>
             </li>
             <li>
-                <a onclick="showResults('closed',$(this).parent());">{% trans "Processed" %}</a>
+                <a onclick="showResults('closed',$(this).parent());">{% trans "Report Processed" %}</a>
             </li>
         </ul>
         <div id="search_results" class="search_results_home">
