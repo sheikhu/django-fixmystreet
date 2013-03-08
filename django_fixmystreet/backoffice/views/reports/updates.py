@@ -151,8 +151,9 @@ def reportPdf(request, report_id, pro_version):
     report = get_object_or_404(Report, id=report_id)
 
     #Verify if the connected user is well pro ! (Server side protection)
-    # if request.user.fmsuser.is_citizen():
-       # pro_Version = 0
+    if request.fmsuser.is_citizen():
+        pro_Version = 0
+    
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {'user' : request.user.fmsuser,'report' : report, 'file_list' : report.files(), 'comment_list' : report.comments(), 'activity_list' : report.activities.all() ,'pro_version': pro_version},
                 context_instance=RequestContext(request))
