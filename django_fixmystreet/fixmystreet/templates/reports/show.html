@@ -28,6 +28,8 @@ $(function(){
     fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1, {% if BACKOFFICE %}true{%else%}false{%endif%});
 
     $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
+    //Clear the comment textarea after each POST
+    $("#id_comment-text").val('');
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -37,6 +39,9 @@ function setFileCreationDate(){
     $("[name='file_creation_date']").val(dateString);
 }
 
+/**
+ * Mark as done function
+ */
 function markAsDone(){
     // $("#divMarkAsDone").show();
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
