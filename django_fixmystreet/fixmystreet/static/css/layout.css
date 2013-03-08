@@ -618,6 +618,13 @@ li img {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+#view_nearby_reports a{
+    margin-left:20px;
+}
+#create_form_left span#address-text{
+    margin-top:5px;
+    display:inline-block;
+}
 
 #report-form .btn{
     margin-top: 15px;
@@ -631,17 +638,20 @@ li img {
 
 #citizen-subscription-form .btn{
     margin-top: 15px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     /*background: #FFF203;*/
     background:#FFDB00;
     border-radius: 4px;
     min-width: 100px;
     /*border: 1px solid black;*/
 }
+#send-comment-show-report{
+    margin-bottom:0 !important;
+}
 
 #citizen-subscription-form .btn:hover{
     margin-top: 15px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     /*background: #FFF203;*/
     background:#E6E6E6;
     border-radius: 4px;
@@ -1081,12 +1091,14 @@ legend span {
 .author-sign {
     text-align:left;
     font-family: dosismedium, Arial, sans-serif !important;
+    font-size:14px;
 }
 
 .author-sign strong {
     display:inline-block;
     font-family: dosisbold, Arial, sans-serif !important;
-    font-size: initial;
+    /*font-size: initial;*/
+    font-weight:normal !important;
 }
 
 #report-status th {
@@ -1099,14 +1111,37 @@ legend span {
 #report-status {
 	margin-top: 10px;
 }
+#report-status td{
+    padding-top:2px;
+}
 
 #more-actions {/* "offensive?" */
 	text-align: right;
     margin-top: 10px;
 }
 
+.is_in_progress {
+    width:98%;
+    padding: 5px;
+    margin-bottom: 1em;
+    text-align: center;
+    position: relative;
+    background-color: #FFE4CA;
+    border: solid 2px #F79421;
+    border-radius:5px;
+    color: #222;
+}
+
+.is_in_progress p {
+    color: #222;
+    text-align: left;
+    margin: 1em;
+}
+
+
+
 .is_created {
-    width:100%;
+    width:98%;
     padding: 5px;
     margin-bottom: 1em;
     text-align: center;
@@ -1125,7 +1160,7 @@ legend span {
 
 
 .is_fixed {
-    width:100%;
+    width:98%;
     padding: 5px;
     margin-bottom: 1em;
     text-align: center;
@@ -1144,6 +1179,24 @@ legend span {
 
 #report_updates {
     font-family: dosisbold, Arial, sans-serif;
+}
+span.picture-caption{
+    border-bottom:1px solid lightgrey;
+    display:block;
+    padding-bottom:5px;
+    margin-bottom:5px;
+}
+span.picture-date{
+    font-size:12px;
+}
+p.comment-incident{
+    border-bottom:1px solid lightgrey;
+    display:block;
+    padding-bottom:5px;
+    margin-bottom:5px;
+}
+.comment-date{
+    font-size:12px;
 }
 
 .report_update:first-child {
@@ -1552,6 +1605,9 @@ ul.info_links li a:hover {
 
 
 #report-body p { margin-bottom: .5em;}
+#report-body th strong{
+    font-size:14px;
+}
 #faq p { margin-bottom: 1em;}
 #faq ul { margin-bottom: 1em;}
 
@@ -1759,6 +1815,9 @@ table.report_overview_table th{
 .file-upload-button .popover-content p{
     font-size: 12px;
     margin-bottom: 4px;
+}
+.file-upload-button.show-report{
+    margin-left:0;
 }
 
 .popover-content{

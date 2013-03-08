@@ -23,22 +23,23 @@
             <a href="{{ file.file.url }}"><img src='/static/images/icon-excel.png' width="48px" height="48px"/> </a>
         {% endif %}
         <div class="update_text">
-            {{file.title}}
+            <span class="picture-caption">{{file.title}}</span>
             {% if BACKOFFICE %}
             <br/>
             <span class="update_light_text">{% trans 'Posted by' %}</span>
                 {{file.get_display_name}}
              {% endif %}
-            <br/>
+            <span class="picture-date">
+            <span class="update_light_text">{% trans 'file creation Date' %}</span>
             {% if file.file_creation_date != None%}
                 {{file.file_creation_date}}
             {% else %}
                 -
             {% endif %}
-            <span class="update_light_text">{% trans 'file creation Date' %}</span>
             <br/>
-            {{file.created}}
             <span class="update_light_text">{% trans 'file publication date' %}</span>
+            {{file.created}}
+            </span>
         </div> <!-- update_text -->
     {% endif %}
     <!-- If the status allow such interactions -->

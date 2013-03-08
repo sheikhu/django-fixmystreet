@@ -10,18 +10,16 @@
         {% endif %}
     {% endif %}
     <div class="update_text">
-        <p>{{ comment.text }}</p>
+        <p class="comment-incident">{{ comment.text }}</p>
         {% if BACKOFFICE %}
         {% blocktrans with by=comment.get_display_name on=comment.created %}
         Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
         {% endblocktrans %}
         {% else %}
-        <p class="author-sign">
-                <p class="author-sign">
+        <p class="author-sign comment-date">
                     {% blocktrans with on=report.created %}
                         Posted on <strong>{{on}}</strong>
                     {% endblocktrans %}
-                </p>
 
         </p>
         {% endif %}
