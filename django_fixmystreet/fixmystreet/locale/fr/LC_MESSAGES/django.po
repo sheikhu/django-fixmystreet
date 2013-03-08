@@ -1814,7 +1814,7 @@ msgstr "En traitement"
 
 #: templates/reports/show.html:180
 msgid "Responsible:"
-msgstr "Responsable:"
+msgstr "Traité par:"
 
 #: templates/reports/show.html:189
 msgid "Download a pdf report of this incident"
@@ -1852,7 +1852,7 @@ msgstr ""
 
 #: templates/reports/show.html:257
 msgid "subscribers to this incident"
-msgstr " personnes se sont déjà abonnées à cet incident"
+msgstr " personnes sont déjà abonnées à cet incident"
 
 #: templates/reports/show.html:261
 msgid "Your email"
