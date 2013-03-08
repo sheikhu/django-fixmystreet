@@ -10,15 +10,12 @@
 {% block script %}
 {{ block.super }}
 <script>
-var msg_prefix =  "<p>{% trans 'This commune does not participate.\nPlease request your commune to join the initiative.' %}</p>";
-var bxl_mobility_msg = "<p>{% trans 'Brussels Mobility (tel:0800/94.001)' %}</p>";
 
 var zipcodes = new Object();
 
 {% for zip in all_zips %}
     zipcodes[{{zip.code}}] = new Object();
     zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].msg = msg_prefix + "<p>{{ zip.commune.name }} ({{zip.commune.phone}})</p>" + bxl_mobility_msg;
     zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
     zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
 {% endfor %}
@@ -140,14 +137,14 @@ var categories = {
                 <div id="view_nearby_reports">
                     {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
                     <br/>
-                    <a onclick="$('#nearby_reports_popup').modal();" class="btn"> {% trans 'Verify' %} </a>
+                    <button onclick="$('#nearby_reports_popup').modal();" class="btn">{% trans 'Verify' %}</button>
                 </div>
 
             <fieldset>
                 <div class="control-group required">
                     <label class="control-label" for="address-text">{% trans "Location:" %}</label>
                     <div class="controls">
-                        <span id="address-text"></span>
+                        <p id="address-text"></p>
                     </div>
                     <a href="#" style="margin-top:-20px;margin-left:-60px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
@@ -259,6 +256,18 @@ var categories = {
         {% else %}
             <p>{% trans "No problems have been reported in this area." %}</p>
         {% endif %}
+    </div>
+</div>
+<div id="nonparticipatingcommune" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{% trans "Warning" %}!</h3>
+    </div>
+    <div class="modal-body">
+        <p>{% trans "Does not participate to FixMyStreet yet with details"%} <span id="phone"></span></p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> {% trans "Close dialog" %}</button>
     </div>
 </div>
 
