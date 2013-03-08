@@ -144,6 +144,7 @@ def show(request, slug, report_id):
                 "file_formset": file_formset,
                 "comment_form": comment_form,
                 "mark_as_done_form":MarkAsDoneForm(),
+                'activity_list' : report.activities.all(),
             },
             context_instance=RequestContext(request))
 
