@@ -108,8 +108,6 @@ def show(request, slug, report_id):
         user_to_show = report.created_by
 
     if request.method == "POST":
-        import pdb
-        pdb.set_trace()
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')

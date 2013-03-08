@@ -125,7 +125,7 @@ $("[data-toggle=popover]")
                     <h1>{% trans "Report Ticket" %} {{ report.get_ticket_number }}</h1>
                 </div-->
             </div>
-    
+
             <!-- ######### -->
             <!-- IS FIXED  -->
             <!-- ######### -->
@@ -191,7 +191,7 @@ $("[data-toggle=popover]")
                 </a>
             </p>
         </div> <!-- Bordered-box-->
-    
+
         <!-- ################# FILES ############### -->
         <!-- ################# FILES ############### -->
         <!-- ################# FILES ############### -->
@@ -228,40 +228,16 @@ $("[data-toggle=popover]")
             {% endif %}
         </div> <!-- Bordered-box -->
         {% endif %}
-    
+
     </div> <!-- span6 -->
 
     {% if report.is_in_progress %}
     <div class="span6">
         <div class="bordered-box">
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% csrf_token %}
-                <!-- ############################################# -->
-                <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
-                <!-- ############################################# -->
-                <h4>{% trans 'Complete incident rapport' %}</h4>
-                <div class="file-upload-button show-report">
-                    <button id="file-upload" class="btn">{% trans 'Add file' %}</button>
-                    <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
-                        data-toggle="popover"
-                        data-trigger="hover"
-                        title="{% trans 'Recommendations'%}">
-                        <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
-                    </a>
-                    <div id="photo-recommendations" class="hide">
-                        <p>{% trans '1- Supported formats' %}: jpeg, png. </p>
-                        <p>{% trans '2- Optimal resolution: 1200 x 800.' %}</p>
-                        <p>{% trans '3- The photo must contain the environment of the incident' %}</p>
-                        <p>{% trans "4- Please do not include people's faces and car registration plates." %}</p>
-                    </div>
-                </div>
-                <fieldset>
-                    <legend>{% trans 'Comments' %}</legend>
-                    {{ comment_form.text }}
-                    {# comment_form.text.errors #}
-                </fieldset>
+                {% include "_annexes_form.html" %}
 
-                    <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
+                <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
             </form> <!-- report-form-->
         </div> <!-- bordered-box-->
         <div class="bordered-box">
