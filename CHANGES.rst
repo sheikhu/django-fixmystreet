@@ -35,9 +35,8 @@ Changelog of django-fixmystreet
 0.4.1 (2013-03-06)
 ------------------
 
-- Nothing changed yet.
-
 - Remove typo
+
 - Spelling, vocabulary and terminology
 
 
