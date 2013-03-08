@@ -638,17 +638,20 @@ li img {
 
 #citizen-subscription-form .btn{
     margin-top: 15px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     /*background: #FFF203;*/
     background:#FFDB00;
     border-radius: 4px;
     min-width: 100px;
     /*border: 1px solid black;*/
 }
+#send-comment-show-report{
+    margin-bottom:0 !important;
+}
 
 #citizen-subscription-form .btn:hover{
     margin-top: 15px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     /*background: #FFF203;*/
     background:#E6E6E6;
     border-radius: 4px;
@@ -1812,6 +1815,9 @@ table.report_overview_table th{
 .file-upload-button .popover-content p{
     font-size: 12px;
     margin-bottom: 4px;
+}
+.file-upload-button.show-report{
+    margin-left:0;
 }
 
 .popover-content{

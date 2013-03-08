@@ -5,7 +5,6 @@
 {% block script %}
 {{ block.super }}
 
-
 <meta name="title" property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
 <meta name="description" property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
@@ -42,6 +41,17 @@ function markAsDone(){
     // $("#divMarkAsDone").show();
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 }
+
+$("[data-toggle=popover]")
+        .popover({
+            html : true,
+            content: function() {
+                return $(this).next().html();
+            }
+        })
+        .click(function(e) {
+            e.preventDefault();
+        });
 </script>
 {% endblock %}
 {% block css %}
@@ -224,8 +234,8 @@ function markAsDone(){
                 <!-- ############################################# -->
                 <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
                 <!-- ############################################# -->
-                <span class="info-bloc">{% trans 'Complete incident rapport' %}</span>
-                <div class="file-upload-button">
+                <h4>{% trans 'Complete incident rapport' %}</h4>
+                <div class="file-upload-button show-report">
                     <button id="file-upload" class="btn">{% trans 'Add file' %}</button>
                     <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
@@ -246,30 +256,30 @@ function markAsDone(){
                     {# comment_form.text.errors #}
                 </fieldset>
 
-                <p>
-                    <input type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
-                </p>
+                    <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
             </form> <!-- report-form-->
         </div> <!-- bordered-box-->
         <div class="bordered-box">
             <!-- ################ -->
             <!-- SUBSCRIBER BLOCK -->
             <!-- ################ -->
-            {% trans "Subscribers:" %} <b>{{report.subscriptions.count}}</b><br/>
+            <h4>{% trans "Subscribe" %}</h4>
+            {% trans "Subscribe to receive notifications" %} ({{report.subscriptions.count}} {% trans "subscribers to this incident" %})<br/>
             {% if not report.is_closed and not subscribed %}
                 <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
                     {% csrf_token %}
                     <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
-                    <p>
-                        <input type="submit" class="btn" value="{% trans 'Subscribe' %}" />
-                    </p>
+                        <input id="subscribe-incident-show-report" type="submit" class="btn" value="{% trans 'Subscribe' %}" />
                 </form>
             {% endif %}
-
+         </div> <!-- bordered-box -->
+         <div class="bordered-box">
+             <h4>{% trans "Mark this incident as done"  %}</h4>
+             <p>{% trans "You think this incident is close. Indicate it!" %}</p>
              <div>
                  {% if report.is_in_progress %}
                      {% if not report.status == report.SOLVED %}
-                          <a href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
+                          <a id="mark-as-done-show-report" href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
                      {% else %}
                          <button style="float:right;" onclick="" class="btn" disabled>{% trans 'Mark as done' %}</button>
                          <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>

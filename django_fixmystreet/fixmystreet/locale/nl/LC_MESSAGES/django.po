@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 09:20+0100\n"
+"POT-Creation-Date: 2013-03-08 10:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1632,7 +1632,7 @@ msgstr "Contact gegevens:"
 msgid "Subscription:"
 msgstr "Zich abonneren:"
 
-#: templates/reports/new.html:235 templates/reports/show.html:250
+#: templates/reports/new.html:235 templates/reports/show.html:249
 msgid "Send"
 msgstr "Doorsturen"
 
@@ -1742,21 +1742,35 @@ msgstr "Commentaar:"
 msgid "Complete incident rapport"
 msgstr "Localiseer het incident op de kaart"
 
-#: templates/reports/show.html:250
+#: templates/reports/show.html:249
 msgid "Submit all added files and comments by pressing this button"
 msgstr "Verzend alle bestanden en commentaren"
 
-#: templates/reports/show.html:258
-msgid "Subscribers:"
-msgstr "Abonnees"
+#: templates/reports/show.html:256 templates/reports/show.html.py:262
+msgid "Subscribe"
+msgstr "Abonneer"
 
-#: templates/reports/show.html:262
+#: templates/reports/show.html:257
+msgid "Subscribe to receive notifications"
+msgstr ""
+
+#: templates/reports/show.html:257
+#, fuzzy
+msgid "subscribers to this incident"
+msgstr "Beschrijf het incident"
+
+#: templates/reports/show.html:261
 msgid "Your email"
 msgstr "Uw email"
 
-#: templates/reports/show.html:264
-msgid "Subscribe"
-msgstr "Abonneer"
+#: templates/reports/show.html:267
+#, fuzzy
+msgid "Mark this incident as done"
+msgstr "is opgelost"
+
+#: templates/reports/show.html:268
+msgid "You think this incident is close. Indicate it!"
+msgstr ""
 
 #: templates/reports/show.html:272
 msgid ""
@@ -1793,6 +1807,9 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "Subscribers:"
+#~ msgstr "Abonnees"
 
 #~ msgid "Add a file to this incident"
 #~ msgstr "Voeg een bestand toe aan dit rapport"

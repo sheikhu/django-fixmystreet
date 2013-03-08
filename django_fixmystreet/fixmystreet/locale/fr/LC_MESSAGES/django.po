@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 09:21+0100\n"
+"POT-Creation-Date: 2013-03-08 10:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1718,7 +1718,7 @@ msgstr "Vos coordonnées:"
 msgid "Subscription:"
 msgstr "S'abonner:"
 
-#: templates/reports/new.html:235 templates/reports/show.html:250
+#: templates/reports/new.html:235 templates/reports/show.html:249
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1822,25 +1822,38 @@ msgid "Comments"
 msgstr "Commentaires"
 
 #: templates/reports/show.html:227
-#, fuzzy
 msgid "Complete incident rapport"
 msgstr "Localiser l'incident sur la carte"
 
-#: templates/reports/show.html:250
+#: templates/reports/show.html:249
 msgid "Submit all added files and comments by pressing this button"
 msgstr ""
 
-#: templates/reports/show.html:258
-msgid "Subscribers:"
-msgstr "Abonnés:"
+#: templates/reports/show.html:256 templates/reports/show.html.py:262
+msgid "Subscribe"
+msgstr "Abonnez-vous"
 
-#: templates/reports/show.html:262
+#: templates/reports/show.html:257
+msgid "Subscribe to receive notifications"
+msgstr ""
+"Abonnez-vous pour suivre l’évolution de l’incident et recevoir des "
+"notifications par mail"
+
+#: templates/reports/show.html:257
+msgid "subscribers to this incident"
+msgstr " personnes se sont déjà abonnées à cet incident"
+
+#: templates/reports/show.html:261
 msgid "Your email"
 msgstr "Votre email"
 
-#: templates/reports/show.html:264
-msgid "Subscribe"
-msgstr "Abonnez-vous"
+#: templates/reports/show.html:267
+msgid "Mark this incident as done"
+msgstr "L'incident a été clôturé."
+
+#: templates/reports/show.html:268
+msgid "You think this incident is close. Indicate it!"
+msgstr "Vous avez constaté que l'incident a été résolu. Signalez-le !"
 
 #: templates/reports/show.html:272
 msgid ""
@@ -1875,6 +1888,9 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+#~ msgid "Subscribers:"
+#~ msgstr "Abonnés:"
 
 #~ msgid "Add a file to this incident"
 #~ msgstr "Ajouter un fichier a l'incident"
