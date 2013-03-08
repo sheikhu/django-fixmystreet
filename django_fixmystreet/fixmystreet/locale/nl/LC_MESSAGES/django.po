@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 15:13+0100\n"
+"POT-Creation-Date: 2013-03-08 15:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -851,7 +851,7 @@ msgstr "Toevoegen"
 
 #: templates/admin/change_form.html:32
 #: templates/admin/fixmystreet/fmsuser/change_form.html:9
-#: templates/reports/show.html:194
+#: templates/reports/show.html:196
 msgid "History"
 msgstr "Geschiedenis"
 
@@ -1637,7 +1637,7 @@ msgstr "Contact gegevens:"
 msgid "Subscription:"
 msgstr "Abonnement:"
 
-#: templates/reports/new.html:204 templates/reports/show.html:245
+#: templates/reports/new.html:204 templates/reports/show.html:248
 msgid "Send"
 msgstr "Doorsturen"
 
@@ -1733,44 +1733,44 @@ msgstr "Download een kopie van het incident als pdf."
 msgid "report pdf"
 msgstr "PDF rapport"
 
-#: templates/reports/show.html:195
+#: templates/reports/show.html:197
 msgid "History incident"
 msgstr "Incident history"
 
-#: templates/reports/show.html:206
+#: templates/reports/show.html:209
 msgid "Files"
 msgstr "Foto's en bestanden"
 
-#: templates/reports/show.html:223
+#: templates/reports/show.html:226
 msgid "Comments"
 msgstr "Commentaar:"
 
-#: templates/reports/show.html:245
+#: templates/reports/show.html:248
 msgid "Submit all added files and comments by pressing this button"
 msgstr "Verzend alle bestanden en commentaren"
 
-#: templates/reports/show.html:253 templates/reports/show.html.py:259
+#: templates/reports/show.html:256 templates/reports/show.html.py:262
 msgid "Subscribe"
 msgstr "Abonneer"
 
-#: templates/reports/show.html:254
+#: templates/reports/show.html:257
 msgid "Subscribe to receive notifications"
 msgstr ""
 
-#: templates/reports/show.html:254
+#: templates/reports/show.html:257
 #, fuzzy
 msgid "subscribers to this incident"
 msgstr "Beschrijf het incident"
 
-#: templates/reports/show.html:258
+#: templates/reports/show.html:261
 msgid "Your email"
 msgstr "Uw email"
 
-#: templates/reports/show.html:265
+#: templates/reports/show.html:268
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
-#: templates/reports/show.html:269
+#: templates/reports/show.html:272
 msgid ""
 "Indicate that the incident is fixed. By pressing this button a mail will be "
 "send to the responsible manager."
@@ -1778,11 +1778,11 @@ msgstr ""
 "Signaleer dat dit incident opgelost is. Door op deze knop te klikken zal een "
 "mail worden gestuurd naar de verantwoordelijke van dit incident."
 
-#: templates/reports/show.html:269 templates/reports/show.html.py:271
+#: templates/reports/show.html:272 templates/reports/show.html.py:274
 msgid "Mark as done"
 msgstr "Markeer als behandeld"
 
-#: templates/reports/show.html:272
+#: templates/reports/show.html:275
 msgid "This report is already marked as done"
 msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 15:13+0100\n"
+"POT-Creation-Date: 2013-03-08 15:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -911,7 +911,7 @@ msgstr "Ajouter"
 
 #: templates/admin/change_form.html:32
 #: templates/admin/fixmystreet/fmsuser/change_form.html:9
-#: templates/reports/show.html:194
+#: templates/reports/show.html:196
 msgid "History"
 msgstr "Historique"
 
@@ -1729,7 +1729,7 @@ msgstr "Vos coordonnées:"
 msgid "Subscription:"
 msgstr "S'abonner:"
 
-#: templates/reports/new.html:204 templates/reports/show.html:245
+#: templates/reports/new.html:204 templates/reports/show.html:248
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1806,7 +1806,7 @@ msgstr "Catégorie:"
 
 #: templates/reports/show.html:172
 msgid "Status:"
-msgstr "Status:"
+msgstr "Statut:"
 
 #: templates/reports/show.html:174
 msgid "In_progress"
@@ -1824,55 +1824,55 @@ msgstr "Télécharger une copie de l'incident sous format pdf."
 msgid "report pdf"
 msgstr "Télécharger le PDF."
 
-#: templates/reports/show.html:195
+#: templates/reports/show.html:197
 msgid "History incident"
 msgstr "Historique de l'incident"
 
-#: templates/reports/show.html:206
+#: templates/reports/show.html:209
 msgid "Files"
 msgstr "Photos et fichiers"
 
-#: templates/reports/show.html:223
+#: templates/reports/show.html:226
 msgid "Comments"
 msgstr "Commentaires"
 
-#: templates/reports/show.html:245
+#: templates/reports/show.html:248
 msgid "Submit all added files and comments by pressing this button"
 msgstr ""
 
-#: templates/reports/show.html:253 templates/reports/show.html.py:259
+#: templates/reports/show.html:256 templates/reports/show.html.py:262
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
-#: templates/reports/show.html:254
+#: templates/reports/show.html:257
 msgid "Subscribe to receive notifications"
 msgstr ""
 "Abonnez-vous pour suivre l’évolution de l’incident et recevoir des "
 "notifications par mail"
 
-#: templates/reports/show.html:254
+#: templates/reports/show.html:257
 msgid "subscribers to this incident"
 msgstr " personnes se sont déjà abonnées à cet incident"
 
-#: templates/reports/show.html:258
+#: templates/reports/show.html:261
 msgid "Your email"
 msgstr "Votre email"
 
-#: templates/reports/show.html:265
+#: templates/reports/show.html:268
 msgid "You think this incident is close. Indicate it!"
-msgstr "Vous avez constaté que l'incident a été résolu. Signalez-le !"
+msgstr "Vous constatez que l'incident est résolu ?"
 
-#: templates/reports/show.html:269
+#: templates/reports/show.html:272
 msgid ""
 "Indicate that the incident is fixed. By pressing this button a mail will be "
 "send to the responsible manager."
 msgstr ""
 
-#: templates/reports/show.html:269 templates/reports/show.html.py:271
+#: templates/reports/show.html:272 templates/reports/show.html.py:274
 msgid "Mark as done"
-msgstr "Signaler comme terminé"
+msgstr "Signaler comme résolu"
 
-#: templates/reports/show.html:272
+#: templates/reports/show.html:275
 msgid "This report is already marked as done"
 msgstr "Ce rapport est déja marqué comme terminé"
 
