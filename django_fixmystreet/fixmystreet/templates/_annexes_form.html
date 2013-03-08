@@ -1,0 +1,38 @@
+{% load i18n tags %}
+<fieldset>
+    <legend>{% trans 'Photos:' %}</legend>
+    <div id="form-files">
+        {{ file_formset.management_form }}
+        {% if file_formset.errors %}
+            {{ file_formset.errors }}
+        {% endif %}
+
+        <div id="file-form-template" class="control-group">
+            <img class="thumbnail" />
+            {{ file_formset.empty_form.reportattachment_ptr }}
+            {{ file_formset.empty_form.file }}
+            {{ file_formset.empty_form.title }}
+            {{ file_formset.empty_form.file_creation_date }}
+        </div>
+    </div>
+    <div class="file-upload-button">
+        <button id="file-upload" class="btn">{% trans 'Add file' %}</button>
+        <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
+            data-toggle="popover"
+            data-trigger="hover"
+            title="{% trans 'Recommendations'%}">
+            <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
+        </a>
+        <div id="photo-recommendations" class="hide">
+            <p>{% trans '1- Supported formats' %}: jpeg, png. </p>
+            <p>{% trans '2- Optimal resolution: 1200 x 800.' %}</p>
+            <p>{% trans '3- The photo must contain the environment of the incident' %}</p>
+            <p>{% trans "4- Please do not include people's faces and car registration plates." %}</p>
+        </div>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>{% trans 'Comment:' %}</legend>
+    {% include "_form_horizontal.html" with form=comment_form %}
+</fieldset>
+
