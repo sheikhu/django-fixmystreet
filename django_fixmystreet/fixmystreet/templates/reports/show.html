@@ -224,32 +224,28 @@ function markAsDone(){
                 <!-- ############################################# -->
                 <!-- # ONLY AVAILABLE WHEN REPORT IS IN PROGRESS # -->
                 <!-- ############################################# -->
+                <span class="info-bloc">{% trans 'Complete incident rapport' %}</span>
+                <div class="file-upload-button">
+                    <button id="file-upload" class="btn">{% trans 'Add file' %}</button>
+                    <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
+                        data-toggle="popover"
+                        data-trigger="hover"
+                        title="{% trans 'Recommendations'%}">
+                        <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
+                    </a>
+                    <div id="photo-recommendations" class="hide">
+                        <p>{% trans '1- Supported formats' %}: jpeg, png. </p>
+                        <p>{% trans '2- Optimal resolution: 1200 x 800.' %}</p>
+                        <p>{% trans '3- The photo must contain the environment of the incident' %}</p>
+                        <p>{% trans "4- Please do not include people's faces and car registration plates." %}</p>
+                    </div>
+                </div>
                 <fieldset>
                     <legend>{% trans 'Comments' %}</legend>
                     {{ comment_form.text }}
                     {# comment_form.text.errors #}
                 </fieldset>
-                <fieldset>
-                    <legend>{% trans 'Files' %}</legend>
-                    <div id="form-files">
-                        {{ file_formset.management_form }}
-                        {% if file_formset.errors %}
-                            {{ file_formset.errors }}
-                        {% endif %}
 
-                        <div id="file-form-template">
-                            <img class="thumbnail" />
-                            {{ file_formset.empty_form.reportattachment_ptr }}
-                            {{ file_formset.empty_form.file }}
-                            {{ file_formset.empty_form.title }}
-                            {{ file_formset.empty_form.file_creation_date }}
-                        </div>
-                    </div>
-                    <div class="file-upload-button">
-                        <a id="file-upload" title="{% trans 'Add a file to this incident' %}"><img src="{{STATIC_URL}}images/plus-button.png">{% trans 'Add file' %}</a>
-                    </div>
-
-                </fieldset>
                 <p>
                     <input type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
                 </p>
