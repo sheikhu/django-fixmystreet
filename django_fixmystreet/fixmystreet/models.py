@@ -807,7 +807,7 @@ def report_notify(sender, instance, **kwargs):
                     related_new=report.contractor
                 ).save()
 
-        if report.__former['contractor']!= report.contractor:
+        if report.__former['contractor']!= report.contractor and report.contractor:
             for recipient in report.contractor.workers.all():
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
