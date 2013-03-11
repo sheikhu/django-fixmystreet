@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-11 16:14+0100\n"
+"POT-Creation-Date: 2013-03-11 18:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,9 @@ msgstr "Boodschap"
 
 #: forms.py:216
 msgid "Add a comment, please."
-msgstr "Voeg een commentaar toe aan dit rapport"
+msgstr ""
+"Gelieve een commentaar toe te voegen (deze commentaar zal voor publicatie "
+"goedgekeurd worden)."
 
 #: forms.py:233
 #, fuzzy
@@ -169,7 +171,7 @@ msgstr "Opgelost"
 
 #: models.py:376 models.py:377
 msgid "Processed"
-msgstr "Behandeld"
+msgstr "Afgesloten"
 
 #: models.py:378
 msgid "Deleted"
@@ -177,7 +179,7 @@ msgstr "Verwijderd"
 
 #: models.py:385
 msgid "Location"
-msgstr "Geolocatie"
+msgstr "Lokalisatie"
 
 #: models.py:386
 msgid "Address Number"
@@ -878,7 +880,7 @@ msgstr "Author"
 #: templates/emails/report_show.html:14
 #: templates/emails/send_report_closed_to_subscribers/message.txt:19
 msgid "Created at:"
-msgstr "Aangemaakt op:"
+msgstr "Gemeld op:"
 
 #: templates/emails/report_show.html:18
 msgid "Extra comments"
@@ -1331,13 +1333,12 @@ msgid ""
 msgstr ""
 
 #: templates/reports/_annexes_form.html:3
-#, fuzzy
 msgid "Photos:"
-msgstr "Foto"
+msgstr "Foto's:"
 
 #: templates/reports/_annexes_form.html:19
 msgid "Add file"
-msgstr "Voeg een bestand toe"
+msgstr "Foto's toevoegen"
 
 #: templates/reports/_annexes_form.html:23
 #, fuzzy
@@ -1413,11 +1414,11 @@ msgstr "Gepost door"
 
 #: templates/reports/_file.html:33
 msgid "file creation Date"
-msgstr "Aangemaakt op:"
+msgstr "Datum foto-opname"
 
 #: templates/reports/_file.html:40
 msgid "file publication date"
-msgstr ""
+msgstr "Datum publicatie foto"
 
 #: templates/reports/_navigation.html:20
 #, fuzzy
@@ -1561,7 +1562,7 @@ msgstr "verifiëren"
 #: templates/reports/new.html:145 templates/reports/new.html.py:152
 #: templates/reports/show.html:184
 msgid "Location:"
-msgstr "Adres:"
+msgstr "Lokalisatie:"
 
 #: templates/reports/new.html:156
 msgid "** To change the address, move the marker on the map above."
@@ -1649,16 +1650,15 @@ msgstr "Incident"
 
 #: templates/reports/show.html:154
 msgid "This incident is not validated."
-msgstr "is niet gevalideerd."
+msgstr "Het incident wordt bekrachtigd."
 
 #: templates/reports/show.html:157
-#, fuzzy
 msgid "This incident is in progress."
-msgstr "is opgelost"
+msgstr "Het incident wordt behandeld."
 
 #: templates/reports/show.html:160
 msgid "This incident has been closed."
-msgstr "is opgelost"
+msgstr "Het incident is afgesloten."
 
 #: templates/reports/show.html:188
 msgid "Category:"
@@ -1674,7 +1674,7 @@ msgstr "In behandeling"
 
 #: templates/reports/show.html:200
 msgid "Responsible:"
-msgstr "Verantwoordelijke beheerder:"
+msgstr "Behandeld door:"
 
 #: templates/reports/show.html:209
 msgid "Download a pdf report of this incident"
@@ -1682,20 +1682,19 @@ msgstr "Download een kopie van het incident als pdf."
 
 #: templates/reports/show.html:210
 msgid "report pdf"
-msgstr "PDF rapport"
+msgstr "Downloaden als pdf"
 
 #: templates/reports/show.html:214
-#, fuzzy
 msgid "Show history"
-msgstr "Geschiedenis"
+msgstr "Overzicht van het incident tonen."
 
 #: templates/reports/show.html:224
 msgid "Files"
-msgstr "Foto's en bestanden"
+msgstr "Foto's en documenten"
 
 #: templates/reports/show.html:241
 msgid "Comments"
-msgstr "Commentaar:"
+msgstr "Commentaar"
 
 #: templates/reports/show.html:263
 msgid "Submit all added files and comments by pressing this button"
@@ -1703,16 +1702,17 @@ msgstr "Verzend alle bestanden en commentaren"
 
 #: templates/reports/show.html:271 templates/reports/show.html.py:277
 msgid "Subscribe"
-msgstr "Abonneer"
+msgstr "Volgen"
 
 #: templates/reports/show.html:272
 msgid "Subscribe to receive notifications"
 msgstr ""
+"Abonneer u om de evolutie van dit incident te volgen en de berichten per "
+"mail te ontvangen (al"
 
 #: templates/reports/show.html:272
-#, fuzzy
 msgid "subscribers to this incident"
-msgstr "Beschrijf het incident"
+msgstr " perso(o)n(en) geabonneerd op dit incident)"
 
 #: templates/reports/show.html:276
 msgid "Your email"
@@ -1720,7 +1720,7 @@ msgstr "Uw email"
 
 #: templates/reports/show.html:283
 msgid "You think this incident is close. Indicate it!"
-msgstr ""
+msgstr "U merkt dat het incident verholpen is?"
 
 #: templates/reports/show.html:287
 msgid ""
@@ -1732,7 +1732,7 @@ msgstr ""
 
 #: templates/reports/show.html:287 templates/reports/show.html.py:289
 msgid "Mark as done"
-msgstr "Markeer als behandeld"
+msgstr "Als opgelost melden"
 
 #: templates/reports/show.html:290
 msgid "This report is already marked as done"
@@ -1838,7 +1838,7 @@ msgstr "U bent succesvol afgemeld voor updates"
 #~ msgstr "Applicant:"
 
 #~ msgid "Photos and files"
-#~ msgstr "Foto's en bestanden: "
+#~ msgstr "Foto's en documenten:"
 
 #~ msgid "Anonymous "
 #~ msgstr "Anoniem"
