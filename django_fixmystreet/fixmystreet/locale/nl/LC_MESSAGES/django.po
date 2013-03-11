@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-11 11:58+0100\n"
+"POT-Creation-Date: 2013-03-11 16:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,7 +210,7 @@ msgstr "Confidentieel"
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1288 models.py:1596
+#: models.py:1288 models.py:1597
 msgid "Label"
 msgstr "Label"
 
@@ -327,11 +327,11 @@ msgstr "Vraag"
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1597
+#: models.py:1598
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1598
+#: models.py:1599
 msgid "Related model field"
 msgstr ""
 
@@ -688,7 +688,9 @@ msgid "Access Ticket"
 msgstr "Zoeken"
 
 #: templates/home.html:119
-msgid "30 Created"
+#, fuzzy
+msgctxt "plurial"
+msgid "Created"
 msgstr "Gemeld"
 
 #: templates/home.html:120 templates/home.html.py:125
@@ -696,12 +698,16 @@ msgid "In the 30 last days"
 msgstr "De voorbije 30 dagen"
 
 #: templates/home.html:124
-msgid "30 In progress"
-msgstr "Behandeld"
+#, fuzzy
+msgctxt "plurial"
+msgid "In progress"
+msgstr "In behandeling"
 
 #: templates/home.html:129
-msgid "30 Processed"
-msgstr "Afgesloten"
+#, fuzzy
+msgctxt "plurial"
+msgid "Processed"
+msgstr "Behandeld"
 
 #: templates/home.html:130
 msgid "In the 30 last days "
@@ -1113,11 +1119,11 @@ msgstr ""
 "href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a>.</p>\n"
 
 #: templates/emails/send_report_closed_to_subscribers/message.txt:4
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "\n"
 "The report of type %(reportType)s created at %(date)s is now marked as "
-"closed. You can consult the report at %(SITE_URL)s/report/%(reportId)s.\n"
+"closed. You can consult the report at %(SITE_URL)s/%(url)s.\n"
 "Report overview:\n"
 msgstr ""
 "\n"
@@ -1448,7 +1454,7 @@ msgid "Warning"
 msgstr ""
 
 #: templates/reports/index.html:18 templates/reports/new.html:267
-#: views/reports/main.py:170
+#: views/reports/main.py:168
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
 "Neemt nog geen deel in Fix My Street. Om een incident re rapporteren "
@@ -1736,11 +1742,11 @@ msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: views/reports/main.py:132
+#: views/reports/main.py:130
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
 
-#: views/reports/main.py:159
+#: views/reports/main.py:157
 msgid "No incident found with this ticket number"
 msgstr "Geen incident gevonden met dit nummer"
 
@@ -1751,6 +1757,15 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "30 Created"
+#~ msgstr "Gemeld"
+
+#~ msgid "30 In progress"
+#~ msgstr "Behandeld"
+
+#~ msgid "30 Processed"
+#~ msgstr "Afgesloten"
 
 #~ msgid ""
 #~ "This commune does not participate.\\nPlease request your commune to join "

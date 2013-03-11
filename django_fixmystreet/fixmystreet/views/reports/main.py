@@ -112,8 +112,6 @@ def show(request, slug, report_id):
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
-        print file_formset.is_valid(), comment_form.is_valid()
-        print file_formset.errors
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
             # this saves the update as part of the report.
             # citizen = citizen_form.save()
@@ -125,8 +123,8 @@ def show(request, slug, report_id):
 
             file_formset.save()
 
-            if request.POST.get("citizen_subscription", False):
-                ReportSubscription(report=report, subscriber=report.created_by).save()
+            # if request.POST.get("citizen_subscription", False):
+            #     ReportSubscription(report=report, subscriber=report.created_by).save()
 
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))

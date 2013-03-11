@@ -116,17 +116,17 @@ function showResults(type,li){
     <article id="counters">
         <div class='counter'>
             <p class='number lead'>{{ report_counts.recent_new }}</p>
-            <p class='text'>{% trans "30 Created" %}</p>
+            <p class='text'>{% trans "Created" context "plurial" %}</p>
             <p class='qualifier'>{% trans "In the 30 last days" %}</p>
         </div>
         <div class='counter'>
             <p class='number lead'>{{ report_counts.recent_updated }}</p>
-            <p class='text'>{% trans "30 In progress" %}</p>
+            <p class='text'>{% trans "In progress" context "plurial" %}</p>
             <p class='qualifier'>{% trans "In the 30 last days" %}</p>
         </div>
         <div class='counter'>
             <p class='number lead'>{{ report_counts.recent_fixed }}</p>
-            <p class='text'>{% trans "30 Processed" %}</p>
+            <p class='text'>{% trans "Processed" context "plurial" %}</p>
             <p class='qualifier'>{% trans "In the 30 last days " %}</p>
         </div>
     </article>
