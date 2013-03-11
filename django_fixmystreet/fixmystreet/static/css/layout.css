@@ -1388,12 +1388,12 @@ p.comment-incident{
 
 /********* FAQ LAYOUT ********/
 
-#faq p, #faq ul {
+#faq p, #faq ul, #faq ol {
 	margin-left: 2em;
 	text-align:left !important;
 }
 
-#faq ul li { margin-left:4em; }
+#faq ul li, #faq ol li { margin-left:4em; }
 
 
 /********* SUBSCRIBE LAYOUT ********/
