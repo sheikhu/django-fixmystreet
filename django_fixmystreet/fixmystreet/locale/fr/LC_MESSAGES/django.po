@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 09:50+0100\n"
+"POT-Creation-Date: 2013-03-12 10:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,7 +169,7 @@ msgstr "Résolu"
 
 #: models.py:376 models.py:377
 msgid "Processed"
-msgstr "Clôturés"
+msgstr "Clôturé"
 
 #: models.py:378
 msgid "Deleted"
@@ -1368,7 +1368,7 @@ msgstr "Recommandations"
 
 #: templates/reports/_annexes_form.html:27
 msgid "1- Supported formats"
-msgstr "- Format supportés"
+msgstr "- Formats supportés"
 
 #: templates/reports/_annexes_form.html:28
 msgid "2- Optimal resolution: 1200 x 800."
@@ -1381,7 +1381,7 @@ msgstr "- La photo doit permettre de replacer l’incident dans son contexte"
 #: templates/reports/_annexes_form.html:30
 msgid "4- Please do not include people's faces and car registration plates."
 msgstr ""
-"- Les visages et plaques d’immatriculations ne peuvent pas être identifiables"
+"- Les visages et plaques d’immatriculation ne peuvent pas être identifiables"
 
 #: templates/reports/_comment.html:7
 msgid "Please confirm comment deletion"
@@ -1595,7 +1595,7 @@ msgstr "Type d'incident :"
 msgid "Contact information:"
 msgstr "Vos coordonnées :"
 
-#: templates/reports/new.html:196
+#: templates/reports/new.html:196 templates/reports/show.html:271
 msgid "Subscription:"
 msgstr "Abonnez-vous :"
 
@@ -1719,10 +1719,6 @@ msgstr "Commentaires"
 msgid "Submit all added files and comments by pressing this button"
 msgstr ""
 
-#: templates/reports/show.html:271 templates/reports/show.html.py:277
-msgid "Subscribe"
-msgstr "S'abonner"
-
 #: templates/reports/show.html:272
 msgid "Subscribe to receive notifications"
 msgstr ""
@@ -1731,11 +1727,15 @@ msgstr ""
 
 #: templates/reports/show.html:272
 msgid "subscribers to this incident"
-msgstr " personne(s) déjà abonnée(s) à cet incident)"
+msgstr " personne(s) déjà abonnée(s) à cet incident"
 
 #: templates/reports/show.html:276
 msgid "Your email"
 msgstr "Votre email"
+
+#: templates/reports/show.html:277
+msgid "Subscribe"
+msgstr "S'abonner"
 
 #: templates/reports/show.html:283
 msgid "You think this incident is close. Indicate it!"

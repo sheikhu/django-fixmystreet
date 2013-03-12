@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 09:50+0100\n"
+"POT-Creation-Date: 2013-03-12 10:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1568,7 +1568,7 @@ msgstr "Incident type:"
 msgid "Contact information:"
 msgstr "Contact gegevens:"
 
-#: templates/reports/new.html:196
+#: templates/reports/new.html:196 templates/reports/show.html:271
 msgid "Subscription:"
 msgstr "Abonnement:"
 
@@ -1692,10 +1692,6 @@ msgstr "Commentaar"
 msgid "Submit all added files and comments by pressing this button"
 msgstr "Verzend alle bestanden en commentaren"
 
-#: templates/reports/show.html:271 templates/reports/show.html.py:277
-msgid "Subscribe"
-msgstr "Volgen"
-
 #: templates/reports/show.html:272
 msgid "Subscribe to receive notifications"
 msgstr ""
@@ -1709,6 +1705,10 @@ msgstr " perso(o)n(en) geabonneerd op dit incident)"
 #: templates/reports/show.html:276
 msgid "Your email"
 msgstr "Uw email"
+
+#: templates/reports/show.html:277
+msgid "Subscribe"
+msgstr "Volgen"
 
 #: templates/reports/show.html:283
 msgid "You think this incident is close. Indicate it!"
