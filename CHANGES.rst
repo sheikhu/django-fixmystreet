@@ -5,7 +5,11 @@ Changelog of django-fixmystreet
 0.4.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Translations FR + NL
+- Remove signaler un incident in list.html for citizens
+- Add footer logo
+- Update footer links NL
+
 
 
 0.4.9 (2013-03-12)
