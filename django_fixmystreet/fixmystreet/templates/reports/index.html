@@ -7,9 +7,19 @@
 <meta property="og:title" content="{% trans 'All Reports' %}" />
 <meta property="og:description" content="{% trans 'Meta description for index page' %}" />
 {% endblock %}
+{% block script %}
+{{block.super}}
+<script>
+$(function(){
+	$(".non-participate").click(function() {
+		$("#non-participate-dialog").modal();
+	});
+});
+</script>
+{% endblock %}
 {% block content %}
 
-<div id="nonparticipatingcommune" class="modal hide fade" role="dialog">
+<div id="non-participate-dialog" class="modal hide fade" role="dialog">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>{% trans "Warning" %}!</h3>
@@ -21,66 +31,17 @@
     	<button class="btn" data-dismiss="modal" aria-hidden="true"> {% trans "Close dialog" %}</button>
     </div>
 </div>
-	{% if top_problems %}
-	<h2>{% trans "Top Reports" %}</h2>
-	<div id='city-stat-group'>
-		<div class='stat'>
-			<p class='number'>{{city_totals.recent_new}}</p>
-			<p class='text'>{% trans "Reports Filed" %}</p>
-		</div>
-		<div class='stat'>
-			<p  class='number'>{{city_totals.recent_fixed}}</p>
-			<p class='text'>{% trans "Reports Fixed" %}*</p>
-		</div>
-		<div class='stat'>
-			<p class='number'>{{city_totals.recent_updated}}</p>
-			<p class='text'>{% trans "Reports Updated" %}</p>
-		</div>
-	</div>
-	<table id="top-reports">
-		<tr class ='table_heading'>
 
-			<th class='table-intro'><!--{% trans "Rank" %}--></th>
-			<th class='row-text' ><!--{% trans "Report" %}--></th>
-			<th class='table-stat'>{% trans "Number of Subscribers" %}</th>
-		</tr>
-		{% for top_problem in top_problems %}
-		<tr class="{% cycle 'row-odd' 'row-even' %}">
-			<td class="number">{{forloop.counter}}</td>
-			<td><a href='{{top_problem.get_absolute_url}}'>{{top_problem.title}}</a></td>
-			<td class="number">{{top_problem.subscriber_count|add:"1"}}</td>
-		</tr>
-		{% endfor %}
-	</table>
-	{% endif %}
-
-	<h2>{% trans "Reports by wards" %}</h2>
-	<div id="city_all_problems" style="clear:both">
-<table id="reports" class="span6 commune-list">
-{% for commune in communes %}
-		{% if commune.active %}
-			<tr class="{% cycle 'commune-row' 'commune-row' %}" onclick="window.location='{{ commune.get_absolute_url }}?page=1'">
-		{% else %}
-			<tr class="{% cycle 'commune-row' 'commune-row' %}" href='#nonparticipatingcommune' data-toggle="modal" onclick="$('#phone').html('{{commune.phone}}')">
-		{% endif %}
-			<td>
-				{% if commune.active %}
-					<strong>
-						<span>
-							{{ commune.name }}
-						</span>
-					</strong>
-				{% else %}
-					<a id="warning-popup" href='#nonparticipatingcommune'>
-						<span style="color:#757475">
-							{{ commune.name }}
-						</span>
-					</a>
-				{% endif %}
-			</td>
-		</tr>
-{% endfor %}
-</table>
+<div id="city_all_problems" class="box-centered commune-list">
+	<h1>{% trans "Reports by wards" %}</h1>
+	{% for commune in communes %}
+	<p class="commune-row">
+		<a {% if commune.active %}href="{{ commune.get_absolute_url }}?page=1" class='participate'{% else %}href="#" class='non-participate'{% endif %}>
+			{{ commune.name }}
+		</a>
+	</p>
+	{% endfor %}
+</div>
 <!--div class="fix-disclaimer"><p>*{% trans "As reported by Fix My Street users." %}</p></div-->
 	</div>
 {% endblock %}

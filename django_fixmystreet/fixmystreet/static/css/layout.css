@@ -558,7 +558,7 @@ li img {
     display: none;
 }
 
-.form-centered {
+.form-centered, .box-centered {
     max-width: 700px;
     border: 1px solid #DFDFDF;
     border-radius: 8px;
@@ -1377,20 +1377,24 @@ p.comment-incident{
 	width:530px;
 }
 
-.commune-list {
-	float: none !important;
-	margin-left: auto;
-	margin-right: auto;
-}
 
 .commune-row {
-	display: block;
-	position: relative;
-	color: black;
-	text-decoration: none;
-	padding: 2px 4px;
-	border: 2px solid #FFDB00;
-	margin-bottom: 1px;
+    position: relative;
+    color: black;
+    text-decoration: none;
+    padding: 2px 4px;
+    border: 2px solid #FFDB00;
+    margin: 0  0 1px 0;
+}
+.commune-row a {
+    display: block;
+}
+.commune-row a.non-participate {
+    color:#757475;
+}
+.commune-row a.participate {
+    color:black;
+    font-weight: bold;
 }
 
 .row-odd {
