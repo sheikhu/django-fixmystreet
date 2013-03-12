@@ -269,7 +269,7 @@ $("[data-toggle=popover]")
             <!-- SUBSCRIBER BLOCK -->
             <!-- ################ -->
             <h4>{% trans "Subscription:" %}</h4>
-            {% trans "Subscribe to receive notifications" %} ({{report.subscriptions.count}} {% trans "subscribers to this incident" %})<br/>
+            {% trans "Subscribe to receive notifications" %} {{report.subscriptions.count}} {% trans "subscribers to this incident" %})<br/>
             {% if not report.is_closed and not subscribed %}
                 <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
                     {% csrf_token %}

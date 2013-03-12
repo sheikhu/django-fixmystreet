@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 12:04+0100\n"
+"POT-Creation-Date: 2013-03-12 14:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,16 +37,16 @@ msgstr "categorie:"
 
 #: forms.py:43 forms.py:59
 msgid "Select a Category"
-msgstr "Kies een Categorie"
+msgstr "Kies een categorie"
 
 #: forms.py:44
 msgid "Secondary category"
 msgstr "subcategorie"
 
 #: forms.py:45
-#, fuzzy
 msgid "Subscription and report follow-up"
-msgstr "Een rapport doorsturen:"
+msgstr ""
+"Ik wil de de evolutie van het incident volgen en mailberichten te ontvangen"
 
 #: forms.py:81
 msgid "Private Report"
@@ -54,23 +54,23 @@ msgstr "Privé rapport"
 
 #: forms.py:120
 msgid "Choose your quality"
-msgstr "Kies een occupatie"
+msgstr "Selecteer een hoedanigheid"
 
 #: forms.py:128
 msgid "Identity"
-msgstr "naam:"
+msgstr "naam :"
 
 #: forms.py:129
 msgid "Tel."
-msgstr "tel. :"
+msgstr "telefoonnummer :"
 
 #: forms.py:130 forms.py:158
 msgid "Email"
-msgstr "email"
+msgstr "e-mail"
 
 #: forms.py:131
 msgid "Quality"
-msgstr "occupatie"
+msgstr "hoedanigheid"
 
 #: forms.py:155 models.py:232 models.py:1132 models.py:1166 models.py:1200
 msgid "Name"
@@ -83,8 +83,7 @@ msgstr "Boodschap"
 #: forms.py:216
 msgid "Add a comment, please."
 msgstr ""
-"Gelieve een commentaar toe te voegen (deze commentaar zal voor publicatie "
-"goedgekeurd worden)."
+"Gelieve een commentaar toe te voegen (wordt goedgekeurd voor publicatie) ."
 
 #: forms.py:233
 #, fuzzy
@@ -115,19 +114,19 @@ msgstr "is niet gevalideerd."
 
 #: models.py:79
 msgid "Resident"
-msgstr "Bewoner"
+msgstr "Buurtbewoner"
 
 #: models.py:80
 msgid "Trade"
-msgstr "Verkoper"
+msgstr "Handelaar"
 
 #: models.py:81
 msgid "Syndicate"
-msgstr "Gebouw Beheerder"
+msgstr "Beheerder van een gebouw"
 
 #: models.py:82
 msgid "Association"
-msgstr "Geolocatie"
+msgstr "Vereniging"
 
 #: models.py:83
 msgid "Other"
@@ -621,7 +620,7 @@ msgstr "Brusselse gemeenten en partnerinstellingen"
 
 #: templates/base.html:227
 msgid "Copyright 2011, CIRB"
-msgstr "Powered by CIRB, 2013"
+msgstr "Powered by CIRB-CIBG, 2013"
 
 #: templates/base.html:228 templates/term_of_use.html:4
 msgid "Terms of Use"
@@ -677,8 +676,8 @@ msgstr "Straatnaam, huisnummer..."
 msgid "All communes..."
 msgstr "Alle gemeenten"
 
-#: templates/home.html:97 templates/reports/list.html:92
-msgid "Search"
+#: templates/home.html:97
+msgid "Widget Search"
 msgstr "Zoeken"
 
 #: templates/home.html:104
@@ -824,11 +823,11 @@ msgstr ""
 
 #: templates/contact/new.html:20 templates/reports/new.html:205
 msgid "* This fields are required"
-msgstr "* Deze velden zijn verplicht"
+msgstr "* Verplichte velden"
 
 #: templates/contact/new.html:24
 msgid "Save"
-msgstr ""
+msgstr "Bewaren"
 
 #: templates/contact/thanks.html:5
 msgid "Thank you"
@@ -1335,29 +1334,27 @@ msgstr "Foto's:"
 
 #: templates/reports/_annexes_form.html:19
 msgid "Add file"
-msgstr "Foto's toevoegen"
+msgstr "Foto toevoegen"
 
 #: templates/reports/_annexes_form.html:23
-#, fuzzy
 msgid "Recommendations"
-msgstr "Commentaar:"
+msgstr "Aanbevelingen:"
 
 #: templates/reports/_annexes_form.html:27
-#, fuzzy
 msgid "1- Supported formats"
 msgstr "Ondersteunde formaten"
 
 #: templates/reports/_annexes_form.html:28
 msgid "2- Optimal resolution: 1200 x 800."
-msgstr ""
+msgstr "Optimale resolutie: 1200 x 800"
 
 #: templates/reports/_annexes_form.html:29
 msgid "3- The photo must contain the environment of the incident"
-msgstr ""
+msgstr "De foto moet de context van het incident verduidelijken"
 
 #: templates/reports/_annexes_form.html:30
 msgid "4- Please do not include people's faces and car registration plates."
-msgstr ""
+msgstr "Gezichten en nummerplaten mogen niet herkenbaar zijn"
 
 #: templates/reports/_comment.html:7
 msgid "Please confirm comment deletion"
@@ -1432,7 +1429,7 @@ msgstr "Behandeld door"
 
 #: templates/reports/_navigation.html:24
 msgid "Subscriptions"
-msgstr "Geabonneerden"
+msgstr "Volger(s)"
 
 #: templates/reports/_navigation.html:28
 msgid "fixed"
@@ -1448,14 +1445,14 @@ msgstr ""
 
 #: templates/reports/index.html:25 templates/reports/new.html:266
 msgid "Warning"
-msgstr ""
+msgstr "Opgelet"
 
 #: templates/reports/index.html:28 templates/reports/new.html:269
 #: views/reports/main.py:168
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
-"Neemt nog geen deel in Fix My Street. Om een incident re rapporteren "
-"contacteer uw gemeente"
+"Deze gemeente neemt nog niet deel aan Fix My Street. Om dit incident te "
+"melden dient u rechtstreeks contact op te nemen met de gemeente op het nummer"
 
 #: templates/reports/index.html:31 templates/reports/new.html:272
 msgid "Close dialog"
@@ -1493,6 +1490,10 @@ msgstr "Rapport nummer zoeken"
 msgid "Ticket number"
 msgstr "Incident nummer..."
 
+#: templates/reports/list.html:92
+msgid "Search"
+msgstr "Zoeken"
+
 #: templates/reports/new.html:3 templates/reports/new.html.py:6
 msgid "New Report"
 msgstr "Nieuw rapport"
@@ -1509,48 +1510,48 @@ msgstr "Bestand beschrijving"
 
 #: templates/reports/new.html:125
 msgid "Drag me to change my location."
-msgstr "Bedankt om het icoon te plaatsen op de kaart"
+msgstr "Plaats het icoon op de kaart"
 
 #: templates/reports/new.html:136
 msgid "Submitting a report"
-msgstr "Een incident melden:"
+msgstr "Meld een incident:"
 
 #: templates/reports/new.html:138
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
-msgstr ""
-"Alvorens een incident te rapporteren, kijk even na of het incident nog niet "
-"gerapporteerd is."
+msgstr "Als er al een rapport bestaat kunt u dit volgen"
 
 #: templates/reports/new.html:140
 msgid "Verify"
-msgstr "verifiëren"
+msgstr "Controleren"
 
 #: templates/reports/new.html:146 templates/reports/new.html.py:151
 #: templates/reports/show.html:184
 msgid "Location:"
-msgstr "Lokalisatie:"
+msgstr "Plaats:"
 
 #: templates/reports/new.html:155
 msgid "** To change the address, move the marker on the map above."
-msgstr "Om het adres aan te passen, verplaats het icoon op de kaart hierboven."
+msgstr ""
+"Verplaats het icoon op de kaart of geef een zoekopdracht om het adres te "
+"wijzigen."
 
 #: templates/reports/new.html:166
 msgid "Incident category:"
-msgstr "Incident type:"
+msgstr "Soort incident:"
 
 #: templates/reports/new.html:185
 msgid "Contact information:"
-msgstr "Contact gegevens:"
+msgstr "Uw contactgegevens:"
 
 #: templates/reports/new.html:198 templates/reports/show.html:271
 msgid "Subscription:"
-msgstr "Abonnement:"
+msgstr "Volgen:"
 
 #: templates/reports/new.html:203 templates/reports/show.html:263
 msgid "Send"
-msgstr "Doorsturen"
+msgstr "Verzenden"
 
 #: templates/reports/new.html:216
 msgid "Submit an incident:"
@@ -1582,7 +1583,7 @@ msgstr "Bevestigen"
 
 #: templates/reports/new.html:249
 msgid "Nearby incidents that are already submitted:"
-msgstr "Nabijgelegen incidenten die reeds gesignaleerd zijn:"
+msgstr "Incidenten in de buurt die al gemeld zijn:"
 
 #: templates/reports/new.html:259
 msgid "No problems have been reported in this area."
@@ -1667,12 +1668,11 @@ msgstr "Verzend alle bestanden en commentaren"
 #: templates/reports/show.html:272
 msgid "Subscribe to receive notifications"
 msgstr ""
-"Abonneer u om de evolutie van dit incident te volgen en de berichten per "
-"mail te ontvangen (al"
+"Ik wil de evolutie van het incident volgen en mailberichten te ontvangen"
 
 #: templates/reports/show.html:272
 msgid "subscribers to this incident"
-msgstr " perso(o)n(en) geabonneerd op dit incident)"
+msgstr " perso(o)n(en) geabonneerd op dit incident"
 
 #: templates/reports/show.html:276
 msgid "Your email"

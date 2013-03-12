@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 12:04+0100\n"
+"POT-Creation-Date: 2013-03-12 14:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -619,7 +619,7 @@ msgstr "les communes et les institutions bruxelloises partenaires"
 
 #: templates/base.html:227
 msgid "Copyright 2011, CIRB"
-msgstr "Powered by CIRB, 2013"
+msgstr "Powered by CIRB-CIBG, 2013"
 
 #: templates/base.html:228 templates/term_of_use.html:4
 msgid "Terms of Use"
@@ -673,8 +673,8 @@ msgstr "Nom de rue, numéro de rue..."
 msgid "All communes..."
 msgstr "Toutes les communes"
 
-#: templates/home.html:97 templates/reports/list.html:92
-msgid "Search"
+#: templates/home.html:97
+msgid "Widget Search"
 msgstr "Rechercher"
 
 #: templates/home.html:104
@@ -1519,6 +1519,10 @@ msgstr "Recherche par numéro :"
 msgid "Ticket number"
 msgstr "Numéro de l'incident"
 
+#: templates/reports/list.html:92
+msgid "Search"
+msgstr "Rechercher"
+
 #: templates/reports/new.html:3 templates/reports/new.html.py:6
 msgid "New Report"
 msgstr "Nouvel incident"
@@ -1589,7 +1593,7 @@ msgstr "Merci ! Votre incident a bien été envoyé au service concerné."
 
 #: templates/reports/new.html:220
 msgid "A mail containing the link report has been sent."
-msgstr "Un mail contenant les informations du rapport vous a éeté envoyé"
+msgstr "Un mail contenant les informations du rapport vous a été envoyé"
 
 #: templates/reports/new.html:222
 msgid "Download a copy of the incident as a pdf"
@@ -1733,7 +1737,7 @@ msgstr "Notez"
 
 #: views/reports/main.py:130
 msgid "You attachments has been sent"
-msgstr ""
+msgstr "Vos attachements ont été envoyés"
 
 #: views/reports/main.py:157
 msgid "No incident found with this ticket number"

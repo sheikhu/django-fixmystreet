@@ -188,6 +188,10 @@ footer *{
     padding-top:35px;
     padding-bottom:5px;
 }
+div.footer_left img{
+    margin-right:10px;
+    vertical-align:baseline;
+}
 .footer_left a:link, .footer_left a:visited{
     /*color:#0A00BE;*/
     font-size:12px;
@@ -203,10 +207,12 @@ footer *{
 
 .footer_right{
     float:right;
+    padding-top:34px;
 }
 .footer_left{
     vertical-align:bottom;
 }
+
 
 #legal-notice {
     padding-top:15px;

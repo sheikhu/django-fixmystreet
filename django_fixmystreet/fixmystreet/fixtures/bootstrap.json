@@ -603,7 +603,7 @@
         "pk": 2,
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Straat",
+            "name_nl": "Rijweg",
             "name_fr": "Chaussée"
         }
     },
@@ -619,7 +619,7 @@
         "pk": 4,
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Groene ruimten",
+            "name_nl": "Groenezone",
             "name_fr": "Espace vert"
         }
     },
@@ -627,7 +627,7 @@
         "pk": 5,
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Bruggen en tunnels",
+            "name_nl": "Brug of tunnel",
             "name_fr": "Pont ou tunnel",
             "hint":1
         }
@@ -637,7 +637,7 @@
         "pk": 1,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_nl": "Beschadigingen",
+            "name_nl": "Wegdek",
             "name_fr": "Revêtement"
         }
     },
@@ -722,7 +722,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Revêtement dégradé",
-            "name_nl": "Wegdek beschadiging",
+            "name_nl": "Beschadigd wegdek",
             "category_class": 1,
             "secondary_category_class": 1,
             "public": true
@@ -878,7 +878,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Wegmarkering verwijderd",
+            "name_nl": "Verdwenen markering",
             "category_class": 1,
             "secondary_category_class": 5,
             "public": true
@@ -1022,7 +1022,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Revêtement dégradé",
-            "name_nl": "Wegdek beschadiging",
+            "name_nl": "Beschadigd wegdek",
             "category_class": 2,
             "secondary_category_class": 1,
             "public": true
@@ -1202,7 +1202,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Wegmarkering verwijderd",
+            "name_nl": "Verdwenen markering",
             "category_class": 2,
             "secondary_category_class": 5,
             "public": true
@@ -1346,7 +1346,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Revêtement dégradé",
-            "name_nl": "Wegdek beschadiging",
+            "name_nl": "Beschadigd wegdek",
             "category_class": 3,
             "secondary_category_class": 1,
             "public": true
@@ -1502,7 +1502,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Wegmarkering verwijderd",
+            "name_nl": "Verdwenen markering",
             "category_class": 3,
             "secondary_category_class": 5,
             "public": true
@@ -1610,7 +1610,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Revêtement dégradé",
-            "name_nl": "Wegdek beschadiging",
+            "name_nl": "Beschadigd wegdek",
             "category_class": 4,
             "secondary_category_class": 1,
             "public": true
@@ -1766,7 +1766,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Wegmarkering verwijderd",
+            "name_nl": "Verdwenen markering",
             "category_class": 4,
             "secondary_category_class": 5,
             "public": true
@@ -1910,7 +1910,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Revêtement dégradé",
-            "name_nl": "Wegdek beschadiging",
+            "name_nl": "Beschadigd wegdek",
             "category_class": 5,
             "secondary_category_class": 1,
             "public": true
@@ -2030,7 +2030,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Wegmarkering verwijderd",
+            "name_nl": "Verdwenen markering",
             "category_class": 5,
             "secondary_category_class": 5,
             "public": true

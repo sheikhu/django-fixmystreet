@@ -5,7 +5,7 @@ Changelog of django-fixmystreet
 0.4.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Missing cirb logo due to forgotten git add (:-)) file is now added 
 
 
 0.4.10 (2013-03-12)
