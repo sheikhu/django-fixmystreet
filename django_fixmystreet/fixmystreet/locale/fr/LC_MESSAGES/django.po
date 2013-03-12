@@ -1368,7 +1368,7 @@ msgstr "Recommandations"
 
 #: templates/reports/_annexes_form.html:27
 msgid "1- Supported formats"
-msgstr "- Format supportés"
+msgstr "- Formats supportés"
 
 #: templates/reports/_annexes_form.html:28
 msgid "2- Optimal resolution: 1200 x 800."
@@ -1381,7 +1381,7 @@ msgstr "- La photo doit permettre de replacer l’incident dans son contexte"
 #: templates/reports/_annexes_form.html:30
 msgid "4- Please do not include people's faces and car registration plates."
 msgstr ""
-"- Les visages et plaques d’immatriculations ne peuvent pas être identifiables"
+"- Les visages et plaques d’immatriculation ne peuvent pas être identifiables"
 
 #: templates/reports/_comment.html:7
 msgid "Please confirm comment deletion"

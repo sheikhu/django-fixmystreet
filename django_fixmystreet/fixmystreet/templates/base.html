@@ -166,13 +166,23 @@
                 {% if messages %}
                 <div id="messages">
                     {% for message in messages %}
-                    <!-- <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p> -->
-                    <div class="alert alert-block alert-{% if message.tags %}{{ message.tags }}{% endif %} hide fade in">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <strong class="alert-heading">{% if message.tags %}{{ message.tags }}{% endif %}</strong>
-                        <span class="alert-message">
-                            {{ message }}
-                        </span>
+                    <div class="message modal hide" role="dialog">
+                        <div class="modal-body">
+                            <!-- <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p> -->
+                            <p class="lead {{ message.tags }}">
+                                {% if message.tags == "success" %}
+                                    <i class="icon-ok-sign"> </i>
+                                {% elif message.tags == "warning" %}
+                                    <i class="icon-warning-sign"> </i>
+                                {% elif message.tags == "warning" %}
+                                    <i class="icon-remove-sign"> </i>
+                                {% endif %}
+                                <strong>{{ message }}</strong>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
@@ -256,10 +266,10 @@
             {% if messages %}
 
             $(function(){
-                $('.alert').fadeIn('slow');
-                setTimeout(function(){
+                $('.message').modal();
+                /*setTimeout(function(){
                     $('.alert').alert('close');
-                },10000);
+                },10000);*/
             });
             {% endif %}
         </script>
