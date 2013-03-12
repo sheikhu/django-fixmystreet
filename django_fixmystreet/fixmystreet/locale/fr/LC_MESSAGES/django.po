@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 15:41+0100\n"
+"POT-Creation-Date: 2013-03-12 08:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -753,7 +753,7 @@ msgid ""
 "website."
 msgstr "Veuillez télécharger un des navigateurs proposé ci-dessous."
 
-#: templates/base.html:203 templates/reports/new.html:244
+#: templates/base.html:203 templates/reports/new.html:241
 #: templates/reports/show.html:102
 msgid "Cancel"
 msgstr "Annuler"
@@ -973,7 +973,7 @@ msgstr ""
 "<a href=\"/\">\"Signaler un incident\"</a> et suivre les instructions.</p>\n"
 "            "
 
-#: templates/contact/new.html:20 templates/reports/new.html:206
+#: templates/contact/new.html:20 templates/reports/new.html:203
 msgid "* This fields are required"
 msgstr "* Ces champs sont obligatoires"
 
@@ -1303,7 +1303,8 @@ msgstr ""
 "\n"
 "<p>Vous avez souscrit un abonnement a ce rapport de type %(reportType)s, "
 "créé le %(date)s. Vous pouvez consulter le rapport en cliquant sur le lien "
-"suivant: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a>.</p>\n"
+"suivant: <a href=\"%(SITE_URL)s/report/%(reportId)s\">%(SITE_URL)s/report/%"
+"(reportId)s</a>.</p>\n"
 
 #: templates/emails/send_report_closed_to_subscribers/message.txt:10
 msgid "Description:"
@@ -1586,18 +1587,19 @@ msgstr "Tous les incidents"
 msgid "Meta description for index page"
 msgstr ""
 
-#: templates/reports/index.html:15
+#: templates/reports/index.html:15 templates/reports/new.html:264
 msgid "Warning"
 msgstr "Attention"
 
-#: templates/reports/index.html:18 views/reports/main.py:169
+#: templates/reports/index.html:18 templates/reports/new.html:267
+#: views/reports/main.py:169
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
 "Cette commune ne participe pas encore à Fix My Street. Pour signaler un "
 "incident, merci de contacter directement votre administration communale au "
 "numéro"
 
-#: templates/reports/index.html:21
+#: templates/reports/index.html:21 templates/reports/new.html:270
 msgid "Close dialog"
 msgstr "Fermer"
 
@@ -1671,101 +1673,89 @@ msgid ""
 "service public en charge de le traiter."
 msgstr ""
 
-#: templates/reports/new.html:13
-msgid ""
-"This commune does not participate.\\nPlease request your commune to join the "
-"initiative."
-msgstr ""
-"Cette commune ne participe pas Fix My Street. \\n Veuillez prendre contact "
-"avec votre commune pour leur demander de joindre l'initiative."
-
-#: templates/reports/new.html:14
-msgid "Brussels Mobility (tel:0800/94.001)"
-msgstr "Bruxelles Mobilité (tel:0800/94.001)"
-
-#: templates/reports/new.html:76 templates/reports/show.html:30
+#: templates/reports/new.html:73 templates/reports/show.html:30
 msgid "Your file description"
 msgstr "Votre description de fichier"
 
-#: templates/reports/new.html:128
+#: templates/reports/new.html:125
 msgid "Drag me to change my location."
 msgstr "Merci de positionner l'icône sur la carte"
 
-#: templates/reports/new.html:139
+#: templates/reports/new.html:136
 msgid "Submitting a report"
 msgstr "Signaler un incident"
 
-#: templates/reports/new.html:141
+#: templates/reports/new.html:138
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
 msgstr "Si un rapport existe déjà vous pouvez vous y abonner"
 
 # "Avant de signaler un incident, vérifiez qu'il n'a pas déjà été constaté."
-#: templates/reports/new.html:143
+#: templates/reports/new.html:140
 msgid "Verify"
 msgstr "vérifier"
 
-#: templates/reports/new.html:148 templates/reports/new.html.py:155
+#: templates/reports/new.html:145 templates/reports/new.html.py:152
 #: templates/reports/show.html:164
 msgid "Location:"
 msgstr "localisation:"
 
-#: templates/reports/new.html:159
+#: templates/reports/new.html:156
 msgid "** To change the address, move the marker on the map above."
 msgstr ""
 "Pour modifier l'adresse, changer la position de l'icône sur la carte ou "
 "refaire une recherche."
 
-#: templates/reports/new.html:167
+#: templates/reports/new.html:164
 msgid "Incident category:"
 msgstr "Type d'incident:"
 
-#: templates/reports/new.html:186
+#: templates/reports/new.html:183
 msgid "Contact information:"
 msgstr "Vos coordonnées:"
 
-#: templates/reports/new.html:199
+#: templates/reports/new.html:196
 msgid "Subscription:"
 msgstr "S'abonner:"
 
-#: templates/reports/new.html:204 templates/reports/show.html:248
+#: templates/reports/new.html:201 templates/reports/show.html:248
 msgid "Send"
 msgstr "Envoyer"
 
-#: templates/reports/new.html:217
+#: templates/reports/new.html:214
 msgid "Submit an incident:"
 msgstr "Enregistrement de l'incident:"
 
-#: templates/reports/new.html:220
+#: templates/reports/new.html:217
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné."
 
-#: templates/reports/new.html:221
+#: templates/reports/new.html:218
 msgid "A mail containing the link report has been sent."
 msgstr "Un mail contenant les informations du rapport vous a éeté envoyé"
 
-#: templates/reports/new.html:223
+#: templates/reports/new.html:220
 msgid "Download a copy of the incident as a pdf"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: templates/reports/new.html:228 templates/reports/new.html.py:230
+#: templates/reports/new.html:225 templates/reports/new.html.py:227
 msgid "Continue"
 msgstr "continuer"
 
-#: templates/reports/new.html:237
+#: templates/reports/new.html:234
 msgid "Incident overview:"
 msgstr "Aperçu de votre rapport d'incident:"
 
-#: templates/reports/new.html:243 templates/reports/show.html:104
+#: templates/reports/new.html:240 templates/reports/show.html:104
 msgid "Confirm"
 msgstr "confirmer"
 
-#: templates/reports/new.html:250
+#: templates/reports/new.html:247
 msgid "Nearby incidents that are already submitted:"
 msgstr "Incidents déjà signalé à proximité:"
 
-#: templates/reports/new.html:260
+#: templates/reports/new.html:257
 msgid "No problems have been reported in this area."
 msgstr "Aucun problème n'a été signalé."
 
@@ -1852,7 +1842,7 @@ msgstr ""
 
 #: templates/reports/show.html:257
 msgid "subscribers to this incident"
-msgstr " personnes sont déjà abonnées à cet incident"
+msgstr " personne(s) sont déjà abonnées à cet incident"
 
 #: templates/reports/show.html:261
 msgid "Your email"
@@ -1895,6 +1885,16 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+#~ msgid ""
+#~ "This commune does not participate.\\nPlease request your commune to join "
+#~ "the initiative."
+#~ msgstr ""
+#~ "Cette commune ne participe pas Fix My Street. \\n Veuillez prendre "
+#~ "contact avec votre commune pour leur demander de joindre l'initiative."
+
+#~ msgid "Brussels Mobility (tel:0800/94.001)"
+#~ msgstr "Bruxelles Mobilité (tel:0800/94.001)"
 
 #~ msgid "Does not participate to FixMyStreet yet"
 #~ msgstr "Ne participe pas encore à Fix My Street"
