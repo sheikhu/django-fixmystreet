@@ -36,6 +36,10 @@ $(function(){
         $("#history_popup").modal();
     });
 
+    //If running internet explorer then apply an extra span5 to comment and file div sections. Otherwise nothing is shown
+    if ($.browser.msie) {
+	$('.report_update').addClass('span5');
+    }
 
 });
 function setFileCreationDate(){
