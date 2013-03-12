@@ -228,7 +228,8 @@ class ProReportHandler(BaseHandler):
             report_comment.save()
 
         #Automatic subscribe when creating a report using mobile device
-        ReportSubscription(report=report, subscriber=report.created_by).save()        
+        # ReportSubscription(report=report, subscriber=report.created_by).save()
+        report.subscribe_author()
 
         #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
         report.organisation = None
@@ -236,6 +237,7 @@ class ProReportHandler(BaseHandler):
         report.work_for = None
         report.created_by = None
         report.modified_by = None
+        
         return report
 
 
@@ -290,10 +292,10 @@ class CitizenReportHandler(BaseHandler):
             report_comment.created_by = citizen
             report_comment.created = datetime.now()
             report_comment.save()
-
         #Automatic subscribe when creating a report using mobile device
-        ReportSubscription(report=report, subscriber=report.citizen).save()        
-       
+        # ReportSubscription(report=report, subscriber=report.citizen).save()
+        report.subscribe_author()
+        
         #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
         report.organisation = None
         report.categories = None
@@ -500,7 +502,6 @@ def create_report_photo(request):
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_NOT_FOUND","request":request.POST}),mimetype='application/json')
     try:
         report_file.title = "Mobile Upload"
-        report_file.file_type = ReportFile.IMAGE
         report_file.file = data_file_content
         report_file.report = reference_report
         report_file.file_creation_date = datetime.now()
@@ -511,9 +512,9 @@ def create_report_photo(request):
             report_file.created_by = reference_report.created_by
         #Save given data
         report_file.save()
+
     except Exception:
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_PROBLEM_DATA","request":request.POST}),mimetype='application/json')
-
     #Return the report ID
     return JsonHttpResponse({
         'report_photo': report_file.id
