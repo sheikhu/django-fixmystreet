@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 09:15+0100\n"
+"POT-Creation-Date: 2013-03-12 09:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -627,7 +627,7 @@ msgstr "Gebruiksvoorwaarden"
 msgid "Meta description for home page"
 msgstr ""
 
-#: templates/home.html:72 templates/reports/list.html:96
+#: templates/home.html:72
 msgid "Report an incident"
 msgstr "Meld een incident"
 
@@ -690,7 +690,6 @@ msgid "Access Ticket"
 msgstr "Zoeken"
 
 #: templates/home.html:119
-#, fuzzy
 msgctxt "plurial"
 msgid "Created"
 msgstr "Gemeld"
@@ -700,16 +699,14 @@ msgid "In the 30 last days"
 msgstr "De voorbije 30 dagen"
 
 #: templates/home.html:124
-#, fuzzy
 msgctxt "plurial"
 msgid "In progress"
 msgstr "In behandeling"
 
 #: templates/home.html:129
-#, fuzzy
 msgctxt "plurial"
 msgid "Processed"
-msgstr "Behandeld"
+msgstr "Afgesloten"
 
 #: templates/home.html:130
 msgid "In the 30 last days "
@@ -1492,7 +1489,7 @@ msgstr "Aantal geabonneerden"
 msgid "Reports by wards"
 msgstr "Rapporten per gemeente"
 
-#: templates/reports/index.html:82
+#: templates/reports/index.html:84
 msgid "As reported by Fix My Street users."
 msgstr "Gerapporteerd door Fix My Street gebruikers"
 

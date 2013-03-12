@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 09:16+0100\n"
+"POT-Creation-Date: 2013-03-12 09:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -625,7 +625,7 @@ msgstr "Conditions d'utilisation"
 msgid "Meta description for home page"
 msgstr ""
 
-#: templates/home.html:72 templates/reports/list.html:96
+#: templates/home.html:72
 msgid "Report an incident"
 msgstr "Signaler un incident"
 
@@ -643,7 +643,7 @@ msgstr "Entrez l'adresse où vous avez constaté l'incident"
 
 #: templates/home.html:80
 msgid "Locate the incident on map"
-msgstr "Localiser l'incident sur la carte"
+msgstr "Localisez l'incident sur la carte"
 
 #: templates/home.html:81
 msgid "Descibe the incident"
@@ -674,7 +674,6 @@ msgid "Search"
 msgstr "Rechercher"
 
 #: templates/home.html:104
-#, fuzzy
 msgid "Enter the report ticket:"
 msgstr "Entrez le numéro d'incident"
 
@@ -1516,7 +1515,7 @@ msgstr "Nombre d'abonnés"
 msgid "Reports by wards"
 msgstr "Incidents par commune"
 
-#: templates/reports/index.html:82
+#: templates/reports/index.html:84
 msgid "As reported by Fix My Street users."
 msgstr "Comme indiqué par les utilisateurs de fix my street."
 
