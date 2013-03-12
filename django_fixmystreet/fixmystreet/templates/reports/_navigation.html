@@ -5,9 +5,9 @@
 		<img style="max-width:30px;" src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
 
 		{% if report.thumbnail %}
-		<img src="{{ report.thumbnail }}" class="report-preview" />
+		<img width="69px" src="{{ report.thumbnail }}" class="report-preview thumbnail" />
 		{% else %}
-		<img src="{{ STATIC_URL }}images/no-photo-yellow-line.png" class="report-preview"/>
+		<img src="{{ STATIC_URL }}images/no-photo-yellow-line.png" class="report-preview thumbnail" />
 		{% endif %}
 	</div>
 	<div class="center_search_result">

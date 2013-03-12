@@ -256,7 +256,16 @@ footer *{
 #map {
     position: relative;
     height: 300px;
-    box-shadow: inset 0px 20px 10px -5px #949499, inset 0px -20px 10px -5px #949499;
+}
+#map:before {
+    position: absolute;
+    display: block;
+    z-index: 100000;
+    content: " ";
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px 20px 20px -20px #DFDFDF, inset 0px -20px 20px -20px #DFDFDF;
+    pointer-events: none
 }
 
 #map img {
@@ -645,8 +654,22 @@ li img {
     min-width: 100px;
     /*border: 1px solid black;*/
 }
+#citizen-subscription-form{
+    margin:10px 0 0 0;
+}
+#citizen-subscription-form p{
+    float:left;
+}
+#subscribe-incident-show-report{
+    margin:0 !important;
+    float:right;
+}
+#mark-as-done-show-report{
+    float:right;
+}
 #send-comment-show-report{
     margin-bottom:0 !important;
+    float:right;
 }
 
 #citizen-subscription-form .btn:hover{
@@ -1374,12 +1397,12 @@ p.comment-incident{
 
 /********* FAQ LAYOUT ********/
 
-#faq p, #faq ul {
+#faq p, #faq ul, #faq ol {
 	margin-left: 2em;
 	text-align:left !important;
 }
 
-#faq ul li { margin-left:4em; }
+#faq ul li, #faq ol li { margin-left:4em; }
 
 
 /********* SUBSCRIBE LAYOUT ********/
@@ -1744,10 +1767,18 @@ table.report_overview_table th{
     background: #FFDB00;
 }
 
-.download-pdf{
+.download-pdf {
     background:transparent url('/static/images/download-pdf.png') top left no-repeat;
     width:41px;
     height:38px;
+    display:inline-block;
+    margin-right:9px;
+    vertical-align:middle;
+}
+#show-history i {
+    background:transparent url('/static/images/history.png') top left no-repeat;
+    width:41px;
+    height:41px;
     display:inline-block;
     margin-right:9px;
     vertical-align:middle;
@@ -1821,6 +1852,6 @@ table.report_overview_table th{
 }
 
 .popover-content{
-    font-weight:normal; 
+    font-weight:normal;
 }
 

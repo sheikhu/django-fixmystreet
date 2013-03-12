@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}{% trans "All Reports" %}{% endblock %}
-{% block script %}
+{% block meta %}
 {{block.super}}
 <meta property="og:title" content="{% trans 'All Reports' %}" />
 <meta property="og:description" content="{% trans 'Meta description for index page' %}" />
@@ -60,7 +60,7 @@
 <table id="reports" width="100%">
 {% for commune in communes %}
 		<tr class="{% cycle 'row-odd' 'row-even' %}">
-			<td>	
+			<td>
 				{% if commune.active %}
 					<a href='{{ commune.get_absolute_url }}?page=1'>
 					<strong>
@@ -71,13 +71,11 @@
 					</a>
 				{% else %}
 					<a href='#nonparticipatingcommune' data-toggle="modal" onclick="$('#phone').html('{{commune.phone}}')">
-					<span style="color:#757475">
-						{{ commune.name }}
-						&nbsp;
-						({% trans "Does not participate to FixMyStreet yet" %})
-					</span>
+						<span style="color:#757475">
+							{{ commune.name }}
+						</span>
 					</a>
-				{% endif %}	
+				{% endif %}
 			</td>
 		</tr>
 {% endfor %}

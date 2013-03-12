@@ -807,7 +807,7 @@ def report_notify(sender, instance, **kwargs):
                     related_new=report.contractor
                 ).save()
 
-        if report.__former['contractor']!= report.contractor:
+        if report.__former['contractor']!= report.contractor and report.contractor:
             for recipient in report.contractor.workers.all():
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
@@ -1557,13 +1557,14 @@ class FaqEntry(models.Model):
     order = models.IntegerField(null=True, blank=True)
 
     class Meta:
+        ordering = ["order"]
         verbose_name_plural = 'faq entries'
         translate = ('q', 'a')
 
 @receiver(pre_save,sender=FaqEntry)
 def save(sender, instance, **kwargs):
     if instance.order == None:
-        instance.order = instance.id + 1
+        instance.order = FaqEntry.objects.all().aggregate(models.Max('order'))['order__max'] + 1
 
 
 class FaqMgr(object):

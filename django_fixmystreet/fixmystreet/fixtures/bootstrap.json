@@ -119,8 +119,8 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Bruxelles-ville",
-            "name_nl": "Brussel Stad",
+            "name_fr": "Bruxelles-Ville",
+            "name_nl": "Brussel-Stad",
             "phone": "02/279.22.11",
             "feature_id": "URB_A_MU.7400"
         }
@@ -215,7 +215,7 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Molenbeek Saint Jean",
+            "name_fr": "Molenbeek-Saint-Jean",
             "name_nl": "Sint-Jans-Molenbeek",
             "phone": "02/412.36.75",
             "feature_id": "URB_A_MU.8200"
@@ -287,7 +287,7 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Woluwe Saint Lambert",
+            "name_fr": "Woluwe-Saint-Lambert",
             "name_nl": "Sint-Lambrechts-Woluwe",
             "phone": "02/761.27.11",
             "feature_id": "URB_A_MU.8800"
@@ -299,7 +299,7 @@
         "fields": {
             "commune": true,
             "dependency":20,
-            "name_fr": "Woluwe Saint Pierre",
+            "name_fr": "Woluwe-Saint-Pierre",
             "name_nl": "Sint-Pieters-Woluwe",
             "phone": "02/773.05.11",
             "feature_id": "URB_A_MU.8900"
@@ -620,7 +620,7 @@
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
             "name_nl": "Groene ruimten",
-            "name_fr": "Espaces verts"
+            "name_fr": "Espace vert"
         }
     },
     {
@@ -628,7 +628,7 @@
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
             "name_nl": "Bruggen en tunnels",
-            "name_fr": "Ponts et tunnels",
+            "name_fr": "Pont ou tunnel",
             "hint":1
         }
     },
@@ -673,8 +673,8 @@
         "pk": 5,
         "model": "fixmystreet.reportsecondarycategoryclass",
         "fields": {
-            "name_nl": "Signalisatie en lichten",
-            "name_fr": "Signalisation et feux"
+            "name_nl": "Signalisatie",
+            "name_fr": "Signalisation"
         }
     },
 
