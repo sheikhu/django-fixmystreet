@@ -1,0 +1,17 @@
+<table width="100%">
+    {% for activity in activity_list %}
+        {{ pro_version }}
+        {% if pro_version or activity.is_public_visible %}
+        <tr>
+            <td colspan="2">
+                <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
+                {% if pro_version %}
+                    {{ activity }}
+                {% else %}
+                    {{ activity.get_public_activity_text }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+</table>

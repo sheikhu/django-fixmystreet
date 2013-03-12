@@ -21,7 +21,6 @@
     	<button class="btn" data-dismiss="modal" aria-hidden="true"> {% trans "Close dialog" %}</button>
     </div>
 </div>
-	<h1>{% trans "All Reports" %}</h1>
 	{% if top_problems %}
 	<h2>{% trans "Top Reports" %}</h2>
 	<div id='city-stat-group'>
@@ -57,20 +56,22 @@
 
 	<h2>{% trans "Reports by wards" %}</h2>
 	<div id="city_all_problems" style="clear:both">
-<table id="reports" width="100%">
+<table id="reports" class="span6 commune-list">
 {% for commune in communes %}
-		<tr class="{% cycle 'row-odd' 'row-even' %}">
+		{% if commune.active %}
+			<tr class="{% cycle 'commune-row' 'commune-row' %}" onclick="window.location='{{ commune.get_absolute_url }}?page=1'">
+		{% else %}
+			<tr class="{% cycle 'commune-row' 'commune-row' %}" href='#nonparticipatingcommune' data-toggle="modal" onclick="$('#phone').html('{{commune.phone}}')">
+		{% endif %}
 			<td>
 				{% if commune.active %}
-					<a href='{{ commune.get_absolute_url }}?page=1'>
 					<strong>
 						<span>
 							{{ commune.name }}
 						</span>
 					</strong>
-					</a>
 				{% else %}
-					<a href='#nonparticipatingcommune' data-toggle="modal" onclick="$('#phone').html('{{commune.phone}}')">
+					<a id="warning-popup" href='#nonparticipatingcommune'>
 						<span style="color:#757475">
 							{{ commune.name }}
 						</span>

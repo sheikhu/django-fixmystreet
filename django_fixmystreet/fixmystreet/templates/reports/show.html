@@ -29,7 +29,14 @@ $(function(){
 
     $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
     //Clear the comment textarea after each POST
-    $("#id_comment-text").val('');
+    //$("#id_comment-text").val('');
+
+    $("#show-history").click(function(evt) {
+        evt.preventDefault();
+        $("#history_popup").modal();
+    });
+
+
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -103,6 +110,19 @@ $("[data-toggle=popover]")
 
             <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
         </form>
+    </div>
+</div>
+
+<div id="history_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h1>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h1>
+    </div>
+    <div class="modal-body">
+        {% include "reports/_activity_list.html" with pro_version=0 %}
+    </div>
+    <div class="modal-footer">
+        <input type="button" class="btn"  value="{% trans 'Return to incident'%}" data-dismiss="modal" aria-hidden="true"/>
     </div>
 </div>
 
@@ -190,13 +210,8 @@ $("[data-toggle=popover]")
                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' %}
                 </a>
             </p>
-            {% if report.is_created %}
-            {% else %}
-            <p>
-                <a href="#" title="{% trans 'History' %}">
-                <!--i class="icon-download" /--><i class="history-incident"> </i>{% trans 'History incident' %}
-                </a>
-            </p>
+            {% if not report.is_created %}
+                <p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p>
             {% endif %}
        </div> <!-- Bordered-box-->
 
@@ -243,7 +258,7 @@ $("[data-toggle=popover]")
     <div class="span6">
         <div class="bordered-box">
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% include "_annexes_form.html" %}
+                {% include "reports/_annexes_form.html" %}
 
                 <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
             </form> <!-- report-form-->

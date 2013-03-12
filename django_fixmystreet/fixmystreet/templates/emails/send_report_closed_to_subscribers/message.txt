@@ -2,14 +2,14 @@
 {% load i18n %}
 {% block content %}
 {% blocktrans with reportType=report.category.name date=report.created|date reportId=report.id %}
-The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/report/{{reportId}}.
+The report of type {{reportType}} created at {{date}} is now marked as closed. You can consult the report at {{SITE_URL}}/{{ url }}.
 Report overview:
 {% endblocktrans %}
 {% trans 'Address:'%} {{report.address}}
 {% trans 'Postal code:'%} {{report.postalcode}}
 {% trans 'Description:'%} {{report.description}}
 {% trans 'Type:'%} {{report.category.name}}
-{% trans 'Creator:'%} 
+{% trans 'Creator:'%}
 	{% if report.creator %}
 	{{report.creator.username}}
 	{% else %}

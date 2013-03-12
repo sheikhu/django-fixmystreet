@@ -143,15 +143,15 @@ var categories = {
             <fieldset>
                 <div class="control-group required">
                     <label class="control-label" for="address-text">{% trans "Location:" %}</label>
-                    <div class="controls">
-                        <p id="address-text"></p>
-                    </div>
-                    <a href="#" style="margin-top:-20px;margin-left:-60px; display: inline-block; vertical-align: top;"
+                    <a href="#" style="margin-left:-50px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
                         data-trigger="hover"
                         title="{% trans 'Location:'%}">
                         <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
                     </a>
+                    <div class="controls">
+                        <p id="address-text"></p>
+                    </div>
                     <div id="location-recommendations" class="hide">
                         {% trans '** To change the address, move the marker on the map above.' %}
                     </div>
@@ -171,7 +171,7 @@ var categories = {
 
             {% endblock %}
 
-            {% include "_annexes_form.html" %}
+            {% include "reports/_annexes_form.html" %}
         </div>
     </div>
     <div class="span6" style="margin-top: 30px;">

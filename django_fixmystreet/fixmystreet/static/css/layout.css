@@ -256,7 +256,16 @@ footer *{
 #map {
     position: relative;
     height: 300px;
-    box-shadow: inset 0px 20px 10px -5px #949499, inset 0px -20px 10px -5px #949499;
+}
+#map:before {
+    position: absolute;
+    display: block;
+    z-index: 100000;
+    content: " ";
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px 20px 20px -20px #DFDFDF, inset 0px -20px 20px -20px #DFDFDF;
+    pointer-events: none
 }
 
 #map img {
@@ -607,7 +616,7 @@ li img {
 }
 
 .file-upload-button {
-    margin-left: 20px;
+    /*margin-left: 20px;*/
 }
 
 .file-upload-button a img{
@@ -1326,12 +1335,12 @@ p.comment-incident{
 
 #top-reports td:first-child,
 #reports td:first-child{
-    border-left: 1px solid #D5E5F6;
+    /*border-left: 1px solid #D5E5F6;*/
 }
 
 #top-reports td:last-child,
 #reports td:last-child{
-    border-right: 1px solid #D5E5F6;
+    /*border-right: 1px solid #D5E5F6;*/
 }
 
 #reports th.feeds{
@@ -1359,6 +1368,22 @@ p.comment-incident{
 
 #top-reports {
 	width:530px;
+}
+
+.commune-list {
+	float: none !important;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.commune-row {
+	display: block;
+	position: relative;
+	color: black;
+	text-decoration: none;
+	padding: 2px 4px;
+	border: 2px solid #FFDB00;
+	margin-bottom: 1px;
 }
 
 .row-odd {
@@ -1390,12 +1415,12 @@ p.comment-incident{
 
 /********* FAQ LAYOUT ********/
 
-#faq p, #faq ul {
+#faq p, #faq ul, #faq ol {
 	margin-left: 2em;
 	text-align:left !important;
 }
 
-#faq ul li { margin-left:4em; }
+#faq ul li, #faq ol li { margin-left:4em; }
 
 
 /********* SUBSCRIBE LAYOUT ********/
@@ -1760,7 +1785,7 @@ table.report_overview_table th{
     background: #FFDB00;
 }
 
-.download-pdf{
+.download-pdf {
     background:transparent url('/static/images/download-pdf.png') top left no-repeat;
     width:41px;
     height:38px;
@@ -1768,7 +1793,7 @@ table.report_overview_table th{
     margin-right:9px;
     vertical-align:middle;
 }
-.history-incident{
+#show-history i {
     background:transparent url('/static/images/history.png') top left no-repeat;
     width:41px;
     height:41px;
