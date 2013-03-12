@@ -11,7 +11,19 @@ Changelog of django-fixmystreet
 0.4.9 (2013-03-12)
 ------------------
 
-- Nothing changed yet.
+- Global spelling and wording corrections.
+
+- Dutch translation (work in progress).
+
+- Clean & lighter create report form.
+
+- About page review.
+
+- Communes index review (non-participate message, layout).
+
+- Create report form => non participate commune in a dialog box.
+
+
 
 
 0.4.8 (2013-03-12)
