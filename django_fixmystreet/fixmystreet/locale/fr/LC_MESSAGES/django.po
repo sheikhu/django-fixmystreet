@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 10:19+0100\n"
+"POT-Creation-Date: 2013-03-12 12:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: admin.py:100
 msgid "Password changed successfully."
@@ -617,11 +617,11 @@ msgstr ""
 msgid "Communes and Brussels Partner Institutions"
 msgstr "les communes et les institutions bruxelloises partenaires"
 
-#: templates/base.html:226
+#: templates/base.html:227
 msgid "Copyright 2011, CIRB"
-msgstr "Created by CIRB, 2013"
+msgstr "Powered by CIRB, 2013"
 
-#: templates/base.html:227 templates/term_of_use.html:4
+#: templates/base.html:228 templates/term_of_use.html:4
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
@@ -1064,8 +1064,8 @@ msgstr "Mis à jour"
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<!--p> Please activate yourself first by clicking the following link: "
-"%(url)s/</p-->\n"
+"<!--p> Please activate yourself first by clicking the following link: %(url)"
+"s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
@@ -1110,8 +1110,8 @@ msgstr "Fix My Street: Un nouveau rapport vous a été assigné"
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s has changed. You "
-"can consult the report at <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s"
-"%(url)s</a>.</p>\n"
+"can consult the report at <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)"
+"s</a>.</p>\n"
 msgstr ""
 "\n"
 "<p>Vous avez souscrit un abonnement a ce rapport de type %(reportType)s, "
@@ -1141,8 +1141,8 @@ msgstr "Rapport a changé"
 msgid ""
 "\n"
 "<p>The report of type %(reportType)s created at %(date)s is now marked as "
-"closed. You can consult the report at <a href=\"%(SITE_URL)s%(url)s\">"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"closed. You can consult the report at <a href=\"%(SITE_URL)s%(url)s\">%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 "\n"
 "<p>Vous avez souscrit un abonnement a ce rapport de type %(reportType)s, "
@@ -1175,19 +1175,18 @@ msgstr "Rapport fermé"
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
-"If you want to accept this report, click the following link: <a href="
-"\"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">%(SITE_URL)s/fr/pro/"
-"report/%(reportId)s/accept</a>. If you want to see the content of the "
-"report, click the following link: <a href=\"%(SITE_URL)s%(url)s\">"
-"%(SITE_URL)s%(url)s</a> .(A mail is automatically sent to the creator of "
-"this report.) </p>\n"
+"If you want to accept this report, click the following link: <a href=\"%"
+"(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">%(SITE_URL)s/fr/pro/report/%"
+"(reportId)s/accept</a>. If you want to see the content of the report, click "
+"the following link: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a> ."
+"(A mail is automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
-"Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">%(SITE_URL)s/fr/pro/"
-"report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du rapport, "
-"veuillez cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail est "
+"Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href=\"%"
+"(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">%(SITE_URL)s/fr/pro/report/%"
+"(reportId)s/accept</a>. Si vous désirez voir le contenu du rapport, veuillez "
+"cliquer sur le lien suivant: %(SITE_URL)s%(url)s .(Un mail est "
 "automatiquement envoyé au createur du rapport.) </p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/message.html:18
@@ -1195,21 +1194,20 @@ msgstr ""
 msgid ""
 "\n"
 "<p>A report of type %(reportType)s created at %(date)s is assigned to you. "
-"If you want to accept this report, click the following link: <a href="
-"\"%(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">%(SITE_URL)s/nl/pro/"
-"report/%(reportId)s/accept</a>. If you want to see the content of the "
-"report, click the following link: <a href=\"%(SITE_URL)s%(url)s\">"
-"%(SITE_URL)s%(url)s</a> .(A mail is automatically sent to the creator of "
-"this report.) </p>\n"
+"If you want to accept this report, click the following link: <a href=\"%"
+"(SITE_URL)s/nl/pro/report/%(reportId)s/accept\">%(SITE_URL)s/nl/pro/report/%"
+"(reportId)s/accept</a>. If you want to see the content of the report, click "
+"the following link: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%(url)s</a> ."
+"(A mail is automatically sent to the creator of this report.) </p>\n"
 msgstr ""
 "\n"
 "<p>Un rapport de type %(reportType)s créé le %(date)s vous a ete assigné."
-"Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href="
-"\"%(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">%(SITE_URL)s/fr/pro/"
-"report/%(reportId)s/accept</a>. Si vous désirez voir le contenu du rapport, "
-"veuillez cliquer sur le lien suivant: <a href=\"%(SITE_URL)s%(url)s\">"
-"%(SITE_URL)s%(url)s</a>.(Un mail est automatiquement envoyé au createur du "
-"rapport.) </p>\n"
+"Pour accepter ce rapport, veuillez cliquer sur le lien suivant: <a href=\"%"
+"(SITE_URL)s/fr/pro/report/%(reportId)s/accept\">%(SITE_URL)s/fr/pro/report/%"
+"(reportId)s/accept</a>. Si vous désirez voir le contenu du rapport, veuillez "
+"cliquer sur le lien suivant: <a href=\"%(SITE_URL)s%(url)s\">%(SITE_URL)s%"
+"(url)s</a>.(Un mail est automatiquement envoyé au createur du rapport.) </"
+"p>\n"
 
 #: templates/emails/send_report_creation_to_gest_resp/subject.txt:1
 msgid "Fix My Street: New report created."
@@ -1237,8 +1235,8 @@ msgstr "Rapport deassigné"
 msgid ""
 "\n"
 "<p>The report with type %(reportType)s created at %(date)s is marked as "
-"fixed. You can consult the report at <a href=\"%(SITE_URL)s%(url)s\">"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"fixed. You can consult the report at <a href=\"%(SITE_URL)s%(url)s\">%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 "<p> The user gave the following motivation for marking the report as done:</"
 "p>\n"
 "%(motivation)s\n"
@@ -1294,8 +1292,8 @@ msgstr "L'incident signalé a été refusé"
 msgid ""
 "\n"
 "<p>You are now subscribed to the report with type %(reportType)s, created at "
-"%(date)s. You can consult the report at <a href=\"%(SITE_URL)s%(url)s\">"
-"%(SITE_URL)s%(url)s</a>.</p>\n"
+"%(date)s. You can consult the report at <a href=\"%(SITE_URL)s%(url)s\">%"
+"(SITE_URL)s%(url)s</a>.</p>\n"
 msgstr ""
 "\n"
 "<p>Vous avez souscrit un abonnement a ce rapport de type %(reportType)s, "
@@ -1473,11 +1471,11 @@ msgstr "Tous les incidents"
 msgid "Meta description for index page"
 msgstr ""
 
-#: templates/reports/index.html:15 templates/reports/new.html:266
+#: templates/reports/index.html:25 templates/reports/new.html:266
 msgid "Warning"
 msgstr "Attention"
 
-#: templates/reports/index.html:18 templates/reports/new.html:269
+#: templates/reports/index.html:28 templates/reports/new.html:269
 #: views/reports/main.py:168
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
@@ -1485,43 +1483,15 @@ msgstr ""
 "incident, merci de contacter directement votre administration communale au "
 "numéro"
 
-#: templates/reports/index.html:21 templates/reports/new.html:272
+#: templates/reports/index.html:31 templates/reports/new.html:272
 msgid "Close dialog"
 msgstr "Fermer"
 
-#: templates/reports/index.html:25
-msgid "Top Reports"
-msgstr "Incident classé"
-
-#: templates/reports/index.html:29
-msgid "Reports Filed"
-msgstr "Incidents enregistrés"
-
-#: templates/reports/index.html:33
-msgid "Reports Fixed"
-msgstr "Incidents résolus"
-
-#: templates/reports/index.html:37
-msgid "Reports Updated"
-msgstr "Incidents <span style='display:inline-block;'>mis à jour</span>"
-
-#: templates/reports/index.html:43
-msgid "Rank"
-msgstr "Classement"
-
-#: templates/reports/index.html:44
-msgid "Report"
-msgstr "Incident"
-
-#: templates/reports/index.html:45
-msgid "Number of Subscribers"
-msgstr "Nombre d'abonnés"
-
-#: templates/reports/index.html:57
+#: templates/reports/index.html:36
 msgid "Reports by wards"
 msgstr "Incidents par commune"
 
-#: templates/reports/index.html:84
+#: templates/reports/index.html:45
 msgid "As reported by Fix My Street users."
 msgstr "Comme indiqué par les utilisateurs de fix my street."
 
@@ -1587,7 +1557,7 @@ msgstr "Vérifier"
 msgid "Location:"
 msgstr "Localisation :"
 
-#: templates/reports/new.html:158
+#: templates/reports/new.html:155
 msgid "** To change the address, move the marker on the map above."
 msgstr ""
 "Pour modifier l'adresse, changer la position de l'icône sur la carte ou "
@@ -1776,6 +1746,27 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous vous êtes abonné aux mises à jour"
+
+#~ msgid "Top Reports"
+#~ msgstr "Incident classé"
+
+#~ msgid "Reports Filed"
+#~ msgstr "Incidents enregistrés"
+
+#~ msgid "Reports Fixed"
+#~ msgstr "Incidents résolus"
+
+#~ msgid "Reports Updated"
+#~ msgstr "Incidents <span style='display:inline-block;'>mis à jour</span>"
+
+#~ msgid "Rank"
+#~ msgstr "Classement"
+
+#~ msgid "Report"
+#~ msgstr "Incident"
+
+#~ msgid "Number of Subscribers"
+#~ msgstr "Nombre d'abonnés"
 
 #~ msgid "Return to incident"
 #~ msgstr "Signaler un incident"
