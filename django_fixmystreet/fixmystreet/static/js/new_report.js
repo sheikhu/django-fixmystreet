@@ -140,6 +140,7 @@ function createOverview(){
         $(fieldset).find(".control-group").each(function(idx, control){
 
             if ($(control).find('label').text()) {
+                console.log($(control).find('label').text());
                 reportBody.append($("<strong/>").text($(control).find('label').text() + " "));
                 // reportBody.append();
             }
@@ -151,7 +152,7 @@ function createOverview(){
                     reportBody.append("<br>").append($(control).find("span").clone());
                 }
                 else{
-                    reportBody.append($(control).children().clone());
+                    reportBody.append($(control).find('div').children().clone().text());
                 }
             } else if (input.is("select")) {
 
