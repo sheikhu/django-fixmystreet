@@ -140,7 +140,6 @@ function createOverview(){
         $(fieldset).find(".control-group").each(function(idx, control){
 
             if ($(control).find('label').text()) {
-                console.log($(control).find('label').text());
                 reportBody.append($("<strong/>").text($(control).find('label').text() + " "));
                 // reportBody.append();
             }
