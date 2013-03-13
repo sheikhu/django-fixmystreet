@@ -228,7 +228,8 @@ class ProReportHandler(BaseHandler):
             report_comment.save()
 
         #Automatic subscribe when creating a report using mobile device
-        ReportSubscription(report=report, subscriber=report.created_by).save()        
+        #ReportSubscription(report=report, subscriber=report.created_by).save()        
+        report.subscribe_author()
 
         #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
         report.organisation = None
@@ -292,7 +293,8 @@ class CitizenReportHandler(BaseHandler):
             report_comment.save()
 
         #Automatic subscribe when creating a report using mobile device
-        ReportSubscription(report=report, subscriber=report.citizen).save()        
+        #ReportSubscription(report=report, subscriber=report.citizen).save()        
+        report.subscribe_author()
        
         #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
         report.organisation = None
@@ -303,178 +305,6 @@ class CitizenReportHandler(BaseHandler):
         return report 
 
 
-
-#def create_report_citizen(request):
-#    """Create a citizens reports. Validation included."""
-#    data_email                       = request.POST.get('user_email')
-    #data_firstname                   = request.POST.get('user_firstname')
-#    data_phone			  = request.POST.get('user_phone')
-#    data_firstname                = ''
-#    data_lastname                 = request.POST.get('user_lastname')
-#    data_category_id              = request.POST.get('report_category_id')
-#    data_main_category_id         = request.POST.get('report_main_category_id')
-#    data_description              = request.POST.get('report_description')
-#    data_address                  = request.POST.get('report_address')
-#    data_address_number           = request.POST.get('report_address_number')
-#    data_zip                      = request.POST.get('report_zipcode')
-#    data_quality                  = request.POST.get('report_quality')
-#    data_x                        = request.POST.get('report_x')
-#    data_y                        = request.POST.get('report_y')
-    #data_subscription             = request.POST.get('report_subscription')
-    #create a new object
-#    report = Report()
-
-    #Verify that everything has been posted to create a citizen report.
-#    if (data_email == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_EMAIL","request":request.POST}),mimetype='application/json')
-    #if (data_firstname == None):
-    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_FIRSTNAME","request":request.POST}),mimetype='application/json')
-#    if (data_lastname == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_LASTNAME","request":request.POST}),mimetype='application/json')
-#    if (data_phone == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PHONE","request":request.POST}),mimetype='application/json')
-
-#    if (data_category_id == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-#    if (data_main_category_id == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-#    if (data_description == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')
-#    if (data_address == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')
-#    if (data_address_number == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS_NUMBER","request":request.POST}),mimetype='application/json')
-#    if (data_zip == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')
-#    if (data_quality == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_QUALITY","request":request.POST}),mimetype='application/json')
-#    if (data_x == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')
-#    if (data_y == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')
-    #if (data_subscription == None):
-    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_SUBSCRIPTION","request":request.POST}),mimetype='application/json')
-
-    #Verify if the citizen profile exists
-    #Create it if necessary and assign value to citizen attribute.
-#    try:
-#        existingUser = FMSUser.objects.get(email=data_email);
-        #Assign citizen
-#        report.citizen = existingUser
-#    except FMSUser.DoesNotExist:
-        #Add information about the citizen connected if it does not exist
-#        report.citizen = FMSUser.objects.create(username=data_email, telephone=data_phone, email=data_email, first_name=data_firstname, last_name=data_lastname, agent=False, contractor=False, manager=False, leader=False)
-
-    #Assign values to the report.
-#    try:
-        # Status
-#        report.status = Report.CREATED
-        # Category
-#        report.category           = ReportMainCategoryClass.objects.get(id=data_main_category_id)
-#        report.secondary_category = ReportCategory.objects.get(id=data_category_id)
-        # Description
-#        report.description = data_description
-        # Address
-#        report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
-#        report.postalcode = data_zip
-#        report.address = data_address
-#        report.address_number = data_address_number
-#        report.quality = data_quality
-#        report.private = False
-        #Subscription is automatic.
-        #Save given data
-#        report.save()
-#    except Exception:
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST}),mimetype='application/json')
-
-    #Return the report ID
-#    return JsonHttpResponse({
-#        'report_id': report.id
-#    })
-
-#def create_report_pro(request):
-#    '''This method is used to create citizens reports. Validation included.'''
-#    data_username              = request.POST.get('user_name')
-#    data_password              = request.POST.get('user_p')
-#    data_category_id              = request.POST.get('report_category_id')
-#    data_main_category_id         = request.POST.get('report_main_category_id')
-#    data_description              = request.POST.get('report_description')
-#    data_address                  = request.POST.get('report_address')
-#    data_address_number           = request.POST.get('report_address_number')
-#    data_zip                      = request.POST.get('report_zipcode')
-#    data_x                        = request.POST.get('report_x')
-#    data_y                        = request.POST.get('report_y')
-    #data_subscription             = request.POST.get('report_subscription')
-    #create a new object
-#    report = Report()
-
-    #Verify that everything has been posted to create a citizen report.
-#    if (data_username == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_USERNAME","request":request.POST}),mimetype='application/json')
-    #if (data_password == None):
-    #    return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_PASSWORD","request":request.POST}),mimetype='application/json')
-#    if (data_category_id == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-#    if (data_main_category_id == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_MAIN_CATEGORY_ID","request":request.POST}),mimetype='application/json')
-#    if (data_description == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_DESCRIPTION","request":request.POST}),mimetype='application/json')
-#    if (data_address == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS","request":request.POST}),mimetype='application/json')
-#    if (data_address_number == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ADDRESS_NUMBER","request":request.POST}),mimetype='application/json')
-#    if (data_zip == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_ZIP","request":request.POST}),mimetype='application/json')
-#    if (data_x == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_X","request":request.POST}),mimetype='application/json')
-#    if (data_y == None):
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_MISSING_DATA_Y","request":request.POST}),mimetype='application/json')
-
-    #Verify if the citizen profile exists
-    #Create it if necessary and assign value to citizen attribute.
-#    try:
-#        existingUser = FMSUser.objects.get(username=data_username)
-        #Assign creator (as pro user)
-#        report.created_by = existingUser
-#    except FMSUser.DoesNotExist:
-        #The user has not the right to create a report
-#        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
-
-    #Login the user
-#    user = authenticate(username=data_username, password=data_password)
-#    if user is not None:
-#        if user.is_active:
-#            login(request, user)
-#        else:
-#            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
-#    else:
-#        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
-
-    #Assign values to the report.
-#    try:
-        # Status
-#        report.status = Report.CREATED
-        # Category
-#        report.category = ReportMainCategoryClass.objects.get(id=data_main_category_id)
-#        report.secondary_category = ReportCategory.objects.get(id=data_category_id)
-        # Description
-#        report.description = data_description
-        # Address
-#        report.point = fromstr("POINT(" + data_x + " " + data_y + ")", srid=31370)
-#        report.postalcode = data_zip
-#        report.address = data_address
-#        report.address_number = data_address_number
-#        report.private = True
-        #Subscription is automatic.
-        #Save given data
-#        report.save()
-#    except Exception as e:
-#        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_PROBLEM_DATA","request":request.POST, "message": e.message}),mimetype='application/json')
-
-    #Return the report ID
-#    return JsonHttpResponse({
-#        'report_id': report.id
-#    })
 
 @csrf_exempt
 def create_report_photo(request):
