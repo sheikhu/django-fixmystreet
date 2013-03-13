@@ -99,6 +99,11 @@ $(function(){
         .click(function(e) {
             e.preventDefault();
         });
+
+    $('#verify_btn').click(function(evt) {
+        evt.preventDefault();
+        $('#nearby_reports_popup').modal();
+    });
 });
 
 
@@ -142,7 +147,7 @@ var categories = {
                 <div id="view_nearby_reports">
                     {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
                     <br/>
-                    <button onclick="$('#nearby_reports_popup').modal();" class="btn">{% trans 'Verify' %}</button>
+                    <button id="verify_btn" class="btn">{% trans 'Verify' %}</button>
                 </div>
 
             <fieldset>
