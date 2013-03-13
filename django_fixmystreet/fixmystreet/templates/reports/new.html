@@ -74,14 +74,19 @@ $(function(){
 
     $('#validate_button').click(function(evt) {
         evt.preventDefault();
-        if (validateForm($("#report-form"))) {
-            createOverview();
-            $('#validate_report_popup').modal();
-        }
+        var emailSection = $('#id_citizen-email');
+        if (!UtilValidator.validateEmail(emailSection.val())) {
+		emailSection.parent().parent().addClass('invalid');
+	} else {
+        	if (validateForm($("#report-form"))) {
+            		createOverview();
+            		$('#validate_report_popup').modal();
+        	}
+	}
     });
     $('#confirm_button').click(function(evt) {
         evt.preventDefault();
-        $('#report-form').submit();
+       	$('#report-form').submit();
     });
 
     $("[data-toggle=popover]")
@@ -230,7 +235,7 @@ var categories = {
         {% endif %}
     </div>
 </div>
-<div id="validate_report_popup" class="modal hide fade" role="dialog">
+<div id="validate_report_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
         <h3>{% trans 'Incident overview:' %}</h3>
@@ -243,7 +248,7 @@ var categories = {
         <button id="confirm_cancel_button" class='btn pull-left' data-dismiss="modal">{% trans 'Cancel' %}</button>
     </div>
 </div>
-<div id="nearby_reports_popup" class="modal hide fade" role="dialog">
+<div id="nearby_reports_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
         <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
@@ -260,7 +265,7 @@ var categories = {
         {% endif %}
     </div>
 </div>
-<div id="nonparticipatingcommune" class="modal hide fade" role="dialog">
+<div id="nonparticipatingcommune" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>{% trans "Warning" %}!</h3>
