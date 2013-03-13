@@ -1,7 +1,12 @@
 from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext_lazy as _
 
+from piston.resource import Resource
+
+from django_fixmystreet.fixmystreet.api import ReportHandler
+
 # from django_fixmystreet.backoffice.views.users import CreateUser
+
 
 urlpatterns = patterns('django_fixmystreet.backoffice.views.main',
     url(_(r'^$'), 'home',name='home_pro'),
@@ -85,4 +90,8 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(r'^agents/(?P<user_id>\d+)/delete$',   'delete_user', {'user_type': 'agents'},   name="delete_user"),
     url(r'^managers/(?P<user_id>\d+)/delete$', 'delete_user', {'user_type': 'managers'}, name="delete_user"),
     url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
+)
+
+urlpatterns += patterns('',
+    url(_(r'^export_file/reports/((?P<emitter_format>.+))/'), Resource(ReportHandler)),
 )

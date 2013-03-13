@@ -23,7 +23,7 @@ def load_zipcodes(request):
 def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''
         all_categories = ReportCategory.objects.all().order_by('category_class','secondary_category_class')
-        #Right ! 
+        #Right !
         return HttpResponse(ReportCategory.listToJSON(all_categories), mimetype='application/json')
 
 @csrf_exempt
@@ -61,7 +61,7 @@ def login_user(request):
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),mimetype='application/json')
-        
+
         #Login the user (for internal correct usage)
         user = authenticate(username=user_name, password=user_password)
         login(request, user)
@@ -164,147 +164,6 @@ def reports_pro(request):
 
 
 
-class ProReportHandler(BaseHandler):
-    '''This method is called by mobile to create pro reports'''
-    allowed_methods = ('POST')
-    model = Report
-    fields = (
-        'category',
-        'secondary_category',
-        'description',
-        'address',
-        'address_number',
-        'address_regional',
-        'postalcode',
-        'quality',
-        'x',
-        'y',
-        'id'
-    )
-    include = ('id')
-
-#    @validate(CitizenReportForm, 'POST')
-    def create(self, request):
-        '''Create pro report from mobile'''
-        '''Create a user if necessary'''
-        try:
-            existingUser = FMSUser.objects.get(username=request.data.get('user_name'))
-        except FMSUser.DoesNotExist:
-            #The user has not the right to create a report
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
-
-        #Login the user
-        user = authenticate(username=request.data['user_name'], password=request.data['user_p'])
-        if user is not None:
-            if user.is_active == True:
-                login(request, user)
-            else:
-                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_USER_NOT_ACTIVE","username": data_username}),mimetype='application/json')
-        else:
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_REPORT_UNKNOWN_PRO_USER","username": data_username}),mimetype='application/json')
-        #Create report self'''
-        report_form = ProReportForm(request.data)
-        if not report_form.is_valid():
-            raise ValidationError(str(report_form.errors))
-        report = report_form.save(commit=False)
-        
-        #Assign creator (as pro user)
-        report.created_by = existingUser
-        # Category
-        #report.category = ReportMainCategoryClass(request.data['secondary_category'])
-        #report.secondary_category = ReportCategory(request.data['category'])
-        # Address
-        report.private = True
-        #Save given data
-        report.save()
-        
-        #Create the comment is a comment has been given'''
-        if (request.data['description'].__len__()>0):
-            report_comment = ReportComment()
-            report_comment.report = report
-            report_comment.text = request.data['description']
-            report_comment.created_by = existingUser
-            report_comment.created = datetime.now()
-            report_comment.save()
-
-        #Automatic subscribe when creating a report using mobile device
-        #ReportSubscription(report=report, subscriber=report.created_by).save()        
-        report.subscribe_author()
-
-        #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
-        report.organisation = None
-        report.categories = None
-        report.work_for = None
-        report.created_by = None
-        report.modified_by = None
-        return report
-
-
-
-class CitizenReportHandler(BaseHandler):
-    '''This method is called by mobile to create citizen reports'''
-    allowed_methods = ('POST')
-    model = Report
-    fields = (
-        'category',
-        'secondary_category',
-        'description',
-        'address',
-        'address_number',
-        'address_regional',
-        'postalcode',
-        'quality',
-        'x',
-        'y',
-        'id'
-    )
-    include = ('id')
-
-#    @validate(CitizenReportForm, 'POST')
-    def create(self, request):
-        '''Create citizen report from mobile'''
-        '''Create a user if necessary'''
-        try:
-            citizen = FMSUser.objects.get(email=request.data.get('citizen-email'))
-        except FMSUser.DoesNotExist:
-            citizen_form = CitizenForm(request.data, prefix='citizen')
-            if not citizen_form.is_valid():
-                raise ValidationError(str(citizen_form.errors))
-            citizen = citizen_form.save()
-
-        #Create report self'''
-        report_form = CitizenReportForm(request.data)
-        if not report_form.is_valid():
-            raise ValidationError(str(report_form.errors))
-
-        report = report_form.save(commit=False)
-        report.citizen = citizen
-        #report.category = ReportMainCategoryClass(request.data['secondary_category'])
-        #report.secondary_category = ReportCategory(request.data['category'])
-        report.save()
-
-        #Create the comment is a comment has been given'''
-        if (request.data['description'].__len__()>0):
-            report_comment = ReportComment()
-            report_comment.report = report
-            report_comment.text = request.data['description']
-            report_comment.created_by = citizen
-            report_comment.created = datetime.now()
-            report_comment.save()
-
-        #Automatic subscribe when creating a report using mobile device
-        #ReportSubscription(report=report, subscriber=report.citizen).save()        
-        report.subscribe_author()
-       
-        #Piston random defect on JSONEmitter: workaround. delete unnecessary fields before answering
-        report.organisation = None
-        report.categories = None
-        report.work_for = None
-        report.created_by = None
-        report.modified_by = None
-        return report 
-
-
 
 @csrf_exempt
 def create_report_photo(request):
@@ -315,7 +174,7 @@ def create_report_photo(request):
 
     data_report_id = request.POST.get('report_id')
     data_file_content = request.FILES.get('report_file')
-    
+
     report_file = ReportFile()
     #Verify that everything has been posted to create a citizen report.
     if (data_report_id == None):
