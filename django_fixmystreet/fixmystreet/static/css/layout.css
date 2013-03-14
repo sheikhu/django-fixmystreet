@@ -186,6 +186,11 @@ footer *{
 .footer_left{
     float: left;
     padding-top:35px;
+    padding-bottom:5px;
+}
+div.footer_left img{
+    margin-right:10px;
+    vertical-align:baseline;
 }
 .footer_left a:link, .footer_left a:visited{
     /*color:#0A00BE;*/
@@ -202,10 +207,12 @@ footer *{
 
 .footer_right{
     float:right;
+    padding-top:34px;
 }
 .footer_left{
     vertical-align:bottom;
 }
+
 
 #legal-notice {
     padding-top:15px;
@@ -264,7 +271,7 @@ footer *{
     content: " ";
     width: 100%;
     height: 100%;
-    box-shadow: inset 0px 20px 20px -20px #DFDFDF, inset 0px -20px 20px -20px #DFDFDF;
+    box-shadow: inset 0px 20px 20px -20px #000, inset 0px -20px 20px -20px #000;
     pointer-events: none
 }
 
@@ -383,7 +390,7 @@ footer *{
 }
 .counter .text{
     color:#FFDB00;
-    font-size:19px;
+    font-size:17px;
     display:block;
 }
 .pro-counter .text{
@@ -411,7 +418,10 @@ footer *{
 #instructions, #search-form {
     position: absolute;
     top: 10%;
-    z-index: 750;
+    z-index: 100000750;
+}
+div.olControlZoom{
+    z-index:10000000 !important;
 }
 
 .form-search {
@@ -558,7 +568,7 @@ li img {
     display: none;
 }
 
-.form-centered {
+.form-centered, .box-centered {
     max-width: 700px;
     border: 1px solid #DFDFDF;
     border-radius: 8px;
@@ -605,6 +615,13 @@ li img {
     font-family: dosis-medium, arial, sans-serif;
 }
 
+.form-horizontal .control-group p,
+.form-horizontal .control-group [data-toggle="popover"],
+.file-upload-button [data-toggle="popover"] {
+    padding-top: 5px;
+}
+
+
 .warning_information_form {
     padding: 15px;
     margin-bottom: 40px;
@@ -616,7 +633,7 @@ li img {
 }
 
 .file-upload-button {
-    margin-left: 20px;
+    /*margin-left: 20px;*/
 }
 
 .file-upload-button a img{
@@ -795,7 +812,8 @@ li img {
     border: 1px solid #DFDFDF;
     border-radius: 8px;
     padding: 15px;
-    box-shadow: 0px 0px 3px 3px #DFDFDF;
+    /*box-shadow: 0px 0px 3px 3px #DFDFDF;*/
+    box-shadow:0px 4px 15px 3px #DFDFDF;
     float:right;
     width:350px;
     margin-left: 10px;
@@ -1274,7 +1292,8 @@ p.comment-incident{
     border: 1px solid #DFDFDF;
     border-radius: 8px;
     padding: 15px;
-    box-shadow: 0px 0px 3px 3px #DFDFDF;
+    /*box-shadow: 0px 0px 3px 3px #DFDFDF;*/
+    box-shadow:0px 4px 15px 3px #DFDFDF;
     margin-bottom: 10px;
     position: relative;
     box-sizing: border-box;
@@ -1333,12 +1352,12 @@ p.comment-incident{
 
 #top-reports td:first-child,
 #reports td:first-child{
-    border-left: 1px solid #D5E5F6;
+    /*border-left: 1px solid #D5E5F6;*/
 }
 
 #top-reports td:last-child,
 #reports td:last-child{
-    border-right: 1px solid #D5E5F6;
+    /*border-right: 1px solid #D5E5F6;*/
 }
 
 #reports th.feeds{
@@ -1366,6 +1385,26 @@ p.comment-incident{
 
 #top-reports {
 	width:530px;
+}
+
+
+.commune-row {
+    position: relative;
+    color: black;
+    text-decoration: none;
+    padding: 2px 4px;
+    border: 2px solid #FFDB00;
+    margin: 0  0 1px 0;
+}
+.commune-row a {
+    display: block;
+}
+.commune-row a.non-participate {
+    color:#757475;
+}
+.commune-row a.participate {
+    color:black;
+    font-weight: bold;
 }
 
 .row-odd {

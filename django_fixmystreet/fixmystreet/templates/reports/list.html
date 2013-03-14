@@ -64,7 +64,7 @@ $(function(){
                     <img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Unpublished' %}</span>
             </li>
             <li>
-                    <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'In progress' %}</span>
+                    <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'Report In progress' %}</span>
             </li>
             <li>
                     <img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Closed' %}</span>
@@ -91,9 +91,6 @@ $(function(){
                 <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Ticket number' %}">
                 <input type="submit" class="btn" id="filterReports" value="{% trans 'Search' %}"/>
             </div>
-        </div>
-        <div id="go_to_submit_report">
-            <input type="button" class='btn' value="{% trans 'Report an incident' %}" onclick="window.location.href='/'"/>
         </div>
    </div>
 </div>

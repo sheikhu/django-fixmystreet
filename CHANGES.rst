@@ -2,7 +2,71 @@ Changelog of django-fixmystreet
 ===================================================
 
 
-0.4.8 (unreleased)
+0.4.16 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+0.4.15 (2013-03-14)
+-------------------
+
+- Nothing changed yet.
+
+
+0.4.14 (2013-03-13)
+-------------------
+
+- Nothing changed yet.
+
+
+0.4.13 (2013-03-12)
+-------------------
+
+- Nothing changed yet.
+
+
+0.4.12 (2013-03-12)
+-------------------
+
+- Nothing changed yet.
+
+
+0.4.11 (2013-03-12)
+-------------------
+
+- Missing cirb logo due to forgotten git add (:-)) file is now added 
+
+
+0.4.10 (2013-03-12)
+-------------------
+
+- Translations FR + NL
+- Remove signaler un incident in list.html for citizens
+- Add footer logo
+- Update footer links NL
+
+
+
+0.4.9 (2013-03-12)
+------------------
+
+- Global spelling and wording corrections.
+
+- Dutch translation (work in progress).
+
+- Clean & lighter create report form.
+
+- About page review.
+
+- Communes index review (non-participate message, layout).
+
+- Create report form => non participate commune in a dialog box.
+
+
+
+
+0.4.8 (2013-03-12)
 ------------------
 
 - Nothing changed yet.

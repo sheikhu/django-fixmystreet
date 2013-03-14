@@ -36,6 +36,10 @@ $(function(){
         $("#history_popup").modal();
     });
 
+    //If running internet explorer then apply an extra span5 to comment and file div sections. Otherwise nothing is shown
+    if ($.browser.msie) {
+	$('.report_update').addClass('span5');
+    }
 
 });
 function setFileCreationDate(){
@@ -122,7 +126,7 @@ $("[data-toggle=popover]")
         {% include "reports/_activity_list.html" with pro_version=0 %}
     </div>
     <div class="modal-footer">
-        <input type="button" class="btn"  value="{% trans 'Return to incident'%}" data-dismiss="modal" aria-hidden="true"/>
+        <input type="button" class="btn"  value="{% trans 'Close'%}" data-dismiss="modal" aria-hidden="true"/>
     </div>
 </div>
 
@@ -268,8 +272,8 @@ $("[data-toggle=popover]")
             <!-- ################ -->
             <!-- SUBSCRIBER BLOCK -->
             <!-- ################ -->
-            <h4>{% trans "Subscribe" %}</h4>
-            {% trans "Subscribe to receive notifications" %} ({{report.subscriptions.count}} {% trans "subscribers to this incident" %})<br/>
+            <h4>{% trans "Subscription:" %}</h4>
+            {% trans "Subscribe to receive notifications" %} {{report.subscriptions.count}} {% trans "subscribers to this incident" %})<br/>
             {% if not report.is_closed and not subscribed %}
                 <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
                     {% csrf_token %}
@@ -278,23 +282,21 @@ $("[data-toggle=popover]")
                 </form>
             {% endif %}
             <div style="clear:both;"></div>
-         </div> <!-- bordered-box -->
-         <div class="bordered-box">
-             <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
-             <div>
-                 {% if report.is_in_progress %}
-                     {% if not report.status == report.SOLVED %}
+        </div> <!-- bordered-box -->
+        {% if report.status != report.SOLVED %}
+            <div class="bordered-box">
+                 <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
+                 <div>
+                     {% if report.is_in_progress %}
                           <a id="mark-as-done-show-report" href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
                      {% else %}
                          <button style="float:right;" onclick="" class="btn" disabled>{% trans 'Mark as done' %}</button>
                          <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>
                      {% endif %}
-                 {% endif %}
                  <div style="clear:both;"></div>
              </div>
-
-
         </div> <!-- bordered-box -->
+        {% endif %}
 
     </div> <!-- span6 -->
     {% endif %}

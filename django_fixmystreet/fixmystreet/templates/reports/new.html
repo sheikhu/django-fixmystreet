@@ -74,14 +74,19 @@ $(function(){
 
     $('#validate_button').click(function(evt) {
         evt.preventDefault();
-        if (validateForm($("#report-form"))) {
-            createOverview();
-            $('#validate_report_popup').modal();
-        }
+        var emailSection = $('#id_citizen-email');
+        if (!UtilValidator.validateEmail(emailSection.val())) {
+		emailSection.parent().parent().addClass('invalid');
+	} else {
+        	if (validateForm($("#report-form"))) {
+            		createOverview();
+            		$('#validate_report_popup').modal();
+        	}
+	}
     });
     $('#confirm_button').click(function(evt) {
         evt.preventDefault();
-        $('#report-form').submit();
+       	$('#report-form').submit();
     });
 
     $("[data-toggle=popover]")
@@ -94,6 +99,11 @@ $(function(){
         .click(function(e) {
             e.preventDefault();
         });
+
+    $('#verify_btn').click(function(evt) {
+        evt.preventDefault();
+        $('#nearby_reports_popup').modal();
+    });
 });
 
 
@@ -137,23 +147,25 @@ var categories = {
                 <div id="view_nearby_reports">
                     {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
                     <br/>
-                    <button onclick="$('#nearby_reports_popup').modal();" class="btn">{% trans 'Verify' %}</button>
+                    <button id="verify_btn" class="btn">{% trans 'Verify' %}</button>
                 </div>
 
             <fieldset>
                 <div class="control-group required">
-                    <label class="control-label" for="address-text">{% trans "Location:" %}</label>
-                    <div class="controls">
-                        <p id="address-text"></p>
-                    </div>
-                    <a href="#" style="margin-top:-20px;margin-left:-60px; display: inline-block; vertical-align: top;"
+                    <label class="control-label" for="address-text">
+                        {% trans "Location:" %}
+                    </label>
+                    <a href="#" style="margin-left:-50px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
                         data-trigger="hover"
-                        title="{% trans 'Location:'%}">
+                        title="{% trans 'Location:'%}" class="pull-left">
                         <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
                     </a>
                     <div id="location-recommendations" class="hide">
                         {% trans '** To change the address, move the marker on the map above.' %}
+                    </div>
+                    <div class="controls">
+                        <p id="address-text"></p>
                     </div>
 
                 </div>
@@ -228,7 +240,7 @@ var categories = {
         {% endif %}
     </div>
 </div>
-<div id="validate_report_popup" class="modal hide fade" role="dialog">
+<div id="validate_report_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
         <h3>{% trans 'Incident overview:' %}</h3>
@@ -241,7 +253,7 @@ var categories = {
         <button id="confirm_cancel_button" class='btn pull-left' data-dismiss="modal">{% trans 'Cancel' %}</button>
     </div>
 </div>
-<div id="nearby_reports_popup" class="modal hide fade" role="dialog">
+<div id="nearby_reports_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
         <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
@@ -258,7 +270,7 @@ var categories = {
         {% endif %}
     </div>
 </div>
-<div id="nonparticipatingcommune" class="modal hide fade" role="dialog">
+<div id="nonparticipatingcommune" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>{% trans "Warning" %}!</h3>

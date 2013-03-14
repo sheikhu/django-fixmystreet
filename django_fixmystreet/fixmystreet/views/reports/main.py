@@ -21,10 +21,13 @@ def new(request):
 
     pnt = dictToPoint(request.REQUEST)
     report=None
+    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+
     if request.method == "POST":
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+
         # this checks update is_valid too
         if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
             # this saves the update as part of the report.
@@ -54,9 +57,9 @@ def new(request):
             'x': request.REQUEST.get('x'),
             'y': request.REQUEST.get('y')
         }, prefix='report')
-    file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
-    comment_form = ReportCommentForm(prefix='comment')
-    citizen_form = CitizenForm(prefix='citizen')
+        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(prefix='comment')
+        citizen_form = CitizenForm(prefix='citizen')
 
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("reports/new.html",

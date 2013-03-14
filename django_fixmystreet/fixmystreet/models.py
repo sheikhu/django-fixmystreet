@@ -888,9 +888,10 @@ def report_notify(sender, instance, **kwargs):
             ).save()
 
             # automatic subscription for new responsible manager
-            subscription = ReportSubscription(report=instance, subscriber=report.responsible_manager)
-            subscription.notify_creation = False # don't send notification for subscription
-            subscription.save()
+            if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
+                subscription = ReportSubscription(report=instance, subscriber=report.responsible_manager)
+                subscription.notify_creation = False # don't send notification for subscription
+                subscription.save()
 
             if report.__former['responsible_entity'] == report.responsible_entity: # avoid double log when entity change
                 if report.__former['responsible_manager']:
