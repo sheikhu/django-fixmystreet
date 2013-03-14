@@ -1088,7 +1088,6 @@ class ReportFile(ReportAttachment):
 def init_file_type(sender,instance,**kwargs):
     if instance.file_type:
         return
-
     content_type = instance.file.file.content_type
 
     if content_type == "application/pdf":
