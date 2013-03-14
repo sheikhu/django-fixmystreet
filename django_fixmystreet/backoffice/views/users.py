@@ -26,7 +26,7 @@ def login_view(request):
         if form.is_valid():
             user = form.user
             login(request, user)
-            messages.add_message(request, messages.SUCCESS, _("You are logged in successfully"))
+            # messages.add_message(request, messages.SUCCESS, _("You are logged in successfully"))
             logger.info('login user {1} ({0})'.format(user.id, user.username))
             if 'next' in request.REQUEST and request.REQUEST['next'] and request.REQUEST['next'] != reverse('login'):
                 return HttpResponseRedirect(request.REQUEST['next'])

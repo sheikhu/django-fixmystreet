@@ -111,37 +111,16 @@ function showResults(type,li){
 {% endblock %}
 
 {% block content %}
-<div id="page_content_container">
-    {% block statistics %}
-    <article id="counters">
-        <div class='counter'>
-            <p class='number lead'>{{ report_counts.recent_new }}</p>
-            <p class='text'>{% trans "Report Created" %}</p>
-            <p class='qualifier'>{% trans "In the 30 last days" %}</p>
-        </div>
-        <div class='counter'>
-            <p class='number lead'>{{ report_counts.recent_updated }}</p>
-            <p class='text'>{% trans "Report In progress" %}</p>
-            <p class='qualifier'>{% trans "In the 30 last days" %}</p>
-        </div>
-        <div class='counter'>
-            <p class='number lead'>{{ report_counts.recent_fixed }}</p>
-            <p class='text'>{% trans "Report Processed" %}</p>
-            <p class='qualifier'>{% trans "In the 30 last days " %}</p>
-        </div>
-    </article>
-{% endblock %}
-
-    <article id="recent-reports" class="home_recent_reports">
+    <article id="recent-reports" class="home_recent_reports span6">
         <h4>{% trans 'Last modified reports:' %}</h4>
         <ul id="recent_home_nav" class="nav nav-tabs">
             <li class="active">
                 <a onclick="showResults('created',$(this).parent());">{% trans "Report Created" %}</a>
             </li>
-            <li>
+            <li class="">
                 <a onclick="showResults('in_progress',$(this).parent());">{% trans "Report In progress" %}</a>
             </li>
-            <li>
+            <li class="">
                 <a onclick="showResults('closed',$(this).parent());">{% trans "Report Processed" %}</a>
             </li>
         </ul>
@@ -176,12 +155,33 @@ function showResults(type,li){
         </div>
     </article>
 
-    <article id="home_download_mobile">
-        <p>{% trans 'Download Fix My Street for your smartphone:' %}</p>
-        <img src="{{STATIC_URL}}images/app-store.png" alt="App Store">
-        <img src="{{STATIC_URL}}images/google-play.png" alt="Google Play" class="pull-right">
-    </article>
-</div>
+    <div class="span6">
+        {% block statistics %}
+        <article id="counters">
+            <div class='counter'>
+                <p class='number lead'>{{ report_counts.recent_new }}</p>
+                <p class='text'>{% trans "Report Created" %}</p>
+                <p class='qualifier'>{% trans "In the 30 last days" %}</p>
+            </div>
+            <div class='counter'>
+                <p class='number lead'>{{ report_counts.recent_updated }}</p>
+                <p class='text'>{% trans "Report In progress" %}</p>
+                <p class='qualifier'>{% trans "In the 30 last days" %}</p>
+            </div>
+            <div class='counter'>
+                <p class='number lead'>{{ report_counts.recent_fixed }}</p>
+                <p class='text'>{% trans "Report Processed" %}</p>
+                <p class='qualifier'>{% trans "In the 30 last days " %}</p>
+            </div>
+        </article>
+        {% endblock %}
+
+        <article id="home_download_mobile">
+            <p>{% trans 'Download Fix My Street for your smartphone:' %}</p>
+            <img src="{{STATIC_URL}}images/app-store.png" alt="App Store">
+            <img src="{{STATIC_URL}}images/google-play.png" alt="Google Play" class="pull-right">
+        </article>
+    </div>
 {% endblock %}
 
 {% block content_third %}{% endblock %}

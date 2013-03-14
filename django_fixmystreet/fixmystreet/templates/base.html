@@ -162,20 +162,19 @@
             {% block map %}
             {% endblock %}
 
-            <section id="content">
+            <section id="content" class="row">
                 {% if messages %}
                 <div id="messages">
                     {% for message in messages %}
                     <div class="message modal hide" role="dialog">
                         <div class="modal-body">
-                            <!-- <p{% if message.tags %} class="msg {{ message.tags }}"{% endif %}>{{ message }}</p> -->
-                            <p class="lead {{ message.tags }}">
+                            <p class="lead text-{{ message.tags }}">
                                 {% if message.tags == "success" %}
-                                    <i class="icon-ok-sign"> </i>
+                                    <i class="icon-ok-big"> </i>
                                 {% elif message.tags == "warning" %}
                                     <i class="icon-warning-sign"> </i>
                                 {% elif message.tags == "warning" %}
-                                    <i class="icon-remove-sign"> </i>
+                                    <i class="icon-nok-big"> </i>
                                 {% endif %}
                                 <strong>{{ message }}</strong>
                             </p>
