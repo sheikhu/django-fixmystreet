@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 14:29+0100\n"
+"POT-Creation-Date: 2013-03-14 15:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,145 +41,149 @@ msgstr "Agent"
 msgid "Manager"
 msgstr "Gestionnaire"
 
-#: urls.py:7
+#: urls.py:12
 msgid "^$"
 msgstr ""
 
-#: urls.py:11
+#: urls.py:16
 msgid "^report/(?P<slug>.*)/(?P<report_id>\\d+)$"
 msgstr ""
 
-#: urls.py:12
+#: urls.py:17
 #, fuzzy
 msgid "^report/new$"
 msgstr "^rapport/nouveau"
 
-#: urls.py:13
+#: urls.py:18
 #, fuzzy
 msgid "^report/subscription$"
 msgstr "^rapport/abonnement"
 
-#: urls.py:14
+#: urls.py:19
 #, fuzzy
 msgid "^report/search_ticket_pro$"
 msgstr "^rapport/(\\d+)/accepter/"
 
-#: urls.py:15
+#: urls.py:20
 #, fuzzy
 msgid "^report/prepare_pro$"
 msgstr "^rapport/nouveau"
 
-#: urls.py:16
+#: urls.py:21
 #, fuzzy
 msgid "^report/(\\d+)/delete/$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:20
+#: urls.py:25
 msgid "^report/list/(.+)"
 msgstr "^rapport/liste/(.+)"
 
-#: urls.py:21
+#: urls.py:26
 #, fuzzy
 msgid "^report/listfilter/$"
 msgstr "^rapport/liste/(.+)"
 
-#: urls.py:25
+#: urls.py:30
 #, fuzzy
 msgid "^report/(\\d+)/update/$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:26
+#: urls.py:31
 #, fuzzy
 msgid "^report/(\\d+)/accept/$"
 msgstr "^rapport/(\\d+)/accepter/"
 
-#: urls.py:27
+#: urls.py:32
 #, fuzzy
 msgid "^report/(\\d+)/refuse/$"
 msgstr "^rapport/(\\d+)/refuser/"
 
-#: urls.py:28 urls.py:35
+#: urls.py:33 urls.py:40
 #, fuzzy
 msgid "^report/(\\d+)/fixed/$"
 msgstr "^rapport/(\\d+)/resolu/"
 
-#: urls.py:29
+#: urls.py:34
 #, fuzzy
 msgid "^report/(\\d+)/close/$"
 msgstr "^rapport/(\\d+)/termine/"
 
-#: urls.py:30
+#: urls.py:35
 #, fuzzy
 msgid "^report/(\\d+)/validateAll/$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:31
+#: urls.py:36
 #, fuzzy
 msgid "^report/(\\d+)/updateFile$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:32
+#: urls.py:37
 #, fuzzy
 msgid "^report/(\\d+)/deleteFile$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:33
+#: urls.py:38
 #, fuzzy
 msgid "^report/(\\d+)/updateComment$"
 msgstr "^rapport/(\\d+)/termine/"
 
-#: urls.py:34
+#: urls.py:39
 #, fuzzy
 msgid "^report/(\\d+)/deleteComment$"
 msgstr "^rapport/(\\d+)/termine/"
 
-#: urls.py:36
+#: urls.py:41
 msgid "^report/(\\d+)/changeManager/"
 msgstr ""
 
-#: urls.py:37
+#: urls.py:42
 msgid "^report/(\\d+)/changeContractor/"
 msgstr ""
 
-#: urls.py:38
+#: urls.py:43
 #, fuzzy
 msgid "^report/(\\d+)/switchPrivacy/"
 msgstr "^rapport/(\\d+)/accepter/"
 
-#: urls.py:39
+#: urls.py:44
 msgid "^report/(\\d+)/accept_and_validate/"
 msgstr ""
 
-#: urls.py:40
+#: urls.py:45
 msgid "^report/(\\d+)-(\\d+)/pdf/"
 msgstr ""
 
-#: urls.py:44
+#: urls.py:49
 msgid "^report/(\\d+)/subscribe/"
 msgstr ""
 
-#: urls.py:45
+#: urls.py:50
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr ""
 
-#: urls.py:49
+#: urls.py:54
 msgid "^report/(\\d+)/flags/thanks"
 msgstr ""
 
-#: urls.py:50
+#: urls.py:55
 msgid "^report/(\\d+)/flags"
 msgstr ""
 
-#: urls.py:60
+#: urls.py:65
 msgid "^ajax/saveSelection"
 msgstr ""
 
-#: urls.py:65
+#: urls.py:70
 msgid "^logout/$"
 msgstr ""
 
-#: urls.py:66
+#: urls.py:71
 msgid "^change-password/$"
+msgstr ""
+
+#: urls.py:96
+msgid "^export_file/reports/((?P<emitter_format>.+))/"
 msgstr ""
 
 #: templates/pro/change_password.html:4 templates/pro/login.html:4

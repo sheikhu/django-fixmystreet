@@ -191,7 +191,13 @@ class ReportCountBetweenDates(SqlQuery):
         return self.get_results()[self.index][3]
 
 class ReportCountStatsPro(object):
-
+    translations = { 
+            "seven_days":_("seven_days"),
+            "one_month":_("one_month"),
+            "three_months":_("three_months"),
+            "one_year":_("one_year"),
+            "more_years":_("more_years")
+        }
     def get_stats(self):
         today = dt.today()
         return {
@@ -205,7 +211,7 @@ class ReportCountStatsPro(object):
         stats= self.get_stats()
         result = ['']*len(stats)
         for stat in stats:
-            result[stats[stat]["order"]] = {"stat_value":ReportCountBetweenDates(stats[stat]["start_date"],stats[stat]["end_date"]),"stat_name":_(stat),"stat_key":stat}
+            result[stats[stat]["order"]] = {"stat_value":ReportCountBetweenDates(stats[stat]["start_date"],stats[stat]["end_date"]),"stat_name":self.translations[stat],"stat_key":stat}
         return result
 
 
