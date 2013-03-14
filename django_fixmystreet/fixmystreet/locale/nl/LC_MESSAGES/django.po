@@ -276,7 +276,6 @@ msgid "Report closed by {user}"
 msgstr "Rapport afgesloten door {user}"
 
 #: models.py:1417
-#, fuzzy
 msgid "Report pointed as solved"
 msgstr "Incident aangegeven als behandeld"
 
@@ -661,8 +660,8 @@ msgstr "Uw incident wordt naar de bevoegde dienst gestuurd"
 #: templates/home.html:83
 msgid "Subscribe an incident to be kept posted"
 msgstr ""
-"Abonneer u om op de hoogte te blijven van het gevolgdat aan uw indident "
-"geveen wordt"
+"Abonneer u om op de hoogte te blijven van het gevolg dat aan uw incident "
+"gegeven wordt"
 
 #: templates/home.html:89
 msgid "Enter the address where the incident is:"
@@ -1484,7 +1483,7 @@ msgstr "Geen problemen zijn gerapporteerd"
 
 #: templates/reports/list.html:89
 msgid "Search by ticket number:"
-msgstr "Rapport nummer zoeken"
+msgstr "Zoek op nummer :"
 
 #: templates/reports/list.html:91
 msgid "Ticket number"
@@ -1563,7 +1562,7 @@ msgstr "Bedankt ! Het incident is correct naar het systeem verstuurd."
 
 #: templates/reports/new.html:220
 msgid "A mail containing the link report has been sent."
-msgstr "Een email met report details werd opgestuurd."
+msgstr "Een email met rapport details werd opgestuurd."
 
 #: templates/reports/new.html:222
 msgid "Download a copy of the incident as a pdf"
@@ -1668,7 +1667,7 @@ msgstr "Verzend alle bestanden en commentaren"
 #: templates/reports/show.html:272
 msgid "Subscribe to receive notifications"
 msgstr ""
-"Ik wil de evolutie van het incident volgen en mailberichten te ontvangen"
+"Ik wil de evolutie van het incident volgen en wens mailberichten te ontvangen"
 
 #: templates/reports/show.html:272
 msgid "subscribers to this incident"

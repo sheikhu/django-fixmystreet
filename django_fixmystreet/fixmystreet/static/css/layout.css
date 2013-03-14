@@ -418,10 +418,10 @@ div.footer_left img{
 #instructions, #search-form {
     position: absolute;
     top: 10%;
-    z-index: 100000750;
+    z-index: 1040;
 }
 div.olControlZoom{
-    z-index:10000000 !important;
+    z-index:1035 !important;
 }
 
 .form-search {
