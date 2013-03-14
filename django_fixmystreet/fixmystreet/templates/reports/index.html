@@ -36,7 +36,7 @@ $(function(){
 	<h1>{% trans "Reports by wards" %}</h1>
 	{% for commune in communes %}
 	<p class="commune-row">
-		<a {% if commune.active %}href="{{ commune.get_absolute_url }}?page=1" class='participate'{% else %}href="#" class='non-participate'{% endif %}>
+		<a {% if commune.active %}href="{{ commune.get_absolute_url }}?page=1" class='participate'{% else %}href="#" onclick="$('#phone').html('{{commune.phone}}');" class='non-participate'{% endif %}>
 			{{ commune.name }}
 		</a>
 	</p>
