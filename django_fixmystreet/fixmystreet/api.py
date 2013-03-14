@@ -132,14 +132,13 @@ class ReportHandler(BaseHandler):
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
-        if request.path.find('/pro/'):
+        if request.data.get('username', False):
             return self.create_pro(request)
         else:
             return self.create_citizen(request)
 
     def create_pro(self, request):
         '''Create pro report'''
-
         #Login the user
         user = authenticate(username=request.data.get('username'), password=request.data.get('password'))
         if user and user.is_active == True:
@@ -151,7 +150,7 @@ class ReportHandler(BaseHandler):
         report_form = ProReportForm(request.data, prefix='report')
         comment_form = ReportCommentForm(request.data, prefix='comment')
         if not report_form.is_valid():
-            raise ValidationError(unicode(report_form.errors))
+            return HttpResponse(unicode(citizen_form.errors), status=400)
         report = report_form.save(commit=False)
 
         report.private = True
@@ -174,14 +173,14 @@ class ReportHandler(BaseHandler):
         except FMSUser.DoesNotExist:
             citizen_form = CitizenForm(request.data, prefix='citizen')
             if not citizen_form.is_valid():
-                raise ValidationError(str(citizen_form.errors))
+                return HttpResponse(unicode(citizen_form.errors), status=400)
             citizen = citizen_form.save()
 
         #Create report self'''
-        report_form = CitizenReportForm(request.data)
+        report_form = CitizenReportForm(request.data, prefix='report')
         comment_form = ReportCommentForm(request.data, prefix='comment')
         if not report_form.is_valid():
-            raise ValidationError(str(report_form.errors))
+            return HttpResponse(unicode(citizen_form.errors), status=400)
 
         report = report_form.save(commit=False)
         report.citizen = citizen

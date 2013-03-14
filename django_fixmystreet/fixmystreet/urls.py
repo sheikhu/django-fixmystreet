@@ -97,9 +97,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/logout/$'),'logout_user',name='logout_user'),
     url(_(r'^api/load_categories/$'),'load_categories',name='load_categories'),
     url(_(r'^api/load_zipcodes/$'),'load_zipcodes',name='load_zipcodes'),
-    url(_(r'^api/create_report_citizen/$'),Resource(ReportHandler),name='create_report_citizen'),
-    #url(_(r'^api/create_report_pro/$'),'create_report_pro',name='create_report_pro'),
-    url(_(r'^api/create_report_pro/$'),Resource(ReportHandler),name='create_report_pro'),
+    url(_(r'^api/create-report/$'),Resource(ReportHandler)),
     url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
 )
 
