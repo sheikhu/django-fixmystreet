@@ -133,7 +133,6 @@ $("[data-toggle=popover]")
 <!-- ######################### -->
 <!-- # MAIN CONTENT DEFINITION -->
 <!-- ######################### -->
-<div class="row">
     <h1 class="span12">
     {% if report.is_in_progress %}
         <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
@@ -300,5 +299,4 @@ $("[data-toggle=popover]")
 
     </div> <!-- span6 -->
     {% endif %}
-</div> <!-- row -->
 {% endblock %}

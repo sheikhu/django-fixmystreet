@@ -199,7 +199,6 @@ header nav li a.active,
 footer{
     height: 110px;
     vertical-align: bottom;
-    padding:0 0 0 30px;
 }
 footer *{
     /*vertical-align: bottom;*/

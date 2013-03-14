@@ -75,14 +75,14 @@ $(function(){
     $('#validate_button').click(function(evt) {
         evt.preventDefault();
         var emailSection = $('#id_citizen-email');
-        if (!UtilValidator.validateEmail(emailSection.val())) {
-		emailSection.parent().parent().addClass('invalid');
-	} else {
-        	if (validateForm($("#report-form"))) {
-            		createOverview();
-            		$('#validate_report_popup').modal();
-        	}
-	}
+        if (emailSection.length && !UtilValidator.validateEmail(emailSection.val())) {
+            emailSection.parent().parent().addClass('invalid');
+        } else {
+            if (validateForm($("#report-form"))) {
+                createOverview();
+                $('#validate_report_popup').modal();
+            }
+        }
     });
     $('#confirm_button').click(function(evt) {
         evt.preventDefault();
@@ -138,7 +138,7 @@ var categories = {
 {% endblock %}
 
 {% block content %}
-<form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal row">
+<form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
     <div class="span6" style="margin-top: 30px;">
         <div id="create_form_left" class="bordered-box">
             <span class="report-step-number img-circle">1</span>
