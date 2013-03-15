@@ -5,7 +5,7 @@ Changelog of django-fixmystreet
 0.4.19 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- disable email sending on staging, dev and local
 
 
 0.4.18 (2013-03-14)
@@ -53,7 +53,7 @@ Changelog of django-fixmystreet
 0.4.11 (2013-03-12)
 -------------------
 
-- Missing cirb logo due to forgotten git add (:-)) file is now added 
+- Missing cirb logo due to forgotten git add (:-)) file is now added
 
 
 0.4.10 (2013-03-12)
