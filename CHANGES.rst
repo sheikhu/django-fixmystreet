@@ -2,8 +2,8 @@ Changelog of django-fixmystreet
 ===================================================
 
 
-0.4.19 (unreleased)
--------------------
+0.5.0 (2013-03-15)
+------------------
 
 - disable email sending on staging, dev and local
 
