@@ -15,9 +15,6 @@ h1, h2, h3, h4, h5, p {
 h1 {
     margin-bottom: 42px;
 }
-h2 {
-    margin-bottom: 28px;
-}
 
 a {
     color:#949499;
@@ -1447,6 +1444,10 @@ p.comment-incident{
 
 #faq p, #faq ul, #faq ol {
 	text-align:left !important;
+}
+
+#faq h2 {
+    margin-bottom: 28px;
 }
 
 
