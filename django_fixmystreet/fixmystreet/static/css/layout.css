@@ -12,6 +12,13 @@ h1, h2, h3, h4, h5, p {
     color: #4D4D4D;
 }
 
+h1 {
+    margin-bottom: 42px;
+}
+h2 {
+    margin-bottom: 28px;
+}
+
 a {
     color:#949499;
     text-decoration: none;
@@ -152,6 +159,7 @@ header nav ul {
 
 header nav a {
     padding:0.2em 0.7em;
+    margin-left: 10px;
     border: transparent solid 2px;
 
 }
@@ -1438,11 +1446,9 @@ p.comment-incident{
 /********* FAQ LAYOUT ********/
 
 #faq p, #faq ul, #faq ol {
-	margin-left: 2em;
 	text-align:left !important;
 }
 
-#faq ul li, #faq ol li { margin-left:4em; }
 
 
 /********* SUBSCRIBE LAYOUT ********/

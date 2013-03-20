@@ -4,13 +4,14 @@
 	{% trans "About" %}
 {% endblock %}
 {% block content %}
-<div id="page_content_container">
-    <h1>{% trans "About FixMyStreet Brussels" %}</h1>
-    <div id="faq">
-        {% for faq in faq_entries %}
-            <h2{% if faq.slug %} id="{{ faq.slug }}"{% endif %}>{{faq.q}}</h2>
-            <div>{{faq.a|safe|urlize}}</div>
-        {% endfor %}
+
+<div id="faq">
+    <h1 class="span12">{% trans "About" %}</h1>
+    {% for faq in faq_entries %}
+    <div class="span12">
+        <h2{% if faq.slug %} id="{{ faq.slug }}"{% endif %}>{{faq.q}}</h2>
+        <div>{{faq.a|safe|urlize}}</div>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}
