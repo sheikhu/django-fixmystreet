@@ -69,10 +69,10 @@ urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.flags',
     url(_(r'^report/(\d+)/flags'), 'new',name='flag_report'),
 )
 
-urlpatterns += patterns('django_fixmystreet.fixmystreet.views.contact',
-    (_(r'^contact/thanks'), 'thanks'),
-    (_(r'^contact/'), 'new', {}, 'contact'),
-)
+# urlpatterns += patterns('django_fixmystreet.fixmystreet.views.contact',
+#     (_(r'^contact/thanks'), 'thanks'),
+#     (_(r'^contact/'), 'new', {}, 'contact'),
+# )
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
 
