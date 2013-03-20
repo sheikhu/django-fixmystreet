@@ -519,8 +519,8 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 5,
-            "name_fr": "Laeken",
-            "name_nl": "Laken",
+            "name_fr": "Bruxelles (Laeken)",
+            "name_nl": "Brussel (Laken)",
             "hide": false,
             "code": 1020
         }
@@ -530,8 +530,8 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 5,
-            "name_fr": "Neder-over-Heembeek",
-            "name_nl": "Neder-over-Heembeek",
+            "name_fr": "Bruxelles (Neder-over-Heembeek)",
+            "name_nl": "Brussel (Neder-over-Heembeek)",
             "hide": false,
             "code": 1120
         }
@@ -541,8 +541,8 @@
         "model": "fixmystreet.zipcode",
         "fields": {
             "commune": 5,
-            "name_fr": "Haren",
-            "name_nl": "Haren",
+            "name_fr": "Bruxelles (Haren)",
+            "name_nl": "Brussel (Haren)",
             "hide": false,
             "code": 1130
         }
