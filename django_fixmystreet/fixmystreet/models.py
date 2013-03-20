@@ -507,10 +507,10 @@ class Report(UserTrackedModel):
             if reportImages.exists():
                 if user and user.is_authenticated():
                     if not reportImages[0].is_confidential():
-                        return reportImages[0].image.url
+                        return reportImages[0].image.thumbnail.url()
                 else:
                     if reportImages[0].is_public():
-                        return reportImages[0].image.url
+                        return reportImages[0].image.thumbnail.url()
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
