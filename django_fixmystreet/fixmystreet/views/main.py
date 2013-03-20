@@ -19,7 +19,6 @@ def home(request, location = None, error_msg =None):
         fromUrl = '/'+local_lng+'/pro/'
         return HttpResponseRedirect(fromUrl)
 
-
     if request.GET.has_key('q'):
         location = request.GET["q"]
     last_30_days = dt.today() + datetime.timedelta(days=-30)

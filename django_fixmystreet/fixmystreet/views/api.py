@@ -17,8 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 def load_zipcodes(request):
         '''load_zipcodes is a method used by the mobiles to retrieve all usable zipcodes'''
-        #Right !
-        return HttpResponse(ZipCode().get_usable_zipcodes_to_mobile_json(),mimetype='application/json')
+        zips = ZipCode.participates.filter(hide=False)
+        return HttpResponse(simplejson.dumps([{'c':z.code, 'p':z.commune.phone} for z in zips]), mimetype='application/json')
 
 def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''

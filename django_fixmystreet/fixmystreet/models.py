@@ -1102,6 +1102,18 @@ def init_file_type(sender,instance,**kwargs):
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name, instance.file, save=False)
 
+# @receiver(post_save, sender=ReportFile)
+# def init_report_overview(sender,instance,**kwargs):
+#     if not instance.report.photo:
+#         if not instance.logical_deleted and instance.is_public():
+#             instance.report = instance.image
+#     elif instance.report.photo == instance.image
+#         if instance.logical_deleted or not instance.is_public():
+#             public_images = instance.files.filter(file_type=ReportFile.IMAGE, logical_deleted=False, security_level=ReportAttachment.PUBLIC)
+#             if public_images.exists():
+#                 instance.report = public_images[0]
+
+
 class ReportSubscription(models.Model):
     """
     Report Subscribers are notified when there's an update to an existing report.
@@ -1122,6 +1134,7 @@ def notify_report_subscription(sender, instance, **kwargs):
             reply_to=report.responsible_manager.email,
         )
         notifiation.save()
+
 
 class ReportMainCategoryClass(UserTrackedModel):
     __metaclass__ = TransMeta
@@ -1527,23 +1540,6 @@ class ZipCode(models.Model):
 
     objects = ZipCodeManager()
     participates = ParticipateZipCodeManager()
-
-    def get_usable_zipcodes(self):
-        allCommunesHavingManagers = ZipCode.participates.all().filter(hide=False)
-        #allManagers = FMSUser.objects.filter(manager=True)
-        #allCommunesHavingManagers = ZipCode.objects.filter(commune_id__in=OrganisationEntity.objects.filter(id__in=allManagers.values_list("organisation", flat=True)).values_list("id",flat=True)).distinct('code')
-        return allCommunesHavingManagers
-
-    def get_usable_zipcodes_to_mobile_json(self):
-        list_of_elements_as_json = []
-        for current_element in self.get_usable_zipcodes():
-            d = {}
-            d['c'] = getattr(current_element, 'code')
-            d['p'] = getattr(current_element.commune, 'phone')
-            list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
-
-
 
     class Meta:
         translate = ('name', )
