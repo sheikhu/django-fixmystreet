@@ -132,7 +132,6 @@ def delete(request,slug, report_id):
 def show(request,slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
-    page_number = int(request.GET.get("page", 1))
     report = get_object_or_404(Report, id=report_id)
 
     if request.method == "POST":
@@ -169,26 +168,8 @@ def show(request,slug, report_id):
 
     applicants = OrganisationEntity.objects.filter(applicant=True)
 
-    connectedUser = request.fmsuser
-
-    reports = Report.objects.all().order_by('-created')
-    #if the user is an contractor then user the dependent organisation id
-    if (connectedUser.contractor == True or connectedUser.applicant == True):
-        #if the user is an contractor then display only report where He is responsible
-        reports = reports.filter(contractor__in=connectedUser.work_for.all())
-    else:
-        #If the manager is connected then filter on manager
-        if (connectedUser.manager == True):
-            reports = reports.filter(responsible_manager=connectedUser);
-        else:
-            reports = reports.filter(responsible_entity=connectedUser.organisation)
-
-
-    pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
-
     return render_to_response("pro/reports/show.html",
             {
-                "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
                 "fms_user": request.fmsuser,
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
@@ -200,9 +181,7 @@ def show(request,slug, report_id):
                 "applicants":applicants,
                 "entities":entities,
                 "refuse_form": RefuseForm(instance=report),
-                "pages_list":pages_list,
                 "mark_as_done_form":MarkAsDoneForm(),
-                "page_number": page_number,
                 'activity_list' : report.activities.all(),
             },
             context_instance=RequestContext(request))
