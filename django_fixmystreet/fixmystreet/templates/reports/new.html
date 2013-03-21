@@ -7,25 +7,22 @@
 <meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur fix my street qui identifiera alors le service public en charge de le traiter.' %}" />
 {% endblock %}
 
+
 {% block script %}
 {{ block.super }}
-<script>
-
-var zipcodes = new Object();
-
-{% for zip in all_zips %}
-    zipcodes[{{zip.code}}] = new Object();
-    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-{% endfor %}
-</script>
-{% block specific_scripts %}
-{% endblock %}
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
 <script src="{{STATIC_URL}}js/new_report.js"></script>
 <script>
+var zipcodes = new Object();
+
+{% for zip in all_zips %}
+zipcodes[{{zip.code}}] = new Object();
+zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+{% endfor %}
+
 $(function(){
     // $("#user_information_form").find('.inactive_overlay_form_overview').hide();
     // $("#create_form_left").find('.inactive_overlay_form_overview').hide();
