@@ -60,7 +60,7 @@ function retrieveAddress() {
         $('#address-text').removeClass('loading');
         $form.find('.text-error').remove();
 
-        if (typeof window.zipcodes != 'undefined' && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
+        if (!BACKOFFICE && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
 
             fillAdressField(lang, address);
 

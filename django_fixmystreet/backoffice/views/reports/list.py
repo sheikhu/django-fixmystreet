@@ -11,6 +11,12 @@ def list(request, status):
     page_number = int(request.GET.get("page", 1))
     ownership = request.GET.get("ownership", "entity")
 
+    #Get street
+    value_street = request.GET.get("street", "")
+    value_street_number = request.GET.get("streetNumber", "")
+    #Get the rayon
+    value_rayon = request.GET.get("rayon", "")
+
     default_position = {
         'x': '148954.431',
         'y': '170458.371'
@@ -50,51 +56,9 @@ def list(request, status):
         reports = reports.closed()
     # else: # all
 
-    #reports = reports.distance(pnt).order_by('distance')
-    #reports = reports.distance(pnt).order_by('address', 'address_number')
-    reports = reports.distance(pnt).order_by('-created')
-    pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
-    zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
-
-    return render_to_response("pro/reports/list.html",
-            {
-                "pnt":pnt,
-                "zipcodes": zipcodes,
-                "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
-                "status":status,
-                "pages_list":pages_list,
-                "ownership": ownership,
-                "page_number": page_number,
-                "status": status
-            },
-            context_instance=RequestContext(request))
-
-
-@login_required(login_url='/pro/accounts/login/')
-def listfilter(request):
-    if request.GET.get("page"):
-        page_number = int(request.GET.get("page"))
-    else:
-        page_number=1
-    #Get location
-    pnt = dictToPoint(request.REQUEST)
-    #Get street
-    value_street = request.GET.get("street")
-    value_street_number = request.GET.get("streetNumber")
-    #Get the rayon
-    value_rayon = request.GET.get("rayon")
-    #Get the current user
-    connectedUser = request.fmsuser
-    user_organisation = connectedUser.organisation
-    #if the user is an executeur de travaux then user the dependent organisation id
-    if (connectedUser.contractor == True):
-        user_organisation = user_organisation.dependency
-
-    #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
-    reports = Report.objects.filter(responsible_entity=user_organisation)
-
+    # Address & rayon
     #If a rayon is given the apply it on the research
-    if (not value_rayon == None):
+    if (value_rayon):
         if (not value_street_number == ""):
             #update point to use with rayon
             if request.LANGUAGE_CODE == 'nl':
@@ -121,23 +85,21 @@ def listfilter(request):
         if (not value_street_number == ""):
             reports = reports.filter(address_number=value_street_number)
 
-    #if the user is an executeur de travaux then display only report where He is responsible
-    if (connectedUser.contractor == True):
-        reports = reports.filter(contractor = connectedUser.organisation)
-
-    if request.LANGUAGE_CODE=='nl':
-        reports = reports.order_by('address_nl', 'address_number_as_int')
-    else:
-        reports = reports.order_by('address_fr', 'address_number_as_int')
-
+    #reports = reports.distance(pnt).order_by('distance')
+    #reports = reports.distance(pnt).order_by('address', 'address_number')
+    reports = reports.distance(pnt).order_by('-created')
     pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
+
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,
                 "zipcodes": zipcodes,
                 "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
-                "status": "all",
+                "status":status,
                 "pages_list":pages_list,
+                "ownership": ownership,
+                "page_number": page_number,
+                "status": status
             },
             context_instance=RequestContext(request))

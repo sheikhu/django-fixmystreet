@@ -23,9 +23,9 @@ $(document).ready(function() {
             var valueRayon = $('#rayon').val();
             var rayonChecked = valueRayon != "";
             if (rayonChecked) {
-                window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
+                window.location="{% url report_list_pro 'all' %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&rayon="+valueRayon+"&page=1";
             } else {
-                window.location="{% url report_filter_list_pro %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
+                window.location="{% url report_list_pro 'all' %}?x="+valueX+"&y="+valueY+"&street="+valueStreet+"&streetNumber="+valueStreetNumber+"&page=1";
             }
         }
     });
@@ -134,60 +134,69 @@ function highlightFilterSelection(id) {
     {% trans 'Closed reports' %}
     {% endif %}
     </h1>
-    <div id="incident_filter" class="span12">
-        <ul>
-            <li>
-                {% trans 'Filter the incidents by:' %}
-            </li>
-            <li>
-                <a href="{% url report_list_pro 'all' %}" {% ifequal status 'all' %} class="active"{% endifequal %}>
-                    <img src="{{STATIC_URL}}images/pin-fixmystreet-L.png" width="40px" height="54px"> <span id="all">{% trans 'All reports' %}</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url report_list_pro 'created'%}" {% ifequal status 'created' %} class="active"{% endifequal %}>
-                    <img src="{{STATIC_URL}}images/pin-red-L.png"> <span id="created">{% trans 'Unpublished' %}</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url report_list_pro 'in_progress' %}" {% ifequal status 'in_progress' %} class="active"{% endifequal %}>
-                    <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url report_list_pro 'in_progress_and_assigned' %}" {% ifequal status 'in_progress_and_assigned' %} class="active"{% endifequal %}>
-                    <img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url report_list_pro 'closed' %}" {% ifequal status 'closed' %} class="active"{% endifequal %}>
-                    <img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="span8">
-        {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
-        <p class="btn-group pull-right">
-            <a href="{% url report_list_pro status %}?ownership=responsible" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">{% trans 'My Reports' %}</a>
-            <a href="{% url report_list_pro status %}?ownership=entity" class="btn{% ifequal ownership 'entity' %} active{% endifequal %}">{% trans 'All Reports' %}</a>
-            <a href="{% url report_list_pro status %}?ownership=subscribed" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">{% trans 'My Subscriptions' %}</a>
-        </p>
-        {% endif %}
-        {% if reports %}
-            <div id='search_results' style="clear: both;">
-                <a id="create_report_fastlink" href="{% url report_prepare_pro %}" class="report">
-                   <h3 class="report-title">{% trans "create_report" %}</h3>
-                </a>
-                {% for report in reports %}
-                {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
-                {% endfor %}
-                {% include "_paginator.html" %}
-            </div>
-        {% else %}
-            <p>{% trans "No problems have been reported in this area." %}</p>
-        {% endif %}
-    </div>
+
+    {% with ownership=request.GET.ownership street=request.GET.street streetNumber=request.GET.streetNumber rayon=request.GET.rayon %}
+        <div id="incident_filter" class="span12">
+            <ul>
+                <li>
+                    {% trans 'Filter the incidents by:' %}
+                </li>
+                <li>ownership
+                    <a
+                        href="{% url report_list_pro 'all' %}?ownership={{ ownership }}&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}"
+                        {% ifequal status 'all' %} class="active"{% endifequal %}>
+
+                        <img src="{{STATIC_URL}}images/pin-fixmystreet-L.png" width="40px" height="54px"> <span id="all">{% trans 'All reports' %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url report_list_pro 'created'%}?ownership={{ ownership }}&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" {% ifequal status 'created' %} class="active"{% endifequal %}>
+                        <img src="{{STATIC_URL}}images/pin-red-L.png"> <span id="created">{% trans 'Unpublished' %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url report_list_pro 'in_progress' %}?ownership={{ ownership }}&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" {% ifequal status 'in_progress' %} class="active"{% endifequal %}>
+                        <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span id="in_progress">{% trans 'In progress' %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url report_list_pro 'in_progress_and_assigned' %}?ownership={{ ownership }}&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" {% ifequal status 'in_progress_and_assigned' %} class="active"{% endifequal %}>
+                        <img src="{{STATIC_URL}}images/pin-orange-executed-L.png"> <span id="in_progress_and_assigned">{% trans 'In progress and assigned' %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url report_list_pro 'closed' %}?ownership={{ ownership }}&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" {% ifequal status 'closed' %} class="active"{% endifequal %}>
+                        <img src="{{STATIC_URL}}images/pin-green-L.png"> <span id="closed">{% trans 'Closed' %}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="span8">
+            {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
+            <p class="btn-group pull-right">
+                <a href="{% url report_list_pro status %}?ownership=responsible&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" class="btn{% ifequal ownership 'responsible' %} active{% endifequal %}">{% trans 'My Reports' %}</a>
+                <a href="{% url report_list_pro status %}?ownership=entity&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" class="btn{% if ownership == 'entity' or ownership == '' %} active{% endif %}">{% trans 'All Reports' %}</a>
+                <a href="{% url report_list_pro status %}?ownership=subscribed&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}" class="btn{% ifequal ownership 'subscribed' %} active{% endifequal %}">{% trans 'My Subscriptions' %}</a>
+            </p>
+            {% endif %}
+
+            {% if reports %}
+                <div id='search_results' style="clear: both;">
+                    <a id="create_report_fastlink" href="{% url report_prepare_pro %}" class="report">
+                       <h3 class="report-title">{% trans "create_report" %}</h3>
+                    </a>
+                    {% for report in reports %}
+                    {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+                    {% endfor %}
+                    {% include "_paginator.html" %}
+                </div>
+            {% else %}
+                <p>{% trans "No problems have been reported in this area." %}</p>
+            {% endif %}
+        </div>
+    {% endwith %}
+
     <div class="span4">
         <div id="search_by_commune_or_address" class="block highlighted">
             <form id="search-street">
