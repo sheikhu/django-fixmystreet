@@ -23,7 +23,7 @@
 
         </p>
         {% endif %}
-    </div> <!-- update_text -->
+    <!--/div--> <!-- update_text -->
     <!-- If the status allow such interactions -->
     {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
         <ul>
@@ -42,11 +42,14 @@
             </label></li>
         </ul>
     {% else %}
+        <p>
         {% if comment.security_level == comment.PRIVATE %}
             {% trans "private" %}
         {% elif comment.security_level == comment.CONFIDENTIAL %}
             {% trans "confidential" %}
         {% endif %}
+        </p>
     {% endif %}
+    </div>
 </div> <!-- report_update -->
 <div style="clear:both"></div>

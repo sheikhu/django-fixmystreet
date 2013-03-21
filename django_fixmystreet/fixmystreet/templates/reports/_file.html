@@ -25,10 +25,10 @@
         <div class="update_text">
             <span class="picture-caption">{{file.title}}</span>
             {% if BACKOFFICE %}
-            <br/>
             <span class="update_light_text">{% trans 'Posted by' %}</span>
                 {{file.get_display_name}}
              {% endif %}
+            <br />
             <span class="picture-date">
             <span class="update_light_text">{% trans 'file creation Date' %}</span>
             {% if file.file_creation_date != None%}

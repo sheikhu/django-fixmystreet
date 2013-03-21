@@ -217,7 +217,7 @@ function close(){
                             {% endblocktrans %}
                         {% else %}
                             {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
-                                Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
+                                Posted on <strong>{{on}}</strong> by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong>
                             {% endblocktrans %}
                             (tel:{{report.citizen.fmsuser.telephone}})
                         {% endif %}
@@ -289,7 +289,7 @@ function close(){
                         <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
                         <!-- ################################# -->
                         <tr>
-                            <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
+                            <th><strong>{% trans "Contractor/Applicant:" %}&nbsp;:</strong></th>
                             <td colspan="4">
                                 <select id="report_responsible_impetrant_contractor_select">
                                     <option value="-1">{% trans 'Select a contractor/applicant' %}</option>
@@ -311,7 +311,7 @@ function close(){
                         <!-- ################################# -->
                         <tr>
                             <th>
-                                <strong>{% trans "Set as private report" %}&nbsp;?</strong>
+                                <strong>{% trans "Set as private report" %}</strong>
                             </th>
                             <td colspan="2">
                                 <input type="radio" id="id_private" name="public_private">
@@ -466,6 +466,7 @@ function close(){
                 <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
             {% endif %}
         {% endif %}
+        <div style="clear:both;"></div>
     </div>
 
     {% if not report.is_closed and not report.is_created %}

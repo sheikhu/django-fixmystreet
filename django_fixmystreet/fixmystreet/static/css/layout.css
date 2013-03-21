@@ -1102,6 +1102,9 @@ legend span {
 	width:100%;
 	clear:both;
 }
+#report_responsible_manager_select, #report_responsible_impetrant_contractor_select{
+     width:384px;
+}
 
 .note {
 	font-weight:bold;
@@ -1288,6 +1291,14 @@ p.comment-incident{
     clear: both;
     margin-right: 15px;
     padding: 10px;
+}
+.update_text strong{
+    font-weight:normal !important;
+}
+
+a.pull-right img{
+    margin-right:5px;
+    margin-top:5px;
 }
 
 .report_update .update_light_text {
