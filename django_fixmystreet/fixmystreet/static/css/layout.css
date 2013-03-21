@@ -187,6 +187,10 @@ header nav li a.active,
     border-radius: 10px;
 }
 
+#incident_filter ul{
+    margin-left:0;
+}
+
 #incident_filter li{
     display: inline;
     margin-left: 0px;
