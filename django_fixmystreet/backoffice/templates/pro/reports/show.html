@@ -442,38 +442,36 @@ function close(){
                 <input type="checkbox" name="pro-subscription" id="id_pro-subscription"> {% trans "Subscription and report follow-up" %}
             </label>
         </div>
+        <!-- #################################### -->
+        <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
+        <!-- #################################### -->
+        {% if report.responsible_manager == request.fmsuser %}
+            <!-- ############################################# -->
+            <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
+            <!-- ############################################# -->
+            {% if report.is_in_progress %}
+                {% if request.fmsuser.is_superuser %}
+                    <a href="{% url report_delete_pro report.id %}" class="btn pull-right clearfix btn-danger">{% trans 'Delete' %}</a>
+                {% endif %}
+                {% if not fms_user.contractor %}
+                    <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
+                {% endif %}
+            {% endif %}
+            <!-- ######################################### -->
+            <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
+            <!-- ######################################### -->
+            {% if report.is_created %}
+                <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Accept' %}</a>
+                <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish' %}</a>
+                <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
+            {% endif %}
+        {% endif %}
     </div>
 
-    {% if not report.is_closed %}
+    {% if not report.is_closed and not report.is_created %}
         <div class="bordered-box">
              <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>
-                <!-- ################################################### -->
-                <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
-                <!-- ################################################### -->
-                {% if report.responsible_manager == request.fmsuser %}
-                    <!-- ############################################# -->
-                    <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
-                    <!-- ############################################# -->
-                    {% if report.is_in_progress %}
-                        {% if request.fmsuser.is_superuser %}
-                            <a href="{% url report_delete_pro report.id %}" class="btn pull-right clearfix btn-danger">{% trans 'Delete' %}</a>
-                        {% endif %}
-                        {% if not fms_user.contractor %}
-                            <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
-                        {% endif %}
-                    {% endif %}
-                    <!-- ######################################### -->
-                    <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
-                    <!-- ######################################### -->
-                    {% if report.is_created %}
-                        <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Accept' %}</a>
-                        <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish' %}</a>
-                        <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
-                    {% endif %}
-                {% endif %}
-
-
                 {% if report.is_in_progress %}
                     {% if report.is_markable_as_solved %}
                         <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Solved' %}</button>
