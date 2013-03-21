@@ -48,20 +48,7 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    connectedUser = request.fmsuser
-
-    #if the user is an contractor then user the dependent organisation id
-    if (connectedUser.contractor == True or connectedUser.applicant == True):
-        #if the user is an contractor then display only report where He is responsible
-        reports = Report.objects.filter(contractor__in = connectedUser.work_for.all())
-    else:
-        reports = Report.objects.filter(responsible_entity = connectedUser.organisation)
-
-    #If the manager is connected then filter on manager
-    if (connectedUser.manager == True):
-        reports = reports.filter(responsible_manager=connectedUser);
-
-    reports = reports.distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,
@@ -69,7 +56,7 @@ def new(request):
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "report_form": report_form,
                 "pnt":pnt,
-                "reports":reports[0:5],
+                "reports":reports,
                 "file_formset":file_formset,
                 "comment_form":comment_form,
             },

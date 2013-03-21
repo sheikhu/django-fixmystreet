@@ -61,7 +61,8 @@ def new(request):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance').public()
+
     return render_to_response("reports/new.html",
             {
                 "report":report,
@@ -73,7 +74,7 @@ def new(request):
                 "report_form": report_form,
                 "citizen_form": citizen_form,
                 "pnt":pnt,
-                "reports":reports[0:5]
+                "reports":reports
             },
             context_instance=RequestContext(request))
 
