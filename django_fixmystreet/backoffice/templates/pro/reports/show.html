@@ -444,14 +444,14 @@ function close(){
         </div>
     </div>
 
-    {% if not report.is_created and not report.is_closed %}
+    {% if not report.is_closed %}
         <div class="bordered-box">
              <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>
                 <!-- ################################################### -->
                 <!-- # ONLY THE MANAGER AND CONTRACTOR CAN USE BUTTONS # -->
                 <!-- ################################################### -->
-                {% if report.responsible_manager == request.fmsuser or report.contractor in request.fmsuser.work_for %}
+                {% if report.responsible_manager == request.fmsuser %}
                     <!-- ############################################# -->
                     <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
                     <!-- ############################################# -->
@@ -472,6 +472,8 @@ function close(){
                         <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
                     {% endif %}
                 {% endif %}
+
+
                 {% if report.is_in_progress %}
                     {% if report.is_markable_as_solved %}
                         <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Solved' %}</button>
