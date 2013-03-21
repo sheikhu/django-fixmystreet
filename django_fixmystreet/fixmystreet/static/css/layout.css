@@ -1813,7 +1813,22 @@ table.report_overview_table th{
 #divMarkAsDone input[type=submit] {
     background: #FFDB00;
 }
-
+.download-pdf-pro {
+    background:transparent url('/static/images/download-pdf-pro.png') top left no-repeat;
+    width:41px;
+    height:38px;
+    display:inline-block;
+    margin-right:9px;
+    vertical-align:middle;
+}
+.download-xls {
+    background:transparent url('/static/images/download-xls.png') top left no-repeat;
+    width:41px;
+    height:38px;
+    display:inline-block;
+    margin-right:9px;
+    vertical-align:middle;
+}
 .download-pdf {
     background:transparent url('/static/images/download-pdf.png') top left no-repeat;
     width:41px;
