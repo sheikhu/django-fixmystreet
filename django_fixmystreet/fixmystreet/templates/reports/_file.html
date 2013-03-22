@@ -40,7 +40,6 @@
             <span class="update_light_text">{% trans 'file publication date' %}</span>
             {{file.created}}
             </span>
-        </div> <!-- update_text -->
     {% endif %}
     <!-- If the status allow such interactions -->
     {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
@@ -60,10 +59,13 @@
             </label></li>
         </ul>
     {% else %}
+        <p>
         {% if file.security_level == file.PRIVATE %}
             {% trans "private" %}
         {% elif file.security_level == file.CONFIDENTIAL %}
             {% trans "confidential" %}
         {% endif %}
+        </p>
     {% endif %}
+    </div> <!-- update_text -->
 </div> <!-- report_update -->
