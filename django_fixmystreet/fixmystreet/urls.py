@@ -101,14 +101,14 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
 )
 
-urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
-    url(_(r'^import/report/close/$'), 'close_report',name='close_report'),
-    url(_(r'^import/report/change_manager/$'), 'change_manager_report',name='change_manager_report'),
-)
+# urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
+#     url(_(r'^import/report/close/$'), 'close_report',name='close_report'),
+#     url(_(r'^import/report/change_manager/$'), 'change_manager_report',name='change_manager_report'),
+# )
 
-urlpatterns += patterns('django_fixmystreet.fixmystreet.views.export',
-    url(_(r'^export/reports/entity/$'), 'entity_reports',name='entity_reports'),
-    url(_(r'^export/reports/contractor/$'), 'contractor_reports',name='contractor_reports'),
-    url(_(r'^export/reports/manager/$'), 'manager_reports',name='manager_reports'),
-)
+# urlpatterns += patterns('django_fixmystreet.fixmystreet.views.export',
+#     url(_(r'^export/reports/entity/$'), 'entity_reports',name='entity_reports'),
+#     url(_(r'^export/reports/contractor/$'), 'contractor_reports',name='contractor_reports'),
+#     url(_(r'^export/reports/manager/$'), 'manager_reports',name='manager_reports'),
+# )
 

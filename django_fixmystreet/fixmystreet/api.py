@@ -4,7 +4,6 @@ import datetime
 
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth import authenticate, login
-from django.core.exceptions import ValidationError
 
 from piston.handler import BaseHandler
 from piston.emitters import Emitter
@@ -46,11 +45,16 @@ class CSVEmitter(Emitter):
     def render(self, request):
         output = StringIO.StringIO()
         content = self.construct()
+
+        if not isinstance(content, (list, tuple)):
+            content = [content]
+
         headers = self.get_keys(content[0], field_order=self.fields)
 
         writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
         writer.writerow(headers)
+
 
         for row in content:
             writer.writerow(self.get_values(row, field_order=self.fields))
@@ -118,6 +122,7 @@ class ReportHandler(BaseHandler):
     fields = (
         'id',
         'point',
+        'status',
         'created',
         'responsible_entity',
         'responsible_manager',
@@ -150,7 +155,7 @@ class ReportHandler(BaseHandler):
         report_form = ProReportForm(request.data, prefix='report')
         comment_form = ReportCommentForm(request.data, prefix='comment')
         if not report_form.is_valid():
-            return HttpResponse(unicode(citizen_form.errors), status=400)
+            return HttpResponse(unicode(report_form.errors), status=400)
         report = report_form.save(commit=False)
 
         report.private = True

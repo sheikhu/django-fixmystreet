@@ -92,5 +92,6 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
 )
 
 urlpatterns += patterns('',
-    url(_(r'^export_file/reports/((?P<emitter_format>.+))/'), Resource(ReportHandler)),
+    url(_(r'^export_file/reports/(?P<emitter_format>.+)/(?P<id>\d+)'), Resource(ReportHandler), name="export_report"),
+    url(_(r'^export_file/reports/(?P<emitter_format>.+)'), Resource(ReportHandler), name="export_report"),
 )
