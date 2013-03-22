@@ -1092,12 +1092,12 @@ def init_file_type(sender,instance,**kwargs):
 
     if content_type == "application/pdf":
         instance.file_type = ReportFile.PDF
-    elif content_type == 'application/msword' or content_type == 'application/vnd.oasis.opendocument.text' or content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        instance.file_type = ReportFile.WORD
-    elif content_type == 'image/png' or content_type == 'image/jpeg':
-        instance.file_type = ReportFile.IMAGE
     elif content_type == 'application/vnd.ms-excel' or content_type == 'application/vnd.oasis.opendocument.spreadsheet':
         instance.file_type = ReportFile.EXCEL
+    elif content_type == 'image/png' or content_type == 'image/jpeg':
+        instance.file_type = ReportFile.IMAGE
+        instance.file_type = ReportFile.WORD
+    else:
 
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name, instance.file, save=False)
