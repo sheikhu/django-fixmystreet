@@ -67,6 +67,6 @@ def posters(request):
 
 
 def terms_of_use(request):
-    return render_to_response("term_of_use.html",
+    return render_to_response("terms_of_use.html",
             context_instance=RequestContext(request))
 
