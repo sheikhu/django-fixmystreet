@@ -432,12 +432,12 @@ class Report(UserTrackedModel):
             elif self.is_pro():
                 return "images/pro-pin-"+marker_color+"-XS.png"
             else:
-                return "images/pin-"+marker_color+"-XL.png"
+                return "images/pin-"+marker_color+"-XS.png"
         else:
             if self.is_pro():
                 return "images/pro-pin-"+marker_color+"-XS.png"
             else:
-                return "images/pin-"+marker_color+"-XL.png"
+                return "images/pin-"+marker_color+"-XS.png"
 
     def is_regional(self):
         return self.address_regional == True
