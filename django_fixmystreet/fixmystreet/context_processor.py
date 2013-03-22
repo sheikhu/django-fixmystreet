@@ -13,9 +13,10 @@ def domain(request):
 
 def environment(request):
     return {
-        'APP_VERSION': settings.VERSION,
-        'ENVIRONMENT': settings.ENVIRONMENT,
-        'BACKOFFICE': request.backoffice
+        'APP_VERSION':  settings.VERSION,
+        'DEBUG':        settings.DEBUG,
+        'ENVIRONMENT':  settings.ENVIRONMENT,
+        'BACKOFFICE':   request.backoffice
     }
 
 

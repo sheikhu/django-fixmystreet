@@ -19,6 +19,27 @@ function cloneObj (obj) {
     }
 }
 
+
+// var fms.LayerShowControl = OpenLayers.Util.extend(new OpenLayers.Control(), {
+//     draw: function () {
+//         // this Handler.Box will intercept the shift-mousedown
+//         // before Control.MouseDefault gets to see it
+//         this.box = new OpenLayers.Handler.Box( control,
+//             {"done": this.notice},
+//             {keyMask: OpenLayers.Handler.MOD_SHIFT});
+//         this.box.activate();
+//     },
+
+//     notice: function (bounds) {
+//         var ll = map.getLonLatFromPixel(new OpenLayers.Pixel(bounds.left, bounds.bottom));
+//         var ur = map.getLonLatFromPixel(new OpenLayers.Pixel(bounds.right, bounds.top));
+//         alert(ll.lon.toFixed(4) + ", " +
+//               ll.lat.toFixed(4) + ", " +
+//               ur.lon.toFixed(4) + ", " +
+//               ur.lat.toFixed(4));
+//     }
+// });
+
 (function(){
         var markerWidth = 30,
         markerHeight = 40,
@@ -96,31 +117,31 @@ function cloneObj (obj) {
             units: 'm',
             projection: "EPSG:31370",
             controls: [
-                new OpenLayers.Control.TouchNavigation(
+                new OpenLayers.Control.Navigation(
                             {dragPanOptions: {enableKinetic: true}}
                     ),
-                new OpenLayers.Control.Zoom({
-
-                })
+                new OpenLayers.Control.Zoom(),
+                //new fms.LayerShowControl()
             ]
         });
 
-        // this.map.events.on({
-        //     movestart:function(){
-        //         self.element.trigger('movestart');
-        //     },
-        //     zoomend:function(){
-        //         self.element.trigger('zoomend');
-        //     }
-        // });
+        if (DEBUG) {
+            var regional = new OpenLayers.Layer.WMS(
+                "regional",
+                this.options.urbisUrl,
+                { layers: "urbis:URB_A_SS", transparent: true },
+                { isBaseLayer: false, opacity: 0.6 }
+            );
+            this.map.addLayer(regional);
+        }
 
-        var wms = new OpenLayers.Layer.WMS(
-            "Bruxelles",
+        var base = new OpenLayers.Layer.WMS(
+            "base",
             this.options.urbisUrl,
             { layers: 'urbis' + LANGUAGE_CODE.toUpperCase() }
         );
-        wms.setZIndex(-100);
-        this.map.addLayer(wms);
+        base.setZIndex(-100);
+        this.map.addLayer(base);
 
         if(x && y) {
             this.map.setCenter(new OpenLayers.LonLat(x,y));

@@ -238,7 +238,8 @@
             }
             var GEOSERVER_URL = '//{{ GEOSERVER }}';
             var STATIC_URL = '{{ STATIC_URL }}';
-            var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }}
+            var DEBUG =  {{ DEBUG|yesno:"true,false" }}
+            var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
         </script>
         <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}lib/qtip/jquery.qtip.min.js"></script>
