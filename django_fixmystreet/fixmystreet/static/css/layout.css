@@ -208,6 +208,7 @@ header nav li a.active,
 footer{
     height: 110px;
     vertical-align: bottom;
+    margin-top:25px;
 }
 footer *{
     /*vertical-align: bottom;*/
@@ -363,6 +364,10 @@ div.footer_left img{
 #counters {
     margin: 0 10px;
     text-align: right;
+}
+#statistics{
+    margin:0 10px;
+    float:right;
 }
 
 .pro-counter {
@@ -1051,6 +1056,9 @@ input[type="submit"].btn:hover {
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+#btn-del{
+    margin-left:10px;
 }
 
 

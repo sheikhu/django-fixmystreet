@@ -287,9 +287,9 @@ $("[data-toggle=popover]")
                  <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
                  <div>
                      {% if report.is_in_progress %}
-                          <a id="mark-as-done-show-report" href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
+                          <a id="mark-as-done-show-report" href="#divMarkAsDone" onclick="markAsDone();" class="pull-right btn" data-toggle="modal" title="{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}">{% trans 'Mark as done' %}</a>
                      {% else %}
-                         <button style="float:right;" onclick="" class="btn" disabled>{% trans 'Mark as done' %}</button>
+                         <button style="float:right;" onclick="" class="pull-right btn" disabled>{% trans 'Mark as done' %}</button>
                          <p style="float:right;"><small>({% trans 'This report is already marked as done' %})</small></p>
                      {% endif %}
                  <div style="clear:both;"></div>

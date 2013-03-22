@@ -451,7 +451,7 @@ function close(){
             <!-- ############################################# -->
             {% if report.is_in_progress %}
                 {% if request.fmsuser.is_superuser %}
-                    <a href="{% url report_delete_pro report.id %}" class="btn pull-right clearfix btn-danger">{% trans 'Delete' %}</a>
+                    <a href="{% url report_delete_pro report.id %}" class="btn pull-right clearfix btn-danger" id="btn-del">{% trans 'Delete' %}</a>
                 {% endif %}
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
@@ -475,7 +475,7 @@ function close(){
              <div>
                 {% if report.is_in_progress %}
                     {% if report.is_markable_as_solved %}
-                        <button href="#divMarkAsDone" onclick="markAsDone();" class="btn" data-toggle="modal" >{% trans 'Solved' %}</button>
+                        <button href="#divMarkAsDone" onclick="markAsDone();" class="pull-right btn" data-toggle="modal" >{% trans 'Solved' %}</button>
                     {% endif %}
                 {% endif %}
             </div>
