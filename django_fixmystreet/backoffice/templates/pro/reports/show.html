@@ -367,7 +367,7 @@ function close(){
         {% endif %}
 
         {% if request.fmsuser.manager or request.fmsuser.leader %}
-            <p><a href="/export_file/reports/csv/?id={{report.id}}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
+            <p><a href="{% url export_report 'csv' report.id %}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
         {% endif %}
 
         {% if not report.is_created %}
@@ -469,15 +469,11 @@ function close(){
         <div style="clear:both;"></div>
     </div>
 
-    {% if not report.is_closed and not report.is_created %}
+    {% if report.is_markable_as_solved %}
         <div class="bordered-box">
              <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>
-                {% if report.is_in_progress %}
-                    {% if report.is_markable_as_solved %}
-                        <button href="#divMarkAsDone" onclick="markAsDone();" class="pull-right btn" data-toggle="modal" >{% trans 'Solved' %}</button>
-                    {% endif %}
-                {% endif %}
+                <button href="#divMarkAsDone" onclick="markAsDone();" class="pull-right btn" data-toggle="modal" >{% trans 'Solved' %}</button>
             </div>
             <div style="clear:both;"></div>
          </div>
