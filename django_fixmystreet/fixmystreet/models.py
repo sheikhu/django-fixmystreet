@@ -1096,8 +1096,8 @@ def init_file_type(sender,instance,**kwargs):
         instance.file_type = ReportFile.EXCEL
     elif content_type == 'image/png' or content_type == 'image/jpeg':
         instance.file_type = ReportFile.IMAGE
-        instance.file_type = ReportFile.WORD
     else:
+        instance.file_type = ReportFile.WORD
 
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name, instance.file, save=False)
