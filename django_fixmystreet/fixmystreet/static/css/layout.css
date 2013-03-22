@@ -1243,6 +1243,10 @@ legend span {
 #report_updates {
     font-family: dosisbold, Arial, sans-serif;
 }
+#report_updates .report_update .update_text .picture-caption a img{
+    vertical-align:middle !important;
+    margin-right:10px;
+}
 span.picture-caption{
     border-bottom:1px solid lightgrey;
     display:block;
