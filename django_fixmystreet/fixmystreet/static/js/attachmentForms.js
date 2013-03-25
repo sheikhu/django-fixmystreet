@@ -1,6 +1,11 @@
 
 
-var allowed_file_types = ["image/png","image/jpeg","application/pdf","application/msword","application/vnd.ms-excel","application/vnd.oasis.opendocument.text","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.oasis.opendocument.spreadsheet"];
+var allowed_file_types = [
+        "image/png","image/jpeg","application/pdf","application/msword","application/vnd.ms-excel",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.oasis.opendocument.spreadsheet"
+    ];
 var file_max_size = 15000000; // 15MB
 
 var file_form_template = $("#file-form-template");
@@ -27,18 +32,20 @@ $(document).ready(function() {
 
 
         var form_copy = file_form_template.clone();
-        file_form_template.attr('id', '');
-        file_form_template.find(":input").each(function(index, input) {
+        var form_new = file_form_template;
+        file_form_template = form_copy;
+
+        form_new.attr('id', '');
+        form_new.find(":input").each(function(index, input) {
             input.id = input.id.replace(/__prefix__/g, file_count);
             input.name = input.name.replace(/__prefix__/g, file_count);
         })
-        file_form_template.find("label").each(function(index, label) {
+        form_new.find("label").each(function(index, label) {
             $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
         })
+        $('#form-files').append(form_new);
         $('#form-files').append(file_form_template);
-        $('#form-files').append(form_copy);
 
-        file_form_template = form_copy;
 
         file_count++;
         $("#id_files-TOTAL_FORMS").val(file_count);
@@ -78,10 +85,10 @@ $(document).ready(function() {
                 hour = fileDate.getHours();
                 minute = fileDate.getMinutes();
 
-                file_form_template.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+                form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
             }
 
-            AddFileToView(file_form_template, file);
+            AddFileToView(form_new, file);
         }
     }
 
@@ -98,6 +105,8 @@ function AddFileToView(elem, file){
     }
 
     var thumbnails = "", img = elem.find("img");
+    console.log(file.name);
+    console.log('ello',img);
     if (type == "pdf"){
         thumbnails = "/static/images/icon-pdf.png";
     }
