@@ -13,54 +13,11 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
 from django.contrib.auth.models import User
-import PIL.Image as PIL
 
 from south.modelsinspector import add_introspection_rules
 import transmeta
 from stdimage import StdImageField
 
-def resize_image(filePath):
-    '''This method is used to resize the given image'''
-    img = PIL.open(filePath)
-    #if img.mode != "RGB":
-    #    img = img.convert("RGB")
-    #apply rotation if necessary
-    exifs = get_exifs(img)
-    if('Orientation' in exifs):
-        orientation = exifs['Orientation']
-
-        if(orientation == 3 or orientation == 4):
-            img = img.rotate(180)
-        elif(orientation == 5 or orientation == 6):
-            img = img.rotate(-90)
-        elif(orientation == 7 or orientation == 8):
-            img = img.rotate(90)
-
-        if(orientation == 2 or orientation == 4 or orientation == 5 or orientation == 7):
-            img = ImageOps.mirror(img)
-
-        img.save(filePath)
-
-    #Default resize for fms images
-    if (img.size[0] > img.size[1]):
-        img.thumbnail((1200, 800))
-    else:
-        img.thumbnail((800,1200))
-
-
-    #Default
-    fileType = "PNG"
-    if (img.format == "JPEG"):
-        fileType = "JPEG"
-    else:
-        #force handling of transparency
-        img.convert('RGBA')
-    img.save(filePath, fileType)
-    #img.thumbnail((80,60), PIL.ANTIALIAS)
-    #pathElements = filePath.split('.')
-    #pathElementsLength = pathElements.__len__()
-    #thumbPath = filePath.replace('.'+pathElements[pathElementsLength-1], '-thumb.'+ pathElements[pathElementsLength-1])
-    #img.save(thumbPath)
 
 def ssl_required(view_func):
     """Decorator makes sure URL is accessed over https."""

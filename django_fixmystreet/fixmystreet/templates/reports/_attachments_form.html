@@ -2,13 +2,13 @@
 <fieldset>
     <legend>{% trans 'Photos:' %}</legend>
     <div id="form-files">
-        <!--Good way to display error lists. Thibaut.-->
+        {# Good way to display error lists. Thibaut. #}
         {{ file_formset.management_form }}
         {% for dict in file_formset.errors %}
-    		{% for error in dict.values %}
-        		{{ error }}
-    		{% endfor %}
-	{% endfor %}
+            {% for error in dict.values %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
 
         <div id="file-form-template" class="control-group">
             <img class="thumbnail" />

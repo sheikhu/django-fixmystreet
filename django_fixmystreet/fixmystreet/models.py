@@ -1084,6 +1084,7 @@ class ReportFile(ReportAttachment):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
 
+
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender,instance,**kwargs):
     if instance.file_type:
@@ -1101,6 +1102,7 @@ def init_file_type(sender,instance,**kwargs):
 
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name, instance.file, save=False)
+
 
 # @receiver(post_save, sender=ReportFile)
 # def init_report_overview(sender,instance,**kwargs):

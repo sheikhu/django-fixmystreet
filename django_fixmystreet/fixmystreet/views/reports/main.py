@@ -120,19 +120,19 @@ def show(request, slug, report_id):
             # this saves the update as part of the report.
             # citizen = citizen_form.save()
 
-            if request.POST["comment-text"]:
+            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
                 comment = comment_form.save(commit=False)
                 comment.report = report
                 comment.save()
 
+            import pdb; pdb.set_trace()
             file_formset.save()
 
             # if request.POST.get("citizen_subscription", False):
             #     ReportSubscription(report=report, subscriber=report.created_by).save()
 
-
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
-            return HttpResponseRedirect(report.get_absolute_url())
+            #return HttpResponseRedirect(report.get_absolute_url())
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')

@@ -149,6 +149,8 @@ def show(request,slug, report_id):
                     comment.save()
 
             file_formset.save()
+            messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
+            #return HttpResponseRedirect(report.get_absolute_url())
 
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())

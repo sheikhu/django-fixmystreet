@@ -170,7 +170,7 @@ function close(){
         {% include "reports/_activity_list.html" with pro_version=1 %}
     </div>
     <div class="modal-footer">
-        <input type="button" class="btn"  value="{% trans 'Return to incident'%}" data-dismiss="modal" aria-hidden="true"/>
+        <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
     </div>
 </div>
 
@@ -426,7 +426,7 @@ function close(){
         <!-- ########################## -->
         <div class="bordered-box"/>
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% include "reports/_annexes_form.html" %}
+                {% include "reports/_attachments_form.html" %}
 
                 <div style="overflow:hidden;">
                     <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />

@@ -126,7 +126,7 @@ $("[data-toggle=popover]")
         {% include "reports/_activity_list.html" with pro_version=0 %}
     </div>
     <div class="modal-footer">
-        <input type="button" class="btn"  value="{% trans 'Close'%}" data-dismiss="modal" aria-hidden="true"/>
+        <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
     </div>
 </div>
 
@@ -261,9 +261,9 @@ $("[data-toggle=popover]")
     <div class="span6">
         <div class="bordered-box">
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% include "reports/_annexes_form.html" %}
+                {% include "reports/_attachments_form.html" %}
 
-                <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments by pressing this button' %}"/>
+                <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments' %}"/>
             </form> <!-- report-form-->
             <div style="clear:both;"></div>
         </div> <!-- bordered-box-->
