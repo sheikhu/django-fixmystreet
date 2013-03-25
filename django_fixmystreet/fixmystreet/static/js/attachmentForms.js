@@ -20,10 +20,6 @@
         /* This listener will verify the validity of the filesize */
         /**********************************************************/
         $(document.body).delegate(":file", "change", fileSelected);
-        $("#file-upload").click(function (evt) {
-            evt.preventDefault();
-            file_form_template.find(":file").click();
-        });
     });
 
 /********************************************************************************************/
@@ -42,15 +38,26 @@
         form_new.find(":input").each(function(index, input) {
             input.id = input.id.replace(/__prefix__/g, file_count);
             input.name = input.name.replace(/__prefix__/g, file_count);
-        })
+        });
         form_new.find("label").each(function(index, label) {
             $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
-        })
+        });
+
         $('#form-files').append(form_new);
         $('#form-files').append(file_form_template);
+        form_new.find("[data-toggle=popover]").remove();
+        file_form_template.find("[data-toggle=popover]")
+                .popover({
+                    html : true,
+                    content: function() {
+                        return $(this).next().html();
+                    }
+                }).click(function(e) {
+                    e.preventDefault();
+                });
 
 
-        if (inputFile.files != 'undefined' && inputFile.files.length) {
+        if (typeof inputFile.files != 'undefined' && inputFile.files.length) {
             file = inputFile.files[0];
             if(file.size == 0) {
                 alert('Filesize must be greater than 0');
@@ -69,9 +76,9 @@
                 return;
             }
 
-            if (file.name) {
-                $("#id_files-"+file_count+"-title").val(file.name);
-            }
+            // if (file.name) {
+            //     $("#id_files-"+file_count+"-title").val(file.name);
+            // }
 
             if(file.lastModifiedDate) {
                 // Append file creation date
@@ -86,10 +93,11 @@
             }
 
             AddFileToView(form_new, file);
-
-            file_count++;
-            $("#id_files-TOTAL_FORMS").val(file_count);
+        } else {
+            AddFileToView(form_new, null);
         }
+        file_count++;
+        $("#id_files-TOTAL_FORMS").val(file_count);
     }
 
     /************************************************************************************/
@@ -97,14 +105,14 @@
     /************************************************************************************/
     function AddFileToView(elem, file){
         //Determine the type of the submited file
-        var type = file.type.split("/")[1];
+        var type = (file && file.type.split("/")[1]) || null;
         //Structured Data of the file to add
         var title = elem.find(":file").val();
         if (title == ""){
             title = file.name;
         }
 
-        var thumbnails = "", img = elem.find("img");
+        var thumbnails = "", img = elem.find(".thumbnail");
         if (type == "pdf"){
             thumbnails = "/static/images/icon-pdf.png";
         }
@@ -117,10 +125,10 @@
         else if (type == "vnd.openxmlformats-officedocument.wordprocessingml.document"){
             thumbnails = "/static/images/icon-word.jpg";
         } else {
-            thumbnails = "/static/images/icon-file.png";
+            thumbnails = "/static/images/icon-generic.png";
         }
 
-        if (FileReader && (type == "jpeg" || type == "png")) {
+        if (typeof window.FileReader != 'undefined' && (type == "jpeg" || type == "png")) {
             img[0].file = file;
 
             var reader = new FileReader();

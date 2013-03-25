@@ -566,11 +566,12 @@ li img {
     margin-left: 40px;
 }
 
-#form-files input[type=file] {
+
+#form-files .file-upload-btn {
     display: none;
 }
 
-#form-files img {
+#form-files .thumbnail {
     max-width: 100px;
     display: inline-block;
 }
@@ -581,9 +582,32 @@ li img {
     max-height: 110px;
 }
 
-#file-form-template {
+
+#file-form-template .thumbnail,
+#file-form-template textarea {
     display: none;
 }
+
+#file-form-template .file-upload-btn {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+#file-form-template input[type=file] {
+    position: absolute;
+    display: block;
+    width: 200px;
+    z-index: 10;
+    opacity: 0;
+    top: 0;
+    left: 5px;
+    font-size: 500px;
+    cursor: pointer;
+}
+
+
 
 .form-centered, .box-centered {
     max-width: 700px;

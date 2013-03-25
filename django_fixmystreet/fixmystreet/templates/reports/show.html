@@ -2,11 +2,15 @@
 {% load i18n tags %}
 {% block title %}{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}{% endblock %}
 
+{% block meta %}
+{{ block.super }}
+<meta name="title" property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
+<meta name="description" property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
+{% endblock %}
+
 {% block script %}
 {{ block.super }}
 
-<meta name="title" property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
-<meta name="description" property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
 {% addthis_scripts %}
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script>
@@ -37,9 +41,9 @@ $(function(){
     });
 
     //If running internet explorer then apply an extra span5 to comment and file div sections. Otherwise nothing is shown
-    if ($.browser.msie) {
-	$('.report_update').addClass('span5');
-    }
+ //    if ($.browser.msie) {
+	// $('.report_update').addClass('span5');
+ //    }
 
 });
 function setFileCreationDate(){
@@ -143,16 +147,9 @@ $("[data-toggle=popover]")
     </h1>
     <div class="span6">
         <div class="bordered-box">
-            <div class="row-fluid">
-                <!--div class="span6" >
-                    <h1>{% trans "Report Ticket" %} {{ report.get_ticket_number }}</h1>
-                </div-->
-            </div>
-
             <!-- ######### -->
             <!-- IS FIXED  -->
             <!-- ######### -->
-
             {% if report.is_created %}
             <div class='is_created'>{% trans "This incident is not validated." %}</div>
             {% endif %}
@@ -218,38 +215,33 @@ $("[data-toggle=popover]")
             {% endif %}
        </div> <!-- Bordered-box-->
 
-        <!-- ################# FILES ############### -->
-        <!-- ################# FILES ############### -->
-        <!-- ################# FILES ############### -->
         {% if report.active_files or report.active_comments %}
         <div class="bordered-box">
             {% if report.active_files %}
+                <!-- ################# FILES ############### -->
+                <!-- ################# FILES ############### -->
+                <!-- ################# FILES ############### -->
                 <h4>{% trans 'Files' %}</h4>
                 <div id="report_updates">
-                    <table id="extraFilesTable">
                     {% for file in report.active_files.all %}
                         {% if file.is_public %}
                             {% include "reports/_file.html" %}
                         {% endif %}
                     {% endfor %}
-                    </table>
                 </div>
             {% endif %}
 
-            <!-- ################# COMMENTS ############### -->
-            <!-- ################# COMMENTS ############### -->
-            <!-- ################# COMMENTS ############### -->
             {% if report.active_comments %}
-                <br/>
+                <!-- ################# COMMENTS ############### -->
+                <!-- ################# COMMENTS ############### -->
+                <!-- ################# COMMENTS ############### -->
                 <h4>{% trans "Comments" %}</h4>
                 <div id="report_updates">
-                    <table class="extraCommentsTable">
                     {% for comment in report.active_comments.all %}
                         {% if comment.is_public %}
                             {% include "reports/_comment.html" %}
                         {% endif %}
                     {% endfor %}
-                    </table>
                 </div>
             {% endif %}
         </div> <!-- Bordered-box -->

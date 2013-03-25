@@ -13,38 +13,26 @@
         <div id="file-form-template" class="control-group">
             <img class="thumbnail" />
             {{ file_formset.empty_form.reportattachment_ptr }}
-            {{ file_formset.empty_form.file }}
             {{ file_formset.empty_form.title }}
             {{ file_formset.empty_form.file_creation_date }}
-        </div>
-    </div>
-    <div class="file-upload-button">
 
-        <!--[if IE 9]>
-            <script type="text/javascript">
-                document.onready = function () {
-                    document.getElementById('file-upload').style.display = "none";
-                };
-            </script>
-
-            <div class="btn" style="position:relative;overflow:hidden;cursor:pointer;">
-                <input type="file" id="id_files-0-file" name="files-0-file" style="position:absolute;display:block;width:200px;z-index:10;opacity:0;top:0;left:5px;font-size:500px;cursor:pointer;" placeholder="">
+            {# { file_formset.empty_form.file } #}
+            <div  class="file-upload-btn btn">
+                <input type="file" id="id_files-__prefix__-file" name="files-__prefix__-file"/>
                 {% trans 'Add file' %}
             </div>
-        <![endif]-->
-
-        <button id="file-upload" class="btn">{% trans 'Add file' %}</button>
-        <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
-            data-toggle="popover"
-            data-trigger="hover"
-            title="{% trans 'Recommendations'%}">
-            <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
-        </a>
-        <div id="photo-recommendations" class="hide">
-            <p>{% trans '1- Supported formats' %}: jpeg, png. </p>
-            <p>{% trans '2- Optimal resolution: 1200 x 800.' %}</p>
-            <p>{% trans '3- The photo must contain the environment of the incident' %}</p>
-            <p>{% trans "4- Please do not include people's faces and car registration plates." %}</p>
+            <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
+                        data-toggle="popover"
+                        data-trigger="hover"
+                        title="{% trans 'Recommendations'%}">
+                <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
+            </a>
+            <div id="photo-recommendations" class="hide">
+                <p>{% trans '1- Supported formats' %}: jpeg, png. </p>
+                <p>{% trans '2- Optimal resolution: 1200 x 800.' %}</p>
+                <p>{% trans '3- The photo must contain the environment of the incident' %}</p>
+                <p>{% trans "4- Please do not include people's faces and car registration plates." %}</p>
+            </div>
         </div>
     </div>
 </fieldset>

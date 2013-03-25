@@ -125,14 +125,13 @@ def show(request, slug, report_id):
                 comment.report = report
                 comment.save()
 
-            import pdb; pdb.set_trace()
             file_formset.save()
 
             # if request.POST.get("citizen_subscription", False):
             #     ReportSubscription(report=report, subscriber=report.created_by).save()
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
-            #return HttpResponseRedirect(report.get_absolute_url())
+            return HttpResponseRedirect(report.get_absolute_url())
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
