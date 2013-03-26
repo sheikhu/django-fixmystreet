@@ -55,6 +55,14 @@
         body{
             width: 100%;
         }
+        h2
+        {
+            font-size: 26px;
+        }
+        hr
+        {
+            border-color: #999;
+        }
         div > p
         {
             margin-left:30px;
@@ -62,6 +70,11 @@
         .p_title
         {
             margin-left: 0;
+        }
+        .by
+        {
+            font-size: x-small;
+            text-align: right;
         }
     </style>
 {% endblock %}
@@ -82,9 +95,9 @@
 
     <h1 style="position:relative;">
         {% if report.is_in_progress %}
-            <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
+            <img src="{{STATIC_URL}}{{report.get_marker}}" style="width:40px;" />
         {% else %}
-            <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
+            <img src="{{STATIC_URL}}{{report.get_marker}}" style="width:40px;" />
         {% endif %}
         {% trans "Report Ticket" %} {{ report.get_ticket_number }}
     </h1>
@@ -138,7 +151,7 @@
     -->
 
     <br/>
-    <div style="width:420px;float:left;border: 1px solid #999;padding:20px;padding-top:10px;height:110px;">
+    <div style="width:420px;float:left;border: 1px solid #999;padding:20px;padding-top:10px;height:130px;">
         <h2>{% trans 'Author'%}</h2>
 
         <p>
@@ -149,7 +162,7 @@
             {% if report.citizen %}
                 {% if pro_version == "1" %}
                     {{report.citizen.fmsuser.get_display_name}},
-
+                    <br/>
                     {{report.citizen.fmsuser.email}}
                     -
                     {{report.citizen.fmsuser.telephone}}
@@ -174,7 +187,7 @@
         Responsible
     -->
 
-    <div style="width:420px;float:right;border: 1px solid #999;padding:20px;padding-top:10px;height:110px;">
+    <div style="width:420px;float:right;border: 1px solid #999;padding:20px;padding-top:10px;height:130px;">
         <h2>{% trans 'Treated'%}</h2>
 
         <p>
@@ -182,7 +195,7 @@
 
             {% if pro_version == "1" %}
                 {{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} - {{report.responsible_manager.organisation.name}},
-
+                <br/>
                 {{report.responsible_manager.email}}
                 -
                 {{report.responsible_manager.telephone}}
@@ -220,7 +233,7 @@
             <h2>{% trans 'Comments' %}</h2>
                 {% for comment in comment_list %}
                     <p>{{comment.text}}</p>
-                    <p style="font-size: x-small;">
+                    <p class="by">
                         <strong>{% trans 'By' %}</strong>
 
                         {% if pro_version == "1" %}
@@ -293,7 +306,7 @@
                     {{file.created|date}}
                 </p>
 
-                <p style="font-size: x-small;">
+                <p class="by">
                     <strong>{% trans 'By' %}</strong>
 
                     {% if pro_version == "1" %}
