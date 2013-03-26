@@ -22,545 +22,300 @@
 <!-- ############################################################## -->
 {% block script %}
 {{ block.super }}
-<script>
-$(document).ready(function() {
-	fms.currentMap = new fms.Map(
-		'map',
-		{apiLang:'nl',
-        	localizeUrl: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
-        	urbisUrl: 'http://geoserver.gis.irisnet.be/geoserver/wms',
-        	origin: {
-			x:{{report.point.x}},
-			y:{{report.point.y}}
-			}
-		});
-	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
-	var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
-	document.getElementById("wgs84").innerHTML="L: " + res.x + " l: "+res.y;
-});
-</script>
+    <script>
+        $(document).ready(function() {
+            fms.currentMap = new fms.Map(
+                'map',
+                {apiLang:'nl',
+                    localizeUrl: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
+                    urbisUrl: 'http://geoserver.gis.irisnet.be/geoserver/wms',
+                    origin: {
+                    x:{{report.point.x}},
+                    y:{{report.point.y}}
+                    }
+                });
+            fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
+            var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
+            document.getElementById("wgs84").innerHTML="L: " + res.x + " l: "+res.y;
+        });
+    </script>
 {% endblock %}
 
-{% block nav %}
-{% endblock %}
-{% block lng %}
-{% endblock %}
+{% block nav %}{% endblock %}
+{% block lng %}{% endblock %}
 
 {% block css %}
-{{ block.super }}
-<style>
-header {
-	height: 100px;
-	width: auto;
-	background-color: white;
-}
-body {
-	width: 800px;
-}
-</style>
+    {{ block.super }}
+    <style>
+        header {
+            height: 100px;
+            width: auto;
+            background-color: white;
+        }
+        body{
+            width: 100%;
+        }
+        div > p
+        {
+            margin-left:30px;
+        }
+        .p_title
+        {
+            margin-left: 0;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<!-- ############################################################## -->
-<!-- ####################### REPORT ############################### -->
-<!-- ############################################################## -->
-<div id="map">
-</div>
-<hr/>
-<h1>{% trans 'Incident numero' %} : {{report.get_ticket_number}}</h1>
+    {% if pro_version == "1" %}
+        <p style="right:0;top:10px;position:absolute;">PRO</p>
+    {% endif %}
+
+    <div  style="width:800px;margin:0 auto;">
+            <div id="map"></div>
+    </div>
 
 
+    <!--
+        Title
+    -->
+
+    <h1 style="position:relative;">
+        {% if report.is_in_progress %}
+            <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
+        {% else %}
+            <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
+        {% endif %}
+        {% trans "Report Ticket" %} {{ report.get_ticket_number }}
+    </h1>
+
+    <!--
+        Status
+    -->
+
+    <div style="right:-10px;position:absolute; top:416px">
+        {% if report.is_created %}
+            <div class='is_created'>{% trans "This incident is not validated." %}</div>
+        {% endif %}
+
+        {% if report.is_in_progress %}
+            <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
+        {% endif %}
+
+        {% if report.is_closed %}
+            <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+        {% endif %}
+
+        {% if report.markedAsFinished %}
+            <div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
+        {% endif %}
+    </div>
+
+    <!--
+        Localisation
+    -->
+
+    <div style="width:420px;float:left;border: 1px solid #999;padding:20px;height:110px;">
+        <p class="p_title"><strong>{% trans 'Location:' %}</strong></p>
+        <p>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</p>
+
+        <p class="p_title"><strong>{% trans 'Category' %}</strong></p>
+        <p>{{report.display_category}}</p>
+    </div>
+
+    <div style="width:420px;float:right;border: 1px solid #999;padding:20px;height:110px;">
+        <p class="p_title"><strong>{% trans 'Geolocation' %} ({% trans 'Lambert 72 Belgium'%})</strong></p>
+        <p>L:{{report.point.x}} l:{{report.point.y}}</p>
+
+        <p class="p_title"><strong>{% trans 'Geolocation' %} (WGS84)</strong></p>
+        <p id="wgs84"></p>
+    </div>
+
+    <div style="clear:both;"></div>
+
+    <!--
+        Reporter
+    -->
+
+    <br/>
+    <div style="width:420px;float:left;border: 1px solid #999;padding:20px;padding-top:10px;height:110px;">
+        <h2>{% trans 'Author'%}</h2>
+
+        <p>
+            <strong>
+                {% trans 'By' %}
+            </strong>
+
+            {% if report.citizen %}
+                {% if pro_version == "1" %}
+                    {{report.citizen.fmsuser.get_display_name}},
+
+                    {{report.citizen.fmsuser.email}}
+                    -
+                    {{report.citizen.fmsuser.telephone}}
+                {% else %}
+                    {% trans 'Citizen' %}
+                {% endif %}
+            {% else %}
+                {{report.created_by.fmsuser.get_display_name}},
+            {% endif %}
+        </p>
+
+        <p>
+            <strong>
+                {% trans 'le' %}
+            </strong>
+            {{report.created|date}}
+        </p>
+    </div>
 
 
-<h2>{% trans 'Information '%}</h2>
-<table style="width:100%">
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Address' %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'Geolocation' %} ({% trans 'Lambert 72 Belgium'%})
-			</strong>
-		</td>
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})
-		</td>	
-		<td>
-			L:{{report.point.x}} l:{{report.point.y}}
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Category' %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'Geolocation' %} (WGS84)
-			</strong>
-		</td>
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
+    <!--
+        Responsible
+    -->
 
-	<tr>
-		<td>
-			{{report.display_category}}
-		</td>	
-		<td id="wgs84">
-			
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Creation Date' %}
-			</strong>
-		</td>	
-		<td>
-			&nbsp;
-		</td>
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	
-	<tr>
-		<td>
-			{{report.created|date}}
-		</td>	
-		<td>
-			&nbsp;
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-</table>
+    <div style="width:420px;float:right;border: 1px solid #999;padding:20px;padding-top:10px;height:110px;">
+        <h2>{% trans 'Treated'%}</h2>
 
+        <p>
+            <strong>{% trans 'By' %}</strong>
 
+            {% if pro_version == "1" %}
+                {{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} - {{report.responsible_manager.organisation.name}},
 
+                {{report.responsible_manager.email}}
+                -
+                {{report.responsible_manager.telephone}}
+            {% else %}
+                {{report.responsible_manager.organisation.name}}
+            {% endif %}
+        </p>
+    </div>
 
-{% if user.can_see_confidential %}
-<h2>{% trans 'Author'%}</h2>
-<table style="width:100%">
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Name' %}
-			</strong>
-		</td>	
-		<td>
-			&nbsp;
-		</td>	
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td>
-			
-			{% if report.citizen %}
-				{{report.citizen.fmsuser.get_display_name}}
-			{% else %}
-				{{report.created_by.fmsuser.get_display_name}}
-			{% endif %}
-		</td>
-		<td>
-			&nbsp;
-		</td>	
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<strong>
-				{% if user.can_see_confidential %}
- 					{% if report.citizen %}
-						{% if pro_version == "1" %}
-							{% trans 'Mail' %}
-						{% endif %}
-					{% else %}
-						{% trans 'Mail' %}
-					{% endif %}
-				{% endif %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% if user.can_see_confidential %}
- 					{% if report.citizen %}
-						{% if pro_version == "1" %}
-							{% trans 'Phone' %}
-						{% endif %}
-					{% else %}
-						{% trans 'Phone' %}
-					{% endif %}
-				{% endif %}
-			</strong>
-		</td>	
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td>
-                        {% if user.can_see_confidential %}
- 				{% if report.citizen %}
-					{% if pro_version == "1" %}
-                               			<!-- Protect citizen privacy -->
-                                        	{{report.citizen.fmsuser.email}}
-                                	{% endif %}
-                        	{% else %}
-                                	<a href="mailto:{{report.created_by.fmsuser.email}}">{{report.created_by.fmsuser.email}}</a>
+    <div style="clear:both;"></div>
+
+    <!--
+        History
+    -->
+
+    <br/>
+    <div style="width:900px;border: 1px solid #999;padding:20px;padding-top:10px;">
+        <h2>{% trans 'History' %}</h2>
+        {% if activity_list %}
+            {% for activity in activity_list %}
+                <p><strong>{{activity.event_at|date}}</strong> : {{ activity.get_status }} <strong>{% trans 'By' %}</strong> {{activity.organisation.name}}</p>
+            {% endfor %}
+        {% else %}
+            <p>{% trans 'No Report History' %}</p>
+        {% endif %}
+    </div>
+
+    <!--
+        Comments
+    -->
+
+    {% if comment_list %}
+        <br/>
+        <div style="width:900px;border: 1px solid #999;padding:20px;padding-top:10px;padding-bottom:10px;">
+            <h2>{% trans 'Comments' %}</h2>
+                {% for comment in comment_list %}
+                    <p>{{comment.text}}</p>
+                    <p style="font-size: x-small;">
+                        <strong>{% trans 'By' %}</strong>
+
+                        {% if pro_version == "1" %}
+                                {% if comment.created_by %}
+                                    {{comment.created_by.fmsuser.get_display_name}} {{comment.created_by.fmsuser.organisation.name}},
+
+                                    {{comment.created_by.fmsuser.email}}
+                                    -
+                                    {{comment.created_by.fmsuser.telephone}}
+                                {% else %}
+                                    {% trans 'Anonymous '%}
                                 {% endif %}
-                        {% endif %}
-		</td>
-		<td>
-			{% if user.can_see_confidential %}
-				{% if report.citizen %}
-					{% if pro_version == "1" %}
-						{% if report.citizen.fmsuser.telephone %}
-							{{report.citizen.fmsuser.telephone}}
-						{% else %}
-							-
-						{% endif %}
-					{% endif %}
-				{% else %}
-					{% if report.created_by.fmsuser.telephone %}
-						{{report.created_by.fmsuser.telephone}}
-					{% else %}
-						-
-					{% endif %}
-				{% endif %}
-			{% endif %}
-		</td>
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-
-</table>
-
-{% endif %}
-
-
-{% if pro_version == "1" %}
-<h2>{% trans 'Manager'%}</h2>
-{% else %}
-<h2>{% trans 'Commune' %}</h2>
-{% endif %}
-<table style="width:100%">
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Name' %}
-			</strong>
-		</td>	
-		<td>
-			<strong>
-				{% trans 'Status' %}
-			</strong>
-		</td>
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			{% if pro_version == "1" %}
-			{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})
-			{% else %}
-			{{report.responsible_manager.organisation.name}}
-			{% endif %}
-		</td>	
-		<td>
-			{% if report.status == 4 or report.status == 6%}
-			{{ report.get_status_display }} for {{report.responsible_manager.organisation.name}}
-			{% else %}
-			{% if report.status == 5%}
-			{{ report.get_status_display }}: {{report.contractor.name}}
-			{% else %}
-			{{ report.get_status_display }}
-			{% endif %}
-			{% endif %}
-		</td>
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	{% if pro_version == "1" %}
-	<tr>
-		<td>
-			<strong>
-				{% trans 'Mail' %}
-			</strong>
-		</td>
-		<td>
-			<strong>
-				{% trans 'Phone' %}
-			</strong>
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	<tr>
-		<td>
-			{% trans 'mail' %}:{{report.responsible_manager.email}}
-		</td>	
-		<td>
-			{% trans 'tel' %}:{{report.responsible_manager.telephone}}
-		</td>	
-                <td>
-			&nbsp;
-		</td>	
-	</tr>
-	{% endif %}
-</table>
-
-
-<!-- ############################################################## -->
-<!-- ####################### HISTORY ############################## -->
-<!-- ############################################################## -->
-<hr/>
-<h1>{% trans 'History' %}</h1>
-{% if activity_list %}
-{% if pro_version == "1" %}
-<table width="100%">
-	{% for activity in activity_list %}
-	<tr>
-		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity}}
-		</td>
-	</tr>
-	{% endfor %}
-</table>
-{% else %}
-<table width="100%">
-	{% for activity in activity_list %}
-	{% if activity.is_public_visible %}
-	<tr>
-		<td colspan="2">
-			<strong>- {{activity.event_at|date}} : [{{activity.organisation.name}}] </strong>{{activity.get_public_activity_text}}
-		</td>
-	</tr>
-	{% endif %}
-	{% endfor %}
-</table>
-{% endif %}
-
-{% else %}
-
-<h3>{% trans 'No Report History' %}</h3>
-
-{% endif %}
-
-<!-- ############################################################## -->
-<!-- ###################### COMMENTS ############################## -->
-<!-- ############################################################## -->
-<hr/>
-<h1>{% trans 'Comments' %}</h1>
-{% if pro_version == "1" or report.has_at_least_one_non_confidential_comment %}
-{% if comment_list %}
-<table width="100%">
-	{% for comment in comment_list %}
-	<!-- If we asked for a public version -->
-	{% if not comment.is_citizen_visible and pro_version == "0" %}
-		<!-- SKIP ROW if the current file annex is confidential -->
-	{% elif not comment.is_confidential_visible and pro_version == "1" %}
-		
-	{% else %}
-	<tr>
-                <td colspan="2">
-                	{% if pro_version == "1" %}
-					<strong>- {{comment.created|date}} : </strong> 
-			 			{% if comment.created_by %}
-			 	
-         	               {{comment.created_by.fmsuser.get_display_name}} 
-				(<strong>{{comment.created_by.fmsuser.organisation.name}}</strong>,
-				 <strong>mail:</strong>{{comment.created_by.fmsuser.email}}, 
-				 <strong>tel:</strong>{{comment.created_by.fmsuser.telephone}})
-				 
-                       	{% else %}
-                       		{% trans 'Anonymous' %}
-                       	{% endif %}
-                       	{% else %}
-                       	<strong>- {{comment.created|date}}</strong> 
-                       	{% endif %}
-                </td>
-        </tr>	
-	<tr>
-		<td width="5%">
-			&nbsp;
-		</td>
-		<td>
-			<i>{{comment.text}}</i>
-		</td>
-	</tr>
-	{% endif %}
-	{% endfor %}
-</table>
-
-{% else %}
-
-<h3>{% trans 'No Comment' %}</h3>
-
-{% endif %}
-{% endif %}
-
-
-
-<!-- ############################################################## -->
-<!-- ####################### PHOTOS ############################### -->
-<!-- ############################################################## -->
-<hr/>
-<h1>{% trans 'Files' %}</h1>
-{% if pro_version == "1" or report.has_at_least_one_non_confidential_file %}
-{% if file_list %}
-<table width="100%">
-	{% for file in file_list %}
-	<!-- If we asked for a public version -->
-	{% if not file.is_citizen_visible and pro_version == "0" %}
-		<!-- SKIP ROW if the current file annex is confidential -->
-	{% elif not file.is_confidential_visible and pro_version == "1" %}
-		<!-- SKIP ROW if the current file annex is confidential -->
-	{% else %}
-	<tr>
-                <td colspan="3">
-                	{% if pro_version == "1" %}
-                      <strong>- {{file.created|date}} : </strong>
-                       {% if file.created_by %}
-                             {{file.created_by.fmsuser.get_display_name}} (<strong>{{file.created_by.fmsuser.organisation.name}}</strong>,
-                                 <strong>mail:</strong>{{file.created_by.fmsuser.email}},
-                                 <strong>tel:</strong>{{file.created_by.fmsuser.telephone}})
-                       {% else %}
-                             {% trans 'Anonymous' %}
-                       {% endif %}
-                       {% else %}
-                       <strong>- {{file.created|date}}  </strong>
-                       {% endif %}
-                </td>
-        </tr>
-        <tr>
-                <td width="5%">
-                        &nbsp;
-                </td>
-		<td >
-			{% if file.file_type == 1 %}
-			<a href="{{file.file.url}}"><img width="128px" height="128px" src="{{STATIC_URL}}images/icon-pdf.png"/></a>
-			{% endif %}
-			{% if file.file_type == 2 %}
-			<a href="{{file.file.url}}"><img width="128px" height="128px" src="{{STATIC_URL}}images/icon-word.jpg"/></a>
-			{% endif %}
-			{% if file.file_type == 3 %}
-			<a href="{{file.file.url}}"><img width="128px" height="128px" src="{{STATIC_URL}}images/icon-excel.png"/></a>
-			{% endif %}
-			{% if file.file_type == 4 %}
-			<a href="{{file.file.url}}"><img src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/></a>
-			{% endif %}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-		<td>
-			<strong>{% trans 'Creation Date' %} : </strong>
-                        {% if file.file_creation_date %}
-                                {{file.file_creation_date}}
                         {% else %}
-                                -
+                            {% if report.citizen %}
+                                {% trans 'Citizen' %}
+                            {% else %}
+                                {{report.created_by.fmsuser.get_display_name}},
+                            {% endif %}
                         {% endif %}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-		<td>
-			<strong>{% trans 'Publication Date' %} : </strong>
-                        {{file.created|date}}
-		</td>
-	</tr>
-	{% if pro_version == "1" %}
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-		
-		<td>
-			<strong>{% trans 'By' %} : </strong> 
-			{% if file.created_by %}	
-				{{file.created_by.fmsuser.get_display_name}}
-				(mail:{{file.created_by.fmsuser.email}}, tel:{{file.created_by.fmsuser.telephone}})
-			{% else %}
-				{% trans 'Anonymous '%}
-			{% endif %}
-		</td>
-		
-	</tr>
-	{% endif %}
-        <tr>
-                <td>
-                        &nbsp;
-                </td>
-                <td>
-			<strong>{% trans 'City' %} : </strong>
-                        {{report.responsible_entity.name}}
-                </td>
-        </tr>
-	<tr>
-                <td>
-                        &nbsp;
-                </td>
-                <td>
-			<strong>{% trans 'Comment' %} : </strong>
-                        {{file.title}}
-		</td>
-	</tr>
-	<tr>
-                <td>
-                        &nbsp;
-                </td>
-                <td>
-                        &nbsp;
-		</td>
-	</tr>
-	<tr>
-                <td>
-                        &nbsp;
-                </td>
-                <td>
-			&nbsp;
-		</td>
-	</tr>
-	{% endif %}
-	{% endfor %}
-</table>
 
-{% else %}
+                        <strong>le</strong> {{comment.created|date}}
+                    </p>
+                    <hr/>
+                {% endfor %}
+        </div>
+    {% endif %}
 
-<h3>{% trans 'No File' %}</h3>
+    <!--
+        Photos
+    -->
 
-{% endif %}
-{% endif %}
-<hr/>
+    {% if file_list %}
+        {% for file in file_list %}
+            <br/>
+            <div style="width:900px;border: 1px solid #999;padding:20px;">
+
+                <div style="margin-bottom:20px;">
+                    {% if file.file_type == 1 %}
+                        <img width="128px" height="128px" src="{{STATIC_URL}}images/icon-pdf.png"/>
+                    {% endif %}
+                    {% if file.file_type == 2 %}
+                        <img width="128px" height="128px" src="{{STATIC_URL}}images/icon-word.jpg"/>
+                    {% endif %}
+                    {% if file.file_type == 3 %}
+                        <img width="128px" height="128px" src="{{STATIC_URL}}images/icon-excel.png"/>
+                    {% endif %}
+                    {% if file.file_type == 4 %}
+                        <img src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/>
+                    {% endif %}
+                </div>
+
+                <hr/>
+
+                <p>
+                    <strong>{% trans 'Description' %} : </strong>
+                    {{file.title}}
+                </p>
+
+                <p>
+                    <strong>{% trans 'file creation Date' %}</strong>
+                    {% if file.file_creation_date %}
+                            {{file.file_creation_date}}
+                    {% else %}
+                            -
+                    {% endif %}
+                </p>
+
+                <p>
+                    <strong>{% trans 'file publication date' %}</strong>
+                    {{file.created|date}}
+                </p>
+
+                <p style="font-size: x-small;">
+                    <strong>{% trans 'By' %}</strong>
+
+                    {% if pro_version == "1" %}
+                            {% if file.created_by %}
+                                {{file.created_by.fmsuser.get_display_name}} {{file.created_by.fmsuser.organisation.name}},
+
+                                {{file.created_by.fmsuser.email}}
+                                -
+                                {{file.created_by.fmsuser.telephone}}
+                            {% else %}
+                                {% trans 'Anonymous '%}
+                            {% endif %}
+                    {% else %}
+                        {% if report.citizen %}
+                            {% trans 'Citizen' %}
+                        {% else %}
+                            {{report.created_by.fmsuser.get_display_name}},
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}

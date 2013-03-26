@@ -1479,6 +1479,9 @@ class ReportEventLog(models.Model):
             related_new=self.related_new
         )
 
+    def get_status (self):
+        return self.EVENT_TYPE_CHOICES[self.event_type][1]
+
     def is_public_visible(self):
         return self.event_type in ReportEventLog.PUBLIC_VISIBLE_TYPES
 
