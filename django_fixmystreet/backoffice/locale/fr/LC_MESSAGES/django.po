@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-22 09:49+0100\n"
+"POT-Creation-Date: 2013-03-26 17:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -178,7 +178,11 @@ msgid "^change-password/$"
 msgstr ""
 
 #: urls.py:95
-msgid "^export_file/reports/((?P<emitter_format>.+))/"
+msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
+msgstr ""
+
+#: urls.py:96
+msgid "^export_file/reports/(?P<emitter_format>.+)"
 msgstr ""
 
 #: templates/pro/change_password.html:4 templates/pro/login.html:4
@@ -531,10 +535,6 @@ msgstr "Créer un incident"
 msgid "New Report"
 msgstr "Nouveau rapport"
 
-#: templates/pro/reports/new.html:12
-msgid "Incident category:"
-msgstr "Catégorie d'incident"
-
 #: templates/pro/reports/show.html:147 templates/pro/reports/show.html:159
 msgid "Confirm"
 msgstr "Confirmer"
@@ -545,9 +545,8 @@ msgid "incident "
 msgstr "Numéro d'incident"
 
 #: templates/pro/reports/show.html:173
-#, fuzzy
-msgid "Return to incident"
-msgstr "Rejeter l'incident"
+msgid "OK"
+msgstr ""
 
 #: templates/pro/reports/show.html:183
 msgid "Report Ticket"
@@ -591,8 +590,8 @@ msgid ""
 "                            "
 msgstr ""
 "\n"
-"Signalé le <strong>%(on)s</strong> par <strong><a href='mailto:%(mail)s'>%"
-"(by)s</a></strong>"
+"Signalé le <strong>%(on)s</strong> par <strong><a href='mailto:%(mail)s'>"
+"%(by)s</a></strong>"
 
 #: templates/pro/reports/show.html:225
 #, python-format
@@ -726,7 +725,7 @@ msgstr "Rejeter"
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
-#: templates/pro/reports/show.html:478
+#: templates/pro/reports/show.html:476
 msgid "Solved"
 msgstr "Résolu"
 
@@ -775,6 +774,11 @@ msgstr "Aucun rapport pour ce numéro de ticket"
 msgid "Report successfully deleted"
 msgstr "L'utilisateur a été correctement supprimé"
 
+#: views/reports/main.py:152
+#, fuzzy
+msgid "You attachments has been sent"
+msgstr "Votre compte est desactivé"
+
 #: views/reports/subscribers.py:13
 msgid "You have subscribed from updates successfully"
 msgstr "Vous êtes abonné aux mises à jour"
@@ -782,6 +786,13 @@ msgstr "Vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "Incident category:"
+#~ msgstr "Catégorie d'incident"
+
+#, fuzzy
+#~ msgid "Return to incident"
+#~ msgstr "Rejeter l'incident"
 
 #, fuzzy
 #~ msgid "^report/listfilter/$"
@@ -850,9 +861,6 @@ msgstr "Vous n'êtes plus abonné aux mises à jour"
 
 #~ msgid "Validate all"
 #~ msgstr "Rendre photos et commentaires publics"
-
-#~ msgid "Your account has been disabled."
-#~ msgstr "Votre compte est desactivé"
 
 #~ msgid "Insert your ticket number here"
 #~ msgstr "Numéro d'incident"

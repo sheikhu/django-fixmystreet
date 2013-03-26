@@ -595,7 +595,7 @@
         "pk": 1,
         "model": "fixmystreet.reportmaincategoryclass",
         "fields": {
-            "name_nl": "Stoep",
+            "name_nl": "Voetpad",
             "name_fr": "Trottoir"
         }
     },
@@ -878,7 +878,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Verdwenen markering",
+            "name_nl": "Onduidelijke markering",
             "category_class": 1,
             "secondary_category_class": 5,
             "public": true
@@ -1202,7 +1202,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Verdwenen markering",
+            "name_nl": "Onduidelijke markering",
             "category_class": 2,
             "secondary_category_class": 5,
             "public": true
@@ -1502,7 +1502,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Verdwenen markering",
+            "name_nl": "Onduidelijke markering",
             "category_class": 3,
             "secondary_category_class": 5,
             "public": true
@@ -1766,7 +1766,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Verdwenen markering",
+            "name_nl": "Onduidelijke markering",
             "category_class": 4,
             "secondary_category_class": 5,
             "public": true
@@ -2030,7 +2030,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Marquage effacé",
-            "name_nl": "Verdwenen markering",
+            "name_nl": "Onduidelijke markering",
             "category_class": 5,
             "secondary_category_class": 5,
             "public": true

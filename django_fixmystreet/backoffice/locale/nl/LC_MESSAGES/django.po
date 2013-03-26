@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-21 16:54+0100\n"
+"POT-Creation-Date: 2013-03-26 17:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -180,7 +180,11 @@ msgid "^change-password/$"
 msgstr "Wachtwoord aanpassen?"
 
 #: urls.py:95
-msgid "^export_file/reports/((?P<emitter_format>.+))/"
+msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
+msgstr ""
+
+#: urls.py:96
+msgid "^export_file/reports/(?P<emitter_format>.+)"
 msgstr ""
 
 #: templates/pro/change_password.html:4 templates/pro/login.html:4
@@ -540,10 +544,6 @@ msgstr "Ingediende Rapporten"
 msgid "New Report"
 msgstr "Nieuw rapport"
 
-#: templates/pro/reports/new.html:12
-msgid "Incident category:"
-msgstr "Categorie"
-
 #: templates/pro/reports/show.html:147 templates/pro/reports/show.html:159
 msgid "Confirm"
 msgstr "Bevestigen"
@@ -554,9 +554,8 @@ msgid "incident "
 msgstr "Incident nummer"
 
 #: templates/pro/reports/show.html:173
-#, fuzzy
-msgid "Return to incident"
-msgstr "Keur het incident af"
+msgid "OK"
+msgstr ""
 
 #: templates/pro/reports/show.html:183
 msgid "Report Ticket"
@@ -738,7 +737,7 @@ msgstr "Afkeuren"
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
-#: templates/pro/reports/show.html:478
+#: templates/pro/reports/show.html:476
 msgid "Solved"
 msgstr "Opgelost"
 
@@ -787,6 +786,11 @@ msgstr "Geen report gevonden voor dit ticket nummer"
 msgid "Report successfully deleted"
 msgstr "Gebruiker is succesvol verwijderd"
 
+#: views/reports/main.py:152
+#, fuzzy
+msgid "You attachments has been sent"
+msgstr "U account is inactief"
+
 #: views/reports/subscribers.py:13
 msgid "You have subscribed from updates successfully"
 msgstr "U bent succesvol geabonneerd voor updates"
@@ -794,6 +798,13 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:20
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "Incident category:"
+#~ msgstr "Categorie"
+
+#, fuzzy
+#~ msgid "Return to incident"
+#~ msgstr "Keur het incident af"
 
 #, fuzzy
 #~ msgid "^report/listfilter/$"
@@ -862,9 +873,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "Validate all"
 #~ msgstr "Alle fotos en commentaren publiceren"
-
-#~ msgid "Your account has been disabled."
-#~ msgstr "U account is inactief"
 
 #~ msgid "Insert your ticket number here"
 #~ msgstr "Vul je ticket in"
