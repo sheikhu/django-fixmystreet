@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-26 17:25+0100\n"
+"POT-Creation-Date: 2013-03-27 12:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,7 +210,7 @@ msgstr "Confidentieel"
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1303 models.py:1595
+#: models.py:1303 models.py:1598
 msgid "Label"
 msgstr "Label"
 
@@ -318,19 +318,19 @@ msgstr "Contractor verandert van {related_old} naar {related_new}"
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr "Applicant contractor verandert van {related_old} tot {related_new}"
 
-#: models.py:1553
+#: models.py:1556
 msgid "Question"
 msgstr "Vraag"
 
-#: models.py:1554
+#: models.py:1557
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1596
+#: models.py:1599
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1597
+#: models.py:1600
 msgid "Related model field"
 msgstr ""
 
@@ -354,152 +354,152 @@ msgstr "3 maanden - 1 jaar"
 msgid "more_years"
 msgstr "> 1 jaar"
 
-#: urls.py:19
+#: urls.py:20
 msgid "^feeds/(?P<url>.*)/$"
 msgstr ""
 
-#: urls.py:23
+#: urls.py:24
 msgid "^$"
 msgstr ""
 
-#: urls.py:24
+#: urls.py:25
 msgid "^about/$"
 msgstr ""
 
-#: urls.py:25
+#: urls.py:26
 msgid "^posters/$"
 msgstr ""
 
-#: urls.py:26
+#: urls.py:27
 msgid "^terms-of-use/$"
 msgstr ""
 
-#: urls.py:27
+#: urls.py:28
 msgid "^update-language/"
 msgstr ""
 
-#: urls.py:32
+#: urls.py:33
 #, fuzzy
 msgid "^login/$"
 msgstr "Aanmelden"
 
-#: urls.py:36
+#: urls.py:37
 msgid "^promotions/(\\w+)$"
 msgstr ""
 
-#: urls.py:49
+#: urls.py:50
 msgid "^reports/$"
 msgstr "^rapporten/$"
 
-#: urls.py:50
+#: urls.py:51
 msgid "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
 msgstr "^rapporten/(?P<slug>.*)/(?P<commune_id>\\d+)$"
 
-#: urls.py:51
+#: urls.py:52
 msgid "^report/(?P<slug>.*)/(?P<report_id>\\d+)$"
 msgstr "^rapport/(?P<slug>.*)/(?P<report_id>\\d+)$"
 
-#: urls.py:52
+#: urls.py:53
 #, fuzzy
 msgid "^report/search_ticket"
 msgstr "areport/(\\d+)/aanvaarden/"
 
-#: urls.py:53
+#: urls.py:54
 msgid "^report/new"
 msgstr "^rapport/nieuw"
 
-#: urls.py:54
+#: urls.py:55
 #, fuzzy
 msgid "^report/prepare"
 msgstr "^rapport/nieuw"
 
-#: urls.py:58
+#: urls.py:59
 msgid "^report/(\\d+)/update/"
 msgstr "^rapport/(\\d+)/update/"
 
-#: urls.py:59
+#: urls.py:60
 msgid "^report/(\\d+)-(\\d+)/pdf/"
 msgstr ""
 
-#: urls.py:63
+#: urls.py:64
 msgid "^report/(\\d+)/subscribe/"
 msgstr "^report/(\\d+)/abonneren/"
 
-#: urls.py:68
+#: urls.py:69
 msgid "^report/(\\d+)/flags/thanks"
 msgstr "^report/(\\d+)/flags/bedankt"
 
-#: urls.py:69
+#: urls.py:70
 msgid "^report/(\\d+)/flags"
 msgstr ""
 
-#: urls.py:79
+#: urls.py:80
 msgid "^ajax/create-comment"
 msgstr ""
 
-#: urls.py:80
+#: urls.py:81
 msgid "^ajax/create-file"
 msgstr ""
 
-#: urls.py:81
+#: urls.py:82
 msgid "^ajax/categories/(\\d+)"
 msgstr ""
 
-#: urls.py:82
+#: urls.py:83
 msgid "^ajax/upload-file"
 msgstr ""
 
-#: urls.py:88
+#: urls.py:89
 msgid "^api/reports/$"
 msgstr ""
 
-#: urls.py:89
+#: urls.py:90
 #, fuzzy
 msgid "^api/reports/mobile/$"
 msgstr "^rapporten/$"
 
-#: urls.py:90
+#: urls.py:91
 msgid "^api/reports/map/$"
 msgstr ""
 
-#: urls.py:91
+#: urls.py:92
 msgid "^api/reports/citizen/nearest/$"
 msgstr ""
 
-#: urls.py:92
+#: urls.py:93
 msgid "^api/reports/pro/nearest/$"
 msgstr ""
 
-#: urls.py:93
+#: urls.py:94
 msgid "^api/reports/citizen/$"
 msgstr ""
 
-#: urls.py:94
+#: urls.py:95
 msgid "^api/reports/pro/$"
 msgstr ""
 
-#: urls.py:96
+#: urls.py:97
 msgid "^api/login/$"
 msgstr ""
 
-#: urls.py:97
+#: urls.py:98
 msgid "^api/logout/$"
 msgstr ""
 
-#: urls.py:98
+#: urls.py:99
 msgid "^api/load_categories/$"
 msgstr ""
 
-#: urls.py:99
+#: urls.py:100
 msgid "^api/load_zipcodes/$"
 msgstr ""
 
-#: urls.py:100
+#: urls.py:101
 #, fuzzy
 msgid "^api/create-report/$"
 msgstr "^gebruikeraanmaken"
 
-#: urls.py:101
+#: urls.py:102
 msgid "^api/create_report_photo/$"
 msgstr ""
 

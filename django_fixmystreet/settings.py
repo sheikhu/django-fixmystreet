@@ -3,9 +3,23 @@ import os, sys
 import subprocess
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
-(out, err) = proc.communicate()
-VERSION = out
+
+
+# supported value of ENVIRONMENT are dev, jenkins, staging, production
+if "ENV" in os.environ:
+    ENVIRONMENT = os.environ['ENV']
+else:
+    ENVIRONMENT = "local"
+    sys.stderr.write( "No ENV specified, using local.\n" )
+
+
+
+if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
+    DEBUG = True
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    DEBUG = False
+
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 
@@ -30,7 +44,11 @@ STATIC_URL = '/static/'
 
 POSTGIS_TEMPLATE = 'template_postgis'
 
-URBIS_URL = "http://gis.irisnet.be/"
+PROXY_URL = "http://gis.irisnet.be/"
+if DEBUG:
+    URBIS_URL = "/urbis/"
+else:
+    URBIS_URL = "http://gis.irisnet.be/"
 
 TIME_ZONE = 'Europe/Brussels'
 
@@ -52,6 +70,11 @@ AUTH_PROFILE_MODULE = "django_fixmystreet.fixmystreet.FMSUser"
 
 SOUTH_LOGGING_ON = True
 SOUTH_LOGGING_FILE = os.path.join(PROJECT_PATH,"south.log")
+
+proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
+(out, err) = proc.communicate()
+VERSION = out
+
 
 
 
@@ -111,14 +134,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# supported value of ENVIRONMENT are dev, jenkins, staging, production
-if "ENV" in os.environ:
-    ENVIRONMENT = os.environ['ENV']
-else:
-    ENVIRONMENT = "local"
-    sys.stderr.write( "No ENV specified, using local.\n" )
-
-
 
 try:
     __import__('gunicorn')
@@ -161,13 +176,6 @@ try:
 except ImportError:
     pass
 
-
-
-if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
-    DEBUG = True
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    DEBUG = False
 
 LOGGING = {
     'version': 1,

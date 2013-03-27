@@ -141,7 +141,7 @@ function highlightFilterSelection(id) {
                 <li>
                     {% trans 'Filter the incidents by:' %}
                 </li>
-                <li>ownership
+                <li>
                     <a
                         href="{% url report_list_pro 'all' %}?ownership={{ ownership }}&street={{ street }}&streetNumber={{ streetNumber }}&rayon={{ rayon }}"
                         {% ifequal status 'all' %} class="active"{% endifequal %}>

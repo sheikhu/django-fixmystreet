@@ -1,19 +1,20 @@
+from datetime import datetime, timedelta
+import urllib2
+import socket
+import logging
 
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.utils import simplejson
 from django.db.models import Q
-from datetime import datetime, timedelta
-from django.contrib.gis.geos import fromstr
 from django.contrib.auth import authenticate, login, logout
-from  django.core.exceptions import ValidationError, ObjectDoesNotExist
+from  django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 
-from piston.handler import BaseHandler
-from piston.utils import validate
-
-from django_fixmystreet.fixmystreet.models import ReportSubscription, Report, ReportFile, ReportCategory, ReportMainCategoryClass, dictToPoint, FMSUser, ZipCode, ReportComment
-from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm
+from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, dictToPoint, FMSUser, ZipCode
 from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
+logger = logging.getLogger(__name__)
 
 def load_zipcodes(request):
         '''load_zipcodes is a method used by the mobiles to retrieve all usable zipcodes'''
@@ -130,8 +131,6 @@ def reports_pro_mobile(request):
     pnt = dictToPoint(request.REQUEST)
     reports = Report.objects.filter().distance(pnt).order_by('distance')
 
-    #Max 1 month in the past
-    timestamp_from = datetime.now().date() - timedelta(days=31)
     #Max 20 reports
     reports = Report.objects.distance(pnt).order_by('distance')[:30]
     result = []
@@ -183,7 +182,7 @@ def create_report_photo(request):
     try:
         #Retrieve the report
         reference_report = Report.objects.get(id=data_report_id)
-    except Exception as e:
+    except Exception:
         return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_REPORT_FILE_NOT_FOUND","request":request.POST}),mimetype='application/json')
     try:
         report_file.title = "Mobile Upload"
@@ -204,3 +203,47 @@ def create_report_photo(request):
     return JsonHttpResponse({
         'report_photo': report_file.id
     })
+
+
+def proxy(request, path):
+    URL = settings.PROXY_URL
+
+    query = request.META['QUERY_STRING']
+    if query:
+        path = '{0}{1}?{2}'.format(URL, path, query)
+    else:
+        path = '{0}{1}'.format(URL, path)
+
+    if request.POST:
+        urbisRequest = urllib2.Request(path, request.raw_post_data)
+    else:
+        urbisRequest = urllib2.Request(path)
+
+
+    logger.warning('PROXY URL {0}'.format(path))
+
+    if request.META.get("HTTP_SOAPACTION"):
+        urbisRequest.add_header("SOAPAction", request.META.get("HTTP_SOAPACTION"))
+    if request.META.get("CONTENT_TYPE"):
+        urbisRequest.add_header("Content-Type", request.META.get("CONTENT_TYPE"))
+
+    try:
+        oldtimeout = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(7)
+
+        opener = urllib2.build_opener()
+
+        try:
+            urbis_response = opener.open(urbisRequest)
+        except urllib2.HTTPError, e:
+            urbis_response = e
+    finally:
+        socket.setdefaulttimeout(oldtimeout)
+
+    data = urbis_response.read()
+    response = HttpResponse(data)
+    for key, value in urbis_response.headers.items():
+        if key not in ["server", "connection", "transfer-encoding"]:
+            response[key] = value
+
+    return response

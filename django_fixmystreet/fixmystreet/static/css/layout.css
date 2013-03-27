@@ -398,6 +398,7 @@ div.footer_left img{
     padding-top:0;
     display: inline-block;
     margin-left:10px;
+    vertical-align: top;
 }
 .counter:first-child{
     margin-left:6px;

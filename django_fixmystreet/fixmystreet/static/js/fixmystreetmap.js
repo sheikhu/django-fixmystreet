@@ -126,12 +126,26 @@ function cloneObj (obj) {
         });
 
         if (DEBUG) {
-            var regional = new OpenLayers.Layer.WMS(
-                "regional",
-                this.options.urbisUrl,
-                { layers: "urbis:URB_A_SS", transparent: true },
-                { isBaseLayer: false, opacity: 0.6 }
-            );
+            var regional = new OpenLayers.Layer.Vector("regional", {
+                strategies: [new OpenLayers.Strategy.BBOX()],
+                protocol: new OpenLayers.Protocol.WFS({
+                    url:  this.options.urbisUrl,
+                    typename: "urbis:URB_A_SS",
+                    // featureType: "tasmania_roads",
+                    // featureNS: "http://www.openplans.org/topp"
+                }),
+                //{ layers: , transparent: true },
+                //{ isBaseLayer: false, opacity: 0.6 },
+                styleMap: new OpenLayers.StyleMap({
+                    strokeWidth: 3,
+                    strokeColor: "#333333"
+                }),
+                // filter: new OpenLayers.Filter.Comparison({
+                //     type: OpenLayers.Filter.Comparison.EQUAL,
+                //     property: 'administrator',
+                //     value: 'REG'
+                // })
+            });
             this.map.addLayer(regional);
         }
 
@@ -301,44 +315,44 @@ function cloneObj (obj) {
 
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 callbacks: {
-                        click: function(feature){
-                    window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
-                   },
-                         over: function(feature){
-                    if(feature.layer.name != "Dragable Layer"){
+                    click: function(feature){
+                        window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
+                    },
+                    over: function(feature){
+                        if(feature.layer.name != "Dragable Layer"){
 
-                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+                            domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-                    var imageLink = "/static/images/no-photo-yellow-line.png";
+                            var imageLink = "/static/images/no-photo-yellow-line.png";
 
-                    if (feature.attributes.report.thumb != 'null') {
-                        imageLink = feature.attributes.report.thumb;
-                    }
+                            if (feature.attributes.report.thumb != 'null') {
+                                imageLink = feature.attributes.report.thumb;
+                            }
 
-                    $(domElementUsedToAnchorTooltip).qtip({
-                        id: 'myMarkerTooltip',
-                        content: {
-                            text:"<img src='"+imageLink+"'/>"
-                        },
-                        position: {
-                            my: "bottom center", // Use the corner...
-                            at: "top center"
-                        },
-                        viewport: $(window),
-                        show: {
-                            event: false, // Don't specify a show event...
-                            ready: true // ... but show the tooltip when ready
-                        },
-                        onHide: function(){
+                            $(domElementUsedToAnchorTooltip).qtip({
+                                id: 'myMarkerTooltip',
+                                content: {
+                                    text:"<img src='"+imageLink+"'/>"
+                                },
+                                position: {
+                                    my: "bottom center", // Use the corner...
+                                    at: "top center"
+                                },
+                                viewport: $(window),
+                                show: {
+                                    event: false, // Don't specify a show event...
+                                    ready: true // ... but show the tooltip when ready
+                                },
+                                onHide: function(){
                                     $(this).qtip('destroy');
-                               },
-                        style: {
-                            classes: 'qtip-jtools'
+                                },
+                                style: {
+                                    classes: 'qtip-jtools'
+                                }
+                            });
                         }
-                    });
                     }
-                   }
-                    }
+                }
                 /*onSelect:function(feature){
                     alert('olk');
                     //Ticket web service

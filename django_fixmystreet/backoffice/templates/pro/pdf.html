@@ -41,7 +41,12 @@
     </script>
 {% endblock %}
 
-{% block nav %}{% endblock %}
+
+{% block nav %}
+    {% if not BACKOFFICE %}
+        <img id="banner-pro" src="{{ STATIC_URL }}images/fixmystreet-pro.png" alt="{% trans 'Fix My Street Pro' %}">
+    {% endif %}
+{% endblock %}
 {% block lng %}{% endblock %}
 
 {% block css %}
@@ -76,6 +81,36 @@
             font-size: x-small;
             text-align: right;
         }
+
+        .container {
+            width:800px;
+        }
+        .block-left, .block-right {
+            width: 48%;
+            height: 160px;
+            border: 1px solid #999;
+            padding:20px;
+            box-sizing: border-box;
+        }
+        .block-left {
+            float:left;
+        }
+        .block-right {
+            float:right;
+        }
+        .block-full {
+            width: 100%;
+            border: 1px solid #999;
+            padding:20px;
+            box-sizing: border-box;
+        }
+
+        #banner-pro {
+            position: absolute;
+            bottom: -30px;
+            right: 30px;
+            z-index: 1000000;
+        }
     </style>
 {% endblock %}
 
@@ -106,7 +141,7 @@
         Status
     -->
 
-    <div style="right:-10px;position:absolute; top:416px">
+    <div>
         {% if report.is_created %}
             <div class='is_created'>{% trans "This incident is not validated." %}</div>
         {% endif %}
@@ -128,7 +163,7 @@
         Localisation
     -->
 
-    <div style="width:420px;float:left;border: 1px solid #999;padding:20px;height:110px;">
+    <div class="block-left">
         <p class="p_title"><strong>{% trans 'Location:' %}</strong></p>
         <p>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</p>
 
@@ -136,7 +171,7 @@
         <p>{{report.display_category}}</p>
     </div>
 
-    <div style="width:420px;float:right;border: 1px solid #999;padding:20px;height:110px;">
+    <div class="block-right">
         <p class="p_title"><strong>{% trans 'Geolocation' %} ({% trans 'Lambert 72 Belgium'%})</strong></p>
         <p>L:{{report.point.x}} l:{{report.point.y}}</p>
 
@@ -151,8 +186,8 @@
     -->
 
     <br/>
-    <div style="width:420px;float:left;border: 1px solid #999;padding:20px;padding-top:10px;height:130px;">
-        <h2>{% trans 'Author'%}</h2>
+    <div class="block-left">
+        <h2>{% trans 'Created'%}</h2>
 
         <p>
             <strong>
@@ -176,7 +211,7 @@
 
         <p>
             <strong>
-                {% trans 'le' %}
+                {% trans 'on' context 'time' %}
             </strong>
             {{report.created|date}}
         </p>
@@ -187,7 +222,7 @@
         Responsible
     -->
 
-    <div style="width:420px;float:right;border: 1px solid #999;padding:20px;padding-top:10px;height:130px;">
+    <div class="block-right">
         <h2>{% trans 'Treated'%}</h2>
 
         <p>
@@ -212,7 +247,7 @@
     -->
 
     <br/>
-    <div style="width:900px;border: 1px solid #999;padding:20px;padding-top:10px;">
+    <div class="block-full" style="padding-top:10px;">
         <h2>{% trans 'History' %}</h2>
         {% if activity_list %}
             {% for activity in activity_list %}
@@ -229,7 +264,7 @@
 
     {% if comment_list %}
         <br/>
-        <div style="width:900px;border: 1px solid #999;padding:20px;padding-top:10px;padding-bottom:10px;">
+        <div class="block-full" style="padding-bottom:10px;">
             <h2>{% trans 'Comments' %}</h2>
                 {% for comment in comment_list %}
                     <p>{{comment.text}}</p>
@@ -268,7 +303,7 @@
     {% if file_list %}
         {% for file in file_list %}
             <br/>
-            <div style="width:900px;border: 1px solid #999;padding:20px;">
+            <div class="block-full">
 
                 <div style="margin-bottom:20px;">
                     {% if file.file_type == 1 %}

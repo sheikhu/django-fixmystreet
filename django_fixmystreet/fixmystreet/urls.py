@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, url
 from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestUpdatesByReport
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 from piston.resource import Resource
 
@@ -100,7 +101,6 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/create-report/$'),Resource(ReportHandler)),
     url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
 )
-
 # urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
 #     url(_(r'^import/report/close/$'), 'close_report',name='close_report'),
 #     url(_(r'^import/report/change_manager/$'), 'change_manager_report',name='change_manager_report'),

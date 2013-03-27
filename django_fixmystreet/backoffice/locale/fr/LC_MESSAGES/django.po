@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-26 17:25+0100\n"
+"POT-Creation-Date: 2013-03-27 12:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr "Type d'utilisateur"
 msgid "Agent"
 msgstr "Agent"
 
-#: forms.py:165 templates/pro/pdf.html:266
+#: forms.py:165
 msgid "Manager"
 msgstr "Gestionnaire"
 
@@ -279,116 +279,95 @@ msgstr "Configuration des catégories des gestionnaires"
 msgid "Cancel"
 msgstr "Annuer"
 
-#: templates/pro/pdf.html:70
-msgid "Incident numero"
-msgstr "Numéro d'incident"
+#: templates/pro/pdf.html:125 templates/pro/reports/show.html:183
+msgid "Report Ticket"
+msgstr "Ticket"
 
-#: templates/pro/pdf.html:75
-msgid "Information "
-msgstr "Information"
+#: templates/pro/pdf.html:134 templates/pro/reports/show.html:189
+msgid "This incident is not validated."
+msgstr ""
 
-#: templates/pro/pdf.html:80
-msgid "Address"
-msgstr "Adresse"
+#: templates/pro/pdf.html:138 templates/pro/reports/show.html:193
+msgid "This incident is in progress."
+msgstr ""
 
-#: templates/pro/pdf.html:85 templates/pro/pdf.html.py:111
-msgid "Geolocation"
-msgstr "Géolocalisation:"
+#: templates/pro/pdf.html:142 templates/pro/reports/show.html:197
+#, fuzzy
+msgid "This incident has been closed."
+msgstr "Ce problème a été résolu."
 
-#: templates/pro/pdf.html:85
-msgid "Lambert 72 Belgium"
-msgstr "Lambert 72 Belgique"
+#: templates/pro/pdf.html:146 templates/pro/reports/show.html:201
+msgid "This problem has been fixed."
+msgstr "Ce problème a été résolu."
 
-#: templates/pro/pdf.html:106
+#: templates/pro/pdf.html:155 templates/pro/reports/show.html:242
+msgid "Location:"
+msgstr "Adresse:"
+
+#: templates/pro/pdf.html:158
 msgid "Category"
 msgstr "Catégorie:"
 
-#: templates/pro/pdf.html:133 templates/pro/pdf.html.py:486
-msgid "Creation Date"
-msgstr "Date de Création"
+#: templates/pro/pdf.html:163 templates/pro/pdf.html.py:166
+msgid "Geolocation"
+msgstr "Géolocalisation:"
 
-#: templates/pro/pdf.html:161
-msgid "Author"
-msgstr "Signalé par"
+#: templates/pro/pdf.html:163
+msgid "Lambert 72 Belgium"
+msgstr "Lambert 72 Belgique"
 
-#: templates/pro/pdf.html:166 templates/pro/pdf.html.py:274
-msgid "Name"
-msgstr "Nom"
+#: templates/pro/pdf.html:178
+msgid "Created"
+msgstr "Signalé"
 
-#: templates/pro/pdf.html:198 templates/pro/pdf.html.py:201
-#: templates/pro/pdf.html:313
-msgid "Mail"
-msgstr "Email"
-
-#: templates/pro/pdf.html:211 templates/pro/pdf.html.py:214
-#: templates/pro/pdf.html:318
-msgid "Phone"
-msgstr "Telephone"
-
-#: templates/pro/pdf.html:268
-#, fuzzy
-msgid "Commune"
-msgstr "Commentaires"
-
-#: templates/pro/pdf.html:279
-msgid "Status"
-msgstr "Statut:"
-
-#: templates/pro/pdf.html:327
-msgid "mail"
-msgstr "email"
-
-#: templates/pro/pdf.html:330
-msgid "tel"
-msgstr "tel"
-
-#: templates/pro/pdf.html:344 templates/pro/reports/show.html:167
-msgid "History"
-msgstr "Historique"
-
-#: templates/pro/pdf.html:372
-msgid "No Report History"
-msgstr "Pas d'historique"
-
-#: templates/pro/pdf.html:380 templates/pro/reports/show.html:404
-msgid "Comments"
-msgstr "Commentaires"
-
-#: templates/pro/pdf.html:403 templates/pro/pdf.html.py:455
-msgid "Anonymous"
-msgstr ""
-
-#: templates/pro/pdf.html:424
-msgid "No Comment"
-msgstr "Pas de commentaire"
-
-#: templates/pro/pdf.html:435
-msgid "Files"
-msgstr "Fichiers"
-
-#: templates/pro/pdf.html:499
-msgid "Publication Date"
-msgstr "Date de publication"
-
-#: templates/pro/pdf.html:510
+#: templates/pro/pdf.html:182 templates/pro/pdf.html.py:217
+#: templates/pro/pdf.html:242 templates/pro/pdf.html.py:260
+#: templates/pro/pdf.html:333
 msgid "By"
 msgstr "par"
 
-#: templates/pro/pdf.html:515
+#: templates/pro/pdf.html:193 templates/pro/pdf.html.py:274
+#: templates/pro/pdf.html:347
+msgid "Citizen"
+msgstr ""
+
+#: templates/pro/pdf.html:202
+msgctxt "time"
+msgid "on"
+msgstr "le"
+
+#: templates/pro/pdf.html:214
+msgid "Treated"
+msgstr "Traité"
+
+#: templates/pro/pdf.html:239 templates/pro/reports/show.html:167
+msgid "History"
+msgstr "Historique"
+
+#: templates/pro/pdf.html:245
+msgid "No Report History"
+msgstr "Pas d'historique"
+
+#: templates/pro/pdf.html:256 templates/pro/reports/show.html:404
+msgid "Comments"
+msgstr "Commentaires"
+
+#: templates/pro/pdf.html:270 templates/pro/pdf.html.py:343
 msgid "Anonymous "
 msgstr "Anonyme "
 
-#: templates/pro/pdf.html:526
-msgid "City"
-msgstr "Ville"
+#: templates/pro/pdf.html:314
+#, fuzzy
+msgid "Description"
+msgstr "Abonnement"
 
-#: templates/pro/pdf.html:535
-msgid "Comment"
-msgstr "Commentaires"
+#: templates/pro/pdf.html:319
+msgid "file creation Date"
+msgstr "(Date de création du fichier)"
 
-#: templates/pro/pdf.html:561
-msgid "No File"
-msgstr "Pas de fichier"
+#: templates/pro/pdf.html:328
+msgid "file publication date"
+msgstr "(Date de publication du fichier)"
 
 #: templates/pro/user_create.html:26 templates/pro/users_overview.html:34
 msgid "Collaborators in"
@@ -548,27 +527,6 @@ msgstr "Numéro d'incident"
 msgid "OK"
 msgstr ""
 
-#: templates/pro/reports/show.html:183
-msgid "Report Ticket"
-msgstr "Ticket"
-
-#: templates/pro/reports/show.html:189
-msgid "This incident is not validated."
-msgstr ""
-
-#: templates/pro/reports/show.html:193
-msgid "This incident is in progress."
-msgstr ""
-
-#: templates/pro/reports/show.html:197
-#, fuzzy
-msgid "This incident has been closed."
-msgstr "Ce problème a été résolu."
-
-#: templates/pro/reports/show.html:201
-msgid "This problem has been fixed."
-msgstr "Ce problème a été résolu."
-
 #: templates/pro/reports/show.html:215
 #, python-format
 msgid ""
@@ -614,10 +572,6 @@ msgstr ""
 "\n"
 "Signalé par <strong><a href='mailto:%(mail)s'>%(by)s</a></strong> le <strong>"
 "%(on)s</strong>"
-
-#: templates/pro/reports/show.html:242
-msgid "Location:"
-msgstr "Adresse:"
 
 #: templates/pro/reports/show.html:246
 msgid "Category:"
@@ -787,6 +741,61 @@ msgstr "Vous êtes abonné aux mises à jour"
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
 
+#~ msgid "Incident numero"
+#~ msgstr "Numéro d'incident"
+
+#~ msgid "Information "
+#~ msgstr "Information"
+
+#~ msgid "Address"
+#~ msgstr "Adresse"
+
+#~ msgid "Creation Date"
+#~ msgstr "Date de Création"
+
+#~ msgid "Author"
+#~ msgstr "Signalé par"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "Mail"
+#~ msgstr "Email"
+
+#~ msgid "Phone"
+#~ msgstr "Telephone"
+
+#, fuzzy
+#~ msgid "Commune"
+#~ msgstr "Commentaires"
+
+#~ msgid "Status"
+#~ msgstr "Statut:"
+
+#~ msgid "mail"
+#~ msgstr "email"
+
+#~ msgid "tel"
+#~ msgstr "tel"
+
+#~ msgid "No Comment"
+#~ msgstr "Pas de commentaire"
+
+#~ msgid "Files"
+#~ msgstr "Fichiers"
+
+#~ msgid "Publication Date"
+#~ msgstr "Date de publication"
+
+#~ msgid "City"
+#~ msgstr "Ville"
+
+#~ msgid "Comment"
+#~ msgstr "Commentaires"
+
+#~ msgid "No File"
+#~ msgstr "Pas de fichier"
+
 #~ msgid "Incident category:"
 #~ msgstr "Catégorie d'incident"
 
@@ -815,12 +824,6 @@ msgstr "Vous n'êtes plus abonné aux mises à jour"
 
 #~ msgid "Posted by"
 #~ msgstr "Posté par"
-
-#~ msgid "file creation Date"
-#~ msgstr "(Date de création du fichier)"
-
-#~ msgid "file publication date"
-#~ msgstr "(Date de publication du fichier)"
 
 #~ msgid "Confidential"
 #~ msgstr "Confidentiel"
@@ -876,9 +879,6 @@ msgstr "Vous n'êtes plus abonné aux mises à jour"
 
 #~ msgid "Submit"
 #~ msgstr "Envoyer"
-
-#~ msgid "on"
-#~ msgstr "a"
 
 #~ msgid "Public?"
 #~ msgstr "Public?"
@@ -991,10 +991,6 @@ msgstr "Vous n'êtes plus abonné aux mises à jour"
 
 #~ msgid "Unsubscribe"
 #~ msgstr "Annuler l'abonnement"
-
-#, fuzzy
-#~ msgid "Created"
-#~ msgstr "Créer un utilisateur"
 
 #~ msgid "Nearby reports"
 #~ msgstr "Rapports à proximité"
