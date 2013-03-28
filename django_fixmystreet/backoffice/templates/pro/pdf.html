@@ -83,14 +83,17 @@
         }
 
         .container {
-            width:800px;
+            width:700px;
         }
+        .olControlZoom {
+            display: none;
+        }
+
         .block-left, .block-right {
-            width: 48%;
+            width: 300px;
             height: 160px;
             border: 1px solid #999;
             padding:20px;
-            box-sizing: border-box;
         }
         .block-left {
             float:left;
@@ -99,10 +102,9 @@
             float:right;
         }
         .block-full {
-            width: 100%;
+            width: 660px;
             border: 1px solid #999;
             padding:20px;
-            box-sizing: border-box;
         }
 
         #banner-pro {
@@ -119,9 +121,7 @@
         <p style="right:0;top:10px;position:absolute;">PRO</p>
     {% endif %}
 
-    <div  style="width:800px;margin:0 auto;">
-            <div id="map"></div>
-    </div>
+    <div id="map"></div>
 
 
     <!--

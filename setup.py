@@ -16,15 +16,11 @@ install_requires = [
     'django-transmeta',
     'django-stdimage',
     'south',
-    'django-extensions',
+    # 'django-extensions',
     'simple_history',
     'docutils',
-    'django-registration',
-    'django-piston',
-    'unittest2'
-    # 'django-nose'
-    # 'django-simple-history',
-    # 'lizard-ui >= 4.0b5'
+    # 'django-registration',
+    'django-piston'
     ]
 
 tests_require = [
@@ -36,7 +32,7 @@ tests_require = [
 debug_require = [
     'django-debug-toolbar',
     'ipython',
-    'django-pdb'
+    # 'django-pdb'
     ]
 
 setup(name='django-fixmystreet',

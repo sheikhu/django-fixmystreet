@@ -438,8 +438,16 @@ div.footer_left img{
     top: 10%;
     z-index: 1040;
 }
-div.olControlZoom{
+div.olControlZoom {
     z-index:1035 !important;
+}
+
+div.layerSwitcher {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 50px;
+    height: 30px;
 }
 
 .form-search {

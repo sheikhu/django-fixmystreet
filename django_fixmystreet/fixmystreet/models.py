@@ -24,10 +24,11 @@ from email.MIMEImage import MIMEImage
 from transmeta import TransMeta
 from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta
-from django_extensions.db.models import TimeStampedModel
 
 
-class UserTrackedModel(TimeStampedModel):
+class UserTrackedModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True, null=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, null=True, editable=False)
     created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
     modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
@@ -110,8 +111,8 @@ class FMSUser(User):
     # http://scottbarnham.com/blog/2008/08/21/extending-the-django-user-model-with-inheritance/
     # must extends UserTrackedModel
     created = models.DateTimeField(auto_now_add=True, null=True, editable=False)
-    created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
     modified = models.DateTimeField(auto_now=True, null=True, editable=False)
+    created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
     modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
     def save(self, *args, **kwargs):

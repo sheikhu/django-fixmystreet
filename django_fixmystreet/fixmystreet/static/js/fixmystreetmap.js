@@ -20,25 +20,17 @@ function cloneObj (obj) {
 }
 
 
-// var fms.LayerShowControl = OpenLayers.Util.extend(new OpenLayers.Control(), {
-//     draw: function () {
-//         // this Handler.Box will intercept the shift-mousedown
-//         // before Control.MouseDefault gets to see it
-//         this.box = new OpenLayers.Handler.Box( control,
-//             {"done": this.notice},
-//             {keyMask: OpenLayers.Handler.MOD_SHIFT});
-//         this.box.activate();
-//     },
-
-//     notice: function (bounds) {
-//         var ll = map.getLonLatFromPixel(new OpenLayers.Pixel(bounds.left, bounds.bottom));
-//         var ur = map.getLonLatFromPixel(new OpenLayers.Pixel(bounds.right, bounds.top));
-//         alert(ll.lon.toFixed(4) + ", " +
-//               ll.lat.toFixed(4) + ", " +
-//               ur.lon.toFixed(4) + ", " +
-//               ur.lat.toFixed(4));
-//     }
-// });
+fms.LayerShowControl = new OpenLayers.Control.Panel({
+    displayClass: "layerSwitcher"
+});
+fms.LayerShowControl.addControls([new OpenLayers.Control.Button({
+    displayClass: "btn",
+    text: 'regional',
+    trigger: function () {
+        console.log("hello");
+        fms.regionalLayer.setVisibility(false);
+    }
+})]);
 
 (function(){
         var markerWidth = 30,
@@ -121,32 +113,33 @@ function cloneObj (obj) {
                             {dragPanOptions: {enableKinetic: true}}
                     ),
                 new OpenLayers.Control.Zoom(),
-                //new fms.LayerShowControl()
+                fms.LayerShowControl
             ]
         });
 
         if (DEBUG) {
-            var regional = new OpenLayers.Layer.Vector("regional", {
+            fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
                 strategies: [new OpenLayers.Strategy.BBOX()],
                 protocol: new OpenLayers.Protocol.WFS({
                     url:  this.options.urbisUrl,
-                    typename: "urbis:URB_A_SS",
-                    // featureType: "tasmania_roads",
-                    // featureNS: "http://www.openplans.org/topp"
+                    featureType: "URB_A_SS",
+                    featureNS: "http://www.cirb.irisnet.be/urbis",
+                    geometryName: "GEOM",
+                    // outputFormat: "JSON"
                 }),
-                //{ layers: , transparent: true },
-                //{ isBaseLayer: false, opacity: 0.6 },
                 styleMap: new OpenLayers.StyleMap({
-                    strokeWidth: 3,
-                    strokeColor: "#333333"
+                    strokeWidth: 2,
+                    strokeColor: "#2f3f99",
+                    fillColor: "#2f3f99",
+                    fillOpacity: 0.6
                 }),
-                // filter: new OpenLayers.Filter.Comparison({
-                //     type: OpenLayers.Filter.Comparison.EQUAL,
-                //     property: 'administrator',
-                //     value: 'REG'
-                // })
+                filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                    property: 'ADMINISTRATOR',
+                    value: 'REG'
+                })
             });
-            this.map.addLayer(regional);
+            this.map.addLayer(fms.regionalLayer);
         }
 
         var base = new OpenLayers.Layer.WMS(
