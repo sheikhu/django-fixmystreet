@@ -27,8 +27,8 @@ from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_u
 
 
 class UserTrackedModel(models.Model):
-    created = models.DateTimeField(auto_now_add=True, null=True, editable=False)
-    modified = models.DateTimeField(auto_now=True, null=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, null=True, blank=True, editable=False)
     created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
     modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
