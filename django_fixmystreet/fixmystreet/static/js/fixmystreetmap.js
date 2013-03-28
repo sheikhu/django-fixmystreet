@@ -21,17 +21,27 @@ function cloneObj (obj) {
 
 
 fms.LayerShowControl = new OpenLayers.Control.Panel({
-    displayClass: "layerSwitcher"
-});
-fms.LayerShowControl.addControls([new OpenLayers.Control.Button({
-    displayClass: "btn",
-    text: 'regional',
-    autoActivate: true,
-    trigger: function () {
-        console.log("hello");
-        fms.regionalLayer.setVisibility(false);
+    draw: function() {
+        var button = document.createElement('button');
+        this.div = document.createElement('div');
+
+        this.div.className = "layerSwitcher";
+        button.innerHTML = "reg";
+        this.div.appendChild(button);
+
+        return this.div;
     }
-})]);
+});
+// fms.LayerShowControl.addControl(new OpenLayers.Control.Button({
+//     displayClass: "btn",
+//     title: 'regional',
+//     autoActivate: true,
+
+//     trigger: function () {
+//         console.log("hello");
+//         fms.regionalLayer.setVisibility(false);
+//     }
+// }));
 
 (function(){
         var markerWidth = 30,
