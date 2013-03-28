@@ -26,6 +26,7 @@ fms.LayerShowControl = new OpenLayers.Control.Panel({
 fms.LayerShowControl.addControls([new OpenLayers.Control.Button({
     displayClass: "btn",
     text: 'regional',
+    autoActivate: true,
     trigger: function () {
         console.log("hello");
         fms.regionalLayer.setVisibility(false);
