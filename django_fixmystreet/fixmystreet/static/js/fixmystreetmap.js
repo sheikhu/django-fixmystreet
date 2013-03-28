@@ -113,12 +113,12 @@ fms.LayerShowControl.addControls([new OpenLayers.Control.Button({
                 new OpenLayers.Control.Navigation(
                             {dragPanOptions: {enableKinetic: true}}
                     ),
-                new OpenLayers.Control.Zoom(),
-                fms.LayerShowControl
+                new OpenLayers.Control.Zoom()
             ]
         });
 
         if (DEBUG) {
+            this.map.addControl(fms.LayerShowControl);
             fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
                 strategies: [new OpenLayers.Strategy.BBOX()],
                 protocol: new OpenLayers.Protocol.WFS({

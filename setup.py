@@ -16,7 +16,7 @@ install_requires = [
     'django-transmeta',
     'django-stdimage',
     'south',
-    # 'django-extensions',
+    'django-extensions',
     'simple_history',
     'docutils',
     # 'django-registration',
