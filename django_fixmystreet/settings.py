@@ -123,7 +123,6 @@ INSTALLED_APPS = (
     'transmeta',
     'south',
     'simple_history',
-    'django_extensions',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
     'django_fixmystreet.monitoring',
