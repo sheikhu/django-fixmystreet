@@ -173,6 +173,10 @@ class CurrentUserMiddleware:
     def process_request(self, request):
         set_current_user(getattr(request, 'fmsuser', None))
 
+    def process_response(self, request, response):
+        set_current_user(None)
+        return response
+
 
 # class AccessControlAllowOriginMiddleware:
 
