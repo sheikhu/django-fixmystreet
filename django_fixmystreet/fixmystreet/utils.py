@@ -3,7 +3,6 @@ import tempfile
 import datetime
 import os
 import logging
-import shutil
 from threading import local
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,7 +11,6 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.translation import activate, deactivate
-from django.contrib.auth.models import User
 
 from south.modelsinspector import add_introspection_rules
 import transmeta
@@ -175,31 +173,18 @@ class CurrentUserMiddleware:
     def process_request(self, request):
         set_current_user(getattr(request, 'fmsuser', None))
 
-    def process_response(self, request, response):
-        set_current_user(None)
-        return response
 
+# class AccessControlAllowOriginMiddleware:
 
-def save_file_to_server(file_name, file_type, file_extension,file_index,report_id):
-        date = datetime.datetime.now()
-        filepath = "files/%s/%s/" % (date.year,date.month);
-        if not os.path.exists(os.path.join(settings.MEDIA_ROOT,filepath)):
-            os.makedirs(os.path.join(settings.MEDIA_ROOT,filepath))
-        #filepath += "%s_%s_%s.%s" % (file_type,report_id,file_index,file_extension)
-        #Create random number
-        random_number = User.objects.make_random_password(length=30, allowed_chars='123456789')
-        filepath += "%s_%s_%s_%s.%s" % (file_type,report_id,file_index,random_number,file_extension)
-        srcpath = str(file_name)
-        if not "media" in srcpath:
-            srcpath = ("media/%s")%(srcpath)
-        srcpath = os.path.join(settings.PROJECT_PATH,srcpath)
-        if not os.path.exists(srcpath):
-            srcpath = str(file_name)
-            if not "media" in srcpath:
-                srcpath = ("media/%s")%(srcpath)
-            srcpath = os.path.join(settings.MEDIA_ROOT,srcpath)
-        if os.path.exists(srcpath):
-            shutil.move(srcpath,os.path.join(settings.MEDIA_ROOT,filepath))
-            return filepath
-        else:
-            return str(file_name)
+#     def process_request(self, request):
+#         if 'HTTP_ACCESS_CONTROL_REQUEST_METHOD' in request.META:
+#             response = HttpResponse()
+#             response['Access-Control-Allow-Methods'] = "GET,POST,OPTIONS"
+#             response['Access-Control-Allow-Origin'] = "http://gis.irisnet.be"
+#             return response
+
+#     def process_response(self, request, response):
+#         '''Add the respective CORS headers'''
+#         response['Access-Control-Allow-Methods'] = "GET,POST,OPTIONS"
+#         response['Access-Control-Allow-Origin'] = "http://gis.irisnet.be"
+#         return response

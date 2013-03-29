@@ -442,15 +442,11 @@ div.olControlZoom {
     z-index:1035 !important;
 }
 
-.layerSwitcher {
+
+#layerSwitcher {
     position: absolute;
-    top: 50px;
-    left: 0;
-    width: 50px;
-    height: 30px;
-}
-.layerSwitcher .btn {
-    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
 
 .form-search {

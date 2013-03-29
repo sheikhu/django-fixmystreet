@@ -20,20 +20,29 @@ function cloneObj (obj) {
 }
 
 
-fms.LayerShowControl = new OpenLayers.Control.Panel({
-    type: OpenLayers.Control.TYPE_TOOL,
+fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
+    type: OpenLayers.Control.TYPE_BUTTON,
     draw: function() {
-        console.log(arguments, this.div);
+        var self = this;
         OpenLayers.Control.prototype.draw.apply(this, arguments);
-        var button = document.createElement('button');
-        //this.div = document.createElement('div');
 
-        this.panel_div.className = "layerSwitcher";
-        button.innerHTML = "reg";
-        this.panel_div.appendChild(button);
+        this.div.id = "layerSwitcher";
+        this.div.innerHTML = "reg";
+        this.div.className = "btn active";
+        this.div.addEventListener('click', this.trigger);
 
-        return this.panel_div;
-    }
+        return this.div;
+    },
+    trigger: function(evt) {
+        if (fms.regionalLayer.getVisibility()) {
+            fms.regionalLayer.setVisibility(false);
+            this.className = this.className.replace(/active/, '');
+        } else {
+            fms.regionalLayer.setVisibility(true);
+            this.className += ' active';
+        }
+    },
+    CLASS_NAME: "fms.LayerShowControl"
 });
 // fms.LayerShowControl.addControl(new OpenLayers.Control.Button({
 //     displayClass: "btn",
@@ -131,14 +140,13 @@ fms.LayerShowControl = new OpenLayers.Control.Panel({
         });
 
         if (DEBUG) {
-            this.map.addControl(fms.LayerShowControl);
             fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
                 strategies: [new OpenLayers.Strategy.BBOX()],
                 protocol: new OpenLayers.Protocol.WFS({
                     url:  this.options.urbisUrl,
                     featureType: "URB_A_SS",
                     featureNS: "http://www.cirb.irisnet.be/urbis",
-                    geometryName: "GEOM",
+                    geometryName: "GEOM"
                     // outputFormat: "JSON"
                 }),
                 styleMap: new OpenLayers.StyleMap({
@@ -154,6 +162,9 @@ fms.LayerShowControl = new OpenLayers.Control.Panel({
                 })
             });
             this.map.addLayer(fms.regionalLayer);
+            var layerShow = new fms.LayerShowControl();
+            this.map.addControl(layerShow);
+            layerShow.activate();
         }
 
         var base = new OpenLayers.Layer.WMS(

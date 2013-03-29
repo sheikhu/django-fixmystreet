@@ -106,6 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
     'django_fixmystreet.backoffice.middleware.LoadUserMiddleware',
     'django_fixmystreet.fixmystreet.utils.CurrentUserMiddleware',
+    # 'django_fixmystreet.fixmystreet.utils.AccessControlAllowOriginMiddleware',
 )
 
 INSTALLED_APPS = (
