@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 12:58+0100\n"
+"POT-Creation-Date: 2013-03-29 15:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,7 +72,7 @@ msgstr "email :"
 msgid "Quality"
 msgstr "qualité :"
 
-#: forms.py:155 models.py:232 models.py:1147 models.py:1181 models.py:1215
+#: forms.py:155 models.py:235 models.py:1150 models.py:1184 models.py:1218
 msgid "Name"
 msgstr "Votre nom"
 
@@ -111,228 +111,228 @@ msgstr ""
 msgid "This account is inactive."
 msgstr "est en cours de validation"
 
-#: models.py:79
+#: models.py:82
 msgid "Resident"
 msgstr "Riverain"
 
-#: models.py:80
+#: models.py:83
 msgid "Trade"
 msgstr "Commerçant"
 
-#: models.py:81
+#: models.py:84
 msgid "Syndicate"
 msgstr "Syndic d'immeuble"
 
-#: models.py:82
+#: models.py:85
 msgid "Association"
 msgstr "Association"
 
-#: models.py:83
+#: models.py:86
 msgid "Other"
 msgstr "Autre"
 
-#: models.py:143 models.py:1020
+#: models.py:146 models.py:1023
 msgid "ANONYMOUS"
 msgstr "Anonyme"
 
-#: models.py:233 models.py:1148 models.py:1182 models.py:1216
+#: models.py:236 models.py:1151 models.py:1185 models.py:1219
 msgid "Slug"
 msgstr ""
 
-#: models.py:365 models.py:366
+#: models.py:368 models.py:369
 msgid "Created"
 msgstr "Signalé"
 
-#: models.py:367
+#: models.py:370
 msgid "Refused"
 msgstr "Refusé"
 
-#: models.py:369 models.py:370
+#: models.py:372 models.py:373
 msgid "In progress"
 msgstr "En traitement"
 
-#: models.py:371
+#: models.py:374
 msgid "Manager is assigned"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:372
+#: models.py:375
 msgid "Applicant is responsible"
 msgstr "Un impétrant est assigné"
 
-#: models.py:373
+#: models.py:376
 msgid "Contractor is assigned"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: models.py:374
+#: models.py:377
 msgid "Solved"
 msgstr "Résolu"
 
-#: models.py:376 models.py:377
+#: models.py:379 models.py:380
 msgid "Processed"
 msgstr "Clôturé"
 
-#: models.py:378
+#: models.py:381
 msgid "Deleted"
 msgstr "Effacé"
 
-#: models.py:385
+#: models.py:388
 msgid "Location"
 msgstr "Adresse"
 
-#: models.py:386
+#: models.py:389
 msgid "Address Number"
 msgstr ""
 
-#: models.py:389
+#: models.py:392
 msgid "Postal Code"
 msgstr "Code postal"
 
-#: models.py:391 models.py:392
+#: models.py:394 models.py:395
 msgid "Category"
 msgstr "Catégorie"
 
-#: models.py:970 templates/reports/_comment.html:32
+#: models.py:973 templates/reports/_comment.html:32
 #: templates/reports/_file.html:64
 msgid "Public"
 msgstr "Public"
 
-#: models.py:971 templates/reports/_comment.html:37
+#: models.py:974 templates/reports/_comment.html:37
 #: templates/reports/_file.html:69
 msgid "Private"
 msgstr "Privé"
 
-#: models.py:972 templates/reports/_comment.html:41
+#: models.py:975 templates/reports/_comment.html:41
 #: templates/reports/_file.html:73
 msgid "Confidential"
 msgstr "Confidentiel"
 
-#: models.py:1218 models.py:1219
+#: models.py:1221 models.py:1222
 msgid "Category group"
 msgstr "Groupe categorie"
 
-#: models.py:1303 models.py:1598
+#: models.py:1306 models.py:1601
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1415
+#: models.py:1418
 msgid "Refuse"
 msgstr "Refusé"
 
-#: models.py:1416
+#: models.py:1419
 msgid "Close"
 msgstr "Clôturer"
 
-#: models.py:1417
+#: models.py:1420
 msgid "Mark as Done"
 msgstr "Marquer comme résolu"
 
-#: models.py:1418
+#: models.py:1421
 msgid "Manager assinged"
 msgstr "Un gestionnaire est responsable"
 
-#: models.py:1419
+#: models.py:1422
 msgid "Manager changed"
 msgstr "Le gestionnaire est changé"
 
-#: models.py:1420
+#: models.py:1423
 msgid "Publish"
 msgstr "Publier"
 
-#: models.py:1421
+#: models.py:1424
 msgid "Organisation assinged"
 msgstr "Une organisation est assignée"
 
-#: models.py:1422
+#: models.py:1425
 msgid "Organisation changed"
 msgstr ""
 
-#: models.py:1423
+#: models.py:1426
 msgid "Contractor assinged"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: models.py:1424
+#: models.py:1427
 msgid "Contractor changed"
 msgstr "L'exécuteur de travaux est modifié"
 
-#: models.py:1425
+#: models.py:1428
 msgid "Applicant assinged"
 msgstr "Un impétrant est assigné"
 
-#: models.py:1426
+#: models.py:1429
 msgid "Applicant changed"
 msgstr "Impétrant modifié"
 
-#: models.py:1427
+#: models.py:1430
 msgid "Applicant contractor changed"
 msgstr "Exécuteur de travaux modifié"
 
-#: models.py:1430
+#: models.py:1433
 msgid "Report refused by {user}"
 msgstr "L'incident est refusé par {user}"
 
-#: models.py:1431
+#: models.py:1434
 msgid "Report closed by {user}"
 msgstr "L'incident est clôturer par {user}"
 
-#: models.py:1432
+#: models.py:1435
 msgid "Report pointed as solved"
 msgstr "Incident signalé comme résolu"
 
-#: models.py:1433
+#: models.py:1436
 msgid "Report as been assigned to {related_new}"
 msgstr "L'incident est assigné à {related_new}"
 
-#: models.py:1434
+#: models.py:1437
 msgid "Report as change manager from {related_old} to {related_new}"
 msgstr "L'incident a changé de gestionnaire de {related_old} par {related_new}"
 
-#: models.py:1435
+#: models.py:1438
 msgid "Report has been approved by {user}"
 msgstr "L'incident est approuvé par {user}"
 
-#: models.py:1436
+#: models.py:1439
 msgid "{related_new} is responsible for the report"
 msgstr "{related_new} est responsable pour l'incident"
 
-#: models.py:1437
+#: models.py:1440
 msgid "{related_old} give responsibility to {related_new}"
 msgstr "{related_old} a donné la responsabilité a {related_new}"
 
-#: models.py:1438
+#: models.py:1441
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Impétrant {related_new} est responsable pour l'incident"
 
-#: models.py:1439
+#: models.py:1442
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Impetrant a changé de {related_old} par {related_new}"
 
-#: models.py:1440
+#: models.py:1443
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Executeur de travaux {related_new} est responsable pour l'incident"
 
-#: models.py:1441
+#: models.py:1444
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Executeur de travaux a changé de {related_old} par {related_new}"
 
-#: models.py:1442
+#: models.py:1445
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr ""
 "Changement impetrant - executeur de travaux de {related_old} par "
 "{related_new}"
 
-#: models.py:1556
+#: models.py:1559
 msgid "Question"
 msgstr "Question"
 
-#: models.py:1557
+#: models.py:1560
 msgid "Answere"
 msgstr "Réponse"
 
-#: models.py:1599
+#: models.py:1602
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1600
+#: models.py:1603
 msgid "Related model field"
 msgstr ""
 

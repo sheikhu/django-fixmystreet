@@ -124,7 +124,7 @@ $("[data-toggle=popover]")
 <div id="history_popup" class="modal hide fade" role="dialog">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h1>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h1>
+        <h2>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h2>
     </div>
     <div class="modal-body">
         {% include "reports/_activity_list.html" with pro_version=0 %}

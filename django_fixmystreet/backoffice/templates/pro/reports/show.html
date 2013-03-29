@@ -164,7 +164,7 @@ function close(){
 <div id="history_popup" class="modal hide fade" role="dialog">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h1>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h1>
+        <h2>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h2>
     </div>
     <div class="modal-body">
         {% include "reports/_activity_list.html" with pro_version=1 %}
@@ -358,7 +358,7 @@ function close(){
 
         <p>
             <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
-            <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' %}
+            <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
             </a>
         </p>
 

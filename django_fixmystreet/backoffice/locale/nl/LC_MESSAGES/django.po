@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 12:58+0100\n"
+"POT-Creation-Date: 2013-03-29 15:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -281,94 +281,99 @@ msgstr "Configureer de beheerder categorieën"
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: templates/pro/pdf.html:125 templates/pro/reports/show.html:183
+#: templates/pro/pdf.html:47
+#, fuzzy
+msgid "Fix My Street Pro"
+msgstr "Fix My Street Beheer"
+
+#: templates/pro/pdf.html:130 templates/pro/reports/show.html:183
 msgid "Report Ticket"
 msgstr "Incident nummer"
 
-#: templates/pro/pdf.html:134 templates/pro/reports/show.html:189
+#: templates/pro/pdf.html:139 templates/pro/reports/show.html:189
 msgid "This incident is not validated."
 msgstr ""
 
-#: templates/pro/pdf.html:138 templates/pro/reports/show.html:193
+#: templates/pro/pdf.html:143 templates/pro/reports/show.html:193
 msgid "This incident is in progress."
 msgstr ""
 
-#: templates/pro/pdf.html:142 templates/pro/reports/show.html:197
+#: templates/pro/pdf.html:147 templates/pro/reports/show.html:197
 #, fuzzy
 msgid "This incident has been closed."
 msgstr "Dit probleem is opgelost"
 
-#: templates/pro/pdf.html:146 templates/pro/reports/show.html:201
+#: templates/pro/pdf.html:151 templates/pro/reports/show.html:201
 msgid "This problem has been fixed."
 msgstr "Dit probleem is opgelost"
 
-#: templates/pro/pdf.html:155 templates/pro/reports/show.html:242
+#: templates/pro/pdf.html:160 templates/pro/reports/show.html:242
 msgid "Location:"
 msgstr "Lokalisatie:"
 
-#: templates/pro/pdf.html:158
+#: templates/pro/pdf.html:163
 msgid "Category"
 msgstr "Categorie"
 
-#: templates/pro/pdf.html:163 templates/pro/pdf.html.py:166
+#: templates/pro/pdf.html:168 templates/pro/pdf.html.py:171
 msgid "Geolocation"
 msgstr "Geolocatie"
 
-#: templates/pro/pdf.html:163
+#: templates/pro/pdf.html:168
 msgid "Lambert 72 Belgium"
 msgstr ""
 
-#: templates/pro/pdf.html:178
+#: templates/pro/pdf.html:183
 msgid "Created"
 msgstr "Aangemaakt"
 
-#: templates/pro/pdf.html:182 templates/pro/pdf.html.py:217
-#: templates/pro/pdf.html:242 templates/pro/pdf.html.py:260
-#: templates/pro/pdf.html:333
+#: templates/pro/pdf.html:187 templates/pro/pdf.html.py:222
+#: templates/pro/pdf.html:247 templates/pro/pdf.html.py:265
+#: templates/pro/pdf.html:338
 msgid "By"
 msgstr "Door"
 
-#: templates/pro/pdf.html:193 templates/pro/pdf.html.py:274
-#: templates/pro/pdf.html:347
+#: templates/pro/pdf.html:198 templates/pro/pdf.html.py:279
+#: templates/pro/pdf.html:352
 msgid "Citizen"
 msgstr ""
 
-#: templates/pro/pdf.html:202
+#: templates/pro/pdf.html:207
 #, fuzzy
 msgctxt "time"
 msgid "on"
 msgstr "om"
 
-#: templates/pro/pdf.html:214
+#: templates/pro/pdf.html:219
 msgid "Treated"
 msgstr "Behandeld"
 
-#: templates/pro/pdf.html:239 templates/pro/reports/show.html:167
+#: templates/pro/pdf.html:244 templates/pro/reports/show.html:167
 msgid "History"
 msgstr "Geschiedenis"
 
-#: templates/pro/pdf.html:245
+#: templates/pro/pdf.html:250
 msgid "No Report History"
 msgstr "Geen History"
 
-#: templates/pro/pdf.html:256 templates/pro/reports/show.html:404
+#: templates/pro/pdf.html:261 templates/pro/reports/show.html:404
 msgid "Comments"
 msgstr "Commentaren"
 
-#: templates/pro/pdf.html:270 templates/pro/pdf.html.py:343
+#: templates/pro/pdf.html:275 templates/pro/pdf.html.py:348
 msgid "Anonymous "
 msgstr ""
 
-#: templates/pro/pdf.html:314
+#: templates/pro/pdf.html:319
 #, fuzzy
 msgid "Description"
 msgstr "Vraag"
 
-#: templates/pro/pdf.html:319
+#: templates/pro/pdf.html:324
 msgid "file creation Date"
 msgstr "(Creatie datum)"
 
-#: templates/pro/pdf.html:328
+#: templates/pro/pdf.html:333
 msgid "file publication date"
 msgstr "(Publicatie datum)"
 
@@ -471,7 +476,6 @@ msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
 #: templates/pro/reports/list.html:204
-#, fuzzy
 msgid "Search address:"
 msgstr "Zoeken op gemeente of adres"
 
@@ -621,7 +625,7 @@ msgstr "Selecteer een aannemer/impetrant"
 
 #: templates/pro/reports/show.html:314
 msgid "Set as private report"
-msgstr "Zichtbaarheid van dit incident"
+msgstr "Zichtbaarheid"
 
 #: templates/pro/reports/show.html:318
 msgid "Private"
@@ -637,25 +641,23 @@ msgid "Download a pdf report of this incident"
 msgstr "Voeg een bestand toe aan dit rapport"
 
 #: templates/pro/reports/show.html:361
-#, fuzzy
+msgctxt "pro"
 msgid "report pdf"
-msgstr "Download pro PDF."
+msgstr "Downloaden als PDF (publiek)."
 
 #: templates/pro/reports/show.html:366
-#, fuzzy
 msgid "report pdf pro"
-msgstr "Download pro PDF."
+msgstr "Download als PDF (pro)."
 
 #: templates/pro/reports/show.html:370
 msgid "Export Csv"
-msgstr "Export incident naar Excel"
+msgstr "Export naar Excel"
 
 #: templates/pro/reports/show.html:374
 msgid "Show history"
-msgstr "Toon de geschiedenis van dit incident"
+msgstr "Geschiedenis van incident tonen."
 
 #: templates/pro/reports/show.html:385
-#, fuzzy
 msgid "Publish all"
 msgstr "Alles publiceren"
 
@@ -665,7 +667,7 @@ msgstr "Fotos en bestanden"
 
 #: templates/pro/reports/show.html:439
 msgid "Subscription"
-msgstr "Abonnement"
+msgstr "Melding opvolgen"
 
 #: templates/pro/reports/show.html:442
 msgid "Subscription and report follow-up"
@@ -1254,9 +1256,6 @@ msgstr "U bent succesvol afgemeld voor updates"
 
 #~ msgid "Recent Reports"
 #~ msgstr "Recente Rapporten"
-
-#~ msgid "Fix My Street Admin"
-#~ msgstr "Fix My Street Beheer"
 
 #~ msgid "Fix My Street Administration"
 #~ msgstr "Fix My Street Administratie"
