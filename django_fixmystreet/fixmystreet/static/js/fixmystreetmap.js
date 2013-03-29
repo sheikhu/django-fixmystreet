@@ -21,15 +21,18 @@ function cloneObj (obj) {
 
 
 fms.LayerShowControl = new OpenLayers.Control.Panel({
+    type: OpenLayers.Control.TYPE_TOOL,
     draw: function() {
+        console.log(arguments, this.div);
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
         var button = document.createElement('button');
-        this.div = document.createElement('div');
+        //this.div = document.createElement('div');
 
-        this.div.className = "layerSwitcher";
+        this.panel_div.className = "layerSwitcher";
         button.innerHTML = "reg";
-        this.div.appendChild(button);
+        this.panel_div.appendChild(button);
 
-        return this.div;
+        return this.panel_div;
     }
 });
 // fms.LayerShowControl.addControl(new OpenLayers.Control.Button({
