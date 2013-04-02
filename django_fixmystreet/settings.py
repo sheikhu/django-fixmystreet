@@ -66,7 +66,8 @@ MAX_ITEMS_PAGE = 10
 USE_I18N = True
 REGISTRATION_OPEN = False
 ROOT_URLCONF = 'django_fixmystreet.urls'
-AUTH_PROFILE_MODULE = "django_fixmystreet.fixmystreet.FMSUser"
+# AUTH_PROFILE_MODULE = "django_fixmystreet.fixmystreet.FMSUser"
+# AUTH_USER_MODEL = "django_fixmystreet.fixmystreet.FMSUser"
 
 SOUTH_LOGGING_ON = True
 SOUTH_LOGGING_FILE = os.path.join(PROJECT_PATH,"south.log")
@@ -131,9 +132,9 @@ INSTALLED_APPS = (
     'piston',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+# )
 
 
 try:

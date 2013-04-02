@@ -20,7 +20,7 @@ bootstrap.py:
 	mkdir $(LIBS_DIR)
 
 $(BIN_DIR)/buildout: bootstrap.py
-	python bootstrap.py
+	python27 bootstrap.py
 
 # deploy: $(BIN_DIR)/buildout
 	# $(BIN_DIR)/buildout install django
@@ -30,7 +30,8 @@ install: $(BIN_DIR)/buildout
 	$(BIN_DIR)/buildout -Nvt 5
 
 init:
-	$(BIN_DIR)/django migrate fixmystreet || ($(BIN_DIR)/django syncdb && $(BIN_DIR)/django migrate fixmystreet --fake)
+	$(BIN_DIR)/django syncdb
+	$(BIN_DIR)/django migrate --all
 	$(BIN_DIR)/django collectstatic --noinput
 
 schemamigration:
