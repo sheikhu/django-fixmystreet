@@ -30,7 +30,7 @@ install: $(BIN_DIR)/buildout
 	$(BIN_DIR)/buildout -Nvt 5
 
 init:
-	$(BIN_DIR)/django migrate fixmystreet
+	$(BIN_DIR)/django migrate fixmystreet || ($(BIN_DIR)/django syncdb && $(BIN_DIR)/django migrate fixmystreet --fake)
 	$(BIN_DIR)/django collectstatic --noinput
 
 schemamigration:
