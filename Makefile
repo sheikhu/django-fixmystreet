@@ -20,7 +20,7 @@ bootstrap.py:
 	mkdir $(LIBS_DIR)
 
 $(BIN_DIR)/buildout: bootstrap.py
-	python27 bootstrap.py
+	python2.7 bootstrap.py
 
 # deploy: $(BIN_DIR)/buildout
 	# $(BIN_DIR)/buildout install django
