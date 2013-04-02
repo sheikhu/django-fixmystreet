@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block script-search %}
     <script type="text/javascript">
-    var NEXT_PAGE_URL = '{% url report_new_pro %}';
+    var NEXT_PAGE_URL = '{% url "report_new_pro" %}';
      $(function(){
      	{% if popup_reports%}
      	$("#report_popup").modal();
@@ -29,7 +29,7 @@
         </span>
 	</td>
 	<td>
-        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >
+        <a style="color:white" href="{% url 'report_prepare_pro' %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >
        	<span class='qualifier'>
 		{{stat.stat_value.get_count_new}}
         </span>
@@ -52,7 +52,7 @@
         </span>
         </td>
         <td>
-        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >
+        <a style="color:white" href="{% url 'report_prepare_pro' %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >
        	<span class='qualifier'>
 		{{stat.stat_value.get_count_in_progress}}
         </span>
@@ -75,9 +75,9 @@
         </span>
         </td>
         <td>
-        <a style="color:white" href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >
+        <a style="color:white" href="{% url 'report_prepare_pro' %}?stat_type={{stat.stat_key}}&stat_status=closed" >
        	<span class='qualifier'>
-		{{stat.stat_value.get_count_closed}}	
+		{{stat.stat_value.get_count_closed}}
         </span>
 	</a>
         </td>
@@ -86,22 +86,6 @@
         </table>
        </span>
     </div>
-    <!--table>
-    	<tr>
-    		<th></th>
-    		<th>{% trans 'Unpublished' %}</th>
-    		<th>{% trans 'In progress' %}</th>
-    		<th>{% trans 'Closed' %}</th>
-    	</tr>
-    	{% for stat in stats %}
-    	<tr>
-    		<td>{{ stat.stat_name }}</td>
-    		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >{{stat.stat_value.get_count_new}}</a></td>
-    		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >{{stat.stat_value.get_count_in_progress}}</a></td>
-    		<td><a href="{% url report_prepare_pro %}?stat_type={{stat.stat_key}}&stat_status=closed" >{{stat.stat_value.get_count_closed}}</a></td>
-    	</tr>
-    	{% endfor %}
-    </table-->
 </article>
 <div id="report_popup" class="modal hide fade">
 	<div class="modal-header">

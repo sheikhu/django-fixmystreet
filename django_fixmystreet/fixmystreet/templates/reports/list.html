@@ -85,7 +85,7 @@ $(function(){
     </div>
 
     <div class='span4'>
-        <form action="{% url search_ticket %}" class="block highlighted" id="search_by_ticket_nr">
+        <form action="{% url 'search_ticket' %}" class="block highlighted" id="search_by_ticket_nr">
             <h2>{% trans "Search by ticket number:" %}</h2>
             <div class="form-search">
                 <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Ticket number' %}">

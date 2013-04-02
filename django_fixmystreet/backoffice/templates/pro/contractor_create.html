@@ -10,7 +10,7 @@
             <div id="user_type_filter">
                 <ul>
                     <li>
-                        <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"         href="{% url list_contractors %}">
+                        <a class="{% ifequal 'users_all' menu %}active{% endifequal %}"         href="{% url 'list_contractors' %}">
                             <img src="{{STATIC_URL}}images/pin-fixmystreet-L.png" width="40px" height="54px" > <span id="users">{% trans "Contractors in" %} {{ request.fmsuser.organisation.name }}</span>
                         </a>
                     </li>

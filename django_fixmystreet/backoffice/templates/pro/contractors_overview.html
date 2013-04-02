@@ -25,12 +25,12 @@
         <div class="span12">
             <div class="list_contractors{% if user_form %} span4{% endif %}">
                 <div id='search_results'>
-                    <a class="report" href="{% url create_contractor %}">
+                    <a class="report" href="{% url 'create_contractor' %}">
                         <h3>+ {% trans 'Create a new contractor' %}</h3>
                     </a>
 
                     {% for contractor in contractors %}
-                    <a class="report{% if contractor_form.instance == contractor %} active{% endif %}" href="{% url edit_contractor contractor.id %}">
+                    <a class="report{% if contractor_form.instance == contractor %} active{% endif %}" href="{% url 'edit_contractor' contractor.id %}">
                        <div class="left_search_result">
                            <img src="{{ STATIC_URL }}images/contractor.png" />
                        </div>
@@ -60,7 +60,7 @@
                 {% include "_form_horizontal.html" with form=user_form %}
             </fieldset>
             <input type="submit" value="{% trans 'Save' %}" class="btn"/>
-            <a class= "btn pull-right btn-danger" href='{% url delete_contractor contractor_id=contractor_form.instance.id %}' onclick="return confirm('Are you sure you want to delete this user?')" >{% trans 'Delete' %}</a>
+            <a class= "btn pull-right btn-danger" href='{% url "delete_contractor" contractor_id=contractor_form.instance.id %}' onclick="return confirm('Are you sure you want to delete this user?')" >{% trans 'Delete' %}</a>
         </form>
     </div>
     {%endif%}

@@ -8,7 +8,7 @@
 {% block specific_scripts %}
 <script type="text/javascript">
 
-var URL_REPORT_REFUSE = "{% url report_refuse_pro report.id %}";
+var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
 
 $(function(){
  /**********************************************/
@@ -20,10 +20,10 @@ $(function(){
         var level = $(this).val();
         if(type == "file"){
             //TODO handle public bool of file with id vals[2]
-            window.location = '{% url report_update_file report.id %}?fileId='+id+'&updateType='+level;
+            window.location = '{% url "report_update_file" report.id %}?fileId='+id+'&updateType='+level;
         } else if (type == "comment"){
             //TODO handle public bool of comment with id vals[2]
-            window.location = '{% url report_update_comment report.id %}?commentId='+id+'&updateType='+level;
+            window.location = '{% url "report_update_comment" report.id %}?commentId='+id+'&updateType='+level;
         }
     });
 
@@ -38,7 +38,7 @@ $(function(){
     $("#report_responsible_manager_select").bind("change",function(event){
         var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
         if (r==true){
-            window.location = '{% url report_change_manager_pro report.id %}?manId='+$("#report_responsible_manager_select").val();
+            window.location = '{% url "report_change_manager_pro" report.id %}?manId='+$("#report_responsible_manager_select").val();
         }
         else{
             $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
@@ -56,7 +56,7 @@ $(function(){
 
         var r=confirm("Are you sure you want to change the contractor/applicant?");
         if (r==true){
-            window.location = '{% url report_change_contractor_pro report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
+            window.location = '{% url "report_change_contractor_pro" report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
         }
         else{
             $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
@@ -66,10 +66,10 @@ $(function(){
     /* Implement method when clicking private/public checkbox       */
     /****************************************************************/
     $("#id_private").bind("click",function(event){
-            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
+            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
     });
     $("#id_public").bind("click",function(event){
-            window.location = '{% url report_change_switch_privacy report.id %}?privacy='+$("#id_private").is(":checked");
+            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
     });
     {% if subscribed %}
     $("#id_pro-subscription").attr("value","on").prop('checked', true);
@@ -80,11 +80,11 @@ $(function(){
     $("#id_pro-subscription").change(function(){
         if($(this).attr("value")== "on"){
             $(this).attr("value","off");
-            $.ajax("{% url unsubscribe_pro report.id %}")
+            $.ajax("{% url 'unsubscribe_pro' report.id %}")
         }
         else{
             $(this).attr("value","on");
-            $.ajax("{% url subscribe_pro report.id %}");
+            $.ajax("{% url 'subscribe_pro' report.id %}");
         }
     });
 
@@ -113,13 +113,12 @@ function markAsDone(){
     // $("#divMarkAsDone").show();
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 
-    // window.location = '{% url report_update report.id %}?is_fixed=True';
 }
 
 function close(){
     var r=confirm("Are you sure you want to close this report?");
     if (r==true){
-        window.location = "{% url report_close_pro report.id %}";
+        window.location = "{% url 'report_close_pro' report.id %}";
     }
 }
 
@@ -140,7 +139,7 @@ function close(){
 <div id="divMarkAsDone" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_fix_pro report.id %}?is_fixed=True" method="post" >
+        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}?is_fixed=True" method="post" >
             {% csrf_token %}
             {{ mark_as_done_form.as_p }}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
@@ -152,7 +151,7 @@ function close(){
 <div id="divRefuse" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <form id="dialog" title="Please enter more information about rejecting the report" action="{% url report_refuse_pro report.id %}" method="post">
+        <form id="dialog" title="Please enter more information about rejecting the report" action="{% url 'report_refuse_pro' report.id %}" method="post">
             {% csrf_token %}
             {{ refuse_form.as_p }}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
@@ -357,17 +356,17 @@ function close(){
         </div>
 
         <p>
-            <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
+            <a href="{% url 'report_pdf' report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
             <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
             </a>
         </p>
 
         {% if request.fmsuser.is_pro %}
-            <p><a href="{% url report_pdf_pro report.id 1 %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a></p>
+            <p><a href="{% url 'report_pdf_pro' report.id 1 %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a></p>
         {% endif %}
 
         {% if request.fmsuser.manager or request.fmsuser.leader %}
-            <p><a href="{% url export_report 'csv' report.id %}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
+            <p><a href="{% url 'export_report' 'csv' report.id %}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
         {% endif %}
 
         {% if not report.is_created %}
@@ -382,7 +381,7 @@ function close(){
         <!-- ########################## -->
         <div class="bordered-box"/>
         {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
-            <a href="{% url report_validate_all_pro report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
+            <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
         {% endif %}
         {% if report.files %}
             <h4>{% trans "Photos and files" %}</h4>
@@ -451,7 +450,7 @@ function close(){
             <!-- ############################################# -->
             {% if report.is_in_progress %}
                 {% if request.fmsuser.is_superuser %}
-                    <a href="{% url report_delete_pro report.id %}" class="btn pull-right clearfix btn-danger" id="btn-del">{% trans 'Delete' %}</a>
+                    <a href="{% url 'report_delete_pro' report.id %}" class="btn pull-right clearfix btn-danger" id="btn-del">{% trans 'Delete' %}</a>
                 {% endif %}
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
@@ -461,8 +460,8 @@ function close(){
             <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
             <!-- ######################################### -->
             {% if report.is_created %}
-                <a href="{% url report_accept_pro report.id %}" class="btn" >{% trans 'Accept' %}</a>
-                <a href="{% url report_accept_and_validate report.id %}" class="btn">{% trans 'Publish' %}</a>
+                <a href="{% url 'report_accept_pro' report.id %}" class="btn" >{% trans 'Accept' %}</a>
+                <a href="{% url 'report_accept_and_validate' report.id %}" class="btn">{% trans 'Publish' %}</a>
                 <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
             {% endif %}
         {% endif %}

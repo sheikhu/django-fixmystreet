@@ -75,7 +75,10 @@ class MailTest(TestCase):
 
 
 		# report_id = resolve(response.redirect_chain[-1][0]).kwargs['report_id']
-		report = Report.objects.get(id=1)
+		self.assertIn('report', response.context)
+
+		report_id = response.context['report'].id
+		report = Report.objects.get(id=report_id)
 		self.assertEquals(report.subscriptions.all().count(), 2)
 		self.assertEquals(len(mail.outbox), 2)
 
@@ -107,20 +110,22 @@ class MailTest(TestCase):
 		#Send a post request filling in the form to create a report
 		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
-		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
+		self.assertTrue(response.context['report_form'].is_valid(), response.context['report_form'].errors)
+		self.assertIn('report', response.context)
 
-		report = Report.objects.get(id=1)
+		report_id = response.context['report'].id
+		report = Report.objects.get(id=report_id)
 		self.assertEquals(report.subscriptions.all().count(), 2)
 		self.assertEquals(len(mail.outbox), 2) # one for creator subscription, one for manager
 
 		#Login to access the pro page to create a user
 		self.client.login(username='manager@a.com', password='test')
 		#Refuse the created report
-		response = self.client.post('/en/pro/report/1/refuse/',{'refusal_motivation':'more info'}, follow=True)
+		response = self.client.post(reverse('report_refuse_pro', args=[report_id]), {'refusal_motivation':'more info'}, follow=True)
 		self.assertEquals(response.status_code, 200)
 		self.assertEquals(len(mail.outbox),3)
 		#The status of the report must now be REFUSED
-		report = Report.objects.get(id=report.id)
+		report = Report.objects.get(id=report_id)
 		self.assertEquals(report.status, Report.REFUSED)
 		#3 mails have been sent, 2 for the report creation and 1 for refusing the report
 		#The last one must be sent to the citizen (= the refusing report mail)
@@ -130,12 +135,13 @@ class MailTest(TestCase):
 		#Send a post request filling in the form to create a report
 		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
-		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-sen-saint-josse-ten-noode/1', response['Location'])
+		self.assertIn('report', response.context)
 
+		report_id = response.context['report'].id
 		self.assertEquals(len(mail.outbox),2) # one for creator subscription, one for manager
 
 		#Send a post request subscribing a citizen to the just created report
-		response = self.client.post('/en/report/1/subscribe/',{'citizen_email':'post@test.com'}, follow=True)
+		response = self.client.post(reverse('subscribe', args=[report_id]),{'citizen_email':'post@test.com'}, follow=True)
 		self.assertEquals(response.status_code, 200)
 		#3 mails have been sent, 2 for the report creation and 1 for subscribing to the report
 		self.assertEquals(len(mail.outbox),3)
@@ -145,29 +151,31 @@ class MailTest(TestCase):
 		#Send a post request filling in the form to create a report
 		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
-		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
+		self.assertIn('report', response.context)
+
+		report_id = response.context['report'].id
 
 		self.assertEquals(len(mail.outbox), 2) # one for creator subscription, one for manager
 
 		#Login to access the pro page
 		self.client.login(username='manager@a.com', password='test')
 		#Publish the created report
-		response = self.client.post('/en/pro/report/1/accept/', follow=True)
+		response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
 		self.assertEquals(response.status_code, 200)
 		self.assertEquals(len(mail.outbox), 3)
 
 		#Send a post request to mark the report as done
 
-		response = self.client.post('/en/report/1/update/',{'is_fixed':'True'})
+		response = self.client.post(reverse('report_update', args=[report_id]), {'is_fixed':'True'})
 		self.assertEquals(response.status_code, 302)
 		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 		#4 mails have been sent, 2 for the report creation and 1 for telling the responsible manager that the report is marked as done, and 1 for the report change to the citizen subscriber
-		self.assertEquals(Report.objects.get(id=1).status, Report.SOLVED)
+		self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
 
 		self.assertEquals(len(mail.outbox), 4)
 		self.assertTrue(self.manager.email in mail.outbox[3].to)
 		#Send another post request to mark the report as done
-		response = self.client.post('/en/report/1/update/', {'is_fixed':'True'})
+		response = self.client.post(reverse('report_update', args=[report_id]), {'is_fixed':'True'})
 		self.assertEquals(response.status_code, 302)
 		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 		#Again 4 mails have been sent, the extra mark as done request will not send an extra email to the responsible manager

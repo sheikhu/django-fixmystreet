@@ -110,7 +110,7 @@ $("[data-toggle=popover]")
 <div id="divMarkAsDone" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url report_update report.id %}?is_fixed=True" method="post" >
+        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_update' report.id %}?is_fixed=True" method="post" >
             {% csrf_token %}
             {{ mark_as_done_form.as_p }}
 
@@ -206,7 +206,7 @@ $("[data-toggle=popover]")
                 </table>
             </div> <!-- report-body -->
             <p>
-                <a href="{% url report_pdf report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
+                <a href="{% url 'report_pdf' report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' %}
                 </a>
             </p>
@@ -268,7 +268,7 @@ $("[data-toggle=popover]")
             Subscribe to receive notifications ({{ count }} subscribers to this incident)
             {% endblocktrans %}<br/>
             {% if not report.is_closed and not subscribed %}
-                <form id="citizen-subscription-form" action="{% url subscribe report.id %}">
+                <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
                     {% csrf_token %}
                     <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
                         <input id="subscribe-incident-show-report" type="submit" class="btn" value="{% trans 'Subscribe' %}" />
