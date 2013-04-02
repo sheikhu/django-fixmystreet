@@ -229,11 +229,11 @@ if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2
-    SITE_URL = "fixmystreet.irisnetlab.be"
+    ALLOWED_HOSTS = ("fixmystreet.irisnetlab.be", )
 
 elif ENVIRONMENT=="production":
     SITE_ID = 1
-    SITE_URL = "fixmystreet.irisnet.be"
+    ALLOWED_HOSTS = ("fixmystreet.irisnet.be", )
 
 
 try:
