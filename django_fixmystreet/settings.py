@@ -45,10 +45,7 @@ STATIC_URL = '/static/'
 POSTGIS_TEMPLATE = 'template_postgis'
 
 PROXY_URL = "http://gis.irisnet.be/"
-if DEBUG:
-    URBIS_URL = "/urbis/"
-else:
-    URBIS_URL = "http://gis.irisnet.be/"
+URBIS_URL = "/urbis/"
 
 TIME_ZONE = 'Europe/Brussels'
 
