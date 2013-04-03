@@ -1,6 +1,37 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>404 - Not Found</title>
+    <title>Page not found</title>
+        <!--[if lt IE 9]>
+        <script src="{{ STATIC_URL }}lib/html5shiv.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/layout.css" />
+
+        <link rel="Shortcut Icon" type="image/x-icon" href="/static/images/favicon.ico" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     </head>
-    <body><h1>Error 404 - Not Found</h1></body>
+
+    <body>
+        <div class="container">
+            <header>
+                <img id="banner" src="/static/images/logo_fixmystreet.png" alt="Fix My Street">
+            </header>
+            <section id="content" class="container">
+                <center><h1>Page not found</h1></center>
+            </section>
+
+            <footer>
+                <p>An initiative of Bruxelles Mobilite in collaboration with Communes and Brussels Partner Institutions</p>
+                <div class="footer_left">
+
+                    <a href="http://www.cirb.irisnet.be" target="_blank"><img src="/static/images/fms-cirb-logo.png"/>Powered by CIRB-CIBG, 2013</a>
+                </div>
+                <div class="footer_right">
+                    <a href="http://www.bruxelles.irisnet.be/" target="_blank"><img src="/static/images/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png"></a>
+                </div>
+            </footer>
+        </div>
+    </body>
 </html>

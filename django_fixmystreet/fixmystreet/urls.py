@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestUpdatesByReport
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 
 from piston.resource import Resource
 
