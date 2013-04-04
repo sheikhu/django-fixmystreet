@@ -143,7 +143,7 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
                 strategies: [new OpenLayers.Strategy.BBOX()],
                 protocol: new OpenLayers.Protocol.WFS({
-                    url:  this.options.urbisUrl,
+                    url:  URBIS_URL + 'geoserver/wfs',
                     featureType: "URB_A_SS",
                     featureNS: "http://www.cirb.irisnet.be/urbis",
                     geometryName: "GEOM"

@@ -680,6 +680,13 @@ def init_street_number_as_int(sender, instance, **kwargs):
 
 
 @receiver(pre_save,sender=Report)
+def init_regional_street(sender, instance, **kwargs):
+    if not instance.id and not kwargs['raw']:
+        if StreetSurface.objects.filter(geom__intersects=instance.point.buffer(5), administrator=StreetSurface.REGION).exists():
+            instance.address_regional = True
+
+
+@receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
@@ -1605,6 +1612,47 @@ class ListItem(models.Model):
 
     class Meta:
         translate = ('label', )
+
+
+
+# to import fresh datas:
+#
+# ogr2ogr -a_srs EPSG:31370 -overwrite -f "PostgreSQL" -nln public.urbis \
+# PG:"host=localhost user=xxx password=xxx dbname=fixmystreet" \
+# OCI:"xxx/xxx@( \
+#     DESCRIPTION = \
+#         (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = xxx)(PORT = 1521))) \
+#         (CONNECT_DATA = (SID =ORAPRD01)) \
+#     ):URBIS_DIFF.URB_A_SS"
+
+
+class StreetSurface(models.Model):
+    REGION = 'REG'
+    ADMINISTRATORS = ((REGION, 'Region'), )
+    LEVELS = (
+        ("+", "up"),
+        ("=", "reference"),
+        ("-", "down"),
+        ("0", "not defined")
+    )
+    TYPES = (
+        ("A", "access ramp"),
+        ("G", "gallery"),
+        ("I", "crossroads"),
+        ("L", "local road"),
+        ("P", "place"),
+        ("S", "section")
+    )
+
+    urbis_id = models.IntegerField(null=True, blank=True)
+    pw_id = models.IntegerField(null=True, blank=True)
+    ssft = models.CharField(blank=True, max_length=1, choices=TYPES)
+    sslv = models.CharField(blank=True, max_length=1, choices=LEVELS)
+    version_id = models.IntegerField(null=True, blank=True)
+    administrator = models.CharField(blank=True, null=True, max_length=3, choices=ADMINISTRATORS)
+    geom = models.GeometryField(null=False, srid=31370, blank=False)
+
+    objects = models.GeoManager()
 
 
 def dictToPoint(data):

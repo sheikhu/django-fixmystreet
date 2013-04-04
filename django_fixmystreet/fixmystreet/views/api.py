@@ -214,7 +214,7 @@ def proxy(request, path):
     else:
         path = '{0}{1}'.format(URL, path)
 
-    if request.POST:
+    if request.method == 'POST':
         urbisRequest = urllib2.Request(path, request.raw_post_data)
     else:
         urbisRequest = urllib2.Request(path)

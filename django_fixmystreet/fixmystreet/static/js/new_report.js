@@ -77,24 +77,9 @@ function retrieveAddress() {
             fillAdressField(currLang, address);
             fillI18nAdressField(currLang, address);
 
-            //Search if the address is on a regional road or not.
-            var pointX = $('#id_report-x').val();
-            var pointY = $('#id_report-y').val();
 
             //Default False
             $('#id_report-address_regional').val('False');
-
-            $.ajax({
-                url: "http://gis.irisnet.be/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=urbis:URB_A_SS&maxFeatures=1&outputFormat=json&bbox="+(pointX-30)+","+(pointY-30)+","+(pointX+30)+","+(pointY+30),
-                dataType: "json",
-                type: "POST",
-                success: function(responseData, textStatus, jqXHR) {
-                    if (responseData.features[0].properties.ADMINISTRATOR != null) {
-                        //ROUTE REGIONALE
-                        $('#id_report-address_regional').val('True');
-                    }
-                }
-            });
 
             //Does not work. Fill in the wrong input zone
             for (var i in languages) {
@@ -108,6 +93,12 @@ function retrieveAddress() {
                 }
             }
 
+
+            //Search if the address is on a regional road or not.
+            // var pointX = parseInt($('#id_report-x').val());
+            // var pointY = parseInt($('#id_report-y').val());
+            // regDetection(pointX, pointY);
+
         } else {
             var msg = 'Error: ' + response.status;
             if(response.status == 'error') {
@@ -119,6 +110,53 @@ function retrieveAddress() {
     });
 }
 
+// function regDetection (x, y, radius) {
+//     radius = radius || 1;
+//     if (radius > 100) {
+//         return; // not found
+//     }
+
+//     console.log(x, y, radius);
+
+//     var bbox = (x-radius)+","+(y-radius)+","+(x+radius)+","+(y+radius);
+//     $.getJSON(URBIS_URL + "geoserver/wms",    {
+//         service: "WFS",
+//         version: "1.0.0",
+//         request: 'GetFeature',
+//         typeName: 'urbis:URB_A_SS',
+//         maxFeatures: 100,
+//         outputFormat: "json",
+//         X: x,
+//         Y: y,
+//         bbox: bbox
+//     }
+//     ).success(function(responseData, textStatus, jqXHR) {
+//         if (responseData.features.length) {
+//             for (i in responseData.features) {
+//                 if (responseData.features[i].properties.ADMINISTRATOR != null) {
+//                     //ROUTE REGIONALE
+//                     $('#id_report-address_regional').val('True');
+//                 }
+//             }
+//         } else {
+//             regDetection(x, y, radius * 10);
+//         }
+//     });
+//     // {
+//     //     SERVICE: "WMS",
+//     //     REQUEST: 'GetFeatureInfo',
+//     //     QUERY_LAYERS: 'urbis:URB_A_SS',
+//     //     INFO_FORMAT: "json",
+//     //     FEATURE_COUNT: 50,
+//     //     BBOX: bbox,
+//     //     version: "1.1.1",
+//     //     Layers:'urbis:URB_A_SS',
+//     //     WIDTH:20,
+//     //     HEIGHT:20,
+//     //     x: 1,
+//     //     y: 1
+//     // }
+// }
 
 /**
  * Create the overview popup content
