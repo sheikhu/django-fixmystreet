@@ -255,9 +255,10 @@ $("[data-toggle=popover]")
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
                 {% include "reports/_attachments_form.html" %}
 
-                <input id="send-comment-show-report" type="submit" class='btn' value="{% trans 'Send' %}" title="{% trans 'Submit all added files and comments' %}"/>
+                <div style="overflow:hidden;">
+                    <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
+                </div>
             </form> <!-- report-form-->
-            <div style="clear:both;"></div>
         </div> <!-- bordered-box-->
         <div class="bordered-box">
             <!-- ################ -->
