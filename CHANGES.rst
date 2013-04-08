@@ -2,8 +2,8 @@ Changelog of django-fixmystreet
 ===================================================
 
 
-0.5.17 (unreleased)
--------------------
+0.6.0 (2013-04-08)
+------------------
 
 - Regional surface detection reviewed.
 
