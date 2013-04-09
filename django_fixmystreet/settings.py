@@ -20,6 +20,7 @@ else:
     DEBUG = False
 
 if ENVIRONMENT != "production":
+    #disable mail in non-production environment
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
