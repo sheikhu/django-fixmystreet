@@ -90,7 +90,7 @@ def list(request, status):
     #pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
 
-    page_number = int(request.GET.get("page", 1))
+    page_number = request.GET.get("page", 1)
     paginator = Paginator(reports, settings.MAX_ITEMS_PAGE)
     try:
         page = paginator.page(page_number)
@@ -106,7 +106,6 @@ def list(request, status):
                 "reports": page,
                 "status": status,
                 "ownership": ownership,
-                "page_number": page_number,
                 "status": status
             },
             context_instance=RequestContext(request))

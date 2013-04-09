@@ -981,6 +981,9 @@ li img {
 #search_results .pagination {
     margin-left: 15px;
 }
+#search_results .pagination ul {
+    box-shadow: none;
+}
 
 #search_results .pagination a.active {
     background: #FFDB00;
@@ -995,19 +998,18 @@ li img {
 
 #search_results .pagination_prev,
 #search_results .pagination_next {
-    width:14px;
+    width:10px;
     height:20px;
-    margin-top: 2px;
     background-repeat: no-repeat;
-    background-position: 5px -28px;
-    background-color: transparent !important;
+    background-position: 10px -26px;
     border: none;
 }
 
 #search_results .pagination_prev.disabled,
 #search_results .pagination_next.disabled {
-    background-position: 5px 0;
+    background-position: 10px 2px;
     cursor: auto;
+    background-color: transparent !important;
 }
 
 #search_results .pagination_prev {

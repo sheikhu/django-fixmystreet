@@ -10,7 +10,7 @@ import datetime
 from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 from django.conf import settings
-import math
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
@@ -171,18 +171,22 @@ def index(request, slug=None, commune_id=None):
             error_message = _("Does not participate to FixMyStreet yet with details")+' '+commune_phone
             messages.add_message(request, messages.ERROR, error_message)
         else:
-            page_number = int(request.GET.get("page", 1))
 
             entity = OrganisationEntity.objects.get(id=commune_id)
             reports = Report.objects.all().entity_territory(entity).public().order_by('-created')
 
-            pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
+            page_number = request.GET.get("page", 1)
+            paginator = Paginator(reports, settings.MAX_ITEMS_PAGE)
+            try:
+                page = paginator.page(page_number)
+            except PageNotAnInteger:
+                page = paginator.page(1)
+            except EmptyPage:
+                page = paginator.page(paginator.num_pages)
 
             return render_to_response("reports/list.html", {
-                "reports": reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
+                "reports": page,
                 "entity":entity,
-                "pages_list":pages_list,
-                "page_number": page_number,
             }, context_instance=RequestContext(request))
 
     communes = OrganisationEntity.objects.filter(commune=True).order_by('name_' + get_language())
