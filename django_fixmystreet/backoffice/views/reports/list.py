@@ -4,11 +4,10 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils.translation import get_language
-import math
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 @login_required(login_url='/pro/accounts/login/')
 def list(request, status):
-    page_number = int(request.GET.get("page", 1))
     ownership = request.GET.get("ownership", "entity")
 
     #Get street
@@ -88,16 +87,24 @@ def list(request, status):
     #reports = reports.distance(pnt).order_by('distance')
     #reports = reports.distance(pnt).order_by('address', 'address_number')
     reports = reports.distance(pnt).order_by('-created')
-    pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
+    #pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
+
+    page_number = int(request.GET.get("page", 1))
+    paginator = Paginator(reports, settings.MAX_ITEMS_PAGE)
+    try:
+        page = paginator.page(page_number)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
 
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,
                 "zipcodes": zipcodes,
-                "reports":reports[int((page_number-1)*settings.MAX_ITEMS_PAGE):int(page_number*settings.MAX_ITEMS_PAGE)],
-                "status":status,
-                "pages_list":pages_list,
+                "reports": page,
+                "status": status,
                 "ownership": ownership,
                 "page_number": page_number,
                 "status": status

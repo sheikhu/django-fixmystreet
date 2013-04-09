@@ -14,14 +14,13 @@ else:
 
 
 
-if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
+if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     DEBUG = True
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-elif ENVIRONMENT=="staging":
-    DEBUG = False
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     DEBUG = False
+
+if ENVIRONMENT != "production":
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'

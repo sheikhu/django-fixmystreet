@@ -189,7 +189,7 @@ function highlightFilterSelection(id) {
                     {% for report in reports %}
                     {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                     {% endfor %}
-                    {% include "_paginator.html" %}
+                    {% include "_paginator.html" with page=reports %}
                 </div>
             {% else %}
                 <p>{% trans "No problems have been reported in this area." %}</p>

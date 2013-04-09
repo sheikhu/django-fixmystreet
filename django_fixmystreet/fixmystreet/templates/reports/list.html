@@ -80,7 +80,7 @@ $(function(){
         {% for report in reports %}
             {% include "reports/_navigation.html" with url=report.get_absolute_url %}
         {% endfor %}
-        {% include "_paginator.html" %}
+        {% include "_paginator.html" with page=reports %}
     {% endif %}
     </div>
 

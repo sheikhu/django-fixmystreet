@@ -1,17 +1,31 @@
-{% if pages_list|length > 1 %}
+{% if page.has_other_pages %}
 <div class="pagination pagination-centered">
     <ul>
+        {% if page.has_previous %}
         <li>
-            <a class="pagination_prev{% if page_number == 1 %} disabled{% endif %}"></a>
+            <a class="pagination_prev" data-page="{{ page.previous_page_number }}"></a>
         </li>
-        {% for number in pages_list %}
+        {% else %}
         <li>
-            <a{% if page_number == number %} class="active"{% endif %} data-page="{{ number }}">{{ number }}</a>
+            <a class="pagination_prev disabled"></a>
+        </li>
+        {% endif %}
+
+        {% for number in page.paginator.page_range %}
+        <li>
+            <a{% if page.number == number %} class="active"{% endif %} data-page="{{ number }}">{{ number }}</a>
         </li>
         {% endfor %}
+
+        {% if page.has_next %}
         <li>
-            <a class="pagination_next{% if page_number == pages_list|last %} disabled{% endif %}"></a>
+            <a class="pagination_next" data-page="{{ page.next_page_number }}"></a>
         </li>
+        {% else %}
+        <li>
+            <a class="pagination_next disabled"></a>
+        </li>
+        {% endif %}
     </ul>
 </div>
 {% endif %}

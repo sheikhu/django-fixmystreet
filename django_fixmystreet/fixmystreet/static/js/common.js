@@ -44,15 +44,7 @@ $(document).ready(function(){
     // Add the active class to the active page number
     var paginator = $(".pagination");
     if (paginator.length) {
-        $(".pagination_next:not(.disabled)").click(function(evt) {
-            evt.preventDefault();
-            getUrlForPageNumber(pageNumber + 1);
-        });
-        $(".pagination_prev:not(.disabled)").click(function(evt) {
-            evt.preventDefault();
-            getUrlForPageNumber(pageNumber - 1);
-        });
-        paginator.delegate("a:not(.active)", "click", function(evt) {
+        paginator.delegate("a:not(.active), .pagination_prev:not(.disabled) .pagination_next:not(.disabled)", "click", function(evt) {
             evt.preventDefault();
             var page = $(this).data("page");
             if(page) {
