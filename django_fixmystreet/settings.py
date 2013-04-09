@@ -17,7 +17,7 @@ else:
 if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     DEBUG = True
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else if ENVIRONMENT=="staging":
+elif ENVIRONMENT=="staging":
     DEBUG = False
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
