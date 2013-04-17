@@ -772,7 +772,7 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
 
-            elif report.status == Report.APPLICANT_RESPONSIBLE:
+            elif report.status == Report.APPLICANT_RESPONSIBLE or report.status == Report.CONTRACTOR_ASSIGNED:
                 #Applicant responsible
                 for recipient in report.contractor.workers.all():
                     ReportNotification(
@@ -790,34 +790,11 @@ def report_notify(sender, instance, **kwargs):
                     ).save()
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.APPLICANT_ASSIGNED,
+                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
                     related_new=report.contractor
                 ).save()
 
-
-            elif report.status == Report.CONTRACTOR_ASSIGNED:
-                #Contractor assigned
-                for recipient in report.contractor.workers.all():
-                    ReportNotification(
-                        content_template='send_report_assigned_to_app_contr',
-                        recipient=recipient,
-                        related=report,
-                        reply_to=report.responsible_manager.email
-                    ).save()
-                for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.CONTRACTOR_ASSIGNED,
-                    related_new=report.contractor
-                ).save()
-
-        if report.__former['contractor']!= report.contractor and report.contractor:
+        if report.__former['contractor'] != report.contractor and report.contractor:
             for recipient in report.contractor.workers.all():
                 ReportNotification(
                     content_template='send_report_assigned_to_app_contr',
