@@ -8,7 +8,7 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 long_description = '\n\n'.join([
     open(os.path.join(PROJECT_PATH, 'README.md')).read(),
     # open('CREDITS.rst').read(),
-    open(os.path.join(PROJECT_PATH, 'CHANGES.rst')).read(),
+    open(os.path.join(PROJECT_PATH, 'CHANGES.md')).read(),
     ])
 
 install_requires = [
@@ -45,8 +45,8 @@ setup(name='django-fixmystreet',
         'Framework :: Django',
         ],
     keywords=[],
-    author='TODO',
-    author_email='TODO@nelen-schuurmans.nl',
+    author='CIRB',
+    author_email='TODO@cirb.irisnet.be',
     url='',
     license='GPL',
     packages=['django_fixmystreet'],
