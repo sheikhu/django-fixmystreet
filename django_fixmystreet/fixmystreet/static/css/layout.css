@@ -196,9 +196,10 @@ header nav li a.active,
     margin-left: 0px;
 }
 
-#incident_filter a:hover span,
-#incident_filter a.active span,
-#user_type_filter li span.selected {
+#incident_filter li:hover span,
+#incident_filter li.active span,
+#user_type_filter li:hover span,
+#user_type_filter li.active span {
     border-bottom: #FFDB00 solid 2px;
 }
 
@@ -1575,14 +1576,6 @@ blockquote {
 #user_type_filter li{
     display: inline;
     margin-left: 0px;
-}
-
-#user_type_filter li:hover span{
-    border-bottom: #FFF203 solid 2px;
-}
-
-#user_type_filter li.active span {
-    border-bottom: #FFF203 solid 2px;
 }
 
 #leftcol.list_users img, #leftcol.list_contractors img{

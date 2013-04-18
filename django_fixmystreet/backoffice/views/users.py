@@ -64,7 +64,7 @@ def list_users(request, user_id=None, user_type='users'):
     users = FMSUser.objects.filter(organisation=currentOrganisation)
     if user_id:
         user_to_edit = FMSUser.objects.get(id=user_id)
-        params['can_edit'] = (((user_to_edit.manager or user_to_edit.agent) and request.fmsuser.leader) or ((user_to_edit.agent) and request.fmsuser.manager))
+        params['can_edit'] = ((not user_to_edit.leader and request.fmsuser.leader) or ((not user_to_edit.leader and not user_to_edit.manager) and request.fmsuser.manager))
 
         if request.method == "POST" and params['can_edit']:
             user_form = FmsUserForm(request.POST, instance=user_to_edit)
@@ -80,10 +80,13 @@ def list_users(request, user_id=None, user_type='users'):
 
     if user_type == 'agents':
         users = users.filter(agent=True, manager=False)
+        params['can_create'] = request.fmsuser.manager or request.fmsuser.leader
     elif user_type == 'managers':
         users = users.filter(manager=True)
+        params['can_create'] = request.fmsuser.leader
     else:
         users = users.filter(Q(agent=True) | Q(manager=True) | Q(leader=True))
+        params['can_create'] = request.fmsuser.manager or request.fmsuser.leader
 
     users = users.filter(logical_deleted = False)
 
@@ -117,7 +120,8 @@ def create_user(request, user_type='users'):
     return render_to_response("pro/user_create.html",
             {
                 "user_form":user_form,
-                "isManager":isManager
+                "isManager":isManager,
+                "user_type": user_type
             },
             context_instance=RequestContext(request))
 
@@ -151,7 +155,7 @@ def list_contractors(request, contractor_id=None):
     if contractor_id:
         contractor_to_edit = OrganisationEntity.objects.get(id=contractor_id, subcontractor=True)
         user_to_edit = contractor_to_edit.workers.all()[0]
-        params['can_edit'] = request.fmsuser.leader or request.fmsuser.manager
+        params['can_edit'] = request.fmsuser.leader
 
         if request.method == "POST" and params['can_edit']:
             contractor_form = ContractorForm(request.POST, instance=contractor_to_edit)
@@ -169,6 +173,7 @@ def list_contractors(request, contractor_id=None):
 
         params['contractor_form'] = contractor_form
         params['user_form'] = user_form
+        params['can_create'] = request.fmsuser.leader
 
     params["contractors"] = contractors
     return render_to_response("pro/contractors_overview.html", params, context_instance=RequestContext(request))
