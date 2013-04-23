@@ -191,7 +191,7 @@ admin.site.register(ReportCategory, ReportCategoryAdmin)
 
 
 class MailNotificationTemplateAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'title')
     readonly_fields = ('content_html_fr', 'content_html_nl')
     def content_html_fr(self, o):
         return markdown(o.content_fr)

@@ -805,16 +805,16 @@ def report_notify(sender, instance, **kwargs):
                         recipient=recipient,
                         related=report,
                         reply_to=report.responsible_manager.email
-                    ).save(old_responsible=report.__former['reponsible'])
+                    ).save(old_responsible=report.responsible_manager)
 
-                if report.__former['contractor']:
-                    for recipient in report.__former['contractor'].workers.all():
-                        ReportNotification(
-                            content_template='notify-deallocate',
-                            recipient=recipient,
-                            related=report,
-                            reply_to=report.responsible_manager.email
-                        ).save()
+                # if report.__former['contractor']:
+                #     for recipient in report.__former['contractor'].workers.all():
+                #         ReportNotification(
+                #             content_template='notify-deallocate',
+                #             recipient=recipient,
+                #             related=report,
+                #             reply_to=report.responsible_manager.email
+                #         ).save(old_responsible=report.responsible_manager)
 
                 if report.contractor.applicant:
                     for subscription in report.subscriptions.all():
@@ -823,7 +823,8 @@ def report_notify(sender, instance, **kwargs):
                             recipient=subscription.subscriber,
                             related=report,
                             reply_to=report.responsible_manager.email,
-                        ).save()
+                        ).save(old_responsible=report.responsible_manager)
+
                     ReportEventLog(
                         report=report,
                         event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
@@ -843,7 +844,8 @@ def report_notify(sender, instance, **kwargs):
                 content_template='notify-affectation',
                 recipient=report.responsible_manager,
                 related=report,
-            ).save()
+            ).save(old_responsible=report.__former['responsible_manager'])
+
             ReportEventLog(
                 report=report,
                 event_type=ReportEventLog.MANAGER_ASSIGNED,
@@ -858,7 +860,7 @@ def report_notify(sender, instance, **kwargs):
                         recipient=subscription.subscriber,
                         related=report,
                         reply_to=report.responsible_manager.email,
-                    ).save()
+                    ).save(old_responsible=report.__former['responsible_manager'])
 
                     ReportEventLog(
                         report=report,
@@ -1268,48 +1270,56 @@ class ReportNotification(models.Model):
     related_object_id = models.PositiveIntegerField()
 
 
-@receiver(pre_save, sender=ReportNotification)
-def send_notification(sender, instance, **kwargs):
-    if not instance.recipient.email:
-        instance.error_msg = "No email recipient"
-        instance.success = False
-        return
+    # @receiver(pre_save, sender=ReportNotification)
+    # def send_notification(sender, instance, **kwargs):
+    def save(self, *agrs, **kwargs):
+        if not self.recipient.email:
+            self.error_msg = "No email recipient"
+            self.success = False
+            return
 
-    recipients = (instance.recipient.email,)
+        recipients = (self.recipient.email,)
 
 
-    template = MailNotificationTemplate.objects.get(name=instance.content_template)
-    subject, html, text = transform_notification_template(template, instance.related, instance.recipient)
+        template = MailNotificationTemplate.objects.get(name=self.content_template)
 
-    if instance.reply_to:
-        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":instance.reply_to})
-    else:
-        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
+        if 'old_responsible' in kwargs:
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
+            del kwargs['old_responsible']
+        else:
+            subject, html, text = transform_notification_template(template, self.related, self.recipient)
 
-    if html:
-        msg.attach_alternative(html, "text/html")
+        if self.reply_to:
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
+        else:
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
 
-    # if self.report.photo:
-        # msg.attach_file(self.report.photo.file.name)
-    if isinstance(instance.related, Report):
-        if instance.related.files():
-            for f in instance.related.files():
-                if f:
-                    if f.file_type == ReportFile.IMAGE and f.is_public():
-                        # Open the file
-                        #fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
-                        fp = open(f.file.path, 'rb')
-                        msgImage = MIMEImage(fp.read())
-                        fp.close()
-                        # Define the image's ID to reference to it
-                        msgImage.add_header('Content-ID', '<image'+str(f.reportattachment_ptr_id)+'>')
-                        msg.attach(msgImage)
-    try:
-        msg.send()
-        instance.success = True
-    except SMTPException as e:
-        instance.success = False
-        instance.error_msg = str(e)
+        if html:
+            msg.attach_alternative(html, "text/html")
+
+        # if self.report.photo:
+            # msg.attach_file(self.report.photo.file.name)
+        if isinstance(self.related, Report):
+            if self.related.files():
+                for f in self.related.files():
+                    if f:
+                        if f.file_type == ReportFile.IMAGE and f.is_public():
+                            # Open the file
+                            #fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
+                            fp = open(f.file.path, 'rb')
+                            msgImage = MIMEImage(fp.read())
+                            fp.close()
+                            # Define the image's ID to reference to it
+                            msgImage.add_header('Content-ID', '<image'+str(f.reportattachment_ptr_id)+'>')
+                            msg.attach(msgImage)
+        try:
+            msg.send()
+            self.success = True
+        except SMTPException as e:
+            self.success = False
+            self.error_msg = str(e)
+
+        super(ReportNotification, self).save(*agrs, **kwargs)
 
 
 class ReportEventLog(models.Model):

@@ -219,7 +219,7 @@ def transform_notification_user_display(user, to_show):
         else:
             return _("a citizen")
 
-def transform_notification_template(template, report, user):
+def transform_notification_template(template, report, user, old_responsible=None):
     from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
     SITE_URL = Site.objects.get_current().domain
 
@@ -265,6 +265,9 @@ def transform_notification_template(template, report, user):
         if user.is_active and template.name == "mark-as-done":
             data["done_motivation"] = report.mark_as_done_motivation
             data["resolver"] = transform_notification_user_display(user, report.mark_as_done_user)
+
+        if old_responsible:
+            data["old_responsible"] = transform_notification_user_display(user, old_responsible)
 
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
