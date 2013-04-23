@@ -756,7 +756,7 @@ def report_notify(sender, instance, **kwargs):
                 for subscription in report.subscriptions.all():
                     if subscription.subscriber != report.responsible_manager:
                         ReportNotification(
-                            content_template='notify-processed',
+                            content_template='announcement-processed',
                             recipient=subscription.subscriber,
                             related=report,
                             reply_to=report.responsible_manager.email,
@@ -797,7 +797,7 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
 
-            elif report.status == Report.APPLICANT_RESPONSIBLE or report.status == Report.CONTRACTOR_ASSIGNED:
+            if report.__former['contractor'] != report.contractor:
                 #Applicant responsible
                 for recipient in report.contractor.workers.all():
                     ReportNotification(
@@ -806,98 +806,32 @@ def report_notify(sender, instance, **kwargs):
                         related=report,
                         reply_to=report.responsible_manager.email
                     ).save(old_responsible=report.__former['reponsible'])
-                for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='notify-affectation',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
-                ReportEventLog(
-                    report=report,
-                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
-                    related_new=report.contractor
-                ).save()
 
-        if report.__former['contractor'] != report.contractor and report.contractor:
-            for recipient in report.contractor.workers.all():
-                ReportNotification(
-                    content_template='notify-affectation',
-                    recipient=recipient,
-                    related=report,
-                    reply_to=report.responsible_manager.email
-                ).save()
-            if report.__former['contractor']:
-                for recipient in report.__former['contractor'].workers.all():
-                    ReportNotification(
-                        content_template='notify-affectation',
-                        recipient=recipient,
-                        related=report,
-                        reply_to=report.responsible_manager.email
-                    ).save()
-            for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
-            if report.__former['contractor']:
-                if report.__former['status']==Report.CONTRACTOR_ASSIGNED and report.status == Report.CONTRACTOR_ASSIGNED:
+                if report.__former['contractor']:
+                    for recipient in report.__former['contractor'].workers.all():
+                        ReportNotification(
+                            content_template='notify-deallocate',
+                            recipient=recipient,
+                            related=report,
+                            reply_to=report.responsible_manager.email
+                        ).save()
+
+                if report.contractor.applicant:
+                    for subscription in report.subscriptions.all():
+                        ReportNotification(
+                            content_template='announcement-affectation',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_manager.email,
+                        ).save()
                     ReportEventLog(
                         report=report,
-                        event_type=ReportEventLog.CONTRACTOR_CHANGED,
-                        related_old = report.__former['contractor'],
-                        related_new = report.contractor
-                    ).save()
-                elif report.__former['status']==Report.APPLICANT_RESPONSIBLE and report.status == Report.APPLICANT_RESPONSIBLE:
-                    ReportEventLog(
-                        report=report,
-                        event_type=ReportEventLog.APPLICANT_CHANGED,
-                        related_old = report.__former['contractor'],
-                        related_new = report.contractor
-                    ).save()
-                else:
-                    ReportEventLog(
-                        report=report,
-                        event_type=ReportEventLog.APPLICANT_CONTRACTOR_CHANGE,
-                        related_old = report.__former['contractor'],
-                        related_new = report.contractor
+                        event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
+                        related_new=report.contractor
                     ).save()
 
 
-
-        if report.__former['responsible_entity'] != report.responsible_entity:
-
-            if report.__former['responsible_entity']:
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.ENTITY_CHANGED,
-                    related_old=report.__former['responsible_entity'],
-                    related_new=report.responsible_entity
-                ).save()
-
-                for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
-            else:
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.ENTITY_ASSIGNED,
-                    related_new=report.responsible_entity
-                ).save()
-
-        if report.__former['responsible_manager'] != report.responsible_manager:
-
-            ReportNotification(
-                content_template='notify-creation',
-                recipient=report.responsible_manager,
-                related=report,
-            ).save()
+        if report.status != Report.CREATED and report.__former['responsible_manager'] != report.responsible_manager:
 
             # automatic subscription for new responsible manager
             if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
@@ -905,27 +839,31 @@ def report_notify(sender, instance, **kwargs):
                 subscription.notify_creation = False # don't send notification for subscription
                 subscription.save()
 
-            if report.__former['responsible_entity'] == report.responsible_entity: # avoid double log when entity change
-                if report.__former['responsible_manager']:
-                    ReportEventLog(
-                        report=report,
-                        event_type=ReportEventLog.MANAGER_CHANGED,
-                        related_old=report.__former['responsible_manager'],
-                        related_new=report.responsible_manager
+            ReportNotification(
+                content_template='notify-affectation',
+                recipient=report.responsible_manager,
+                related=report,
+            ).save()
+            ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.MANAGER_ASSIGNED,
+                related_new=report.responsible_manager
+            ).save()
+
+
+            if report.__former['responsible_entity'] != report.responsible_entity:
+                for subscription in report.subscriptions.all():
+                    ReportNotification(
+                        content_template='announcement-affectation',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
                     ).save()
 
-                    for subscription in report.subscriptions.all():
-                        ReportNotification(
-                            content_template='send_report_changed_to_subscribers',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_manager.email,
-                        ).save()
-                else:
                     ReportEventLog(
                         report=report,
-                        event_type=ReportEventLog.MANAGER_ASSIGNED,
-                        related_new=report.responsible_manager
+                        event_type=ReportEventLog.ENTITY_ASSIGNED,
+                        related_new=report.responsible_entity
                     ).save()
 
 
