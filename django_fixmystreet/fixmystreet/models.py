@@ -822,7 +822,7 @@ def report_notify(sender, instance, **kwargs):
         if report.__former['contractor'] != report.contractor and report.contractor:
             for recipient in report.contractor.workers.all():
                 ReportNotification(
-                    content_template='send_report_assigned_to_app_contr',
+                    content_template='notify-affectation',
                     recipient=recipient,
                     related=report,
                     reply_to=report.responsible_manager.email
@@ -830,7 +830,7 @@ def report_notify(sender, instance, **kwargs):
             if report.__former['contractor']:
                 for recipient in report.__former['contractor'].workers.all():
                     ReportNotification(
-                        content_template='send_report_deassigned_to_app_contr',
+                        content_template='notify-affectation',
                         recipient=recipient,
                         related=report,
                         reply_to=report.responsible_manager.email
