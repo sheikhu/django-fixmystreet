@@ -20,7 +20,8 @@ install_requires = [
     'simple_history',
     'docutils',
     # 'django-registration',
-    'django-piston'
+    'django-piston',
+    'markdown'
     ]
 
 tests_require = [

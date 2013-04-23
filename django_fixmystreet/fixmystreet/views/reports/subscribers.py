@@ -12,7 +12,7 @@ from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 
 def create(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    #CREATE USER CITIZEN IF NECESSARY 
+    #CREATE USER CITIZEN IF NECESSARY
     try:
         user = FMSUser.objects.get(email=request.REQUEST.get('citizen_email'));
     except FMSUser.DoesNotExist:
@@ -24,27 +24,27 @@ def create(request, report_id):
         subscriber = ReportSubscription(subscriber=user,report=report)
         subscriber.save()
         messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
-    except IntegrityError:   
+    except IntegrityError:
         #Do nothing. A subscription for this user already exists...
         messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
-    
+
     return HttpResponseRedirect(report.get_absolute_url())
 
 def remove(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    
+
     try:
         user = FMSUser.objects.get(email=request.REQUEST.get('citizen_email'));
     except FMSUser.DoesNotExist:
-        HttpResponseRedirect(report.get_absolute_url())    
+        HttpResponseRedirect(report.get_absolute_url())
 
     #VERIFY THAT A SUBSCRIPTION DOES NOT ALREADY EXIST
     try:
         subscriber = ReportSubscription(subscriber=user,report=report)
         subscriber.delete()
         messages.add_message(request, messages.SUCCESS, _("You have unsubscribed from updates successfully"))
-    except ReportSubscription.DoesNotExist:   
+    except ReportSubscription.DoesNotExist:
         #Do nothing. A subscription for this user already exists...
         messages.add_message(request, messages.SUCCESS, _("You have unsubscribed from updates successfully"))
-    
+
     return HttpResponseRedirect(report.get_absolute_url())

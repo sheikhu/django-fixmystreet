@@ -52,10 +52,10 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
     url(_(r'^report/search_ticket'), 'search_ticket',name='search_ticket'),
     url(_(r'^report/new'), 'new',name='report_new'),
     url(_(r'^report/prepare'), 'report_prepare',name='report_prepare'),
+    url(_(r'^report/(\d+)/update/'), 'update', name='report_update'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.updates',
-    url(_(r'^report/(\d+)/update/'), 'new', name='report_update'),
     url(_(r'^report/(\d+)-(\d+)/pdf/'), 'reportPdf', name='report_pdf'),
 )
 

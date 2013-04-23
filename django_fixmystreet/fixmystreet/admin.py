@@ -12,8 +12,9 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.template.response import TemplateResponse
 from django.conf.urls.defaults import patterns
+from markdown import markdown
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog
+from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate
 
 
 #admin.site.unregister(User)
@@ -189,4 +190,16 @@ class ReportCategoryAdmin(admin.ModelAdmin):
 admin.site.register(ReportCategory, ReportCategoryAdmin)
 
 
+class MailNotificationTemplateAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    readonly_fields = ('content_html_fr', 'content_html_nl')
+    def content_html_fr(self, o):
+        return markdown(o.content_fr)
 
+    def content_html_nl(self, o):
+        return markdown(o.content_nl)
+    content_html_fr.allow_tags = True
+    content_html_nl.allow_tags = True
+
+
+admin.site.register(MailNotificationTemplate, MailNotificationTemplateAdmin)

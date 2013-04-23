@@ -2,7 +2,8 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile, dictToPoint
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
+from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
 class NotificationTest(TestCase):
@@ -67,7 +68,7 @@ class NotificationTest(TestCase):
             description='Just a test',
             postalcode = 1000,
             address='my address',
-            point=dictToPoint({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x":'149776', "y":'170005'}),
             address_number='6h',
             created_by=self.manager_etterbeek
         )
@@ -83,7 +84,7 @@ class NotificationTest(TestCase):
             description='Just a test',
             postalcode = 1000,
             address='my address',
-            point=dictToPoint({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x":'149776', "y":'170005'}),
             address_number='6h',
             citizen=self.citizen
         )

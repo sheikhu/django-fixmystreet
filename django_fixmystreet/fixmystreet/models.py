@@ -9,23 +9,19 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
-from django.contrib.gis.geos import fromstr
+
 from django.contrib.gis.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from django.template import TemplateDoesNotExist
-from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.http import Http404
 from email.MIMEImage import MIMEImage
 
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
 
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
 
 
 class UserTrackedModel(TimeStampedModel):
@@ -401,6 +397,8 @@ class Report(UserTrackedModel):
     citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
     refusal_motivation = models.TextField(null=True, blank=True)
     mark_as_done_motivation = models.TextField(null=True, blank=True)
+    mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True)
+
     #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
     responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
@@ -430,7 +428,7 @@ class Report(UserTrackedModel):
             marker_color = "red"
 
         if user and user.is_authenticated():
-    	    if self.is_regional():
+            if self.is_regional():
                 return "images/reg-pin-"+marker_color+"-XS.png"
             elif self.is_pro():
                 return "images/pro-pin-"+marker_color+"-XS.png"
@@ -451,8 +449,8 @@ class Report(UserTrackedModel):
     def __unicode__(self):
         return self.display_category()
 
-    def get_address_city_name(self):
-        return ZipCode.objects.get(code=self.postalcode).name
+    def get_address_commune_name(self):
+        return self.territorial_entity().name
 
     def get_number_of_subscription(self):
         return self.subscriptions.all().__len__()
@@ -482,6 +480,12 @@ class Report(UserTrackedModel):
         slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
         return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
 
+
+    def get_pdf_url(self):
+        return reverse('report_pdf', args=[self.id, 0])
+    def get_pdf_url_pro(self):
+        return reverse('report_pdf', args=[self.id, 1])
+
     def has_at_least_one_non_confidential_comment(self):
         return ReportComment.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
 
@@ -502,6 +506,14 @@ class Report(UserTrackedModel):
 
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
+
+    def get_public_status_display(self):
+        if self.is_created():
+            return _("Created")
+        elif self.is_in_progress():
+            return _("In progress")
+        else:
+            return _("Processed")
 
     def thumbnail(self):
         if not self.is_created():
@@ -529,14 +541,18 @@ class Report(UserTrackedModel):
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def territorial_entity(self):
-        return OrganisationEntity.objects.filter(zipcode__code=self.postalcode)[0]
+        return OrganisationEntity.objects.get(zipcode__code=self.postalcode)
 
     def subscribe_author(self):
-        if self.id:
-            self.create_subscriber(self.created_by or self.citizen)
-        else:
-            # if not already created, waiting for post_save
-            self.subscribe_author = True
+        subscription = ReportSubscription(subscriber=self.created_by or self.citizen)
+        subscription.notify_creation = False # don't send notification for subscription
+        self.subscriptions.add(subscription)
+
+        # if self.id:
+        #     self.create_subscriber(self.created_by or self.citizen)
+        # else:
+        #     # if not already created, waiting for post_save
+        #     self.subscribe_author = True
 
     def create_subscriber(self, user):
         if not self.subscriptions.filter(subscriber=user).exists():
@@ -713,10 +729,18 @@ def report_notify(sender, instance, **kwargs):
     """
     report = instance
     if not kwargs['raw']:
+        if kwargs['created'] and report.citizen:
+            ReportNotification(
+                content_template='acknowledge-creation',
+                recipient=report.citizen,
+                related=report,
+            ).save()
+
         if report.__former['status'] != report.status:
+
             if report.status == Report.REFUSED:
                 ReportNotification(
-                    content_template='send_report_refused_to_creator',
+                    content_template='notify-refused',
                     recipient=report.citizen or report.created_by,
                     related=report,
                     reply_to = report.responsible_manager.email,
@@ -730,12 +754,13 @@ def report_notify(sender, instance, **kwargs):
 
             elif report.status == Report.PROCESSED:
                 for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='send_report_closed_to_subscribers',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save()
+                    if subscription.subscriber != report.responsible_manager:
+                        ReportNotification(
+                            content_template='notify-processed',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_manager.email,
+                        ).save()
 
                 ReportEventLog(
                     report=report,
@@ -747,7 +772,7 @@ def report_notify(sender, instance, **kwargs):
                 # created => in progress: published by manager
                 # for subscription in report.subscriptions.all():
                 ReportNotification(
-                    content_template='send_report_changed_to_subscribers',
+                    content_template='notify-validation',
                     recipient=report.created_by or report.citizen,
                     # recipient=subscription.subscriber,
                     related=report,
@@ -762,7 +787,7 @@ def report_notify(sender, instance, **kwargs):
 
             elif report.status == Report.SOLVED:
                 ReportNotification(
-                    content_template='send_report_fixed_to_gest_resp',
+                    content_template='mark-as-done',
                     recipient=report.responsible_manager,
                     related=report,
                 ).save()
@@ -776,14 +801,14 @@ def report_notify(sender, instance, **kwargs):
                 #Applicant responsible
                 for recipient in report.contractor.workers.all():
                     ReportNotification(
-                        content_template='send_report_assigned_to_app_contr',
+                        content_template='notify-affectation',
                         recipient=recipient,
                         related=report,
                         reply_to=report.responsible_manager.email
-                    ).save()
+                    ).save(old_responsible=report.__former['reponsible'])
                 for subscription in report.subscriptions.all():
                     ReportNotification(
-                        content_template='send_report_changed_to_subscribers',
+                        content_template='notify-affectation',
                         recipient=subscription.subscriber,
                         related=report,
                         reply_to=report.responsible_manager.email,
@@ -869,7 +894,7 @@ def report_notify(sender, instance, **kwargs):
         if report.__former['responsible_manager'] != report.responsible_manager:
 
             ReportNotification(
-                content_template='send_report_creation_to_gest_resp',
+                content_template='notify-creation',
                 recipient=report.responsible_manager,
                 related=report,
             ).save()
@@ -902,14 +927,6 @@ def report_notify(sender, instance, **kwargs):
                         event_type=ReportEventLog.MANAGER_ASSIGNED,
                         related_new=report.responsible_manager
                     ).save()
-
-
-@receiver(post_save,sender=Report)
-def report_subscribe_author(sender, instance, **kwargs):
-    """signal on a report to register author as subscriber to his own report"""
-    if hasattr(instance, 'subscribe_author') and instance.subscribe_author:
-        instance.create_subscriber(instance.created_by or instance.citizen)
-
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
@@ -1046,7 +1063,7 @@ class ReportFile(ReportAttachment):
         return path
 
     file = models.FileField(upload_to=move_to, blank=True)
-    image = FixStdImageField(upload_to=move_to, blank=True, size=(1200, 800), thumbnail_size=(66, 50))
+    image = FixStdImageField(upload_to=move_to, blank=True, size=(1200, 800), thumbnail_size=(80, 120))
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
@@ -1117,7 +1134,7 @@ def notify_report_subscription(sender, instance, **kwargs):
     if not kwargs['raw'] and kwargs['created'] and (not hasattr(instance, 'notify_creation') or instance.notify_creation):
         report = instance.report
         notifiation = ReportNotification(
-            content_template='send_subscription_to_subscriber',
+            content_template='notify-subscription',
             recipient=instance.subscriber,
             related=report,
             reply_to=report.responsible_manager.email,
@@ -1319,42 +1336,17 @@ def send_notification(sender, instance, **kwargs):
         instance.error_msg = "No email recipient"
         instance.success = False
         return
-    reply_to = settings.DEFAULT_FROM_EMAIL
-    if instance.reply_to:
-        reply_to = instance.reply_to
+
     recipients = (instance.recipient.email,)
 
-    if instance.recipient.is_pro():
-        mail_url = instance.related.get_absolute_url_pro()
+
+    template = MailNotificationTemplate.objects.get(name=instance.content_template)
+    subject, html, text = transform_notification_template(template, instance.related, instance.recipient)
+
+    if instance.reply_to:
+        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":instance.reply_to})
     else:
-        mail_url = instance.related.get_absolute_url()
-    data = {
-        "recipient": instance.recipient,
-        "related": instance.related,
-        "SITE_URL": "http://{0}".format(Site.objects.get_current().domain),
-        "mail_url": mail_url
-    }
-    if instance.recipient.is_active and instance.content_template == "send_subscription_to_subscriber":
-        data ["unsubscribe_url"] = reverse("unsubscribe_pro",args=[instance.related.id])
-
-    subject, html, text = '', '', ''
-    try:
-        subject = render_to_string('emails/' + instance.content_template + "/subject.txt", data)
-    except TemplateDoesNotExist:
-        instance.error_msg = "No subject"
-    try:
-        text    = render_to_string('emails/' + instance.content_template + "/message.txt", data)
-    except TemplateDoesNotExist:
-        instance.error_msg = "No content"
-
-    try:
-        html    = render_to_string('emails/' + instance.content_template + "/message.html", data)
-    except TemplateDoesNotExist:
-        pass
-
-    subject = subject.rstrip(' \n\t').lstrip(' \n\t')
-
-    msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":reply_to})
+        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
 
     if html:
         msg.attach_alternative(html, "text/html")
@@ -1632,10 +1624,13 @@ class StreetSurface(models.Model):
     objects = models.GeoManager()
 
 
-def dictToPoint(data):
-    if not data.has_key('x') or not data.has_key('y'):
-        raise Http404('<h1>Location not found</h1>')
-    px = data.get('x')
-    py = data.get('y')
+class MailNotificationTemplate(models.Model):
+    name = models.CharField(max_length=50, help_text="Tehnical name")
+    __metaclass__= TransMeta
+    content = models.TextField(blank=True, verbose_name="Content")
+    title = models.CharField(max_length=100, blank=True, verbose_name="Subject")
 
-    return fromstr("POINT(" + px + " " + py + ")", srid=31370)
+    class Meta:
+        translate = ('content', 'title')
+
+

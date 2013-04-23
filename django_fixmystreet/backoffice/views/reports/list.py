@@ -1,10 +1,12 @@
 from django.shortcuts import render_to_response
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ZipCode
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils.translation import get_language
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from django_fixmystreet.fixmystreet.models import Report, ZipCode
+from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 @login_required(login_url='/pro/accounts/login/')
 def list(request, status):
@@ -22,9 +24,9 @@ def list(request, status):
     }
 
     if 'x' in request.REQUEST and 'y' in request.REQUEST:
-        pnt = dictToPoint(request.REQUEST)
+        pnt = dict_to_point(request.REQUEST)
     else:
-        pnt = dictToPoint(default_position)
+        pnt = dict_to_point(default_position)
 
     connectedUser = request.fmsuser
 

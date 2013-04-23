@@ -6,8 +6,10 @@ from django.db import transaction
 
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
-from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm
+from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm, MarkAsDoneForm
 from django_fixmystreet.backoffice.forms import RefuseForm
+
+# TODO move to backoffice/views/reports/main.py
 
 @transaction.commit_on_success
 def accept( request, report_id ):
@@ -45,11 +47,11 @@ def refuse( request, report_id ):
 
 def fixed( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
-    #Update the status
-    report.fixed_at = datetime.now()
-    report.status = Report.SOLVED
-    report.save()
-    #Redirect to the report show page
+    if request.REQUEST.has_key('is_fixed'):
+        form = MarkAsDoneForm(request.POST, instance=report)
+        # Save the mark as done motivation in the database
+        form.save() # Redirect to the report show page
+
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
@@ -68,6 +70,7 @@ def close( request, report_id ):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+# ???????? DEPRECATED ???????? WTF !
 def new( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
@@ -153,7 +156,7 @@ def reportPdf(request, report_id, pro_version):
     #Verify if the connected user is well pro ! (Server side protection)
     if request.fmsuser.is_citizen():
         pro_Version = 0
-    
+
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {'user' : request.user.fmsuser,'report' : report, 'file_list' : report.files(), 'comment_list' : report.comments(), 'activity_list' : report.activities.all() ,'pro_version': pro_version},
                 context_instance=RequestContext(request))

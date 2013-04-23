@@ -39,8 +39,7 @@ else:
 
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
-EMAIL_FROM_USER = "Fix My Street<fixmystreet@cirb.irisnet.be>"
-DEFAULT_FROM_EMAIL = "Fix My Street<fixmystreet@cirb.irisnset.be>"
+DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnset.be>"
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
@@ -228,7 +227,6 @@ LOGGING = {
 
 if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     SITE_ID = 3
-    LANGUAGES += ('en', gettext('English')),
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2

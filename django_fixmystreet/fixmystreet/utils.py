@@ -9,12 +9,20 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, urlize, date as date_filter
+from django.utils.translation import ugettext as _
 from django.utils.translation import activate, deactivate
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+from django.contrib.gis.geos import fromstr
+from django.http import Http404
 
 from south.modelsinspector import add_introspection_rules
 import transmeta
 from stdimage import StdImageField
+from markdown import markdown
+
+
 
 
 def ssl_required(view_func):
@@ -192,3 +200,89 @@ class CurrentUserMiddleware:
 #         response['Access-Control-Allow-Methods'] = "GET,POST,OPTIONS"
 #         response['Access-Control-Allow-Origin'] = "http://gis.irisnet.be"
 #         return response
+
+
+def transform_notification_user_display(user, to_show):
+    if  to_show is None:
+        return _("a citizen")
+
+    if to_show.is_pro() and to_show.get_organisation():
+        entity_name = to_show.get_organisation().name
+    else:
+        entity_name = ''
+
+    if user.is_pro():
+        return u"{0} {1} ({2})".format(entity_name, to_show.get_full_name(), to_show.email)
+    else:
+        if to_show.is_pro():
+            return entity_name
+        else:
+            return _("a citizen")
+
+def transform_notification_template(template, report, user):
+    from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
+    SITE_URL = Site.objects.get_current().domain
+
+    data = {
+        "user": user
+    }
+    title = list()
+    content = list()
+
+    overview_tmp = MailNotificationTemplate.objects.get(name='report-overview')
+    opening_tmp = MailNotificationTemplate.objects.get(name='opening')
+    closing_tmp = MailNotificationTemplate.objects.get(name='closing')
+
+    for l in settings.LANGUAGE_CODE:
+        activate(l)
+
+        data["report"] = report
+        data["created_at"] = date_filter(report.created)
+        data["created_by"] = transform_notification_user_display(user, report.citizen or report.created_by)
+        data["responsible"] = transform_notification_user_display(user, report.responsible_manager)
+        data["address"] = u"{street}, {num} ({code} {commune})".format(street=report.address, num=report.address_number, code=report.postalcode, commune=report.get_address_commune_name())
+        data["category"] = report.display_category()
+
+        if user.is_pro():
+            data["status"] = report.get_status_display()
+        else:
+            data["status"] = report.get_public_status_display()
+
+        data["report_overview"] = overview_tmp.content.format(**data)
+        opening = opening_tmp.content.format(**data)
+        closing = closing_tmp.content.format(**data)
+
+        if user.is_pro():
+            data["display_url"] = "http://{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
+            data["pdf_url"]     = "http://{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
+        else:
+            data["display_url"] = "http://{0}{1}".format(SITE_URL, report.get_absolute_url())
+            data["pdf_url"]     = "http://{0}{1}".format(SITE_URL, report.get_pdf_url())
+
+        if user.is_active and (template.name == "notify-subscription" or template.name == "notify-affectation"):
+            data["unsubscribe_url"] = "http://{0}{1}".format(SITE_URL, reverse("unsubscribe_pro",args=[report.id]))
+
+        if user.is_active and template.name == "mark-as-done":
+            data["done_motivation"] = report.mark_as_done_motivation
+            data["resolver"] = transform_notification_user_display(user, report.mark_as_done_user)
+
+        title.append(template.title.format(**data))
+        content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
+
+
+    subject = u"incident #{0} - {1}".format(report.id, " / ".join(title))
+    text = "\n\n---------------------------\n\n".join(content)
+    html = markdown(urlize(text))
+
+
+    return (subject, html, text)
+
+
+
+def dict_to_point(data):
+    if not data.has_key('x') or not data.has_key('y'):
+        raise Http404('<h1>Location not found</h1>')
+    px = data.get('x')
+    py = data.get('y')
+
+    return fromstr("POINT(" + px + " " + py + ")", srid=31370)

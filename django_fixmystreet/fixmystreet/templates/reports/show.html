@@ -182,7 +182,7 @@ $("[data-toggle=popover]")
                 <table id='report-status'>
                     <tr>
                         <th><strong>{% trans "Location:" %}</strong></th>
-                        <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_city_name}})</td>
+                        <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
                     </tr>
                     <tr>
                         <th><strong>{% trans "Category:" %}</strong></th>
@@ -190,11 +190,7 @@ $("[data-toggle=popover]")
                     </tr>
                     <tr>
                         <th><strong>{% trans "Status:" %}</strong></th>
-                        {% if report.is_in_progress %}
-                        <td>{% trans "In_progress" %}&nbsp;&nbsp;</td>
-                        {% else %}
-                        <td>{{ report.get_status_display }}&nbsp;&nbsp;</td>
-                        {% endif %}
+                        <td>{{ report.get_public_status_display }}&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                        <th><strong>{% trans "Responsible:" %}</strong></th>

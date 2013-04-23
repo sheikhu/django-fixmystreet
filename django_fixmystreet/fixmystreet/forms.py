@@ -1,3 +1,4 @@
+import datetime
 
 from django import forms
 from django.template.loader import render_to_string
@@ -9,7 +10,8 @@ from django.contrib.auth import authenticate
 from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, \
-                ReportCategory, ReportSecondaryCategoryClass, dictToPoint, FMSUser
+                ReportCategory, ReportSecondaryCategoryClass, FMSUser
+from django_fixmystreet.fixmystreet.utils import dict_to_point, get_current_user
 
 
 def secondaryCategoryChoices(show_private):
@@ -62,16 +64,13 @@ class ReportForm(forms.ModelForm):
     def save(self, commit=True):
         report = super(ReportForm, self).save(commit=False)
 
-        report.point = dictToPoint(self.cleaned_data)
+        report.point = dict_to_point(self.cleaned_data)
         report.status = Report.CREATED
         # report.address = self.cleaned_data["address"].split(", ")[0]
         # report.address_number = self.cleaned_data["address_number"]
 
         if commit:
             report.save()
-
-        if self.cleaned_data['subscription']:
-            report.subscribe_author()
 
         return report
 
@@ -162,7 +161,7 @@ class ContactForm(forms.Form):
     def save(self, fail_silently=False):
         message = render_to_string("emails/contact/message.txt", self.cleaned_data)
         send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message,
-                   settings.EMAIL_FROM_USER,[settings.ADMIN_EMAIL], fail_silently=False)
+                   settings.DEFAULT_FROM_EMAIL,[settings.ADMIN_EMAIL], fail_silently=False)
 
 
 class ReportFileForm(forms.ModelForm):
@@ -224,6 +223,9 @@ class MarkAsDoneForm(forms.ModelForm):
     def save(self, commit=True):
         report = super(MarkAsDoneForm,self).save(commit=False)
         report.status = Report.SOLVED
+        report.mark_as_done_user = get_current_user()
+        report.fixed_at = datetime.datetime.now()
+
         if commit:
             report.save()
         return report

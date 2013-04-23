@@ -147,7 +147,7 @@ class FmsUserCreateForm(FmsUserForm):
 
         subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-        msg = EmailMultiAlternatives(subject, text, settings.EMAIL_FROM_USER, recipients, headers={"Reply-To":user.created_by.email})
+        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":user.created_by.email})
         if html:
             msg.attach_alternative(html, "text/html")
 

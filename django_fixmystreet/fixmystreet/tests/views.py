@@ -190,7 +190,7 @@ class ReportViewsTest(SampleFilesTestCase):
     #    }, follow=True)
     #    self.assertEquals(len(mail.outbox), 1)
     #    self.assertEquals(len(mail.outbox[0].to), 1)
-    #    self.assertEquals(mail.outbox[0].from_email, settings.EMAIL_FROM_USER)
+    #    self.assertEquals(mail.outbox[0].from_email, settings.DEFAULT_FROM_EMAIL)
         #self.assertEquals(mail.outbox[0].from_email, 'Test<test@test.irisnet.be>') TODO for reply behavior
     #    self.assertEquals(mail.outbox[0].to, [settings.EMAIL_ADMIN])
 

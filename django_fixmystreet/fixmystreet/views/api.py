@@ -7,12 +7,12 @@ from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequ
 from django.utils import simplejson
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
-from  django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, dictToPoint, FMSUser, ZipCode
-from django_fixmystreet.fixmystreet.utils import JsonHttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
+from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportCategory, FMSUser, ZipCode
+from django_fixmystreet.fixmystreet.utils import JsonHttpResponse, dict_to_point
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ def login_user(request):
 
 #Method used to retrieve nearest reports for pro
 def near_reports_pro(request):
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
 
     #Max 1 month in the past
     timestamp_from = datetime.now().date() - timedelta(days=31)
@@ -92,7 +92,7 @@ def near_reports_pro(request):
 
 #Method used to retrieve nearest reports for citizens
 def near_reports_citizen(request):
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
 
     #Max 1 month in the past
     timestamp_from = datetime.now().date() - timedelta(days=31)
@@ -110,7 +110,7 @@ def near_reports_citizen(request):
 
 #Method used to retrieve all reports for citizens
 def reports_citizen(request):
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
 
     #Max 1 month in the past
     timestamp_from = datetime.now().date() - timedelta(days=31)
@@ -128,7 +128,7 @@ def reports_citizen(request):
 
 #Method used to retrieve all reports for pros on mobiles
 def reports_pro_mobile(request):
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
     reports = Report.objects.filter().distance(pnt).order_by('distance')
 
     #Max 20 reports
@@ -145,7 +145,7 @@ def reports_pro_mobile(request):
 
 #Method used to retrieve all reports for pros
 def reports_pro(request):
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
     reports = Report.objects.filter().distance(pnt).order_by('distance')
 
     #Max 1 month in the past

@@ -1,23 +1,21 @@
-import math
-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms.models import inlineformset_factory
-from django_fixmystreet.fixmystreet.models import ZipCode, dictToPoint, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
-from django_fixmystreet.backoffice.forms import  RefuseForm
 from django.template import RequestContext
-from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-
 from django.utils.translation import get_language
+
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
+from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.utils import dict_to_point
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
+from django_fixmystreet.backoffice.forms import  RefuseForm
 
 
 def new(request):
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = None
     if request.method == "POST":

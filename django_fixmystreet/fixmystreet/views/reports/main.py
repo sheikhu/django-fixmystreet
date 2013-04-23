@@ -1,25 +1,26 @@
+import datetime
+
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.forms.models import inlineformset_factory
 from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from datetime import datetime as dt
-import datetime
 from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 from django.conf import settings
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from django_fixmystreet.fixmystreet.models import dictToPoint, Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
+from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
 def new(request):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
-    pnt = dictToPoint(request.REQUEST)
+    pnt = dict_to_point(request.REQUEST)
     report=None
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
 
@@ -39,6 +40,11 @@ def new(request):
 
                 report.citizen = citizen
                 report.save()
+
+                if report_form.cleaned_data['subscription']:
+                    report.subscribe_author()
+
+
                 if request.POST["comment-text"]:
                     comment = comment_form.save(commit=False)
                     comment.created_by = citizen
@@ -83,7 +89,7 @@ def report_prepare(request, location = None, error_msg = None):
     '''Used to redirect pro users when clicking home. See backoffice version'''
     if request.GET.has_key('q'):
         location = request.GET["q"]
-    last_30_days = dt.today() + datetime.timedelta(days=-30)
+    last_30_days = datetime.datetime.today() + datetime.timedelta(days=-30)
 
     #wards = Ward.objects.all().order_by('name')
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
@@ -149,6 +155,39 @@ def show(request, slug, report_id):
             },
             context_instance=RequestContext(request))
 
+def update( request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    if request.REQUEST.has_key('is_fixed'):
+        form = MarkAsDoneForm(request.POST, instance=report)
+        #Save the mark as done motivation in the database
+        form.save()
+
+        if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+    # ????? DEPRECATED ?????
+    if request.method == 'POST':
+        if request.POST['form-type'] == u"comment-form":
+            comment_form = ReportCommentForm(request.POST)
+            if comment_form.is_valid():
+                comment_form.save(request.user, report)
+
+        if request.POST['form-type'] == u"file-form":
+            #set default title if not given
+            fileTitle = request.POST.get("title")
+            if (fileTitle == ""):
+                  request.POST.__setitem__("title",request.FILES.get('file').name)
+            file_form = ReportFileForm(request.POST,request.FILES)
+            if file_form.is_valid:
+                file_form.save(request.user, report)
+
+        if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        else:
+            return HttpResponseRedirect(report.get_absolute_url())
+    raise Http404()
 
 def search_ticket(request):
     try:
