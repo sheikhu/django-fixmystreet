@@ -559,12 +559,12 @@ class Report(UserTrackedModel):
             self.subscriptions.add(ReportSubscription(subscriber=user))
 
 
-    def trigger_updates_added(self, user):
+    def trigger_updates_added(self, user=None):
         ReportNotification(
             content_template='notify-updates',
             recipient=self.responsible_manager,
             related=self,
-        ).save()
+        ).save(updater=user)
 
         ReportEventLog(
             report=self,
@@ -1313,6 +1313,9 @@ class ReportNotification(models.Model):
         if 'old_responsible' in kwargs:
             subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
             del kwargs['old_responsible']
+        if 'updater' in kwargs:
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'])
+            del kwargs['updater']
         else:
             subject, html, text = transform_notification_template(template, self.related, self.recipient)
 

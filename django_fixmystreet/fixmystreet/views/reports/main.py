@@ -136,7 +136,7 @@ def show(request, slug, report_id):
             # if request.POST.get("citizen_subscription", False):
             #     ReportSubscription(report=report, subscriber=report.created_by).save()
 
-            report.trigger_updates_added(request.fmsuser)
+            report.trigger_updates_added()
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url())
