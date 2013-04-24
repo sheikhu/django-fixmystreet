@@ -219,9 +219,9 @@ def transform_notification_user_display(user, to_show):
         else:
             return _("a citizen")
 
-def transform_notification_template(template, report, user, old_responsible=None):
+def transform_notification_template(template, report, user, **kwargs):
     from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
-    SITE_URL = Site.objects.get_current().domain
+    SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
 
     data = {
         "user": user
@@ -233,8 +233,9 @@ def transform_notification_template(template, report, user, old_responsible=None
     opening_tmp = MailNotificationTemplate.objects.get(name='opening')
     closing_tmp = MailNotificationTemplate.objects.get(name='closing')
 
-    for l in settings.LANGUAGE_CODE:
-        activate(l)
+    for l in settings.LANGUAGES:
+
+        activate(l[0])
 
         data["report"] = report
         data["created_at"] = date_filter(report.created)
@@ -253,24 +254,32 @@ def transform_notification_template(template, report, user, old_responsible=None
         closing = closing_tmp.content.format(**data)
 
         if user.is_pro():
-            data["display_url"] = "http://{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
-            data["pdf_url"]     = "http://{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
+            data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
+            data["pdf_url"]     = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
         else:
-            data["display_url"] = "http://{0}{1}".format(SITE_URL, report.get_absolute_url())
-            data["pdf_url"]     = "http://{0}{1}".format(SITE_URL, report.get_pdf_url())
+            data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url())
+            data["pdf_url"]     = "{0}{1}".format(SITE_URL, report.get_pdf_url())
 
-        if user.is_active and (template.name == "notify-subscription" or template.name == "notify-affectation"):
-            data["unsubscribe_url"] = "http://{0}{1}".format(SITE_URL, reverse("unsubscribe_pro",args=[report.id]))
+
+        if user.is_pro():
+            data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro",args=[report.id]))
+        else:
+            data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe",args=[report.id]), user.email)
 
         if user.is_active and template.name == "mark-as-done":
             data["done_motivation"] = report.mark_as_done_motivation
             data["resolver"] = transform_notification_user_display(user, report.mark_as_done_user)
 
-        if old_responsible:
-            data["old_responsible"] = transform_notification_user_display(user, old_responsible)
+        if 'old_responsible' in kwargs:
+            data["old_responsible"] = transform_notification_user_display(user, kwargs['old_responsible'])
+
+        if 'updater' in kwargs:
+            data["updater"] = transform_notification_user_display(user, kwargs['updater'])
 
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
+
+        deactivate()
 
 
     subject = u"incident #{0} - {1}".format(report.id, " / ".join(title))

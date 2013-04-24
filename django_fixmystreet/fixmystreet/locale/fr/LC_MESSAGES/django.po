@@ -1718,7 +1718,7 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
-msgstr "Vous vous êtes abonné aux mises à jour"
+msgstr "Vous n'êtes plus abonné aux mises à jour"
 
 #~ msgid "In_progress"
 #~ msgstr "En traitement"

@@ -147,6 +147,9 @@ def show(request,slug, report_id):
                     comment.save()
 
             file_formset.save()
+
+            report.trigger_updates_added(request.fmsuser)
+
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url_pro())
 
