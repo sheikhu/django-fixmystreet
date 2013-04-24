@@ -746,23 +746,33 @@ def report_notify(sender, instance, **kwargs):
     """
     report = instance
     if not kwargs['raw']:
-        if kwargs['created'] and report.citizen:
+        
+        ### CREATED
+        if kwargs['created']:
+            event_log_user = None
 
             if report.citizen: # and report.subscriptions.filter(subscriber=report.citizen).exists(): subscription as not been already created
                 ReportNotification(
-                    content_template='acknowledge-creation',
-                    recipient=report.citizen,
+                    content_template='notify-creation',
+                    recipient=report.responsible_manager,
                     related=report,
                 ).save()
 
-            ReportNotification(
-                content_template='notify-creation',
-                recipient=report.responsible_manager,
-                related=report,
+                event_log_user = report.citizen
+
+            else:
+                event_log_user = report.created_by
+
+            ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.CREATED,
+                user=event_log_user,
             ).save()
+        ###
 
         if report.__former['status'] != report.status:
 
+            ### REFUSED
             if report.status == Report.REFUSED:
                 ReportNotification(
                     content_template='notify-refused',
@@ -776,7 +786,7 @@ def report_notify(sender, instance, **kwargs):
                     event_type=ReportEventLog.REFUSE,
                     user=report.responsible_manager,
                 ).save()
-
+            ###
             elif report.status == Report.PROCESSED:
                 for subscription in report.subscriptions.all():
                     if subscription.subscriber != report.responsible_manager:
@@ -793,7 +803,7 @@ def report_notify(sender, instance, **kwargs):
                     user=report.responsible_manager
                 ).save()
 
-            elif report.__former['status'] == Report.CREATED:
+            elif report.__former['status'] == Report.CREATED and report.status != Report.REFUSED:
                 # created => in progress: published by manager
                 # for subscription in report.subscriptions.all():
                 if report.subscriptions.filter(subscriber=report.created_by or report.citizen).exists():
@@ -807,23 +817,27 @@ def report_notify(sender, instance, **kwargs):
 
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.PUBLISH,
+                    event_type=ReportEventLog.VALID,
                     user=report.responsible_manager
                 ).save()
 
+            ### SOLVED
             elif report.status == Report.SOLVED:
                 ReportNotification(
                     content_template='mark-as-done',
                     recipient=report.responsible_manager,
                     related=report,
                 ).save()
+
                 ReportEventLog(
                     report=report,
-                    event_type=ReportEventLog.SOLVE_REQUEST
+                    event_type=ReportEventLog.SOLVE_REQUEST,
+                    user=report.modified_by
                 ).save()
-
+            ###
 
             if report.__former['contractor'] != report.contractor:
+
                 #Applicant responsible
                 for recipient in report.contractor.workers.all():
                     ReportNotification(
@@ -851,15 +865,14 @@ def report_notify(sender, instance, **kwargs):
                             reply_to=report.responsible_manager.email,
                         ).save(old_responsible=report.responsible_manager)
 
-                    ReportEventLog(
-                        report=report,
-                        event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
-                        related_new=report.contractor
-                    ).save()
+                ReportEventLog(
+                    report=report,
+                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
+                    related_new=report.contractor
+                ).save()
 
 
         if report.__former['responsible_manager'] != report.responsible_manager:
-
             # automatic subscription for new responsible manager
             if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
                 subscription = ReportSubscription(report=instance, subscriber=report.responsible_manager)
@@ -867,7 +880,6 @@ def report_notify(sender, instance, **kwargs):
                 subscription.save()
 
             if report.status != Report.CREATED:
-
                 ReportNotification(
                     content_template='notify-affectation',
                     recipient=report.responsible_manager,
@@ -877,7 +889,7 @@ def report_notify(sender, instance, **kwargs):
                 ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.MANAGER_ASSIGNED,
-                    related_new=report.responsible_manager
+                    user=report.responsible_manager
                 ).save()
 
 
@@ -893,7 +905,7 @@ def report_notify(sender, instance, **kwargs):
                         ReportEventLog(
                             report=report,
                             event_type=ReportEventLog.ENTITY_ASSIGNED,
-                            related_new=report.responsible_entity
+                            user=report.responsible_entity
                         ).save()
 
 
@@ -1314,7 +1326,7 @@ class ReportNotification(models.Model):
         if 'old_responsible' in kwargs:
             subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
             del kwargs['old_responsible']
-        if 'updater' in kwargs:
+        elif 'updater' in kwargs:
             subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'])
             del kwargs['updater']
         else:
@@ -1361,7 +1373,7 @@ class ReportEventLog(models.Model):
     SOLVE_REQUEST = 3
     MANAGER_ASSIGNED = 4
     MANAGER_CHANGED = 5
-    PUBLISH = 6
+    VALID = 6
     ENTITY_ASSIGNED = 7
     ENTITY_CHANGED = 8
     CONTRACTOR_ASSIGNED = 9
@@ -1369,13 +1381,16 @@ class ReportEventLog(models.Model):
     APPLICANT_ASSIGNED =11
     APPLICANT_CHANGED = 12
     APPLICANT_CONTRACTOR_CHANGE = 13
+    CREATED = 14
+    UPDATED = 15
+    UPDATE_PUBLISHED = 16
     EVENT_TYPE_CHOICES = (
         (REFUSE,_("Refuse")),
         (CLOSE,_("Close")),
         (SOLVE_REQUEST,_("Mark as Done")),
         (MANAGER_ASSIGNED,_("Manager assinged")),
         (MANAGER_CHANGED,_("Manager changed")),
-        (PUBLISH,_("Publish")),
+        (VALID,_("Valid")),
         (ENTITY_ASSIGNED, _('Organisation assinged')),
         (ENTITY_CHANGED, _('Organisation changed')),
         (CONTRACTOR_ASSIGNED,_('Contractor assinged')),
@@ -1383,6 +1398,9 @@ class ReportEventLog(models.Model):
         (APPLICANT_ASSIGNED,_('Applicant assinged')),
         (APPLICANT_CHANGED,_('Applicant changed')),
         (APPLICANT_CONTRACTOR_CHANGE,_('Applicant contractor changed')),
+        (CREATED,_("Created")),
+        (UPDATED,_("Updated")),
+        (UPDATE_PUBLISHED,_("Update published")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1390,7 +1408,7 @@ class ReportEventLog(models.Model):
         SOLVE_REQUEST: _("Report pointed as solved"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
         MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
-        PUBLISH: _("Report has been approved by {user}"),
+        VALID: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
         APPLICANT_ASSIGNED:_('Applicant {related_new} is assigned to the report'),
@@ -1398,10 +1416,13 @@ class ReportEventLog(models.Model):
         CONTRACTOR_ASSIGNED:_('Contractor {related_new} is assigned to the report'),
         CONTRACTOR_CHANGED:_('Contractor changed from {related_old} to {related_new}'),
         APPLICANT_CONTRACTOR_CHANGE:_('Applicant contractor change from {related_old} to {related_new}'),
+        CREATED: _("Report created by {user}"),
+        UPDATED: _("Report updated by {user}"),
+        UPDATE_PUBLISHED: _("Informations published by {user}"),
     }
 
-    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, SOLVE_REQUEST, PUBLISH,APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, ENTITY_CHANGED)
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, APPLICANT_CONTRACTOR_CHANGE, MANAGER_ASSIGNED, MANAGER_CHANGED)
+    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, ENTITY_CHANGED, CREATED, MANAGER_ASSIGNED, MANAGER_CHANGED, APPLICANT_CONTRACTOR_CHANGE)
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 
@@ -1422,18 +1443,34 @@ class ReportEventLog(models.Model):
     related_content_type = models.ForeignKey(ContentType, null=True)
 
     def __unicode__(self):
+        user_to_display = _("a citizen")
+
+        if self.user:
+            if self.user.fmsuser.is_citizen():
+                user_to_display = self.user.get_full_name() or self.user
+            
+            if self.user.fmsuser.is_pro():
+                user_to_display = '%s %s' %(self.user.fmsuser.organisation, self.user.get_full_name() or self.user)
+
         return self.EVENT_TYPE_TEXT[self.event_type].format(
-            user=(self.user.get_full_name() if self.user else None),
+            user=user_to_display,
             organisation=self.organisation,
-            related_old=self.related_old,
             related_new=self.related_new
         )
 
     def get_public_activity_text (self):
+        user_to_display = _("a citizen")
+
+        if self.user:
+            if self.user.fmsuser.is_citizen():
+                user_to_display = _("a citizen")
+
+            if self.user.fmsuser.is_pro():
+                user_to_display = self.user.fmsuser.organisation
+
         return self.EVENT_TYPE_TEXT[self.event_type].format(
-            user=(self.user.fmsuser.organisation if self.user else None),
+            user=user_to_display,
             organisation=self.organisation,
-            related_old=self.related_old,
             related_new=self.related_new
         )
 
