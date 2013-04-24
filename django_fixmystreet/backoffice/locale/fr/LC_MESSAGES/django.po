@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-03 09:57+0200\n"
+"POT-Creation-Date: 2013-04-24 09:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: forms.py:36
 msgid "Refusal motivation"
@@ -93,7 +93,7 @@ msgstr "^rapport/(\\d+)/accepter/"
 msgid "^report/(\\d+)/refuse/$"
 msgstr "^rapport/(\\d+)/refuser/"
 
-#: urls.py:32 urls.py:39
+#: urls.py:32
 #, fuzzy
 msgid "^report/(\\d+)/fixed/$"
 msgstr "^rapport/(\\d+)/resolu/"
@@ -128,60 +128,60 @@ msgstr "^rapport/(\\d+)/termine/"
 msgid "^report/(\\d+)/deleteComment$"
 msgstr "^rapport/(\\d+)/termine/"
 
-#: urls.py:40
+#: urls.py:39
 msgid "^report/(\\d+)/changeManager/"
 msgstr ""
 
-#: urls.py:41
+#: urls.py:40
 msgid "^report/(\\d+)/changeContractor/"
 msgstr ""
 
-#: urls.py:42
+#: urls.py:41
 #, fuzzy
 msgid "^report/(\\d+)/switchPrivacy/"
 msgstr "^rapport/(\\d+)/accepter/"
 
-#: urls.py:43
+#: urls.py:42
 msgid "^report/(\\d+)/accept_and_validate/"
 msgstr ""
 
-#: urls.py:44
+#: urls.py:43
 msgid "^report/(\\d+)-(\\d+)/pdf/"
 msgstr ""
 
-#: urls.py:48
+#: urls.py:47
 msgid "^report/(\\d+)/subscribe/"
 msgstr ""
 
-#: urls.py:49
+#: urls.py:48
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr ""
 
-#: urls.py:53
+#: urls.py:52
 msgid "^report/(\\d+)/flags/thanks"
 msgstr ""
 
-#: urls.py:54
+#: urls.py:53
 msgid "^report/(\\d+)/flags"
 msgstr ""
 
-#: urls.py:64
+#: urls.py:63
 msgid "^ajax/saveSelection"
 msgstr ""
 
-#: urls.py:69
+#: urls.py:68
 msgid "^logout/$"
 msgstr ""
 
-#: urls.py:70
+#: urls.py:69
 msgid "^change-password/$"
 msgstr ""
 
-#: urls.py:95
+#: urls.py:94
 msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
 msgstr ""
 
-#: urls.py:96
+#: urls.py:95
 msgid "^export_file/reports/(?P<emitter_format>.+)"
 msgstr ""
 
@@ -220,19 +220,19 @@ msgid "* This fields are required"
 msgstr "* Ces champs sont requis"
 
 #: templates/pro/contractor_create.html:28
-#: templates/pro/contractors_overview.html:55
+#: templates/pro/contractors_overview.html:53
 msgid "Contractor"
 msgstr "Executeur de travaux/Impetrant"
 
 #: templates/pro/contractor_create.html:32
-#: templates/pro/contractors_overview.html:59
+#: templates/pro/contractors_overview.html:57
 msgid "User"
 msgstr "Utilisateur"
 
 #: templates/pro/contractor_create.html:37
-#: templates/pro/contractors_overview.html:62
+#: templates/pro/contractors_overview.html:60
 #: templates/pro/manager_category_configuration.html:86
-#: templates/pro/user_create.html:48 templates/pro/users_overview.html:91
+#: templates/pro/user_create.html:48 templates/pro/users_overview.html:88
 #: templates/pro/reports/show.html:431
 msgid "Save"
 msgstr "Enregistrer"
@@ -241,12 +241,12 @@ msgstr "Enregistrer"
 msgid "Contractors"
 msgstr "Executeur de travaux"
 
-#: templates/pro/contractors_overview.html:29
+#: templates/pro/contractors_overview.html:27
 msgid "Create a new contractor"
 msgstr "Créer un executeur de travaux"
 
-#: templates/pro/contractors_overview.html:63
-#: templates/pro/users_overview.html:92 templates/pro/reports/show.html:453
+#: templates/pro/contractors_overview.html:61
+#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:453
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -369,47 +369,47 @@ msgstr "(Date de création du fichier)"
 msgid "file publication date"
 msgstr "(Date de publication du fichier)"
 
-#: templates/pro/user_create.html:26 templates/pro/users_overview.html:34
+#: templates/pro/user_create.html:26 templates/pro/users_overview.html:30
 msgid "Collaborators in"
 msgstr ""
 
-#: templates/pro/user_create.html:31 templates/pro/users_overview.html:39
+#: templates/pro/user_create.html:31 templates/pro/users_overview.html:35
 msgid "Agents"
 msgstr "Agents"
 
-#: templates/pro/user_create.html:36 templates/pro/users_overview.html:44
+#: templates/pro/user_create.html:36 templates/pro/users_overview.html:40
 msgid "Managers"
 msgstr "Gestionnaires"
 
-#: templates/pro/users_overview.html:25
+#: templates/pro/users_overview.html:20
 msgid "User overview"
 msgstr "Voir les utilisateurs"
 
-#: templates/pro/users_overview.html:54
+#: templates/pro/users_overview.html:51
 msgid "Create a new user"
 msgstr "Créer un utilisateur"
 
-#: templates/pro/users_overview.html:65
+#: templates/pro/users_overview.html:62
 msgid "ENTITE"
 msgstr "ENTITE"
 
-#: templates/pro/users_overview.html:66
+#: templates/pro/users_overview.html:63
 msgid "GESTIONNAIRE"
 msgstr "GESTIONNAIRE"
 
-#: templates/pro/users_overview.html:67
+#: templates/pro/users_overview.html:64
 msgid "AGENT"
 msgstr "AGENT"
 
-#: templates/pro/users_overview.html:68
+#: templates/pro/users_overview.html:65
 msgid "EXECUTEUR DE TRAVAUX"
 msgstr "EXECUTEUR DE TRAVAUX"
 
-#: templates/pro/users_overview.html:69
+#: templates/pro/users_overview.html:66
 msgid "Applicant"
 msgstr "Impetrant"
 
-#: templates/pro/users_overview.html:85
+#: templates/pro/users_overview.html:82
 msgid "Users"
 msgstr "Utilisateurs"
 
@@ -531,8 +531,8 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:"
-"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:%(mail)"
+"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
@@ -548,8 +548,8 @@ msgid ""
 "                            "
 msgstr ""
 "\n"
-"Signalé le <strong>%(on)s</strong> par <strong><a href='mailto:%(mail)s'>"
-"%(by)s</a></strong>"
+"Signalé le <strong>%(on)s</strong> par <strong><a href='mailto:%(mail)s'>%"
+"(by)s</a></strong>"
 
 #: templates/pro/reports/show.html:224
 #, python-format
@@ -688,59 +688,57 @@ msgstr "Résolu"
 msgid "User has been saved successfully"
 msgstr "L'utilisateur a été correctement enregistré"
 
-#: views/users.py:108 views/users.py:194
+#: views/users.py:111 views/users.py:199
 msgid "User has been created successfully"
 msgstr "L'utilisateur a été correctement créé"
 
-#: views/users.py:112 views/users.py:198
+#: views/users.py:115 views/users.py:203
 msgid "An error occurd during the email sending"
 msgstr "Une erreur s'est produire pendant l'envoi de mail"
 
-#: views/users.py:132
+#: views/users.py:136
 msgid "You can not delete this user"
 msgstr "Vous ne pouvez pas supprimer cet utilisateur"
 
-#: views/users.py:140
+#: views/users.py:144
 msgid "User deleted successfully"
 msgstr "L'utilisateur a été correctement supprimé"
 
-#: views/users.py:164
+#: views/users.py:168
 msgid "Contractor has been saved successfully"
 msgstr "L'exécuteur de travaux a été correctement enregistré"
 
-#: views/users.py:191
+#: views/users.py:196
 msgid "Contractor has been linked with existing user {0}"
 msgstr "L'exécuteur de travaux a été lié avec un utilisateur existant"
 
-#: views/users.py:218
+#: views/users.py:223
 msgid "You can not delete this contractor"
 msgstr "Vous ne pouvez supprimer cet exécuteur de travaux"
 
-#: views/users.py:231
+#: views/users.py:236
 msgid "Contractor deleted successfully"
 msgstr "L'exécuteur de travaux a été correctement supprimé"
 
-#: views/reports/main.py:104
+#: views/reports/main.py:102
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
-#: views/reports/main.py:127
+#: views/reports/main.py:125
 #, fuzzy
 msgid "Report successfully deleted"
 msgstr "L'utilisateur a été correctement supprimé"
 
-#: views/reports/main.py:152
+#: views/reports/main.py:150
 #, fuzzy
 msgid "You attachments has been sent"
 msgstr "Votre compte est desactivé"
 
-#: views/reports/subscribers.py:13
-msgid "You have subscribed from updates successfully"
-msgstr "Vous êtes abonné aux mises à jour"
+#~ msgid "You have subscribed from updates successfully"
+#~ msgstr "Vous êtes abonné aux mises à jour"
 
-#: views/reports/subscribers.py:20
-msgid "You have unsubscribed from updates successfully"
-msgstr "Vous n'êtes plus abonné aux mises à jour"
+#~ msgid "You have unsubscribed from updates successfully"
+#~ msgstr "Vous n'êtes plus abonné aux mises à jour"
 
 #~ msgid "Incident numero"
 #~ msgstr "Numéro d'incident"

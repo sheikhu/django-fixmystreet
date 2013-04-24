@@ -1707,8 +1707,20 @@ ol li {
 	list-style-type:decimal;
 	/*margin-left:2.5em;*/
 }
+#instructions h2{
+    margin:8px 0 10px 0;
+}
 #instructions ol li{
-    font-size:0.9em;
+    font-size:0.85em;
+    line-height:1.5em;
+}
+.callpolice{
+    color:red;
+    font-size:0.85em;
+    font-weight:bold;
+    line-height:1.1em;
+    margin-top:-6px;
+    margin-bottom:7px;
 }
 
 ul.info_links li {
