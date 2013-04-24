@@ -558,6 +558,22 @@ class Report(UserTrackedModel):
         if not self.subscriptions.filter(subscriber=user).exists():
             self.subscriptions.add(ReportSubscription(subscriber=user))
 
+
+    def trigger_updates_added(self, user):
+        ReportNotification(
+            content_template='notify-updates',
+            recipient=self.responsible_manager,
+            related=self,
+        ).save()
+
+        ReportEventLog(
+            report=self,
+            event_type=ReportEventLog.UPDATED,
+            user=user,
+        ).save()
+
+        self.save() # set updated date and updated_by
+
     def to_full_JSON(self):
         """
         Method used to display the whole object content as JSON structure for website
@@ -730,9 +746,17 @@ def report_notify(sender, instance, **kwargs):
     report = instance
     if not kwargs['raw']:
         if kwargs['created'] and report.citizen:
+
+            if report.citizen: # and report.subscriptions.filter(subscriber=report.citizen).exists(): subscription as not been already created
+                ReportNotification(
+                    content_template='acknowledge-creation',
+                    recipient=report.citizen,
+                    related=report,
+                ).save()
+
             ReportNotification(
-                content_template='acknowledge-creation',
-                recipient=report.citizen,
+                content_template='notify-creation',
+                recipient=report.responsible_manager,
                 related=report,
             ).save()
 
@@ -771,13 +795,14 @@ def report_notify(sender, instance, **kwargs):
             elif report.__former['status'] == Report.CREATED:
                 # created => in progress: published by manager
                 # for subscription in report.subscriptions.all():
-                ReportNotification(
-                    content_template='notify-validation',
-                    recipient=report.created_by or report.citizen,
-                    # recipient=subscription.subscriber,
-                    related=report,
-                    reply_to=report.responsible_manager.email,
-                ).save()
+                if report.subscriptions.filter(subscriber=report.created_by or report.citizen).exists():
+                    ReportNotification(
+                        content_template='notify-validation',
+                        recipient=report.created_by or report.citizen,
+                        # recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save()
 
                 ReportEventLog(
                     report=report,
@@ -832,7 +857,7 @@ def report_notify(sender, instance, **kwargs):
                     ).save()
 
 
-        if report.status != Report.CREATED and report.__former['responsible_manager'] != report.responsible_manager:
+        if report.__former['responsible_manager'] != report.responsible_manager:
 
             # automatic subscription for new responsible manager
             if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
@@ -840,33 +865,35 @@ def report_notify(sender, instance, **kwargs):
                 subscription.notify_creation = False # don't send notification for subscription
                 subscription.save()
 
-            ReportNotification(
-                content_template='notify-affectation',
-                recipient=report.responsible_manager,
-                related=report,
-            ).save(old_responsible=report.__former['responsible_manager'])
+            if report.status != Report.CREATED:
 
-            ReportEventLog(
-                report=report,
-                event_type=ReportEventLog.MANAGER_ASSIGNED,
-                related_new=report.responsible_manager
-            ).save()
+                ReportNotification(
+                    content_template='notify-affectation',
+                    recipient=report.responsible_manager,
+                    related=report,
+                ).save(old_responsible=report.__former['responsible_manager'])
+
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.MANAGER_ASSIGNED,
+                    related_new=report.responsible_manager
+                ).save()
 
 
-            if report.__former['responsible_entity'] != report.responsible_entity:
-                for subscription in report.subscriptions.all():
-                    ReportNotification(
-                        content_template='announcement-affectation',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_manager.email,
-                    ).save(old_responsible=report.__former['responsible_manager'])
+                if report.__former['responsible_entity'] != report.responsible_entity:
+                    for subscription in report.subscriptions.all():
+                        ReportNotification(
+                            content_template='announcement-affectation',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_manager.email,
+                        ).save(old_responsible=report.__former['responsible_manager'])
 
-                    ReportEventLog(
-                        report=report,
-                        event_type=ReportEventLog.ENTITY_ASSIGNED,
-                        related_new=report.responsible_entity
-                    ).save()
+                        ReportEventLog(
+                            report=report,
+                            event_type=ReportEventLog.ENTITY_ASSIGNED,
+                            related_new=report.responsible_entity
+                        ).save()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):

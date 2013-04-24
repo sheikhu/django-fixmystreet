@@ -40,8 +40,8 @@ def remove(request, report_id):
 
     #VERIFY THAT A SUBSCRIPTION DOES NOT ALREADY EXIST
     try:
-        subscriber = ReportSubscription(subscriber=user,report=report)
-        subscriber.delete()
+        subscription = ReportSubscription.objects.get(subscriber=user,report=report)
+        subscription.delete()
         messages.add_message(request, messages.SUCCESS, _("You have unsubscribed from updates successfully"))
     except ReportSubscription.DoesNotExist:
         #Do nothing. A subscription for this user already exists...
