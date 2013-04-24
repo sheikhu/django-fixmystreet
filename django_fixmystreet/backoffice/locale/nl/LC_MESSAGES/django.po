@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-24 09:38+0200\n"
+"POT-Creation-Date: 2013-04-24 16:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: forms.py:36
@@ -540,13 +540,13 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                                Posted by <strong><a href='mailto:%(mail)"
-"s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
+"                                Posted by <strong><a href='mailto:"
+"%(mail)s'>ANONYMOUS</a></strong> on <strong>%(on)s</strong>\n"
 "                            "
 msgstr ""
 "\n"
-"Gemeld door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>%(on)"
-"s</strong>"
+"Gemeld door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:218
 #, fuzzy, python-format
@@ -557,8 +557,8 @@ msgid ""
 "                            "
 msgstr ""
 "\n"
-"Gemeld door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
-"s</strong>"
+"Gemeld door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:224
 #, python-format
@@ -580,8 +580,8 @@ msgid ""
 "                   "
 msgstr ""
 "\n"
-"Gemeld door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%(on)"
-"s</strong>"
+"Gemeld door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+"%(on)s</strong>"
 
 #: templates/pro/reports/show.html:245
 msgid "Category:"
@@ -738,7 +738,7 @@ msgstr "Geen report gevonden voor dit ticket nummer"
 msgid "Report successfully deleted"
 msgstr "Gebruiker is succesvol verwijderd"
 
-#: views/reports/main.py:150
+#: views/reports/main.py:153
 #, fuzzy
 msgid "You attachments has been sent"
 msgstr "U account is inactief"
@@ -946,8 +946,8 @@ msgstr "U account is inactief"
 #~ "               "
 #~ msgstr ""
 #~ "\n"
-#~ "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>%"
-#~ "(on)s</strong>"
+#~ "Gepost door <a href=\"mailto:%(mail)s\">%(by)s</a></strong> op <strong>"
+#~ "%(on)s</strong>"
 
 #~ msgid "Save Incident"
 #~ msgstr "Sauvegarder"
