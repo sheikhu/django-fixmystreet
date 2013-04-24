@@ -753,15 +753,19 @@ def report_notify(sender, instance, **kwargs):
 
             if report.citizen: # and report.subscriptions.filter(subscriber=report.citizen).exists(): subscription as not been already created
                 ReportNotification(
-                    content_template='notify-creation',
-                    recipient=report.responsible_manager,
+                    content_template='acknowledge-creation',
+                    recipient=report.citizen,
                     related=report,
                 ).save()
-
                 event_log_user = report.citizen
-
             else:
                 event_log_user = report.created_by
+
+            ReportNotification(
+                content_template='notify-creation',
+                recipient=report.responsible_manager,
+                related=report,
+            ).save()
 
             ReportEventLog(
                 report=report,
