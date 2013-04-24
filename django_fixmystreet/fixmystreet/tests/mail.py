@@ -56,20 +56,20 @@ class MailTest(TestCase):
 
 	def testCreateReportMail(self):
 		#Send a post request filling in the form to create a report
-		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
+		response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
 		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 		#2 mails must be sent, one to the creator and 1 to the responsible manager
 		self.assertEquals(len(mail.outbox), 2)
-		self.assertEquals(len(mail.outbox[0].to), 1)
-		self.assertEquals(len(mail.outbox[1].to), 1)
+		self.assertEquals(len(mail.outbox[0].to), 1) # to the citizen for aknowledge of creation
+		self.assertEquals(len(mail.outbox[1].to), 1) # to the responsible for creation notify
 		#Mail to creator and manager must be sent
 		self.assertTrue(self.citizen.email in mail.outbox[0].to or self.citizen.email in mail.outbox[1].to)
 		self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
 
 	def testCloseReportMail(self):
 		#Send a post request filling in the form to create a report
-		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
+		response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
 		# self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 
@@ -101,14 +101,14 @@ class MailTest(TestCase):
 		report = Report.objects.get(id=report.id)
 		self.assertEquals(report.status, Report.PROCESSED)
 		#4 mails have been sent, 2 for the report creation, 1 for the report publishing and 1 for closing the report
-		self.assertEquals(len(mail.outbox), 5)
+		self.assertEquals(len(mail.outbox), 4)
 		#The last one must be sent to the citizen (= the closing report mail)
-		self.assertIn(self.citizen.email, mail.outbox[4].to)
+		self.assertIn(self.citizen.email, mail.outbox[3].to)
 
 
 	def testRefuseReportMail(self):
 		#Send a post request filling in the form to create a report
-		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
+		response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
 		self.assertTrue(response.context['report_form'].is_valid(), response.context['report_form'].errors)
 		self.assertIn('report', response.context)
@@ -133,7 +133,7 @@ class MailTest(TestCase):
 
 	def testSubscriptionForCititzenMail(self):
 		#Send a post request filling in the form to create a report
-		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
+		response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
 		self.assertIn('report', response.context)
 
@@ -149,7 +149,7 @@ class MailTest(TestCase):
 
 	def testMarkReportAsDoneMail(self):
 		#Send a post request filling in the form to create a report
-		response = self.client.post('/en/report/new?x=150056.538&y=170907.56', self.sample_post)
+		response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
 		self.assertEquals(response.status_code, 200)
 		self.assertIn('report', response.context)
 

@@ -560,11 +560,12 @@ class Report(UserTrackedModel):
 
 
     def trigger_updates_added(self, user=None):
-        ReportNotification(
-            content_template='notify-updates',
-            recipient=self.responsible_manager,
-            related=self,
-        ).save(updater=user)
+        if user != self.responsible_manager:
+            ReportNotification(
+                content_template='notify-updates',
+                recipient=self.responsible_manager,
+                related=self,
+            ).save(updater=user)
 
         ReportEventLog(
             report=self,
