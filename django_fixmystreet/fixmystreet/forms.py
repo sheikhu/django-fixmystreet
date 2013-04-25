@@ -14,6 +14,10 @@ from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Repor
                 ReportCategory, ReportSecondaryCategoryClass, FMSUser
 from django_fixmystreet.fixmystreet.utils import dict_to_point, get_current_user
 
+# tricky stuff
+from django.utils.functional import lazy
+from django.utils import six
+mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 def secondaryCategoryChoices(show_private):
     choices = []
@@ -101,7 +105,7 @@ class ProReportForm(ReportForm):
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
 
-    terms_of_use_validated = forms.BooleanField(initial=False, required=True, label=mark_safe(_('I have read and accepted <a href="/terms-of-use/" target="_blank">the terms of use</a>')))
+    terms_of_use_validated = forms.BooleanField(initial=False, required=True, label=mark_safe_lazy(_('I have read and accepted <a href="/terms-of-use/" target="_blank">the terms of use</a>')))
 
     class Meta:
         model = Report
