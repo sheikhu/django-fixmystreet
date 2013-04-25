@@ -1554,7 +1554,7 @@ class ZipCode(models.Model):
 class FaqEntry(models.Model):
     __metaclass__ = TransMeta
 
-    q = models.CharField(_('Question'), max_length=100)
+    q = models.CharField(_('Question'), max_length=200)
     a = models.TextField(_('Answere'), blank=True, null=True)
     slug = models.SlugField(null=True, blank=True)
     order = models.IntegerField(null=True, blank=True)
