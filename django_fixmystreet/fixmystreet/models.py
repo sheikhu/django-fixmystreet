@@ -411,6 +411,8 @@ class Report(UserTrackedModel):
     photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
+    terms_of_use_validated = models.BooleanField(default=False)
+
     objects = ReportManager()
 
     history = HistoricalRecords()

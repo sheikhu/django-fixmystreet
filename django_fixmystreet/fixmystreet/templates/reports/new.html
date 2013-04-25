@@ -205,6 +205,7 @@ var categories = {
                 {% include "_field_horizontal.html" with field=report_form.subscription %}
             </fieldset>
         </div>
+        {% include "_field_horizontal.html" with field=report_form.terms_of_use_validated %}
         <div class="warning_information_form">
             <button id="validate_button" class="btn pull-right"> {% trans 'Send' %}</button>
         </div>

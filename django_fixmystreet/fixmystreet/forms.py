@@ -8,6 +8,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
 from django.utils.translation import get_language
+from django.utils.safestring import mark_safe
 
 from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, \
                 ReportCategory, ReportSecondaryCategoryClass, FMSUser
@@ -100,9 +101,17 @@ class ProReportForm(ReportForm):
 class CitizenReportForm(ReportForm):
     """Citizen Report form"""
 
+    terms_of_use_validated = forms.BooleanField(initial=False, required=True, label=mark_safe(_('I have read and accepted <a href="/terms-of-use/" target="_blank">the terms of use</a>')))
+
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode', 'subscription')
+        fields = (
+            'x', 'y', 'address_nl','address_fr',
+            'address_number', 'address_regional', 'postalcode',
+            'category', 'secondary_category',
+            'postalcode',
+            'subscription',
+            'terms_of_use_validated')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
