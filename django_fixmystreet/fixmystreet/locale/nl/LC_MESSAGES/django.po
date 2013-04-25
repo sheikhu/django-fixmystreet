@@ -279,74 +279,71 @@ msgstr "Niet gepubliceerd"
 
 #: models.py:1406
 msgid "Report refused by {user}"
-msgstr "Incident afgewezen door {user}"
+msgstr "Probleem niet goedgekeurd door {user}"
 
 #: models.py:1407
 msgid "Report closed by {user}"
-msgstr "Rapport afgesloten door {user}"
+msgstr "Probleem afgesloten door {user}"
 
 #: models.py:1408
 msgid "Report pointed as solved"
-msgstr "Incident aangegeven als behandeld"
+msgstr "Probleem gemeld als opgelost door {user}"
 
 #: models.py:1409
 msgid "Report as been assigned to {related_new}"
-msgstr "Incident is toegewezen aan {related_new}"
+msgstr "Probleem toegewezen aan {user}"
 
 #: models.py:1410
 msgid "Report as change manager from {related_old} to {related_new}"
-msgstr "Verantwoordelijke verandert van {related_old} naar {related_new}"
+msgstr "Probleem toegewezen aan {user}"
 
 #: models.py:1411
 msgid "Report has been approved by {user}"
-msgstr "Incident is geaccepteerd door {user}"
+msgstr "Probleem goedgekeurd door {user}"
 
 #: models.py:1412
 msgid "{related_new} is responsible for the report"
-msgstr "{related_new} is verantwoordelijk voor het incident"
+msgstr "Probleem toegewezen aan {user}"
 
 #: models.py:1413
 msgid "{related_old} give responsibility to {related_new}"
-msgstr "{related_old} geeft de verantwoordelijkheid door aan {related_new}"
+msgstr "Probleem toegewezen aan {user}"
 
 #: models.py:1414
 msgid "Applicant {related_new} is assigned to the report"
-msgstr "Aannemer {related_new} is verantwoordelijk voor het incident"
+msgstr "Probleem toegewezen aan {related_new}"
 
 #: models.py:1415
 msgid "Applicant changed from {related_old} to {related_new}"
-msgstr "Aannemer verandert van {related_old} naar {related_new}"
+msgstr "Probleem toegewezen aan {related_new}"
 
 #: models.py:1416
 msgid "Contractor {related_new} is assigned to the report"
-msgstr "Contractor {related_new} is verantwoordelijk voor het report"
+msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
 #: models.py:1417
 msgid "Contractor changed from {related_old} to {related_new}"
-msgstr "Contractor verandert van {related_old} naar {related_new}"
+msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
 #: models.py:1418
 msgid "Applicant contractor change from {related_old} to {related_new}"
-msgstr "Applicant contractor verandert van {related_old} tot {related_new}"
+msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
 #: models.py:1419
-#, fuzzy
 msgid "Report created by {user}"
-msgstr "Incident afgewezen door {user}"
+msgstr "Probleem gemeld door {user}"
 
 #: models.py:1420
-#, fuzzy
 msgid "Report updated by {user}"
-msgstr "Incident afgewezen door {user}"
+msgstr "Probleem geactualiseerd door {user}"
 
 #: models.py:1421
-#, fuzzy
 msgid "Informations published by {user}"
-msgstr "Rapport afgesloten door {user}"
+msgstr "Informatie gepubliceerd door {user}"
 
 #: models.py:1446 models.py:1462 models.py:1466 utils.py:207 utils.py:220
 msgid "a citizen"
-msgstr ""
+msgstr "burger"
 
 #: models.py:1551
 msgid "Question"

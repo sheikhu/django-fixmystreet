@@ -293,7 +293,7 @@ msgstr "Incident assigné à {user}"
 
 #: models.py:1410
 msgid "Report as change manager from {related_old} to {related_new}"
-msgstr "Incident assigné à {related_new}"
+msgstr "Incident assigné à {user}"
 
 #: models.py:1411
 msgid "Report has been approved by {user}"
