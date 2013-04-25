@@ -39,7 +39,7 @@ else:
 
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
-DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnset.be>"
+DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnet.be>"
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
