@@ -1989,3 +1989,16 @@ table.report_overview_table th{
     font-weight:normal;
 }
 
+#legend-container .popover
+{
+    width: auto;
+    font-size: small;
+}
+
+#legend-container .popover img
+{
+    max-width: 400px;
+    width: 20px;
+    height: 27px;
+    margin-right:10px;
+}
