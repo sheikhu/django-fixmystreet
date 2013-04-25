@@ -52,6 +52,7 @@ class MailTest(TestCase):
 			'citizen-email':self.citizen.email,
 			'citizen-firstname':self.citizen.first_name,
 			'citizen-lastname':self.citizen.last_name,
+			'report-terms_of_use_validated': True
 		}
 
 	def testCreateReportMail(self):
