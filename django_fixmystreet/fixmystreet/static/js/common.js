@@ -68,6 +68,13 @@ function validateForm(form) {
         }
     });
 
+    if(!$("#id_report-terms_of_use_validated").prop('checked')) {
+        valid = false;
+        $("#id_report-terms_of_use_validated").addClass('invalid_checkbox');
+    } else {
+        $("#id_report-terms_of_use_validated").removeClass('invalid_checkbox');
+    }
+
     if(!valid) {
         form.find('.invalid input, .invalid select').first().focus();
         form.find('.required-error-msg').fadeIn();

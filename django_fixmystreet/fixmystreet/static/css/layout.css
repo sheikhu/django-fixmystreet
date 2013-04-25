@@ -506,6 +506,12 @@ div.olControlZoom {
     background-color: #FDD;
 }
 
+.invalid_checkbox {
+    outline-color: red;
+    outline-style: solid;
+    outline-width: 2px;
+}
+
 form.required-invalid .required-msg {
     color:red;
 }
