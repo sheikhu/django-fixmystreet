@@ -507,7 +507,7 @@ div.olControlZoom {
     background-color: #FDD;
 }
 
-.invalid_checkbox {
+.required.invalid input[type=checkbox] {
     outline-color: red;
     outline-style: solid;
     outline-width: 2px;

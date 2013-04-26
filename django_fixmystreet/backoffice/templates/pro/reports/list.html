@@ -136,6 +136,35 @@ function highlightFilterSelection(id) {
     </h1>
 
     {% with ownership=request.GET.ownership street=request.GET.street streetNumber=request.GET.streetNumber rayon=request.GET.rayon %}
+
+        <div id="legend-container" class="row" style="text-align:right;margin:5px 0 0 0;height:16px;">
+            <a  style="float:none;"
+                href="#"
+                data-toggle="popover"
+                data-trigger="hover"
+                data-placement="left"
+                title="{% trans 'Legend' %}" class="pull-left">
+                    <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
+            </a>
+            <div id="legend-recommendations" class="hide" style="width: 600px;">
+                <p><img src="{{STATIC_URL}}images/pin-red-XS.png"/> {% trans 'Incident signalé' %}</p>
+                <p><img src="{{STATIC_URL}}images/reg-pin-red-XS.png"/> {% trans 'Incident signalé sur une voie régionale' %}</p>
+                <p><img src="{{STATIC_URL}}images/pro-pin-red-XS.png"/> {% trans 'Incident signalé par un professionnel' %}</p>
+                <hr/>
+                <p><img src="{{STATIC_URL}}images/pin-orange-XS.png"/> {% trans 'Incident en traitement' %}</p>
+                <p><img src="{{STATIC_URL}}images/reg-pin-orange-XS.png"/> {% trans 'Incident en traitement sur une voie régionale' %}</p>
+                <p><img src="{{STATIC_URL}}images/pro-pin-orange-XS.png"/> {% trans 'Incident en traitement signalé par un professionel' %}</p>
+                <hr/>
+                <p><img src="{{STATIC_URL}}images/pin-orange-executed-XS.png"/> {% trans 'Incident en traitement et assigné' %}</p>
+                <p><img src="{{STATIC_URL}}images/reg-pin-orange-executed-XS.png"/> {% trans 'Incident en traitement sur une voie régionale et assigné' %}</p>
+                <p><img src="{{STATIC_URL}}images/pro-pin-orange-executed-XS.png"/> {% trans 'Incident en traitement signalé par un professionnel et assigné' %}</p>
+                <hr/>
+                <p><img src="{{STATIC_URL}}images/pin-green-XS.png"/> {% trans 'Incident clôturé' %}</p>
+                <p><img src="{{STATIC_URL}}images/reg-pin-green-XS.png"/> {% trans 'Incident clôturé sur une voie régionale' %}</p>
+                <p><img src="{{STATIC_URL}}images/pro-pin-green-XS.png"/> {% trans 'Incident clôturé par un professionnel' %}</p>
+            </div>
+        </div>
+
         <div id="incident_filter" class="span12">
             <ul>
                 <li>
@@ -170,6 +199,7 @@ function highlightFilterSelection(id) {
                     </a>
                 </li>
             </ul>
+
         </div>
 
         <div class="span8">

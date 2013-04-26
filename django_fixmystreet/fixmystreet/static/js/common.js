@@ -33,6 +33,17 @@ $(document).ready(function(){
         }
     });
 
+    $("[data-toggle=popover]")
+        .popover({
+            html : true,
+            content: function() {
+                return $(this).next().html();
+            }
+        })
+        .click(function(e) {
+            e.preventDefault();
+        });
+
 
     // if (!$("#users_menu_item a").hasClass('active')) {
     //     $("#users_menu_item").hover(function(){$("#users_sub_menu").css("visibility","visible");},function(){$("#users_sub_menu").css('visibility','hidden');});
@@ -60,20 +71,18 @@ function validateForm(form) {
 
     form.find('.required input, .required select, .required textarea').each(function(ind,input) {
         var $input = $(input);
-        if(!$input.val()) {
+        var value = $input.val();
+
+        if ($input.is(":checkbox")) {
+            value = $input.is(":checked");
+        }
+        if(!value) {
             valid = false;
             $input.closest('.required').addClass('invalid');
         } else {
             $input.closest('.required').removeClass('invalid');
         }
     });
-
-    if(!$("#id_report-terms_of_use_validated").prop('checked')) {
-        valid = false;
-        $("#id_report-terms_of_use_validated").addClass('invalid_checkbox');
-    } else {
-        $("#id_report-terms_of_use_validated").removeClass('invalid_checkbox');
-    }
 
     if(!valid) {
         form.find('.invalid input, .invalid select').first().focus();

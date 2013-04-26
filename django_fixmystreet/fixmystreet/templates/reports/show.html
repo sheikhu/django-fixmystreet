@@ -62,16 +62,6 @@ function markAsDone(){
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 }
 
-$("[data-toggle=popover]")
-        .popover({
-            html : true,
-            content: function() {
-                return $(this).next().html();
-            }
-        })
-        .click(function(e) {
-            e.preventDefault();
-        });
 </script>
 {% endblock %}
 {% block css %}
