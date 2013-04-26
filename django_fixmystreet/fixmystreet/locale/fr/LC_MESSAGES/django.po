@@ -657,7 +657,7 @@ msgstr "Comment signaler un incident"
 msgid "call police"
 msgstr ""
 "Tout problème représentant un grave danger de sécurité doit être signalé à "
-"la police au numéro d'urgence 112"
+"la police au numéro d'urgence 101"
 
 #: templates/home.html:80
 msgid "Enter a street where you have located an incident"

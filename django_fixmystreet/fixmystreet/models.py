@@ -748,7 +748,7 @@ def report_notify(sender, instance, **kwargs):
     """
     report = instance
     if not kwargs['raw']:
-        
+
         ### CREATED
         if kwargs['created']:
             event_log_user = None
@@ -1452,11 +1452,11 @@ class ReportEventLog(models.Model):
         user_to_display = _("a citizen")
 
         if self.user:
-            if self.user.fmsuser.is_citizen():
+            if self.user.is_citizen():
                 user_to_display = self.user.get_full_name() or self.user
-            
-            if self.user.fmsuser.is_pro():
-                user_to_display = '%s %s' %(self.user.fmsuser.organisation, self.user.get_full_name() or self.user)
+
+            if self.user.is_pro():
+                user_to_display = '%s %s' %(self.user.organisation, self.user.get_full_name() or self.user)
 
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,

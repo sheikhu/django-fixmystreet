@@ -657,7 +657,7 @@ msgstr "Hoe meld ik een probleem?"
 msgid "call police"
 msgstr ""
 "Elk probleem dat een ernstig veiligheidsgevaar met zich meebrengt moet "
-"worden gemeld aan de politie op het noodnummer 112"
+"worden gemeld aan de politie op het noodnummer 101"
 
 #: templates/home.html:80
 msgid "Enter a street where you have located an incident"
