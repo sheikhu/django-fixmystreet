@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-25 16:17+0200\n"
+"POT-Creation-Date: 2013-04-26 11:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,33 +27,33 @@ msgstr ""
 msgid "Change password: %s"
 msgstr "Paswoord wijzigen"
 
-#: forms.py:20 forms.py:47 forms.py:80
+#: forms.py:24 forms.py:51 forms.py:84
 msgid "Select a secondary Category"
 msgstr "Kies een subcategorie"
 
-#: forms.py:46 forms.py:62 forms.py:80
+#: forms.py:50 forms.py:66 forms.py:84
 msgid "category"
 msgstr "categorie"
 
-#: forms.py:46 forms.py:62
+#: forms.py:50 forms.py:66
 msgid "Select a Category"
 msgstr "Kies een categorie"
 
-#: forms.py:47
+#: forms.py:51
 msgid "Secondary category"
 msgstr "subcategorie"
 
-#: forms.py:48
+#: forms.py:52
 msgid "Subscription and report follow-up"
 msgstr ""
 "Ik wil de evolutie van de melding volgen en e-mailberichten hierover "
 "ontvangen"
 
-#: forms.py:81
+#: forms.py:85
 msgid "Private Report"
 msgstr "Privé rapport"
 
-#: forms.py:104
+#: forms.py:108
 msgid ""
 "I have read and accepted <a href=\"/terms-of-use/\" target=\"_blank\">the "
 "terms of use</a>"
@@ -61,60 +61,60 @@ msgstr ""
 "Ik heb gelezen en ingestemd met de <a href=\"/nl/terms-of-use/\" target="
 "\"_blank\">gebruiksvoorwaarden</a>"
 
-#: forms.py:128
+#: forms.py:132
 msgid "Choose your quality"
 msgstr "Selecteer een hoedanigheid"
 
-#: forms.py:136
+#: forms.py:140
 msgid "Identity"
 msgstr "Naam"
 
-#: forms.py:137
+#: forms.py:141
 msgid "Tel."
 msgstr "telefoonnummer"
 
-#: forms.py:138 forms.py:166
+#: forms.py:142 forms.py:170
 msgid "Email"
 msgstr "E-mail"
 
-#: forms.py:139
+#: forms.py:143
 msgid "Quality"
 msgstr "Hoedanigheid"
 
-#: forms.py:163 models.py:231 models.py:1137 models.py:1171 models.py:1205
+#: forms.py:167 models.py:231 models.py:1137 models.py:1171 models.py:1205
 msgid "Name"
 msgstr "Naam"
 
-#: forms.py:168
+#: forms.py:172
 msgid "Message"
 msgstr "Boodschap"
 
-#: forms.py:224
+#: forms.py:228
 msgid "Add a comment, please."
 msgstr ""
 "Gelieve een commentaar toe te voegen (wordt goedgekeurd voor publicatie)."
 
-#: forms.py:244
+#: forms.py:248
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: forms.py:245
+#: forms.py:249
 msgid "Password"
 msgstr "Paswoord"
 
-#: forms.py:248
+#: forms.py:252
 msgid ""
 "Please enter a correct username and password. Note that both fields are case-"
 "sensitive."
 msgstr ""
 
-#: forms.py:250
+#: forms.py:254
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr ""
 
-#: forms.py:252
+#: forms.py:256
 #, fuzzy
 msgid "This account is inactive."
 msgstr "is niet gevalideerd."
@@ -399,7 +399,7 @@ msgstr ""
 
 #: urls.py:24
 msgid "^about/$"
-msgstr ""
+msgstr "^over-ons/$"
 
 #: urls.py:25
 msgid "^posters/$"
