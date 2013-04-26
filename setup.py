@@ -21,7 +21,8 @@ install_requires = [
     'docutils',
     # 'django-registration',
     'django-piston',
-    'markdown'
+    'markdown',
+    'oauth2'
     ]
 
 tests_require = [
