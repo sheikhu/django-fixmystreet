@@ -240,8 +240,8 @@ elif ENVIRONMENT=="production":
 try:
     from local_settings import *
 except ImportError:
-    import sys
-    sys.stderr.write( "local_settings.py not set; using environment settings\n" )
+    pass
+if not 'DATABASES' in locals():
     DATABASES = {
        'default': {
             'ENGINE': os.environ['DATABASE_ENGINE'],
@@ -255,9 +255,9 @@ except ImportError:
             }
        }
     }
-    if 'EMAIL_ADMIN' in os.environ:
-        EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
-    else:
-        EMAIL_ADMIN = 'jsanchezpando@cirb.irisnet.be'
-    ADMIN_EMAIL = EMAIL_ADMIN
+if 'EMAIL_ADMIN' in os.environ:
+    EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
+else:
+    EMAIL_ADMIN = 'jsanchezpando@cirb.irisnet.be'
+ADMIN_EMAIL = EMAIL_ADMIN
 
