@@ -1497,7 +1497,7 @@ def eventlog_init_values(sender, instance, **kwargs):
         if instance.status_new == None:
             instance.status_new = instance.report.status
 
-        if instance.status_old == None:
+        if instance.status_old == None and hasattr(instance.report, '__former'):
             instance.status_old = instance.report.__former["status"]
 
         if not hasattr(instance, "organisation"):
