@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-26 15:42+0200\n"
+"POT-Creation-Date: 2013-04-26 16:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -323,53 +323,51 @@ msgstr ""
 msgid "Created"
 msgstr "Aangemaakt"
 
-#: templates/pro/pdf.html:187 templates/pro/pdf.html.py:222
-#: templates/pro/pdf.html:247 templates/pro/pdf.html.py:265
-#: templates/pro/pdf.html:338
+#: templates/pro/pdf.html:187 templates/pro/pdf.html.py:226
+#: templates/pro/pdf.html:263 templates/pro/pdf.html.py:336
 msgid "By"
 msgstr "Door"
 
-#: templates/pro/pdf.html:198 templates/pro/pdf.html.py:279
-#: templates/pro/pdf.html:352
-msgid "Citizen"
+#: templates/pro/pdf.html:198
+msgid "a citizen"
 msgstr ""
 
-#: templates/pro/pdf.html:207
+#: templates/pro/pdf.html:211
 #, fuzzy
 msgctxt "time"
 msgid "on"
 msgstr "om"
 
-#: templates/pro/pdf.html:219
+#: templates/pro/pdf.html:223
 msgid "Treated"
 msgstr "Behandeld"
 
-#: templates/pro/pdf.html:244 templates/pro/reports/show.html:193
+#: templates/pro/pdf.html:248 templates/pro/reports/show.html:193
 msgid "History"
 msgstr "Geschiedenis"
 
-#: templates/pro/pdf.html:250
-msgid "No Report History"
-msgstr "Geen History"
-
-#: templates/pro/pdf.html:261 templates/pro/reports/show.html:430
+#: templates/pro/pdf.html:259 templates/pro/reports/show.html:430
 msgid "Comments"
 msgstr "Commentaren"
 
-#: templates/pro/pdf.html:275 templates/pro/pdf.html.py:348
+#: templates/pro/pdf.html:273 templates/pro/pdf.html.py:346
 msgid "Anonymous "
 msgstr ""
 
-#: templates/pro/pdf.html:319
+#: templates/pro/pdf.html:277 templates/pro/pdf.html.py:350
+msgid "Citizen"
+msgstr ""
+
+#: templates/pro/pdf.html:317
 #, fuzzy
 msgid "Description"
 msgstr "Vraag"
 
-#: templates/pro/pdf.html:324
+#: templates/pro/pdf.html:322
 msgid "file creation Date"
 msgstr "(Creatie datum)"
 
-#: templates/pro/pdf.html:333
+#: templates/pro/pdf.html:331
 msgid "file publication date"
 msgstr "(Publicatie datum)"
 
@@ -797,6 +795,9 @@ msgstr "Gebruiker is succesvol verwijderd"
 #, fuzzy
 msgid "You attachments has been sent"
 msgstr "U account is inactief"
+
+#~ msgid "No Report History"
+#~ msgstr "Geen History"
 
 #~ msgid "You have subscribed from updates successfully"
 #~ msgstr "U bent succesvol geabonneerd voor updates"

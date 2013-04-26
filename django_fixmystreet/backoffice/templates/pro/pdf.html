@@ -36,7 +36,7 @@
                 });
             fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
             var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
-            document.getElementById("wgs84").innerHTML="L: " + res.x + " l: "+res.y;
+            document.getElementById("wgs84").innerHTML="L: " + res.x + " <br/>l: "+res.y;
         });
     </script>
 {% endblock %}
@@ -195,10 +195,14 @@
                     -
                     {{report.citizen.fmsuser.telephone}}
                 {% else %}
-                    {% trans 'Citizen' %}
+                    {% trans 'a citizen' %}
                 {% endif %}
             {% else %}
-                {{report.created_by.fmsuser.get_display_name}},
+                {% if pro_version == "1" %}
+                    {{ report.created_by.get_organisation }} {{ report.created_by.fmsuser.get_display_name }}
+                {% else %}
+                    {{ report.created_by.get_organisation }}
+                {% endif %}
             {% endif %}
         </p>
 
@@ -242,13 +246,7 @@
     <br/>
     <div class="block-full" style="padding-top:10px;">
         <h2>{% trans 'History' %}</h2>
-        {% if activity_list %}
-            {% for activity in activity_list %}
-                <p><strong>{{activity.event_at|date}}</strong> : {{ activity.get_status }} <strong>{% trans 'By' %}</strong> {{activity.organisation.name}}</p>
-            {% endfor %}
-        {% else %}
-            <p>{% trans 'No Report History' %}</p>
-        {% endif %}
+        {% include "reports/_activity_list.html" %}
     </div>
 
     <!--
