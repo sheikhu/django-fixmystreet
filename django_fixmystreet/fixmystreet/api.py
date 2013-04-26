@@ -185,14 +185,15 @@ class ReportHandler(BaseHandler):
         report_form = CitizenReportForm(request.data, prefix='report')
         comment_form = ReportCommentForm(request.data, prefix='comment')
         if not report_form.is_valid():
-            return HttpResponse(unicode(citizen_form.errors), status=400)
+            return HttpResponse(unicode(report_form.errors), status=400)
 
         report = report_form.save(commit=False)
         report.citizen = citizen
         #report.category = ReportMainCategoryClass(request.data['secondary_category'])
         #report.secondary_category = ReportCategory(request.data['category'])
-        report.subscribe_author()
         report.save()
+
+        report.subscribe_author()
 
         #Create the comment is a comment has been given'''
         if (request.data["comment-text"] or comment_form.is_valid()):
