@@ -36,7 +36,7 @@ $(function(){
     /* Implement method when changing manager using the dropdown */
     /*************************************************************/
     $("#report_responsible_manager_select").bind("change",function(event){
-        var r=confirm("Are you sure you want to change the responsable manager? This action cannot be undone.");
+        var r=confirm("{% trans 'Are you sure you want to change the responsable manager? This action cannot be undone.' %}");
         if (r==true){
             window.location = '{% url "report_change_manager_pro" report.id %}?manId='+$("#report_responsible_manager_select").val();
         }

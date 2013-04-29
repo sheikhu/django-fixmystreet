@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-26 16:22+0200\n"
+"POT-Creation-Date: 2013-04-29 16:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -218,7 +218,7 @@ msgstr "Confidentieel"
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1293 models.py:1599
+#: models.py:1293 models.py:1600
 msgid "Label"
 msgstr "Label"
 
@@ -238,10 +238,6 @@ msgstr "Markeer als behandeld"
 msgid "Manager assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1398
-msgid "Manager changed"
-msgstr "Beheerder is toegekend"
-
 #: models.py:1399
 #, fuzzy
 msgid "Valid"
@@ -250,10 +246,6 @@ msgstr "verifiëren"
 #: models.py:1400
 msgid "Organisation assinged"
 msgstr "Beheerder is toegekend"
-
-#: models.py:1401
-msgid "Organisation changed"
-msgstr "Organisatie aangepast"
 
 #: models.py:1402
 msgid "Contractor assinged"
@@ -301,20 +293,12 @@ msgstr "Probleem gemeld als opgelost door {user}"
 msgid "Report as been assigned to {related_new}"
 msgstr "Probleem toegewezen aan {user}"
 
-#: models.py:1416
-msgid "Report as change manager from {related_old} to {related_new}"
-msgstr "Probleem toegewezen aan {user}"
-
 #: models.py:1417
 msgid "Report has been approved by {user}"
 msgstr "Probleem goedgekeurd door {user}"
 
 #: models.py:1418
 msgid "{related_new} is responsible for the report"
-msgstr "Probleem toegewezen aan {user}"
-
-#: models.py:1419
-msgid "{related_old} give responsibility to {related_new}"
 msgstr "Probleem toegewezen aan {user}"
 
 #: models.py:1420
@@ -349,23 +333,23 @@ msgstr "Probleem geactualiseerd door {user}"
 msgid "Informations published by {user}"
 msgstr "Informatie gepubliceerd door {user}"
 
-#: models.py:1452 models.py:1468 models.py:1472 utils.py:207 utils.py:220
+#: models.py:1453 models.py:1469 models.py:1473 utils.py:207 utils.py:220
 msgid "a citizen"
 msgstr "burger"
 
-#: models.py:1557
+#: models.py:1558
 msgid "Question"
 msgstr "Vraag"
 
-#: models.py:1558
+#: models.py:1559
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1600
+#: models.py:1601
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1601
+#: models.py:1602
 msgid "Related model field"
 msgstr ""
 
@@ -598,7 +582,7 @@ msgstr "Toekenning verantwoordelijke managers"
 msgid "Change your password"
 msgstr "Paswoord wijzigen"
 
-#: templates/base.html:173 templates/reports/show.html:133
+#: templates/base.html:173 templates/reports/show.html:123
 msgid "OK"
 msgstr ""
 
@@ -612,8 +596,8 @@ msgid ""
 "website."
 msgstr "Download een van de onderstaande browsers alvorens verder te gaan."
 
-#: templates/base.html:202 templates/reports/new.html:250
-#: templates/reports/show.html:117
+#: templates/base.html:202 templates/reports/new.html:242
+#: templates/reports/show.html:107
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -641,98 +625,98 @@ msgstr "Gebruiksvoorwaarden"
 msgid "Meta description for home page"
 msgstr ""
 
-#: templates/home.html:72
+#: templates/home.html:68
 msgid "Report an incident"
 msgstr "Een incident melden"
 
-#: templates/home.html:72
+#: templates/home.html:68
 msgid "Hole, degradations, subsidence, invisible marks..."
 msgstr "put, beschadigd wegdek, verzakking, verdwenen markering..."
 
-#: templates/home.html:77
+#: templates/home.html:73
 msgid "How to fill a report"
 msgstr "Hoe meld ik een probleem?"
 
-#: templates/home.html:78
+#: templates/home.html:74
 msgid "call police"
 msgstr ""
 "Elk probleem dat een ernstig veiligheidsgevaar met zich meebrengt moet "
 "worden gemeld aan de politie op het noodnummer 101"
 
-#: templates/home.html:80
+#: templates/home.html:76
 msgid "Enter a street where you have located an incident"
 msgstr "Geef het adres op waar het probleem zich voordoet"
 
-#: templates/home.html:81
+#: templates/home.html:77
 msgid "Locate the incident on map"
 msgstr "Lokaliseer het probleem op de kaart"
 
-#: templates/home.html:82
+#: templates/home.html:78
 msgid "Descibe the incident"
 msgstr "Beschrijf het probleem"
 
-#: templates/home.html:83
+#: templates/home.html:79
 msgid "The incident will be sent to the right service"
 msgstr "Uw melding wordt naar de bevoegde dienst gestuurd"
 
-#: templates/home.html:84
+#: templates/home.html:80
 msgid "Subscribe an incident to be kept posted"
 msgstr "Volg de evolutie van uw melding"
 
-#: templates/home.html:90
+#: templates/home.html:86
 msgid "Enter the address where the incident is:"
 msgstr "Geef het adres op waar het probleem zich voordoet:"
 
-#: templates/home.html:91
+#: templates/home.html:87
 msgid "Street name, Street number..."
 msgstr "Straatnaam, huisnummer..."
 
-#: templates/home.html:93
+#: templates/home.html:89
 msgid "All communes..."
 msgstr "Alle gemeenten"
 
-#: templates/home.html:98
+#: templates/home.html:94
 msgid "Widget Search"
 msgstr "Zoeken"
 
-#: templates/home.html:105
+#: templates/home.html:101
 msgid "Enter the report ticket:"
 msgstr "Vul het nummer van de melding"
 
-#: templates/home.html:106
+#: templates/home.html:102
 msgid "Ticket number..."
 msgstr "Nummer van de melding..."
 
-#: templates/home.html:107
+#: templates/home.html:103
 msgid "Access Ticket"
 msgstr "Een melding zoeken"
 
-#: templates/home.html:116
+#: templates/home.html:112
 msgid "Last modified reports:"
 msgstr "Meest recente meldingen"
 
-#: templates/home.html:119 templates/home.html.py:164
+#: templates/home.html:115 templates/home.html.py:160
 msgid "Report Created"
 msgstr "Gemelde problemen"
 
-#: templates/home.html:122 templates/home.html.py:169
+#: templates/home.html:118 templates/home.html.py:165
 #: templates/reports/list.html:67
 msgid "Report In progress"
 msgstr "Behandelde problemen"
 
-#: templates/home.html:125 templates/home.html.py:174
+#: templates/home.html:121 templates/home.html.py:170
 msgid "Report Processed"
 msgstr "Afgesloten meldingen"
 
-#: templates/home.html:165 templates/home.html.py:170
+#: templates/home.html:161 templates/home.html.py:166
 msgid "In the 30 last days"
 msgstr "De voorbije 30 dagen"
 
-#: templates/home.html:175
+#: templates/home.html:171
 msgid "In the 30 last days "
 msgstr "De voorbije 30 dagen"
 
-#: templates/home.html:181
+#: templates/home.html:177
 msgid "Download Fix My Street for your smartphone:"
 msgstr "Download Fix My Street op uw smartphone"
 
@@ -767,7 +751,7 @@ msgstr "Toevoegen"
 
 #: templates/admin/change_form.html:32
 #: templates/admin/fixmystreet/fmsuser/change_form.html:9
-#: templates/reports/show.html:127
+#: templates/reports/show.html:117
 msgid "History"
 msgstr "Geschiedenis"
 
@@ -826,11 +810,11 @@ msgid ""
 "        "
 msgstr ""
 
-#: templates/contact/new.html:20 templates/reports/new.html:212
+#: templates/contact/new.html:20 templates/reports/new.html:204
 msgid "* This fields are required"
 msgstr "* Verplichte velden"
 
-#: templates/contact/new.html:24 templates/reports/show.html:255
+#: templates/contact/new.html:24 templates/reports/show.html:245
 msgid "Save"
 msgstr "Bewaren"
 
@@ -1380,7 +1364,7 @@ msgstr ""
 "%(on)s</strong>\n"
 " "
 
-#: templates/reports/_comment.html:20 templates/reports/show.html:173
+#: templates/reports/_comment.html:20 templates/reports/show.html:163
 #, python-format
 msgid ""
 "\n"
@@ -1447,18 +1431,18 @@ msgstr "Alle Incidenten"
 msgid "Meta description for index page"
 msgstr ""
 
-#: templates/reports/index.html:25 templates/reports/new.html:273
+#: templates/reports/index.html:25 templates/reports/new.html:265
 msgid "Warning"
 msgstr "Opgelet"
 
-#: templates/reports/index.html:28 templates/reports/new.html:276
+#: templates/reports/index.html:28 templates/reports/new.html:268
 #: views/reports/main.py:212
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
 "Deze gemeente neemt nog niet deel aan Fix My Street. Om dit incident te "
 "melden dient u rechtstreeks contact op te nemen met de gemeente op het nummer"
 
-#: templates/reports/index.html:31 templates/reports/new.html:279
+#: templates/reports/index.html:31 templates/reports/new.html:271
 msgid "Close dialog"
 msgstr "Afsluiten"
 
@@ -1512,84 +1496,84 @@ msgstr ""
 msgid "Your file description"
 msgstr "Bestand beschrijving"
 
-#: templates/reports/new.html:132
+#: templates/reports/new.html:122
 msgid "Drag me to change my location."
 msgstr "Localiseer het probleem op de kaart door middel van het icoon."
 
-#: templates/reports/new.html:143
+#: templates/reports/new.html:133
 msgid "Submitting a report"
 msgstr "Meld een incident:"
 
-#: templates/reports/new.html:145
+#: templates/reports/new.html:135
 msgid ""
 "Before submitting an incident, please verify that the incident isn't "
 "submitted yet."
 msgstr "Als er al een melding bestaat kunt u dit opvolgen"
 
-#: templates/reports/new.html:147
+#: templates/reports/new.html:137
 msgid "Verify"
 msgstr "Controleren"
 
-#: templates/reports/new.html:153 templates/reports/new.html.py:158
-#: templates/reports/show.html:184
+#: templates/reports/new.html:143 templates/reports/new.html.py:148
+#: templates/reports/show.html:174
 msgid "Location:"
 msgstr "Plaats:"
 
-#: templates/reports/new.html:162
+#: templates/reports/new.html:152
 msgid "** To change the address, move the marker on the map above."
 msgstr ""
 "Verplaats het icoon op de kaart of geef een zoekopdracht om het adres te "
 "wijzigen."
 
-#: templates/reports/new.html:173
+#: templates/reports/new.html:163
 msgid "Incident category:"
 msgstr "Soort probleem:"
 
-#: templates/reports/new.html:191
+#: templates/reports/new.html:181
 msgid "Contact information:"
 msgstr "Uw contactgegevens:"
 
-#: templates/reports/new.html:204 templates/reports/show.html:263
+#: templates/reports/new.html:194 templates/reports/show.html:253
 msgid "Subscription:"
 msgstr "Melding opvolgen:"
 
-#: templates/reports/new.html:210
+#: templates/reports/new.html:202
 msgid "Send"
 msgstr "Verzenden"
 
-#: templates/reports/new.html:223
+#: templates/reports/new.html:215
 msgid "Submit an incident:"
 msgstr "Een incident melden:"
 
-#: templates/reports/new.html:226
+#: templates/reports/new.html:218
 msgid "Thank you! Your incident has been sent correctly to the system."
 msgstr "Bedankt ! Het incident is correct naar het systeem verstuurd."
 
-#: templates/reports/new.html:227
+#: templates/reports/new.html:219
 msgid "A mail containing the link report has been sent."
 msgstr "Een email met rapport details werd opgestuurd."
 
-#: templates/reports/new.html:229
+#: templates/reports/new.html:221
 msgid "Download a copy of the incident as a pdf"
 msgstr "Download een kopie van het incident als pdf."
 
-#: templates/reports/new.html:234 templates/reports/new.html.py:236
+#: templates/reports/new.html:226 templates/reports/new.html.py:228
 msgid "Continue"
 msgstr "ga verder"
 
-#: templates/reports/new.html:243
+#: templates/reports/new.html:235
 msgid "Incident overview:"
 msgstr "Overzicht van het ingevulde incident rapport:"
 
-#: templates/reports/new.html:249 templates/reports/show.html:119
+#: templates/reports/new.html:241 templates/reports/show.html:109
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: templates/reports/new.html:256
+#: templates/reports/new.html:248
 msgid "Nearby incidents that are already submitted:"
 msgstr "Meldingen in directe omgeving:"
 
-#: templates/reports/new.html:266
+#: templates/reports/new.html:258
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
@@ -1608,60 +1592,60 @@ msgid ""
 "traiter. "
 msgstr ""
 
-#: templates/reports/show.html:127
+#: templates/reports/show.html:117
 #, fuzzy
 msgid "incident "
 msgstr "Incident history"
 
-#: templates/reports/show.html:146
+#: templates/reports/show.html:136
 msgid "Report Ticket"
 msgstr "Incident"
 
-#: templates/reports/show.html:154
+#: templates/reports/show.html:144
 msgid "This incident is not validated."
 msgstr "De melding wordt goedgekeurd."
 
-#: templates/reports/show.html:157
+#: templates/reports/show.html:147
 msgid "This incident is in progress."
 msgstr "De melding wordt behandeld."
 
-#: templates/reports/show.html:160
+#: templates/reports/show.html:150
 msgid "This incident has been closed."
 msgstr "De melding is afgesloten."
 
-#: templates/reports/show.html:188
+#: templates/reports/show.html:178
 msgid "Category:"
 msgstr "Categorie:"
 
-#: templates/reports/show.html:192
+#: templates/reports/show.html:182
 msgid "Status:"
 msgstr "Status:"
 
-#: templates/reports/show.html:196
+#: templates/reports/show.html:186
 msgid "Responsible:"
 msgstr "Behandeld door:"
 
-#: templates/reports/show.html:205
+#: templates/reports/show.html:195
 msgid "Download a pdf report of this incident"
 msgstr "Download een kopie van het incident als pdf."
 
-#: templates/reports/show.html:206
+#: templates/reports/show.html:196
 msgid "report pdf"
 msgstr "Download als PDF"
 
-#: templates/reports/show.html:210
+#: templates/reports/show.html:200
 msgid "Show history"
 msgstr "Geschiedenis van incident tonen."
 
-#: templates/reports/show.html:220
+#: templates/reports/show.html:210
 msgid "Files"
 msgstr "Foto's en documenten"
 
-#: templates/reports/show.html:234
+#: templates/reports/show.html:224
 msgid "Comments"
 msgstr "Commentaar"
 
-#: templates/reports/show.html:264
+#: templates/reports/show.html:254
 #, python-format
 msgid ""
 "\n"
@@ -1673,19 +1657,19 @@ msgstr ""
 "Volg de evolutie van deze melding op en ontvang hierover e-mailberichten (al "
 "%(count)s volger(s))"
 
-#: templates/reports/show.html:270
+#: templates/reports/show.html:260
 msgid "Your email"
 msgstr "Uw email"
 
-#: templates/reports/show.html:271
+#: templates/reports/show.html:261
 msgid "Subscribe"
 msgstr "Volgen"
 
-#: templates/reports/show.html:278
+#: templates/reports/show.html:268
 msgid "You think this incident is close. Indicate it!"
 msgstr "U merkt dat het probleem verholpen is?"
 
-#: templates/reports/show.html:281
+#: templates/reports/show.html:271
 msgid ""
 "Indicate that the incident is fixed. By pressing this button a mail will be "
 "send to the responsible manager."
@@ -1693,11 +1677,11 @@ msgstr ""
 "Signaleer dat dit incident opgelost is. Door op deze knop te klikken zal een "
 "mail worden gestuurd naar de verantwoordelijke van dit incident."
 
-#: templates/reports/show.html:281 templates/reports/show.html.py:283
+#: templates/reports/show.html:271 templates/reports/show.html.py:273
 msgid "Mark as done"
 msgstr "Als opgelost melden"
 
-#: templates/reports/show.html:284
+#: templates/reports/show.html:274
 msgid "This report is already marked as done"
 msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
 
@@ -1720,6 +1704,18 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "Manager changed"
+#~ msgstr "Beheerder is toegekend"
+
+#~ msgid "Organisation changed"
+#~ msgstr "Organisatie aangepast"
+
+#~ msgid "Report as change manager from {related_old} to {related_new}"
+#~ msgstr "Probleem toegewezen aan {user}"
+
+#~ msgid "{related_old} give responsibility to {related_new}"
+#~ msgstr "Probleem toegewezen aan {user}"
 
 #~ msgid "Publish"
 #~ msgstr "Publiceren"
