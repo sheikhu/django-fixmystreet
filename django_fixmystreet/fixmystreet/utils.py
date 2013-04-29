@@ -233,8 +233,8 @@ def transform_notification_template(template, report, user, **kwargs):
     opening_tmp = MailNotificationTemplate.objects.get(name='opening')
     closing_tmp = MailNotificationTemplate.objects.get(name='closing')
 
+    trickystuff = get_language()
     for l in settings.LANGUAGES:
-
         activate(l[0])
 
         data["report"] = report
@@ -281,6 +281,7 @@ def transform_notification_template(template, report, user, **kwargs):
 
         deactivate()
 
+    activate(trickystuff)
 
     subject = u"incident #{0} - {1}".format(report.id, " / ".join(title))
     text = "\n\n---------------------------\n\n".join(content)
