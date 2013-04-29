@@ -35,10 +35,6 @@ $(function(){
 	proVersion = true;
     {% endif %}
 
-    {% for report in reports %}
-    	fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, {{forloop.counter}}, proVersion);
-    {% endfor %}
-
     $("#list_created").show();
     $("#list_closed").hide();
     $("#list_in_progress").hide();

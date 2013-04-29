@@ -45,7 +45,6 @@ def home(request, location = None, error_msg =None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports':Report.objects.all(),
                 'reports_created': Report.objects.filter(status=Report.CREATED).order_by('-modified')[0:5],
                 'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).order_by('-modified')[0:5],
                 'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).order_by('-modified')[0:5],
