@@ -233,6 +233,7 @@ def transform_notification_template(template, report, user, **kwargs):
     opening_tmp = MailNotificationTemplate.objects.get(name='opening')
     closing_tmp = MailNotificationTemplate.objects.get(name='closing')
 
+    from django.utils.translation import get_language
     trickystuff = get_language()
     for l in settings.LANGUAGES:
         activate(l[0])
