@@ -8,7 +8,7 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         db.execute("UPDATE fixmystreet_reporteventlog SET user_id=related_new_id WHERE event_type IN (4,5);")
-        db.execute("UPDATE fixmystreet_reporteventlog SET user_id=4 WHERE event_type=5;")
+        db.execute("UPDATE fixmystreet_reporteventlog SET event_type=4 WHERE event_type=5;")
         db.execute("UPDATE fixmystreet_reporteventlog SET event_type=7 WHERE event_type=8;")
         db.execute("UPDATE fixmystreet_reporteventlog e SET user_id=(SELECT u.user_ptr_id FROM fixmystreet_fmsuser u WHERE u.organisation_id=e.related_new_id LIMIT 1) WHERE event_type=7;")
         # SELECT *, (SELECT u.user_ptr_id FROM fixmystreet_fmsuser u WHERE u.organisation_id=e.related_new_id LIMIT 1) FROM fixmystreet_reporteventlog e WHERE event_type=7;
