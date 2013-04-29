@@ -908,11 +908,11 @@ def report_notify(sender, instance, **kwargs):
                             reply_to=report.responsible_manager.email,
                         ).save(old_responsible=report.__former['responsible_manager'])
 
-                        ReportEventLog(
-                            report=report,
-                            event_type=ReportEventLog.ENTITY_ASSIGNED,
-                            user=report.responsible_entity
-                        ).save()
+                    ReportEventLog(
+                        report=report,
+                        event_type=ReportEventLog.ENTITY_ASSIGNED,
+                        user=report.responsible_manager
+                    ).save()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
@@ -1395,10 +1395,10 @@ class ReportEventLog(models.Model):
         (CLOSE,_("Close")),
         (SOLVE_REQUEST,_("Mark as Done")),
         (MANAGER_ASSIGNED,_("Manager assinged")),
-        (MANAGER_CHANGED,_("Manager changed")),
+        #(MANAGER_CHANGED,_("Manager changed")),
         (VALID,_("Valid")),
         (ENTITY_ASSIGNED, _('Organisation assinged')),
-        (ENTITY_CHANGED, _('Organisation changed')),
+        #(ENTITY_CHANGED, _('Organisation changed')),
         (CONTRACTOR_ASSIGNED,_('Contractor assinged')),
         (CONTRACTOR_CHANGED,_('Contractor changed')),
         (APPLICANT_ASSIGNED,_('Applicant assinged')),
@@ -1413,10 +1413,10 @@ class ReportEventLog(models.Model):
         CLOSE: _("Report closed by {user}"),
         SOLVE_REQUEST: _("Report pointed as solved"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
-        MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
+        #MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
         VALID: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
-        ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
+        #ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
         APPLICANT_ASSIGNED:_('Applicant {related_new} is assigned to the report'),
         APPLICANT_CHANGED:_('Applicant changed from {related_old} to {related_new}'),
         CONTRACTOR_ASSIGNED:_('Contractor {related_new} is assigned to the report'),
@@ -1427,8 +1427,9 @@ class ReportEventLog(models.Model):
         UPDATE_PUBLISHED: _("Informations published by {user}"),
     }
 
-    PUBLIC_VISIBLE_TYPES = (REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, ENTITY_CHANGED, CREATED, MANAGER_ASSIGNED, MANAGER_CHANGED, APPLICANT_CONTRACTOR_CHANGE)
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + (CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED)
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, MANAGER_ASSIGNED, APPLICANT_CONTRACTOR_CHANGE]
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED]
+    PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
 
