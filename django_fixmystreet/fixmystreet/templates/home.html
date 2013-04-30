@@ -175,8 +175,22 @@ function showResults(type,li){
 
         <article id="home_download_mobile">
             <p>{% trans 'Download Fix My Street for your smartphone:' %}</p>
-            <img src="{{STATIC_URL}}images/app-store.png" alt="App Store">
-            <img src="{{STATIC_URL}}images/google-play.png" alt="Google Play" class="pull-right">
+
+            <div class="appstore_container">
+                <a style="float:none;"
+                    href="#"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="left"
+                    class="pull-left">
+                        <img src="{{STATIC_URL}}images/app-store.png" alt="App Store">
+                </a>
+                <div id="appstore-recommendations" class="hide">
+                    <p>{% trans "coming_soon" %}</p>
+                </div>
+            </div>
+
+            <a href="https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet"><img src="{{STATIC_URL}}images/google-play.png" alt="Google Play" class="pull-right"></a>
         </article>
     </div>
 {% endblock %}

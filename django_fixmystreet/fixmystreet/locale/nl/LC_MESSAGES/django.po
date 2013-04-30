@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-29 16:21+0200\n"
+"POT-Creation-Date: 2013-04-30 10:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -719,6 +719,10 @@ msgstr "De voorbije 30 dagen"
 #: templates/home.html:177
 msgid "Download Fix My Street for your smartphone:"
 msgstr "Download Fix My Street op uw smartphone"
+
+#: templates/home.html:188
+msgid "coming_soon"
+msgstr "Weldra beschikbaar"
 
 #: templates/posters.html:4 templates/posters.html.py:8
 msgid "Posters"

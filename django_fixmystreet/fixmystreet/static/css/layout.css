@@ -2009,3 +2009,12 @@ table.report_overview_table th{
     height: 27px;
     margin-right:10px;
 }
+
+.appstore_container
+{
+    float:left;
+}
+.appstore_container .popover
+{
+    width: auto;
+}
