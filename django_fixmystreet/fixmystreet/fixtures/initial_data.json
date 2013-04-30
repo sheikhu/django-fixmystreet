@@ -3,8 +3,8 @@
         "pk": 1,
         "model": "sites.site",
         "fields": {
-            "domain": "profms.irisnet.be",
-            "name": "profms.irisnet.be"
+            "domain": "fixmystreet.irisnet.be",
+            "name": "fixmystreet.irisnet.be"
         }
     },
     {
