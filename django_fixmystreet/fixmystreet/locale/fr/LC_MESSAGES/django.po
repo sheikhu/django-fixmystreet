@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 10:18+0200\n"
+"POT-Creation-Date: 2013-05-03 15:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -351,23 +351,23 @@ msgstr ""
 msgid "Related model field"
 msgstr ""
 
-#: stats.py:195
+#: stats.py:202
 msgid "seven_days"
 msgstr "< 7j"
 
-#: stats.py:196
+#: stats.py:203
 msgid "one_month"
 msgstr "8j - 1m"
 
-#: stats.py:197
+#: stats.py:204
 msgid "three_months"
 msgstr "1m - 3m"
 
-#: stats.py:198
+#: stats.py:205
 msgid "one_year"
 msgstr "3m - 1y"
 
-#: stats.py:199
+#: stats.py:206
 msgid "more_years"
 msgstr "> 1y"
 
@@ -696,6 +696,7 @@ msgid "Last modified reports:"
 msgstr "Les derniers incidents"
 
 #: templates/home.html:115 templates/home.html.py:160
+#: templates/reports/list.html:64
 msgid "Report Created"
 msgstr "Incidents signalés"
 
@@ -705,6 +706,7 @@ msgid "Report In progress"
 msgstr "Incidents en traitement"
 
 #: templates/home.html:121 templates/home.html.py:170
+#: templates/reports/list.html:70
 msgid "Report Processed"
 msgstr "Incidents clôturés"
 
@@ -720,7 +722,7 @@ msgstr "les 30 derniers jours"
 msgid "Download Fix My Street for your smartphone:"
 msgstr "Téléchargez Fix My Street sur votre smartphone:"
 
-#: templates/home.html:188
+#: templates/home.html:189
 msgid "coming_soon"
 msgstr "Bientôt disponible"
 
@@ -1492,14 +1494,6 @@ msgstr "Comme indiqué par les utilisateurs de fix my street."
 msgid "Meta description for list page"
 msgstr ""
 
-#: templates/reports/list.html:64
-msgid "Unpublished"
-msgstr "Incidents signalés"
-
-#: templates/reports/list.html:70
-msgid "Closed"
-msgstr "Incidents clôturés"
-
 #: templates/reports/list.html:78
 msgid "No problems have been reported."
 msgstr "Aucun incident n'a été signalé"
@@ -1737,6 +1731,12 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "Unpublished"
+#~ msgstr "Incidents signalés"
+
+#~ msgid "Closed"
+#~ msgstr "Incidents clôturés"
 
 #~ msgid "Manager changed"
 #~ msgstr "Le gestionnaire est changé"

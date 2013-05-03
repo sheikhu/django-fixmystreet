@@ -70,7 +70,7 @@
 
                 {% block nav %}
                 <nav>
-                    {% if not BACKOFFICE %}
+                    {% if not request.user.is_authenticated or not request.fmsuser.is_pro %}
                     <ul>
                         {% get_active_menu %}
                         <li>

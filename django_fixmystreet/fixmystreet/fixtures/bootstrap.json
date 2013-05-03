@@ -3,8 +3,8 @@
         "pk":20,
         "model":"fixmystreet.organisationentity",
         "fields":{
-            "name_fr":"Region Bruxelloise",
-            "name_nl":"Brusselse Gewest",
+            "name_fr":"Région Bruxelles-Capitale (Bruxelles Mobilité)",
+            "name_nl":"Brussels Hoofdstedelijk Gewest (Mobiel Brussel)",
             "commune":false,
             "region":true,
             "subcontractor":false,

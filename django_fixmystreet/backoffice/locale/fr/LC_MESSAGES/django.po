@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 10:18+0200\n"
+"POT-Creation-Date: 2013-05-03 15:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -233,7 +233,7 @@ msgstr "Utilisateur"
 #: templates/pro/contractors_overview.html:60
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:88
-#: templates/pro/reports/show.html:431
+#: templates/pro/reports/show.html:429
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -246,7 +246,7 @@ msgid "Create a new contractor"
 msgstr "Créer un executeur de travaux"
 
 #: templates/pro/contractors_overview.html:61
-#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:453
+#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:451
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -342,7 +342,7 @@ msgstr "Traité"
 msgid "History"
 msgstr "Historique"
 
-#: templates/pro/pdf.html:259 templates/pro/reports/show.html:403
+#: templates/pro/pdf.html:259 templates/pro/reports/show.html:401
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -709,35 +709,35 @@ msgstr "Tout publier"
 msgid "Photos and files"
 msgstr "Photos et fichiers"
 
-#: templates/pro/reports/show.html:438
+#: templates/pro/reports/show.html:436
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: templates/pro/reports/show.html:441
+#: templates/pro/reports/show.html:439
 msgid "Subscription and report follow-up"
 msgstr ""
 
-#: templates/pro/reports/show.html:456
+#: templates/pro/reports/show.html:454
 msgid "Close"
 msgstr "Cloturer"
 
-#: templates/pro/reports/show.html:463
+#: templates/pro/reports/show.html:461
 msgid "Accept"
 msgstr "Accepter"
 
-#: templates/pro/reports/show.html:464
+#: templates/pro/reports/show.html:462
 msgid "Publish"
 msgstr "Publier"
 
-#: templates/pro/reports/show.html:465
+#: templates/pro/reports/show.html:463
 msgid "Reject"
 msgstr "Rejeter"
 
-#: templates/pro/reports/show.html:473
+#: templates/pro/reports/show.html:471
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
-#: templates/pro/reports/show.html:475
+#: templates/pro/reports/show.html:473
 msgid "Solved"
 msgstr "Résolu"
 

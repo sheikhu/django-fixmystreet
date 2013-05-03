@@ -53,7 +53,9 @@ $(function(){
 {% endblock %}
 
 {% block map %}
-<article id="map"></article>
+<article id="map">
+    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+</article>
 {% endblock %}
 
 {% block content %}
@@ -61,13 +63,13 @@ $(function(){
     <div id="incident_filter" class="span12">
         <ul>
             <li>
-                    <img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Unpublished' %}</span>
+                    <img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Report Created' %}</span>
             </li>
             <li>
                     <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'Report In progress' %}</span>
             </li>
             <li>
-                    <img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Closed' %}</span>
+                    <img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Report Processed' %}</span>
             </li>
         </ul>
     </div>

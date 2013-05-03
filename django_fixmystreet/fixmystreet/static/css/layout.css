@@ -322,26 +322,37 @@ div.footer_left img {
 }
 
 #map-center-icon {
-	display: block;
-	margin: 1px;
-	padding: 0;
-	color: white;
-	font-size: 18px;
-	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	text-decoration: none;
-	text-align: center;
-	height: 22px;
-	width: 22px;
-	line-height: 19px;
-        background: rgba(0, 60, 136, 0.5)  url('/static/images/center.png') center center  no-repeat;
-	filter: alpha(opacity=80);
-        position: absolute;
-	top: 60px;
-	left: 8px;
-	border-radius: 4px;
-	padding: 2px;
-        z-index: 1004;
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 18px;
+    font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 22px;
+    width: 22px;
+    line-height: 19px;
+     background: rgba(0, 60, 136, 0.5)  url('/static/images/center.png') center center  no-repeat;
+    filter: alpha(opacity=80);
+    position: absolute;
+    top: 60px;
+    left: 8px;
+    border-radius: 4px;
+    padding: 2px;
+    z-index: 1004;
+}
+
+#copyright-urbis {
+    position: absolute;
+    z-index: 1000;
+    bottom: -5px;
+    left: 3px;
+    color: #aaa;
+    font-style: italic;
+    text-decoration: none;
+    font-size: 70%;
 }
 
 .olMapViewport *:first-child {
