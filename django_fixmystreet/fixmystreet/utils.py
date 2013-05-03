@@ -207,7 +207,7 @@ def transform_notification_user_display(user, to_show):
         return _("a citizen")
 
     if to_show.is_pro() and to_show.get_organisation():
-        entity_name = to_show.get_organisation().name
+        entity_name = str(to_show.get_organisation())
     else:
         entity_name = ''
 

@@ -387,9 +387,7 @@ function close(){
             <h4>{% trans "Photos and files" %}</h4>
             <div id="report_updates">
                 {% for file in report.files.all %}
-                    {% if file.is_confidential and not fms_user.can_see_confidential %}
-                    <!-- Skip -->
-                    {% else %}
+                    {% if not file.is_confidential or fms_user.can_see_confidential %}
                         {% include "reports/_file.html" %}
                     {% endif %}
                 {% endfor %}
