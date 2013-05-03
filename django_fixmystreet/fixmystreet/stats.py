@@ -167,14 +167,21 @@ class AllCityTotals(ReportCountQuery):
         return( self.get_results()[self.index][7] != self.get_results()[self.index-1][7] )
 
 
+# select count(case when reports.created > '2013-04-30 00:00:00' AND reports.created < NOW() AND reports.status = 1 THEN 1 ELSE null end) as count_new,
+#        count(case when reports.created > '2013-04-30 00:00:00' AND reports.created < NOW() AND reports.status in (2, 4, 5, 6, 7) THEN 1 ELSE null end) as count_in_progress,
+#        count(case when reports.created > '2013-04-30 00:00:00' AND reports.created < NOW() AND reports.status = 3 THEN 1 ELSE null end) as count_closed,
+#        count(case when reports.created > '2013-04-30 00:00:00' AND reports.created < NOW() AND reports.status = 9 THEN 1 ELSE null end) as count_refused,
+#        count(case when reports.created > '2013-04-30 00:00:00' AND reports.created < NOW() THEN 1 ELSE null end) as count_all
+#             from fixmystreet_report as reports;
+
 class ReportCountBetweenDates(SqlQuery):
     def __init__(self, start_date,end_date):
         SqlQuery.__init__(self)
-        self.sql = """ select 
-        count(case when (reports.created between '{start_date}' AND '{end_date}') AND reports.status = {unpublished} THEN 1 ELSE null end) as count_new,
+        self.sql = """ select
+        count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' AND reports.status = {unpublished} THEN 1 ELSE null end) as count_new,
         count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' AND reports.status in ({progress}) THEN 1 ELSE null end) as count_in_progress,
         count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' AND reports.status ={closed} THEN 1 ELSE null end) as count_closed,
-        count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' THEN 1 ELSE null end) as count_all 
+        count(case when reports.created > '{start_date}' AND reports.created < '{end_date}' THEN 1 ELSE null end) as count_all
         from fixmystreet_report as reports;
         """.format(start_date=str(start_date),end_date=str(end_date), progress=','.join([str(s) for s in Report.REPORT_STATUS_IN_PROGRESS]), closed=Report.PROCESSED, unpublished = Report.CREATED)
 
@@ -183,15 +190,15 @@ class ReportCountBetweenDates(SqlQuery):
 
     def get_count_in_progress(self):
         return self.get_results()[self.index][1]
-    
+
     def get_count_closed(self):
         return self.get_results()[self.index][2]
-    
+
     def get_count_all(self):
         return self.get_results()[self.index][3]
 
 class ReportCountStatsPro(object):
-    translations = { 
+    translations = {
             "seven_days":_("seven_days"),
             "one_month":_("one_month"),
             "three_months":_("three_months"),
