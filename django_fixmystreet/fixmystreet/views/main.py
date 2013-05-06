@@ -10,15 +10,6 @@ from datetime import datetime as dt
 import datetime
 
 def home(request, location = None, error_msg =None):
-    if request.user.is_authenticated() == True:
-        #Default language
-        if (not request.LANGUAGE_CODE in ['fr', 'nl', 'en']):
-            local_lng = 'fr'
-        else:
-            local_lng = request.LANGUAGE_CODE
-        fromUrl = '/'+local_lng+'/pro/'
-        return HttpResponseRedirect(fromUrl)
-
     if request.GET.has_key('q'):
         location = request.GET["q"]
     last_30_days = dt.today() + datetime.timedelta(days=-30)

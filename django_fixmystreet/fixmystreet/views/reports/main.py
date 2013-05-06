@@ -86,27 +86,8 @@ def new(request):
 
 
 def report_prepare(request, location = None, error_msg = None):
-    '''Used to redirect pro users when clicking home. See backoffice version'''
-    if request.GET.has_key('q'):
-        location = request.GET["q"]
-    last_30_days = datetime.datetime.today() + datetime.timedelta(days=-30)
-
-    #wards = Ward.objects.all().order_by('name')
-    zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
-
-    return render_to_response("home.html",
-            {
-                #"report_counts": ReportCountQuery('1 year'),
-                "report_counts": ReportCountQuery('1 month'),
-                'search_error': error_msg,
-                'zipcodes': zipcodes,
-                'location':location,
-                'reports': Report.objects.all()[0:5],
-                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(modified__gt=last_30_days).order_by('-modified')[0:5],
-            },
-            context_instance=RequestContext(request))
+    '''Deprecated, no sense'''
+    return HttpResponseRedirect(reverse('home'))
 
 
 def show(request, slug, report_id):
