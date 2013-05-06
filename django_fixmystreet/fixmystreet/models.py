@@ -1,5 +1,5 @@
 from django.utils import simplejson
-from smtplib import SMTPException
+from exceptions import Exception
 import logging
 import re
 import datetime
@@ -1324,47 +1324,48 @@ class ReportNotification(models.Model):
             self.success = False
             return
 
-        recipients = (self.recipient.email,)
-
-
-        template = MailNotificationTemplate.objects.get(name=self.content_template)
-
-        if 'old_responsible' in kwargs:
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
-            del kwargs['old_responsible']
-        elif 'updater' in kwargs:
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'])
-            del kwargs['updater']
-        else:
-            subject, html, text = transform_notification_template(template, self.related, self.recipient)
-
-        if self.reply_to:
-            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
-        else:
-            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
-
-        if html:
-            msg.attach_alternative(html, "text/html")
-
-        # if self.report.photo:
-            # msg.attach_file(self.report.photo.file.name)
-        if isinstance(self.related, Report):
-            if self.related.files():
-                for f in self.related.files():
-                    if f:
-                        if f.file_type == ReportFile.IMAGE and f.is_public():
-                            # Open the file
-                            #fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
-                            fp = open(f.file.path, 'rb')
-                            msgImage = MIMEImage(fp.read())
-                            fp.close()
-                            # Define the image's ID to reference to it
-                            msgImage.add_header('Content-ID', '<image'+str(f.reportattachment_ptr_id)+'>')
-                            msg.attach(msgImage)
         try:
+            recipients = (self.recipient.email,)
+
+
+            template = MailNotificationTemplate.objects.get(name=self.content_template)
+
+            if 'old_responsible' in kwargs:
+                subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
+                del kwargs['old_responsible']
+            elif 'updater' in kwargs:
+                subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'])
+                del kwargs['updater']
+            else:
+                subject, html, text = transform_notification_template(template, self.related, self.recipient)
+
+            if self.reply_to:
+                msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
+            else:
+                msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
+
+            if html:
+                msg.attach_alternative(html, "text/html")
+
+            # if self.report.photo:
+                # msg.attach_file(self.report.photo.file.name)
+            if isinstance(self.related, Report):
+                if self.related.files():
+                    for f in self.related.files():
+                        if f:
+                            if f.file_type == ReportFile.IMAGE and f.is_public():
+                                # Open the file
+                                #fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
+                                fp = open(f.file.path, 'rb')
+                                msgImage = MIMEImage(fp.read())
+                                fp.close()
+                                # Define the image's ID to reference to it
+                                msgImage.add_header('Content-ID', '<image'+str(f.reportattachment_ptr_id)+'>')
+                                msg.attach(msgImage)
+
             msg.send()
             self.success = True
-        except SMTPException as e:
+        except Exception as e:
             self.success = False
             self.error_msg = str(e)
 
