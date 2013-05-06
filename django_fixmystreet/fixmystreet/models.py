@@ -146,7 +146,7 @@ class FMSUser(User):
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.contractor == True or self.applicant == True:
-            return ", ".join([str(o) for o in self.work_for.all()])
+            return u", ".join([str(o) for o in self.work_for.all()])
         elif self.organisation:
              return self.organisation
 
@@ -1457,7 +1457,7 @@ class ReportEventLog(models.Model):
                 user_to_display = self.user.get_full_name() or self.user
 
             if self.user.fmsuser.is_pro():
-                user_to_display = '%s %s' %(self.user.fmsuser.organisation, self.user.get_full_name() or self.user)
+                user_to_display = u'%s %s' %(self.user.fmsuser.organisation, self.user.get_full_name() or self.user)
 
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,
