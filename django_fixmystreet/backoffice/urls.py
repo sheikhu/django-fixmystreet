@@ -16,8 +16,8 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.reports.main',
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show_pro'),
     url(_(r'^report/new$'), 'new',name='report_new_pro'),
     url(_(r'^report/subscription$'), 'subscription',name='report_subscription_pro'),
-    url(_(r'^report/search_ticket_pro$'), 'search_ticket_pro',name='search_ticket_pro'),
-    url(_(r'^report/prepare_pro$'), 'report_prepare_pro',name='report_prepare_pro'),
+    url(_(r'^report/search$'), 'search_ticket_pro',name='search_ticket_pro'),
+    url(_(r'^report/$'), 'report_prepare_pro',name='report_prepare_pro'),
     url(_(r'^report/(\d+)/delete/$'), 'delete', name='report_delete_pro'),
 )
 

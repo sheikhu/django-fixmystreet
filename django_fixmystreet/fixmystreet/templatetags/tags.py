@@ -9,9 +9,9 @@ from django_fixmystreet.fixmystreet.models import FMSUser
 register = template.Library()
 
 MENU_DEFS = [
-    ('submit', ['home','report_new','report_new_pro','home_pro']),
+    ('submit', ['home','report_new','report_new_pro','home_pro','report_prepare_pro']),
     ('view', ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report','report_show_pro','report_list_pro']),
-    ('users',['list_users', 'edit_user', 'create_contractor', 'category_gestionnaire_configuration', 'password_change']),
+    ('users',['list_users', 'create_user', 'list_contractors', 'create_contractor', 'category_gestionnaire_configuration', 'password_change']),
     ('about',  ['about', 'terms_of_use']),
     ('contact', ['contact'])
 ]

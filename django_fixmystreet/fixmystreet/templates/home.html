@@ -22,10 +22,10 @@ $(function(){
         apiLang:     LANGUAGE_CODE,
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
         urbisUrl:    URBIS_URL + '/geoserver/wms',
-        {% if reports.0 %}
+        {% if reports_created.0 %}
         origin:{
-            x:{{ reports.0.point.x }},
-            y:{{ reports.0.point.y }}
+            x:{{ reports_created.0.point.x }},
+            y:{{ reports_created.0.point.y }}
         }
         {% endif %}
     });
