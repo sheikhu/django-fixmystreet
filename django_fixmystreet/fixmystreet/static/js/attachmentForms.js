@@ -8,7 +8,7 @@
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "application/vnd.oasis.opendocument.spreadsheet"
         ],
-        file_max_size = 15000000, // 15MB
+        file_max_size = 10000000, // 10MB
         file_count = 0,
         file_form_template = null;
 
