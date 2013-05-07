@@ -190,7 +190,7 @@
             </strong>
 
             {% if report.citizen %}
-                {% if pro_version == "1" %}
+                {% if pro_version %}
                     {{report.citizen.fmsuser.get_display_name}},
                     <br/>
                     {{report.citizen.fmsuser.email}}
@@ -200,7 +200,7 @@
                     {% trans 'a citizen' %}
                 {% endif %}
             {% else %}
-                {% if pro_version == "1" %}
+                {% if pro_version %}
                     {{ report.created_by.get_organisation }} {{ report.created_by.fmsuser.get_display_name }}
                 {% else %}
                     {{ report.created_by.get_organisation }}
@@ -227,7 +227,7 @@
         <p>
             <strong>{% trans 'By' %}</strong>
 
-            {% if pro_version == "1" %}
+            {% if pro_version %}
                 {{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} - {{report.responsible_manager.organisation.name}},
                 <br/>
                 {{report.responsible_manager.email}}
@@ -264,21 +264,21 @@
                     <p class="by">
                         <strong>{% trans 'By' %}</strong>
 
-                        {% if pro_version == "1" %}
+                        {% if pro_version %}
                                 {% if comment.created_by %}
-                                    {{comment.created_by.fmsuser.get_display_name}} {{comment.created_by.fmsuser.organisation.name}},
+                                    {{ comment.created_by.get_display_name }} {{ comment.created_by.get_organisation }},
 
-                                    {{comment.created_by.fmsuser.email}}
+                                    {{ comment.created_by.email }}
                                     -
-                                    {{comment.created_by.fmsuser.telephone}}
+                                    {{ comment.created_by.telephone }}
                                 {% else %}
-                                    {% trans 'Anonymous '%}
+                                    {% trans 'a citizen '%}
                                 {% endif %}
                         {% else %}
-                            {% if report.citizen %}
-                                {% trans 'Citizen' %}
+                            {% if comment.created_by %}
+                                {{ report.created_by.get_organisation }}
                             {% else %}
-                                {{report.created_by.fmsuser.get_display_name}},
+                                {% trans 'a citizen' %}
                             {% endif %}
                         {% endif %}
 
@@ -337,21 +337,21 @@
                 <p class="by">
                     <strong>{% trans 'By' %}</strong>
 
-                    {% if pro_version == "1" %}
+                    {% if pro_version %}
                             {% if file.created_by %}
-                                {{file.created_by.fmsuser.get_display_name}} {{file.created_by.fmsuser.organisation.name}},
+                                {{ file.created_by.get_display_name }} {{ file.created_by.get_organisation }},
 
-                                {{file.created_by.fmsuser.email}}
+                                {{ file.created_by.email }}
                                 -
-                                {{file.created_by.fmsuser.telephone}}
+                                {{ file.created_by.telephone }}
                             {% else %}
                                 {% trans 'Anonymous '%}
                             {% endif %}
                     {% else %}
                         {% if report.citizen %}
-                            {% trans 'Citizen' %}
+                            {% trans 'a citizen' %}
                         {% else %}
-                            {{report.created_by.fmsuser.get_display_name}},
+                            {{ file.created_by.get_organisation }},
                         {% endif %}
                     {% endif %}
                 </p>

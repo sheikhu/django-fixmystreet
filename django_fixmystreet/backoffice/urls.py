@@ -40,7 +40,9 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
     url(_(r'^report/(\d+)/changeContractor/'), 'changeContractor', name='report_change_contractor_pro'),
     url(_(r'^report/(\d+)/switchPrivacy/'), 'switchPrivacy', name='report_change_switch_privacy'),
     url(_(r'^report/(\d+)/accept_and_validate/'), 'acceptAndValidate', name='report_accept_and_validate'),
-    url(_(r'^report/(\d+)-(\d+)/pdf/'), 'reportPdf', name='report_pdf_pro'),
+)
+urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.updates',
+    url(_(r'^report/(\d+)/pdf/'), 'report_pdf', {"pro_version": True}, name='report_pdf_pro'),
 )
 
 urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.subscribers',

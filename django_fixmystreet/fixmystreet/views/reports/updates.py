@@ -2,15 +2,15 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report
+from django.core.exceptions import PermissionDenied
 
 
-
-
-#DEPRECATED ??? USE TH EONE IN BACKOFFICE???
-def reportPdf(request, report_id, pro_version):
+def report_pdf(request, report_id, pro_version=False):
     '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
     report = get_object_or_404(Report, id=report_id)
 
+    if pro_version and not (request.user.is_authenticated() and request.fmsuser.is_pro()):
+        raise PermissionDenied
 
     #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
     # pro_Version = 0

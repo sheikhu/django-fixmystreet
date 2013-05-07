@@ -40,21 +40,21 @@
         </span>
         {% endif %}
             {% if BACKOFFICE %}
-            <span class="update_light_text">{% trans 'Posted by' %}</span>
+                <span class="update_light_text">{% trans 'Posted by' %}</span>
                 {{file.get_display_name}}
              {% endif %}
             <br />
-            <span class="picture-date">
-            <span class="update_light_text">{% trans 'file creation Date' %}</span>
-            {% if file.file_creation_date != None%}
-                {{file.file_creation_date}}
-            {% else %}
-                -
-            {% endif %}
-            <br/>
-            <span class="update_light_text">{% trans 'file publication date' %}</span>
-            {{file.created}}
-            </span>
+            <p class="picture-date">
+                <span class="update_light_text">{% trans 'file creation Date' %}</span>
+                {% if file.file_creation_date != None%}
+                    {{file.file_creation_date}}
+                {% else %}
+                    -
+                {% endif %}
+                <br/>
+                <span class="update_light_text">{% trans 'file publication date' %}</span>
+                {{file.created}}
+            </p>
     {% endif %}
     <!-- If the status allow such interactions -->
     {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}

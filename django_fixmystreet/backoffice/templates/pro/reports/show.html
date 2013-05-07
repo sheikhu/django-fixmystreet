@@ -358,13 +358,13 @@ function close(){
         </div>
 
         <p>
-            <a href="{% url 'report_pdf' report.id 0 %}" title="{% trans 'Download a pdf report of this incident' %}">
+            <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
             <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
             </a>
         </p>
 
         {% if request.fmsuser.is_pro %}
-            <p><a href="{% url 'report_pdf_pro' report.id 1 %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a></p>
+            <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a></p>
         {% endif %}
 
         {% if request.fmsuser.manager or request.fmsuser.leader %}
