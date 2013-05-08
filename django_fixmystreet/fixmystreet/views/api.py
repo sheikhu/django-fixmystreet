@@ -189,11 +189,7 @@ def create_report_photo(request):
         report_file.file = data_file_content
         report_file.report = reference_report
         report_file.file_creation_date = datetime.now()
-        #Either posted by a citizen or a pro...
-        if (reference_report.citizen):
-            report_file.created_by = reference_report.citizen
-        else:
-            report_file.created_by = reference_report.created_by
+
         #Save given data
         report_file.save()
 

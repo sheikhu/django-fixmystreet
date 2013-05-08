@@ -1091,7 +1091,7 @@ def init_file_type(sender,instance,**kwargs):
         instance.file_type = ReportFile.WORD
 
     if instance.file_type == ReportFile.IMAGE:
-        instance.image.save(instance.file.name, instance.file, save=False)
+        instance.image.save(instance.file.name.split('?')[0], instance.file, save=False)
 
 
 # @receiver(post_save, sender=ReportFile)
