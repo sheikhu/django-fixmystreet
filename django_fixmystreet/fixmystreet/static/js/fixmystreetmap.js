@@ -334,7 +334,7 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 callbacks: {
                     click: function(feature){
-                        window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search_ticket"+((proVersion)?"_pro":"")+"?report_id="+feature.attributes.report.id;
+                        window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id;
                     },
                     over: function(feature){
                         if(feature.layer.name != "Dragable Layer"){
