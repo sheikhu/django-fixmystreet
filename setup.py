@@ -8,7 +8,7 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 long_description = '\n\n'.join([
     open(os.path.join(PROJECT_PATH, 'README.md')).read(),
     # open('CREDITS.rst').read(),
-    open(os.path.join(PROJECT_PATH, 'CHANGES.md')).read(),
+    open(os.path.join(PROJECT_PATH, 'CHANGES.rst')).read(),
     ])
 
 install_requires = [
