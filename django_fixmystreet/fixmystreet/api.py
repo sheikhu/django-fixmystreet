@@ -2,6 +2,7 @@ import csv
 import StringIO
 import datetime
 
+from django.db.models import ForeignKey
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.auth import authenticate, login
 
@@ -19,17 +20,20 @@ class CSVEmitter(Emitter):
     """
     Emitter for exporting to CSV (excel dialect).
     """
-    def get_keys(self, input_dict, prefix='', field_order=None):
+    def get_keys(self, prefix='', handler=None):
         if prefix:
             prefix = prefix + '.'
         keys = []
-        for key in field_order or input_dict.keys():
-            if isinstance(input_dict[key], dict):
-                keys.extend(self.get_keys(input_dict[key], prefix + key))
+
+        fields = handler.fields
+        current_model = handler.model
+        for key in fields:
+            if key in current_model._meta.get_all_field_names() and isinstance(current_model._meta.get_field(key), ForeignKey):
+                keys.extend(self.get_keys(prefix + key, handler=self.in_typemapper(current_model._meta.get_field(key).rel.to, self.anonymous)))
                 # keys.extend(self.get_keys(item[1]))
             else:
-
                 keys.append(prefix + key)
+
         return keys
 
     def get_values(self, input_dict, field_order=None):
@@ -54,7 +58,7 @@ class CSVEmitter(Emitter):
         if not isinstance(content, (list, tuple)):
             content = [content]
 
-        headers = self.get_keys(content[0], field_order=self.fields)
+        headers = self.get_keys(handler=self.handler)
 
         writer = csv.writer(output, delimiter=';', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
@@ -136,7 +140,6 @@ class ReportHandler(BaseHandler):
         'is_pro',
         'responsible_manager',
         'contractor',
-        'territorial_entity',
         'category',
         'secondary_category',
         'address',
@@ -149,18 +152,18 @@ class ReportHandler(BaseHandler):
 
     def read(self, request, *args, **kwargs):
 
-            if 'time_ago' in kwargs:
-                time_ago = kwargs['time_ago']
-                if time_ago=='week':
-                    return Report.objects.one_week_ago()
-                elif time_ago=='month':
-                    return Report.objects.one_month_ago()
-                else:
-                    return HttpResponseBadRequest("invalid argument time_ago {0}".format(time_ago))
-            elif 'id' in kwargs:
-                return Report.objects.get(pk=kwargs['id'])
+        if 'time_ago' in kwargs:
+            time_ago = kwargs['time_ago']
+            if time_ago=='week':
+                return Report.objects.one_week_ago()
+            elif time_ago=='month':
+                return Report.objects.one_month_ago()
             else:
-                return Report.objects.all()
+                return HttpResponseBadRequest("invalid argument time_ago {0}".format(time_ago))
+        elif 'id' in kwargs:
+            return Report.objects.get(pk=kwargs['id'])
+        else:
+            return Report.objects.all()
 
 
 #    @validate(CitizenReportForm, 'POST')
