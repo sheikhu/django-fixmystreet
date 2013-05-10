@@ -44,7 +44,7 @@ class CSVEmitter(Emitter):
                     if value is not None:
                         value = value[n]
 
-            values.append(unicode(value).encode('utf-8'))
+            values.append(unicode(value).encode('iso-8859-15'))
         return values
 
     def render(self, request):
@@ -56,7 +56,7 @@ class CSVEmitter(Emitter):
 
         headers = self.get_keys(content[0], field_order=self.fields)
 
-        writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+        writer = csv.writer(output, delimiter=';', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
         writer.writerow(headers)
 
@@ -70,13 +70,13 @@ class CSVEmitter(Emitter):
         output.close()
 
         response = HttpResponse()
-        response['Content-Type'] = 'application/csv; charset=utf-8'
+        response['Content-Type'] = 'application/csv; charset=iso-8859-15'
         response['Content-Disposition'] = 'attachment; filename=' + self.handler.get_csv_filename(request)
         response.write(csv_content)
 
         return response
 
-Emitter.register('csv', CSVEmitter, 'application/csv; charset=utf-8')
+Emitter.register('csv', CSVEmitter, 'application/csv; charset=iso-8859-15')
 
 
 class CategoryHandler(BaseHandler):
