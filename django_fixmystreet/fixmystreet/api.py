@@ -2,7 +2,7 @@ import csv
 import StringIO
 import datetime
 
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.auth import authenticate, login
 
 from piston.handler import BaseHandler
@@ -23,7 +23,6 @@ class CSVEmitter(Emitter):
         if prefix:
             prefix = prefix + '.'
         keys = []
-        print input_dict
         for key in field_order or input_dict.keys():
             if isinstance(input_dict[key], dict):
                 keys.extend(self.get_keys(input_dict[key], prefix + key))
@@ -35,11 +34,17 @@ class CSVEmitter(Emitter):
 
     def get_values(self, input_dict, field_order=None):
         values = []
-        for key in field_order or input_dict.keys():
-            if isinstance(input_dict[key], dict):
-                values.extend(self.get_values(input_dict[key]))
+        for key in field_order:
+
+            if key in input_dict:
+                value = input_dict[key]
             else:
-                values.append(unicode(input_dict[key]).encode('utf-8'))
+                value = input_dict
+                for n in key.split('.'):
+                    if value is not None:
+                        value = value[n]
+
+            values.append(unicode(value).encode('utf-8'))
         return values
 
     def render(self, request):
@@ -57,7 +62,7 @@ class CSVEmitter(Emitter):
 
 
         for row in content:
-            writer.writerow(self.get_values(row, field_order=self.fields))
+            writer.writerow(self.get_values(row, field_order=headers))
 
         # return  output.getvalue()
 
@@ -103,6 +108,7 @@ class FMSUserHandler(BaseHandler):
     model = FMSUser
     fields = (
         'get_full_name',
+        'organisation',
         'email',
     )
 
@@ -123,9 +129,14 @@ class ReportHandler(BaseHandler):
         'id',
         'point',
         'status',
+        'get_public_status_display',
+        'get_status_display',
         'created',
-        'responsible_entity',
+        'created_by',
+        'is_pro',
         'responsible_manager',
+        'contractor',
+        'territorial_entity',
         'category',
         'secondary_category',
         'address',
@@ -134,6 +145,23 @@ class ReportHandler(BaseHandler):
         'postalcode',
         'quality',
     )
+
+
+    def read(self, request, *args, **kwargs):
+
+            if 'time_ago' in kwargs:
+                time_ago = kwargs['time_ago']
+                if time_ago=='week':
+                    return Report.objects.one_week_ago()
+                elif time_ago=='month':
+                    return Report.objects.one_month_ago()
+                else:
+                    return HttpResponseBadRequest("invalid argument time_ago {0}".format(time_ago))
+            elif 'id' in kwargs:
+                return Report.objects.get(pk=kwargs['id'])
+            else:
+                return Report.objects.all()
+
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
@@ -205,4 +233,4 @@ class ReportHandler(BaseHandler):
         return report
 
     def get_csv_filename(self, request):
-        return 'incident_{0}_{1}.csv'.format(request.GET.get('id') or 'all', datetime.datetime.now())
+        return 'incident_{0}_{1}.csv'.format(request.GET.get('id') or 'all', datetime.date.today())

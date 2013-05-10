@@ -71,12 +71,15 @@ def report_prepare_pro(request, location = None, error_msg = None):
     if "stat_type" in request.GET:
         start_date = stats[str(request.GET["stat_type"])]["start_date"]
         end_date = stats[str(request.GET["stat_type"])]["end_date"]
+
+        popup_reports = Report.objects.created_between(start_date, end_date)
+
         if str(request.GET["stat_status"]) == 'unpublished':
-            popup_reports = Report.objects.filter(status=Report.CREATED).filter(created__gt=str(start_date)).filter(created__lt=str(end_date))
+            popup_reports = popup_reports.pending()
         elif str(request.GET["stat_status"])== 'in_progress':
-            popup_reports = Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(created__gt=str(start_date)).filter(created__lt=str(end_date))
+            popup_reports = popup_reports.in_progress()
         else:
-            popup_reports = Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(created__gt=str(start_date)).filter(created__lt=str(end_date))
+            popup_reports = popup_reports.closed()
 
     return render_to_response("pro/home.html",
             {
@@ -84,9 +87,9 @@ def report_prepare_pro(request, location = None, error_msg = None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports_created': Report.objects.filter(status=Report.CREATED).order_by('-modified')[0:5],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).order_by('-modified')[0:5],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).order_by('-modified')[0:5],
+                'reports_created': Report.objects.all().pending().order_by('-modified')[0:5],
+                'reports_in_progress': Report.objects.all().in_progress().order_by('-modified')[0:5],
+                'reports_closed':Report.objects.all().closed().order_by('-modified')[0:5],
                 'stats':stats_result,
                 'popup_reports':popup_reports,
             },

@@ -1,8 +1,19 @@
 Changelog of django-fixmystreet
 ===================================================
 
+1.0.11 (unreleased)
+------------------
 
-0.6.2 (unreleased)
+- enhance csv export
+
+
+1.0.0 (2013-04-29)
+------------------
+
+- Nothing changed yet.
+
+
+0.6.2 (2013-04-18)
 ------------------
 
 - Nothing changed yet.

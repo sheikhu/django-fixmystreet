@@ -331,6 +331,17 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
 class ReportManager(models.GeoManager):
 
+    def one_week_ago(self):
+        time_from = datetime.date.today() - datetime.timedelta(days=7)
+        return self.get_query_set().filter(created__gt=time_from)
+
+    def one_month_ago(self):
+        time_from = datetime.date.today() - datetime.timedelta(days=30)
+        return self.get_query_set().filter(created__gt=time_from)
+
+    def created_between(self, start_date, end_date):
+        return self.get_query_set().filter(created__gt=start_date, created__lt=end_date)
+
     def get_query_set(self):
         return ReportQuerySet(self.model) \
                 .exclude(status=Report.SOLVED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
@@ -443,10 +454,10 @@ class Report(UserTrackedModel):
                 return "images/pin-"+marker_color+"-XS.png"
 
     def is_regional(self):
-        return self.address_regional == True
+        return self.address_regional
 
     def is_pro(self):
-        return self.citizen == None
+        return self.citizen is None
 
     def __unicode__(self):
         return self.display_category()
