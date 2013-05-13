@@ -191,11 +191,12 @@ class ReportFileForm(forms.ModelForm):
         if (file):
             if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
                 raise ValidationError("File is too large")
-        #else:
-         #   raise forms.ValidationError(_('File type is not supported'))
 
-        #if self.fields.get('title').label == '':
-        #    self.fields.get('title').label = "zaza"
+        flength = len(file.name)
+        if flength > 70: # If filenameis longer than 70, truncate filename
+            offset = flength - (flength % 40 + 20) # modulus of file name + 20 to prevent file type truncation
+            file.name = file.name[offset:]
+
         return file
 
     def clean_file_creation_date(self):

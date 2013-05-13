@@ -1,15 +1,20 @@
+from datetime import datetime as dt
+import datetime
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils.translation import get_language, activate
-from django.conf import settings
+from django.core.urlresolvers import reverse
 from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, Report
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
-from datetime import datetime as dt
-import datetime
+
+from django.conf import settings
 
 def home(request, location = None, error_msg =None):
+    if request.user.is_authenticated() == True:
+        return HttpResponseRedirect(reverse('home_pro'))
+
     if request.GET.has_key('q'):
         location = request.GET["q"]
     last_30_days = dt.today() + datetime.timedelta(days=-30)
@@ -37,12 +42,8 @@ def update_current_language(request):
         fmsUser.last_used_language = request.REQUEST.get('language').upper()
         fmsUser.save()
     activate(request.REQUEST.get('language'))
-    fromUrl = request.REQUEST.get('from')
-    if 'pro' in fromUrl:
-        fromUrl = '/'+request.REQUEST.get('language')+'/pro/'
-    else:
-        fromUrl = '/'+request.REQUEST.get('language')+'/'
-    return HttpResponseRedirect(fromUrl)
+
+    return HttpResponseRedirect(reverse('home_pro'))
 
 
 def about(request):
