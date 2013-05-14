@@ -30,6 +30,7 @@
             <div id="photo-recommendations" class="hide">
                 <p>{% trans '1- Supported formats' %}: jpeg, png. </p>
                 <p>{% trans '2- Optimal resolution: 1200 x 800.' %}</p>
+                <p>{% trans '2- Maximum size : 10 Mb per image.' %}</p>
                 <p>{% trans '3- The photo must contain the environment of the incident' %}</p>
                 <p>{% trans "4- Please do not include people's faces and car registration plates." %}</p>
             </div>
@@ -40,4 +41,23 @@
     <legend>{% trans 'Comment:' %}</legend>
     {% include "_form_horizontal.html" with form=comment_form %}
 </fieldset>
-
+<div id="file-too-large-error" class="modal hide fade" role="dialog">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <p class="lead text-error">
+            <strong>
+                {% trans "File too large: 10 Mb per image maximum." %}
+            </strong>
+        </p>
+    </div>
+</div>
+<div id="file-type-error" class="modal hide fade" role="dialog">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <p class="lead text-error">
+            <strong>
+                {% trans "The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls." %}
+            </strong>
+        </p>
+    </div>
+</div>

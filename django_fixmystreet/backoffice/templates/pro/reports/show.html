@@ -106,14 +106,6 @@ $(document).ready(function() {
     $("#id_comment-text").val('');
 });
 
-/**
- * Mark As Done JS function
- */
-function markAsDone(){
-    // $("#divMarkAsDone").show();
-    $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
-
-}
 
 function close(){
     var r=confirm("Are you sure you want to close this report?");
@@ -142,8 +134,7 @@ function close(){
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}?is_fixed=True" method="post" >
-            {% csrf_token %}
-            {{ mark_as_done_form.as_p }}
+            {% include "_form_horizontal.html" with form=mark_as_done_form %}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
             <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
         </form>
@@ -154,7 +145,6 @@ function close(){
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialog" title="Please enter more information about rejecting the report" action="{% url 'report_refuse_pro' report.id %}" method="post">
-            {% csrf_token %}
             {{ refuse_form.as_p }}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
             <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
@@ -472,7 +462,7 @@ function close(){
         <div class="bordered-box">
              <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>
-                <button href="#divMarkAsDone" onclick="markAsDone();" class="pull-right btn" data-toggle="modal" >{% trans 'Solved' %}</button>
+                <button href="#divMarkAsDone" class="pull-right btn" data-toggle="modal" >{% trans 'Solved' %}</button>
             </div>
             <div style="clear:both;"></div>
          </div>

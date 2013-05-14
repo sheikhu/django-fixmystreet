@@ -457,6 +457,10 @@ class Report(UserTrackedModel):
         return self.address_regional
 
     def is_pro(self):
+        """
+        Return if the report is pro.
+        This is defined by logged user when report was filled.
+        """
         return self.created_by is not None
 
     def __unicode__(self):

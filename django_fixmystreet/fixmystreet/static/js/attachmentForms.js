@@ -34,29 +34,6 @@
         var form_new = file_form_template;
         file_form_template = form_copy;
 
-        form_new.attr('id', '');
-        form_new.find(":input").each(function(index, input) {
-            input.id = input.id.replace(/__prefix__/g, file_count);
-            input.name = input.name.replace(/__prefix__/g, file_count);
-        });
-        form_new.find("label").each(function(index, label) {
-            $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
-        });
-
-        $('#form-files').append(form_new);
-        $('#form-files').append(file_form_template);
-        form_new.find("[data-toggle=popover]").remove();
-        file_form_template.find("[data-toggle=popover]")
-                .popover({
-                    html : true,
-                    content: function() {
-                        return $(this).next().html();
-                    }
-                }).click(function(e) {
-                    e.preventDefault();
-                });
-
-
         if (typeof inputFile.files != 'undefined' && inputFile.files.length) {
             file = inputFile.files[0];
             if(file.size == 0) {
@@ -64,14 +41,14 @@
                 $("#fileForm #id_file").val("");
                 return;
             }
-            //TODO determine max file size
+
             else if(file.size > file_max_size) {
-                alert('File to large');
+                $('#file-too-large-error').modal();
                 $("#id_files-"+file_count+"-file").val("");
                 return;
             }
             else if(allowed_file_types.indexOf(file.type)==-1 ){
-                alert('The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls.');
+                $('#file-type-error').modal();
                 $("#id_files-"+file_count+"-file").val("");
                 return;
             }
@@ -96,6 +73,32 @@
         } else {
             AddFileToView(form_new, null);
         }
+
+
+        form_new.attr('id', '');
+        form_new.find(":input").each(function(index, input) {
+            input.id = input.id.replace(/__prefix__/g, file_count);
+            input.name = input.name.replace(/__prefix__/g, file_count);
+        });
+        form_new.find("label").each(function(index, label) {
+            $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
+        });
+
+        form_new.find("[data-toggle=popover]").remove();
+        file_form_template.find("[data-toggle=popover]")
+                .popover({
+                    html : true,
+                    content: function() {
+                        return $(this).next().html();
+                    }
+                }).click(function(e) {
+                    e.preventDefault();
+                });
+
+
+        $('#form-files').append(form_new);
+        $('#form-files').append(file_form_template);
+
         file_count++;
         $("#id_files-TOTAL_FORMS").val(file_count);
     }

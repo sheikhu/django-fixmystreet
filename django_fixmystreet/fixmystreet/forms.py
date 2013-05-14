@@ -230,8 +230,15 @@ class ReportCommentForm(forms.ModelForm):
 
 
 class MarkAsDoneForm(forms.ModelForm):
+    mark_as_done_motivation = forms.CharField(
+                label=_("Mark as done"),
+                required=False,
+                widget=forms.Textarea(attrs={
+                    'placeholder': _("Mark as done comments.")
+                })
+            )
     class Meta:
-        model = Report
+        model = Report;
         fields = ('mark_as_done_motivation',)
 
     def save(self, commit=True):
