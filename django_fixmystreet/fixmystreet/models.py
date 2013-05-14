@@ -457,7 +457,7 @@ class Report(UserTrackedModel):
         return self.address_regional
 
     def is_pro(self):
-        return self.citizen is None
+        return self.created_by is not None
 
     def __unicode__(self):
         return self.display_category()
@@ -496,6 +496,7 @@ class Report(UserTrackedModel):
 
     def get_pdf_url(self):
         return reverse('report_pdf', args=[self.id, 0])
+
     def get_pdf_url_pro(self):
         return reverse('report_pdf', args=[self.id, 1])
 
