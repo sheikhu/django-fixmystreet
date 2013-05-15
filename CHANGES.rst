@@ -16,6 +16,7 @@ Changelog of django-fixmystreet
 
 - search by ticket number triggered by submit event.
 
+- change refused report pin color
 
 
 1.0.14 (2013-05-13)

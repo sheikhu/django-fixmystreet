@@ -141,6 +141,13 @@
             <div class='is_created'>{% trans "This incident is not validated." %}</div>
         {% endif %}
 
+        {% if report.is_refused %}
+            <div class='is_created'>
+                <p>{% trans "This problem has been refused." %}</p>
+                <p>{{ report.refusal_motivation }}</p>
+            </div>
+        {% endif %}
+
         {% if report.is_in_progress %}
             <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
         {% endif %}
@@ -149,9 +156,6 @@
             <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
         {% endif %}
 
-        {% if report.markedAsFinished %}
-            <div class='is_fixed'>{% trans "This problem has been fixed." %}</div>
-        {% endif %}
     </div>
 
     <!--

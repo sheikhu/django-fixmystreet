@@ -437,7 +437,7 @@ class Report(UserTrackedModel):
             if user and user.is_authenticated():
                 if not self.contractor == None:
                     marker_color = "orange-executed"
-        elif (self.is_created()):
+        elif (self.is_created() or self.is_refused()):
             marker_color = "red"
 
         if user and user.is_authenticated():
@@ -518,6 +518,9 @@ class Report(UserTrackedModel):
 
     def is_created(self):
         return self.status == Report.CREATED
+
+    def is_refused(self):
+        return self.status == Report.REFUSED
 
     def is_in_progress(self):
         return self.status in Report.REPORT_STATUS_IN_PROGRESS
