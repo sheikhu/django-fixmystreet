@@ -283,7 +283,7 @@ function close(){
                             <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
                             <td colspan="4">
                                 <select id="report_responsible_impetrant_contractor_select">
-                                    <option value="-1">{% trans 'Select a contractor/applicant' %}</option>
+                                    <option value="None">{% trans 'No selected contractor/applicant' %}</option>
                                         <optgroup label="Executeur de travaux">
                                         {% for organisation in contractors %}
                                         <option value="{{organisation.id}}">{{ organisation.name }}</option>

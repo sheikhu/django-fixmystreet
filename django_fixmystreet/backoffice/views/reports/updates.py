@@ -128,11 +128,13 @@ def changeManager(request,report_id):
             return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
     else:
             return HttpResponseRedirect(report.get_absolute_url())
+
 def changeContractor(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     contractorId = request.REQUEST.get("contractorId")
-    if contractorId=='-1':
-        report.subcontractor = None
+
+    if contractorId == 'None':
+        report.contractor = None
         #Restore status to IN_PROGRESS
         report.status = Report.IN_PROGRESS
     else:

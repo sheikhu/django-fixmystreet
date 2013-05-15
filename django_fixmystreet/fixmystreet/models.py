@@ -860,14 +860,30 @@ def report_notify(sender, instance, **kwargs):
 
             if report.__former['contractor'] != report.contractor:
 
-                #Applicant responsible
-                for recipient in report.contractor.workers.all():
-                    ReportNotification(
-                        content_template='notify-affectation',
-                        recipient=recipient,
-                        related=report,
-                        reply_to=report.responsible_manager.email
-                    ).save(old_responsible=report.responsible_manager)
+                if report.contractor:
+                    #Applicant responsible
+                    for recipient in report.contractor.workers.all():
+                        ReportNotification(
+                            content_template='notify-affectation',
+                            recipient=recipient,
+                            related=report,
+                            reply_to=report.responsible_manager.email
+                        ).save(old_responsible=report.responsible_manager)
+
+                    if report.contractor.applicant:
+                        for subscription in report.subscriptions.all():
+                            ReportNotification(
+                                content_template='announcement-affectation',
+                                recipient=subscription.subscriber,
+                                related=report,
+                                reply_to=report.responsible_manager.email,
+                            ).save(old_responsible=report.responsible_manager)
+
+                    ReportEventLog(
+                        report=report,
+                        event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
+                        related_new=report.contractor
+                    ).save()
 
                 # if report.__former['contractor']:
                 #     for recipient in report.__former['contractor'].workers.all():
@@ -878,20 +894,7 @@ def report_notify(sender, instance, **kwargs):
                 #             reply_to=report.responsible_manager.email
                 #         ).save(old_responsible=report.responsible_manager)
 
-                if report.contractor.applicant:
-                    for subscription in report.subscriptions.all():
-                        ReportNotification(
-                            content_template='announcement-affectation',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_manager.email,
-                        ).save(old_responsible=report.responsible_manager)
 
-                ReportEventLog(
-                    report=report,
-                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
-                    related_new=report.contractor
-                ).save()
 
 
         if report.__former['responsible_manager'] != report.responsible_manager:
