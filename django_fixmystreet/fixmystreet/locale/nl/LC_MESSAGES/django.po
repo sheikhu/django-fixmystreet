@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 11:19+0200\n"
+"POT-Creation-Date: 2013-05-15 11:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1360,11 +1360,11 @@ msgstr "De foto moet de context van het incident verduidelijken"
 msgid "4- Please do not include people's faces and car registration plates."
 msgstr "Gezichten en nummerplaten mogen niet herkenbaar zijn"
 
-#: templates/reports/_attachments_form.html:46
+#: templates/reports/_attachments_form.html:49
 msgid "File too large: 10 Mb per image maximum."
 msgstr "Het bestand is te zwaar : maximum 10 Mb per foto."
 
-#: templates/reports/_attachments_form.html:51
+#: templates/reports/_attachments_form.html:59
 msgid ""
 "The type of the file is not correct. You can only upload files of type: jpg, "
 "png, pdf, doc and xls."

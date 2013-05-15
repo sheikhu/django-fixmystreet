@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 11:19+0200\n"
+"POT-Creation-Date: 2013-05-15 11:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -238,7 +238,7 @@ msgstr "Utilisateur"
 #: templates/pro/contractors_overview.html:60
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:88
-#: templates/pro/reports/show.html:421
+#: templates/pro/reports/show.html:437
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -251,7 +251,7 @@ msgid "Create a new contractor"
 msgstr "Créer un executeur de travaux"
 
 #: templates/pro/contractors_overview.html:61
-#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:443
+#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:459
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -348,7 +348,7 @@ msgstr "Traité"
 msgid "History"
 msgstr "Historique"
 
-#: templates/pro/pdf.html:261 templates/pro/reports/show.html:393
+#: templates/pro/pdf.html:261 templates/pro/reports/show.html:409
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -651,7 +651,7 @@ msgstr "Gestionnaire responsable:"
 
 #: templates/pro/reports/show.html:258 templates/pro/reports/show.html:321
 msgid "Responsible manager:"
-msgstr "Traité par : "
+msgstr "Traité par: "
 
 #: templates/pro/reports/show.html:261
 msgid "Gestionnaires"
@@ -665,85 +665,93 @@ msgstr "Entités"
 msgid "Organisms"
 msgstr "Organismes"
 
-#: templates/pro/reports/show.html:283 templates/pro/reports/show.html:329
+#: templates/pro/reports/show.html:283 templates/pro/reports/show.html:328
 msgid "Contractor/Applicant:"
-msgstr "Exécuteur/Impétrant"
+msgstr "Exécuteur/Impétrant:"
 
 #: templates/pro/reports/show.html:286
 msgid "Select a contractor/applicant"
 msgstr "Choisir un exécuteur de travaux / impétrant"
 
-#: templates/pro/reports/show.html:305
-msgid "Set as private report"
-msgstr "Visibilité :"
+#: templates/pro/reports/show.html:305 templates/pro/reports/show.html:348
+msgid "Visibility:"
+msgstr "Visibilité:"
 
 #: templates/pro/reports/show.html:309
 msgid "Private"
-msgstr "privé"
+msgstr "Privé"
 
 #: templates/pro/reports/show.html:313
 msgid "Public"
 msgstr "Public"
 
 #: templates/pro/reports/show.html:351
+msgid "private"
+msgstr "privé"
+
+#: templates/pro/reports/show.html:353
+msgid "public"
+msgstr "public"
+
+#: templates/pro/reports/show.html:367
 #, fuzzy
 msgid "Download a pdf report of this incident"
 msgstr "Ajouter les fichiers attachés"
 
-#: templates/pro/reports/show.html:352
+#: templates/pro/reports/show.html:368
 msgctxt "pro"
 msgid "report pdf"
 msgstr "Télécharger le PDF (public)."
 
-#: templates/pro/reports/show.html:357
+#: templates/pro/reports/show.html:373
 msgid "report pdf pro"
 msgstr "Télécharger le PDF (pro)."
 
-#: templates/pro/reports/show.html:361
+#: templates/pro/reports/show.html:377
 msgid "Export Csv"
 msgstr "Exporter l'incident vers Excel"
 
-#: templates/pro/reports/show.html:365
+#: templates/pro/reports/show.html:381
 msgid "Show history"
 msgstr "Montrer l'historique de l'incident."
 
-#: templates/pro/reports/show.html:376
+#: templates/pro/reports/show.html:392
 msgid "Publish all"
 msgstr "Tout publier"
 
-#: templates/pro/reports/show.html:379
+#: templates/pro/reports/show.html:395
 msgid "Photos and files"
 msgstr "Photos et fichiers"
 
-#: templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:444
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: templates/pro/reports/show.html:431
+#: templates/pro/reports/show.html:447
 msgid "Subscription and report follow-up"
 msgstr ""
 
-#: templates/pro/reports/show.html:446
+#: templates/pro/reports/show.html:462
 msgid "Close"
 msgstr "Cloturer"
 
-#: templates/pro/reports/show.html:453
+#: templates/pro/reports/show.html:469
 msgid "Accept"
 msgstr "Accepter"
 
-#: templates/pro/reports/show.html:454
+#: templates/pro/reports/show.html:470
 msgid "Publish"
 msgstr "Publier"
 
-#: templates/pro/reports/show.html:455
+#: templates/pro/reports/show.html:471
 msgid "Reject"
 msgstr "Rejeter"
 
-#: templates/pro/reports/show.html:463
+#: templates/pro/reports/show.html:479
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
-#: templates/pro/reports/show.html:465
+#: templates/pro/reports/show.html:481
 msgid "Solved"
 msgstr "Résolu"
 
@@ -894,10 +902,6 @@ msgstr "Votre compte est desactivé"
 
 #~ msgid "Confidential"
 #~ msgstr "Confidentiel"
-
-#, fuzzy
-#~ msgid "private"
-#~ msgstr "privé"
 
 #, fuzzy
 #~ msgid "confidential"

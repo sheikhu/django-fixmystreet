@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 11:19+0200\n"
+"POT-Creation-Date: 2013-05-15 11:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -240,7 +240,7 @@ msgstr "Gebruikersnaam:"
 #: templates/pro/contractors_overview.html:60
 #: templates/pro/manager_category_configuration.html:86
 #: templates/pro/user_create.html:48 templates/pro/users_overview.html:88
-#: templates/pro/reports/show.html:421
+#: templates/pro/reports/show.html:437
 msgid "Save"
 msgstr "Bewaren"
 
@@ -253,7 +253,7 @@ msgid "Create a new contractor"
 msgstr "Gebruiker aanmaken"
 
 #: templates/pro/contractors_overview.html:61
-#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:443
+#: templates/pro/users_overview.html:89 templates/pro/reports/show.html:459
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -352,7 +352,7 @@ msgstr "Behandeld"
 msgid "History"
 msgstr "Geschiedenis"
 
-#: templates/pro/pdf.html:261 templates/pro/reports/show.html:393
+#: templates/pro/pdf.html:261 templates/pro/reports/show.html:409
 msgid "Comments"
 msgstr "Commentaren"
 
@@ -678,7 +678,7 @@ msgstr "Entiteiten"
 msgid "Organisms"
 msgstr ""
 
-#: templates/pro/reports/show.html:283 templates/pro/reports/show.html:329
+#: templates/pro/reports/show.html:283 templates/pro/reports/show.html:328
 msgid "Contractor/Applicant:"
 msgstr "Aannemer/Impetrant"
 
@@ -686,9 +686,9 @@ msgstr "Aannemer/Impetrant"
 msgid "Select a contractor/applicant"
 msgstr "Selecteer een aannemer/impetrant"
 
-#: templates/pro/reports/show.html:305
-msgid "Set as private report"
-msgstr "Zichtbaarheid"
+#: templates/pro/reports/show.html:305 templates/pro/reports/show.html:348
+msgid "Visibility:"
+msgstr ""
 
 #: templates/pro/reports/show.html:309
 msgid "Private"
@@ -700,63 +700,73 @@ msgstr "Publiek"
 
 #: templates/pro/reports/show.html:351
 #, fuzzy
+msgid "private"
+msgstr "Privaat"
+
+#: templates/pro/reports/show.html:353
+#, fuzzy
+msgid "public"
+msgstr "Publiek"
+
+#: templates/pro/reports/show.html:367
+#, fuzzy
 msgid "Download a pdf report of this incident"
 msgstr "Voeg een bestand toe aan dit rapport"
 
-#: templates/pro/reports/show.html:352
+#: templates/pro/reports/show.html:368
 msgctxt "pro"
 msgid "report pdf"
 msgstr "Downloaden als PDF (publiek)."
 
-#: templates/pro/reports/show.html:357
+#: templates/pro/reports/show.html:373
 msgid "report pdf pro"
 msgstr "Download als PDF (pro)."
 
-#: templates/pro/reports/show.html:361
+#: templates/pro/reports/show.html:377
 msgid "Export Csv"
 msgstr "Export naar Excel"
 
-#: templates/pro/reports/show.html:365
+#: templates/pro/reports/show.html:381
 msgid "Show history"
 msgstr "Geschiedenis van incident tonen."
 
-#: templates/pro/reports/show.html:376
+#: templates/pro/reports/show.html:392
 msgid "Publish all"
 msgstr "Alles publiceren"
 
-#: templates/pro/reports/show.html:379
+#: templates/pro/reports/show.html:395
 msgid "Photos and files"
 msgstr "Fotos en bestanden"
 
-#: templates/pro/reports/show.html:428
+#: templates/pro/reports/show.html:444
 msgid "Subscription"
 msgstr "Melding opvolgen"
 
-#: templates/pro/reports/show.html:431
+#: templates/pro/reports/show.html:447
 msgid "Subscription and report follow-up"
 msgstr "Abonneer op dit incident en volg alle aanpassingen."
 
-#: templates/pro/reports/show.html:446
+#: templates/pro/reports/show.html:462
 msgid "Close"
 msgstr "Incident afsluiten"
 
-#: templates/pro/reports/show.html:453
+#: templates/pro/reports/show.html:469
 msgid "Accept"
 msgstr ""
 
-#: templates/pro/reports/show.html:454
+#: templates/pro/reports/show.html:470
 msgid "Publish"
 msgstr "Goedkeuren"
 
-#: templates/pro/reports/show.html:455
+#: templates/pro/reports/show.html:471
 msgid "Reject"
 msgstr "Afkeuren"
 
-#: templates/pro/reports/show.html:463
+#: templates/pro/reports/show.html:479
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
-#: templates/pro/reports/show.html:465
+#: templates/pro/reports/show.html:481
 msgid "Solved"
 msgstr "Opgelost"
 
@@ -809,6 +819,9 @@ msgstr "Gebruiker is succesvol verwijderd"
 #, fuzzy
 msgid "You attachments has been sent"
 msgstr "U account is inactief"
+
+#~ msgid "Set as private report"
+#~ msgstr "Zichtbaarheid"
 
 #, fuzzy
 #~ msgid "^report/search_ticket_pro$"
@@ -911,10 +924,6 @@ msgstr "U account is inactief"
 
 #~ msgid "Confidential"
 #~ msgstr "Confidentieel"
-
-#, fuzzy
-#~ msgid "private"
-#~ msgstr "Privaat"
 
 #, fuzzy
 #~ msgid "confidential"

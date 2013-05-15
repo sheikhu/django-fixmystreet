@@ -242,7 +242,7 @@ function close(){
                     <td>{{ report.get_status_display }}</td>
                 </tr>
 
-                {% if not report.is_in_progress%}
+                {% if not report.is_in_progress %}
                 <tr>
                     <th><strong>{% trans "Responsible:" %}</strong></th>
                     <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
@@ -280,7 +280,7 @@ function close(){
                         <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
                         <!-- ################################# -->
                         <tr>
-                            <th><strong>{% trans "Contractor/Applicant:" %}&nbsp;:</strong></th>
+                            <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
                             <td colspan="4">
                                 <select id="report_responsible_impetrant_contractor_select">
                                     <option value="-1">{% trans 'Select a contractor/applicant' %}</option>
@@ -295,6 +295,16 @@ function close(){
                                     {% endfor %}
                                     </optgroup>
                                 </select>
+                                {% if report.contractor %}
+                                <ul>
+                                    {% for contact_person in report.contractor.workers.all %}
+                                        <li>
+                                            {{ contact_person.get_full_name }}
+                                            {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
+                                         </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
                             </td>
                         </tr>
                         <!-- ################################# -->
@@ -302,7 +312,7 @@ function close(){
                         <!-- ################################# -->
                         <tr>
                             <th>
-                                <strong>{% trans "Set as private report" %}</strong>
+                                <strong>{% trans "Visibility:" %}</strong>
                             </th>
                             <td colspan="2">
                                 <input type="radio" id="id_private" name="public_private">
@@ -321,24 +331,40 @@ function close(){
                             <th><strong>{% trans "Responsible manager:" %}</strong></th>
                             <td>
                              <a href='mailto:{{ report.responsible_manager.email }}'>{{ report.responsible_manager.get_full_name }}</a> ({{ report.responsible_entity.name }})
-
                          </td>
                         </tr>
                         {% if report.contractor %}
+                            <tr>
+                                <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
+                                <td>
+                                    <p><strong>{{ report.contractor.name }}</strong></p>
+                                    {% if not report.contractor %}
+                                        -
+                                    {% else %}
+                                    <ul>
+                                        {% for contact_person in report.contractor.workers.all %}
+                                            <li>
+                                                {{ contact_person.get_full_name }}
+                                                {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
+                                             </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
                         <tr>
-                            <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
+                            <th><strong>{% trans "Visibility:" %}</strong></th>
                             <td>
-                                {{ report.contractor.name }}
-                                <br/>
-                                {% if report.contractor %}-{% endif %}
-                                {% for contact_person in report.contractor.workers.all %}
-                                    {{ contact_person.get_full_name }}
-                                    {% if contact_person.telephone %}(tel:{{contact_person.telephone}}) {% endif %}
-                                     <br/>
-                                {% endfor %}
+                                {% if report.private %}
+                                    {% trans "private" %}
+                                {% else %}
+                                    {% trans "public" %}
+                                {% endif %}
                             </td>
                         </tr>
-                        {% endif %}
+
                     {% endif %}
                 {% endif %}
                 <tr>

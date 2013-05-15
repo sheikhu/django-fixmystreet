@@ -11,6 +11,7 @@ from django.utils import translation
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.backoffice.forms import FmsUserForm, AgentForm, ContractorForm, ContractorUserForm
 from django_fixmystreet.fixmystreet.forms import LoginForm
@@ -60,8 +61,15 @@ def change_password(request):
 def list_users(request, user_id=None, user_type='users'):
     params = dict()
     params['user_type'] = user_type
+
     currentOrganisation = request.fmsuser.organisation
-    users = FMSUser.objects.filter(organisation=currentOrganisation)
+    if currentOrganisation:
+        users = FMSUser.objects.filter(organisation=currentOrganisation)
+    else:
+        if not request.user.is_superuser:
+            raise PermissionDenied()
+        users = FMSUser.objects.all()
+
     if user_id:
         user_to_edit = FMSUser.objects.get(id=user_id)
         params['can_edit'] = ((not user_to_edit.leader and request.fmsuser.leader) or ((not user_to_edit.leader and not user_to_edit.manager) and request.fmsuser.manager))
@@ -149,8 +157,15 @@ def delete_user(request, user_id, user_type='users'):
 
 def list_contractors(request, contractor_id=None):
     currentOrganisation = request.fmsuser.organisation
+
+
     params = dict()
-    contractors = OrganisationEntity.objects.filter(dependency=currentOrganisation, subcontractor=True)
+    if currentOrganisation:
+        contractors = OrganisationEntity.objects.filter(dependency=currentOrganisation, subcontractor=True)
+    else:
+        if not request.user.is_superuser:
+            raise PermissionDenied()
+        contractors = OrganisationEntity.objects.all(subcontractor=True)
 
     if contractor_id:
         contractor_to_edit = OrganisationEntity.objects.get(id=contractor_id, subcontractor=True)
@@ -173,8 +188,8 @@ def list_contractors(request, contractor_id=None):
 
         params['contractor_form'] = contractor_form
         params['user_form'] = user_form
-        params['can_create'] = request.fmsuser.leader
 
+    params['can_create'] = request.fmsuser.leader
     params["contractors"] = contractors
     return render_to_response("pro/contractors_overview.html", params, context_instance=RequestContext(request))
 

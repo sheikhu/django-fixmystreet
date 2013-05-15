@@ -170,7 +170,7 @@
                             </p>
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
+                            <input type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
                         </div>
                     </div>
                     {% endfor %}
@@ -263,17 +263,15 @@
         {% endblock %}
 
         <script type="text/javascript" src="{{ STATIC_URL }}js/common.js"></script>
-        <script>
-            {% if messages %}
 
+        {% if messages %}
+        <script>
             $(function(){
                 $('.message').modal();
-                /*setTimeout(function(){
-                    $('.alert').alert('close');
-                },10000);*/
             });
-            {% endif %}
         </script>
+        {% endif %}
+
         <script type="text/javascript">
             $(function(){
                 if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 9)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 10) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 20) {

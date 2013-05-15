@@ -6,7 +6,7 @@
 
 <script>
     function disableFormFields() {
-        $.each($(":input"),function(idx,value){
+        $.each($("form :input"),function(idx,value){
             $(value).pro("disabled", true);
         });
         $("form :submit, form .btn, .helptext").hide();
