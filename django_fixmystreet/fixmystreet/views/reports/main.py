@@ -99,6 +99,7 @@ def show(request, slug, report_id):
         user_to_show = report.created_by
 
     if request.method == "POST":
+        comment = None
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
@@ -112,12 +113,12 @@ def show(request, slug, report_id):
                 comment.report = report
                 comment.save()
 
-            file_formset.save()
+            files = file_formset.save()
 
             # if request.POST.get("citizen_subscription", False):
             #     ReportSubscription(report=report, subscriber=report.created_by).save()
 
-            report.trigger_updates_added()
+            report.trigger_updates_added(files=files, comment=comment)
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url())

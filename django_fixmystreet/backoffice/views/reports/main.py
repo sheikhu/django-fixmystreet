@@ -137,6 +137,7 @@ def show(request,slug, report_id):
     if request.method == "POST":
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+        comment = None
         # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         # this checks update is_valid too
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
@@ -148,9 +149,9 @@ def show(request,slug, report_id):
                     comment.report = report
                     comment.save()
 
-            file_formset.save()
+            files = file_formset.save()
 
-            report.trigger_updates_added(request.fmsuser)
+            report.trigger_updates_added(request.fmsuser, files=files, comment=comment)
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url_pro())

@@ -277,6 +277,9 @@ def transform_notification_template(template, report, user, **kwargs):
         if 'updater' in kwargs:
             data["updater"] = transform_notification_user_display(user, kwargs['updater'])
 
+        if 'comment' in kwargs:
+            data["comment"] = kwargs['comment']
+
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
 

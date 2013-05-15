@@ -577,21 +577,22 @@ class Report(UserTrackedModel):
             self.subscriptions.add(ReportSubscription(subscriber=user))
 
 
-    def trigger_updates_added(self, user=None):
-        if user != self.responsible_manager:
-            ReportNotification(
-                content_template='notify-updates',
-                recipient=self.responsible_manager,
-                related=self,
-            ).save(updater=user)
+    def trigger_updates_added(self, user=None, files=None, comment=None):
+        if files or comment:
+            if user != self.responsible_manager:
+                ReportNotification(
+                    content_template='notify-updates',
+                    recipient=self.responsible_manager,
+                    related=self,
+                ).save(updater=user, files=files, comment=comment)
 
-        ReportEventLog(
-            report=self,
-            event_type=ReportEventLog.UPDATED,
-            user=user,
-        ).save()
+            ReportEventLog(
+                report=self,
+                event_type=ReportEventLog.UPDATED,
+                user=user,
+            ).save()
 
-        self.save() # set updated date and updated_by
+            self.save() # set updated date and updated_by
 
     def to_full_JSON(self):
         """
@@ -920,12 +921,13 @@ def report_notify(sender, instance, **kwargs):
 
                 if report.__former['responsible_entity'] != report.responsible_entity:
                     for subscription in report.subscriptions.all():
-                        ReportNotification(
-                            content_template='announcement-affectation',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_manager.email,
-                        ).save(old_responsible=report.__former['responsible_manager'])
+                        if subscription.subscriber != report.responsible_manager:
+                            ReportNotification(
+                                content_template='announcement-affectation',
+                                recipient=subscription.subscriber,
+                                related=report,
+                                reply_to=report.responsible_manager.email,
+                            ).save(old_responsible=report.__former['responsible_manager'])
 
                     ReportEventLog(
                         report=report,
@@ -1353,8 +1355,9 @@ class ReportNotification(models.Model):
                 subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
                 del kwargs['old_responsible']
             elif 'updater' in kwargs:
-                subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'])
+                subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'], comment=kwargs['comment'])
                 del kwargs['updater']
+                del kwargs['comment']
             else:
                 subject, html, text = transform_notification_template(template, self.related, self.recipient)
 
@@ -1368,19 +1371,13 @@ class ReportNotification(models.Model):
 
             # if self.report.photo:
                 # msg.attach_file(self.report.photo.file.name)
-            if isinstance(self.related, Report):
-                if self.related.files():
-                    for f in self.related.files():
-                        if f:
-                            if f.file_type == ReportFile.IMAGE and f.is_public():
-                                # Open the file
-                                #fp = open(settings.PROJECT_PATH+f.file.url, 'rb')
-                                fp = open(f.file.path, 'rb')
-                                msgImage = MIMEImage(fp.read())
-                                fp.close()
-                                # Define the image's ID to reference to it
-                                msgImage.add_header('Content-ID', '<image'+str(f.reportattachment_ptr_id)+'>')
-                                msg.attach(msgImage)
+            if 'files' in kwargs:
+                files = kwargs['files']
+                del kwargs['files']
+                for f in files:
+                    if f.file_type == ReportFile.IMAGE:
+                        msg.attach(f.file.name, f.file.read(), 'image/png')
+
 
             msg.send()
             self.success = True
