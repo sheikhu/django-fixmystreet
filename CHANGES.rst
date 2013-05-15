@@ -10,6 +10,11 @@ Changelog of django-fixmystreet
 
 - fix user resurection.
 
+- low mail notification sending.
+
+- update notification mail attach newly created image and comment.
+
+
 
 1.0.14 (2013-05-13)
 -------------------

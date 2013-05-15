@@ -81,29 +81,30 @@ function showResults(type,li){
             </ol>
         </div>
 
-        <form id='search-form' class="block highlighted form-inline search-form">
-            <div id="address-search-div">
-                <h2>{% trans "Enter the address where the incident is:" %}</h2>
-                <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
-                <select id="input-ward" class="input-medium" name="ward" onchange="document.getElementById('widget-search-button').click()">
-                    <option value="">{% trans "All communes..." %}</option>
-                    {% for zip in zipcodes %}
-                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                    {% endfor %}
-                </select>
-                <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Widget Search' %}">
-                <ul id="proposal" class="inline hide"> </ul>
-            </div>
+        <div id="search-form" class="block highlighted">
+            <form id="search-address-form" class="form-inline search-form">
+                <div id="address-search-div">
+                    <h2>{% trans "Enter the address where the incident is:" %}</h2>
+                    <input id="input-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
+                    <select id="input-ward" class="input-medium" name="ward" onchange="document.getElementById('widget-search-button').click()">
+                        <option value="">{% trans "All communes..." %}</option>
+                        {% for zip in zipcodes %}
+                            <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Widget Search' %}">
+                    <ul id="proposal" class="inline hide"> </ul>
+                </div>
+            </form>
 
-
-            <div id="ticket-div-section">
+            <form id="search-ticket-form" class="form-inline">
                 <!-- Search per ticket -->
                 <h2>{% trans "Enter the report ticket:" %}</h2>
                 <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-                <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" onclick="return false" value="{% trans 'Access Ticket' %}">
-            </div>
+                <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="{% trans 'Access Ticket' %}">
+            </form>
+        </div>
 
-        </form>
         <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
     </article>
 {% endblock %}

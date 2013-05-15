@@ -2,12 +2,14 @@ $(function(){
 
     var $searchTerm = $('#input-search');
     var $searchWard = $('#input-ward');
-    var $searchForm = $('.search-form');
+    var $searchAddressForm = $('#search-address-form');
+    var $searchTicketForm = $('#search-ticket-form');
     var $searchButton = $('#widget-search-button');
     var $searchTicketButton = $('#widget-search-ticket-button');
     var $proposal = $('#proposal');
 
-    $searchTicketButton.click(function(event){
+    $searchTicketForm.submit(function(event){
+        event.preventDefault();
         var searchValue = $('#input-ticket-search').val();
 
         if (searchValue && searchValue.length > 0) {
@@ -27,19 +29,19 @@ $(function(){
     });
 
 
-    $searchForm.submit(function(event){
+    $searchAddressForm.submit(function(event){
         event.preventDefault();
         var searchValue = $searchTerm.val();
         $proposal.slideUp();
 
         if (!$searchTerm.val()) {
-            $("#ticket-div-section").show();
+            $searchTicketForm.show();
             return;
         }
 
         $searchTerm.addClass('loading');
         $searchButton.prop('disabled',true);
-                    $.ajax({
+        $.ajax({
             url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
             dataType:'jsonp',
             data:{
@@ -54,7 +56,7 @@ $(function(){
         }).success(function(response){
             if(response.status == 'success' && response.result.length > 0)
             {
-                $("#ticket-div-section").hide();
+                $searchTicketForm.hide();
                 if(response.result.length == 1)
                 {
                     var pos = response.result[0].point;
@@ -78,7 +80,7 @@ $(function(){
             }
             else
             {
-                $("#ticket-div-section").show();
+                $searchTicketForm.show();
                 $searchTerm.removeClass('loading');
                 $searchButton.prop('disabled',false);
                 if(response.status == "noresult" || response.status == "success")
@@ -98,5 +100,5 @@ $(function(){
         });
     });
 
-    $searchForm.submit();
+    $searchAddressForm.submit();
 });

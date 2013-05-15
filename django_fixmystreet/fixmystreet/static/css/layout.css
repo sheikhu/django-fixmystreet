@@ -49,9 +49,6 @@ a:hover, a:focus {
 .lead{
     margin-bottom:18px;
 }
-#ticket-div-section .lead{
-    margin-top:30px;
-}
 
 /********* HEADER LAYOUT ********/
 
@@ -819,6 +816,10 @@ li img {
 
 #input-search.loading::-webkit-search-cancel-button {
     display: none;
+}
+
+#search-ticket-form .lead{
+    margin-top:30px;
 }
 
 
