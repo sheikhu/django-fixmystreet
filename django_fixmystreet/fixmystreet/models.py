@@ -1466,6 +1466,9 @@ class ReportEventLog(models.Model):
 
     related_content_type = models.ForeignKey(ContentType, null=True)
 
+    class Meta:
+        ordering = ['event_at',]
+
     def __unicode__(self):
         user_to_display = _("a citizen")
 

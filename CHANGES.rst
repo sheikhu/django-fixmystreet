@@ -4,7 +4,11 @@ Changelog of django-fixmystreet
 1.0.15 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- show report privacy.
+
+- display contact info of report contractor.
+
+- fix user resurection.
 
 
 1.0.14 (2013-05-13)

@@ -8,7 +8,8 @@ class Migration(DataMigration):
     def forwards(self, orm):
         "Write your forwards methods here."
         # Note: Remember to use orm['appname.ModelName'] rather than "from appname.models..."
-        call_command("loaddata", "streetsurface")
+
+        # call_command("loaddata", "streetsurface") disabled for performance
 
     def backwards(self, orm):
         "Write your backwards methods here."
