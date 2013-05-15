@@ -14,6 +14,8 @@ Changelog of django-fixmystreet
 
 - update notification mail attach newly created image and comment.
 
+- search by ticket number triggered by submit event.
+
 
 
 1.0.14 (2013-05-13)

@@ -146,7 +146,6 @@ class ReportHandler(BaseHandler):
         'address_number',
         'address_regional',
         'postalcode',
-        'quality',
     )
 
 
