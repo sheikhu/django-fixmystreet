@@ -259,28 +259,28 @@
         Comments
     -->
 
-    {% if comment_list %}
+    {% if report.active_comments %}
         <br/>
         <div class="block-full" style="padding-bottom:10px;">
             <h2>{% trans 'Comments' %}</h2>
-                {% for comment in comment_list %}
+                {% for comment in report.active_comments %}
                     <p>{{comment.text}}</p>
                     <p class="by">
                         <strong>{% trans 'By' %}</strong>
 
                         {% if pro_version %}
-                                {% if comment.created_by %}
-                                    {{ comment.created_by.get_display_name }} {{ comment.created_by.get_organisation }},
+                            {% if comment.created_by %}
+                                {{ comment.created_by.get_display_name }} {{ comment.created_by.get_organisation }},
 
-                                    {{ comment.created_by.email }}
-                                    -
-                                    {{ comment.created_by.telephone }}
-                                {% else %}
-                                    {% trans 'a citizen '%}
-                                {% endif %}
+                                {{ comment.created_by.email }}
+                                -
+                                {{ comment.created_by.telephone }}
+                            {% else %}
+                                {% trans 'a citizen '%}
+                            {% endif %}
                         {% else %}
                             {% if comment.created_by %}
-                                {{ report.created_by.get_organisation }}
+                                {{ comment.created_by.get_organisation }}
                             {% else %}
                                 {% trans 'a citizen' %}
                             {% endif %}
@@ -297,8 +297,8 @@
         Photos
     -->
 
-    {% if file_list %}
-        {% for file in file_list %}
+    {% if report.active_files %}
+        {% for file in report.active_files %}
             <br/>
             <div class="block-full">
 
@@ -349,13 +349,13 @@
                                 -
                                 {{ file.created_by.telephone }}
                             {% else %}
-                                {% trans 'Anonymous '%}
+                                {% trans 'a citizen' %}
                             {% endif %}
                     {% else %}
-                        {% if report.citizen %}
-                            {% trans 'a citizen' %}
-                        {% else %}
+                        {% if file.created_by %}
                             {{ file.created_by.get_organisation }},
+                        {% else %}
+                            {% trans 'a citizen' %}
                         {% endif %}
                     {% endif %}
                 </p>

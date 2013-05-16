@@ -17,8 +17,6 @@ def report_pdf(request, report_id, pro_version=False):
     if request.GET.get('output', False):
         return render_to_response("pro/pdf.html", {
             'report' : report,
-            'file_list' : report.files(),
-            'comment_list' : report.comments(),
             'activity_list' : report.activities.all(),
             'pro_version' : pro_version
         }, context_instance=RequestContext(request))
