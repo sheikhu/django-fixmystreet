@@ -310,15 +310,17 @@ class RequestFingerprint:
     def __init__(self, request):
         # assume that request.method == "POST":
         self.request = request
-        self.request_fingerprint = hashlib.sha1(request.path + unicode(request.POST))
-        if 'request_fingerprint_expire' in request.session and request.session['request_fingerprint_expire'] > datetime.datetime.now():
+        md5 = hashlib.md5()
+        md5.update(request.path)
+        md5.update(unicode(request.POST))
+        self.request_fingerprint = md5.hexdigest()
+        if 'request_fingerprint_expire' in request.session and request.session['request_fingerprint_expire'] < datetime.datetime.now():
+            # fingerprint expired
             del request.session['request_fingerprint']
             del request.session['request_fingerprint_expire']
 
     def is_duplicate(self):
-        print 'request_fingerprint' in self.request.session
-        print 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] != self.request_fingerprint
-        return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] != self.request_fingerprint
+        return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint
 
     def save(self):
         self.request.session['request_fingerprint'] = self.request_fingerprint

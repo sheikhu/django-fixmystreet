@@ -309,70 +309,9 @@
         Photos
     -->
 
-    {% if report.active_files %}
+    {% if pro_version and report.active_files %}
         {% for file in report.active_files %}
-                    **{% include "reports/_attachment.html" with attachment=file privacy='private' editable=Flase %}**
-            <br/>
-            <div class="block-full">
-
-                <div style="margin-bottom:20px;">
-                    {% if file.file_type == 1 %}
-                        <img width="128px" height="128px" src="{{STATIC_URL}}images/icon-pdf.png"/>
-                    {% endif %}
-                    {% if file.file_type == 2 %}
-                        <img width="128px" height="128px" src="{{STATIC_URL}}images/icon-word.jpg"/>
-                    {% endif %}
-                    {% if file.file_type == 3 %}
-                        <img width="128px" height="128px" src="{{STATIC_URL}}images/icon-excel.png"/>
-                    {% endif %}
-                    {% if file.file_type == 4 %}
-                        <img src="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{{file.file.url}}"/>
-                    {% endif %}
-                </div>
-
-                <hr/>
-
-                <p>
-                    <strong>{% trans 'Description' %} : </strong>
-                    {{file.title}}
-                </p>
-
-                <p>
-                    <strong>{% trans 'file creation Date' %}</strong>
-                    {% if file.file_creation_date %}
-                            {{file.file_creation_date}}
-                    {% else %}
-                            -
-                    {% endif %}
-                </p>
-
-                <p>
-                    <strong>{% trans 'file publication date' %}</strong>
-                    {{file.created|date}}
-                </p>
-
-                <p class="by">
-                    <strong>{% trans 'By' %}</strong>
-
-                    {% if pro_version %}
-                            {% if file.created_by %}
-                                {{ file.created_by.get_display_name }} {{ file.created_by.get_organisation }},
-
-                                {{ file.created_by.email }}
-                                -
-                                {{ file.created_by.telephone }}
-                            {% else %}
-                                {% trans 'a citizen' %}
-                            {% endif %}
-                    {% else %}
-                        {% if file.created_by %}
-                            {{ file.created_by.get_organisation }},
-                        {% else %}
-                            {% trans 'a citizen' %}
-                        {% endif %}
-                    {% endif %}
-                </p>
-            </div>
+            {% include "reports/_attachment.html" with attachment=file privacy='private' editable=Flase %}
         {% endfor %}
     {% endif %}
 
