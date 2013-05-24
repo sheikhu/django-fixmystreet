@@ -211,9 +211,9 @@ function markAsDone(){
                 <!-- ################# FILES ############### -->
                 <h4>{% trans 'Files' %}</h4>
                 <div id="report_updates">
-                    {% for file in report.active_files.all %}
-                        {% if file.is_public %}
-                            {% include "reports/_file.html" %}
+                    {% for attachment in report.active_files %}
+                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
+                            {% include "reports/_attachment.html" with attachment=attachment privacy='public' editable=attachment_edit %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -225,9 +225,9 @@ function markAsDone(){
                 <!-- ################# COMMENTS ############### -->
                 <h4>{% trans "Comments" %}</h4>
                 <div id="report_updates">
-                    {% for comment in report.active_comments.all %}
-                        {% if comment.is_public %}
-                            {% include "reports/_comment.html" %}
+                    {% for attachment in report.active_comments %}
+                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
+                            {% include "reports/_attachment.html" with attachment=attachment privacy='public' editable=attachment_edit %}
                         {% endif %}
                     {% endfor %}
                 </div>

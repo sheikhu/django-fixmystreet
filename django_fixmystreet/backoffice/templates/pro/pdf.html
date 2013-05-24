@@ -269,50 +269,13 @@
         Comments
     -->
 
-    {% if report.active_comments %}
+    <h2>{% trans 'Comments' %}</h2>
+    {% for attachment in comments %}
+        {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+    {% endfor %}
 
-        <br/>
-        <div class="block-full" style="padding-bottom:10px;">
-            <h2>{% trans 'Comments' %}</h2>
-                {% for comment in report.active_comments %}
-                    {% include "reports/_attachment.html" with attachment=comment privacy='private' editable=False %}
-                    <p>{{comment.text}}</p>
-                    <p class="by">
-                        <strong>{% trans 'By' %}</strong>
-
-                        {% if pro_version %}
-                            {% if comment.created_by %}
-                                {{ comment.created_by.get_display_name }} {{ comment.created_by.get_organisation }},
-
-                                {{ comment.created_by.email }}
-                                -
-                                {{ comment.created_by.telephone }}
-                            {% else %}
-                                {% trans 'a citizen '%}
-                            {% endif %}
-                        {% else %}
-                            {% if comment.created_by %}
-                                {{ comment.created_by.get_organisation }}
-                            {% else %}
-                                {% trans 'a citizen' %}
-                            {% endif %}
-                        {% endif %}
-
-                        <strong>le</strong> {{comment.created|date}}
-                    </p>
-                    <hr/>
-                {% endfor %}
-        </div>
-    {% endif %}
-
-    <!--
-        Photos
-    -->
-
-    {% if pro_version and report.active_files %}
-        {% for file in report.active_files %}
-            {% include "reports/_attachment.html" with attachment=file privacy='private' editable=Flase %}
-        {% endfor %}
-    {% endif %}
+    {% for attachment in files %}
+        {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=Flase %}
+    {% endfor %}
 
 {% endblock %}

@@ -16,15 +16,8 @@ $(function(){
     /**********************************************/
     $("input[type=radio]").bind("click",function(){
         var id = $(this).data('attachmentId');
-        var type = $(this).data('type');
         var level = $(this).val();
-        if(type == "file"){
-            //TODO handle public bool of file with id vals[2]
-            window.location = '{% url "report_update_file" report.id %}?fileId='+id+'&updateType='+level;
-        } else if (type == "comment"){
-            //TODO handle public bool of comment with id vals[2]
-            window.location = '{% url "report_update_comment" report.id %}?commentId='+id+'&updateType='+level;
-        }
+        window.location = '{% url "report_update_attachment" report.id %}?attachmentId='+id+'&updateType='+level;
     });
 
     /***************************/
@@ -408,9 +401,9 @@ function close(){
             {% if report.files %}
                 <h4>{% trans "Photos and files" %}</h4>
                 <div id="report_updates">
-                    {% for file in report.files.all %}
-                        {% if not file.is_confidential or fms_user.can_see_confidential %}
-                            {% include "reports/_attachment.html" with attachment=file privacy='private' editable=attachment_edit %}
+                    {% for attachment in report.files %}
+                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
+                            {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -422,11 +415,9 @@ function close(){
             {% if report.comments %}
                 <h4>{% trans "Comments" %}</h4>
                 <div id="report_updates">
-                    {% for comment in report.comments %}
-                        {% if comment.is_confidential and not fms_user.can_see_confidential %}
-                        <!-- Skip -->
-                        {% else %}
-                            {% include "reports/_attachment.html" with attachment=comment privacy='private' editable=attachment_edit %}
+                    {% for attachment in report.comments %}
+                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
+                            {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit %}
                         {% endif %}
                     {% endfor %}
                 </div>

@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django_fixmystreet.fixmystreet.utils import render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report
@@ -14,12 +14,11 @@ def report_pdf(request, report_id, pro_version=False):
 
     #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
     # pro_Version = 0
-    if request.GET.get('output', False):
-        return render_to_response("pro/pdf.html", {
-            'report' : report,
-            'activity_list' : report.activities.all(),
-            'privacy' : ('private' if pro_version else 'public')
-        }, context_instance=RequestContext(request))
-    else:
-        return render_to_pdf("pro/pdf.html", {'report' : report,  'file_list' : report.files(), 'comment_list' : report.comments(), 'activity_list' : report.activities.all(), 'pro_version' : pro_version},
-                context_instance=RequestContext(request))
+
+    return render_to_pdf("pro/pdf.html", {
+        'report' : report,
+        'files': report.files() if pro_version else report.active_files(),
+        'comments': report.comments() if pro_version else report.active_comments(),
+        'activity_list' : report.activities.all(),
+        'pro_version' : pro_version
+    }, context_instance=RequestContext(request))
