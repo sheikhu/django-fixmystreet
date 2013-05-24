@@ -11,6 +11,7 @@ from piston.emitters import Emitter
 
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, ReportCategory, ReportSecondaryCategoryClass, ReportMainCategoryClass, OrganisationEntity
 from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm, ReportCommentForm
+from django_fixmystreet.fixmystreet.utils import RequestFingerprint
 
 
 # ###############
@@ -167,10 +168,13 @@ class ReportHandler(BaseHandler):
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
-        if request.data.get('username', False):
-            return self.create_pro(request)
-        else:
-            return self.create_citizen(request)
+        fingerprint = RequestFingerprint(request)
+        if not fingerprint.is_duplicate():
+            fingerprint.save()
+            if request.data.get('username', False):
+                return self.create_pro(request)
+            else:
+                return self.create_citizen(request)
 
     def create_pro(self, request):
         '''Create pro report'''
