@@ -88,24 +88,21 @@ class CategoryHandler(BaseHandler):
     allowed_methods = ('GET')
     model = ReportCategory
     fields = (
-        'name_fr',
-        'name_nl',
+        'name',
     )
 
 class ReportSecondaryCategoryHandler(BaseHandler):
     allowed_methods = ('GET')
     model = ReportSecondaryCategoryClass
     fields = (
-        'name_fr',
-        'name_nl',
+        'name',
     )
 
 class ReportMainCategoryHandler(BaseHandler):
     allowed_methods = ('GET')
     model = ReportMainCategoryClass
     fields = (
-        'name_fr',
-        'name_nl',
+        'name',
     )
 
 class FMSUserHandler(BaseHandler):
@@ -121,8 +118,7 @@ class EntityHandler(BaseHandler):
     allowed_methods = ('GET')
     model = OrganisationEntity
     fields = (
-        'name_fr',
-        'name_nl',
+        'name'
     )
 
 
@@ -134,8 +130,8 @@ class ReportHandler(BaseHandler):
         'id',
         'point',
         'status',
-        'get_public_status_display',
-        'get_status_display',
+        # 'get_public_status_display',
+        # 'get_status_display',
         'created',
         'created_by',
         'is_pro',
