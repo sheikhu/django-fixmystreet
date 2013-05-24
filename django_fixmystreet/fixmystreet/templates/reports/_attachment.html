@@ -1,0 +1,69 @@
+{% load i18n %}
+<div class="report_update">
+    {% if editable %}
+        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm deletion' %}')" href="{% url 'report_delete_file' report.id %}?fileId={{file.id}}">
+            <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
+        </a>
+    {% endif %}
+    <div class="update_text">
+    {% if attachment.file %}
+        <span class="picture-caption">
+            <a href="{{ attachment.file.url }}">
+                {% if attachment.is_image %}
+                    <img src='{{attachment.image.url}}' class="view-image"/>
+                {% elif attachment.is_pdf %}
+                    <img src='/static/images/icon-pdf.png'/>
+                {% elif attachment.is_word %}
+                    <img src='/static/images/icon-word.png'/>
+                {% elif attachment.is_excel %}
+                    <img src='/static/images/icon-excel.png'/>
+                {% endif %}
+                {{file.title}}
+            </a>
+        </span>
+
+        {% if privacy == 'private' %}
+            <span class="update_light_text">{% trans 'Posted by' %}</span>
+            {{file.get_display_name}}
+        {% endif %}
+        <br />
+        <p class="picture-date">
+            <span class="update_light_text">{% trans 'file creation Date' %}</span>
+            {% if file.file_creation_date != None%}
+                {{file.file_creation_date}}
+            {% else %}
+                -
+            {% endif %}
+            <br/>
+            <span class="update_light_text">{% trans 'file publication date' %}</span>
+            {{file.created}}
+        </p>
+    {% endif %}
+    <!-- If the status allow such interactions -->
+    {% if editable %}
+        <ul>
+            <li><label>
+                <input type="radio" name="security_level_{{file.id}}" data-attachment-id="{{file.id}}" value="{{file.PUBLIC}}"{% if file.is_public %} checked="checked"{% endif %}>
+                {% trans "Public" %}
+            </label></li>
+
+            <li><label>
+                <input type="radio" name="security_level_{{file.id}}" data-attachment-id="{{file.id}}" value="{{file.PRIVATE}}"{% if file.is_private %} checked="checked"{% endif %}>
+                {% trans "Private" %}
+            </label></li>
+            <li><label>
+                <input type="radio" name="security_level_{{file.id}}" data-attachment-id="{{file.id}}" value="{{file.CONFIDENTIAL}}"{% if file.is_confidential %} checked="checked"{% endif %}>
+                {% trans "Confidential" %}
+            </label></li>
+        </ul>
+    {% else %}
+        <p>
+        {% if file.security_level == file.PRIVATE %}
+            {% trans "private" %}
+        {% elif file.security_level == file.CONFIDENTIAL %}
+            {% trans "confidential" %}
+        {% endif %}
+        </p>
+    {% endif %}
+    </div> <!-- update_text -->
+</div> <!-- report_update -->
