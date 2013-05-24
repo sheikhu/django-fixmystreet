@@ -83,7 +83,6 @@ class EmailBackend(BaseEmailBackend):
         Sends one or more EmailMessage objects and returns the number of email
         messages sent.
         """
-
         if not email_messages:
             return
         with self._lock:
@@ -110,7 +109,7 @@ class EmailBackend(BaseEmailBackend):
                       for addr in email_message.recipients()]
         message = email_message.message()
         charset = message.get_charset().get_output_charset() if message.get_charset() else 'utf-8'
-        
+
         # tricky-stuff
         message = email_message.message().as_string()
         message = message.replace('<p>Bonjour,</p>', '<p>ATTENTION, UN TRICKY STUFF EST UTILISÉ (smtpforward.EmailBackend).<br/>CET EMAIL ÉTAIT CENSÉ ÊTRE ENVOYÉ À : <strong>%s</strong></p><p>Bonjour,</p>' %recipients)

@@ -101,10 +101,20 @@
         .block-right {
             float:right;
         }
-        .block-full {
+
+        .block-full, .report_update {
             width: 660px;
             border: 1px solid #999;
             padding:20px;
+            border-radius: 0;
+        }
+
+        .report_update a {
+            color: #333333;
+        }
+
+        .report_update .view-image {
+            width: auto;
         }
 
         #banner-pro {
@@ -144,7 +154,7 @@
         {% if report.is_refused %}
             <div class='is_created'>
                 <p>{% trans "This problem has been refused." %}</p>
-                <p>{{ report.refusal_motivation }}</p>
+                {% if pro_version %}<p>{{ report.refusal_motivation }}</p>{% endif %}
             </div>
         {% endif %}
 
@@ -260,10 +270,12 @@
     -->
 
     {% if report.active_comments %}
+
         <br/>
         <div class="block-full" style="padding-bottom:10px;">
             <h2>{% trans 'Comments' %}</h2>
                 {% for comment in report.active_comments %}
+                    {% include "reports/_attachment.html" with attachment=comment privacy='private' editable=False %}
                     <p>{{comment.text}}</p>
                     <p class="by">
                         <strong>{% trans 'By' %}</strong>
@@ -299,6 +311,7 @@
 
     {% if report.active_files %}
         {% for file in report.active_files %}
+                    **{% include "reports/_attachment.html" with attachment=file privacy='private' editable=Flase %}**
             <br/>
             <div class="block-full">
 

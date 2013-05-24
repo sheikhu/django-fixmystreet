@@ -1,4 +1,3 @@
-import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
@@ -8,13 +7,12 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.utils.translation import get_language
-from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 from django.conf import settings
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
-from django_fixmystreet.fixmystreet.utils import dict_to_point
+from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 
 
 def new(request):
@@ -29,13 +27,18 @@ def new(request):
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
 
+        fingerprint = RequestFingerprint(request)
+
         # this checks update is_valid too
-        if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
+        if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid() and not fingerprint.is_duplicate():
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
             file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
+
             if file_formset.is_valid():
+                fingerprint.save()
+
                 citizen = citizen_form.save()
 
                 report.citizen = citizen

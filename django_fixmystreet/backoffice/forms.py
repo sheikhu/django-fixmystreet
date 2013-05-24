@@ -33,7 +33,12 @@ class RefuseForm(forms.ModelForm):
         model = Report
         fields = ('refusal_motivation',)
 
-    refusal_motivation = forms.CharField(required=True,label=_('Refusal motivation'),widget=forms.Textarea())
+    refusal_motivation = forms.CharField(
+                required=True,
+                label=_('Refusal motivation'),
+                widget=forms.Textarea(attrs={
+                    'placeholder': _("Refusal motivation description.")
+                }))
     def save(self, commit=True):
         report = super(RefuseForm,self).save(commit=False)
         report.status = Report.REFUSED

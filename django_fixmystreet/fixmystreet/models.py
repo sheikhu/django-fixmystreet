@@ -15,13 +15,14 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from email.MIMEImage import MIMEImage
 
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
+
+logger = logging.getLogger(__name__)
 
 
 class UserTrackedModel(TimeStampedModel):
@@ -345,6 +346,7 @@ class ReportManager(models.GeoManager):
     def get_query_set(self):
         return ReportQuerySet(self.model) \
                 .exclude(status=Report.SOLVED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+                .exclude(status=Report.DELETED) \
                 .select_related('category', 'secondary_category', 'secondary_category__secondary_category_class', 'responsible_entity', 'responsible_manager', 'citizen', 'contractor')
 
 
@@ -432,12 +434,12 @@ class Report(UserTrackedModel):
         user = get_current_user()
 
         marker_color = "green" #default color
-        if (self.is_in_progress()):
+        if self.is_in_progress():
             marker_color = "orange"
             if user and user.is_authenticated():
                 if not self.contractor == None:
                     marker_color = "orange-executed"
-        elif (self.is_created() or self.is_refused()):
+        elif self.is_created():
             marker_color = "red"
 
         if user and user.is_authenticated():
@@ -565,9 +567,11 @@ class Report(UserTrackedModel):
         return OrganisationEntity.objects.get(zipcode__code=self.postalcode)
 
     def subscribe_author(self):
-        subscription = ReportSubscription(subscriber=self.created_by or self.citizen)
-        subscription.notify_creation = False # don't send notification for subscription
-        self.subscriptions.add(subscription)
+        user = self.created_by or self.citizen
+        if not self.subscriptions.filter(subscriber=user).exists():
+            subscription = ReportSubscription(subscriber=user)
+            subscription.notify_creation = False # don't send notification for subscription
+            self.subscriptions.add(subscription)
 
         # if self.id:
         #     self.create_subscriber(self.created_by or self.citizen)
@@ -711,6 +715,7 @@ class Report(UserTrackedModel):
         }
     class Meta:
         translate=('address',)
+        #unique_together = (("point", "citizen"), ("point", "created_by"))
 
 
 @receiver(pre_save, sender=Report)
@@ -1358,7 +1363,8 @@ class ReportNotification(models.Model):
                 subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
                 del kwargs['old_responsible']
             elif 'updater' in kwargs:
-                subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'], comment=kwargs['comment'])
+                comment = kwargs['comment'].text if kwargs['comment'] else ''
+                subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'], comment=comment)
                 del kwargs['updater']
                 del kwargs['comment']
             else:
@@ -1387,6 +1393,8 @@ class ReportNotification(models.Model):
         except Exception as e:
             self.success = False
             self.error_msg = str(e)
+            logger.error('Mail not send !')
+            logger.error(e)
 
         super(ReportNotification, self).save(*agrs, **kwargs)
 

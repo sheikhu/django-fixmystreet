@@ -1,3 +1,4 @@
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms.models import inlineformset_factory
@@ -9,10 +10,9 @@ from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.utils import dict_to_point
+from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import  RefuseForm
-
 
 def new(request):
     pnt = dict_to_point(request.REQUEST)
@@ -22,13 +22,17 @@ def new(request):
         report_form = ProReportForm(request.POST, request.FILES, prefix='report')
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
 
+        fingerprint = RequestFingerprint(request)
+
         # this checks update is_valid too
-        if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
+        if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and not fingerprint.is_duplicate():
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
             file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
             if file_formset.is_valid():
+                fingerprint.save()
+
                 report.save()
 
                 if request.POST["comment-text"]:
@@ -189,5 +193,6 @@ def show(request,slug, report_id):
                 "refuse_form": RefuseForm(instance=report),
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),
+                'attachment_edit': request.fmsuser == report.responsible_manager and (report.is_created() or report.is_in_progress())
             },
             context_instance=RequestContext(request))

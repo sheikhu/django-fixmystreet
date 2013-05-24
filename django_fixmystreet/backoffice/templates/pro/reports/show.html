@@ -145,7 +145,7 @@ function close(){
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialog" title="Please enter more information about rejecting the report" action="{% url 'report_refuse_pro' report.id %}" method="post">
-            {{ refuse_form.as_p }}
+            {% include "_form_horizontal.html" with form=refuse_form %}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
             <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
         </form>
@@ -401,34 +401,35 @@ function close(){
         <!-- # DISPLAY FILES SECTION  # -->
         <!-- ########################## -->
         <div class="bordered-box"/>
-        {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
-            <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
-        {% endif %}
-        {% if report.files %}
-            <h4>{% trans "Photos and files" %}</h4>
-            <div id="report_updates">
-                {% for file in report.files.all %}
-                    {% if not file.is_confidential or fms_user.can_see_confidential %}
-                        {% include "reports/_file.html" %}
-                    {% endif %}
-                {% endfor %}
-            </div>
+            {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
+                <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
+            {% endif %}
+
+            {% if report.files %}
+                <h4>{% trans "Photos and files" %}</h4>
+                <div id="report_updates">
+                    {% for file in report.files.all %}
+                        {% if not file.is_confidential or fms_user.can_see_confidential %}
+                            {% include "reports/_attachment.html" with attachment=file privacy='private' editable=attachment_edit %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             {% endif %}
             <!-- ############################# -->
             <!-- # DISPLAY COMMENTS SECTION  # -->
             <!-- ############################# -->
 
             {% if report.comments %}
-            <h4>{% trans "Comments" %}</h4>
-            <div id="report_updates">
-                {% for comment in report.comments %}
-                    {% if comment.is_confidential and not fms_user.can_see_confidential %}
-                    <!-- Skip -->
-                    {% else %}
-                        {% include "reports/_comment.html" %}
-                    {% endif %}
-                {% endfor %}
-            </div>
+                <h4>{% trans "Comments" %}</h4>
+                <div id="report_updates">
+                    {% for comment in report.comments %}
+                        {% if comment.is_confidential and not fms_user.can_see_confidential %}
+                        <!-- Skip -->
+                        {% else %}
+                            {% include "reports/_attachment.html" with attachment=comment privacy='private' editable=attachment_edit %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             {% endif %}
         </div>
     {% endif %}

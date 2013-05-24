@@ -31,6 +31,7 @@ ADD_THIS_KEY = os.environ['ADD_THIS_KEY'] if 'ADD_THIS_KEY' in os.environ else '
 GA_CODE = os.environ['GA_CODE'] if 'GA_CODE' in os.environ else 'UA-17146775-54'
 SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else 'dev'
 EMAIL_HOST = "relay.irisnet.be"
+ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))
 
 if 'MEDIA_ROOT' in os.environ:
     MEDIA_ROOT = os.environ['MEDIA_ROOT']
@@ -103,6 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
     'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
     'django_fixmystreet.backoffice.middleware.LoadUserMiddleware',
     'django_fixmystreet.fixmystreet.utils.CurrentUserMiddleware',
@@ -198,7 +200,7 @@ LOGGING = {
         'console':{
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'verbose'
         },
         'mail_admins': {
             'level': 'ERROR',
@@ -213,7 +215,7 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False,
         },
@@ -227,6 +229,8 @@ LOGGING = {
 
 if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
     SITE_ID = 3
+    ALLOWED_HOSTS = ("*", )
+    EMAIL_HOST = "localhost"
 
 elif ENVIRONMENT=="staging":
     SITE_ID = 2

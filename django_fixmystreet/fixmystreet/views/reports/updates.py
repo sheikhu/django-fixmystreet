@@ -18,7 +18,7 @@ def report_pdf(request, report_id, pro_version=False):
         return render_to_response("pro/pdf.html", {
             'report' : report,
             'activity_list' : report.activities.all(),
-            'pro_version' : pro_version
+            'privacy' : ('private' if pro_version else 'public')
         }, context_instance=RequestContext(request))
     else:
         return render_to_pdf("pro/pdf.html", {'report' : report,  'file_list' : report.files(), 'comment_list' : report.comments(), 'activity_list' : report.activities.all(), 'pro_version' : pro_version},

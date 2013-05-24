@@ -138,7 +138,7 @@
         "content_fr": "Un incident a \u00e9t\u00e9 mis \u00e0 jour par {updater}\r\n\r\n{comment}\r\n\r\n{report_overview}\r\n\r\nVous pouvez acc\u00e9der \u00e0 cet incident en cliquant sur le lien ci-dessous :\r\n\r\n- {display_url}\r\n\r\nVous pouvez vous d\u00e9sinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous\u00a0:\r\n\r\n- {unsubscribe_url}",
         "title_nl": "werd geactualiseerd op Fix My Street",
         "name": "notify-updates",
-        "content_nl": "Een probleem werd geactualiseerd door {updater}\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
+        "content_nl": "Een probleem werd geactualiseerd door {updater}\r\n\r\n{comment}\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
         "title_fr": "vous a \u00e9t\u00e9 mis \u00e0 jour sur Fix My Street"
     }
 }
