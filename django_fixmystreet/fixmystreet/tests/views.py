@@ -19,6 +19,7 @@ class ReportViewsTest(SampleFilesTestCase):
             last_name="citizen",
             email="citizen@a.com"
         )
+        self.citizen.save()
 
         self.manager = FMSUser(
             telephone="0123456789",

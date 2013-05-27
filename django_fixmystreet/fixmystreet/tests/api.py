@@ -19,19 +19,19 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class ApiTest(SampleFilesTestCase):
-    fixtures = ['bootstrap', 'sample']
-    users = {
-        '100003558692539': {
-            'name':'Steven Test',
-            'email': "steven_strubyi_test@tfbnw.net"
-        }
-    }
+    fixtures = ['bootstrap']
+    #~ users = {
+        #~ '100003558692539': {
+            #~ 'name':'Steven Test',
+            #~ 'email': "steven_strubyi_test@tfbnw.net"
+        #~ }
+    #~ }
 
     def setUp(self):
 
         try:
             organisation = OrganisationEntity.objects.get(id=1)
-        except ObjectDoesNotExist:        
+        except ObjectDoesNotExist:
             organisation = OrganisationEntity(id=1, name="Test organisation")
             organisation.save()
         
@@ -41,16 +41,58 @@ class ApiTest(SampleFilesTestCase):
         user = FMSUser(password="test", first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username='superuser')
         user.save()
 
-        main_category = ReportMainCategoryClass(id=2,name_en='test main en',name_nl='test main nl',name_fr='test main fr')
-        main_category.save()
-        
-        secondary_category = ReportSecondaryCategoryClass(id=2,name_en='test second en',name_nl='test second nl',name_fr='test second fr')        
-        secondary_category.save()
-        
-        category = ReportCategory(id=2,name_en='test parent en',name_nl='test parent nl',name_fr='test parent fr', public=True, category_class=main_category, secondary_category_class=secondary_category)
-        category.save()
-		
-		
+        #~ main_category = ReportMainCategoryClass(id=2,name_en='test main en',name_nl='test main nl',name_fr='test main fr')
+        #~ main_category.save()
+        #~
+        #~ secondary_category = ReportSecondaryCategoryClass(id=2,name_en='test second en',name_nl='test second nl',name_fr='test second fr')
+        #~ secondary_category.save()
+        #~
+        #~ category = ReportCategory(id=2,name_en='test parent en',name_nl='test parent nl',name_fr='test parent fr', public=True, category_class=main_category, secondary_category_class=secondary_category)
+        #~ category.save()
+        self.citizen = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            first_name="citizen",
+            last_name="citizen",
+            email="citizen@a.com"
+        )
+        self.citizen.save()
+
+        self.manager = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager",
+            last_name="manager",
+            email="manager@a.com",
+            manager=True
+        )
+        self.manager.set_password('test')
+        self.manager.organisation = OrganisationEntity.objects.get(pk=14)
+        self.manager.save()
+        self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
+        self.sample_post = {
+            'report-x':'150056.538',
+            'report-y':'170907.56',
+            'report-address_fr':'Avenue des Arts, 3',
+            'report-address_nl':'Kunstlaan, 3',
+            'report-address_number':'3',
+            'report-postalcode':'1210',
+            'report-category':'1',
+            'report-secondary_category':'1',
+            'report-subscription':'on',
+            'citizen-quality':'1',
+            'comment-text':'test',
+            'files-TOTAL_FORMS': 0,
+            'files-INITIAL_FORMS': 0,
+            'files-MAX_NUM_FORMS': 1000,
+            'citizen-email':self.citizen.email,
+            'citizen-firstname':self.citizen.first_name,
+            'citizen-lastname':self.citizen.last_name,
+            'report-terms_of_use_validated': True
+        }
+
         """
         self.steven = self.users['100003558692539']
         
@@ -84,33 +126,21 @@ class ApiTest(SampleFilesTestCase):
             print simplejson.loads(e.read())['error']['message']
             raise e
         """
-        
+
     def testCreateReportCitizen(self):
         #Parameters to save the report in database.
-        params = {
-          "x":"1231",
-          "y":"1231",
-          "postalcode":"1000",
-          "address": "eeee2",
-          "address_number":"122",
-          "address_regional":"True",
-          "quality":"2",
-          "description": "mydescr",
-          "category":"2",
-          "secondary_category":"2",
-          "citizen-email":"aegrergreg@azazrfazfe.be",
-          "citizen-lastname":"aegrergreg@azazrfazfe.be",
-          "citizen-telephone":"012345"
-        }
-       
+
         #Create a client to launch requests
         client = Client()
         #Get the request response
-        response = client.post(reverse('create_report_citizen'), params, follow=True)      
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
         #Test the http response code (200 = OK)
-        self.assertEqual(response.status_code, 200)        
+        self.assertEqual(response.status_code, 200)
         #Test if the response if JSON structured.
         self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
+
+        self.assertEqual(1, len(Report.objects.all()))
+
         #Load the response data as JSON object
         result = simplejson.loads(response.content)
     
@@ -146,8 +176,22 @@ class ApiTest(SampleFilesTestCase):
     #    report = Report.objects.get(id=result['report_id'])
         #Verify the persisted data for the new created report
     #    self.assertEquals(report.description, 'zazadescr')
-    
-    def testLoadCategories(self):                
+
+    def testCreateReportDoubleCitizen(self):
+        #Parameters to save the report in database.
+
+        #Create a client to launch requests
+        client = Client()
+        #Get the request response
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+
+        self.assertEqual(1, len(Report.objects.all()))
+
+        #Load the response data as JSON object
+        result = simplejson.loads(response.content)
+
+    def testLoadCategories(self):
         #Parameters to save the report in database.
         params = {
             "user_name": "superuser"

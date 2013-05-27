@@ -11,6 +11,7 @@ class SampleFilesTestCase(TestCase):
     def setUpClass(cls):
         default_storage.location = 'media/' # force using source media folder to avoid real data erasing
 
+from django_fixmystreet.fixmystreet.tests.api import *
 from django_fixmystreet.fixmystreet.tests.views import *
 from django_fixmystreet.fixmystreet.tests.reports import *
 from django_fixmystreet.fixmystreet.tests.users import *
