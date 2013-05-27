@@ -22,7 +22,8 @@ install_requires = [
     # 'django-registration',
     'django-piston',
     'markdown',
-    'oauth2'
+    'oauth2',
+    'simplejson'
     ]
 
 tests_require = [
