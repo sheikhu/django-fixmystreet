@@ -14,6 +14,8 @@ from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportSubs
 from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 
+import logging
+logger = logging.getLogger(__name__)
 
 def new(request):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)

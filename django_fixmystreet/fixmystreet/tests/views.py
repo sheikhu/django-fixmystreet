@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
-from django_fixmystreet.fixmystreet.models import FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 
 class ReportViewsTest(SampleFilesTestCase):
     fixtures = ['bootstrap']
@@ -19,6 +19,41 @@ class ReportViewsTest(SampleFilesTestCase):
             last_name="citizen",
             email="citizen@a.com"
         )
+
+        self.manager = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager",
+            last_name="manager",
+            email="manager@a.com",
+            manager=True
+        )
+        self.manager.set_password('test')
+        self.manager.organisation = OrganisationEntity.objects.get(pk=14)
+        self.manager.save()
+        self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
+        self.sample_post = {
+            'report-x':'150056.538',
+            'report-y':'170907.56',
+            'report-address_fr':'Avenue des Arts, 3',
+            'report-address_nl':'Kunstlaan, 3',
+            'report-address_number':'3',
+            'report-postalcode':'1210',
+            'report-category':'1',
+            'report-secondary_category':'1',
+            'report-subscription':'on',
+            'citizen-quality':'1',
+            'comment-text':'test',
+            'files-TOTAL_FORMS': 0,
+            'files-INITIAL_FORMS': 0,
+            'files-MAX_NUM_FORMS': 0,
+            'citizen-email':self.citizen.email,
+            'citizen-firstname':self.citizen.first_name,
+            'citizen-lastname':self.citizen.last_name,
+            'report-terms_of_use_validated': True
+        }
 
     def test_home(self):
         """Tests the new report view."""
@@ -73,42 +108,31 @@ class ReportViewsTest(SampleFilesTestCase):
 
     def test_create_report(self):
         """Tests the creation of a report and test the view of it."""
-        #self.client.login(username='test1', password='test')
 
-        # !!!!!!!!!!!!!!!!!!!!!!!!******************************!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO fix me !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # !!!!!!!!!!!!!!!!!!!!!!!!******************************!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        return
+        url = "%s?x=148360&y=171177" % reverse('report_new')
 
-        url = reverse('report_new')
-
-        response = self.client.post(url, {
-            'report-x':'150056.538',
-            'report-y':'170907.56',
-            'report-address_fr':'Avenue des Arts',
-            'report-address_nl':'Kunstlaan',
-            'report-address_number':'3',
-            'report-postalcode':'1000',
-            'report-category':'1',
-            'report-secondary_category':'1',
-            'report-subscription':'on',
-            'comment-text':'test',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0,
-            'citizen-email':self.citizen.email,
-            'citizen-firstname':self.citizen.first_name,
-            'citizen-lastname':self.citizen.last_name,
-            'citizen-quality':'1',
-        }, follow=True)
+        response = self.client.post(url, self.sample_post, follow=True)
 
         self.assertEqual(response.status_code, 200)
 
         self.assertIn('report', response.context)
+
         report = response.context['report']
-        self.assertRedirects(response, reverse('report_show', args=[report.id]))
+
         self.assertContains(response, report.postalcode)
         self.assertContains(response, report.status)
+
+        self.assertEqual(1, len(Report.objects.all()))
+
+    def test_create_report_double(self):
+        """Tests the creation of a double report and test the view of it."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+
+        response = self.client.post(url, self.sample_post, follow=True)
+        response = self.client.post(url, self.sample_post, follow=True)
+
+        self.assertEqual(1, len(Report.objects.all()))
 
     #def test_add_comment(self):
     #    """Tests the update of a report and flag it as fixed."""
