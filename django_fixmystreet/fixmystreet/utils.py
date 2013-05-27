@@ -9,6 +9,7 @@ from threading import local
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
+from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template.defaultfilters import slugify, urlize, date as date_filter
 from django.utils.translation import ugettext as _
@@ -118,6 +119,10 @@ add_introspection_rules(
     ["^django_fixmystreet.fixmystreet.utils.FixStdImageField",])
 
 def render_to_pdf(*args, **kwargs):
+    context_instance = kwargs.get('context_instance', None)
+    if 'request' in context_instance and 'output' in context_instance.get('request').GET:
+        return render_to_response(*args, **kwargs)
+
     tmpfolder = tempfile.mkdtemp()
     html_tmp_file_path = "%s/export.html" %(tmpfolder)
     html_tmp_file = file(html_tmp_file_path, "w")

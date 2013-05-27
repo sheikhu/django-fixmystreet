@@ -21,26 +21,30 @@
                 {{attachment.title}}
             </a>
         </span>
-
-        {% if privacy == 'private' %}
-            <span class="update_light_text">{% trans 'Posted by' %}</span>
-            {{attachment.get_display_name}}
-        {% endif %}
-        <br />
         <p class="picture-date">
-            <span class="update_light_text">{% trans 'file creation Date' %}</span>
+            {% trans 'file creation Date' %}
             {% if attachment.file_creation_date != None%}
                 {{attachment.file_creation_date}}
-            {% else %}
-                -
-            {% endif %}
-            <br/>
-            <span class="update_light_text">{% trans 'file publication date' %}</span>
-            {{attachment.created}}
+            {% else %} - {% endif %}
         </p>
     {% else %} {# comment #}
         <p class="comment-incident">{{ attachment.text }}</p>
     {% endif %}
+
+    {% if privacy == 'private' %}
+    <p class="author-sign comment-date">
+        {% blocktrans with by=attachment.get_display_name on=attachment.created %}
+        Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+        {% endblocktrans %}
+    </p>
+    {% else %}
+    <p class="author-sign comment-date">
+        {% blocktrans with on=report.created %}
+        Posted on <strong>{{on}}</strong>
+        {% endblocktrans %}
+    </p>
+    {% endif %}
+
     <!-- If the status allow such interactions -->
     {% if editable %}
         <ul>

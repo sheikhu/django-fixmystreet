@@ -1,10 +1,8 @@
 from datetime import datetime
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, Http404
-from django.template import RequestContext
 from django.db import transaction
 
-from django_fixmystreet.fixmystreet.utils import render_to_pdf
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm, MarkAsDoneForm
 from django_fixmystreet.backoffice.forms import RefuseForm

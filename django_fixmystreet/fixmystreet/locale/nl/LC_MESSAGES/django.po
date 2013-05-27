@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-15 11:23+0200\n"
+"POT-Creation-Date: 2013-05-27 11:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,7 @@ msgstr "E-mail"
 msgid "Quality"
 msgstr "Hoedanigheid"
 
-#: forms.py:167 models.py:231 models.py:1153 models.py:1187 models.py:1221
+#: forms.py:167 models.py:232 models.py:1166 models.py:1200 models.py:1234
 msgid "Name"
 msgstr "Naam"
 
@@ -128,237 +128,236 @@ msgstr ""
 msgid "This account is inactive."
 msgstr "is niet gevalideerd."
 
-#: models.py:78
+#: models.py:79
 msgid "Resident"
 msgstr "Buurtbewoner"
 
-#: models.py:79
+#: models.py:80
 msgid "Trade"
 msgstr "Handelaar"
 
-#: models.py:80
+#: models.py:81
 msgid "Syndicate"
 msgstr "Beheerder van een gebouw"
 
-#: models.py:81
+#: models.py:82
 msgid "Association"
 msgstr "Vereniging"
 
-#: models.py:82
+#: models.py:83
 msgid "Other"
 msgstr "Andere"
 
-#: models.py:142 models.py:1026
+#: models.py:143 models.py:1039
 msgid "ANONYMOUS"
 msgstr "ANONIEM"
 
-#: models.py:232 models.py:1154 models.py:1188 models.py:1222
+#: models.py:233 models.py:1167 models.py:1201 models.py:1235
 msgid "Slug"
 msgstr ""
 
-#: models.py:375 models.py:376 models.py:530 models.py:1424
+#: models.py:377 models.py:378 models.py:535 models.py:1435
+#: templates/reports/pdf.html:199
 msgid "Created"
 msgstr "Gemeld"
 
-#: models.py:377
+#: models.py:379
 msgid "Refused"
 msgstr "Afgewezen"
 
-#: models.py:379 models.py:380 models.py:532
+#: models.py:381 models.py:382 models.py:537
 msgid "In progress"
 msgstr "In behandeling"
 
-#: models.py:381
+#: models.py:383
 msgid "Manager is assigned"
 msgstr "Beheerder is toegekend"
 
-#: models.py:382
+#: models.py:384
 msgid "Applicant is responsible"
 msgstr "Aannemer is verantwoordelijk"
 
-#: models.py:383
+#: models.py:385
 msgid "Contractor is assigned"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:384
+#: models.py:386
 msgid "Solved"
 msgstr "Opgelost"
 
-#: models.py:386 models.py:387 models.py:534
+#: models.py:388 models.py:389 models.py:539
 msgid "Processed"
 msgstr "Afgesloten"
 
-#: models.py:388
+#: models.py:390
 msgid "Deleted"
 msgstr "Verwijderd"
 
-#: models.py:395
+#: models.py:397 templates/reports/pdf.html:176
 msgid "Location"
 msgstr "Plaats"
 
-#: models.py:396
+#: models.py:398
 msgid "Address Number"
 msgstr "Adres nummer"
 
-#: models.py:399
+#: models.py:401
 msgid "Postal Code"
 msgstr "Postcode"
 
-#: models.py:401 models.py:402
+#: models.py:403 models.py:404 templates/reports/pdf.html:179
 msgid "Category"
 msgstr "Categorie"
 
-#: models.py:976 templates/reports/_comment.html:32
-#: templates/reports/_file.html:64
+#: models.py:989 templates/reports/_attachment.html:53
 msgid "Public"
 msgstr "Publiek"
 
-#: models.py:977 templates/reports/_comment.html:37
-#: templates/reports/_file.html:69
+#: models.py:990 templates/reports/_attachment.html:58
 msgid "Private"
 msgstr "Privaat"
 
-#: models.py:978 templates/reports/_comment.html:41
-#: templates/reports/_file.html:73
+#: models.py:991 templates/reports/_attachment.html:62
 msgid "Confidential"
 msgstr "Confidentieel"
 
-#: models.py:1224 models.py:1225
+#: models.py:1237 models.py:1238
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1309 models.py:1617
+#: models.py:1322 models.py:1631
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1411
+#: models.py:1422
 msgid "Refuse"
 msgstr "Afgewezen"
 
-#: models.py:1412
+#: models.py:1423
 msgid "Close"
 msgstr "Afsluiten"
 
-#: models.py:1413
+#: models.py:1424
 msgid "Mark as Done"
 msgstr "Markeer als behandeld"
 
-#: models.py:1414
+#: models.py:1425
 msgid "Manager assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1416
+#: models.py:1427
 #, fuzzy
 msgid "Valid"
 msgstr "verifiëren"
 
-#: models.py:1417
+#: models.py:1428
 msgid "Organisation assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1419
+#: models.py:1430
 msgid "Contractor assinged"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:1420
+#: models.py:1431
 msgid "Contractor changed"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:1421
+#: models.py:1432
 msgid "Applicant assinged"
 msgstr "Aannemer is verantwoordelijk"
 
-#: models.py:1422
+#: models.py:1433
 msgid "Applicant changed"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1423
+#: models.py:1434
 msgid "Applicant contractor changed"
 msgstr "Applicant contractor aangepast"
 
-#: models.py:1425 templates/emails/report_update/subject.txt:1
+#: models.py:1436 templates/emails/report_update/subject.txt:1
 #, fuzzy
 msgid "Updated"
 msgstr "Bijgewerkte Rapporten"
 
-#: models.py:1426
+#: models.py:1437
 #, fuzzy
 msgid "Update published"
 msgstr "Niet gepubliceerd"
 
-#: models.py:1429
+#: models.py:1440
 msgid "Report refused by {user}"
 msgstr "Probleem niet goedgekeurd door {user}"
 
-#: models.py:1430
+#: models.py:1441
 msgid "Report closed by {user}"
 msgstr "Probleem afgesloten door {user}"
 
-#: models.py:1431
+#: models.py:1442
 msgid "Report pointed as solved"
 msgstr "Probleem gemeld als opgelost door {user}"
 
-#: models.py:1432
+#: models.py:1443
 msgid "Report as been assigned to {related_new}"
 msgstr "Probleem toegewezen aan {user}"
 
-#: models.py:1434
+#: models.py:1445
 msgid "Report has been approved by {user}"
 msgstr "Probleem goedgekeurd door {user}"
 
-#: models.py:1435
+#: models.py:1446
 msgid "{related_new} is responsible for the report"
 msgstr "Probleem toegewezen aan {user}"
 
-#: models.py:1437
+#: models.py:1448
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: models.py:1438
+#: models.py:1449
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: models.py:1439
+#: models.py:1450
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: models.py:1440
+#: models.py:1451
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: models.py:1441
+#: models.py:1452
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: models.py:1442
+#: models.py:1453
 msgid "Report created by {user}"
 msgstr "Probleem gemeld door {user}"
 
-#: models.py:1443
+#: models.py:1454
 msgid "Report updated by {user}"
 msgstr "Probleem geactualiseerd door {user}"
 
-#: models.py:1444
+#: models.py:1455
 msgid "Informations published by {user}"
 msgstr "Informatie gepubliceerd door {user}"
 
-#: models.py:1470 models.py:1486 models.py:1490 utils.py:207 utils.py:220
+#: models.py:1484 models.py:1500 models.py:1504 utils.py:213 utils.py:226
+#: templates/reports/pdf.html:214
 msgid "a citizen"
 msgstr "burger"
 
-#: models.py:1575
+#: models.py:1589
 msgid "Question"
 msgstr "Vraag"
 
-#: models.py:1576
+#: models.py:1590
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1618
+#: models.py:1632
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1619
+#: models.py:1633
 msgid "Related model field"
 msgstr ""
 
@@ -611,22 +610,22 @@ msgstr "Download een van de onderstaande browsers alvorens verder te gaan."
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: templates/base.html:211
+#: templates/base.html:212
 msgid "A initiative of Bruxelles Mobilite in collaboration with "
 msgstr ""
 "Een initiatief van <a href='http://brussel.irisnet.be/over-het-gewest/"
 "ministerie-van-het-brussels-hoofdstedelijk-gewest/mobiliteit' "
 "target='_blank'>Mobiel Brussel</a> in samenwerking met de "
 
-#: templates/base.html:212
+#: templates/base.html:213
 msgid "Communes and Brussels Partner Institutions"
 msgstr "Brusselse gemeenten en partnerinstellingen"
 
-#: templates/base.html:216
+#: templates/base.html:217
 msgid "Copyright 2011, CIRB"
 msgstr "Powered by CIRB-CIBG, 2013"
 
-#: templates/base.html:224 templates/terms_of_use.html:4
+#: templates/base.html:225 templates/terms_of_use.html:4
 #: templates/terms_of_use.html.py:8
 msgid "Terms of Use"
 msgstr "Gebruiksvoorwaarden"
@@ -673,62 +672,62 @@ msgstr "Uw melding wordt naar de bevoegde dienst gestuurd"
 msgid "Subscribe an incident to be kept posted"
 msgstr "Volg de evolutie van uw melding"
 
-#: templates/home.html:86
+#: templates/home.html:87
 msgid "Enter the address where the incident is:"
 msgstr "Geef het adres op waar het probleem zich voordoet:"
 
-#: templates/home.html:87
+#: templates/home.html:88
 msgid "Street name, Street number..."
 msgstr "Straatnaam, huisnummer..."
 
-#: templates/home.html:89
+#: templates/home.html:90
 msgid "All communes..."
 msgstr "Alle gemeenten"
 
-#: templates/home.html:94
+#: templates/home.html:95
 msgid "Widget Search"
 msgstr "Zoeken"
 
-#: templates/home.html:101
+#: templates/home.html:102
 msgid "Enter the report ticket:"
 msgstr "Vul het nummer van de melding"
 
-#: templates/home.html:102
+#: templates/home.html:103
 msgid "Ticket number..."
 msgstr "Nummer van de melding..."
 
-#: templates/home.html:103
+#: templates/home.html:104
 msgid "Access Ticket"
 msgstr "Een melding zoeken"
 
-#: templates/home.html:113
+#: templates/home.html:114
 msgid "Last modified reports:"
 msgstr "Meest recente meldingen"
 
-#: templates/home.html:116 templates/home.html.py:161
+#: templates/home.html:117 templates/home.html.py:162
 #: templates/reports/list.html:66
 msgid "Report Created"
 msgstr "Gemelde problemen"
 
-#: templates/home.html:119 templates/home.html.py:166
+#: templates/home.html:120 templates/home.html.py:167
 #: templates/reports/list.html:69
 msgid "Report In progress"
 msgstr "Problemen in behandeling"
 
-#: templates/home.html:122 templates/home.html.py:171
+#: templates/home.html:123 templates/home.html.py:172
 #: templates/reports/list.html:72
 msgid "Report Processed"
 msgstr "Afgesloten meldingen"
 
-#: templates/home.html:162 templates/home.html.py:167
+#: templates/home.html:163 templates/home.html.py:168
 msgid "In the 30 last days"
 msgstr "De voorbije 30 dagen"
 
-#: templates/home.html:172
+#: templates/home.html:173
 msgid "In the 30 last days "
 msgstr "De voorbije 30 dagen"
 
-#: templates/home.html:178
+#: templates/home.html:179
 msgid "Download Fix My Street for your smartphone:"
 msgstr "Download Fix My Street op uw smartphone"
 
@@ -763,7 +762,7 @@ msgstr "Toevoegen"
 
 #: templates/admin/change_form.html:32
 #: templates/admin/fixmystreet/fmsuser/change_form.html:9
-#: templates/reports/show.html:119
+#: templates/reports/pdf.html:264 templates/reports/show.html:119
 msgid "History"
 msgstr "Geschiedenis"
 
@@ -1328,6 +1327,49 @@ msgid ""
 " out of the first 100 confirmed reports were filed with the promotional code "
 msgstr ""
 
+#: templates/reports/_attachment.html:4
+#, fuzzy
+msgid "Please confirm deletion"
+msgstr "Commentaar verwijdering bevestigen"
+
+#: templates/reports/_attachment.html:5
+msgid "delete file"
+msgstr "File verwijderen"
+
+#: templates/reports/_attachment.html:25
+msgid "file creation Date"
+msgstr "Datum foto-opname"
+
+#: templates/reports/_attachment.html:36
+#, python-format
+msgid ""
+"\n"
+"        Posted by <strong>%(by)s</strong> on <strong>%(on)s</strong>\n"
+"        "
+msgstr ""
+"\n"
+"       Gemeld door <strong>%(by)s</strong> op <strong>%(on)s</strong>\n"
+" "
+
+#: templates/reports/_attachment.html:42
+#, python-format
+msgid ""
+"\n"
+"        Posted on <strong>%(on)s</strong>\n"
+"        "
+msgstr ""
+"\n"
+"        Gemeld op <strong>%(on)s</strong>\n"
+" "
+
+#: templates/reports/_attachment.html:68
+msgid "private"
+msgstr "Privaat"
+
+#: templates/reports/_attachment.html:70
+msgid "confidential"
+msgstr "Confidentieel"
+
 #: templates/reports/_attachments_form.html:3
 msgid "Photos:"
 msgstr "Foto's:"
@@ -1370,64 +1412,6 @@ msgid ""
 "png, pdf, doc and xls."
 msgstr "Ongeldig bestand. Toegelaten bestanden: JPG, PNG, PDF, DOC en XLS"
 
-#: templates/reports/_comment.html:7
-msgid "Please confirm comment deletion"
-msgstr "Commentaar verwijdering bevestigen"
-
-#: templates/reports/_comment.html:8
-msgid "delete comment"
-msgstr "Commentaar verwijderen"
-
-#: templates/reports/_comment.html:15
-#, python-format
-msgid ""
-"\n"
-"        Posted by <strong>%(by)s</strong> on <strong>%(on)s</strong>\n"
-"        "
-msgstr ""
-"\n"
-"                            Gemeld door <strong>%(by)s</strong> op <strong>"
-"%(on)s</strong>\n"
-" "
-
-#: templates/reports/_comment.html:20 templates/reports/show.html:165
-#, python-format
-msgid ""
-"\n"
-"                        Posted on <strong>%(on)s</strong>\n"
-"                    "
-msgstr ""
-"\n"
-"Gemeld op <strong>%(on)s</strong>"
-
-#: templates/reports/_comment.html:47 templates/reports/_file.html:79
-msgid "private"
-msgstr "Privaat"
-
-#: templates/reports/_comment.html:49 templates/reports/_file.html:81
-msgid "confidential"
-msgstr "Confidentieel"
-
-#: templates/reports/_file.html:7
-msgid "Please confirm file deletion"
-msgstr ""
-
-#: templates/reports/_file.html:8
-msgid "delete file"
-msgstr "File verwijderen"
-
-#: templates/reports/_file.html:43
-msgid "Posted by"
-msgstr "Gemeld door"
-
-#: templates/reports/_file.html:48
-msgid "file creation Date"
-msgstr "Datum foto-opname"
-
-#: templates/reports/_file.html:55
-msgid "file publication date"
-msgstr "Datum publicatie foto"
-
 #: templates/reports/_navigation.html:20
 #, fuzzy
 msgid "subscriptions"
@@ -1462,7 +1446,7 @@ msgid "Warning"
 msgstr "Opgelet"
 
 #: templates/reports/index.html:28 templates/reports/new.html:269
-#: views/reports/main.py:193
+#: views/reports/main.py:197
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
 "Deze gemeente neemt nog niet deel aan Fix My Street. Om dit incident te "
@@ -1595,6 +1579,57 @@ msgstr "Meldingen in directe omgeving:"
 msgid "No problems have been reported in this area."
 msgstr "Er zijn geen problemen gerapporteerd in deze omgeving"
 
+#: templates/reports/pdf.html:47
+#, fuzzy
+msgid "Fix My Street Pro"
+msgstr "Fix My Street"
+
+#: templates/reports/pdf.html:142 templates/reports/show.html:138
+msgid "Report Ticket"
+msgstr "Incident"
+
+#: templates/reports/pdf.html:151 templates/reports/show.html:146
+msgid "This incident is not validated."
+msgstr "De melding wordt goedgekeurd."
+
+#: templates/reports/pdf.html:156
+#, fuzzy
+msgid "This problem has been refused."
+msgstr "Geen problemen zijn gerapporteerd"
+
+#: templates/reports/pdf.html:162 templates/reports/show.html:149
+msgid "This incident is in progress."
+msgstr "De melding wordt behandeld."
+
+#: templates/reports/pdf.html:166 templates/reports/show.html:152
+msgid "This incident has been closed."
+msgstr "De melding is afgesloten."
+
+#: templates/reports/pdf.html:184 templates/reports/pdf.html.py:187
+msgid "Geolocation"
+msgstr "Geolocatie"
+
+#: templates/reports/pdf.html:184
+msgid "Lambert 72 Belgium"
+msgstr ""
+
+#: templates/reports/pdf.html:203 templates/reports/pdf.html.py:242
+msgid "By"
+msgstr "Door"
+
+#: templates/reports/pdf.html:227
+msgctxt "time"
+msgid "on"
+msgstr "om"
+
+#: templates/reports/pdf.html:239
+msgid "Treated"
+msgstr "Behandeld"
+
+#: templates/reports/pdf.html:272 templates/reports/show.html:226
+msgid "Comments"
+msgstr "Commentaar"
+
 #: templates/reports/show.html:3 templates/reports/show.html.py:7
 #: templates/reports/show.html:8
 msgid "in"
@@ -1615,21 +1650,15 @@ msgstr ""
 msgid "incident "
 msgstr "Incident history"
 
-#: templates/reports/show.html:138
-msgid "Report Ticket"
-msgstr "Incident"
-
-#: templates/reports/show.html:146
-msgid "This incident is not validated."
-msgstr "De melding wordt goedgekeurd."
-
-#: templates/reports/show.html:149
-msgid "This incident is in progress."
-msgstr "De melding wordt behandeld."
-
-#: templates/reports/show.html:152
-msgid "This incident has been closed."
-msgstr "De melding is afgesloten."
+#: templates/reports/show.html:165
+#, python-format
+msgid ""
+"\n"
+"                        Posted on <strong>%(on)s</strong>\n"
+"                    "
+msgstr ""
+"\n"
+"Gemeld op <strong>%(on)s</strong>"
 
 #: templates/reports/show.html:180
 msgid "Category:"
@@ -1658,10 +1687,6 @@ msgstr "Geschiedenis van incident tonen."
 #: templates/reports/show.html:212
 msgid "Files"
 msgstr "Foto's en documenten"
-
-#: templates/reports/show.html:226
-msgid "Comments"
-msgstr "Commentaar"
 
 #: templates/reports/show.html:256
 #, python-format
@@ -1703,11 +1728,11 @@ msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: views/reports/main.py:122
+#: views/reports/main.py:126
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
 
-#: views/reports/main.py:182
+#: views/reports/main.py:186
 msgid "No incident found with this ticket number"
 msgstr "Geen incident gevonden met dit nummer"
 
@@ -1718,6 +1743,15 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: views/reports/subscribers.py:45 views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "delete comment"
+#~ msgstr "Commentaar verwijderen"
+
+#~ msgid "Posted by"
+#~ msgstr "Gemeld door"
+
+#~ msgid "file publication date"
+#~ msgstr "Datum publicatie foto"
 
 #~ msgid "coming_soon"
 #~ msgstr "Weldra beschikbaar"

@@ -15,10 +15,10 @@ def report_pdf(request, report_id, pro_version=False):
     #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
     # pro_Version = 0
 
-    return render_to_pdf("pro/pdf.html", {
+    return render_to_pdf("reports/pdf.html", {
         'report' : report,
         'files': report.files() if pro_version else report.active_files(),
         'comments': report.comments() if pro_version else report.active_comments(),
         'activity_list' : report.activities.all(),
-        'pro_version' : pro_version
+        'privacy' : 'private'  if pro_version else 'public'
     }, context_instance=RequestContext(request))

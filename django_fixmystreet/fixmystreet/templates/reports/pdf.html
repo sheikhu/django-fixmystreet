@@ -173,7 +173,7 @@
     -->
 
     <div class="block-left">
-        <p class="p_title"><strong>{% trans 'Location:' %}</strong></p>
+        <p class="p_title"><strong>{% trans 'Location' %}</strong></p>
         <p>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</p>
 
         <p class="p_title"><strong>{% trans 'Category' %}</strong></p>
@@ -275,7 +275,8 @@
     {% endfor %}
 
     {% for attachment in files %}
-        {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=Flase %}
+        {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
     {% endfor %}
 
+    {% block footer %}{% endblock %}
 {% endblock %}

@@ -11,8 +11,6 @@ class NotificationTest(TestCase):
     fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
-        self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
-        self.user.save()
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
         #Create a FMSUser
