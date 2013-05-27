@@ -7,6 +7,7 @@ import datetime
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -532,11 +533,11 @@ class Report(UserTrackedModel):
 
     def get_public_status_display(self):
         if self.is_created():
-            return _("Created")
+            return ugettext("Created")
         elif self.is_in_progress():
-            return _("In progress")
+            return ugettext("In progress")
         else:
-            return _("Processed")
+            return ugettext("Processed")
 
     def thumbnail(self):
         if not self.is_created():
