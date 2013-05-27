@@ -185,6 +185,8 @@ class ApiTest(SampleFilesTestCase):
         #Get the request response
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
 
         self.assertEqual(1, len(Report.objects.all()))
 

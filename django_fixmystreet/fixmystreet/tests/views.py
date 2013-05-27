@@ -132,6 +132,8 @@ class ReportViewsTest(SampleFilesTestCase):
 
         response = self.client.post(url, self.sample_post, follow=True)
         response = self.client.post(url, self.sample_post, follow=True)
+        response = self.client.post(url, self.sample_post, follow=True)
+        response = self.client.post(url, self.sample_post, follow=True)
 
         self.assertEqual(1, len(Report.objects.all()))
 
