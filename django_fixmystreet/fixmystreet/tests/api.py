@@ -19,7 +19,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class ApiTest(SampleFilesTestCase):
-    fixtures = ['bootstrap']
     #~ users = {
         #~ '100003558692539': {
             #~ 'name':'Steven Test',
@@ -34,8 +33,8 @@ class ApiTest(SampleFilesTestCase):
         except ObjectDoesNotExist:
             organisation = OrganisationEntity(id=1, name="Test organisation")
             organisation.save()
-        
-        
+
+
         #user_auth = User.objects.create_user(username='superuser', email='test1@fixmystreet.irisnet.be', password='test')
         #user_auth.save()
         user = FMSUser(password="test", first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username='superuser')
@@ -98,7 +97,7 @@ class ApiTest(SampleFilesTestCase):
 
         """
         self.steven = self.users['100003558692539']
-        
+
         params = {
             'client_id': settings.FACEBOOK_APP_ID,
             'client_secret': settings.FACEBOOK_API_SECRET,
@@ -170,9 +169,11 @@ class ApiTest(SampleFilesTestCase):
         #Create a client to launch requests
         client = Client()
         #Get the request response
+
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
         #Test the http response code (200 = OK)
         self.assertEqual(response.status_code, 200)
+
         #Test if the response if JSON structured.
         self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
 
@@ -210,13 +211,13 @@ class ApiTest(SampleFilesTestCase):
         #Create a client to launch requests
         client = Client()
         #Get the request response
-        response = client.get(reverse('load_categories'), params, follow=True)        
+        response = client.get(reverse('load_categories'), params, follow=True)
         #Test the http response code (200 = OK)
-        self.assertEqual(response.status_code, 200)        
+        self.assertEqual(response.status_code, 200)
         #Test if the response if JSON structured.
         self.assertEqual(response['Content-Type'], 'application/json')
         #Load the response data as JSON object
-        result = simplejson.loads(response.content)      
+        result = simplejson.loads(response.content)
 
     """
     def testLoadReports(self):

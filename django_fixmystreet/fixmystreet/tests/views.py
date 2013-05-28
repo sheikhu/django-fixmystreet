@@ -6,7 +6,6 @@ from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 
 class ReportViewsTest(SampleFilesTestCase):
-    fixtures = ['bootstrap']
 
     def setUp(self):
         self.user = User.objects.create_user(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
