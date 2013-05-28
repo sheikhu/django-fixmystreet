@@ -228,3 +228,57 @@ class ApiTest(SampleFilesTestCase):
         self.assertEquals(result['status'], 'success')
         self.assertEquals(len(result['results']), 13) # sample contains 14 reports but 1 is fixed
     """
+
+    def test_login_user(self):
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+        response = self.client.post(reverse('login_user'), params)
+
+        self.assertEqual(response.status_code, 200)
+
+        result = simplejson.loads(response.content)
+        self.assertEqual(result['id'], self.manager.id)
+        self.assertEqual(result['first_name'], self.manager.first_name)
+
+    def test_login_user_fail(self):
+        params = {
+            'username': self.manager.email,
+            'password': 'badpassword'
+        }
+        response = self.client.post(reverse('login_user'), params)
+
+        self.assertEqual(response.status_code, 403)
+
+        result = simplejson.loads(response.content)
+        self.assertEqual("ERROR_LOGIN_INVALID_PARAMETERS", result["error_key"])
+
+    def test_login_user_fail_empty_field(self):
+        params = {
+            'username': self.manager.email
+        }
+        response = self.client.post(reverse('login_user'), params)
+
+        self.assertEqual(response.status_code, 400)
+
+        result = simplejson.loads(response.content)
+        self.assertEqual("ERROR_LOGIN_INVALID_PARAMETERS", result["error_key"])
+
+    def test_login_user_bad_username(self):
+        params = {
+            'username': "hello@a.com",
+            'password': "kikoo"
+        }
+        response = self.client.post(reverse('login_user'), params)
+
+        self.assertEqual(response.status_code, 403)
+
+        result = simplejson.loads(response.content)
+        self.assertEqual("ERROR_LOGIN_INVALID_PARAMETERS", result["error_key"])
+
+    def test_logout_user(self):
+        response = self.client.post(reverse('logout_user'))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual('', response.content)

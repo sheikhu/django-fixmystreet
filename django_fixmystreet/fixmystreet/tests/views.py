@@ -216,16 +216,16 @@ class ReportViewsTest(SampleFilesTestCase):
     #    response = self.client.get(reverse('ward_show',args=[1]), follow=True)
     #    self.assertEqual(response.status_code, 200)
 
-    def loginUser(self):
+    def test_login_user(self):
         params = {
             'username': self.manager.email,
             'password': 'test'
         }
         response = self.client.post(reverse('login'), params)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
-    def loginUserWithRedirect(self):
+    def test_login_user_with_redirect(self):
         params = {
             'username': self.manager.email,
             'password': 'test'
@@ -236,16 +236,17 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def loginUserFail(self):
+    def test_login_user_fail(self):
         params = {
             'username': self.manager.email,
             'password': 'badpassword'
         }
         response = self.client.post(reverse('login'), params)
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Please enter a correct username and password. Note that both fields are case-sensitive.')
 
-    def logoutUser(self):
+    def test_logout_user(self):
         params = {
             'username': self.manager.email,
             'password': 'test'

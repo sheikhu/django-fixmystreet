@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template.defaultfilters import slugify, urlize, date as date_filter
+from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate, deactivate
 from django.contrib.sites.models import Site
@@ -193,7 +194,7 @@ class CurrentUserMiddleware:
             if user and user.is_active:
                 login(request, user)
             else:
-                return HttpResponseForbidden('invalid username or password')
+                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_PARAMETERS","username":request.POST.get('username')}),mimetype='application/json')
 
             set_current_user(user.fmsuser)
             request.fmsuser = user.fmsuser
