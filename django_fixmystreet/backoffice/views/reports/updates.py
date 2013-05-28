@@ -68,32 +68,6 @@ def close( request, report_id ):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-# ???????? DEPRECATED ???????? WTF !
-def new( request, report_id ):
-    report = get_object_or_404(Report, id=report_id)
-    if request.method == 'POST':
-        import pdb
-        pdb.set_trace()
-        if request.POST['form-type'] == u"comment-form":
-            comment_form = ReportCommentForm(request.POST)
-            if comment_form.is_valid():
-                comment_form.save(request.user, report)
-
-        if request.POST['form-type'] == u"file-form":
-            if request.POST['title'] == "":
-                request.POST['title']= request.FILES.get('file').name
-            file_form = ReportFileForm(request.POST,request.FILES)
-            if file_form.is_valid:
-                report_file = file_form.save(request.user, report)
-                report_file.image.save(report_file.title, File(open(report_file.file.url[1:])))
-
-        if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
-        else:
-            return HttpResponseRedirect(report.get_absolute_url())
-    raise Http404()
-
-
 def switchPrivacy(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")

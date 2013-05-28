@@ -142,7 +142,7 @@ class ReportHandler(BaseHandler):
         'address',
         'address_number',
         'address_regional',
-        'postalcode',
+        'postalcode'
     )
 
 
@@ -176,7 +176,7 @@ class ReportHandler(BaseHandler):
         '''Create pro report'''
         #Login the user
         user = authenticate(username=request.data.get('username'), password=request.data.get('password'))
-        if user and user.is_active == True:
+        if user and user.is_active:
             login(request, user)
         else:
             return HttpResponseForbidden('invalid username or password')
@@ -189,9 +189,9 @@ class ReportHandler(BaseHandler):
         report = report_form.save(commit=False)
 
         report.private = True
-        report.subscribe_author()
-
         report.save()
+
+        report.subscribe_author()
 
         #Create the comment is a comment has been given'''
         if (request.data["comment-text"] or comment_form.is_valid()):

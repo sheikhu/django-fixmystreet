@@ -117,8 +117,10 @@ class FMSUser(User):
 
     def save(self, *args, **kwargs):
         user = get_current_user()
+
         if user and user.is_authenticated():
             self.modified_by = user
+
             if not self.id:
                 self.created_by = user
             self._history_user = user # used by simple_history
@@ -1000,15 +1002,6 @@ class ReportAttachment(UserTrackedModel):
 
     #is_validated = models.BooleanField(default=False)
     #is_visible = models.BooleanField(default=False)
-    def get_security_level(self, security_level_as_int):
-        '''Return the security level key for the given int value'''
-        if (self.PUBLIC == security_level_as_int):
-            return self.PUBLIC
-        if (self.PRIVATE == security_level_as_int):
-            return self.PRIVATE
-        if (self.CONFIDENTIAL == security_level_as_int):
-            return self.CONFIDENTIAL
-
 
     #def is_deleted(self):
     #    '''Returns true if the attachment is deleted'''

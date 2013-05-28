@@ -182,10 +182,23 @@ def set_current_user(user):
 def get_current_user():
     return getattr(_thread_locals, 'user', None)
 
+from django.contrib.auth import authenticate, login
 
 class CurrentUserMiddleware:
     def process_request(self, request):
-        set_current_user(getattr(request, 'fmsuser', None))
+        if request.method == 'POST' and request.POST.get('username', False) and request.POST.get('password', False):
+            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+
+            if user and user.is_active:
+                login(request, user)
+            else:
+                return HttpResponseForbidden('invalid username or password')
+
+            set_current_user(user.fmsuser)
+            request.fmsuser = user.fmsuser
+        else:
+            set_current_user(getattr(request, 'fmsuser', None))
+
 
     def process_response(self, request, response):
         set_current_user(None)

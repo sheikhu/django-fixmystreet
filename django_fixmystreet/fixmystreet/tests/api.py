@@ -82,15 +82,18 @@ class ApiTest(SampleFilesTestCase):
             'report-category':'1',
             'report-secondary_category':'1',
             'report-subscription':'on',
-            'citizen-quality':'1',
+            'report-terms_of_use_validated': True,
+
             'comment-text':'test',
+
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 1000,
+
+            'citizen-quality':'1',
             'citizen-email':self.citizen.email,
             'citizen-firstname':self.citizen.first_name,
-            'citizen-lastname':self.citizen.last_name,
-            'report-terms_of_use_validated': True
+            'citizen-lastname':self.citizen.last_name
         }
 
         """
@@ -143,39 +146,6 @@ class ApiTest(SampleFilesTestCase):
 
         #Load the response data as JSON object
         result = simplejson.loads(response.content)
-    
-    #def testCreateReportPro(self):
-        #Parameters to save the report in database.
-    #    params = {
-    #        "user_name": "superuser",
-    #        "report_category_id": "2",
-    #        "report_description": "zazadescr",
-    #        "user_firstname": "Thibo",
-    #        "report_address": "Avenue des emeutes",
-    #        "user_lastname": "Bilbao",
-    #        "report_main_category_id": "2",
-    #        "report_zipcode": "1000",
-    #        "report_id": "22",
-    #        "report_y": "170375.278",
-    #        "report_x": "149157.349"
-    #    }
-        
-        #Create a client to launch requests
-    #    client = Client()
-        #Get the request response
-    #    response = client.post(reverse('create_report_pro'), params, follow=True)        
-        #Test the http response code (200 = OK)
-    #    self.assertEqual(response.status_code, 200)        
-        #Test if the response if JSON structured.
-    #    self.assertEqual(response['Content-Type'], 'application/json')
-        #Load the response data as JSON object
-    #    result = simplejson.loads(response.content)
-        #Verify if the report_id is returned by the webservice
-    #    self.assertTrue(result['report_id'] != None)
-        #Get in the DB the created report
-    #    report = Report.objects.get(id=result['report_id'])
-        #Verify the persisted data for the new created report
-    #    self.assertEquals(report.description, 'zazadescr')
 
     def testCreateReportDoubleCitizen(self):
         #Parameters to save the report in database.
@@ -192,6 +162,45 @@ class ApiTest(SampleFilesTestCase):
 
         #Load the response data as JSON object
         result = simplejson.loads(response.content)
+
+    def testCreateReportPro(self):
+        self.sample_post['username'] = self.manager.username
+        self.sample_post['password'] = 'test'
+
+        #Create a client to launch requests
+        client = Client()
+        #Get the request response
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        #Test the http response code (200 = OK)
+        self.assertEqual(response.status_code, 200)
+        #Test if the response if JSON structured.
+        self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
+
+        #Load the response data as JSON object
+        result = simplejson.loads(response.content)
+
+        #Verify if the report_id is returned by the webservice
+        self.assertTrue(result['id'] != None)
+        #Get in the DB the created report
+        report = Report.objects.get(id=result['id'])
+        #Verify the persisted data for the new created report
+        self.assertEquals(report.address, self.sample_post['report-address_fr'])
+        self.assertTrue(report.is_pro())
+
+    def testCreateReportDoublePro(self):
+        self.sample_post['username'] = self.manager.username
+        self.sample_post['password'] = 'test'
+
+        #Create a client to launch requests
+        client = Client()
+
+        #Get the request response
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+
+        self.assertEqual(1, len(Report.objects.all()))
 
     def testLoadCategories(self):
         #Parameters to save the report in database.
