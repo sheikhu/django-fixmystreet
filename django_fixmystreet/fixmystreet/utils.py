@@ -3,6 +3,7 @@ import tempfile
 import datetime
 import hashlib
 import os
+import re
 import logging
 from threading import local
 
@@ -186,7 +187,7 @@ from django.contrib.auth import authenticate, login
 
 class CurrentUserMiddleware:
     def process_request(self, request):
-        if request.method == 'POST' and request.POST.get('username', False) and request.POST.get('password', False):
+        if re.compile('^/(.*)/api/').search(request.path_info) and request.method == 'POST' and request.POST.get('username', False) and request.POST.get('password', False):
             user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
 
             if user and user.is_active:
