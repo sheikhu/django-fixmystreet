@@ -8,7 +8,7 @@ from django_fixmystreet.fixmystreet.models import Report, ReportCategory, Organi
 
 
 class MailTest(TestCase):
-	fixtures = ["bootstrap", "list_items"]
+	fixtures = ["list_items"]
 
 	def setUp(self):
 		self.citizen = FMSUser(
