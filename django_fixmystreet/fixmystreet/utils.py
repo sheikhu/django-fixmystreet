@@ -6,7 +6,7 @@ import os
 import logging
 from threading import local
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
