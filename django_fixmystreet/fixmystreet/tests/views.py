@@ -216,4 +216,41 @@ class ReportViewsTest(SampleFilesTestCase):
     #    response = self.client.get(reverse('ward_show',args=[1]), follow=True)
     #    self.assertEqual(response.status_code, 200)
 
+    def loginUser(self):
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+        response = self.client.post(reverse('login'), params)
 
+        self.assertEqual(response.status_code, 200)
+
+    def loginUserWithRedirect(self):
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+
+        url = '%s?next=/fr/pro/reports/' %reverse('login')
+        response = self.client.post(url, params)
+
+        self.assertEqual(response.status_code, 302)
+
+    def loginUserFail(self):
+        params = {
+            'username': self.manager.email,
+            'password': 'badpassword'
+        }
+        response = self.client.post(reverse('login'), params)
+
+        self.assertEqual(response.status_code, 403)
+
+    def logoutUser(self):
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+        self.client.post(reverse('login'), params)
+
+        response = self.client.post(reverse('logout'))
+        self.assertEqual(response.status_code, 302)
