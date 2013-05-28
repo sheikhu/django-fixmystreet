@@ -10,15 +10,15 @@ class Migration(SchemaMigration):
 
         # Changing field 'ReportFile.file_creation_date'
         db.alter_column('fixmystreet_reportfile', 'file_creation_date', self.gf('django.db.models.fields.DateTimeField')(null=True))
-        call_command("loaddata", "bootstrap.json")
-        db.execute("""
-            UPDATE fixmystreet_organisationentity o
-                SET active = true
-                    WHERE exists (
-                        SELECT * FROM fixmystreet_fmsuser
-                        WHERE manager=true AND organisation_id=o.id
-                    );
-        """)
+        # call_command("loaddata", "bootstrap.json")
+        # db.execute("""
+        #     UPDATE fixmystreet_organisationentity o
+        #         SET active = true
+        #             WHERE exists (
+        #                 SELECT * FROM fixmystreet_fmsuser
+        #                 WHERE manager=true AND organisation_id=o.id
+        #             );
+        # """)
 
     def backwards(self, orm):
 
