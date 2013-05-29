@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="report_update">
     {% if editable %}
-        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm deletion' %}')" href="{% url 'report_delete_file' report.id %}?fileId={{file.id}}">
+        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm deletion' %}')" href="{% url 'report_delete_attachment' report.id %}?attachmentId={{attachment.id}}">
             <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
         </a>
     {% endif %}

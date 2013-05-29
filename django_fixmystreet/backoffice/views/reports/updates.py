@@ -1,10 +1,10 @@
 from datetime import datetime
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.db import transaction
 
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
-from django_fixmystreet.fixmystreet.forms import ReportCommentForm, ReportFileForm, MarkAsDoneForm
+from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
 from django_fixmystreet.backoffice.forms import RefuseForm
 
 # TODO move to backoffice/views/reports/main.py
@@ -174,26 +174,12 @@ def updateAttachment(request,report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-def deleteComment(request,report_id):
-    """deleteComment is used to delete a comment (pro only)"""
+def deleteAttachment(request, report_id):
+    """delete a attachment (pro only)"""
     report = get_object_or_404(Report,id=report_id)
-    comment = ReportComment.objects.get(pk=request.REQUEST.get('commentId'))
-    comment.logical_deleted = True
-    comment.save()
+    a = ReportAttachment.objects.get(pk=request.REQUEST.get('attachmentId'))
+    a.logical_deleted = True
+    a.save()
 
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
-def deleteFile(request,report_id):
-    """deleteFile is used to delete a file (pro only)"""
-    report = get_object_or_404(Report,id=report_id)
-    f = ReportFile.objects.get(pk=request.REQUEST.get('fileId'))
-    f.logical_deleted = True
-    f.save()
-
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())

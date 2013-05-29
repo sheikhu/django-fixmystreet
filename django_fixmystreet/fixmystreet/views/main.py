@@ -37,13 +37,15 @@ def home(request, location = None, error_msg =None):
 
 
 def update_current_language(request):
+    activate(request.REQUEST.get('language'))
+
     if request.user.is_authenticated():
         fmsUser = request.user.fmsuser
         fmsUser.last_used_language = request.REQUEST.get('language').upper()
         fmsUser.save()
-    activate(request.REQUEST.get('language'))
+        return HttpResponseRedirect(reverse('home_pro'))
 
-    return HttpResponseRedirect(reverse('home_pro'))
+    return HttpResponseRedirect(reverse('home'))
 
 
 def about(request):
