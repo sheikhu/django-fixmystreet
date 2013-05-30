@@ -1339,9 +1339,24 @@ class ReportNotification(models.Model):
     related_object_id = models.PositiveIntegerField()
 
 
-    # @receiver(pre_save, sender=ReportNotification)
-    # def send_notification(sender, instance, **kwargs):
-    def save(self, *agrs, **kwargs):
+    def save(self, *args, **kwargs):
+        old_responsible=None
+        updater=None
+        comment=None
+        files=None
+        if 'old_responsible' in kwargs:
+            old_responsible = kwargs['old_responsible']
+            del kwargs['old_responsible']
+        if 'updater' in kwargs:
+            old_responsible = kwargs['updater']
+            del kwargs['updater']
+        if 'comment' in kwargs:
+            old_responsible = kwargs['comment']
+            del kwargs['comment']
+        if 'files' in kwargs:
+            old_responsible = kwargs['files']
+            del kwargs['files']
+
         if not self.recipient.email:
             self.error_msg = "No email recipient"
             self.success = False
@@ -1353,16 +1368,9 @@ class ReportNotification(models.Model):
 
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
-            if 'old_responsible' in kwargs:
-                subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=kwargs['old_responsible'])
-                del kwargs['old_responsible']
-            elif 'updater' in kwargs:
-                comment = kwargs['comment'].text if kwargs['comment'] else ''
-                subject, html, text = transform_notification_template(template, self.related, self.recipient, updater=kwargs['updater'], comment=comment)
-                del kwargs['updater']
-                del kwargs['comment']
-            else:
-                subject, html, text = transform_notification_template(template, self.related, self.recipient)
+            comment = comment.text if comment else ''
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment)
+
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
@@ -1372,11 +1380,7 @@ class ReportNotification(models.Model):
             if html:
                 msg.attach_alternative(html, "text/html")
 
-            # if self.report.photo:
-                # msg.attach_file(self.report.photo.file.name)
-            if 'files' in kwargs:
-                files = kwargs['files']
-                del kwargs['files']
+            if files:
                 for f in files:
                     if f.file_type == ReportFile.IMAGE:
                         msg.attach(f.file.name, f.file.read(), 'image/png')
@@ -1384,13 +1388,15 @@ class ReportNotification(models.Model):
 
             msg.send()
             self.success = True
+            super(ReportNotification, self).save(*args, **kwargs)
         except Exception as e:
             self.success = False
             self.error_msg = str(e)
             logger.error('Mail not send !')
             logger.error(e)
+            super(ReportNotification, self).save(*args, **kwargs)
+            raise
 
-        super(ReportNotification, self).save(*agrs, **kwargs)
 
 
 class ReportEventLog(models.Model):
@@ -1482,7 +1488,7 @@ class ReportEventLog(models.Model):
                 user_to_display = self.user.get_full_name() or self.user
 
             if self.user.fmsuser.is_pro():
-                user_to_display = u'%s %s' %(self.user.fmsuser.organisation, self.user.get_full_name() or self.user)
+                user_to_display = u'%s %s' %(self.user.fmsuser.get_organisation(), self.user.get_full_name() or self.user)
 
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,
@@ -1498,7 +1504,7 @@ class ReportEventLog(models.Model):
                 user_to_display = _("a citizen")
 
             if self.user.fmsuser.is_pro():
-                user_to_display = self.user.fmsuser.organisation
+                user_to_display = self.user.fmsuser.get_organisation()
 
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,

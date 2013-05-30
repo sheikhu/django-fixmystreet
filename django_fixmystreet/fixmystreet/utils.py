@@ -31,7 +31,7 @@ from markdown import markdown
 
 def ssl_required(view_func):
     """Decorator makes sure URL is accessed over https."""
-    def _wrapped_view_func(request, *args, **kwargs):
+    def _wrapped_view_func(request, *args):
         if not request.is_secure():
             if getattr(settings, 'HTTPS_SUPPORT', True):
                 request_url = request.build_absolute_uri(request.get_full_path())
@@ -240,7 +240,7 @@ def transform_notification_user_display(user, to_show):
         else:
             return _("a citizen")
 
-def transform_notification_template(template, report, user, **kwargs):
+def transform_notification_template(template, report, user, old_responsible=None, updater=None, comment=None, files=None):
     from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
     SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
 
@@ -292,14 +292,14 @@ def transform_notification_template(template, report, user, **kwargs):
             data["done_motivation"] = report.mark_as_done_motivation
             data["resolver"] = transform_notification_user_display(user, report.mark_as_done_user)
 
-        if 'old_responsible' in kwargs:
-            data["old_responsible"] = transform_notification_user_display(user, kwargs['old_responsible'])
+        if old_responsible:
+            data["old_responsible"] = transform_notification_user_display(user, old_responsible)
 
-        if 'updater' in kwargs:
-            data["updater"] = transform_notification_user_display(user, kwargs['updater'])
+        if updater:
+            data["updater"] = transform_notification_user_display(user, updater)
 
-        if 'comment' in kwargs:
-            data["comment"] = kwargs['comment']
+        if comment:
+            data["comment"] = comment
 
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
