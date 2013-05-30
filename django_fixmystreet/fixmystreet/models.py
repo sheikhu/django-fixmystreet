@@ -1348,13 +1348,13 @@ class ReportNotification(models.Model):
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
         if 'updater' in kwargs:
-            old_responsible = kwargs['updater']
+            updater = kwargs['updater']
             del kwargs['updater']
         if 'comment' in kwargs:
-            old_responsible = kwargs['comment']
+            comment = kwargs['comment']
             del kwargs['comment']
         if 'files' in kwargs:
-            old_responsible = kwargs['files']
+            files = kwargs['files']
             del kwargs['files']
 
         if not self.recipient.email:
@@ -1370,7 +1370,6 @@ class ReportNotification(models.Model):
 
             comment = comment.text if comment else ''
             subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment)
-
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
@@ -1392,8 +1391,8 @@ class ReportNotification(models.Model):
         except Exception as e:
             self.success = False
             self.error_msg = str(e)
-            logger.error('Mail not send !')
-            logger.error(e)
+            # logger.error('Mail not send !')
+            # logger.error(e)
             super(ReportNotification, self).save(*args, **kwargs)
             raise
 

@@ -295,11 +295,9 @@ def transform_notification_template(template, report, user, old_responsible=None
         if old_responsible:
             data["old_responsible"] = transform_notification_user_display(user, old_responsible)
 
-        if updater:
-            data["updater"] = transform_notification_user_display(user, updater)
-
-        if comment:
+        if comment is not None: # can be ''
             data["comment"] = comment
+            data["updater"] = transform_notification_user_display(user, updater)
 
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
