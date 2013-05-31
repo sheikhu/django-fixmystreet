@@ -8,6 +8,7 @@ def domain(request):
     return {
         'SITE_URL': 'http://{0}'.format(site.domain),
         'URBIS_URL': settings.URBIS_URL,
+        'WMS_SERVICE_URL': '{0}geoserver/gwc/service/wms'.format(settings.URBIS_URL),
     }
 
 

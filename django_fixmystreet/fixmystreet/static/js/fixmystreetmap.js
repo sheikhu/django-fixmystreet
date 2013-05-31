@@ -127,8 +127,13 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             y = this.options.origin.y;
         }
         this.map = new OpenLayers.Map(this.id, {
-            maxExtent: new OpenLayers.Bounds(133736.38890635, 160293.01359269, 167103.47196451, 182838.33998333),
-            maxResolution:46,
+            maxExtent: new OpenLayers.Bounds(16478.795,19244.928,301307.738,304073.87100000004),
+//            maxResolution: 46,
+            resolutions: [
+                69.53831616210938, 34.76915808105469, 17.384579040527345, 8.692289520263673,
+                4.346144760131836, 2.173072380065918, 1.086536190032959, 0.5432680950164795,
+                0.2716340475082398, 0.1358170237541199
+            ],
             units: 'm',
             projection: "EPSG:31370",
             controls: [

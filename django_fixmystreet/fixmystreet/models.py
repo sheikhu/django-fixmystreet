@@ -303,7 +303,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def responsible(self, user):
         if user.contractor or user.applicant:
-            return self.filter(contractor__in=user.work_for)
+            return self.filter(contractor__in=user.work_for.all())
         else:
             return self.filter(responsible_manager=user)
 

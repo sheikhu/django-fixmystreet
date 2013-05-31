@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils.translation import get_language
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.fixmystreet.models import Report, ZipCode
 from django_fixmystreet.fixmystreet.utils import dict_to_point
@@ -32,17 +33,19 @@ def list(request, status):
 
     reports = Report.objects.all()
     #if the user is an contractor then user the dependent organisation id
-    if (connectedUser.contractor == True or connectedUser.applicant == True):
-        #if the user is an contractor then display only report where He is responsible
-        reports = reports.filter(contractor__in = connectedUser.work_for.all())
-    else:
-        #If the manager is connected then filter on manager
+    #If the manager is connected then filter on manager
+    if connectedUser.agent or connectedUser.manager or connectedUser.leader:
         if ownership == "responsible":
             reports = reports.responsible(connectedUser)
         elif ownership == "subscribed":
             reports = reports.subscribed(connectedUser)
         elif connectedUser.organisation: # ownership == entity
             reports = reports.entity_responsible(connectedUser.organisation)
+    elif (connectedUser.contractor or connectedUser.applicant):
+        #if the user is an contractor then display only report where He is responsible
+        reports = reports.filter(contractor__in = connectedUser.work_for.all())
+    else:
+        raise PermissionDenied()
 
 
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]

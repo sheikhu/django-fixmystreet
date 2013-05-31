@@ -22,7 +22,7 @@ $(function(){
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    URBIS_URL + '/geoserver/wms',
+        urbisUrl:    WMS_SERVICE_URL,
         origin:{
             x:{{ report.point.x }},
             y:{{ report.point.y }}
