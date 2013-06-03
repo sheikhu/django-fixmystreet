@@ -55,7 +55,6 @@ class ReportForm(forms.ModelForm):
     address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
     address_fr = forms.CharField(widget=forms.widgets.HiddenInput)
     address_number = forms.CharField(widget=forms.widgets.HiddenInput)
-    address_regional = forms.BooleanField(widget=forms.widgets.HiddenInput, required=False)
     postalcode = forms.CharField(widget=forms.widgets.HiddenInput)
     x = forms.CharField(widget=forms.widgets.HiddenInput)
     y = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -90,7 +89,7 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'address_regional', 'postalcode', 'category', 'secondary_category', 'postalcode','private', 'subscription')
+        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode','private', 'subscription')
 
 
     def save (self,commit=True):
@@ -111,7 +110,7 @@ class CitizenReportForm(ReportForm):
         model = Report
         fields = (
             'x', 'y', 'address_nl','address_fr',
-            'address_number', 'address_regional', 'postalcode',
+            'address_number', 'postalcode',
             'category', 'secondary_category',
             'postalcode',
             'subscription',

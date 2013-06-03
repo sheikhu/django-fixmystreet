@@ -77,10 +77,6 @@ function retrieveAddress() {
             fillAdressField(currLang, address);
             fillI18nAdressField(currLang, address);
 
-
-            //Default False
-            $('#id_report-address_regional').val('False');
-
             //Does not work. Fill in the wrong input zone
             for (var i in languages) {
                 if (languages[i] != currLang) {
