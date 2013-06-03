@@ -118,7 +118,7 @@ class EntityHandler(BaseHandler):
     allowed_methods = ('GET')
     model = OrganisationEntity
     fields = (
-        'name'
+        'name',
     )
 
 
