@@ -170,6 +170,15 @@ class ApiTest(SampleFilesTestCase):
         client = Client()
         #Get the request response
 
+        response = client.post('/fr/api/login/', {
+            'username': self.manager.username,
+            'password': 'test'
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        #Load the response data as JSON object
+        result = simplejson.loads(response.content)
+        self.assertIn('email', result)
+
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
         #Test the http response code (200 = OK)
         self.assertEqual(response.status_code, 200)

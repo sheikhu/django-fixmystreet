@@ -149,10 +149,10 @@ class FMSUser(User):
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
-        if self.contractor == True or self.applicant == True:
-            return u", ".join([unicode(o) for o in self.work_for.all()])
-        elif self.organisation:
+        if self.organisation:
              return self.organisation
+        elif self.contractor == True or self.applicant == True:
+            return u", ".join([unicode(o) for o in self.work_for.all()])
 
     def is_pro(self):
         return self.agent or self.manager or self.leader or self.applicant or self.contractor
@@ -181,7 +181,7 @@ class FMSUser(User):
         d['last_name'] = getattr(self, 'last_name')
         d['email'] = getattr(self, 'email')
         d['last_used_language'] = getattr(self, 'last_used_language')
-        d['organisation'] = getattr(self.get_organisation(), 'id')
+        d['organisation'] = getattr(self.get_organisation(), 'id', None)
         return simplejson.dumps(d)
     def get_number_of_created_reports(self):
         userConnectedOrganisation = self.organisation
