@@ -50,7 +50,7 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 1000)).order_by('distance')
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 300)).pending().order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,
@@ -79,7 +79,7 @@ def report_prepare_pro(request, location = None, error_msg = None):
         popup_reports = Report.objects.created_between(start_date, end_date)
 
         if str(request.GET["stat_status"]) == 'unpublished':
-            popup_reports = popup_reports.pending()
+            popup_reports = popup_reports.created()
         elif str(request.GET["stat_status"])== 'in_progress':
             popup_reports = popup_reports.in_progress()
         else:
@@ -91,7 +91,7 @@ def report_prepare_pro(request, location = None, error_msg = None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports_created': Report.objects.all().pending().order_by('-modified')[0:5],
+                'reports_created': Report.objects.all().created().order_by('-modified')[0:5],
                 'reports_in_progress': Report.objects.all().in_progress().order_by('-modified')[0:5],
                 'reports_closed':Report.objects.all().closed().order_by('-modified')[0:5],
                 'stats':stats_result,

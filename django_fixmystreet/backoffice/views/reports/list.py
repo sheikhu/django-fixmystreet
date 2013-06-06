@@ -51,7 +51,7 @@ def list(request, status):
     #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
 
     if status == 'created':
-        reports = reports.pending()
+        reports = reports.created()
     elif status == 'in_progress':
         reports = reports.in_progress()
     elif status == 'in_progress_and_assigned':

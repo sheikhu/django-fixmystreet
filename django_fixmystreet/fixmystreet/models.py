@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from django.contrib.gis.db import models
+from django.contrib.gis.db.models import Q
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
@@ -316,11 +317,14 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def entity_territory(self, organisation):
         return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode_set.all()])
 
-    def pending(self):
+    def created(self):
         return self.filter(status=Report.CREATED)
 
     def in_progress(self):
         return self.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+
+    def pending(self):
+        return self.filter(Q(status=Report.CREATED) | Q(status__in=Report.REPORT_STATUS_IN_PROGRESS))
 
     def assigned(self):
         return self.filter(contractor__isnull=False)
