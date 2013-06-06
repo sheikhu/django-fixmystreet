@@ -72,7 +72,7 @@ def new(request):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 300)).order_by('distance').public()
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()
 
     return render_to_response("reports/new.html",
             {

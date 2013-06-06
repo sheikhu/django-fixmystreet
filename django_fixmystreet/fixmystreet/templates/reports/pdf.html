@@ -91,7 +91,7 @@
 
         .block-left, .block-right {
             width: 300px;
-            height: 160px;
+            height: 140px;
             border: 1px solid #999;
             padding:20px;
         }
@@ -154,7 +154,7 @@
         {% if report.is_refused %}
             <div class='is_created'>
                 <p>{% trans "This problem has been refused." %}</p>
-                {% if pro_version %}<p>{{ report.refusal_motivation }}</p>{% endif %}
+                {% if privacy == 'private' %}<p>{{ report.refusal_motivation }}</p>{% endif %}
             </div>
         {% endif %}
 
@@ -204,7 +204,7 @@
             </strong>
 
             {% if report.citizen %}
-                {% if pro_version %}
+                {% if privacy == 'private' %}
                     {{report.citizen.fmsuser.get_display_name}},
                     <br/>
                     {{report.citizen.fmsuser.email}}
@@ -214,7 +214,7 @@
                     {% trans 'a citizen' %}
                 {% endif %}
             {% else %}
-                {% if pro_version %}
+                {% if privacy == 'private' %}
                     {{ report.created_by.get_organisation }} {{ report.created_by.fmsuser.get_display_name }}
                 {% else %}
                     {{ report.created_by.get_organisation }}
@@ -241,7 +241,7 @@
         <p>
             <strong>{% trans 'By' %}</strong>
 
-            {% if pro_version %}
+            {% if privacy == 'private' %}
                 {{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} - {{report.responsible_manager.organisation.name}},
                 <br/>
                 {{report.responsible_manager.email}}
@@ -262,7 +262,7 @@
     <br/>
     <div class="block-full" style="padding-top:10px;">
         <h2>{% trans 'History' %}</h2>
-        {% include "reports/_activity_list.html" %}
+        {% include "reports/_activity_list.html" with privacy=privacy %}
     </div>
 
     <!--

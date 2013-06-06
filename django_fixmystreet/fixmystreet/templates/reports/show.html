@@ -119,7 +119,7 @@ function markAsDone(){
         <h2>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h2>
     </div>
     <div class="modal-body">
-        {% include "reports/_activity_list.html" with pro_version=0 %}
+        {% include "reports/_activity_list.html" with privacy='public' %}
     </div>
     <div class="modal-footer">
         <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>

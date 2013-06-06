@@ -303,16 +303,26 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
     def responsible(self, user):
-        if user.contractor or user.applicant:
-            return self.filter(contractor__in=user.work_for.all())
-        else:
-            return self.filter(responsible_manager=user)
+        query = Q()
 
-    def entity_responsible(self, organisation):
-        if organisation.subcontractor or organisation.applicant:
-            return self.filter(contractor=organisation)
-        else:
-            return self.filter(responsible_entity=organisation)
+        if user.contractor or user.applicant:
+            query = query | Q(contractor__in=user.work_for.all())
+
+        if user.manager or user.leader:
+            query = query | Q(responsible_manager=user)
+
+        return self.filter(query)
+
+    def entity_responsible(self, user):
+        query = Q()
+
+        if user.contractor or user.applicant:
+            query = query | Q(contractor__in=user.work_for.all())
+
+        if user.agent or user.manager or user.leader:
+            query = query | Q(responsible_entity=user.organisation)
+
+        return self.filter(query)
 
     def entity_territory(self, organisation):
         return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode_set.all()])

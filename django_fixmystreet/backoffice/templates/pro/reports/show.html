@@ -151,7 +151,7 @@ function close(){
         <h2>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h2>
     </div>
     <div class="modal-body">
-        {% include "reports/_activity_list.html" with pro_version=1 %}
+        {% include "reports/_activity_list.html" with  privacy='private' %}
     </div>
     <div class="modal-footer">
         <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>

@@ -50,7 +50,7 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 300)).pending().order_by('distance')
+    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).pending().order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,

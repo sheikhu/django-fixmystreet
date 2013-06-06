@@ -40,10 +40,10 @@ def list(request, status):
         elif ownership == "subscribed":
             reports = reports.subscribed(connectedUser)
         elif connectedUser.organisation: # ownership == entity
-            reports = reports.entity_responsible(connectedUser.organisation)
-    elif (connectedUser.contractor or connectedUser.applicant):
+            reports = reports.entity_responsible(connectedUser)
+    elif connectedUser.contractor or connectedUser.applicant:
         #if the user is an contractor then display only report where He is responsible
-        reports = reports.filter(contractor__in = connectedUser.work_for.all())
+        reports = reports.entity_responsible(connectedUser)
     else:
         raise PermissionDenied()
 
