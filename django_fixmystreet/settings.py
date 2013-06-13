@@ -30,7 +30,7 @@ LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ els
 ADD_THIS_KEY = os.environ['ADD_THIS_KEY'] if 'ADD_THIS_KEY' in os.environ else ''
 GA_CODE = os.environ['GA_CODE'] if 'GA_CODE' in os.environ else 'UA-17146775-54'
 SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else 'dev'
-EMAIL_HOST = "relay.irisnet.be"
+EMAIL_HOST = "localhost"
 ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))
 
 if 'MEDIA_ROOT' in os.environ:
