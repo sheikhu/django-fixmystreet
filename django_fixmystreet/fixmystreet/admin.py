@@ -1,3 +1,5 @@
+
+
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 from django.core import urlresolvers
@@ -15,10 +17,11 @@ from django.conf.urls.defaults import patterns
 from markdown import markdown
 
 from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate
-
+from django_fixmystreet.fixmystreet.utils import export_as_csv_action
 
 #admin.site.unregister(User)
 #admin.site.unregister(Group)
+
 
 class FaqEntryAdmin(admin.ModelAdmin):
     list_display = ('q', 'order')
@@ -78,6 +81,10 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     readonly_fields = ("created", "created_by", "modified", "modified_by", "password", "username")
     search_fields = ("username", "email", "first_name", "last_name")
     list_filter = ("leader", "manager", "agent", "applicant", "contractor")
+
+    actions = (
+        export_as_csv_action(fields=list_display),
+    )
 
     def get_urls(self):
         urls = super(FMSUserAdmin, self).get_urls()
@@ -203,3 +210,4 @@ class MailNotificationTemplateAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MailNotificationTemplate, MailNotificationTemplateAdmin)
+
