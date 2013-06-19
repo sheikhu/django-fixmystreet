@@ -308,7 +308,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
         if user.contractor or user.applicant:
             query = query | Q(contractor__in=user.work_for.all())
 
-        if user.manager or user.leader:
+        if user.manager or user.leader or user.agent:
             query = query | Q(responsible_manager=user)
 
         return self.filter(query)
