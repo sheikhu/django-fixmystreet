@@ -1,6 +1,6 @@
 <table width="100%">
     {% for activity in activity_list %}
-        {% if  privacy == 'private' or activity.is_public_visible %}
+        {% if  privacy == 'private' and activity.is_pro_visible or activity.is_public_visible %}
         <tr>
             <td colspan="2">
                 <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
