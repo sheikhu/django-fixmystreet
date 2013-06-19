@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-27 11:14+0200\n"
+"POT-Creation-Date: 2013-06-19 14:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,9 +22,8 @@ msgid "Refusal motivation"
 msgstr "Motivation de refus:"
 
 #: forms.py:40
-#, fuzzy
 msgid "Refusal motivation description."
-msgstr "Motivation de refus:"
+msgstr "Déscription du refus"
 
 #: forms.py:58
 msgid "Email"
@@ -85,108 +84,98 @@ msgstr "^rapport/liste/(.+)"
 
 #: urls.py:29
 #, fuzzy
-msgid "^report/(\\d+)/update/$"
-msgstr "^rapport/(\\d+)/modifier/"
-
-#: urls.py:30
-#, fuzzy
 msgid "^report/(\\d+)/accept/$"
 msgstr "^rapport/(\\d+)/accepter/"
 
-#: urls.py:31
+#: urls.py:30
 #, fuzzy
 msgid "^report/(\\d+)/refuse/$"
 msgstr "^rapport/(\\d+)/refuser/"
 
-#: urls.py:32
+#: urls.py:31
 #, fuzzy
 msgid "^report/(\\d+)/fixed/$"
 msgstr "^rapport/(\\d+)/resolu/"
 
-#: urls.py:33
+#: urls.py:32
 #, fuzzy
 msgid "^report/(\\d+)/close/$"
 msgstr "^rapport/(\\d+)/termine/"
 
-#: urls.py:34
+#: urls.py:33
 #, fuzzy
 msgid "^report/(\\d+)/validateAll/$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:35
+#: urls.py:34
 #, fuzzy
 msgid "^report/(\\d+)/updateAttachment$"
 msgstr "^rapport/(\\d+)/termine/"
 
-#: urls.py:36
+#: urls.py:35
 #, fuzzy
 msgid "^report/(\\d+)/deleteFile$"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:37
-#, fuzzy
-msgid "^report/(\\d+)/deleteComment$"
-msgstr "^rapport/(\\d+)/termine/"
-
-#: urls.py:38
+#: urls.py:36
 msgid "^report/(\\d+)/changeManager/"
 msgstr ""
 
-#: urls.py:39
+#: urls.py:37
 msgid "^report/(\\d+)/changeContractor/"
 msgstr ""
 
-#: urls.py:40
+#: urls.py:38
 #, fuzzy
 msgid "^report/(\\d+)/switchPrivacy/"
 msgstr "^rapport/(\\d+)/accepter/"
 
-#: urls.py:41
+#: urls.py:39
 msgid "^report/(\\d+)/accept_and_validate/"
 msgstr ""
 
-#: urls.py:44
+#: urls.py:42
 #, fuzzy
 msgid "^report/(\\d+)/pdf/"
 msgstr "^rapport/(\\d+)/modifier/"
 
-#: urls.py:48
+#: urls.py:46
 msgid "^report/(\\d+)/subscribe/"
 msgstr ""
 
-#: urls.py:49
+#: urls.py:47
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr ""
 
-#: urls.py:53
+#: urls.py:51
 msgid "^report/(\\d+)/flags/thanks"
 msgstr ""
 
-#: urls.py:54
+#: urls.py:52
 msgid "^report/(\\d+)/flags"
 msgstr ""
 
-#: urls.py:64
+#: urls.py:62
 msgid "^ajax/saveSelection"
 msgstr ""
 
-#: urls.py:69
+#: urls.py:67
 msgid "^logout/$"
 msgstr ""
 
-#: urls.py:70
+#: urls.py:68
 msgid "^change-password/$"
 msgstr ""
 
-#: urls.py:95
+#: urls.py:93
 msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
 msgstr ""
 
-#: urls.py:96
+#: urls.py:94
 msgid "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
 msgstr ""
 
-#: urls.py:97
+#: urls.py:95
 msgid "^export_file/reports/(?P<emitter_format>.+)"
 msgstr ""
 
@@ -746,6 +735,14 @@ msgstr "L'utilisateur a été correctement supprimé"
 #, fuzzy
 msgid "You attachments has been sent"
 msgstr "Votre compte est desactivé"
+
+#, fuzzy
+#~ msgid "^report/(\\d+)/update/$"
+#~ msgstr "^rapport/(\\d+)/modifier/"
+
+#, fuzzy
+#~ msgid "^report/(\\d+)/deleteComment$"
+#~ msgstr "^rapport/(\\d+)/termine/"
 
 #, fuzzy
 #~ msgid "^report/(\\d+)/updateFile$"

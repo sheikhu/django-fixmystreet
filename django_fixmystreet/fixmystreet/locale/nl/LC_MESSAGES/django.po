@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-27 11:14+0200\n"
+"POT-Creation-Date: 2013-06-19 14:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,24 +18,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:101
+#: admin.py:108
 msgid "Password changed successfully."
 msgstr ""
 
-#: admin.py:111
+#: admin.py:118
 #, fuzzy, python-format
 msgid "Change password: %s"
 msgstr "Paswoord wijzigen"
 
-#: forms.py:24 forms.py:51 forms.py:84
+#: forms.py:24 forms.py:51 forms.py:83
 msgid "Select a secondary Category"
 msgstr "Kies een subcategorie"
 
-#: forms.py:50 forms.py:66 forms.py:84
+#: forms.py:50 forms.py:65 forms.py:83
 msgid "category"
 msgstr "categorie"
 
-#: forms.py:50 forms.py:66
+#: forms.py:50 forms.py:65
 msgid "Select a Category"
 msgstr "Kies een categorie"
 
@@ -49,11 +49,11 @@ msgstr ""
 "Ik wil de evolutie van de melding volgen en e-mailberichten hierover "
 "ontvangen"
 
-#: forms.py:85
+#: forms.py:84
 msgid "Private Report"
 msgstr "Privé rapport"
 
-#: forms.py:108
+#: forms.py:107
 msgid ""
 "I have read and accepted <a href=\"/terms-of-use/\" target=\"_blank\">the "
 "terms of use</a>"
@@ -61,303 +61,303 @@ msgstr ""
 "Ik heb gelezen en ingestemd met de <a href=\"/nl/terms-of-use/\" target="
 "\"_blank\">gebruiksvoorwaarden</a>"
 
-#: forms.py:132
+#: forms.py:131
 msgid "Choose your quality"
 msgstr "Selecteer een hoedanigheid"
 
-#: forms.py:140
+#: forms.py:139
 msgid "Identity"
 msgstr "Naam"
 
-#: forms.py:141
+#: forms.py:140
 msgid "Tel."
 msgstr "telefoonnummer"
 
-#: forms.py:142 forms.py:170
+#: forms.py:141 forms.py:169
 msgid "Email"
 msgstr "E-mail"
 
-#: forms.py:143
+#: forms.py:142
 msgid "Quality"
 msgstr "Hoedanigheid"
 
-#: forms.py:167 models.py:232 models.py:1166 models.py:1200 models.py:1234
+#: forms.py:166 models.py:236 models.py:1174 models.py:1208 models.py:1242
 msgid "Name"
 msgstr "Naam"
 
-#: forms.py:172
+#: forms.py:171
 msgid "Message"
 msgstr "Boodschap"
 
-#: forms.py:229
+#: forms.py:228
 msgid "Add a comment, please."
 msgstr ""
 "Gelieve een commentaar toe te voegen (wordt goedgekeurd voor publicatie)."
 
-#: forms.py:234 templates/reports/show.html:273
+#: forms.py:233 templates/reports/show.html:273
 #: templates/reports/show.html.py:275
 msgid "Mark as done"
 msgstr "Als opgelost melden"
 
-#: forms.py:237
+#: forms.py:236
 msgid "Mark as done comments."
 msgstr "Opmerkingen (facultatief)."
 
-#: forms.py:256
+#: forms.py:255
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: forms.py:257
+#: forms.py:256
 msgid "Password"
 msgstr "Paswoord"
 
-#: forms.py:260
+#: forms.py:259
 msgid ""
 "Please enter a correct username and password. Note that both fields are case-"
 "sensitive."
 msgstr ""
 
-#: forms.py:262
+#: forms.py:261
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr ""
 
-#: forms.py:264
+#: forms.py:263
 #, fuzzy
 msgid "This account is inactive."
 msgstr "is niet gevalideerd."
 
-#: models.py:79
+#: models.py:81
 msgid "Resident"
 msgstr "Buurtbewoner"
 
-#: models.py:80
+#: models.py:82
 msgid "Trade"
 msgstr "Handelaar"
 
-#: models.py:81
+#: models.py:83
 msgid "Syndicate"
 msgstr "Beheerder van een gebouw"
 
-#: models.py:82
+#: models.py:84
 msgid "Association"
 msgstr "Vereniging"
 
-#: models.py:83
+#: models.py:85
 msgid "Other"
 msgstr "Andere"
 
-#: models.py:143 models.py:1039
+#: models.py:147 models.py:1047
 msgid "ANONYMOUS"
 msgstr "ANONIEM"
 
-#: models.py:233 models.py:1167 models.py:1201 models.py:1235
+#: models.py:237 models.py:1175 models.py:1209 models.py:1243
 msgid "Slug"
 msgstr ""
 
-#: models.py:377 models.py:378 models.py:535 models.py:1435
+#: models.py:394 models.py:395 models.py:552 models.py:1448
 #: templates/reports/pdf.html:199
 msgid "Created"
 msgstr "Gemeld"
 
-#: models.py:379
+#: models.py:396
 msgid "Refused"
 msgstr "Afgewezen"
 
-#: models.py:381 models.py:382 models.py:537
+#: models.py:398 models.py:399 models.py:554
 msgid "In progress"
 msgstr "In behandeling"
 
-#: models.py:383
+#: models.py:400
 msgid "Manager is assigned"
 msgstr "Beheerder is toegekend"
 
-#: models.py:384
+#: models.py:401
 msgid "Applicant is responsible"
 msgstr "Aannemer is verantwoordelijk"
 
-#: models.py:385
+#: models.py:402
 msgid "Contractor is assigned"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:386
+#: models.py:403
 msgid "Solved"
 msgstr "Opgelost"
 
-#: models.py:388 models.py:389 models.py:539
+#: models.py:405 models.py:406 models.py:556
 msgid "Processed"
 msgstr "Afgesloten"
 
-#: models.py:390
+#: models.py:407
 msgid "Deleted"
 msgstr "Verwijderd"
 
-#: models.py:397 templates/reports/pdf.html:176
+#: models.py:414 templates/reports/pdf.html:176
 msgid "Location"
 msgstr "Plaats"
 
-#: models.py:398
+#: models.py:415
 msgid "Address Number"
 msgstr "Adres nummer"
 
-#: models.py:401
+#: models.py:418
 msgid "Postal Code"
 msgstr "Postcode"
 
-#: models.py:403 models.py:404 templates/reports/pdf.html:179
+#: models.py:420 models.py:421 templates/reports/pdf.html:179
 msgid "Category"
 msgstr "Categorie"
 
-#: models.py:989 templates/reports/_attachment.html:53
+#: models.py:1006 templates/reports/_attachment.html:53
 msgid "Public"
 msgstr "Publiek"
 
-#: models.py:990 templates/reports/_attachment.html:58
+#: models.py:1007 templates/reports/_attachment.html:58
 msgid "Private"
 msgstr "Privaat"
 
-#: models.py:991 templates/reports/_attachment.html:62
+#: models.py:1008 templates/reports/_attachment.html:62
 msgid "Confidential"
 msgstr "Confidentieel"
 
-#: models.py:1237 models.py:1238
+#: models.py:1245 models.py:1246
 msgid "Category group"
 msgstr "Categorie group"
 
-#: models.py:1322 models.py:1631
+#: models.py:1330 models.py:1644
 msgid "Label"
 msgstr "Label"
 
-#: models.py:1422
+#: models.py:1435
 msgid "Refuse"
 msgstr "Afgewezen"
 
-#: models.py:1423
+#: models.py:1436
 msgid "Close"
 msgstr "Afsluiten"
 
-#: models.py:1424
+#: models.py:1437
 msgid "Mark as Done"
 msgstr "Markeer als behandeld"
 
-#: models.py:1425
+#: models.py:1438
 msgid "Manager assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1427
+#: models.py:1440
 #, fuzzy
 msgid "Valid"
 msgstr "verifiëren"
 
-#: models.py:1428
+#: models.py:1441
 msgid "Organisation assinged"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1430
+#: models.py:1443
 msgid "Contractor assinged"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:1431
+#: models.py:1444
 msgid "Contractor changed"
 msgstr "Aannemer is toegewezen"
 
-#: models.py:1432
+#: models.py:1445
 msgid "Applicant assinged"
 msgstr "Aannemer is verantwoordelijk"
 
-#: models.py:1433
+#: models.py:1446
 msgid "Applicant changed"
 msgstr "Beheerder is toegekend"
 
-#: models.py:1434
+#: models.py:1447
 msgid "Applicant contractor changed"
 msgstr "Applicant contractor aangepast"
 
-#: models.py:1436 templates/emails/report_update/subject.txt:1
+#: models.py:1449 templates/emails/report_update/subject.txt:1
 #, fuzzy
 msgid "Updated"
 msgstr "Bijgewerkte Rapporten"
 
-#: models.py:1437
+#: models.py:1450
 #, fuzzy
 msgid "Update published"
 msgstr "Niet gepubliceerd"
 
-#: models.py:1440
+#: models.py:1453
 msgid "Report refused by {user}"
 msgstr "Probleem niet goedgekeurd door {user}"
 
-#: models.py:1441
+#: models.py:1454
 msgid "Report closed by {user}"
 msgstr "Probleem afgesloten door {user}"
 
-#: models.py:1442
+#: models.py:1455
 msgid "Report pointed as solved"
 msgstr "Probleem gemeld als opgelost door {user}"
 
-#: models.py:1443
+#: models.py:1456
 msgid "Report as been assigned to {related_new}"
 msgstr "Probleem toegewezen aan {user}"
 
-#: models.py:1445
+#: models.py:1458
 msgid "Report has been approved by {user}"
 msgstr "Probleem goedgekeurd door {user}"
 
-#: models.py:1446
+#: models.py:1459
 msgid "{related_new} is responsible for the report"
 msgstr "Probleem toegewezen aan {user}"
 
-#: models.py:1448
+#: models.py:1461
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: models.py:1449
+#: models.py:1462
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: models.py:1450
+#: models.py:1463
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: models.py:1451
+#: models.py:1464
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: models.py:1452
+#: models.py:1465
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: models.py:1453
+#: models.py:1466
 msgid "Report created by {user}"
 msgstr "Probleem gemeld door {user}"
 
-#: models.py:1454
+#: models.py:1467
 msgid "Report updated by {user}"
 msgstr "Probleem geactualiseerd door {user}"
 
-#: models.py:1455
+#: models.py:1468
 msgid "Informations published by {user}"
 msgstr "Informatie gepubliceerd door {user}"
 
-#: models.py:1484 models.py:1500 models.py:1504 utils.py:213 utils.py:226
+#: models.py:1497 models.py:1513 models.py:1517 utils.py:216 utils.py:229
 #: templates/reports/pdf.html:214
 msgid "a citizen"
 msgstr "burger"
 
-#: models.py:1589
+#: models.py:1602
 msgid "Question"
 msgstr "Vraag"
 
-#: models.py:1590
+#: models.py:1603
 msgid "Answere"
 msgstr "Antwoord"
 
-#: models.py:1632
+#: models.py:1645
 msgid "Related model class name"
 msgstr ""
 
-#: models.py:1633
+#: models.py:1646
 msgid "Related model field"
 msgstr ""
 
@@ -1446,7 +1446,7 @@ msgid "Warning"
 msgstr "Opgelet"
 
 #: templates/reports/index.html:28 templates/reports/new.html:269
-#: views/reports/main.py:197
+#: views/reports/main.py:199
 msgid "Does not participate to FixMyStreet yet with details"
 msgstr ""
 "Deze gemeente neemt nog niet deel aan Fix My Street. Om dit incident te "
@@ -1728,11 +1728,11 @@ msgstr "Dit incident is reeds gesignaleerd als afgehandeld"
 msgid "Please Note"
 msgstr "Opmerking"
 
-#: views/reports/main.py:126
+#: views/reports/main.py:128
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
 
-#: views/reports/main.py:186
+#: views/reports/main.py:188
 msgid "No incident found with this ticket number"
 msgstr "Geen incident gevonden met dit nummer"
 
