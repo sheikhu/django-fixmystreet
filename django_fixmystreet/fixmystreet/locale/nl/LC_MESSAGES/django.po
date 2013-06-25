@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-19 14:48+0200\n"
+"POT-Creation-Date: 2013-06-25 16:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -690,7 +690,7 @@ msgstr "Zoeken"
 
 #: templates/home.html:102
 msgid "Enter the report ticket:"
-msgstr "Vul het nummer van de melding"
+msgstr "Vul het nummer in van de melding"
 
 #: templates/home.html:103
 msgid "Ticket number..."
@@ -1011,41 +1011,36 @@ msgid "Fixed"
 msgstr "opgelost"
 
 #: templates/emails/send_created_to_user/message.html:9
-#: templates/emails/send_created_to_user/message.html:21
+#: templates/emails/send_created_to_user/message.html:20
 #, python-format
 msgid ""
 "\n"
 "<p>The user %(firstname)s %(lastname)s is created for you.</p>\n"
-"<!--p> Please activate yourself first by clicking the following link: "
-"%(url)s/</p-->\n"
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
 msgstr ""
 "\n"
 "<p>De gebruiker %(firstname)s %(lastname)s is aangemaakt voor u.</p>\n"
-"<!--p> U moet de gebruiker activeren door op de volgende link te klikken: "
-"%(url)s/</p-->\n"
-"<h2>Gebruikersinformatie:</h2>\n"
-"<p> Gebruikersnaam: %(username)s</p>\n"
-"<p> Paswoord: %(password)s</p>\n"
+"<p>Gebruikersinformatie:</p>\n"
+"<ul>\n"
+"<li>Gebruikersnaam: %(username)s</li>\n"
+"<li>Paswoord: %(password)s</li>\n"
+"</ul>\n"
 
 #: templates/emails/send_created_to_user/message.txt:4
 #, python-format
 msgid ""
 "\n"
-"The user %(related.firstname)s %(related.lastname)s is created for you.\n"
-"Please activate yourself first by clicking the following link: %(url)s\n"
+"The user %(firstname)s %(lastname)s is created for you.\n"
 "User information:\n"
-"Username: %(related.username)s\n"
+"Username: %(username)s\n"
 "Password: %(password)s\n"
 msgstr ""
 "\n"
-"De gebruiker %(related.firstname)s %(related.lastname)s is voor u "
-"aangemaakt.\n"
-"U moet de gebruiker activeren door op de volgende link te klikken: %(url)s\n"
+"De gebruiker %(firstname)s %(lastname)s is voor u aangemaakt.\n"
 "Gebruikersinformatie:\n"
-"Gebruikersnaam: %(related.username)s\n"
+"Gebruikersnaam: %(username)s\n"
 "Paswoord: %(password)s\n"
 
 #: templates/emails/send_created_to_user/subject.txt:1

@@ -2,10 +2,9 @@
 {% load i18n %}
 {% block content %}
 {% blocktrans with firstname=user.first_name lastname=user.last_name url=SITE_URL username=user.username password=password %}
-The user {{related.firstname}} {{related.lastname}} is created for you.
-Please activate yourself first by clicking the following link: {{url}}
+The user {{firstname}} {{lastname}} is created for you.
 User information:
-Username: {{related.username}}
+Username: {{username}}
 Password: {{password}}
 {% endblocktrans %}
 {% endblock %}
