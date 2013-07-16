@@ -506,15 +506,18 @@ class Report(UserTrackedModel):
         '''Return the report ticket as a displayable component'''
         return "#"+self.get_ticket_number()
 
+    def get_slug(self):
+        slug_sec_cat = self.secondary_category.slug
+        slug_sec_cat_class = self.secondary_category.secondary_category_class.slug
+        slug_cat = self.category.slug
+        slug_ent = self.responsible_entity.slug
+        return "{0}-{1}-{2}-{3}".format(slug_sec_cat, slug_sec_cat_class, slug_cat, slug_ent)
+
     def get_absolute_url(self):
-        #TODO determine when pro and no-pro url must be returned
-        slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
-        return reverse("report_show",kwargs={'report_id':self.id,'slug': slug })
+        return reverse("report_show",kwargs={'report_id':self.id,'slug': self.get_slug() })
 
     def get_absolute_url_pro(self):
-        #TODO determine when pro and no-pro url must be returned
-        slug = self.secondary_category.slug + '-' + self.secondary_category.secondary_category_class.slug + '-' + self.category.slug + '-' + self.responsible_entity.slug
-        return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': slug })
+        return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': self.get_slug() })
 
 
     def get_pdf_url(self):
@@ -765,22 +768,22 @@ def init_regional_street(sender, instance, **kwargs):
 
 @receiver(pre_save,sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
-    if not instance.responsible_manager:
+    if not instance.responsible_entity:
         #Detect who is the responsible Manager for the given type
-        #When created by pro a creator exists otherwise a citizen object
-
         if instance.created_by and hasattr(instance.created_by, 'fmsuser') and instance.created_by.fmsuser.organisation:
             # assign entity of the creator
             instance.responsible_entity = instance.created_by.fmsuser.organisation
         else:
             instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
 
+    if not instance.responsible_manager:
+        #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
         users = instance.responsible_entity.team.filter(manager=True, categories=instance.secondary_category)
         if len(users) > 0:
             instance.responsible_manager = users[0]
         else:
-            logging.error("no responsible")
+            raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
 
 @receiver(post_save, sender=Report)
