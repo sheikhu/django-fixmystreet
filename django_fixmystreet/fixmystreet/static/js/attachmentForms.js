@@ -34,6 +34,7 @@
         }
 
 
+        var form_copy = file_form_template.clone();
 
         if (file) {
             // validation of the file

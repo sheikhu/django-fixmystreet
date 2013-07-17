@@ -69,13 +69,19 @@ $(function(){
 
     $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
 
-    $('form').submit(function(evt) {
-        createOverview();
-        $('#validate_report_popup').modal();
+    var confirmed = false;
+    $('#report-form').submit(function(evt) {
+        if (!confirmed) {
+            evt.preventDefault();
+            createOverview();
+            $('#validate_report_popup').modal();
+        }
     });
+
     $('#confirm_button').click(function(evt) {
+        confirmed = true;
         evt.preventDefault();
-       	$('#report-form').submit();
+        $('#report-form').submit();
     });
 
 

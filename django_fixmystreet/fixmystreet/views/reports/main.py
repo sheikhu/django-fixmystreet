@@ -49,7 +49,6 @@ def new(request):
                 if report_form.cleaned_data['subscription']:
                     report.subscribe_author()
 
-
                 if request.POST["comment-text"]:
                     comment = comment_form.save(commit=False)
                     comment.created_by = citizen
@@ -62,6 +61,10 @@ def new(request):
                     report_file.created_by = citizen
                     #report_file.report = report
                     report_file.save()
+                # messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
+                # return HttpResponseRedirect(report.get_absolute_url_pro())
+            else:
+                report = None
 
     else:
         report_form = CitizenReportForm(initial={

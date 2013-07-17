@@ -57,6 +57,7 @@ def new(request):
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).pending().order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
+                "report":report,
                 "all_zips":ZipCode.objects.all(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "report_form": report_form,
