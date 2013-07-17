@@ -42,9 +42,12 @@
     {% include "_form_horizontal.html" with form=comment_form %}
 </fieldset>
 <div id="file-too-large-error" class="modal hide fade" role="dialog">
-    <div class="modal-body">
+    <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <p class="lead text-error">
+        <h3>{% trans "Validation error" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="lead">
             <strong>
                 {% trans "File too large: 10 Mb per image maximum." %}
             </strong>
@@ -52,12 +55,15 @@
     </div>
 </div>
 <div id="file-type-error" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{% trans "Validation error" %}</h3>
+    </div>
     <div class="modal-body">
-        <p class="lead text-error">
+        <p class="lead">
             <strong>
                 {% trans "The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls." %}
             </strong>
         </p>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
 </div>
