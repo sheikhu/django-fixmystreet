@@ -30,6 +30,7 @@ $(document).ready(function(){
     $("form").submit(function(evt) {
         if (!validateForm($(this))) {
             evt.preventDefault();
+            evt.stopImmediatePropagation();
         }
     });
 
@@ -75,6 +76,9 @@ function validateForm(form) {
 
         if ($input.is(":checkbox")) {
             value = $input.is(":checked");
+        }
+        if (input.type === 'email' || $input.hasClass("validate-email")) {
+            value = UtilValidator.validateEmail($input.val());
         }
         if(!value) {
             valid = false;

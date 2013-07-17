@@ -69,17 +69,9 @@ $(function(){
 
     $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
 
-    $('#validate_button').click(function(evt) {
-        evt.preventDefault();
-        var emailSection = $('#id_citizen-email');
-        if (emailSection.length && !UtilValidator.validateEmail(emailSection.val())) {
-            emailSection.parent().parent().addClass('invalid');
-        } else {
-            if (validateForm($("#report-form"))) {
-                createOverview();
-                $('#validate_report_popup').modal();
-            }
-        }
+    $('form').submit(function(evt) {
+        createOverview();
+        $('#validate_report_popup').modal();
     });
     $('#confirm_button').click(function(evt) {
         evt.preventDefault();

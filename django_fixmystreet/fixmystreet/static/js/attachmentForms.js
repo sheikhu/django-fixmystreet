@@ -29,34 +29,36 @@
         var inputFile = evt.currentTarget;
         var file;
 
+        if (typeof inputFile.files != 'undefined' && inputFile.files.length) {
+            file = inputFile.files[0];
+        }
+
+
+
+        if (file) {
+            // validation of the file
+            if(file.size === 0) {
+                alert('Filesize must be greater than 0');
+                return false;
+            }
+            else if(file.size > file_max_size) {
+                $('#file-too-large-error').modal();
+                return false;
+            }
+            else if(allowed_file_types.indexOf(file.type)==-1 ){
+                $('#file-type-error').modal();
+                return false;
+            }
+        }
 
         var form_copy = file_form_template.clone();
         var form_new = file_form_template;
         file_form_template = form_copy;
-
-        if (typeof inputFile.files != 'undefined' && inputFile.files.length) {
-            file = inputFile.files[0];
-            if(file.size == 0) {
-                alert('Filesize must be greater than 0');
-                $("#fileForm #id_file").val("");
-                return;
-            }
-
-            else if(file.size > file_max_size) {
-                $('#file-too-large-error').modal();
-                $("#id_files-"+file_count+"-file").val("");
-                return;
-            }
-            else if(allowed_file_types.indexOf(file.type)==-1 ){
-                $('#file-type-error').modal();
-                $("#id_files-"+file_count+"-file").val("");
-                return;
-            }
-
             // if (file.name) {
             //     $("#id_files-"+file_count+"-title").val(file.name);
             // }
 
+        if (file) {
             if(file.lastModifiedDate) {
                 // Append file creation date
                 var fileDate = new Date(file.lastModifiedDate);

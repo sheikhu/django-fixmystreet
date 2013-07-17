@@ -138,7 +138,7 @@ class CitizenForm(forms.Form):
 
     last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
-    email = forms.EmailField(max_length="75", label=_('Email'))
+    email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={ 'type': 'email', 'class': 'validate-email' }))
     quality = forms.ChoiceField(label=_('Quality'), choices=qualities)
     #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
 

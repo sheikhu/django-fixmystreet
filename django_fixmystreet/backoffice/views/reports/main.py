@@ -40,6 +40,10 @@ def new(request):
                     comment.report = report
                     comment.save()
                 file_formset.save()
+                # messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
+                # return HttpResponseRedirect(report.get_absolute_url_pro())
+            else:
+                report = None
 
     else:
         report_form = ProReportForm(initial={
@@ -53,7 +57,6 @@ def new(request):
     reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).pending().order_by('distance')
     return render_to_response("pro/reports/new.html",
             {
-                "report":report,
                 "all_zips":ZipCode.objects.all(),
                 "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
                 "report_form": report_form,
