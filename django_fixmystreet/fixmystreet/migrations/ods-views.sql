@@ -1,11 +1,5 @@
-DROP VIEW ods_incident_event;
-DROP VIEW ods_dim_status;
-DROP VIEW ods_dim_user;
-DROP VIEW ods_dim_manager;
-DROP VIEW ods_dim_quality;
-DROP VIEW ods_dim_entity_responsible;
-DROP VIEW ods_dim_entity_contractor;
 
+BEGIN;
 
 CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     r.id,
@@ -93,7 +87,7 @@ CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
     commune,
     region
 FROM fixmystreet_organisationentity
-WHERE active AND (commune OR region)
+WHERE active AND (commune OR region);
 
 CREATE OR REPLACE VIEW ods_dim_entity_contractor AS SELECT
     id,
@@ -102,22 +96,29 @@ CREATE OR REPLACE VIEW ods_dim_entity_contractor AS SELECT
     subcontractor,
     applicant
 FROM fixmystreet_organisationentity
-WHERE subcontractor OR applicant;
+    WHERE subcontractor OR applicant;
 
 
-ods_dim_main_category
-    id
-    name_fr
+CREATE OR REPLACE VIEW ods_dim_category AS SELECT
+    id,
+    name_fr,
+    name_nl,
+    secondary_category_class_id,
+    category_class_id
+FROM fixmystreet_reportcategory;
+
+
+CREATE OR REPLACE VIEW ods_dim_main_category_class AS SELECT
+    id,
+    name_fr,
     name_nl
+FROM fixmystreet_reportmaincategoryclass;
 
-ods_dim_secondary_category_class
-    id
-    name_fr
-    name_nl
 
-ods_dim_category
-    id
-    name_fr
+CREATE OR REPLACE VIEW ods_dim_secondary_category_class AS SELECT
+    id,
+    name_fr,
     name_nl
-    main_category
-    secondary_category_class
+FROM fixmystreet_reportsecondarycategoryclass;
+
+COMMIT;

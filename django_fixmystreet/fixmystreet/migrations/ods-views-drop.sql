@@ -1,0 +1,10 @@
+DROP VIEW ods_incident_event;
+DROP VIEW ods_dim_status;
+DROP VIEW ods_dim_user;
+DROP VIEW ods_dim_manager;
+DROP VIEW ods_dim_quality;
+DROP VIEW ods_dim_entity_responsible;
+DROP VIEW ods_dim_entity_contractor;
+DROP VIEW ods_dim_category;
+DROP VIEW ods_dim_main_category_class;
+DROP VIEW ods_dim_secondary_category_class;
