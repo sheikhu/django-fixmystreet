@@ -1,23 +1,10 @@
 from django.conf.urls.defaults import patterns, url
-from django_fixmystreet.fixmystreet.feeds import LatestReports, LatestUpdatesByReport
 from django.utils.translation import ugettext_lazy as _
 
 from piston.resource import Resource
 
 from django_fixmystreet.fixmystreet.api import ReportHandler
 #from django_fixmystreet.fixmystreet.views.api import CitizenReportHandler, ProReportHandler
-
-feeds = {
-    'report': LatestReports,
-    # 'commune': LatestReportsByWard,
-    #'city': LatestReportsByCity,
-    'report_updates': LatestUpdatesByReport,
-}
-
-
-urlpatterns = patterns('',
-    (_(r'^feeds/(?P<url>.*)/$'), 'django.contrib.syndication.views.Feed', {'feed_dict': feeds},'feeds'),
-)
 
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.main',
     url(_(r'^$'), 'home',name='home'),
