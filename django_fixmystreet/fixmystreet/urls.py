@@ -6,7 +6,7 @@ from piston.resource import Resource
 from django_fixmystreet.fixmystreet.api import ReportHandler
 #from django_fixmystreet.fixmystreet.views.api import CitizenReportHandler, ProReportHandler
 
-urlpatterns += patterns('django_fixmystreet.fixmystreet.views.main',
+urlpatterns = patterns('django_fixmystreet.fixmystreet.views.main',
     url(_(r'^$'), 'home',name='home'),
     url(_(r'^about/$'), 'about',name='about'),
     url(_(r'^posters/$'), 'posters',name='posters'),
