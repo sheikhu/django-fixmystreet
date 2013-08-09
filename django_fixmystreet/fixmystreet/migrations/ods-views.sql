@@ -51,7 +51,7 @@ FROM fixmystreet_listitem
 
 
 CREATE OR REPLACE VIEW ods_dim_user AS SELECT
-    concat(first_name, ' ', last_name) as user_name,
+    first_name || ' ' || last_name as user_name,
     agent as agent_flag,
     manager as manager_flag,
     leader as entity_flag
@@ -62,7 +62,7 @@ FROM fixmystreet_fmsuser fmsuser
 
 
 CREATE OR REPLACE VIEW ods_dim_manager AS SELECT
-    concat(first_name, ' ', last_name) as user_name,
+    first_name || ' ' || last_name as user_name,
     agent as agent_flag,
     manager as manager_flag,
     leader as entity_flag
