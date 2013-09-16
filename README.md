@@ -145,3 +145,12 @@ To build a mobile app:
 * copy media/js/fixmystreetmap.js into www/js phongap folder
 * for ios: put geoserver.gis.irisnet.be and fixmystreet.irisnet(lab).be into the externalHost in the phonegap.plist file
 
+dump DB
+
+    pg_dump fixmystreet -U fixmystreet > fixmystreet_dump.sql
+
+import dump DB
+
+    dropdb fixmystreet -U postgres
+    createdb --template=template_postgis fixmystreet -U postgres -O fixmystreet
+    cat fixmystreet_dump.sql | psql -U fixmystreet
