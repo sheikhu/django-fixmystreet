@@ -1,1 +1,2 @@
 from django_fixmystreet.backoffice.tests.lists import *
+from django_fixmystreet.backoffice.tests.views import *
