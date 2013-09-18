@@ -68,6 +68,19 @@ def close( request, report_id ):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+def planned( request, report_id ):
+    report = get_object_or_404(Report, id=report_id)
+
+    #Update the status and set the planned
+    report.planned = not report.planned
+    report.save()
+
+    #Redirect to the report show page
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
+
 def switchPrivacy(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")
