@@ -107,6 +107,10 @@ function close(){
     }
 }
 
+function planned(){
+    window.location = "{% url 'report_planned_pro' report.id %}";
+}
+
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
@@ -465,6 +469,11 @@ function close(){
                 {% endif %}
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
+                    {% if not report.planned %}
+                        <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
+                    {% else %}
+                        <a href="javascript:planned();" class="btn pull-right">{% trans 'Unplanned' %}</a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
             <!-- ######################################### -->
