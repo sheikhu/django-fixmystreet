@@ -42,7 +42,13 @@ $(function(){
     var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
 
     {% for report in reports %}
-    fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }},{{forloop.counter}}, proVersion);
+        var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
+
+        {% if BACKOFFICE %}
+            reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
+        {%endif%}
+
+        fms.currentMap.addReport(reportJSON, {{forloop.counter}}, proVersion);
     {% endfor %}
     fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
 

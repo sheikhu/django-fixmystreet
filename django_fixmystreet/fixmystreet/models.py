@@ -663,6 +663,28 @@ class Report(UserTrackedModel):
             "thumb": thumbValue
         }
 
+    def marker_detail_JSON(self):
+        return {
+            "category": self.display_category(),
+
+            "address": self.address,
+            "address_number": self.address_number,
+            "postalcode": self.postalcode,
+            "address_commune_name": self.get_address_commune_name(),
+            "address_regional": self.address_regional,
+
+            "regional" : self.is_regional(),
+            "contractor" : True if self.contractor else False,
+            "planned" : self.planned,
+            "is_closed" : self.is_closed()
+        }
+
+    def marker_detail_pro_JSON(self):
+        return {
+            "citizen" : not self.is_pro(),
+            "priority" : 0
+        }
+
     def to_JSON(self):
         """
         Method used to display the object as JSON structure for website
@@ -691,8 +713,8 @@ class Report(UserTrackedModel):
                 "y": self.point.y,
             },
             "status": self.status,
-            "address_regional": self.address_regional,
             "status_label": self.get_status_display(),
+
             "close_date": close_date_as_string,
             "citizen": citizenValue,
             "private": self.private,
