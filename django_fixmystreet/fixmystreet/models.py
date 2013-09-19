@@ -675,12 +675,12 @@ class Report(UserTrackedModel):
 
             "regional" : self.is_regional(),
             "contractor" : True if self.contractor else False,
-            "planned" : self.planned,
-            "is_closed" : self.is_closed()
+            "planned" : self.planned
         }
 
     def marker_detail_pro_JSON(self):
         return {
+            "is_closed" : self.is_closed(),
             "citizen" : not self.is_pro(),
             "priority" : 0
         }

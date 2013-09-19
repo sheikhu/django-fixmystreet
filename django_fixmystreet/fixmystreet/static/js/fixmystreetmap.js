@@ -362,12 +362,12 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     "<ul>" +
                                     "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
                                     "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.planned + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>";
+                                    "<li style='display:inline'>" + feature.attributes.report.planned + "</li>";
 
                             // If Pro, there are priority and citizen values
                             if (feature.attributes.report.priority != undefined) {
-                                popoverContent += "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>" +
+                                popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
+                                    "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
                                     "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
                             }
                             popoverContent += "</ul>";
