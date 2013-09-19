@@ -91,7 +91,7 @@
 
         .block-left, .block-right {
             width: 300px;
-            height: 140px;
+            height: 180px;
             border: 1px solid #999;
             padding:20px;
         }
@@ -178,6 +178,10 @@
 
         <p class="p_title"><strong>{% trans 'Category' %}</strong></p>
         <p>{{report.display_category}}</p>
+        {% if privacy == 'private' %}
+        <p class="p_title"><strong>{% trans 'Priority' %}</strong></p>
+        <p>{{report.get_priority}}</p>
+        {% endif %}
     </div>
 
     <div class="block-right">

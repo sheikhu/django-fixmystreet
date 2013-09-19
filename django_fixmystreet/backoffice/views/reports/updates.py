@@ -2,6 +2,8 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db import transaction
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
@@ -182,4 +184,40 @@ def deleteAttachment(request, report_id):
     a.save()
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
+
+def updatePriority(request, report_id):
+    report=get_object_or_404(Report, id=report_id)
+    report.gravity = request.GET["gravity"]
+    report.probability = request.GET["probability"]
+    report.save()
+
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+def merge(request,report_id):
+    report = get_object_or_404(Report, id=report_id)
+    report_2 = get_object_or_404(Report,id=request.GET["mergeId"])
+    if report.created < report_2.created:
+        final_report = report
+        report_to_delete = report_2
+    else:
+        final_report = report_2
+        report_to_delete = report
+
+    for attachment in report_to_delete.attachments.all():
+        attachment.report_id = final_report.id
+        attachment.save()
+
+    if not report_to_delete.private:
+        final_report.private = False
+        final_report.save()
+
+    report_to_delete.delete();
+    messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
+    if "pro" in request.path:
+            return HttpResponseRedirect(final_report.get_absolute_url_pro()+"?page=1")
+    else:
+            return HttpResponseRedirect(final_report.get_absolute_url())
 

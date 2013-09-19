@@ -54,6 +54,26 @@ class ReportViewsTest(SampleFilesTestCase):
             'citizen-quality':'1',
             'report-terms_of_use_validated': True
         }
+        self.sample_post_2 = {
+            'report-x':'150056',
+            'report-y':'170907.56',
+            'report-address_fr':'Avenue des Arts, 3',
+            'report-address_nl':'Kunstlaan, 3',
+            'report-address_number':'5',
+            'report-postalcode':'1210',
+            'report-category':'1',
+            'report-secondary_category':'1',
+            'report-subscription':'on',
+            'comment-text':'test2',
+            'files-TOTAL_FORMS': 0,
+            'files-INITIAL_FORMS': 0,
+            'files-MAX_NUM_FORMS': 0,
+            'citizen-email':self.citizen.email,
+            'citizen-firstname':self.citizen.first_name,
+            'citizen-lastname':self.citizen.last_name,
+            'citizen-quality':'1',
+            'report-terms_of_use_validated': True
+        }
 
     def test_home(self):
         """Tests the new report view."""
@@ -206,6 +226,35 @@ class ReportViewsTest(SampleFilesTestCase):
         #current user is no more subscribed
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen).exists())
 
+    def test_merge_reports(self):
+        #Add first report
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        #Add second report
+        response2 = self.client.post(url, self.sample_post_2, follow=True)
+        report2 = response2.context['report']
+
+        #Login user
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+        response3 = self.client.post(reverse('login'), params)
+
+        #Merge reports
+        url2 = reverse('report_merge_pro',args=[report.id])
+        response4 = self.client.get(url2,{"mergeId":report2.id})
+
+        #Only 1 report left
+        self.assertEqual(len(Report.objects.all()),1)
+
+        #The first one (oldest one) is kept
+        self.assertEqual(Report.objects.all()[0].id, report.id)
+        
+        #The comment of the second one is added to the first one
+        self.assertEqual(Report.objects.get(id=report.id).comments().count(),2)
 
     #def test_wards_city(self):
     #    """Tests the city and wards view."""

@@ -437,6 +437,8 @@ class Report(UserTrackedModel):
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
+    gravity = models.IntegerField(default=1)
+    probability = models.IntegerField(default=1)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
@@ -525,6 +527,9 @@ class Report(UserTrackedModel):
 
     def get_pdf_url_pro(self):
         return reverse('report_pdf', args=[self.id, 1])
+
+    def get_priority(self):
+        return self.gravity * self.probability
 
     def has_at_least_one_non_confidential_comment(self):
         return ReportComment.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0

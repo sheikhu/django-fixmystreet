@@ -181,7 +181,8 @@ def show(request,slug, report_id):
         contractors = OrganisationEntity.objects.filter(subcontractor=True)
 
     applicants = OrganisationEntity.objects.filter(applicant=True)
-
+    pnt = report.point
+    nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
     return render_to_response("pro/reports/show.html",
             {
                 "fms_user": request.fmsuser,
@@ -197,6 +198,7 @@ def show(request,slug, report_id):
                 "refuse_form": RefuseForm(instance=report),
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),
-                'attachment_edit': request.fmsuser == report.responsible_manager and (report.is_created() or report.is_in_progress())
+                'attachment_edit': request.fmsuser == report.responsible_manager and (report.is_created() or report.is_in_progress()),
+                "nearby_reports":nearby_reports
             },
             context_instance=RequestContext(request))

@@ -1073,6 +1073,10 @@ li img {
     float:right;
 }
 
+a.report.selected {
+    border:2px solid green !important;
+}
+
 input[type="submit"].btn {
     /*background: #FFF203;*/
     background:#E6E6E6;

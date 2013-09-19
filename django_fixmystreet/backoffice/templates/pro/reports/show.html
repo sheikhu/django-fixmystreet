@@ -11,7 +11,7 @@
 var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
 
 $(function(){
- /**********************************************/
+    /**********************************************/
     /* Prepare iphone toogle button look and feel */
     /**********************************************/
     $("input[type=radio]").bind("click",function(){
@@ -81,6 +81,10 @@ $(function(){
         }
     });
 
+    $("#grav").val("{{report.gravity}}");
+    $("#prob").val("{{report.probability}}");
+
+
 });
 /* When JQUERY is ready*/
 $(document).ready(function() {
@@ -105,6 +109,21 @@ function close(){
     if (r==true){
         window.location = "{% url 'report_close_pro' report.id %}";
     }
+}
+
+function updatePriority(){
+    var a = parseInt($("#grav").val());
+    var b = parseInt($("#prob").val());
+    window.location ="{% url 'report_update_priority' report.id %}?gravity="+a+"&probability="+b;
+}
+
+function showNearbyReports(){
+    $("#merge_nearby_reports_popup").modal();
+}
+
+function mergeReport(){
+    $("#merge_nearby_reports_popup").modal("hide");
+    window.location = "{% url 'report_merge_pro' report.id %}?mergeId="+selected;
 }
 
 </script>
@@ -319,6 +338,36 @@ function close(){
                                 {% trans "Public" %}
                             </td>
                         </tr>
+                        <!-- ############ -->
+                        <!-- # PRIORITY # -->
+                        <!-- ############ -->
+                        <tr>
+                            <th>
+                                <strong>{% trans "Priority:" %} </strong>
+                            </th>
+                            <td colspan="2">
+                                <span>{% trans "Probability:" %}</span>
+                                <select style="width:50px;" id="prob" onchange="updatePriority()">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </td>
+                            <td colspan="2">
+                                <span>{% trans "Gravity:" %}</span>
+                                <select style="width:50px;" id="grav" onchange="updatePriority()">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2">{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></td>
+                        </tr>
                     {% else %}
                         <!-- ########################################################### -->
                         <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
@@ -360,7 +409,10 @@ function close(){
                                 {% endif %}
                             </td>
                         </tr>
-
+                        <tr>
+                            <th><strong>{% trans "Priority" %}</strong></th>
+                            <td colspan="2"><span id="prio_result">{{report.get_priority}}</span></td>
+                        </tr>
                     {% endif %}
                 {% endif %}
                 <tr>
@@ -456,6 +508,7 @@ function close(){
         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
         <!-- #################################### -->
         {% if report.responsible_manager == request.fmsuser %}
+            <button onclick="showNearbyReports();" class="btn" id="btn-merge">{% trans 'Merge' %}</button>
             <!-- ############################################# -->
             <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
             <!-- ############################################# -->
@@ -489,5 +542,37 @@ function close(){
          </div>
     {% endif %}
 
+</div>
+<div id="merge_nearby_reports_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
+        <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
+    </div>
+    <div class="modal-body">
+        {% if nearby_reports %}
+        <div id='search_results'>
+            {% for report in nearby_reports %}
+                {% include "reports/_selection.html" %}
+            {% endfor %}
+            <script type="text/javascript">
+                var selected;
+                function selectReport(id,elem){
+                    selected = id;
+                    $.each($(elem).parent().children(),function(idx,elem){
+                        $(elem).removeClass("selected");
+                    });
+                    $(elem).addClass("selected");
+                }
+            </script>
+        </div>
+        {% else %}
+            <p>{% trans "No problems have been reported in this area." %}</p>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        {% if nearby_reports %}
+        <button class="btn pull-right" onclick="mergeReport();">Merge selected</button>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
