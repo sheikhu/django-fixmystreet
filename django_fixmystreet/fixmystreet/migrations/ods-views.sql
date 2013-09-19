@@ -22,6 +22,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     r.point,
     r.address_fr as street_name_fr,
     r.address_nl as street_name_nl,
+    r.postalcode as postalcode,
     created_by.organisation_id as created_by_entity_id,
     CASE
         WHEN (r.created_by_id IS NULL AND r.citizen_id IS NOT NULL) THEN 0
@@ -40,7 +41,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     r.private,
     r.created_by_id IS NOT NULL as is_pro,
     r.category_id,
-    category.category_class_id,
+    category.secondary_category_class_id,
     r.secondary_category_id,
     zipcode.commune_id as territorial_entity,
     (
@@ -56,14 +57,14 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
 FROM fixmystreet_historicalreport r
     LEFT JOIN fixmystreet_fmsuser created_by ON r.created_by_id=created_by.user_ptr_id
     LEFT JOIN fixmystreet_fmsuser citizen ON r.citizen_id=citizen.user_ptr_id
-    LEFT JOIN fixmystreet_reportcategory category ON r.category_id=category.id
+    LEFT JOIN fixmystreet_reportcategory category ON r.secondary_category_id=category.id
     LEFT JOIN fixmystreet_zipcode zipcode ON r.postalcode=zipcode.code
     LEFT JOIN fixmystreet_historicalreport previous_row ON previous_row.history_id = (
         SELECT Max(previous_rows.history_id)
             FROM fixmystreet_historicalreport previous_rows
             WHERE previous_rows.history_id < r.history_id AND r.id=previous_rows.id
         )
-WHERE r.status != previous_row.status OR r.responsible_manager_id != previous_row.responsible_manager_id;
+WHERE previous_row.id IS NULL OR r.status != previous_row.status OR r.responsible_manager_id != previous_row.responsible_manager_id;
 
 
 CREATE OR REPLACE VIEW ods_dim_status AS SELECT
