@@ -165,7 +165,7 @@ def list_contractors(request, contractor_id=None):
     else:
         if not request.user.is_superuser:
             raise PermissionDenied()
-        contractors = OrganisationEntity.objects.all(subcontractor=True)
+        contractors = OrganisationEntity.objects.filter(subcontractor=True)
 
     if contractor_id:
         contractor_to_edit = OrganisationEntity.objects.get(id=contractor_id, subcontractor=True)

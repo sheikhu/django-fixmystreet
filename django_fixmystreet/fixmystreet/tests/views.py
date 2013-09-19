@@ -226,7 +226,10 @@ class ReportViewsTest(SampleFilesTestCase):
         #current user is no more subscribed
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen).exists())
 
+
     def test_merge_reports(self):
+        """Test merge reports. """
+
         #Add first report
         url = "%s?x=148360&y=171177" % reverse('report_new')
         response = self.client.post(url, self.sample_post, follow=True)
@@ -255,6 +258,57 @@ class ReportViewsTest(SampleFilesTestCase):
         
         #The comment of the second one is added to the first one
         self.assertEqual(Report.objects.get(id=report.id).comments().count(),2)
+
+
+    def test_mark_done(self):
+        """Tests marking report as done."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        self.assertFalse(report.mark_as_done_user)
+        self.assertFalse(report.fixed_at)
+
+        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed':'True'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+        self.assertTrue(report.fixed_at)
+        self.assertEqual(report.status, Report.SOLVED)
+
+    def test_mark_done_as_user(self):
+        """Tests marking report as done."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+        self.assertFalse(report.mark_as_done_user)
+        self.assertFalse(report.fixed_at)
+
+        # Auth as manager
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed':'True'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+        self.assertTrue(report.fixed_at)
+        self.assertTrue(report.mark_as_done_user)
+        self.assertEqual(report.status, Report.SOLVED)
+
+    def test_search_ticket(self):
+        """Tests searching ticket."""
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        url = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
+        response = self.client.get(url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        report_result = response.context['report']
+
+        self.assertEqual(report, report_result)
 
     #def test_wards_city(self):
     #    """Tests the city and wards view."""
