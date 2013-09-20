@@ -1,6 +1,5 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils.translation import get_language
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -8,28 +7,27 @@ from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.fixmystreet.models import Report, ZipCode
 from django_fixmystreet.fixmystreet.utils import dict_to_point
+from django_fixmystreet.backoffice.forms import SearchIncidentForm
 
-@login_required(login_url='/pro/accounts/login/')
-def list(request, status):
-    ownership = request.GET.get("ownership", "entity")
+default_position = {
+    'x': '148954.431',
+    'y': '170458.371'
+}
 
-    #Get street
-    value_street = request.GET.get("street", "")
-    value_street_number = request.GET.get("streetNumber", "")
-    #Get the rayon
-    value_rayon = request.GET.get("rayon", "")
+def filter_reports(user, criteria):
+    ownership = criteria.get("ownership", "entity")
 
-    default_position = {
-        'x': '148954.431',
-        'y': '170458.371'
-    }
+    search_street = criteria.get("street", "")
+    search_street_number = criteria.get("streetNumber", "")
+    search_radius = int(criteria.get("rayon", 0))
+    status = criteria.get("status", "")
+    is_default_position = False
 
-    if 'x' in request.REQUEST and 'y' in request.REQUEST:
-        pnt = dict_to_point(request.REQUEST)
+    if 'x' in criteria and 'y' in criteria:
+        pnt = dict_to_point(criteria)
     else:
         pnt = dict_to_point(default_position)
-
-    connectedUser = request.fmsuser
+        is_default_position = True
 
     reports = Report.objects.all()
 
@@ -38,21 +36,18 @@ def list(request, status):
 
     #if the user is an contractor then user the dependent organisation id
     #If the manager is connected then filter on manager
-    if connectedUser.agent or connectedUser.manager or connectedUser.leader:
+    if user.agent or user.manager or user.leader:
         if ownership == "responsible":
-            reports = reports.responsible(connectedUser)
+            reports = reports.responsible(user)
         elif ownership == "subscribed":
-            reports = reports.subscribed(connectedUser)
-        elif connectedUser.organisation: # ownership == entity
-            reports = reports.entity_responsible(connectedUser)
-    elif connectedUser.contractor or connectedUser.applicant:
+            reports = reports.subscribed(user)
+        elif user.organisation:  # ownership == entity
+            reports = reports.entity_responsible(user)
+    elif user.contractor or user.applicant:
         #if the user is an contractor then display only report where He is responsible
-        reports = reports.entity_responsible(connectedUser)
+        reports = reports.entity_responsible(user)
     else:
         raise PermissionDenied()
-
-
-    #reports = Report.objects.distance(pnt).order_by('distance')[0:10]
 
     if status == 'created':
         reports = reports.created()
@@ -64,39 +59,28 @@ def list(request, status):
         reports = reports.closed()
     # else: # all
 
-    # Address & rayon
-    #If a rayon is given the apply it on the research
-    if (value_rayon):
-        if (not value_street_number == ""):
-            #update point to use with rayon
-            if request.LANGUAGE_CODE == 'nl':
-                unique_report_result = reports.filter(address_nl__contains=value_street).filter(address_number=value_street_number)
-            else:
-                unique_report_result = reports.filter(address_fr__contains=value_street).filter(address_number=value_street_number)
+    if search_street:
+        reports = reports.filter(address__contains=search_street)
 
-            if unique_report_result.__len__() == 0:
-                #no result then use the given point
-                the_unique_report_with_number_point = pnt
-            else:
-                the_unique_report_with_number_point = unique_report_result[0].point
-            reports = reports.distance(the_unique_report_with_number_point).filter(point__distance_lte=(the_unique_report_with_number_point,int(value_rayon)))
-        else:
-            #Use the default position as the street number has not been given
-            reports = reports.distance(pnt).filter(point__distance_lte=(pnt,int(value_rayon)))
-    #if the numer is given then filter on it
-    else:
-        if request.LANGUAGE_CODE == 'nl':
-            reports = reports.filter(address_nl__contains=value_street)
-        else:
-            reports = reports.filter(address_fr__contains=value_street)
+        if search_street_number:
+            reports = reports.filter(address_number=search_street_number)
 
-        if (not value_street_number == ""):
-            reports = reports.filter(address_number=value_street_number)
+    if len(reports) > 0 and is_default_position:
+        pnt = reports[0].point
 
-    #reports = reports.distance(pnt).order_by('distance')
-    #reports = reports.distance(pnt).order_by('address', 'address_number')
+    reports = reports.distance(pnt)
+
+    if search_radius:
+        reports = reports.filter(point__distance_lte=(pnt, search_radius))
+
     reports = reports.distance(pnt).order_by('-created')
-    #pages_list = range(1,int(math.ceil(len(reports)/settings.MAX_ITEMS_PAGE))+1+int(len(reports)%settings.MAX_ITEMS_PAGE != 0))
+    return (reports, pnt)
+
+
+def list(request):
+    search_form = SearchIncidentForm(request.GET)
+    reports, pnt = filter_reports(request.fmsuser, request.GET)
+
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
 
     page_number = request.GET.get("page", 1)
@@ -113,8 +97,21 @@ def list(request, status):
                 "pnt":pnt,
                 "zipcodes": zipcodes,
                 "reports": page,
-                "status": status,
-                "ownership": ownership,
-                "status": status
+                "search_form": search_form
+            },
+            context_instance=RequestContext(request))
+
+
+def table(request):
+    search_form = SearchIncidentForm(request.GET)
+    reports, pnt = filter_reports(request.fmsuser, request.GET)
+
+    zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
+    return render_to_response("pro/reports/table.html",
+            {
+                "pnt":pnt,
+                "zipcodes": zipcodes,
+                "reports": reports,
+                "search_form": search_form
             },
             context_instance=RequestContext(request))

@@ -2,7 +2,6 @@
 import logging
 
 from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
@@ -26,7 +25,6 @@ class ManagersListForm(forms.Form):
         self.manager = forms.ModelChoiceField(queryset=FMSUser.objects.filter(manager=True, organisation=user.organisation).order_by('last_name', 'first_name'))
 
         super(ManagersListForm, self).__init__(*args, **kwargs)
-
 
 
 class RefuseForm(forms.ModelForm):
@@ -185,6 +183,7 @@ class ContractorUserForm(FmsUserCreateForm):
     def promote(self, user):
         user.contractor = True
 
+
 class ContractorForm(forms.ModelForm):
     required_css_class = 'required'
     class Meta:
@@ -204,3 +203,17 @@ class ContractorForm(forms.ModelForm):
             contractor.save()
         return contractor
 
+
+class SearchIncidentForm(forms.Form):
+    status = forms.ChoiceField(choices=(
+        ("", _("All Status")),
+        ("created", _("Unpublished")),
+        ("in_progress", _("In progress")),
+        ("in_progress_and_assigned", _("In progress and assigned")),
+        ("closed", _("Closed"))
+    ), required=False)
+    ownership = forms.ChoiceField(choices=(
+        ("entity", _("All reports in my entity")),
+        ("responsible", _("My responbsible reports")),
+        ("subscribed", _("My subscriptions"))
+    ), required=False)

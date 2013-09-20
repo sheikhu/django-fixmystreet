@@ -7,11 +7,14 @@
 
 {% endblock %}
 
-{% block script %}
+{% block meta %}
 {{ block.super }}
-
 <meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
 <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
+{% endblock %}
+
+{% block script_map %}
+{{ block.super }}
 <script>
 $(function(){
     var defaultX = 148838.00741428943;
@@ -43,18 +46,18 @@ $(function(){
             y: defaultY
         }
     });
+    var reportJSON;
     {% for report in reports %}
-        var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
 
         {% if BACKOFFICE %}
             reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
+        {% else %}
+            reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
         {%endif%}
 
         fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
     {% endfor %}
 });
-
-
 </script>
 {% endblock %}
 

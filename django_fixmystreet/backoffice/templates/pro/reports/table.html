@@ -1,0 +1,37 @@
+{% extends "pro/reports/search.html" %}
+{% load i18n %}
+
+{% block map %}
+{% endblock %}
+{% block script_map %}
+{% endblock %}
+
+{% block results %}
+<div class="span12">
+    <table id="result-table">
+        <thead>
+            <tr>
+                <th>{% trans "Number" %}</th>
+                <th>{% trans "Category" %}</th>
+                <th>{% trans "Sub category" %}</th>
+                <th>{% trans "Address" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "Responsible" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.category.name }}</td>
+                <td>{{ report.secondary_category.name }}</td>
+                <td>{{ report.address }}</td>
+                <td>{{ report.status }}</td>
+                <td>{{ report.responsible_entity.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="span12 lead"><a href="{% url 'report_list_pro' %}">{% trans "Display as list" %}</a></p>
+{% endblock %}
