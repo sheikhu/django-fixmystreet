@@ -335,7 +335,6 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 }});*/
             this.map.addLayer(this.markersLayer);
 
-
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 callbacks: {
                     click: function(feature){
@@ -352,27 +351,41 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                 imageLink = feature.attributes.report.thumb;
                             }
 
-                            $(domElementUsedToAnchorTooltip).qtip({
-                                id: 'myMarkerTooltip',
-                                content: {
-                                    text:"<img src='"+imageLink+"'/>"
-                                },
-                                position: {
-                                    my: "bottom center", // Use the corner...
-                                    at: "top center"
-                                },
-                                viewport: $(window),
-                                show: {
-                                    event: false, // Don't specify a show event...
-                                    ready: true // ... but show the tooltip when ready
-                                },
-                                onHide: function(){
-                                    $(this).qtip('destroy');
-                                },
-                                style: {
-                                    classes: 'qtip-jtools'
-                                }
-                            });
+                            var popoverContent = '<img src="' + imageLink +'"/>' +
+                                    "<p>" + feature.attributes.report.address_number + ', ' +
+                                    feature.attributes.report.address + ' ' + "<br/>" +
+                                    feature.attributes.report.postalcode + ' ' +
+                                    feature.attributes.report.address_commune_name + "</p>" +
+
+                                    "<p>" + feature.attributes.report.category + "</p>" +
+
+                                    "<ul>" +
+                                    "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
+                                    "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
+                                    "<li style='display:inline'>" + feature.attributes.report.planned + "</li>";
+
+                            // If Pro, there are priority and citizen values
+                            if (feature.attributes.report.priority != undefined) {
+                                popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
+                                    "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
+                                    "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
+                            }
+                            popoverContent += "</ul>";
+
+                            var popup = new OpenLayers.Popup.Popover(
+                                "popup",
+                                new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
+                                popoverContent,
+                                "#" + feature.attributes.report.id
+                            );
+                            this.map.addPopup(popup);
+                        }
+                    },
+                    out: function(feature){
+                        for(var i=0, length=this.map.popups.length; i < length; i++) {
+                            var popup = this.map.popups[i];
+                            this.map.removePopup(popup);
+                            popup.destroy();
                         }
                     }
                 }
