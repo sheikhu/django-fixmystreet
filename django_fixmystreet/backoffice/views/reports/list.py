@@ -31,8 +31,6 @@ def filter_reports(user, criteria):
 
     reports = Report.objects.all()
 
-    #List of transfered reports (previous reports)
-    previous_reports = connectedUser.previous_reports.all()
 
     #if the user is an contractor then user the dependent organisation id
     #If the manager is connected then filter on manager
@@ -41,6 +39,9 @@ def filter_reports(user, criteria):
             reports = reports.responsible(user)
         elif ownership == "subscribed":
             reports = reports.subscribed(user)
+        elif ownership == "transfered":
+            #List of transfered reports (previous reports)
+            reports = user.previous_reports.all()
         elif user.organisation:  # ownership == entity
             reports = reports.entity_responsible(user)
     elif user.contractor or user.applicant:
@@ -48,6 +49,7 @@ def filter_reports(user, criteria):
         reports = reports.entity_responsible(user)
     else:
         raise PermissionDenied()
+
 
     if status == 'created':
         reports = reports.created()
@@ -91,7 +93,7 @@ def list(request):
         page = paginator.page(1)
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
-    
+
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,

@@ -215,5 +215,6 @@ class SearchIncidentForm(forms.Form):
     ownership = forms.ChoiceField(choices=(
         ("entity", _("All reports in my entity")),
         ("responsible", _("My responbsible reports")),
-        ("subscribed", _("My subscriptions"))
+        ("subscribed", _("My subscriptions")),
+        ("transfered", _("My transfered reports"))
     ), required=False)
