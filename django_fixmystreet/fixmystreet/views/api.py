@@ -215,8 +215,7 @@ def proxy(request, path):
     else:
         urbisRequest = urllib2.Request(path)
 
-
-    logger.warning('PROXY URL {0}'.format(path))
+    # logger.warning('PROXY URL {0}'.format(path))
 
     if request.META.get("HTTP_SOAPACTION"):
         urbisRequest.add_header("SOAPAction", request.META.get("HTTP_SOAPACTION"))

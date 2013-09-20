@@ -1,15 +1,15 @@
 {% extends "home.html" %}
 {% load i18n %}
+
 {% block script-search %}
-    <script type="text/javascript">
+  <script type="text/javascript">
     var NEXT_PAGE_URL = '{% url "report_new_pro" %}';
-     $(function(){
-     	{% if popup_reports%}
-     	$("#report_popup").modal();
-     	{% endif %}
-     });
-    </script>
-    <script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+    $(function(){
+      {% if popup_reports%}
+      $("#report_popup").modal();
+      {% endif %}
+    });
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -20,47 +20,47 @@
 <article id="statistics">
     <div class='pro-counter'>
        <span class='text'>{% trans 'Unpublished' %}</span>
-	<table align="center">
-	{% for stat in stats %}
-	<tr>
-	<td>
-       	<span class='qualifier'>
+    <table align="center">
+    {% for stat in stats %}
+    <tr>
+    <td>
+           <span class='qualifier'>
         {{ stat.stat_name }}:
         </span>
-	</td>
-	<td>
+    </td>
+    <td>
         <a style="color:white" href="{% url 'report_prepare_pro' %}?stat_type={{stat.stat_key}}&stat_status=unpublished" >
-       	<span class='qualifier'>
-		{{stat.stat_value.get_count_new}}
+           <span class='qualifier'>
+        {{stat.stat_value.get_count_new}}
         </span>
-	</a>
-	</td>
-	</tr>
-	{% endfor %}
-	</table>
+    </a>
+    </td>
+    </tr>
+    {% endfor %}
+    </table>
        </span>
     </div>
     <div class='pro-counter'>
        <span class='text'>{% trans 'In progress' %}</span>
        <span class='qualifier'>
-	<table align="center">
-	{% for stat in stats %}
+    <table align="center">
+    {% for stat in stats %}
         <tr>
         <td>
-       	<span class='qualifier'>
+           <span class='qualifier'>
         {{ stat.stat_name }}:
         </span>
         </td>
         <td>
         <a style="color:white" href="{% url 'report_prepare_pro' %}?stat_type={{stat.stat_key}}&stat_status=in_progress" >
-       	<span class='qualifier'>
-		{{stat.stat_value.get_count_in_progress}}
+           <span class='qualifier'>
+        {{stat.stat_value.get_count_in_progress}}
         </span>
-	</a>
+    </a>
         </td>
         </tr>
         {% endfor %}
-	</table>
+    </table>
        </span>
     </div>
     <div class='pro-counter'>
@@ -70,16 +70,16 @@
         {% for stat in stats %}
         <tr>
         <td>
-       	<span class='qualifier'>
+           <span class='qualifier'>
         {{ stat.stat_name }}:
         </span>
         </td>
         <td>
         <a style="color:white" href="{% url 'report_prepare_pro' %}?stat_type={{stat.stat_key}}&stat_status=closed" >
-       	<span class='qualifier'>
-		{{stat.stat_value.get_count_closed}}
+           <span class='qualifier'>
+        {{stat.stat_value.get_count_closed}}
         </span>
-	</a>
+    </a>
         </td>
         </tr>
         {% endfor %}
@@ -88,15 +88,15 @@
     </div>
 </article>
 <div id="report_popup" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h2>{% trans request.GET.stat_type %} {% trans request.GET.stat_status %}</h2>
-	</div>
-	<div id="search_results" class="modal-body">
-		{% for report in popup_reports %}
-		{% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
-		{% endfor %}
-	</div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h2>{% trans request.GET.stat_type %} {% trans request.GET.stat_status %}</h2>
+    </div>
+    <div id="search_results" class="modal-body">
+        {% for report in popup_reports %}
+        {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 
