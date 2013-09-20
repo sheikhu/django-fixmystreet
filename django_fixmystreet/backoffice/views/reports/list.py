@@ -32,6 +32,10 @@ def list(request, status):
     connectedUser = request.fmsuser
 
     reports = Report.objects.all()
+
+    #List of transfered reports (previous reports)
+    previous_reports = connectedUser.previous_reports.all()
+
     #if the user is an contractor then user the dependent organisation id
     #If the manager is connected then filter on manager
     if connectedUser.agent or connectedUser.manager or connectedUser.leader:
@@ -103,7 +107,7 @@ def list(request, status):
         page = paginator.page(1)
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
-
+    
     return render_to_response("pro/reports/list.html",
             {
                 "pnt":pnt,

@@ -436,6 +436,7 @@ class Report(UserTrackedModel):
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
     responsible_manager_validated = models.BooleanField(default=False)
+    previous_managers = models.ManyToManyField('FMSUser',related_name='previous_reports',null=True, blank=True)
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)

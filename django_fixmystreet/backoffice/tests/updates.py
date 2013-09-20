@@ -91,3 +91,22 @@ class UpdatesTest(TestCase):
         self.assertEquals(updated_report.probability,4)
         self.assertEquals(updated_report.get_priority(),8)
         
+    def test_previous_reports(self):
+        self.client.login(username='manager@a.com', password='test')
+        manager2 = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager2",
+            last_name="manager2",
+            email="manager2@a.com",
+            manager=True
+        )
+        manager2.set_password('test')
+        manager2.organisation = self.organisation
+        manager2.save()
+        managerId = "manager_%s" % (manager2.id)
+        response = self.client.post(reverse("report_change_manager_pro",args=[self.report.id])+"?manId="+managerId)
+        self.assertEquals(len(self.manager.previous_reports.all()),1)
+        self.assertEquals(self.manager.previous_reports.all()[0].id, self.report.id)
+        self.assertEquals(len(self.manager.reports_in_charge.all()),0)

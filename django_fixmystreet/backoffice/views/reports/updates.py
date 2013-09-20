@@ -97,6 +97,8 @@ def switchPrivacy(request,report_id):
 def changeManager(request,report_id):
     report = Report.objects.get(pk=report_id)
     report.status = Report.MANAGER_ASSIGNED
+    old_resp_man = report.responsible_manager
+    report.previous_managers.add(old_resp_man)
     manId = request.REQUEST.get("manId")
     if manId.split("_")[0] == "manager":
         newRespMan = FMSUser.objects.get(pk=int(manId.split("_")[1]))
