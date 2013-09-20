@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% load i18n tags %}
 
-{% block script %}
-{{ block.super }}
-
+{% block meta %}
 <meta property="og:title" content="{% trans 'Home' %}" />
 <meta property="og:description" content="{% trans 'Meta description for home page' %}" />
+{% endblock %}
 
+{% block script %}
+{{ block.super }}
 <script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
 
 {% block script-search %}
 <script type="text/javascript">
     var NEXT_PAGE_URL = '{% url "report_new" %}';
 </script>
-
-
 {% endblock %}
+
 <script type="text/javascript">
 $(function(){
     fms.currentMap = new fms.Map('map', {
