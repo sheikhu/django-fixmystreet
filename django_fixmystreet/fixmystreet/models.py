@@ -422,6 +422,7 @@ class Report(UserTrackedModel):
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=_("Category"), blank=True)
 
     fixed_at = models.DateTimeField(null=True, blank=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
 
@@ -438,6 +439,8 @@ class Report(UserTrackedModel):
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
+    gravity = models.IntegerField(default=1)
+    probability = models.IntegerField(default=1)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
@@ -526,6 +529,9 @@ class Report(UserTrackedModel):
 
     def get_pdf_url_pro(self):
         return reverse('report_pdf', args=[self.id, 1])
+
+    def get_priority(self):
+        return self.gravity * self.probability
 
     def has_at_least_one_non_confidential_comment(self):
         return ReportComment.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
@@ -658,6 +664,28 @@ class Report(UserTrackedModel):
             "thumb": thumbValue
         }
 
+    def marker_detail_JSON(self):
+        return {
+            "category": self.display_category(),
+
+            "address": self.address,
+            "address_number": self.address_number,
+            "postalcode": self.postalcode,
+            "address_commune_name": self.get_address_commune_name(),
+            "address_regional": self.address_regional,
+
+            "regional" : self.is_regional(),
+            "contractor" : True if self.contractor else False,
+            "planned" : self.planned
+        }
+
+    def marker_detail_pro_JSON(self):
+        return {
+            "is_closed" : self.is_closed(),
+            "citizen" : not self.is_pro(),
+            "priority" : 0
+        }
+
     def to_JSON(self):
         """
         Method used to display the object as JSON structure for website
@@ -686,8 +714,8 @@ class Report(UserTrackedModel):
                 "y": self.point.y,
             },
             "status": self.status,
-            "address_regional": self.address_regional,
             "status_label": self.get_status_display(),
+
             "close_date": close_date_as_string,
             "citizen": citizenValue,
             "private": self.private,

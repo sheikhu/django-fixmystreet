@@ -1,6 +1,8 @@
 
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test.client import Client
+from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
 from django_fixmystreet.fixmystreet.utils import dict_to_point
@@ -104,6 +106,35 @@ class PhotosTest(TestCase):
         self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False)
         self.fmsuser.save();
         #self.ward = Ward.objects.all()[0]
+
+class ValueUpdate(TestCase):
+    def setUp(self):
+        self.secondary_category = ReportCategory.objects.all()[0]
+        self.category = self.secondary_category.category_class
+        #Create a FMSUser
+        self.etterbeek = OrganisationEntity.objects.get(id=5) # postal code = 1040 Etterbeek
+        self.etterbeek.save()
+        self.bxl = OrganisationEntity.objects.get(id=4) # postal code = 1000 Bxl
+        self.bxl.save()
+        self.manager_etterbeek = FMSUser(email="manager@etterbeek.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.etterbeek)
+        self.manager_etterbeek.save()
+        self.manager_bxl = FMSUser(email="manager@bxl.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.bxl)
+        self.manager_bxl.save()
+        self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")
+        self.citizen.save()
+        self.client = Client()
+        self.manager = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager",
+            last_name="manager",
+            email="manager@a.com",
+            manager=True
+        )
+        self.manager.set_password('test')
+        self.manager.organisation = OrganisationEntity.objects.get(pk=14)
+        self.manager.save()
 
     #def testPhotoExifData(self):
     #

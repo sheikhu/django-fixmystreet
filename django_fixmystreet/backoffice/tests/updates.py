@@ -64,3 +64,30 @@ class UpdatesTest(TestCase):
         # Set as planned without auth raise an error by accessing report in context
         response = self.client.get(url, follow=True)
         self.assertRaises(KeyError, lambda: response.context['report'])
+
+    def test_update_priority(self):
+        #Test default value of priority set to 1
+        new_report = Report(
+            status=Report.CREATED,
+            secondary_category=self.secondary_category,
+            category=self.category,
+            description='Just a test',
+            postalcode = 1000,
+            address='my address',
+            point=dict_to_point({"x":'149776', "y":'170005'}),
+            address_number='6h',
+            created_by=self.manager
+        )
+        new_report.save()
+        self.assertEquals(new_report.gravity,1)
+        self.assertEquals(new_report.probability,1)
+        self.assertEquals(new_report.get_priority(),1)
+        self.client.login(username='manager@a.com', password='test')
+
+        #Test update report priority
+        response = self.client.get(reverse("report_update_priority",args=[new_report.id]), {'gravity':'2','probability':'4'})
+        updated_report = Report.objects.get(id=new_report.id)
+        self.assertEquals(updated_report.gravity,2)
+        self.assertEquals(updated_report.probability,4)
+        self.assertEquals(updated_report.get_priority(),8)
+        
