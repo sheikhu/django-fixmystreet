@@ -19,6 +19,7 @@ def accept( request, report_id ):
     if report.status == Report.CREATED:
         #Update the status and persist to the database
         report.status = Report.MANAGER_ASSIGNED
+        report.accepted_at = datetime.now()
         report.save()
 
     #Redirect to the report show page
@@ -210,24 +211,48 @@ def updatePriority(request, report_id):
             return HttpResponseRedirect(report.get_absolute_url())
 
 def merge(request,report_id):
+    #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
     report_2 = get_object_or_404(Report,id=request.GET["mergeId"])
-    if report.created < report_2.created:
-        final_report = report
-        report_to_delete = report_2
-    else:
-        final_report = report_2
-        report_to_delete = report
 
+    #Determine which report needs to be kept
+    if report.accepted_at:
+        if report_2.accepted_at:
+            if report.accepted_at < report_2.accepted_at:
+                final_report = report
+                report_to_delete = report_2
+            else:
+                final_report = report_2
+                report_to_delete = report
+        else:
+            final_report = report
+            report_to_delete = report_2
+    else:
+        if report_2.accepted_at:
+            final_report = report_2
+            report_to_delete = report
+        else:
+            if report.created < report_2.created:
+                final_report = report
+                report_to_delete = report_2
+            else:
+                final_report = report_2
+                report_to_delete = report
+
+    #Move attachments to new report
     for attachment in report_to_delete.attachments.all():
         attachment.report_id = final_report.id
         attachment.save()
 
+    #If one of the reports is public, the new report should be public
     if not report_to_delete.private:
         final_report.private = False
         final_report.save()
 
+    #Delete the 2nd report
     report_to_delete.delete();
+
+    #Send message of confirmation
     messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
     if "pro" in request.path:
             return HttpResponseRedirect(final_report.get_absolute_url_pro()+"?page=1")

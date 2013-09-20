@@ -422,6 +422,7 @@ class Report(UserTrackedModel):
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=_("Category"), blank=True)
 
     fixed_at = models.DateTimeField(null=True, blank=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
 
