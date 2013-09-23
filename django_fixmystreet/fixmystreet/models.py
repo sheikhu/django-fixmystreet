@@ -1641,8 +1641,8 @@ def eventlog_init_values(sender, instance, **kwargs):
 
         if not hasattr(instance, "user"):
             instance.user = instance.report.modified_by
-    
-        if instance.report.date_planned != instance.report.__former["date_planned"]:
+
+        if hasattr(instance.report, '__former') and instance.report.date_planned != instance.report.__former["date_planned"]:
             instance.value_old = instance.report.get_date_planned()
 
 
