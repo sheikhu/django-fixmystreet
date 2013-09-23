@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class UpdatesTest(TestCase):
 
@@ -49,7 +49,8 @@ class UpdatesTest(TestCase):
     def test_update_planned(self):
         self.client.login(username='manager@a.com', password='test')
 
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), datetime.now().strftime("%d-%m-%Y"))
+        date_planned = (datetime.now() + timedelta(days=1)).strftime("%d-%m-%Y")
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -59,13 +60,42 @@ class UpdatesTest(TestCase):
         self.assertTrue(report.planned)
         self.assertTrue(report.date_planned)
 
+    def test_update_planned_max_date(self):
+        self.client.login(username='manager@a.com', password='test')
+
+        max_date_planned = self.report.accepted_at + timedelta(days=366)
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), max_date_planned.strftime("%d-%m-%Y"))
+
+        # Set as planned
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.get(url, follow=True)
+        report = response.context['report']
+
+        self.assertFalse(report.planned)
+        self.assertFalse(report.date_planned)
+
+    def test_update_planned_min_date(self):
+        self.client.login(username='manager@a.com', password='test')
+
+        min_date_planned = self.report.accepted_at - timedelta(days=366)
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%d-%m-%Y"))
+
+        # Set as planned
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.get(url, follow=True)
+        report = response.context['report']
+
+        self.assertFalse(report.planned)
+        self.assertFalse(report.date_planned)
+
     def test_update_planned_not_accepted(self):
         self.client.login(username='manager@a.com', password='test')
 
         self.report.accepted_at = None
         self.report.save()
 
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), datetime.now().strftime("%d-%m-%Y"))
+        date_planned = (datetime.now() + timedelta(days=1)).strftime("%d-%m-%Y")
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -91,7 +121,7 @@ class UpdatesTest(TestCase):
         self.assertFalse(report.planned)
         self.assertFalse(report.date_planned)
 
-    def test_update_planned_already(self):
+    def test_update_planned_change(self):
         self.client.login(username='manager@a.com', password='test')
 
         first_date_planned = datetime.now()
@@ -100,7 +130,8 @@ class UpdatesTest(TestCase):
         self.report.date_planned = first_date_planned
         self.report.save()
 
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), datetime.now().strftime("%d-%m-%Y"))
+        date_planned = datetime.now() + timedelta(days=1)
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%d-%m-%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -108,7 +139,8 @@ class UpdatesTest(TestCase):
         report = response.context['report']
 
         self.assertTrue(report.planned)
-        self.assertEqual(first_date_planned, report.date_planned)
+        self.assertEqual(date_planned.strftime("%d-%m-%Y"), report.date_planned.strftime("%d-%m-%Y"))
+        self.assertNotEqual(first_date_planned, report.date_planned)
 
     def test_update_planned_unauth(self):
         url = reverse('report_planned_pro', args=[self.report.id])

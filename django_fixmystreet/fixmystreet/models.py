@@ -833,13 +833,13 @@ def check_planned(sender, instance, **kwargs):
     if instance.pk:
         old_report = Report.objects.get(pk=instance.pk)
 
-        if (not old_report.accepted_at or not instance.date_planned or old_report.planned):
+        dates_exists   = True if old_report.accepted_at and instance.date_planned else False
+        date_too_small = instance.date_planned <= old_report.accepted_at if dates_exists else False
+        date_too_big   = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
+
+        if (not dates_exists or date_too_small or date_too_big): 
             instance.planned = old_report.planned
             instance.date_planned = old_report.date_planned
-        else:
-            max_date_planned = old_report.accepted_at + timedelta(days=365)
-            if (instance.date_planned > max_date_planned):
-                raise ValidationError("date_planned is bigger thant accepted max date")
     else:
         instance.planned = False
         instance.date_planned = None
@@ -1021,6 +1021,27 @@ def report_notify(sender, instance, **kwargs):
                         user=report.responsible_manager
                     ).save()
 
+        # Report planned
+        if report.__former['date_planned'] != report.date_planned:
+            for subscription in report.subscriptions.all():
+                if subscription.subscriber != report.responsible_manager:
+                    ReportNotification(
+                        content_template='notify-planned',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save(old_responsible=report.__former['responsible_manager'])
+
+            if not report.__former['planned']:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.PLANNED
+                ).save()
+            else:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.PLANNED_CHANGE
+                ).save()
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
     def files(self):
@@ -1492,6 +1513,8 @@ class ReportEventLog(models.Model):
     CREATED = 14
     UPDATED = 15
     UPDATE_PUBLISHED = 16
+    PLANNED = 17
+    PLANNED_CHANGE = 18
     EVENT_TYPE_CHOICES = (
         (REFUSE,_("Refuse")),
         (CLOSE,_("Close")),
@@ -1509,6 +1532,8 @@ class ReportEventLog(models.Model):
         (CREATED,_("Created")),
         (UPDATED,_("Updated")),
         (UPDATE_PUBLISHED,_("Update published")),
+        (PLANNED,_("Planned")),
+        (PLANNED_CHANGE,_("Planned change")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1527,10 +1552,12 @@ class ReportEventLog(models.Model):
         CREATED: _("Report created by {user}"),
         UPDATED: _("Report updated by {user}"),
         UPDATE_PUBLISHED: _("Informations published by {user}"),
+        PLANNED: _("Report planned to {date_planned}"),
+        PLANNED_CHANGE: _("Report planned change"),
     }
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, MANAGER_ASSIGNED, APPLICANT_CONTRACTOR_CHANGE]
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED]
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED, PLANNED_CHANGE]
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
@@ -1551,6 +1578,8 @@ class ReportEventLog(models.Model):
 
     related_content_type = models.ForeignKey(ContentType, null=True)
 
+    value_old = models.CharField(max_length=255, null=True)
+
     class Meta:
         ordering = ['event_at',]
 
@@ -1567,7 +1596,8 @@ class ReportEventLog(models.Model):
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,
             organisation=self.organisation,
-            related_new=self.related_new
+            related_new=self.related_new,
+            date_planned=self.value_old
         )
 
     def get_public_activity_text (self):
@@ -1611,6 +1641,9 @@ def eventlog_init_values(sender, instance, **kwargs):
 
         if not hasattr(instance, "user"):
             instance.user = instance.report.modified_by
+    
+        if instance.report.date_planned != instance.report.__former["date_planned"]:
+            instance.value_old = instance.report.get_date_planned()
 
 
 # class Zone(models.Model):

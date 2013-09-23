@@ -531,14 +531,13 @@ function planned(){
                 {% endif %}
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
-                    {% if not report.planned %}
+                    {% if report.planned %}
+                        <p>{% trans 'Planned' %} : {{ report.planned }} - {{ report.date_planned }}</p>
+                    {% endif %}
                         <p>
                             <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
                             <input type="date" id="date_planned" name="date_planned" min="2011-08-13" max="2012-06-25" />
                         </p>
-                    {% else %}
-                        <p>{% trans 'Planned' %} : {{ report.planned }} - {{ report.date_planned }}</p>
-                    {% endif %}
                 {% endif %}
             {% endif %}
             <!-- ######################################### -->
