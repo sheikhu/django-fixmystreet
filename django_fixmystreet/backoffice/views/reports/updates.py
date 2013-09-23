@@ -3,18 +3,23 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db import transaction
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
 from django_fixmystreet.backoffice.forms import RefuseForm
 
+from datetime import datetime, timedelta
+
+import logging
+logger = logging.getLogger(__name__)
+
 # TODO move to backoffice/views/reports/main.py
 
 @transaction.commit_on_success
-def accept( request, report_id ):
+def accept( request, report_id, redirect=True):
     report = get_object_or_404(Report, id=report_id)
-
     #Test if the report is created...
     if report.status == Report.CREATED:
         #Update the status and persist to the database
@@ -23,10 +28,11 @@ def accept( request, report_id ):
         report.save()
 
     #Redirect to the report show page
-    if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
-    else:
-        return HttpResponseRedirect(report.get_absolute_url())
+    if redirect:
+        if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        else:
+            return HttpResponseRedirect(report.get_absolute_url())
 
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
@@ -42,7 +48,7 @@ def refuse( request, report_id ):
 
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -54,7 +60,7 @@ def fixed( request, report_id ):
         form.save() # Redirect to the report show page
 
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -67,7 +73,7 @@ def close( request, report_id ):
     report.save()
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -75,12 +81,17 @@ def planned( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
 
     #Update the status and set the planned
-    report.planned = not report.planned
-    report.save()
+    date_planned = request.GET.get("date_planned", False)
+    if (date_planned):
+        date_planned = datetime.strptime(date_planned, "%d-%m-%Y")
+
+        report.planned = True
+        report.date_planned = date_planned
+        report.save()
 
     #Redirect to the report show page
     if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
@@ -90,7 +101,7 @@ def switchPrivacy(request,report_id):
     report.private = ('true' == privacy)
     report.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+            return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -115,7 +126,7 @@ def changeManager(request,report_id):
                 break
 
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+            return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -137,12 +148,16 @@ def changeContractor(request,report_id):
 
     report.save()
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+            return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
 
-def acceptAndValidate(request, report_id):
+def publish(request, report_id):
+    # Accept first
+    accept(request, report_id, redirect=False)
+
+    # Publish
     report = get_object_or_404(Report, id=report_id)
     report.status = Report.MANAGER_ASSIGNED
     report.private = False
@@ -159,7 +174,7 @@ def acceptAndValidate(request, report_id):
         f.save()
 
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+            return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
@@ -208,7 +223,7 @@ def updatePriority(request, report_id):
     report.save()
 
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+            return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
