@@ -362,7 +362,7 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     "<ul>" +
                                     "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
                                     "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.planned + "</li>";
+                                    "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
                             // If Pro, there are priority and citizen values
                             if (feature.attributes.report.priority != undefined) {

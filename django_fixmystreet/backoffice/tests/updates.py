@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
+from datetime import datetime
+
 class UpdatesTest(TestCase):
 
     def setUp(self):
@@ -39,24 +41,74 @@ class UpdatesTest(TestCase):
             address='my address',
             point=dict_to_point({"x":'149776', "y":'170005'}),
             address_number='6h',
-            created_by=self.manager
+            created_by=self.manager,
+            accepted_at= datetime.now()
         )
         self.report.save()
 
     def test_update_planned(self):
         self.client.login(username='manager@a.com', password='test')
 
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), datetime.now().strftime("%d-%m-%Y"))
+
+        # Set as planned
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.get(url, follow=True)
+        report = response.context['report']
+
+        self.assertTrue(report.planned)
+        self.assertTrue(report.date_planned)
+
+    def test_update_planned_not_accepted(self):
+        self.client.login(username='manager@a.com', password='test')
+
+        self.report.accepted_at = None
+        self.report.save()
+
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), datetime.now().strftime("%d-%m-%Y"))
+
+        # Set as planned
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.get(url, follow=True)
+        report = response.context['report']
+
+        self.assertFalse(report.planned)
+        self.assertFalse(report.date_planned)
+
+    def test_update_planned_no_date_planned(self):
+        self.client.login(username='manager@a.com', password='test')
+
+        self.report.accepted_at = None
+        self.report.save()
+
         url = reverse('report_planned_pro', args=[self.report.id])
 
         # Set as planned
+        self.client.login(username='manager@a.com', password='test')
         response = self.client.get(url, follow=True)
         report = response.context['report']
-        self.assertTrue(report.planned)
 
-        # Set as unplanned
+        self.assertFalse(report.planned)
+        self.assertFalse(report.date_planned)
+
+    def test_update_planned_already(self):
+        self.client.login(username='manager@a.com', password='test')
+
+        first_date_planned = datetime.now()
+
+        self.report.planned = True
+        self.report.date_planned = first_date_planned
+        self.report.save()
+
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), datetime.now().strftime("%d-%m-%Y"))
+
+        # Set as planned
+        self.client.login(username='manager@a.com', password='test')
         response = self.client.get(url, follow=True)
         report = response.context['report']
-        self.assertFalse(report.planned)
+
+        self.assertTrue(report.planned)
+        self.assertEqual(first_date_planned, report.date_planned)
 
     def test_update_planned_unauth(self):
         url = reverse('report_planned_pro', args=[self.report.id])
