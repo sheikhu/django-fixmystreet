@@ -202,7 +202,6 @@ class MailTest(TestCase):
         response = self.client.get(url, follow=True)
 
         self.assertEquals(len(mail.outbox), 3)
-        self.assertTrue(self.manager.email in mail.outbox[1].to)
 
     def testPublishReportMail(self):
         #Send a post request filling in the form to create a report
@@ -222,7 +221,6 @@ class MailTest(TestCase):
         response = self.client.get(url, follow=True)
 
         self.assertEquals(len(mail.outbox), 3)
-        self.assertTrue(self.manager.email in mail.outbox[2].to)
 
     def testPlannedReportMail(self):
         #Send a post request filling in the form to create a report
