@@ -4,6 +4,8 @@ import logging
 import re
 import datetime
 
+from datetime import timedelta
+
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
@@ -18,6 +20,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
+from django.core.exceptions import ValidationError
+
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
@@ -25,7 +29,6 @@ from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
 
 logger = logging.getLogger(__name__)
-
 
 class UserTrackedModel(TimeStampedModel):
     # created = models.DateTimeField(auto_now_add=True, null=True, blank=True, editable=False)
@@ -412,7 +415,6 @@ class Report(UserTrackedModel):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
-    planned = models.BooleanField(default=False)
     quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=_("Location"))
@@ -426,6 +428,9 @@ class Report(UserTrackedModel):
 
     fixed_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
+
+    planned      = models.BooleanField(default=False)
+    date_planned = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
 
@@ -569,6 +574,11 @@ class Report(UserTrackedModel):
         else:
             return ugettext("Processed")
 
+    def get_date_planned(self):
+        if self.planned:
+            return self.date_planned.strftime('%m%Y')
+        return ""
+
     def thumbnail(self):
         if not self.is_created():
             user = get_current_user()
@@ -680,7 +690,7 @@ class Report(UserTrackedModel):
 
             "regional" : self.is_regional(),
             "contractor" : True if self.contractor else False,
-            "planned" : self.planned
+            "date_planned" : self.get_date_planned()
         }
 
     def marker_detail_pro_JSON(self):
@@ -818,6 +828,21 @@ def report_assign_responsible(sender, instance, **kwargs):
         else:
             raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
+@receiver(pre_save,sender=Report)
+def check_planned(sender, instance, **kwargs):
+    if instance.pk:
+        old_report = Report.objects.get(pk=instance.pk)
+
+        if (not old_report.accepted_at or not instance.date_planned or old_report.planned):
+            instance.planned = old_report.planned
+            instance.date_planned = old_report.date_planned
+        else:
+            max_date_planned = old_report.accepted_at + timedelta(days=365)
+            if (instance.date_planned > max_date_planned):
+                raise ValidationError("date_planned is bigger thant accepted max date")
+    else:
+        instance.planned = False
+        instance.date_planned = None
 
 @receiver(post_save, sender=Report)
 def report_notify(sender, instance, **kwargs):
