@@ -496,20 +496,18 @@ function planned(){
 
 <div class="span6">
 
-    {% if report.is_in_progress %}
-        <!-- ########################## -->
-        <!-- # DISPLAY COMMENT FORM   # -->
-        <!-- ########################## -->
-        <div class="bordered-box"/>
-            <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% include "reports/_attachments_form.html" %}
+    <!-- ########################## -->
+    <!-- # DISPLAY COMMENT FORM   # -->
+    <!-- ########################## -->
+    <div class="bordered-box"/>
+        <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
+            {% include "reports/_attachments_form.html" %}
 
-                <div style="overflow:hidden;">
-                    <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
-                </div>
-            </form>
-        </div>
-    {% endif %}
+            <div style="overflow:hidden;">
+                <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
+            </div>
+        </form>
+    </div>
 
     <div class="bordered-box">
         <h4>{% trans "Subscription" %}</h4>
