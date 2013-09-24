@@ -34,8 +34,9 @@ $(function(){
     {% if BACKOFFICE %}
         reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
     {%endif%}
-
-    fms.currentMap.addReport(reportJSON, 1, {% if BACKOFFICE %}true{%else%}false{%endif%});
+    var markers = [];
+    markers.push(fms.currentMap.addReport(reportJSON, 1, {% if BACKOFFICE %}true{%else%}false{%endif%}));
+    fms.currentMap.markersLayer.addFeatures(markers);
 
     $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
     //Clear the comment textarea after each POST

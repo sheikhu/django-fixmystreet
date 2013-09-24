@@ -50,6 +50,7 @@ $(function(){
         }
     });
     var reportJSON;
+    var markers = [];
     {% for report in reports %}
 
         {% if BACKOFFICE %}
@@ -57,9 +58,9 @@ $(function(){
         {% else %}
             reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
         {%endif%}
-
-        fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
+        markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}));
     {% endfor %}
+    fms.currentMap.markersLayer.addFeatures(markers);
 });
 </script>
 {% endblock %}

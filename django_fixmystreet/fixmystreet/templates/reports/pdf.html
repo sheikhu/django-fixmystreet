@@ -34,7 +34,9 @@
                     y:{{report.point.y}}
                     }
                 });
-            fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1);
+            var markers = [];
+            markers.push(fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1));
+            fms.currentMap.markersLayer.addFeatures(markers);
             var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
             document.getElementById("wgs84").innerHTML="L: " + res.x + " <br/>l: "+res.y;
         });

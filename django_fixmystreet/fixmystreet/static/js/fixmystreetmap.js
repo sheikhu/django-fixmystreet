@@ -144,33 +144,33 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             ]
         });
 
-        if (DEBUG) {
-            fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
-                strategies: [new OpenLayers.Strategy.BBOX()],
-                protocol: new OpenLayers.Protocol.WFS({
-                    url:  URBIS_URL + 'geoserver/wfs',
-                    featureType: "URB_A_SS",
-                    featureNS: "http://www.cirb.irisnet.be/urbis",
-                    geometryName: "GEOM"
-                    // outputFormat: "JSON"
-                }),
-                styleMap: new OpenLayers.StyleMap({
-                    strokeWidth: 2,
-                    strokeColor: "#2f3f99",
-                    fillColor: "#2f3f99",
-                    fillOpacity: 0.6
-                }),
-                filter: new OpenLayers.Filter.Comparison({
-                    type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                    property: 'ADMINISTRATOR',
-                    value: 'REG'
-                })
-            });
-            this.map.addLayer(fms.regionalLayer);
-            var layerShow = new fms.LayerShowControl();
-            this.map.addControl(layerShow);
-            layerShow.activate();
-        }
+        // if (DEBUG) {
+        //     fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
+        //         strategies: [new OpenLayers.Strategy.BBOX()],
+        //         protocol: new OpenLayers.Protocol.WFS({
+        //             url:  URBIS_URL + 'geoserver/wfs',
+        //             featureType: "URB_A_SS",
+        //             featureNS: "http://www.cirb.irisnet.be/urbis",
+        //             geometryName: "GEOM"
+        //             // outputFormat: "JSON"
+        //         }),
+        //         styleMap: new OpenLayers.StyleMap({
+        //             strokeWidth: 2,
+        //             strokeColor: "#2f3f99",
+        //             fillColor: "#2f3f99",
+        //             fillOpacity: 0.6
+        //         }),
+        //         filter: new OpenLayers.Filter.Comparison({
+        //             type: OpenLayers.Filter.Comparison.EQUAL_TO,
+        //             property: 'ADMINISTRATOR',
+        //             value: 'REG'
+        //         })
+        //     });
+        //     this.map.addLayer(fms.regionalLayer);
+        //     var layerShow = new fms.LayerShowControl();
+        //     this.map.addControl(layerShow);
+        //     layerShow.activate();
+        // }
 
         var base = new OpenLayers.Layer.WMS(
             "base",
@@ -286,7 +286,7 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             }'},
             success:function(response)
             {
-                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer" );
+                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})]});
                 self.map.addLayer(self.markersLayer);
                 callback(language, response);
             },
@@ -311,7 +311,38 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         var self = this;
         if(!this.markersLayer)
         {
-            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer");
+            var style = new OpenLayers.Style({
+                    pointRadius: "${radius}",
+                    fillColor: "#ffcc66",
+                    fillOpacity: 0.8,
+                    strokeColor: "#cc6633",
+                    strokeWidth: "${width}",
+                    strokeOpacity: 0.8,
+                    label :"${count}"
+                }, {
+                    context: {
+                        width: function(feature) {
+                            return (feature.cluster) ? 2 : 1;
+                        },
+                        radius: function(feature) {
+                            var pix = 2;
+                            if(feature.cluster) {
+                                pix = Math.min(feature.attributes.count, 7) + 10;
+                            }
+                            return pix;
+                        },
+                        count: function(feature) {
+                            return feature.attributes.count;
+                        }
+                    }
+                });
+            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:100,threshold:2})],styleMap: new OpenLayers.StyleMap({
+                        "default": style,
+                        "select": {
+                            fillColor: "#8aeeef",
+                            strokeColor: "#32a8a9"
+                        }
+                    })});
             //NEW APPROACH
             /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
             marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
@@ -403,8 +434,8 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
             this.map.addControl(this.selectFeature);
             this.selectFeature.activate();
-        }
 
+        }
         var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
         var newMarker = new OpenLayers.Geometry.Collection([markerPoint]);
 
@@ -424,8 +455,9 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                //ROUTE REGIONALE
                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
             }
-                var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-                self.markersLayer.addFeatures(vectorOfMarkers);
+
+                return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+                // self.markersLayer.addFeatures(vectorOfMarkers);
         } else {
             //Non pro version
             if (report.citizen == 'true') {
@@ -433,8 +465,8 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             } else {
                 var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
             }
-            var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-            self.markersLayer.addFeatures(vectorOfMarkers);
+            return vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+            // self.markersLayer.addFeatures(vectorOfMarkers);
         }
 
 

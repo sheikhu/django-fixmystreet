@@ -40,7 +40,7 @@ $(function(){
     });
 
     var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
-
+    var markers = [];
     {% for report in reports %}
         var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
 
@@ -48,7 +48,8 @@ $(function(){
             reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
         {%endif%}
 
-        fms.currentMap.addReport(reportJSON, {{forloop.counter}}, proVersion);
+        markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, proVersion));
+        fms.currentMap.markersLayer.addFeatures(markers);
     {% endfor %}
     fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
 

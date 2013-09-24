@@ -687,7 +687,11 @@ class Report(UserTrackedModel):
         return {
             "is_closed" : self.is_closed(),
             "citizen" : not self.is_pro(),
-            "priority" : 0
+            "priority" : 0,
+            "point": {
+                "x": self.point.x,
+                "y": self.point.y,
+            }
         }
 
     def to_JSON(self):
