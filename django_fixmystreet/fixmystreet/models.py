@@ -4,6 +4,8 @@ import logging
 import re
 import datetime
 
+from datetime import timedelta
+
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
@@ -18,6 +20,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
+from django.core.exceptions import ValidationError
+
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
@@ -25,7 +29,6 @@ from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
 
 logger = logging.getLogger(__name__)
-
 
 class UserTrackedModel(TimeStampedModel):
     # created = models.DateTimeField(auto_now_add=True, null=True, blank=True, editable=False)
@@ -412,7 +415,6 @@ class Report(UserTrackedModel):
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
-    planned = models.BooleanField(default=False)
     quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=_("Location"))
@@ -426,6 +428,9 @@ class Report(UserTrackedModel):
 
     fixed_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
+
+    planned      = models.BooleanField(default=False)
+    date_planned = models.DateTimeField(null=True, blank=True)
 
     hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
 
@@ -569,6 +574,11 @@ class Report(UserTrackedModel):
         else:
             return ugettext("Processed")
 
+    def get_date_planned(self):
+        if self.date_planned:
+            return self.date_planned.strftime('%m%Y')
+        return ""
+
     def thumbnail(self):
         if not self.is_created():
             user = get_current_user()
@@ -680,7 +690,7 @@ class Report(UserTrackedModel):
 
             "regional" : self.is_regional(),
             "contractor" : True if self.contractor else False,
-            "planned" : self.planned
+            "date_planned" : self.get_date_planned()
         }
 
     def marker_detail_pro_JSON(self):
@@ -822,6 +832,21 @@ def report_assign_responsible(sender, instance, **kwargs):
         else:
             raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
+@receiver(pre_save,sender=Report)
+def check_planned(sender, instance, **kwargs):
+    if instance.pk:
+        old_report = Report.objects.get(pk=instance.pk)
+
+        dates_exists   = True if old_report.accepted_at and instance.date_planned else False
+        date_too_small = instance.date_planned <= old_report.accepted_at if dates_exists else False
+        date_too_big   = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
+
+        if (not dates_exists or date_too_small or date_too_big):
+            instance.planned = old_report.planned
+            instance.date_planned = old_report.date_planned
+    else:
+        instance.planned = False
+        instance.date_planned = None
 
 @receiver(post_save, sender=Report)
 def report_notify(sender, instance, **kwargs):
@@ -1000,6 +1025,27 @@ def report_notify(sender, instance, **kwargs):
                         user=report.responsible_manager
                     ).save()
 
+        # Report planned
+        if report.__former['date_planned'] != report.date_planned:
+            for subscription in report.subscriptions.all():
+                if subscription.subscriber != report.responsible_manager:
+                    ReportNotification(
+                        content_template='notify-planned',
+                        recipient=subscription.subscriber,
+                        related=report,
+                        reply_to=report.responsible_manager.email,
+                    ).save(old_responsible=report.__former['responsible_manager'])
+
+            if not report.__former['planned']:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.PLANNED
+                ).save()
+            else:
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.PLANNED_CHANGE
+                ).save()
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
     def files(self):
@@ -1471,6 +1517,8 @@ class ReportEventLog(models.Model):
     CREATED = 14
     UPDATED = 15
     UPDATE_PUBLISHED = 16
+    PLANNED = 17
+    PLANNED_CHANGE = 18
     EVENT_TYPE_CHOICES = (
         (REFUSE,_("Refuse")),
         (CLOSE,_("Close")),
@@ -1488,6 +1536,8 @@ class ReportEventLog(models.Model):
         (CREATED,_("Created")),
         (UPDATED,_("Updated")),
         (UPDATE_PUBLISHED,_("Update published")),
+        (PLANNED,_("Planned")),
+        (PLANNED_CHANGE,_("Planned change")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1506,10 +1556,12 @@ class ReportEventLog(models.Model):
         CREATED: _("Report created by {user}"),
         UPDATED: _("Report updated by {user}"),
         UPDATE_PUBLISHED: _("Informations published by {user}"),
+        PLANNED: _("Report planned to {date_planned}"),
+        PLANNED_CHANGE: _("Report planned change"),
     }
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, MANAGER_ASSIGNED, APPLICANT_CONTRACTOR_CHANGE]
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED]
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED, PLANNED_CHANGE]
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
@@ -1530,6 +1582,8 @@ class ReportEventLog(models.Model):
 
     related_content_type = models.ForeignKey(ContentType, null=True)
 
+    value_old = models.CharField(max_length=255, null=True)
+
     class Meta:
         ordering = ['event_at',]
 
@@ -1546,7 +1600,8 @@ class ReportEventLog(models.Model):
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,
             organisation=self.organisation,
-            related_new=self.related_new
+            related_new=self.related_new,
+            date_planned=self.value_old
         )
 
     def get_public_activity_text (self):
@@ -1590,6 +1645,9 @@ def eventlog_init_values(sender, instance, **kwargs):
 
         if not hasattr(instance, "user"):
             instance.user = instance.report.modified_by
+
+        if hasattr(instance.report, '__former') and instance.report.date_planned != instance.report.__former["date_planned"]:
+            instance.value_old = instance.report.get_date_planned()
 
 
 # class Zone(models.Model):

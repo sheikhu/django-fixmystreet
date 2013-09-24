@@ -143,35 +143,75 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 new OpenLayers.Control.Zoom()
             ]
         });
+        if (DEBUG) {
+            // Regional layer
+            fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
+                strategies: [new OpenLayers.Strategy.BBOX()],
+                protocol: new OpenLayers.Protocol.WFS({
+                    url:  URBIS_URL + 'geoserver/wfs',
+                    featureType: "URB_A_SS",
+                    featureNS: "http://www.cirb.irisnet.be/urbis",
+                    geometryName: "GEOM"
+                    // outputFormat: "JSON"
+                }),
+                styleMap: new OpenLayers.StyleMap({
+                    strokeWidth: 2,
+                    strokeColor: "#2f3f99",
+                    fillColor: "#2f3f99",
+                    fillOpacity: 0.6
+                }),
+                filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                    property: 'ADMINISTRATOR',
+                    value: 'REG'
+                })
+            });
+            this.map.addLayer(fms.regionalLayer);
+            var layerShow = new fms.LayerShowControl();
+            this.map.addControl(layerShow);
+            layerShow.activate();
+        }
 
-        // if (DEBUG) {
-        //     fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
-        //         strategies: [new OpenLayers.Strategy.BBOX()],
-        //         protocol: new OpenLayers.Protocol.WFS({
-        //             url:  URBIS_URL + 'geoserver/wfs',
-        //             featureType: "URB_A_SS",
-        //             featureNS: "http://www.cirb.irisnet.be/urbis",
-        //             geometryName: "GEOM"
-        //             // outputFormat: "JSON"
-        //         }),
-        //         styleMap: new OpenLayers.StyleMap({
-        //             strokeWidth: 2,
-        //             strokeColor: "#2f3f99",
-        //             fillColor: "#2f3f99",
-        //             fillOpacity: 0.6
-        //         }),
-        //         filter: new OpenLayers.Filter.Comparison({
-        //             type: OpenLayers.Filter.Comparison.EQUAL_TO,
-        //             property: 'ADMINISTRATOR',
-        //             value: 'REG'
-        //         })
-        //     });
-        //     this.map.addLayer(fms.regionalLayer);
-        //     var layerShow = new fms.LayerShowControl();
-        //     this.map.addControl(layerShow);
-        //     layerShow.activate();
-        // }
+        // Add municipality limits layer
+        fms.municipalityLayer = new OpenLayers.Layer.WMS("municipality_limits",
+            URBIS_URL + "geoserver/wms",
+            {layers: "urbis:URB_A_MU",
+                format: "image/png",
+                transparent: true},
+            {buffer: 0, isBaseLayer: false, displayInLayerSwitcher: true, visibility: true}
+        );
+        this.map.addLayer(fms.municipalityLayer);
 
+        // Controller of municipality limits layer
+        fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
+            type: OpenLayers.Control.TYPE_BUTTON,
+            draw: function() {
+                var self = this;
+                OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+                this.div.id = "municipalityLayerSwitcher";
+                this.div.innerHTML = "com";
+                this.div.className = "btn active";
+                this.div.addEventListener('click', this.trigger);
+
+                return this.div;
+            },
+            trigger: function(evt) {
+                if (fms.municipalityLayer.getVisibility()) {
+                    fms.municipalityLayer.setVisibility(false);
+                    this.className = this.className.replace(/active/, '');
+                } else {
+                    fms.municipalityLayer.setVisibility(true);
+                    this.className += ' active';
+                }
+            },
+            CLASS_NAME: "fms.MunicipalityLimitsLayerShowControl"
+        });
+        var municiplaityLayerShow = new fms.MunicipalityLimitsLayerShowControl();
+        this.map.addControl(municiplaityLayerShow);
+        municiplaityLayerShow.activate();
+
+        // Base layer
         var base = new OpenLayers.Layer.WMS(
             "base",
             this.options.urbisUrl,
@@ -393,7 +433,7 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     "<ul>" +
                                     "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
                                     "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.planned + "</li>";
+                                    "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
                             // If Pro, there are priority and citizen values
                             if (feature.attributes.report.priority != undefined) {

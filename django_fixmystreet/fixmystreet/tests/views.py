@@ -156,6 +156,43 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertEqual(1, len(Report.objects.all()))
 
+    def test_accept_report(self):
+        """Tests acceptation a report and test the view of it."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url = reverse('report_accept_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.assertTrue(report.accepted_at is not None)
+
+    def test_publish_report(self):
+        """Tests publishing a report and test the view of it."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.client.login(username='manager@a.com', password='test')
+        url = reverse('report_publish_pro', args=[report.id])
+        response = self.client.get(url, {}, follow=True)
+
+        report = response.context['report']
+
+        self.assertTrue(report.accepted_at is not None)
+        self.assertFalse(report.private)
+
     def test_add_comment(self):
         """Tests the update of a report."""
         self.client.login(username='manager@a.com', password='test')
