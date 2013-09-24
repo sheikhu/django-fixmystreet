@@ -145,6 +145,7 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         });
 
         if (DEBUG) {
+            // Regional layer
             fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
                 strategies: [new OpenLayers.Strategy.BBOX()],
                 protocol: new OpenLayers.Protocol.WFS({
@@ -172,6 +173,46 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             layerShow.activate();
         }
 
+        // Add municipality limits layer
+        fms.municipalityLayer = new OpenLayers.Layer.WMS("municipality_limits",
+            URBIS_URL + "geoserver/wms",
+            {layers: "urbis:URB_A_MU",
+                format: "image/png",
+                transparent: true},
+            {buffer: 0, isBaseLayer: false, displayInLayerSwitcher: true, visibility: true}
+        );
+        this.map.addLayer(fms.municipalityLayer);
+
+        // Controller of municipality limits layer
+        fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
+            type: OpenLayers.Control.TYPE_BUTTON,
+            draw: function() {
+                var self = this;
+                OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+                this.div.id = "municipalityLayerSwitcher";
+                this.div.innerHTML = "com";
+                this.div.className = "btn active";
+                this.div.addEventListener('click', this.trigger);
+
+                return this.div;
+            },
+            trigger: function(evt) {
+                if (fms.municipalityLayer.getVisibility()) {
+                    fms.municipalityLayer.setVisibility(false);
+                    this.className = this.className.replace(/active/, '');
+                } else {
+                    fms.municipalityLayer.setVisibility(true);
+                    this.className += ' active';
+                }
+            },
+            CLASS_NAME: "fms.MunicipalityLimitsLayerShowControl"
+        });
+        var municiplaityLayerShow = new fms.MunicipalityLimitsLayerShowControl();
+        this.map.addControl(municiplaityLayerShow);
+        municiplaityLayerShow.activate();
+
+        // Base layer
         var base = new OpenLayers.Layer.WMS(
             "base",
             this.options.urbisUrl,
