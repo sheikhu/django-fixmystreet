@@ -99,6 +99,7 @@ def list(request):
                 "pnt":pnt,
                 "zipcodes": zipcodes,
                 "reports": page,
+                "all_reports":reports,
                 "search_form": search_form
             },
             context_instance=RequestContext(request))

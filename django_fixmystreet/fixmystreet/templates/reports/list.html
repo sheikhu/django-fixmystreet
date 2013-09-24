@@ -51,7 +51,7 @@ $(function(){
     });
     var reportJSON;
     var markers = [];
-    {% for report in reports %}
+    {% for report in all_reports %}
 
         {% if BACKOFFICE %}
             reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
