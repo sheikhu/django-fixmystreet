@@ -19,16 +19,16 @@ function cloneObj (obj) {
     }
 }
 
-
-fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
+// Controller of regional layer
+fms.regionalLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     type: OpenLayers.Control.TYPE_BUTTON,
     draw: function() {
         var self = this;
         OpenLayers.Control.prototype.draw.apply(this, arguments);
 
-        this.div.id = "layerSwitcher";
+        this.div.id = "regionalLayerSwitcher";
         this.div.innerHTML = "reg";
-        this.div.className = "btn active";
+        this.div.className = "btn";
         this.div.addEventListener('click', this.trigger);
 
         return this.div;
@@ -42,18 +42,34 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.className += ' active';
         }
     },
-    CLASS_NAME: "fms.LayerShowControl"
+    CLASS_NAME: "fms.regionalLayerShowControl"
 });
-// fms.LayerShowControl.addControl(new OpenLayers.Control.Button({
-//     displayClass: "btn",
-//     title: 'regional',
-//     autoActivate: true,
 
-//     trigger: function () {
-//         console.log("hello");
-//         fms.regionalLayer.setVisibility(false);
-//     }
-// }));
+// Controller of municipality limits layer
+fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
+    type: OpenLayers.Control.TYPE_BUTTON,
+    draw: function() {
+        var self = this;
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+        this.div.id = "municipalityLayerSwitcher";
+        this.div.innerHTML = "com";
+        this.div.className = "btn";
+        this.div.addEventListener('click', this.trigger);
+
+        return this.div;
+    },
+    trigger: function(evt) {
+        if (fms.municipalityLayer.getVisibility()) {
+            fms.municipalityLayer.setVisibility(false);
+            this.className = this.className.replace(/active/, '');
+        } else {
+            fms.municipalityLayer.setVisibility(true);
+            this.className += ' active';
+        }
+    },
+    CLASS_NAME: "fms.MunicipalityLimitsLayerShowControl"
+});
 
 (function(){
         var markerWidth = 30,
@@ -143,61 +159,37 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 new OpenLayers.Control.Zoom()
             ]
         });
-        if (DEBUG) {
-            // Regional layer
-            //~ fms.regionalLayer = new OpenLayers.Layer.Vector("regional", {
-                //~ strategies: [new OpenLayers.Strategy.BBOX()],
-                //~ protocol: new OpenLayers.Protocol.WFS({
-                    //~ url:  URBIS_URL + 'geoserver/wfs',
-                    //~ featureType: "URB_A_SS",
-                    //~ featureNS: "http://www.cirb.irisnet.be/urbis",
-                    //~ geometryName: "GEOM"
-                    //~ // outputFormat: "JSON"
-                //~ }),
-                //~ styleMap: new OpenLayers.StyleMap({
-                    //~ strokeWidth: 2,
-                    //~ strokeColor: "#2f3f99",
-                    //~ fillColor: "#2f3f99",
-                    //~ fillOpacity: 0.6
-                //~ }),
-                //~ filter: new OpenLayers.Filter.Comparison({
-                    //~ type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                    //~ property: 'ADMINISTRATOR',
-                    //~ value: 'REG'
-                //~ })
-            //~ });
-            //~ this.map.addLayer(fms.regionalLayer);
 
-            var filter= new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'ADMINISTRATOR',
-                value: 'REG'
-            });
-            var xml = new OpenLayers.Format.XML();
-            var filter_1_1 = new OpenLayers.Format.Filter({version: "1.1.0"});
+        // Regional layer
+        var filter= new OpenLayers.Filter.Comparison({
+            type: OpenLayers.Filter.Comparison.EQUAL_TO,
+            property: 'ADMINISTRATOR',
+            value: 'REG'
+        });
+        var xml = new OpenLayers.Format.XML();
+        var filter_1_1 = new OpenLayers.Format.Filter({version: "1.1.0"});
 
-            // Add regional limits layer
-            fms.regionalLayer = new OpenLayers.Layer.WMS("regional",
-                URBIS_URL + "geoserver/wms",
-                {
-                    layers: "urbis:URB_A_SS",
-                    format: "image/png",
-                    transparent: true,
-                    filter: xml.write(filter_1_1.write(filter))
-                },
-                {
-                    buffer: 0,
-                    isBaseLayer: false,
-                    displayInLayerSwitcher: true,
-                    isibility: true
-                }
-            );
-            this.map.addLayer(fms.regionalLayer);
+        // Add regional limits layer
+        fms.regionalLayer = new OpenLayers.Layer.WMS("regional",
+            URBIS_URL + "geoserver/wms",
+            {
+                layers: "urbis:URB_A_SS",
+                format: "image/png",
+                transparent: true,
+                filter: xml.write(filter_1_1.write(filter))
+            },
+            {
+                buffer: 0,
+                isBaseLayer: false,
+                displayInLayerSwitcher: true,
+                visibility: false
+            }
+        );
+        this.map.addLayer(fms.regionalLayer);
 
-            var layerShow = new fms.LayerShowControl();
-            this.map.addControl(layerShow);
-            layerShow.activate();
-        }
+        var regionalLayerShow = new fms.regionalLayerShowControl();
+        this.map.addControl(regionalLayerShow);
+        regionalLayerShow.activate();
 
         // Add municipality limits layer
         fms.municipalityLayer = new OpenLayers.Layer.WMS("municipality_limits",
@@ -205,35 +197,10 @@ fms.LayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             {layers: "urbis:URB_A_MU",
                 format: "image/png",
                 transparent: true},
-            {buffer: 0, isBaseLayer: false, displayInLayerSwitcher: true, visibility: true}
+            {buffer: 0, isBaseLayer: false, displayInLayerSwitcher: true, visibility: false}
         );
         this.map.addLayer(fms.municipalityLayer);
 
-        // Controller of municipality limits layer
-        fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
-            type: OpenLayers.Control.TYPE_BUTTON,
-            draw: function() {
-                var self = this;
-                OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-                this.div.id = "municipalityLayerSwitcher";
-                this.div.innerHTML = "com";
-                this.div.className = "btn active";
-                this.div.addEventListener('click', this.trigger);
-
-                return this.div;
-            },
-            trigger: function(evt) {
-                if (fms.municipalityLayer.getVisibility()) {
-                    fms.municipalityLayer.setVisibility(false);
-                    this.className = this.className.replace(/active/, '');
-                } else {
-                    fms.municipalityLayer.setVisibility(true);
-                    this.className += ' active';
-                }
-            },
-            CLASS_NAME: "fms.MunicipalityLimitsLayerShowControl"
-        });
         var municiplaityLayerShow = new fms.MunicipalityLimitsLayerShowControl();
         this.map.addControl(municiplaityLayerShow);
         municiplaityLayerShow.activate();
