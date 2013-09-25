@@ -217,6 +217,7 @@ def index(request, slug=None, commune_id=None):
 
             return render_to_response("reports/list.html", {
                 "reports": page,
+                "all_reports":reports,
                 "entity":entity,
             }, context_instance=RequestContext(request))
 
