@@ -401,59 +401,66 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.map.addLayer(this.markersLayer);
 
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-                callbacks: {
-                    click: function(feature){
-                        window.location = '/'+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id;
-                    },
-                    over: function(feature){
-                        if(feature.layer.name != "Dragable Layer"){
+                onSelect: function(feature){
+                        //TODO add call to db
+                        if(feature.layer.name != "Dragable Layer" && !feature.cluster){
+                            $.ajax({
+                                type:'GET',
+                                url:"/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/ajax/reportPopupDetails/",
+                                data:{'report_id':feature.attributes.report.id},
+                                datatype:"json",
+                                success:function(data){
+                                    feature.attributes.report = data;
+                                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-                            domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+                                    var imageLink = "/static/images/no-photo-yellow-line.png";
 
-                            var imageLink = "/static/images/no-photo-yellow-line.png";
+                                    if (feature.attributes.report.thumb != 'null') {
+                                        imageLink = feature.attributes.report.thumb;
+                                    }
 
-                            if (feature.attributes.report.thumb != 'null') {
-                                imageLink = feature.attributes.report.thumb;
-                            }
+                                    var popoverContent = '<img src="' + imageLink +'"/>' +
+                                            "<p>" + feature.attributes.report.address_number + ', ' +
+                                            feature.attributes.report.address + ' ' + "<br/>" +
+                                            feature.attributes.report.postalcode + ' ' +
+                                            feature.attributes.report.address_commune_name + "</p>" +
 
-                            var popoverContent = '<img src="' + imageLink +'"/>' +
-                                    "<p>" + feature.attributes.report.address_number + ', ' +
-                                    feature.attributes.report.address + ' ' + "<br/>" +
-                                    feature.attributes.report.postalcode + ' ' +
-                                    feature.attributes.report.address_commune_name + "</p>" +
+                                            "<p>" + feature.attributes.report.category + "</p>" +
 
-                                    "<p>" + feature.attributes.report.category + "</p>" +
+                                            "<ul>" +
+                                            "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
+                                            "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
+                                            "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
-                                    "<ul>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
-
-                            // If Pro, there are priority and citizen values
-                            if (feature.attributes.report.priority != undefined) {
-                                popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
-                                    "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
-                                    "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
-                            }
-                            popoverContent += "</ul>";
-
-                            var popup = new OpenLayers.Popup.Popover(
-                                "popup",
-                                new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
-                                popoverContent,
-                                "#" + feature.attributes.report.id
-                            );
-                            this.map.addPopup(popup);
+                                    // If Pro, there are priority and citizen values
+                                    if (feature.attributes.report.priority != undefined) {
+                                        popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
+                                            "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
+                                            "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
+                                    }
+                                    popoverContent += "</ul>";
+                                    popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'> More details </a></p>";
+                                    
+                                    var popup = new OpenLayers.Popup.Popover(
+                                        "popup",
+                                        new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
+                                        popoverContent,
+                                        "#" + feature.attributes.report.id
+                                    );
+                                    fms.currentMap.map.addPopup(popup);
+                                }
+                            });
+                            
                         }
                     },
-                    out: function(feature){
+                    onUnselect: function(feature){
                         for(var i=0, length=this.map.popups.length; i < length; i++) {
                             var popup = this.map.popups[i];
                             this.map.removePopup(popup);
                             popup.destroy();
                         }
                     }
-                }
+                
                 /*onSelect:function(feature){
                     alert('olk');
                     //Ticket web service
@@ -489,7 +496,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                //ROUTE REGIONALE
                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
             }
-
                 return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
                 // self.markersLayer.addFeatures(vectorOfMarkers);
         } else {

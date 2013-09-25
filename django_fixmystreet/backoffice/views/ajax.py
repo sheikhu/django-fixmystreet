@@ -1,8 +1,9 @@
 
-from django.http import HttpResponseRedirect
+import json
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
-from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report
 from django_fixmystreet.fixmystreet.stats import UserTypeForOrganisation
 
 def saveCategoryConfiguration(request):
@@ -24,3 +25,8 @@ def saveCategoryConfiguration(request):
 		manager.categories.add(ReportCategory.objects.get(pk=request.REQUEST.get(cat+str(i))))
 		i = i+1
 	return HttpResponseRedirect(reverse("category_gestionnaire_configuration"))
+
+def get_report_popup_details(request):
+	report_id = request.REQUEST.get("report_id")
+	report = Report.objects.get(id=report_id)
+	return HttpResponse(json.dumps(report.full_marker_detail_pro_JSON()), mimetype="application/json")
