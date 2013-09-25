@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://fms.dev.srv.cirb.lan/" />
+<title>history</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">history</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/fr/reports/bruxelles-ville/4?page=50</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='search_results']/a[6]/div/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=td</td>
+	<td>- 05-06-2013 14:55 : [Bruxelles-Ville] Incident signalé par un citoyen</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[2]/td</td>
+	<td>- 12-06-2013 15:43 : [Bruxelles-Ville] Incident validé par Bruxelles-Ville</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[3]/td</td>
+	<td>- 12-06-2013 15:43 : [Bruxelles-Ville] Incident assigné à Bruxelles-Ville</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[4]/td</td>
+	<td>- 30-08-2013 14:28 : [Bruxelles-Ville] Incident clôturé par Bruxelles-Ville</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
