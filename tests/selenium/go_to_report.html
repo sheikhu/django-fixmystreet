@@ -4,38 +4,34 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://fms.dev.srv.cirb.lan/" />
-<title>search_ticket</title>
+<title>go_to_report</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">search_ticket</td></tr>
+<tr><td rowspan="1" colspan="3">go_to_report</td></tr>
 </thead><tbody>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Voir tous les incidents</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Bruxelles-Ville</td>
+	<td>open</td>
+	<td>/fr/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=input-search</td>
-	<td>002743</td>
+	<td>id=input-ticket-search</td>
+	<td>520</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=filterReports</td>
+	<td>id=widget-search-ticket-button</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>css=h1.span12</td>
-	<td>Incident n° 002743</td>
+	<td>Incident n° 000520</td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

@@ -80,3 +80,14 @@ def ga_script():
     return {
         'code': settings.GA_CODE
     }
+
+@register.filter
+def model_field_choices(model, field):
+    choices = []
+    for value in model._meta.get_field_by_name(field)[0].choices:
+        if isinstance(value[1],tuple):
+            [choices.append(unicode(v[1])) for v in value[1]]
+        else:
+            unicode(choices.append(value[1]))
+
+    return choices

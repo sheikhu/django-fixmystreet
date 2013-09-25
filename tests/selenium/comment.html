@@ -4,73 +4,84 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://fms.dev.srv.cirb.lan/" />
-<title>new_report_pro</title>
+<title>comment</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">new_report_pro</td></tr>
+<tr><td rowspan="1" colspan="3">comment</td></tr>
 </thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/fr/</td>
+	<td></td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Signaler un incident</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=input-search</td>
-	<td>Arts 21</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=widget-search-button</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>link=Avenue des Arts (1000 Bruxelles)</td>
-	<td>Avenue des Arts (1000 Bruxelles)</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>link=Avenue des Arts (1000 Bruxelles)</td>
+	<td>css=div.right_list_search_result</td>
 	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>id=id_report-category</td>
-	<td>label=Chaussée</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>id=id_report-secondary_category</td>
-	<td>label=Déchets</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>id=id_comment-text</td>
-	<td>kikoolol commentaire</td>
+	<td>kikoolol</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.pull-right.btn</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=validate_button</td>
+	<td>css=input.btn</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=confirm_button</td>
+	<td>link=Accès réservé</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>selenium@cirb.irisnet.be</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>selenium</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.big_button</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=continuer</td>
+	<td>link=Signaler un incident</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=div.right_list_search_result</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>css=p.comment-incident</td>
-	<td>kikoolol commentaire</td>
+	<td>kikoolol</td>
 </tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Déconnexion</td>
+	<td></td>
+</tr>
+
 </tbody></table>
 </body>
 </html>
