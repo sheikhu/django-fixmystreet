@@ -361,7 +361,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         radius: function(feature) {
                             var pix = 2;
                             if(feature.cluster) {
-                                pix = Math.min(feature.attributes.count, 7) + 10;
+                                pix = (feature.attributes.count/10+7);
                             }
                             return pix;
                         },
@@ -370,12 +370,9 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         }
                     }
                 });
-            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:100,threshold:2})],styleMap: new OpenLayers.StyleMap({
+            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:50,threshold:2})],styleMap: new OpenLayers.StyleMap({
                         "default": style,
-                        "select": {
-                            fillColor: "#8aeeef",
-                            strokeColor: "#32a8a9"
-                        }
+                        "select": style
                     })});
             //NEW APPROACH
             /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
@@ -419,7 +416,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                         imageLink = feature.attributes.report.thumb;
                                     }
 
-                                    var popoverContent = '<img src="' + imageLink +'"/>' +
+                                    var popoverContent = '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
                                             "<p>" + feature.attributes.report.address_number + ', ' +
                                             feature.attributes.report.address + ' ' + "<br/>" +
                                             feature.attributes.report.postalcode + ' ' +
@@ -450,7 +447,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     fms.currentMap.map.addPopup(popup);
                                 }
                             });
-                            
+                        }
+                        if(feature.cluster){
+                            this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
+                            this.map.zoomIn();
                         }
                     },
                     onUnselect: function(feature){
