@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://fms.dev.srv.cirb.lan/" />
-<title>planned</title>
+<title>new_report_pro</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">planned</td></tr>
+<tr><td rowspan="1" colspan="3">new_report_pro</td></tr>
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
@@ -39,27 +39,17 @@
 <tr>
 	<td>select</td>
 	<td>id=id_report-category</td>
-	<td>label=Espace vert</td>
+	<td>label=Chaussée</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>id=id_report-secondary_category</td>
-	<td>label=Trou</td>
+	<td>label=Déchets</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=id_citizen-email</td>
-	<td>test@cirb.irisnet.be</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>id=id_citizen-quality</td>
-	<td>label=Autre</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=id_report-terms_of_use_validated</td>
-	<td></td>
+	<td>id=id_comment-text</td>
+	<td>kikoolol commentaire</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -78,28 +68,8 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=#report-status &gt; tbody &gt; tr &gt; td</td>
-	<td>Avenue des Arts, 21 (1000 Bruxelles-Ville)</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=div.is_created</td>
-	<td>L'incident est en cours de validation</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//table[@id='report-status']/tbody/tr[4]/td</td>
-	<td>Bruxelles-Ville</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//table[@id='report-status']/tbody/tr[3]/td</td>
-	<td>Signalé</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//table[@id='report-status']/tbody/tr[2]/td</td>
-	<td>Espace vert / Revêtement : Trou</td>
+	<td>css=p.comment-incident</td>
+	<td>kikoolol commentaire</td>
 </tr>
 </tbody></table>
 </body>

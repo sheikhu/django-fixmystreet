@@ -96,14 +96,15 @@ $(document).ready(function() {
     {% else %}
         $('#id_public').attr("checked", "checked");
     {% endif %}
+    var markers = [];
     {% for report in reports %}
         var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
 
         {% if BACKOFFICE %}
             reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
         {%endif%}
-
-        fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%});
+        markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}));
+        fms.currentMap.markersLayer.addFeatures(markers);
     {% endfor %}
     //Clear the comment textarea after each POST
     $("#id_comment-text").val('');
@@ -132,7 +133,11 @@ function mergeReport(){
     window.location = "{% url 'report_merge_pro' report.id %}?mergeId="+selected;
 }
 function planned(){
-    window.location = "{% url 'report_planned_pro' report.id %}";
+    var date_planned = document.getElementById('date_planned').value;
+    if (date_planned) {
+        var url = "{% url 'report_planned_pro' report.id %}?date_planned=" + date_planned;
+        window.location = url;
+    }
 }
 
 </script>
@@ -491,20 +496,18 @@ function planned(){
 
 <div class="span6">
 
-    {% if report.is_in_progress %}
-        <!-- ########################## -->
-        <!-- # DISPLAY COMMENT FORM   # -->
-        <!-- ########################## -->
-        <div class="bordered-box"/>
-            <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% include "reports/_attachments_form.html" %}
+    <!-- ########################## -->
+    <!-- # DISPLAY COMMENT FORM   # -->
+    <!-- ########################## -->
+    <div class="bordered-box"/>
+        <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
+            {% include "reports/_attachments_form.html" %}
 
-                <div style="overflow:hidden;">
-                    <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
-                </div>
-            </form>
-        </div>
-    {% endif %}
+            <div style="overflow:hidden;">
+                <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
+            </div>
+        </form>
+    </div>
 
     <div class="bordered-box">
         <h4>{% trans "Subscription" %}</h4>
@@ -527,11 +530,13 @@ function planned(){
                 {% endif %}
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
-                    {% if not report.planned %}
-                        <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
-                    {% else %}
-                        <a href="javascript:planned();" class="btn pull-right">{% trans 'Unplanned' %}</a>
+                    {% if report.planned %}
+                        <p>{% trans 'Planned' %} : {{ report.planned }} - {{ report.date_planned }}</p>
                     {% endif %}
+                        <p>
+                            <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
+                            <input type="date" id="date_planned" name="date_planned" min="2011-08-13" max="2012-06-25" />
+                        </p>
                 {% endif %}
             {% endif %}
             <!-- ######################################### -->
@@ -539,7 +544,7 @@ function planned(){
             <!-- ######################################### -->
             {% if report.is_created %}
                 <a href="{% url 'report_accept_pro' report.id %}" class="btn" >{% trans 'Accept' %}</a>
-                <a href="{% url 'report_accept_and_validate' report.id %}" class="btn">{% trans 'Publish' %}</a>
+                <a href="{% url 'report_publish_pro' report.id %}" class="btn">{% trans 'Publish' %}</a>
                 <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
             {% endif %}
         {% endif %}

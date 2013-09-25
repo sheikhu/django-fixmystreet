@@ -455,7 +455,12 @@ div.olControlZoom {
 }
 
 
-#layerSwitcher {
+#regionalLayerSwitcher {
+    position: absolute;
+    bottom: 50px;
+    left: 10px;
+}
+#municipalityLayerSwitcher {
     position: absolute;
     bottom: 10px;
     left: 10px;
