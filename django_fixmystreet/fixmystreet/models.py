@@ -694,32 +694,14 @@ class Report(UserTrackedModel):
         }
 
     def marker_detail_pro_JSON(self):
-        local_thumbnail = self.thumbnail()
-        if (local_thumbnail == None):
-            thumbValue = 'null'
-        else:
-            thumbValue = local_thumbnail
+
         return {
             "id": self.id,
-            "is_closed" : self.is_closed(),
-            "citizen" : not self.is_pro(),
-            "priority" : 0,
+            
             "point": {
                 "x": self.point.x,
                 "y": self.point.y,
-            },
-            "category": self.display_category(),
-
-            "address": self.address,
-            "address_number": self.address_number,
-            "postalcode": self.postalcode,
-            "address_commune_name": self.get_address_commune_name(),
-            "address_regional": self.address_regional,
-
-            "regional" : self.is_regional(),
-            "contractor" : True if self.contractor else False,
-            "date_planned" : self.get_date_planned(),
-            "thumb": thumbValue
+            }
         }
 
     def to_JSON(self):
