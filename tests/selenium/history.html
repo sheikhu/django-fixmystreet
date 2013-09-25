@@ -12,36 +12,40 @@
 <tr><td rowspan="1" colspan="3">history</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/fr/reports/bruxelles-ville/4?page=50</td>
+	<td>clickAndWait</td>
+	<td>link=Signaler un incident</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=input-ticket-search</td>
+	<td>1895</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='search_results']/a[6]/div/img</td>
+	<td>id=widget-search-ticket-button</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=td</td>
-	<td>- 05-06-2013 14:55 : [Bruxelles-Ville] Incident signalé par un citoyen</td>
+	<td>css=td &gt; strong</td>
+	<td>- 25-05-2013 12:52 : [Bruxelles-Ville]</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[2]/td</td>
-	<td>- 12-06-2013 15:43 : [Bruxelles-Ville] Incident validé par Bruxelles-Ville</td>
+	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[2]/td/strong</td>
+	<td>- 01-06-2013 21:40 : [Bruxelles-Ville]</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[3]/td</td>
-	<td>- 12-06-2013 15:43 : [Bruxelles-Ville] Incident assigné à Bruxelles-Ville</td>
+	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[3]/td/strong</td>
+	<td>- 01-06-2013 21:40 : [Bruxelles-Ville]</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[4]/td</td>
-	<td>- 30-08-2013 14:28 : [Bruxelles-Ville] Incident clôturé par Bruxelles-Ville</td>
+	<td>//div[@id='history_popup']/div[2]/table/tbody/tr[4]/td/strong</td>
+	<td>- 07-06-2013 12:51 : [Bruxelles-Ville]</td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
