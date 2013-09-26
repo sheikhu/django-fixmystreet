@@ -699,7 +699,8 @@ class Report(UserTrackedModel):
             "point": {
                 "x": self.point.x,
                 "y": self.point.y,
-            }   
+            },
+            "status": self.status,
         }
 
     def full_marker_detail_pro_JSON(self):

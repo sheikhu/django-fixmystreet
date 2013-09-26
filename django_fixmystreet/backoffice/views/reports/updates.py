@@ -216,17 +216,6 @@ def deleteAttachment(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-def updatePriority(request, report_id):
-    report=get_object_or_404(Report, id=report_id)
-    report.gravity = request.GET["gravity"]
-    report.probability = request.GET["probability"]
-    report.save()
-
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
-
 def merge(request,report_id):
     #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
@@ -265,7 +254,7 @@ def merge(request,report_id):
     if not report_to_delete.private:
         final_report.private = False
         final_report.save()
-
+    #Send mail to report_to_delete subscribers, resp man and creator if
     #Delete the 2nd report
     report_to_delete.delete();
 

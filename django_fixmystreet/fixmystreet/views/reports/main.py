@@ -205,7 +205,6 @@ def index(request, slug=None, commune_id=None):
 
             entity = OrganisationEntity.objects.get(id=commune_id)
             reports = Report.objects.all().entity_territory(entity).public().order_by('-created')
-
             page_number = request.GET.get("page", 1)
             paginator = Paginator(reports, settings.MAX_ITEMS_PAGE)
             try:

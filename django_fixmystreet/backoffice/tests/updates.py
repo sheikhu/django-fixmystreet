@@ -194,3 +194,11 @@ class UpdatesTest(TestCase):
         self.assertEquals(len(self.manager.previous_reports.all()),1)
         self.assertEquals(self.manager.previous_reports.all()[0].id, self.report.id)
         self.assertEquals(len(self.manager.reports_in_charge.all()),0)
+
+    def test_update_visibility(self):
+        self.client.login(username='manager@a.com',password='test')
+        response2 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=true")
+        self.assertTrue(Report.objects.get(id=self.report.id).private)
+        response = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
+        self.assertFalse(self.report.private)
+
