@@ -107,7 +107,7 @@ def search_ticket_pro(request):
     report_id = request.REQUEST.get('report_id')
     try:
         report = Report.objects.get(id=report_id)
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     except:
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home_pro'))
