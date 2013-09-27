@@ -20,8 +20,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
-from django.core.exceptions import ValidationError
-
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
@@ -29,6 +27,7 @@ from simple_history.models import HistoricalRecords
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
 
 logger = logging.getLogger(__name__)
+
 
 class UserTrackedModel(TimeStampedModel):
     # created = models.DateTimeField(auto_now_add=True, null=True, blank=True, editable=False)
@@ -347,7 +346,6 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def subscribed(self, user):
         return self.filter(subscriptions__subscriber=user)
-
 
 
 class ReportManager(models.GeoManager):
