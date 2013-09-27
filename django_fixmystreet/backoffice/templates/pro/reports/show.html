@@ -459,7 +459,7 @@ function planned(){
         <!-- ########################## -->
         <!-- # DISPLAY FILES SECTION  # -->
         <!-- ########################## -->
-        <div class="bordered-box"/>
+        <div class="bordered-box">
             {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
             {% endif %}
@@ -499,7 +499,7 @@ function planned(){
     <!-- ########################## -->
     <!-- # DISPLAY COMMENT FORM   # -->
     <!-- ########################## -->
-    <div class="bordered-box"/>
+    <div class="bordered-box">
         <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
             {% include "reports/_attachments_form.html" %}
 

@@ -545,7 +545,7 @@ msgid ""
 "                            "
 msgstr ""
 "\n"
-"Gemeld door <a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>"
+"Gemeld door <strong><a href=\"mailto:%(mail)s\">ANONIEM</a></strong> op <strong>"
 "%(on)s</strong>"
 
 #: templates/pro/reports/show.html:228
