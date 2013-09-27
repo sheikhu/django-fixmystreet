@@ -23,7 +23,10 @@ install_requires = [
     'django-piston',
     'markdown',
     'oauth2',
-    'simplejson'
+    'simplejson',
+    'djangorestframework==2.3.5',
+    'django-rest-swagger==0.1.8',
+    'django-filter'
     ]
 
 tests_require = [

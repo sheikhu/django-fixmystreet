@@ -5,6 +5,7 @@ import datetime
 from django.db.models import ForeignKey
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.auth import authenticate, login
+from django.contrib.gis.geos import GEOSGeometry
 
 from piston.handler import BaseHandler
 from piston.emitters import Emitter
@@ -12,6 +13,89 @@ from piston.emitters import Emitter
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, ReportCategory, ReportSecondaryCategoryClass, ReportMainCategoryClass, OrganisationEntity
 from django_fixmystreet.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm, ReportCommentForm
 from django_fixmystreet.fixmystreet.utils import RequestFingerprint
+
+from rest_framework import viewsets, routers, serializers, renderers
+
+
+class JSONRenderer(renderers.JSONRenderer):
+    media_type = 'application/json'
+    format = 'json'
+
+    def render(self, data, media_type=None, renderer_context=None):
+        renderer_context = renderer_context or {}
+        geom_field = getattr(renderer_context.get('view'), 'geometry_field_name')
+
+        for elem in data:
+            geometry = elem[geom_field]
+
+            if isinstance(geometry, basestring):
+                geometry = GEOSGeometry(geometry)
+
+            elem[geom_field] = (geometry.x, geometry.y)
+
+        return super(JSONRenderer, self).render(data, media_type, renderer_context)
+
+
+class GeoJSONRenderer(renderers.JSONRenderer):
+    media_type = 'application/json'
+    format = 'geojson'
+
+    def render(self, data, media_type=None, renderer_context=None):
+        renderer_context = renderer_context or {}
+        geom_field = getattr(renderer_context.get('view'), 'geometry_field_name')
+
+        if isinstance(data, list):
+            new_data = {
+              'type': 'FeatureCollection',
+              'features': [(self.get_feature(elem, geom_field) or elem) for elem in data]
+            }
+        else:
+            new_data = self.get_feature(data, geom_field) or data
+
+        return super(GeoJSONRenderer, self).render(new_data, media_type, renderer_context)
+
+    def get_feature(self, data, geom_field):
+
+        geometry = data.pop(geom_field)
+
+        if isinstance(geometry, basestring):
+            geometry = GEOSGeometry(geometry)
+        feature = {
+            'type': 'Feature',
+            'geometry':{
+                'type': 'Point',
+                'coordinates': [
+                    geometry.x,
+                    geometry.y
+                ]
+            },
+            'properties': data,
+        }
+
+        return feature
+
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ('id', 'status', 'point')
+
+
+class ReportViewSet(viewsets.ModelViewSet):
+    allowed_methods = ('GET', 'OPTIONS')
+    model = Report
+    serializer_class = ReportSerializer
+    renderer_classes = (
+        JSONRenderer,
+        renderers.BrowsableAPIRenderer,
+        GeoJSONRenderer
+        )
+    geometry_field_name = 'point'
+
+
+router = routers.DefaultRouter()
+router.register(r'reports', ReportViewSet)
 
 
 # ###############
