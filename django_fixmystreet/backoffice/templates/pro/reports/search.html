@@ -2,14 +2,8 @@
 {% load i18n tags %}
 {% block title %}{% blocktrans %}{{status}} Reports{%endblocktrans%}{% endblock %}
 
-{% block css %}
-{{ block.super }}
-<link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></script>
-{% endblock %}
-
 {% block script %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}lib/dataTables/js/jquery.dataTables.js"></script>
 <script>
 $(document).ready(function() {
     var $form = $('#report_form');
@@ -115,11 +109,6 @@ function highlightFilterSelection(id) {
     $("#search-by-address").show();
 }
 
-
-$(document).ready(function() {
-    $('#result-table').dataTable();
-} );
-
 $('#incident-filter select').change(function() {
     $('#incident-filter').submit();
 } );
@@ -127,7 +116,6 @@ $('#incident-filter select').change(function() {
 {% endblock %}
 
 {% block content %}
-<div class="">
     <h1 class="span12">
     {% trans 'Reports' %}
     </h1>
@@ -162,50 +150,6 @@ $('#incident-filter select').change(function() {
             </div>
         </div>
 
-        <form id="incident-filter" class="span8" method="GET">
-            {{ search_form.as_p }}
-        </form>
-        <div class="span4">
-            <div id="search_by_commune_or_address" class="block highlighted">
-                <form id="search-street">
-                    <!-- TODO create logic behind searching -->
-                    <h2>{% trans "Search address:" %}</h2>
-                    <input type="search" class="input-block-level" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" id="input-commune-search" style="box-sizing:border-box;">
-                    <div class="form-search">
-                        <select id="input-ward" class="input-medium" onchange="javascript:filterReports()">
-                            <option value="">{% trans "All communes..." %}</option>
-                            {% for zip in zipcodes %}
-                                <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                            {% endfor %}
-                        </select>
-
-                        <input type="submit" class="btn" id="filterReports" value="{% trans 'Search street' %}"/>
-                    </div>
-                    <div id="search_by_commune_or_address_section_results" style="display:none">
-                        <ul id="proposal" class="inline"> </ul>
-                    </div>
-                </form>
-                <form id="search-by-address" style="display:none">
-                    <p>{% trans "within a radius of:" %}</p>
-                    <select id="rayon" class="input-block-level">
-                        <option value="">{% trans 'No limit'%}</option>
-                        <option value="50">50m</option>
-                        <option value="100">100m</option>
-                        <option value="200">200m</option>
-                    </select>
-                    <input class="btn" type="submit" id="applyFilter" value="{% trans 'Filtrer list of reports' %}">
-                </form>
-            </div>
-            <form action="{% url 'search_ticket_pro' %}" class="block highlighted" id="search_by_ticket_nr">
-                <!-- TODO create logic behind searching -->
-                <h2>{% trans "Search by ticket number:" %}</h2>
-                <div class="form-search">
-                    <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Ticket number' %}">
-                    <input type="submit" class="btn" id="filterReports" value="{% trans 'Search' %}"/>
-                </div>
-            </form>
-        </div>
-
         {% if reports %}
             {% block results %}{% endblock %}
         {% else %}
@@ -214,5 +158,4 @@ $('#incident-filter select').change(function() {
 
     {% endwith %}
 
-</div>
 {% endblock %}

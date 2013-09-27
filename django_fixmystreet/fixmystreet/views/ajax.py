@@ -1,10 +1,11 @@
 import os
+import json
 
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
 
@@ -40,3 +41,8 @@ def uploadFile(request):
                 destination.write(chunk)
     hh = HttpResponse(content='True',mimetype='text/html')
     return hh
+
+def get_report_popup_details(request):
+    report_id = request.REQUEST.get("report_id")
+    report = Report.objects.get(id=report_id)
+    return HttpResponse(json.dumps(report.full_marker_detail_JSON()), mimetype="application/json")

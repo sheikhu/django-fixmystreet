@@ -40,7 +40,6 @@ urlpatterns += patterns( 'django_fixmystreet.backoffice.views.reports.updates',
     url(_(r'^report/(\d+)/changeContractor/'), 'changeContractor', name='report_change_contractor_pro'),
     url(_(r'^report/(\d+)/switchPrivacy/'), 'switchPrivacy', name='report_change_switch_privacy'),
     url(_(r'^report/(\d+)/publish/'), 'publish', name='report_publish_pro'),
-    url(_(r'^report/(\d+)/updatePriority/'),'updatePriority',name="report_update_priority"),
 )
 urlpatterns += patterns( 'django_fixmystreet.fixmystreet.views.reports.updates',
     url(_(r'^report/(\d+)/pdf/'), 'report_pdf', {"pro_version": True}, name='report_pdf_pro'),
@@ -64,7 +63,8 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.manager_category_co
 
 urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
     url(_(r'^ajax/saveSelection'),'saveCategoryConfiguration',name='saveSelection'),
-    url(_(r'^ajax/reportPopupDetails'),'get_report_popup_details',name="get_report_popup_details"),
+    url(_(r'^ajax/reportPopupDetails'),'get_report_popup_details',name="get_report_popup_details_pro"),
+    url(_(r'^ajax/report/(\d+)/updatePriority/'),'updatePriority',name="report_update_priority"),
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',

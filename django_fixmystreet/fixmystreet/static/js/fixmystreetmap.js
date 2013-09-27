@@ -157,7 +157,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             {dragPanOptions: {enableKinetic: true}}
                     ),
                 new OpenLayers.Control.Zoom()
-            ]
+            ],
+            numZoomLevels:9
         });
 
         // Regional layer
@@ -449,8 +450,23 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             });
                         }
                         if(feature.cluster){
-                            this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
-                            this.map.zoomIn();
+                            if(this.map.zoom == this.map.numZoomLevels){
+                                var content = "<ul>";
+                                for(var i = 0; i< feature.cluster.length; i++){
+                                    content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
+                                }
+                                var popup = new OpenLayers.Popup.Popover(
+                                        "popup",
+                                        new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
+                                        content,
+                                        "Reports at this location:"
+                                    );
+                                fms.currentMap.map.addPopup(popup);
+                            }
+                            else{
+                                this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
+                                this.map.zoomIn();
+                            }
                         }
                     },
                     onUnselect: function(feature){

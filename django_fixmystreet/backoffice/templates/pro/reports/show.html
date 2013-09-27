@@ -121,7 +121,16 @@ function close(){
 function updatePriority(){
     var a = parseInt($("#grav").val());
     var b = parseInt($("#prob").val());
-    window.location ="{% url 'report_update_priority' report.id %}?gravity="+a+"&probability="+b;
+    $.ajax({url:"{% url 'report_update_priority' report.id %}",
+        data:{"gravity":a,"probability":b},
+        type:'GET',
+        datatype:"json",
+        success: function(data){
+            $("#prio_result").html(data.priority);
+        }
+    });
+
+
 }
 
 function showNearbyReports(){
@@ -129,7 +138,8 @@ function showNearbyReports(){
 }
 
 function mergeReport(){
-    $("#merge_nearby_reports_popup").modal("hide");
+    $("#merge_confirm_popup").modal("hide");
+
     window.location = "{% url 'report_merge_pro' report.id %}?mergeId="+selected;
 }
 function planned(){
@@ -138,6 +148,11 @@ function planned(){
         var url = "{% url 'report_planned_pro' report.id %}?date_planned=" + date_planned;
         window.location = url;
     }
+}
+
+function showMergeConfirmation(){
+    $("#merge_nearby_reports_popup").modal("hide");
+    $("#merge_confirm_popup").modal();
 }
 
 </script>
@@ -590,8 +605,22 @@ function planned(){
     </div>
     <div class="modal-footer">
         {% if nearby_reports %}
-        <button class="btn pull-right" onclick="mergeReport();">Merge selected</button>
+        <button class="btn pull-right" onclick="showMergeConfirmation();">Merge selected</button>
         {% endif %}
+    </div>
+</div>
+
+<div id="merge_confirm_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
+        <h3>{% trans 'Confirm merge' %}</h3>
+    </div>
+    <div class="modal-body">
+        <span>{% trans 'Are you sure you want to merge these incidents?' %}</span>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>
+        <button class="btn" onclick="mergeReport();">{% trans 'Yes' %}</button>
     </div>
 </div>
 {% endblock %}

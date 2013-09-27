@@ -107,7 +107,7 @@ def search_ticket_pro(request):
     report_id = request.REQUEST.get('report_id')
     try:
         report = Report.objects.get(id=report_id)
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     except:
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home_pro'))
@@ -182,7 +182,13 @@ def show(request,slug, report_id):
 
     applicants = OrganisationEntity.objects.filter(applicant=True)
     pnt = report.point
-    nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
+    if report.is_created():
+        nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)
+    elif report.is_closed():
+        nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
+    else:
+        nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
+
     return render_to_response("pro/reports/show.html",
             {
                 "fms_user": request.fmsuser,

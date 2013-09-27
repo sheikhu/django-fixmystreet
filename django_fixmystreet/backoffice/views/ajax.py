@@ -2,6 +2,7 @@
 import json
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 
 from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report
 from django_fixmystreet.fixmystreet.stats import UserTypeForOrganisation
@@ -30,3 +31,10 @@ def get_report_popup_details(request):
 	report_id = request.REQUEST.get("report_id")
 	report = Report.objects.get(id=report_id)
 	return HttpResponse(json.dumps(report.full_marker_detail_pro_JSON()), mimetype="application/json")
+
+def updatePriority(request, report_id):
+    report=get_object_or_404(Report, id=report_id)
+    report.gravity = int(request.GET["gravity"])
+    report.probability = int(request.GET["probability"])
+    report.save()
+    return HttpResponse(json.dumps({"priority":report.get_priority()}), mimetype="application/json")

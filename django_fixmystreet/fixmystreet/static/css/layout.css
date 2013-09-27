@@ -2036,3 +2036,18 @@ table.report_overview_table th{
 {
     width: auto;
 }
+
+/********************** TABLES ******************/
+table.dataTable tr.odd {
+    background-color: #DDD;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #CCC;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EEE;
+}
+
+table.dataTable thead input, table.dataTable thead select {
+    width: 90px;
+}

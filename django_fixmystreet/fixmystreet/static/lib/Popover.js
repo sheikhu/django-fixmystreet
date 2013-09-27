@@ -83,7 +83,7 @@ OpenLayers.Popup.Popover =
 		this.popupHTML = '<div id="'+this.id+'" class="popover fade top in" style="position:absolute;z-index:100000000; top: '+(px.y - this.dimensions.h + this.delta.y)+'px; left: '+(px.x - Math.ceil(this.dimensions.w/2) + this.delta.x)+'px; display: block;width:'+ this.dimensions.w+'px;height:'+ this.dimensions.h+'px;">'
 							+'<div class="arrow"></div>'
 							+'<h3 class="popover-title"><button class="close">&times;</button><span>'+this.title+'</span><div class="clearfix"></div></h3>'
-							+'<div class="popover-content">'
+							+'<div class="popover-content" style="overflow-y: auto;height:'+(this.dimensions.h-70)+'px;">'
 							+'<p>'+ this.contentHTML + '</p></div></div>';
 
 		this.size = this.getRenderedDimensions();
