@@ -17,14 +17,41 @@
 <script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
 <script>
 
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "num-html-pre": function ( a ) {
+        var x = String(a).replace( /<[\s\S]*?>/g, "" );
+        return parseFloat( x );
+    },
+
+    "num-html-asc": function ( a, b ) {
+        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    },
+
+    "num-html-desc": function ( a, b ) {
+        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    }
+} );
+
 $(document).ready(function() {
-    var table = $('#result-table').dataTable();
+    var table = $('#result-table').dataTable({
+            "aoColumns": [
+                {
+                    sType: "num-html"
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
+        });
     // {
     //     "bStateSave": true
     // });
     table.columnFilter({ sPlaceHolder: "head:after",
         aoColumns: [
-             {type: "number"},
+             {type: "number"}, // incidnet number
              {type: "select"}, // categories
              {type: "select"}, // sec cat
              {type: "text"}, // addr
@@ -83,7 +110,7 @@ $(document).ready(function() {
         <tbody>
             {% for report in reports %}
             <tr>
-                <td>{{ report.id }}</td>
+                <td><a href="{{ report.get_absolute_url_pro }}">{{ report.id }}</a></td>
                 <td>{{ report.category.name }}</td>
                 <td>{{ report.secondary_category.name }}</td>
                 <td>{{ report.address }}</td>
