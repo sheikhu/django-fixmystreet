@@ -426,7 +426,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                             "<p>" + feature.attributes.report.category + "</p>" +
 
                                             "<ul>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.regional + "</li>" +
+                                            "<li style='display:inline'>" + feature.attributes.report.address_regional + "</li>" +
                                             "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
                                             "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
