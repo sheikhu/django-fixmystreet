@@ -105,8 +105,10 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
+    ### deprecated to remove ###
     categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
     organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True) # organisation that can be responsible of reports
+    ### deprecated to remove replaced by UserOrganisationMembership ###
     work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True) # list of contractors/services that user work with
 
     history = HistoricalRecords()
@@ -237,16 +239,20 @@ class OrganisationEntity(UserTrackedModel):
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
+    phone = models.CharField(max_length=32)
+    email = models.EmailField(null=True, blank=True)
 
     active = models.BooleanField(default=False)
 
-    phone = models.CharField(max_length=32)
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
+    department = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
     dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
     feature_id = models.CharField(max_length=25, null=True, blank=True)
+
+    dispatch_categories = models.ManyToManyField('ReportCategory', related_name='assinged_to_department', blank=True)
 
     history = HistoricalRecords()
 
@@ -297,6 +303,26 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 #     kwargs['request'].session['django_language'] = lang_code.lower()
 #     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
 #     activate(lang_code.lower())
+
+class UserOrganisationMembership(UserTrackedModel):
+    AGENT        = "agent"
+    MANAGER      = "manager"
+    LEADER       = "leader"
+    CONTRACTOR   = "contractor"
+    APPLICANT    = "applicant"
+
+    DEPANRTMENT_ROLES = ("agent", "manager", "leader")
+    ROLES = (
+        (LEADER, _("Agent")),
+        (MANAGER, _("Manager")),
+        (AGENT, _("Leader")),
+        (APPLICANT, _("Contractor")),
+        (CONTRACTOR, _("Applicant"))
+    )
+    user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
+    organisation = models.ForeignKey(OrganisationEntity, related_name='memberships', null=True, blank=True)
+    contact_user = models.BooleanField(default=False)
+    role = models.CharField(max_length="16")
 
 
 class ReportQuerySet(models.query.GeoQuerySet):
@@ -437,11 +463,13 @@ class Report(UserTrackedModel):
     mark_as_done_motivation = models.TextField(null=True, blank=True)
     mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True)
 
-    #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
-    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
-    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
+    responsible_entity = models.ForeignKey(OrganisationEntity, related_name='reports_in_charge', null=True, blank=True)
+    responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True) # must be not null after migration
+    ### deprecated to remove ###
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
+    ### deprecated to remove ###
     responsible_manager_validated = models.BooleanField(default=False)
+    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
     previous_managers = models.ManyToManyField('FMSUser',related_name='previous_reports',null=True, blank=True)
 
     valid = models.BooleanField(default=False)
