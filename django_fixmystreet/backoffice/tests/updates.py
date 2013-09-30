@@ -49,7 +49,7 @@ class UpdatesTest(TestCase):
     def test_update_planned(self):
         self.client.login(username='manager@a.com', password='test')
 
-        date_planned = (datetime.now() + timedelta(days=1)).strftime("%d-%m-%Y")
+        date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
         url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
@@ -63,8 +63,8 @@ class UpdatesTest(TestCase):
     def test_update_planned_max_date(self):
         self.client.login(username='manager@a.com', password='test')
 
-        max_date_planned = self.report.accepted_at + timedelta(days=366)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), max_date_planned.strftime("%d-%m-%Y"))
+        max_date_planned = self.report.accepted_at + timedelta(days=395)
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), max_date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -78,7 +78,7 @@ class UpdatesTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
 
         min_date_planned = self.report.accepted_at - timedelta(days=366)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%d-%m-%Y"))
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -94,7 +94,7 @@ class UpdatesTest(TestCase):
         self.report.accepted_at = None
         self.report.save()
 
-        date_planned = (datetime.now() + timedelta(days=1)).strftime("%d-%m-%Y")
+        date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
         url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
@@ -131,7 +131,7 @@ class UpdatesTest(TestCase):
         self.report.save()
 
         date_planned = datetime.now() + timedelta(days=1)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%d-%m-%Y"))
+        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -139,7 +139,7 @@ class UpdatesTest(TestCase):
         report = response.context['report']
 
         self.assertTrue(report.planned)
-        self.assertEqual(date_planned.strftime("%d-%m-%Y"), report.date_planned.strftime("%d-%m-%Y"))
+        self.assertEqual(date_planned.strftime("%m/%Y"), report.date_planned.strftime("%m/%Y"))
         self.assertNotEqual(first_date_planned, report.date_planned)
 
     def test_update_planned_unauth(self):

@@ -6,6 +6,9 @@
 {{ block.super }}
 
 {% block specific_scripts %}
+<script src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/datepicker.css" type="text/css"/>
+
 <script type="text/javascript">
 
 var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
@@ -108,6 +111,19 @@ $(document).ready(function() {
     {% endfor %}
     //Clear the comment textarea after each POST
     $("#id_comment-text").val('');
+
+    // Datepicker for planned
+    var nowTemp = new Date();
+    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+    var max_date = new Date({{ report.accepted_at|date:"Y" }} + 1, {{ report.accepted_at|date:"n" }}, 0, 0, 0, 0, 0);
+
+    $('.input-append.date').datepicker({
+        format: "mm/yyyy",
+        startDate: "+1d",
+        endDate: "+1y",
+        language: "fr"
+    });
 });
 
 
@@ -546,11 +562,14 @@ function showMergeConfirmation(){
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
                     {% if report.planned %}
-                        <p>{% trans 'Planned' %} : {{ report.planned }} - {{ report.date_planned }}</p>
+                        <p>{% trans 'Planned' %} : {{ report.planned }} - {{ report.date_planned|date:'m/Y' }}</p>
                     {% endif %}
                         <p>
                             <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
-                            <input type="date" id="date_planned" name="date_planned" min="2011-08-13" max="2012-06-25" />
+
+                            <div class="input-append date" data-date="{{ report.date_planned|date:'m/Y' }}">
+                                <input id="date_planned" type="text" class="span2" readonly="" value="{{ report.date_planned|date:'m/Y' }}"><span class="add-on"><i class="icon-th"></i></span>
+                            </div>
                         </p>
                 {% endif %}
             {% endif %}

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 # TODO move to backoffice/views/reports/main.py
 
 @transaction.commit_on_success
-def accept( request, report_id, redirect=True):
+def accept(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     #Test if the report is created...
     if report.status == Report.CREATED:
@@ -27,12 +27,10 @@ def accept( request, report_id, redirect=True):
         report.accepted_at = datetime.now()
         report.save()
 
-    #Redirect to the report show page
-    if redirect:
-        if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-        else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def refuse( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
@@ -83,7 +81,7 @@ def planned( request, report_id ):
     #Update the status and set the planned
     date_planned = request.GET.get("date_planned", False)
     if (date_planned):
-        date_planned = datetime.strptime(date_planned, "%d-%m-%Y")
+        date_planned = datetime.strptime(date_planned, "%m/%Y")
 
         report.planned = True
         report.date_planned = date_planned
@@ -155,7 +153,7 @@ def changeContractor(request,report_id):
 
 def publish(request, report_id):
     # Accept first
-    accept(request, report_id, redirect=False)
+    accept(request, report_id)
 
     # Publish
     report = get_object_or_404(Report, id=report_id)
@@ -174,9 +172,9 @@ def publish(request, report_id):
         f.save()
 
     if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+        return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
-            return HttpResponseRedirect(report.get_absolute_url())
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def validateAll(request,report_id):
     '''Set all annexes to public'''
