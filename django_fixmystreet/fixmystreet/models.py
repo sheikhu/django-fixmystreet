@@ -882,7 +882,7 @@ def check_planned(sender, instance, **kwargs):
         old_report = Report.objects.get(pk=instance.pk)
 
         dates_exists   = True if old_report.accepted_at and instance.date_planned else False
-        date_too_small = instance.date_planned <= old_report.accepted_at if dates_exists else False
+        date_too_small = instance.date_planned.strftime('%m/%Y') < old_report.accepted_at.strftime('%m/%Y') if dates_exists else False
         date_too_big   = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
 
         if (not dates_exists or date_too_small or date_too_big):

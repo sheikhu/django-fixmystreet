@@ -238,7 +238,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 2) # one for creator subscription, one for manager
 
         # Set as planned
-        date_planned = (datetime.now() + timedelta(days=1)).strftime("%d-%m-%Y")
+        date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
         url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[report_id]), date_planned)
 
         self.client.login(username='manager@a.com', password='test')
@@ -247,7 +247,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 3)
 
         # Planned another date
-        date_planned = (datetime.now() + timedelta(days=10)).strftime("%d-%m-%Y")
+        date_planned = (datetime.now() + timedelta(days=40)).strftime("%m/%Y")
         url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[report_id]), date_planned)
 
         self.client.login(username='manager@a.com', password='test')
