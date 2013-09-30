@@ -403,6 +403,11 @@ class MailTest(TestCase):
         report_id = response.context['report'].id
         self.assertEquals(len(mail.outbox), 2) # one for creator subscription, one for manager
 
+        # Add a worker for this entity
+        worker = FMSUser(email="worker@impetrant.be", telephone="0123456789")
+        worker.save()
+        worker.work_for.add(self.impetrant)
+
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
         #Publish the created report
@@ -415,7 +420,7 @@ class MailTest(TestCase):
         #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to impetrant, 2 to subcribers (manager, user)
         self.assertEquals(len(mail.outbox), 6)
         report = Report.objects.get(id=report_id)
-        self.assertTrue(self.impetrant.email in mail.outbox[3].to)
+        self.assertTrue(worker.email in mail.outbox[3].to)
         self.assertTrue(self.citizen.email in mail.outbox[4].to or self.citizen.email in mail.outbox[5].to)
         self.assertTrue(self.manager.email in mail.outbox[4].to or self.manager.email in mail.outbox[5].to)
 
@@ -425,6 +430,11 @@ class MailTest(TestCase):
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
         self.assertEquals(len(mail.outbox), 2) # one for creator subscription, one for manager
+
+        # Add a worker for this entity
+        worker = FMSUser(email="worker@contractor.be", telephone="0123456789")
+        worker.save()
+        worker.work_for.add(self.contractor)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
@@ -438,7 +448,7 @@ class MailTest(TestCase):
         #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to contractor
         self.assertEquals(len(mail.outbox), 4)
         report = Report.objects.get(id=report_id)
-        self.assertTrue(self.contractor.email in mail.outbox[3].to)
+        self.assertTrue(worker.email in mail.outbox[3].to)
 
     def testCitizenUpdatesReportMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
