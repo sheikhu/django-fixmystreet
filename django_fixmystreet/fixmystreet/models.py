@@ -387,7 +387,7 @@ class Report(UserTrackedModel):
     PROCESSED = 3
     DELETED   = 8
 
-    REPORT_STATUS_SETTABLE_TO_SOLVED = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
+    REPORT_STATUS_SETTABLE_TO_SOLVED = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_ASSIGNED    = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
@@ -676,21 +676,6 @@ class Report(UserTrackedModel):
             "thumb": thumbValue
         }
 
-    def marker_detail_JSON(self):
-        return {
-            "category": self.display_category(),
-
-            "address": self.address,
-            "address_number": self.address_number,
-            "postalcode": self.postalcode,
-            "address_commune_name": self.get_address_commune_name(),
-            "address_regional": self.address_regional,
-
-            "regional" : self.is_regional(),
-            "contractor" : True if self.contractor else False,
-            "date_planned" : self.get_date_planned()
-        }
-
     def marker_detail_short(self):
         return {
             "id": self.id,
@@ -720,10 +705,12 @@ class Report(UserTrackedModel):
             "postalcode": self.postalcode,
             "address_commune_name": self.get_address_commune_name(),
             "address_regional": self.address_regional,
-            "regional" : self.is_regional(),
             "contractor" : True if self.contractor else False,
             "date_planned" : self.get_date_planned(),
-            "thumb": thumbValue
+            "thumb": thumbValue,
+            "is_closed": self.is_closed(),
+            "citizen": not self.is_pro(),
+            "priority": self.get_priority()
         }
 
     def full_marker_detail_JSON(self):
@@ -745,7 +732,9 @@ class Report(UserTrackedModel):
             "postalcode": self.postalcode,
             "address_commune_name": self.get_address_commune_name(),
             "address_regional": self.address_regional,
-            "thumb": thumbValue
+            "thumb": thumbValue,
+            "contractor" : True if self.contractor else False,
+            "date_planned" : self.get_date_planned()
         }
 
     def to_JSON(self):
