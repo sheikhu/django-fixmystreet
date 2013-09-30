@@ -541,7 +541,7 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
-       
+   
     def testAssignToContractor(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
         self.assertEquals(response.status_code, 200)

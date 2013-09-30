@@ -267,7 +267,7 @@ function markAsDone(){
                 {% if not report.is_closed and not subscribed %}
                     <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
                         {% csrf_token %}
-                        <p class="required"><input type="text" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
+                        <p class="required"><input type="email" class="validate-email" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" /></p>
                             <input id="subscribe-incident-show-report" type="submit" class="btn" value="{% trans 'Subscribe' %}" />
                     </form>
                 {% endif %}
