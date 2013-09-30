@@ -308,13 +308,16 @@ class OrganisationEntity(UserTrackedModel):
         #Activate something similar to this to filter per entity !!!
         #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
         return reports.count()
+
     def get_total_number_of_users(self):
         users = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
         return users.count()
+
     def get_number_of_agents(self):
         agents = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
         agents = agents.filter(agent = True)
         return agents.count()
+
     def get_number_of_contractors(self):
         #Get organisations dependants from the current organisation id
         dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = self.id)
@@ -323,10 +326,12 @@ class OrganisationEntity(UserTrackedModel):
         contractors = FMSUser.objects.filter(organisation_id__in=allOrganisation).filter(logical_deleted = False)
         contractors = contractors.filter(contractor = True)
         return contractors.count()
+
     def get_number_of_impetrants(self):
         impetrants = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
         impetrants = impetrants.filter(applicant = True)
         return impetrants.count()
+
     def get_number_of_managers(self):
         managers = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
         managers = managers.filter(manager = True)
@@ -356,6 +361,7 @@ class UserOrganisationMembership(UserTrackedModel):
 
     class Meta:
         unique_together = (("user", "organisation"),)
+
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
