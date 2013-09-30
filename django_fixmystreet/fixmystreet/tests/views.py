@@ -395,3 +395,60 @@ class ReportViewsTest(SampleFilesTestCase):
 
         response = self.client.post(reverse('logout'))
         self.assertEqual(response.status_code, 302)
+
+
+    def test_marker_detail_citizen(self):
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+
+        response = self.client.post(url, self.sample_post, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertIn('report', response.context)
+
+        report = response.context['report']
+        jsonResult = report.full_marker_detail_JSON()
+        #Now test on all mandatory fields
+        self.assertIn('id', jsonResult)
+        self.assertIn('point', jsonResult)
+        self.assertIn('category', jsonResult)
+        self.assertIn('address', jsonResult)
+        self.assertIn('address_number', jsonResult)
+        self.assertIn('postalcode', jsonResult)
+        self.assertIn('address_commune_name', jsonResult)
+        self.assertIn('address_regional', jsonResult)
+        self.assertIn('thumb', jsonResult)
+        self.assertIn('contractor', jsonResult)
+        self.assertIn('date_planned', jsonResult)
+        self.assertNotIn('is_closed', jsonResult)
+        self.assertNotIn('citizen', jsonResult)
+        self.assertNotIn('priority', jsonResult)
+
+    def test_marker_detail_pro(self):
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+
+        response = self.client.post(url, self.sample_post, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertIn('report', response.context)
+
+        report = response.context['report']
+        jsonResult = report.full_marker_detail_pro_JSON()
+        #Now test on all mandatory fields
+        self.assertIn('id', jsonResult)
+        self.assertIn('point', jsonResult)
+        self.assertIn('category', jsonResult)
+        self.assertIn('address', jsonResult)
+        self.assertIn('address_number', jsonResult)
+        self.assertIn('postalcode', jsonResult)
+        self.assertIn('address_commune_name', jsonResult)
+        self.assertIn('address_regional', jsonResult)
+        self.assertIn('thumb', jsonResult)
+        self.assertIn('contractor', jsonResult)
+        self.assertIn('date_planned', jsonResult)
+        self.assertIn('is_closed', jsonResult)
+        self.assertIn('citizen', jsonResult)
+        self.assertIn('priority', jsonResult)
+
+
