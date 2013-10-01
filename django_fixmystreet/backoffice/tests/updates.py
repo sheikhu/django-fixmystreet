@@ -63,7 +63,7 @@ class UpdatesTest(TestCase):
     def test_update_planned_max_date(self):
         self.client.login(username='manager@a.com', password='test')
 
-        max_date_planned = self.report.accepted_at + timedelta(days=395)
+        max_date_planned = self.report.accepted_at + timedelta(days=450)
         url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), max_date_planned.strftime("%m/%Y"))
 
         # Set as planned
