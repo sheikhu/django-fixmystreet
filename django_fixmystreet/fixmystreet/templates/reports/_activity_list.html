@@ -1,16 +1,21 @@
 <table width="100%">
     {% for activity in activity_list %}
-        {% if  privacy == 'private' and activity.is_pro_visible or activity.is_public_visible %}
-        <tr>
-            <td colspan="2">
-                <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
-                {% if privacy == 'private' %}
-                    {{ activity }}
-                {% else %}
-                    {{ activity.get_public_activity_text }}
-                {% endif %}
-            </td>
-        </tr>
+        {% if privacy == 'private' and activity.is_pro_visible %}
+            <tr>
+                <td colspan="2">
+                    <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
+                        {{ activity }}
+                </td>
+            </tr>
+        {% else %}
+            {% if privacy == 'public' and activity.is_public_visible %}
+                <tr>
+                    <td colspan="2">
+                        <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
+                            {{ activity.get_public_activity_text }}
+                    </td>
+                </tr>
+            {% endif %}
         {% endif %}
     {% endfor %}
 </table>
