@@ -78,9 +78,9 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(r'^users/create$',   'create_user', name='create_user'),
     url(r'^users/(?P<user_id>\d+)/delete$', 'delete_user', name="delete_user"),
 
-    url(r'^contractors/$', 'list_contractors', name='list_contractors'),
-    url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
-    url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
+    # url(r'^contractors/$', 'list_contractors', name='list_contractors'),
+    # url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
+    # url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
 )
 
 urlpatterns += patterns('',
