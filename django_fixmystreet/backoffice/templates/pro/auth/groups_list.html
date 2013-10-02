@@ -66,7 +66,7 @@ $(document).ready(function() {
 </div>
 {% if can_create %}
     <p class="lead span12">
-        <a href="{% url 'create_group' %}">{% trans 'Create a new group' %}</a>
+        <a class="btn btn-large" href="{% url 'create_group' %}"><i class="icon-plus"></i> {% trans 'Create a new group' %}</a>
     </p>
 {% endif %}
 
