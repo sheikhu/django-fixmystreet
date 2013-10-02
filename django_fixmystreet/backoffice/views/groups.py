@@ -30,7 +30,7 @@ def list_groups(request):
     elif not request.user.is_superuser:
         raise PermissionDenied()
 
-    return render_to_response("pro/auth/groups_overview.html", {
+    return render_to_response("pro/auth/groups_list.html", {
         'groups': groups,
         'can_create' : request.fmsuser.leader
     }, context_instance=RequestContext(request))
