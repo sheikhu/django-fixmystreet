@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 def list_groups(request):
     current_user = request.fmsuser
 
-    groups = OrganisationEntity.objects.filter(type='D')
+    groups = OrganisationEntity.objects.filter(type__in=['D', 'S'])
     if current_user.organisation:
         groups = groups.filter(dependency=current_user.organisation)
     elif not request.user.is_superuser:
