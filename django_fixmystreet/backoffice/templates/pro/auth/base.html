@@ -1,0 +1,16 @@
+{% extends "pro/base.html" %}
+{% load i18n tags %}
+
+{% block content %}
+{{ block.super }}
+<div class="span12">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="{% url 'list_users' %}">{% trans "Users" %}</a>
+        </li>
+        <li>
+            <a href="{% url 'list_users' %}">{% trans "Groups" %}</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

@@ -1706,13 +1706,6 @@ blockquote {
 
 .recent_photos li a { text-decoration: none; }
 
-#posters { text-align: center;  }
-#posters p {width: 450px; margin: 20px auto;}
-
-ul li {
-	list-style-type: disc;
-}
-
 ul.keyline_list li {
 	padding: 0.7em 0;
 	border-bottom: 1px solid #e5e5e5;
