@@ -1,0 +1,105 @@
+{% extends "pro/base.html" %}
+{% load i18n tags %}
+
+{% block script %}
+{{ block.super }}
+{% if request.user.fmsuser.manager and not request.user.fmsuser.leader %}
+<script type="text/javascript">
+    $(function(){
+        $.each($("#id_group_type").find("option"),function(idx,value){
+            if (value.value != "agent"){
+                $(value).remove();
+            }
+        });
+    });
+</script>
+{% endif %}
+
+<script type="text/javascript">
+    var group_id             = {{ group_id }};
+    var users_field          = document.querySelector('select[name="users"]');
+    var users_list           = document.getElementById('memberships');
+
+    // AJAX request to remove membership
+    function removeMembership() {
+        console.log('Remove');
+
+        var self = this;
+        $.get( "/pro/groups/membership/remove/" + self.getAttribute('id') + "/", function(data) {
+
+            if (data == 'OK') {
+                self.parentNode.removeChild(self);
+            }
+        });
+    }
+
+    users_field.addEventListener('change', function () {
+        console.log("create membership");
+
+        var self = this;
+        var selectedIndex = this.selectedIndex;
+        var user_id = this.options[selectedIndex].value;
+
+        // AJAX request to add membership
+        $.getJSON( "/pro/groups/membership/add/" + group_id + "/" + user_id + "/", function( data ) {
+
+            if (data.status == 'OK') {
+                var membership_id = data.membership_id
+                var new_user = document.createElement("LI");
+
+                new_user.setAttribute("id", membership_id);
+                new_user.innerHTML = self.options[selectedIndex].text;
+
+                users_list.appendChild(new_user);
+
+                new_user.addEventListener('click', removeMembership);
+
+            }
+
+        });
+
+    });
+
+    // Init event
+    memberships = document.querySelectorAll('#memberships li');
+
+    for (var i=0, length = memberships.length; i < length; i++) {
+        memberships[i].addEventListener('click', removeMembership);
+    }
+
+</script>
+{% endblock %}
+
+{% block title %} {% trans "Create group" %} {% endblock %}
+
+{% block content %}
+<div id="group_type_filter">
+    <ul>
+        <li>
+                <a href="{% url 'list_groups' %}">
+                    <img src="{{STATIC_URL}}images/pin-fixmystreet-L.png" width="40px" height="54px" > <span id="groups">{% trans "Collaborators in" %} {{ request.user.fmsuser.get_organisation.name }}</span>
+                </a>
+        </li>
+    </ul>
+</div>
+<form action="" method="POST" class="form-centered form-horizontal">
+    {% csrf_token %}
+    <h1>{% trans "Create group" %}</h1>
+
+    <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
+
+    {% include "_form_horizontal.html" with form=group_form %}
+
+    <ul id="memberships">
+        {% for membership in memberships %}
+            <li id="{{ membership.id }}">{{ membership.user }}</li>
+        {% endfor %}
+    </ul>
+
+    <div class="control-group">
+        <div class="controls">
+           <input type="submit" value="{% trans 'Save' %}" class="btn"/>
+        </div>
+    </div>
+</form>
+{% endblock %}
