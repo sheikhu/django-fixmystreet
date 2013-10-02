@@ -148,7 +148,7 @@ class FMSUser(User):
 
     def get_display_name(self):
         if ((self.first_name == None or self.first_name == "") and (self.last_name == None or self.last_name == "")):
-             return _('ANONYMOUS')
+             return _('A citizen')
         else:
              return self.first_name+' '+self.last_name
 
@@ -188,10 +188,13 @@ class FMSUser(User):
         d['last_used_language'] = getattr(self, 'last_used_language')
         d['organisation'] = getattr(self.get_organisation(), 'id', None)
         return simplejson.dumps(d)
+
+    ### DEPRECATED ??? ###
     def get_number_of_created_reports(self):
         userConnectedOrganisation = self.organisation
         reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
         return reports.count()
+    ### DEPRECATED ??? ###
     def get_number_of_in_progress_reports(self):
         connectedOrganisation = self.organisation
         userConnectedOrganisation = connectedOrganisation
@@ -201,6 +204,7 @@ class FMSUser(User):
         else:
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
         return reports.count()
+    ### DEPRECATED ??? ###
     def get_number_of_closed_reports(self):
         connectedOrganisation = self.organisation
         userConnectedOrganisation = connectedOrganisation
@@ -211,6 +215,7 @@ class FMSUser(User):
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
 
         return reports.count()
+    ### DEPRECATED ??? ###
     def get_number_of_subscriptions(self):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
         return subscriptions.count()
