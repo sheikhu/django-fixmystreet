@@ -21,14 +21,16 @@
     var users_list           = document.getElementById('memberships');
 
     // AJAX request to remove membership
-    function removeMembership() {
+    function removeMembership(evt) {
+        evt.preventDefault();
         console.log('Remove');
 
-        var self = this;
-        $.get( "/pro/groups/membership/remove/" + self.getAttribute('id') + "/", function(data) {
+        var li            = this.parentNode;
+        var membership_id = li.getAttribute('id');
 
+        $.get( "/pro/groups/membership/remove/" + membership_id + "/", function(data) {
             if (data == 'OK') {
-                self.parentNode.removeChild(self);
+                users_list.removeChild(li);
             }
         });
     }
@@ -45,15 +47,18 @@
 
             if (data.status == 'OK') {
                 var membership_id = data.membership_id
-                var new_user = document.createElement("LI");
+
+                var new_user      = document.createElement("li");
+                var button_remove = document.createElement("BUTTON");
+
+                button_remove.textContent = "Remove";
+                button_remove.addEventListener('click', removeMembership);
 
                 new_user.setAttribute("id", membership_id);
-                new_user.innerHTML = self.options[selectedIndex].text;
+                new_user.innerHTML = self.options[selectedIndex].text + " - ";
+                new_user.appendChild(button_remove);
 
                 users_list.appendChild(new_user);
-
-                new_user.addEventListener('click', removeMembership);
-
             }
 
         });
@@ -64,7 +69,7 @@
     memberships = document.querySelectorAll('#memberships li');
 
     for (var i=0, length = memberships.length; i < length; i++) {
-        memberships[i].addEventListener('click', removeMembership);
+        memberships[i].querySelector('button').addEventListener('click', removeMembership);
     }
 
 </script>
@@ -92,7 +97,10 @@
 
     <ul id="memberships">
         {% for membership in memberships %}
-            <li id="{{ membership.id }}">{{ membership.user }}</li>
+            <li id="{{ membership.id }}">
+                {{ membership.user }} -
+                <button>Remove</button>
+            </li>
         {% endfor %}
     </ul>
 
