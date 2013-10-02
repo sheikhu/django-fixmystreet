@@ -11,7 +11,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import TemplateDoesNotExist
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import FMSUser, Report
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report
 
 #Increase username size
 AuthenticationForm.base_fields['username'].max_length = 150
@@ -159,3 +159,40 @@ class SearchIncidentForm(forms.Form):
         ("subscribed", _("My subscriptions")),
         ("transfered", _("My transfered reports"))
     ), required=False)
+
+class GroupForm(forms.ModelForm):
+    required_css_class = 'required'
+    class Meta:
+        model = OrganisationEntity
+        fields = ('name_fr', 'name_nl', 'phone', 'email', 'type')
+
+    name_fr = forms.CharField()
+    name_nl = forms.CharField()
+
+    phone = forms.CharField(required=True)
+    email = forms.EmailField(required=True, label=_('Email'))
+
+    users =  forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
+    #~ selected_users =  forms.ModelChoiceField(widget=forms.MultipleHiddenInput, required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
+    #~ selected_users =  forms.ModelMultipleChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
+
+    def __init__(self, *args, **kwargs):
+        try:
+            edit = kwargs.pop('edit')
+        except KeyError:
+            edit = False
+
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+        if not edit:
+            del self.fields['users']
+
+    def save(self, commit=True):
+        group = super(GroupForm, self).save(commit=False)
+
+        group.department = True
+
+        if commit:
+            group.save()
+
+        return group

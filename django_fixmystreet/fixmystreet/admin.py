@@ -16,7 +16,7 @@ from django.template.response import TemplateResponse
 from django.conf.urls.defaults import patterns
 from markdown import markdown
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate
+from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import export_as_csv_action
 
 #admin.site.unregister(User)
@@ -211,3 +211,4 @@ class MailNotificationTemplateAdmin(admin.ModelAdmin):
 
 admin.site.register(MailNotificationTemplate, MailNotificationTemplateAdmin)
 
+admin.site.register(UserOrganisationMembership)

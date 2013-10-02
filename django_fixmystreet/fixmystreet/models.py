@@ -340,6 +340,8 @@ class UserOrganisationMembership(UserTrackedModel):
     organisation = models.ForeignKey(OrganisationEntity, related_name='memberships', null=True, blank=True)
     contact_user = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = (("user", "organisation"),)
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
