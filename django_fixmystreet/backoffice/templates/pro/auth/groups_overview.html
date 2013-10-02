@@ -1,0 +1,72 @@
+{% extends "pro/base.html" %}
+{% load i18n tags %}
+
+{% block title %}{% trans "Groups admin" %}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></link>
+{{ block.super }}
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script src="{{ STATIC_URL }}lib/dataTables/js/jquery.dataTables.js"></script>
+<script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
+<script>
+
+$(document).ready(function() {
+    var table = $('#groups-table').dataTable();
+
+    table.columnFilter({ sPlaceHolder: "head:after",
+        aoColumns: [
+             {type: "text"}, // name
+             {type: "text"}, // phone
+             {type: "text"} // email
+        ]
+    });
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="span12">
+    <table id="groups-table">
+        <thead>
+            <tr>
+                <td>{% trans "Name" %}</td>
+                <td>{% trans "Phone" %}</td>
+                <td>{% trans "Email" %}</td>
+            </tr>
+            <tr>
+                <td>{% trans "Name" %}</td>
+                <td>{% trans "Phone" %}</td>
+                <td>{% trans "Email" %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+            <tr>
+                <td>
+                    <a href="{% url 'edit_group' group_id=group.id %}">
+                        {{ group }}
+                    </a>
+                </td>
+                <td>
+                    <a href="tel:{{ group.telephone }}">{{ group.phone }}</a>
+                </td>
+                <td>
+                    <a href="mailto:{{ group.email }}">{{ group.email }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if can_create %}
+    <p class="lead span12">
+        <a href="{% url 'create_group' %}">{% trans 'Create a new group' %}</a>
+    </p>
+{% endif %}
+
+{% endblock %}
