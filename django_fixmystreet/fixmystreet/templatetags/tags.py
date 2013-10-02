@@ -8,21 +8,23 @@ from django_fixmystreet.fixmystreet.models import FMSUser
 
 register = template.Library()
 
-MENU_DEFS = [
-    ('submit', ['home','report_new','report_new_pro','home_pro','report_prepare_pro']),
-    ('view', ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report','report_show_pro','report_list_pro']),
-    ('users',['list_users', 'create_user', 'list_contractors', 'create_contractor', 'category_gestionnaire_configuration', 'password_change']),
-    ('about',  ['about', 'terms_of_use']),
-    ('contact', ['contact'])
-]
+MENU_DEFS = {
+    'submit':                    ['home','report_new','report_new_pro','home_pro','report_prepare_pro'],
+    'view':                      ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report','report_show_pro','report_list_pro'],
+    'auth':                      ['list_users', 'edit_user', 'create_user', 'list_groups', 'create_group', 'edit_group', 'category_gestionnaire_configuration', 'password_change'],
+    'users':                     ['list_users', 'edit_user', 'create_user'],
+    'groups':                    ['list_groups', 'create_group', 'edit_group'],
+    'users_manager_dispatching': ['category_gestionnaire_configuration'],
+    'users_change_password':     ['password_change'],
+    'about':                     ['about', 'terms_of_use'],
+    'contact':                   ['contact']
+}
 
 @register.simple_tag(takes_context=True)
-def get_active_menu(context):
+def is_active_menu(context, menu):
     page = resolve(context['request'].path)
-    for menu,defs in MENU_DEFS:
-        if page.url_name in defs:
-            context['menu'] = menu
-            return ''
+    if page.url_name in MENU_DEFS[menu]:
+        return 'active'
     return ''
 
 @register.simple_tag

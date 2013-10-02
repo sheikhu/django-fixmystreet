@@ -72,49 +72,47 @@
                 <nav>
                     {% if not request.user.is_authenticated or not request.fmsuser.is_pro %}
                     <ul>
-                        {% get_active_menu %}
                         <li>
-                            <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url 'home' %}">
+                            <a class="{% is_active_menu 'submit' %}"   href="{% url 'home' %}">
                                 {% trans "Submit a Report" %}
                             </a>
                         </li>
                         <li>
-                            <a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url 'report_index' %}">
+                            <a class="{% is_active_menu 'view' %}"     href="{% url 'report_index' %}">
                                 {% trans "View Reports" %}
                             </a>
                         </li>
                         <li>
-                            <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url 'about' %}">
+                            <a class="{% is_active_menu 'about' %}"    href="{% url 'about' %}">
                                 {% trans "About" %}
                             </a>
                         </li>
                     </ul>
                     {% else %}
                     <ul>
-                        {% get_active_menu %}
                         <li>
-                            <a class="{% ifequal 'submit' menu %}active{% endifequal %}"   href="{% url 'report_prepare_pro' %}">
+                            <a class="{% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
                                 {% trans "Submit a Report" %}
                             </a>
                         <li>
-                            <a class="{% ifequal 'view' menu %}active{% endifequal %}"     href="{% url 'report_list_pro' %}">
+                            <a class="{% is_active_menu 'view' %}"     href="{% url 'report_list_pro' %}">
                                 {% trans "View Reports" %}
                             </a>
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle {% ifequal 'users' menu %}active{% endifequal %}" data-toggle="dropdown" href="{% url 'list_users' %}">
+                            <a class="dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
                                 {% trans "Users" %}
                                 <b class="caret"></b>
                             </a>
                              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
                                 <li>
-                                    <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url 'list_users' %}">
+                                    <a class="{% is_active_menu 'users' %}"     href="{% url 'list_users' %}">
                                         {% trans "Users" %}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="{% ifequal 'list_groups' menu %}active{% endifequal %}"     href="{% url 'list_groups' %}">
+                                    <a class="{% is_active_menu 'groups' %}"     href="{% url 'list_groups' %}">
                                         {% trans "Groups" %}
                                     </a>
                                 </li>
@@ -122,21 +120,21 @@
                                 {% if request.fmsuser.leader %}
                                     {% if request.user.id|hasAtLeastAManager %}
                                     <li>
-                                        <a class="{% ifequal 'users_manager_dispatching' menu %}active{% endifequal %}"  href="{% url 'category_gestionnaire_configuration' %}">
+                                        <a class="{% is_active_menu 'users_manager_dispatching' %}"  href="{% url 'category_gestionnaire_configuration' %}">
                                             {% trans "Managers dispatching" %}
                                         </a>
                                     </li>
                                     {% endif %}
                                 {% endif %}
                                 <li>
-                                    <a class="{% ifequal 'users_change_password' menu %}active{% endifequal %}"     href="{% url 'password_change' %}">
+                                    <a class="{% is_active_menu 'users_change_password' %}"     href="{% url 'password_change' %}">
                                         {% trans "Change your password" %}
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a class="{% ifequal 'about' menu %}active{% endifequal %}"    href="{% url 'about' %}">
+                            <a class="{% is_active_menu 'about' %}"    href="{% url 'about' %}">
                                 {% trans "About" %}
                             </a>
                         </li>
