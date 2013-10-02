@@ -1,6 +1,20 @@
 {% extends "pro/base.html" %}
 {% load i18n tags %}
 
+{% block script %}
+{{ block.super }}
+{% if not can_edit %}
+<script type="text/javascript">
+    $(function(){
+        $.each($("form :input"),function(idx,value) {
+            $(value).prop("disabled", true);
+        });
+        $("form :submit, form .btn, .helptext").hide();
+    });
+</script>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 {{ block.super }}
 <div class="span12">
@@ -9,7 +23,7 @@
             <a href="{% url 'list_users' %}">{% trans "Users" %}</a>
         </li>
         <li>
-            <a href="{% url 'list_users' %}">{% trans "Groups" %}</a>
+            <a href="{% url 'list_groups' %}">{% trans "Groups" %}</a>
         </li>
     </ul>
 </div>

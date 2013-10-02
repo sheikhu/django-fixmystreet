@@ -14,7 +14,7 @@ from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.backoffice.forms import FmsUserForm, FmsUserCreateForm
 from django_fixmystreet.fixmystreet.forms import LoginForm
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import FMSUser
 
 logger = logging.getLogger(__name__)
 
@@ -81,10 +81,10 @@ def edit_user(request, user_id):
     users = users.filter(logical_deleted = False)
 
     user_to_edit = users.get(id=user_id)
-    edit_allowed = current_user.leader and not user_to_edit.leader
+    can_edit = current_user.leader and not user_to_edit.leader
 
 
-    if request.method == "POST" and edit_allowed:
+    if request.method == "POST" and can_edit:
         user_form = FmsUserForm(request.POST, instance=user_to_edit)
         if user_form.is_valid():
             user_form.save()
@@ -93,14 +93,14 @@ def edit_user(request, user_id):
         user_form = FmsUserForm(instance=user_to_edit)
 
     return render_to_response("pro/auth/user_edit.html", {
-        'edit_allowed': edit_allowed,
+        'can_edit': can_edit,
         'user_form': user_form
     }, context_instance=RequestContext(request))
 
 
 def create_user(request):
-    edit_allowed = request.fmsuser.leader
-    if request.method == "POST" and edit_allowed:
+    can_edit = request.fmsuser.leader
+    if request.method == "POST" and can_edit:
         user_form = FmsUserCreateForm(request.POST)
         if user_form.is_valid():
             try:
