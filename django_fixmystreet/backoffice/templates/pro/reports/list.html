@@ -2,13 +2,13 @@
 {% load i18n tags %}
 
 {% block results %}
-<form id="incident-filter" class="row" method="GET">
+<form id="incident-filter" method="GET">
     <span class="span4">{{ search_form.status }}</span>
     <span class="span4">{{ search_form.ownership }}</span>
     <span class="span4"><a class="btn" href="{% url 'report_table_pro' %}">{% trans "Display as table" %}</a></span>
 </form>
 
-<div class="row">
+<div>
     <div id='search_results' class="span8">
         <a id="create_report_fastlink" href="{% url 'report_prepare_pro' %}" class="report">
            <h3 class="report-title">{% trans "create_report" %}</h3>

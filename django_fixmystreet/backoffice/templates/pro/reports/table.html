@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></link>
 {{ block.super }}
 {% endblock %}
 
@@ -35,6 +35,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 $(document).ready(function() {
     var table = $('#result-table').dataTable({
             "aoColumns": [
+                null,
                 {
                     sType: "num-html"
                 },
@@ -51,17 +52,18 @@ $(document).ready(function() {
     // });
     table.columnFilter({ sPlaceHolder: "head:after",
         aoColumns: [
-             {type: "number"}, // incidnet number
-             {type: "select"}, // categories
-             {type: "select"}, // sec cat
-             {type: "text"}, // addr
-             {type: "select", values: [ // status
+            null,
+            {type: "number"}, // incidnet number
+            {type: "select"}, // categories
+            {type: "select"}, // sec cat
+            {type: "text"}, // addr
+            {type: "select", values: [ // status
                 {% for s in reports.0|model_field_choices:'status' %}
                     "{{ s }}"{% if not forloop.last %},{% endif %}
                 {% endfor %}
-             ]},
-             {type: "select"}, // resp entity
-             {type: "select"} // resp manager
+            ]},
+            {type: "select"}, // resp entity
+            {type: "select"} // resp manager
         ]
     });
     $('#column-visibility :checkbox').change(function () {
@@ -110,7 +112,8 @@ $(document).ready(function() {
         <tbody>
             {% for report in reports %}
             <tr>
-                <td><a href="{{ report.get_absolute_url_pro }}">{{ report.id }}</a></td>
+                <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
+                <td>{{ report.id }}</td>
                 <td>{{ report.category.name }}</td>
                 <td>{{ report.secondary_category.name }}</td>
                 <td>{{ report.address }}</td>
