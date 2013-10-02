@@ -102,14 +102,14 @@
                             </a>
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle {% ifequal 'users' menu %}active{% endifequal %}" data-toggle="dropdown" href="{% url 'list_users' user_type='users' %}">
+                            <a class="dropdown-toggle {% ifequal 'users' menu %}active{% endifequal %}" data-toggle="dropdown" href="{% url 'list_users' %}">
                                 {% trans "Users" %}
                                 <b class="caret"></b>
                             </a>
                              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                 {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
                                 <li>
-                                    <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url 'list_users' user_type='users' %}">
+                                    <a class="{% ifequal 'list_users' menu %}active{% endifequal %}"     href="{% url 'list_users' %}">
                                         {% trans "Users" %}
                                     </a>
                                 </li>

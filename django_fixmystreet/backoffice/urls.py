@@ -73,24 +73,13 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(_(r'^change-password/$'), 'change_password', name='password_change'),
     #url(_(r'^change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
 
-    url(r'^users/$',    'list_users', {'user_type': 'users'},    name='list_users'),
-    url(r'^agents/$',   'list_users', {'user_type': 'agents'},   name='list_users'),
-    url(r'^managers/$', 'list_users', {'user_type': 'managers'}, name='list_users'),
+    url(r'^users/$', 'list_users', name='list_users'),
+    url(r'^users/(?P<user_id>\d+)/$', 'edit_user', name='edit_user'),
+    url(r'^users/create$',   'create_user', name='create_user'),
+    url(r'^users/(?P<user_id>\d+)/delete$', 'delete_user', name="delete_user"),
+
     url(r'^contractors/$', 'list_contractors', name='list_contractors'),
-
-    url(r'^users/(?P<user_id>\d+)/$',    'list_users', {'user_type': 'users'},    name='edit_user'),
-    url(r'^agents/(?P<user_id>\d+)/$',   'list_users', {'user_type': 'agents'},   name='edit_user'),
-    url(r'^managers/(?P<user_id>\d+)/$', 'list_users', {'user_type': 'managers'}, name='edit_user'),
-    url(r'^contractors/(?P<contractor_id>\d+)/$', 'list_contractors', name='edit_contractor'),
-
-    url(r'^users/create$',   'create_user', {'user_type': 'users'},     name='create_user'),
-    url(r'^agents/create$',  'create_user', {'user_type': 'agents'},    name='create_user'),
-    url(r'^managers/create$','create_user', {'user_type': 'managers'},  name='create_user'),
     url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
-
-    url(r'^users/(?P<user_id>\d+)/delete$',    'delete_user', {'user_type': 'users'},    name="delete_user"),
-    url(r'^agents/(?P<user_id>\d+)/delete$',   'delete_user', {'user_type': 'agents'},   name="delete_user"),
-    url(r'^managers/(?P<user_id>\d+)/delete$', 'delete_user', {'user_type': 'managers'}, name="delete_user"),
     url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
 )
 
