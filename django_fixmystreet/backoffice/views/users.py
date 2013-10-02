@@ -1,7 +1,6 @@
 import logging
 from smtplib import SMTPException
 
-from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -18,7 +17,6 @@ from django_fixmystreet.fixmystreet.forms import LoginForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
 
 logger = logging.getLogger(__name__)
-
 
 
 def login_view(request):
@@ -58,49 +56,51 @@ def change_password(request):
     return render_to_response('pro/change_password.html', {'form': form}, context_instance=RequestContext(request))
 
 
-def list_users(request, user_id=None, user_type='users'):
-    params = dict()
-    params['user_type'] = user_type
-
-    currentOrganisation = request.fmsuser.organisation
-    if currentOrganisation:
-        users = FMSUser.objects.filter(organisation=currentOrganisation)
-    else:
-        if not request.user.is_superuser:
-            raise PermissionDenied()
-        users = FMSUser.objects.all()
-
-    if user_id:
-        user_to_edit = FMSUser.objects.get(id=user_id)
-        params['can_edit'] = ((not user_to_edit.leader and request.fmsuser.leader) or ((not user_to_edit.leader and not user_to_edit.manager) and request.fmsuser.manager))
-
-        if request.method == "POST" and params['can_edit']:
-            user_form = FmsUserForm(request.POST, instance=user_to_edit)
-            if user_form.is_valid():
-                user_form.save()
-                messages.add_message(request, messages.SUCCESS, _("User has been saved successfully"))
-                return HttpResponseRedirect('')
-        else:
-            user_form = FmsUserForm(instance=user_to_edit)
-
-        params['user_form'] = user_form
-
-
-    if user_type == 'agents':
-        users = users.filter(agent=True, manager=False)
-        params['can_create'] = request.fmsuser.manager or request.fmsuser.leader
-    elif user_type == 'managers':
-        users = users.filter(manager=True)
-        params['can_create'] = request.fmsuser.leader
-    else:
-        users = users.filter(Q(agent=True) | Q(manager=True) | Q(leader=True))
-        params['can_create'] = request.fmsuser.manager or request.fmsuser.leader
+def list_users(request):
+    current_user = request.fmsuser
+    users = FMSUser.objects.all()
+    if current_user.organisation:
+        users = users.filter(organisation=current_user.organisation)
+    elif not request.user.is_superuser:
+        raise PermissionDenied()
 
     users = users.filter(logical_deleted = False)
 
-    params['users'] = users
+    return render_to_response("pro/users_overview.html", {
+        'users': users
+    }, context_instance=RequestContext(request))
 
-    return render_to_response("pro/users_overview.html", params, context_instance=RequestContext(request))
+
+def edit_user(request, user_id):
+    current_user = request.fmsuser
+    users = FMSUser.objects.all()
+    if current_user.organisation:
+        users = users.filter(organisation=current_user.organisation)
+    elif not request.user.is_superuser:
+        raise PermissionDenied()
+
+    users = users.filter(logical_deleted = False)
+
+    user_to_edit = users.get(id=user_id)
+    edit_allowed = (
+            current_user.leader and not user_to_edit.leader
+        ) or (
+            current_user.manager and not user_to_edit.leader and not user_to_edit.manager
+        )
+
+    if request.method == "POST" and edit_allowed:
+        user_form = FmsUserForm(request.POST, instance=user_to_edit)
+        if user_form.is_valid():
+            user_form.save()
+            messages.add_message(request, messages.SUCCESS, _("User has been saved successfully"))
+            return HttpResponseRedirect('')
+    else:
+        user_form = FmsUserForm(instance=user_to_edit)
+
+    return render_to_response("pro/users_overview.html", {
+        'edit_allowed': edit_allowed,
+        'user_form': user_form
+    }, context_instance=RequestContext(request))
 
 
 def create_user(request, user_type='users'):
