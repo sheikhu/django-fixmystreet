@@ -235,6 +235,7 @@ class FMSUser(User):
     def get_absolute_url(self):
         return reverse("edit_user",kwargs={'user_id':self.id})
 
+
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     """This method is used to create the security matrix when creating the first manager of the entity"""
@@ -247,6 +248,7 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
           instance.organisation.save()
           for type in ReportCategory.objects.all():
              instance.categories.add(type)
+
 
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
