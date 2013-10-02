@@ -58,13 +58,11 @@ def change_password(request):
 
 def list_users(request):
     current_user = request.fmsuser
-    users = FMSUser.objects.all()
+    users = FMSUser.objects.filter(logical_deleted=False).is_pro()
     if current_user.organisation:
         users = users.filter(organisation=current_user.organisation)
     elif not request.user.is_superuser:
         raise PermissionDenied()
-
-    users = users.filter(logical_deleted = False)
 
     return render_to_response("pro/users_overview.html", {
         'users': users

@@ -56,6 +56,17 @@ User._meta.get_field_by_name('email')[0].null = True
 User._meta.get_field_by_name('email')[0].max_length=75
 User._meta.get_field_by_name('username')[0].max_length=75
 
+
+class FMSUserManager(models.Manager):
+    def get_query_set(self):
+        return FMSUserQuerySet(self.model)
+
+
+class FMSUserQuerySet(models.query.QuerySet):
+    def is_pro(self):
+        return self.filter(Q(agent=True) | Q(manager=True) | Q(leader=True) | Q(applicant=True) | Q(contractor=True))
+
+
 class FMSUser(User):
     AGENT        = "agent"
     MANAGER      = "manager"
@@ -89,6 +100,7 @@ class FMSUser(User):
 
 
     # user = models.OneToOneField(User)
+    objects = FMSUserManager()
 
     telephone = models.CharField(max_length=20,null=True)
     last_used_language = models.CharField(max_length=10,null=True,default="FR")
@@ -256,8 +268,7 @@ class OrganisationEntity(UserTrackedModel):
 
     active = models.BooleanField(default=False)
 
-
-
+    ### DEPRECATED use type instead ###
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
@@ -275,7 +286,6 @@ class OrganisationEntity(UserTrackedModel):
 
     class Meta:
         translate = ('name', 'slug')
-
 
     def get_absolute_url(self):
         return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
