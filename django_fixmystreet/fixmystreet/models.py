@@ -241,6 +241,13 @@ def populate_username(sender, instance, **kwargs):
 
 
 class OrganisationEntity(UserTrackedModel):
+    ENTITY_TYPE = (
+        ('R', _('Region')),
+        ('C', _('Commune')),
+        ('S', _('Subcontractor')),
+        ('D', _('Department')),
+        ('A', _('Applicant')),
+    )
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
@@ -249,11 +256,16 @@ class OrganisationEntity(UserTrackedModel):
 
     active = models.BooleanField(default=False)
 
+
+
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
     department = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
+
+    type = models.CharField(max_length=1, choices=ENTITY_TYPE, default='')
+
     dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
     feature_id = models.CharField(max_length=25, null=True, blank=True)
 
@@ -310,24 +322,9 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 #     activate(lang_code.lower())
 
 class UserOrganisationMembership(UserTrackedModel):
-    AGENT        = "agent"
-    MANAGER      = "manager"
-    LEADER       = "leader"
-    CONTRACTOR   = "contractor"
-    APPLICANT    = "applicant"
-
-    DEPANRTMENT_ROLES = ("agent", "manager", "leader")
-    ROLES = (
-        (LEADER, _("Agent")),
-        (MANAGER, _("Manager")),
-        (AGENT, _("Leader")),
-        (APPLICANT, _("Contractor")),
-        (CONTRACTOR, _("Applicant"))
-    )
     user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
     organisation = models.ForeignKey(OrganisationEntity, related_name='memberships', null=True, blank=True)
     contact_user = models.BooleanField(default=False)
-    role = models.CharField(max_length="16")
 
 
 class ReportQuerySet(models.query.GeoQuerySet):
