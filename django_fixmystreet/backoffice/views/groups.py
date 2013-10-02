@@ -26,6 +26,11 @@ def list_groups(request):
 
     groups = OrganisationEntity.objects.filter(type__in=['D', 'S'])
 
+    if current_user.organisation:
+        groups = groups.filter(dependency=current_user.organisation)
+    elif not request.user.is_superuser:
+        raise PermissionDenied()
+
     #~ if current_user.organisation:
         #~ groups = groups.filter(dependency=current_user.organisation)
     #~ elif not request.user.is_superuser:
@@ -100,7 +105,7 @@ def delete_group(request, group_id):
 def add_membership(request, group_id, user_id):
     can_edit = request.fmsuser.leader
     response_data = {}
-    if can_edit:        
+    if can_edit:
         organisation  = OrganisationEntity.objects.get(id=group_id)
         user          = FMSUser.objects.get(id=user_id)
 
