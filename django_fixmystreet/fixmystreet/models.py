@@ -232,6 +232,9 @@ class FMSUser(User):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
         return subscriptions.count()
 
+    def get_absolute_url(self):
+        return reverse("edit_user",kwargs={'user_id':self.id})
+
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     """This method is used to create the security matrix when creating the first manager of the entity"""
@@ -257,8 +260,9 @@ class OrganisationEntity(UserTrackedModel):
         ('R', _('Region')),
         ('C', _('Commune')),
         ('S', _('Subcontractor')),
-        ('D', _('Department')),
         ('A', _('Applicant')),
+        ('D', _('Department')),
+        ('N', _('Neighbour house')),
     )
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)

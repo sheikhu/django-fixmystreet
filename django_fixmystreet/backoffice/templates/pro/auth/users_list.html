@@ -1,4 +1,4 @@
-{% extends "pro/base.html" %}
+{% extends "pro/auth/base.html" %}
 {% load i18n tags %}
 
 {% block title %}{% trans "Users admin" %}{% endblock %}
@@ -31,6 +31,7 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
+{{ block.super }}
 <div class="span12">
     <table id="users-table">
         <thead>
@@ -76,7 +77,9 @@ $(document).ready(function() {
 </div>
 {% if can_create %}
 <p class="lead span12">
-    <a href="{% url 'create_user' %}">{% trans 'Create a new user' %}</a>
+    <a href="{% url 'create_user' %}" class="btn btn-large">
+        <i class="icon-plus"></i> {% trans 'Create a new user' %}
+    </a>
 </p>
 {% endif %}
 

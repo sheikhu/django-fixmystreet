@@ -2,6 +2,7 @@
 import logging
 
 from django import forms
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
@@ -10,7 +11,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import TemplateDoesNotExist
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import FMSUser, Report, OrganisationEntity
+from django_fixmystreet.fixmystreet.models import FMSUser, Report
 
 #Increase username size
 AuthenticationForm.base_fields['username'].max_length = 150
@@ -60,27 +61,11 @@ class FmsUserForm(forms.ModelForm):
 
 
 class FmsUserCreateForm(FmsUserForm):
-    required_css_class = 'required'
-    class Meta:
-        model = FMSUser
-        fields = ('first_name','last_name','telephone','email','password1','password2','is_active')
-
-    error_messages = {
-        'password_mismatch': _("The two password fields didn't match."),
-    }
-
-    password1 = forms.CharField(widget=forms.PasswordInput(), label="Password" )
-    password2 = forms.CharField(widget=forms.PasswordInput(), label="Repeat Password" )
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1", "")
-        password2 = self.cleaned_data["password2"]
-        if password1 != password2:
-            raise forms.ValidationError(self.error_messages['password_mismatch'])
-        return password2
 
     def save(self, commit=True):
         user = self.retrive_user()
+        self.password = False
+
         if not user:
             user = super(FmsUserCreateForm,self).save(commit=False)
             user.lastUsedLanguage = "FR"
@@ -92,18 +77,17 @@ class FmsUserCreateForm(FmsUserForm):
             user.is_active = True
 
         if not user.password:
-            user.set_password(self.cleaned_data["password1"])
+            self.password = User.objects.make_random_password()
+            user.set_password(self.password)
             user.is_active = True
 
         if not user.username:
             user.username = self.cleaned_data["email"]
 
-        self.promote(user)
-
         if commit:
             user.save()
-            if not self.instance_retrived:
-                self.notify_user(user)
+            self.notify_user()
+        self.instance = user
         return user
 
     def validate_unique(self):
@@ -119,89 +103,46 @@ class FmsUserCreateForm(FmsUserForm):
             self.instance_retrived = False
             return None
 
-    def promote(self, user):
-        """ set flags for user role, must be extends """
-        pass
-
-    def notify_user(self, user):
+    def notify_user(self):
         """
         Send directly an email to the created user
         (do not use the reportnotification class because then the password is saved in plain text in the DB)
         """
-        recipients = (user.email,)
 
-        data = {
-            "user": user,
-            "password":self.cleaned_data['password1'],
-            "SITE_URL": 'http://{0}'.format(Site.objects.get_current().domain),
-        }
+        if self.password:
+            user = self.instance
+            recipients = (user.email,)
 
-        # MAIL SENDING...
-        subject, html, text = '', '', ''
-        try:
-            subject = render_to_string('emails/send_created_to_user/subject.txt', data)
-        except TemplateDoesNotExist:
-            logger.error('template {0} does not exist'.format('emails/send_created_to_user/subject.txt'))
-        try:
-            text    = render_to_string('emails/send_created_to_user/message.txt', data)
-        except TemplateDoesNotExist:
-            logger.error('template {0} does not exist'.format('emails/send_created_to_user/message.txt'))
+            data = {
+                "user": user,
+                "password": self.password,
+                "SITE_URL": 'http://{0}'.format(Site.objects.get_current().domain),
+            }
 
-        try:
-            html    = render_to_string('emails/send_created_to_user/message.html', data)
-        except TemplateDoesNotExist:
-            logger.info('template {0} does not exist'.format('emails/send_created_to_user/message.html'))
+            # MAIL SENDING...
+            subject, html, text = '', '', ''
+            try:
+                subject = render_to_string('emails/send_created_to_user/subject.txt', data)
+            except TemplateDoesNotExist:
+                logger.error('template {0} does not exist'.format('emails/send_created_to_user/subject.txt'))
+            try:
+                text    = render_to_string('emails/send_created_to_user/message.txt', data)
+            except TemplateDoesNotExist:
+                logger.error('template {0} does not exist'.format('emails/send_created_to_user/message.txt'))
 
-        subject = subject.rstrip(' \n\t').lstrip(' \n\t')
+            try:
+                html    = render_to_string('emails/send_created_to_user/message.html', data)
+            except TemplateDoesNotExist:
+                logger.info('template {0} does not exist'.format('emails/send_created_to_user/message.html'))
 
-        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":user.created_by.email})
-        if html:
-            msg.attach_alternative(html, "text/html")
+            subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-        msg.send()
-        # MAIL SENDED
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":user.created_by.email})
+            if html:
+                msg.attach_alternative(html, "text/html")
 
-
-class AgentForm(FmsUserCreateForm):
-    class Meta:
-        model = FMSUser
-        fields = ('user_type','first_name','last_name','telephone','email','password1','password2','is_active')
-
-    user_type = forms.ChoiceField(label=_("User type"),required=True, choices=(
-        ("agent", _("Agent")),
-        ("manager", _("Manager")),
-    ))
-
-
-    def promote(self, user):
-        user.agent = (self.cleaned_data['user_type'] == FMSUser.AGENT or self.cleaned_data['user_type'] == FMSUser.MANAGER) #All gestionnaires are also agents
-        user.manager = (self.cleaned_data['user_type'] == FMSUser.MANAGER)
-
-
-class ContractorUserForm(FmsUserCreateForm):
-
-    def promote(self, user):
-        user.contractor = True
-
-
-class ContractorForm(forms.ModelForm):
-    required_css_class = 'required'
-    class Meta:
-        model = OrganisationEntity
-        fields = ('name_fr', 'name_nl', 'telephone')
-
-    name_fr = forms.CharField()
-    name_nl = forms.CharField()
-    telephone = forms.CharField(required=False)
-
-    def save(self, organisation, commit=True):
-        contractor = super(ContractorForm, self).save(commit=False)
-        contractor.subcontractor = True
-        contractor.dependency = organisation
-
-        if commit:
-            contractor.save()
-        return contractor
+            msg.send()
+            # MAIL SENDED
 
 
 class SearchIncidentForm(forms.Form):

@@ -114,13 +114,6 @@
                                     </a>
                                 </li>
                                 {% endif %}
-                                {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
-                                <li>
-                                    <a class="{% ifequal 'contractorOverview' menu %}active{% endifequal %}"     href="{% url 'list_contractors' %}">
-                                        {% trans "Contractors" %}
-                                    </a>
-                                </li>
-                                {% endif %}
                                 {% if request.fmsuser.leader %}
                                     {% if request.user.id|hasAtLeastAManager %}
                                     <li>
