@@ -36,8 +36,8 @@ def list_groups(request):
     }, context_instance=RequestContext(request))
 
 def create_group(request,):
-    isManager = request.fmsuser.manager
-    #a boolean value to tell the ui if the user can edit the given form content
+    can_edit = request.fmsuser.leader
+
     if request.method == "POST":
         group_form = GroupForm(request.POST)
 
@@ -55,13 +55,12 @@ def create_group(request,):
     return render_to_response("pro/auth/group_create.html",
             {
                 "group_form": group_form,
-                "isManager":  isManager,
+                "can_edit":  can_edit,
             },
             context_instance=RequestContext(request))
 
 def edit_group(request, group_id):
-    isManager = request.fmsuser.manager
-    #a boolean value to tell the ui if the user can edit the given form content
+    can_edit = request.fmsuser.leader
 
     instance = OrganisationEntity.objects.get(id=group_id)
     if request.method == "POST":
@@ -81,13 +80,14 @@ def edit_group(request, group_id):
                 "group_id"   : instance.id,
                 "group_form" : group_form,
                 "memberships"  : UserOrganisationMembership.objects.filter(organisation=instance),
+                "can_edit" : can_edit
             },
             context_instance=RequestContext(request))
 
 def add_membership(request, group_id, user_id):
-    can_add = request.fmsuser.leader
+    can_edit = request.fmsuser.leader
 
-    if can_add:
+    if can_edit:
         response_data = {}
         organisation  = OrganisationEntity.objects.get(id=group_id)
         user          = FMSUser.objects.get(id=user_id)
@@ -107,9 +107,9 @@ def add_membership(request, group_id, user_id):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def remove_membership(request, membership_id):
-    can_remove = request.fmsuser.leader
+    can_edit = request.fmsuser.leader
 
-    if not can_remove:
+    if not can_edit:
         return HttpResponse('Permission Denied');
 
     isManager = request.fmsuser.manager
