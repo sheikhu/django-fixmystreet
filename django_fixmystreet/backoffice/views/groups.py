@@ -31,11 +31,6 @@ def list_groups(request):
     elif not request.user.is_superuser:
         raise PermissionDenied()
 
-    #~ if current_user.organisation:
-        #~ groups = groups.filter(dependency=current_user.organisation)
-    #~ elif not request.user.is_superuser:
-        #~ raise PermissionDenied()
-
     return render_to_response("pro/auth/groups_list.html", {
         'groups': groups,
         'can_create' : current_user.leader
