@@ -18,7 +18,6 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='memberships', null=True, to=orm['fixmystreet.FMSUser'])),
             ('organisation', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='memberships', null=True, to=orm['fixmystreet.OrganisationEntity'])),
             ('contact_user', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('role', self.gf('django.db.models.fields.CharField')(max_length='16')),
         ))
         db.send_create_signal(u'fixmystreet', ['UserOrganisationMembership'])
 
@@ -32,6 +31,11 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.BooleanField')(default=False),
                       keep_default=False)
 
+        # Adding field 'HistoricalOrganisationEntity.type'
+        db.add_column(u'fixmystreet_historicalorganisationentity', 'type',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=1),
+                      keep_default=False)
+
         # Adding field 'OrganisationEntity.email'
         db.add_column(u'fixmystreet_organisationentity', 'email',
                       self.gf('django.db.models.fields.EmailField')(max_length=75, null=True, blank=True),
@@ -40,6 +44,11 @@ class Migration(SchemaMigration):
         # Adding field 'OrganisationEntity.department'
         db.add_column(u'fixmystreet_organisationentity', 'department',
                       self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
+
+        # Adding field 'OrganisationEntity.type'
+        db.add_column(u'fixmystreet_organisationentity', 'type',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=1),
                       keep_default=False)
 
         # Adding M2M table for field dispatch_categories on 'OrganisationEntity'
@@ -60,6 +69,10 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True),
                       keep_default=False)
 
+        orm.OrganisationEntity.objects.filter(subcontractor=True).update(type='S')
+        orm.OrganisationEntity.objects.filter(applicant=True).update(type='A')
+        orm.OrganisationEntity.objects.filter(commune=True).update(type='C')
+        orm.OrganisationEntity.objects.filter(region=True).update(type='R')
 
     def backwards(self, orm):
         # Deleting model 'UserOrganisationMembership'
@@ -71,11 +84,17 @@ class Migration(SchemaMigration):
         # Deleting field 'HistoricalOrganisationEntity.department'
         db.delete_column(u'fixmystreet_historicalorganisationentity', 'department')
 
+        # Deleting field 'HistoricalOrganisationEntity.type'
+        db.delete_column(u'fixmystreet_historicalorganisationentity', 'type')
+
         # Deleting field 'OrganisationEntity.email'
         db.delete_column(u'fixmystreet_organisationentity', 'email')
 
         # Deleting field 'OrganisationEntity.department'
         db.delete_column(u'fixmystreet_organisationentity', 'department')
+
+        # Deleting field 'OrganisationEntity.type'
+        db.delete_column(u'fixmystreet_organisationentity', 'type')
 
         # Removing M2M table for field dispatch_categories on 'OrganisationEntity'
         db.delete_table('fixmystreet_organisationentity_dispatch_categories')
@@ -211,7 +230,8 @@ class Migration(SchemaMigration):
             'region': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'slug_fr': ('django.db.models.fields.SlugField', [], {'max_length': '100'}),
             'slug_nl': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'type': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1'})
         },
         u'fixmystreet.historicalreport': {
             'Meta': {'ordering': "('-history_date', '-history_id')", 'object_name': 'HistoricalReport'},
@@ -297,7 +317,8 @@ class Migration(SchemaMigration):
             'region': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'slug_fr': ('django.db.models.fields.SlugField', [], {'max_length': '100'}),
             'slug_nl': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'type': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1'})
         },
         u'fixmystreet.report': {
             'Meta': {'object_name': 'Report'},
@@ -465,7 +486,6 @@ class Migration(SchemaMigration):
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'userorganisationmembership_modified'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
             'organisation': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'memberships'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
-            'role': ('django.db.models.fields.CharField', [], {'max_length': "'16'"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'memberships'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"})
         },
         u'fixmystreet.zipcode': {
