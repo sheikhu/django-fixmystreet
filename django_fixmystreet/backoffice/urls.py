@@ -83,6 +83,16 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     # url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
 )
 
+urlpatterns +=patterns('django_fixmystreet.backoffice.views.groups',
+    url(r'^groups/$',                   'list_groups',  name='list_groups'),
+    url(r'^groups/create/$',            'create_group', name='create_group'),
+
+    url(r'^groups/(?P<group_id>\d+)/$', 'edit_group',   name='edit_group'),
+
+    url(r'^groups/membership/add/(?P<group_id>\d+)/(?P<user_id>\d+)/$', 'add_membership',   name='add_membership'),
+    url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership',   name='remove_membership'),
+)
+
 urlpatterns += patterns('',
     url(_(r'^export_file/reports/(?P<emitter_format>.+)/(?P<id>\d+)'), Resource(ReportHandler), name="export_report"),
     url(_(r'^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)'), Resource(ReportHandler), name="export_report"),

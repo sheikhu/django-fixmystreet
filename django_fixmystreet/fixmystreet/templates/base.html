@@ -113,6 +113,11 @@
                                         {% trans "Users" %}
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="{% ifequal 'list_groups' menu %}active{% endifequal %}"     href="{% url 'list_groups' %}">
+                                        {% trans "Groups" %}
+                                    </a>
+                                </li>
                                 {% endif %}
                                 {% if request.fmsuser.leader %}
                                     {% if request.user.id|hasAtLeastAManager %}
