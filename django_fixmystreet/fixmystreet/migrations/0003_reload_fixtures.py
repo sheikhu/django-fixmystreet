@@ -7,15 +7,18 @@ from django.core.management import call_command
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        call_command("loaddata", "bootstrap.json")
-        db.execute("""
-            UPDATE fixmystreet_organisationentity o
-                SET active = true
-                    WHERE exists (
-                        SELECT * FROM fixmystreet_fmsuser
-                        WHERE manager=true AND organisation_id=o.id
-                    );
-        """)
+        #~ call_command("loaddata", "bootstrap.json")
+        #~ db.execute("""
+            #~ UPDATE fixmystreet_organisationentity o
+                #~ SET active = true
+                    #~ WHERE exists (
+                        #~ SELECT * FROM fixmystreet_fmsuser
+                        #~ WHERE manager=true AND organisation_id=o.id
+                    #~ );
+        #~ """)
+
+        # On a des problèmes : à cause du loaddata qui créée des oragnisationentity. Un champ email est défini dans le model, mais pas encore créée en DB à ce niveau de la procédure de south.
+        pass
     def backwards(self, orm):
         pass
 

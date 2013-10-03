@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 
 class UpdatesTest(TestCase):
 
+    fixtures = ["bootstrap","list_items"]
+
     def setUp(self):
         self.client = Client()
 
@@ -174,7 +176,7 @@ class UpdatesTest(TestCase):
         self.assertEquals(updated_report.gravity,2)
         self.assertEquals(updated_report.probability,4)
         self.assertEquals(updated_report.get_priority(),8)
-        
+
     def test_previous_reports(self):
         self.client.login(username='manager@a.com', password='test')
         manager2 = FMSUser(
