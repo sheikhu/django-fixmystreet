@@ -172,9 +172,9 @@ class GroupForm(forms.ModelForm):
     phone = forms.CharField(required=True)
     email = forms.EmailField(required=True, label=_('Email'))
 
+    type = forms.ChoiceField(widget=forms.RadioSelect, choices=OrganisationEntity.ENTITY_TYPE_GROUP)
+
     users =  forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
-    #~ selected_users =  forms.ModelChoiceField(widget=forms.MultipleHiddenInput, required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
-    #~ selected_users =  forms.ModelMultipleChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
 
     def __init__(self, *args, **kwargs):
         try:
