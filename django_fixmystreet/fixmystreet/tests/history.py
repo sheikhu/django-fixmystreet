@@ -36,6 +36,7 @@ class HistoryTest(TestCase):
             email="citizen3@a.com"
         )
         self.citizen3.save()
+
         self.manager = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
@@ -49,6 +50,7 @@ class HistoryTest(TestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
         self.manager2 = FMSUser(
             telephone="9876543210",
             last_used_language="nl",
@@ -61,7 +63,7 @@ class HistoryTest(TestCase):
         self.manager2.set_password('test2')
         self.manager2.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager2.save()
-        self.manager2.categories.add(ReportCategory.objects.get(pk=1))
+        self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
         self.manager3 = FMSUser(
             telephone="000000000",
@@ -445,7 +447,7 @@ class HistoryTest(TestCase):
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
-        response = self.client.get(reverse('subscribe',args=[report_id]) + '?citizen_email=' + self.citizen2.email, {}, follow=True)
+        response = self.client.get(reverse('subscribe', args=[report_id]) + '?citizen_email=' + self.citizen2.email, {}, follow=True)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(response.status_code, 200)
