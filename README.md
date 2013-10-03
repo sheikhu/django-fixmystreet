@@ -1,6 +1,5 @@
 
 
-
 Thanks
 ======
 
@@ -154,3 +153,5 @@ import dump DB
     dropdb fixmystreet -U postgres
     createdb --template=template_postgis fixmystreet -U postgres -O fixmystreet
     cat fixmystreet_dump.sql | psql -U fixmystreet
+    
+TEST
