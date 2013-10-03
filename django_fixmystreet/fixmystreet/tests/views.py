@@ -7,6 +7,8 @@ from django_fixmystreet.fixmystreet.models import Report, ReportCategory, Organi
 
 class ReportViewsTest(SampleFilesTestCase):
 
+    fixtures = ["bootstrap","list_items"]
+
     def setUp(self):
         self.user = User.objects.create_user(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
         self.user.save()
@@ -292,7 +294,7 @@ class ReportViewsTest(SampleFilesTestCase):
 
         #The first one (oldest one) is kept
         self.assertEqual(Report.objects.all()[0].id, report.id)
-        
+
         #The comment of the second one is added to the first one
         self.assertEqual(Report.objects.get(id=report.id).comments().count(),2)
 

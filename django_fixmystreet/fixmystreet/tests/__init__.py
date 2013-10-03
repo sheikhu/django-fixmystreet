@@ -6,6 +6,8 @@ from django.test import TestCase
 
 class SampleFilesTestCase(TestCase):
 
+    fixtures = ["bootstrap","list_items"]
+
     @classmethod
     def setUpClass(cls):
         default_storage.location = 'media/' # force using source media folder to avoid real data erasing
