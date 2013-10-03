@@ -108,6 +108,10 @@
     <div class="control-group">
         <div class="controls">
            <input type="submit" value="{% trans 'Save' %}" class="btn"/>
+
+            {% if group_id %}
+                <a href="{% url 'delete_group' group_id %}" class="btn">{% trans 'Delete' %}</a>
+            {% endif %}
         </div>
     </div>
 </form>

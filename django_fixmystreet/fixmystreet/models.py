@@ -6,7 +6,7 @@ import datetime
 
 from datetime import timedelta
 
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
@@ -264,6 +264,12 @@ class OrganisationEntity(UserTrackedModel):
         ('D', _('Department')),
         ('N', _('Neighbour house')),
     )
+
+    ENTITY_TYPE_GROUP = (
+        ('S', _('Subcontractor')),
+        ('D', _('Department')),
+    )
+
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
@@ -327,6 +333,14 @@ class OrganisationEntity(UserTrackedModel):
         return managers.count()
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
+
+@receiver(pre_delete, sender=OrganisationEntity)
+def organisationentity_delete(sender, instance, **kwargs):
+    # Delete all memberships associated
+    memberships = UserOrganisationMembership.objects.filter(organisation=instance)
+
+    for membership in memberships:
+        membership.delete()
 
 # @receiver(user_logged_in)
 # def lang(sender, **kwargs):
