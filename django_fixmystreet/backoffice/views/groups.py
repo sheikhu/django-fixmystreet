@@ -39,7 +39,7 @@ def list_groups(request):
 def create_group(request,):
     can_edit = request.fmsuser.leader
 
-    if request.method == "POST":
+    if request.method == "POST" and can_edit:
         group_form = GroupForm(request.POST)
 
         if group_form.is_valid():
@@ -64,7 +64,7 @@ def edit_group(request, group_id):
     can_edit = request.fmsuser.leader
 
     instance = OrganisationEntity.objects.get(id=group_id)
-    if request.method == "POST":
+    if request.method == "POST" and can_edit:
         group_form = GroupForm(request.POST, instance=instance)
 
         if group_form.is_valid():
@@ -84,6 +84,18 @@ def edit_group(request, group_id):
                 "can_edit" : can_edit
             },
             context_instance=RequestContext(request))
+
+def delete_group(request, group_id):
+    can_edit = request.fmsuser.leader
+
+    instance = OrganisationEntity.objects.get(id=group_id)
+    if request.method == "GET" and can_edit:
+            # Delete group and memberships (in pre_delete)
+            instance.delete()
+
+            messages.add_message(request, messages.SUCCESS, _("Group has been deleted successfully"))
+
+    return HttpResponseRedirect(reverse('list_groups'))
 
 def add_membership(request, group_id, user_id):
     can_edit = request.fmsuser.leader
