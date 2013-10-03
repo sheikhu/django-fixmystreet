@@ -14,17 +14,9 @@ from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
 from django.core.exceptions import ObjectDoesNotExist
 
-# https://developers.facebook.com/docs/test_users/
-# https://developers.facebook.com/docs/authentication/#applogin
-
-
 class ApiTest(SampleFilesTestCase):
-    #~ users = {
-        #~ '100003558692539': {
-            #~ 'name':'Steven Test',
-            #~ 'email': "steven_strubyi_test@tfbnw.net"
-        #~ }
-    #~ }
+
+    fixtures = ["bootstrap","list_items"]
 
     def setUp(self):
 

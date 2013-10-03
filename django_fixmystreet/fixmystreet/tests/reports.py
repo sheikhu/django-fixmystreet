@@ -108,6 +108,9 @@ class PhotosTest(TestCase):
         #self.ward = Ward.objects.all()[0]
 
 class ValueUpdate(TestCase):
+
+    fixtures = ["bootstrap","list_items"]
+
     def setUp(self):
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
