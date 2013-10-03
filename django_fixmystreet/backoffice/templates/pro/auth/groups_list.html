@@ -36,28 +36,26 @@ $(document).ready(function() {
         <thead>
             <tr>
                 <td>{% trans "Name" %}</td>
-                <td>{% trans "Phone" %}</td>
                 <td>{% trans "Email" %}</td>
+                <td>{% trans "Type" %}</td>
             </tr>
             <tr>
                 <td>{% trans "Name" %}</td>
-                <td>{% trans "Phone" %}</td>
                 <td>{% trans "Email" %}</td>
+                <td>{% trans "Type" %}</td>
             </tr>
         </thead>
         <tbody>
             {% for group in groups %}
             <tr>
                 <td>
-                    <a href="{% url 'edit_group' group_id=group.id %}">
-                        {{ group }}
-                    </a>
-                </td>
-                <td>
-                    <a href="tel:{{ group.telephone }}">{{ group.phone }}</a>
+                    <a href="{% url 'edit_group' group_id=group.id %}">{{ group }}</a>
                 </td>
                 <td>
                     <a href="mailto:{{ group.email }}">{{ group.email }}</a>
+                </td>
+                <td>
+                    <a>{{ group.type }}</a>
                 </td>
             </tr>
             {% endfor %}
