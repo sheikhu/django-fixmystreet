@@ -88,6 +88,7 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.groups',
     url(r'^groups/create/$',            'create_group', name='create_group'),
 
     url(r'^groups/(?P<group_id>\d+)/$', 'edit_group',   name='edit_group'),
+    url(r'^groups/(?P<group_id>\d+)/delete/$', 'delete_group',   name='delete_group'),
 
     url(r'^groups/membership/add/(?P<group_id>\d+)/(?P<user_id>\d+)/$', 'add_membership',   name='add_membership'),
     url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership',   name='remove_membership'),
