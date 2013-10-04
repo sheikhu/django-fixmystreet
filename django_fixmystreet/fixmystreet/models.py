@@ -6,7 +6,7 @@ import datetime
 
 from datetime import timedelta
 
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
@@ -56,6 +56,17 @@ User._meta.get_field_by_name('email')[0].null = True
 User._meta.get_field_by_name('email')[0].max_length=75
 User._meta.get_field_by_name('username')[0].max_length=75
 
+
+class FMSUserManager(models.Manager):
+    def get_query_set(self):
+        return FMSUserQuerySet(self.model)
+
+
+class FMSUserQuerySet(models.query.QuerySet):
+    def is_pro(self):
+        return self.filter(Q(agent=True) | Q(manager=True) | Q(leader=True) | Q(applicant=True) | Q(contractor=True))
+
+
 class FMSUser(User):
     AGENT        = "agent"
     MANAGER      = "manager"
@@ -89,6 +100,7 @@ class FMSUser(User):
 
 
     # user = models.OneToOneField(User)
+    objects = FMSUserManager()
 
     telephone = models.CharField(max_length=20,null=True)
     last_used_language = models.CharField(max_length=10,null=True,default="FR")
@@ -105,8 +117,10 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
+    ### deprecated to remove ###
     categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
     organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True) # organisation that can be responsible of reports
+    ### deprecated to remove replaced by UserOrganisationMembership ###
     work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True) # list of contractors/services that user work with
 
     history = HistoricalRecords()
@@ -146,7 +160,7 @@ class FMSUser(User):
 
     def get_display_name(self):
         if ((self.first_name == None or self.first_name == "") and (self.last_name == None or self.last_name == "")):
-             return _('ANONYMOUS')
+             return _('A citizen')
         else:
              return self.first_name+' '+self.last_name
 
@@ -186,10 +200,13 @@ class FMSUser(User):
         d['last_used_language'] = getattr(self, 'last_used_language')
         d['organisation'] = getattr(self.get_organisation(), 'id', None)
         return simplejson.dumps(d)
+
+    ### DEPRECATED ??? ###
     def get_number_of_created_reports(self):
         userConnectedOrganisation = self.organisation
         reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
         return reports.count()
+    ### DEPRECATED ??? ###
     def get_number_of_in_progress_reports(self):
         connectedOrganisation = self.organisation
         userConnectedOrganisation = connectedOrganisation
@@ -199,6 +216,7 @@ class FMSUser(User):
         else:
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
         return reports.count()
+    ### DEPRECATED ??? ###
     def get_number_of_closed_reports(self):
         connectedOrganisation = self.organisation
         userConnectedOrganisation = connectedOrganisation
@@ -209,9 +227,13 @@ class FMSUser(User):
             reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
 
         return reports.count()
+    ### DEPRECATED ??? ###
     def get_number_of_subscriptions(self):
         subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
         return subscriptions.count()
+
+    def get_absolute_url(self):
+        return reverse("edit_user",kwargs={'user_id':self.id})
 
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
@@ -234,25 +256,46 @@ def populate_username(sender, instance, **kwargs):
 
 
 class OrganisationEntity(UserTrackedModel):
+    ENTITY_TYPE = (
+        ('R', _('Region')),
+        ('C', _('Commune')),
+        ('S', _('Subcontractor')),
+        ('A', _('Applicant')),
+        ('D', _('Department')),
+        ('N', _('Neighbour house')),
+    )
+
+    ENTITY_TYPE_GROUP = (
+        ('S', _('Subcontractor')),
+        ('D', _('Department')),
+    )
+
     __metaclass__= TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
+    phone = models.CharField(max_length=32)
+    email = models.EmailField(null=True, blank=True)
 
     active = models.BooleanField(default=False)
 
-    phone = models.CharField(max_length=32)
+    ### DEPRECATED use type instead ###
     commune = models.BooleanField(default=False)
     region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
+    department = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
+
+    type = models.CharField(max_length=1, choices=ENTITY_TYPE, default='')
+
     dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
     feature_id = models.CharField(max_length=25, null=True, blank=True)
+
+    dispatch_categories = models.ManyToManyField('ReportCategory', related_name='assinged_to_department', blank=True)
 
     history = HistoricalRecords()
 
     class Meta:
         translate = ('name', 'slug')
-
 
     def get_absolute_url(self):
         return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
@@ -291,6 +334,14 @@ class OrganisationEntity(UserTrackedModel):
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
+@receiver(pre_delete, sender=OrganisationEntity)
+def organisationentity_delete(sender, instance, **kwargs):
+    # Delete all memberships associated
+    memberships = UserOrganisationMembership.objects.filter(organisation=instance)
+
+    for membership in memberships:
+        membership.delete()
+
 # @receiver(user_logged_in)
 # def lang(sender, **kwargs):
 #     lang_code = kwargs['user'].fmsuser.get_langage()
@@ -298,6 +349,13 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 #     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
 #     activate(lang_code.lower())
 
+class UserOrganisationMembership(UserTrackedModel):
+    user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
+    organisation = models.ForeignKey(OrganisationEntity, related_name='memberships', null=True, blank=True)
+    contact_user = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (("user", "organisation"),)
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
@@ -437,11 +495,13 @@ class Report(UserTrackedModel):
     mark_as_done_motivation = models.TextField(null=True, blank=True)
     mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True)
 
-    #responsible = models.ForeignKey(OrganisationEntity, related_name='in_charge_reports', null=False)
-    responsible_entity = models.ForeignKey('OrganisationEntity', related_name='reports_in_charge', null=True, blank=True)
-    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
+    responsible_entity = models.ForeignKey(OrganisationEntity, related_name='reports_in_charge', null=True, blank=True)
+    responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True) # must be not null after migration
+    ### deprecated to remove ###
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
+    ### deprecated to remove ###
     responsible_manager_validated = models.BooleanField(default=False)
+    contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
     previous_managers = models.ManyToManyField('FMSUser',related_name='previous_reports',null=True, blank=True)
 
     valid = models.BooleanField(default=False)

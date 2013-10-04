@@ -73,25 +73,25 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
     url(_(r'^change-password/$'), 'change_password', name='password_change'),
     #url(_(r'^change_password/$'), 'django.contrib.auth.views.password_change', {'template_name': 'pro/change_password.html','post_change_redirect':'/pro/'}, name='password_change'),
 
-    url(r'^users/$',    'list_users', {'user_type': 'users'},    name='list_users'),
-    url(r'^agents/$',   'list_users', {'user_type': 'agents'},   name='list_users'),
-    url(r'^managers/$', 'list_users', {'user_type': 'managers'}, name='list_users'),
-    url(r'^contractors/$', 'list_contractors', name='list_contractors'),
+    url(r'^users/$', 'list_users', name='list_users'),
+    url(r'^users/(?P<user_id>\d+)/$', 'edit_user', name='edit_user'),
+    url(r'^users/create$',   'create_user', name='create_user'),
+    url(r'^users/(?P<user_id>\d+)/delete$', 'delete_user', name="delete_user"),
 
-    url(r'^users/(?P<user_id>\d+)/$',    'list_users', {'user_type': 'users'},    name='edit_user'),
-    url(r'^agents/(?P<user_id>\d+)/$',   'list_users', {'user_type': 'agents'},   name='edit_user'),
-    url(r'^managers/(?P<user_id>\d+)/$', 'list_users', {'user_type': 'managers'}, name='edit_user'),
-    url(r'^contractors/(?P<contractor_id>\d+)/$', 'list_contractors', name='edit_contractor'),
+    # url(r'^contractors/$', 'list_contractors', name='list_contractors'),
+    # url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
+    # url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
+)
 
-    url(r'^users/create$',   'create_user', {'user_type': 'users'},     name='create_user'),
-    url(r'^agents/create$',  'create_user', {'user_type': 'agents'},    name='create_user'),
-    url(r'^managers/create$','create_user', {'user_type': 'managers'},  name='create_user'),
-    url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
+urlpatterns +=patterns('django_fixmystreet.backoffice.views.groups',
+    url(r'^groups/$',                   'list_groups',  name='list_groups'),
+    url(r'^groups/create/$',            'create_group', name='create_group'),
 
-    url(r'^users/(?P<user_id>\d+)/delete$',    'delete_user', {'user_type': 'users'},    name="delete_user"),
-    url(r'^agents/(?P<user_id>\d+)/delete$',   'delete_user', {'user_type': 'agents'},   name="delete_user"),
-    url(r'^managers/(?P<user_id>\d+)/delete$', 'delete_user', {'user_type': 'managers'}, name="delete_user"),
-    url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
+    url(r'^groups/(?P<group_id>\d+)/$', 'edit_group',   name='edit_group'),
+    url(r'^groups/(?P<group_id>\d+)/delete/$', 'delete_group',   name='delete_group'),
+
+    url(r'^groups/membership/add/(?P<group_id>\d+)/(?P<user_id>\d+)/$', 'add_membership',   name='add_membership'),
+    url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership',   name='remove_membership'),
 )
 
 urlpatterns += patterns('',

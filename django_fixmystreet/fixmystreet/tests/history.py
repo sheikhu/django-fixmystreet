@@ -8,7 +8,8 @@ from django.utils.html import escape
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 
 class HistoryTest(TestCase):
-    fixtures = ["list_items"]
+
+    fixtures = ["bootstrap","list_items"]
 
     def setUp(self):
         self.citizen = FMSUser(
@@ -35,6 +36,7 @@ class HistoryTest(TestCase):
             email="citizen3@a.com"
         )
         self.citizen3.save()
+
         self.manager = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
@@ -48,6 +50,7 @@ class HistoryTest(TestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
         self.manager2 = FMSUser(
             telephone="9876543210",
             last_used_language="nl",
@@ -60,7 +63,7 @@ class HistoryTest(TestCase):
         self.manager2.set_password('test2')
         self.manager2.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager2.save()
-        self.manager2.categories.add(ReportCategory.objects.get(pk=1))
+        self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
         self.manager3 = FMSUser(
             telephone="000000000",
@@ -144,13 +147,13 @@ class HistoryTest(TestCase):
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEquals(activities.all().count(), 1)
-        
+
         url = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, self.calculatePrint(activities[0]))
         self.assertNotContains(response, self.calculatePrintPro(activities[0]))
-       
+
         #Now redo the test with a manager user
         self.client.login(username='manager@a.com', password='test')
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report.id)
@@ -159,7 +162,7 @@ class HistoryTest(TestCase):
         activities = report.activities.all()
         self.assertEquals(activities.all().count(), 1)
         #check if the page contains the exact string as it should be generated
-        self.assertEquals(response.status_code, 200)        
+        self.assertEquals(response.status_code, 200)
         self.assertContains(response, self.calculatePrintPro(activities[0]))
 
     def testCreateReportHistoryPro(self):
@@ -215,7 +218,7 @@ class HistoryTest(TestCase):
         activities = report.activities.all()
         self.assertEquals(activities.all().count(), 2)
         self.assertContains(response, self.calculatePrintPro(activities[1]))
-        
+
     def testInvalidateReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
         self.assertEquals(response.status_code, 200)
@@ -396,7 +399,7 @@ class HistoryTest(TestCase):
         self.assertEquals(activities.all().count(), 3)
         self.assertContains(response, self.calculatePrintPro(activities[2]))
         self.client.logout()
-       
+
     def testProUpdatesReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
         self.assertEquals(response.status_code, 200)
@@ -444,7 +447,7 @@ class HistoryTest(TestCase):
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
-        response = self.client.get(reverse('subscribe',args=[report_id]) + '?citizen_email=' + self.citizen2.email, {}, follow=True)
+        response = self.client.get(reverse('subscribe', args=[report_id]) + '?citizen_email=' + self.citizen2.email, {}, follow=True)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(response.status_code, 200)
@@ -452,7 +455,7 @@ class HistoryTest(TestCase):
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen3).exists())
         self.assertFalse(report.subscriptions.filter(subscriber=self.manager2).exists())
         self.assertEquals(activities.all().count(), 1)
-        
+
 
     def testProSubscribesToReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
@@ -483,7 +486,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)      
+        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -521,7 +524,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=entity_21', {}, follow=True)      
+        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=entity_21', {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -542,7 +545,7 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
-   
+
     def testAssignToContractor(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
         self.assertEquals(response.status_code, 200)
@@ -555,7 +558,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)      
+        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -575,7 +578,7 @@ class HistoryTest(TestCase):
         self.assertEqual(activities.all().count(), 3)
         self.assertNotContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
-        
+
 
     def testAssignToImpetrant(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
@@ -589,7 +592,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)      
+        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -651,7 +654,7 @@ class HistoryTest(TestCase):
         self.assertEqual(activities.all().count(), 4)
         self.assertContains(response, self.calculatePrint(activities[3]))
         self.assertNotContains(response, self.calculatePrintPro(activities[3]))
-        
+
     def testPublish(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
         self.assertEquals(response.status_code, 200)
@@ -700,8 +703,8 @@ class HistoryTest(TestCase):
             organisation=activity.organisation,
             related_new=activity.related_new
         )
-    
-        
+
+
 
 
         #Mail to creator and manager must be sent

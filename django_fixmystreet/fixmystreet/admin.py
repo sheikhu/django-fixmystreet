@@ -1,26 +1,28 @@
 
 
 from django.contrib import admin
-from simple_history.admin import SimpleHistoryAdmin
 from django.core import urlresolvers
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.forms import AdminPasswordChangeForm
+from django.contrib.auth.models import User, Group
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.template.response import TemplateResponse
 from django.conf.urls.defaults import patterns
-from markdown import markdown
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate
+from markdown import markdown
+from simple_history.admin import SimpleHistoryAdmin
+
+from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import export_as_csv_action
 
-#admin.site.unregister(User)
-#admin.site.unregister(Group)
+admin.site.unregister(User)
+admin.site.unregister(Group)
 
 
 class FaqEntryAdmin(admin.ModelAdmin):
@@ -211,3 +213,4 @@ class MailNotificationTemplateAdmin(admin.ModelAdmin):
 
 admin.site.register(MailNotificationTemplate, MailNotificationTemplateAdmin)
 
+admin.site.register(UserOrganisationMembership)
