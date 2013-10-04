@@ -57,6 +57,7 @@ header {
     height: 150px;
     width: auto;
     background-color: #FFF;
+    left:-10px;
 }
 
 #banner {
