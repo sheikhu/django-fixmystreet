@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     END as status,
     CASE
         WHEN (r.status=1 OR r.status=9) THEN 'created'
-        WHEN (r.status = 3 OR r.status=8) THEN 'processed'
+        WHEN (r.status=3 OR r.status=8) THEN 'processed'
         ELSE 'in_progress'
     END as main_status,
     CASE

@@ -13,10 +13,14 @@
         <a id="create_report_fastlink" href="{% url 'report_prepare_pro' %}" class="report">
            <h3 class="report-title">{% trans "create_report" %}</h3>
         </a>
-        {% for report in reports %}
-        {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
-        {% endfor %}
-        {% include "_paginator.html" with page=reports %}
+        {% if reports %}
+            {% for report in reports %}
+            {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
+            {% endfor %}
+            {% include "_paginator.html" with page=reports %}
+        {% else %}
+            <p>{% trans "No results has been found." %}</p>
+        {% endif %}
     </div>
     <div class="span4">
         <div id="search_by_commune_or_address" class="block highlighted">
