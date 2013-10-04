@@ -175,11 +175,13 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             URBIS_URL + "geoserver/wms",
             {
                 layers: "urbis:URB_A_SS",
+                styles: "URB_A_SS_FIXMYSTREET",
                 format: "image/png",
                 transparent: true,
                 filter: xml.write(filter_1_1.write(filter))
             },
             {
+                opacity: 0.5,
                 buffer: 0,
                 isBaseLayer: false,
                 displayInLayerSwitcher: true,
@@ -438,7 +440,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     }
                                     popoverContent += "</ul>";
                                     popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'> More details </a></p>";
-                                    
+
                                     var popup = new OpenLayers.Popup.Popover(
                                         "popup",
                                         new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
@@ -476,7 +478,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             popup.destroy();
                         }
                     }
-                
+
                 /*onSelect:function(feature){
                     alert('olk');
                     //Ticket web service
