@@ -10,8 +10,14 @@ register = template.Library()
 
 MENU_DEFS = {
     'submit':                    ['home','report_new','report_new_pro','home_pro','report_prepare_pro'],
-    'view':                      ['report_index', 'report_show', 'report_update', 'subscribe', 'unsubscribe', 'flag_success', 'flag_report','report_show_pro','report_list_pro'],
-    'auth':                      ['list_users', 'edit_user', 'create_user', 'list_groups', 'create_group', 'edit_group', 'category_gestionnaire_configuration', 'password_change'],
+    'view':                      ['report_index', 'report_show', 'report_update', 'subscribe',
+                                    'unsubscribe', 'flag_success', 'flag_report','report_show_pro',
+                                    'report_list_pro','report_table_pro'
+                                 ],
+    'auth':                      ['list_users', 'edit_user', 'create_user', 'list_groups',
+                                    'create_group', 'edit_group', 'category_gestionnaire_configuration',
+                                    'password_change'
+                                 ],
     'users':                     ['list_users', 'edit_user', 'create_user'],
     'groups':                    ['list_groups', 'create_group', 'edit_group'],
     'users_manager_dispatching': ['category_gestionnaire_configuration'],

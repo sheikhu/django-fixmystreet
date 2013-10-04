@@ -17,58 +17,65 @@
 <script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
 <script>
 
-jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "num-html-pre": function ( a ) {
-        var x = String(a).replace( /<[\s\S]*?>/g, "" );
-        return parseFloat( x );
-    },
-
-    "num-html-asc": function ( a, b ) {
-        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-    },
-
-    "num-html-desc": function ( a, b ) {
-        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
-    }
-} );
-
 $(document).ready(function() {
-    var table = $('#result-table').dataTable({
-            "aoColumns": [
-                null,
-                {
-                    sType: "num-html"
-                },
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            ]
-        });
-    // {
-    //     "bStateSave": true
-    // });
-    table.columnFilter({ sPlaceHolder: "head:after",
-        aoColumns: [
-            null,
+    jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+        "date-euro-pre": function ( a ) {
+            if ($.trim(a) != '') {
+                var datea = $.trim(a).split('/');
+                var x = parseInt(datea[2] + datea[1] + datea[0]);
+            } else {
+                var x = 0;
+            }
+
+            return x;
+        },
+
+        "date-euro-asc": function ( a, b ) {
+            return a - b;
+        },
+
+        "date-euro-desc": function ( a, b ) {
+            return b - a;
+        }
+    });
+    var columns = [
+            {type: "null", bSortable: false},
             {type: "number"}, // incidnet number
             {type: "select"}, // categories
-            {type: "select"}, // sec cat
+            {type: "select"}, // sec categories
             {type: "text"}, // addr
+            {type: "select"}, // postal code
+            {type: "select", values: [
+                '{{ True|yesno:_("yes,no") }}',
+                '{{ False|yesno:_("yes,no") }}'
+            ]}, // regionnal
             {type: "select", values: [ // status
                 {% for s in reports.0|model_field_choices:'status' %}
                     "{{ s }}"{% if not forloop.last %},{% endif %}
                 {% endfor %}
             ]},
             {type: "select"}, // resp entity
-            {type: "select"} // resp manager
+            {type: "select"}, // resp manager
+            {type: "select", values: [
+                '{{ True|yesno:_("yes,no") }}',
+                '{{ False|yesno:_("yes,no") }}'
+            ]}, // planned
+            {sType: "date-euro", oSort:"date-eu"}, // date planned
+            {type: "number"}, // priority
+            {type: "select", values: [
+                '{{ True|yesno:_("yes,no") }}',
+                '{{ False|yesno:_("yes,no") }}'
+            ]} // subscribed
         ]
-    });
+    var table = $('#result-table').dataTable({aoColumns: columns});
+    // {
+    //     "bStateSave": true
+    // });
+    table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
+
     $('#column-visibility :checkbox').change(function () {
         var checked = $(this).prop('checked'),
-            index = $(this).closest('li').index();
+            index = $(this).closest('li').index() + 1; // show column
         table.fnSetColumnVis(index, checked);
     }).change();
 });
@@ -80,14 +87,21 @@ $(document).ready(function() {
 <p class="span12"><a class="btn" href="{% url 'report_list_pro' %}">{% trans "Display as list" %}</a></p>
 <div class="span12">
     <ul id="column-visibility">
-        <li><label><input type="checkbox" checked />{% trans "Ticket" %}</label></li>
-        <li><label><input type="checkbox" checked />{% trans "Category" %}</label></li>
-        <li><label><input type="checkbox" checked />{% trans "Sub category" %}</label></li>
-        <li><label><input type="checkbox" checked />{% trans "Address" %}</label></li>
-        <li><label><input type="checkbox" checked />{% trans "Status" %}</label></li>
-        <li><label><input type="checkbox" checked />{% trans "Responsible" %}</label></li>
-        <li><label><input type="checkbox" checked />{% trans "Manager" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Regionnal" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Manager" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Planned" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Date planned" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
     </ul>
+    {% if reports %}
     <table id="result-table" class="dataTable">
         <thead>
             <tr>
@@ -96,9 +110,15 @@ $(document).ready(function() {
                 <th>{% trans "Category" %}</th>
                 <th>{% trans "Sub category" %}</th>
                 <th>{% trans "Address" %}</th>
+                <th>{% trans "Postal code" %}</th>
+                <th>{% trans "Regionnal" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Responsible" %}</th>
                 <th>{% trans "Manager" %}</th>
+                <th>{% trans "Planned" %}</th>
+                <th>{% trans "Date planned" %}</th>
+                <th>{% trans "Priority" %}</th>
+                <th>{% trans "Subscribed" %}</th>
             </tr>
             <tr>
                 <th></th>
@@ -106,9 +126,15 @@ $(document).ready(function() {
                 <th>{% trans "Category" %}</th>
                 <th>{% trans "Sub category" %}</th>
                 <th>{% trans "Address" %}</th>
+                <th>{% trans "Postal code" %}</th>
+                <th>{% trans "Regionnal" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Responsible" %}</th>
                 <th>{% trans "Manager" %}</th>
+                <th>{% trans "Planned" %}</th>
+                <th>{% trans "Date planned" %}</th>
+                <th>{% trans "Priority" %}</th>
+                <th>{% trans "Subscribed" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -118,13 +144,22 @@ $(document).ready(function() {
                 <td>{{ report.id }}</td>
                 <td>{{ report.category.name }}</td>
                 <td>{{ report.secondary_category.name }}</td>
-                <td>{{ report.address }}</td>
+                <td>{{ report.address }}, {{report.address_number}}</td>
+                <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
+                <td>{{ report.address_regional|yesno:_("yes,no") }}</td>
                 <td>{{ report.get_status_display }}</td>
                 <td>{{ report.responsible_entity.name }}</td>
                 <td>{{ report.responsible_manager.get_full_name }}</td>
+                <td>{{ report.planned|yesno:_("yes,no") }}</td>
+                <td>{{ report.date_planned|date:"d/m/Y" }}</td>
+                <td>{{ report.get_priority }}</td>
+                <td>{{ report.subscribed|yesno:_("yes,no") }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <p>{% trans "No results has been found." %}</p>
+    {% endif %}
 </div>
 {% endblock %}
