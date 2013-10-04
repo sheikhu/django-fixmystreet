@@ -129,7 +129,6 @@ class GroupsTest(TestCase):
         groups = response.context['groups']
         can_create = response.context['can_create']
         self.assertTrue(can_create)
-        print groups
         #todo re enable if the check to see only your organisation's groups is enabled again also update the number of the element we get from the array
         #self.assertEquals(groups.count(), 2)
         self.assertEquals(groups[2].name_fr, 'groupe3')
