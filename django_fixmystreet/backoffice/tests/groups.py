@@ -1,17 +1,17 @@
 import json
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, UserOrganisationMembership, FMSUser
-from django.contrib.auth.models import User
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser
+
 
 class GroupsTest(TestCase):
 
     fixtures = ["bootstrap","list_items"]
 
-    def setUp(self):
+    def setUp(self): 
         self.manager = FMSUser(
             telephone="0123456789",
-            last_used_language="fr",
+            last_used_language="fr", 
             password='test',
             first_name="manager",
             last_name="manager",
@@ -129,7 +129,6 @@ class GroupsTest(TestCase):
         groups = response.context['groups']
         can_create = response.context['can_create']
         self.assertTrue(can_create)
-        print groups
         #todo re enable if the check to see only your organisation's groups is enabled again also update the number of the element we get from the array
         #self.assertEquals(groups.count(), 2)
         self.assertEquals(groups[2].name_fr, 'groupe3')
@@ -263,7 +262,7 @@ class GroupsTest(TestCase):
         self.assertTrue('membership_id' in returnobject)
         status = returnobject['status']
         membership_id = returnobject['membership_id']
-
+        self.assertEquals('OK', status)
         #try with user who has no rights to remove it
         self.client.logout()
         self.client.login(username='manager@a.com', password='test')
