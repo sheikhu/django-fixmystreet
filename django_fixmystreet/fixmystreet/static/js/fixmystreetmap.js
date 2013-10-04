@@ -175,11 +175,13 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             URBIS_URL + "geoserver/wms",
             {
                 layers: "urbis:URB_A_SS",
+                styles: "URB_A_SS_FIXMYSTREET",
                 format: "image/png",
                 transparent: true,
                 filter: xml.write(filter_1_1.write(filter))
             },
             {
+                opacity: 0.5,
                 buffer: 0,
                 isBaseLayer: false,
                 displayInLayerSwitcher: true,
@@ -482,6 +484,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             this.map.zoomIn();
                         }
                     }
+<<<<<<< HEAD
                 },
                 onUnselect: function(feature){
                     for(var i=0, length=this.map.popups.length; i < length; i++) {
@@ -490,6 +493,19 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         popup.destroy();
                     }
                 }
+=======
+
+                /*onSelect:function(feature){
+                    alert('olk');
+                    //Ticket web service
+                    window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
+                    //console.log(pixel.attributes.report.id);
+                    //var p = feature.geometry.components[0];
+                    //var point = {x:p.x,y:p.y};
+                    //console.log(point,feature.attributes.report);
+                    //self.element.trigger('reportselected', [point, feature.attributes.report]);
+                }*/
+>>>>>>> add layer transparency and style FMS-15
             });
 
             this.map.addControl(this.selectFeature);
