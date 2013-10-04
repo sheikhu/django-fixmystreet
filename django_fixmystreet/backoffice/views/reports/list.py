@@ -1,3 +1,6 @@
+
+
+from collections import OrderedDict
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.conf import settings
@@ -107,13 +110,42 @@ def list(request):
 
 def table(request):
     search_form = SearchIncidentForm(request.GET)
-    reports, pnt = filter_reports(request.fmsuser, request.GET)
+    # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
+    # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
-    zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
+    reports = Report.objects.all()
+
+    if request.fmsuser.organisation:
+        reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
+    elif not request.fmsuser.is_superuser:
+        raise PermissionDenied()
+
+
+    # import pdb; pdb.set_trace()
+    reports = reports.extra(
+        select = OrderedDict([
+            ('subscribed',
+                'SELECT COUNT(subscription.ID) \
+                    FROM fixmystreet_reportsubscription subscription \
+                    WHERE subscription.subscriber_id = %s \
+                    AND subscription.report_id = fixmystreet_report.id'),
+            # ('transfered',
+            #     'SELECT COUNT(previous.ID) \
+            #         FROM fixmystreet_report_previous_managers previous \
+            #         WHERE previous.fmsuser_id = %s \
+            #         AND previous.report_id = fixmystreet_report.id'),
+        ]),
+        select_params = (
+            str(request.fmsuser.id),
+            # str(request.fmsuser.id),
+        )
+    )
+
+    zipcodes = ZipCode.objects.order_by('name_' + get_language())
+
     return render_to_response("pro/reports/table.html",
             {
-                "pnt":pnt,
-                "zipcodes": zipcodes,
+                "zipcodes": dict([(z.code, z.name) for z in zipcodes]),
                 "reports": reports,
                 "search_form": search_form
             },
