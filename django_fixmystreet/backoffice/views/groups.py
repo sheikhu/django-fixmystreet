@@ -99,9 +99,8 @@ def delete_group(request, group_id):
 
 def add_membership(request, group_id, user_id):
     can_edit = request.fmsuser.leader
-    
-    if can_edit:
-        response_data = {}
+    response_data = {}
+    if can_edit:        
         organisation  = OrganisationEntity.objects.get(id=group_id)
         user          = FMSUser.objects.get(id=user_id)
 
