@@ -421,7 +421,7 @@ class ReportManager(models.GeoManager):
 
     def get_query_set(self):
         return ReportQuerySet(self.model) \
-                .exclude(status=Report.SOLVED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+                .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
                 .exclude(status=Report.DELETED) \
                 .select_related('category', 'secondary_category',
                     'secondary_category__secondary_category_class',
