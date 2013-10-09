@@ -49,7 +49,7 @@ class MailTest(TestCase):
         self.manager2.set_password('test2')
         self.manager2.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager2.save()
-        self.manager2.categories.add(ReportCategory.objects.get(pk=1))
+        self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
         self.manager3 = FMSUser(
             telephone="000000000",
@@ -394,8 +394,8 @@ class MailTest(TestCase):
         #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other entity, 2 to subcribers (manager, user)
         self.assertEquals(len(mail.outbox), 6)
         self.assertTrue(self.manager3.email in mail.outbox[3].to)
-        self.assertTrue(self.citizen.email in mail.outbox[4].to or self.citizen.email in mail.outbox[5].to)
-        self.assertTrue(self.manager.email in mail.outbox[4].to or self.manager.email in mail.outbox[5].to)
+        self.assertIn(self.citizen.email, mail.outbox[4].to + mail.outbox[5].to)
+        self.assertIn(self.manager.email, mail.outbox[4].to + mail.outbox[5].to)
 
     def testAssignToImpetrantMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
