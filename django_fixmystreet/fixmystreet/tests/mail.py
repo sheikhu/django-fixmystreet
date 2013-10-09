@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 
 
 class MailTest(TestCase):
-
     fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
@@ -390,7 +389,6 @@ class MailTest(TestCase):
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
-
         response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=entity_21', {}, follow=True)
         self.assertEquals(response.status_code, 200)
         #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other entity, 2 to subcribers (manager, user)
