@@ -2,7 +2,7 @@
 //              -http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js
 
 if (!('fms' in window)) {
-    window.fms = {}
+    window.fms = {};
 }
 
 function cloneObj (obj) {
@@ -73,53 +73,53 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
 (function(){
         var markerWidth = 30,
-        markerHeight = 40,
-        defaultMarkerStyle = {
-            pointRadius: markerHeight,
-            externalGraphic: STATIC_URL + "images/pin-red-L.png",
-            graphicXOffset: -markerWidth/2,
-            graphicYOffset: -markerHeight,
-            graphicHeight: markerHeight,
-            graphicWidth: markerWidth
-        }
-        areaStyle = {
-            strokeColor: "#004990",
-            strokeOpacity: 1,
-            strokeWidth: 2,
-            fillColor: "#517EB5",
-            fillOpacity: 0.6
-        },
-        apiRootUrl = "/api/",
-        localizeUrl = "/api/locate/",
-        urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
-        apiLang = "fr",
-        showControl = true,
-        markerStyle = cloneObj(defaultMarkerStyle),
-        fixedMarkerStyle = cloneObj(defaultMarkerStyle),
-        pendingMarkerStyle = cloneObj(defaultMarkerStyle),
-        pendingExecutedMarkerStyle = cloneObj(defaultMarkerStyle),
-        draggableMarkerStyle = cloneObj(defaultMarkerStyle),
-        fixedMarkerStyleReg = cloneObj(defaultMarkerStyle),
-        pendingMarkerStyleReg = cloneObj(defaultMarkerStyle),
-        pendingExecutedMarkerStyleReg = cloneObj(defaultMarkerStyle),
-        defaultMarkerStyleReg = cloneObj(defaultMarkerStyle),
-        fixedMarkerStylePro = cloneObj(defaultMarkerStyle),
-        pendingMarkerStylePro = cloneObj(defaultMarkerStyle),
-        pendingExecutedMarkerStylePro = cloneObj(defaultMarkerStyle),
-        defaultMarkerStylePro = cloneObj(defaultMarkerStyle),
+            markerHeight = 40,
+            defaultMarkerStyle = {
+                pointRadius: markerHeight,
+                externalGraphic: STATIC_URL + "images/pin-red-L.png",
+                graphicXOffset: -markerWidth/2,
+                graphicYOffset: -markerHeight,
+                graphicHeight: markerHeight,
+                graphicWidth: markerWidth
+            },
+            areaStyle = {
+                strokeColor: "#004990",
+                strokeOpacity: 1,
+                strokeWidth: 2,
+                fillColor: "#517EB5",
+                fillOpacity: 0.6
+            },
+            apiRootUrl = "/api/",
+            localizeUrl = "/api/locate/",
+            urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
+            apiLang = "fr",
+            showControl = true,
+            markerStyle = cloneObj(defaultMarkerStyle),
+            fixedMarkerStyle = cloneObj(defaultMarkerStyle),
+            pendingMarkerStyle = cloneObj(defaultMarkerStyle),
+            pendingExecutedMarkerStyle = cloneObj(defaultMarkerStyle),
+            draggableMarkerStyle = cloneObj(defaultMarkerStyle),
+            fixedMarkerStyleReg = cloneObj(defaultMarkerStyle),
+            pendingMarkerStyleReg = cloneObj(defaultMarkerStyle),
+            pendingExecutedMarkerStyleReg = cloneObj(defaultMarkerStyle),
+            defaultMarkerStyleReg = cloneObj(defaultMarkerStyle),
+            fixedMarkerStylePro = cloneObj(defaultMarkerStyle),
+            pendingMarkerStylePro = cloneObj(defaultMarkerStyle),
+            pendingExecutedMarkerStylePro = cloneObj(defaultMarkerStyle),
+            defaultMarkerStylePro = cloneObj(defaultMarkerStyle);
 
-        markerStyle.externalGraphic = "/static/images/pin-red-L.png",
-        fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png",
+        markerStyle.externalGraphic = "/static/images/pin-red-L.png";
+        fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png";
         pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-L.png";
         pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-L.png";
 
-        defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-L.png",
-        fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-L.png",
+        defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-L.png";
+        fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-L.png";
         pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-L.png";
         pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-L.png";
 
-        defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-L.png",
-        fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-L.png",
+        defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-L.png";
+        fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-L.png";
         pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-L.png";
         pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-L.png";
 
@@ -317,10 +317,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             url: this.options.localizeUrl,
             type:'POST',
             dataType:'jsonp',
-            data:{json: '{\
-                "language": "' + language + '",\
-                "point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}\
-            }'},
+            data: {
+                json: ['{',
+                    '"language": "' + language + '",',
+                    '"point":{x:' + this.selectedLocation.x + ',y:' + this.selectedLocation.y + '}',
+                    '}'].join('\n')
+            },
             success:function(response)
             {
                 self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})]});
@@ -402,93 +404,96 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 onSelect: function(feature){
-                        //TODO add call to db
-                        if(feature.layer.name != "Dragable Layer" && !feature.cluster){
-                            $.ajax({
-                                type:'GET',
-                                url:"/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/ajax/reportPopupDetails/",
-                                data:{'report_id':feature.attributes.report.id},
-                                datatype:"json",
-                                success:function(data){
-                                    feature.attributes.report = data;
-                                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+                    if(feature.layer.name != "Dragable Layer" && !feature.cluster){
+                        $.ajax({
+                            type:'GET',
+                            url:"/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/ajax/reportPopupDetails/",
+                            data:{'report_id':feature.attributes.report.id},
+                            datatype:"json",
+                            success:function(data){
+                                feature.attributes.report = data;
+                                domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-                                    var imageLink = "/static/images/no-photo-yellow-line.png";
+                                var imageLink = "/static/images/no-photo-yellow-line.png";
 
-                                    if (feature.attributes.report.thumb != 'null') {
-                                        imageLink = feature.attributes.report.thumb;
-                                    }
-
-                                    var popoverContent = '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
-                                            "<p>" + feature.attributes.report.address_number + ', ' +
-                                            feature.attributes.report.address + ' ' + "<br/>" +
-                                            feature.attributes.report.postalcode + ' ' +
-                                            feature.attributes.report.address_commune_name + "</p>" +
-
-                                            "<p>" + feature.attributes.report.category + "</p>" +
-
-                                            "<ul>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.address_regional + "</li>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
-
-                                    // If Pro, there are priority and citizen values
-                                    if (feature.attributes.report.priority != undefined) {
-                                        popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
-                                            "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
-                                    }
-                                    popoverContent += "</ul>";
-                                    popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'> More details </a></p>";
-
-                                    var popup = new OpenLayers.Popup.Popover(
-                                        "popup",
-                                        new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
-                                        popoverContent,
-                                        "#" + feature.attributes.report.id
-                                    );
-                                    fms.currentMap.map.addPopup(popup);
+                                if (feature.attributes.report.thumb != 'null') {
+                                    imageLink = feature.attributes.report.thumb;
                                 }
-                            });
-                        }
-                        if(feature.cluster){
-                            if(this.map.zoom == this.map.numZoomLevels){
-                                var content = "<ul>";
-                                for(var i = 0; i< feature.cluster.length; i++){
-                                    content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
+
+                                var popoverContent = '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
+                                        "<p>" + feature.attributes.report.address_number + ', ' +
+                                        feature.attributes.report.address + ' ' + "<br/>" +
+                                        feature.attributes.report.postalcode + ' ' +
+                                        feature.attributes.report.address_commune_name + "</p>" +
+
+                                        "<p>" + feature.attributes.report.category + "</p>" +
+
+                                        "<ul>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.address_regional + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
+
+                                // If Pro, there are priority and citizen values
+                                if (feature.attributes.report.priority) {
+                                    popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
                                 }
+                                popoverContent += "</ul>";
+                                popoverContent += "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
+
                                 var popup = new OpenLayers.Popup.Popover(
-                                        "popup",
-                                        new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
-                                        content,
-                                        "Reports at this location:"
-                                    );
+                                    "popup",
+                                    new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
+                                    popoverContent,
+                                    "#" + feature.attributes.report.id,
+                                    function() { // Click close button
+                                        feature.unselectAll();
+                                    }
+                                );
+
                                 fms.currentMap.map.addPopup(popup);
+                                fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
+                                    console.log('destroy');
+                                    this.removePopup(popup);
+                                    popup.destroy();
+                                });
                             }
-                            else{
-                                this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
-                                this.map.zoomIn();
-                            }
-                        }
-                    },
-                    onUnselect: function(feature){
-                        for(var i=0, length=this.map.popups.length; i < length; i++) {
-                            var popup = this.map.popups[i];
-                            this.map.removePopup(popup);
-                            popup.destroy();
-                        }
+                        });
                     }
 
-                /*onSelect:function(feature){
-                    alert('olk');
-                    //Ticket web service
-                    window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
-                    //console.log(pixel.attributes.report.id);
-                    //var p = feature.geometry.components[0];
-                    //var point = {x:p.x,y:p.y};
-                    //console.log(point,feature.attributes.report);
-                    //self.element.trigger('reportselected', [point, feature.attributes.report]);
-                }*/
+                    if(feature.cluster){
+                        if(this.map.zoom == this.map.numZoomLevels){
+                            var content = "<ul>";
+                            for(var i = 0; i< feature.cluster.length; i++){
+                                content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
+                            }
+                            var popup = new OpenLayers.Popup.Popover(
+                                    "popup",
+                                    new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
+                                    content,
+                                    "Reports at this location:"
+                                );
+                            fms.currentMap.map.addPopup(popup);
+                            fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
+                                console.log('destroy');
+                                this.removePopup(popup);
+                                popup.destroy();
+                            });
+                        }
+                        else{
+                            this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
+                            this.map.zoomIn();
+                        }
+                    }
+                },
+                onUnselect: function(feature){
+                    for(var i=0, length=this.map.popups.length; i < length; i++) {
+                        var popup = this.map.popups[i];
+                        this.map.removePopup(popup);
+                        popup.destroy();
+                    }
+                }
             });
 
             this.map.addControl(this.selectFeature);
@@ -500,35 +505,33 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
         //Can be either orange, red or green and in the set of regional route or not.
         var markerConf;
-        var self = this;
 
         if (proVersion) {
-            if (false == report.address_regional) {
+            if (!report.address_regional) {
                 //NOT ROUTE REGIONALE
                 if (report.citizen == 'true') {
-                    var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
+                    markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
                 } else {
-                   var markerConf = (report.status == 3 ||report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
+                   markerConf = (report.status == 3 ||report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
                 }
             } else {
                //ROUTE REGIONALE
-               var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
+               markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
             }
                 return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
                 // self.markersLayer.addFeatures(vectorOfMarkers);
         } else {
             //Non pro version
             if (report.citizen == 'true') {
-                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
+                markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
             } else {
-                var markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
+                markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
             }
-            return vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+            var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+            return vectorOfMarkers;
             // self.markersLayer.addFeatures(vectorOfMarkers);
         }
-
-
-    },
+    };
 
     /**
      * Add a simple indiocator to the current map.
@@ -578,8 +581,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             }
 
             var ring = new OpenLayers.Geometry.LinearRing(points);
-            var polygon = new OpenLayers.Feature.Vector(ring,null,areaStyle);
-            layer.addFeatures(polygon);
+            var featurePolygon = new OpenLayers.Feature.Vector(ring, null, areaStyle);
+            layer.addFeatures(featurePolygon);
         }
     };
 
