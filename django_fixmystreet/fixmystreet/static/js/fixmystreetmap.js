@@ -431,33 +431,14 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                         "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
                                         "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
-                                    // If Pro, there are priority and citizen values
-                                    if (feature.attributes.report.priority != undefined) {
-                                        popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
-                                            "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
-                                    }
-                                    popoverContent += "</ul>";
-                                    popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'> More details </a></p>";
-
-                                    var popup = new OpenLayers.Popup.Popover(
-                                        "popup",
-                                        new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
-                                        popoverContent,
-                                        "#" + feature.attributes.report.id
-                                    );
-                                    fms.currentMap.map.addPopup(popup);
-                                }
-                            });
-                        }
-                        if(feature.cluster){
-                            if(this.map.zoom == this.map.numZoomLevels){
-                                var content = "<ul>";
-                                for(var i = 0; i< feature.cluster.length; i++){
-                                    content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
+                                // If Pro, there are priority and citizen values
+                                if (feature.attributes.report.priority) {
+                                    popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
+                                        "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
                                 }
                                 popoverContent += "</ul>";
-                                popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
+                                popoverContent += "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
 
                                 var popup = new OpenLayers.Popup.Popover(
                                     "popup",
