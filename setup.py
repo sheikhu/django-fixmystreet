@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-version = '2.0.3.dev0'
+version = '2.1.0.dev0'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,29 +39,29 @@ debug_require = [
     ]
 
 setup(name='django-fixmystreet',
-    version=version,
-    description="TODO",
-    long_description=long_description,
-    # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=[
-        'Programming Language :: Python',
-        'Framework :: Django',
-        ],
-    keywords=[],
-    author='CIRB',
-    author_email='TODO@cirb.irisnet.be',
-    url='',
-    license='GPL',
-    packages=['django_fixmystreet'],
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=install_requires,
-    tests_require=tests_require,
-    extras_require={
-      'jenkins': tests_require,
-      'debug': debug_require
+      version=version,
+      description="TODO",
+      long_description=long_description,
+      # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+                  'Programming Language :: Python',
+                  'Framework :: Django',
+      ],
+      keywords=[],
+      author='CIRB',
+      author_email='TODO@cirb.irisnet.be',
+      url='',
+      license='GPL',
+      packages=['django_fixmystreet'],
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=install_requires,
+      tests_require=tests_require,
+      extras_require={
+          'jenkins': tests_require,
+          'debug': debug_require
       },
-    entry_points={
-        'console_scripts': []
-        },
-    )
+      entry_points={
+          'console_scripts': []
+      },
+      )
