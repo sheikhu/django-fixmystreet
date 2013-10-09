@@ -334,7 +334,7 @@ class MailTest(TestCase):
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
+        self.assertIn(self.manager.email, mail.outbox[0].to)
 
     def testReportResolvedAsProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
@@ -422,8 +422,8 @@ class MailTest(TestCase):
         #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to impetrant, 2 to subcribers (manager, user)
         self.assertEquals(len(mail.outbox), 6)
         self.assertTrue(worker.email in mail.outbox[3].to)
-        self.assertTrue(self.citizen.email in mail.outbox[4].to or self.citizen.email in mail.outbox[5].to)
-        self.assertTrue(self.manager.email in mail.outbox[4].to or self.manager.email in mail.outbox[5].to)
+        self.assertIn(self.citizen.email, mail.outbox[4].to + mail.outbox[5].to)
+        self.assertIn(self.manager.email, mail.outbox[4].to + mail.outbox[5].to)
 
     def testAssignToContractorMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
