@@ -432,13 +432,13 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                         "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
                                 // If Pro, there are priority and citizen values
-                                if (feature.attributes.report.priority != undefined) {
+                                if (feature.attributes.report.priority) {
                                     popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
                                         "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>";
                                         "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
                                 }
                                 popoverContent += "</ul>";
-                                popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
+                                popoverContent += "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
 
                                 var popup = new OpenLayers.Popup.Popover(
                                     "popup",
@@ -484,7 +484,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             this.map.zoomIn();
                         }
                     }
-<<<<<<< HEAD
+
                 },
                 onUnselect: function(feature){
                     for(var i=0, length=this.map.popups.length; i < length; i++) {
@@ -493,19 +493,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         popup.destroy();
                     }
                 }
-=======
-
-                /*onSelect:function(feature){
-                    alert('olk');
-                    //Ticket web service
-                    window.location = "/report/search_ticket?report_id="+feature.attributes.report.id
-                    //console.log(pixel.attributes.report.id);
-                    //var p = feature.geometry.components[0];
-                    //var point = {x:p.x,y:p.y};
-                    //console.log(point,feature.attributes.report);
-                    //self.element.trigger('reportselected', [point, feature.attributes.report]);
-                }*/
->>>>>>> add layer transparency and style FMS-15
             });
 
             this.map.addControl(this.selectFeature);
