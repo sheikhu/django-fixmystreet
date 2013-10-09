@@ -402,35 +402,34 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 onSelect: function(feature){
-                        //TODO add call to db
-                        if(feature.layer.name != "Dragable Layer" && !feature.cluster){
-                            $.ajax({
-                                type:'GET',
-                                url:"/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/ajax/reportPopupDetails/",
-                                data:{'report_id':feature.attributes.report.id},
-                                datatype:"json",
-                                success:function(data){
-                                    feature.attributes.report = data;
-                                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+                    if(feature.layer.name != "Dragable Layer" && !feature.cluster){
+                        $.ajax({
+                            type:'GET',
+                            url:"/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/ajax/reportPopupDetails/",
+                            data:{'report_id':feature.attributes.report.id},
+                            datatype:"json",
+                            success:function(data){
+                                feature.attributes.report = data;
+                                domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-                                    var imageLink = "/static/images/no-photo-yellow-line.png";
+                                var imageLink = "/static/images/no-photo-yellow-line.png";
 
-                                    if (feature.attributes.report.thumb != 'null') {
-                                        imageLink = feature.attributes.report.thumb;
-                                    }
+                                if (feature.attributes.report.thumb != 'null') {
+                                    imageLink = feature.attributes.report.thumb;
+                                }
 
-                                    var popoverContent = '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
-                                            "<p>" + feature.attributes.report.address_number + ', ' +
-                                            feature.attributes.report.address + ' ' + "<br/>" +
-                                            feature.attributes.report.postalcode + ' ' +
-                                            feature.attributes.report.address_commune_name + "</p>" +
+                                var popoverContent = '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
+                                        "<p>" + feature.attributes.report.address_number + ', ' +
+                                        feature.attributes.report.address + ' ' + "<br/>" +
+                                        feature.attributes.report.postalcode + ' ' +
+                                        feature.attributes.report.address_commune_name + "</p>" +
 
-                                            "<p>" + feature.attributes.report.category + "</p>" +
+                                        "<p>" + feature.attributes.report.category + "</p>" +
 
-                                            "<ul>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.address_regional + "</li>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                            "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
+                                        "<ul>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.address_regional + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
+                                        "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
 
                                     // If Pro, there are priority and citizen values
                                     if (feature.attributes.report.priority != undefined) {
@@ -457,27 +456,54 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                 for(var i = 0; i< feature.cluster.length; i++){
                                     content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
                                 }
+                                popoverContent += "</ul>";
+                                popoverContent+= "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
+
                                 var popup = new OpenLayers.Popup.Popover(
-                                        "popup",
-                                        new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
-                                        content,
-                                        "Reports at this location:"
-                                    );
+                                    "popup",
+                                    new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
+                                    popoverContent,
+                                    "#" + feature.attributes.report.id,
+                                    function() { // Click close button
+                                        feature.unselectAll();
+                                    }
+                                );
+
                                 fms.currentMap.map.addPopup(popup);
+                                fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
+                                    console.log('destroy');
+                                    this.removePopup(popup);
+                                    popup.destroy();
+                                });
                             }
-                            else{
-                                this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
-                                this.map.zoomIn();
+                        });
+                    }
+
+                    if(feature.cluster){
+                        if(this.map.zoom == this.map.numZoomLevels){
+                            var content = "<ul>";
+                            for(var i = 0; i< feature.cluster.length; i++){
+                                content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
                             }
+                            var popup = new OpenLayers.Popup.Popover(
+                                    "popup",
+                                    new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
+                                    content,
+                                    "Reports at this location:"
+                                );
+                            fms.currentMap.map.addPopup(popup);
+                            fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
+                                console.log('destroy');
+                                this.removePopup(popup);
+                                popup.destroy();
+                            });
                         }
-                    },
-                    onUnselect: function(feature){
-                        for(var i=0, length=this.map.popups.length; i < length; i++) {
-                            var popup = this.map.popups[i];
-                            this.map.removePopup(popup);
-                            popup.destroy();
+                        else{
+                            this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
+                            this.map.zoomIn();
                         }
                     }
+<<<<<<< HEAD
 
                 /*onSelect:function(feature){
                     alert('olk');
@@ -489,6 +515,16 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     //console.log(point,feature.attributes.report);
                     //self.element.trigger('reportselected', [point, feature.attributes.report]);
                 }*/
+=======
+                },
+                onUnselect: function(feature){
+                    for(var i=0, length=this.map.popups.length; i < length; i++) {
+                        var popup = this.map.popups[i];
+                        this.map.removePopup(popup);
+                        popup.destroy();
+                    }
+                }
+>>>>>>> FMS-14 Popover : close box on click. Destroy popup when zoom (still buggy).
             });
 
             this.map.addControl(this.selectFeature);
