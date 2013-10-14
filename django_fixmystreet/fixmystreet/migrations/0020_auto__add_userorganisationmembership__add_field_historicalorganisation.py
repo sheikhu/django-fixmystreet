@@ -499,4 +499,8 @@ class Migration(SchemaMigration):
         }
     }
 
+<<<<<<< HEAD
     complete_apps = ['fixmystreet']
+=======
+    complete_apps = ['fixmystreet']
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd

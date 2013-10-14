@@ -8,10 +8,17 @@ class GroupsTest(TestCase):
 
     fixtures = ["bootstrap","list_items"]
 
+<<<<<<< HEAD
     def setUp(self): 
         self.manager = FMSUser(
             telephone="0123456789",
             last_used_language="fr", 
+=======
+    def setUp(self):
+        self.manager = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
             password='test',
             first_name="manager",
             last_name="manager",
@@ -60,7 +67,11 @@ class GroupsTest(TestCase):
             'name_fr':'groupe3',
             'name_nl':'groep3',
             'phone':'0000000000',
+<<<<<<< HEAD
             'email':'group3@test.com', 
+=======
+            'email':'group3@test.com',
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
             'type':'D'
         }
 
@@ -68,7 +79,11 @@ class GroupsTest(TestCase):
             'name_fr':'groupe4',
             'name_nl':'groep4',
             'phone':'0000000000',
+<<<<<<< HEAD
             'email':'group4@test.com', 
+=======
+            'email':'group4@test.com',
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
             'type':'S'
         }
 
@@ -76,14 +91,22 @@ class GroupsTest(TestCase):
             'name_fr':'groupe1nouveau',
             'name_nl':'groep1nieuw',
             'phone':'111111',
+<<<<<<< HEAD
             'email':'group1new@test.com', 
+=======
+            'email':'group1new@test.com',
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
             'type':'D'
         }
         self.editgroup_post2 = {
             'name_fr':'groupe2nouveau',
             'name_nl':'groep2nieuw',
             'phone':'2222222',
+<<<<<<< HEAD
             'email':'group2new@test.com', 
+=======
+            'email':'group2new@test.com',
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
             'type':'S'
         }
 
@@ -121,7 +144,11 @@ class GroupsTest(TestCase):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('create_group'), self.creategroup_post)
         self.assertEquals(response.status_code, 302)
+<<<<<<< HEAD
         response = self.client.post(reverse('list_groups'), follow=True)       
+=======
+        response = self.client.post(reverse('list_groups'), follow=True)
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -142,7 +169,11 @@ class GroupsTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.post(reverse('create_group'), self.creategroup_post2)
         self.assertEquals(response.status_code, 200)
+<<<<<<< HEAD
         response = self.client.post(reverse('list_groups'), follow=True)       
+=======
+        response = self.client.post(reverse('list_groups'), follow=True)
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -157,7 +188,11 @@ class GroupsTest(TestCase):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post)
         self.assertEquals(response.status_code, 302)
+<<<<<<< HEAD
         response = self.client.post(reverse('list_groups'), follow=True)       
+=======
+        response = self.client.post(reverse('list_groups'), follow=True)
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -177,7 +212,11 @@ class GroupsTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post2)
         self.assertEquals(response.status_code, 200)
+<<<<<<< HEAD
         response = self.client.post(reverse('list_groups'), follow=True)       
+=======
+        response = self.client.post(reverse('list_groups'), follow=True)
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -199,7 +238,11 @@ class GroupsTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
         self.assertEquals(response.status_code, 200)
+<<<<<<< HEAD
         response = self.client.post(reverse('list_groups'), follow=True)       
+=======
+        response = self.client.post(reverse('list_groups'), follow=True)
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -215,7 +258,11 @@ class GroupsTest(TestCase):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
         self.assertEquals(response.status_code, 200)
+<<<<<<< HEAD
         response = self.client.post(reverse('list_groups'), follow=True)       
+=======
+        response = self.client.post(reverse('list_groups'), follow=True)
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -263,13 +310,21 @@ class GroupsTest(TestCase):
         status = returnobject['status']
         membership_id = returnobject['membership_id']
         self.assertEquals('OK', status)
+<<<<<<< HEAD
+=======
+
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #try with user who has no rights to remove it
         self.client.logout()
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(reverse('remove_membership', args=[membership_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('Permission Denied', response.content)
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         #now try with user who has rights to remove
         self.client.logout()
         self.client.login(username='leader@a.com', password='test')

@@ -26,10 +26,17 @@ def list_groups(request):
 
     groups = OrganisationEntity.objects.filter(type__in=['D', 'S'])
 
+<<<<<<< HEAD
     #~ if current_user.organisation:
         #~ groups = groups.filter(dependency=current_user.organisation)
     #~ elif not request.user.is_superuser:
         #~ raise PermissionDenied()
+=======
+    if current_user.organisation:
+        groups = groups.filter(dependency=current_user.organisation)
+    elif not request.user.is_superuser:
+        raise PermissionDenied()
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
 
     return render_to_response("pro/auth/groups_list.html", {
         'groups': groups,
@@ -100,7 +107,11 @@ def delete_group(request, group_id):
 def add_membership(request, group_id, user_id):
     can_edit = request.fmsuser.leader
     response_data = {}
+<<<<<<< HEAD
     if can_edit:        
+=======
+    if can_edit:
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
         organisation  = OrganisationEntity.objects.get(id=group_id)
         user          = FMSUser.objects.get(id=user_id)
 

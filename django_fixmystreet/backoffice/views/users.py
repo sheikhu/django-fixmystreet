@@ -63,6 +63,7 @@ def list_users(request):
         users = users.filter(organisation=current_user.organisation)
     elif not request.user.is_superuser:
         raise PermissionDenied()
+<<<<<<< HEAD
 
     return render_to_response("pro/auth/users_list.html", {
         'users': users,
@@ -77,9 +78,16 @@ def edit_user(request, user_id):
         users = users.filter(organisation=current_user.organisation)
     elif not request.user.is_superuser:
         raise PermissionDenied()
+=======
 
-    users = users.filter(logical_deleted = False)
+    return render_to_response("pro/auth/users_list.html", {
+        'users': users,
+        'can_create': current_user.leader
+    }, context_instance=RequestContext(request))
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
 
+
+<<<<<<< HEAD
     user_to_edit = users.get(id=user_id)
     can_edit = current_user.leader and not user_to_edit.leader
 
@@ -92,6 +100,29 @@ def edit_user(request, user_id):
     else:
         user_form = FmsUserForm(instance=user_to_edit)
 
+=======
+def edit_user(request, user_id):
+    current_user = request.fmsuser
+    users = FMSUser.objects.all()
+    if current_user.organisation:
+        users = users.filter(organisation=current_user.organisation)
+    elif not request.user.is_superuser:
+        raise PermissionDenied()
+
+    users = users.filter(logical_deleted=False)
+
+    user_to_edit = users.get(id=user_id)
+    can_edit = current_user.leader and not user_to_edit.leader
+
+    if request.method == "POST" and can_edit:
+        user_form = FmsUserForm(request.POST, instance=user_to_edit)
+        if user_form.is_valid():
+            user_form.save()
+            return HttpResponseRedirect('')
+    else:
+        user_form = FmsUserForm(instance=user_to_edit)
+
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
     return render_to_response("pro/auth/user_edit.html", {
         'can_edit': can_edit,
         'user_form': user_form
@@ -119,7 +150,11 @@ def create_user(request):
         user_form = FmsUserCreateForm()
 
     return render_to_response("pro/auth/user_edit.html", {
+<<<<<<< HEAD
                 "user_form":user_form,
+=======
+                "user_form": user_form,
+>>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
                 "can_edit": can_edit
             }, context_instance=RequestContext(request))
 
