@@ -1147,7 +1147,7 @@ def report_notify(sender, instance, **kwargs):
                         recipient=subscription.subscriber,
                         related=report,
                         reply_to=report.responsible_manager.email,
-                    ).save(old_responsible=report.__former['responsible_manager'])
+                    ).save(old_responsible=report.__former['responsible_manager'], date_planned=report.get_date_planned())
 
             ReportEventLog(
                 report=report,
@@ -1551,6 +1551,7 @@ class ReportNotification(models.Model):
         updater=None
         comment=None
         files=None
+        date_planned=None
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -1563,6 +1564,9 @@ class ReportNotification(models.Model):
         if 'files' in kwargs:
             files = kwargs['files']
             del kwargs['files']
+        if 'date_planned' in kwargs:
+            date_planned = kwargs['date_planned']
+            del kwargs['date_planned']
 
         if not self.recipient.email:
             self.error_msg = "No email recipient"
@@ -1576,7 +1580,7 @@ class ReportNotification(models.Model):
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment)
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned)
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
