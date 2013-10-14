@@ -11,7 +11,8 @@ from datetime import datetime, timedelta
 
 
 class MailTest(TestCase):
-    fixtures = ["bootstrap", "list_items"]
+
+    fixtures = ["bootstrap","list_items"]
 
     def setUp(self):
         self.citizen = FMSUser(
@@ -333,7 +334,7 @@ class MailTest(TestCase):
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertIn(self.manager.email, mail.outbox[0].to)
+        self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
 
     def testReportResolvedAsProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
@@ -370,7 +371,8 @@ class MailTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
 
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)
+
         self.assertEquals(response.status_code, 200)
         #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other person
         self.assertEquals(len(mail.outbox), 4)
@@ -389,7 +391,8 @@ class MailTest(TestCase):
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=entity_21', {}, follow=True)
+        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=entity_21', {}, follow=True)
+
         self.assertEquals(response.status_code, 200)
         #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other entity, 2 to subcribers (manager, user)
         self.assertEquals(len(mail.outbox), 6)
@@ -415,7 +418,8 @@ class MailTest(TestCase):
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
-        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
+
         self.assertEquals(response.status_code, 200)
         #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to impetrant, 2 to subcribers (manager, user)
         self.assertEquals(len(mail.outbox), 6)
@@ -441,7 +445,8 @@ class MailTest(TestCase):
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
-        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
+
         self.assertEquals(response.status_code, 200)
         #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to contractor
         self.assertEquals(len(mail.outbox), 4)
