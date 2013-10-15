@@ -127,6 +127,36 @@ $(document).ready(function() {
         endDate: "+1y",
         language: LANGUAGE_CODE
     });
+
+    // False address
+    var report_false_adress = "{{ report.false_address }}";
+
+    document.getElementById('declare_false_address').addEventListener('click', function() {
+        document.getElementById('false_address_field').classList.remove('hidden');
+        this.classList.add('hidden');
+    });
+
+    document.getElementById('submit_false_address').addEventListener('click', function() {
+        // Ajax request to set false_address
+        var false_address = document.getElementById('false_address').value;
+        var url = '{% url "report_false_address" report.id %}';
+        var data = { 'false_address': false_address }
+
+        var self = this;
+        $.post( url, data, function( result ) {
+            // Do nothing
+            self.classList.add('hidden');
+            report_false_adress = result;
+        });
+    });
+
+    document.getElementById('false_address').addEventListener('keyup', function() {
+        if (this.value != report_false_adress) {
+            document.getElementById('submit_false_address').classList.remove('hidden');
+        } else {
+            document.getElementById('submit_false_address').classList.add('hidden');
+        }
+    });
 });
 
 
@@ -295,8 +325,16 @@ function showMergeConfirmation(){
             <table id='report-status'>
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
-                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
+                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
+                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span></td>
                 </tr>
+
+                <tr id="false_address_field" class="{% if not report.false_address %}hidden{% endif %}">
+                    <th><strong>{% trans "Raison:" %}</strong></th>
+                    <td colspan="3"><textarea id="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
+                    <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
+                </tr>
+
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
                     <td colspan="4">{{report.display_category}}</td>

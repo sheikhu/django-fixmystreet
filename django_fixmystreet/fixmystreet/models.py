@@ -525,6 +525,8 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    false_address = models.TextField(null=True, blank=True)
+
     def get_marker(self):
         user = get_current_user()
 

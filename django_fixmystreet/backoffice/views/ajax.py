@@ -38,3 +38,13 @@ def updatePriority(request, report_id):
     report.probability = int(request.GET["probability"])
     report.save()
     return HttpResponse(json.dumps({"priority":report.get_priority()}), mimetype="application/json")
+
+def report_false_address(request, report_id):
+    if request.method == "POST":
+        report = get_object_or_404(Report, id=report_id)
+
+        false_address = request.POST.get('false_address');
+        report.false_address = false_address;
+        report.save();
+
+        return HttpResponse(report.false_address);

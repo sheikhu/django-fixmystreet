@@ -204,3 +204,21 @@ class UpdatesTest(TestCase):
         response = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
         self.assertFalse(self.report.private)
 
+    def test_false_address(self):
+        self.client.login(username='manager@a.com',password='test')
+
+        url = reverse("report_false_address", args=[self.report.id])
+        post_data = {'false_address' : 'This is a false address'}
+        response = self.client.post(url, post_data)
+
+        report = Report.objects.get(id=self.report.id)
+        self.assertEqual(response.content, post_data['false_address'])
+        self.assertEqual(report.false_address, post_data['false_address'])
+
+        post_data = {'false_address' : 'Another false address'}
+        response = self.client.post(url, post_data)
+
+        report = Report.objects.get(id=self.report.id)
+        self.assertEqual(response.content, post_data['false_address'])
+        self.assertEqual(report.false_address, post_data['false_address'])
+
