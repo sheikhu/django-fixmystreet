@@ -42,15 +42,11 @@ $(function(){
     var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
     var markers = [];
     {% for report in reports %}
-        var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
-
-        {% if BACKOFFICE %}
-            reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
-        {%endif%}
-
+        var reportJSON = {{ report.marker_detail_short|dict_to_json|safe }};
         markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, proVersion));
-        fms.currentMap.markersLayer.addFeatures(markers);
     {% endfor %}
+
+    fms.currentMap.markersLayer.addFeatures(markers);
     fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
 
     retrieveAddress();
@@ -254,9 +250,9 @@ var categories = {
         <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
     </div>
     <div class="modal-body">
-        {% if reports %}
+        {% if reports_nearby %}
         <div id='search_results'>
-            {% for report in reports %}
+            {% for report in reports_nearby %}
                 {% include "reports/_navigation.html" with url=report.get_absolute_url %}
             {% endfor %}
         </div>

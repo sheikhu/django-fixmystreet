@@ -65,6 +65,7 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
     url(_(r'^ajax/saveSelection'),'saveCategoryConfiguration',name='saveSelection'),
     url(_(r'^ajax/reportPopupDetails'),'get_report_popup_details',name="get_report_popup_details_pro"),
     url(_(r'^ajax/report/(\d+)/updatePriority/'),'updatePriority',name="report_update_priority"),
+    url(_(r'^ajax/map/filter/'),'filter_map',name="filter_map"),
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',

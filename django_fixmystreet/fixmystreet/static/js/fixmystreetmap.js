@@ -19,6 +19,112 @@ function cloneObj (obj) {
     }
 }
 
+fms.statusFilterCreated = OpenLayers.Class(OpenLayers.Control, {
+    type:OpenLayers.Control.TYPE_TOGGLE,
+    draw: function() {
+        var self = this;
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+        this.div.id = "statusFilter1";
+        this.div.innerHTML = "Created";
+        this.div.className = "btn";
+        this.div.addEventListener('click', this.trigger);
+
+        return this.div;
+    },
+    trigger: function(){
+        if(this.className.indexOf("active")=== -1){
+            this.className += ' active';
+            fms.statusFilter.push("created");
+        }
+        else {
+            this.className = this.className.replace(/active/, '');
+            var i = fms.statusFilter.indexOf("created");
+            if(i != -1) {
+                fms.statusFilter.splice(i, 1);
+            }
+        }
+        fms.filterMapWithStatus();
+    }
+});
+
+fms.statusFilterInProgress = OpenLayers.Class(OpenLayers.Control, {
+    type:OpenLayers.Control.TYPE_TOGGLE,
+    draw: function() {
+        var self = this;
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+        this.div.id = "statusFilter2";
+        this.div.innerHTML = "In progress";
+        this.div.className = "btn";
+        this.div.addEventListener('click', this.trigger);
+
+        return this.div;
+    },
+    trigger: function(){
+        if(this.className.indexOf("active")=== -1){
+            this.className += ' active';
+            fms.statusFilter.push("in_progress");
+        }
+        else {
+            this.className = this.className.replace(/active/, '');
+            var i = fms.statusFilter.indexOf("in_progress");
+            if(i != -1) {
+                fms.statusFilter.splice(i, 1);
+            }
+        }
+        fms.filterMapWithStatus();
+    }
+});
+
+fms.statusFilterClosed = OpenLayers.Class(OpenLayers.Control, {
+    type:OpenLayers.Control.TYPE_TOGGLE,
+    draw: function() {
+        var self = this;
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+        this.div.id = "statusFilter3";
+        this.div.innerHTML = "Closed";
+        this.div.className = "btn";
+        this.div.addEventListener('click', this.trigger);
+
+        return this.div;
+    },
+    trigger: function(){
+        if(this.className.indexOf("active")=== -1){
+            this.className += ' active';
+            fms.statusFilter.push("closed");
+        }
+        else {
+            this.className = this.className.replace(/active/, '');
+            var i = fms.statusFilter.indexOf("closed");
+            if(i != -1) {
+                fms.statusFilter.splice(i, 1);
+            }
+        }
+        fms.filterMapWithStatus();
+    }
+});
+
+fms.filterMapWithStatus = function(){
+    $.ajax({
+            url:"/nl/pro/ajax/map/filter/?filter="+fms.statusFilter,
+            type:'GET',
+            datatype:"json",
+            success: function(data){
+                if(fms.currentMap.markersLayer){
+                    fms.currentMap.markersLayer.destroyFeatures();
+                }
+                var markers = [];
+                for(var i=0; i< data.length; ++i){
+                    markers.push(fms.currentMap.addReport(data[i], i, true));
+                }
+                fms.currentMap.markersLayer.addFeatures(markers);
+            }
+        }
+        );
+}
+
 // Controller of regional layer
 fms.regionalLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     type: OpenLayers.Control.TYPE_BUTTON,
@@ -124,7 +230,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-L.png";
 
         draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-L.png";
-
+        fms.statusFilter = [];
     /**
      * Open the map in the dom element witch id="map-bxl". If no center coordinate is provide,
      * the whole map is displayed. Must be called before each other function.
@@ -207,6 +313,15 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         var municiplaityLayerShow = new fms.MunicipalityLimitsLayerShowControl();
         this.map.addControl(municiplaityLayerShow);
         municiplaityLayerShow.activate();
+
+        var statusToggleCreated = new fms.statusFilterCreated();
+        this.map.addControl(statusToggleCreated);
+
+        var statusToggleInProgress = new fms.statusFilterInProgress();
+        this.map.addControl(statusToggleInProgress);
+
+        var statusToggleClosed = new fms.statusFilterClosed();
+        this.map.addControl(statusToggleClosed);
 
         // Base layer
         var base = new OpenLayers.Layer.WMS(
@@ -486,10 +601,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             this.map.zoomIn();
                         }
                     }
-<<<<<<< HEAD
-
-=======
->>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
                 },
                 onUnselect: function(feature){
                     for(var i=0, length=this.map.popups.length; i < length; i++) {

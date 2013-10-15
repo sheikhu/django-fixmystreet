@@ -113,7 +113,7 @@ $(document).ready(function() {
     {% endfor %}
     //Clear the comment textarea after each POST
     $("#id_comment-text").val('');
-
+    {% if report.accepted_at %}
     // Datepicker for planned
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -127,6 +127,7 @@ $(document).ready(function() {
         endDate: "+1y",
         language: LANGUAGE_CODE
     });
+    {% endif %}
 });
 
 

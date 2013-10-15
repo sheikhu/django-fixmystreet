@@ -235,10 +235,7 @@ class FMSUser(User):
     def get_absolute_url(self):
         return reverse("edit_user",kwargs={'user_id':self.id})
 
-<<<<<<< HEAD
-=======
 
->>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     """This method is used to create the security matrix when creating the first manager of the entity"""
@@ -366,10 +363,6 @@ class UserOrganisationMembership(UserTrackedModel):
 
     class Meta:
         unique_together = (("user", "organisation"),)
-<<<<<<< HEAD
-=======
-
->>>>>>> fc2f0799166888a383d1a361c0d3c27b89a429bd
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
@@ -757,7 +750,7 @@ class Report(UserTrackedModel):
                 "x": self.point.x,
                 "y": self.point.y,
             },
-            "status": self.status,
+            "status": self.status
         }
 
     def full_marker_detail_pro_JSON(self):
