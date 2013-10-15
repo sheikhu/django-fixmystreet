@@ -140,7 +140,7 @@ $(document).ready(function() {
         // Ajax request to set false_address
         var false_address = document.getElementById('false_address').value;
         var url = '{% url "report_false_address" report.id %}';
-        var data = { 'false_address': false_address }
+        var data = { 'false_address': false_address };
 
         var self = this;
         $.post( url, data, function( result ) {
@@ -563,7 +563,7 @@ function showMergeConfirmation(){
                     {% endfor %}
                 </div>
             {% endif %}
-            
+
         </div>
     {% endif %}
 
