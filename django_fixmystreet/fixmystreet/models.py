@@ -235,7 +235,10 @@ class FMSUser(User):
     def get_absolute_url(self):
         return reverse("edit_user",kwargs={'user_id':self.id})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 22c3782ebaa746e2b423e87a36617d864aee1b99
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     """This method is used to create the security matrix when creating the first manager of the entity"""
@@ -363,6 +366,10 @@ class UserOrganisationMembership(UserTrackedModel):
 
     class Meta:
         unique_together = (("user", "organisation"),)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 22c3782ebaa746e2b423e87a36617d864aee1b99
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
@@ -641,8 +648,20 @@ class Report(UserTrackedModel):
 
     def get_date_planned(self):
         if self.date_planned:
-            return self.date_planned.strftime('%m%Y')
+            return self.date_planned.strftime('%m/%Y')
         return ""
+
+    def get_date_planned_available(self):
+        from dateutil.relativedelta import relativedelta
+        dates = []
+        start_date = datetime.datetime.now()
+        end_date   = self.accepted_at + relativedelta(months=+12)
+
+        while (start_date < end_date):
+            dates.append(start_date)
+            start_date = start_date + relativedelta(months=+1)
+
+        return dates
 
     def thumbnail(self):
         if not self.is_created():
@@ -934,19 +953,19 @@ def report_assign_responsible(sender, instance, **kwargs):
 
 @receiver(pre_save,sender=Report)
 def check_planned(sender, instance, **kwargs):
-    if instance.pk:
+    if instance.pk and instance.date_planned:
         old_report = Report.objects.get(pk=instance.pk)
 
-        dates_exists   = True if old_report.accepted_at and instance.date_planned else False
-        date_too_small = instance.date_planned.strftime('%m/%Y') < old_report.accepted_at.strftime('%m/%Y') if dates_exists else False
+        dates_exists   = True if old_report.accepted_at else False
+        date_too_small = instance.date_planned.strftime('%Y%m') < old_report.accepted_at.strftime('%Y%m') if dates_exists else False
         date_too_big   = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
 
         if (not dates_exists or date_too_small or date_too_big):
             instance.planned = old_report.planned
             instance.date_planned = old_report.date_planned
-    else:
-        instance.planned = False
-        instance.date_planned = None
+    #~ else:
+        #~ instance.planned = False
+        #~ instance.date_planned = None
 
 @receiver(post_save, sender=Report)
 def report_notify(sender, instance, **kwargs):
@@ -1126,7 +1145,7 @@ def report_notify(sender, instance, **kwargs):
                     ).save()
 
         # Report planned
-        if report.__former['date_planned'] != report.date_planned:
+        if report.date_planned and report.__former['date_planned'] != report.date_planned:
             for subscription in report.subscriptions.all():
                 if subscription.subscriber != report.responsible_manager:
                     ReportNotification(
@@ -1134,18 +1153,12 @@ def report_notify(sender, instance, **kwargs):
                         recipient=subscription.subscriber,
                         related=report,
                         reply_to=report.responsible_manager.email,
-                    ).save(old_responsible=report.__former['responsible_manager'])
+                    ).save(old_responsible=report.__former['responsible_manager'], date_planned=report.get_date_planned())
 
-            if not report.__former['planned']:
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.PLANNED
-                ).save()
-            else:
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.PLANNED_CHANGE
-                ).save()
+            ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.PLANNED
+            ).save()
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
     def files(self):
@@ -1544,6 +1557,7 @@ class ReportNotification(models.Model):
         updater=None
         comment=None
         files=None
+        date_planned=None
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -1556,6 +1570,9 @@ class ReportNotification(models.Model):
         if 'files' in kwargs:
             files = kwargs['files']
             del kwargs['files']
+        if 'date_planned' in kwargs:
+            date_planned = kwargs['date_planned']
+            del kwargs['date_planned']
 
         if not self.recipient.email:
             self.error_msg = "No email recipient"
@@ -1569,7 +1586,7 @@ class ReportNotification(models.Model):
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment)
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned)
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
@@ -1618,7 +1635,6 @@ class ReportEventLog(models.Model):
     UPDATED = 15
     UPDATE_PUBLISHED = 16
     PLANNED = 17
-    PLANNED_CHANGE = 18
     EVENT_TYPE_CHOICES = (
         (REFUSE,_("Refuse")),
         (CLOSE,_("Close")),
@@ -1637,7 +1653,6 @@ class ReportEventLog(models.Model):
         (UPDATED,_("Updated")),
         (UPDATE_PUBLISHED,_("Update published")),
         (PLANNED,_("Planned")),
-        (PLANNED_CHANGE,_("Planned change")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1657,11 +1672,10 @@ class ReportEventLog(models.Model):
         UPDATED: _("Report updated by {user}"),
         UPDATE_PUBLISHED: _("Informations published by {user}"),
         PLANNED: _("Report planned to {date_planned}"),
-        PLANNED_CHANGE: _("Report planned change"),
     }
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE]
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED, PLANNED_CHANGE]
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)

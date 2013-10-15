@@ -117,7 +117,7 @@ def create_user(request):
         user_form = FmsUserCreateForm()
 
     return render_to_response("pro/auth/user_edit.html", {
-                "user_form": user_form,
+                "user_form":user_form,
                 "can_edit": can_edit
             }, context_instance=RequestContext(request))
 

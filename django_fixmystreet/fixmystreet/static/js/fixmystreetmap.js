@@ -601,6 +601,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             this.map.zoomIn();
                         }
                     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 22c3782ebaa746e2b423e87a36617d864aee1b99
                 },
                 onUnselect: function(feature){
                     for(var i=0, length=this.map.popups.length; i < length; i++) {

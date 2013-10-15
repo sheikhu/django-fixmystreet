@@ -60,7 +60,7 @@ class GroupsTest(TestCase):
             'name_fr':'groupe3',
             'name_nl':'groep3',
             'phone':'0000000000',
-            'email':'group3@test.com',
+            'email':'group3@test.com', 
             'type':'D'
         }
 
@@ -68,7 +68,7 @@ class GroupsTest(TestCase):
             'name_fr':'groupe4',
             'name_nl':'groep4',
             'phone':'0000000000',
-            'email':'group4@test.com',
+            'email':'group4@test.com', 
             'type':'S'
         }
 
@@ -76,14 +76,14 @@ class GroupsTest(TestCase):
             'name_fr':'groupe1nouveau',
             'name_nl':'groep1nieuw',
             'phone':'111111',
-            'email':'group1new@test.com',
+            'email':'group1new@test.com', 
             'type':'D'
         }
         self.editgroup_post2 = {
             'name_fr':'groupe2nouveau',
             'name_nl':'groep2nieuw',
             'phone':'2222222',
-            'email':'group2new@test.com',
+            'email':'group2new@test.com', 
             'type':'S'
         }
 
@@ -121,7 +121,7 @@ class GroupsTest(TestCase):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('create_group'), self.creategroup_post)
         self.assertEquals(response.status_code, 302)
-        response = self.client.post(reverse('list_groups'), follow=True)
+        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -142,7 +142,7 @@ class GroupsTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.post(reverse('create_group'), self.creategroup_post2)
         self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)
+        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -157,7 +157,7 @@ class GroupsTest(TestCase):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post)
         self.assertEquals(response.status_code, 302)
-        response = self.client.post(reverse('list_groups'), follow=True)
+        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -177,7 +177,7 @@ class GroupsTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post2)
         self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)
+        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -199,7 +199,7 @@ class GroupsTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
         self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)
+        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -215,7 +215,7 @@ class GroupsTest(TestCase):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
         self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)
+        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -263,14 +263,12 @@ class GroupsTest(TestCase):
         status = returnobject['status']
         membership_id = returnobject['membership_id']
         self.assertEquals('OK', status)
-
         #try with user who has no rights to remove it
         self.client.logout()
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(reverse('remove_membership', args=[membership_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('Permission Denied', response.content)
-
         #now try with user who has rights to remove
         self.client.logout()
         self.client.login(username='leader@a.com', password='test')
@@ -280,3 +278,4 @@ class GroupsTest(TestCase):
 
 
 
+        
