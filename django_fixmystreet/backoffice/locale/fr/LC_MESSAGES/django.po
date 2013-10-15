@@ -682,7 +682,7 @@ msgstr "Tout publier"
 
 #: templates/pro/reports/show.html:457
 msgid "Photos and files"
-msgstr "Photos et fichiers"
+msgstr "Photos, fichiers et commentaires"
 
 #: templates/pro/reports/show.html:471
 msgid "Comments"

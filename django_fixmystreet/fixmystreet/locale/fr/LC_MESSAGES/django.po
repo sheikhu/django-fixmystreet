@@ -1658,7 +1658,7 @@ msgstr "Afficher l'historique de l'incident."
 
 #: templates/reports/show.html:212
 msgid "Files"
-msgstr "Photos et fichiers"
+msgstr "Photos, fichiers et commentaires"
 
 #: templates/reports/show.html:256
 #, python-format

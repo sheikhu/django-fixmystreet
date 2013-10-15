@@ -620,7 +620,7 @@ class Report(UserTrackedModel):
         return self.files().filter(logical_deleted=False).filter(security_level=1)
 
     def active_attachments(self):
-        return self.attachments().filter(logical_deleted=False).filter(security_level=1)
+        return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1)
 
     def is_created(self):
         return self.status == Report.CREATED

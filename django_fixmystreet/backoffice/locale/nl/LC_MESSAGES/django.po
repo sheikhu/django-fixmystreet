@@ -694,7 +694,7 @@ msgstr "Alles publiceren"
 
 #: templates/pro/reports/show.html:457
 msgid "Photos and files"
-msgstr "Fotos en bestanden"
+msgstr "Fotos, bestanden en commentaren"
 
 #: templates/pro/reports/show.html:471
 msgid "Comments"
