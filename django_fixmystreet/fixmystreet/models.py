@@ -645,14 +645,16 @@ class Report(UserTrackedModel):
         return ""
 
     def get_date_planned_available(self):
-        from dateutil.relativedelta import relativedelta
         dates = []
-        start_date = datetime.datetime.now()
-        end_date   = self.accepted_at + relativedelta(months=+12)
+        start_date = datetime.date.today() + timedelta(days=1)
+        end_date   = datetime.date(self.accepted_at.year, self.accepted_at.month, self.accepted_at.day) + timedelta(days=365)
 
         while (start_date < end_date):
             dates.append(start_date)
-            start_date = start_date + relativedelta(months=+1)
+
+            month = start_date.month
+            while (month == start_date.month):
+                start_date = start_date + timedelta(days=1)
 
         return dates
 
