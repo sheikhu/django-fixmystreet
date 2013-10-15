@@ -6,29 +6,29 @@
         </a>
     {% endif %}
     <div class="update_text">
-    {% if attachment.file %}
+    {% if attachment.reportfile %}
         <span class="picture-caption">
-            <a href="{{ attachment.file.url }}">
-                {% if attachment.is_image %}
-                    <img src='{{attachment.image.url}}' class="view-image"/>
-                {% elif attachment.is_pdf %}
+            <a href="{{ attachment.reportfile.file.url }}">
+                {% if attachment.reportfile.is_image %}
+                    <img src='{{attachment.reportfile.image.url}}' class="view-image"/>
+                {% elif attachment.reportfile.is_pdf %}
                     <img src='/static/images/icon-pdf.png'/>
-                {% elif attachment.is_word %}
+                {% elif attachment.reportfile.is_word %}
                     <img src='/static/images/icon-word.png'/>
-                {% elif attachment.is_excel %}
+                {% elif attachment.reportfile.is_excel %}
                     <img src='/static/images/icon-excel.png'/>
                 {% endif %}
-                {{attachment.title}}
+                {{attachment.reportfile.title}}
             </a>
         </span>
         <p class="picture-date">
             {% trans 'file creation Date' %}
-            {% if attachment.file_creation_date != None%}
-                {{attachment.file_creation_date}}
+            {% if attachment.reportfile.file_creation_date != None%}
+                {{attachment.reportfile.file_creation_date}}
             {% else %} - {% endif %}
         </p>
     {% else %} {# comment #}
-        <p class="comment-incident">{{ attachment.text }}</p>
+        <p class="comment-incident">{{ attachment.reportcomment.text }}</p>
     {% endif %}
 
     {% if privacy == 'private' %}

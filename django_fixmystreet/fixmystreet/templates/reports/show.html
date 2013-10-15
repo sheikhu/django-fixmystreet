@@ -215,15 +215,15 @@ function markAsDone(){
             {% endif %}
        </div> <!-- Bordered-box-->
 
-        {% if report.active_files or report.active_comments %}
+        {% if report.active_attachments %}
         <div class="bordered-box">
-            {% if report.active_files %}
+            {% if report.active_attachments %}
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
                 <h4>{% trans 'Files' %}</h4>
                 <div id="report_updates">
-                    {% for attachment in report.active_files %}
+                    {% for attachment in report.active_attachments %}
                         {% if not attachment.is_confidential or fms_user.can_see_confidential %}
                             {% include "reports/_attachment.html" with attachment=attachment privacy='public' editable=attachment_edit %}
                         {% endif %}
@@ -231,19 +231,6 @@ function markAsDone(){
                 </div>
             {% endif %}
 
-            {% if report.active_comments %}
-                <!-- ################# COMMENTS ############### -->
-                <!-- ################# COMMENTS ############### -->
-                <!-- ################# COMMENTS ############### -->
-                <h4>{% trans "Comments" %}</h4>
-                <div id="report_updates">
-                    {% for attachment in report.active_comments %}
-                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
-                            {% include "reports/_attachment.html" with attachment=attachment privacy='public' editable=attachment_edit %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
         </div> <!-- Bordered-box -->
         {% endif %}
 

@@ -526,6 +526,8 @@ class Report(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    false_address = models.TextField(null=True, blank=True)
+
     def get_marker(self):
         user = get_current_user()
 
@@ -620,6 +622,9 @@ class Report(UserTrackedModel):
     def active_files(self):
         return self.files().filter(logical_deleted=False).filter(security_level=1)
 
+    def active_attachments(self):
+        return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1)
+
     def is_created(self):
         return self.status == Report.CREATED
 
@@ -649,14 +654,16 @@ class Report(UserTrackedModel):
         return ""
 
     def get_date_planned_available(self):
-        from dateutil.relativedelta import relativedelta
         dates = []
-        start_date = datetime.datetime.now()
-        end_date   = self.accepted_at + relativedelta(months=+12)
+        start_date = datetime.date.today() + timedelta(days=1)
+        end_date   = datetime.date(self.accepted_at.year, self.accepted_at.month, self.accepted_at.day) + timedelta(days=365)
 
         while (start_date < end_date):
             dates.append(start_date)
-            start_date = start_date + relativedelta(months=+1)
+
+            month = start_date.month
+            while (month == start_date.month):
+                start_date = start_date + timedelta(days=1)
 
         return dates
 
@@ -684,6 +691,9 @@ class Report(UserTrackedModel):
         # return self.attachments.get_query_set().files().filter(logical_deleted=False)
         # ==> is wrong
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
+
+    def attachmentsList(self): 
+        return ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def territorial_entity(self):
         return OrganisationEntity.objects.get(zipcode__code=self.postalcode)

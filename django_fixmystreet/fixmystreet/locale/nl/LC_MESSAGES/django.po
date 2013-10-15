@@ -1878,7 +1878,7 @@ msgstr "U bent succesvol afgemeld voor updates"
 #~ msgstr "Applicant:"
 
 #~ msgid "Photos and files"
-#~ msgstr "Foto's en documenten:"
+#~ msgstr "Foto's, documenten en commentaar:"
 
 #~ msgid "Anonymous "
 #~ msgstr "Anoniem"
