@@ -639,6 +639,10 @@ li img {
     cursor: pointer;
 }
 
+#file-form-template .removeThumbnail {
+    display: inline-block;
+}
+
 
 
 .form-centered, .box-centered {
