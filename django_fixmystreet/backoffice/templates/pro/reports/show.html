@@ -163,6 +163,7 @@ function mergeReport(){
 }
 function planned(){
     var date_planned = document.getElementById('date_planned').value;
+
     if (date_planned) {
         var url = "{% url 'report_planned_pro' report.id %}?date_planned=" + date_planned;
         window.location = url;
@@ -462,6 +463,22 @@ function showMergeConfirmation(){
                             <td colspan="2"><span id="prio_result">{{report.get_priority}}</span></td>
                         </tr>
                     {% endif %}
+                    <tr>
+                        <th>
+                            <strong>{% trans "Planned:" %}</strong>
+                        </th>
+                        <td colspan="2">
+                            <select id="date_planned">
+                                <option value="">{% trans "Not planned" %}</option>
+                                {% for date in report.get_date_planned_available %}
+                                    <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td colspan="2">
+                            <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
+                        </td>
+                    </tr>
                 {% endif %}
                 <tr>
                     <td>&nbsp;</td>
@@ -564,16 +581,6 @@ function showMergeConfirmation(){
                 {% endif %}
                 {% if not fms_user.contractor %}
                     <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
-                    {% if report.planned %}
-                        <p>{% trans 'Planned' %} : {{ report.planned }} - {{ report.date_planned|date:'m/Y' }}</p>
-                    {% endif %}
-                        <p>
-                            <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
-
-                            <div class="input-append date" data-date="{{ report.date_planned|date:'m/Y' }}">
-                                <input id="date_planned" type="text" class="span2" readonly="" value="{{ report.date_planned|date:'m/Y' }}"><span class="add-on"><i class="icon-th"></i></span>
-                            </div>
-                        </p>
                 {% endif %}
             {% endif %}
             <!-- ######################################### -->
