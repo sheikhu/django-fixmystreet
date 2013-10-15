@@ -687,8 +687,6 @@ class Report(UserTrackedModel):
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def attachmentsList(self): 
-        print 'hier zijn de attachments >>>>>>>>>>>>>>>>>>>>>>>>>>'
-        print ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
         return ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def territorial_entity(self):

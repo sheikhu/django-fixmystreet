@@ -135,10 +135,6 @@ def show(request, slug, report_id):
         comment_form = ReportCommentForm(prefix='comment')
         # citizen_form = CitizenForm(prefix='citizen')
 
-    print 'goed kijken he'
-    print report.active_attachments()
-
-
     return render_to_response("reports/show.html",
             {
                 "report": report,
