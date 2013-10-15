@@ -238,25 +238,28 @@ function showMergeConfirmation(){
 
 <div class="span6">
     <div class="bordered-box">
-        {% if report.is_created %}
-            <div class='is_created'>{% trans "This incident is not validated." %}</div>
-        {% endif %}
+        {% if not report.is_merged %}
+            {% if report.is_created %}
+                <div class='is_created'>{% trans "This incident is not validated." %}</div>
+            {% endif %}
 
-        {% if report.is_refused %}
-            <div class='is_created'>
-                <p>{% trans "This problem has been refused." %}</p>
-                <p>{{ report.refusal_motivation }}</p>
-            </div>
-        {% endif %}
+            {% if report.is_refused %}
+                <div class='is_created'>
+                    <p>{% trans "This problem has been refused." %}</p>
+                    <p>{{ report.refusal_motivation }}</p>
+                </div>
+            {% endif %}
 
-        {% if report.is_in_progress %}
-            <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
-        {% endif %}
+            {% if report.is_in_progress %}
+                <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
+            {% endif %}
 
-        {% if report.is_closed %}
-            <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+            {% if report.is_closed %}
+                <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+            {% endif %}
+        {% else %}
+            <div class='is_fixed'>{% trans "This report has been merged with report: " %}<a href="{{report.merged_with.get_absolute_url_pro}}" >{{report.merged_with.get_ticket_number}}</a></div>
         {% endif %}
-
         <div id='report-body'>
             <p>
                 {% if report.description %}
@@ -315,7 +318,7 @@ function showMergeConfirmation(){
                 {% endif %}
 
                 {% if report.is_in_progress %}
-                    {% if request.user.id == report.responsible_manager.id %}
+                    {% if request.user.id == report.responsible_manager.id and not report.is_merged %}
                         <!-- ############################### -->
                         <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
                         <!-- ############################### -->
@@ -545,9 +548,9 @@ function showMergeConfirmation(){
 
 </div>
 
-
 <div class="span6">
 
+    {% if not report.is_merged %}
     <!-- ########################## -->
     <!-- # DISPLAY COMMENT FORM   # -->
     <!-- ########################## -->
@@ -560,7 +563,6 @@ function showMergeConfirmation(){
             </div>
         </form>
     </div>
-
     <div class="bordered-box">
         <h4>{% trans "Subscription" %}</h4>
         <div id="report-subscription">
@@ -595,8 +597,9 @@ function showMergeConfirmation(){
         {% endif %}
         <div style="clear:both;"></div>
     </div>
+    {% endif %}
 
-    {% if report.is_markable_as_solved %}
+    {% if report.is_markable_as_solved and not report.is_merged%}
         <div class="bordered-box">
              <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>

@@ -190,7 +190,6 @@ def show(request,slug, report_id):
         nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
     else:
         nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
-
     return render_to_response("pro/reports/show.html",
             {
                 "fms_user": request.fmsuser,

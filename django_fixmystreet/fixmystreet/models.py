@@ -235,10 +235,6 @@ class FMSUser(User):
     def get_absolute_url(self):
         return reverse("edit_user",kwargs={'user_id':self.id})
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 22c3782ebaa746e2b423e87a36617d864aee1b99
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     """This method is used to create the security matrix when creating the first manager of the entity"""
@@ -366,10 +362,6 @@ class UserOrganisationMembership(UserTrackedModel):
 
     class Meta:
         unique_together = (("user", "organisation"),)
-<<<<<<< HEAD
-=======
-
->>>>>>> 22c3782ebaa746e2b423e87a36617d864aee1b99
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
@@ -518,6 +510,8 @@ class Report(UserTrackedModel):
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
     previous_managers = models.ManyToManyField('FMSUser',related_name='previous_reports',null=True, blank=True)
 
+    merged_with = models.ForeignKey('Report',related_name='merged_reports',null=True,blank=True)
+
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
     gravity = models.IntegerField(default=1)
@@ -637,6 +631,9 @@ class Report(UserTrackedModel):
 
     def is_closed(self):
         return self.status in Report.REPORT_STATUS_CLOSED
+
+    def is_merged(self):
+        return self.merged_with != None
 
     def get_public_status_display(self):
         if self.is_created():
@@ -1001,7 +998,7 @@ def report_notify(sender, instance, **kwargs):
                 user=event_log_user,
             ).save()
         ###
-
+        #Status changed
         if report.__former['status'] != report.status:
 
             ### REFUSED
@@ -1068,6 +1065,7 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
             ###
 
+            #Contractor changed
             if report.__former['contractor'] != report.contractor:
 
                 if report.contractor:
@@ -1106,7 +1104,7 @@ def report_notify(sender, instance, **kwargs):
 
 
 
-
+        #Responsible manager changed
         if report.__former['responsible_manager'] != report.responsible_manager:
             # automatic subscription for new responsible manager
             if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
@@ -1159,6 +1157,38 @@ def report_notify(sender, instance, **kwargs):
                 report=report,
                 event_type=ReportEventLog.PLANNED
             ).save()
+        #Report merged
+        if report.merged_with and report.__former['merged_with'] != report.merged_with:
+            creator = report.citizen or report.created_by
+            for subscription in report.subscriptions.all():
+                if subscription.subscriber != report.responsible_manager:
+                    if subscription.subscriber != creator:
+                        ReportNotification(
+                            content_template='notify-merged',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_manager.email,
+                        ).save()
+
+            if creator != report.responsible_manager:
+                ReportNotification(
+                    content_template='notify-merged',
+                    recipient=creator,
+                    related=report,
+                    reply_to=report.responsible_manager.email,
+                ).save()
+
+            ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.MERGED
+            ).save()
+
+            ReportEventLog(
+                report=report.merged_with,
+                event_type=ReportEventLog.MERGED,
+                merged_with_id = report.id,
+            ).save()
+
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
     def files(self):
@@ -1558,6 +1588,7 @@ class ReportNotification(models.Model):
         comment=None
         files=None
         date_planned=None
+        merged_with=None
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -1573,6 +1604,9 @@ class ReportNotification(models.Model):
         if 'date_planned' in kwargs:
             date_planned = kwargs['date_planned']
             del kwargs['date_planned']
+        
+        if self.related.merged_with:
+            merged_with = self.related.merged_with
 
         if not self.recipient.email:
             self.error_msg = "No email recipient"
@@ -1586,7 +1620,7 @@ class ReportNotification(models.Model):
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned)
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned,merged_with=merged_with)
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
@@ -1635,6 +1669,7 @@ class ReportEventLog(models.Model):
     UPDATED = 15
     UPDATE_PUBLISHED = 16
     PLANNED = 17
+    MERGED = 18
     EVENT_TYPE_CHOICES = (
         (REFUSE,_("Refuse")),
         (CLOSE,_("Close")),
@@ -1653,6 +1688,7 @@ class ReportEventLog(models.Model):
         (UPDATED,_("Updated")),
         (UPDATE_PUBLISHED,_("Update published")),
         (PLANNED,_("Planned")),
+        (MERGED,_("Merged")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1672,9 +1708,10 @@ class ReportEventLog(models.Model):
         UPDATED: _("Report updated by {user}"),
         UPDATE_PUBLISHED: _("Informations published by {user}"),
         PLANNED: _("Report planned to {date_planned}"),
+        MERGED:_("Report merged with report #{merged_with_id}"),
     }
 
-    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE]
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
@@ -1698,6 +1735,8 @@ class ReportEventLog(models.Model):
 
     value_old = models.CharField(max_length=255, null=True)
 
+    merged_with_id = models.PositiveIntegerField(null=True)
+
     class Meta:
         ordering = ['event_at',]
 
@@ -1715,7 +1754,8 @@ class ReportEventLog(models.Model):
             user=user_to_display,
             organisation=self.organisation,
             related_new=self.related_new,
-            date_planned=self.value_old
+            date_planned=self.value_old,
+            merged_with_id = self.merged_with_id,
         )
 
     def get_public_activity_text (self):
@@ -1731,7 +1771,9 @@ class ReportEventLog(models.Model):
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,
             organisation=self.organisation,
-            related_new=self.related_new
+            related_new=self.related_new,
+            date_planned=self.value_old,
+            merged_with_id = self.merged_with_id,
         )
 
     def get_status (self):
@@ -1763,6 +1805,8 @@ def eventlog_init_values(sender, instance, **kwargs):
         if hasattr(instance.report, '__former') and instance.report.date_planned != instance.report.__former["date_planned"]:
             instance.value_old = instance.report.get_date_planned()
 
+        if hasattr(instance.report, '__former') and instance.report.merged_with != instance.report.__former["merged_with"]:
+            instance.merged_with_id = instance.report.merged_with.id
 
 # class Zone(models.Model):
     # __metaclass__ = TransMeta
