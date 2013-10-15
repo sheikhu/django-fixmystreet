@@ -98,6 +98,11 @@
                     e.preventDefault();
                 });
 
+        var removeThumbnail = form_new.find('.removeThumbnail')[0];
+        removeThumbnail.classList.remove('hidden');
+        removeThumbnail.addEventListener('click', function() {
+            $(this.parentNode).remove();
+        });
 
         $('#form-files').append(form_new);
         $('#form-files').append(file_form_template);
