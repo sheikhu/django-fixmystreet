@@ -619,6 +619,9 @@ class Report(UserTrackedModel):
     def active_files(self):
         return self.files().filter(logical_deleted=False).filter(security_level=1)
 
+    def active_attachments(self):
+        return self.attachments().filter(logical_deleted=False).filter(security_level=1)
+
     def is_created(self):
         return self.status == Report.CREATED
 
@@ -680,6 +683,11 @@ class Report(UserTrackedModel):
         # return self.attachments.get_query_set().files().filter(logical_deleted=False)
         # ==> is wrong
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
+
+    def attachmentsList(self): 
+        print 'hier zijn de attachments >>>>>>>>>>>>>>>>>>>>>>>>>>'
+        print ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
+        return ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def territorial_entity(self):
         return OrganisationEntity.objects.get(zipcode__code=self.postalcode)

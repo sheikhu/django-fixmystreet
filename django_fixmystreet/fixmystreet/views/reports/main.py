@@ -133,7 +133,7 @@ def show(request, slug, report_id):
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
-        # citizen_form = CitizenForm(prefix='citizen')
+        # citizen_form = CitizenForm(prefix='citizen')        
 
     return render_to_response("reports/show.html",
             {

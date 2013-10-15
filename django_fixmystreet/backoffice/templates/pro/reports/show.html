@@ -506,39 +506,26 @@ function showMergeConfirmation(){
 
     </div>
 
-    {% if report.files or report.comments %}
+    {% if report.attachmentsList %}
         <!-- ########################## -->
-        <!-- # DISPLAY FILES SECTION  # -->
+        <!-- # DISPLAY FILES AND COMMENTS SECTION  # -->
         <!-- ########################## -->
         <div class="bordered-box">
             {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
             {% endif %}
 
-            {% if report.files %}
+            {% if report.attachmentsList %}
                 <h4>{% trans "Photos and files" %}</h4>
                 <div id="report_updates">
-                    {% for attachment in report.files %}
+                    {% for attachment in report.attachmentsList %}
                         {% if not attachment.is_confidential or fms_user.can_see_confidential %}
                             {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit %}
                         {% endif %}
                     {% endfor %}
                 </div>
             {% endif %}
-            <!-- ############################# -->
-            <!-- # DISPLAY COMMENTS SECTION  # -->
-            <!-- ############################# -->
-
-            {% if report.comments %}
-                <h4>{% trans "Comments" %}</h4>
-                <div id="report_updates">
-                    {% for attachment in report.comments %}
-                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
-                            {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
+            
         </div>
     {% endif %}
 
