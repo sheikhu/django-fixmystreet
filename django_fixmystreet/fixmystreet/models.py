@@ -1198,6 +1198,17 @@ def report_notify(sender, instance, **kwargs):
                 event_type=ReportEventLog.MERGED,
                 merged_with_id = report.id,
             ).save()
+        #Switched to private
+        if (not kwargs['created'] and report.private and (not report.__former['private'])):
+            #inform all subscribers
+            for subscription in report.subscriptions.all():
+                if not subscription.subscriber.is_pro():                    
+                        ReportNotification(
+                            content_template='notify-became-private',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_manager.email,
+                        ).save()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
@@ -1289,6 +1300,8 @@ class ReportAttachment(UserTrackedModel):
 
 @receiver(post_save,sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
+    import pdb;
+    pdb.set_trace();
     if not kwargs['created'] and instance.is_public():
         #now create notification
         attachment = instance

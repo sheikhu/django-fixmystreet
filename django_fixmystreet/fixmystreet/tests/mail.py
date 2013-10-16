@@ -561,3 +561,22 @@ class MailTest(TestCase):
         #Now there should be 4 mails: 2 for creation, 1 for acceptance, 1 to subscriber
         self.assertEquals(len(mail.outbox), 4)
         self.assertTrue(self.manager2.email in mail.outbox[3].to)
+
+    def testMakeReportPrivate(self):
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('report', response.context)
+        report_id = response.context['report'].id
+        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        #Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+        #Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(mail.outbox), 3)
+        #Now make the report private
+        response = self.client.get(reverse('report_change_switch_privacy', args=[report_id]) + '?privacy=true', follow=True)
+        self.assertEquals(response.status_code, 200)
+        #one more mail added to subcribers to show that issue became private
+        self.assertEquals(len(mail.outbox), 4)
+        self.assertTrue(self.citizen.email in mail.outbox[3].to)
