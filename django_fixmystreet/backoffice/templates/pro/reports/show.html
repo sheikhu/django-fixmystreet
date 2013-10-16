@@ -113,7 +113,7 @@ $(document).ready(function() {
     {% endfor %}
     //Clear the comment textarea after each POST
     $("#id_comment-text").val('');
-
+    {% if report.accepted_at %}
     // Datepicker for planned
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -126,6 +126,37 @@ $(document).ready(function() {
         startDate: "+1d",
         endDate: "+1y",
         language: LANGUAGE_CODE
+    });
+    {% endif %}
+
+    // False address
+    var report_false_adress = "{{ report.false_address }}";
+
+    document.getElementById('declare_false_address').addEventListener('click', function() {
+        document.getElementById('false_address_field').classList.remove('hidden');
+        this.classList.add('hidden');
+    });
+
+    document.getElementById('submit_false_address').addEventListener('click', function() {
+        // Ajax request to set false_address
+        var false_address = document.getElementById('false_address').value;
+        var url = '{% url "report_false_address" report.id %}';
+        var data = { 'false_address': false_address };
+
+        var self = this;
+        $.post( url, data, function( result ) {
+            // Do nothing
+            self.classList.add('hidden');
+            report_false_adress = result;
+        });
+    });
+
+    document.getElementById('false_address').addEventListener('keyup', function() {
+        if (this.value != report_false_adress) {
+            document.getElementById('submit_false_address').classList.remove('hidden');
+        } else {
+            document.getElementById('submit_false_address').classList.add('hidden');
+        }
     });
 });
 
@@ -237,25 +268,28 @@ function showMergeConfirmation(){
 
 <div class="span6">
     <div class="bordered-box">
-        {% if report.is_created %}
-            <div class='is_created'>{% trans "This incident is not validated." %}</div>
-        {% endif %}
+        {% if not report.is_merged %}
+            {% if report.is_created %}
+                <div class='is_created'>{% trans "This incident is not validated." %}</div>
+            {% endif %}
 
-        {% if report.is_refused %}
-            <div class='is_created'>
-                <p>{% trans "This problem has been refused." %}</p>
-                <p>{{ report.refusal_motivation }}</p>
-            </div>
-        {% endif %}
+            {% if report.is_refused %}
+                <div class='is_created'>
+                    <p>{% trans "This problem has been refused." %}</p>
+                    <p>{{ report.refusal_motivation }}</p>
+                </div>
+            {% endif %}
 
-        {% if report.is_in_progress %}
-            <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
-        {% endif %}
+            {% if report.is_in_progress %}
+                <div class="is_in_progress">{% trans "This incident is in progress." %}</div>
+            {% endif %}
 
-        {% if report.is_closed %}
-            <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+            {% if report.is_closed %}
+                <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
+            {% endif %}
+        {% else %}
+            <div class='is_fixed'>{% trans "This report has been merged with report: " %}<a href="{{report.merged_with.get_absolute_url_pro}}" >{{report.merged_with.get_ticket_number}}</a></div>
         {% endif %}
-
         <div id='report-body'>
             <p>
                 {% if report.description %}
@@ -295,8 +329,16 @@ function showMergeConfirmation(){
             <table id='report-status'>
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
-                    <td colspan="4">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
+                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
+                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span></td>
                 </tr>
+
+                <tr id="false_address_field" class="{% if not report.false_address %}hidden{% endif %}">
+                    <th><strong>{% trans "Raison:" %}</strong></th>
+                    <td colspan="3"><textarea id="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
+                    <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
+                </tr>
+
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
                     <td colspan="4">{{report.display_category}}</td>
@@ -314,7 +356,7 @@ function showMergeConfirmation(){
                 {% endif %}
 
                 {% if report.is_in_progress %}
-                    {% if request.user.id == report.responsible_manager.id %}
+                    {% if request.user.id == report.responsible_manager.id and not report.is_merged %}
                         <!-- ############################### -->
                         <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
                         <!-- ############################### -->
@@ -469,7 +511,9 @@ function showMergeConfirmation(){
                         </th>
                         <td colspan="2">
                             <select id="date_planned">
-                                <option value="">{% trans "Not planned" %}</option>
+                                {% if not report.planned %}
+                                    <option value="">{% trans "Not planned" %}</option>
+                                {% endif %}
                                 {% for date in report.get_date_planned_available %}
                                     <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
                                 {% endfor %}
@@ -525,15 +569,15 @@ function showMergeConfirmation(){
                     {% endfor %}
                 </div>
             {% endif %}
-            
+
         </div>
     {% endif %}
 
 </div>
 
-
 <div class="span6">
 
+    {% if not report.is_merged %}
     <!-- ########################## -->
     <!-- # DISPLAY COMMENT FORM   # -->
     <!-- ########################## -->
@@ -546,7 +590,6 @@ function showMergeConfirmation(){
             </div>
         </form>
     </div>
-
     <div class="bordered-box">
         <h4>{% trans "Subscription" %}</h4>
         <div id="report-subscription">
@@ -581,8 +624,9 @@ function showMergeConfirmation(){
         {% endif %}
         <div style="clear:both;"></div>
     </div>
+    {% endif %}
 
-    {% if report.is_markable_as_solved %}
+    {% if report.is_markable_as_solved and not report.is_merged%}
         <div class="bordered-box">
              <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
              <div>

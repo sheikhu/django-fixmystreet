@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 
 
 class MailTest(TestCase):
-
     fixtures = ["bootstrap","list_items"]
 
     def setUp(self):

@@ -467,6 +467,24 @@ div.olControlZoom {
     left: 10px;
 }
 
+#statusFilter1 {
+    position: absolute;
+    bottom: 90px;
+    right: 10px;
+}
+
+#statusFilter2 {
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+}
+
+#statusFilter3 {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
 .form-search {
     margin-bottom: 15px;
 }

@@ -269,7 +269,6 @@ class GroupsTest(TestCase):
         response = self.client.get(reverse('remove_membership', args=[membership_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('Permission Denied', response.content)
-        
         #now try with user who has rights to remove
         self.client.logout()
         self.client.login(username='leader@a.com', password='test')

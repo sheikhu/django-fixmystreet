@@ -8,102 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'UserOrganisationMembership'
-        db.create_table(u'fixmystreet_userorganisationmembership', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
-            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
-            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='userorganisationmembership_created', null=True, to=orm['fixmystreet.FMSUser'])),
-            ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='userorganisationmembership_modified', null=True, to=orm['fixmystreet.FMSUser'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='memberships', null=True, to=orm['fixmystreet.FMSUser'])),
-            ('organisation', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='memberships', null=True, to=orm['fixmystreet.OrganisationEntity'])),
-            ('contact_user', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal(u'fixmystreet', ['UserOrganisationMembership'])
-
-        # Adding field 'HistoricalOrganisationEntity.email'
-        db.add_column(u'fixmystreet_historicalorganisationentity', 'email',
-                      self.gf('django.db.models.fields.EmailField')(max_length=75, null=True, blank=True),
+        # Adding field 'Report.false_address'
+        db.add_column(u'fixmystreet_report', 'false_address',
+                      self.gf('django.db.models.fields.TextField')(null=True, blank=True),
                       keep_default=False)
 
-        # Adding field 'HistoricalOrganisationEntity.department'
-        db.add_column(u'fixmystreet_historicalorganisationentity', 'department',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
+        # Adding field 'HistoricalReport.false_address'
+        db.add_column(u'fixmystreet_historicalreport', 'false_address',
+                      self.gf('django.db.models.fields.TextField')(null=True, blank=True),
                       keep_default=False)
 
-        # Adding field 'HistoricalOrganisationEntity.type'
-        db.add_column(u'fixmystreet_historicalorganisationentity', 'type',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=1),
-                      keep_default=False)
-
-        # Adding field 'OrganisationEntity.email'
-        db.add_column(u'fixmystreet_organisationentity', 'email',
-                      self.gf('django.db.models.fields.EmailField')(max_length=75, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'OrganisationEntity.department'
-        db.add_column(u'fixmystreet_organisationentity', 'department',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
-                      keep_default=False)
-
-        # Adding field 'OrganisationEntity.type'
-        db.add_column(u'fixmystreet_organisationentity', 'type',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=1),
-                      keep_default=False)
-
-        # Adding M2M table for field dispatch_categories on 'OrganisationEntity'
-        db.create_table(u'fixmystreet_organisationentity_dispatch_categories', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('organisationentity', models.ForeignKey(orm[u'fixmystreet.organisationentity'], null=False)),
-            ('reportcategory', models.ForeignKey(orm[u'fixmystreet.reportcategory'], null=False))
-        ))
-        db.create_unique(u'fixmystreet_organisationentity_dispatch_categories', ['organisationentity_id', 'reportcategory_id'])
-
-        # Adding field 'Report.responsible_department'
-        db.add_column(u'fixmystreet_report', 'responsible_department',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='reports_in_department', null=True, to=orm['fixmystreet.OrganisationEntity']),
-                      keep_default=False)
-
-        # Adding field 'HistoricalReport.responsible_department_id'
-        db.add_column(u'fixmystreet_historicalreport', 'responsible_department_id',
-                      self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True),
-                      keep_default=False)
-
-        orm.OrganisationEntity.objects.filter(subcontractor=True).update(type='S')
-        orm.OrganisationEntity.objects.filter(applicant=True).update(type='A')
-        orm.OrganisationEntity.objects.filter(commune=True).update(type='C')
-        orm.OrganisationEntity.objects.filter(region=True).update(type='R')
 
     def backwards(self, orm):
-        # Deleting model 'UserOrganisationMembership'
-        db.delete_table(u'fixmystreet_userorganisationmembership')
+        # Deleting field 'Report.false_address'
+        db.delete_column(u'fixmystreet_report', 'false_address')
 
-        # Deleting field 'HistoricalOrganisationEntity.email'
-        db.delete_column(u'fixmystreet_historicalorganisationentity', 'email')
-
-        # Deleting field 'HistoricalOrganisationEntity.department'
-        db.delete_column(u'fixmystreet_historicalorganisationentity', 'department')
-
-        # Deleting field 'HistoricalOrganisationEntity.type'
-        db.delete_column(u'fixmystreet_historicalorganisationentity', 'type')
-
-        # Deleting field 'OrganisationEntity.email'
-        db.delete_column(u'fixmystreet_organisationentity', 'email')
-
-        # Deleting field 'OrganisationEntity.department'
-        db.delete_column(u'fixmystreet_organisationentity', 'department')
-
-        # Deleting field 'OrganisationEntity.type'
-        db.delete_column(u'fixmystreet_organisationentity', 'type')
-
-        # Removing M2M table for field dispatch_categories on 'OrganisationEntity'
-        db.delete_table('fixmystreet_organisationentity_dispatch_categories')
-
-        # Deleting field 'Report.responsible_department'
-        db.delete_column(u'fixmystreet_report', 'responsible_department_id')
-
-        # Deleting field 'HistoricalReport.responsible_department_id'
-        db.delete_column(u'fixmystreet_historicalreport', 'responsible_department_id')
+        # Deleting field 'HistoricalReport.false_address'
+        db.delete_column(u'fixmystreet_historicalreport', 'false_address')
 
 
     models = {
@@ -249,6 +170,7 @@ class Migration(SchemaMigration):
             'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'date_planned': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'false_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fixed_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'gravity': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'hash_code': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -336,6 +258,7 @@ class Migration(SchemaMigration):
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'report_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
             'date_planned': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'false_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fixed_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'gravity': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'hash_code': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -478,7 +401,7 @@ class Migration(SchemaMigration):
             'version_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         u'fixmystreet.userorganisationmembership': {
-            'Meta': {'object_name': 'UserOrganisationMembership'},
+            'Meta': {'unique_together': "(('user', 'organisation'),)", 'object_name': 'UserOrganisationMembership'},
             'contact_user': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'userorganisationmembership_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),

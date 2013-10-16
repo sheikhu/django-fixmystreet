@@ -54,7 +54,8 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).pending().order_by('distance')
+    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).pending().order_by('distance')
+    reports = Report.objects.all()
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,
@@ -65,6 +66,7 @@ def new(request):
                 "reports":reports,
                 "file_formset":file_formset,
                 "comment_form":comment_form,
+                "reports_nearby":reports_nearby
             },
             context_instance=RequestContext(request))
 
@@ -188,7 +190,6 @@ def show(request,slug, report_id):
         nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
     else:
         nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
-  
     return render_to_response("pro/reports/show.html",
             {
                 "fms_user": request.fmsuser,

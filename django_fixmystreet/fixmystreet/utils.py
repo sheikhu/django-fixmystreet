@@ -228,7 +228,7 @@ def transform_notification_user_display(user, to_show):
         else:
             return _("a citizen")
 
-def transform_notification_template(template, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None):
+def transform_notification_template(template, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
     from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
     SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
 
@@ -289,6 +289,9 @@ def transform_notification_template(template, report, user, old_responsible=None
 
         if date_planned:
             data["date_planned"] = date_planned
+
+        if merged_with:
+            data["merged_with"] = merged_with.id
 
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
