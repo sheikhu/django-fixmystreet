@@ -57,6 +57,16 @@ $(function(){
         markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}));
     {% endfor %}
     fms.currentMap.markersLayer.addFeatures(markers);
+
+    //Add status filters for the map
+    var statusToggleCreated = new fms.statusFilterCreated();
+    fms.currentMap.map.addControl(statusToggleCreated);
+
+    var statusToggleInProgress = new fms.statusFilterInProgress();
+    fms.currentMap.map.addControl(statusToggleInProgress);
+
+    var statusToggleClosed = new fms.statusFilterClosed();
+    fms.currentMap.map.addControl(statusToggleClosed);
 });
 </script>
 {% endblock %}

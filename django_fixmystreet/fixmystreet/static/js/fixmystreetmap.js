@@ -314,15 +314,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         this.map.addControl(municiplaityLayerShow);
         municiplaityLayerShow.activate();
 
-        var statusToggleCreated = new fms.statusFilterCreated();
-        this.map.addControl(statusToggleCreated);
-
-        var statusToggleInProgress = new fms.statusFilterInProgress();
-        this.map.addControl(statusToggleInProgress);
-
-        var statusToggleClosed = new fms.statusFilterClosed();
-        this.map.addControl(statusToggleClosed);
-
         // Base layer
         var base = new OpenLayers.Layer.WMS(
             "base",

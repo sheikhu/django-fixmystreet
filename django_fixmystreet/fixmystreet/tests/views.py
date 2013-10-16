@@ -289,8 +289,8 @@ class ReportViewsTest(SampleFilesTestCase):
         url2 = reverse('report_merge_pro',args=[report.id])
         response4 = self.client.get(url2,{"mergeId":report2.id})
 
-        #Only 1 report left
-        self.assertEqual(len(Report.objects.all()),1)
+        #Reference from merged to kept report
+        self.assertEqual(report.id,Report.objects.get(id=report2.id).merged_with.id)
 
         #The first one (oldest one) is kept
         self.assertEqual(Report.objects.all()[0].id, report.id)
