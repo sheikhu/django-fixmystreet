@@ -1648,7 +1648,7 @@ class ReportNotification(models.Model):
         
         if self.related.merged_with:
             merged_with = self.related.merged_with
-
+        
         if not self.recipient.email:
             self.error_msg = "No email recipient"
             self.success = False
