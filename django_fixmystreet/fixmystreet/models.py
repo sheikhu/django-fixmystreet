@@ -1287,6 +1287,26 @@ class ReportAttachment(UserTrackedModel):
         else:
              return self.created_by.first_name+' '+self.created_by.last_name
 
+@receiver(post_save,sender=ReportAttachment)
+def report_attachment_notify(sender, instance, **kwargs):
+    if not kwargs['created'] and instance.is_public():
+        #now create notification
+        attachment = instance
+        report = instance.report
+        ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.UPDATE_PUBLISHED,
+                    user=report.responsible_manager,
+                ).save()
+        for subscription in report.subscriptions.all():
+            if subscription.subscriber != report.responsible_manager:
+                ReportNotification(
+                    content_template='informations_published',
+                    recipient=subscription.subscriber,
+                    related=report,
+                    reply_to=report.responsible_manager.email,
+                ).save()
+
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
@@ -1721,8 +1741,10 @@ class ReportEventLog(models.Model):
         MERGED:_("Report merged with report #{merged_with_id}"),
     }
 
-    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED]
+
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
+
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
     event_type = models.IntegerField(choices=EVENT_TYPE_CHOICES)
