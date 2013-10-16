@@ -507,7 +507,9 @@ function showMergeConfirmation(){
                         </th>
                         <td colspan="2">
                             <select id="date_planned">
-                                <option value="">{% trans "Not planned" %}</option>
+                                {% if not report.planned %}
+                                    <option value="">{% trans "Not planned" %}</option>
+                                {% endif %}
                                 {% for date in report.get_date_planned_available %}
                                     <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
                                 {% endfor %}
