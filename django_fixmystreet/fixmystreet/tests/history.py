@@ -545,6 +545,48 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
+    def testMergeReports(self):
+        #Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('report', response.context)
+
+        report_id = response.context['report'].id
+
+        #Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+
+        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
+        self.assertEquals(response.status_code, 200)
+        #Should send mail only to responsible
+        
+        report2_id = response2.context['report'].id
+
+        #Publish the created report
+        response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
+        self.assertEquals(response3.status_code, 200)
+        
+        #Merge reports
+        url2 = reverse('report_merge_pro',args=[report_id])
+        response4 = self.client.get(url2,{"mergeId":report2_id})
+
+        #Reference from merged to kept report
+        self.assertEqual(report2_id,Report.objects.get(id=report_id).merged_with.id)
+
+        report = Report.objects.get(id=report_id)
+        activities = report.activities.all()
+        #2 activities are present: 1 for creation and 1 for merge
+        self.assertEquals(activities.all().count(), 2)
+        #Type of the second activity = merge (18)
+        self.assertEqual(18,activities[1].event_type)
+
+        report2 = Report.objects.get(id=report2_id)
+        activities2 = report2.activities.all()
+        #3 activities are present: 1 for creation, 1 for acception and 1 for merge
+        self.assertEquals(activities2.all().count(),3)
+        #Type of the third activity = merge (18)
+        self.assertEquals(18,activities2[2].event_type)
+
 
     def testAssignToContractor(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
