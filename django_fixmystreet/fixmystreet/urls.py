@@ -19,6 +19,15 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.users',
     url(_(r'^login/$'), 'login_view', name='login'),
 )
 
+urlpatterns += patterns('django.contrib.auth.views',
+    (r'^accounts/password/reset/$', 'password_reset',
+            {'post_reset_redirect' : '/accounts/password/reset/done/', 'template_name': 'admin/registration/password_reset_form.html'}),
+    (r'^accounts/password/reset/done/$', 'password_reset_done', {'template_name': 'admin/registration/password_reset_done.html'}),
+    (r'^accounts/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'password_reset_confirm',
+            {'post_reset_redirect' : '/accounts/password/done/', 'template_name': 'admin/registration/password_reset_confirm.html'}),
+    (r'^accounts/password/done/$', 'password_reset_complete', {'template_name': 'admin/registration/password_reset_complete.html'}),
+)
+
 urlpatterns += patterns('django_fixmystreet.fixmystreet.views.promotion',
     (_(r'^promotions/(\w+)$'), 'show'),
 )
