@@ -512,7 +512,6 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 4)
         self.assertTrue(self.manager.email in mail.outbox[3].to)
 
-    @unittest.skipIf(True, 'Test will be skipped untill feature of notification for making info public is developed')
     def testPublishCommentMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
         self.assertEquals(response.status_code, 200)
@@ -538,11 +537,10 @@ class MailTest(TestCase):
         #Now make the comment public
         response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
         self.assertEqual(response.status_code, 200)
-
-        #Now there should be 5 mails: 2 for creation, 1 for acceptance, 2 to subscribers to inform about publish (citizen, manager)
-        self.assertEquals(len(mail.outbox), 5)
-        self.assertTrue(self.citizen.email in mail.outbox[3].to or self.citizen.email in mail.outbox[4].to)
-        self.assertTrue(self.manager.email in mail.outbox[3].to or self.manager.email in mail.outbox[4].to)
+        print mail.outbox
+        #Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers to inform about publish (citizen), Manager who did the update does not get an email
+        self.assertEquals(len(mail.outbox), 4)
+        self.assertTrue(self.citizen.email in mail.outbox[3].to)
 
     def testSubscriptionForProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)

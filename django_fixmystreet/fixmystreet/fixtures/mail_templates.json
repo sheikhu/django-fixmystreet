@@ -152,5 +152,16 @@
         "content_nl": "Interventie voor het incident is gepland voor {date_planned}.\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
         "title_fr": "planifié sur Fix My Street"
     }
+},
+{
+    "pk": 15,
+    "model": "fixmystreet.mailnotificationtemplate",
+    "fields": {
+        "content_fr": "Informations publi\u00e9es par {updater}.\r\n\r\n{report_overview}\r\n\r\nVous pouvez acc\u00e9der \u00e0 cet incident en cliquant sur le lien ci-dessous :\r\n\r\n- {display_url}\r\n\r\nVous pouvez vous d\u00e9sinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous\u00a0:\r\n\r\n- {unsubscribe_url}",
+        "title_nl": "werd gepubliceerd op Fix My Street",
+        "name": "informations_published",
+        "content_nl": "Informatie gepubliceerd door {updater}.\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
+        "title_fr": "publié sur Fix My Street"
+    }
 }
 ]
