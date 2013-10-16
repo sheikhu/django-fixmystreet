@@ -536,7 +536,6 @@ class MailTest(TestCase):
         #Now make the comment public
         response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
         self.assertEqual(response.status_code, 200)
-        print mail.outbox
         #Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers to inform about publish (citizen), Manager who did the update does not get an email
         self.assertEquals(len(mail.outbox), 4)
         self.assertTrue(self.citizen.email in mail.outbox[3].to)
@@ -562,6 +561,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 4)
         self.assertTrue(self.manager2.email in mail.outbox[3].to)
 
+
     def testMakeReportPrivate(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
         self.assertEquals(response.status_code, 200)
@@ -580,3 +580,38 @@ class MailTest(TestCase):
         #one more mail added to subcribers to show that issue became private
         self.assertEquals(len(mail.outbox), 4)
         self.assertTrue(self.citizen.email in mail.outbox[3].to)
+
+    def testMergeReportMail(self):
+        #Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('report', response.context)
+
+        report_id = response.context['report'].id
+
+        self.assertEquals(len(mail.outbox),  2)  # one for creator subscription, one for manager
+
+        #Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+
+        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
+        self.assertEquals(response.status_code, 200)
+        #Should send mail only to responsible
+        self.assertEquals(len(mail.outbox), 3)
+
+        report2_id = response2.context['report'].id
+
+        #Publish the created report
+        response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
+        self.assertEquals(response3.status_code, 200)
+        self.assertEquals(len(mail.outbox), 4)
+
+        #Merge reports
+        url2 = reverse('report_merge_pro',args=[report_id])
+        response4 = self.client.get(url2,{"mergeId":report2_id})
+
+        #Reference from merged to kept report
+        self.assertEqual(report2_id,Report.objects.get(id=report_id).merged_with.id)
+        #A mail has been sent to the creator of the first report to notify him that his report has been merged
+        self.assertEquals(len(mail.outbox),5)
+

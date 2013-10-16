@@ -1300,8 +1300,6 @@ class ReportAttachment(UserTrackedModel):
 
 @receiver(post_save,sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
-    import pdb;
-    pdb.set_trace();
     if not kwargs['created'] and instance.is_public():
         #now create notification
         attachment = instance
