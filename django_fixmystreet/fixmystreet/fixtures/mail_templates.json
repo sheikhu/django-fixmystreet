@@ -59,10 +59,10 @@
   "model": "fixmystreet.mailnotificationtemplate",
   "fields": {
     "content_fr": "Un nouvel incident vous a \u00e9t\u00e9 signal\u00e9.\r\n\r\n{report_overview}\r\n\r\nVous pouvez acc\u00e9der \u00e0 cet incident en cliquant sur le lien ci-dessous :\r\n\r\n- {display_url}",
-    "title_nl": "gemeld via Fix My Street",
+    "title_nl": "gemeld {address}",
     "name": "notify-creation",
     "content_nl": "Er werd u een nieuw probleem gemeld. \r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken: \r\n\r\n- {display_url}",
-    "title_fr": "signal\u00e9 sur Fix My Street"
+    "title_fr": "signal\u00e9 {address}"
   }
 },
 {
@@ -163,8 +163,8 @@
         "content_nl": "Informatie gepubliceerd door {updater}.\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
         "title_fr": "publié sur Fix My Street"
     }
-  },
-  {
+},
+{
     "pk": 16,
     "model": "fixmystreet.mailnotificationtemplate",
     "fields": {
@@ -173,6 +173,17 @@
         "name": "notify-merged",
         "content_nl": "Een incident is samengevoegd met incident: {merged_with}.\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
         "title_fr": "fusionn\u00e9 sur Fix My Street"
+    }
+},
+{
+    "pk": 17,
+    "model": "fixmystreet.mailnotificationtemplate",
+    "fields": {
+        "content_fr": "Un incident est devenue priv\u00e9 .\r\n\r\n{report_overview}\r\n\r\nVous pouvez acc\u00e9der \u00e0 cet incident en cliquant sur le lien ci-dessous :\r\n\r\n- {display_url}\r\n\r\nVous pouvez vous d\u00e9sinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous\u00a0:\r\n\r\n- {unsubscribe_url}",
+        "title_nl": "is prive geworden op Fix My Street",
+        "name": "notify-became-private",
+        "content_nl": "Een incident is prive geworden.\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
+        "title_fr": "devenue privé sur Fix My Street"
     }
 }
 ]
