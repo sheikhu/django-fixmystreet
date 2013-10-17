@@ -158,7 +158,6 @@ def show(request,slug, report_id):
                     comment.created_by = FMSUser.objects.get(pk=request.user.id)
                     comment.report = report
                     comment.save()
-
             files = file_formset.save()
 
             report.trigger_updates_added(request.fmsuser, files=files, comment=comment)

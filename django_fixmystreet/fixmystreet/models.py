@@ -1240,6 +1240,8 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
                 yield obj.reportcomment
 
 
+
+
 class ReportAttachmentManager(models.Manager):
     use_for_related_fields = True
     def get_query_set(self):
@@ -1263,6 +1265,8 @@ class ReportAttachment(UserTrackedModel):
     report = models.ForeignKey(Report, related_name="attachments")
 
     objects = ReportAttachmentManager()
+
+    publish_update = True
 
     #is_validated = models.BooleanField(default=False)
     #is_visible = models.BooleanField(default=False)
@@ -1297,13 +1301,19 @@ class ReportAttachment(UserTrackedModel):
              return _('ANONYMOUS')
         else:
              return self.created_by.first_name+' '+self.created_by.last_name
+    #needed to make sure that no mail is sent when a complete report is published only when individual reports are updated
+    def save(self, *args, **kwargs):
+        if 'publish_report' in kwargs:
+            del kwargs['publish_report']
+            self.publish_update = False
+        super(ReportAttachment, self).save(*args, **kwargs)
 
 @receiver(post_save,sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
-    if not kwargs['created'] and instance.is_public():
+    report = instance.report    
+    if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
         attachment = instance
-        report = instance.report
         ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.UPDATE_PUBLISHED,
@@ -1318,9 +1328,28 @@ def report_attachment_notify(sender, instance, **kwargs):
                     reply_to=report.responsible_manager.email,
                 ).save()
 
+    #if report is assigned to impetrant or executeur de travaux also inform them
+   
+    if (kwargs['created'] and report.contractor != None):
+            for recipient in report.contractor.workers.all():
+                ReportNotification(
+                    content_template='informations_published',
+                    recipient=recipient,
+                    related=report,
+                    reply_to=report.responsible_manager.email,
+                ).save()
+
+
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
+
+
+
+
+@receiver(post_save,sender=ReportComment)
+def report_comment_notify(sender, instance, **kwargs):
+    report_attachment_notify(sender, instance, **kwargs)
 
 
 class ReportFile(ReportAttachment):
@@ -1381,6 +1410,9 @@ class ReportFile(ReportAttachment):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
 
+@receiver(post_save,sender=ReportFile)
+def report_file_notify(sender, instance, **kwargs):  
+    report_attachment_notify(sender, instance, **kwargs)
 
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender,instance,**kwargs):
