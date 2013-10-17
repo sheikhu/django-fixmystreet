@@ -96,8 +96,16 @@ def planned( request, report_id ):
 def switchPrivacy(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")
-    report.private = ('true' == privacy)
+    if privacy != 'true':
+        if report.secondary_category.public:
+            report.private = ('true' == privacy)
+        else:
+            messages.add_message(request, messages.ERROR, _("Cannot turn incident public. The category of this incident may not be shown to the citizens."))
+    else:
+        report.private = ('true' == privacy)
+
     report.save()
+    
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:

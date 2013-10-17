@@ -198,11 +198,26 @@ class UpdatesTest(TestCase):
         self.assertEquals(len(self.manager.reports_in_charge.all()),0)
 
     def test_update_visibility(self):
+        #Test switch to public and back
         self.client.login(username='manager@a.com',password='test')
         response2 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=true")
         self.assertTrue(Report.objects.get(id=self.report.id).private)
         response = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
         self.assertFalse(self.report.private)
+        
+        #Test constraint: cannot turn report public if category is private
+
+        #Turn report private
+        response3 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=true")
+        
+        #Change category to private one
+        report = Report.objects.get(id=self.report.id)
+        report.secondary_category = ReportCategory.objects.get(id=4)
+        report.save()
+        #Try to set report to public
+        response4 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
+        #Report not set to public because private category
+        self.assertTrue(Report.objects.get(id=self.report.id).private)
 
     def test_false_address(self):
         self.client.login(username='manager@a.com',password='test')

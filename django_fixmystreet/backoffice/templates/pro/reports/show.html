@@ -165,10 +165,8 @@ $(document).ready(function() {
         success:function(data){
             for(var i = 0; i<data.length;++i){
                 {% if report.private %}
-                if(data[i].p !== 1){
                     var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
                     $("#sec_cat_select").append(option);
-                }
                 {% else %}
                 if(data[i].p === 1){
                     var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
@@ -191,10 +189,8 @@ $(document).ready(function() {
                 success:function(data){
                     for(var i = 0; i<data.length;++i){
                         {% if report.private %}
-                        if(data[i].p !== 1){
                             var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
                             $("#sec_cat_select").append(option);
-                        }
                         {% else %}
                         if(data[i].p === 1){
                             var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
