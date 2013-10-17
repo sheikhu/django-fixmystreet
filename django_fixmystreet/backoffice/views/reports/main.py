@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
-from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, ReportCategory
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import  RefuseForm
@@ -205,6 +205,7 @@ def show(request,slug, report_id):
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),
                 'attachment_edit': request.fmsuser == report.responsible_manager and (report.is_created() or report.is_in_progress()),
-                "nearby_reports":nearby_reports
+                "nearby_reports":nearby_reports,
+                "category_list":ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()),
             },
             context_instance=RequestContext(request))

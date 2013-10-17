@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report,ReportMainCategoryClass
 from django_fixmystreet.fixmystreet.stats import UserTypeForOrganisation
 
 def saveCategoryConfiguration(request):
@@ -70,3 +70,18 @@ def report_false_address(request, report_id):
         report.save();
 
         return HttpResponse(report.false_address);
+
+def secondary_category_for_main_category(request):
+    main_category_id = int(request.GET["main_category"])
+    secondary_categories = ReportCategory.objects.filter(category_class=main_category_id)
+    jsonstring= ReportCategory.listToJSON(secondary_categories)
+    return HttpResponse(jsonstring,mimetype="application/json")
+
+def update_category_for_report(request,report_id):
+    main_category_id = int(request.POST["main_category"])
+    secondary_category_id = int(request.POST["secondary_category"])
+    report = get_object_or_404(Report,id=report_id)
+    report.category = ReportMainCategoryClass.objects.get(id=main_category_id)
+    report.secondary_category = ReportCategory.objects.get(id=secondary_category_id)
+    report.save()
+    return HttpResponse(json.dumps({"returntype":"ok"}),mimetype="application/json")

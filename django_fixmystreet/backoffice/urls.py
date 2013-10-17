@@ -67,6 +67,8 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
     url(_(r'^ajax/report/(\d+)/updatePriority/'),'updatePriority',name="report_update_priority"),
     url(_(r'^ajax/map/filter/'),'filter_map',name="filter_map"),
     url(_(r'^ajax/report/(\d+)/false_address/'),'report_false_address',name="report_false_address"),
+    url(_(r'^ajax/secondary_category_for_main_category'),'secondary_category_for_main_category',name="secondary_category_for_main_category"),
+    url(_(r'^ajax/update_category_for_report/(\d+)'),'update_category_for_report',name="update_category_for_report"),
 )
 
 urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',

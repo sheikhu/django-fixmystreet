@@ -1604,15 +1604,15 @@ class ReportCategory(UserTrackedModel):
             #s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
             s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
-                prev_d['s_c_n_en'] = d['s_c_n_en'] = s_c_n_en_value
+                d['s_c_n_en'] = s_c_n_en_value
             #s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_fr'] == s_c_n_fr_value:
-                prev_d['s_c_n_fr'] = d['s_c_n_fr'] = s_c_n_fr_value
+                d['s_c_n_fr'] = s_c_n_fr_value
             #s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
-                prev_d['s_c_n_nl'] = d['s_c_n_nl'] = s_c_n_nl_value
+                d['s_c_n_nl'] = s_c_n_nl_value
 
 
             list_of_elements_as_json.append(d)
