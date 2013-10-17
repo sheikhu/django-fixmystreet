@@ -158,6 +158,69 @@ $(document).ready(function() {
             document.getElementById('submit_false_address').classList.add('hidden');
         }
     });
+    $("#main_cat_select").val("{{report.category.id}}");
+    $.ajax({
+        url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
+        type:"GET",
+        success:function(data){
+            for(var i = 0; i<data.length;++i){
+                {% if report.private %}
+                if(data[i].p !== 1){
+                    var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
+                    $("#sec_cat_select").append(option);
+                }
+                {% else %}
+                if(data[i].p === 1){
+                    var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
+                    $("#sec_cat_select").append(option);
+                }
+                {% endif %}
+            }
+            $("#sec_cat_select").val("{{report.secondary_category.id}}");
+        }
+        
+    });
+    $('#main_cat_select').change(function(){
+        if(this.value !== "0"){
+            $("#sec_cat_select").removeAttr("disabled");
+            $("#sec_cat_select").empty();
+            $("#sec_cat_select").append('<option value="0">{% trans "Select a Category" %}</option>');
+            $.ajax({
+                url:"{% url 'secondary_category_for_main_category' %}?main_category="+this.value,
+                type:"GET",
+                success:function(data){
+                    for(var i = 0; i<data.length;++i){
+                        {% if report.private %}
+                        if(data[i].p !== 1){
+                            var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
+                            $("#sec_cat_select").append(option);
+                        }
+                        {% else %}
+                        if(data[i].p === 1){
+                            var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
+                            $("#sec_cat_select").append(option);
+                        }
+                        {% endif %}
+                    }
+                    
+                }
+            });
+        }
+        else {
+            $("#sec_cat_select").attr("disabled","disabled");
+        }
+    });
+
+    $("#sec_cat_select").change(function(){
+        $.ajax({
+            url:"{% url 'update_category_for_report' report.id %}",
+            data:{"main_category":$('#main_cat_select').val(),"secondary_category":this.value},
+            type:"POST",
+            success:function(data){
+                //do nothing
+            }
+        });
+    })
 });
 
 
@@ -338,11 +401,32 @@ function showMergeConfirmation(){
                     <td colspan="3"><textarea id="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
                     <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
                 </tr>
-
+                {% if request.user.id == report.responsible_manager.id and report.is_in_progress %}
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
-                    <td colspan="4">{{report.display_category}}</td>
+                    <td colspan="4">
+                            <select id="main_cat_select">
+                                <option value="0">{% trans "Select a Category" %}</option>
+                                {% for cat in category_list%}
+                                    <option value="{{cat.id}}">{{cat.name}}</option>
+                                {% endfor %}
+                            </select>
+                    </td>
                 </tr>
+                <tr>
+                    <th><strong>{% trans "Secondary category:" %}</strong></th>
+                    <td colspan="4">
+                        <select id="sec_cat_select"><option value="0">{% trans "Select a Category" %}</option></select>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <th><strong>{% trans "Category:" %}</strong></th>
+                    <td colspan="4">
+                    {{report.display_category}}
+                    </td>
+                </tr>
+                {% endif %}
                 <tr>
                     <th><strong>{% trans "Status:" %}</strong></th>
                     <td>{{ report.get_status_display }}</td>

@@ -217,6 +217,20 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertEqual(report.comments().count(), 2)
 
+    def test_change_category(self):
+        self.client.login(username='manager@a.com', password='test')
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        self.assertEqual(Report.objects.get(id=report.id).category.id,1)
+        self.assertEqual(Report.objects.get(id=report.id).secondary_category.id,1)
+
+        response2 = self.client.post(reverse('update_category_for_report',args=[report.id]),{"main_category":"2","secondary_category":"32"})
+
+        self.assertEqual(Report.objects.get(id=report.id).category.id,2)
+        self.assertEqual(Report.objects.get(id=report.id).secondary_category.id,32)
 
     def test_subscription(self):
         """Tests the subscription of a report."""
