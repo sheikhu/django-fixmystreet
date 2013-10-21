@@ -4,8 +4,15 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report,ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report,ReportMainCategoryClass,MailNotificationTemplate
 from django_fixmystreet.fixmystreet.stats import UserTypeForOrganisation
+from django.utils.translation import ugettext as _
+from django_fixmystreet.fixmystreet.utils import get_current_user, transform_notification_template
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from django_fixmystreet.fixmystreet.utils import generate_pdf
+from django.template import RequestContext
+
 
 def saveCategoryConfiguration(request):
     # Save the chosen categories from the different forms
@@ -51,7 +58,6 @@ def filter_map(request):
     if mFilter == "":
         result += Report.objects.all()
 
-    jsonList =[]
     jsonString= "["
     for report in result:
         jsonString+= json.dumps(report.marker_detail_short())+","
@@ -69,7 +75,7 @@ def report_false_address(request, report_id):
         report.false_address = false_address;
         report.save();
 
-        return HttpResponse(report.false_address);
+        return HttpResponse(report.false_address)
 
 def secondary_category_for_main_category(request):
     main_category_id = int(request.GET["main_category"])
@@ -85,3 +91,36 @@ def update_category_for_report(request,report_id):
     report.secondary_category = ReportCategory.objects.get(id=secondary_category_id)
     report.save()
     return HttpResponse(json.dumps({"returntype":"ok"}),mimetype="application/json")
+
+def send_pdf(request,report_id):
+
+    
+    user = get_current_user();
+    recipients = request.POST.get('to');
+    comments = request.POST.get('comments');
+    report = get_object_or_404(Report,id=report_id)
+    #generate the pdf
+    pdffile = generate_pdf("reports/pdf.html", {
+        'report' : report,
+        'files': report.files(),
+        'comments': report.comments() ,
+        'activity_list' : report.activities.all(),
+        'privacy' : 'private'
+    }, context_instance=RequestContext(request))
+
+
+    template = MailNotificationTemplate.objects.get(name="mail-pdf")
+
+    subject, html, text = transform_notification_template(template, report, user, comment=comments)
+    recipients = (recipients,)
+
+    msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
+
+    if html:
+        msg.attach_alternative(html, "text/html")
+
+    msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
+
+
+    msg.send()
+    return HttpResponse(_("PDF sent as email"),mimetype="application/text")

@@ -112,7 +112,14 @@ def render_to_pdf(*args, **kwargs):
     context_instance = kwargs.get('context_instance', None)
     if 'request' in context_instance and 'output' in context_instance.get('request').GET:
         return render_to_response(*args, **kwargs)
+    
+    pdf_tmp_file = generate_pdf(*args, **kwargs)
+    response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=%s%s.pdf' %(u"export-incident-"+str((args[1]['report']).id)+"-date-", datetime.date.today().isoformat())
+    pdf_tmp_file.close()
+    return response
 
+def generate_pdf(*args, **kwargs):
     tmpfolder = tempfile.mkdtemp()
     html_tmp_file_path = "%s/export.html" %(tmpfolder)
     html_tmp_file = file(html_tmp_file_path, "w")
@@ -120,7 +127,7 @@ def render_to_pdf(*args, **kwargs):
     html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
-    cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10 \
+    cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10\
             --encoding utf-8 \
             --footer-font-size 8 \
             --footer-left '{0}' \
@@ -135,13 +142,8 @@ def render_to_pdf(*args, **kwargs):
     logging.info(cmd)
     os.system(cmd)
 
-
     pdf_tmp_file = file(pdf_tmp_file_path, "r")
-    response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=%s%s.pdf' %(u"export-incident-"+str((args[1]['report']).id)+"-date-", datetime.date.today().isoformat())
-    pdf_tmp_file.close()
-    return response
-
+    return pdf_tmp_file
 
 def autoslug_transmeta(populate_from, populate_to):
     """
@@ -292,7 +294,6 @@ def transform_notification_template(template, report, user, old_responsible=None
 
         if merged_with:
             data["merged_with"] = merged_with.id
-
         title.append(template.title.format(**data))
         content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
 

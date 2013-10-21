@@ -90,6 +90,8 @@ $(function(){
     $("#prob").val("{{report.probability}}");
 
 
+
+
 });
 /* When JQUERY is ready*/
 $(document).ready(function() {
@@ -137,6 +139,17 @@ $(document).ready(function() {
         this.classList.add('hidden');
     });
 
+    document.getElementById('mailPDFProButton').addEventListener('click', function() {
+        mailbox = document.getElementById('mail_pdf');
+        if (mailbox.classList.contains('hidden'))
+            mailbox.classList.remove('hidden');
+        else
+            mailbox.classList.add('hidden');
+            document.getElementById('mail_pdf_emailaddresses').value = '';
+            document.getElementById('mail_pdf_emailcomments').value ='';
+    });
+
+
     document.getElementById('submit_false_address').addEventListener('click', function() {
         // Ajax request to set false_address
         var false_address = document.getElementById('false_address').value;
@@ -149,6 +162,20 @@ $(document).ready(function() {
             self.classList.add('hidden');
             report_false_adress = result;
         });
+    });
+
+    document.getElementById("send_pdf_pro_button").addEventListener('click', function(event){
+        $.ajax({
+            url:"{% url 'send_pdf' report.id %}",
+            data:{"to":$('#mail_pdf_emailaddresses').val(), "comments":$('#mail_pdf_emailcomments').val()},
+            type:"POST",
+            success:function(data){
+                alert(data);
+                document.getElementById('mailPDFProButton').click();
+            }
+        });    
+        
+       
     });
 
     document.getElementById('false_address').addEventListener('keyup', function() {
@@ -614,10 +641,23 @@ function showMergeConfirmation(){
             <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
             <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
             </a>
+
+
         </p>
 
         {% if request.fmsuser.is_pro %}
-            <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a></p>
+            <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a>
+                <a id='mailPDFProButton' class="btn">{% trans 'mail pdf' %}</a>
+            </p>
+            <span id="mail_pdf" class="hidden">
+                {% trans 'enter mail address' %}
+                <textarea id="mail_pdf_emailaddresses"></textarea>
+                <a class="btn pull-right" id="send_pdf_pro_button">{% trans 'send pdf' %}</a>
+                <br>
+                {% trans 'enter comment for mail' %}
+                <textarea id="mail_pdf_emailcomments"></textarea>
+            </span>
+
         {% endif %}
 
         {% if request.fmsuser.manager or request.fmsuser.leader %}

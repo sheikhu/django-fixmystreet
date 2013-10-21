@@ -2023,7 +2023,7 @@ class StreetSurface(models.Model):
 
 
 class MailNotificationTemplate(models.Model):
-    name = models.CharField(max_length=50, help_text="Tehnical name")
+    name = models.CharField(max_length=50, help_text="Technical name")
     __metaclass__= TransMeta
     content = models.TextField(blank=True, verbose_name="Content")
     title = models.CharField(max_length=100, blank=True, verbose_name="Subject")
