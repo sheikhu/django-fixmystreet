@@ -526,7 +526,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     imageLink = feature.attributes.report.thumb;
                                 }
 
-                                var popoverContent = '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
+                                var popoverContent = "<h2>#" + feature.attributes.report.id + "</h2>" +
+                                        '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
                                         "<p>" + feature.attributes.report.address_number + ', ' +
                                         feature.attributes.report.address + ' ' + "<br/>" +
                                         feature.attributes.report.postalcode + ' ' +
@@ -548,21 +549,22 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                 popoverContent += "</ul>";
                                 popoverContent += "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
 
-                                var popup = new OpenLayers.Popup.Popover(
+                                var popup = new OpenLayers.Popup(
                                     "popup",
                                     new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
+                                    new OpenLayers.Size(400,220),
                                     popoverContent,
-                                    "#" + feature.attributes.report.id,
-                                    function() { // Click close button
-                                        feature.unselectAll();
-                                    }
+                                    true
                                 );
+                                popup.panMapIfOutOfView = true;
 
                                 fms.currentMap.map.addPopup(popup);
                                 fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
-                                    console.log('destroy');
-                                    this.removePopup(popup);
-                                    popup.destroy();
+                                    for(var i=0, length=this.popups.length; i < length; i++) {
+                                        var popup = this.popups[i];
+                                        this.removePopup(popup);
+                                        popup.destroy();
+                                    }
                                 });
                             }
                         });
@@ -570,21 +572,26 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
                     if(feature.cluster){
                         if(this.map.zoom == this.map.numZoomLevels){
-                            var content = "<ul>";
+                            var content = "<h2>Reports at this location:</h2><ul>";
                             for(var i = 0; i< feature.cluster.length; i++){
                                 content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
                             }
-                            var popup = new OpenLayers.Popup.Popover(
-                                    "popup",
-                                    new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
-                                    content,
-                                    "Reports at this location:"
-                                );
+                            var popup = new OpenLayers.Popup(
+                                "popup",
+                                new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
+                                new OpenLayers.Size(400,220),
+                                content,
+                                true
+                            );
+                            popup.panMapIfOutOfView = true;
+
                             fms.currentMap.map.addPopup(popup);
                             fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
-                                console.log('destroy');
-                                this.removePopup(popup);
-                                popup.destroy();
+                                for(var i=0, length=this.popups.length; i < length; i++) {
+                                    var popup = this.popups[i];
+                                    this.removePopup(popup);
+                                    popup.destroy();
+                                }
                             });
                         }
                         else{
