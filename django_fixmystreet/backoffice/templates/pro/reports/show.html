@@ -149,6 +149,16 @@ $(document).ready(function() {
             document.getElementById('mail_pdf_emailcomments').value ='';
     });
 
+    document.getElementById('mailPDFCitizenButton').addEventListener('click', function() {
+        mailbox = document.getElementById('mail_pdf_citizen');
+        if (mailbox.classList.contains('hidden'))
+            mailbox.classList.remove('hidden');
+        else
+            mailbox.classList.add('hidden');
+            document.getElementById('mail_pdf_emailaddresses_citizen').value = '';
+            document.getElementById('mail_pdf_emailcomments_citizen').value ='';
+    });
+
     document.getElementById('show_in_streetview').addEventListener('click', function(){
         var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
         window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
@@ -169,10 +179,24 @@ $(document).ready(function() {
         });
     });
 
+    document.getElementById("send_pdf_citizen_button").addEventListener('click', function(event){
+        $.ajax({
+            url:"{% url 'send_pdf' report.id %}",
+            data:{"to":$('#mail_pdf_emailaddresses_citizen').val(), "comments":$('#mail_pdf_emailcomments_citizen').val(), "privacy":"public"},
+            type:"POST",
+            success:function(data){
+                alert(data);
+                document.getElementById('mailPDFCitizenButton').click();
+            }
+        });    
+        
+       
+    });
+
     document.getElementById("send_pdf_pro_button").addEventListener('click', function(event){
         $.ajax({
             url:"{% url 'send_pdf' report.id %}",
-            data:{"to":$('#mail_pdf_emailaddresses').val(), "comments":$('#mail_pdf_emailcomments').val()},
+            data:{"to":$('#mail_pdf_emailaddresses').val(), "comments":$('#mail_pdf_emailcomments').val(), "privacy":"private"},
             type:"POST",
             success:function(data){
                 alert(data);
@@ -649,7 +673,19 @@ function showMergeConfirmation(){
             <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
             </a>
 
-
+            {% if request.fmsuser.is_pro %}
+            <a id='mailPDFCitizenButton' class="btn">{% trans 'mail pdf' %}</a>
+            </p>
+        <p>
+            <span id="mail_pdf_citizen" class="hidden">
+                {% trans 'enter mail address' %}
+                <textarea id="mail_pdf_emailaddresses_citizen"></textarea>
+                <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
+                <br>
+                {% trans 'enter comment for mail' %}
+                <textarea id="mail_pdf_emailcomments_citizen"></textarea>
+            </span>
+            {% endif %}
         </p>
 
         {% if request.fmsuser.is_pro %}

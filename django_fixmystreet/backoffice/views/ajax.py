@@ -12,6 +12,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django_fixmystreet.fixmystreet.utils import generate_pdf
 from django.template import RequestContext
+import re
 
 
 def saveCategoryConfiguration(request):
@@ -98,6 +99,7 @@ def send_pdf(request,report_id):
     user = get_current_user();
     recipients = request.POST.get('to');
     comments = request.POST.get('comments');
+    privacy = request.POST.get('privacy');
     report = get_object_or_404(Report,id=report_id)
     #generate the pdf
     try:
@@ -106,24 +108,27 @@ def send_pdf(request,report_id):
             'files': report.files(),
             'comments': report.comments() ,
             'activity_list' : report.activities.all(),
-            'privacy' : 'private'
+            'privacy' : privacy
         }, context_instance=RequestContext(request))
 
 
         template = MailNotificationTemplate.objects.get(name="mail-pdf")
 
         subject, html, text = transform_notification_template(template, report, user, comment=comments)
-        recipients = (recipients,)
+        recepients = re.compile("[\\s,;]+").split(recipients)
 
-        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
+        for recepient in recepients:
 
-        if html:
-            msg.attach_alternative(html, "text/html")
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, (recepient,))
 
-        msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
+            if html:
+                msg.attach_alternative(html, "text/html")
+
+            msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
 
 
-        msg.send()
+            msg.send()
+
     except Exception, e:
         return HttpResponse(_("Error occurd sending PDF"),mimetype="application/text")
     return HttpResponse(_("PDF sent as email"),mimetype="application/text")
