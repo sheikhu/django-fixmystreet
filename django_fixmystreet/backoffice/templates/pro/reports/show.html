@@ -149,6 +149,11 @@ $(document).ready(function() {
             document.getElementById('mail_pdf_emailcomments').value ='';
     });
 
+    document.getElementById('show_in_streetview').addEventListener('click', function(){
+        var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
+        window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
+    })
+
 
     document.getElementById('submit_false_address').addEventListener('click', function() {
         // Ajax request to set false_address
@@ -416,7 +421,9 @@ function showMergeConfirmation(){
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
                     <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
-                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span></td>
+                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span>
+                    </td>
+                    <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
                 </tr>
 
                 <tr id="false_address_field" class="{% if not report.false_address %}hidden{% endif %}">

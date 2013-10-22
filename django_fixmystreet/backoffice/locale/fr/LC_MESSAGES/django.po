@@ -1144,3 +1144,6 @@ msgstr "Votre incident est fusionné."
 
 #~ msgid "Error occured sending PDF"
 #~ msgstr "Erreur envoyer le PDF"
+
+#~ msgid "show on google streetview"
+#~ msgstr "Streetview"

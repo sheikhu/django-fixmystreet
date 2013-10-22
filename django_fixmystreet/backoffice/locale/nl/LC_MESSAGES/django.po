@@ -1466,3 +1466,8 @@ msgstr "Het incident is samengevoegd."
 
 #~ msgid "Error occured sending PDF"
 #~ msgstr "Er is een fout opgetreden bij het verzenden van het rapport!"
+
+#~ msgid "show on google streetview"
+#~ msgstr "Streetview"
+
+
