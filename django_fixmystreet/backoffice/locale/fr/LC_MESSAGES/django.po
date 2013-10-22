@@ -1141,3 +1141,6 @@ msgstr "Votre incident est fusionné."
 
 #~ msgid "enter comment for mail"
 #~ msgstr "Commentaire"
+
+#~ msgid "Error occured sending PDF"
+#~ msgstr "Erreur envoyer le PDF"

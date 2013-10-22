@@ -1463,3 +1463,6 @@ msgstr "Het incident is samengevoegd."
 
 #~ msgid "enter comment for mail"
 #~ msgstr "Commentaar"
+
+#~ msgid "Error occured sending PDF"
+#~ msgstr "Er is een fout opgetreden bij het verzenden van het rapport!"

@@ -100,27 +100,30 @@ def send_pdf(request,report_id):
     comments = request.POST.get('comments');
     report = get_object_or_404(Report,id=report_id)
     #generate the pdf
-    pdffile = generate_pdf("reports/pdf.html", {
-        'report' : report,
-        'files': report.files(),
-        'comments': report.comments() ,
-        'activity_list' : report.activities.all(),
-        'privacy' : 'private'
-    }, context_instance=RequestContext(request))
+    try:
+        pdffile = generate_pdf("reports/pdf.html", {
+            'report' : report,
+            'files': report.files(),
+            'comments': report.comments() ,
+            'activity_list' : report.activities.all(),
+            'privacy' : 'private'
+        }, context_instance=RequestContext(request))
 
 
-    template = MailNotificationTemplate.objects.get(name="mail-pdf")
+        template = MailNotificationTemplate.objects.get(name="mail-pdf")
 
-    subject, html, text = transform_notification_template(template, report, user, comment=comments)
-    recipients = (recipients,)
+        subject, html, text = transform_notification_template(template, report, user, comment=comments)
+        recipients = (recipients,)
 
-    msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
+        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
 
-    if html:
-        msg.attach_alternative(html, "text/html")
+        if html:
+            msg.attach_alternative(html, "text/html")
 
-    msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
+        msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
 
 
-    msg.send()
+        msg.send()
+    except Exception, e:
+        return HttpResponse(_("Error occurd sending PDF"),mimetype="application/text")
     return HttpResponse(_("PDF sent as email"),mimetype="application/text")
