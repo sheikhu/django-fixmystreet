@@ -692,7 +692,7 @@ class Report(UserTrackedModel):
         # ==> is wrong
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
-    def attachmentsList(self): 
+    def attachmentsList(self):
         return ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def territorial_entity(self):
@@ -1202,7 +1202,7 @@ def report_notify(sender, instance, **kwargs):
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
             #inform all subscribers
             for subscription in report.subscriptions.all():
-                if not subscription.subscriber.is_pro():                    
+                if not subscription.subscriber.is_pro():
                         ReportNotification(
                             content_template='notify-became-private',
                             recipient=subscription.subscriber,
@@ -1301,6 +1301,22 @@ class ReportAttachment(UserTrackedModel):
              return _('ANONYMOUS')
         else:
              return self.created_by.first_name+' '+self.created_by.last_name
+
+    def get_display_name_as_pro(self):
+        if self.created_by:
+            return self.created_by.email
+
+        return _('ANONYMOUS')
+
+    def get_display_name_as_citizen(self):
+        if self.created_by:
+            if self.created_by.is_citizen():
+                return _("a citizen")
+            else:
+                return self.created_by.get_organisation()
+
+        return _('ANONYMOUS')
+
     #needed to make sure that no mail is sent when a complete report is published only when individual reports are updated
     def save(self, *args, **kwargs):
         if 'publish_report' in kwargs:
@@ -1310,7 +1326,7 @@ class ReportAttachment(UserTrackedModel):
 
 @receiver(post_save,sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
-    report = instance.report    
+    report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
         attachment = instance
@@ -1329,7 +1345,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                 ).save()
 
     #if report is assigned to impetrant or executeur de travaux also inform them
-   
+
     if (kwargs['created'] and report.contractor != None):
             for recipient in report.contractor.workers.all():
                 ReportNotification(
@@ -1343,8 +1359,6 @@ def report_attachment_notify(sender, instance, **kwargs):
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
-
-
 
 
 @receiver(post_save,sender=ReportComment)
@@ -1411,7 +1425,7 @@ class ReportFile(ReportAttachment):
 
 
 @receiver(post_save,sender=ReportFile)
-def report_file_notify(sender, instance, **kwargs):  
+def report_file_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
 
 @receiver(pre_save, sender=ReportFile)
@@ -1677,10 +1691,10 @@ class ReportNotification(models.Model):
         if 'date_planned' in kwargs:
             date_planned = kwargs['date_planned']
             del kwargs['date_planned']
-        
+
         if self.related.merged_with:
             merged_with = self.related.merged_with
-        
+
         if not self.recipient.email:
             self.error_msg = "No email recipient"
             self.success = False

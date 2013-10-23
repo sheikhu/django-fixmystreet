@@ -111,18 +111,24 @@ def show(request, slug, report_id):
         comment = None
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
-        # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+        citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+
         # this checks update is_valid too
-        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
+        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
             # this saves the update as part of the report.
-            # citizen = citizen_form.save()
+            citizen = citizen_form.save()
 
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                comment = comment_form.save(commit=False)
-                comment.report = report
+                comment            = comment_form.save(commit=False)
+                comment.report     = report
+                comment.created_by = citizen
                 comment.save()
 
             files = file_formset.save()
+
+            for report_file in files:
+                report_file.created_by = citizen
+                report_file.save()
 
             # if request.POST.get("citizen_subscription", False):
             #     ReportSubscription(report=report, subscriber=report.created_by).save()
@@ -134,7 +140,7 @@ def show(request, slug, report_id):
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
-        # citizen_form = CitizenForm(prefix='citizen')
+        citizen_form = CitizenForm(prefix='citizen')
 
     return render_to_response("reports/show.html",
             {
@@ -143,6 +149,7 @@ def show(request, slug, report_id):
                 "author": user_to_show,
                 "file_formset": file_formset,
                 "comment_form": comment_form,
+                "citizen_form": citizen_form,
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),
             },

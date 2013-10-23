@@ -232,7 +232,7 @@ $(document).ready(function() {
             }
             $("#sec_cat_select").val("{{report.secondary_category.id}}");
         }
-        
+
     });
     $('#main_cat_select').change(function(){
         if(this.value !== "0"){
@@ -254,7 +254,7 @@ $(document).ready(function() {
                         }
                         {% endif %}
                     }
-                    
+
                 }
             });
         }
@@ -746,7 +746,7 @@ function showMergeConfirmation(){
     <!-- ########################## -->
     <div class="bordered-box">
         <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-            {% include "reports/_attachments_form.html" %}
+            {% include "reports/_attachments_form.html" with display_citizen_form_comment=False %}
 
             <div style="overflow:hidden;">
                 <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
