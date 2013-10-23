@@ -134,11 +134,6 @@ $(document).ready(function() {
     // False address
     var report_false_adress = "{{ report.false_address }}";
 
-    document.getElementById('declare_false_address').addEventListener('click', function() {
-        document.getElementById('false_address_field').classList.remove('hidden');
-        this.classList.add('hidden');
-    });
-
     document.getElementById('mailPDFProButton').addEventListener('click', function() {
         mailbox = document.getElementById('mail_pdf');
         if (mailbox.classList.contains('hidden'))
@@ -164,6 +159,23 @@ $(document).ready(function() {
         window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
     })
 
+    var isFalseAddressCheckBox = document.getElementById('is_false_address');
+    isFalseAddressCheckBox.addEventListener('change', function() {
+        var falseAddress_Reason = document.getElementById('false_address');
+        if (this.checked) {
+            falseAddress_Reason.classList.remove('hidden');
+        } else {
+            falseAddress_Reason.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('false_address').addEventListener('keyup', function() {
+        if (this.value != report_false_adress) {
+            document.getElementById('submit_false_address').classList.remove('hidden');
+        } else {
+            document.getElementById('submit_false_address').classList.add('hidden');
+        }
+    });
 
     document.getElementById('submit_false_address').addEventListener('click', function() {
         // Ajax request to set false_address
@@ -188,9 +200,9 @@ $(document).ready(function() {
                 alert(data);
                 document.getElementById('mailPDFCitizenButton').click();
             }
-        });    
-        
-       
+        });
+
+
     });
 
     document.getElementById("send_pdf_pro_button").addEventListener('click', function(event){
@@ -202,18 +214,11 @@ $(document).ready(function() {
                 alert(data);
                 document.getElementById('mailPDFProButton').click();
             }
-        });    
-        
-       
+        });
+
+
     });
 
-    document.getElementById('false_address').addEventListener('keyup', function() {
-        if (this.value != report_false_adress) {
-            document.getElementById('submit_false_address').classList.remove('hidden');
-        } else {
-            document.getElementById('submit_false_address').classList.add('hidden');
-        }
-    });
     $("#main_cat_select").val("{{report.category.id}}");
     $.ajax({
         url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
@@ -450,9 +455,10 @@ function showMergeConfirmation(){
                     <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
                 </tr>
 
-                <tr id="false_address_field" class="{% if not report.false_address %}hidden{% endif %}">
-                    <th><strong>{% trans "Raison:" %}</strong></th>
-                    <td colspan="3"><textarea id="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
+                <tr>
+                    <th><strong>{% trans "Wrong address:" %}</strong></th>
+                    <td colspan="2"><textarea id="false_address" name="false_address" {% if not report.false_address %}class="hidden"{% endif %}>{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
+                    <td colspan="1"><input type="checkbox" id="is_false_address" {% if report.false_address %}checked{% endif %}></td>
                     <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
                 </tr>
                 {% if request.user.id == report.responsible_manager.id and report.is_in_progress %}
