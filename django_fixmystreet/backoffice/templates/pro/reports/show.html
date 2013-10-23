@@ -64,7 +64,14 @@ $(function(){
     /* Implement method when clicking private/public checkbox       */
     /****************************************************************/
     $("#id_private").bind("click",function(event){
+        var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
+        if (r2==true){
             window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
+        }
+        else {
+            $('#id_public').attr("checked", "checked");
+            window.location = '{{report.get_absolute_url_pro}}';
+        }
     });
     $("#id_public").bind("click",function(event){
             window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
@@ -397,7 +404,7 @@ function showMergeConfirmation(){
                     <td colspan="3"><textarea id="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
                     <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
                 </tr>
-                {% if request.user.id == report.responsible_manager.id and report.is_in_progress %}
+                {% if request.user.id == report.responsible_manager.id and report.is_in_progress and not report.is_merged%}
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
                     <td colspan="4">

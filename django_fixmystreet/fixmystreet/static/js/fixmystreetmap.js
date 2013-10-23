@@ -122,7 +122,7 @@ fms.filterMapWithStatus = function(){
                 fms.currentMap.markersLayer.addFeatures(markers);
             }
         }
-        );
+    );
 }
 
 // Controller of regional layer
