@@ -115,21 +115,6 @@ $(document).ready(function() {
     {% endfor %}
     //Clear the comment textarea after each POST
     $("#id_comment-text").val('');
-    {% if report.accepted_at %}
-    // Datepicker for planned
-    var nowTemp = new Date();
-    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-
-    var max_date = new Date({{ report.accepted_at|date:"Y" }} + 1, {{ report.accepted_at|date:"n" }}, 0, 0, 0, 0, 0);
-
-    $('.input-append.date').datepicker({
-        format: "mm/yyyy",
-        weekStart: 1,
-        startDate: "+1d",
-        endDate: "+1y",
-        language: LANGUAGE_CODE
-    });
-    {% endif %}
 
     // False address
     var report_false_adress = "{{ report.false_address }}";
@@ -455,12 +440,21 @@ function showMergeConfirmation(){
                     <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
                 </tr>
 
+                {% if request.user.id == report.responsible_manager.id and not report.is_merged %}
                 <tr>
                     <th><strong>{% trans "Wrong address:" %}</strong></th>
                     <td colspan="2"><textarea id="false_address" name="false_address" {% if not report.false_address %}class="hidden"{% endif %}>{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
                     <td colspan="1"><input type="checkbox" id="is_false_address" {% if report.false_address %}checked{% endif %}></td>
                     <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
                 </tr>
+                {% else %}
+                    {% if report.false_address %}
+                        <tr>
+                            <th><strong>{% trans "Wrong address:" %}</strong></th>
+                            <td colspan="2">{{report.false_address}}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
                 {% if request.user.id == report.responsible_manager.id and report.is_in_progress %}
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
@@ -603,6 +597,21 @@ function showMergeConfirmation(){
                             <th></th>
                             <td colspan="2">{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></td>
                         </tr>
+                    <tr>
+                        <th>
+                            <strong>{% trans "Planned:" %}</strong>
+                        </th>
+                        <td colspan="4">
+                            <select id="date_planned" onchange="planned()">
+                                {% if not report.planned %}
+                                    <option value="">{% trans "Not planned" %}</option>
+                                {% endif %}
+                                {% for date in report.get_date_planned_available %}
+                                    <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
                     {% else %}
                         <!-- ########################################################### -->
                         <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
@@ -648,25 +657,14 @@ function showMergeConfirmation(){
                             <th><strong>{% trans "Priority" %}</strong></th>
                             <td colspan="2"><span id="prio_result">{{report.get_priority}}</span></td>
                         </tr>
+                        {% if report.planned %}
+                            <tr>
+                                <th><strong>{% trans "Planned" %}</strong></th>
+                                <td colspan="2">{{report.get_date_planned}}</td>
+                            </tr>
+                        {% endif %}
+
                     {% endif %}
-                    <tr>
-                        <th>
-                            <strong>{% trans "Planned:" %}</strong>
-                        </th>
-                        <td colspan="2">
-                            <select id="date_planned">
-                                {% if not report.planned %}
-                                    <option value="">{% trans "Not planned" %}</option>
-                                {% endif %}
-                                {% for date in report.get_date_planned_available %}
-                                    <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td colspan="2">
-                            <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
-                        </td>
-                    </tr>
                 {% endif %}
                 <tr>
                     <td>&nbsp;</td>
