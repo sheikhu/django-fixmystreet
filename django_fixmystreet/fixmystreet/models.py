@@ -41,7 +41,7 @@ class UserTrackedModel(TimeStampedModel):
             self.modified_by = user
             if not self.id:
                 self.created_by = user
-            self._history_user = user # used by simple_history
+            self._history_user = user  # used by simple_history
         else:
             self.modified_by = None
 
@@ -53,8 +53,8 @@ class UserTrackedModel(TimeStampedModel):
 
 User._meta.get_field_by_name('email')[0]._unique = True
 User._meta.get_field_by_name('email')[0].null = True
-User._meta.get_field_by_name('email')[0].max_length=75
-User._meta.get_field_by_name('username')[0].max_length=75
+User._meta.get_field_by_name('email')[0].max_length = 75
+User._meta.get_field_by_name('username')[0].max_length = 75
 
 
 class FMSUserManager(models.Manager):
@@ -68,11 +68,11 @@ class FMSUserQuerySet(models.query.QuerySet):
 
 
 class FMSUser(User):
-    AGENT        = "agent"
-    MANAGER      = "manager"
-    LEADER       = "leader"
-    CONTRACTOR   = "contractor"
-    APPLICANT    = "applicant"
+    AGENT = "agent"
+    MANAGER = "manager"
+    LEADER = "leader"
+    CONTRACTOR = "contractor"
+    APPLICANT = "applicant"
 
     # user types ordered by weight
     USER_TYPES = (
@@ -83,7 +83,6 @@ class FMSUser(User):
         CONTRACTOR,
     )
 
-
     #List of qualities
     RESIDENT = 1
     TRADE = 2
@@ -91,22 +90,20 @@ class FMSUser(User):
     ASSOCIATION = 4
     OTHER = 5
     REPORT_QUALITY_CHOICES = (
-        (RESIDENT,_("Resident")),
-        (TRADE,_("Trade")),
-        (SYNDICATE,_("Syndicate")),
-        (ASSOCIATION,_("Association")),
-        (OTHER,_("Other"))
+        (RESIDENT, _("Resident")),
+        (TRADE, _("Trade")),
+        (SYNDICATE, _("Syndicate")),
+        (ASSOCIATION, _("Association")),
+        (OTHER, _("Other"))
     )
-
 
     # user = models.OneToOneField(User)
     objects = FMSUserManager()
 
-    telephone = models.CharField(max_length=20,null=True)
-    last_used_language = models.CharField(max_length=10,null=True,default="FR")
+    telephone = models.CharField(max_length=20, null=True)
+    last_used_language = models.CharField(max_length=10, null=True, default="FR")
     #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
-
 
     agent = models.BooleanField(default=False)
     manager = models.BooleanField(default=False)
@@ -119,9 +116,9 @@ class FMSUser(User):
 
     ### deprecated to remove ###
     categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True) # organisation that can be responsible of reports
+    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True)  # organisation that can be responsible of reports
     ### deprecated to remove replaced by UserOrganisationMembership ###
-    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True) # list of contractors/services that user work with
+    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True)  # list of contractors/services that user work with
 
     history = HistoricalRecords()
 
@@ -140,7 +137,7 @@ class FMSUser(User):
 
             if not self.id:
                 self.created_by = user
-            self._history_user = user # used by simple_history
+            self._history_user = user  # used by simple_history
         else:
             self.modified_by = None
 
@@ -159,16 +156,16 @@ class FMSUser(User):
         return "#"+self.get_ticket_number()
 
     def get_display_name(self):
-        if ((self.first_name == None or self.first_name == "") and (self.last_name == None or self.last_name == "")):
-             return _('A citizen')
+        if ((self.first_name is None or self.first_name == "") and (self.last_name is None or self.last_name == "")):
+            return _('A citizen')
         else:
-             return self.first_name+' '+self.last_name
+            return self.first_name+' '+self.last_name
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
         if self.organisation:
-             return self.organisation
-        elif self.contractor == True or self.applicant == True:
+            return self.organisation
+        elif self.contractor or self.applicant:
             return u", ".join([unicode(o) for o in self.work_for.all()])
 
     def is_pro(self):
@@ -208,77 +205,60 @@ class FMSUser(User):
         d['organisation'] = getattr(self.get_organisation(), 'id', None)
         return simplejson.dumps(d)
 
-    ### DEPRECATED ??? ###
-    def get_number_of_created_reports(self):
-        userConnectedOrganisation = self.organisation
-        reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status=Report.CREATED)
-        return reports.count()
-    ### DEPRECATED ??? ###
-    def get_number_of_in_progress_reports(self):
-        connectedOrganisation = self.organisation
-        userConnectedOrganisation = connectedOrganisation
-        #if the user is an executeur de travaux then user the dependent organisation id
-        if (self.contractor == True):
-            reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-        else:
-            reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-        return reports.count()
-    ### DEPRECATED ??? ###
-    def get_number_of_closed_reports(self):
-        connectedOrganisation = self.organisation
-        userConnectedOrganisation = connectedOrganisation
-        #if the user is an executeur de travaux then user the dependent organisation id
-        if (self.contractor == True):
-            reports = Report.objects.filter(contractor=self.organisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
-        else:
-            reports = Report.objects.filter(responsible_entity=userConnectedOrganisation).filter(status__in=Report.REPORT_STATUS_CLOSED)
-
-        return reports.count()
-    ### DEPRECATED ??? ###
-    def get_number_of_subscriptions(self):
-        subscriptions = ReportSubscription.objects.filter(subscriber_id=self.id)
-        return subscriptions.count()
-
     def get_absolute_url(self):
-        return reverse("edit_user",kwargs={'user_id':self.id})
+        return reverse("edit_user", kwargs={'user_id': self.id})
+
 
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
     """This method is used to create the security matrix when creating the first manager of the entity"""
     #If this is the first user created and of type gestionnaire then assign all reportcategories to him
-    if (instance.manager == True):
-       #if we have just created the first one, then apply all type to him
-       if instance.organisation.team.filter(manager=True).count() == 1:
-          #Activate the organisation
-          instance.organisation.active = True
-          instance.organisation.save()
-          for type in ReportCategory.objects.all():
-             instance.categories.add(type)
+    if instance.manager:
+        #if we have just created the first one, then apply all type to him
+        if instance.organisation.team.filter(manager=True).count() == 1:
+            #Activate the organisation
+            instance.organisation.active = True
+            instance.organisation.save()
+            for type in ReportCategory.objects.all():
+                instance.categories.add(type)
 
 
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
     """populate username with email"""
     if instance.email and instance.username != instance.email and instance.is_active:
-       instance.username = instance.email
+        instance.username = instance.email
 
 
 class OrganisationEntity(UserTrackedModel):
+    REGION = 'R'
+    COMMUNE = 'C'
+    SUBCONTRACTOR = 'S'
+    APPLICANT = 'A'
+    DEPARTMENT = 'D'
+    NEIGHBOUR_HOUSE = 'N'
+
     ENTITY_TYPE = (
-        ('R', _('Region')),
-        ('C', _('Commune')),
-        ('S', _('Subcontractor')),
-        ('A', _('Applicant')),
-        ('D', _('Department')),
-        ('N', _('Neighbour house')),
+        (REGION, _('Region')),
+        (COMMUNE, _('Commune')),
+        (SUBCONTRACTOR, _('Subcontractor')),
+        (APPLICANT, _('Applicant')),
+        (DEPARTMENT, _('Department')),
+        (NEIGHBOUR_HOUSE, _('Neighbour house')),
+    )
+    ENTITY_GROUP_REQUIRED_ROLE = (
+        (SUBCONTRACTOR, 'contractor'),
+        (DEPARTMENT, 'manager'),
+        (NEIGHBOUR_HOUSE, 'agent'),
     )
 
     ENTITY_TYPE_GROUP = (
-        ('S', _('Subcontractor')),
-        ('D', _('Department')),
+        (SUBCONTRACTOR, _('Subcontractor')),
+        (DEPARTMENT, _('Department')),
+        (NEIGHBOUR_HOUSE, _('Neighbour house')),
     )
 
-    __metaclass__= TransMeta
+    __metaclass__ = TransMeta
     name = models.CharField(verbose_name=_('Name'), max_length=100, null=False)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
     phone = models.CharField(max_length=32)
@@ -305,47 +285,18 @@ class OrganisationEntity(UserTrackedModel):
     class Meta:
         translate = ('name', 'slug')
 
+    def accepted_user(self, user):
+        required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
+        return getattr(user, required_role)
+
     def get_absolute_url(self):
-        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
+        return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 
     def __unicode__(self):
         return self.name
 
-    def get_total_number_of_reports(self):
-        reports = Report.objects.filter(responsible_entity=self).all()
-        #Activate something similar to this to filter per entity !!!
-        #reports = Report.objects.filter(status_id=1).filter(responsible_manager__organisation=userConnectedOrganisation)
-        return reports.count()
-
-    def get_total_number_of_users(self):
-        users = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
-        return users.count()
-
-    def get_number_of_agents(self):
-        agents = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
-        agents = agents.filter(agent = True)
-        return agents.count()
-
-    def get_number_of_contractors(self):
-        #Get organisations dependants from the current organisation id
-        dependantOrganisations = OrganisationEntity.objects.filter(dependency_id = self.id)
-        allOrganisation = list(dependantOrganisations)
-        allOrganisation.append(self.id)
-        contractors = FMSUser.objects.filter(organisation_id__in=allOrganisation).filter(logical_deleted = False)
-        contractors = contractors.filter(contractor = True)
-        return contractors.count()
-
-    def get_number_of_impetrants(self):
-        impetrants = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
-        impetrants = impetrants.filter(applicant = True)
-        return impetrants.count()
-
-    def get_number_of_managers(self):
-        managers = FMSUser.objects.filter(organisation_id = self.id).filter(logical_deleted = False)
-        managers = managers.filter(manager = True)
-        return managers.count()
-
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
+
 
 @receiver(pre_delete, sender=OrganisationEntity)
 def organisationentity_delete(sender, instance, **kwargs):
@@ -362,6 +313,7 @@ def organisationentity_delete(sender, instance, **kwargs):
 #     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
 #     activate(lang_code.lower())
 
+
 class UserOrganisationMembership(UserTrackedModel):
     user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
     organisation = models.ForeignKey(OrganisationEntity, related_name='memberships', null=True, blank=True)
@@ -369,6 +321,7 @@ class UserOrganisationMembership(UserTrackedModel):
 
     class Meta:
         unique_together = (("user", "organisation"),)
+
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
@@ -434,12 +387,13 @@ class ReportManager(models.GeoManager):
 
     def get_query_set(self):
         return ReportQuerySet(self.model) \
-                .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
-                .exclude(status=Report.DELETED) \
-                .select_related('category', 'secondary_category',
-                    'secondary_category__secondary_category_class',
-                    'responsible_entity', 'responsible_manager', 'contractor',
-                    'citizen', 'created_by')
+            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+            .exclude(status=Report.DELETED) \
+            .select_related(
+                'category', 'secondary_category',
+                'secondary_category__secondary_category_class',
+                'responsible_entity', 'responsible_manager', 'contractor',
+                'citizen', 'created_by')
 
 
 class Report(UserTrackedModel):
@@ -449,37 +403,37 @@ class Report(UserTrackedModel):
     CREATED = 1
     REFUSED = 9
 
-    IN_PROGRESS           = 2
-    MANAGER_ASSIGNED      = 4
+    IN_PROGRESS = 2
+    MANAGER_ASSIGNED = 4
     APPLICANT_RESPONSIBLE = 5
-    CONTRACTOR_ASSIGNED   = 6
-    SOLVED                = 7
+    CONTRACTOR_ASSIGNED = 6
+    SOLVED = 7
 
     PROCESSED = 3
-    DELETED   = 8
+    DELETED = 8
 
     REPORT_STATUS_SETTABLE_TO_SOLVED = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
-    REPORT_STATUS_VIEWABLE    = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
-    REPORT_STATUS_ASSIGNED    = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
-    REPORT_STATUS_CLOSED      = (PROCESSED, DELETED)
-    REPORT_STATUS_OFF         = (DELETED)
+    REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
+    REPORT_STATUS_ASSIGNED = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
+    REPORT_STATUS_CLOSED = (PROCESSED, DELETED)
+    REPORT_STATUS_OFF = (DELETED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
-            (CREATED,               _("Created")), # Aangemaakt, Cree
-            (REFUSED,               _("Refused")), # Afgewezen, Refuse
+            (CREATED, _("Created")),
+            (REFUSED, _("Refused")),
         )),
         (_("In progress"), (
-            (IN_PROGRESS,           _("In progress")),              # In behandeling, En progres
-            (MANAGER_ASSIGNED,      _("Manager is assigned")),      # Gestionnaire is toegekend, Gestionnaire est assigne
-            (APPLICANT_RESPONSIBLE, _("Applicant is responsible")), # Impetrant is verantwoordelijk, Impetrant est responsable
-            (CONTRACTOR_ASSIGNED,   _("Contractor is assigned")),   # Executeur de travaux is toegekend, Executeur de travaux est assigne
-            (SOLVED,                _("Solved")),                   # Opgelost, Resolu
+            (IN_PROGRESS, _("In progress")),
+            (MANAGER_ASSIGNED, _("Manager is assigned")),
+            (APPLICANT_RESPONSIBLE, _("Applicant is responsible")),
+            (CONTRACTOR_ASSIGNED, _("Contractor is assigned")),
+            (SOLVED, _("Solved")),
         )),
         (_("Processed"), (
-            (PROCESSED,             _("Processed")),# Afgehandeld, Precessed
-            (DELETED,               _("Deleted")),  # Suprime, Verwijderd
+            (PROCESSED, _("Processed")),
+            (DELETED, _("Deleted")),
         ))
     )
 
@@ -498,10 +452,10 @@ class Report(UserTrackedModel):
     fixed_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
 
-    planned      = models.BooleanField(default=False)
+    planned = models.BooleanField(default=False)
     date_planned = models.DateTimeField(null=True, blank=True)
 
-    hash_code = models.IntegerField(null=True, blank=True) # used by external app for secure sync, must be random generated
+    hash_code = models.IntegerField(null=True, blank=True)  # used by external app for secure sync, must be random generated
 
     citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
     refusal_motivation = models.TextField(null=True, blank=True)
@@ -509,15 +463,15 @@ class Report(UserTrackedModel):
     mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True)
 
     responsible_entity = models.ForeignKey(OrganisationEntity, related_name='reports_in_charge', null=True, blank=True)
-    responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True) # must be not null after migration
+    responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True)  # must be not null after migration
     ### deprecated to remove ###
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
     ### deprecated to remove ###
     responsible_manager_validated = models.BooleanField(default=False)
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
-    previous_managers = models.ManyToManyField('FMSUser',related_name='previous_reports',null=True, blank=True)
+    previous_managers = models.ManyToManyField('FMSUser', related_name='previous_reports', null=True, blank=True)
 
-    merged_with = models.ForeignKey('Report',related_name='merged_reports',null=True,blank=True)
+    merged_with = models.ForeignKey('Report', related_name='merged_reports', null=True, blank=True)
 
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
@@ -538,11 +492,11 @@ class Report(UserTrackedModel):
     def get_marker(self):
         user = get_current_user()
 
-        marker_color = "green" #default color
+        marker_color = "green"  # default color
         if self.is_in_progress():
             marker_color = "orange"
             if user and user.is_authenticated():
-                if not self.contractor == None:
+                if not self.contractor:
                     marker_color = "orange-executed"
         elif self.is_created():
             marker_color = "red"
@@ -587,7 +541,7 @@ class Report(UserTrackedModel):
         report_ticket_id = str(self.id)
         if (report_ticket_id.__len__() <= 6):
             for i in range(6-(report_ticket_id.__len__())):
-                report_ticket_id = "0"+report_ticket_id;
+                report_ticket_id = "0" + report_ticket_id
         return report_ticket_id
 
     def get_ticket_as_string(self):
@@ -602,11 +556,10 @@ class Report(UserTrackedModel):
         return "{0}-{1}-{2}-{3}".format(slug_sec_cat, slug_sec_cat_class, slug_cat, slug_ent)
 
     def get_absolute_url(self):
-        return reverse("report_show",kwargs={'report_id':self.id,'slug': self.get_slug() })
+        return reverse("report_show", kwargs={'report_id': self.id, 'slug': self.get_slug()})
 
     def get_absolute_url_pro(self):
-        return reverse("report_show_pro", kwargs={'report_id':self.id,'slug': self.get_slug() })
-
+        return reverse("report_show_pro", kwargs={'report_id': self.id, 'slug': self.get_slug()})
 
     def get_pdf_url(self):
         return reverse('report_pdf', args=[self.id, 0])
@@ -618,10 +571,10 @@ class Report(UserTrackedModel):
         return self.gravity * self.probability
 
     def has_at_least_one_non_confidential_comment(self):
-        return ReportComment.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
+        return ReportComment.objects.filter(report__id=self.id).filter(security_level__in=[1, 2]).count() != 0
 
     def has_at_least_one_non_confidential_file(self):
-        return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1,2]).count() != 0
+        return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1, 2]).count() != 0
 
     def active_comments(self):
         return self.comments().filter(logical_deleted=False).filter(security_level=1)
@@ -645,7 +598,7 @@ class Report(UserTrackedModel):
         return self.status in Report.REPORT_STATUS_CLOSED
 
     def is_merged(self):
-        return self.merged_with != None
+        return self.merged_with is not None
 
     def get_public_status_display(self):
         if self.is_created():
@@ -663,7 +616,7 @@ class Report(UserTrackedModel):
     def get_date_planned_available(self):
         dates = []
         start_date = datetime.date.today() + timedelta(days=1)
-        end_date   = datetime.date(self.accepted_at.year, self.accepted_at.month, self.accepted_at.day) + timedelta(days=365)
+        end_date = datetime.date(self.accepted_at.year, self.accepted_at.month, self.accepted_at.day) + timedelta(days=365)
 
         while (start_date < end_date):
             dates.append(start_date)
@@ -709,7 +662,7 @@ class Report(UserTrackedModel):
         user = self.created_by or self.citizen
         if not self.subscriptions.filter(subscriber=user).exists():
             subscription = ReportSubscription(subscriber=user)
-            subscription.notify_creation = False # don't send notification for subscription
+            subscription.notify_creation = False  # don't send notification for subscription
             self.subscriptions.add(subscription)
 
         # if self.id:
@@ -721,7 +674,6 @@ class Report(UserTrackedModel):
     def create_subscriber(self, user):
         if not self.subscriptions.filter(subscriber=user).exists():
             self.subscriptions.add(ReportSubscription(subscriber=user))
-
 
     def trigger_updates_added(self, user=None, files=None, comment=None):
         if files or comment:
@@ -738,7 +690,7 @@ class Report(UserTrackedModel):
                 user=user,
             ).save()
 
-            self.save() # set updated date and updated_by
+            self.save()  # set updated date and updated_by
 
     def to_full_JSON(self):
         """
@@ -746,10 +698,7 @@ class Report(UserTrackedModel):
         """
 
         local_thumbnail = self.thumbnail()
-        if (local_thumbnail == None):
-            thumbValue = 'null'
-        else:
-            thumbValue = local_thumbnail
+        thumbValue = local_thumbnail or 'null'
 
         return {
             "id": self.id,
@@ -788,10 +737,8 @@ class Report(UserTrackedModel):
 
     def full_marker_detail_pro_JSON(self):
         local_thumbnail = self.thumbnail()
-        if (local_thumbnail == None):
-            thumbValue = 'null'
-        else:
-            thumbValue = local_thumbnail
+
+        thumbValue = local_thumbnail or 'null'
 
         return {
             "id": self.id,
@@ -805,8 +752,8 @@ class Report(UserTrackedModel):
             "postalcode": self.postalcode,
             "address_commune_name": self.get_address_commune_name(),
             "address_regional": self.address_regional,
-            "contractor" : True if self.contractor else False,
-            "date_planned" : self.get_date_planned(),
+            "contractor": True if self.contractor else False,
+            "date_planned": self.get_date_planned(),
             "thumb": thumbValue,
             "is_closed": self.is_closed(),
             "citizen": not self.is_pro(),
@@ -815,7 +762,7 @@ class Report(UserTrackedModel):
 
     def full_marker_detail_JSON(self):
         local_thumbnail = self.thumbnail()
-        if (local_thumbnail == None):
+        if local_thumbnail:
             thumbValue = 'null'
         else:
             thumbValue = local_thumbnail
@@ -833,8 +780,8 @@ class Report(UserTrackedModel):
             "address_commune_name": self.get_address_commune_name(),
             "address_regional": self.address_regional,
             "thumb": thumbValue,
-            "contractor" : True if self.contractor else False,
-            "date_planned" : self.get_date_planned()
+            "contractor": True if self.contractor else False,
+            "date_planned": self.get_date_planned()
         }
 
     def to_JSON(self):
@@ -843,17 +790,14 @@ class Report(UserTrackedModel):
         """
 
         close_date_as_string = ""
-        if (self.close_date):
+        if self.close_date:
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
 
         local_thumbnail = self.thumbnail()
-        if (local_thumbnail == None):
-            thumbValue = 'null'
-        else:
-            thumbValue = local_thumbnail
+        thumbValue = local_thumbnail or 'null'
 
-        local_citizen = self.citizen;
-        if (local_citizen == None):
+        local_citizen = self.citizen
+        if local_citizen:
             citizenValue = 'false'
         else:
             citizenValue = 'true'
@@ -913,8 +857,9 @@ class Report(UserTrackedModel):
             "m_c": self.secondary_category.category_class.id,
             "s_c": self.secondary_category.secondary_category_class.id
         }
+
     class Meta:
-        translate=('address',)
+        translate = ('address',)
         #unique_together = (("point", "citizen"), ("point", "created_by"))
 
 
@@ -928,8 +873,7 @@ def track_former_value(sender, instance, **kwargs):
         instance.__former = dict((field.name, getattr(Report(), field.name)) for field in Report._meta.fields)
 
 
-
-@receiver(pre_save,sender=Report)
+@receiver(pre_save, sender=Report)
 def init_street_number_as_int(sender, instance, **kwargs):
     """
     Store the street number as int for further filtering (as somtimes the street number is 19H ...)
@@ -939,14 +883,14 @@ def init_street_number_as_int(sender, instance, **kwargs):
     instance.address_number_as_int = int(value_processed)
 
 
-@receiver(pre_save,sender=Report)
+@receiver(pre_save, sender=Report)
 def init_regional_street(sender, instance, **kwargs):
     if not instance.id and not kwargs['raw']:
         if StreetSurface.objects.filter(geom__intersects=instance.point.buffer(5), administrator=StreetSurface.REGION).exists():
             instance.address_regional = True
 
 
-@receiver(pre_save,sender=Report)
+@receiver(pre_save, sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_entity:
         #Detect who is the responsible Manager for the given type
@@ -965,14 +909,15 @@ def report_assign_responsible(sender, instance, **kwargs):
         else:
             raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
-@receiver(pre_save,sender=Report)
+
+@receiver(pre_save, sender=Report)
 def check_planned(sender, instance, **kwargs):
     if instance.pk and instance.date_planned:
         old_report = Report.objects.get(pk=instance.pk)
 
-        dates_exists   = True if old_report.accepted_at else False
+        dates_exists = True if old_report.accepted_at else False
         date_too_small = instance.date_planned.strftime('%Y%m') < old_report.accepted_at.strftime('%Y%m') if dates_exists else False
-        date_too_big   = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
+        date_too_big = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
 
         if (not dates_exists or date_too_small or date_too_big):
             instance.planned = old_report.planned
@@ -980,6 +925,7 @@ def check_planned(sender, instance, **kwargs):
     #~ else:
         #~ instance.planned = False
         #~ instance.date_planned = None
+
 
 @receiver(post_save, sender=Report)
 def report_notify(sender, instance, **kwargs):
@@ -993,7 +939,7 @@ def report_notify(sender, instance, **kwargs):
         if kwargs['created']:
             event_log_user = None
 
-            if report.citizen: # and report.subscriptions.filter(subscriber=report.citizen).exists(): subscription as not been already created
+            if report.citizen:  # and report.subscriptions.filter(subscriber=report.citizen).exists(): subscription as not been already created
                 ReportNotification(
                     content_template='acknowledge-creation',
                     recipient=report.citizen,
@@ -1024,7 +970,7 @@ def report_notify(sender, instance, **kwargs):
                     content_template='notify-refused',
                     recipient=report.citizen or report.created_by,
                     related=report,
-                    reply_to = report.responsible_manager.email,
+                    reply_to=report.responsible_manager.email,
                 ).save()
 
                 ReportEventLog(
@@ -1110,23 +1056,12 @@ def report_notify(sender, instance, **kwargs):
                         related_new=report.contractor
                     ).save()
 
-                # if report.__former['contractor']:
-                #     for recipient in report.__former['contractor'].workers.all():
-                #         ReportNotification(
-                #             content_template='notify-deallocate',
-                #             recipient=recipient,
-                #             related=report,
-                #             reply_to=report.responsible_manager.email
-                #         ).save(old_responsible=report.responsible_manager)
-
-
-
-        #Responsible manager changed
+        # Responsible manager changed
         if report.__former['responsible_manager'] != report.responsible_manager:
             # automatic subscription for new responsible manager
             if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
                 subscription = ReportSubscription(report=instance, subscriber=report.responsible_manager)
-                subscription.notify_creation = False # don't send notification for subscription
+                subscription.notify_creation = False  # don't send notification for subscription
                 subscription.save()
 
             if report.status != Report.CREATED:
@@ -1141,7 +1076,6 @@ def report_notify(sender, instance, **kwargs):
                     event_type=ReportEventLog.MANAGER_ASSIGNED,
                     user=report.responsible_manager
                 ).save()
-
 
                 if report.__former['responsible_entity'] != report.responsible_entity:
                     for subscription in report.subscriptions.all():
@@ -1174,7 +1108,8 @@ def report_notify(sender, instance, **kwargs):
                 report=report,
                 event_type=ReportEventLog.PLANNED
             ).save()
-        #Report merged
+
+        # Report merged
         if report.merged_with and report.__former['merged_with'] != report.merged_with:
             creator = report.citizen or report.created_by
             for subscription in report.subscriptions.all():
@@ -1203,9 +1138,10 @@ def report_notify(sender, instance, **kwargs):
             ReportEventLog(
                 report=report.merged_with,
                 event_type=ReportEventLog.MERGED,
-                merged_with_id = report.id,
+                merged_with_id=report.id,
             ).save()
-        #Switched to private
+
+        # Switched to private
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
             #inform all subscribers
             for subscription in report.subscriptions.all():
@@ -1230,7 +1166,7 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
         return qs
 
     def _clone(self, *args, **kwargs):
-        qs =  super(ReportAttachmentQuerySet, self)._clone(*args, **kwargs)
+        qs = super(ReportAttachmentQuerySet, self)._clone(*args, **kwargs)
         if hasattr(self, 'cast_to'):
             qs.cast_to = self.cast_to
         return qs
@@ -1247,10 +1183,9 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
                 yield obj.reportcomment
 
 
-
-
 class ReportAttachmentManager(models.Manager):
     use_for_related_fields = True
+
     def get_query_set(self):
         return ReportAttachmentQuerySet(self.model)
 
@@ -1262,9 +1197,9 @@ class ReportAttachment(UserTrackedModel):
     CONFIDENTIAL = 3
 
     REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES = (
-        (PUBLIC,_("Public")),
-        (PRIVATE,_("Private")),
-        (CONFIDENTIAL,_("Confidential"))
+        (PUBLIC, _("Public")),
+        (PRIVATE, _("Private")),
+        (CONFIDENTIAL, _("Confidential"))
     )
 
     logical_deleted = models.BooleanField(default=False)
@@ -1296,18 +1231,20 @@ class ReportAttachment(UserTrackedModel):
     def is_public(self):
         '''Is the annex public?'''
         return self.security_level == ReportAttachment.PUBLIC
+
     def is_private(self):
         '''Is the annex private?'''
         return self.security_level == ReportAttachment.PRIVATE
+
     def is_confidential(self):
         '''Is the annex confidential?'''
         return self.security_level == ReportAttachment.CONFIDENTIAL
 
     def get_display_name(self):
-        if (not self.created_by or self.created_by.first_name == None and self.created_by.last_name == None):
-             return _('ANONYMOUS')
+        if not self.created_by or not self.created_by.first_name and not self.created_by.last_name:
+            return _('ANONYMOUS')
         else:
-             return self.created_by.first_name+' '+self.created_by.last_name
+            return self.created_by.first_name + ' ' + self.created_by.last_name
 
     def get_display_name_as_pro(self):
         if self.created_by:
@@ -1331,17 +1268,17 @@ class ReportAttachment(UserTrackedModel):
             self.publish_update = False
         super(ReportAttachment, self).save(*args, **kwargs)
 
-@receiver(post_save,sender=ReportAttachment)
+
+@receiver(post_save, sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
-        attachment = instance
         ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.UPDATE_PUBLISHED,
-                    user=report.responsible_manager,
-                ).save()
+            report=report,
+            event_type=ReportEventLog.UPDATE_PUBLISHED,
+            user=report.responsible_manager,
+        ).save()
         for subscription in report.subscriptions.all():
             if subscription.subscriber != report.responsible_manager:
                 ReportNotification(
@@ -1352,8 +1289,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                 ).save()
 
     #if report is assigned to impetrant or executeur de travaux also inform them
-
-    if (kwargs['created'] and report.contractor != None):
+    if kwargs['created'] and report.contractor:
             for recipient in report.contractor.workers.all():
                 ReportNotification(
                     content_template='informations_published',
@@ -1363,24 +1299,23 @@ def report_attachment_notify(sender, instance, **kwargs):
                 ).save()
 
 
-
 class ReportComment(ReportAttachment):
     text = models.TextField()
 
 
-@receiver(post_save,sender=ReportComment)
+@receiver(post_save, sender=ReportComment)
 def report_comment_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
 
 
 class ReportFile(ReportAttachment):
-    PDF   = 1
-    WORD  = 2
+    PDF = 1
+    WORD = 2
     EXCEL = 3
     IMAGE = 4
     attachment_type = (
-        (PDF  , "pdf"),
-        (WORD , "word"),
+        (PDF, "pdf"),
+        (WORD, "word"),
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
@@ -1397,6 +1332,7 @@ class ReportFile(ReportAttachment):
     #    extension = os.path.splitext(old_filename)[1]
     #    filename = old_filename+'_'+str(time.time()) + extension
     #    return 'files/' + filename
+
     def move_to(instance, filename):
         path = unicode("files/{0}/{1:02d}/{2:02d}/{3}").format(
             instance.report.created.year,
@@ -1410,8 +1346,7 @@ class ReportFile(ReportAttachment):
     #file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
-    file_creation_date= models.DateTimeField(blank=False, null=True)
-
+    file_creation_date = models.DateTimeField(blank=False, null=True)
 
     #def file(self):
     #    if (self.attach == None):
@@ -1421,22 +1356,27 @@ class ReportFile(ReportAttachment):
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
+
     def is_word(self):
         return self.file_type == ReportFile.WORD
+
     def is_excel(self):
         return self.file_type == ReportFile.EXCEL
+
     def is_image(self):
         return self.file_type == ReportFile.IMAGE
+
     def is_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
 
-@receiver(post_save,sender=ReportFile)
+@receiver(post_save, sender=ReportFile)
 def report_file_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
 
+
 @receiver(pre_save, sender=ReportFile)
-def init_file_type(sender,instance,**kwargs):
+def init_file_type(sender, instance, **kwargs):
     if instance.file_type:
         return
     content_type = instance.file.file.content_type
@@ -1472,10 +1412,12 @@ class ReportSubscription(models.Model):
     """
     report = models.ForeignKey(Report, related_name="subscriptions")
     subscriber = models.ForeignKey(FMSUser, null=False)
+
     class Meta:
         unique_together = (("report", "subscriber"),)
 
-@receiver(post_save,sender=ReportSubscription)
+
+@receiver(post_save, sender=ReportSubscription)
 def notify_report_subscription(sender, instance, **kwargs):
     if not kwargs['raw'] and kwargs['created'] and (not hasattr(instance, 'notify_creation') or instance.notify_creation):
         report = instance.report
@@ -1554,7 +1496,6 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportSecondaryCategoryClass)
 
 
-
 class ReportCategory(UserTrackedModel):
     __metaclass__ = TransMeta
     help_text = """
@@ -1568,6 +1509,7 @@ class ReportCategory(UserTrackedModel):
     category_class = models.ForeignKey(ReportMainCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
+
     def __unicode__(self):
         return self.category_class.name + ":" + self.name
 
@@ -1576,19 +1518,19 @@ class ReportCategory(UserTrackedModel):
         list_of_elements_as_json = []
         d = {}
         prev_d = {
-           'id':None,
-           'n_en':None,
-           'n_fr':None,
-           'n_nl':None,
-           'm_c_id':None,
-           'm_c_n_en':None,
-           'm_c_n_fr':None,
-           'm_c_n_nl':None,
-           's_c_id':None,
-           's_c_n_en':None,
-           's_c_n_fr':None,
-           's_c_n_nl':None,
-           'p':None
+            'id': None,
+            'n_en': None,
+            'n_fr': None,
+            'n_nl': None,
+            'm_c_id': None,
+            'm_c_n_en': None,
+            'm_c_n_fr': None,
+            'm_c_n_nl': None,
+            's_c_id': None,
+            's_c_n_en': None,
+            's_c_n_fr': None,
+            's_c_n_nl': None,
+            'p': None
         }
 
         for current_element in list_of_elements:
@@ -1597,7 +1539,7 @@ class ReportCategory(UserTrackedModel):
             d['n_en'] = getattr(current_element, 'name_fr')
             d['n_fr'] = getattr(current_element, 'name_fr')
             d['n_nl'] = getattr(current_element, 'name_nl')
-            d['m_c_id'] = getattr(getattr(current_element, 'category_class'),'id')
+            d['m_c_id'] = getattr(getattr(current_element, 'category_class'), 'id')
 
             is_it_public = getattr(current_element, 'public')
             if is_it_public:
@@ -1619,7 +1561,7 @@ class ReportCategory(UserTrackedModel):
             m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
             if is_it_public or not prev_d['m_c_n_nl'] == m_c_n_nl_value:
                 prev_d['m_c_n_nl'] = d['m_c_n_nl'] = m_c_n_nl_value
-            d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'),'id')
+            d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'), 'id')
 
             #Optimize data transfered removing duplicates on main class names
             #s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
@@ -1635,7 +1577,6 @@ class ReportCategory(UserTrackedModel):
             if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
                 d['s_c_n_nl'] = s_c_n_nl_value
 
-
             list_of_elements_as_json.append(d)
         return simplejson.dumps(list_of_elements_as_json)
 
@@ -1647,10 +1588,10 @@ class ReportCategory(UserTrackedModel):
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportCategory)
 
 
-
 class ReportCategoryHint(models.Model):
     __metaclass__ = TransMeta
     label = models.TextField(verbose_name=_('Label'), blank=False, null=False)
+
     class Meta:
         translate = ('label', )
 
@@ -1669,20 +1610,19 @@ class ReportNotification(models.Model):
     success = models.BooleanField()
     error_msg = models.TextField()
     content_template = models.CharField(max_length=40)
-    reply_to = models.CharField(max_length=200,null=True)
+    reply_to = models.CharField(max_length=200, null=True)
 
     related = generic.GenericForeignKey('related_content_type', 'related_object_id')
     related_content_type = models.ForeignKey(ContentType)
     related_object_id = models.PositiveIntegerField()
 
-
     def save(self, *args, **kwargs):
-        old_responsible=None
-        updater=None
-        comment=None
-        files=None
-        date_planned=None
-        merged_with=None
+        old_responsible = None
+        updater = None
+        comment = None
+        files = None
+        date_planned = None
+        merged_with = None
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -1709,15 +1649,13 @@ class ReportNotification(models.Model):
 
         try:
             recipients = (self.recipient.email,)
-
-
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned,merged_with=merged_with)
+            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with)
 
             if self.reply_to:
-                msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":self.reply_to})
+                msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": self.reply_to})
             else:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients)
 
@@ -1729,7 +1667,6 @@ class ReportNotification(models.Model):
                     if f.file_type == ReportFile.IMAGE:
                         msg.attach(f.file.name, f.file.read(), 'image/png')
 
-
             msg.send()
             self.success = True
             super(ReportNotification, self).save(*args, **kwargs)
@@ -1740,7 +1677,6 @@ class ReportNotification(models.Model):
             # logger.error(e)
             super(ReportNotification, self).save(*args, **kwargs)
             raise
-
 
 
 class ReportEventLog(models.Model):
@@ -1756,7 +1692,7 @@ class ReportEventLog(models.Model):
     ENTITY_CHANGED = 8
     CONTRACTOR_ASSIGNED = 9
     CONTRACTOR_CHANGED = 10
-    APPLICANT_ASSIGNED =11
+    APPLICANT_ASSIGNED = 11
     APPLICANT_CHANGED = 12
     APPLICANT_CONTRACTOR_CHANGE = 13
     CREATED = 14
@@ -1765,24 +1701,24 @@ class ReportEventLog(models.Model):
     PLANNED = 17
     MERGED = 18
     EVENT_TYPE_CHOICES = (
-        (REFUSE,_("Refuse")),
-        (CLOSE,_("Close")),
-        (SOLVE_REQUEST,_("Mark as Done")),
-        (MANAGER_ASSIGNED,_("Manager assinged")),
+        (REFUSE, _("Refuse")),
+        (CLOSE, _("Close")),
+        (SOLVE_REQUEST, _("Mark as Done")),
+        (MANAGER_ASSIGNED, _("Manager assinged")),
         #(MANAGER_CHANGED,_("Manager changed")),
-        (VALID,_("Valid")),
+        (VALID, _("Valid")),
         (ENTITY_ASSIGNED, _('Organisation assinged')),
         #(ENTITY_CHANGED, _('Organisation changed')),
-        (CONTRACTOR_ASSIGNED,_('Contractor assinged')),
-        (CONTRACTOR_CHANGED,_('Contractor changed')),
-        (APPLICANT_ASSIGNED,_('Applicant assinged')),
-        (APPLICANT_CHANGED,_('Applicant changed')),
-        (APPLICANT_CONTRACTOR_CHANGE,_('Applicant contractor changed')),
-        (CREATED,_("Created")),
-        (UPDATED,_("Updated")),
-        (UPDATE_PUBLISHED,_("Update published")),
-        (PLANNED,_("Planned")),
-        (MERGED,_("Merged")),
+        (CONTRACTOR_ASSIGNED, _('Contractor assinged')),
+        (CONTRACTOR_CHANGED, _('Contractor changed')),
+        (APPLICANT_ASSIGNED, _('Applicant assinged')),
+        (APPLICANT_CHANGED, _('Applicant changed')),
+        (APPLICANT_CONTRACTOR_CHANGE, _('Applicant contractor changed')),
+        (CREATED, _("Created")),
+        (UPDATED, _("Updated")),
+        (UPDATE_PUBLISHED, _("Update published")),
+        (PLANNED, _("Planned")),
+        (MERGED, _("Merged")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -1793,18 +1729,17 @@ class ReportEventLog(models.Model):
         VALID: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
         #ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
-        APPLICANT_ASSIGNED:_('Applicant {related_new} is assigned to the report'),
-        APPLICANT_CHANGED:_('Applicant changed from {related_old} to {related_new}'),
-        CONTRACTOR_ASSIGNED:_('Contractor {related_new} is assigned to the report'),
-        CONTRACTOR_CHANGED:_('Contractor changed from {related_old} to {related_new}'),
-        APPLICANT_CONTRACTOR_CHANGE:_('Applicant contractor change from {related_old} to {related_new}'),
+        APPLICANT_ASSIGNED: _('Applicant {related_new} is assigned to the report'),
+        APPLICANT_CHANGED: _('Applicant changed from {related_old} to {related_new}'),
+        CONTRACTOR_ASSIGNED: _('Contractor {related_new} is assigned to the report'),
+        CONTRACTOR_CHANGED: _('Contractor changed from {related_old} to {related_new}'),
+        APPLICANT_CONTRACTOR_CHANGE: _('Applicant contractor change from {related_old} to {related_new}'),
         CREATED: _("Report created by {user}"),
         UPDATED: _("Report updated by {user}"),
         UPDATE_PUBLISHED: _("Informations published by {user}"),
         PLANNED: _("Report planned to {date_planned}"),
-        MERGED:_("Report merged with report #{merged_with_id}"),
+        MERGED: _("Report merged with report #{merged_with_id}"),
     }
-
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
@@ -1834,7 +1769,7 @@ class ReportEventLog(models.Model):
     merged_with_id = models.PositiveIntegerField(null=True)
 
     class Meta:
-        ordering = ['event_at',]
+        ordering = ['event_at', ]
 
     def __unicode__(self):
         user_to_display = _("a citizen")
@@ -1844,17 +1779,17 @@ class ReportEventLog(models.Model):
                 user_to_display = self.user.get_full_name() or self.user
 
             if self.user.fmsuser.is_pro():
-                user_to_display = u'%s %s' %(self.user.fmsuser.get_organisation(), self.user.get_full_name() or self.user)
+                user_to_display = u'%s %s' % (self.user.fmsuser.get_organisation(), self.user.get_full_name() or self.user)
 
         return self.EVENT_TYPE_TEXT[self.event_type].format(
             user=user_to_display,
             organisation=self.organisation,
             related_new=self.related_new,
             date_planned=self.value_old,
-            merged_with_id = self.merged_with_id,
+            merged_with_id=self.merged_with_id,
         )
 
-    def get_public_activity_text (self):
+    def get_public_activity_text(self):
         user_to_display = _("a citizen")
 
         if self.user:
@@ -1869,10 +1804,10 @@ class ReportEventLog(models.Model):
             organisation=self.organisation,
             related_new=self.related_new,
             date_planned=self.value_old,
-            merged_with_id = self.merged_with_id,
+            merged_with_id=self.merged_with_id,
         )
 
-    def get_status (self):
+    def get_status(self):
         return self.EVENT_TYPE_CHOICES[self.event_type][1]
 
     def is_public_visible(self):
@@ -1886,10 +1821,10 @@ class ReportEventLog(models.Model):
 def eventlog_init_values(sender, instance, **kwargs):
     if instance.report:
 
-        if instance.status_new == None:
+        if not instance.status_new:
             instance.status_new = instance.report.status
 
-        if instance.status_old == None and hasattr(instance.report, '__former'):
+        if not instance.status_old and hasattr(instance.report, '__former'):
             instance.status_old = instance.report.__former["status"]
 
         if not hasattr(instance, "organisation"):
@@ -1961,9 +1896,10 @@ class FaqEntry(models.Model):
         verbose_name_plural = 'faq entries'
         translate = ('q', 'a')
 
-@receiver(pre_save,sender=FaqEntry)
+
+@receiver(pre_save, sender=FaqEntry)
 def save(sender, instance, **kwargs):
-    if instance.order == None:
+    if not instance.order:
         instance.order = FaqEntry.objects.all().aggregate(models.Max('order'))['order__max'] + 1
 
 
@@ -1992,15 +1928,14 @@ class ListItem(models.Model):
     """
     Only for sql selection purpose
     """
-    __metaclass__= TransMeta
-    label = models.CharField(verbose_name=_('Label'),max_length=100,null=False)
-    model_class = models.CharField(verbose_name=_('Related model class name'),max_length=100,null=False)
-    model_field = models.CharField(verbose_name=_('Related model field'),max_length=100,null=False)
-    code = models.CharField(max_length=50,null=False)
+    __metaclass__ = TransMeta
+    label = models.CharField(verbose_name=_('Label'), max_length=100, null=False)
+    model_class = models.CharField(verbose_name=_('Related model class name'), max_length=100, null=False)
+    model_field = models.CharField(verbose_name=_('Related model field'), max_length=100, null=False)
+    code = models.CharField(max_length=50, null=False)
 
     class Meta:
         translate = ('label', )
-
 
 
 # to import fresh datas:
@@ -2012,8 +1947,6 @@ class ListItem(models.Model):
 #         (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = xxx)(PORT = 1521))) \
 #         (CONNECT_DATA = (SID =ORAPRD01)) \
 #     ):URBIS_DIFF.URB_A_SS"
-
-
 class StreetSurface(models.Model):
     REGION = 'REG'
     ADMINISTRATORS = ((REGION, 'Region'), )
@@ -2045,7 +1978,7 @@ class StreetSurface(models.Model):
 
 class MailNotificationTemplate(models.Model):
     name = models.CharField(max_length=50, help_text="Technical name")
-    __metaclass__= TransMeta
+    __metaclass__ = TransMeta
     content = models.TextField(blank=True, verbose_name="Content")
     title = models.CharField(max_length=100, blank=True, verbose_name="Subject")
 
