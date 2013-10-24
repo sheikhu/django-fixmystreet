@@ -257,18 +257,31 @@ def populate_username(sender, instance, **kwargs):
 
 
 class OrganisationEntity(UserTrackedModel):
+    REGION = 'R'
+    COMMUNE = 'C'
+    SUBCONTRACTOR = 'S'
+    APPLICANT = 'A'
+    DEPARTMENT = 'D'
+    NEIGHBOUR_HOUSE = 'N'
+
     ENTITY_TYPE = (
-        ('R', _('Region')),
-        ('C', _('Commune')),
-        ('S', _('Subcontractor')),
-        ('A', _('Applicant')),
-        ('D', _('Department')),
-        ('N', _('Neighbour house')),
+        (REGION, _('Region')),
+        (COMMUNE, _('Commune')),
+        (SUBCONTRACTOR, _('Subcontractor')),
+        (APPLICANT, _('Applicant')),
+        (DEPARTMENT, _('Department')),
+        (NEIGHBOUR_HOUSE, _('Neighbour house')),
+    )
+    ENTITY_GROUP_REQUIRED_ROLE = (
+        (SUBCONTRACTOR, 'contractor'),
+        (DEPARTMENT, 'manager'),
+        (NEIGHBOUR_HOUSE, 'agent'),
     )
 
     ENTITY_TYPE_GROUP = (
-        ('S', _('Subcontractor')),
-        ('D', _('Department')),
+        (SUBCONTRACTOR, _('Subcontractor')),
+        (DEPARTMENT, _('Department')),
+        (NEIGHBOUR_HOUSE, _('Neighbour house')),
     )
 
     __metaclass__= TransMeta
@@ -298,8 +311,12 @@ class OrganisationEntity(UserTrackedModel):
     class Meta:
         translate = ('name', 'slug')
 
+    def accepted_user(self, user):
+        required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
+        return getattr(user, required_role)
+
     def get_absolute_url(self):
-        return reverse("report_commune_index", kwargs={'commune_id':self.id, 'slug':self.slug})
+        return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 
     def __unicode__(self):
         return self.name
