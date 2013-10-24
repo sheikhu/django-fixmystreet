@@ -31,15 +31,23 @@ def new(request):
 
             file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
             if file_formset.is_valid():
+                user = FMSUser.objects.get(pk=request.user.id)
+
                 fingerprint.save()
 
                 report.save()
 
                 if request.POST["comment-text"]:
-                    comment = comment_form.save(commit=False)
-                    comment.report = report
+                    comment            = comment_form.save(commit=False)
+                    comment.report     = report
+                    comment.created_by = user
                     comment.save()
-                file_formset.save()
+
+                files = file_formset.save()
+
+                for report_file in files:
+                    report_file.created_by = user
+                    report_file.save()
                 # messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
                 # return HttpResponseRedirect(report.get_absolute_url_pro())
             else:
@@ -148,17 +156,23 @@ def show(request,slug, report_id):
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         comment = None
-        # citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+
         # this checks update is_valid too
-        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()): # and citizen_form.is_valid():
+        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
             # this saves the update as part of the report.
-            # citizen = citizen_form.save()
+
+            user = FMSUser.objects.get(pk=request.user.id)
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
                     comment = comment_form.save(commit=False)
-                    comment.created_by = FMSUser.objects.get(pk=request.user.id)
-                    comment.report = report
+                    comment.created_by = user
+                    comment.report     = report
                     comment.save()
+
             files = file_formset.save()
+
+            for report_file in files:
+                report_file.created_by = user
+                report_file.save()
 
             report.trigger_updates_added(request.fmsuser, files=files, comment=comment)
 

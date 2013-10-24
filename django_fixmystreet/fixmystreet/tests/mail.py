@@ -83,7 +83,7 @@ class MailTest(TestCase):
             region=False,
             subcontractor=True,
             applicant=False)
-        self.contractor.save()        
+        self.contractor.save()
 
         self.sample_post = {
             'report-x': '150056.538',
@@ -440,7 +440,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 7)
         self.assertTrue(self.impetrant.workers.all()[0].email in mail.outbox[6].to)
 
-        
+
 
     def testAssignToContractorMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
@@ -494,6 +494,8 @@ class MailTest(TestCase):
         self.client.logout()
         response = self.client.post(reverse('report_show', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
+            'citizen-email'   : self.citizen.email,
+            'citizen-quality' : 1,
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
