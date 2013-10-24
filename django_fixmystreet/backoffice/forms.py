@@ -60,7 +60,22 @@ class FmsUserForm(forms.ModelForm):
     last_name = forms.CharField(required=True)
     email = forms.EmailField(required=True, label=_('Email'))
     telephone = forms.CharField(max_length="20")
-    is_active = forms.BooleanField(required=False, initial=True, help_text="only active users can login.", label="Active")
+    is_active = forms.BooleanField(
+        required=False,
+        initial=True,
+        help_text="only active users can login.",
+        label="Active"
+    )
+
+    leader = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            {'disabled': True}
+        })
+    )
+    agent = forms.BooleanField(required=False)
+    manager = forms.BooleanField(required=False)
+    contractor = forms.BooleanField(required=False)
 
 
 class FmsUserCreateForm(FmsUserForm):
@@ -109,7 +124,8 @@ class FmsUserCreateForm(FmsUserForm):
     def notify_user(self):
         """
         Send directly an email to the created user
-        (do not use the reportnotification class because then the password is saved in plain text in the DB)
+        (do not use the reportnotification class because then the password is saved
+        in plain text in the DB)
         """
 
         if self.password:
@@ -124,19 +140,10 @@ class FmsUserCreateForm(FmsUserForm):
 
             # MAIL SENDING...
             subject, html, text = '', '', ''
-            try:
-                subject = render_to_string('emails/send_created_to_user/subject.txt', data)
-            except TemplateDoesNotExist:
-                logger.error('template {0} does not exist'.format('emails/send_created_to_user/subject.txt'))
-            try:
-                text = render_to_string('emails/send_created_to_user/message.txt', data)
-            except TemplateDoesNotExist:
-                logger.error('template {0} does not exist'.format('emails/send_created_to_user/message.txt'))
 
-            try:
-                html = render_to_string('emails/send_created_to_user/message.html', data)
-            except TemplateDoesNotExist:
-                logger.info('template {0} does not exist'.format('emails/send_created_to_user/message.html'))
+            subject = render_to_string('emails/send_created_to_user/subject.txt', data)
+            text = render_to_string('emails/send_created_to_user/message.txt', data)
+            html = render_to_string('emails/send_created_to_user/message.html', data)
 
             subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
