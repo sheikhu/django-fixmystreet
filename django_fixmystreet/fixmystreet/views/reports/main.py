@@ -225,3 +225,14 @@ def index(request, slug=None, commune_id=None):
     return render_to_response("reports/index.html", {
         "communes": communes
     }, context_instance=RequestContext(request))
+
+def newmap(request):
+    pro_user = False
+    try:
+        pro_user = request.fmsuser.manager
+    except  AttributeError:
+        pro_user = False    
+    return render_to_response("reports/newmap.html", { 
+        "all_zips":ZipCode.objects.all(),
+        "pro_user":pro_user,
+        }, context_instance=RequestContext(request))
