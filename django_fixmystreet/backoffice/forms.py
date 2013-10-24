@@ -144,6 +144,16 @@ class FmsUserCreateForm(FmsUserForm):
             msg.send()
             # MAIL SENDED
 
+def ownership_choices(current_user_ownership):
+    if 'manager' in current_user_ownership :
+        return (
+        ("entity", _("All reports in my entity")),
+        ("responsible", _("My responbsible reports")),
+        ("subscribed", _("My subscriptions")),
+        ("transfered", _("My transfered reports")))
+    else :
+        return (("entity", _("All reports in my entity")),("subscribed", _("My subscriptions")))
+
 
 class SearchIncidentForm(forms.Form):
     status = forms.ChoiceField(choices=(
@@ -153,12 +163,11 @@ class SearchIncidentForm(forms.Form):
         ("in_progress_and_assigned", _("In progress and assigned")),
         ("closed", _("Closed"))
     ), required=False)
-    ownership = forms.ChoiceField(choices=(
-        ("entity", _("All reports in my entity")),
-        ("responsible", _("My responbsible reports")),
-        ("subscribed", _("My subscriptions")),
-        ("transfered", _("My transfered reports"))
-    ), required=False)
+    ownership = forms.ChoiceField(choices=(("entity", _("All reports in my entity")),("subscribed", _("My subscriptions"))), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchIncidentForm, self).__init__(*args, **kwargs)
+        self.fields['ownership'].choices = ownership_choices(args[1].get_user_type_list())
 
 class GroupForm(forms.ModelForm):
     required_css_class = 'required'

@@ -188,6 +188,13 @@ class FMSUser(User):
             if getattr(self, user_type, False):
                 return user_type
 
+    def get_user_type_list(self):
+        result = []
+        for user_type in self.USER_TYPES:
+            if getattr(self, user_type, False):
+                result.append(user_type)
+        return result
+
     def is_user_type(self, user_type):
         return getattr(self, user_type, False)
 
@@ -383,7 +390,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
         query = Q()
 
         if user.contractor or user.applicant:
-            query = query | Q(contractor__in=user.work_for.all())
+            query = query | Q(contractor=user.organisation)
 
         if user.agent or user.manager or user.leader:
             query = query | Q(responsible_entity=user.organisation)
