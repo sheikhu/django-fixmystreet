@@ -83,7 +83,7 @@ def filter_reports(user, criteria):
 
 
 def list(request):
-    search_form = SearchIncidentForm(request.GET)
+    search_form = SearchIncidentForm(request.GET,request.fmsuser)
     reports, pnt = filter_reports(request.fmsuser, request.GET)
 
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
@@ -109,7 +109,7 @@ def list(request):
 
 
 def table(request):
-    search_form = SearchIncidentForm(request.GET)
+    search_form = SearchIncidentForm(request.GET,request.fmsuser)
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
