@@ -1451,3 +1451,23 @@ msgstr "Het incident is samengevoegd."
 
 #~ msgid "more_years"
 #~ msgstr "> 1 jaar"
+
+#~ msgid "enter mail address"
+#~ msgstr "Stuur naar: "
+
+#~ msgid "mail pdf"
+#~ msgstr "E-mail pdf"
+
+#~ msgid "send pdf"
+#~ msgstr "Verstuur"
+
+#~ msgid "enter comment for mail"
+#~ msgstr "Commentaar"
+
+#~ msgid "Error occured sending PDF"
+#~ msgstr "Er is een fout opgetreden bij het verzenden van het rapport!"
+
+#~ msgid "show on google streetview"
+#~ msgstr "Streetview"
+
+

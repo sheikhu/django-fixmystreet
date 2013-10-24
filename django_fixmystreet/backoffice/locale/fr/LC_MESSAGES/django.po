@@ -1129,3 +1129,21 @@ msgstr "Votre incident est fusionné."
 
 #~ msgid "in"
 #~ msgstr "à"
+
+#~ msgid "enter mail address"
+#~ msgstr "Stuur naar: "
+
+#~ msgid "mail pdf"
+#~ msgstr "Envoie par couriel"
+
+#~ msgid "send pdf"
+#~ msgstr "Envoie"
+
+#~ msgid "enter comment for mail"
+#~ msgstr "Commentaire"
+
+#~ msgid "Error occured sending PDF"
+#~ msgstr "Erreur envoyer le PDF"
+
+#~ msgid "show on google streetview"
+#~ msgstr "Streetview"

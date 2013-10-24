@@ -171,13 +171,13 @@ def publish(request, report_id):
 
     comments = ReportComment.objects.filter(report_id=report_id)
     for comment in comments:
-        comment.security_level = ReportAttachment.PUBLIC
-        comment.save()
+        comment.security_level = ReportAttachment.PUBLIC  
+        comment.save(publish_report=True)
 
     files = ReportFile.objects.filter(report_id=report_id)
     for f in files:
         f.security_level = ReportAttachment.PUBLIC
-        f.save()
+        f.save(publish_report=True)
 
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())

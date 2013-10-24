@@ -97,6 +97,8 @@ $(function(){
     $("#prob").val("{{report.probability}}");
 
 
+
+
 });
 /* When JQUERY is ready*/
 $(document).ready(function() {
@@ -120,28 +122,51 @@ $(document).ready(function() {
     {% endfor %}
     //Clear the comment textarea after each POST
     $("#id_comment-text").val('');
-    {% if report.accepted_at %}
-    // Datepicker for planned
-    var nowTemp = new Date();
-    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-
-    var max_date = new Date({{ report.accepted_at|date:"Y" }} + 1, {{ report.accepted_at|date:"n" }}, 0, 0, 0, 0, 0);
-
-    $('.input-append.date').datepicker({
-        format: "mm/yyyy",
-        weekStart: 1,
-        startDate: "+1d",
-        endDate: "+1y",
-        language: LANGUAGE_CODE
-    });
-    {% endif %}
 
     // False address
     var report_false_adress = "{{ report.false_address }}";
 
-    document.getElementById('declare_false_address').addEventListener('click', function() {
-        document.getElementById('false_address_field').classList.remove('hidden');
-        this.classList.add('hidden');
+    document.getElementById('mailPDFProButton').addEventListener('click', function() {
+        mailbox = document.getElementById('mail_pdf');
+        if (mailbox.classList.contains('hidden'))
+            mailbox.classList.remove('hidden');
+        else
+            mailbox.classList.add('hidden');
+            document.getElementById('mail_pdf_emailaddresses').value = '';
+            document.getElementById('mail_pdf_emailcomments').value ='';
+    });
+
+    document.getElementById('mailPDFCitizenButton').addEventListener('click', function() {
+        mailbox = document.getElementById('mail_pdf_citizen');
+        if (mailbox.classList.contains('hidden'))
+            mailbox.classList.remove('hidden');
+        else
+            mailbox.classList.add('hidden');
+            document.getElementById('mail_pdf_emailaddresses_citizen').value = '';
+            document.getElementById('mail_pdf_emailcomments_citizen').value ='';
+    });
+
+    document.getElementById('show_in_streetview').addEventListener('click', function(){
+        var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
+        window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
+    })
+
+    var isFalseAddressCheckBox = document.getElementById('is_false_address');
+    isFalseAddressCheckBox.addEventListener('change', function() {
+        var falseAddress_Reason = document.getElementById('false_address');
+        if (this.checked) {
+            falseAddress_Reason.classList.remove('hidden');
+        } else {
+            falseAddress_Reason.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('false_address').addEventListener('keyup', function() {
+        if (this.value != report_false_adress) {
+            document.getElementById('submit_false_address').classList.remove('hidden');
+        } else {
+            document.getElementById('submit_false_address').classList.add('hidden');
+        }
     });
 
     document.getElementById('submit_false_address').addEventListener('click', function() {
@@ -158,13 +183,34 @@ $(document).ready(function() {
         });
     });
 
-    document.getElementById('false_address').addEventListener('keyup', function() {
-        if (this.value != report_false_adress) {
-            document.getElementById('submit_false_address').classList.remove('hidden');
-        } else {
-            document.getElementById('submit_false_address').classList.add('hidden');
-        }
+    document.getElementById("send_pdf_citizen_button").addEventListener('click', function(event){
+        $.ajax({
+            url:"{% url 'send_pdf' report.id %}",
+            data:{"to":$('#mail_pdf_emailaddresses_citizen').val(), "comments":$('#mail_pdf_emailcomments_citizen').val(), "privacy":"public"},
+            type:"POST",
+            success:function(data){
+                alert(data);
+                document.getElementById('mailPDFCitizenButton').click();
+            }
+        });
+
+
     });
+
+    document.getElementById("send_pdf_pro_button").addEventListener('click', function(event){
+        $.ajax({
+            url:"{% url 'send_pdf' report.id %}",
+            data:{"to":$('#mail_pdf_emailaddresses').val(), "comments":$('#mail_pdf_emailcomments').val(), "privacy":"private"},
+            type:"POST",
+            success:function(data){
+                alert(data);
+                document.getElementById('mailPDFProButton').click();
+            }
+        });
+
+
+    });
+
     $("#main_cat_select").val("{{report.category.id}}");
     $.ajax({
         url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
@@ -183,7 +229,7 @@ $(document).ready(function() {
             }
             $("#sec_cat_select").val("{{report.secondary_category.id}}");
         }
-        
+
     });
     $('#main_cat_select').change(function(){
         if(this.value !== "0"){
@@ -205,7 +251,7 @@ $(document).ready(function() {
                         }
                         {% endif %}
                     }
-                    
+
                 }
             });
         }
@@ -396,15 +442,27 @@ function showMergeConfirmation(){
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
                     <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
-                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span></td>
+                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span>
+                    </td>
+                    <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
                 </tr>
 
-                <tr id="false_address_field" class="{% if not report.false_address %}hidden{% endif %}">
-                    <th><strong>{% trans "Raison:" %}</strong></th>
-                    <td colspan="3"><textarea id="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
+                {% if request.user.id == report.responsible_manager.id and not report.is_merged %}
+                <tr>
+                    <th><strong>{% trans "Wrong address:" %}</strong></th>
+                    <td colspan="2"><textarea id="false_address" name="false_address" {% if not report.false_address %}class="hidden"{% endif %}>{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
+                    <td colspan="1"><input type="checkbox" id="is_false_address" {% if report.false_address %}checked{% endif %}></td>
                     <td colspan="1"><span id="submit_false_address" class="btn hidden" style="float:right;">Valider</span></td>
                 </tr>
-                {% if request.user.id == report.responsible_manager.id and report.is_in_progress and not report.is_merged%}
+                {% else %}
+                    {% if report.false_address %}
+                        <tr>
+                            <th><strong>{% trans "Wrong address:" %}</strong></th>
+                            <td colspan="2">{{report.false_address}}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+                {% if request.user.id == report.responsible_manager.id and report.is_in_progress and not report.is_merged %}
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
                     <td colspan="4">
@@ -546,6 +604,21 @@ function showMergeConfirmation(){
                             <th></th>
                             <td colspan="2">{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></td>
                         </tr>
+                    <tr>
+                        <th>
+                            <strong>{% trans "Planned:" %}</strong>
+                        </th>
+                        <td colspan="4">
+                            <select id="date_planned" onchange="planned()">
+                                {% if not report.planned %}
+                                    <option value="">{% trans "Not planned" %}</option>
+                                {% endif %}
+                                {% for date in report.get_date_planned_available %}
+                                    <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
                     {% else %}
                         <!-- ########################################################### -->
                         <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
@@ -591,25 +664,14 @@ function showMergeConfirmation(){
                             <th><strong>{% trans "Priority" %}</strong></th>
                             <td colspan="2"><span id="prio_result">{{report.get_priority}}</span></td>
                         </tr>
+                        {% if report.planned %}
+                            <tr>
+                                <th><strong>{% trans "Planned" %}</strong></th>
+                                <td colspan="2">{{report.get_date_planned}}</td>
+                            </tr>
+                        {% endif %}
+
                     {% endif %}
-                    <tr>
-                        <th>
-                            <strong>{% trans "Planned:" %}</strong>
-                        </th>
-                        <td colspan="2">
-                            <select id="date_planned">
-                                {% if not report.planned %}
-                                    <option value="">{% trans "Not planned" %}</option>
-                                {% endif %}
-                                {% for date in report.get_date_planned_available %}
-                                    <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td colspan="2">
-                            <a href="javascript:planned();" class="btn pull-right">{% trans 'Planned' %}</a>
-                        </td>
-                    </tr>
                 {% endif %}
                 <tr>
                     <td>&nbsp;</td>
@@ -621,10 +683,35 @@ function showMergeConfirmation(){
             <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
             <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
             </a>
+
+            {% if request.fmsuser.is_pro %}
+            <a id='mailPDFCitizenButton' class="btn">{% trans 'mail pdf' %}</a>
+            </p>
+        <p>
+            <span id="mail_pdf_citizen" class="hidden">
+                {% trans 'enter mail address' %}
+                <textarea id="mail_pdf_emailaddresses_citizen"></textarea>
+                <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
+                <br>
+                {% trans 'enter comment for mail' %}
+                <textarea id="mail_pdf_emailcomments_citizen"></textarea>
+            </span>
+            {% endif %}
         </p>
 
         {% if request.fmsuser.is_pro %}
-            <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a></p>
+            <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a>
+                <a id='mailPDFProButton' class="btn">{% trans 'mail pdf' %}</a>
+            </p>
+            <span id="mail_pdf" class="hidden">
+                {% trans 'enter mail address' %}
+                <textarea id="mail_pdf_emailaddresses"></textarea>
+                <a class="btn pull-right" id="send_pdf_pro_button">{% trans 'send pdf' %}</a>
+                <br>
+                {% trans 'enter comment for mail' %}
+                <textarea id="mail_pdf_emailcomments"></textarea>
+            </span>
+
         {% endif %}
 
         {% if request.fmsuser.manager or request.fmsuser.leader %}
@@ -670,7 +757,7 @@ function showMergeConfirmation(){
     <!-- ########################## -->
     <div class="bordered-box">
         <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-            {% include "reports/_attachments_form.html" %}
+            {% include "reports/_attachments_form.html" with display_citizen_form_comment=False %}
 
             <div style="overflow:hidden;">
                 <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />

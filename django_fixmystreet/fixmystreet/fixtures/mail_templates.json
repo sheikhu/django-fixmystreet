@@ -185,5 +185,16 @@
         "content_nl": "Een incident is prive geworden.\r\n\r\n{report_overview}\r\n\r\nU kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:\r\n\r\n- {display_url}\r\n\r\nIndien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:\r\n\r\n- {unsubscribe_url}",
         "title_fr": "devenue privé sur Fix My Street"
     }
+},
+{
+    "pk": 18,
+    "model": "fixmystreet.mailnotificationtemplate",
+    "fields": {
+        "content_fr": "{user} a envoyé ce PDF avect le message suivant: \r\n\r\n {comment}",
+        "title_nl": "{user} stuurt u deze PDF.",
+        "name": "mail-pdf",
+        "content_nl": "{user} heeft je deze PDF gestuurd met volgend bericht: \r\n\r\n {comment}",
+        "title_fr": "{user} a envoyé ce PDF"
+    }
 }
 ]

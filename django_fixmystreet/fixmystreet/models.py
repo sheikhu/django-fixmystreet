@@ -692,7 +692,7 @@ class Report(UserTrackedModel):
         # ==> is wrong
         return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
-    def attachmentsList(self): 
+    def attachmentsList(self):
         return ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
 
     def territorial_entity(self):
@@ -1202,7 +1202,7 @@ def report_notify(sender, instance, **kwargs):
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
             #inform all subscribers
             for subscription in report.subscriptions.all():
-                if not subscription.subscriber.is_pro():                    
+                if not subscription.subscriber.is_pro():
                         ReportNotification(
                             content_template='notify-became-private',
                             recipient=subscription.subscriber,
@@ -1240,6 +1240,8 @@ class ReportAttachmentQuerySet(models.query.QuerySet):
                 yield obj.reportcomment
 
 
+
+
 class ReportAttachmentManager(models.Manager):
     use_for_related_fields = True
     def get_query_set(self):
@@ -1263,6 +1265,8 @@ class ReportAttachment(UserTrackedModel):
     report = models.ForeignKey(Report, related_name="attachments")
 
     objects = ReportAttachmentManager()
+
+    publish_update = True
 
     #is_validated = models.BooleanField(default=False)
     #is_visible = models.BooleanField(default=False)
@@ -1298,12 +1302,34 @@ class ReportAttachment(UserTrackedModel):
         else:
              return self.created_by.first_name+' '+self.created_by.last_name
 
+    def get_display_name_as_pro(self):
+        if self.created_by:
+            return self.created_by.email
+
+        return _('ANONYMOUS')
+
+    def get_display_name_as_citizen(self):
+        if self.created_by:
+            if self.created_by.is_citizen():
+                return _("a citizen")
+            else:
+                return self.created_by.get_organisation()
+
+        return _('ANONYMOUS')
+
+    #needed to make sure that no mail is sent when a complete report is published only when individual reports are updated
+    def save(self, *args, **kwargs):
+        if 'publish_report' in kwargs:
+            del kwargs['publish_report']
+            self.publish_update = False
+        super(ReportAttachment, self).save(*args, **kwargs)
+
 @receiver(post_save,sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
-    if not kwargs['created'] and instance.is_public():
+    report = instance.report
+    if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
         attachment = instance
-        report = instance.report
         ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.UPDATE_PUBLISHED,
@@ -1318,9 +1344,26 @@ def report_attachment_notify(sender, instance, **kwargs):
                     reply_to=report.responsible_manager.email,
                 ).save()
 
+    #if report is assigned to impetrant or executeur de travaux also inform them
+
+    if (kwargs['created'] and report.contractor != None):
+            for recipient in report.contractor.workers.all():
+                ReportNotification(
+                    content_template='informations_published',
+                    recipient=recipient,
+                    related=report,
+                    reply_to=report.responsible_manager.email,
+                ).save()
+
+
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
+
+
+@receiver(post_save,sender=ReportComment)
+def report_comment_notify(sender, instance, **kwargs):
+    report_attachment_notify(sender, instance, **kwargs)
 
 
 class ReportFile(ReportAttachment):
@@ -1381,6 +1424,9 @@ class ReportFile(ReportAttachment):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
 
+@receiver(post_save,sender=ReportFile)
+def report_file_notify(sender, instance, **kwargs):
+    report_attachment_notify(sender, instance, **kwargs)
 
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender,instance,**kwargs):
@@ -1645,10 +1691,10 @@ class ReportNotification(models.Model):
         if 'date_planned' in kwargs:
             date_planned = kwargs['date_planned']
             del kwargs['date_planned']
-        
+
         if self.related.merged_with:
             merged_with = self.related.merged_with
-        
+
         if not self.recipient.email:
             self.error_msg = "No email recipient"
             self.success = False
@@ -1991,7 +2037,7 @@ class StreetSurface(models.Model):
 
 
 class MailNotificationTemplate(models.Model):
-    name = models.CharField(max_length=50, help_text="Tehnical name")
+    name = models.CharField(max_length=50, help_text="Technical name")
     __metaclass__= TransMeta
     content = models.TextField(blank=True, verbose_name="Content")
     title = models.CharField(max_length=100, blank=True, verbose_name="Subject")
