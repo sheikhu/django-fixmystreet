@@ -34,13 +34,15 @@ class RefuseForm(forms.ModelForm):
         fields = ('refusal_motivation',)
 
     refusal_motivation = forms.CharField(
-                required=True,
-                label=_('Refusal motivation'),
-                widget=forms.Textarea(attrs={
-                    'placeholder': _("Refusal motivation description.")
-                }))
+        required=True,
+        label=_('Refusal motivation'),
+        widget=forms.Textarea(attrs={
+            'placeholder': _("Refusal motivation description.")
+        })
+    )
+
     def save(self, commit=True):
-        report = super(RefuseForm,self).save(commit=False)
+        report = super(RefuseForm, self).save(commit=False)
         report.status = Report.REFUSED
         if commit:
             report.save()
@@ -49,9 +51,10 @@ class RefuseForm(forms.ModelForm):
 
 class FmsUserForm(forms.ModelForm):
     required_css_class = 'required'
+
     class Meta:
         model = FMSUser
-        fields = ('first_name','last_name','telephone','email','is_active')
+        fields = ('first_name', 'last_name', 'telephone', 'email', 'is_active')
 
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=True)
@@ -67,7 +70,7 @@ class FmsUserCreateForm(FmsUserForm):
         self.password = False
 
         if not user:
-            user = super(FmsUserCreateForm,self).save(commit=False)
+            user = super(FmsUserCreateForm, self).save(commit=False)
             user.lastUsedLanguage = "FR"
 
         if user.logical_deleted:
@@ -126,18 +129,18 @@ class FmsUserCreateForm(FmsUserForm):
             except TemplateDoesNotExist:
                 logger.error('template {0} does not exist'.format('emails/send_created_to_user/subject.txt'))
             try:
-                text    = render_to_string('emails/send_created_to_user/message.txt', data)
+                text = render_to_string('emails/send_created_to_user/message.txt', data)
             except TemplateDoesNotExist:
                 logger.error('template {0} does not exist'.format('emails/send_created_to_user/message.txt'))
 
             try:
-                html    = render_to_string('emails/send_created_to_user/message.html', data)
+                html = render_to_string('emails/send_created_to_user/message.html', data)
             except TemplateDoesNotExist:
                 logger.info('template {0} does not exist'.format('emails/send_created_to_user/message.html'))
 
             subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":user.created_by.email})
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": user.created_by.email})
             if html:
                 msg.attach_alternative(html, "text/html")
 
@@ -169,8 +172,10 @@ class SearchIncidentForm(forms.Form):
         super(SearchIncidentForm, self).__init__(*args, **kwargs)
         self.fields['ownership'].choices = ownership_choices(args[1].get_user_type_list())
 
+
 class GroupForm(forms.ModelForm):
     required_css_class = 'required'
+
     class Meta:
         model = OrganisationEntity
         fields = ('name_fr', 'name_nl', 'phone', 'email', 'type')
@@ -183,7 +188,7 @@ class GroupForm(forms.ModelForm):
 
     type = forms.ChoiceField(widget=forms.RadioSelect, choices=OrganisationEntity.ENTITY_TYPE_GROUP)
 
-    users =  forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
+    users = forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
 
     def __init__(self, *args, **kwargs):
         try:
