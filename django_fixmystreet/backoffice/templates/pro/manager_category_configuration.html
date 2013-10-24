@@ -27,15 +27,6 @@ $(document).ready(function(){
     $('#58').hide();
   }
 });
-function saveSelection(){
-  var url='{% url "saveSelection" %}?';
-  var i =0;
-  $.each($('[name=manager]'),function(idx,value){
-    url+="cat"+i+"="+$(value).parent().parent().attr("id")+"&man"+i+"="+value.value+"&";
-    i= i+1;
-  });
-  window.location.href=url;
-}
 
 </script>
 {% if categories %}
@@ -63,53 +54,69 @@ function saveSelection(){
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       <h3>{{firstCateg.name}} / {{secondCateg.name}}</h3>
     </div>
+
     <div class="modal-body">
-      <form action="">
-        <table style="padding:20px">
-          {% for cat in categories %}
-          <tr>
-            <td style="padding:5px;">{{cat.name}}</td>
-        <td id="{{cat.id}}">
-                                        <p><select name="manager" id="id_manager">
-                                                {% for choice in managerDropDown %}
-                                                        <option value="{{choice.0}}">{{choice.1}}</option>
-                                                {% endfor %}
-                                        </select></p>
-                                </td>
-      </tr>
-          {% endfor %}
+        <form action="{% url 'saveSelection' %}" method="GET">
+            <table style="padding:20px">
+                {% for cat in categories %}
+                    <tr>
+                        <td style="padding:5px;">{{ cat.name }}</td>
+                        <td>
+                            <input type="hidden" value="{{cat.id}}" name="category" />
+                            <p>
+                                <select name="group" id="id_manager">
+                                        {% for group in groupDropDown %}
+                                                <option value="{{group.id}}">{{group}}</option>
+                                        {% endfor %}
+                                </select>
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn" >{% trans 'Cancel' %}</a>
+                <button class="btn" type="submit" >{% trans 'Save' %}</button>
+            </div>
+        </form>
+    </div>
+
+
+  </div>
+
+
+    <div id="configurationTable">
+        <table class="configTable">
+            <tr>
+                <th style="border-right:1px solid black"></th>
+                {% for mainCat in maincategories %}
+                    <th style="width:18%; text-align:center">{{mainCat.name}}</th>
+                {% endfor %}
+            </tr>
+
+            {% for line in table %}
+                <tr>
+                    <td class="firstItem">{{ line.secondCategory.name }}</td>
+
+                        {% for mainCategory in line.mainCategories %}
+                            <td>
+                                <a id="{{mainCategory.id}}{{line.secondCategory.id}}" class="matrixButton" href="{% url 'gestionnaire_selection_dialog' %}?main={{mainCategory.id}}&second={{line.secondCategory.id}}">
+                                    {% if not mainCategory.groups.0 %}
+                                        no group
+                                    {% else %}
+                                        {% for group in mainCategory.groups %}
+                                            {{ group.0.name }}
+                                        {% endfor %}
+                                    {% endif %}
+                                </a>
+                            </td>
+                        {% endfor %}
+
+                </tr>
+            {% endfor %}
         </table>
-         </div>
-      </form>
-      <div class="modal-footer">
-        <a href="#" data-dismiss="modal" class="btn" >{% trans 'Cancel' %}</a>
-        <a href="#" onclick="saveSelection();" class="btn" >{% trans 'Save' %}</a>
-      </div>
-  </div>
-
-
-  <div id="configurationTable">
-  	<table class="configTable">
-  		<tr>
-  			<th style="border-right:1px solid black"></th>
-  			{% for mainCat in maincategories %}
-  				<th style="width:18%; text-align:center">{{mainCat.name}}</th>
-  			{% endfor %}
-  		</tr>
-  		{% for secondCat in secondcategories %}
-  			<tr>
-  				<td class="firstItem">{{secondCat.name}}</td>
-  				{% for m in maincategories %}
-  				<td>
-            <a id="{{m.id}}{{secondCat.id}}" class="matrixButton" href="{% url 'gestionnaire_selection_dialog' %}?main={{m.id}}&second={{secondCat.id}}">
-              {{currentSelectedList|get_element_from_list:forloop.counter0|get_element_from_list:forloop.parentloop.counter0}}
-            </a>
-          </td>
-  				{% endfor %}
-  			</tr>
-  		{% endfor %}
-  	</table>
-  </div>
+    </div>
 
 </div>
 
