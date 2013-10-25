@@ -156,10 +156,10 @@ class FMSUser(User):
         return "#"+self.get_ticket_number()
 
     def get_display_name(self):
-        if ((self.first_name is None or self.first_name == "") and (self.last_name is None or self.last_name == "")):
-            return _('A citizen')
+        if not self.first_name and not self.last_name:
+            return _('An anonymous citizen')
         else:
-            return self.first_name+' '+self.last_name
+            return self.get_full_name()
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''
@@ -208,6 +208,9 @@ class FMSUser(User):
     def get_absolute_url(self):
         return reverse("edit_user", kwargs={'user_id': self.id})
 
+    def __unicode__(self):
+        return self.get_display_name()
+
 
 @receiver(post_save, sender=FMSUser)
 def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
@@ -246,11 +249,11 @@ class OrganisationEntity(UserTrackedModel):
         (DEPARTMENT, _('Department')),
         (NEIGHBOUR_HOUSE, _('Neighbour house')),
     )
-    ENTITY_GROUP_REQUIRED_ROLE = (
-        (SUBCONTRACTOR, 'contractor'),
-        (DEPARTMENT, 'manager'),
-        (NEIGHBOUR_HOUSE, 'agent'),
-    )
+    ENTITY_GROUP_REQUIRED_ROLE = {
+        SUBCONTRACTOR: 'contractor',
+        DEPARTMENT: 'manager',
+        NEIGHBOUR_HOUSE: 'agent',
+    }
 
     ENTITY_TYPE_GROUP = (
         (SUBCONTRACTOR, _('Subcontractor')),
