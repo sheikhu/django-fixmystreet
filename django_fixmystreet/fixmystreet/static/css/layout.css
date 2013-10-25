@@ -601,7 +601,9 @@ li img {
     vertical-align: middle;
 }
 
-
+.loading {
+    opacity: .5;
+}
 
 /*.form-horizontal textarea {
 	width: 100%;

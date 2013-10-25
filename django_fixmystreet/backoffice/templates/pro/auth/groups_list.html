@@ -55,7 +55,7 @@ $(document).ready(function() {
                     <a href="mailto:{{ group.email }}">{{ group.email }}</a>
                 </td>
                 <td>
-                    <a>{{ group.type }}</a>
+                    <a>{{ group.get_type_display }}</a>
                 </td>
             </tr>
             {% endfor %}

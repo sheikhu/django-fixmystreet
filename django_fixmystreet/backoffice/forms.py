@@ -54,7 +54,17 @@ class FmsUserForm(forms.ModelForm):
 
     class Meta:
         model = FMSUser
-        fields = ('first_name', 'last_name', 'telephone', 'email', 'is_active')
+        fields = (
+            'first_name',
+            'last_name',
+            'telephone',
+            'email',
+            'is_active',
+            'leader',
+            'agent',
+            'manager',
+            'contractor'
+        )
 
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=True)
@@ -70,9 +80,10 @@ class FmsUserForm(forms.ModelForm):
     leader = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={
-            {'disabled': True}
+            'disabled': True
         })
     )
+
     agent = forms.BooleanField(required=False)
     manager = forms.BooleanField(required=False)
     contractor = forms.BooleanField(required=False)
@@ -198,15 +209,18 @@ class GroupForm(forms.ModelForm):
     users = forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
 
     def __init__(self, *args, **kwargs):
-        try:
-            edit = kwargs.pop('edit')
-        except KeyError:
-            edit = False
-
         super(GroupForm, self).__init__(*args, **kwargs)
 
-        if not edit:
+        if not self.instance.id:
             del self.fields['users']
+        else:
+            del self.fields['type']  # type is not editable due to possibility cpontains users
+            required_role = OrganisationEntity.ENTITY_GROUP_REQUIRED_ROLE[self.instance.type]
+            print self.instance.dependency
+            users_qs = self.fields['users'].queryset
+            users_qs = users_qs.filter(**{required_role: True})
+            users_qs = users_qs.filter(organisation=self.instance.dependency)
+            self.fields['users'].queryset = users_qs
 
     def save(self, commit=True):
         group = super(GroupForm, self).save(commit=False)

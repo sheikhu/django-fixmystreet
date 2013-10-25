@@ -10,7 +10,7 @@
         <label  class="checkbox">{{ field }} {{ field.help_text }}</label>
         {{ field.errors }}
     {% elif field.field.widget|classname == "CheckboxInput" %}
-        <label  class="checkbox">{{ field }} {{ field.label }}</label>
+        <label  class="controls checkbox">{{ field }} {{ field.label }}</label>
         {{ field.errors }}
     {% else %}
         <label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>
