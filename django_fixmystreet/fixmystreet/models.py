@@ -331,8 +331,13 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def responsible(self, user):
         query = Q()
 
+        if (user.contractor or user.applicant) and (user.manager):
+            query = Q(contractor=user.organisation)
+            query2 = Q(responsible_manager=user)
+            return self.filter(query) | self.filter(query2)
+
         if user.contractor or user.applicant:
-            query = query | Q(contractor__in=user.work_for.all())
+            query = query | Q(contractor=user.organisation)
 
         if user.manager or user.leader or user.agent:
             query = query | Q(responsible_manager=user)
@@ -341,6 +346,10 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def entity_responsible(self, user):
         query = Q()
+        if (user.contractor or user.applicant) and (user.manager or user.agent):
+            query = Q(contractor=user.organisation)
+            query2 = Q(responsible_entity = user.organisation.dependency)
+            return self.filter(query2) | self.filter(query)
 
         if user.contractor or user.applicant:
             query = query | Q(contractor=user.organisation)

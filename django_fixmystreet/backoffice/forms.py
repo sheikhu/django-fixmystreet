@@ -151,6 +151,10 @@ def ownership_choices(current_user_ownership):
         ("responsible", _("My responbsible reports")),
         ("subscribed", _("My subscriptions")),
         ("transfered", _("My transfered reports")))
+    elif 'agent' in current_user_ownership and ('contractor' in current_user_ownership or 'applicant' in current_user_ownership):
+        return (("entity", _("All reports in my entity")),
+        ("responsible", _("My responbsible reports")),
+        ("subscribed", _("My subscriptions")))
     else :
         return (("entity", _("All reports in my entity")),("subscribed", _("My subscriptions")))
 
