@@ -373,6 +373,8 @@ class HistoryTest(TestCase):
         self.client.logout()
         response = self.client.post(reverse('report_show', kwargs={'report_id': report_id, 'slug':'hello'}), {
             'comment-text': 'new created comment',
+            'citizen-email'   : self.citizen.email,
+            'citizen-quality' : 1,
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
@@ -559,13 +561,13 @@ class HistoryTest(TestCase):
         response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
         self.assertEquals(response.status_code, 200)
         #Should send mail only to responsible
-        
+
         report2_id = response2.context['report'].id
 
         #Publish the created report
         response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
         self.assertEquals(response3.status_code, 200)
-        
+
         #Merge reports
         url2 = reverse('report_merge_pro',args=[report_id])
         response4 = self.client.get(url2,{"mergeId":report2_id})

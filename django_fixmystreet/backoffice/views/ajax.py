@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from django_fixmystreet.fixmystreet.models import FMSUser, ReportCategory, Report,ReportMainCategoryClass,MailNotificationTemplate
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, ReportCategory, Report,ReportMainCategoryClass,MailNotificationTemplate
 from django_fixmystreet.fixmystreet.stats import UserTypeForOrganisation
 from django.utils.translation import ugettext as _
 from django_fixmystreet.fixmystreet.utils import get_current_user, transform_notification_template
@@ -14,25 +14,22 @@ from django_fixmystreet.fixmystreet.utils import generate_pdf
 from django.template import RequestContext
 import re
 
-
 def saveCategoryConfiguration(request):
-    # Save the chosen categories from the different forms
-    # The request url has this form:
-    # base_url/?cat0=A&man0=B&cat1=C&man1=D&...   with A,C the id's of the first and second type and with B,D the id's of the selected managers for these types
-    i = 0
-    cat= "cat"
-    man = "man"
-    while request.REQUEST.get(cat+str(i)):
-        #Get the manager from the given id
-        manager = FMSUser.objects.get(user_ptr_id=request.REQUEST.get(man+str(i)))
-        # Query to get the id of the user that are chosen to be reponsible of the given category id in the given organisation
-        resul = UserTypeForOrganisation(int(request.REQUEST.get(cat+str(i))),manager.organisation.id)
-        # If such a user exists remove the category from this user because another user is now assigned to be responsible for this category
-        if resul.get_results():
-            FMSUser.objects.get(user_ptr_id=resul.get_results()[0][0]).categories.remove(ReportCategory.objects.get(pk=resul.get_results()[0][1]))
-        # Set for the user given in the request that he is responsible for this category
-        manager.categories.add(ReportCategory.objects.get(pk=request.REQUEST.get(cat+str(i))))
-        i = i+1
+    categoriesList = request.REQUEST.getlist("category")
+    groupsList     = request.REQUEST.getlist("group")
+
+    # Assign new groups to categories. So for each group, add category to dispatch_categories
+    for idx, groupParam in enumerate(groupsList):
+        newGroup = OrganisationEntity.objects.get(id=groupParam)
+        category = ReportCategory.objects.get(pk=categoriesList[idx])
+
+        # Before add, need to remove this category from the old group.
+        oldGroups = category.assinged_to_department.filter(dependency=request.user.fmsuser.get_organisation)
+        for group in oldGroups:
+            group.dispatch_categories.remove(category)
+
+        newGroup.dispatch_categories.add(category)
+
     return HttpResponseRedirect(reverse("category_gestionnaire_configuration"))
 
 def get_report_popup_details(request):
@@ -95,7 +92,7 @@ def update_category_for_report(request,report_id):
 
 def send_pdf(request,report_id):
 
-    
+
     user = get_current_user();
     recipients = request.POST.get('to');
     comments = request.POST.get('comments');

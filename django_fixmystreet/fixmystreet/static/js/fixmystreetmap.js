@@ -122,7 +122,7 @@ fms.filterMapWithStatus = function(){
                 fms.currentMap.markersLayer.addFeatures(markers);
             }
         }
-        );
+    );
 }
 
 // Controller of regional layer
@@ -508,6 +508,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 }});*/
             this.map.addLayer(this.markersLayer);
 
+            var self= this;
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 onSelect: function(feature){
                     if(feature.layer.name != "Dragable Layer" && !feature.cluster){
@@ -579,17 +580,16 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
                                     new OpenLayers.Size(400,220),
                                     popoverContent,
-                                    true
+                                    true,
+                                    function closeMe() {
+                                        self.selectFeature.onUnselect(feature);
+                                    }
                                 );
                                 popup.panMapIfOutOfView = true;
 
                                 fms.currentMap.map.addPopup(popup);
-                                fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
-                                    for(var i=0, length=this.popups.length; i < length; i++) {
-                                        var popup = this.popups[i];
-                                        this.removePopup(popup);
-                                        popup.destroy();
-                                    }
+                                fms.currentMap.map.events.register("zoomend", null, function() {
+                                    self.selectFeature.onUnselect(feature);
                                 });
                             }
                         });
@@ -606,17 +606,16 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                 new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
                                 new OpenLayers.Size(400,220),
                                 content,
-                                true
+                                true,
+                                function closeMe() {
+                                    self.selectFeature.onUnselect(feature);
+                                }
                             );
                             popup.panMapIfOutOfView = true;
 
                             fms.currentMap.map.addPopup(popup);
-                            fms.currentMap.map.events.register("zoomend", fms.currentMap.map, function() {
-                                for(var i=0, length=this.popups.length; i < length; i++) {
-                                    var popup = this.popups[i];
-                                    this.removePopup(popup);
-                                    popup.destroy();
-                                }
+                            fms.currentMap.map.events.register("zoomend", null, function() {
+                                self.selectFeature.onUnselect(feature);
                             });
                         }
                         else{

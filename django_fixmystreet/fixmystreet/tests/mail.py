@@ -83,7 +83,7 @@ class MailTest(TestCase):
             region=False,
             subcontractor=True,
             applicant=False)
-        self.contractor.save()        
+        self.contractor.save()
 
         self.sample_post = {
             'report-x': '150056.538',
@@ -121,6 +121,18 @@ class MailTest(TestCase):
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0,
             'report-terms_of_use_validated': True
+        }
+
+        self.sample_post_mail_pdf_pro = {
+        'comments':'test comment',
+        'privacy':'private',
+        'to':'test@test.com,filip@test.com;test@filip.com'
+        }
+
+        self.sample_post_mail_pdf_citzen = {
+        'comments':'test comment',
+        'privacy':'public',
+        'to':'test@test.com,filip@test.com;test@filip.com'
         }
 
     def testCreateReportMail(self):
@@ -440,7 +452,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 7)
         self.assertTrue(self.impetrant.workers.all()[0].email in mail.outbox[6].to)
 
-        
+
 
     def testAssignToContractorMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
@@ -494,6 +506,8 @@ class MailTest(TestCase):
         self.client.logout()
         response = self.client.post(reverse('report_show', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
+            'citizen-email'   : self.citizen.email,
+            'citizen-quality' : 1,
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
@@ -641,4 +655,40 @@ class MailTest(TestCase):
         self.assertEqual(report2_id,Report.objects.get(id=report_id).merged_with.id)
         #A mail has been sent to the creator of the first report to notify him that his report has been merged
         self.assertEquals(len(mail.outbox),5)
+
+    def testSendPDFProMail(self):
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('report', response.context)
+        report_id = response.context['report'].id
+        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+
+        #Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+        #Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(mail.outbox), 3)
+        #Now send Pro PDF
+        response = self.client.post(reverse('send_pdf', args=[report_id]), self.sample_post_mail_pdf_pro)
+        #Now 3 additional mails should be sent
+        self.assertEquals(len(mail.outbox), 6)
+
+    def testSendPDFCitizenMail(self):
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        self.assertEquals(response.status_code, 200)
+        self.assertIn('report', response.context)
+        report_id = response.context['report'].id
+        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+
+        #Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+        #Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(mail.outbox), 3)
+        #Now send Pro PDF
+        response = self.client.post(reverse('send_pdf', args=[report_id]), self.sample_post_mail_pdf_citzen)
+        #Now 3 additional mails should be sent
+        self.assertEquals(len(mail.outbox), 6)
 

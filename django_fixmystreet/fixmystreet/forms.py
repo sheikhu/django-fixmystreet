@@ -144,7 +144,7 @@ class CitizenForm(forms.Form):
 
     def save(self):
         try:
-            instance = FMSUser.objects.get(email=self.cleaned_data["email"]);
+            instance = FMSUser.objects.get(email=self.cleaned_data["email"])
         except FMSUser.DoesNotExist:
             data = self.cleaned_data.copy()
             #For unique constraints

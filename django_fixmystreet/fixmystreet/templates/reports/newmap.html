@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n tags %}
+{% block title %}{% trans "New Report" %}{% endblock %}
+
+{% block meta %}
+<meta property="og:title" content="{% trans 'New Report' %}" />
+<meta property="og:description" content="{% trans 'Signalez tout type d incident. Sur fix my street qui identifiera alors le service public en charge de le traiter.' %}" />
+{% endblock %}
+
+
+{% block script %}
+{{ block.super }}
+<script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
+<script src="{{ STATIC_URL }}js/categorySelection.js"></script>
+<script src="{{STATIC_URL}}js/new_report.js"></script>
+<script>
+var zipcodes = new Object();
+
+{% for zip in all_zips %}
+zipcodes[{{zip.code}}] = new Object();
+zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+{% endfor %}
+
+$(function(){
+	mapPoint = UtilGeolocation.convertCoordinatesToWMS(4.369108, 50.845998);
+
+	fms.currentMap = new fms.Map('map', {
+        apiLang:     LANGUAGE_CODE,
+        localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+        urbisUrl:    WMS_SERVICE_URL,
+        origin:{
+            x:mapPoint.x,
+            y:mapPoint.y
+        }
+    });
+
+    fms.currentMap.map.zoomTo(1);
+
+
+    document.getElementById('placeMarkerButton').addEventListener('click', function() {
+        fms.currentMap.addDraggableMarker(fms.currentMap.map.getCenter().lon, fms.currentMap.map.getCenter().lat);
+        document.getElementById('continueButton').classList.remove('hidden')
+    });
+
+
+    document.getElementById('continueButton').addEventListener('click', function() {  
+        
+        {% if not pro_user %}      
+        window.location = "{% url 'report_new' %}?x="+fms.currentMap.getSelectedLocation().x + "&y=" + fms.currentMap.getSelectedLocation().y;
+        {% else %}
+         window.location = "{% url 'report_new_pro' %}?x="+fms.currentMap.getSelectedLocation().x + "&y=" + fms.currentMap.getSelectedLocation().y;
+        {% endif %}
+    });
+
+
+	});
+</script>
+
+{% endblock %}
+
+
+
+{% block map %}
+
+<article id="map" class="bigMap" style="height:600px">
+    
+    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+</article>
+{% endblock %}
+
+{% block content %}
+
+<br><br>
+	<a id='placeMarkerButton' class="btn pull-left">{% trans 'place marker' %}</a>
+
+	<a id='continueButton' class="btn pull-right hidden" >{% trans 'continue' %}</a>
+
+
+
+
+{% endblock %}

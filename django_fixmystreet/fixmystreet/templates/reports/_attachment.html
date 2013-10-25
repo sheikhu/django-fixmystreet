@@ -33,14 +33,14 @@
 
     {% if privacy == 'private' %}
     <p class="author-sign comment-date">
-        {% blocktrans with by=attachment.get_display_name on=attachment.created %}
-        Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+        {% blocktrans with by=attachment.reportcomment.get_display_name_as_pro email=attachment.created_by.email on=attachment.created %}
+            Posted by <strong><a href="mailto:{{email}}">{{by}}</a></strong> on <strong>{{on}}</strong>
         {% endblocktrans %}
     </p>
     {% else %}
     <p class="author-sign comment-date">
-        {% blocktrans with on=report.created %}
-        Posted on <strong>{{on}}</strong>
+        {% blocktrans with by=attachment.reportcomment.get_display_name_as_citizen on=report.created %}
+        Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
         {% endblocktrans %}
     </p>
     {% endif %}

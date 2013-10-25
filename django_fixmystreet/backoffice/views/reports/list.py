@@ -32,7 +32,7 @@ def filter_reports(user, criteria):
         pnt = dict_to_point(default_position)
         is_default_position = True
 
-    reports = Report.objects.all()
+    reports = Report.objects.all().filter(merged_with__isnull=True)
 
 
     #if the user is an contractor then user the dependent organisation id
@@ -83,7 +83,7 @@ def filter_reports(user, criteria):
 
 
 def list(request):
-    search_form = SearchIncidentForm(request.GET)
+    search_form = SearchIncidentForm(request.GET,request.fmsuser)
     reports, pnt = filter_reports(request.fmsuser, request.GET)
 
     zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
@@ -109,11 +109,11 @@ def list(request):
 
 
 def table(request):
-    search_form = SearchIncidentForm(request.GET)
+    search_form = SearchIncidentForm(request.GET,request.fmsuser)
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
-    reports = Report.objects.all()
+    reports = Report.objects.all().filter(merged_with__isnull=True)
 
     if request.fmsuser.organisation:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)

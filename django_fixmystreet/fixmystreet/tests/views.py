@@ -10,7 +10,7 @@ class ReportViewsTest(SampleFilesTestCase):
     fixtures = ["bootstrap","list_items"]
 
     def setUp(self):
-        self.user = User.objects.create_user(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
+        self.user = FMSUser(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
         self.user.save()
         self.client = Client()
         self.citizen = FMSUser(
@@ -197,17 +197,18 @@ class ReportViewsTest(SampleFilesTestCase):
 
     def test_add_comment(self):
         """Tests the update of a report."""
-        self.client.login(username='manager@a.com', password='test')
-
         url = "%s?x=148360&y=171177" % reverse('report_new')
         response = self.client.post(url, self.sample_post, follow=True)
         report = response.context['report']
 
         self.assertEqual(report.comments().count(), 1)
+        self.assertEqual(report.comments()[0].created_by, self.citizen)
         report.save()
 
         response = self.client.post(reverse('report_show', kwargs={'report_id': report.id, 'slug':'hello'}), {
             'comment-text': 'new created comment',
+            'citizen-email'   : self.user.email,
+            'citizen-quality' : 1,
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
@@ -216,6 +217,31 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertRedirects(response, report.get_absolute_url())
 
         self.assertEqual(report.comments().count(), 2)
+        self.assertEqual(report.comments()[1].created_by, self.user)
+
+    def test_add_comment_as_pro(self):
+        """Tests the update of a report as a pro."""
+        self.client.login(username='manager@a.com', password='test')
+
+        url = "%s?x=148360&y=171177" % reverse('report_new_pro')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        self.assertEqual(report.comments().count(), 1)
+        self.assertEqual(report.comments()[0].created_by, self.manager)
+        report.save()
+
+        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report.id, 'slug':'hello'}), {
+            'comment-text': 'new created comment',
+            'files-TOTAL_FORMS': 0,
+            'files-INITIAL_FORMS': 0,
+            'files-MAX_NUM_FORMS': 0
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, report.get_absolute_url_pro())
+
+        self.assertEqual(report.comments().count(), 2)
+        self.assertEqual(report.comments()[1].created_by, self.manager)
 
     def test_change_category(self):
         self.client.login(username='manager@a.com', password='test')

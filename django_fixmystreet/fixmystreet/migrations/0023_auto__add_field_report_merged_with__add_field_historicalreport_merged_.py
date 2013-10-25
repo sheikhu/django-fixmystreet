@@ -18,9 +18,11 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(db_index=True, null=True, blank=True),
                       keep_default=False)
 
+        # Adding field 'ReportEventLog.merged_with_id'
+        db.add_column(u'fixmystreet_reporteventlog', 'merged_with_id',
+                      self.gf('django.db.models.fields.PositiveIntegerField')(null=True),
+                      keep_default=False)
 
-        # Changing field 'HistoricalReport.photo'
-        db.alter_column(u'fixmystreet_historicalreport', 'photo', self.gf('django.db.models.fields.files.FileField')(max_length=100))
 
     def backwards(self, orm):
         # Deleting field 'Report.merged_with'
@@ -29,9 +31,9 @@ class Migration(SchemaMigration):
         # Deleting field 'HistoricalReport.merged_with_id'
         db.delete_column(u'fixmystreet_historicalreport', 'merged_with_id')
 
+        # Deleting field 'ReportEventLog.merged_with_id'
+        db.delete_column(u'fixmystreet_reporteventlog', 'merged_with_id')
 
-        # Changing field 'HistoricalReport.photo'
-        db.alter_column(u'fixmystreet_historicalreport', 'photo', self.gf('django.db.models.fields.TextField')(max_length=100))
 
     models = {
         u'auth.group': {
@@ -176,6 +178,7 @@ class Migration(SchemaMigration):
             'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'date_planned': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'false_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fixed_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'gravity': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'hash_code': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -189,7 +192,7 @@ class Migration(SchemaMigration):
             'merged_with_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'photo': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'photo': ('django.db.models.fields.TextField', [], {'max_length': '100', 'blank': 'True'}),
             'planned': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'point': ('django.contrib.gis.db.models.fields.PointField', [], {'srid': '31370', 'null': 'True', 'blank': 'True'}),
             'postalcode': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
@@ -264,6 +267,7 @@ class Migration(SchemaMigration):
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'report_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
             'date_planned': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'false_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fixed_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'gravity': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'hash_code': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -333,6 +337,7 @@ class Migration(SchemaMigration):
             'event_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'event_type': ('django.db.models.fields.IntegerField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'merged_with_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
             'organisation': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'activities'", 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'related_content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']", 'null': 'True'}),
             'related_new_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
