@@ -20,10 +20,11 @@
     var users_field          = document.querySelector('select[name="users"]');
     var users_list           = document.getElementById('memberships');
 
-    // AJAX request to remove membership
-    function removeMembership(evt) {
+
+    // Init event
+    $('#memberships').delegate('button', 'click', function removeMembership(evt) {
+        // AJAX request to remove membership
         evt.preventDefault();
-        console.log('Remove');
 
         var user = $(this).closest('tr');
         var membership_id = user.prop('id');
@@ -33,38 +34,57 @@
             user.removeClass('loading');
             if (data == 'OK') {
                 user.remove();
+                refreshDisabledUser();
             }
         });
-    }
-
-    users_field.addEventListener('change', function () {
-        console.log("create membership");
-
-        var self = this;
-        var selectedIndex = this.selectedIndex;
-        var user_id = this.options[selectedIndex].value;
-
-        $(self).addClass('loading');
-        // AJAX request to add membership
-        $.getJSON("/pro/groups/membership/add/" + group_id + "/" + user_id + "/", function(data) {
-
-            $(self).removeClass('loading');
-            if (data.status == 'OK') {
-                var membership_id = data.membership_id
-
-                var new_user = $('#memberships .hidden').clone().removeClass('hidden');
-                new_user.prop("id", membership_id);
-                new_user.find('.name').html(self.options[selectedIndex].text);
-
-                $(users_list).append(new_user);
-            }
-
-        });
-
     });
 
-    // Init event
-    $('#memberships').delegate('button', 'click', removeMembership);
+    users_field.addEventListener('change', function addMembership() {
+        var $this = $(this);
+        var user_id = $this.val();
+
+        if (!user_id) {
+            return;
+        }
+
+        $this.addClass('loading');
+        // AJAX request to add membership
+        $.getJSON("/pro/groups/membership/add/" + group_id + "/" + user_id + "/")
+        .success(function(data) {
+
+            $this.removeClass('loading');
+            $this.val(null);
+            if (data.status == 'OK') {
+                var userOption = $this.find('option[value=' + user_id + ']');
+
+                var membership_id = data.membership_id;
+
+                var new_user = $('#memberships .hidden').clone();
+                new_user.removeClass('hidden');
+                new_user.prop("id", membership_id).data('user', user_id);
+                new_user.find('.name').html(userOption.text());
+
+                $(users_list).append(new_user);
+                refreshDisabledUser();
+            }
+        }).error(function (error) {
+            $this.removeClass('loading');
+            $this.val(null);
+            console.error(error);
+        });
+    });
+
+    function refreshDisabledUser() {
+        options = $(users_field).find('option');
+        options.prop('disabled', false);
+
+        $('#memberships tr').each(function (index, row) {
+            var user_id = $(row).data('user');
+            var userOption = options.filter('[value=' + user_id + ']');
+            userOption.prop('disabled', true);
+        });
+    }
+    refreshDisabledUser();
 
 </script>
 {% endblock %}
@@ -102,14 +122,14 @@
 
     <table id="memberships">
         {% for membership in memberships %}
-            <tr id="{{ membership.id }}">
+            <tr id="{{ membership.id }}" data-user="{{ membership.user.id }}">
+            <td><button><i class="icon-remove"></i></button></td>
                 <td class="name">{{ membership.user }}</td>
-                <td><button>Remove</button></td>
             </tr>
         {% endfor %}
         <tr class="hidden">
+            <td><button><i class="icon-remove"></i></button></td>
             <td class="name">template line</td>
-            <td><button>Remove</button></td>
         </tr>
     </table>
 
