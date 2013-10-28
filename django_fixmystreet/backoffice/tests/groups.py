@@ -134,12 +134,18 @@ class GroupsTest(TestCase):
 
         #check to see only your organisation's groups is enabled again also update the number of the element we get from the array
         self.assertEquals(groups.count(), 2)
-        self.assertEquals(groups[0].name_fr, 'groupe3')
-        self.assertEquals(groups[0].name_nl, 'groep3')
-        self.assertEquals(groups[0].phone, '0000000000')
-        self.assertEquals(groups[0].email, 'group3@test.com')
-        self.assertEquals(groups[0].type, 'D')
-        self.assertEquals(groups[0].dependency, self.leader.organisation)
+
+        if groups[0].name_fr == 'groupe3':
+            group = groups[0]
+        else:
+            group = groups[1]
+
+        self.assertEquals(group.name_fr, 'groupe3')
+        self.assertEquals(group.name_nl, 'groep3')
+        self.assertEquals(group.phone, '0000000000')
+        self.assertEquals(group.email, 'group3@test.com')
+        self.assertEquals(group.type, 'D')
+        self.assertEquals(group.dependency, self.leader.organisation)
 
         #now test create with user who is not leader
         self.client.logout()
