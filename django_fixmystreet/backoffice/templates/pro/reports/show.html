@@ -28,7 +28,7 @@ $(function(){
     /***************************/
     /* Set the current manager */
     /***************************/
-    $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+    $("#report_responsible_manager_select").val("department_{{report.responsible_department.id}}");
 
     /*************************************************************/
     /* Implement method when changing manager using the dropdown */
@@ -39,7 +39,7 @@ $(function(){
             window.location = '{% url "report_change_manager_pro" report.id %}?manId='+$("#report_responsible_manager_select").val();
         }
         else{
-            $("#report_responsible_manager_select").val("manager_{{report.responsible_manager.id}}");
+            $("#report_responsible_manager_select").val("department_{{report.responsible_department.id}}");
         }
     });
     /******************************/
@@ -447,7 +447,7 @@ function showMergeConfirmation(){
                     <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
                 </tr>
 
-                {% if request.user.id == report.responsible_manager.id and not report.is_merged %}
+                {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                 <tr>
                     <th><strong>{% trans "Wrong address:" %}</strong></th>
                     <td colspan="2"><textarea id="false_address" name="false_address" {% if not report.false_address %}class="hidden"{% endif %}>{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea></td>
@@ -462,7 +462,7 @@ function showMergeConfirmation(){
                         </tr>
                     {% endif %}
                 {% endif %}
-                {% if request.user.id == report.responsible_manager.id and report.is_in_progress and not report.is_merged %}
+                {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
                 <tr>
                     <th><strong>{% trans "Category:" %}</strong></th>
                     <td colspan="4">
@@ -501,7 +501,7 @@ function showMergeConfirmation(){
                 {% endif %}
 
                 {% if report.is_in_progress %}
-                    {% if request.user.id == report.responsible_manager.id and not report.is_merged %}
+                    {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                         <!-- ############################### -->
                         <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
                         <!-- ############################### -->
@@ -510,8 +510,8 @@ function showMergeConfirmation(){
                             <td colspan="4">
                                 <select id="report_responsible_manager_select">
                                    <optgroup label="{% trans 'Gestionnaires' %}">
-                                    {% for manager in managers %}
-                                        <option value="manager_{{manager.id}}">{{manager.first_name}} {{ manager.last_name}} ({{manager.organisation}})</option>
+                                    {% for department in departments %}
+                                        <option value="department_{{department.id}}">{{department.name}} ({{ department.dependency.name}})</option>
                                     {% endfor %}
                                     </optgroup>
                                     <optgroup label="{% trans 'Entites' %}">
@@ -729,7 +729,7 @@ function showMergeConfirmation(){
         <!-- # DISPLAY FILES AND COMMENTS SECTION  # -->
         <!-- ########################## -->
         <div class="bordered-box">
-            {% if report.is_in_progress and report.responsible_manager.id == request.user.id %}
+            {% if report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list %}
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
             {% endif %}
 
@@ -774,7 +774,7 @@ function showMergeConfirmation(){
         <!-- #################################### -->
         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
         <!-- #################################### -->
-        {% if report.responsible_manager == request.fmsuser %}
+        {% if report.responsible_department in request.fmsuser.organisations_list %}
             <button onclick="showNearbyReports();" class="btn" id="btn-merge">{% trans 'Merge' %}</button>
             <!-- ############################################# -->
             <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->

@@ -50,6 +50,7 @@ def change_password(request):
         form = PasswordChangeForm(request.fmsuser, request.POST)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.SUCCESS, _("Password changed successfully"))
             return HttpResponseRedirect('')
     else:
         form = PasswordChangeForm(request.fmsuser)

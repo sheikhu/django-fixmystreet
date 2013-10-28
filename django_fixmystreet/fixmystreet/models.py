@@ -195,6 +195,13 @@ class FMSUser(User):
     def is_user_type(self, user_type):
         return getattr(self, user_type, False)
 
+    def organisations_list(self):
+        result = []
+        memberships = self.memberships.all()
+        for membership in memberships:
+            result.append(membership.organisation)
+        return result
+
     def toJSON(self):
         d = {}
         d['id'] = getattr(self, 'id')
@@ -336,14 +343,15 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
         if (user.contractor or user.applicant) and (user.manager):
             query = Q(contractor=user.organisation)
-            query2 = Q(responsible_manager=user)
-            return self.filter(query) | self.filter(query2)
+            # query2 = Q(responsible_manager=user)
+            query3 = Q(responsible_department__in = user.organisations_list())
+            return self.filter(query) | self.filter(query3)
 
         if user.contractor or user.applicant:
             query = query | Q(contractor=user.organisation)
 
         if user.manager or user.leader or user.agent:
-            query = query | Q(responsible_manager=user)
+            query = query | Q(responsible_department__in = user.organisations_list())
 
         return self.filter(query)
 
@@ -915,9 +923,11 @@ def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_manager:
         #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
+        departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories = instance.secondary_category)
         users = instance.responsible_entity.team.filter(manager=True, categories=instance.secondary_category)
         if len(users) > 0:
             instance.responsible_manager = users[0]
+            instance.responsible_department = departements[0]
         else:
             raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 

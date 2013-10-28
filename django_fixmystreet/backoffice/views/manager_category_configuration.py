@@ -50,7 +50,7 @@ def update(request):
             "maincategories" : maincategories,
             "table": getTable(),
             "categories":categories,
-            "groupDropDown":OrganisationEntity.objects.filter(department=True),
+            "groupDropDown":OrganisationEntity.objects.filter(type=OrganisationEntity.DEPARTMENT),
             "firstCateg":mainCategory,
             "secondCateg":secondCategory
         },

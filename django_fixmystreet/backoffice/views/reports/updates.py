@@ -117,6 +117,10 @@ def changeManager(request,report_id):
     old_resp_man = report.responsible_manager
     report.previous_managers.add(old_resp_man)
     manId = request.REQUEST.get("manId")
+    if manId.split("_")[0] == "department":
+        newRespMan = OrganisationEntity.objects.get(pk=int(manId.split("_")[1]))
+        report.responsible_department = newRespMan
+        report.save()
     if manId.split("_")[0] == "manager":
         newRespMan = FMSUser.objects.get(pk=int(manId.split("_")[1]))
         report.responsible_manager = newRespMan

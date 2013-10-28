@@ -310,6 +310,10 @@ div.footer_left img {
     pointer-events: none;
 }
 
+.olControlLoadingPanel {
+    background: url('/static/images/loader.gif');
+}
+
 #map img {
     /* overwride twitter bootstrap */
     max-width: none;

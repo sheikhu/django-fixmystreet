@@ -151,7 +151,6 @@ def show(request,slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
     report = get_object_or_404(Report, id=report_id)
-
     if request.method == "POST":
         file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
@@ -186,7 +185,7 @@ def show(request,slug, report_id):
     organisation = request.fmsuser.organisation
 
     managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True)
-
+    departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT)
     region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
     entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
     if organisation:
@@ -212,13 +211,14 @@ def show(request,slug, report_id):
                 "file_formset":file_formset,
                 "region_institution":region_institution,
                 "managers":managers,
+                "departments":departments,
                 "contractors":contractors,
                 "applicants":applicants,
                 "entities":entities,
                 "refuse_form": RefuseForm(instance=report),
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),
-                'attachment_edit': request.fmsuser == report.responsible_manager and (report.is_created() or report.is_in_progress()),
+                'attachment_edit': report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list() and (report.is_created() or report.is_in_progress()),
                 "nearby_reports":nearby_reports,
                 "category_list":ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()),
             },
