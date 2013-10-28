@@ -8,10 +8,10 @@ class GroupsTest(TestCase):
 
     fixtures = ["bootstrap","list_items"]
 
-    def setUp(self): 
+    def setUp(self):
         self.manager = FMSUser(
             telephone="0123456789",
-            last_used_language="fr", 
+            last_used_language="fr",
             password='test',
             first_name="manager",
             last_name="manager",
@@ -60,7 +60,7 @@ class GroupsTest(TestCase):
             'name_fr':'groupe3',
             'name_nl':'groep3',
             'phone':'0000000000',
-            'email':'group3@test.com', 
+            'email':'group3@test.com',
             'type':'D'
         }
 
@@ -68,7 +68,7 @@ class GroupsTest(TestCase):
             'name_fr':'groupe4',
             'name_nl':'groep4',
             'phone':'0000000000',
-            'email':'group4@test.com', 
+            'email':'group4@test.com',
             'type':'S'
         }
 
@@ -76,14 +76,14 @@ class GroupsTest(TestCase):
             'name_fr':'groupe1nouveau',
             'name_nl':'groep1nieuw',
             'phone':'111111',
-            'email':'group1new@test.com', 
+            'email':'group1new@test.com',
             'type':'D'
         }
         self.editgroup_post2 = {
             'name_fr':'groupe2nouveau',
             'name_nl':'groep2nieuw',
             'phone':'2222222',
-            'email':'group2new@test.com', 
+            'email':'group2new@test.com',
             'type':'S'
         }
 
@@ -98,8 +98,9 @@ class GroupsTest(TestCase):
         groups = response.context['groups']
         self.assertFalse(can_create)
         #now check that all groups are groups of organisation should only be group1 as the other is assigned to other entity
-        #todo Re enable line below if check to see only your groups is back enabled
-        #self.assertEquals(groups.count(), 1)
+
+        #check to see only your groups is back enabled
+        self.assertEquals(groups.count(), 1)
         self.assertEquals(self.group1, groups[0])
         #now do same test with leader user the result should be the same only can_create has to be true
         self.client.logout()
@@ -113,15 +114,16 @@ class GroupsTest(TestCase):
         groups = response.context['groups']
         self.assertTrue(can_create)
         #now check that all groups are groups of organisation should only be group1 as the other is assigned to other entity
-        #todo reanable test if the security to show only groups of your organisation is enabled
-        #self.assertEquals(groups.count(), 1)
+        #test if the security to show only groups of your organisation is enabled
+        self.assertEquals(groups.count(), 1)
         self.assertEquals(self.group1, groups[0])
 
     def testCreateGroups(self):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('create_group'), self.creategroup_post)
         self.assertEquals(response.status_code, 302)
-        response = self.client.post(reverse('list_groups'), follow=True)       
+        response = self.client.post(reverse('list_groups'), follow=True)
+
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -129,20 +131,23 @@ class GroupsTest(TestCase):
         groups = response.context['groups']
         can_create = response.context['can_create']
         self.assertTrue(can_create)
-        #todo re enable if the check to see only your organisation's groups is enabled again also update the number of the element we get from the array
-        #self.assertEquals(groups.count(), 2)
-        self.assertEquals(groups[2].name_fr, 'groupe3')
-        self.assertEquals(groups[2].name_nl, 'groep3')
-        self.assertEquals(groups[2].phone, '0000000000')
-        self.assertEquals(groups[2].email, 'group3@test.com')
-        self.assertEquals(groups[2].type, 'D')
-        self.assertEquals(groups[2].dependency, self.leader.organisation)
+
+        #check to see only your organisation's groups is enabled again also update the number of the element we get from the array
+        self.assertEquals(groups.count(), 2)
+        self.assertEquals(groups[0].name_fr, 'groupe3')
+        self.assertEquals(groups[0].name_nl, 'groep3')
+        self.assertEquals(groups[0].phone, '0000000000')
+        self.assertEquals(groups[0].email, 'group3@test.com')
+        self.assertEquals(groups[0].type, 'D')
+        self.assertEquals(groups[0].dependency, self.leader.organisation)
+
         #now test create with user who is not leader
         self.client.logout()
         self.client.login(username='manager@a.com', password='test')
         response = self.client.post(reverse('create_group'), self.creategroup_post2)
         self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)       
+        response = self.client.post(reverse('list_groups'), follow=True)
+
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -150,72 +155,15 @@ class GroupsTest(TestCase):
         can_create = response.context['can_create']
         self.assertFalse(can_create)
         groups = response.context['groups']
-        #todo change to correct value once the show only groups of your organisation is enabled
-        self.assertEquals(groups.count(), 3)
+
+        self.assertEquals(groups.count(), 2)
 
     def testEditGroups(self):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post)
         self.assertEquals(response.status_code, 302)
-        response = self.client.post(reverse('list_groups'), follow=True)       
-        #now check if we have 2 groups and that the 2nd is group3
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue('groups' in response.context)
-        self.assertTrue('can_create' in response.context)
-        groups = response.context['groups']
-        can_create = response.context['can_create']
-        self.assertTrue(can_create)
-        self.assertEquals(groups.count(), 2)
-        self.assertEquals(groups[1].name_fr, 'groupe1nouveau')
-        self.assertEquals(groups[1].name_nl, 'groep1nieuw')
-        self.assertEquals(groups[1].phone, '111111')
-        self.assertEquals(groups[1].email, 'group1new@test.com')
-        self.assertEquals(groups[1].type, 'D')
-        self.assertEquals(groups[1].dependency, self.leader.organisation)
-        #now do the test with a non leader
-        self.client.logout()
-        self.client.login(username='manager@a.com', password='test')
-        response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post2)
-        self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)       
-        #now check if we have 2 groups and that the 2nd is group3
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue('groups' in response.context)
-        self.assertTrue('can_create' in response.context)
-        groups = response.context['groups']
-        can_create = response.context['can_create']
-        self.assertFalse(can_create)
-        self.assertEquals(groups.count(), 2)
-        #should still be the same as this user does not have the rights to update groups
-        self.assertEquals(groups[1].name_fr, 'groupe1nouveau')
-        self.assertEquals(groups[1].name_nl, 'groep1nieuw')
-        self.assertEquals(groups[1].phone, '111111')
-        self.assertEquals(groups[1].email, 'group1new@test.com')
-        self.assertEquals(groups[1].type, 'D')
-        self.assertEquals(groups[1].dependency, self.leader.organisation)
+        response = self.client.post(reverse('list_groups'), follow=True)
 
-    def testDeleteGroups(self):
-        #first try to delete with user who has no permissions
-        self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)       
-        #now check if we have 2 groups and that the 2nd is group3
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue('groups' in response.context)
-        self.assertTrue('can_create' in response.context)
-        groups = response.context['groups']
-        can_create = response.context['can_create']
-        self.assertFalse(can_create)
-        self.assertEquals(groups.count(), 2)
-        self.assertIn(self.group1, groups)
-
-        self.client.logout()
-        #now try to delete with user who can
-        self.client.login(username='leader@a.com', password='test')
-        response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        response = self.client.post(reverse('list_groups'), follow=True)       
         #now check if we have 2 groups and that the 2nd is group3
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
@@ -224,6 +172,70 @@ class GroupsTest(TestCase):
         can_create = response.context['can_create']
         self.assertTrue(can_create)
         self.assertEquals(groups.count(), 1)
+        self.assertEquals(groups[0].name_fr, 'groupe1nouveau')
+        self.assertEquals(groups[0].name_nl, 'groep1nieuw')
+        self.assertEquals(groups[0].phone, '111111')
+        self.assertEquals(groups[0].email, 'group1new@test.com')
+        self.assertEquals(groups[0].type, 'D')
+        self.assertEquals(groups[0].dependency, self.leader.organisation)
+
+        #now do the test with a non leader
+        self.client.logout()
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post2)
+        self.assertEquals(response.status_code, 200)
+        response = self.client.post(reverse('list_groups'), follow=True)
+
+        #now check if we have 1 group that depends of my organisation
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('groups' in response.context)
+        self.assertTrue('can_create' in response.context)
+        groups = response.context['groups']
+        can_create = response.context['can_create']
+        self.assertFalse(can_create)
+        self.assertEquals(groups.count(), 1)
+
+        #should still be the same as this user does not have the rights to update groups
+        self.assertEquals(groups[0].name_fr, 'groupe1nouveau')
+        self.assertEquals(groups[0].name_nl, 'groep1nieuw')
+        self.assertEquals(groups[0].phone, '111111')
+        self.assertEquals(groups[0].email, 'group1new@test.com')
+        self.assertEquals(groups[0].type, 'D')
+        self.assertEquals(groups[0].dependency, self.leader.organisation)
+
+    def testDeleteGroups(self):
+        #first try to delete with user who has no permissions
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        response = self.client.post(reverse('list_groups'), follow=True)
+
+        #now check if we have 1 group that depends of my organisation
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('groups' in response.context)
+        self.assertTrue('can_create' in response.context)
+        groups = response.context['groups']
+        can_create = response.context['can_create']
+        self.assertFalse(can_create)
+        self.assertEquals(groups.count(), 1)
+        self.assertIn(self.group1, groups)
+
+        self.client.logout()
+
+        #now try to delete with user who can
+        self.client.login(username='leader@a.com', password='test')
+        response = self.client.get(reverse('delete_group', args=[self.group1.id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        response = self.client.post(reverse('list_groups'), follow=True)
+
+        #now check if we have 2 groups and that the 2nd is group3
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('groups' in response.context)
+        self.assertTrue('can_create' in response.context)
+        groups = response.context['groups']
+        can_create = response.context['can_create']
+        self.assertTrue(can_create)
+        self.assertEquals(groups.count(), 0)
         self.assertNotIn(self.group1, groups)
 
     def testAssignMemberToGroup(self):
@@ -278,4 +290,4 @@ class GroupsTest(TestCase):
 
 
 
-        
+
