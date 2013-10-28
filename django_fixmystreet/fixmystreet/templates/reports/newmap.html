@@ -41,7 +41,9 @@ $(function(){
 
     document.getElementById('placeMarkerButton').addEventListener('click', function() {
         fms.currentMap.addDraggableMarker(fms.currentMap.map.getCenter().lon, fms.currentMap.map.getCenter().lat);
-        document.getElementById('continueButton').classList.remove('hidden')
+        document.getElementById('continueButton').classList.remove('hidden');
+        document.getElementById('placeMarkerButton').classList.add('hidden');
+        
     });
 
 
