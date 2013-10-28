@@ -34,13 +34,15 @@ class RefuseForm(forms.ModelForm):
         fields = ('refusal_motivation',)
 
     refusal_motivation = forms.CharField(
-                required=True,
-                label=_('Refusal motivation'),
-                widget=forms.Textarea(attrs={
-                    'placeholder': _("Refusal motivation description.")
-                }))
+        required=True,
+        label=_('Refusal motivation'),
+        widget=forms.Textarea(attrs={
+            'placeholder': _("Refusal motivation description.")
+        })
+    )
+
     def save(self, commit=True):
-        report = super(RefuseForm,self).save(commit=False)
+        report = super(RefuseForm, self).save(commit=False)
         report.status = Report.REFUSED
         if commit:
             report.save()
@@ -49,15 +51,42 @@ class RefuseForm(forms.ModelForm):
 
 class FmsUserForm(forms.ModelForm):
     required_css_class = 'required'
+
     class Meta:
         model = FMSUser
-        fields = ('first_name','last_name','telephone','email','is_active')
+        fields = (
+            'first_name',
+            'last_name',
+            'telephone',
+            'email',
+            'is_active',
+            'leader',
+            'agent',
+            'manager',
+            'contractor'
+        )
 
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=True)
     email = forms.EmailField(required=True, label=_('Email'))
     telephone = forms.CharField(max_length="20")
-    is_active = forms.BooleanField(required=False, initial=True, help_text="only active users can login.", label="Active")
+    is_active = forms.BooleanField(
+        required=False,
+        initial=True,
+        help_text="only active users can login.",
+        label="Active"
+    )
+
+    leader = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'disabled': True
+        })
+    )
+
+    agent = forms.BooleanField(required=False)
+    manager = forms.BooleanField(required=False)
+    contractor = forms.BooleanField(required=False)
 
 
 class FmsUserCreateForm(FmsUserForm):
@@ -67,7 +96,7 @@ class FmsUserCreateForm(FmsUserForm):
         self.password = False
 
         if not user:
-            user = super(FmsUserCreateForm,self).save(commit=False)
+            user = super(FmsUserCreateForm, self).save(commit=False)
             user.lastUsedLanguage = "FR"
 
         if user.logical_deleted:
@@ -106,7 +135,8 @@ class FmsUserCreateForm(FmsUserForm):
     def notify_user(self):
         """
         Send directly an email to the created user
-        (do not use the reportnotification class because then the password is saved in plain text in the DB)
+        (do not use the reportnotification class because then the password is saved
+        in plain text in the DB)
         """
 
         if self.password:
@@ -121,23 +151,14 @@ class FmsUserCreateForm(FmsUserForm):
 
             # MAIL SENDING...
             subject, html, text = '', '', ''
-            try:
-                subject = render_to_string('emails/send_created_to_user/subject.txt', data)
-            except TemplateDoesNotExist:
-                logger.error('template {0} does not exist'.format('emails/send_created_to_user/subject.txt'))
-            try:
-                text    = render_to_string('emails/send_created_to_user/message.txt', data)
-            except TemplateDoesNotExist:
-                logger.error('template {0} does not exist'.format('emails/send_created_to_user/message.txt'))
 
-            try:
-                html    = render_to_string('emails/send_created_to_user/message.html', data)
-            except TemplateDoesNotExist:
-                logger.info('template {0} does not exist'.format('emails/send_created_to_user/message.html'))
+            subject = render_to_string('emails/send_created_to_user/subject.txt', data)
+            text = render_to_string('emails/send_created_to_user/message.txt', data)
+            html = render_to_string('emails/send_created_to_user/message.html', data)
 
             subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To":user.created_by.email})
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": user.created_by.email})
             if html:
                 msg.attach_alternative(html, "text/html")
 
@@ -169,8 +190,10 @@ class SearchIncidentForm(forms.Form):
         super(SearchIncidentForm, self).__init__(*args, **kwargs)
         self.fields['ownership'].choices = ownership_choices(args[1].get_user_type_list())
 
+
 class GroupForm(forms.ModelForm):
     required_css_class = 'required'
+
     class Meta:
         model = OrganisationEntity
         fields = ('name_fr', 'name_nl', 'phone', 'email', 'type')
@@ -183,18 +206,21 @@ class GroupForm(forms.ModelForm):
 
     type = forms.ChoiceField(widget=forms.RadioSelect, choices=OrganisationEntity.ENTITY_TYPE_GROUP)
 
-    users =  forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
+    users = forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
 
     def __init__(self, *args, **kwargs):
-        try:
-            edit = kwargs.pop('edit')
-        except KeyError:
-            edit = False
-
         super(GroupForm, self).__init__(*args, **kwargs)
 
-        if not edit:
+        if not self.instance.id:
             del self.fields['users']
+        else:
+            del self.fields['type']  # type is not editable due to possibility cpontains users
+            required_role = OrganisationEntity.ENTITY_GROUP_REQUIRED_ROLE[self.instance.type]
+            print self.instance.dependency
+            users_qs = self.fields['users'].queryset
+            users_qs = users_qs.filter(**{required_role: True})
+            users_qs = users_qs.filter(organisation=self.instance.dependency)
+            self.fields['users'].queryset = users_qs
 
     def save(self, commit=True):
         group = super(GroupForm, self).save(commit=False)

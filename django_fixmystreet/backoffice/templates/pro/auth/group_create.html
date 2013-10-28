@@ -16,7 +16,7 @@
 {% endif %}
 
 <script type="text/javascript">
-    var group_id             = {{ group_id }};
+    var group_id             = {{ group.id }};
     var users_field          = document.querySelector('select[name="users"]');
     var users_list           = document.getElementById('memberships');
 
@@ -25,12 +25,14 @@
         evt.preventDefault();
         console.log('Remove');
 
-        var li            = this.parentNode;
-        var membership_id = li.getAttribute('id');
+        var user = $(this).closest('tr');
+        var membership_id = user.prop('id');
 
+        user.addClass('loading');
         $.get( "/pro/groups/membership/remove/" + membership_id + "/", function(data) {
+            user.removeClass('loading');
             if (data == 'OK') {
-                users_list.removeChild(li);
+                user.remove();
             }
         });
     }
@@ -42,23 +44,19 @@
         var selectedIndex = this.selectedIndex;
         var user_id = this.options[selectedIndex].value;
 
+        $(self).addClass('loading');
         // AJAX request to add membership
-        $.getJSON( "/pro/groups/membership/add/" + group_id + "/" + user_id + "/", function( data ) {
+        $.getJSON("/pro/groups/membership/add/" + group_id + "/" + user_id + "/", function(data) {
 
+            $(self).removeClass('loading');
             if (data.status == 'OK') {
                 var membership_id = data.membership_id
 
-                var new_user      = document.createElement("li");
-                var button_remove = document.createElement("BUTTON");
+                var new_user = $('#memberships .hidden').clone().removeClass('hidden');
+                new_user.prop("id", membership_id);
+                new_user.find('.name').html(self.options[selectedIndex].text);
 
-                button_remove.textContent = "Remove";
-                button_remove.addEventListener('click', removeMembership);
-
-                new_user.setAttribute("id", membership_id);
-                new_user.innerHTML = self.options[selectedIndex].text + " - ";
-                new_user.appendChild(button_remove);
-
-                users_list.appendChild(new_user);
+                $(users_list).append(new_user);
             }
 
         });
@@ -66,16 +64,18 @@
     });
 
     // Init event
-    memberships = document.querySelectorAll('#memberships li');
-
-    for (var i=0, length = memberships.length; i < length; i++) {
-        memberships[i].querySelector('button').addEventListener('click', removeMembership);
-    }
+    $('#memberships').delegate('button', 'click', removeMembership);
 
 </script>
 {% endblock %}
 
-{% block title %} {% trans "Create group" %} {% endblock %}
+{% block title %}
+    {% if group_form.instance.id %}
+        {% blocktrans with group.name as name and group.get_type_display as type %}Edit {{ name }} ({{ type }}){% endblocktrans %}
+    {% else %}
+        {% trans "Create group" %}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 {{ block.super }}
@@ -90,27 +90,35 @@
 </div>
 <form action="" method="POST" class="form-centered form-horizontal">
     {% csrf_token %}
-    <h1>{% trans "Create group" %}</h1>
+    {% if group_form.instance.id %}
+        <h1>{% blocktrans with group.name as name and group.get_type_display as type %}Edit {{ name }} ({{ type }}){% endblocktrans %}</h1>
+    {% else %}
+        <h1>{% trans "Create group" %}</h1>
+    {% endif %}
 
     <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
 
     {% include "_form_horizontal.html" with form=group_form %}
 
-    <ul id="memberships">
+    <table id="memberships">
         {% for membership in memberships %}
-            <li id="{{ membership.id }}">
-                {{ membership.user }} -
-                <button>Remove</button>
-            </li>
+            <tr id="{{ membership.id }}">
+                <td class="name">{{ membership.user }}</td>
+                <td><button>Remove</button></td>
+            </tr>
         {% endfor %}
-    </ul>
+        <tr class="hidden">
+            <td class="name">template line</td>
+            <td><button>Remove</button></td>
+        </tr>
+    </table>
 
     <div class="control-group">
         <div class="controls">
            <input type="submit" value="{% trans 'Save' %}" class="btn"/>
 
-            {% if group_id %}
-                <a href="{% url 'delete_group' group_id %}" class="btn">{% trans 'Delete' %}</a>
+            {% if group.id %}
+                <a href="{% url 'delete_group' group.id %}" class="btn btn-danger">{% trans 'Delete' %}</a>
             {% endif %}
         </div>
     </div>

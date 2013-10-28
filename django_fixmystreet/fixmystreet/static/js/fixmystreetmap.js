@@ -527,28 +527,53 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     imageLink = feature.attributes.report.thumb;
                                 }
 
-                                var popoverContent = "<h2>#" + feature.attributes.report.id + "</h2>" +
-                                        '<p style="float: left;margin-right: 15px;"><img src="' + imageLink +'"/></p>' +
-                                        "<p>" + feature.attributes.report.address_number + ', ' +
+                                var popoverContent = "<h2>Incident #" + feature.attributes.report.id + " (<a class='moreDetails' href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>Details</a>)</h2>" +
+                                        '<div class="in-popup">' +
+                                        '<p style="float: left;margin-right: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
+                                        "<strong>" + feature.attributes.report.address_number + ', ' +
                                         feature.attributes.report.address + ' ' + "<br/>" +
                                         feature.attributes.report.postalcode + ' ' +
-                                        feature.attributes.report.address_commune_name + "</p>" +
+                                        feature.attributes.report.address_commune_name + "</strong>" +
 
-                                        "<p>" + feature.attributes.report.category + "</p>" +
+                                        "<p class='categoryPopup'>" + feature.attributes.report.category + "</p>" +
 
-                                        "<ul>" +
-                                        "<li style='display:inline'>" + feature.attributes.report.address_regional + "</li>" +
-                                        "<li style='display:inline'>" + feature.attributes.report.contractor + "</li>" +
-                                        "<li style='display:inline'>" + feature.attributes.report.date_planned + "</li>";
+                                        "<ul class='iconsPopup'>";
+                                        //"<li class='addressRegional'>" + feature.attributes.report.address_regional + "</li>";
+
+                                if (feature.attributes.report.address_regional != 'null'){
+                                    popoverContent += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
+                                }
+                                
+                                if (feature.attributes.report.contractor != 'null'){
+                                    popoverContent += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
+                                }
+
+                                if (feature.attributes.report.date_planned){
+                                    popoverContent += "<li class='datePlanned'>" + feature.attributes.report.date_planned + "</li>";
+                                }
 
                                 // If Pro, there are priority and citizen values
                                 if (feature.attributes.report.priority) {
-                                    popoverContent += "<li style='display:inline'>" + feature.attributes.report.is_closed + "</li>" +
-                                        "<li style='display:inline'>" + feature.attributes.report.citizen + "</li>" +
-                                        "<li style='display:inline'>" + feature.attributes.report.priority + "</li>";
+                                    if (feature.attributes.report.is_closed != 'null'){
+                                        popoverContent += "<li class='isClosed'><img src='/static/images/isClosed.png' /></li>";
+                                    }
+                                    if (feature.attributes.report.citizen != 'null'){
+                                        popoverContent += "<li class='fromPro'><img src='/static/images/fromPro.png' /></li>";
+                                    }
+                                    if (feature.attributes.report.priority <= '2'){
+                                        popoverContent += "<li class='priority'><img src='/static/images/lowPriority.png' />" + feature.attributes.report.priority + "</li>";
+                                    }
+                                    else if (feature.attributes.report.priority <= '6'){
+                                        popoverContent += "<li class='priority'><img src='/static/images/mediumPriority.png' />" + feature.attributes.report.priority + "</li>";
+                                    }
+                                    else {
+                                        popoverContent += "<li class='priority'><img src='/static/images/highPriority.png' />" + feature.attributes.report.priority + "</li>";
+                                    }
+                                    //popoverContent += "<li>" + feature.attributes.report.is_closed + "</li>" +
+                                    //popoverContent += "<li>" + feature.attributes.report.citizen + "</li>" +
+                                    //popoverContent += "<li>" + feature.attributes.report.priority + "</li>";
                                 }
-                                popoverContent += "</ul>";
-                                popoverContent += "<p><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>More details</a></p>";
+                                popoverContent += "</ul></div>";
 
                                 var popup = new OpenLayers.Popup(
                                     "popup",

@@ -7,10 +7,10 @@ class UsersTest(TestCase):
 
     fixtures = ["bootstrap","list_items"]
 
-    def setUp(self): 
+    def setUp(self):
         self.manager = FMSUser(
             telephone="0123456789",
-            last_used_language="fr", 
+            last_used_language="fr",
             password='test',
             first_name="manager",
             last_name="manager",
@@ -37,16 +37,17 @@ class UsersTest(TestCase):
         self.createuser_post = {
             'telephone':'123456',
             'is_active': True,
-            'first_name':'david', 
+            'first_name':'david',
             'last_name':'hasselhof',
             'email':'david.hasselhof@baywatch.com'
         }
         self.edituser_post = {
             'telephone':'654321',
             'is_active': True,
-            'first_name':'new_manager', 
+            'first_name':'new_manager',
             'last_name':'new_manager',
-            'email':'manager2@a.com'
+            'email':'manager2@a.com',
+            'manager': True
         }
 
 
@@ -99,21 +100,25 @@ class UsersTest(TestCase):
         response = self.client.post(reverse('edit_user',args=[self.manager.id]), self.edituser_post, follow=True)
         self.assertEquals(response.status_code, 200)
         response = self.client.post(reverse('list_users'), follow=True)
+
         self.assertEquals(response.status_code, 200)
         self.assertTrue('users' in response.context)
         self.assertTrue('can_create' in response.context)
+
         can_create = response.context['can_create']
         users = response.context['users']
         self.assertTrue(can_create)
+
         founduser = False
         for user in users:
             if (user.id == self.manager.id):
-                self.assertEquals(user.first_name, 'new_manager')
-                self.assertEquals(user.last_name, 'new_manager')
-                self.assertEquals(user.telephone, '654321')
-                self.assertEquals(user.email, 'manager2@a.com')
+                self.assertEquals(user.first_name, self.edituser_post['first_name'])
+                self.assertEquals(user.last_name,  self.edituser_post['last_name'])
+                self.assertEquals(user.telephone,  self.edituser_post['telephone'])
+                self.assertEquals(user.email,      self.edituser_post['email'])
                 founduser = True
         self.assertTrue(founduser)
+
         #now try to update a leader user this should not be allowed
         response = self.client.post(reverse('edit_user',args=[self.leader.id]), self.edituser_post, follow=True)
         self.assertEquals(response.status_code, 200)
@@ -127,6 +132,7 @@ class UsersTest(TestCase):
         users = response.context['users']
         self.assertTrue(can_create)
         founduser = False
+
         for user in users:
             if (user.id == self.leader.id):
                 self.assertEquals(user.first_name, self.leader.first_name)
