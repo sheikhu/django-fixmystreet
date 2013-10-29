@@ -232,7 +232,6 @@ def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
             for type in ReportCategory.objects.all():
                 instance.categories.add(type)
 
-
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
     """populate username with email"""
@@ -308,6 +307,14 @@ class OrganisationEntity(UserTrackedModel):
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=OrganisationEntity)
 
 
+@receiver(post_save, sender=OrganisationEntity)
+def create_matrix_when_creating_first_department(sender,instance, **kwargs):
+    if instance.type == 'D':
+        if(instance.dependency):
+            if(len(instance.dependency.associates.all()) == 1):
+                for type in ReportCategory.objects.all():
+                    instance.dispatch_categories.add(type)
+
 @receiver(pre_delete, sender=OrganisationEntity)
 def organisationentity_delete(sender, instance, **kwargs):
     # Delete all memberships associated
@@ -363,10 +370,16 @@ class ReportQuerySet(models.query.GeoQuerySet):
             return self.filter(query2) | self.filter(query)
 
         if user.contractor or user.applicant:
-            query = query | Q(contractor=user.organisation)
+            if user.organisation.type != OrganisationEntity.COMMUNE:
+                query = query | Q(responsible_entity=user.organisation.dependency)
+            else:
+                query = query | Q(contractor=user.organisation)
 
         if user.agent or user.manager or user.leader:
-            query = query | Q(responsible_entity=user.organisation)
+            if user.organisation.type != OrganisationEntity.COMMUNE:
+                query = query | Q(responsible_entity=user.organisation.dependency)
+            else:
+                query = query | Q(responsible_entity=user.organisation)
 
         return self.filter(query)
 
@@ -927,9 +940,10 @@ def report_assign_responsible(sender, instance, **kwargs):
         users = instance.responsible_entity.team.filter(manager=True, categories=instance.secondary_category)
         if len(users) > 0:
             instance.responsible_manager = users[0]
+        if(len(departements) > 0):
             instance.responsible_department = departements[0]
-        else:
-            raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
+        # else:
+        #     raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
 
 @receiver(pre_save, sender=Report)
@@ -974,6 +988,7 @@ def report_notify(sender, instance, **kwargs):
             ReportNotification(
                 content_template='notify-creation',
                 recipient=report.responsible_manager,
+                recipient_mail = report.responsible_department.email,
                 related=report,
             ).save()
 
@@ -1627,6 +1642,7 @@ class ReportCategoryHint(models.Model):
 
 
 class ReportNotification(models.Model):
+    recipient_mail = models.CharField(max_length=200,null=True)
     recipient = models.ForeignKey(FMSUser, related_name="notifications")
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
@@ -1670,7 +1686,10 @@ class ReportNotification(models.Model):
             return
 
         try:
-            recipients = (self.recipient.email,)
+            if self.recipient_mail:
+                recipients= (self.recipient_mail,)
+            else :
+                recipients = (self.recipient.email,)
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
             comment = comment.text if comment else ''
@@ -1893,7 +1912,7 @@ class ParticipateZipCodeManager(ZipCodeManager):
 class ZipCode(models.Model):
     __metaclass__ = TransMeta
 
-    commune = models.ForeignKey(OrganisationEntity)
+    commune = models.ForeignKey(OrganisationEntity, related_name="zipcode")
     code = models.CharField(max_length=4)
     name = models.CharField(max_length=100)
     hide = models.BooleanField()

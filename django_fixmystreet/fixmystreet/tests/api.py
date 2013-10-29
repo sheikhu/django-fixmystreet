@@ -9,7 +9,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, FMSUser, ReportSecondaryCategoryClass, ReportMainCategoryClass, ReportCategory
+from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, FMSUser, ReportSecondaryCategoryClass, ReportMainCategoryClass, ReportCategory, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -62,6 +62,17 @@ class ApiTest(SampleFilesTestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
+        self.group = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = OrganisationEntity.objects.get(pk=14),
+            email="test@email.com"
+            )
+        self.group.save()
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership.save()
 
         self.sample_post = {
             'report-x':'150056.538',

@@ -116,7 +116,7 @@ def table(request):
     reports = Report.objects.all().filter(merged_with__isnull=True)
 
     if request.fmsuser.organisation:
-        reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
+        reports = reports.entity_responsible(request.fmsuser) #| reports.entity_territory(request.fmsuser.organisation)
     elif not request.fmsuser.is_superuser:
         raise PermissionDenied()
 

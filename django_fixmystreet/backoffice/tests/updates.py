@@ -3,7 +3,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 from datetime import datetime, timedelta
@@ -19,7 +19,16 @@ class UpdatesTest(TestCase):
         self.category = self.secondary_category.category_class
 
         self.organisation = OrganisationEntity.objects.get(pk=14)
-
+        self.group = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = self.organisation,
+            email="test@email.com"
+            )
+        self.group.save()
+        
         self.manager = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
@@ -33,6 +42,8 @@ class UpdatesTest(TestCase):
         self.manager.organisation = self.organisation
         self.manager.save()
         self.manager.categories.add(self.secondary_category)
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership.save()
 
         self.report = Report(
             status=Report.CREATED,

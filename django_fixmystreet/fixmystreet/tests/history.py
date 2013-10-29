@@ -5,7 +5,7 @@ from django.utils import unittest
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 
 class HistoryTest(TestCase):
 
@@ -51,6 +51,18 @@ class HistoryTest(TestCase):
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
+        self.group = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = OrganisationEntity.objects.get(pk=14),
+            email="test@email.com"
+            )
+        self.group.save()
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership.save()
+
         self.manager2 = FMSUser(
             telephone="9876543210",
             last_used_language="nl",
@@ -65,6 +77,9 @@ class HistoryTest(TestCase):
         self.manager2.save()
         self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
+        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager2.id, organisation_id = self.group.id)
+        self.usergroupmembership2.save()
+
         self.manager3 = FMSUser(
             telephone="000000000",
             last_used_language="nl",
@@ -78,6 +93,18 @@ class HistoryTest(TestCase):
         self.manager3.organisation = OrganisationEntity.objects.get(pk=21)
         self.manager3.save()
         self.manager3.categories.add(ReportCategory.objects.get(pk=1))
+
+        self.group2 = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = OrganisationEntity.objects.get(pk=21),
+            email="test@email.com"
+            )
+        self.group2.save()
+        self.usergroupmembership3 = UserOrganisationMembership(user_id = self.manager3.id, organisation_id = self.group2.id)
+        self.usergroupmembership3.save()
 
         self.impetrant = OrganisationEntity(
             name_nl="MIVB",

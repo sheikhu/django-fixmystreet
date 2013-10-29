@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 
 class ReportViewsTest(SampleFilesTestCase):
 
@@ -22,6 +22,16 @@ class ReportViewsTest(SampleFilesTestCase):
         )
         self.citizen.save()
 
+        self.group = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = OrganisationEntity.objects.get(pk=14),
+            email="test@email.com"
+            )
+        self.group.save()
+
         self.manager = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
@@ -35,6 +45,9 @@ class ReportViewsTest(SampleFilesTestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership.save()
 
         self.sample_post = {
             'report-x':'150056.538',

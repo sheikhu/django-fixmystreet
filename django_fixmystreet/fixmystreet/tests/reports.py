@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
@@ -24,6 +24,28 @@ class NotificationTest(TestCase):
         self.manager_etterbeek.save()
         self.manager_bxl = FMSUser(email="manager@bxl.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.bxl)
         self.manager_bxl.save()
+        self.group = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = self.bxl,
+            email="test@email.com"
+            )
+        self.group.save()
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager_bxl.id, organisation_id = self.group.id)
+        self.usergroupmembership.save()
+        self.group2 = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = self.etterbeek,
+            email="test@email.com"
+            )
+        self.group2.save()
+        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager_etterbeek.id, organisation_id = self.group2.id)
+        self.usergroupmembership2.save()
         self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")
         self.citizen.save()
 

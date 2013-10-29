@@ -5,7 +5,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.core import mail
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 
 from datetime import datetime, timedelta
 
@@ -35,6 +35,20 @@ class MailTest(TestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
+        self.group = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = OrganisationEntity.objects.get(pk=14),
+            email="test@email.com"
+            )
+        self.group.save()
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership.save()
+
+
         self.client = Client()
 
         self.manager2 = FMSUser(
@@ -51,6 +65,18 @@ class MailTest(TestCase):
         self.manager2.save()
         self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
+        self.group2 = OrganisationEntity(
+            type="D",
+            name_nl="Werken",
+            name_fr="Travaux",
+            phone="090987",
+            dependency = OrganisationEntity.objects.get(pk=21),
+            email="test@email.com"
+            )
+        self.group2.save()
+        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager2.id, organisation_id = self.group2.id)
+        self.usergroupmembership2.save()
+
         self.manager3 = FMSUser(
             telephone="000000000",
             last_used_language="nl",
@@ -64,6 +90,9 @@ class MailTest(TestCase):
         self.manager3.organisation = OrganisationEntity.objects.get(pk=21)
         self.manager3.save()
         self.manager3.categories.add(ReportCategory.objects.get(pk=1))
+
+        self.usergroupmembership3 = UserOrganisationMembership(user_id = self.manager3.id, organisation_id = self.group2.id)
+        self.usergroupmembership3.save()
 
         self.impetrant = OrganisationEntity(
             name_nl="MIVB",
@@ -146,7 +175,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox[1].to), 1)  # to the responsible for creation notify
         #Mail to creator and manager must be sent
         self.assertTrue(self.citizen.email in mail.outbox[0].to or self.citizen.email in mail.outbox[1].to)
-        self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
+        self.assertTrue(self.group.email in mail.outbox[0].to or self.group.email in mail.outbox[1].to)
 
     def testCloseReportMail(self):
         #Send a post request filling in the form to create a report
@@ -349,7 +378,7 @@ class MailTest(TestCase):
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
+        self.assertTrue(self.group.email in mail.outbox[0].to or self.group.email in mail.outbox[1].to)
 
     def testReportResolvedAsProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
