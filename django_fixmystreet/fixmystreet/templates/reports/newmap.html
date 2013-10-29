@@ -40,9 +40,15 @@ $(function(){
 
 
     document.getElementById('placeMarkerButton').addEventListener('click', function() {
-        fms.currentMap.addDraggableMarker(fms.currentMap.map.getCenter().lon, fms.currentMap.map.getCenter().lat);
-        document.getElementById('continueButton').classList.remove('hidden');
-        document.getElementById('placeMarkerButton').classList.add('hidden');
+        if (fms.currentMap.dragfeature == undefined) {
+            fms.currentMap.addDraggableMarker(fms.currentMap.map.getCenter().lon, fms.currentMap.map.getCenter().lat);
+            document.getElementById('continueButton').classList.remove('hidden');
+        } else {
+            fms.currentMap.dragfeature.move(fms.currentMap.map.getCenter());
+            //update the current location
+            fms.currentMap.getSelectedLocation().x = fms.currentMap.dragfeature.geometry.components[0].x;
+            fms.currentMap.getSelectedLocation().y = fms.currentMap.dragfeature.geometry.components[0].y;
+        }
         
     });
 
