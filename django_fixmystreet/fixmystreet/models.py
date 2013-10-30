@@ -384,7 +384,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(query)
 
     def entity_territory(self, organisation):
-        return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode_set.all()])
+        return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode.all()])
 
     def created(self):
         return self.filter(status=Report.CREATED)
