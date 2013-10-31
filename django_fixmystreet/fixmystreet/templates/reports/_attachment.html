@@ -33,8 +33,16 @@
 
     {% if privacy == 'private' %}
     <p class="author-sign comment-date">
-        {% blocktrans with by=attachment.reportcomment.get_display_name_as_pro email=attachment.created_by.email on=attachment.created %}
-            Posted by <strong><a href="mailto:{{email}}">{{by}}</a></strong> on <strong>{{on}}</strong>
+        {% blocktrans with by=attachment.reportcomment.get_display_name email=attachment.created_by.email telephone=attachment.created_by.telephone quality=attachment.created_by.get_quality on=attachment.created %}
+            Posted by
+            <strong>
+                <a href="mailto:{{email}}">
+                    [{{quality}}]
+                    {{by}},
+                    {{telephone}}
+                </a>
+            </strong>
+            on <strong>{{on}}</strong>
         {% endblocktrans %}
     </p>
     {% else %}
