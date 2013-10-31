@@ -442,8 +442,6 @@ function showMergeConfirmation(){
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
                     <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
-                    <td colspan="1" class="{% if report.false_address %}hidden{% endif %}"><span id="declare_false_address" class="btn" style="float:right;">!</span>
-                    </td>
                     <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
                 </tr>
 
