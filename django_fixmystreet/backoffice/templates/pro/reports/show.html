@@ -317,7 +317,6 @@ function showMergeConfirmation(){
     $("#merge_nearby_reports_popup").modal("hide");
     $("#merge_confirm_popup").modal();
 }
-
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
@@ -496,7 +495,11 @@ function showMergeConfirmation(){
                 {% if not report.is_in_progress %}
                 <tr>
                     <th><strong>{% trans "Responsible:" %}</strong></th>
+                    {% if report.responsible_department %}
+                    <td>{{report.responsible_department.name}} ({{report.responsible_department.dependency.name}})</td>
+                    {% else %}
                     <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
+                    {% endif %}
                 </tr>
                 {% endif %}
 
@@ -626,7 +629,11 @@ function showMergeConfirmation(){
                         <tr>
                             <th><strong>{% trans "Responsible manager:" %}</strong></th>
                             <td>
+                                {% if report.responsible_department %}
+                                <a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_department.name}} ({{report.responsible_department.dependency.name}})</a>
+                                {% else %}
                                 <a href='mailto:{{ report.responsible_manager.email }}'>{{ report.responsible_manager.get_full_name }}</a> ({{ report.responsible_entity.name }})
+                                {% endif %}
                             </td>
                         </tr>
                         {% if report.contractor %}

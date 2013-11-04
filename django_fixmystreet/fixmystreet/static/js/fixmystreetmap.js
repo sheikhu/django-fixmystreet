@@ -397,6 +397,23 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     self.selectedLocation = {x:p.x,y:p.y};
                     $(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
                     // reverse_geocode(point);
+                },
+                onDrag:function(event){
+                    var markerBounds = event.geometry.bounds;
+                    var mapBounds = this.map.getExtent();
+                    var delta = 100;
+                    if(mapBounds.left+delta > markerBounds.left) {
+                        this.map.pan(-100,0,{});
+                    }
+                    else if (mapBounds.right-delta < markerBounds.right){
+                        this.map.pan(100,0,{});
+                    }
+                    else if (mapBounds.top-delta < markerBounds.top){
+                        this.map.pan(0,-100,{});
+                    }
+                    else if(mapBounds.bottom + delta > markerBounds.bottom){
+                        this.map.pan(0,100,{});
+                    }
                 }
             });
             this.map.addControl(dragControl);

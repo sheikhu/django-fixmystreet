@@ -231,15 +231,16 @@ def merge(request,report_id):
     report = get_object_or_404(Report, id=report_id)
     report_2 = get_object_or_404(Report,id=request.GET["mergeId"])
 
-    #Check that category + subcategory of two reports are equal:
-    if report.category != report_2.category or report.secondary_category != report_2.secondary_category:
-        messages.add_message(request, messages.ERROR, _("Cannot merge reports that have different categories."))
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    # Constraints for categories match and visibility match when merging
+    # #Check that category + subcategory of two reports are equal:
+    # if report.category != report_2.category or report.secondary_category != report_2.secondary_category:
+    #     messages.add_message(request, messages.ERROR, _("Cannot merge reports that have different categories."))
+    #     return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
 
-    #Check that visibility of two reports are equal:
-    if report.private != report_2.private:
-        messages.add_message(request, messages.ERROR, _("Cannot merge reports that have different visibility."))
-        return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
+    # #Check that visibility of two reports are equal:
+    # if report.private != report_2.private:
+    #     messages.add_message(request, messages.ERROR, _("Cannot merge reports that have different visibility."))
+    #     return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
 
     #Determine which report needs to be kept [TO BE REVIEWED SPRINT 2]
     if report.accepted_at:

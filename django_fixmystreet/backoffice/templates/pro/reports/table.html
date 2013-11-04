@@ -95,7 +95,7 @@ $(document).ready(function() {
         <li><label><input type="checkbox" checked /> {% trans "Regionnal" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Manager" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Planned" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Date planned" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
@@ -114,7 +114,7 @@ $(document).ready(function() {
                 <th>{% trans "Regionnal" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Responsible" %}</th>
-                <th>{% trans "Manager" %}</th>
+                <th>{% trans "Responsible department" %}</th>
                 <th>{% trans "Planned" %}</th>
                 <th>{% trans "Date planned" %}</th>
                 <th>{% trans "Priority" %}</th>
@@ -130,7 +130,7 @@ $(document).ready(function() {
                 <th>{% trans "Regionnal" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Responsible" %}</th>
-                <th>{% trans "Manager" %}</th>
+                <th>{% trans "Responsible department" %}</th>
                 <th>{% trans "Planned" %}</th>
                 <th>{% trans "Date planned" %}</th>
                 <th>{% trans "Priority" %}</th>
@@ -149,7 +149,7 @@ $(document).ready(function() {
                 <td>{{ report.address_regional|yesno:_("yes,no") }}</td>
                 <td>{{ report.get_status_display }}</td>
                 <td>{{ report.responsible_entity.name }}</td>
-                <td>{{ report.responsible_manager.get_full_name }}</td>
+                <td>{{ report.responsible_department.name }}</td>
                 <td>{{ report.planned|yesno:_("yes,no") }}</td>
                 <td>{{ report.date_planned|date:"d/m/Y" }}</td>
                 <td>{{ report.get_priority }}</td>
