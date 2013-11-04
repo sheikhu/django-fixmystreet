@@ -305,6 +305,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             URBIS_URL + "geoserver/wms",
             {layers: "urbis:URB_A_MU",
                 format: "image/png",
+                styles: "fixmystreet_municipalities",
                 transparent: true},
             {buffer: 0, isBaseLayer: false, displayInLayerSwitcher: true, visibility: false}
         );
@@ -560,7 +561,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                 if (feature.attributes.report.address_regional != 'null'){
                                     popoverContent += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
                                 }
-                                
+
                                 if (feature.attributes.report.contractor != 'null'){
                                     popoverContent += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
                                 }

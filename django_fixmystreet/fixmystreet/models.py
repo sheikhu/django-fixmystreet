@@ -202,6 +202,9 @@ class FMSUser(User):
             result.append(membership.organisation)
         return result
 
+    def get_quality(self):
+        return self.REPORT_QUALITY_CHOICES[self.quality - 1][1]
+
     def toJSON(self):
         d = {}
         d['id'] = getattr(self, 'id')
@@ -384,7 +387,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(query)
 
     def entity_territory(self, organisation):
-        return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode_set.all()])
+        return self.filter(postalcode__in=[zc.code for zc in organisation.zipcode.all()])
 
     def created(self):
         return self.filter(status=Report.CREATED)
@@ -1282,12 +1285,6 @@ class ReportAttachment(UserTrackedModel):
             return _('ANONYMOUS')
         else:
             return self.created_by.first_name + ' ' + self.created_by.last_name
-
-    def get_display_name_as_pro(self):
-        if self.created_by:
-            return self.created_by.email
-
-        return _('ANONYMOUS')
 
     def get_display_name_as_citizen(self):
         if self.created_by:
