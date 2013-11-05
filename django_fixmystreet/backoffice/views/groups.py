@@ -101,7 +101,9 @@ def add_membership(request, group_id, user_id):
         organisation = OrganisationEntity.objects.get(id=group_id)
         user = FMSUser.objects.get(id=user_id)
 
-        user_organisation_membership = UserOrganisationMembership(user=user, organisation=organisation)
+        contact = not organisation.memberships.exists()
+        user_organisation_membership = organisation.memberships.create(user=user, contact_user=contact)
+        # user_organisation_membership = UserOrganisationMembership(user=user, organisation=organisation)
 
         try:
             user_organisation_membership.save()
@@ -123,6 +125,24 @@ def remove_membership(request, membership_id):
         return HttpResponse('Permission Denied')
 
     user_organisation_membership = UserOrganisationMembership.objects.get(id=membership_id)
+
+    if user_organisation_membership.contact_user:
+        return HttpResponse('Can not remove the contact user')
+
     user_organisation_membership.delete()
+
+    return HttpResponse('OK')
+
+
+def contact_membership(request, membership_id):
+    can_edit = request.fmsuser.leader
+
+    if not can_edit:
+        return HttpResponse('Permission Denied')
+
+    user_organisation_membership = UserOrganisationMembership.objects.get(id=membership_id)
+    user_organisation_membership.organisation.memberships.all().update(contact_user=False)
+    user_organisation_membership.contact_user = True
+    user_organisation_membership.save()
 
     return HttpResponse('OK')

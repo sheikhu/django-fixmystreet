@@ -46,8 +46,13 @@ a:hover, a:focus {
     height:auto;
 }
 
-.lead{
+.lead {
     margin-bottom:18px;
+}
+
+:disabled {
+    opacity: .5;
+    cursor: not-allowed;
 }
 
 /********* HEADER LAYOUT ********/

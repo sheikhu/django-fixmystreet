@@ -494,7 +494,7 @@ function showMergeConfirmation(){
                 {% if not report.is_in_progress %}
                 <tr>
                     <th><strong>{% trans "Responsible:" %}</strong></th>
-                    <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
+                    <td>{{ report.responsible_department.name }} ({{report.responsible_department.dependency.name}})</td>
                 </tr>
                 {% endif %}
 
@@ -624,7 +624,11 @@ function showMergeConfirmation(){
                         <tr>
                             <th><strong>{% trans "Responsible manager:" %}</strong></th>
                             <td>
-                                <a href='mailto:{{ report.responsible_manager.email }}'>{{ report.responsible_manager.get_full_name }}</a> ({{ report.responsible_entity.name }})
+                                <a href='mailto:{{ report.responsible_department.email }}'>
+                                    {{ report.responsible_department.name }}
+                                </a>
+                                <br/>
+                                {{report.responsible_department.dependency.name}}
                             </td>
                         </tr>
                         {% if report.contractor %}

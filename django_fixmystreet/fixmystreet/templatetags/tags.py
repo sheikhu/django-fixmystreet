@@ -4,6 +4,7 @@ from django.conf import settings
 from django import template
 from django.core.urlresolvers import resolve
 from django_fixmystreet.fixmystreet.models import FMSUser
+from django_fixmystreet.fixmystreet import models
 
 
 register = template.Library()
@@ -101,8 +102,9 @@ def ga_script():
 
 
 @register.filter
-def model_field_choices(model, field):
+def model_field_choices(model_name, field):
     choices = []
+    model = getattr(models, model_name)
     for value in model._meta.get_field_by_name(field)[0].choices:
         if isinstance(value[1], tuple):
             [choices.append(unicode(v[1])) for v in value[1]]
