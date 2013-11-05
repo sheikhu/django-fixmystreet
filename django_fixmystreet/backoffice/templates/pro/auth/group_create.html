@@ -120,7 +120,18 @@
 
     {% include "_form_horizontal.html" with form=group_form %}
 
+    <div class="control-group">
+        <div class="controls">
+           <input type="submit" value="{% trans 'Save' %}" class="btn"/>
+
+            {% if group.id %}
+                <a href="{% url 'delete_group' group.id %}" class="btn btn-danger">{% trans 'Delete' %}</a>
+            {% endif %}
+        </div>
+    </div>
+
     <table id="memberships">
+        <!-- mouve table outside the form due to button vs form submit -->
         {% for membership in memberships %}
             <tr id="{{ membership.id }}" data-user="{{ membership.user.id }}">
             <td><button><i class="icon-remove"></i></button></td>
@@ -132,15 +143,5 @@
             <td class="name">template line</td>
         </tr>
     </table>
-
-    <div class="control-group">
-        <div class="controls">
-           <input type="submit" value="{% trans 'Save' %}" class="btn"/>
-
-            {% if group.id %}
-                <a href="{% url 'delete_group' group.id %}" class="btn btn-danger">{% trans 'Delete' %}</a>
-            {% endif %}
-        </div>
-    </div>
 </form>
 {% endblock %}

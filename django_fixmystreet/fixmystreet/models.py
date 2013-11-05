@@ -116,7 +116,12 @@ class FMSUser(User):
 
     ### deprecated to remove ###
     categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True)  # organisation that can be responsible of reports
+    organisation = models.ForeignKey('OrganisationEntity',
+        related_name='team',
+        null=True,
+        blank=True,
+        limit_choices_to={"type__in":('R', 'C')}
+    )  # organisation that can be responsible of reports
     ### deprecated to remove replaced by UserOrganisationMembership ###
     work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True)  # list of contractors/services that user work with
 

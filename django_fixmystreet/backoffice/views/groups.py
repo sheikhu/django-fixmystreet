@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError
+from django.core.exceptions import PermissionDenied
+
 
 from django_fixmystreet.backoffice.forms import GroupForm
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser
@@ -20,12 +22,11 @@ def list_groups(request):
 
     group_types = [t[0] for t in OrganisationEntity.ENTITY_TYPE_GROUP]
     groups = OrganisationEntity.objects.filter(type__in=group_types)
-    groups = groups.filter(dependency=request.fmsuser.organisation)
 
-    #~ if current_user.organisation:
-        #~ groups = groups.filter(dependency=current_user.organisation)
-    #~ elif not request.user.is_superuser:
-        #~ raise PermissionDenied()
+    if current_user.organisation:
+        groups = groups.filter(dependency=request.fmsuser.organisation)
+    elif not request.user.is_superuser:
+        raise PermissionDenied()
 
     return render_to_response("pro/auth/groups_list.html", {
         'groups': groups,

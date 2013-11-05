@@ -21,7 +21,7 @@ Installation
 $ git clone git@github.com:CIRB/django-fixmystreet.git
 $ make install
 $ bin/django runserver
-$ bin/django-debug runserver # debug toolbar mode 
+$ bin/django-debug runserver # debug toolbar mode
 ```
 
 enchure libxml2-dev, psycopg2 and GeoDjango is installed
@@ -52,15 +52,15 @@ after install, create the database:
 
 ```bash
 
-$ make createdb 
-$ bin/django loaddata sample # if you want some sample data to work with 
-$ cp local_settings_staging.py local_settings.py # and edit db connection settings 
+$ make createdb
+$ bin/django loaddata sample # if you want some sample data to work with
+$ cp local_settings_staging.py local_settings.py # and edit db connection settings
 ```
 
 recreate the database from clean state:
 
 ```bash
-$ make scratchdb # also import default and samples data. 
+$ make scratchdb # also import default and samples data.
 ```
 
 In deploy environment, settings are given by system environment variable.
@@ -79,7 +79,7 @@ DATABASE_NAME
 DATABASE_USER
 DATABASE_PASSWORD
 DATABASE_PORT
-DATABASE_HOST 
+DATABASE_HOST
 ```
 
 To initialize variables on the server
@@ -133,17 +133,6 @@ generate data model image
     $ bin/django graph_models fixmystreet -g -o data-model.png
 
 
-open external connexion to pg:
-
-    /var/lib/pgsql/data/pg_hba.conf
-
-
-To build a mobile app:
-* build a new project with phone gap
-* drop content of media/mobile-app/ into www phongap folder
-* copy media/js/fixmystreetmap.js into www/js phongap folder
-* for ios: put geoserver.gis.irisnet.be and fixmystreet.irisnet(lab).be into the externalHost in the phonegap.plist file
-
 dump DB
 
     pg_dump fixmystreet -U fixmystreet > fixmystreet_dump.sql
@@ -153,5 +142,5 @@ import dump DB
     dropdb fixmystreet -U postgres
     createdb --template=template_postgis fixmystreet -U postgres -O fixmystreet
     cat fixmystreet_dump.sql | psql -U fixmystreet
-    
+
 TEST
