@@ -24,7 +24,7 @@ def saveCategoryConfiguration(request):
         category = ReportCategory.objects.get(pk=categoriesList[idx])
 
         # Before add, need to remove this category from the old group.
-        oldGroups = category.assinged_to_department.filter(dependency=request.user.fmsuser.get_organisation)
+        oldGroups = category.assigned_to_department.filter(dependency=request.user.fmsuser.get_organisation)
         for group in oldGroups:
             group.dispatch_categories.remove(category)
 

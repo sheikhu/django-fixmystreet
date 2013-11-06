@@ -280,7 +280,7 @@ msgid "Mark as Done"
 msgstr "Marquer comme résolu"
 
 #: models.py:1745
-msgid "Manager assinged"
+msgid "Manager assigned"
 msgstr "Un gestionnaire est responsable"
 
 #: models.py:1747
@@ -288,11 +288,11 @@ msgid "Valid"
 msgstr ""
 
 #: models.py:1748
-msgid "Organisation assinged"
+msgid "Organisation assigned"
 msgstr "Une organisation est assignée"
 
 #: models.py:1750
-msgid "Contractor assinged"
+msgid "Contractor assigned"
 msgstr "Un exécuteur de travaux est assigné"
 
 #: models.py:1751
@@ -300,7 +300,7 @@ msgid "Contractor changed"
 msgstr "L'exécuteur de travaux est modifié"
 
 #: models.py:1752
-msgid "Applicant assinged"
+msgid "Applicant assigned"
 msgstr "Un impétrant est assigné"
 
 #: models.py:1753

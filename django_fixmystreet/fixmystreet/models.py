@@ -296,7 +296,7 @@ class OrganisationEntity(UserTrackedModel):
     dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
     feature_id = models.CharField(max_length=25, null=True, blank=True)
 
-    dispatch_categories = models.ManyToManyField('ReportCategory', related_name='assinged_to_department', blank=True)
+    dispatch_categories = models.ManyToManyField('ReportCategory', related_name='assigned_to_department', blank=True)
 
     history = HistoricalRecords()
 
@@ -1729,14 +1729,14 @@ class ReportEventLog(models.Model):
         (REFUSE, _("Refuse")),
         (CLOSE, _("Close")),
         (SOLVE_REQUEST, _("Mark as Done")),
-        (MANAGER_ASSIGNED, _("Manager assinged")),
+        (MANAGER_ASSIGNED, _("Manager assigned")),
         #(MANAGER_CHANGED,_("Manager changed")),
         (VALID, _("Valid")),
-        (ENTITY_ASSIGNED, _('Organisation assinged')),
+        (ENTITY_ASSIGNED, _('Organisation assigned')),
         #(ENTITY_CHANGED, _('Organisation changed')),
-        (CONTRACTOR_ASSIGNED, _('Contractor assinged')),
+        (CONTRACTOR_ASSIGNED, _('Contractor assigned')),
         (CONTRACTOR_CHANGED, _('Contractor changed')),
-        (APPLICANT_ASSIGNED, _('Applicant assinged')),
+        (APPLICANT_ASSIGNED, _('Applicant assigned')),
         (APPLICANT_CHANGED, _('Applicant changed')),
         (APPLICANT_CONTRACTOR_CHANGE, _('Applicant contractor changed')),
         (CREATED, _("Created")),

@@ -60,7 +60,7 @@ $(document).ready(function(){
                         <p>
                             <select name="group" id="id_manager">
                                 {% for group in groupDropDown %}
-                                    <option value="{{group.id}}" {% if group in cat.assinged_to_department.all %}selected="selected"{% endif %}>{{group}}</option>
+                                    <option value="{{group.id}}" {% if group in cat.assigned_to_department.all %}selected="selected"{% endif %}>{{group}}</option>
                                 {% endfor %}
                             </select>
                         </p>

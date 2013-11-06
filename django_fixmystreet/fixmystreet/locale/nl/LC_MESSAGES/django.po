@@ -279,7 +279,7 @@ msgid "Mark as Done"
 msgstr "Markeer als behandeld"
 
 #: models.py:1745
-msgid "Manager assinged"
+msgid "Manager assigned"
 msgstr "Beheerder is toegekend"
 
 #: models.py:1747
@@ -288,11 +288,11 @@ msgid "Valid"
 msgstr "verifiëren"
 
 #: models.py:1748
-msgid "Organisation assinged"
+msgid "Organisation assigned"
 msgstr "Beheerder is toegekend"
 
 #: models.py:1750
-msgid "Contractor assinged"
+msgid "Contractor assigned"
 msgstr "Aannemer is toegewezen"
 
 #: models.py:1751
@@ -300,7 +300,7 @@ msgid "Contractor changed"
 msgstr "Aannemer is toegewezen"
 
 #: models.py:1752
-msgid "Applicant assinged"
+msgid "Applicant assigned"
 msgstr "Aannemer is verantwoordelijk"
 
 #: models.py:1753

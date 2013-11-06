@@ -18,7 +18,7 @@ def getTable(organisation):
 
             # Cell: Inside each cell, list all groups
             for cat in categories:
-                groups.append(cat.assinged_to_department.filter(dependency=organisation))
+                groups.append(cat.assigned_to_department.filter(dependency=organisation))
 
             mainCategories.append({ 'id': mainCat.id, 'groups' : groups})
 
