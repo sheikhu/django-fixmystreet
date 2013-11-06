@@ -255,7 +255,6 @@ class GroupsTest(TestCase):
         status = returnobject['status']
         self.assertEquals('Permission Denied', status)
 
-
         self.client.logout()
         self.client.login(username='leader@a.com', password='test')
         response = self.client.get(reverse('add_membership', args=[self.group1.id, self.manager.id]), follow=True)
@@ -279,21 +278,41 @@ class GroupsTest(TestCase):
         self.assertTrue('status' in returnobject)
         self.assertTrue('membership_id' in returnobject)
         status = returnobject['status']
-        membership_id = returnobject['membership_id']
+        membership1_id = returnobject['membership_id']
         self.assertEquals('OK', status)
+
+        response = self.client.get(reverse('add_membership', args=[self.group1.id, self.leader.id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        returnobject = json.loads(str(response.content))
+        self.assertTrue('status' in returnobject)
+        self.assertTrue('membership_id' in returnobject)
+        membership2_id = returnobject['membership_id']
+
+        self.assertTrue(UserOrganisationMembership.objects.get(id=membership1_id).contact_user)
+        self.assertFalse(UserOrganisationMembership.objects.get(id=membership2_id).contact_user)
+
         #try with user who has no rights to remove it
         self.client.logout()
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('remove_membership', args=[membership_id]), follow=True)
+
+        response = self.client.get(reverse('remove_membership', args=[membership1_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('Permission Denied', response.content)
+
         #now try with user who has rights to remove
         self.client.logout()
         self.client.login(username='leader@a.com', password='test')
-        response = self.client.get(reverse('remove_membership', args=[membership_id]), follow=True)
+
+        response = self.client.get(reverse('remove_membership', args=[membership1_id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertNotIn('OK', response.content)  # can not remove contact membership
+
+        response = self.client.get(reverse('remove_membership', args=[membership2_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('OK', response.content)
 
+        self.assertTrue(UserOrganisationMembership.objects.filter(id=membership1_id).exists())
+        self.assertFalse(UserOrganisationMembership.objects.filter(id=membership2_id).exists())
 
 
 

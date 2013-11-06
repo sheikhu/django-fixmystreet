@@ -70,6 +70,7 @@ def list_users(request):
         'can_create': current_user.leader
     }, context_instance=RequestContext(request))
 
+
 def edit_user(request, user_id):
     current_user = request.fmsuser
     users = FMSUser.objects.all()
@@ -118,9 +119,9 @@ def create_user(request):
         user_form = FmsUserCreateForm()
 
     return render_to_response("pro/auth/user_edit.html", {
-                "user_form":user_form,
-                "can_edit": can_edit
-            }, context_instance=RequestContext(request))
+        "user_form": user_form,
+        "can_edit": can_edit
+    }, context_instance=RequestContext(request))
 
 
 def delete_user(request, user_id, user_type='users'):

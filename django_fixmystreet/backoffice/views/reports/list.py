@@ -37,21 +37,21 @@ def filter_reports(user, criteria):
 
     #if the user is an contractor then user the dependent organisation id
     #If the manager is connected then filter on manager
-    if user.agent or user.manager or user.leader:
-        if ownership == "responsible":
-            reports = reports.responsible(user)
-        elif ownership == "subscribed":
-            reports = reports.subscribed(user)
-        elif ownership == "transfered":
-            #List of transfered reports (previous reports)
-            reports = user.previous_reports.all()
-        elif user.organisation:  # ownership == entity
-            reports = reports.entity_responsible(user)
-    elif user.contractor or user.applicant:
-        #if the user is an contractor then display only report where He is responsible
+    # if user.agent or user.manager or user.leader:
+    if ownership == "responsible":
+        reports = reports.responsible(user)
+    elif ownership == "subscribed":
+        reports = reports.subscribed(user)
+    elif ownership == "transfered":
+        #List of transfered reports (previous reports)
+        reports = user.previous_reports.all()
+    elif user.organisation:  # ownership == entity
         reports = reports.entity_responsible(user)
-    else:
-        raise PermissionDenied()
+    # elif user.contractor or user.applicant:
+        #if the user is an contractor then display only report where He is responsible
+        #reports = reports.responsible(user)
+    # else:
+        # raise PermissionDenied()
 
 
     if status == 'created':
@@ -116,7 +116,7 @@ def table(request):
     reports = Report.objects.all().filter(merged_with__isnull=True)
 
     if request.fmsuser.organisation:
-        reports = reports.entity_responsible(request.fmsuser) #| reports.entity_territory(request.fmsuser.organisation)
+        reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
     elif not request.fmsuser.is_superuser:
         raise PermissionDenied()
 

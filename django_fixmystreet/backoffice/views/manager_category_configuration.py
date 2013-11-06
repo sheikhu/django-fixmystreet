@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
 
 # Build the table of groups dispatching.
-def getTable():
+def getTable(organisation):
     table = []
 
     # Line: Build each lines concerning one SecondaryCategory.
@@ -18,7 +18,7 @@ def getTable():
 
             # Cell: Inside each cell, list all groups
             for cat in categories:
-                groups.append(cat.assinged_to_department.all())
+                groups.append(cat.assinged_to_department.filter(dependency=organisation))
 
             mainCategories.append({ 'id': mainCat.id, 'groups' : groups})
 
@@ -31,12 +31,13 @@ def show(request):
     return render_to_response("pro/manager_category_configuration.html",
         {
             "maincategories" : ReportMainCategoryClass.objects.all(),
-            "table": getTable()
+            "table": getTable(request.fmsuser.organisation)
         },
         context_instance=RequestContext(request))
 
 
 def update(request):
+    organisation = request.fmsuser.organisation
     maincategories = ReportMainCategoryClass.objects.all()
 
     #Set the categories for the selected main and secondary category.
@@ -48,9 +49,9 @@ def update(request):
     return render_to_response("pro/manager_category_configuration.html",
         {
             "maincategories" : maincategories,
-            "table": getTable(),
+            "table": getTable(organisation),
             "categories":categories,
-            "groupDropDown":OrganisationEntity.objects.filter(type=OrganisationEntity.DEPARTMENT),
+            "groupDropDown":OrganisationEntity.objects.filter(type=OrganisationEntity.DEPARTMENT, dependency=organisation),
             "firstCateg":mainCategory,
             "secondCateg":secondCategory
         },

@@ -8,7 +8,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from django.template import TemplateDoesNotExist
 from django.conf import settings
 
 from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report
@@ -165,19 +164,29 @@ class FmsUserCreateForm(FmsUserForm):
             msg.send()
             # MAIL SENDED
 
+
 def ownership_choices(current_user_ownership):
-    if 'manager' in current_user_ownership :
+    if 'manager' in current_user_ownership:
         return (
-        ("entity", _("All reports in my entity")),
-        ("responsible", _("My responbsible reports")),
-        ("subscribed", _("My subscriptions")),
-        ("transfered", _("My transfered reports")))
+            ("entity", _("All reports in my entity")),
+            ("responsible", _("My responbsible reports")),
+            ("subscribed", _("My subscriptions")),
+            ("transfered", _("My transfered reports"))
+        )
     elif 'agent' in current_user_ownership and ('contractor' in current_user_ownership or 'applicant' in current_user_ownership):
-        return (("entity", _("All reports in my entity")),
-        ("responsible", _("My responbsible reports")),
-        ("subscribed", _("My subscriptions")))
-    else :
-        return (("entity", _("All reports in my entity")),("subscribed", _("My subscriptions")))
+        return (
+            ("entity", _("All reports in my entity")),
+            ("responsible", _("My responbsible reports")),
+            ("subscribed", _("My subscriptions"))
+        )
+    elif 'contractor' in current_user_ownership:
+        return (
+            ("entity", _("All reports in my entity")),
+            ("responsible", _("My responbsible reports")),
+            ("subscribed", _("My subscriptions"))
+        )
+    else:
+        return (("entity", _("All reports in my entity")), ("subscribed", _("My subscriptions")))
 
 
 class SearchIncidentForm(forms.Form):
@@ -188,7 +197,7 @@ class SearchIncidentForm(forms.Form):
         ("in_progress_and_assigned", _("In progress and assigned")),
         ("closed", _("Closed"))
     ), required=False)
-    ownership = forms.ChoiceField(choices=(("entity", _("All reports in my entity")),("subscribed", _("My subscriptions"))), required=False)
+    ownership = forms.ChoiceField(choices=(("entity", _("All reports in my entity")), ("subscribed", _("My subscriptions"))), required=False)
 
     def __init__(self, *args, **kwargs):
         super(SearchIncidentForm, self).__init__(*args, **kwargs)
@@ -210,28 +219,15 @@ class GroupForm(forms.ModelForm):
 
     type = forms.ChoiceField(widget=forms.RadioSelect, choices=OrganisationEntity.ENTITY_TYPE_GROUP)
 
-    users = forms.ModelChoiceField(required=False, queryset=FMSUser.objects.filter(manager=True).order_by('last_name', 'first_name'))
-
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
 
-        if not self.instance.id:
-            del self.fields['users']
-        else:
-            del self.fields['type']  # type is not editable due to possibility cpontains users
+        if self.instance.id:
+            del self.fields['type']  # type is not editable due to possibility contained users
+
             required_role = OrganisationEntity.ENTITY_GROUP_REQUIRED_ROLE[self.instance.type]
-            print self.instance.dependency
-            users_qs = self.fields['users'].queryset
-            users_qs = users_qs.filter(**{required_role: True})
+            users_qs = FMSUser.objects.filter(**{required_role: True})
             users_qs = users_qs.filter(organisation=self.instance.dependency)
-            self.fields['users'].queryset = users_qs
+            users_qs = users_qs.order_by('last_name', 'first_name')
 
-    def save(self, commit=True):
-        group = super(GroupForm, self).save(commit=False)
-
-        group.department = True
-
-        if commit:
-            group.save()
-
-        return group
+            self.fields['users'] = forms.ModelChoiceField(required=False, queryset=users_qs)

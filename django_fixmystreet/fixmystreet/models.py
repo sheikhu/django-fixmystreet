@@ -116,7 +116,13 @@ class FMSUser(User):
 
     ### deprecated to remove ###
     categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
-    organisation = models.ForeignKey('OrganisationEntity', related_name='team', null=True, blank=True)  # organisation that can be responsible of reports
+    organisation = models.ForeignKey(
+        'OrganisationEntity',
+        related_name='team',
+        null=True,
+        blank=True,
+        limit_choices_to={"type__in": ('R', 'C')}
+    )  # organisation that can be responsible of reports
     ### deprecated to remove replaced by UserOrganisationMembership ###
     work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True)  # list of contractors/services that user work with
 
@@ -311,12 +317,13 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 
 @receiver(post_save, sender=OrganisationEntity)
-def create_matrix_when_creating_first_department(sender,instance, **kwargs):
+def create_matrix_when_creating_first_department(sender, instance, **kwargs):
     if instance.type == 'D':
         if(instance.dependency):
             if(len(instance.dependency.associates.all()) == 1):
                 for type in ReportCategory.objects.all():
                     instance.dispatch_categories.add(type)
+
 
 @receiver(pre_delete, sender=OrganisationEntity)
 def organisationentity_delete(sender, instance, **kwargs):
@@ -325,13 +332,6 @@ def organisationentity_delete(sender, instance, **kwargs):
 
     for membership in memberships:
         membership.delete()
-
-# @receiver(user_logged_in)
-# def lang(sender, **kwargs):
-#     lang_code = kwargs['user'].fmsuser.get_langage()
-#     kwargs['request'].session['django_language'] = lang_code.lower()
-#     kwargs['request'].LANGUAGE_CODE = lang_code.lower()
-#     activate(lang_code.lower())
 
 
 class UserOrganisationMembership(UserTrackedModel):
@@ -350,39 +350,25 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def responsible(self, user):
         query = Q()
-
-        if (user.contractor or user.applicant) and (user.manager):
-            query = Q(contractor=user.organisation)
+        if user.contractor and user.manager:
+            query = Q(contractor__in=user.organisations_list())
             # query2 = Q(responsible_manager=user)
-            query3 = Q(responsible_department__in = user.organisations_list())
+            query3 = Q(responsible_department__in=user.organisations_list())
             return self.filter(query) | self.filter(query3)
 
-        if user.contractor or user.applicant:
+        if user.contractor:
+            query = query | Q(contractor__in=user.organisations_list())
+
+        if user.applicant:
             query = query | Q(contractor=user.organisation)
 
         if user.manager or user.leader or user.agent:
-            query = query | Q(responsible_department__in = user.organisations_list())
+            query = query | Q(responsible_department__in=user.organisations_list())
 
         return self.filter(query)
 
     def entity_responsible(self, user):
-        query = Q()
-        if (user.contractor or user.applicant) and (user.manager or user.agent):
-            query = Q(contractor=user.organisation)
-            query2 = Q(responsible_entity = user.organisation.dependency)
-            return self.filter(query2) | self.filter(query)
-
-        if user.contractor or user.applicant:
-            if user.organisation.type != OrganisationEntity.COMMUNE:
-                query = query | Q(responsible_entity=user.organisation.dependency)
-            else:
-                query = query | Q(contractor=user.organisation)
-
-        if user.agent or user.manager or user.leader:
-            if user.organisation.type != OrganisationEntity.COMMUNE:
-                query = query | Q(responsible_entity=user.organisation.dependency)
-            else:
-                query = query | Q(responsible_entity=user.organisation)
+        query = Q(responsible_entity=user.organisation)
 
         return self.filter(query)
 

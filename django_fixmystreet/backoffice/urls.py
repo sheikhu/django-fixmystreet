@@ -72,7 +72,7 @@ urlpatterns += patterns('django_fixmystreet.backoffice.views.ajax',
     url(_(r'^ajax/send_pdf/(\d+)'),'send_pdf',name="send_pdf"),
 )
 
-urlpatterns +=patterns('django_fixmystreet.backoffice.views.users',
+urlpatterns += patterns('django_fixmystreet.backoffice.views.users',
     # (r'^accounts/', include('registration.backends.simple.urls')),
     url(_(r'^logout/$'),'logout_view', name='logout'),
     url(_(r'^change-password/$'), 'change_password', name='password_change'),
@@ -97,6 +97,7 @@ urlpatterns +=patterns('django_fixmystreet.backoffice.views.groups',
 
     url(r'^groups/membership/add/(?P<group_id>\d+)/(?P<user_id>\d+)/$', 'add_membership',   name='add_membership'),
     url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership',   name='remove_membership'),
+    url(r'^groups/membership/contact/(?P<membership_id>\d+)/$', 'contact_membership',   name='contact_membership'),
 )
 
 urlpatterns += patterns('',

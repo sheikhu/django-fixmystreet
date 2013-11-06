@@ -493,11 +493,7 @@ function showMergeConfirmation(){
                 {% if not report.is_in_progress %}
                 <tr>
                     <th><strong>{% trans "Responsible:" %}</strong></th>
-                    {% if report.responsible_department %}
-                    <td>{{report.responsible_department.name}} ({{report.responsible_department.dependency.name}})</td>
-                    {% else %}
-                    <td>{{report.responsible_manager.first_name}} {{report.responsible_manager.last_name}} ({{report.responsible_manager.organisation.name}})</td>
-                    {% endif %}
+                    <td>{{ report.responsible_department.name }} ({{report.responsible_department.dependency.name}})</td>
                 </tr>
                 {% endif %}
 
@@ -607,7 +603,7 @@ function showMergeConfirmation(){
                         </tr>
                     <tr>
                         <th>
-                            <strong>{% trans "Planned:" %}</strong>
+                            <strong>{% trans "Planification:" %}</strong>
                         </th>
                         <td colspan="4">
                             <select id="date_planned" onchange="planned()">
@@ -627,11 +623,11 @@ function showMergeConfirmation(){
                         <tr>
                             <th><strong>{% trans "Responsible manager:" %}</strong></th>
                             <td>
-                                {% if report.responsible_department %}
-                                <a href="mailto:{{report.responsible_manager.email}}">{{report.responsible_department.name}} ({{report.responsible_department.dependency.name}})</a>
-                                {% else %}
-                                <a href='mailto:{{ report.responsible_manager.email }}'>{{ report.responsible_manager.get_full_name }}</a> ({{ report.responsible_entity.name }})
-                                {% endif %}
+                                <a href='mailto:{{ report.responsible_department.email }}'>
+                                    {{ report.responsible_department.name }}
+                                </a>
+                                <br/>
+                                {{report.responsible_department.dependency.name}}
                             </td>
                         </tr>
                         {% if report.contractor %}

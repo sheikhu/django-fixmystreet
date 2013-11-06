@@ -190,11 +190,11 @@ def show(request,slug, report_id):
     entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
     if organisation:
         entities.exclude(pk=organisation.id)
-        contractors = organisation.associates.filter(subcontractor=True)
+        contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR)
     else:
-        contractors = OrganisationEntity.objects.filter(subcontractor=True)
+        contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR)
 
-    applicants = OrganisationEntity.objects.filter(applicant=True)
+    applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT)
     pnt = report.point
     if report.is_created():
         nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)

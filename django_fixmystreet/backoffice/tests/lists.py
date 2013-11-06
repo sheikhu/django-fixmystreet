@@ -32,15 +32,15 @@ class ListTest(TestCase):
         self.stib.dependency = self.bxl
         self.stib.save()
         
-        self.contractor = FMSUser(email="contractor@bxl.be", telephone="0123456789", last_used_language="fr", contractor=True, organisation=self.stib)
+        self.contractor = FMSUser(email="contractor@bxl.be", telephone="0123456789", last_used_language="fr", contractor=True, organisation=self.bxl)
         self.contractor.save()
         
-        self.contractor_manager = FMSUser(email="conman@bxl.be",telephone="90870870",last_used_language="fr",contractor=True,organisation=self.stib,manager=True)
+        self.contractor_manager = FMSUser(email="conman@bxl.be",telephone="90870870",last_used_language="fr",contractor=True,organisation=self.bxl,manager=True)
         self.contractor_manager.save()
         uom = UserOrganisationMembership(user=self.contractor_manager, organisation=self.group)
         uom.save()
         
-        self.entity_manager = FMSUser(email="entman@bxl.be",telephone="90870870",last_used_language="fr",leader=True,organisation=self.group,manager=True)
+        self.entity_manager = FMSUser(email="entman@bxl.be",telephone="90870870",last_used_language="fr",leader=True,organisation=self.bxl,manager=True)
         self.entity_manager.save()
         self.usergroupmembership = UserOrganisationMembership(user_id = self.entity_manager.id, organisation_id = self.group.id)
         self.usergroupmembership.save()
