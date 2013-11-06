@@ -495,6 +495,7 @@ class Report(UserTrackedModel):
 
     merged_with = models.ForeignKey('Report', related_name='merged_reports', null=True, blank=True)
 
+    ### deprecated not used ###
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
     gravity = models.IntegerField(default=1)

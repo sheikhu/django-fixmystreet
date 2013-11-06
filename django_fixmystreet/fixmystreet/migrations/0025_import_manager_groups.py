@@ -7,24 +7,24 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         managers = orm['fixmystreet.FMSUser'].objects.filter(manager=True)
 
-        table_line_format = u"{0:5} {1:30.30} {2:15.15} {3:3}"
-        table_line_separator = ''.join(['-' for i in range(56)])
+        table_line_format = u"{0:5} {1:30.30} {2:15.15} {3:4} {4:4}"
+        table_line_separator = ''.join(['-' for i in range(62)])
 
         # pint a table of datas (for debug)
-        print table_line_format.format("id", "email", "communes", "cats")
+        print table_line_format.format("id", "email", "communes", "cat", "rep")
         print table_line_separator
 
         for m in managers:
-            if m.categories.count() > 0:
-                print table_line_format.format(
-                    m.id, m.email,
-                    m.organisation.name_fr,
-                    m.categories.count()
-                )
+            print table_line_format.format(
+                m.id, m.email,
+                m.organisation.name_fr,
+                m.categories.count(),
+                m.reports_in_charge.count()
+            )
         print table_line_separator
 
         for m in managers:
-            if m.categories.count() > 0:
+            if m.categories.count() > 0 or m.reports_in_charge.count() > 0:
                 name = u"{0} {1}".format(m.last_name, m.first_name)
                 print u"--- creating grp for", name
                 group = orm['fixmystreet.OrganisationEntity'].objects.create(

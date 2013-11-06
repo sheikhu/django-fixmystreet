@@ -60,8 +60,8 @@ class FmsUserForm(forms.ModelForm):
             'email',
             'is_active',
             'leader',
-            'agent',
             'manager',
+            'agent',
             'contractor'
         )
 
