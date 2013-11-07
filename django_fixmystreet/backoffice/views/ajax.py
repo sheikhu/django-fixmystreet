@@ -121,6 +121,8 @@ def send_pdf(request,report_id):
             if html:
                 msg.attach_alternative(html, "text/html")
 
+            #reset the seek to 0 to be able to read multiple times the same file
+            pdffile.seek(0)
             msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
 
 
