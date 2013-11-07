@@ -59,10 +59,12 @@ def change_password(request):
 
 def list_users(request):
     current_user = request.fmsuser
-    users = FMSUser.objects.filter(logical_deleted=False).is_pro()
+    users = FMSUser.objects.filter(logical_deleted=False)
     if current_user.organisation:
         users = users.filter(organisation=current_user.organisation)
-    elif not request.user.is_superuser:
+    elif request.user.is_superuser:
+        users = users.is_pro()
+    else:
         raise PermissionDenied()
 
     return render_to_response("pro/auth/users_list.html", {
@@ -130,17 +132,15 @@ def delete_user(request, user_id, user_type='users'):
     user_to_delete = FMSUser.objects.get(id=user_id, organisation=request.fmsuser.organisation)
 
     can_edit = request.fmsuser.leader
-    if not can_edit:
+    if can_edit:
+        user_to_delete.logical_deleted = True
+        user_to_delete.is_active = False
+        user_to_delete.agent = False
+        user_to_delete.manager = False
+        user_to_delete.save()
+        messages.add_message(request, messages.SUCCESS, _("User deleted successfully"))
+    else:
         messages.add_message(request, messages.ERROR, _("You can not delete this user"))
-        return HttpResponseRedirect(reverse('list_users', kwargs={'user_type': user_type}))
 
-    user_to_delete.logical_deleted = True
-    user_to_delete.is_active = False
-    user_to_delete.agent = False
-    user_to_delete.manager = False
-    user_to_delete.save()
-    messages.add_message(request, messages.SUCCESS, _("User deleted successfully"))
-
-    #FMSUser.objects.get(id=request.REQUEST.get('userId')).delete()
-    return HttpResponseRedirect(reverse('list_users', kwargs={'user_type': user_type}))
+    return HttpResponseRedirect(reverse('list_users'))
 
