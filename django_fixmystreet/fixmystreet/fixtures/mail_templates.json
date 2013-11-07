@@ -190,8 +190,8 @@
     "pk": 18,
     "model": "fixmystreet.mailnotificationtemplate",
     "fields": {
-        "content_fr": "{user} a envoyé ce PDF avect le message suivant: \r\n\r\n {comment}",
-        "title_nl": "{user} stuurt u deze PDF.",
+        "content_fr": "{user} a envoyé ce PDF avec le message suivant: \r\n\r\n {comment}",
+        "title_nl": "{user} stuurt u deze PDF",
         "name": "mail-pdf",
         "content_nl": "{user} heeft je deze PDF gestuurd met volgend bericht: \r\n\r\n {comment}",
         "title_fr": "{user} a envoyé ce PDF"
