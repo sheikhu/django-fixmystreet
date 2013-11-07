@@ -351,10 +351,8 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def responsible(self, user):
         query = Q()
         if user.contractor and user.manager:
-            query = Q(contractor__in=user.organisations_list())
-            # query2 = Q(responsible_manager=user)
-            query3 = Q(responsible_department__in=user.organisations_list())
-            return self.filter(query) | self.filter(query3)
+            query = Q(responsible_department__in=user.organisations_list())
+            return self.filter(query)
 
         if user.contractor:
             query = query | Q(contractor__in=user.organisations_list())
@@ -369,7 +367,10 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def entity_responsible(self, user):
         query = Q(responsible_entity=user.organisation)
+        return self.filter(query)
 
+    def responsible_contractor(self, user):
+        query = Q(contractor__in = user.organisations_list())
         return self.filter(query)
 
     def entity_territory(self, organisation):
@@ -1627,7 +1628,7 @@ class ReportCategoryHint(models.Model):
 
 class ReportNotification(models.Model):
     recipient_mail = models.CharField(max_length=200,null=True)
-    recipient = models.ForeignKey(FMSUser, related_name="notifications")
+    recipient = models.ForeignKey(FMSUser, related_name="notifications", null=True)
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
     error_msg = models.TextField()

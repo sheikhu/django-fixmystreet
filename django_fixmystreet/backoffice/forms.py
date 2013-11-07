@@ -167,12 +167,21 @@ class FmsUserCreateForm(FmsUserForm):
 
 def ownership_choices(current_user_ownership):
     if 'manager' in current_user_ownership:
-        return (
-            ("entity", _("All reports in my entity")),
-            ("responsible", _("My responbsible reports")),
-            ("subscribed", _("My subscriptions")),
-            ("transfered", _("My transfered reports"))
-        )
+        if 'contractor' in current_user_ownership:
+            return (
+                ("entity", _("All reports in my entity")),
+                ("responsible", _("My responbsible reports")),
+                ("contractor_responsible", _("My responbsible reports as contractor")),
+                ("subscribed", _("My subscriptions")),
+                ("transfered", _("My transfered reports"))
+            )
+        else:
+            return (
+                ("entity", _("All reports in my entity")),
+                ("responsible", _("My responbsible reports")),
+                ("subscribed", _("My subscriptions")),
+                ("transfered", _("My transfered reports"))
+            )
     elif 'agent' in current_user_ownership and ('contractor' in current_user_ownership or 'applicant' in current_user_ownership):
         return (
             ("entity", _("All reports in my entity")),

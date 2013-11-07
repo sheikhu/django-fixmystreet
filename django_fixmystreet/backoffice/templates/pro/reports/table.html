@@ -84,7 +84,11 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block results %}
-<p class="span12"><a class="btn" href="{% url 'report_list_pro' %}">{% trans "Display as list" %}</a></p>
+<form id="incident-filter" method="GET">
+    <span class="span4">{{ search_form.status }}</span>
+    <span class="span4">{{ search_form.ownership }}</span>
+    <span class="span4"><a class="btn" href="{% url 'report_list_pro' %}">{% trans "Display as list" %}</a></span>
+</form>
 <div class="span12">
     {% if reports %}
     <ul id="column-visibility">

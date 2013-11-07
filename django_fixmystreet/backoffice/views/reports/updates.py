@@ -282,7 +282,7 @@ def merge(request,report_id):
     # report_to_delete.delete();
 
     #Send message of confirmation
-    messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
+    # messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
     if "pro" in request.path:
             return HttpResponseRedirect(final_report.get_absolute_url_pro()+"?page=1")
     else:
