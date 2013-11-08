@@ -59,7 +59,7 @@ class FmsUserForm(forms.ModelForm):
             'telephone',
             'email',
             'is_active',
-            'leader',
+            # 'leader',
             'manager',
             'agent',
             'contractor'
@@ -76,12 +76,7 @@ class FmsUserForm(forms.ModelForm):
         label="Active"
     )
 
-    leader = forms.BooleanField(
-        required=False,
-        widget=forms.CheckboxInput(attrs={
-            'disabled': True
-        })
-    )
+    # leader = forms.BooleanField(required=False)
 
     agent = forms.BooleanField(required=False)
     manager = forms.BooleanField(required=False)

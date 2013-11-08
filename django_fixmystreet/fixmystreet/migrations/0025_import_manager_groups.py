@@ -31,6 +31,7 @@ class Migration(SchemaMigration):
                     name_fr=name,
                     name_nl=name,
                     email=m.email,
+                    phone=m.telephone,
                     type='D',
                     dependency=m.organisation
                 )
