@@ -682,7 +682,6 @@ class HistoryTest(TestCase):
         self.assertEqual(activities.all().count(), 3)
         self.assertContains(response, self.calculatePrint(activities[2]))
 
-    @unittest.skip ('Test will be skipped untill feature of notification for making info public is developed')
     def testMakeCommentPublic(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
         self.assertEquals(response.status_code, 200)
