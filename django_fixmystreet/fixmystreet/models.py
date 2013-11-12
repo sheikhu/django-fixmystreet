@@ -1178,7 +1178,7 @@ def report_notify(sender, instance, **kwargs):
                             content_template='notify-became-private',
                             recipient=subscription.subscriber,
                             related=report,
-                            reply_to=report.responsible_manager.email,
+                            reply_to=report.responsible_departement.email,
                         ).save()
 
 
@@ -1296,6 +1296,7 @@ def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
+    
         ReportEventLog(
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
@@ -1307,7 +1308,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                     content_template='informations_published',
                     recipient=subscription.subscriber,
                     related=report,
-                    reply_to=report.responsible_manager.email,
+                    reply_to=report.responsible_department.email,
                 ).save()
 
     #if report is assigned to impetrant or executeur de travaux also inform them
@@ -1317,7 +1318,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                     content_template='informations_published',
                     recipient=recipient,
                     related=report,
-                    reply_to=report.responsible_manager.email,
+                    reply_to=report.responsible_departement.email,
                 ).save()
 
 
@@ -1447,7 +1448,7 @@ def notify_report_subscription(sender, instance, **kwargs):
             content_template='notify-subscription',
             recipient=instance.subscriber,
             related=report,
-            reply_to=report.responsible_manager.email,
+            reply_to=report.responsible_departement.email,
         )
         notifiation.save()
 
