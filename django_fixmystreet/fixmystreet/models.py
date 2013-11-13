@@ -971,7 +971,7 @@ def report_notify(sender, instance, **kwargs):
 
             ReportNotification(
                 content_template='notify-creation',
-                recipient=report.responsible_manager,
+                # recipient=report.responsible_manager,
                 recipient_mail = report.responsible_department.email,
                 related=report,
             ).save()
