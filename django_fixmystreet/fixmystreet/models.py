@@ -228,18 +228,6 @@ class FMSUser(User):
         return self.get_display_name()
 
 
-@receiver(post_save, sender=FMSUser)
-def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
-    """This method is used to create the security matrix when creating the first manager of the entity"""
-    #If this is the first user created and of type gestionnaire then assign all reportcategories to him
-    if instance.manager:
-        #if we have just created the first one, then apply all type to him
-        if instance.organisation.team.filter(manager=True).count() == 1:
-            #Activate the organisation
-            instance.organisation.active = True
-            instance.organisation.save()
-            for type in ReportCategory.objects.all():
-                instance.categories.add(type)
 
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
@@ -318,11 +306,16 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 @receiver(post_save, sender=OrganisationEntity)
 def create_matrix_when_creating_first_department(sender, instance, **kwargs):
-    if instance.type == 'D':
-        if(instance.dependency):
-            if(len(instance.dependency.associates.all()) == 1):
-                for type in ReportCategory.objects.all():
-                    instance.dispatch_categories.add(type)
+    """This method is used to create the security matrix when creating the first department of the entity"""
+    if instance.type == 'D' and instance.dependency:
+        all_departments = instance.dependency.associates.filter(type='D')
+        if all_departments.count() == 1 and instance.dispatch_categories.count() == 0:
+            # the first department is created and the matrix is empty
+            # actiate entity for citizen
+            instance.dependency.active = True
+            instance.dependency.save()
+            for type in ReportCategory.objects.all():
+                instance.dispatch_categories.add(type)
 
 
 @receiver(pre_delete, sender=OrganisationEntity)
