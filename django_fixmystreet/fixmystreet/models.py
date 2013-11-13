@@ -971,8 +971,8 @@ def report_notify(sender, instance, **kwargs):
 
             ReportNotification(
                 content_template='notify-creation',
-                # recipient=report.responsible_manager,
-                recipient_mail = report.responsible_department.email,
+                recipient=report.responsible_department.memberships.get(contact_user=True).user,
+                recipient_mail=report.responsible_department.email,
                 related=report,
             ).save()
 
@@ -1659,7 +1659,7 @@ class ReportNotification(models.Model):
         if self.related.merged_with:
             merged_with = self.related.merged_with
 
-        if not self.recipient_mail and not self.recipient.email:
+        if not self.recipient.email:
             self.error_msg = "No email recipient"
             self.success = False
             return
