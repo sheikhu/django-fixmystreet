@@ -3,9 +3,10 @@ from django.core.urlresolvers import reverse
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
 from django.utils import unittest
 
+
 class UsersTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.manager = FMSUser(
@@ -29,27 +30,26 @@ class UsersTest(TestCase):
             last_name="leader",
             email="leader@a.com",
             manager=True,
-            leader = True
+            leader=True
         )
         self.leader.set_password('test')
         self.leader.organisation = OrganisationEntity.objects.get(pk=14)
         self.leader.save()
         self.createuser_post = {
-            'telephone':'123456',
+            'telephone': '123456',
             'is_active': True,
-            'first_name':'david',
-            'last_name':'hasselhof',
-            'email':'david.hasselhof@baywatch.com'
+            'first_name': 'david',
+            'last_name': 'hasselhof',
+            'email': 'david.hasselhof@baywatch.com'
         }
         self.edituser_post = {
-            'telephone':'654321',
+            'telephone': '654321',
             'is_active': True,
-            'first_name':'new_manager',
-            'last_name':'new_manager',
-            'email':'manager2@a.com',
+            'first_name': 'new_manager',
+            'last_name': 'new_manager',
+            'email': 'manager2@a.com',
             'manager': True
         }
-
 
     def testListUser(self):
         self.client.login(username='manager@a.com', password='test')
@@ -79,9 +79,6 @@ class UsersTest(TestCase):
         self.assertIn(self.manager, users)
         self.assertIn(self.leader, users)
 
-    #this test fails because the user created by create_user is not marked as pro and hence cannot be found by list_users
-    #when this is fixed update this method to test addition by non leader user
-    @unittest.skip ('Test will be skipped')
     def testCreateUser(self):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.post(reverse('create_user'), self.createuser_post, follow=True)
@@ -93,12 +90,24 @@ class UsersTest(TestCase):
         can_create = response.context['can_create']
         users = response.context['users']
         self.assertTrue(can_create)
-        #self.assertEquals(users.count(), 3)
+        self.assertEquals(users.count(), 3)
+        self.assertContains(response, self.createuser_post["email"])
+
+    def testUpdateLeaderAsLeader(self):
+        self.client.login(username='leader@a.com', password='test')
+        response = self.client.post(reverse('edit_user', args=[self.leader.id]), self.edituser_post, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('can_edit' in response.context)
+        self.assertFalse(response.context['can_edit'])
 
     def testUpdateUserAsLeader(self):
         self.client.login(username='leader@a.com', password='test')
-        response = self.client.post(reverse('edit_user',args=[self.manager.id]), self.edituser_post, follow=True)
+        response = self.client.post(reverse('edit_user', args=[self.manager.id]), self.edituser_post, follow=True)
+
         self.assertEquals(response.status_code, 200)
+        self.assertTrue('can_edit' in response.context)
+        self.assertTrue(response.context['can_edit'])
+
         response = self.client.post(reverse('list_users'), follow=True)
 
         self.assertEquals(response.status_code, 200)
@@ -120,7 +129,7 @@ class UsersTest(TestCase):
         self.assertTrue(founduser)
 
         #now try to update a leader user this should not be allowed
-        response = self.client.post(reverse('edit_user',args=[self.leader.id]), self.edituser_post, follow=True)
+        response = self.client.post(reverse('edit_user', args=[self.leader.id]), self.edituser_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertTrue('can_edit' in response.context)
         self.assertFalse(response.context['can_edit'])
@@ -131,6 +140,9 @@ class UsersTest(TestCase):
         can_create = response.context['can_create']
         users = response.context['users']
         self.assertTrue(can_create)
+        self.assertNotContains(response, self.manager.email)  # the old one
+        self.assertContains(response, self.edituser_post["email"])
+
         founduser = False
 
         for user in users:
@@ -144,7 +156,7 @@ class UsersTest(TestCase):
 
     def testUpdateUserAsPro(self):
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.post(reverse('edit_user',args=[self.manager.id]), self.edituser_post, follow=True)
+        response = self.client.post(reverse('edit_user', args=[self.manager.id]), self.edituser_post, follow=True)
         self.assertEquals(response.status_code, 200)
         response = self.client.post(reverse('list_users'), follow=True)
         self.assertEquals(response.status_code, 200)
@@ -163,8 +175,6 @@ class UsersTest(TestCase):
                 founduser = True
         self.assertTrue(founduser)
 
-    #disable test due to bug in users.py where in delete_user 'list_users' should not have kwargs={'user_type': user_type}
-    @unittest.skip ('Test will be skipped')
     def testDeleteUser(self):
         self.client.login(username='leader@a.com', password='test')
         response = self.client.get(reverse('delete_user', args=[self.manager.id]), follow=True)
@@ -176,10 +186,9 @@ class UsersTest(TestCase):
         can_create = response.context['can_create']
         users = response.context['users']
         self.assertEquals(users.count(), 1)
+        self.assertTrue(can_create)
         self.assertNotIn(self.manager, users)
 
-    #disable test due to bug in users.py where in delete_user 'list_users' should not have kwargs={'user_type': user_type}
-    @unittest.skip ('Test will be skipped')
     def testDeleteUserAsPro(self):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(reverse('delete_user', args=[self.manager.id]), follow=True)
@@ -191,4 +200,5 @@ class UsersTest(TestCase):
         can_create = response.context['can_create']
         users = response.context['users']
         self.assertEquals(users.count(), 2)
+        self.assertFalse(can_create)
         self.assertIn(self.manager, users)

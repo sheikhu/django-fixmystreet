@@ -3,7 +3,9 @@
 
 {% block title %}
     {% if user_form.instance %}
-        {% trans "Edit user" %}
+        {% blocktrans with user_form.instance.get_full_name as name %}
+            Edit {{ name }}
+        {% endblocktrans %}
     {% else %}
         {% trans "Create user" %}
     {% endif %}
@@ -12,6 +14,7 @@
 
 {% block script %}
 {{ block.super }}
+{% if can_edit %}
 <script>
 $(function() {
     var $manager = $(':checkbox[name=manager]');
@@ -19,9 +22,6 @@ $(function() {
     var $contractor = $(':checkbox[name=contractor]');
     var $agent = $(':checkbox[name=agent]');
 
-    if ($leader.prop('checked')) {
-        return;
-    }
     $leader.prop('disabled', true); // leader not editable
 
     $leader.change(function () {
@@ -55,20 +55,34 @@ $(function() {
         $manager.prop('disabled', agent);
     }).change();
 });
-
 </script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
 <form action="" method="POST" class="form-centered form-horizontal">
     {% if user_form.instance %}
-        <h1>{% trans "Edit user" %}</h1>
+        <h1>
+        {% blocktrans with user_form.instance.get_full_name as name %}
+            Edit {{ name }}
+        {% endblocktrans %}
+        </h1>
     {% else %}
         <h1>{% trans "Create user" %}</h1>
     {% endif %}
+
     <div id="required-note" class="controls lead">{% trans "* This fields are required" %}</div>
     {% include "_form_horizontal.html" with form=user_form %}
+
+    {% if user_form.instance.leader and request.fmsuser.leader %}
+        <p class="lead controls">{% trans "This user has leader role and can not be edited" %}</p>
+    {% elif not request.fmsuser.leader %}
+        {% if user_form.instance.leader %}
+            <p class="lead controls">{% trans "This user has leader role" %}</p>
+        {% endif %}
+        <p class="lead controls">{% trans "Only leader can edit users" %}</p>
+    {% endif %}
     <div class="control-group">
         <div class="controls">
            <input type="submit" value="{% trans 'Save' %}" class="btn"/>

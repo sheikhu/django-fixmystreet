@@ -852,6 +852,14 @@ function showMergeConfirmation(){
     </div>
     <div class="modal-body">
         <span>{% trans 'Are you sure you want to merge these incidents?' %}</span>
+        <p>{% trans 'Attention: by merging these incidents the resulting incident will have the following properties:' %}</p>
+        <p> {% trans 'category' %}: {{report.display_category}}</p>
+        {% if report.private %}
+        <p> {% trans 'visibility' %}: {% trans 'private' %}</p>
+        {% else %}
+        <p> {% trans 'visibility' %}: {% trans 'public' %}</p>
+        {% endif %}
+
     </div>
     <div class="modal-footer">
         <a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>

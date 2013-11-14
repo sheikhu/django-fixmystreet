@@ -1,16 +1,16 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 from datetime import datetime, timedelta
 
+
 class UpdatesTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.client = Client()
@@ -24,11 +24,11 @@ class UpdatesTest(TestCase):
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = self.organisation,
+            dependency=self.organisation,
             email="test@email.com"
             )
         self.group.save()
-        
+
         self.manager = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
@@ -42,7 +42,7 @@ class UpdatesTest(TestCase):
         self.manager.organisation = self.organisation
         self.manager.save()
         self.manager.categories.add(self.secondary_category)
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
 
         self.report = Report(
@@ -50,12 +50,12 @@ class UpdatesTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             created_by=self.manager,
-            accepted_at= datetime.now()
+            accepted_at=datetime.now()
         )
         self.report.save()
 
@@ -215,12 +215,12 @@ class UpdatesTest(TestCase):
         self.assertTrue(Report.objects.get(id=self.report.id).private)
         response = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
         self.assertFalse(self.report.private)
-        
+
         #Test constraint: cannot turn report public if category is private
 
         #Turn report private
         response3 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=true")
-        
+
         #Change category to private one
         report = Report.objects.get(id=self.report.id)
         report.secondary_category = ReportCategory.objects.get(id=4)

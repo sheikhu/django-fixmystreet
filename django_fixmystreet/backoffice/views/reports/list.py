@@ -45,6 +45,8 @@ def filter_reports(user, criteria):
     elif ownership == "transfered":
         #List of transfered reports (previous reports)
         reports = user.previous_reports.all()
+    elif ownership == "contractor_responsible":
+        reports = reports.responsible_contractor(user)
     elif user.organisation:  # ownership == entity
         reports = reports.entity_responsible(user)
     # elif user.contractor or user.applicant:
@@ -114,11 +116,12 @@ def table(request):
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
     reports = Report.objects.all().filter(merged_with__isnull=True)
-
     if request.fmsuser.organisation:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
     elif not request.fmsuser.is_superuser:
         raise PermissionDenied()
+
+    reports, pnt = filter_reports(request.fmsuser, request.GET)
 
 
     # import pdb; pdb.set_trace()

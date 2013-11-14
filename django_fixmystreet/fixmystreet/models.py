@@ -228,18 +228,6 @@ class FMSUser(User):
         return self.get_display_name()
 
 
-@receiver(post_save, sender=FMSUser)
-def create_matrix_when_creating_first_manager(sender, instance, **kwargs):
-    """This method is used to create the security matrix when creating the first manager of the entity"""
-    #If this is the first user created and of type gestionnaire then assign all reportcategories to him
-    if instance.manager:
-        #if we have just created the first one, then apply all type to him
-        if instance.organisation.team.filter(manager=True).count() == 1:
-            #Activate the organisation
-            instance.organisation.active = True
-            instance.organisation.save()
-            for type in ReportCategory.objects.all():
-                instance.categories.add(type)
 
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
@@ -318,11 +306,16 @@ pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=Organisa
 
 @receiver(post_save, sender=OrganisationEntity)
 def create_matrix_when_creating_first_department(sender, instance, **kwargs):
-    if instance.type == 'D':
-        if(instance.dependency):
-            if(len(instance.dependency.associates.all()) == 1):
-                for type in ReportCategory.objects.all():
-                    instance.dispatch_categories.add(type)
+    """This method is used to create the security matrix when creating the first department of the entity"""
+    if instance.type == 'D' and instance.dependency:
+        all_departments = instance.dependency.associates.filter(type='D')
+        if all_departments.count() == 1 and instance.dispatch_categories.count() == 0:
+            # the first department is created and the matrix is empty
+            # actiate entity for citizen
+            instance.dependency.active = True
+            instance.dependency.save()
+            for type in ReportCategory.objects.all():
+                instance.dispatch_categories.add(type)
 
 
 @receiver(pre_delete, sender=OrganisationEntity)
@@ -351,10 +344,8 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def responsible(self, user):
         query = Q()
         if user.contractor and user.manager:
-            query = Q(contractor__in=user.organisations_list())
-            # query2 = Q(responsible_manager=user)
-            query3 = Q(responsible_department__in=user.organisations_list())
-            return self.filter(query) | self.filter(query3)
+            query = Q(responsible_department__in=user.organisations_list())
+            return self.filter(query)
 
         if user.contractor:
             query = query | Q(contractor__in=user.organisations_list())
@@ -369,7 +360,10 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def entity_responsible(self, user):
         query = Q(responsible_entity=user.organisation)
+        return self.filter(query)
 
+    def responsible_contractor(self, user):
+        query = Q(contractor__in = user.organisations_list())
         return self.filter(query)
 
     def entity_territory(self, organisation):
@@ -977,8 +971,8 @@ def report_notify(sender, instance, **kwargs):
 
             ReportNotification(
                 content_template='notify-creation',
-                recipient=report.responsible_manager,
-                recipient_mail = report.responsible_department.email,
+                recipient=report.responsible_department.memberships.get(contact_user=True).user,
+                recipient_mail=report.responsible_department.email,
                 related=report,
             ).save()
 
@@ -1177,7 +1171,7 @@ def report_notify(sender, instance, **kwargs):
                             content_template='notify-became-private',
                             recipient=subscription.subscriber,
                             related=report,
-                            reply_to=report.responsible_manager.email,
+                            reply_to=report.responsible_department.email,
                         ).save()
 
 
@@ -1295,6 +1289,7 @@ def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
+
         ReportEventLog(
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
@@ -1306,7 +1301,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                     content_template='informations_published',
                     recipient=subscription.subscriber,
                     related=report,
-                    reply_to=report.responsible_manager.email,
+                    reply_to=report.responsible_department.email,
                 ).save()
 
     #if report is assigned to impetrant or executeur de travaux also inform them
@@ -1316,7 +1311,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                     content_template='informations_published',
                     recipient=recipient,
                     related=report,
-                    reply_to=report.responsible_manager.email,
+                    reply_to=report.responsible_department.email,
                 ).save()
 
 
@@ -1446,7 +1441,7 @@ def notify_report_subscription(sender, instance, **kwargs):
             content_template='notify-subscription',
             recipient=instance.subscriber,
             related=report,
-            reply_to=report.responsible_manager.email,
+            reply_to=report.responsible_department.email,
         )
         notifiation.save()
 
@@ -1627,7 +1622,7 @@ class ReportCategoryHint(models.Model):
 
 class ReportNotification(models.Model):
     recipient_mail = models.CharField(max_length=200,null=True)
-    recipient = models.ForeignKey(FMSUser, related_name="notifications")
+    recipient = models.ForeignKey(FMSUser, related_name="notifications", null=True)
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
     error_msg = models.TextField()
