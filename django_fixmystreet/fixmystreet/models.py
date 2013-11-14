@@ -526,16 +526,16 @@ class Report(UserTrackedModel):
 
         if user and user.is_authenticated():
             if self.is_regional():
-                return "images/reg-pin-"+marker_color+"-XS.png"
+                return "images/marker-"+marker_color+"-xxs.png"
             elif self.is_pro():
-                return "images/pro-pin-"+marker_color+"-XS.png"
+                return "images/marker-"+marker_color+"-xxs.png"
             else:
-                return "images/pin-"+marker_color+"-XS.png"
+                return "images/marker-"+marker_color+"-xxs.png"
         else:
             if self.is_pro():
-                return "images/pro-pin-"+marker_color+"-XS.png"
+                return "images/marker-"+marker_color+"-xxs.png"
             else:
-                return "images/pin-"+marker_color+"-XS.png"
+                return "images/marker-"+marker_color+"-xxs.png"
 
     def is_regional(self):
         return self.address_regional

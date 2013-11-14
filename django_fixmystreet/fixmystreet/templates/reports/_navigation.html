@@ -1,29 +1,40 @@
 {% load i18n %}
 
-<a href="{{ url }}{% if BACKOFFICE %}?page=1{% endif %}" class="clearfix report{% if active %} active{% endif %}">
-	<div class="left_search_result">
-		<img style="max-width:30px;" src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+<a href="{{ url }}{% if BACKOFFICE %}?page=1{% endif %}" class="report{% if active %} active{% endif %}">
+	<div class="span3">
+		<div class="">
 
-		{% if report.thumbnail %}
-		<img width="69px" src="{{ report.thumbnail }}" class="report-preview thumbnail" />
-		{% else %}
-		<img src="{{ STATIC_URL }}images/no-photo-yellow-line.png" class="report-preview thumbnail" />
-		{% endif %}
+			{% if report.thumbnail %}
+			<img src="{{ report.thumbnail }}" class="report-preview thumbnail" />
+			{% else %}
+			<img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+			{% endif %}
+		</div>
+		<div class="loc_desc">
+			<img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+			<span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+			<span class="ticket_address">
+				{{ report.address }}, {{ report.address_number }}<br />
+				{{ report.postalcode }} {{ report.territorial_entity.name }}
+			</span><br />
+			<span class="ticket_desc">
+				{{ report.display_category }}
+			</span><br />
+			<!--h5 class="report-title">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}</h5>
+			<p class="report-address">{{ report.address }}, {{report.address_number}}</p-->
+			<!--p class="list_data">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}
+			<br/>{{ report.address }}, {{report.address_number}} ({{ report.postalcode }} {{ report.territorial_entity.name }})</p-->
+		</div>
+		<!--div class="right_list_search_result"-->
+			<!--h5>280 {% trans 'subscriptions' %}</h5-->
+			<!--h5>({% trans 'Created at' %}: {{report.created}})</h5>
+			<p class="report-entity">{% trans "responsible_entity" %}: {{ report.responsible_entity.name}} ({{report.postalcode}})</p-->
+			<!--p class="subscription_data">
+				{{report.get_number_of_subscription}}<br/>{% trans 'Subscriptions' %}
+			</p>
+		</div-->	
 	</div>
-	<div class="center_search_result">
-		<!--h5 class="report-title">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}</h5>
-		<p class="report-address">{{ report.address }}, {{report.address_number}}</p-->
-		<p class="list_data">{{ report.display_category }} {% if report.distance  %}({{ report.distance.km|floatformat:2 }} km){% endif %}
-		<br/>{{ report.address }}, {{report.address_number}} ({{ report.postalcode }} {{ report.territorial_entity.name }})</p>
-	</div>
-	<div class="right_list_search_result">
-		<!--h5>280 {% trans 'subscriptions' %}</h5-->
-		<!--h5>({% trans 'Created at' %}: {{report.created}})</h5>
-		<p class="report-entity">{% trans "responsible_entity" %}: {{ report.responsible_entity.name}} ({{report.postalcode}})</p-->
-		<p class="subscription_data">
-			{{report.get_number_of_subscription}}<br/>{% trans 'Subscriptions' %}
-		</p>
-	</div>
-	<div class="next_image"></div>
+	
+	<!--div class="next_image"></div-->
 	{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
 </a>

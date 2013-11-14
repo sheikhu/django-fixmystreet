@@ -745,7 +745,7 @@ msgstr "Toutes les communes"
 
 #: templates/home.html:95
 msgid "Widget Search"
-msgstr "Rechercher"
+msgstr "Signaler"
 
 #: templates/home.html:102
 msgid "Enter the report ticket:"

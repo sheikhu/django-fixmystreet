@@ -29,9 +29,9 @@ def home(request, location = None, error_msg =None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:5],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:5],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:5],
+                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:4],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:4],
+                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:4],
             },
             context_instance=RequestContext(request))
 
