@@ -210,7 +210,7 @@ footer .cirb-cibg img{
 	-moz-border-radius-topleft: 4px;
 	border-top-left-radius: 4px;
 }
-#instructions, #newReport{
+#instructions, #newReport, #incident-head{
 	background: #607C9D;
 }
 #instructions{
@@ -345,6 +345,12 @@ footer .cirb-cibg img{
 	border-bottom:0;
 	color:#495E77;
 }
+.nav-tabs > .active > a:focus{
+	background:#BCD3F2;
+	border:1px solid #5F7C9C;
+	border-bottom:0;
+	color:#495E77;
+}
 .num_reports{
 	font-size: 19px;
 }
@@ -422,4 +428,211 @@ h2.last_reports {
 	margin-bottom: 10px;
 	margin-top: 5px;
 	font-size:12px;
+}
+
+/* ==========================
+   SHOW REPORT
+   ========================== */
+#map.view_incident{
+	height:210px;
+}
+#map.view_incident .olMapViewport{
+	height:124px !important;
+}
+#incident-head{
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 10px 0 10px 0;
+}
+.lk-download-pdf, .lk-subscribe, .lk-isresolved{
+	width:80px;
+	height:80px;
+	display:inline-block;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #FFDB00;
+	float:right;
+	margin-right:10px;
+	font-family:'Dosis', sans-serif;
+	font-size:11px;
+	text-transform:uppercase;
+	text-align:center;
+	letter-spacing: -0.3px;
+	color:#607C9D;
+}
+.download-pdf{
+	background: #FFDB00 url('../images/icon-downloadpdf.png') top left no-repeat;
+}
+.subscribe{
+	background:#FFDB00 url('../images/icon-subscribe.png') top left no-repeat;
+}
+.isresolved{
+	background:#FFDB00 url('../images/icon-isresolved.png') top left no-repeat;
+}
+.download-pdf, .subscribe, .isresolved{
+	width: 49px;
+	display: block;
+	height: 49px;
+	margin: 8px auto 0 auto;
+}
+#incident-head .ticket_infos{
+	margin-left:10px;
+}
+#incident-head .ticket_number{
+	color:#D2E2F6;
+	font-size:11px;
+}
+#incident-head .ticket_address{
+	color:#FFF;
+	font-weight:bold;
+}
+#incident-head .ticket_desc{
+	color:#FFF;
+	font-size:12px;
+}
+/* ---
+   Timeline
+   ---- */
+/*.container{
+	width:1170px;
+	margin:30px auto;
+	overflow: hidden;
+	position: relative;*/ /* good for 100% margin child element */
+/*}*/
+.margin{
+	height:100%;
+	position: absolute;
+	background:#7090B7;
+	left:55.3%; 
+	width:2px;
+	margin-left:-1px; /* make it center */
+	bottom:10px;	/* margin-bottom space used by li element */
+	z-index:1000;
+	top: 395px;
+}
+
+ul.timeline{
+	width: 1150px; /* total width and plus 20px for triangles */
+	position: relative;
+	list-style:none;
+	overflow: hidden; 
+	padding: 10px;
+	background:#BCD4F1;
+	margin: 0px ;
+}
+.timeline > li.left{
+	width:650px;
+}
+.timeline > li.right{
+	width:480px;
+}
+.timeline > li{
+	background:#FFF;
+	position: relative; /* important to hold the absolute element triangles */
+	margin:0px 0px 10px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.timeline > li:before{
+	border:7px solid;
+	content:'';
+	display: block;
+	position: absolute;
+}
+/*.timeline > li:nth-child(even){
+	float:right;
+	clear:right;
+}
+.timeline > li:nth-child(odd){
+	float:left;
+	clear:left;
+}*/
+.timeline .right{
+	float:right;
+	clear:right;
+}
+.timeline > .left{
+	float:left;
+	clear:left;
+}
+.timeline .right:before{
+	border-color:#BCD4F1 #7090B7 #BCD4F1 #BCD4F1;
+	right:100%;
+	top:10px;
+}
+.timeline > .left:before{
+	border-color:#BCD4F1 #BCD4F1 #BCD4F1 #7090B7;
+	left:100%;
+	top:10px;
+}
+.timeline > li:first-child + li{
+	margin-top:20px;
+}
+.timeline > li{
+	margin-bottom:20px;
+}
+.timeline > li.right + li.right + li{
+	clear:both;
+}
+.timeline > li.left + li.right + li{
+	clear:both;
+}
+.timeline > li.left + li.right + li.left + li.right{
+	margin-top:20px;
+}
+/*
+.timeline > li:nth-child(even):before{
+	border-color:#fff #e2e2e2 #fff #fff;
+	right:100%;
+	top:10px; 
+}
+.timeline > li:nth-child(odd):before{
+	border-color:#fff #fff #fff #e2e2e2;
+	left:100%;
+	top:10px;
+}
+*/
+.timeline > li p{
+	margin:10px 0px;
+	line-height:1.8em;
+}
+.picture-head, .comment-head{
+	background:#7090B7;
+	/*height:30px;*/
+	color:#FFF;
+	padding:7px 10px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.picture-head{
+	margin-bottom:10px;
+}
+.comment-incident{
+	font-size:12px;
+	line-height: 16px !important;
+	font-style: italic;
+	padding: 10px;
+	color:#607C9D;
+	text-align:justify;
+}
+.comment-deco{
+	float:left;
+	margin:0 10px 0 0;
+}
+.picture-caption{
+	padding:10px;
+}
+.picture-caption img{
+	max-width:97%;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
