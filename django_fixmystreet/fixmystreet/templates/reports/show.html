@@ -47,6 +47,11 @@ $(function(){
         $("#history_popup").modal();
     });
 
+    document.getElementById('btn-streetview').addEventListener('click', function(){
+        var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
+        window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
+    })
+
     //If running internet explorer then apply an extra span5 to comment and file div sections. Otherwise nothing is shown
  //    if ($.browser.msie) {
 	// $('.report_update').addClass('span5');
@@ -102,6 +107,7 @@ function markAsDone(){
 {% block map %}
 <article id="map">
     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+    <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
 </article>
 {% endblock %}
 
