@@ -44,7 +44,7 @@ nav ul li a.help{
 nav ul li a:link, nav ul li a:visited{
 	border: 1px solid #E0E0E0;
 	border-left: 1px solid #FFF;
-	background: #E0E0E0;	
+	background: #E0E0E0;
 	text-decoration: none;
 	color: #495E77;
 }
@@ -91,7 +91,7 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
     -moz-border-radius: 4px;
 	border-radius: 4px;
 	border: 1px solid #E0E0E0;
-	background: #E0E0E0;	
+	background: #E0E0E0;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
 	color: #495E77;
@@ -108,7 +108,7 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	vertical-align: bottom;
 }
 #login a:link, #login a:visited{
-	background: #E0E0E0;	
+	background: #E0E0E0;
 	text-decoration: none;
 	color: #495E77;
 	border: 1px solid #E0E0E0;
@@ -138,17 +138,46 @@ footer .cirb-cibg img{
    HOME
   ==============================================================*/
 #map{
-	margin: 30px 0 0 0;
+	margin: 30px 0 10px 0;
 	position: relative;
-	height: 268px;
+	height: 290px;
+}
+#map.map-big{
+	height: 568px !important;
+    transition: all 1s;
 }
 #map img {
 	max-width: none;
 }
+#proposal {
+    background-color: #FFFFFF;
+    bottom: 20px;
+    display: block;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    margin:1em 0;
+}
+#proposal li {
+    border-bottom: 1px solid #DDDDDD;
+    display: block;
+    margin: 1em 0 1em 1em;
+}
+#proposal li a{
+    color:black;
+}
+#proposal-message{
+    display: block;
+    margin: 0;
+    padding: 0 1em 1em;
+    color: #BCD4F1;
+    font-weight:bold;
+}
 .olMapViewport{
 	position: absolute !important;
+/*
 	top: 88px;
-	z-index: -1;
+*/
 	height: 180px !important;
 	-webkit-border-bottom-right-radius: 4px;
 	-webkit-border-bottom-left-radius: 4px;
@@ -156,6 +185,11 @@ footer .cirb-cibg img{
 	-moz-border-radius-bottomleft: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
+    z-index:0;
+}
+.olMapViewport-big{
+	height: 480px !important;
+    transition: all 1s;
 }
 #copyright-urbis{
 	position: absolute;
@@ -166,12 +200,14 @@ footer .cirb-cibg img{
 	-webkit-border-top-right-radius: 4px;
 	-moz-border-radius-topright: 4px;
 	border-top-right-radius: 4px;
+    z-index:1;
 }
 #btn-localizeviamap, #btn-streetview{
 	position: absolute;
 	bottom: 1px;
 	background: #FFF;
 	padding: 0 5px 0 5px;
+    z-index:1;
 }
 #btn-localizeviamap a, #btn-streetview a{
 	font-size: 11px;
@@ -210,9 +246,6 @@ footer .cirb-cibg img{
 	-moz-border-radius-topleft: 4px;
 	border-top-left-radius: 4px;
 }
-#instructions, #newReport{
-	background: #607C9D;
-}
 #instructions{
 	-webkit-border-top-left-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
@@ -220,15 +253,15 @@ footer .cirb-cibg img{
 	-moz-border-radius-topright: 4px;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
-	padding: 10px 0 0 0;
+    padding: 10px 0;
 }
-#newReport{
-	-webkit-border-bottom-right-radius: 4px;
-	-webkit-border-bottom-left-radius: 4px;
-	-moz-border-radius-bottomright: 4px;
-	-moz-border-radius-bottomleft: 4px;
-	border-bottom-right-radius: 4px;
-	border-bottom-left-radius: 4px;
+#searchContainer{
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px 4px 0 0;
+
+	background-color: #607C9D;
+    padding: 5px;
 }
 #instructions ol.steps{
 	margin: 0 0 10px 10px;
@@ -240,6 +273,7 @@ footer .cirb-cibg img{
 	padding: 0 0 0 50px;
 	height: 22px;
 	margin: 0 0 0 75px;
+    text-indent: -15px;
 }
 #instructions ol li:first-child{
 	margin: 0;
@@ -255,7 +289,7 @@ footer .cirb-cibg img{
 #instructions ol li.stepTwo.on{
 	background: transparent url('../images/stepTwo_on.png') top left no-repeat;
 	color: #FFF;
-}					
+}
 #instructions ol li.stepTwo.off{
 	background: transparent url('../images/stepTwo_off.png') top left no-repeat;
 	color: #BCD4F1;
@@ -272,6 +306,7 @@ footer .cirb-cibg img{
 	background: transparent url('../images/icon-danger.png') top left no-repeat;
 	width: 15px;
 	height: 15px;
+    margin-right: 10px;
 }
 #danger-risk{
 	float: right;
@@ -286,7 +321,7 @@ footer .cirb-cibg img{
 	text-decoration: none;
 }
 #input-search{
-	width: 590px;
+	width: 580px;
 	margin-left: 10px;
 }
 #input-ward{
@@ -297,7 +332,7 @@ footer .cirb-cibg img{
 	padding: 4px 12px 4px 30px;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
-	color: #607C9D;	
+	color: #607C9D;
 }
 #recent-reports{
 	margin-top:30px;
@@ -354,7 +389,7 @@ footer .cirb-cibg img{
 .report .span3{
 	background:#FFF;
 	width:240px;
-	height:210px;
+	height:220px;
 	padding:0 10px 10px 10px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -364,7 +399,7 @@ footer .cirb-cibg img{
 	margin-left:50px;
 }
 .tab-pane{
-	padding-top:20px;
+	padding:20px 0;
 	border:1px solid #5F7C9C;
 	border-top:0;
 	-webkit-border-radius: 4px;
