@@ -1,12 +1,14 @@
 $(function(){
 
-    var $searchTerm = $('#input-search');
-    var $searchWard = $('#input-ward');
+    var $searchStreet = $('#input-search');
+    var $searchStreetNumber = $('#input-streetnumber');
+    var $searchMunicipality = $('#input-ward');
     var $searchAddressForm = $('#search-address-form');
     var $searchTicketForm = $('#search-ticket-form');
     var $searchButton = $('#widget-search-button');
     var $searchTicketButton = $('#widget-search-ticket-button');
     var $proposal = $('#proposal');
+    var $proposalMessage = $('#proposal-message');
 
     $searchTicketForm.submit(function(event){
         event.preventDefault();
@@ -31,15 +33,16 @@ $(function(){
 
     $searchAddressForm.submit(function(event){
         event.preventDefault();
-        var searchValue = $searchTerm.val();
+        var searchValue = $searchStreet.val();
         $proposal.slideUp();
+        $proposalMessage.slideUp();
 
-        if (!$searchTerm.val()) {
+        if (!$searchStreet.val()) {
             $searchTicketForm.show();
             return;
         }
 
-        $searchTerm.addClass('loading');
+        $searchStreet.addClass('loading');
         $searchButton.prop('disabled',true);
         $.ajax({
             url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
@@ -48,9 +51,9 @@ $(function(){
                 json:'{"language": "' + LANGUAGE_CODE + '",' +
                 '"address": {' +
                     '"street": {' +
-                        '"name": "' + $searchTerm.val().replace("\"","\\\"") + '",' +
-                        '"postcode": "' + $searchWard.val().replace("\"","\\\"") + '"' +
-                    '},"number": ""' +
+                        '"name": "' + $searchStreet.val().replace("\"","\\\"") + '",' +
+                        '"postcode": "' + $searchMunicipality.val().replace("\"","\\\"") + '"' +
+                    '},"number": "' + $searchStreetNumber.val() + '"' +
                 '}}'
             }
         }).success(function(response){
@@ -64,24 +67,47 @@ $(function(){
                 }
                 else
                 {
-                    $searchTerm.removeClass('loading');
+                    $searchStreet.removeClass('loading');
                     $searchButton.prop('disabled',false);
                     $proposal.empty();
+                    $proposalMessage.empty();
+                    var markers = [];
+
                     for(var i in response.result)
                     {
                         var street = response.result[i].address.street;
                         var pos = response.result[i].point;
-                        $('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + ' (' + street.postCode + ' ' + street.municipality + ')</a>')
+                        $('<a class="street button" href="' + NEXT_PAGE_URL + '?x=' + pos.x + '&y=' + pos.y + '">' + street.name + '<br/><strong>' +street.postCode + ' ' + street.municipality + '</strong></a>')
                             .appendTo($proposal)
                             .wrap('<li />');
+
+                        // Create marker for this address
+                        markers.push(fms.currentMap.addReport(response.result[i], i));
+
+                        if ($searchMunicipality.val()) {
+                            $proposalMessage.html("Cette rue n'est pas répertoriée dans cette commune");
+                            $proposalMessage.slideDown();
+                        } else if ($searchStreet.val().toLowerCase() == street.name.toLowerCase()) {
+                            $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
+                            $proposalMessage.slideDown();
+                        }
                     }
+                    // Add markers to the map
+                    fms.currentMap.markersLayer.addFeatures(markers);
+
+                    // Enlarge map viewport
+                    var map = document.getElementById('map');
+                    var mapViewPort = document.getElementById('OpenLayers.Map_4_OpenLayers_ViewPort');
+                    map.classList.add("map-big");
+                    mapViewPort.classList.add("olMapViewport-big");
+
                     $proposal.slideDown();
                 }
             }
             else
             {
                 $searchTicketForm.show();
-                $searchTerm.removeClass('loading');
+                $searchStreet.removeClass('loading');
                 $searchButton.prop('disabled',false);
                 if(response.status == "noresult" || response.status == "success")
                 {
@@ -93,7 +119,7 @@ $(function(){
                 }
             }
         }).error(function(xhr,msg,error){
-            $searchTerm.removeClass('loading');
+            $searchStreet.removeClass('loading');
             $searchButton.prop('disabled',false);
 
             $proposal.html('<p class="error-msg">Unexpected error.</p>').slideDown();
@@ -108,9 +134,7 @@ $(function(){
     function enableSearch() {
         var enableSearchBtn = false;
 
-        console.log(this.elements.length);
         for (var i=0, length=this.elements.length; i<length; i++) {
-            console.log(this.elements[i]);
             if ( (this.elements[i].id != "widget-search-button") && (this.elements[i].value) ) {
                 enableSearchBtn = true;
             } else {

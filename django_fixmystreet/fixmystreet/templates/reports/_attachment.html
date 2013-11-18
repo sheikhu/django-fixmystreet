@@ -1,5 +1,9 @@
 {% load i18n %}
-<div class="report_update">
+{% if attachment.reportfile %}
+<li class="report_update left">
+{% else %} 
+<li class="report_update right">
+    {% endif %}
     {% if editable %}
         <a class="pull-right" onclick="return confirm('{% trans 'Please confirm deletion' %}')" href="{% url 'report_delete_attachment' report.id %}?attachmentId={{attachment.id}}">
             <img src="{{STATIC_URL}}images/delete-icon.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}"/>
@@ -7,6 +11,12 @@
     {% endif %}
     <div class="update_text">
     {% if attachment.reportfile %}
+        <div class="picture-head">
+            {% blocktrans with by=attachment.reportcomment.get_display_name_as_citizen on=report.created %}
+                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+            {% endblocktrans %}
+            
+        </div>
         <span class="picture-caption">
             <a href="{{ attachment.reportfile.file.url }}">
                 {% if attachment.reportfile.is_image %}
@@ -28,7 +38,14 @@
             {% else %} - {% endif %}
         </p>
     {% else %} {# comment #}
-        <p class="comment-incident">{{ attachment.reportcomment.text }}</p>
+        <div class="comment-head">
+            {% blocktrans with by=attachment.reportcomment.get_display_name_as_citizen on=report.created %}
+                Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
+            {% endblocktrans %}
+        </div>
+        <p class="comment-incident">
+            <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
+            {{ attachment.reportcomment.text }}</p>
     {% endif %}
 
     {% if privacy == 'private' %}
@@ -48,11 +65,11 @@
         {% trans "on" %} <strong>{{attachment.created}}</strong>
     </p>
     {% else %}
-    <p class="author-sign comment-date">
+    <!--p class="author-sign comment-date">
         {% blocktrans with by=attachment.reportcomment.get_display_name_as_citizen on=report.created %}
         Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
         {% endblocktrans %}
-    </p>
+    </p-->
     {% endif %}
 
     <!-- If the status allow such interactions -->
@@ -73,13 +90,13 @@
             </label></li>
         </ul>
     {% else %}
-        <p>
+        <!--p>
         {% if attachment.security_level == attachment.PRIVATE %}
             {% trans "private" %}
         {% elif attachment.security_level == attachment.CONFIDENTIAL %}
             {% trans "confidential" %}
         {% endif %}
-        </p>
+        </p-->
     {% endif %}
     </div> <!-- update_text -->
-</div> <!-- report_update -->
+</li> <!-- report_update -->
