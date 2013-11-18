@@ -35,7 +35,6 @@ $(function(){
         event.preventDefault();
         var searchValue = $searchStreet.val();
         $proposal.slideUp();
-        $proposalMessage.slideUp();
 
         if (!$searchStreet.val()) {
             $searchTicketForm.show();
@@ -102,6 +101,9 @@ $(function(){
                     mapViewPort.classList.add("olMapViewport-big");
 
                     $proposal.slideDown();
+                    if (!$proposalMessage.html()) {
+                        $proposalMessage.slideUp();
+                    }
                 }
             }
             else
@@ -111,18 +113,18 @@ $(function(){
                 $searchButton.prop('disabled',false);
                 if(response.status == "noresult" || response.status == "success")
                 {
-                    $proposal.html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
+                    $proposalMessage.html('<span class="error-msg">No corresponding address has been found</span>').slideDown();
                 }
                 else
                 {
-                    $proposal.html('<p class="error-msg">' + response.status + '</p>').slideDown();
+                    $proposalMessage.html('<span class="error-msg">' + response.status + '</span>').slideDown();
                 }
             }
         }).error(function(xhr,msg,error){
             $searchStreet.removeClass('loading');
             $searchButton.prop('disabled',false);
 
-            $proposal.html('<p class="error-msg">Unexpected error.</p>').slideDown();
+            $proposalMessage.html('<span class="error-msg">Unexpected error.</span>').slideDown();
         });
     });
 

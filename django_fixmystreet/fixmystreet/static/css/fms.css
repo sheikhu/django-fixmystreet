@@ -143,7 +143,7 @@ footer .cirb-cibg img{
 	height: 290px;
 }
 #map.map-big{
-	height: 568px !important;
+	height: 590px !important;
     transition: all 1s;
 }
 #map img {
@@ -167,7 +167,6 @@ footer .cirb-cibg img{
     color:black;
 }
 #proposal-message{
-    display: block;
     margin: 0;
     padding: 0 1em 1em;
     color: #BCD4F1;
