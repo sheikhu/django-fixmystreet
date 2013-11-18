@@ -102,3 +102,26 @@ $(function(){
 
     $searchAddressForm.submit();
 });
+
+(function() {
+
+    function enableSearch() {
+        var enableSearchBtn = false;
+
+        console.log(this.elements.length);
+        for (var i=0, length=this.elements.length; i<length; i++) {
+            console.log(this.elements[i]);
+            if ( (this.elements[i].id != "widget-search-button") && (this.elements[i].value) ) {
+                enableSearchBtn = true;
+            } else {
+                enableSearchBtn = enableSearchBtn || false;
+            }
+        }
+
+        document.getElementById('widget-search-button').disabled = !enableSearchBtn;
+    }
+    // Enable search button if one of fields contain a value
+    document.getElementById('search-address-form').addEventListener('keyup', enableSearch);
+    document.getElementById('search-address-form').addEventListener('change', enableSearch);
+
+})(document);

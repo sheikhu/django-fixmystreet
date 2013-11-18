@@ -93,12 +93,12 @@ function showResults(type,li){
                                     <li class="stepOne on">{% trans "Localisation" %}</li>
                                     <li class="stepTwo off">{% trans "Description" %}</li>
                                     <li class="stepThree off">{% trans "Coordonnees" %}</li>
-                                </ol>    
+                                </ol>
                             </div>
                             <div class="span4">
                                 <strong id="danger-risk"><a href="#"><i class="icon-danger"></i>{% trans "A big security risk to signal?" %}</a></strong>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div id="newReport">
                         <div class="row">
@@ -109,13 +109,13 @@ function showResults(type,li){
                                             <!--h2>{% trans "Enter the address where the incident is:" %}</h2-->
                                             <input id="input-search" class="input-xxlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
                                             <input placeholder="n°" class="input-mini" type="search" />
-                                            <select id="input-ward" class="input-large" name="ward" onchange="document.getElementById('widget-search-button').click()">
+                                            <select id="input-ward" class="input-large" name="ward">
                                                 <option value="">{% trans "All communes..." %}</option>
                                                 {% for zip in zipcodes %}
                                                     <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
                                                 {% endfor %}
                                             </select>
-                                            <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Widget Search' %}">
+                                            <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Widget Search' %}" disabled>
                                             <ul id="proposal" class="inline hide"> </ul>
                                         </div>
                                     </form>
@@ -136,7 +136,7 @@ function showResults(type,li){
             </div>
         </div>
     </div>
-     
+
 {% endblock %}
 
 {% block content %}
@@ -165,7 +165,7 @@ function showResults(type,li){
                                 <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
                             </form>
                         </li>
-                    </ul>        
+                    </ul>
                 </div>
                 <div id="search_results" class="search_results_home tab-content">
                     <div id="list_created" class="tab-pane">
@@ -205,7 +205,7 @@ function showResults(type,li){
                         </div>
                     </div>
                 </div>
-            </article>            
+            </article>
         </div>
     </div>
 
