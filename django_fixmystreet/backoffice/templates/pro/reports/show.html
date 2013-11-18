@@ -146,10 +146,7 @@ $(document).ready(function() {
             document.getElementById('mail_pdf_emailcomments_citizen').value ='';
     });
 
-    document.getElementById('show_in_streetview').addEventListener('click', function(){
-        var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
-        window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
-    })
+    
 
     var isFalseAddressCheckBox = document.getElementById('is_false_address');
     isFalseAddressCheckBox.addEventListener('change', function() {
@@ -328,6 +325,7 @@ function showMergeConfirmation(){
 
 {% block map %}
 <article id="map">
+    <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
 </article>
 {% endblock %}
@@ -440,8 +438,7 @@ function showMergeConfirmation(){
             <table id='report-status'>
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
-                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
-                    <td><span id="show_in_streetview" class="btn" style="float:right;">{% trans "show on google streetview" %}</span></td>
+                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>                    
                 </tr>
 
                 {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
