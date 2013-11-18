@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils.translation import get_language, activate
 from django.core.urlresolvers import reverse
-from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, Report
+from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, Report, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
 from django.conf import settings
@@ -22,6 +22,10 @@ def home(request, location = None, error_msg =None):
     #wards = Ward.objects.all().order_by('name')
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
 
+    # Get report closed with photos only
+    reportWithPhoto = ReportFile.objects.filter(file_type=ReportFile.IMAGE, logical_deleted=False, security_level=ReportAttachment.PUBLIC).values_list('report_id', flat=True).distinct()
+    reports_closed = Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED, private=False, created__gt=last_30_days, id__in=reportWithPhoto).order_by('-modified')[0:4]
+
     return render_to_response("home.html",
             {
                 #"report_counts": ReportCountQuery('1 year'),
@@ -29,9 +33,9 @@ def home(request, location = None, error_msg =None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports_created': Report.objects.filter(status=Report.CREATED).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:4],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:4],
-                'reports_closed':Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED).filter(private=False).filter(created__gt=last_30_days).order_by('-modified')[0:4],
+                'reports_created': Report.objects.filter(status=Report.CREATED, private=False, created__gt=last_30_days).order_by('-modified')[0:4],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, private=False, created__gt=last_30_days).order_by('-modified')[0:4],
+                'reports_closed': reports_closed,
             },
             context_instance=RequestContext(request))
 
