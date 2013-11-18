@@ -92,8 +92,10 @@ $(function(){
                         }
                     }
                     // Add markers to the map
+                    fms.currentMap.markersLayer.removeAllFeatures();
                     fms.currentMap.markersLayer.addFeatures(markers);
                     fms.currentMap.map.zoomTo(3);
+                    fms.currentMap.map.updateSize();
 
                     // Enlarge map viewport
                     var map = document.getElementById('map');
