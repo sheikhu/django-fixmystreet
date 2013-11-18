@@ -21,7 +21,7 @@ nav ul li{
 }
 nav ul li a{
 	display: block;
-	padding: 10px 20px;
+	padding-top: 10px 20px;
 	min-width: 55px;
 	text-align: center;
 }
@@ -395,7 +395,7 @@ footer .cirb-cibg img{
 .report .span3{
 	background:#FFF;
 	width:240px;
-	height:220px;
+	height:210px;
 	padding:0 10px 10px 10px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -405,7 +405,7 @@ footer .cirb-cibg img{
 	margin-left:50px;
 }
 .tab-pane{
-	padding:20px 0;
+    padding-top: 20px;
 	border:1px solid #5F7C9C;
 	border-top:0;
 	-webkit-border-radius: 4px;
