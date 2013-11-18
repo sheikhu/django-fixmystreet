@@ -93,6 +93,7 @@ $(function(){
                     }
                     // Add markers to the map
                     fms.currentMap.markersLayer.addFeatures(markers);
+                    fms.currentMap.map.zoomTo(3);
 
                     // Enlarge map viewport
                     var map = document.getElementById('map');
