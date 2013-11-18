@@ -47,7 +47,7 @@ class ListTest(TestCase):
 
         self.manager = FMSUser(email="manager@bxl.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.bxl)
         self.manager.save()
-        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id, contact_user = True)
         self.usergroupmembership2.save()
 
         self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")

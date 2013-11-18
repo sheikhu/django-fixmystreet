@@ -46,7 +46,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id,contact_user = True)
         self.usergroupmembership.save()
 
         self.sample_post = {

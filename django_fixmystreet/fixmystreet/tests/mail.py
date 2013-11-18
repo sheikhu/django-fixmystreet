@@ -45,7 +45,7 @@ class MailTest(TestCase):
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id)
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id, contact_user = True)
         self.usergroupmembership.save()
 
 

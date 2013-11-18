@@ -21,7 +21,7 @@ class ExportPDFTest(SampleFilesTestCase):
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager_bxl.id, organisation_id = self.group.id)
+        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager_bxl.id, organisation_id = self.group.id,contact_user = True)
         self.usergroupmembership.save()
         self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")
         self.citizen.save()
