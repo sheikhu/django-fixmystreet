@@ -161,14 +161,17 @@ footer .cirb-cibg img{
     bottom: 20px;
     display: block;
     position: absolute;
-    right: 0;
+    right: 1px;
     z-index: 1;
     margin:1em 0;
+	overflow: auto;
+	max-height: 443px;
 }
 #proposal li {
     border-bottom: 1px solid #DDDDDD;
     display: block;
-    margin: 1em 0 1em 1em;
+	padding: 5px 5px 5px 5px;
+	margin: 0 5px 0 5px;
 }
 #proposal li a{
     color:black;
@@ -194,7 +197,7 @@ footer .cirb-cibg img{
     z-index:0;
 }
 .olMapViewport-big{
-	height: 480px !important;
+	height: 478px !important;
     transition: all 1s;
 }
 #copyright-urbis{
