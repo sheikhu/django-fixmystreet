@@ -141,20 +141,22 @@ $(function(){
 
 (function() {
 
+    var streetKeywords = document.getElementById('input-search');
+    var postalCode = document.getElementById('input-ward');
+    var searchBtn = document.getElementById('widget-search-button')
+
     function enableSearch() {
         var enableSearchBtn = false;
 
-        if (this.value) {
+        if ( (streetKeywords.value) || (postalCode.value) ) {
             enableSearchBtn = true;
-        } else {
-            enableSearchBtn = enableSearchBtn || false;
         }
 
-        document.getElementById('widget-search-button').disabled = !enableSearchBtn;
+        searchBtn.disabled = !enableSearchBtn;
     }
     // Enable search button if one of fields contain a value
-    document.getElementById('input-search').addEventListener('keyup', enableSearch);
-    document.getElementById('input-search').addEventListener('change', enableSearch);
-    document.getElementById('input-ward').addEventListener('change', enableSearch);
+    streetKeywords.addEventListener('keyup', enableSearch);
+    streetKeywords.addEventListener('change', enableSearch);
+    postalCode.addEventListener('change', enableSearch);
 
 })(document);
