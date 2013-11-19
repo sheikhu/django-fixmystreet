@@ -35,7 +35,6 @@ $(function(){
         event.preventDefault();
         var searchValue = $searchStreet.val();
         $proposal.slideUp();
-        $proposalMessage.slideUp();
 
         if (!$searchStreet.val()) {
             $searchTicketForm.show();
@@ -84,24 +83,35 @@ $(function(){
                         // Create marker for this address
                         markers.push(fms.currentMap.addReport(response.result[i], i));
 
+                        // Define message if needed
                         if ($searchMunicipality.val()) {
                             $proposalMessage.html("Cette rue n'est pas répertoriée dans cette commune");
-                            $proposalMessage.slideDown();
                         } else if ($searchStreet.val().toLowerCase() == street.name.toLowerCase()) {
                             $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
-                            $proposalMessage.slideDown();
                         }
                     }
                     // Add markers to the map
+                    fms.currentMap.markersLayer.removeAllFeatures();
                     fms.currentMap.markersLayer.addFeatures(markers);
+                    fms.currentMap.map.zoomTo(3);
+                    fms.currentMap.map.updateSize();
 
                     // Enlarge map viewport
                     var map = document.getElementById('map');
                     var mapViewPort = document.getElementById('OpenLayers.Map_4_OpenLayers_ViewPort');
-                    map.classList.add("map-big");
                     mapViewPort.classList.add("olMapViewport-big");
 
+                    // Show/hide proposal and message
                     $proposal.slideDown();
+
+                    if ($proposalMessage.html()) {
+                        map.classList.add("map-big-message");
+                        $proposalMessage.slideDown();
+                    } else {
+                        map.classList.remove("map-big-message");
+                        map.classList.add("map-big");
+                        $proposalMessage.slideUp();
+                    }
                 }
             }
             else
@@ -111,18 +121,18 @@ $(function(){
                 $searchButton.prop('disabled',false);
                 if(response.status == "noresult" || response.status == "success")
                 {
-                    $proposal.html('<p class="error-msg">No corresponding address has been found</p>').slideDown();
+                    $proposalMessage.html('<span class="error-msg">No corresponding address has been found</span>').slideDown();
                 }
                 else
                 {
-                    $proposal.html('<p class="error-msg">' + response.status + '</p>').slideDown();
+                    $proposalMessage.html('<span class="error-msg">' + response.status + '</span>').slideDown();
                 }
             }
         }).error(function(xhr,msg,error){
             $searchStreet.removeClass('loading');
             $searchButton.prop('disabled',false);
 
-            $proposal.html('<p class="error-msg">Unexpected error.</p>').slideDown();
+            $proposalMessage.html('<span class="error-msg">Unexpected error.</span>').slideDown();
         });
     });
 
@@ -134,18 +144,17 @@ $(function(){
     function enableSearch() {
         var enableSearchBtn = false;
 
-        for (var i=0, length=this.elements.length; i<length; i++) {
-            if ( (this.elements[i].id != "widget-search-button") && (this.elements[i].value) ) {
-                enableSearchBtn = true;
-            } else {
-                enableSearchBtn = enableSearchBtn || false;
-            }
+        if (this.value) {
+            enableSearchBtn = true;
+        } else {
+            enableSearchBtn = enableSearchBtn || false;
         }
 
         document.getElementById('widget-search-button').disabled = !enableSearchBtn;
     }
     // Enable search button if one of fields contain a value
-    document.getElementById('search-address-form').addEventListener('keyup', enableSearch);
-    document.getElementById('search-address-form').addEventListener('change', enableSearch);
+    document.getElementById('input-search').addEventListener('keyup', enableSearch);
+    document.getElementById('input-search').addEventListener('change', enableSearch);
+    document.getElementById('input-ward').addEventListener('change', enableSearch);
 
 })(document);
