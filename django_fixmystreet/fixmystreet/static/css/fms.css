@@ -146,6 +146,10 @@ footer .cirb-cibg img{
 	height: 590px !important;
     transition: all 1s;
 }
+
+#map.map-big-message {
+    height: 624px !important;
+}
 #map img {
 	max-width: none;
 }
