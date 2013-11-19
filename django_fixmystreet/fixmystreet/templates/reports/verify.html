@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load i18n tags %}
+{% block title %}{% endblock %}
+
+{% block meta %}
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/verify.js"></script>
+
+    <script>
+        var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
+        var reportJSONList = [];
+
+        {% for report in reports_nearby %}
+            var reportJSON = {{ report.marker_detail_short|dict_to_json|safe }};
+            reportJSONList.push(reportJSON);
+        {% endfor %}
+    </script>
+
+{% endblock %}
+
+{% block map %}{% endblock %}
+
+{% block content %}
+    <h2>Nous avons déjà {{ reports_nearby.count }} incidents signalés dans le même secteur</h2>
+    <p class="lead">Merci de vérifier si votre incident n'est pas déjà signalé avant de continuer votre rapport.</p>
+
+    <div class="btn-group">
+        <button class="btn active" id="btn-list">{% trans "List" %}</button>
+        <button class="btn" id="btn-map">{% trans "Map" %}</button>
+    </div>
+
+    <article id="map" class="hide">
+        <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
+            <a class="olControlZoomIn olButton"></a>
+        </div>
+        <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+
+    </article>
+
+    <div id='list'>
+
+        {% for report in reports_nearby %}
+
+            <div class="row">
+
+            <!-- Distance -->
+                <p>{% trans "à" %} {{ report.distance.m|floatformat:"0" }} m</p>
+
+            <!-- Photos -->
+                <div>
+                    {% if report.thumbnail %}
+                        <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
+                    {% else %}
+                        <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+                    {% endif %}
+                </div>
+
+            <!-- Address and categories -->
+                <div class="loc_desc">
+                    <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                    <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+                    <span class="ticket_address">
+                        {{ report.address }}, {{ report.address_number }}<br />
+                        {{ report.postalcode }} {{ report.territorial_entity.name }}
+                    </span><br />
+                    <span class="ticket_desc">
+                        {{ report.display_category }}
+                    </span><br />
+                </div>
+
+            <!-- Comments -->
+                {% for attachment in report.attachments.all %}
+                    <p>{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                {% endfor %}
+
+            <!-- Button "it's the same" -->
+                <a href="{{ report.get_absolute_url }}{% if BACKOFFICE %}?page=1{% endif %}" class="report{% if active %} active{% endif %}">{% trans "C'est le même incident" %}</a>
+
+            <!-- Deprecated ? -->
+                {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <p>
+        <a href='{% url "report_new" %}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
+    </p>
+
+{% endblock %}
