@@ -133,6 +133,9 @@ footer .a-propos a{
 footer .cirb-cibg img{
 	float: right;
 }
+.clearfloat{
+	clear:both;
+}
 
 /*==============================================================
    HOME
@@ -251,6 +254,9 @@ footer .cirb-cibg img{
 	-webkit-border-top-left-radius: 4px;
 	-moz-border-radius-topleft: 4px;
 	border-top-left-radius: 4px;
+}
+.view_incident #btn-streetview{	
+	right: 118px;
 }
 #instructions{
 	-webkit-border-top-left-radius: 4px;
@@ -666,6 +672,22 @@ ul.timeline{
 }
 .picture-head{
 	margin-bottom:10px;
+}
+#modal-img{
+	width:800px;
+	height:auto;
+	margin-left:-390px;
+	text-align: center;
+}
+#modal-img .modal-body{
+	max-height:550px;
+	padding: 15px 6px 15px 15px;
+}
+#modal-img img{
+	width:100%;
+}
+#modal-img .close{
+	margin-top: -9px;
 }
 .comment-incident{
 	font-size:12px;
