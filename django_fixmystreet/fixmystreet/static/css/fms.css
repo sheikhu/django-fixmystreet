@@ -258,7 +258,7 @@ footer .cirb-cibg img{
 	-moz-border-radius-topleft: 4px;
 	border-top-left-radius: 4px;
 }
-.view_incident #btn-streetview{	
+.view_incident #btn-streetview{
 	right: 118px;
 }
 #instructions{
@@ -530,7 +530,7 @@ h2{
 }
 .switch_verify #btn-map.active{
 	background:#607C9D url('../images/switch_map_active.png') 5px 3px no-repeat;
-}		
+}
 #list{
 	background:#BCD3F2;
 	border:1px solid #5F7C9C;
@@ -541,7 +541,7 @@ h2{
 #list .one_incident{
 	background:#FFF;
 	margin:0 20px 20px 20px;
-	/*padding:20px;*/	
+	/*padding:20px;*/
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -894,3 +894,10 @@ ul.timeline{
 	margin:5px 10px 5px 5px;
 }
 
+/* Input form not valid */
+.required.invalid input, .required.invalid textarea {
+    background-color: #FFDDDD;
+}
+.required.invalid input, .required.invalid select, .required.invalid textarea {
+    border: 2px solid #FF0000 !important;
+}
