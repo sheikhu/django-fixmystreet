@@ -1,5 +1,6 @@
 
 $(document).ready(function() {
+    // Get point x y from url
     $.urlParam = function(name){
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         return results[1] || 0;
@@ -10,6 +11,79 @@ $(document).ready(function() {
 
     getAddressFromPoint('fr', x, y);
     getAddressFromPoint('nl', x, y);
+
+    // Switch between 2 steps
+    var description = document.getElementById('description');
+    var coordonnees = document.getElementById('coordonnees');
+
+    var nextStep = document.getElementById('nextStep');
+    var previousStep = document.getElementById('previousStep');
+
+    nextStep.addEventListener('click', function(event) {
+        event.preventDefault();
+        description.hidden = true;
+        coordonnees.hidden = false;
+    });
+
+    previousStep.addEventListener('click', function(event) {
+        event.preventDefault();
+        coordonnees.hidden = true;
+        description.hidden = false;
+    });
+
+    // Validity step 1 : enable nexStep button if categories are setted
+    var categoriesElements = description.getElementsByTagName("SELECT");
+    var catego1            = categoriesElements[0];
+    var catego2            = categoriesElements[1];
+
+    function checkStep1Validity() {
+        if ( (catego1.value) && (catego2.value) ) {
+            nextStep.disabled = false;
+        } else {
+            nextStep.disabled = true;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    catego1.addEventListener('change', checkStep1Validity);
+    catego2.addEventListener('change', checkStep1Validity);
+
+    // Check validity in refresh browser.
+    checkStep1Validity();
+
+    // Validity step 2 : enable send button if all required fields are ok
+    var citizenMail    = document.getElementById('id_citizen-email');
+    var citizenQuality = document.getElementById('id_citizen-quality');
+    var termsOfUse     = document.getElementById('id_report-terms_of_use_validated');
+    var send           = document.getElementById('validate_button');
+
+    function checkStep2Validity() {
+        console.log(checkStep1Validity());
+        console.log(citizenMail.value);
+        console.log(citizenQuality.value);
+        console.log(termsOfUse.checked);
+
+        if ( (citizenMail.value) && (citizenQuality.value) && (termsOfUse.checked) ) {
+            send.disabled = false;
+        } else {
+            send.disabled = true;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    citizenMail.addEventListener('keyup', checkStep2Validity);
+    citizenMail.addEventListener('change', checkStep2Validity);
+    citizenQuality.addEventListener('change', checkStep2Validity);
+    termsOfUse.addEventListener('change', checkStep2Validity);
+
+    // Check validity in refresh browser.
+    checkStep2Validity();
 });
 
 function getAddressFromPoint(lang, x, y) {

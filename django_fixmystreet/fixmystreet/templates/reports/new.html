@@ -59,19 +59,6 @@
             }{% if not forloop.last %},{% endif %}
         {% endfor %}
     }
-
-    var description = document.getElementById('description');
-    var coordonnees = document.getElementById('coordonnees');
-
-    document.getElementById('nextStep').addEventListener('click', function() {
-        description.hidden = true;
-        coordonnees.hidden = false;
-    });
-
-    document.getElementById('previousStep').addEventListener('click', function() {
-        coordonnees.hidden = true;
-        description.hidden = false;
-    });
 </script>
 {% endblock %}
 
@@ -99,7 +86,7 @@
             {% include "reports/_attachments_form.html" with display_citizen_form_comment=False %}
         </div>
 
-        <p><a id="nextStep">Etape suivante</a></p>
+        <p><button id="nextStep" disabled>Etape suivante</button></p>
     </div>
 
     <div id="coordonnees" class="span6" style="margin-top: 30px;" hidden>
@@ -121,10 +108,10 @@
             {% include "_field_horizontal.html" with field=report_form.terms_of_use_validated %}
         {% endif %}
         <div class="warning_information_form">
-            <button id="validate_button" class="btn pull-right"> {% trans 'Send' %}</button>
+            <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
         </div>
         <div id="required-note" >{% trans "* This fields are required" %}</div>
-        <p><a id="previousStep">Etape précédente</a></p>
+        <p><button id="previousStep">Etape précédente</button></p>
     </div>
 </form>
 
