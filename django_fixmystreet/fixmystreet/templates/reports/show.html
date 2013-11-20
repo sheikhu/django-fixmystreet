@@ -189,11 +189,11 @@ function markAsDone(){
     {% endif %}
     {% trans "Report Ticket" %} {{ report.get_ticket_number }}
     </h1-->
-    <h3 class="span12">
+    <!--h3 class="span12">
         {% if report.merged_with %}
             {% trans "This report has been merged with report: " %}<a href="{{report.merged_with.get_absolute_url}}" >{{report.merged_with.get_ticket_number}}</a>
         {% endif %}
-    </h3>
+    </h3-->
     <!--div class="span6"-->
         <!--div class="bordered-box"-->
             <!-- ######### -->

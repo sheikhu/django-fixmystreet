@@ -570,11 +570,11 @@ ul.timeline{
 	overflow: hidden;
 	padding: 10px;
 	background:#BCD4F1;
-	margin: 0px ;
+	margin: 25px 0 0 0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	padding-top: 60px;
+	padding-top: 66px;
 }
 .timeline > li.left{
 	width:650px;
@@ -728,7 +728,7 @@ ul.timeline{
 	left: 51.5%;
 	position: absolute;
 	z-index: 1001;
-	top:31px;
+	top:15px;
 }
 .add_info a img{
 	margin:5px 5px 5px 10px;
