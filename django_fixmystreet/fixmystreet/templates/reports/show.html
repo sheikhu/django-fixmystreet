@@ -12,6 +12,7 @@
 {{ block.super }}
 
 {% addthis_scripts %}
+<script src="{{ STATIC_URL }}js/jquery.exif.js"></script>
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script>
 /******************************/
@@ -57,6 +58,8 @@ $(function(){
 	// $('.report_update').addClass('span5');
  //    }
 
+    $($(".update_text").find('#imgtoshow')).exifLoad(someCallback);
+
 });
 function setFileCreationDate(){
     var file = document.getElementById('id_file').files[0];
@@ -75,6 +78,19 @@ function markAsDone(){
 }
 
 </script>
+
+<script>
+    var someCallback = function(exifObject, index) {
+        textAreas = $($(".update_text").find('#imagedate'));
+        var datetosplit = exifObject.DateTimeOriginal;
+        var splitted = datetosplit.split(/[:,\/ ]/)
+        var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
+        textAreas[index].innerHTML = pictureDate;          
+        }
+    
+
+</script>
+
 {% endblock %}
 {% block css %}
 

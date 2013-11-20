@@ -1,5 +1,6 @@
 {% load i18n %}
 {% if attachment.reportfile %}
+
 <li class="report_update left">
 {% else %} 
 <li class="report_update right">
@@ -20,7 +21,7 @@
         <span class="picture-caption">
             <a href="{{ attachment.reportfile.file.url }}">
                 {% if attachment.reportfile.is_image %}
-                    <img src='{{attachment.reportfile.image.url}}' class="view-image"/>
+                    <img id='imgtoshow' src='{{attachment.reportfile.file.url}}' class="view-image"/>
                 {% elif attachment.reportfile.is_pdf %}
                     <img src='/static/images/icon-pdf.png'/>
                 {% elif attachment.reportfile.is_word %}
@@ -33,9 +34,8 @@
         </span>
         <p class="picture-date">
             {% trans 'file creation Date' %}
-            {% if attachment.reportfile.file_creation_date != None%}
-                {{attachment.reportfile.file_creation_date}}
-            {% else %} - {% endif %}
+            <span id='imagedate'></span>
+            
         </p>
     {% else %} {# comment #}
         <div class="comment-head">
