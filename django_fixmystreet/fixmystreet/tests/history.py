@@ -166,7 +166,7 @@ class HistoryTest(TestCase):
 
     def testCreateReportHistoryCitizen(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
         # check the history if it contains 1 line and that the content is correct
@@ -214,7 +214,7 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities[0]))
 
     def testValidateReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -247,7 +247,7 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrintPro(activities[1]))
 
     def testInvalidateReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -278,7 +278,7 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrintPro(activities[1]))
 
     def testClosureReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
         self.client.login(username='manager@a.com', password='test')
@@ -310,7 +310,7 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrintPro(activities[1]))
 
     def testResolvedByCitizenReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -349,7 +349,7 @@ class HistoryTest(TestCase):
 
 
     def testResolvedByProReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -385,7 +385,7 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
     def testCitizenUpdatesReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -430,7 +430,7 @@ class HistoryTest(TestCase):
         self.client.logout()
 
     def testProUpdatesReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -472,7 +472,7 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
     def testCitizenSubscribesToReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -487,7 +487,7 @@ class HistoryTest(TestCase):
 
 
     def testProSubscribesToReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -503,7 +503,7 @@ class HistoryTest(TestCase):
 
 
     def testAssignToOtherMemberOfSameEntity(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -542,7 +542,7 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
     def testAssignToOtherEntity(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
          #first accept the report before citizen can update
@@ -576,7 +576,7 @@ class HistoryTest(TestCase):
 
     def testMergeReports(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -618,7 +618,7 @@ class HistoryTest(TestCase):
 
 
     def testAssignToContractor(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
          #first accept the report before citizen can update
@@ -652,7 +652,7 @@ class HistoryTest(TestCase):
 
 
     def testAssignToImpetrant(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
          #first accept the report before citizen can update
@@ -683,7 +683,7 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrint(activities[2]))
 
     def testMakeCommentPublic(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
          #first accept the report before citizen can update
@@ -726,7 +726,7 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities[3]))
 
     def testPublish(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
          #first accept the report before citizen can update

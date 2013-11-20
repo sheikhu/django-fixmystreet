@@ -61,8 +61,9 @@ def new(request):
                     report_file.created_by = citizen
                     #report_file.report = report
                     report_file.save()
-                # messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
-                # return HttpResponseRedirect(report.get_absolute_url_pro())
+                messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
+                return HttpResponseRedirect(report.get_absolute_url())
+
             else:
                 report = None
 

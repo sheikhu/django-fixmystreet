@@ -166,7 +166,7 @@ class MailTest(TestCase):
 
     def testCreateReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
         #2 mails must be sent, one to the creator and 1 to the responsible manager
@@ -179,7 +179,7 @@ class MailTest(TestCase):
 
     def testCloseReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
 
@@ -216,9 +216,8 @@ class MailTest(TestCase):
 
     def testRefuseReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
-        self.assertTrue(response.context['report_form'].is_valid(), response.context['report_form'].errors)
         self.assertIn('report', response.context)
 
         report_id = response.context['report'].id
@@ -243,7 +242,7 @@ class MailTest(TestCase):
 
     def testSubscriptionForCitizenMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -261,7 +260,7 @@ class MailTest(TestCase):
 
     def testMarkReportAsDoneMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -297,7 +296,7 @@ class MailTest(TestCase):
 
     def testAcceptReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -318,7 +317,7 @@ class MailTest(TestCase):
 
     def testPublishReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -339,7 +338,7 @@ class MailTest(TestCase):
 
     def testPlannedReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -381,7 +380,7 @@ class MailTest(TestCase):
         self.assertTrue(self.group.email in mail.outbox[0].to or self.group.email in mail.outbox[1].to)
 
     def testReportResolvedAsProMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -402,7 +401,7 @@ class MailTest(TestCase):
         self.assertTrue(self.manager.email in mail.outbox[3].to)
 
     def testAssignToOtherMemberOfSameEntityMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -423,7 +422,7 @@ class MailTest(TestCase):
         self.assertTrue(self.manager2.email in mail.outbox[3].to)
 
     def testAssignToMemberOfOtherEntityMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -445,7 +444,7 @@ class MailTest(TestCase):
         self.assertIn(self.manager.email, mail.outbox[4].to + mail.outbox[5].to)
 
     def testAssignToImpetrantMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -484,7 +483,7 @@ class MailTest(TestCase):
 
 
     def testAssignToContractorMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -520,7 +519,7 @@ class MailTest(TestCase):
 
 
     def testCitizenUpdatesReportMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -547,7 +546,7 @@ class MailTest(TestCase):
         self.assertTrue(self.manager.email in mail.outbox[3].to)
 
     def testProUpdatesReportMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -582,7 +581,7 @@ class MailTest(TestCase):
         self.assertTrue(self.manager.email in mail.outbox[3].to)
 
     def testPublishCommentMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -611,7 +610,7 @@ class MailTest(TestCase):
         self.assertTrue(self.citizen.email in mail.outbox[3].to)
 
     def testSubscriptionForProMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -633,7 +632,7 @@ class MailTest(TestCase):
 
 
     def testMakeReportPrivate(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -653,7 +652,7 @@ class MailTest(TestCase):
 
     def testMergeReportMail(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
@@ -686,7 +685,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox),5)
 
     def testSendPDFProMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -704,7 +703,7 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 6)
 
     def testSendPDFCitizenMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post)
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
