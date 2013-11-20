@@ -133,6 +133,9 @@ footer .a-propos a{
 footer .cirb-cibg img{
 	float: right;
 }
+.clearfloat{
+	clear:both;
+}
 
 /*==============================================================
    HOME
@@ -146,6 +149,10 @@ footer .cirb-cibg img{
 	height: 590px !important;
     transition: all 1s;
 }
+
+#map.map-big-message {
+    height: 624px !important;
+}
 #map img {
 	max-width: none;
 }
@@ -154,14 +161,17 @@ footer .cirb-cibg img{
     bottom: 20px;
     display: block;
     position: absolute;
-    right: 0;
+    right: 1px;
     z-index: 1;
     margin:1em 0;
+	overflow: auto;
+	max-height: 443px;
 }
 #proposal li {
     border-bottom: 1px solid #DDDDDD;
     display: block;
-    margin: 1em 0 1em 1em;
+	padding: 5px 5px 5px 5px;
+	margin: 0 5px 0 5px;
 }
 #proposal li a{
     color:black;
@@ -187,7 +197,7 @@ footer .cirb-cibg img{
     z-index:0;
 }
 .olMapViewport-big{
-	height: 480px !important;
+	height: 478px !important;
     transition: all 1s;
 }
 #copyright-urbis{
@@ -201,32 +211,32 @@ footer .cirb-cibg img{
 	border-top-right-radius: 4px;
     z-index:1;
 }
-#btn-localizeviamap, #btn-streetview{
+#btn-localizeviamap, #btn-streetview, #btn-pulldownmap{
 	position: absolute;
 	bottom: 1px;
 	background: #FFF;
 	padding: 0 5px 0 5px;
     z-index:1;
 }
-#btn-localizeviamap a, #btn-streetview a{
+#btn-localizeviamap a, #btn-streetview a, #btn-pulldownmap a{
 	font-size: 11px;
 	vertical-align: bottom;
 }
-#btn-localizeviamap a:link, #btn-localizeviamap a:visited, #btn-streetview a:link, #btn-streetview a:visited{
+#btn-localizeviamap a:link, #btn-localizeviamap a:visited, #btn-streetview a:link, #btn-streetview a:visited, #btn-pulldownmap a:link, #btn-pulldownmap a:visited{
 	color:#485D78;
 	text-decoration: none;
 }
-#btn-localizeviamap a:hover, #btn-localizeviamap a:active, #btn-localizeviamap a:focus, #btn-streetview a:hover, #btn-streetview a:active, #btn-streetview a:focus{
+#btn-localizeviamap a:hover, #btn-localizeviamap a:active, #btn-localizeviamap a:focus, #btn-streetview a:hover, #btn-streetview a:active, #btn-streetview a:focus, #btn-pulldownmap a:hover, #btn-pulldownmap a:active, #btn-pulldownmap a:focus{
 	color:#7090B7;
 	text-decoration: none;
 }
-#btn-localizeviamap{
+#btn-localizeviamap, #btn-pulldownmap{
 	right: 1px;
 	-webkit-border-bottom-right-radius: 4px;
 	-moz-border-radius-bottomright: 4px;
 	border-bottom-right-radius: 4px;
 }
-#btn-localizeviamap i, #btn-streetview i{
+#btn-localizeviamap i, #btn-streetview i, #btn-pulldownmap i{
 	width: 25px;
 	height: 25px;
 }
@@ -236,6 +246,9 @@ footer .cirb-cibg img{
 #btn-streetview i{
 	background: transparent url('../images/icon-streetview.png') center center no-repeat;
 }
+#btn-pulldownmap i{
+	background:transparent url('../images/icon-pulldownmap.png') center center no-repeat;
+}
 #btn-streetview{
 	right: 139px;
 	-webkit-border-bottom-left-radius: 4px;
@@ -244,6 +257,9 @@ footer .cirb-cibg img{
 	-webkit-border-top-left-radius: 4px;
 	-moz-border-radius-topleft: 4px;
 	border-top-left-radius: 4px;
+}
+.view_incident #btn-streetview{	
+	right: 118px;
 }
 #instructions{
 	-webkit-border-top-left-radius: 4px;
@@ -471,13 +487,14 @@ h2.last_reports {
 	height:210px;
 }
 #map.view_incident .olMapViewport{
-	height:124px !important;
+	height:107px !important;
 }
 #incident-head{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	padding: 10px 0 10px 0;
+	background:#607C9D;
 }
 .lk-download-pdf, .lk-subscribe, .lk-isresolved{
 	width:80px;
@@ -529,22 +546,21 @@ h2.last_reports {
 /* ---
    Timeline
    ---- */
-/*.container{
-	width:1170px;
-	margin:30px auto;
-	overflow: hidden;
-	position: relative;*/ /* good for 100% margin child element */
-/*}*/
+.timeline-container{
+	position:relative;
+	margin-top:5px;
+}
 .margin{
-	height:100%;
+	height:93%;
 	position: absolute;
 	background:#7090B7;
-	left:55.3%;
+	/*left:58.55%; Try with bootstrap spans */
+	left:57.35%;
 	width:2px;
 	margin-left:-1px; /* make it center */
 	bottom:10px;	/* margin-bottom space used by li element */
 	z-index:1000;
-	top: 395px;
+	top:50px;
 }
 
 ul.timeline{
@@ -554,7 +570,11 @@ ul.timeline{
 	overflow: hidden;
 	padding: 10px;
 	background:#BCD4F1;
-	margin: 0px ;
+	margin: 25px 0 0 0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding-top: 66px;
 }
 .timeline > li.left{
 	width:650px;
@@ -569,6 +589,13 @@ ul.timeline{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+}
+
+.timeline > li div{
+	line-height:0;
+}
+.timeline > li div.picture-head, .timeline > li div.comment-head{
+	line-height:22px;
 }
 
 .timeline > li:before{
@@ -649,6 +676,22 @@ ul.timeline{
 .picture-head{
 	margin-bottom:10px;
 }
+#modal-img{
+	width:800px;
+	height:auto;
+	margin-left:-390px;
+	text-align: center;
+}
+#modal-img .modal-body{
+	max-height:550px;
+	padding: 15px 6px 15px 15px;
+}
+#modal-img img{
+	width:100%;
+}
+#modal-img .close{
+	margin-top: -9px;
+}
 .comment-incident{
 	font-size:12px;
 	line-height: 16px !important;
@@ -669,4 +712,27 @@ ul.timeline{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+}
+.add_info{
+	background:#5F7C9C;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	text-align: center;
+	/*padding: 10px;*/
+	color:#FFF;
+	font-family:'Dosis', sans-serif;
+	font-size:13px;
+	text-transform:uppercase;
+	display:inline-block;
+	left: 51.5%;
+	position: absolute;
+	z-index: 1001;
+	top:15px;
+}
+.add_info a img{
+	margin:5px 5px 5px 10px;
+}
+.add_info a:first-child img{
+	margin:5px 10px 5px 5px;
 }

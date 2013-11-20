@@ -1,22 +1,16 @@
-from urllib2 import Request, urlopen, HTTPError
-from urllib import urlencode
-import urlparse
-
-from django.contrib.auth.models import User
-from django.test import TestCase
 from django.utils import simplejson
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, FMSUser, ReportSecondaryCategoryClass, ReportMainCategoryClass, ReportCategory, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, FMSUser, ReportCategory, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
 from django.core.exceptions import ObjectDoesNotExist
 
+
 class ApiTest(SampleFilesTestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
 
@@ -25,7 +19,6 @@ class ApiTest(SampleFilesTestCase):
         except ObjectDoesNotExist:
             organisation = OrganisationEntity(id=1, name="Test organisation")
             organisation.save()
-
 
         #user_auth = User.objects.create_user(username='superuser', email='test1@fixmystreet.irisnet.be', password='test')
         #user_auth.save()
@@ -67,35 +60,35 @@ class ApiTest(SampleFilesTestCase):
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = OrganisationEntity.objects.get(pk=14),
+            dependency=OrganisationEntity.objects.get(pk=14),
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id, contact_user=True)
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
 
         self.sample_post = {
-            'report-x':'150056.538',
-            'report-y':'170907.56',
-            'report-address_fr':'Avenue des Arts, 3',
-            'report-address_nl':'Kunstlaan, 3',
-            'report-address_number':'3',
-            'report-postalcode':'1210',
-            'report-category':'1',
-            'report-secondary_category':'1',
-            'report-subscription':'on',
+            'report-x': '150056.538',
+            'report-y': '170907.56',
+            'report-address_fr': 'Avenue des Arts, 3',
+            'report-address_nl': 'Kunstlaan, 3',
+            'report-address_number': '3',
+            'report-postalcode': '1210',
+            'report-category': '1',
+            'report-secondary_category': '1',
+            'report-subscription': 'on',
             'report-terms_of_use_validated': True,
 
-            'comment-text':'test',
+            'comment-text': 'test',
 
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 1000,
 
-            'citizen-quality':'1',
-            'citizen-email':self.citizen.email,
-            'citizen-firstname':self.citizen.first_name,
-            'citizen-lastname':self.citizen.last_name
+            'citizen-quality': '1',
+            'citizen-email': self.citizen.email,
+            'citizen-firstname': self.citizen.first_name,
+            'citizen-lastname': self.citizen.last_name
         }
 
         """
@@ -193,7 +186,7 @@ class ApiTest(SampleFilesTestCase):
         result = simplejson.loads(response.content)
 
         #Verify if the report_id is returned by the webservice
-        self.assertTrue(result['id'] != None)
+        self.assertTrue(result['id'])
         #Get in the DB the created report
         report = Report.objects.get(id=result['id'])
         #Verify the persisted data for the new created report
@@ -208,10 +201,10 @@ class ApiTest(SampleFilesTestCase):
         client = Client()
 
         #Get the request response
-        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
-        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
-        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
-        response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+        client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
 
         self.assertEqual(1, len(Report.objects.all()))
 

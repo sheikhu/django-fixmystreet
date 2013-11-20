@@ -19,7 +19,8 @@
             
         </div>
         <span class="picture-caption">
-            <a href="{{ attachment.reportfile.file.url }}">
+            <!--a href="{{ attachment.reportfile.file.url }}"-->
+            <a href="#modal-img" data-toggle="modal">
                 {% if attachment.reportfile.is_image %}
                     <img id='imgtoshow' src='{{attachment.reportfile.file.url}}' class="view-image"/>
                 {% elif attachment.reportfile.is_pdf %}
@@ -29,14 +30,26 @@
                 {% elif attachment.reportfile.is_excel %}
                     <img src='/static/images/icon-excel.png'/>
                 {% endif %}
-                {{attachment.reportfile.title}}
             </a>
-        </span>
-        <p class="picture-date">
+            <!-- Modal -->
+            <div id="modal-img" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-img-label" aria-hidden="true">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <img src="{{ attachment.reportfile.image.url }}" />
+                </div>
+            </div>
+            <p class="comment-incident">
+                <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
+                {{attachment.reportfile.title}}
+            </p>
+            <p class="picture-date">
             {% trans 'file creation Date' %}
+
             <span id='imagedate'></span>
             
-        </p>
+            </p>
+        </span>
+        
     {% else %} {# comment #}
         <div class="comment-head">
             {% blocktrans with by=attachment.reportcomment.get_display_name_as_citizen on=report.created %}

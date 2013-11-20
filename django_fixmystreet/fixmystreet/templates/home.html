@@ -12,7 +12,7 @@
 
 {% block script-search %}
 <script type="text/javascript">
-    var NEXT_PAGE_URL = '{% url "report_new" %}';
+    var NEXT_PAGE_URL = '{% url "report_verify" %}';
 </script>
 {% endblock %}
 
@@ -117,7 +117,7 @@ function showResults(type,li){
                                                         <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
                                                     {% endfor %}
                                                 </select>
-                                                <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Widget Search' %}" disabled>
+                                                <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Signaler' %}" disabled>
                                             </div>
                                         </form>
 
@@ -140,7 +140,7 @@ function showResults(type,li){
                     </div>
 
                     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                    <div id="btn-localizeviamap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Localiser via la carte" %}</a></div>
+                    <div id="btn-localizeviamap"><a href="#"><i class="icon-localizeviamap"></i>{% trans "Localiser via la carte" %}</a></div>
                     <div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
                 </article>
             </div>
@@ -187,6 +187,7 @@ function showResults(type,li){
                             {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                             {% endif %}
                             {% endfor %}
+                            <div class="clearfloat"></div>
                             <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
@@ -199,6 +200,7 @@ function showResults(type,li){
                             {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                             {% endif %}
                             {% endfor %}
+                            <div class="clearfloat"></div>
                             <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
@@ -211,6 +213,7 @@ function showResults(type,li){
                             {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                             {% endif %}
                             {% endfor %}
+                            <div class="clearfloat"></div>
                             <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>

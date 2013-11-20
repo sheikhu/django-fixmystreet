@@ -158,7 +158,8 @@ function markAsDone(){
                     </div>
                 </div>
                 <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-    <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Agrandir la carte" %}</a></div>
+                <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
             </article>
         </div>
     </div>
@@ -204,11 +205,11 @@ function markAsDone(){
     {% endif %}
     {% trans "Report Ticket" %} {{ report.get_ticket_number }}
     </h1-->
-    <h3 class="span12">
+    <!--h3 class="span12">
         {% if report.merged_with %}
             {% trans "This report has been merged with report: " %}<a href="{{report.merged_with.get_absolute_url}}" >{{report.merged_with.get_ticket_number}}</a>
         {% endif %}
-    </h3>
+    </h3-->
     <!--div class="span6"-->
         <!--div class="bordered-box"-->
             <!-- ######### -->
@@ -272,17 +273,20 @@ function markAsDone(){
             </p-->
             {% if not report.is_created %}
             <!-- This will be the link on the timeline of incident-head -->
-                <p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p>
+                <!--p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p-->
             {% endif %}
        <!--/div--> <!-- Bordered-box-->
 
         {% if report.active_attachments %}
-        <div class="bordered-box">
+        <div class="timeline-container">
             {% if report.active_attachments %}
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
-                <h4>{% trans 'Files' %}</h4>
+                <!--h4>{% trans 'Files' %}</h4-->
+                <span class="add_info">
+                    <a href="#"><img src="{{STATIC_URL}}images/add-img.png" /></a>{% trans 'Ajouter' %}<a href="#"><img src="{{STATIC_URL}}images/add-comment.png"></a>
+                </span>
                 <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
                 <ul id="report_updates" class="timeline">
                     {% for attachment in report.active_attachments %}
@@ -298,7 +302,7 @@ function markAsDone(){
 
     </div> <!-- span6 -->
 
-    <div class="span6">
+    <!--div class="span6">
         <div class="bordered-box">
             <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
                 {% include "reports/_attachments_form.html" with display_citizen_form_comment=True %}
@@ -306,15 +310,15 @@ function markAsDone(){
                 <div style="overflow:hidden;">
                     <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
                 </div>
-            </form> <!-- report-form-->
-        </div> <!-- bordered-box-->
-
+            </form--> <!-- report-form-->
+        <!--/div--> <!-- bordered-box-->
+<!--
         {% if report.is_in_progress %}
-            <div class="bordered-box">
+            <div class="bordered-box"-->
                 <!-- ################ -->
                 <!-- SUBSCRIBER BLOCK -->
                 <!-- ################ -->
-                <h4>{% trans "Subscription:" %}</h4>
+                <!--h4>{% trans "Subscription:" %}</h4>
                 {% blocktrans with count=report.subscriptions.count %}
                 Subscribe to receive notifications ({{ count }} subscribers to this incident)
                 {% endblocktrans %}<br/>
@@ -326,7 +330,8 @@ function markAsDone(){
                     </form>
                 {% endif %}
                 <div style="clear:both;"></div>
-            </div> <!-- bordered-box -->
+            </div--> <!-- bordered-box -->
+            <!--
             {% if report.status != report.SOLVED %}
                 <div class="bordered-box">
                      <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
@@ -339,10 +344,10 @@ function markAsDone(){
                          {% endif %}
                      <div style="clear:both;"></div>
                  </div>
-            </div> <!-- bordered-box -->
+            </div--> <!-- bordered-box -->
             {% endif %}
         {% endif %}
 
-    </div> <!-- span6 -->
+    <!--/div--> <!-- span6 -->
 
 {% endblock %}

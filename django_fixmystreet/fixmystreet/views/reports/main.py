@@ -93,6 +93,15 @@ def new(request):
             },
             context_instance=RequestContext(request))
 
+def verify(request):
+    pnt = dict_to_point(request.REQUEST)
+    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()
+
+    return render_to_response("reports/verify.html",
+        {
+            "reports_nearby":reports_nearby
+        },
+        context_instance=RequestContext(request))
 
 def report_prepare(request, location = None, error_msg = None):
     '''Deprecated, no sense'''
@@ -238,8 +247,8 @@ def newmap(request):
     try:
         pro_user = request.fmsuser.manager
     except  AttributeError:
-        pro_user = False    
-    return render_to_response("reports/newmap.html", { 
+        pro_user = False
+    return render_to_response("reports/newmap.html", {
         "all_zips":ZipCode.objects.all(),
         "pro_user":pro_user,
         }, context_instance=RequestContext(request))
