@@ -51,5 +51,3 @@
     });
 
 })(document, LANGUAGE_CODE, URBIS_URL, WMS_SERVICE_URL, fms);
-
-

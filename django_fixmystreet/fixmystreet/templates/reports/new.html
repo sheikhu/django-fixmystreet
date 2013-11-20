@@ -12,154 +12,78 @@
 {{ block.super }}
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
-<script src="{{STATIC_URL}}js/new_report.js"></script>
+<script src="{{ STATIC_URL }}js/new_report.js"></script>
+
 <script>
-var zipcodes = new Object();
+    var zipcodes = new Object();
 
-{% for zip in all_zips %}
-zipcodes[{{zip.code}}] = new Object();
-zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-{% endfor %}
-
-$(function(){
-    // $("#user_information_form").find('.inactive_overlay_form_overview').hide();
-    // $("#create_form_left").find('.inactive_overlay_form_overview').hide();
-    // $("#validate_form").find('.inactive_overlay_form_overview').hide();
-
-    $("#confirmation_edit_button").hide();
-    fms.currentMap = new fms.Map('map', {
-        apiLang:     LANGUAGE_CODE,
-        localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    WMS_SERVICE_URL,
-        origin:{
-            x:{{ pnt.x }},
-            y:{{ pnt.y }}
-        }
-    });
-
-    var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
-    var markers = [];
-    {% for report in reports %}
-        var reportJSON = {{ report.marker_detail_short|dict_to_json|safe }};
-        markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, proVersion));
+    {% for zip in all_zips %}
+    zipcodes[{{zip.code}}] = new Object();
+    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
     {% endfor %}
 
-    fms.currentMap.markersLayer.addFeatures(markers);
-    fms.currentMap.addDraggableMarker({{ pnt.x }}, {{ pnt.y }});
+    $(function(){
+        var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
 
-    retrieveAddress();
+        $("input:checkbox").attr("value","off");
+        $("input:checkbox").bind("change",function(){
 
-
-    {% if report %}
-    $("#confirmation_popup").modal();
-    {% endif %}
-    $("input:checkbox").attr("value","off");
-    $("input:checkbox").bind("change",function(){
-
-        if ($(this).attr("value")!="on"){
-            $(this).attr("value","on");
-        }
-        else {
-            if($(this).attr("checked")=="checked"){
+            if ($(this).attr("value")!="on"){
                 $(this).attr("value","on");
-                return false;
             }
-            $(this).attr("value","off");
-        }
-    });
+            else {
+                if($(this).attr("checked")=="checked"){
+                    $(this).attr("value","on");
+                    return false;
+                }
+                $(this).attr("value","off");
+            }
+        });
 
-    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
-
-    var confirmed = false;
-    $('#report-form').submit(function(evt) {
-        if (!confirmed) {
-            evt.preventDefault();
-            createOverview();
-            $('#validate_report_popup').modal();
-        }
-    });
-
-    $('#confirm_button').click(function(evt) {
-        confirmed = true;
-        evt.preventDefault();
-        $('#report-form').submit();
+        $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
     });
 
 
-    $('#verify_btn').click(function(evt) {
-        evt.preventDefault();
-        $('#nearby_reports_popup').modal();
-    });
-});
-
-
-var categories = {
-    {% for category_class in category_classes %}
-    "{{ category_class.id }}": {
-        {% for category in category_class.categories.all %}
-            "{{ category.id }}": {
-                "label": "{{ category.name }}",
-                "class": "{{ category.secondary_category_class.id }}",
-                "public": {{ category.public|yesno:"true,false" }}
+    var categories = {
+        {% for category_class in category_classes %}
+        "{{ category_class.id }}": {
+            {% for category in category_class.categories.all %}
+                "{{ category.id }}": {
+                    "label": "{{ category.name }}",
+                    "class": "{{ category.secondary_category_class.id }}",
+                    "public": {{ category.public|yesno:"true,false" }}
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
             }{% if not forloop.last %},{% endif %}
         {% endfor %}
-        }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-}
+    }
 
+    var description = document.getElementById('description');
+    var coordonnees = document.getElementById('coordonnees');
+
+    document.getElementById('nextStep').addEventListener('click', function() {
+        description.hidden = true;
+        coordonnees.hidden = false;
+    });
+
+    document.getElementById('previousStep').addEventListener('click', function() {
+        coordonnees.hidden = true;
+        description.hidden = false;
+    });
 </script>
 {% endblock %}
 
-
-
-{% block map %}
-<article id="map">
-    <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
-        <a class="olControlZoomIn olButton"></a>
-    </div>
-    <div id="cursor-instructions" class="block highlighted dragmeblock">
-        {% trans "Drag me to change my location." %}
-    </div>
-    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-
-</article>
-{% endblock %}
+{% block map %}{% endblock %}
 
 {% block content %}
+
+<h2  id="address-text"></h2>
+
 <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-    <div class="span6" style="margin-top: 30px;">
+    <div id="description" class="span6" style="margin-top: 30px;">
         <div id="create_form_left" class="bordered-box">
-            <span class="report-step-number img-circle">1</span>
-            <!-- <div class="inactive_overlay_form_overview"></div> -->
-            <h1>{% trans "Submitting a report" %}</h1>
-                <div id="view_nearby_reports">
-                    {% trans "Before submitting an incident, please verify that the incident isn't submitted yet." %}
-                    <br/>
-                    <button id="verify_btn" class="btn">{% trans 'Verify' %}</button>
-                </div>
-
-            <fieldset>
-                <div class="control-group required">
-                    <label class="control-label" for="address-text">
-                        {% trans "Location:" %}
-                    </label>
-                    <a href="#" style="margin-left:-50px; display: inline-block; vertical-align: top;"
-                        data-toggle="popover"
-                        data-trigger="hover"
-                        title="{% trans 'Location:'%}" class="pull-left">
-                        <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
-                    </a>
-                    <div id="location-recommendations" class="hide">
-                        {% trans '** To change the address, move the marker on the map above.' %}
-                    </div>
-                    <div class="controls">
-                        <p id="address-text"></p>
-                    </div>
-
-                </div>
-            </fieldset>
 
             {% block report_form %}
             <fieldset>
@@ -174,12 +98,13 @@ var categories = {
 
             {% include "reports/_attachments_form.html" with display_citizen_form_comment=False %}
         </div>
+
+        <p><a id="nextStep">Etape suivante</a></p>
     </div>
-    <div class="span6" style="margin-top: 30px;">
+
+    <div id="coordonnees" class="span6" style="margin-top: 30px;" hidden>
         {% if citizen_form %}
         <div id="user_information_form" class="bordered-box overview_div_right">
-            <span class="report-step-number img-circle">2</span>
-
             <fieldset>
                 <legend>{% trans 'Contact information:' %}</legend>
                 {% include "_form_horizontal.html" with form=citizen_form %}
@@ -187,12 +112,6 @@ var categories = {
         </div>
         {% endif %}
         <div id="validate_form" class="bordered-box overview_div_right">
-            {% if not BACKOFFICE %}
-            <span class="report-step-number img-circle">3</span>
-            {% else %}
-            <span class="report-step-number img-circle">2</span>
-            {% endif %}
-            <!-- <div class="inactive_overlay_form_overview"></div> -->
             <fieldset>
                 <legend>{% trans 'Subscription:' %}</legend>
                 {% include "_field_horizontal.html" with field=report_form.subscription %}
@@ -205,63 +124,12 @@ var categories = {
             <button id="validate_button" class="btn pull-right"> {% trans 'Send' %}</button>
         </div>
         <div id="required-note" >{% trans "* This fields are required" %}</div>
+        <p><a id="previousStep">Etape précédente</a></p>
     </div>
 </form>
 
-<div id="confirmation_popup" class="modal hide fade" role="dialog">
-    <div class="modal-header">
-        {% if not BACKOFFICE %}
-        <a class="close" href="{{report.get_absolute_url}}" >&times;</a>
-        {% else %}
-        <a class="close" href="{{report.get_absolute_url_pro}}" >&times;</a>
-        {% endif %}
-        <h3>{% trans 'Submit an incident:' %}</h3>
-    </div>
-    <div class="modal-body">
-        <p><img src="" > {% trans 'Thank you! Your incident has been sent correctly to the system.' %}</p>
-        <p>{% trans 'A mail containing the link report has been sent.' %}</p>
-        {% if report %}
-        <p><i class="download-pdf"> </i><a href="{% url 'report_pdf' report.id 0 %}" ><img src="" > {% trans 'Download a copy of the incident as a pdf' %}</a></p>
-        {% endif %}
-    </div>
-    <div class="modal-footer">
-        {% if not BACKOFFICE%}
-        <a href="{{report.get_absolute_url}}" class="btn"> {% trans 'Continue'%}</a>
-        {% else %}
-        <a href="{{report.get_absolute_url_pro}}?page=1" class="btn"> {% trans 'Continue'%}</a>
-        {% endif %}
-    </div>
-</div>
-<div id="validate_report_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
-        <h3>{% trans 'Incident overview:' %}</h3>
-    </div>
-    <div class="modal-body">
-        <div id="report-overview"></div>
-    </div>
-    <div class="modal-footer">
-        <button id="confirm_button" class='btn'>{% trans 'Confirm' %}</button>
-        <button id="confirm_cancel_button" class='btn pull-left' data-dismiss="modal">{% trans 'Cancel' %}</button>
-    </div>
-</div>
-<div id="nearby_reports_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
-        <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
-    </div>
-    <div class="modal-body">
-        {% if reports_nearby %}
-        <div id='search_results'>
-            {% for report in reports_nearby %}
-                {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-            {% endfor %}
-        </div>
-        {% else %}
-            <p>{% trans "No problems have been reported in this area." %}</p>
-        {% endif %}
-    </div>
-</div>
+
+
 <div id="nonparticipatingcommune" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

@@ -1,36 +1,48 @@
 
 $(document).ready(function() {
-
-    var $form = $('#report-form');
-    var $map = $('#map');
-
-    function markerMoved (point) {
-        $('#id_report-x').val(point.x);
-        $('#id_report-y').val(point.y);
-
-        window.location.assign('#x=' + point.x + '&y=' + point.y);
-
-        retrieveAddress();
-
+    $.urlParam = function(name){
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        return results[1] || 0;
     }
 
-    $map.one('markerdrag click movestart zoomend',function(evt,point){
-        $('#cursor-instructions').fadeOut();
-    });
+    var x = $.urlParam('x');
+    var y = $.urlParam('y');
 
-    //On page load: The report overview needs to be hidden
-    $('#report_overview_table_div').hide();
-    $map.bind('markermoved',function(evt,point) {
-        markerMoved(point);
-    });
-
-    $(fms.currentMap).bind('reportselected', function(evt, point, report){
-        window.location.assign('/reports/' + report.id);
-    });
+    getAddressFromPoint('fr', x, y);
+    getAddressFromPoint('nl', x, y);
 });
 
-
-function fillAdressField(lang, address) {
+function getAddressFromPoint(lang, x, y) {
+    var self = this;
+    $.ajax({
+        url: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
+        type:'POST',
+        dataType:'jsonp',
+        data: {
+            json: ['{',
+                '"language": "' + lang + '",',
+                '"point":{x:' + x + ',y:' + y + '}',
+                '}'].join('\n')
+        },
+        success:function(response)
+        {
+            if (lang == LANGUAGE_CODE) {
+                fillAdressField(response.result.address);
+            }
+            fillI18nAdressField(lang, response.result.address);
+        },
+        error:function(response)
+        {
+            // Error
+            var msg = 'Error: ' + response.status;
+            if(response.status == 'error') {
+                msg = 'Unable to locate this address';
+            }
+            $('#address-text').html(msg);
+        }
+    });
+}
+function fillAdressField(address) {
     $('#address-text').html(address.number + ' ' + address.street.name+ ', ' + address.street.postCode + " " + zipcodes[address.street.postCode].commune); // urbis must return the full text municipality
     $('#id_report-postalcode').val(address.street.postCode);
     $('#id_report-address_number').val(address.number);
@@ -38,13 +50,6 @@ function fillAdressField(lang, address) {
 
 function fillI18nAdressField(lang, address) {
     $('#id_report-address_' + lang).val(address.street.name);
-}
-
-function checkFileFieldValue(){
-    if($("#id_file").val() == ""){
-        alert("Please select a file to add.");
-        return false;
-    }
 }
 
 function retrieveAddress() {
@@ -104,127 +109,4 @@ function retrieveAddress() {
             $form.prepend('<p class="text-error">' + msg + '</p>');
         }
     });
-}
-
-// function regDetection (x, y, radius) {
-//     radius = radius || 1;
-//     if (radius > 100) {
-//         return; // not found
-//     }
-
-//     console.log(x, y, radius);
-
-//     var bbox = (x-radius)+","+(y-radius)+","+(x+radius)+","+(y+radius);
-//     $.getJSON(URBIS_URL + "geoserver/wms",    {
-//         service: "WFS",
-//         version: "1.0.0",
-//         request: 'GetFeature',
-//         typeName: 'urbis:URB_A_SS',
-//         maxFeatures: 100,
-//         outputFormat: "json",
-//         X: x,
-//         Y: y,
-//         bbox: bbox
-//     }
-//     ).success(function(responseData, textStatus, jqXHR) {
-//         if (responseData.features.length) {
-//             for (i in responseData.features) {
-//                 if (responseData.features[i].properties.ADMINISTRATOR != null) {
-//                     //ROUTE REGIONALE
-//                     $('#id_report-address_regional').val('True');
-//                 }
-//             }
-//         } else {
-//             regDetection(x, y, radius * 10);
-//         }
-//     });
-//     // {
-//     //     SERVICE: "WMS",
-//     //     REQUEST: 'GetFeatureInfo',
-//     //     QUERY_LAYERS: 'urbis:URB_A_SS',
-//     //     INFO_FORMAT: "json",
-//     //     FEATURE_COUNT: 50,
-//     //     BBOX: bbox,
-//     //     version: "1.1.1",
-//     //     Layers:'urbis:URB_A_SS',
-//     //     WIDTH:20,
-//     //     HEIGHT:20,
-//     //     x: 1,
-//     //     y: 1
-//     // }
-// }
-
-/**
- * Create the overview popup content
- */
-function createOverview(){
-    var reportBody = $('#report-overview'),
-        filesBody = $('#files-overview'),
-        commentBody = $('#comment-overview');
-
-    reportBody.empty();
-    filesBody.empty();
-    commentBody.empty();
-
-    $("#report-form").find("fieldset").each(function(idx,fieldset){
-        reportBody = $('#report-overview')
-        reportBody.append("<div id="+idx+" class='bordered-box'>");
-        reportBody = $("#"+idx);
-        reportBody.append($("<h4/>").text($(fieldset).find('legend').text()));
-        $(fieldset).find(".control-group").each(function(idx, control){
-
-            if ($(control).find('label').text()) {
-                reportBody.append($("<strong/>").text($(control).find('label').text() + " "));
-                // reportBody.append();
-            }
-
-            var input = $(control).find('select,input,textarea');
-
-            if (input.length == 0) {
-                if($(control).find("span").length != 0){
-                    reportBody.append("<br>").append($(control).find("span").clone());
-                }
-                else{
-                    reportBody.append($(control).find('div').children().clone().text());
-                }
-            } else if (input.is("select")) {
-
-                if(input.find(":selected").parent().is("optgroup")){
-                    reportBody.append(overviewLine(input.find(":selected").parent().attr("label")+"/"));
-                }
-                reportBody.append(overviewLine(input.find(":selected").text()));
-
-            } else if (input.is(":file")) {
-                if(control.id == "file-form-template") {
-                    if (reportBody.find("img").length == 0) {
-                        reportBody.append(overviewLine());
-                    } else {
-                        return; // continue, do not insert <br/>
-                    }
-                } else {
-                    reportBody.append($(control).find("img").clone().css({'float': 'left'}));
-                    reportBody.append(overviewLine($(control).find("textarea").val()));
-                }
-
-            } else if (input.is(":checkbox")) {
-                reportBody.append(overviewLine(input.clone().prop('disabled', true)));
-            } else if (input.is("input")) {
-
-                if(input.attr("type") != "hidden") {
-                    reportBody.append(overviewLine(input.val()));
-                }
-
-            } else if (input.is("textarea")) {
-                reportBody.append(overviewLine(input.val()));
-            }
-            reportBody.append("</div>");
-            reportBody.append("<br style='clear: left;'/>");
-        });
-    });
-    reportBody.find(".help-block").hide();
-}
-
-function overviewLine(value) {
-    // return $("<i/>").append(value || "-");
-    return value || "-";
 }
