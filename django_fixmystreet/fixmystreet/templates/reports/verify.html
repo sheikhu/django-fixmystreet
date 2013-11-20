@@ -67,7 +67,7 @@
             <p class="lead">Merci de vérifier si votre incident n'est pas déjà signalé avant de continuer votre rapport.</p>    
         </div>
         <div class="span2">
-            <div class="btn-group pull-right">
+            <div class="switch_verify btn-group pull-right">
                 <button class="btn active" id="btn-list">{% trans "List" %}</button>
                 <button class="btn" id="btn-map">{% trans "Map" %}</button>
             </div>    
@@ -127,6 +127,7 @@
             </div>
             <p>
                 <a class="btn_continue pull-right" href='{% url "report_new" %}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
+                <span class="txt_continue pull-right">{% trans 'Aucun de ces incidents ne correspond à votre incident ?' %}</span>
             </p>
         </div>
     </div>

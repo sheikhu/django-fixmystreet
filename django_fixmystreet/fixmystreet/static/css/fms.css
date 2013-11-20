@@ -498,7 +498,39 @@ h2{
 .lead{
 	font-size:13px;
 	margin:0;
-}	
+	color:#7090B7;
+}
+.switch_verify .btn{
+	background:#E0E0E0;
+	box-shadow:none;
+	text-shadow:none;
+	color:#495E77;
+	padding-left:30px;
+}
+.switch_verify .btn:hover, .switch_verify .btn:active, .switch_verify .btn:focus{
+	background:#CCCBCB;
+	color:#495E77;
+}
+.switch_verify .btn.active{
+	background:#607C9D;
+	color:#FFF;
+}
+.switch_verify .btn.active:hover, .switch_verify .btn.active:active, .switch_verify .btn.active:focus{
+	background:#7090B7;
+	color:#FFF;
+}
+.switch_verify #btn-list{
+	background:#E0E0E0 url('../images/switch_list.png') 5px 1px no-repeat;
+}
+.switch_verify #btn-list.active{
+	background:#607C9D url('../images/switch_list_active.png') 5px 1px no-repeat;
+}
+.switch_verify #btn-map{
+	background:#E0E0E0 url('../images/switch_map.png') 5px 3px no-repeat;
+}
+.switch_verify #btn-map.active{
+	background:#607C9D url('../images/switch_map_active.png') 5px 3px no-repeat;
+}		
 #list{
 	background:#BCD3F2;
 	border:1px solid #5F7C9C;
@@ -519,7 +551,7 @@ h2{
 }
 #list .one_incident .distance{
 	width:65px;
-	background:#607C9D;
+	background:#7090B7;
 	-webkit-border-bottom-right-radius: 4px;
 	-webkit-border-bottom-left-radius: 4px;
 	-moz-border-radius-bottomright: 4px;
@@ -596,6 +628,12 @@ h2{
 .btn_continue:hover, .btn_continue:active, .btn_continue:focus{
 	background:#FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
 	text-decoration:none;
+}
+.txt_continue{
+	font-size:12px;
+	color:#607C9D;
+	vertical-align:middle;
+	padding: 15px 15px 0 0;
 }
 
 /* ==========================
