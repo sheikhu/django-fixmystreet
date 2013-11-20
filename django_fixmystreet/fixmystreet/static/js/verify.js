@@ -34,20 +34,37 @@
     var btnMap  = document.getElementById('btn-map');
 
     btnMap.addEventListener('click', function() {
-        fms.currentMap = new fms.Map('map', {
-            apiLang:     LANGUAGE_CODE,
-            localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
-            urbisUrl:    WMS_SERVICE_URL
-        });
 
-        var markers = [];
-        for (var i=0, length=reportJSONList.length; i<length; i++) {
-            var marker = fms.currentMap.addReport(reportJSONList[i], i +1, proVersion);
+        if (!fms.currentMap) {
 
-            markers.push(marker);
+            fms.currentMap = new fms.Map('map', {
+                apiLang:     LANGUAGE_CODE,
+                localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+                urbisUrl:    WMS_SERVICE_URL
+            });
+
+            // Enlarge map viewport
+            var map = document.getElementById('map');
+            var mapViewPort = document.getElementById('OpenLayers.Map_4_OpenLayers_ViewPort');
+            mapViewPort.classList.add("olMapViewport-big");
+
+            var markers = [];
+            for (var i=0, length=reportJSONList.length; i<length; i++) {
+                var marker = fms.currentMap.addReport(reportJSONList[i], i +1, proVersion);
+
+                markers.push(marker);
+            }
+
+            fms.currentMap.markersLayer.addFeatures(markers);
+
+            // Zoom to markers
+            var markersBound = fms.currentMap.markersLayer.getDataExtent();
+            fms.currentMap.map.zoomToExtent(markersBound);
+            // Harcode zoom because getDataExtent set zoom to max :(
+            fms.currentMap.map.zoomTo(7);
+
         }
 
-        fms.currentMap.markersLayer.addFeatures(markers);
     });
 
 })(document, LANGUAGE_CODE, URBIS_URL, WMS_SERVICE_URL, fms);
