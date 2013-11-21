@@ -16,19 +16,34 @@ $(document).ready(function() {
     var description = document.getElementById('description');
     var coordonnees = document.getElementById('coordonnees');
 
-    var nextStep = document.getElementById('nextStep');
+    var nextStep     = document.getElementById('nextStep');
     var previousStep = document.getElementById('previousStep');
+
+    var stepTwo   = document.querySelector('.stepTwo');
+    var stepThree = document.querySelector('.stepThree');
 
     nextStep.addEventListener('click', function(event) {
         event.preventDefault();
         description.hidden = true;
         coordonnees.hidden = false;
+
+        stepTwo.classList.remove('on');
+        stepTwo.classList.add('off');
+
+        stepThree.classList.remove('off');
+        stepThree.classList.add('on');
     });
 
     previousStep.addEventListener('click', function(event) {
         event.preventDefault();
         coordonnees.hidden = true;
         description.hidden = false;
+
+        stepThree.classList.remove('on');
+        stepThree.classList.add('off');
+
+        stepTwo.classList.remove('off');
+        stepTwo.classList.add('on');
     });
 
     // Validity step 1 : enable nexStep button if categories are setted
