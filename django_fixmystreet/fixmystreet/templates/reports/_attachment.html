@@ -45,7 +45,11 @@
             <p class="picture-date">
             {% trans 'file creation Date' %}
 
-            <span id='imagedate'></span>
+            <span id='imagedate'>
+                {% if attachment.reportfile.file_creation_date != None%}
+                {{attachment.reportfile.file_creation_date}}
+                {% else %} - {% endif %}
+            </span>
             
             </p>
         </span>

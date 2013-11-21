@@ -9,6 +9,7 @@
 <script src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
 <script src="{{ STATIC_URL }}js/locales/bootstrap-datepicker.fr.js"></script>
 <script src="{{ STATIC_URL }}js/locales/bootstrap-datepicker.nl.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.exif.js"></script>
 <link   href="{{ STATIC_URL }}css/datepicker.css" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript">
@@ -267,6 +268,8 @@ $(document).ready(function() {
             }
         });
     })
+
+    $($(".update_text").find('#imgtoshow')).exifLoad(someCallback);
 });
 
 
@@ -314,6 +317,19 @@ function showMergeConfirmation(){
     $("#merge_nearby_reports_popup").modal("hide");
     $("#merge_confirm_popup").modal();
 }
+
+var someCallback = function(exifObject, index) {
+        if (exifObject && exifObject.DateTimeOriginal){
+            textAreas = $($(".update_text").find('#imagedate'));
+            var datetosplit = exifObject.DateTimeOriginal;
+            var splitted = datetosplit.split(/[:,\/ ]/)
+            var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
+            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];      
+            }    
+        }
+    
+
+
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 {% endblock %}
