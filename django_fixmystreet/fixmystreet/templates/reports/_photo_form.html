@@ -1,0 +1,59 @@
+{% load i18n %}
+<div id="form-files" class="control-group">
+    <label for="add_photo" class="control-label">
+        <strong>{% trans 'Photos' %}</strong><br />
+        {% trans 'La photo doit permettre de replacer l’incident dans son contexte. Les visages et plaques d’immatriculation ne peuvent pas être identifiables.' %}
+    </label>
+
+    <div class="controls">
+        {# Good way to display error lists. Thibaut. #}
+        {{ file_formset.management_form }}
+        {% for dict in file_formset.errors %}
+            {% for error in dict.values %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
+
+        <div id="file-form-template" class="control-group">
+            <img class="icon-remove removeThumbnail hidden" title="Remove"></img>
+            <img class="thumbnail" />
+            {{ file_formset.empty_form.reportattachment_ptr }}
+            {{ file_formset.empty_form.title }}
+            {{ file_formset.empty_form.file_creation_date }}
+
+            {# { file_formset.empty_form.file } #}
+            <div  class="file-upload-btn btn">
+                <input type="file" id="id_files-__prefix__-file" name="files-__prefix__-file"/>
+                {% trans 'Add file' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="file-too-large-error" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{% trans "Validation error" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="lead">
+            <strong>
+                {% trans "File too large: 10 Mb per image maximum." %}
+            </strong>
+        </p>
+    </div>
+</div>
+
+<div id="file-type-error" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{% trans "Validation error" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="lead">
+            <strong>
+                {% trans "The type of the file is not correct. You can only upload files of type: jpg, png, pdf, doc and xls." %}
+            </strong>
+        </p>
+    </div>
+</div>
