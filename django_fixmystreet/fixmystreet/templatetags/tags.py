@@ -11,7 +11,7 @@ register = template.Library()
 
 MENU_DEFS = {
     'submit':                    ['home', 'report_new', 'report_new_pro', 'home_pro',
-                                  'report_prepare_pro'
+                                  'report_prepare_pro', 'report_verify'
                                   ],
     'view':                      ['report_index', 'report_show', 'report_update', 'subscribe',
                                   'unsubscribe', 'flag_success', 'flag_report', 'report_show_pro',

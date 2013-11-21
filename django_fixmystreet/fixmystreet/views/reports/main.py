@@ -61,8 +61,9 @@ def new(request):
                     report_file.created_by = citizen
                     #report_file.report = report
                     report_file.save()
-                # messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
-                # return HttpResponseRedirect(report.get_absolute_url_pro())
+                messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
+                return HttpResponseRedirect(report.get_absolute_url())
+
             else:
                 report = None
 
@@ -95,7 +96,7 @@ def new(request):
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
-    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()
+    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()[0:6]
 
     return render_to_response("reports/verify.html",
         {
