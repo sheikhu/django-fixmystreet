@@ -20,7 +20,7 @@
         </div>
         <span class="picture-caption">
             <!--a href="{{ attachment.reportfile.file.url }}"-->
-            <a href="#modal-img" data-toggle="modal">
+            <a href="#modal-img" data-toggle="modal" class="lk_picture">
                 {% if attachment.reportfile.is_image %}
                     <img id='imgtoshow' src='{{attachment.reportfile.file.url}}' class="view-image"/>
                 {% elif attachment.reportfile.is_pdf %}
