@@ -834,6 +834,11 @@ ul.timeline{
 .picture-head{
 	margin-bottom:10px;
 }
+.lk_picture{
+	display: inline-block;
+	text-align: center;
+	width: 97%;
+}
 #modal-img{
 	width:800px;
 	height:auto;
