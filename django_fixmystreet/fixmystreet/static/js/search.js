@@ -57,7 +57,6 @@ function getAddressFromPoint(lang, x, y) {
             var y = response.result.point.y;
 
             var popupContent = "<p>" + street + ", " + number;
-            console.log(zipcodes);
             popupContent += "<br/>" + postCode + " " + zipcodes[postCode].commune + "</p>";
             popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
 
@@ -118,8 +117,8 @@ function cleanMap() {
     }
 
     // Hide results
-    var $proposalContainer = $('#proposal-container');
-    $proposalContainer .slideUp();
+    var $proposal = $('#proposal');
+    $proposal.slideUp();
 }
 
 $(function(){
@@ -132,7 +131,6 @@ $(function(){
     var $searchButton = $('#widget-search-button');
     var $searchTicketButton = $('#widget-search-ticket-button');
     var $proposal = $('#proposal');
-    var $proposalContainer = $('#proposal-container');
     var $proposalMessage = $('#proposal-message');
 
     var $map = $('#map');
@@ -164,7 +162,7 @@ $(function(){
     $searchAddressForm.submit(function(event){
         event.preventDefault();
         var searchValue = $searchStreet.val();
-        $proposalContainer.slideUp();
+        $proposal.slideUp();
 
         if (!$searchStreet.val()) {
             $searchTicketForm.show();
@@ -252,7 +250,7 @@ $(function(){
                 // If many results only
                 if (markers) {
                     // Show/hide proposal and message
-                    $proposalContainer.slideDown();
+                    $proposal.slideDown();
 
                     if ($proposalMessage.html()) {
                         map.classList.add("map-big-message");

@@ -143,20 +143,20 @@ footer .cirb-cibg img{
 #map{
 	margin: 30px 0 10px 0;
 	position: relative;
-	height: 290px;
+	height: 280px;
 }
 #map.map-big{
-	height: 590px !important;
+	height: 610px !important;
     transition: all 1s;
 }
 
 #map.map-big-message {
-    height: 624px !important;
+    height: 634px !important;
 }
 #map img {
 	max-width: none;
 }
-#proposal-container {
+#proposal {
     background-color: #FFFFFF;
     bottom: 20px;
     display: block;
@@ -164,17 +164,25 @@ footer .cirb-cibg img{
     right: 1px;
     z-index: 1;
     margin:1em 0;
+    padding: 1em;
 	overflow: auto;
 	max-height: 443px;
+    box-shadow: 0 0 5px 0 #999999;
 }
-#proposal-container li {
+#proposal li {
     border-bottom: 1px solid #DDDDDD;
     display: block;
 	padding: 10px;;
-	margin: 0 5px 0 5px;
+	margin: 10px 15px 10px 15px;
     cursor:pointer;
 }
-#proposal-container li a{
+#proposal li:hover {
+    border-color: #607C9D;
+}
+#proposal li p{
+    margin:0;
+}
+#proposal li a{
     color:black;
 }
 #proposal-message{
@@ -188,7 +196,7 @@ footer .cirb-cibg img{
 /*
 	top: 88px;
 */
-	height: 180px !important;
+	height: 170px !important;
 	-webkit-border-bottom-right-radius: 4px;
 	-webkit-border-bottom-left-radius: 4px;
 	-moz-border-radius-bottomright: 4px;
@@ -198,7 +206,7 @@ footer .cirb-cibg img{
     z-index:0;
 }
 .olMapViewport-big{
-	height: 478px !important;
+	height: 498px !important;
     transition: all 1s;
 }
 #copyright-urbis{
