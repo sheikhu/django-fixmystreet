@@ -83,6 +83,14 @@ function getAddressFromPoint(lang, x, y) {
 }
 
 function initDragMarker(x, y, additionalInfo) {
+        // Remove message info
+        var $map = $('#map');
+        map.classList.remove("map-big-message");
+        map.classList.add("map-big");
+
+        var $proposalMessage = $('#proposal-message');
+        $proposalMessage.slideUp();
+
         var draggableMarker = fms.currentMap.addDraggableMarker(x, y);
         fms.currentMap.centerOnDraggableMarker();
         fms.currentMap.map.zoomTo(6);

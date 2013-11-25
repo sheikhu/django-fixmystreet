@@ -168,6 +168,7 @@ footer .cirb-cibg img{
 	overflow: auto;
 	max-height: 443px;
     box-shadow: 0 0 5px 0 #999999;
+    width: 250px;
 }
 #proposal li {
     border-bottom: 1px solid #DDDDDD;
