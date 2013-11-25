@@ -156,7 +156,7 @@ footer .cirb-cibg img{
 #map img {
 	max-width: none;
 }
-#proposal {
+#proposal-container {
     background-color: #FFFFFF;
     bottom: 20px;
     display: block;
@@ -167,13 +167,14 @@ footer .cirb-cibg img{
 	overflow: auto;
 	max-height: 443px;
 }
-#proposal li {
+#proposal-container li {
     border-bottom: 1px solid #DDDDDD;
     display: block;
 	padding: 10px;;
 	margin: 0 5px 0 5px;
+    cursor:pointer;
 }
-#proposal li a{
+#proposal-container li a{
     color:black;
 }
 #proposal-message{
