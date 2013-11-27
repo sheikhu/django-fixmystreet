@@ -13,6 +13,16 @@
 {% block script-search %}
 <script type="text/javascript">
     var NEXT_PAGE_URL = '{% url "report_verify" %}';
+
+    var zipcodes = new Object();
+
+    {% for zip in zipcodes %}
+        zipcodes[{{zip.code}}] = new Object();
+        zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+        zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+        zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+    {% endfor %}
+
 </script>
 {% endblock %}
 

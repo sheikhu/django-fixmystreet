@@ -384,49 +384,57 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     {
         var self = this;
         this.selectedLocation = {x:x,y:y};
-        if(!this.draggableLayer)
-        {
-            this.draggableLayer = new OpenLayers.Layer.Vector( "Dragable Layer" );
-            this.map.addLayer(this.draggableLayer);
 
-            var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
-                onStart:function(){
-                    $(self.element).trigger('markerdrag');
-                },
-                onComplete:function(feature,pixel){
-                    var p = feature.geometry.components[0];
-                    self.selectedLocation = {x:p.x,y:p.y};
-                    $(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
-                    // reverse_geocode(point);
-                },
-                onDrag:function(event){
-                    var markerBounds = event.geometry.bounds;
-                    var mapBounds = this.map.getExtent();
-                    var delta = 100;
-                    if(mapBounds.left+delta > markerBounds.left) {
-                        this.map.pan(-100,0,{});
-                    }
-                    else if (mapBounds.right-delta < markerBounds.right){
-                        this.map.pan(100,0,{});
-                    }
-                    else if (mapBounds.top-delta < markerBounds.top){
-                        this.map.pan(0,-100,{});
-                    }
-                    else if(mapBounds.bottom + delta > markerBounds.bottom){
-                        this.map.pan(0,100,{});
-                    }
-                }
-            });
-            this.map.addControl(dragControl);
-            //this.superControl.dragControl = dragControl;
-            dragControl.activate();
+        // If one draggableLayer already exists, remove it
+        if(this.draggableLayer)
+        {
+            this.map.removeLayer(this.draggableLayer);
+            delete this.draggableLayer;
         }
+
+        this.draggableLayer = new OpenLayers.Layer.Vector( "Dragable Layer" );
+        this.map.addLayer(this.draggableLayer);
+
+        var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
+            onStart:function(){
+                $(self.element).trigger('markerdrag');
+            },
+            onComplete:function(feature,pixel){
+                var p = feature.geometry.components[0];
+                self.selectedLocation = {x:p.x,y:p.y};
+                $(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
+                // reverse_geocode(point);
+            },
+            onDrag:function(event){
+                //~ var markerBounds = event.geometry.bounds;
+                //~ var mapBounds = this.map.getExtent();
+                //~ var delta = 100;
+                //~ if(mapBounds.left+delta > markerBounds.left) {
+                    //~ this.map.pan(-100,0,{});
+                //~ }
+                //~ else if (mapBounds.right-delta < markerBounds.right){
+                    //~ this.map.pan(100,0,{});
+                //~ }
+                //~ else if (mapBounds.top-delta < markerBounds.top){
+                    //~ this.map.pan(0,-100,{});
+                //~ }
+                //~ else if(mapBounds.bottom + delta > markerBounds.bottom){
+                    //~ this.map.pan(0,100,{});
+                //~ }
+            }
+        });
+        this.map.addControl(dragControl);
+        //this.superControl.dragControl = dragControl;
+        dragControl.activate();
+
         this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
         this.dragfeature = new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle);
         this.draggableLayer.addFeatures([this.dragfeature]);
         if(this.selectFeature) {
             this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
         }
+
+        return this.draggableMarker;
     };
 
     fms.Map.prototype.getSelectedLocation = function()
