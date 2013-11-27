@@ -124,6 +124,11 @@ function cleanMap() {
         fms.currentMap.markersLayer.destroyFeatures();
     }
 
+    // Remove all markers
+    if (fms.currentMap.homepageMarkersLayer) {
+        fms.currentMap.homepageMarkersLayer.destroyFeatures();
+    }
+
     // Hide results
     var $proposal = $('#proposal');
     $proposal.slideUp();
@@ -204,6 +209,7 @@ $(function(){
                 $proposal.empty();
                 $proposalMessage.empty();
 
+                // Urbis response 1 result
                 if(response.result.length == 1) {
                     var pos    = response.result[0].point;
                     var address = response.result[0].address;
@@ -221,8 +227,11 @@ $(function(){
                     map.classList.remove("map-big-message");
                     map.classList.add("map-big");
                 }
+                // Urbis response many results
                 else {
-                    var markers = [];
+                    var features = [];
+
+                    fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay");
 
                     for(var i in response.result) {
                         var street = response.result[i].address.street;
@@ -231,8 +240,11 @@ $(function(){
                         var newAddress = new AddressResult(pos.x, pos.y, response.result[i].address);
                         $proposal.append(newAddress.render());
 
-                        // Create marker for this address
-                        markers.push(fms.currentMap.addReport(response.result[i], i));
+                        // Create feature on vectore layer
+                        var feature = new OpenLayers.Feature.Vector(
+                                new OpenLayers.Geometry.Point(pos.x, pos.y)
+                            );
+                        features.push(feature);
 
                         // Define message if needed
                         if ($searchMunicipality.val()) {
@@ -241,23 +253,31 @@ $(function(){
                             $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
                         }
                     }
-                    // Add markers to the map
-                    fms.currentMap.markersLayer.addFeatures(markers);
-                    //~ fms.currentMap.map.zoomTo(3);
-                    //~ fms.currentMap.map.updateSize();
+
+                    // Add features to layer
+                    fms.currentMap.homepageMarkersLayer.addFeatures(features);
 
                     // Zoom to markers
-                    var markersBound = fms.currentMap.markersLayer.getDataExtent();
+                    var markersBound = fms.currentMap.homepageMarkersLayer.getDataExtent();
                     fms.currentMap.map.zoomToExtent(markersBound);
-                    // Harcode zoom because getDataExtent set zoom to max :(
-                    //~ fms.currentMap.map.zoomTo(7);
-                }
 
-                // Enlarge map viewport
-                mapViewPort.classList.add("olMapViewport-big");
+                    // Add layer to map
+                    fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
 
-                // If many results only
-                if (markers) {
+                    // Function to bind selector to initDragMarker
+                    function bindClick(feature) {
+                        var x = feature.geometry.x;
+                        var y = feature.geometry.y;
+
+                        cleanMap();
+                        initDragMarker(x, y);
+                    }
+
+                    // Add the selector control to the vectorLayer
+                    var clickCtrl = new OpenLayers.Control.SelectFeature(fms.currentMap.homepageMarkersLayer, { onSelect: bindClick });
+                    fms.currentMap.map.addControl(clickCtrl);
+                    clickCtrl.activate();
+
                     // Show/hide proposal and message
                     $proposal.slideDown();
 
@@ -269,8 +289,11 @@ $(function(){
                         map.classList.add("map-big");
                         $proposalMessage.slideUp();
                     }
+
                 }
 
+                // Enlarge map viewport
+                mapViewPort.classList.add("olMapViewport-big");
             }
             else
             {
