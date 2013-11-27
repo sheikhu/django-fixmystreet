@@ -199,6 +199,11 @@ $(function(){
 
                 cleanMap();
 
+                $searchStreet.removeClass('loading');
+                $searchButton.prop('disabled',false);
+                $proposal.empty();
+                $proposalMessage.empty();
+
                 if(response.result.length == 1) {
                     var pos    = response.result[0].point;
                     var address = response.result[0].address;
@@ -217,10 +222,6 @@ $(function(){
                     map.classList.add("map-big");
                 }
                 else {
-                    $searchStreet.removeClass('loading');
-                    $searchButton.prop('disabled',false);
-                    $proposal.empty();
-                    $proposalMessage.empty();
                     var markers = [];
 
                     for(var i in response.result) {
