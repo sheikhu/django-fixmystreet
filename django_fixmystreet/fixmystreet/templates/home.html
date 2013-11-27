@@ -162,10 +162,10 @@ function showResults(type,li){
                         <li class="">
                             <a href="#list_created" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_new }}</span><br />{% trans "Report Created" %}</a>
                         </li>
-                        <li class="">
+                        <li class="active">
                             <a href="#list_in_progress" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
                         </li>
-                        <li class="active">
+                        <li class="">
                             <a href="#list_closed" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
                         </li>
                         <li class="search-ticket">
@@ -191,7 +191,7 @@ function showResults(type,li){
                             <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
-                    <div id="list_in_progress" class="tab-pane">
+                    <div id="list_in_progress" class="tab-pane active">
                         <div class="row">
                             {% for report in reports_in_progress %}
                             {% if not BACKOFFICE %}
@@ -204,7 +204,7 @@ function showResults(type,li){
                             <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
-                    <div id="list_closed" class="tab-pane active">
+                    <div id="list_closed" class="tab-pane">
                         <div class="row">
                             {% for report in reports_closed %}
                             {% if not BACKOFFICE %}

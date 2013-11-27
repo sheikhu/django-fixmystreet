@@ -79,7 +79,8 @@
                                 </ol>
                             </div>
                             <div>
-                                <strong id="danger-risk"><a href="#"><i class="icon-danger"></i>{% trans "A big security risk to signal?" %}</a></strong>
+                                <!--strong id="danger-risk"><a href="#"><i class="icon-danger"></i>{% trans "A big security risk to signal?" %}</a></strong-->
+                                <span id="address-text" class="pull-right"></span>
                             </div>
                         </div>
                     </div>
@@ -92,7 +93,7 @@
 
 {% block content %}
 
-<h2  id="address-text"></h2>
+<!--h2  id="address-text"></h2-->
 
 <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
 
@@ -110,7 +111,7 @@
                 </label>
                 <div class="controls">
                     {% input_class report_form.category 'span4' %}
-                    {% input_class report_form.secondary_category 'span5' %}
+                    {% input_class report_form.secondary_category 'span6' %}
                 </div>
             </div>
 
