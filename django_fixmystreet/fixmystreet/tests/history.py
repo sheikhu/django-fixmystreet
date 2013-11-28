@@ -194,7 +194,7 @@ class HistoryTest(TestCase):
 
     def testCreateReportHistoryPro(self):
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
+        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
         report = Report.objects.get(id=report_id)
@@ -585,7 +585,7 @@ class HistoryTest(TestCase):
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
 
-        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
+        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
         self.assertEquals(response.status_code, 200)
         #Should send mail only to responsible
 
