@@ -12,39 +12,44 @@ $(document).ready(function() {
     getAddressFromPoint('fr', x, y);
     getAddressFromPoint('nl', x, y);
 
-    // Switch between 2 steps
     var description = document.getElementById('description');
-    var coordonnees = document.getElementById('coordonnees');
+    var send        = document.getElementById('validate_button');
 
-    var nextStep     = document.getElementById('nextStep');
-    var previousStep = document.getElementById('previousStep');
+    // Only for citizen
+    if (!proVersion) {
+        // Switch between 2 steps
+        var coordonnees = document.getElementById('coordonnees');
 
-    var stepTwo   = document.querySelector('.stepTwo');
-    var stepThree = document.querySelector('.stepThree');
+        var nextStep     = document.getElementById('nextStep');
+        var previousStep = document.getElementById('previousStep');
 
-    nextStep.addEventListener('click', function(event) {
-        event.preventDefault();
-        description.hidden = true;
-        coordonnees.hidden = false;
+        var stepTwo   = document.querySelector('.stepTwo');
+        var stepThree = document.querySelector('.stepThree');
 
-        stepTwo.classList.remove('on');
-        stepTwo.classList.add('off');
+        nextStep.addEventListener('click', function(event) {
+            event.preventDefault();
+            description.hidden = true;
+            coordonnees.hidden = false;
 
-        stepThree.classList.remove('off');
-        stepThree.classList.add('on');
-    });
+            stepTwo.classList.remove('on');
+            stepTwo.classList.add('off');
 
-    previousStep.addEventListener('click', function(event) {
-        event.preventDefault();
-        coordonnees.hidden = true;
-        description.hidden = false;
+            stepThree.classList.remove('off');
+            stepThree.classList.add('on');
+        });
 
-        stepThree.classList.remove('on');
-        stepThree.classList.add('off');
+        previousStep.addEventListener('click', function(event) {
+            event.preventDefault();
+            coordonnees.hidden = true;
+            description.hidden = false;
 
-        stepTwo.classList.remove('off');
-        stepTwo.classList.add('on');
-    });
+            stepThree.classList.remove('on');
+            stepThree.classList.add('off');
+
+            stepTwo.classList.remove('off');
+            stepTwo.classList.add('on');
+        });
+    }
 
     // Validity step 1 : enable nexStep button if categories are setted
     var categoriesElements = description.getElementsByTagName("SELECT");
@@ -53,9 +58,17 @@ $(document).ready(function() {
 
     function checkStep1Validity() {
         if ( (catego1.value) && (catego2.value) ) {
-            nextStep.disabled = false;
+            if (proVersion) {
+                send.disabled = false;
+            } else {
+                nextStep.disabled = false;
+            }
         } else {
-            nextStep.disabled = true;
+            if (proVersion) {
+                send.disabled = true;
+            } else {
+                nextStep.disabled = true;
+            }
 
             return true;
         }
@@ -69,36 +82,37 @@ $(document).ready(function() {
     // Check validity in refresh browser.
     checkStep1Validity();
 
-    // Validity step 2 : enable send button if all required fields are ok
-    var citizenMail    = document.getElementById('id_citizen-email');
-    var citizenQuality = document.getElementById('id_citizen-quality');
-    var termsOfUse     = document.getElementById('id_report-terms_of_use_validated');
-    var send           = document.getElementById('validate_button');
+    if (!proVersion) {
+        // Validity step 2 : enable send button if all required fields are ok
+        var citizenMail    = document.getElementById('id_citizen-email');
+        var citizenQuality = document.getElementById('id_citizen-quality');
+        var termsOfUse     = document.getElementById('id_report-terms_of_use_validated');
 
-    function checkStep2Validity() {
-        console.log(checkStep1Validity());
-        console.log(citizenMail.value);
-        console.log(citizenQuality.value);
-        console.log(termsOfUse.checked);
+        function checkStep2Validity() {
+            console.log(checkStep1Validity());
+            console.log(citizenMail.value);
+            console.log(citizenQuality.value);
+            console.log(termsOfUse.checked);
 
-        if ( (citizenMail.value) && (citizenQuality.value) && (termsOfUse.checked) ) {
-            send.disabled = false;
-        } else {
-            send.disabled = true;
+            if ( (citizenMail.value) && (citizenQuality.value) && (termsOfUse.checked) ) {
+                send.disabled = false;
+            } else {
+                send.disabled = true;
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
 
-        return false;
+        citizenMail.addEventListener('keyup', checkStep2Validity);
+        citizenMail.addEventListener('change', checkStep2Validity);
+        citizenQuality.addEventListener('change', checkStep2Validity);
+        termsOfUse.addEventListener('change', checkStep2Validity);
+
+        // Check validity in refresh browser.
+        checkStep2Validity();
     }
-
-    citizenMail.addEventListener('keyup', checkStep2Validity);
-    citizenMail.addEventListener('change', checkStep2Validity);
-    citizenQuality.addEventListener('change', checkStep2Validity);
-    termsOfUse.addEventListener('change', checkStep2Validity);
-
-    // Check validity in refresh browser.
-    checkStep2Validity();
 });
 
 function getAddressFromPoint(lang, x, y) {
