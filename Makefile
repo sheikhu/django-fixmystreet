@@ -17,6 +17,7 @@ DBUSER        = fixmystreet
 
 env:
 	virtualenv --python=python2.7 env --system-site-packages
+	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | env/bin/python
 
 install: env
 	env/bin/python setup.py install
