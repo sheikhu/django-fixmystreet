@@ -206,7 +206,7 @@ footer .cirb-cibg img{
 	border-bottom-left-radius: 4px;
     z-index:0;
 }
-.olMapViewport-big{
+.map-big .olMapViewport{
 	height: 498px !important;
     transition: all 1s;
 }

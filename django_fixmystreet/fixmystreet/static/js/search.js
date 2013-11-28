@@ -307,9 +307,6 @@ $(function(){
                     }
 
                 }
-
-                // Enlarge map viewport
-                mapViewPort.classList.add("olMapViewport-big");
             }
             else
             {

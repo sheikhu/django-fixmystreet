@@ -68,13 +68,18 @@ $(function(){
     var statusToggleClosed = new fms.statusFilterClosed();
     fms.currentMap.map.addControl(statusToggleClosed);
 });
+
+$(document).ready(function(){
+    // Enlarge map viewport
+
+});
 </script>
 {% endblock %}
 
 {% endblock %}
 
 {% block map %}
-<article id="map">
+<article id="map" class="map-big">
     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
 </article>
 {% endblock %}
@@ -95,18 +100,7 @@ $(function(){
         </ul>
     </div>
 
-    <h1 class="span12">{% trans "Reports for" %} {{entity.name}}</h1>
-    <div id="search_results" class='span8'>
-    {% if not reports %}
-        {% trans "No problems have been reported." %}
-    {% else %}
-        {% for report in reports %}
-            {% include "reports/_navigation.html" with url=report.get_absolute_url %}
-        {% endfor %}
-        {% include "_paginator.html" with page=reports %}
-    {% endif %}
-    </div>
-
+<!--
     <div class='span4'>
         <form action="{% url 'search_ticket' %}" class="block highlighted" id="search_by_ticket_nr">
             <h2>{% trans "Search by ticket number:" %}</h2>
@@ -116,4 +110,5 @@ $(function(){
             </div>
         </div>
    </div>
+-->
 {% endblock %}
