@@ -9,34 +9,36 @@ long_description = '\n\n'.join([
     open(os.path.join(PROJECT_PATH, 'README.md')).read(),
     # open('CREDITS.rst').read(),
     open(os.path.join(PROJECT_PATH, 'CHANGES.rst')).read(),
-    ])
+])
 
 install_requires = [
-    'django',
+    'django==1.5.5',
     'django-transmeta',
     'django-stdimage',
-    'south',
+    'south==0.7.6',
     'django-extensions',
-    'simple_history',
     'docutils',
-    # 'django-registration',
-    'django-piston',
     'markdown',
     'oauth2',
-    'simplejson'
-    ]
+    'simplejson==1.9.3',
 
-tests_require = [
-    'django-jenkins',
-    'coverage',
-    'pyflakes'
-    ]
+    'django-extensions==1.0.1',
+    'django-nose==1.1',
+    'django-stdimage==0.2.2',
+    'django-transmeta==0.6.9',
 
-debug_require = [
-    'django-debug-toolbar',
+    'simple_history==1.1.3',
+    'django-piston==0.2.3',
+
+    ## debug_require:
+    'django-debug-toolbar==0.9.4',
     'ipython',
     # 'django-pdb'
-    ]
+    'django-jenkins==0.13.0',
+    'coverage==3.6',
+    'pyflakes',
+    'pylint==0.26.0'
+]
 
 setup(name='django-fixmystreet',
       version=version,
@@ -56,12 +58,16 @@ setup(name='django-fixmystreet',
       include_package_data=True,
       zip_safe=False,
       install_requires=install_requires,
-      tests_require=tests_require,
-      extras_require={
-          'jenkins': tests_require,
-          'debug': debug_require
-      },
+      dependency_links=[
+          'https://github.com/CIRB/django-simple-history/archive/3da627f01398fd88f812d789d21197cd622633a7.zip#egg=simple_history-1.1.3',
+          'https://pypi.python.org/packages/source/d/django-piston/django-piston-0.2.3.tar.gz#md5=8b040d426793cf22ce89543e059cd6e1#egg=django-piston-0.2.3',
+      ],
+      ### Not supported on old version of pip
+      #~ extras_require={
+          #~ 'debug': debug_require
+      #~ },
       entry_points={
           'console_scripts': []
       },
-      )
+      scripts=['manage.py'],
+)

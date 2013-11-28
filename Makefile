@@ -15,42 +15,38 @@ RPM_INPUTS_FILE = rpm-include-files
 DBNAME        = fixmystreet
 DBUSER        = fixmystreet
 
-bootstrap.py:
-	wget http://svn.zope.org/*checkout*/zc.buildout/tags/1.4.4/bootstrap/bootstrap.py
-	mkdir $(LIBS_DIR)
+env:
+	virtualenv --python=python2.7 env --system-site-packages
 
-$(BIN_DIR)/buildout: bootstrap.py
-	python2.7 bootstrap.py
+install: env
+	env/bin/python setup.py install
+	env/bin/manage.py migrate --all
+	env/bin/manage.py collectstatic --noinput
 
-# deploy: $(BIN_DIR)/buildout
-	# $(BIN_DIR)/buildout install django
+develop: env
+	env/bin/python setup.py develop
+	env/bin/manage.py migrate --all
 
-install: $(BIN_DIR)/buildout
-	find . -type f -name "*.pyc" -delete
-	$(BIN_DIR)/buildout -Nvt 5
-
-init:
-	$(BIN_DIR)/django syncdb --noinput
-	$(BIN_DIR)/django migrate --all
-	$(BIN_DIR)/django collectstatic --noinput
+extra:
+	env/bin/pip install -e .[debug]
 
 schemamigration:
-	$(BIN_DIR)/django schemamigration fixmystreet --auto
+	env/bin/manage.py schemamigration fixmystreet --auto
 
 html-doc:
 	bin/sphinx-apidoc -fF -o doc/source/gen django_fixmystreet
 	bin/sphinx-build -d doc/build/doctrees doc/source doc/build/html
 
-test: $(BIN_DIR)/django
-	$(BIN_DIR)/django test $(APP_NAME)
+test: env/bin/manage.py
+	env/bin/manage.py test $(APP_NAME)
 
 lint:
 	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes
 
-jenkins: $(BIN_DIR)/django
+jenkins: env/bin/manage.py
 	rm -rf reports
 	mkdir reports
-	$(BIN_DIR)/django-jenkins jenkins $(APP_NAME)
+	env/bin/manage.py jenkins $(APP_NAME)
 
 rpm:
 	find . -type f -name "*.pyc" -delete
@@ -66,8 +62,8 @@ rpm:
 
 createdb:
 	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
-	$(BIN_DIR)/django syncdb --migrate
-	$(BIN_DIR)/django loaddata bootstrap list_items applicants staging_data
+	env/bin/manage.py syncdb --migrate
+	env/bin/manage.py loaddata bootstrap list_items applicants staging_data
 
 dropdb:
 	dropdb $(DBNAME) -U $(DBUSER)
@@ -76,14 +72,11 @@ dropdb:
 # $ make DBNAME=my_fms_db_name scratchdb
 scratchdb: dropdb createdb
 	cp -Rf media/photos-sample/ media/photos/
-	$(BIN_DIR)/django loaddata sample
+	env/bin/manage.py loaddata sample
 
 messages:
 	cd django_fixmystreet/fixmystreet; ../../bin/django makemessages -a ; ../../bin/django compilemessages
 	cd django_fixmystreet/backoffice; ../../bin/django makemessages -a ; ../../bin/django compilemessages
 
 clean:
-	rm -rf bootstrap.py \
-			$(BIN_DIR) \
-			$(LIBS_DIR) \
-			src
+	rm -rf env
