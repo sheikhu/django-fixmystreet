@@ -127,8 +127,6 @@ function cleanMap() {
     if (fms.currentMap.markersLayer) {
         fms.currentMap.markersLayer.destroyFeatures();
     }
-
-    // Remove all markers
     if (fms.currentMap.homepageMarkersLayer) {
         fms.currentMap.homepageMarkersLayer.destroyFeatures();
     }
@@ -340,15 +338,23 @@ $(function(){
     function enableSearch() {
         var enableSearchBtn = false;
 
-        if ( (streetKeywords.value) || (postalCode.value) ) {
+        if (streetKeywords.value) {
             enableSearchBtn = true;
         }
 
         searchBtn.disabled = !enableSearchBtn;
     }
+
+    function municipalityChange() {
+        enableSearch();
+
+        if ( !(streetKeywords.value) && (postalCode.value) ) {
+            alert('middle of municipality : ' + postalCode.value);
+        }
+    }
     // Enable search button if one of fields contain a value
     streetKeywords.addEventListener('keyup', enableSearch);
     streetKeywords.addEventListener('change', enableSearch);
-    postalCode.addEventListener('change', enableSearch);
+    postalCode.addEventListener('change', municipalityChange);
 
 })(document);
