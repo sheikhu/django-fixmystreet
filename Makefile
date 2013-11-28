@@ -44,7 +44,7 @@ test: env/bin/manage.py
 lint:
 	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes
 
-jenkins: env/bin/manage.py
+jenkins: install env/bin/manage.py extra
 	rm -rf reports
 	mkdir reports
 	env/bin/manage.py jenkins $(APP_NAME)

@@ -29,8 +29,9 @@ install_requires = [
 
     'simple_history==1.1.3',
     'django-piston==0.2.3',
+]
 
-    ## debug_require:
+debug_require = [
     'django-debug-toolbar==0.9.4',
     'ipython',
     # 'django-pdb'
@@ -62,10 +63,9 @@ setup(name='django-fixmystreet',
           'https://github.com/CIRB/django-simple-history/archive/3da627f01398fd88f812d789d21197cd622633a7.zip#egg=simple_history-1.1.3',
           'https://pypi.python.org/packages/source/d/django-piston/django-piston-0.2.3.tar.gz#md5=8b040d426793cf22ce89543e059cd6e1#egg=django-piston-0.2.3',
       ],
-      ### Not supported on old version of pip
-      #~ extras_require={
-          #~ 'debug': debug_require
-      #~ },
+      extras_require={
+          'debug': debug_require
+      },
       entry_points={
           'console_scripts': []
       },
