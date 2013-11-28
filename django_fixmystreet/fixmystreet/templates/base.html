@@ -47,7 +47,7 @@
                         {% endif %}
                     </div>
 
-                    
+
 
                     <div class="span5">
                         {% block nav %}
@@ -83,24 +83,30 @@
                                         {% trans "View Reports" %}
                                     </a>
                                 </li>
+
+
                                 <li class="dropdown">
                                     <a class="dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
-                                        {% trans "Users" %}
+                                        {{ request.user.get_full_name }}
                                         <b class="caret"></b>
                                     </a>
                                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                         {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
-                                        <li>
-                                            <a class="{% is_active_menu 'users' %}"     href="{% url 'list_users' %}">
-                                                {% trans "Users" %}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="{% is_active_menu 'groups' %}"     href="{% url 'list_groups' %}">
-                                                {% trans "Groups" %}
-                                            </a>
-                                        </li>
+                                            <li>{{ request.fmsuser.get_organisation }}</li>
+                                            <li class="divider"></li>
+
+                                            <li>
+                                                <a class="{% is_active_menu 'users' %}"     href="{% url 'list_users' %}">
+                                                    {% trans "Users" %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="{% is_active_menu 'groups' %}"     href="{% url 'list_groups' %}">
+                                                    {% trans "Groups" %}
+                                                </a>
+                                            </li>
                                         {% endif %}
+
                                         {% if request.fmsuser.leader %}
                                             {% if request.user.id|hasAtLeastAManager %}
                                             <li>
@@ -110,9 +116,16 @@
                                             </li>
                                             {% endif %}
                                         {% endif %}
+
                                         <li>
                                             <a class="{% is_active_menu 'users_change_password' %}"     href="{% url 'password_change' %}">
                                                 {% trans "Change your password" %}
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{% url 'logout' %}">
+                                                <i class="icon-login"> </i>{% trans 'Log out' %}
                                             </a>
                                         </li>
                                     </ul>
@@ -140,18 +153,14 @@
                                 {% endfor %}
                             </div>
 
-                            <div id="login">
-                                {% if request.user.is_authenticated %}
-                                <a href="{% url 'logout' %}">
-                                    <i class="icon-login"> </i>{% trans 'Log out' %}
-                                </a>
-                                <span>{% trans 'Connected' %}: {{ request.user.get_full_name }} ({{ request.fmsuser.get_organisation }})</span>
-                                {% else %}
-                                <a href="{% url 'login' %}">
-                                    <i class="icon-login"> </i> {% trans 'Sign in' %}
-                                </a>
-                                {% endif %}
-                            </div>
+                            {% if not request.user.is_authenticated %}
+                                <div id="login">
+                                    <a href="{% url 'login' %}">
+                                        <i class="icon-login"> </i> {% trans 'Sign in' %}
+                                    </a>
+                                </div>
+                            {% endif %}
+
                         </section>
                         {% endblock %}
                     </div>
@@ -220,7 +229,7 @@
                 <div class="clearfloat"></div>
                 <div class="row">
                     {% block content_third %}{% endblock %}
-                    
+
                     <!--p>
                         {% trans 'A initiative of Bruxelles Mobilite in collaboration with '%}
                         <a href="{% url 'about' %}#3">{% trans 'Communes and Brussels Partner Institutions'%}</a>
