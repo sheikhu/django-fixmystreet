@@ -50,19 +50,20 @@ function getAddressFromPoint(lang, x, y) {
             var street = response.result.address.street.name;
             var number = response.result.address.number;
             var postCode = response.result.address.street.postCode;
-            var municipality = response.result.address.street.municipality;
+            var municipality = zipcodes[postCode].commune;
 
             var x = response.result.point.x;
             var y = response.result.point.y;
 
             var popupContent = "<p>" + street + ", " + number;
-            popupContent += "<br/>" + postCode + " " + zipcodes[postCode].commune + "</p>";
+            popupContent += "<br/>" + postCode + " " + municipality + "</p>";
             popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+            popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
 
             var popup = new OpenLayers.Popup(
                 "popup",
                 new OpenLayers.LonLat(x, y),
-                new OpenLayers.Size(200,75),
+                new OpenLayers.Size(200,100),
                 popupContent,
                 true
             );
@@ -102,13 +103,14 @@ function initDragMarker(x, y, additionalInfo) {
 
             if (additionalInfo.number) {
                 popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
             }
         }
 
         var popup = new OpenLayers.Popup(
             "popup",
             new OpenLayers.LonLat(x, y),
-            new OpenLayers.Size(200,120),
+            new OpenLayers.Size(200,150),
             popupContent,
             true
         );
@@ -182,6 +184,11 @@ $(function(){
         if (!$searchStreet.val()) {
             $searchTicketForm.show();
             return;
+        }
+
+        var btnLocalizeviamap = document.getElementById('btn-localizeviamap');
+        if (btnLocalizeviamap) {
+            btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
         }
 
         $searchStreet.addClass('loading');
