@@ -479,20 +479,6 @@ h2.last_reports {
 	color:#495E77;
 	font-size:12px;
 }
-.tab-pane .more-incidents a:link, .tab-pane .more-incidents a:visited{
-	color:#495E77;
-	text-decoration:underline;
-}
-.tab-pane .more-incidents a:hover, .tab-pane .more-incidents a:active, .tab-pane .more-incidents a:visited{
-	color:#495E77;
-	text-decoration:underline;
-}
-.tab-pane .more-incidents{
-	margin-right: 17px;
-	margin-bottom: 10px;
-	margin-top: 5px;
-	font-size:12px;
-}
 /* ==========================
    VERIFY
    ========================== */
