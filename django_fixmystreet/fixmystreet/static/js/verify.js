@@ -43,11 +43,6 @@
                 urbisUrl:    WMS_SERVICE_URL
             });
 
-            // Enlarge map viewport
-            var map = document.getElementById('map');
-            var mapViewPort = document.getElementById('OpenLayers.Map_4_OpenLayers_ViewPort');
-            mapViewPort.classList.add("olMapViewport-big");
-
             var markers = [];
             for (var i=0, length=reportJSONList.length; i<length; i++) {
                 var marker = fms.currentMap.addReport(reportJSONList[i], i +1, proVersion);

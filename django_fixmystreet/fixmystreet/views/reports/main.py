@@ -210,37 +210,11 @@ def search_ticket(request):
         return HttpResponseRedirect(reverse('home'))
 
 
-def index(request, slug=None, commune_id=None):
-    if commune_id:
-        exception = request.GET.get("exception")
-        commune_phone = request.GET.get("phone")
+def index(request):
+    all_reports = Report.objects.all().public()
 
-        if exception!=None and exception=='true':
-            #Exception parameter is used to show error message for communes not participating...
-            error_message = _("Does not participate to FixMyStreet yet with details")+' '+commune_phone
-            messages.add_message(request, messages.ERROR, error_message)
-        else:
-
-            entity = OrganisationEntity.objects.get(id=commune_id)
-            reports = Report.objects.all().entity_territory(entity).public().order_by('-created')
-            page_number = request.GET.get("page", 1)
-            paginator = Paginator(reports, settings.MAX_ITEMS_PAGE)
-            try:
-                page = paginator.page(page_number)
-            except PageNotAnInteger:
-                page = paginator.page(1)
-            except EmptyPage:
-                page = paginator.page(paginator.num_pages)
-
-            return render_to_response("reports/list.html", {
-                "reports": page,
-                "all_reports":reports,
-                "entity":entity,
-            }, context_instance=RequestContext(request))
-
-    communes = OrganisationEntity.objects.filter(commune=True).order_by('name_' + get_language())
-    return render_to_response("reports/index.html", {
-        "communes": communes
+    return render_to_response("reports/list.html", {
+        "all_reports":all_reports,
     }, context_instance=RequestContext(request))
 
 def newmap(request):

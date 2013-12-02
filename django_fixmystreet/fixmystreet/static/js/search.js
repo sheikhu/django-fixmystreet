@@ -20,15 +20,14 @@ function AddressResult(x, y, address)
     this.onclick = function(event) {
         cleanMap();
 
-        var popupContent = "";
-        popupContent = "<p>" + self.address.street.name + ", " + self.address.number;
-        popupContent += "<br/>" + self.address.street.postCode + " " + self.address.street.municipality + "</p>";
-
-        if (address.number) {
-            popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + self.x + "&y=" + self.y + "'>C'est ici !</a>";
+        additionalInfo = {
+            'streetName'   : self.address.street.name,
+            'number'       : self.address.number,
+            'postCode'     : self.address.street.postCode,
+            'municipality' : self.address.street.municipality
         }
 
-        initDragMarker(self.x, self.y, popupContent);
+        initDragMarker(self.x, self.y, additionalInfo);
     }
 }
 
@@ -51,19 +50,20 @@ function getAddressFromPoint(lang, x, y) {
             var street = response.result.address.street.name;
             var number = response.result.address.number;
             var postCode = response.result.address.street.postCode;
-            var municipality = response.result.address.street.municipality;
+            var municipality = zipcodes[postCode].commune;
 
             var x = response.result.point.x;
             var y = response.result.point.y;
 
             var popupContent = "<p>" + street + ", " + number;
-            popupContent += "<br/>" + postCode + " " + zipcodes[postCode].commune + "</p>";
+            popupContent += "<br/>" + postCode + " " + municipality + "</p>";
             popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+            popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
 
             var popup = new OpenLayers.Popup(
                 "popup",
                 new OpenLayers.LonLat(x, y),
-                new OpenLayers.Size(200,75),
+                new OpenLayers.Size(200,100),
                 popupContent,
                 true
             );
@@ -98,13 +98,19 @@ function initDragMarker(x, y, additionalInfo) {
         var popupContent = "<p>Déplacez-moi à l'adresse exacte</p>";
 
         if (additionalInfo) {
-            popupContent += additionalInfo;
+            popupContent += "<p>" + additionalInfo.streetName + ", " + additionalInfo.number;
+            popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
+
+            if (additionalInfo.number) {
+                popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
+            }
         }
 
         var popup = new OpenLayers.Popup(
             "popup",
             new OpenLayers.LonLat(x, y),
-            new OpenLayers.Size(200,120),
+            new OpenLayers.Size(200,150),
             popupContent,
             true
         );
@@ -122,6 +128,9 @@ function cleanMap() {
     // Remove all features
     if (fms.currentMap.markersLayer) {
         fms.currentMap.markersLayer.destroyFeatures();
+    }
+    if (fms.currentMap.homepageMarkersLayer) {
+        fms.currentMap.homepageMarkersLayer.destroyFeatures();
     }
 
     // Hide results
@@ -177,6 +186,11 @@ $(function(){
             return;
         }
 
+        var btnLocalizeviamap = document.getElementById('btn-localizeviamap');
+        if (btnLocalizeviamap) {
+            btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
+        }
+
         $searchStreet.addClass('loading');
         $searchButton.prop('disabled',true);
         $.ajax({
@@ -199,64 +213,87 @@ $(function(){
 
                 cleanMap();
 
+                $searchStreet.removeClass('loading');
+                $searchButton.prop('disabled',false);
+                $proposal.empty();
+                $proposalMessage.empty();
+
+                // Urbis response 1 result
                 if(response.result.length == 1) {
                     var pos    = response.result[0].point;
                     var address = response.result[0].address;
 
-                    var popupContent = "";
-                    popupContent = "<p>" + address.street.name + ", " + address.number;
-                    popupContent += "<br/>" + address.street.postCode + " " + address.street.municipality + "</p>";
-
-                    if (address.number) {
-                        popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + pos.x + "&y=" + pos.y + "'>C'est ici !</a>";
+                    additionalInfo = {
+                        'streetName'   : address.street.name,
+                        'number'       : address.number,
+                        'postCode'     : address.street.postCode,
+                        'municipality' : address.street.municipality
                     }
 
-                    initDragMarker(pos.x, pos.y, popupContent);
+                    initDragMarker(pos.x, pos.y, additionalInfo);
 
                     map.classList.remove("map-big-message");
                     map.classList.add("map-big");
                 }
+                // Urbis response many results
                 else {
-                    $searchStreet.removeClass('loading');
-                    $searchButton.prop('disabled',false);
-                    $proposal.empty();
-                    $proposalMessage.empty();
-                    var markers = [];
+                    var features = [];
+
+                    fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay");
 
                     for(var i in response.result) {
-                        var street = response.result[i].address.street;
+                        var address = response.result[i].address;
                         var pos = response.result[i].point;
 
-                        var newAddress = new AddressResult(pos.x, pos.y, response.result[i].address);
+                        var newAddress = new AddressResult(pos.x, pos.y, address);
                         $proposal.append(newAddress.render());
 
-                        // Create marker for this address
-                        markers.push(fms.currentMap.addReport(response.result[i], i));
+                        // Create feature on vectore layer
+                        var feature = new OpenLayers.Feature.Vector(
+                                new OpenLayers.Geometry.Point(pos.x, pos.y),
+                                { 'additionalInfo' :
+                                    {
+                                        'streetName'   : address.street.name,
+                                        'number'       : address.number,
+                                        'postCode'     : address.street.postCode,
+                                        'municipality' : address.street.municipality
+                                    }
+                                }
+                            );
+                        features.push(feature);
 
                         // Define message if needed
                         if ($searchMunicipality.val()) {
                             $proposalMessage.html("Cette rue n'est pas répertoriée dans cette commune");
-                        } else if ($searchStreet.val().toLowerCase() == street.name.toLowerCase()) {
+                        } else if ($searchStreet.val().toLowerCase() == address.street.name.toLowerCase()) {
                             $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
                         }
                     }
-                    // Add markers to the map
-                    fms.currentMap.markersLayer.addFeatures(markers);
-                    //~ fms.currentMap.map.zoomTo(3);
-                    //~ fms.currentMap.map.updateSize();
+
+                    // Add features to layer
+                    fms.currentMap.homepageMarkersLayer.addFeatures(features);
 
                     // Zoom to markers
-                    var markersBound = fms.currentMap.markersLayer.getDataExtent();
+                    var markersBound = fms.currentMap.homepageMarkersLayer.getDataExtent();
                     fms.currentMap.map.zoomToExtent(markersBound);
-                    // Harcode zoom because getDataExtent set zoom to max :(
-                    //~ fms.currentMap.map.zoomTo(7);
-                }
 
-                // Enlarge map viewport
-                mapViewPort.classList.add("olMapViewport-big");
+                    // Add layer to map
+                    fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
 
-                // If many results only
-                if (markers) {
+                    // Function to bind selector to initDragMarker
+                    function bindClick(feature) {
+                        var x = feature.geometry.x;
+                        var y = feature.geometry.y;
+
+                        cleanMap();
+                        initDragMarker(x, y, feature.attributes.additionalInfo);
+                    }
+
+                    // Add the selector control to the vectorLayer
+                    var clickCtrl = new OpenLayers.Control.SelectFeature(fms.currentMap.homepageMarkersLayer, { onSelect: bindClick });
+                    fms.currentMap.map.addControl(clickCtrl);
+                    clickCtrl.activate();
+
                     // Show/hide proposal and message
                     $proposal.slideDown();
 
@@ -268,8 +305,8 @@ $(function(){
                         map.classList.add("map-big");
                         $proposalMessage.slideUp();
                     }
-                }
 
+                }
             }
             else
             {
@@ -305,15 +342,23 @@ $(function(){
     function enableSearch() {
         var enableSearchBtn = false;
 
-        if ( (streetKeywords.value) || (postalCode.value) ) {
+        if (streetKeywords.value) {
             enableSearchBtn = true;
         }
 
         searchBtn.disabled = !enableSearchBtn;
     }
+
+    function municipalityChange() {
+        enableSearch();
+
+        if ( !(streetKeywords.value) && (postalCode.value) ) {
+            alert('middle of municipality : ' + postalCode.value);
+        }
+    }
     // Enable search button if one of fields contain a value
     streetKeywords.addEventListener('keyup', enableSearch);
     streetKeywords.addEventListener('change', enableSearch);
-    postalCode.addEventListener('change', enableSearch);
+    postalCode.addEventListener('change', municipalityChange);
 
 })(document);

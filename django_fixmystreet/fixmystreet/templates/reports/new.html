@@ -16,6 +16,8 @@
 <script src="{{ STATIC_URL }}js/jquery.exif.js"></script>
 
 <script>
+    var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
+
     var zipcodes = new Object();
 
     {% for zip in all_zips %}
@@ -26,8 +28,6 @@
     {% endfor %}
 
     $(function(){
-        var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
-
         $("input:checkbox").attr("value","off");
         $("input:checkbox").bind("change",function(){
 
@@ -75,7 +75,10 @@
                                 <ol class="steps">
                                     <li class="stepOne off">{% trans "Localisation" %}</li>
                                     <li class="stepTwo on">{% trans "Description" %}</li>
-                                    <li class="stepThree off">{% trans "Coordonnees" %}</li>
+
+                                    {% if not BACKOFFICE %}
+                                        <li class="stepThree off">{% trans "Coordonnees" %}</li>
+                                    {% endif %}
                                 </ol>
                             </div>
                             <div>
@@ -129,91 +132,111 @@
 
         {% endblock %}
 
-        <p>
-            <button id="nextStep" class="btn pull-right" disabled>Etape suivante</button>
-        </p>
-    </div>
-
-
-    <!-- Coordonnées -->
-    <div id="coordonnees" class="span6" style="margin-top: 30px;" hidden>
-
-        {% if citizen_form %}
-
-            <div class="control-group">
-                <label for="name" class="control-label">
-                    <strong>{% trans 'Nom' %}</strong>
-                </label>
-                <div class="controls">
-                    {% input_class citizen_form.last_name 'span6' %}
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label for="quality" class="control-label">
-                    <strong>{% trans 'Qualité' %}</strong>
-                </label>
-                <div class="controls">
-                    {% input_class citizen_form.quality 'span6' %}
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label for="telephone" class="control-label">
-                    <strong>{% trans 'Téléphone' %}</strong>
-                </label>
-                <div class="controls">
-                    {% input_class citizen_form.telephone 'span6' %}
-                </div>
-            </div>
-            <div class="control-group">
-                <label for="email" class="control-label">
-                    <strong>{% trans 'Email' %}</strong>
-                </label>
-                <div class="controls">
-                    {% input_class citizen_form.email 'span6' %}
-                </div>
-            </div>
-
-        {% endif %}
-
-        <div class="control-group">
-            <label for="notifications" class="control-label">
-                <strong>{% trans 'Notifications' %}</strong>
-            </label>
-            <div class="controls">
-                <label class="checkbox inline">
-                    {% input_class report_form.subscription 'conditions_check' %}
-                    {% trans "J'accepte de recevoir des notifications par emails m'informant de l'évolution de l'incident" %}
-                </label>
-            </div>
-        </div>
-
         {% if not BACKOFFICE %}
-
+            <p>
+                <button id="nextStep" class="btn pull-right" disabled>Etape suivante</button>
+            </p>
+        {% else %}
             <div class="control-group">
-                <label for="conditions" class="control-label">
-                    <strong>{% trans 'Conditions' %}</strong>
+                <label for="notifications" class="control-label">
+                    <strong>{% trans 'Notifications' %}</strong>
                 </label>
                 <div class="controls">
                     <label class="checkbox inline">
-                        {% input_class report_form.terms_of_use_validated 'conditions_check' %}
-                        {% trans "J'ai lu et accepté les conditions d'utilisations (+ lien)" %}
+                        {% input_class report_form.subscription 'conditions_check' %}
+                        {% trans "J'accepte de recevoir des notifications par emails m'informant de l'évolution de l'incident" %}
                     </label>
                 </div>
             </div>
 
+            <div class="warning_information_form">
+                <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
+            </div>
         {% endif %}
-
-        <div id="required-note" >{% trans "* This fields are required" %}</div>
-
-        <div class="warning_information_form">
-            <p class="info_end_form">{% trans "Un email contenant le rapport vous sera envoyé juste après l'envoi." %}</p>
-            <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
-        </div>
-        <p><button id="previousStep">Etape précédente</button></p>
-
     </div>
+
+
+    <!-- Coordonnées. Only for citizen -->
+    {% if not BACKOFFICE %}
+        <div id="coordonnees" class="span6" style="margin-top: 30px;" hidden>
+
+            {% if citizen_form %}
+
+                <div class="control-group">
+                    <label for="name" class="control-label">
+                        <strong>{% trans 'Nom' %}</strong>
+                    </label>
+                    <div class="controls">
+                        {% input_class citizen_form.last_name 'span6' %}
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="quality" class="control-label">
+                        <strong>{% trans 'Qualité' %}</strong>
+                    </label>
+                    <div class="controls">
+                        {% input_class citizen_form.quality 'span6' %}
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="telephone" class="control-label">
+                        <strong>{% trans 'Téléphone' %}</strong>
+                    </label>
+                    <div class="controls">
+                        {% input_class citizen_form.telephone 'span6' %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="email" class="control-label">
+                        <strong>{% trans 'Email' %}</strong>
+                    </label>
+                    <div class="controls">
+                        {% input_class citizen_form.email 'span6' %}
+                    </div>
+                </div>
+
+            {% endif %}
+
+            <div class="control-group">
+                <label for="notifications" class="control-label">
+                    <strong>{% trans 'Notifications' %}</strong>
+                </label>
+                <div class="controls">
+                    <label class="checkbox inline">
+                        {% input_class report_form.subscription 'conditions_check' %}
+                        {% trans "J'accepte de recevoir des notifications par emails m'informant de l'évolution de l'incident" %}
+                    </label>
+                </div>
+            </div>
+
+            {% if not BACKOFFICE %}
+
+                <div class="control-group">
+                    <label for="conditions" class="control-label">
+                        <strong>{% trans 'Conditions' %}</strong>
+                    </label>
+                    <div class="controls">
+                        <label class="checkbox inline">
+                            {% input_class report_form.terms_of_use_validated 'conditions_check' %}
+                            {% trans "J'ai lu et accepté les conditions d'utilisations (+ lien)" %}
+                        </label>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            <div id="required-note" >{% trans "* This fields are required" %}</div>
+
+            <div class="warning_information_form">
+                <p class="info_end_form">{% trans "Un email contenant le rapport vous sera envoyé juste après l'envoi." %}</p>
+                <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
+            </div>
+            <p><button id="previousStep">Etape précédente</button></p>
+
+        </div>
+    {% endif %}
 
 </form>
 
