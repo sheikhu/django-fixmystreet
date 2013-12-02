@@ -158,7 +158,7 @@
 
     <!-- Coordonnées. Only for citizen -->
     {% if not BACKOFFICE %}
-        <div id="coordonnees" class="span6" style="margin-top: 30px;" hidden>
+        <div id="coordonnees" class="" style="margin-top: 30px;" hidden>
 
             {% if citizen_form %}
 
@@ -167,7 +167,7 @@
                         <strong>{% trans 'Nom' %}</strong>
                     </label>
                     <div class="controls">
-                        {% input_class citizen_form.last_name 'span6' %}
+                        {% input_class citizen_form.last_name 'span10' %}
                     </div>
                 </div>
 
@@ -176,7 +176,7 @@
                         <strong>{% trans 'Qualité' %}</strong>
                     </label>
                     <div class="controls">
-                        {% input_class citizen_form.quality 'span6' %}
+                        {% input_class citizen_form.quality 'span10' %}
                     </div>
                 </div>
 
@@ -185,7 +185,7 @@
                         <strong>{% trans 'Téléphone' %}</strong>
                     </label>
                     <div class="controls">
-                        {% input_class citizen_form.telephone 'span6' %}
+                        {% input_class citizen_form.telephone 'span10' %}
                     </div>
                 </div>
                 <div class="control-group">
@@ -193,7 +193,7 @@
                         <strong>{% trans 'Email' %}</strong>
                     </label>
                     <div class="controls">
-                        {% input_class citizen_form.email 'span6' %}
+                        {% input_class citizen_form.email 'span10' %}
                     </div>
                 </div>
 
@@ -230,7 +230,7 @@
             <div id="required-note" >{% trans "* This fields are required" %}</div>
 
             <div class="warning_information_form">
-                <p class="info_end_form">{% trans "Un email contenant le rapport vous sera envoyé juste après l'envoi." %}</p>
+                <p class="info_end_form" style="clear:both">{% trans "Un email contenant le rapport vous sera envoyé juste après l'envoi." %}</p>
                 <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
             </div>
             <p><button id="previousStep">Etape précédente</button></p>

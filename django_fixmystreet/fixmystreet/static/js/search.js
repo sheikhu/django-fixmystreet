@@ -55,15 +55,17 @@ function getAddressFromPoint(lang, x, y) {
             var x = response.result.point.x;
             var y = response.result.point.y;
 
-            var popupContent = "<p>" + street + ", " + number;
+            //var popupContent = "<p>" + street + ", " + number;
+            var popupContent = "<p class='popupHeading'>Déplacez-moi à l'adresse exacte</p>";
+            popupContent += "<p class='popupContent'>" + street + ", " + number;
             popupContent += "<br/>" + postCode + " " + municipality + "</p>";
-            popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
             popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
+            popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
 
             var popup = new OpenLayers.Popup(
                 "popup",
                 new OpenLayers.LonLat(x, y),
-                new OpenLayers.Size(200,100),
+                new OpenLayers.Size(200,150),
                 popupContent,
                 true
             );
@@ -95,10 +97,10 @@ function initDragMarker(x, y, additionalInfo) {
         fms.currentMap.centerOnDraggableMarker();
         fms.currentMap.map.zoomTo(6);
 
-        var popupContent = "<p>Déplacez-moi à l'adresse exacte</p>";
+        var popupContent = "<p class='popupHeading'>Déplacez-moi à l'adresse exacte</p>";
 
         if (additionalInfo) {
-            popupContent += "<p>" + additionalInfo.streetName + ", " + additionalInfo.number;
+            popupContent += "<p class='popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
             popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
 
             if (additionalInfo.number) {
