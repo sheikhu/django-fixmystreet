@@ -2,7 +2,7 @@
 import os, sys
 import subprocess
 
-PROJECT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+PROJECT_PATH = os.getcwd()
 
 
 # supported value of ENVIRONMENT are dev, jenkins, staging, production
