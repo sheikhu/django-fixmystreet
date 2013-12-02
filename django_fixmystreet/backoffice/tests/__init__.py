@@ -3,3 +3,4 @@ from django_fixmystreet.backoffice.tests.updates import *
 from django_fixmystreet.backoffice.tests.views import *
 from django_fixmystreet.backoffice.tests.groups import *
 from django_fixmystreet.backoffice.tests.users import *
+from django_fixmystreet.backoffice.tests.dispatching import *
