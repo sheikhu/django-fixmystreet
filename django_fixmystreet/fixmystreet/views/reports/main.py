@@ -98,11 +98,14 @@ def verify(request):
     pnt = dict_to_point(request.REQUEST)
     reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()[0:6]
 
-    return render_to_response("reports/verify.html",
-        {
-            "reports_nearby":reports_nearby
-        },
-        context_instance=RequestContext(request))
+    if reports_nearby:
+        return render_to_response("reports/verify.html",
+            {
+                "reports_nearby":reports_nearby
+            },
+            context_instance=RequestContext(request))
+
+    return new(request)
 
 def report_prepare(request, location = None, error_msg = None):
     '''Deprecated, no sense'''

@@ -52,39 +52,35 @@
                     <div class="span5">
                         {% block nav %}
                         <nav>
-                            {% if not request.user.is_authenticated or not request.fmsuser.is_pro %}
                             <ul>
-                                <li>
-                                    <a class="submit {% is_active_menu 'submit' %}"   href="{% url 'home' %}">
-                                        {% trans "Submit a Report" %}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="consult {% is_active_menu 'view' %}"     href="{% url 'report_index' %}">
-                                        {% trans "View Reports" %}
-                                    </a>
-                                </li>
+                                {% if not request.user.is_authenticated or not request.fmsuser.is_pro %}
+                                    <li>
+                                        <a class="submit {% is_active_menu 'submit' %}"   href="{% url 'home' %}">
+                                            {% trans "Submit a Report" %}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="consult {% is_active_menu 'view' %}"     href="{% url 'report_index' %}">
+                                            {% trans "View Reports" %}
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <!--a class="help {% is_active_menu 'about' %}"    href="{% url 'about' %}">
-                                        {% trans "About" %}
-                                    </a-->
-                                    <a class="help" href="#">Aide</a>
-                                </li>
-                            </ul>
-                            {% else %}
-                            <ul>
-                                <li>
-                                    <a class="{% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
-                                        {% trans "Submit a Report" %}
-                                    </a>
-                                <li>
-                                    <a class="{% is_active_menu 'view' %}"     href="{% url 'report_table_pro' %}">
-                                        {% trans "View Reports" %}
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="help" href="#">Aide</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a class="{% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
+                                            {% trans "Submit a Report" %}
+                                        </a>
+                                    <li>
+                                        <a class="{% is_active_menu 'view' %}"     href="{% url 'report_table_pro' %}">
+                                            {% trans "View Reports" %}
+                                        </a>
+                                    </li>
+                            {% endif %}
 
-
+                            {% if request.user.is_authenticated %}
                                 <li class="dropdown">
                                     <a class="dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
                                         {{ request.user.get_full_name }}
@@ -122,6 +118,7 @@
                                                 {% trans "Change your password" %}
                                             </a>
                                         </li>
+
                                         <li class="divider"></li>
                                         <li>
                                             <a href="{% url 'logout' %}">
@@ -130,13 +127,10 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li>
-                                    <a class="{% is_active_menu 'about' %}"    href="{% url 'about' %}">
-                                        {% trans "About" %}
-                                    </a>
-                                </li>
-                            </ul>
                             {% endif %}
+
+                            </ul>
+
                         </nav>
                         {% endblock %}
                     </div>
@@ -240,7 +234,7 @@
                     </div>
                     <div class="span4 a-propos">
                         <!--a href="{% url 'terms_of_use' %}" target="_blank">{% trans "Terms of Use" %}</a-->
-                        <a href="#">A propos de Fix My Street</a>
+                        <a href="{% url 'about' %}">{% trans 'A propos de Fix My Street' %}</a>
                     </div>
                     <div class="span4 cirb-cibg">
                         <a href="http://www.cirb.irisnet.be" target="_blank"><img src="{{ STATIC_URL }}images/created-and-hosted-by-cirb-cibg.png"/></a>
