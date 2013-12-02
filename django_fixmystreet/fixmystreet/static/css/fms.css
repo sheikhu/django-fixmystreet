@@ -800,6 +800,38 @@ form#report-form{
 .isresolved{
 	background:#FFDB00 url('../images/icon-isresolved.png') top left no-repeat;
 }
+.modal form{
+	margin:0;
+}
+.modal .modal-header{
+	background:#607C9D;
+	color:#FFDB00;
+}
+.modal .modal-body{
+	color:#607C9D;
+}
+.modal .close, .modal .close:link, .modal .close:visited, .modal .close:hover, .modal .close:active, .modal .close:focus{
+	color:#FFDB00 !important;
+	opacity:1;
+}
+/*#modalSubscription .modal-footer{
+    background:#FFF;
+    border:0;
+	text-align: center;
+	padding: 0 15px 15px 15px;
+}*/
+.modal #subscribe-incident-show-report{
+	background: #FFDB00;
+	padding: 4px 12px 4px 14px;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #607C9D;
+	vertical-align: top;
+	border:1px solid #607C9D;
+}
+.modal #id_mark_as_done_motivation{
+	width: 98%;
+}
 .download-pdf, .subscribe, .isresolved{
 	width: 49px;
 	display: block;

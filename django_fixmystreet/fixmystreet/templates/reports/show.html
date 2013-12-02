@@ -210,12 +210,12 @@ function markAsDone(){
                 <div class="modal-body">
                     <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
                     {{ mark_as_done_form.as_p }}
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                     <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
                 </div>
+
+                <!--div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div-->
             </form>
         </div>
     {% endif %}
@@ -238,13 +238,13 @@ function markAsDone(){
 
                     <p class="required">
                         <input type="email" class="validate-email" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" />
+                        <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary" value="{% trans 'Subscribe' %}" />
                     </p>
                 </div>
 
-                <div class="modal-footer">
+                <!--div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                    <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary" value="{% trans 'Subscribe' %}" />
-                </div>
+                </div-->
             </form>
         </div>
     {% endif %}
