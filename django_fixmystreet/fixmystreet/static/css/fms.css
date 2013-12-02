@@ -278,7 +278,7 @@ article{
 }
 #btn-localizeviamap, #btn-pulldownmap, #btn-streetview {
 	position: absolute;
-	bottom: -2px;
+	bottom: -1px;
 	background: #FFF;
 	padding: 0 5px 0 5px;
     z-index:1;
@@ -296,11 +296,10 @@ article{
 	text-decoration: none;
 }
 #btn-localizeviamap, #btn-pulldownmap{
-	right: 0;
+	right: 1px;
 	-webkit-border-bottom-right-radius: 4px;
 	-moz-border-radius-bottomright: 4px;
     border-bottom-right-radius: 4px;
-
 	-webkit-border-top-left-radius: 4px;
 	-moz-border-radius-topleft: 4px;
     border-top-left-radius: 4px;
@@ -328,8 +327,12 @@ article{
 	border-top-left-radius: 4px;
 }
 .view_incident #btn-streetview{
-	right: 118px;
+	right: 119px;
 }
+.view_incident #btn-streetview, .view_incident #btn-pulldownmap{
+	bottom: 1px;
+}
+
 #instructions{
 	-webkit-border-top-left-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
