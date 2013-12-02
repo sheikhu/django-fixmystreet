@@ -55,10 +55,14 @@ function getAddressFromPoint(lang, x, y) {
             var x = response.result.point.x;
             var y = response.result.point.y;
 
+            // Convert the point and url for google street view
+            var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(x, y);
+            var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.x +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
+
             var popupContent = "<p>" + street + ", " + number;
             popupContent += "<br/>" + postCode + " " + municipality + "</p>";
             popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
-            popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
+            popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
 
             var popup = new OpenLayers.Popup(
                 "popup",
