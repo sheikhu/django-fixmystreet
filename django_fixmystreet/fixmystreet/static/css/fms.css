@@ -221,14 +221,14 @@ footer .cirb-cibg img{
 	border-top-right-radius: 4px;
     z-index:1;
 }
-#btn-localizeviamap, #btn-pulldownmap{
+#btn-localizeviamap, #btn-pulldownmap, #btn-streetview {
 	position: absolute;
 	bottom: -2px;
 	background: #FFF;
 	padding: 0 5px 0 5px;
     z-index:1;
 }
-#btn-localizeviamap a, #btn-pulldownmap a{
+#btn-localizeviamap a, #btn-pulldownmap a, #btn-streetview a{
 	font-size: 11px;
 	vertical-align: bottom;
 }
