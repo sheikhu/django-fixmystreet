@@ -259,6 +259,7 @@ article{
 #popup #btn-streetview{
 	display:inline;
 	float:none;
+	bottom: 1px;
 }
 #popup #btn-streetview a{
 	font-size: 11px;
@@ -708,6 +709,37 @@ form#report-form{
 	font-size: 11px;
 	margin-left:180px;
 }
+.prevStep{
+	position:absolute;
+	margin-top:14px;
+}
+#previousStep{
+	position: relative;
+	margin-top: 15px;
+	margin-bottom: 20px;
+	background:#7090B7;
+	border-radius: 4px;
+	min-width: 100px;
+	border: 1px solid black;
+	padding: 4px 12px;
+	color:#FFF;
+	padding: 4px 12px 4px 12px;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+}
+#report-form .btn{
+	padding: 4px 12px 4px 12px;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #607C9D;
+}
+#report-form #validate_button{
+	background:#FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
+	padding: 4px 12px 4px 30px;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #607C9D;
+}
 
 /* ==========================
    SHOW REPORT
@@ -741,6 +773,21 @@ form#report-form{
 	text-align:center;
 	letter-spacing: -0.3px;
 	color:#607C9D;
+	padding:0;
+	border:0;
+}
+.lk-subscribe .badge{
+	top: -6px;
+	float: right;
+	border-radius: 50%;
+	padding: 4px 8px;
+	right: -6px;
+	background:#495E77;
+}
+.lk-download-pdf:link, .lk-download-pdf:visited, .lk-download-pdf:hover, .lk-download-pdf:active, .lk-download-pdf:focus,
+.lk-subscribe:link, .lk-subscribe:visited, .lk-subscribe:hover, .lk-subscribe:active, .lk-subscribe:focus,
+.lk-isresolved:link, .lk-isresolved:visited, .lk-isresolved:hover, .lk-isresolved:active, .lk-isresolved:focus{
+	background: #FFDB00;
 }
 .download-pdf{
 	background: #FFDB00 url('../images/icon-downloadpdf.png') top left no-repeat;

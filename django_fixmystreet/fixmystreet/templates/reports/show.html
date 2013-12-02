@@ -162,24 +162,24 @@ function markAsDone(){
                         <div class="span3">
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
-                                    <a href="#divMarkAsDone" role="button" class="btn" data-toggle="modal" class="lk-isresolved">
+                                    <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
                                         <i class="isresolved"> </i>{% trans "Signaler résolu" %}
                                     </a>
                                 {% endif %}
 
                                 {% if not report.is_closed and not subscribed %}
-                                    <a href="#modalSubscription" role="button" class="btn" data-toggle="modal" class="lk-subscribe">
-                                        <i class="subscribe"> </i>
+                                    <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
                                         {% if report.subscriptions.all.count %}
                                             <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
                                         {% endif %}
+                                        <i class="subscribe"> </i>
 
                                         {% trans "S'abonner" %}
                                     </a>
                                 {% endif %}
                             {% endif %}
 
-                            <a class="lk-download-pdf" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                            <a class="lk-download-pdf btn" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
                                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Télécharger' %}
                             </a>
                         </div>
