@@ -86,10 +86,23 @@ function markAsDone(){
             var datetosplit = exifObject.DateTimeOriginal;
             var splitted = datetosplit.split(/[:,\/ ]/)
             var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];      
-            }    
+            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
+            }
         }
-    
+
+    window.onload = function(event) {
+        document.querySelector("#btn-pulldownmap a").addEventListener("click", function() {
+            var mapEl = document.getElementById('map');
+            mapEl.classList.remove('view_incident');
+            mapEl.classList.add('map-big');
+            this.parentNode.removeChild(this);
+
+            // Hack to resize map
+            setTimeout(function() {
+                fms.currentMap.map.updateSize();
+            }, 1000);
+        });
+    };
 
 </script>
 
