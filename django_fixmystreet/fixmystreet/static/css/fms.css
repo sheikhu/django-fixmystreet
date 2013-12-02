@@ -983,3 +983,47 @@ label strong{
 .required.invalid input, .required.invalid select, .required.invalid textarea {
     border: 2px solid #FF0000 !important;
 }
+.form-signin{
+	max-width: 300px;
+	padding: 19px 29px 29px;
+	margin:30px auto 30px auto;
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/*-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	box-shadow: 0 1px 2px rgba(0,0,0,.05);*/
+	background:#BCD3F2;
+	border:1px solid #5F7C9C;
+}
+.form-signin h1{
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color:#495E77;
+	font-size:20px;
+}
+.form-signin input{
+	border:1px solid #5F7C9C;
+}
+.login-btns{
+	width:130px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.form-signin .btn-login{
+	background: #FFDB00 url('../images/icon-btn-login.png') 10px 50% no-repeat;
+	padding: 7px 12px 4px 30px;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #607C9D;
+	width:130px;
+}
+.foroget-pwd{
+	font-size:11px;
+	color:#5F7C9C;
+}
+.login-btns p{
+	text-align:center;
+}
