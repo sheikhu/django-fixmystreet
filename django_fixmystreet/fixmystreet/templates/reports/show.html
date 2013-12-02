@@ -163,8 +163,13 @@ function markAsDone(){
                             <a class="lk-isresolved" href="#">
                                 <i class="isresolved"> </i>{% trans "Signaler résolu" %}
                             </a>
-                            <a class="lk-subscribe" href="#">
-                                <i class="subscribe"> </i>{% trans "S'abonner" %}
+                            <a href="#modalSubscription" role="button" class="btn" data-toggle="modal" class="lk-subscribe">
+                                <i class="subscribe"> </i>
+                                {% if report.subscriptions.all.count %}
+                                    <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
+                                {% endif %}
+
+                                {% trans "S'abonner" %}
                             </a>
                             <a class="lk-download-pdf" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
                                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Télécharger' %}
@@ -195,6 +200,41 @@ function markAsDone(){
         </form>
     </div>
 </div>
+{% if report.is_in_progress %}
+    <div id="modalSubscription" class="modal hide fade">
+        <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>{% trans "Subscription:" %}</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                {% blocktrans with count=report.subscriptions.count %}
+                    Subscribe to receive notifications ({{ count }} subscribers to this incident)
+                {% endblocktrans %}
+                </p>
+
+                {% if not report.is_closed and not subscribed %}
+                    <p class="required">
+                        <input type="email" class="validate-email" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" />
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary" value="{% trans 'Subscribe' %}" />
+            </div>
+        </form>
+    </div>
+{% endif %}
+
+
+
+
+
 
 <div id="history_popup" class="modal hide fade" role="dialog">
     <div class="modal-header">
