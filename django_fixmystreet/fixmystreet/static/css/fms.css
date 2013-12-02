@@ -782,7 +782,9 @@ form#report-form{
 	border-radius: 50%;
 	padding: 4px 8px;
 	right: -6px;
-	background:#495E77;
+	background:#607C9D;
+	border: 2px solid #FFDB00;
+	color:#FFDB00;
 }
 .lk-download-pdf:link, .lk-download-pdf:visited, .lk-download-pdf:hover, .lk-download-pdf:active, .lk-download-pdf:focus,
 .lk-subscribe:link, .lk-subscribe:visited, .lk-subscribe:hover, .lk-subscribe:active, .lk-subscribe:focus,
