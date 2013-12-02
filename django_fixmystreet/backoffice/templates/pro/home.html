@@ -3,7 +3,7 @@
 
 {% block script-search %}
   <script type="text/javascript">
-    var NEXT_PAGE_URL = '{% url "report_new_pro" %}';
+    var NEXT_PAGE_URL = '{% url "report_verify_pro" %}';
     $(function(){
       {% if popup_reports%}
       $("#report_popup").modal();
