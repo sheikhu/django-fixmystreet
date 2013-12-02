@@ -118,7 +118,7 @@ $(document).ready(function() {
         {% if BACKOFFICE %}
             reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
         {%endif%}
-        markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}));
+        markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}, true));
         fms.currentMap.markersLayer.addFeatures(markers);
     {% endfor %}
     //Clear the comment textarea after each POST
@@ -147,7 +147,7 @@ $(document).ready(function() {
             document.getElementById('mail_pdf_emailcomments_citizen').value ='';
     });
 
-    
+
 
     var isFalseAddressCheckBox = document.getElementById('is_false_address');
     isFalseAddressCheckBox.addEventListener('change', function() {
@@ -324,10 +324,10 @@ var someCallback = function(exifObject, index) {
             var datetosplit = exifObject.DateTimeOriginal;
             var splitted = datetosplit.split(/[:,\/ ]/)
             var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];      
-            }    
+            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
+            }
         }
-    
+
 
 
 </script>
@@ -454,7 +454,7 @@ var someCallback = function(exifObject, index) {
             <table id='report-status'>
                 <tr>
                     <th><strong>{% trans "Location:" %}</strong></th>
-                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>                    
+                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
                 </tr>
 
                 {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}

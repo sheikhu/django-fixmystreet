@@ -36,7 +36,7 @@ $(function(){
         reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
     {%endif%}
     var markers = [];
-    markers.push(fms.currentMap.addReport(reportJSON, 1, {% if BACKOFFICE %}true{%else%}false{%endif%}));
+    markers.push(fms.currentMap.addReport(reportJSON, 1, {% if BACKOFFICE %}true{%else%}false{%endif%}, true));
     fms.currentMap.markersLayer.addFeatures(markers);
 
     $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
@@ -335,11 +335,7 @@ function markAsDone(){
                     </tr>
                 </table-->
             <!--/div--> <!-- report-body -->
-            <!--p>
-                <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}"-->
-                <!--i class="icon-download" /--><!--i class="download-pdf"> </i>{% trans 'report pdf' %}
-                </a>
-            </p-->
+
             {% if not report.is_created %}
             <!-- This will be the link on the timeline of incident-head -->
                 <!--p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p-->
@@ -381,7 +377,6 @@ function markAsDone(){
                 </div>
             </form--> <!-- report-form-->
         <!--/div--> <!-- bordered-box-->
-<!--
 
     <!--/div--> <!-- span6 -->
 
