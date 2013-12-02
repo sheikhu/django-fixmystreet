@@ -362,3 +362,18 @@ $(function(){
     postalCode.addEventListener('change', municipalityChange);
 
 })(document);
+
+// Localize report with map
+(function() {
+
+    var btnLocalizeviamap = document.getElementById('btn-localizeviamap');
+
+    btnLocalizeviamap.addEventListener("click", function() {
+        // Hard code center of map (~same value than fms.currentMap.map.getCenter() but as x,y and not lat,lon)
+        initDragMarker(149996,170921);
+        fms.currentMap.map.zoomTo(2);
+
+        btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
+    });
+
+})(document);
