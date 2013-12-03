@@ -78,17 +78,46 @@
                                             {% trans "View Reports" %}
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a class="help" href="#">Aide</a>
+                                    </li>
                             {% endif %}
 
+                            </ul>
+
+                        </nav>
+                        {% endblock %}
+                    </div>
+                    <div class="span2">
+                        {% block lng %}
+                        <section>
+                            <div class="langSelect">
+                                {% get_available_languages as LANGUAGES %}
+                                {% for l in LANGUAGES %}
+                                {% get_language_info for l.0 as lang %}
+                                <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
+                                    href="{% url 'update_current_language' %}?from={{ request.get_full_path }}&language={{ lang.code }}"
+                                    title="{{ lang.name_local }}">{{ lang.code }}</a>
+                                {% endfor %}
+                            </div>
+
+                            {% if not request.user.is_authenticated %}
+                                <div id="login">
+                                    <a href="{% url 'login' %}">
+                                        <i class="icon-login"> </i> {% trans 'Sign in' %}
+                                    </a>
+                                </div>
+                            {% endif %}
                             {% if request.user.is_authenticated %}
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
+                                <div id="login" class="btn-group">
+                                    <a class="btn dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
                                         {{ request.user.get_full_name }}
                                         <b class="caret"></b>
                                     </a>
                                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                         {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
-                                            <li>{{ request.fmsuser.get_organisation }}</li>
+                                            <li class="user-orga">{{ request.fmsuser.get_organisation }}</li>
                                             <li class="divider"></li>
 
                                             <li>
@@ -119,39 +148,15 @@
                                             </a>
                                         </li>
 
-                                        <li class="divider"></li>
+                                    
+
+                                        <!--li class="divider"></li-->
                                         <li>
-                                            <a href="{% url 'logout' %}">
-                                                <i class="icon-login"> </i>{% trans 'Log out' %}
+                                            <a class="logout" href="{% url 'logout' %}">
+                                                <!--i class="icon-login"> </i-->{% trans 'Log out' %}
                                             </a>
                                         </li>
                                     </ul>
-                                </li>
-                            {% endif %}
-
-                            </ul>
-
-                        </nav>
-                        {% endblock %}
-                    </div>
-                    <div class="span2">
-                        {% block lng %}
-                        <section>
-                            <div class="langSelect">
-                                {% get_available_languages as LANGUAGES %}
-                                {% for l in LANGUAGES %}
-                                {% get_language_info for l.0 as lang %}
-                                <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
-                                    href="{% url 'update_current_language' %}?from={{ request.get_full_path }}&language={{ lang.code }}"
-                                    title="{{ lang.name_local }}">{{ lang.code }}</a>
-                                {% endfor %}
-                            </div>
-
-                            {% if not request.user.is_authenticated %}
-                                <div id="login">
-                                    <a href="{% url 'login' %}">
-                                        <i class="icon-login"> </i> {% trans 'Sign in' %}
-                                    </a>
                                 </div>
                             {% endif %}
 
