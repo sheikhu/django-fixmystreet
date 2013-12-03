@@ -84,13 +84,13 @@ $(document).ready(function() {
 
     if (!proVersion) {
         // Validity step 2 : enable send button if all required fields are ok
-        var citizenMail    = document.getElementById('id_citizen-email');
-        var citizenQuality = document.getElementById('id_citizen-quality');
-        var termsOfUse     = document.getElementById('id_report-terms_of_use_validated');
+        var citizenMail      = document.getElementById('id_citizen-email');
+        var termsOfUse       = document.getElementById('id_report-terms_of_use_validated');
 
         function checkStep2Validity() {
+            var citizenQuality = $('input[name="citizen-quality"]:checked').val();
 
-            if ( (citizenMail.value) && (citizenQuality.value) && (termsOfUse.checked) ) {
+            if ( (citizenMail.value) && (citizenQuality) && (termsOfUse.checked) ) {
                 send.disabled = false;
             } else {
                 send.disabled = true;
@@ -103,8 +103,8 @@ $(document).ready(function() {
 
         citizenMail.addEventListener('keyup', checkStep2Validity);
         citizenMail.addEventListener('change', checkStep2Validity);
-        citizenQuality.addEventListener('change', checkStep2Validity);
         termsOfUse.addEventListener('change', checkStep2Validity);
+        $("input[name=citizen-quality]").change(checkStep2Validity);
 
         // Check validity in refresh browser.
         checkStep2Validity();
