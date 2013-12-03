@@ -128,7 +128,6 @@ class CitizenReportForm(ReportForm):
         return report
 
 qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
-qualities.insert(0, ('', _('Choose your quality')))
 
 class CitizenForm(forms.Form):
     required_css_class = 'required'
