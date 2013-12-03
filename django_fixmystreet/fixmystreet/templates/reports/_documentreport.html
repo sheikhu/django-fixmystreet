@@ -38,6 +38,10 @@
 
         {% if not BACKOFFICE %}
             <p>
+                {% if not report_form %}
+                    <p class="prevStep"><a href="{% url 'report_show' report_id=report.id slug=report.get_slug %}">{% trans "Cancel" %}</a></p>
+                {% endif %}
+
                 <button id="nextStep" class="btn pull-right" disabled>Etape suivante</button>
             </p>
         {% else %}
