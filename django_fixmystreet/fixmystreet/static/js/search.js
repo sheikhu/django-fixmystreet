@@ -109,7 +109,7 @@ function initDragMarker(x, y, additionalInfo) {
             popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
 
             if (additionalInfo.number) {
-                popupContent += "<a href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
                 popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
             }
         }
