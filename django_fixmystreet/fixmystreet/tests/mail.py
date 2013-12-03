@@ -532,7 +532,7 @@ class MailTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
         self.client.logout()
-        response = self.client.post(reverse('report_show', kwargs={'report_id': report_id, 'slug': 'hello'}), {
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'citizen-email'   : self.citizen.email,
             'citizen-quality' : 1,

@@ -218,7 +218,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.comments()[0].created_by, self.citizen)
         report.save()
 
-        response = self.client.post(reverse('report_show', kwargs={'report_id': report.id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report.id, 'slug':'hello'}), {
             'comment-text': 'new created comment',
             'citizen-email'   : self.user.email,
             'citizen-quality' : 1,

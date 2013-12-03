@@ -398,7 +398,7 @@ class HistoryTest(TestCase):
         self.assertTrue(report.accepted_at is not None)
 
         self.client.logout()
-        response = self.client.post(reverse('report_show', kwargs={'report_id': report_id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report_id, 'slug':'hello'}), {
             'comment-text': 'new created comment',
             'citizen-email'   : self.citizen.email,
             'citizen-quality' : 1,

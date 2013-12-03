@@ -23,19 +23,19 @@ $(document).ready(function() {
         var nextStep     = document.getElementById('nextStep');
         var previousStep = document.getElementById('previousStep');
 
-        var stepTwo   = document.querySelector('.stepTwo');
-        var stepThree = document.querySelector('.stepThree');
+        var stepDescription = document.getElementById('stepDescription');
+        var stepCoordonnees = document.getElementById('stepCoordonnees');
 
         nextStep.addEventListener('click', function(event) {
             event.preventDefault();
             description.hidden = true;
             coordonnees.hidden = false;
 
-            stepTwo.classList.remove('on');
-            stepTwo.classList.add('off');
+            stepDescription.classList.remove('on');
+            stepDescription.classList.add('off');
 
-            stepThree.classList.remove('off');
-            stepThree.classList.add('on');
+            stepCoordonnees.classList.remove('off');
+            stepCoordonnees.classList.add('on');
         });
 
         previousStep.addEventListener('click', function(event) {
@@ -43,11 +43,11 @@ $(document).ready(function() {
             coordonnees.hidden = true;
             description.hidden = false;
 
-            stepThree.classList.remove('on');
-            stepThree.classList.add('off');
+            stepCoordonnees.classList.remove('on');
+            stepCoordonnees.classList.add('off');
 
-            stepTwo.classList.remove('off');
-            stepTwo.classList.add('on');
+            stepDescription.classList.remove('off');
+            stepDescription.classList.add('on');
         });
     }
 
@@ -89,10 +89,6 @@ $(document).ready(function() {
         var termsOfUse     = document.getElementById('id_report-terms_of_use_validated');
 
         function checkStep2Validity() {
-            console.log(checkStep1Validity());
-            console.log(citizenMail.value);
-            console.log(citizenQuality.value);
-            console.log(termsOfUse.checked);
 
             if ( (citizenMail.value) && (citizenQuality.value) && (termsOfUse.checked) ) {
                 send.disabled = false;

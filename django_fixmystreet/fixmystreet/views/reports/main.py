@@ -113,12 +113,24 @@ def report_prepare(request, location = None, error_msg = None):
 
 
 def show(request, slug, report_id):
-    ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = get_object_or_404(Report, id=report_id)
     if report.citizen:
         user_to_show = report.citizen
     else:
         user_to_show = report.created_by
+
+    return render_to_response("reports/show.html",
+            {
+                "report": report,
+                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+                "author": user_to_show,
+                'activity_list' : report.activities.all(),
+            },
+            context_instance=RequestContext(request))
+
+def document(request, slug, report_id):
+    ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
+    report = get_object_or_404(Report, id=report_id)
 
     if request.method == "POST":
         comment = None
@@ -155,16 +167,13 @@ def show(request, slug, report_id):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    return render_to_response("reports/show.html",
+    return render_to_response("reports/document.html",
             {
                 "report": report,
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "author": user_to_show,
                 "file_formset": file_formset,
                 "comment_form": comment_form,
                 "citizen_form": citizen_form,
-                "mark_as_done_form":MarkAsDoneForm(),
-                'activity_list' : report.activities.all(),
             },
             context_instance=RequestContext(request))
 
