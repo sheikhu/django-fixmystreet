@@ -60,6 +60,9 @@ nav ul li a.active{
 	text-decoration: none;
 	color: #FFF;
 }
+.consult.pro{
+	margin-left:3px;
+}
 ul.dropdown-menu{
 	background:#E0E0E0;
 	-webkit-border-radius: 4px;
@@ -1094,11 +1097,17 @@ ul.timeline{
 	z-index: 1001;
 	top:15px;
 }
-.add_info a img{
+.add_info a:link, .add_info a:visited, .add_info a:hover, .add_info a:active, .add_info a:focus{
+	color:#FFF;
+}
+/*.add_info a img{
 	margin:5px 5px 5px 10px;
 }
 .add_info a:first-child img{
 	margin:5px 10px 5px 5px;
+}*/
+.add_info a img{
+	margin:5px 10px;
 }
 /* ==========
    NEW REPORT
@@ -1177,6 +1186,23 @@ label strong{
 }
 .fullsize_field{
 	width:98%;
+}
+#coordonnees ul li{
+	display:inline;
+	float:left;
+	margin-left:30px;
+}
+#coordonnees ul li:first-child{
+	margin-left:0;
+}
+#coordonnees ul{
+	margin:0;
+}
+#coordonnees label{
+	font-size:13px;
+}
+#coordonnees ul li input{
+	vertical-align:bottom;
 }
 /* Input form not valid */
 .required.invalid input, .required.invalid textarea {

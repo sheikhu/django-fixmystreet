@@ -70,11 +70,11 @@
                                     </li>
                                 {% else %}
                                     <li>
-                                        <a class="{% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
+                                        <a class="submit {% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
                                             {% trans "Submit a Report" %}
                                         </a>
                                     <li>
-                                        <a class="{% is_active_menu 'view' %}"     href="{% url 'report_table_pro' %}">
+                                        <a class="consult pro {% is_active_menu 'view' %}"     href="{% url 'report_table_pro' %}">
                                             {% trans "View Reports" %}
                                         </a>
                                     </li>
