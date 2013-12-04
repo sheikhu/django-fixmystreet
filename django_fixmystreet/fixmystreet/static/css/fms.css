@@ -207,10 +207,9 @@ article{
 #map img {
 	max-width: none;
 }
-#proposal {
+#proposal-container {
     background-color: #FFFFFF;
     bottom: -13px;
-    display: block;
     position: absolute;
     right: 1px;
     z-index: 1;
@@ -220,6 +219,17 @@ article{
 	max-height: 443px;
     box-shadow: 0 0 5px 0 #999999;
     width: 250px;
+}
+#proposal-container .numberResultsContainer {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: 3px solid #DDDDDD;
+}
+#proposal {
+    margin:0;
+    padding:0;
 }
 #proposal li {
     border-bottom: 1px solid #DDDDDD;

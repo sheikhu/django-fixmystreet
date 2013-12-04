@@ -1,3 +1,112 @@
+var results           = [];
+var paginationResults;
+
+var previousResults = document.getElementById("previousResults");
+var nextResults     = document.getElementById("nextResults");
+
+previousResults.addEventListener('click', function() {
+    paginationResults -= 1;
+    renderResults();
+})
+nextResults.addEventListener('click', function() {
+    paginationResults += 1;
+    renderResults();
+})
+
+function renderResults() {
+    var $proposal = $('#proposal');
+    var $proposalMessage = $('#proposal-message');
+
+    var $searchStreet = $('#input-search');
+    var $searchMunicipality = $('#input-ward');
+
+    $proposal.empty();
+    var features = [];
+
+    for(var i=paginationResults*5, length=results.length; i<length && features.length<5; i++) {
+        var address = results[i].address;
+        var pos = results[i].point;
+
+        var newAddress = new AddressResult(pos.x, pos.y, address);
+        $proposal.append(newAddress.render());
+
+        // Create feature on vectore layer
+        var feature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(pos.x, pos.y),
+                { 'additionalInfo' :
+                    {
+                        'streetName'   : address.street.name,
+                        'number'       : address.number,
+                        'postCode'     : address.street.postCode,
+                        'municipality' : address.street.municipality
+                    }
+                }
+            );
+        features.push(feature);
+
+        // Define message if needed
+        if ($searchMunicipality.val()) {
+            $proposalMessage.html("Cette rue n'est pas répertoriée dans cette commune");
+        } else if ($searchStreet.val().toLowerCase() == address.street.name.toLowerCase()) {
+            $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
+        }
+    }
+
+    // Mask/display pagination buttons
+    if (paginationResults == 0) {
+        previousResults.hidden = true;
+    } else {
+        previousResults.hidden = false;
+    }
+
+    console.log(results.length);
+    console.log(paginationResults * 5);
+    if (results.length >= paginationResults * 5 + 6) {
+        nextResults.hidden = false;
+    } else {
+        nextResults.hidden = true;
+    }
+
+
+    // Add features to layer
+    fms.currentMap.homepageMarkersLayer.destroyFeatures();
+    fms.currentMap.homepageMarkersLayer.addFeatures(features);
+
+    // Zoom to markers
+    var markersBound = fms.currentMap.homepageMarkersLayer.getDataExtent();
+    fms.currentMap.map.zoomToExtent(markersBound);
+
+    // Add layer to map
+    fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
+
+    // Function to bind selector to initDragMarker
+    function bindClick(feature) {
+        var x = feature.geometry.x;
+        var y = feature.geometry.y;
+
+        cleanMap();
+        initDragMarker(x, y, feature.attributes.additionalInfo);
+    }
+
+    // Add the selector control to the vectorLayer
+    var clickCtrl = new OpenLayers.Control.SelectFeature(fms.currentMap.homepageMarkersLayer, { onSelect: bindClick });
+    fms.currentMap.map.addControl(clickCtrl);
+    clickCtrl.activate();
+
+    // Show/hide proposal and message
+    $proposalContainer = $('#proposal-container');
+    $proposalContainer.slideDown();
+
+    if ($proposalMessage.html()) {
+        map.classList.add("map-big-message");
+        $proposalMessage.slideDown();
+    } else {
+        map.classList.remove("map-big-message");
+        map.classList.add("map-big");
+        $proposalMessage.slideUp();
+    }
+
+}
 function AddressResult(x, y, address)
 {
     var self = this;
@@ -141,8 +250,8 @@ function cleanMap() {
     }
 
     // Hide results
-    var $proposal = $('#proposal');
-    $proposal.slideUp();
+    $proposalContainer = $('#proposal-container');
+    $proposalContainer.slideUp();
 }
 
 $(function(){
@@ -155,6 +264,7 @@ $(function(){
     var $searchButton = $('#widget-search-button');
     var $searchTicketButton = $('#widget-search-ticket-button');
     var $proposal = $('#proposal');
+    var $proposalContainer = $('#proposal-container');
     var $proposalMessage = $('#proposal-message');
 
     var $map = $('#map');
@@ -185,8 +295,11 @@ $(function(){
 
     $searchAddressForm.submit(function(event){
         event.preventDefault();
+
+        paginationResults = 0;
+
         var searchValue = $searchStreet.val();
-        $proposal.slideUp();
+        $proposalContainer.slideUp();
 
         if (!$searchStreet.val()) {
             $searchTicketForm.show();
@@ -222,7 +335,6 @@ $(function(){
 
                 $searchStreet.removeClass('loading');
                 $searchButton.prop('disabled',false);
-                $proposal.empty();
                 $proposalMessage.empty();
 
                 // Urbis response 1 result
@@ -244,74 +356,14 @@ $(function(){
                 }
                 // Urbis response many results
                 else {
-                    var features = [];
+                    features = [];
 
                     fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay");
 
-                    for(var i in response.result) {
-                        var address = response.result[i].address;
-                        var pos = response.result[i].point;
+                    results = response.result;
+                    document.getElementById('numberResults').innerHTML = results.length;
 
-                        var newAddress = new AddressResult(pos.x, pos.y, address);
-                        $proposal.append(newAddress.render());
-
-                        // Create feature on vectore layer
-                        var feature = new OpenLayers.Feature.Vector(
-                                new OpenLayers.Geometry.Point(pos.x, pos.y),
-                                { 'additionalInfo' :
-                                    {
-                                        'streetName'   : address.street.name,
-                                        'number'       : address.number,
-                                        'postCode'     : address.street.postCode,
-                                        'municipality' : address.street.municipality
-                                    }
-                                }
-                            );
-                        features.push(feature);
-
-                        // Define message if needed
-                        if ($searchMunicipality.val()) {
-                            $proposalMessage.html("Cette rue n'est pas répertoriée dans cette commune");
-                        } else if ($searchStreet.val().toLowerCase() == address.street.name.toLowerCase()) {
-                            $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
-                        }
-                    }
-
-                    // Add features to layer
-                    fms.currentMap.homepageMarkersLayer.addFeatures(features);
-
-                    // Zoom to markers
-                    var markersBound = fms.currentMap.homepageMarkersLayer.getDataExtent();
-                    fms.currentMap.map.zoomToExtent(markersBound);
-
-                    // Add layer to map
-                    fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
-
-                    // Function to bind selector to initDragMarker
-                    function bindClick(feature) {
-                        var x = feature.geometry.x;
-                        var y = feature.geometry.y;
-
-                        cleanMap();
-                        initDragMarker(x, y, feature.attributes.additionalInfo);
-                    }
-
-                    // Add the selector control to the vectorLayer
-                    var clickCtrl = new OpenLayers.Control.SelectFeature(fms.currentMap.homepageMarkersLayer, { onSelect: bindClick });
-                    fms.currentMap.map.addControl(clickCtrl);
-                    clickCtrl.activate();
-
-                    // Show/hide proposal and message
-                    $proposal.slideDown();
-
-                    if ($proposalMessage.html()) {
-                        map.classList.add("map-big-message");
-                        $proposalMessage.slideDown();
-                    } else {
-                        map.classList.remove("map-big-message");
-                        map.classList.add("map-big");
-                        $proposalMessage.slideUp();
-                    }
+                    renderResults();
 
                 }
             }
