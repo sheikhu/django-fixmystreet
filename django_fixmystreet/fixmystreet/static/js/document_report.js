@@ -72,11 +72,11 @@ $(document).ready(function() {
     if (!proVersion) {
         // Validity step 2 : enable send button if all required fields are ok
         var citizenMail    = document.getElementById('id_citizen-email');
-        var citizenQuality = document.getElementById('id_citizen-quality');
 
         function checkStep2Validity() {
+            var citizenQuality = $('input[name="citizen-quality"]:checked').val();
 
-            if ( (citizenMail.value) && (citizenQuality.value)) {
+            if ( (citizenMail.value) && (citizenQuality)) {
                 send.disabled = false;
             } else {
                 send.disabled = true;
@@ -89,7 +89,7 @@ $(document).ready(function() {
 
         citizenMail.addEventListener('keyup', checkStep2Validity);
         citizenMail.addEventListener('change', checkStep2Validity);
-        citizenQuality.addEventListener('change', checkStep2Validity);
+        $("input[name=citizen-quality]").change(checkStep2Validity);
 
         // Check validity in refresh browser.
         checkStep2Validity();
