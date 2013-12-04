@@ -59,39 +59,19 @@ function renderResults() {
         previousResults.hidden = false;
     }
 
-    console.log(results.length);
-    console.log(paginationResults * 5);
     if (results.length >= paginationResults * 5 + 6) {
         nextResults.hidden = false;
     } else {
         nextResults.hidden = true;
     }
 
-
     // Add features to layer
-    fms.currentMap.homepageMarkersLayer.destroyFeatures();
+    cleanMap();
     fms.currentMap.homepageMarkersLayer.addFeatures(features);
 
     // Zoom to markers
     var markersBound = fms.currentMap.homepageMarkersLayer.getDataExtent();
     fms.currentMap.map.zoomToExtent(markersBound);
-
-    // Add layer to map
-    fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
-
-    // Function to bind selector to initDragMarker
-    function bindClick(feature) {
-        var x = feature.geometry.x;
-        var y = feature.geometry.y;
-
-        cleanMap();
-        initDragMarker(x, y, feature.attributes.additionalInfo);
-    }
-
-    // Add the selector control to the vectorLayer
-    var clickCtrl = new OpenLayers.Control.SelectFeature(fms.currentMap.homepageMarkersLayer, { onSelect: bindClick });
-    fms.currentMap.map.addControl(clickCtrl);
-    clickCtrl.activate();
 
     // Show/hide proposal and message
     $proposalContainer = $('#proposal-container');
@@ -127,8 +107,6 @@ function AddressResult(x, y, address)
     };
 
     this.onclick = function(event) {
-        cleanMap();
-
         additionalInfo = {
             'streetName'   : self.address.street.name,
             'number'       : self.address.number,
@@ -199,6 +177,8 @@ function getAddressFromPoint(lang, x, y) {
 }
 
 function initDragMarker(x, y, additionalInfo) {
+        cleanMap();
+
         // Remove message info
         var $map = $('#map');
         map.classList.remove("map-big-message");
@@ -358,10 +338,29 @@ $(function(){
                 else {
                     features = [];
 
-                    fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay");
-
                     results = response.result;
                     document.getElementById('numberResults').innerHTML = results.length;
+
+                    if (!fms.currentMap.homepageMarkersLayer) {
+                        // Create vector layer
+                        fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay");
+
+                        // Add layer to map
+                        fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
+
+                        // Function to bind selector to initDragMarker
+                        function bindClick(feature) {
+                            var x = feature.geometry.x;
+                            var y = feature.geometry.y;
+
+                            initDragMarker(x, y, feature.attributes.additionalInfo);
+                        }
+
+                        // Add the selector control to the vectorLayer
+                        var clickCtrl = new OpenLayers.Control.SelectFeature(fms.currentMap.homepageMarkersLayer, { onSelect: bindClick });
+                        fms.currentMap.map.addControl(clickCtrl);
+                        clickCtrl.activate();
+                    }
 
                     renderResults();
 
