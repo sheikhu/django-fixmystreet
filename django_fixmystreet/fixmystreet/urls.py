@@ -80,6 +80,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
     url(_(r'^ajax/categories/(\d+)'), 'report_category_note',name='report_category_note'),
     url(_(r'^ajax/upload-file'),'uploadFile',name='report_upload_file'),
     url(_(r'^ajax/reportPopupDetails'),'get_report_popup_details',name="get_report_popup_details"),
+    url(_(r'^ajax/map/filter/'),'filter_map',name="filter_map"),
 )
 
 

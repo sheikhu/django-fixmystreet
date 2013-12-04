@@ -58,15 +58,36 @@ $(function(){
     {% endfor %}
     fms.currentMap.markersLayer.addFeatures(markers);
 
-    //Add status filters for the map
-    var statusToggleCreated = new fms.statusFilterCreated();
-    fms.currentMap.map.addControl(statusToggleCreated);
+    // Layer switcher
+    fms.currentMap.map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
 
-    var statusToggleInProgress = new fms.statusFilterInProgress();
-    fms.currentMap.map.addControl(statusToggleInProgress);
+    window.onload = function() {
 
-    var statusToggleClosed = new fms.statusFilterClosed();
-    fms.currentMap.map.addControl(statusToggleClosed);
+        var statusToggleCreated    = document.getElementById('statusToggleCreated');
+        var statusToggleInProgress = document.getElementById('statusToggleInProgress');
+        var statusToggleClosed     = document.getElementById('statusToggleClosed');
+
+        function applyFilter() {
+
+            var value = this.getAttribute('value');
+
+            if(this.checked){
+                fms.statusFilter.push(value);
+            }
+            else {
+                var i = fms.statusFilter.indexOf(value);
+                if(i != -1) {
+                    fms.statusFilter.splice(i, 1);
+                }
+            }
+
+            // Apply filter
+            fms.filterMapWithStatus();
+        }
+        statusToggleCreated.addEventListener('change', applyFilter);
+        statusToggleInProgress.addEventListener('change', applyFilter);
+        statusToggleClosed.addEventListener('change', applyFilter);
+    }
 });
 </script>
 {% endblock %}
@@ -75,26 +96,28 @@ $(function(){
 
 {% block map %}
 <article id="map" class="map-big">
+    <div id="layerswitcher" class="olControlLayerSwitcher" style="z-index:999;">
+        <div class="layersDiv">
+            <div class="dataLayersDiv">
+                <input type="checkbox" id="statusToggleCreated" value="created">
+                <label>{% trans 'Created' %}</label>
+                <br>
+                <input type="checkbox" id="statusToggleInProgress" value="in_progress">
+                <label>{% trans 'In progress' %}</label>
+                <br>
+                <input type="checkbox" id="statusToggleClosed" value="closed">
+                <label>{% trans 'Closed' %}</label>
+            </div>
+        </div>
+
+    </div>
+
     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
 </article>
 {% endblock %}
 
 {% block content %}
 <div class="">
-    <div id="incident_filter" class="span12">
-        <ul>
-            <li>
-                    <img src="{{STATIC_URL}}images/pin-red-L.png"> <span>{% trans 'Report Created' %}</span>
-            </li>
-            <li>
-                    <img src="{{STATIC_URL}}images/pin-orange-L.png"> <span>{% trans 'Report In progress' %}</span>
-            </li>
-            <li>
-                    <img src="{{STATIC_URL}}images/pin-green-L.png"> <span>{% trans 'Report Processed' %}</span>
-            </li>
-        </ul>
-    </div>
-
 <!--
     <div class='span4'>
         <form action="{% url 'search_ticket' %}" class="block highlighted" id="search_by_ticket_nr">

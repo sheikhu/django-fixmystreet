@@ -225,7 +225,7 @@ def search_ticket(request):
 def index(request):
     all_reports = Report.objects.all().public()
 
-    return render_to_response("reports/list.html", {
+    return render_to_response("reports/reports_map.html", {
         "all_reports":all_reports,
     }, context_instance=RequestContext(request))
 

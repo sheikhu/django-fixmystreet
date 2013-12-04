@@ -19,96 +19,9 @@ function cloneObj (obj) {
     }
 }
 
-fms.statusFilterCreated = OpenLayers.Class(OpenLayers.Control, {
-    type:OpenLayers.Control.TYPE_TOGGLE,
-    draw: function() {
-        var self = this;
-        OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-        this.div.id = "statusFilter1";
-        this.div.innerHTML = "Created";
-        this.div.className = "btn";
-        this.div.addEventListener('click', this.trigger);
-
-        return this.div;
-    },
-    trigger: function(){
-        if(this.className.indexOf("active")=== -1){
-            this.className += ' active';
-            fms.statusFilter.push("created");
-        }
-        else {
-            this.className = this.className.replace(/active/, '');
-            var i = fms.statusFilter.indexOf("created");
-            if(i != -1) {
-                fms.statusFilter.splice(i, 1);
-            }
-        }
-        fms.filterMapWithStatus();
-    }
-});
-
-fms.statusFilterInProgress = OpenLayers.Class(OpenLayers.Control, {
-    type:OpenLayers.Control.TYPE_TOGGLE,
-    draw: function() {
-        var self = this;
-        OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-        this.div.id = "statusFilter2";
-        this.div.innerHTML = "In progress";
-        this.div.className = "btn";
-        this.div.addEventListener('click', this.trigger);
-
-        return this.div;
-    },
-    trigger: function(){
-        if(this.className.indexOf("active")=== -1){
-            this.className += ' active';
-            fms.statusFilter.push("in_progress");
-        }
-        else {
-            this.className = this.className.replace(/active/, '');
-            var i = fms.statusFilter.indexOf("in_progress");
-            if(i != -1) {
-                fms.statusFilter.splice(i, 1);
-            }
-        }
-        fms.filterMapWithStatus();
-    }
-});
-
-fms.statusFilterClosed = OpenLayers.Class(OpenLayers.Control, {
-    type:OpenLayers.Control.TYPE_TOGGLE,
-    draw: function() {
-        var self = this;
-        OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-        this.div.id = "statusFilter3";
-        this.div.innerHTML = "Closed";
-        this.div.className = "btn";
-        this.div.addEventListener('click', this.trigger);
-
-        return this.div;
-    },
-    trigger: function(){
-        if(this.className.indexOf("active")=== -1){
-            this.className += ' active';
-            fms.statusFilter.push("closed");
-        }
-        else {
-            this.className = this.className.replace(/active/, '');
-            var i = fms.statusFilter.indexOf("closed");
-            if(i != -1) {
-                fms.statusFilter.splice(i, 1);
-            }
-        }
-        fms.filterMapWithStatus();
-    }
-});
-
 fms.filterMapWithStatus = function(){
     $.ajax({
-            url:"/nl/pro/ajax/map/filter/?filter="+fms.statusFilter,
+            url:"/nl/ajax/map/filter/?filter="+fms.statusFilter,
             type:'GET',
             datatype:"json",
             success: function(data){
@@ -296,10 +209,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         );
         this.map.addLayer(fms.regionalLayer);
 
-        var regionalLayerShow = new fms.regionalLayerShowControl();
-        this.map.addControl(regionalLayerShow);
-        regionalLayerShow.activate();
-
         // Add municipality limits layer
         fms.municipalityLayer = new OpenLayers.Layer.WMS("municipality_limits",
             URBIS_URL + "geoserver/wms",
@@ -311,15 +220,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         );
         this.map.addLayer(fms.municipalityLayer);
 
-        var municiplaityLayerShow = new fms.MunicipalityLimitsLayerShowControl();
-        this.map.addControl(municiplaityLayerShow);
-        municiplaityLayerShow.activate();
-
         // Base layer
         var base = new OpenLayers.Layer.WMS(
             "base",
             this.options.urbisUrl,
-            { layers: 'urbis' + LANGUAGE_CODE.toUpperCase() }
+            {layers: 'urbis' + LANGUAGE_CODE.toUpperCase()},
+            {displayInLayerSwitcher: false}
         );
         base.setZIndex(-100);
         this.map.addLayer(base);
@@ -457,7 +363,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             },
             success:function(response)
             {
-                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})]});
+                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer",
+                    {
+                        strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})],
+                        displayInLayerSwitcher: false
+                    }
+                );
                 self.map.addLayer(self.markersLayer);
                 callback(language, response);
             },
@@ -507,10 +418,16 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         }
                     }
                 });
-            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:50,threshold:2})],styleMap: new OpenLayers.StyleMap({
-                        "default": style,
-                        "select": style
-                    })});
+            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer",
+                {
+                    strategies: [new OpenLayers.Strategy.Cluster({distance:50,threshold:2})],
+                    styleMap: new OpenLayers.StyleMap({
+                            "default": style,
+                            "select": style
+                    }),
+                    displayInLayerSwitcher: false
+                }
+            );
             //NEW APPROACH
             /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
             marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
