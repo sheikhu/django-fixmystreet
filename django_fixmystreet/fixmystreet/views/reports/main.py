@@ -96,7 +96,7 @@ def new(request):
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
-    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()[0:6]
+    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance').public()[0:6]
 
     if reports_nearby:
         return render_to_response("reports/verify.html",
