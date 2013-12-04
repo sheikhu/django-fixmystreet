@@ -213,12 +213,17 @@ article{
     position: absolute;
     right: 1px;
     z-index: 1;
-    margin:1em 0;
-    padding: 1em;
+    margin:15px 0;
+    padding: 0;
 	overflow: auto;
 	max-height: 443px;
-    box-shadow: 0 0 5px 0 #999999;
+	-webkit-box-shadow: -2px -1px 5px rgba(50, 50, 50, 0.35);
+	-moz-box-shadow: -2px -1px 5px rgba(50, 50, 50, 0.35);
+    box-shadow: -2px -1px 5px rgba(50, 50, 50, 0.35);
     width: 250px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
 #proposal-container .numberResultsContainer {
     text-align: center;
@@ -226,6 +231,11 @@ article{
     margin: 0px;
     padding: 0px;
     border-bottom: 3px solid #DDDDDD;
+}
+#proposal-container .numberResultsContainer{
+	background:#607C9D;
+	color:#FFF;
+	border:0;
 }
 #proposal {
     margin:0;
@@ -239,7 +249,7 @@ article{
     cursor:pointer;
 }
 #proposal li:hover {
-    border-color: #607C9D;
+    background:#FFF url('../images/icon-next.png') 200px 22px no-repeat;
 }
 #proposal li p{
     margin:0;
@@ -252,6 +262,29 @@ article{
     padding: 0 1em 1em;
     color: #BCD4F1;
     font-weight:bold;
+}
+#proposal-container button{
+	background:#607C9D;
+	color:#FFF;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-appearance: none;
+	border:0;
+	margin-bottom:15px;
+}
+#proposal-container button:hover, #proposal-container button:active, #proposal-container button:focus{
+	background:#FFDB00;
+	color:#607C9D;
+	border:0;
+}
+#proposal-container button#previousResults{
+	float:left;
+	margin-left: 15px;
+}
+#proposal-container button#nextResults{
+	float:right;
+	margin-right: 15px;
 }
 .olMapViewport{
 	position: absolute !important;

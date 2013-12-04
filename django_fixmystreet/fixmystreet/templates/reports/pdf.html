@@ -125,6 +125,9 @@
             right: 30px;
             z-index: 1000000;
         }
+        .history, .report_update{
+            page-break-inside: avoid;
+        }
     </style>
 {% endblock %}
 
@@ -269,7 +272,7 @@
     -->
 
     <br/>
-    <div class="block-full" style="padding-top:10px;">
+    <div class="block-full history" style="padding-top:10px;">
         <h2>{% trans 'History' %}</h2>
         {% include "reports/_activity_list.html" with privacy=privacy %}
     </div>
