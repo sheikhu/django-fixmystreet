@@ -4,6 +4,8 @@ var paginationResults;
 var previousResults = document.getElementById("previousResults");
 var nextResults     = document.getElementById("nextResults");
 
+var draggableMarker;
+
 previousResults.addEventListener('click', function() {
     paginationResults -= 1;
     renderResults();
@@ -153,10 +155,9 @@ function getAddressFromPoint(lang, x, y) {
             popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
             popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
 
-
             var popup = new OpenLayers.Popup(
                 "popup",
-                new OpenLayers.LonLat(x, y),
+                new OpenLayers.LonLat(draggableMarker.components[0].x, draggableMarker.components[0].y),
                 new OpenLayers.Size(200,150),
                 popupContent,
                 true
@@ -187,7 +188,7 @@ function initDragMarker(x, y, additionalInfo) {
         var $proposalMessage = $('#proposal-message');
         $proposalMessage.slideUp();
 
-        var draggableMarker = fms.currentMap.addDraggableMarker(x, y);
+        draggableMarker = fms.currentMap.addDraggableMarker(x, y);
         fms.currentMap.centerOnDraggableMarker();
         fms.currentMap.map.zoomTo(6);
 
