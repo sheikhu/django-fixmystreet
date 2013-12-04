@@ -222,8 +222,8 @@ class ReportHandler(BaseHandler):
         #report.category = ReportMainCategoryClass(request.data['secondary_category'])
         #report.secondary_category = ReportCategory(request.data['category'])
         report.save()
-
-        report.subscribe_author()
+        if (request.data.get('subscription') == 'true'):
+            report.subscribe_author_ws()
 
         #Create the comment is a comment has been given'''
         if (request.data["comment-text"] or comment_form.is_valid()):

@@ -418,6 +418,7 @@ class Report(UserTrackedModel):
     # List of status
     CREATED = 1
     REFUSED = 9
+    PENDING = 10
 
     IN_PROGRESS = 2
     MANAGER_ASSIGNED = 4
@@ -428,8 +429,9 @@ class Report(UserTrackedModel):
     PROCESSED = 3
     DELETED = 8
 
+
     REPORT_STATUS_SETTABLE_TO_SOLVED = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
-    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED, PENDING)
     REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_ASSIGNED = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_CLOSED = (PROCESSED, DELETED)
@@ -446,6 +448,7 @@ class Report(UserTrackedModel):
             (APPLICANT_RESPONSIBLE, _("Applicant is responsible")),
             (CONTRACTOR_ASSIGNED, _("Contractor is assigned")),
             (SOLVED, _("Solved")),
+            (PENDING, _("Pending")),
         )),
         (_("Processed"), (
             (PROCESSED, _("Processed")),
@@ -674,6 +677,13 @@ class Report(UserTrackedModel):
 
     def territorial_entity(self):
         return OrganisationEntity.objects.get(zipcode__code=self.postalcode)
+
+    def subscribe_author_ws(self):
+        user = self.citizen or self.created_by 
+        if not self.subscriptions.filter(subscriber=user).exists():
+            subscription = ReportSubscription(subscriber=user)
+            subscription.notify_creation = False  # don't send notification for subscription
+            self.subscriptions.add(subscription)
 
     def subscribe_author(self):
         user = self.created_by or self.citizen
@@ -1622,7 +1632,7 @@ class ReportCategoryHint(models.Model):
 
 class ReportNotification(models.Model):
     recipient_mail = models.CharField(max_length=200,null=True)
-    recipient = models.ForeignKey(FMSUser, related_name="notifications", null=True)
+    recipient = models.ForeignKey(FMSUser, related_name="notifications")
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField()
     error_msg = models.TextField()
