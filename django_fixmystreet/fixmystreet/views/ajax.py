@@ -46,3 +46,24 @@ def get_report_popup_details(request):
     report_id = request.REQUEST.get("report_id")
     report = Report.objects.get(id=report_id)
     return HttpResponse(json.dumps(report.full_marker_detail_JSON()), mimetype="application/json")
+
+def filter_map(request):
+    mFilter = request.GET["filter"]
+    result = []
+    if "created" in mFilter:
+        result += Report.objects.all().filter(status=Report.CREATED).public()
+    if "in_progress" in mFilter:
+        result += Report.objects.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).public()
+    if "closed" in mFilter:
+        result+= Report.objects.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
+    if mFilter == "":
+        result += Report.objects.all().public()
+
+    jsonString= "["
+    for report in result:
+        jsonString+= json.dumps(report.marker_detail_short())+","
+
+    jsonString = jsonString[:-1]
+    jsonString+= "]"
+
+    return HttpResponse(jsonString,mimetype="application/json")

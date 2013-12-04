@@ -15,9 +15,9 @@
         {% endfor %}
 
         <div id="file-form-template" class="control-group">
-            <img class="icon-remove removeThumbnail hidden" title="Remove"></img>
             <img class="thumbnail" />
             {{ file_formset.empty_form.reportattachment_ptr }}
+            <img class="icon-remove removeThumbnail hidden" title="Remove"></img>
             {{ file_formset.empty_form.title }}
             {{ file_formset.empty_form.file_creation_date }}
 

@@ -103,8 +103,8 @@ function showResults(type,li){
                                 <div class="span8">
                                     <ol class="steps">
                                         <li class="stepOne on">{% trans "Localisation" %}</li>
-                                        <li class="stepTwo off">{% trans "Description" %}</li>
-                                        <li class="stepThree off">{% trans "Coordonnees" %}</li>
+                                        <li id="stepDescription" class="stepTwo off">{% trans "Description" %}</li>
+                                        <li id="stepCoordonnees" class="stepThree off">{% trans "Coordonnees" %}</li>
                                     </ol>
                                 </div>
                                 <div>
@@ -144,14 +144,17 @@ function showResults(type,li){
                         <!-- Results -->
                         <div>
                             <p id="proposal-message" class="hide"> </p>
-                            <ul id="proposal" class="inline hide"> </ul>
+                            <div id="proposal-container" class="inline" hidden>
+                                <h3 class="numberResultsContainer"><span id="numberResults"></span> result(s)</h3>
+                                <ul id="proposal" ></ul>
+                                <p><button id="previousResults" hidden><</button> <button id="nextResults" hidden>></button></p>
+                            </div>
                         </div>
 
                     </div>
 
                     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
                     <div id="btn-localizeviamap"><a href="#"><i class="icon-localizeviamap"></i>{% trans "Localiser via la carte" %}</a></div>
-                    <div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
                 </article>
             </div>
         </div>
@@ -172,10 +175,10 @@ function showResults(type,li){
                         <li class="">
                             <a href="#list_created" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_new }}</span><br />{% trans "Report Created" %}</a>
                         </li>
-                        <li class="">
+                        <li class="active">
                             <a href="#list_in_progress" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
                         </li>
-                        <li class="active">
+                        <li class="">
                             <a href="#list_closed" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
                         </li>
                         <li class="search-ticket">
@@ -198,10 +201,9 @@ function showResults(type,li){
                             {% endif %}
                             {% endfor %}
                             <div class="clearfloat"></div>
-                            <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
-                    <div id="list_in_progress" class="tab-pane">
+                    <div id="list_in_progress" class="tab-pane active">
                         <div class="row">
                             {% for report in reports_in_progress %}
                             {% if not BACKOFFICE %}
@@ -211,10 +213,9 @@ function showResults(type,li){
                             {% endif %}
                             {% endfor %}
                             <div class="clearfloat"></div>
-                            <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
-                    <div id="list_closed" class="tab-pane active">
+                    <div id="list_closed" class="tab-pane">
                         <div class="row">
                             {% for report in reports_closed %}
                             {% if not BACKOFFICE %}
@@ -224,7 +225,6 @@ function showResults(type,li){
                             {% endif %}
                             {% endfor %}
                             <div class="clearfloat"></div>
-                            <span class="more-incidents pull-right"><a href="#">{% trans 'More incident' %}</a></span>
                         </div>
                     </div>
                 </div>

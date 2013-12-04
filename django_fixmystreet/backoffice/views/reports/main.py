@@ -48,8 +48,9 @@ def new(request):
                 for report_file in files:
                     report_file.created_by = user
                     report_file.save()
-                # messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
-                # return HttpResponseRedirect(report.get_absolute_url_pro())
+
+                messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
+                return HttpResponseRedirect(report.get_absolute_url_pro())
             else:
                 report = None
 
@@ -105,9 +106,9 @@ def report_prepare_pro(request, location = None, error_msg = None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports_created': Report.objects.all().created().order_by('-modified')[0:5],
-                'reports_in_progress': Report.objects.all().in_progress().order_by('-modified')[0:5],
-                'reports_closed':Report.objects.all().closed().order_by('-modified')[0:5],
+                'reports_created': Report.objects.all().created().order_by('-modified')[0:4],
+                'reports_in_progress': Report.objects.all().in_progress().order_by('-modified')[0:4],
+                'reports_closed':Report.objects.all().closed().order_by('-modified')[0:4],
                 'stats':stats_result,
                 'popup_reports':popup_reports,
             },
@@ -223,3 +224,16 @@ def show(request,slug, report_id):
                 "category_list":ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()),
             },
             context_instance=RequestContext(request))
+
+def verify(request):
+    pnt = dict_to_point(request.REQUEST)
+    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance')[0:6]
+
+    if reports_nearby:
+        return render_to_response("reports/verify.html",
+            {
+                "reports_nearby":reports_nearby
+            },
+            context_instance=RequestContext(request))
+
+    return new(request)

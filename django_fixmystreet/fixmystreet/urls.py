@@ -45,6 +45,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.reports.main',
     url(_(r'^reports/$'), 'index',name='report_index'),
     url(_(r'^reports/(?P<slug>.*)/(?P<commune_id>\d+)$'), 'index',name='report_commune_index'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show',name='report_show'),
+    url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/document$'), 'document',name='report_document'),
     url(_(r'^report/search'), 'search_ticket',name='search_ticket'),
     url(_(r'^report/new'), 'new',name='report_new'),
     url(_(r'^report/verify'), 'verify',name='report_verify'),
@@ -79,6 +80,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.ajax',
     url(_(r'^ajax/categories/(\d+)'), 'report_category_note',name='report_category_note'),
     url(_(r'^ajax/upload-file'),'uploadFile',name='report_upload_file'),
     url(_(r'^ajax/reportPopupDetails'),'get_report_popup_details',name="get_report_popup_details"),
+    url(_(r'^ajax/map/filter/'),'filter_map',name="filter_map"),
 )
 
 

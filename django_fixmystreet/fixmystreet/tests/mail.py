@@ -372,7 +372,7 @@ class MailTest(TestCase):
     def testCreateReportAsProMail(self):
         #creata a report
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
+        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
         self.assertEquals(response.status_code, 200)
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 1)
@@ -532,7 +532,7 @@ class MailTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
         self.client.logout()
-        response = self.client.post(reverse('report_show', kwargs={'report_id': report_id, 'slug': 'hello'}), {
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'citizen-email'   : self.citizen.email,
             'citizen-quality' : 1,
@@ -663,7 +663,7 @@ class MailTest(TestCase):
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
 
-        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro)
+        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
         self.assertEquals(response.status_code, 200)
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 3)

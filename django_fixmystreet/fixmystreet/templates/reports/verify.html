@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n tags %}
-{% block title %}{% endblock %}
+{% block title %}{% trans 'Incidents signalés dans le même secteur' %}{% endblock %}
 
 {% block meta %}
     <meta property="og:title" content="" />
@@ -126,7 +126,12 @@
                 {% endfor %}
             </div>
             <p>
-                <a class="btn_continue pull-right" href='{% url "report_new" %}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
+                {% if BACKOFFICE %}
+                    {% url "report_new_pro" as report_url %}
+                {% else %}
+                    {% url "report_new" as report_url %}
+                {% endif %}
+                <a class="btn_continue pull-right" href='{{ report_url }}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
                 <span class="txt_continue pull-right">{% trans 'Aucun de ces incidents ne correspond à votre incident ?' %}</span>
             </p>
         </div>

@@ -12,7 +12,7 @@
 {{ block.super }}
 <script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
 <script src="{{ STATIC_URL }}js/categorySelection.js"></script>
-<script src="{{STATIC_URL}}js/new_report.js"></script>
+<script src="{{STATIC_URL}}js/document_report.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.exif.js"></script>
 
 <script>
@@ -73,11 +73,10 @@
                         <div class="row">
                             <div class="span8">
                                 <ol class="steps">
-                                    <li class="stepOne off">{% trans "Localisation" %}</li>
-                                    <li id="stepDescription" class="stepTwo on">{% trans "Description" %}</li>
+                                    <li id="stepDescription" class="stepOne on">{% trans "Description" %}</li>
 
                                     {% if not BACKOFFICE %}
-                                        <li id="stepCoordonnees" class="stepThree off">{% trans "Coordonnees" %}</li>
+                                        <li id="stepCoordonnees" class="stepTwo off">{% trans "Coordonnees" %}</li>
                                     {% endif %}
                                 </ol>
                             </div>

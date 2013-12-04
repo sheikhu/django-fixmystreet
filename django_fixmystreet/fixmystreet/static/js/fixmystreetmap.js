@@ -19,96 +19,9 @@ function cloneObj (obj) {
     }
 }
 
-fms.statusFilterCreated = OpenLayers.Class(OpenLayers.Control, {
-    type:OpenLayers.Control.TYPE_TOGGLE,
-    draw: function() {
-        var self = this;
-        OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-        this.div.id = "statusFilter1";
-        this.div.innerHTML = "Created";
-        this.div.className = "btn";
-        this.div.addEventListener('click', this.trigger);
-
-        return this.div;
-    },
-    trigger: function(){
-        if(this.className.indexOf("active")=== -1){
-            this.className += ' active';
-            fms.statusFilter.push("created");
-        }
-        else {
-            this.className = this.className.replace(/active/, '');
-            var i = fms.statusFilter.indexOf("created");
-            if(i != -1) {
-                fms.statusFilter.splice(i, 1);
-            }
-        }
-        fms.filterMapWithStatus();
-    }
-});
-
-fms.statusFilterInProgress = OpenLayers.Class(OpenLayers.Control, {
-    type:OpenLayers.Control.TYPE_TOGGLE,
-    draw: function() {
-        var self = this;
-        OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-        this.div.id = "statusFilter2";
-        this.div.innerHTML = "In progress";
-        this.div.className = "btn";
-        this.div.addEventListener('click', this.trigger);
-
-        return this.div;
-    },
-    trigger: function(){
-        if(this.className.indexOf("active")=== -1){
-            this.className += ' active';
-            fms.statusFilter.push("in_progress");
-        }
-        else {
-            this.className = this.className.replace(/active/, '');
-            var i = fms.statusFilter.indexOf("in_progress");
-            if(i != -1) {
-                fms.statusFilter.splice(i, 1);
-            }
-        }
-        fms.filterMapWithStatus();
-    }
-});
-
-fms.statusFilterClosed = OpenLayers.Class(OpenLayers.Control, {
-    type:OpenLayers.Control.TYPE_TOGGLE,
-    draw: function() {
-        var self = this;
-        OpenLayers.Control.prototype.draw.apply(this, arguments);
-
-        this.div.id = "statusFilter3";
-        this.div.innerHTML = "Closed";
-        this.div.className = "btn";
-        this.div.addEventListener('click', this.trigger);
-
-        return this.div;
-    },
-    trigger: function(){
-        if(this.className.indexOf("active")=== -1){
-            this.className += ' active';
-            fms.statusFilter.push("closed");
-        }
-        else {
-            this.className = this.className.replace(/active/, '');
-            var i = fms.statusFilter.indexOf("closed");
-            if(i != -1) {
-                fms.statusFilter.splice(i, 1);
-            }
-        }
-        fms.filterMapWithStatus();
-    }
-});
-
 fms.filterMapWithStatus = function(){
     $.ajax({
-            url:"/nl/pro/ajax/map/filter/?filter="+fms.statusFilter,
+            url:"/nl/ajax/map/filter/?filter="+fms.statusFilter,
             type:'GET',
             datatype:"json",
             success: function(data){
@@ -296,10 +209,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         );
         this.map.addLayer(fms.regionalLayer);
 
-        var regionalLayerShow = new fms.regionalLayerShowControl();
-        this.map.addControl(regionalLayerShow);
-        regionalLayerShow.activate();
-
         // Add municipality limits layer
         fms.municipalityLayer = new OpenLayers.Layer.WMS("municipality_limits",
             URBIS_URL + "geoserver/wms",
@@ -311,15 +220,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         );
         this.map.addLayer(fms.municipalityLayer);
 
-        var municiplaityLayerShow = new fms.MunicipalityLimitsLayerShowControl();
-        this.map.addControl(municiplaityLayerShow);
-        municiplaityLayerShow.activate();
-
         // Base layer
         var base = new OpenLayers.Layer.WMS(
             "base",
             this.options.urbisUrl,
-            { layers: 'urbis' + LANGUAGE_CODE.toUpperCase() }
+            {layers: 'urbis' + LANGUAGE_CODE.toUpperCase()},
+            {displayInLayerSwitcher: false}
         );
         base.setZIndex(-100);
         this.map.addLayer(base);
@@ -457,7 +363,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             },
             success:function(response)
             {
-                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})]});
+                self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer",
+                    {
+                        strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})],
+                        displayInLayerSwitcher: false
+                    }
+                );
                 self.map.addLayer(self.markersLayer);
                 callback(language, response);
             },
@@ -477,7 +388,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
      * @param index the report index
      * @param proVersion true if the application is running the pro version
      */
-    fms.Map.prototype.addReport = function(report,index,proVersion)
+    fms.Map.prototype.addReport = function(report,index,proVersion,isIconsOnly)
     {
         var self = this;
         if(!this.markersLayer)
@@ -507,10 +418,16 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         }
                     }
                 });
-            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer", {strategies:[new OpenLayers.Strategy.Cluster({distance:50,threshold:2})],styleMap: new OpenLayers.StyleMap({
-                        "default": style,
-                        "select": style
-                    })});
+            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer",
+                {
+                    strategies: [new OpenLayers.Strategy.Cluster({distance:50,threshold:2})],
+                    styleMap: new OpenLayers.StyleMap({
+                            "default": style,
+                            "select": style
+                    }),
+                    displayInLayerSwitcher: false
+                }
+            );
             //NEW APPROACH
             /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
             marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
@@ -553,59 +470,68 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                     imageLink = feature.attributes.report.thumb;
                                 }
 
-                                var popoverContent = "<h2>Incident #" + feature.attributes.report.id + " (<a class='moreDetails' href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>Details</a>)</h2>" +
-                                        '<div class="in-popup">' +
-                                        '<p style="float: left;margin-right: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
+                                // Set content of popover
+                                var popoverTitle   = "";
+                                var popoverContent = "";
+                                var popoverIcons   = "";
+                                var popoverSize    = new OpenLayers.Size(200,50);
+
+                                if (!isIconsOnly) {
+                                    popoverSize  = new OpenLayers.Size(400,220);
+                                    popoverTitle = "<h2>Incident #" + feature.attributes.report.id + " (<a class='moreDetails' href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>Details</a>)</h2>";
+
+                                    popoverContent = '<p style="float: left;margin-right: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
                                         "<strong>" + feature.attributes.report.address_number + ', ' +
                                         feature.attributes.report.address + ' ' + "<br/>" +
                                         feature.attributes.report.postalcode + ' ' +
                                         feature.attributes.report.address_commune_name + "</strong>" +
 
-                                        "<p class='categoryPopup'>" + feature.attributes.report.category + "</p>" +
+                                        "<p class='categoryPopup'>" + feature.attributes.report.category + "</p>";
+                                }
 
-                                        "<ul class='iconsPopup'>";
+                                var popoverIcons = "<ul class='iconsPopup'>";
                                         //"<li class='addressRegional'>" + feature.attributes.report.address_regional + "</li>";
 
                                 if (feature.attributes.report.address_regional != 'null'){
-                                    popoverContent += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
+                                    popoverIcons += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
                                 }
 
                                 if (feature.attributes.report.contractor != 'null'){
-                                    popoverContent += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
+                                    popoverIcons += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
                                 }
 
                                 if (feature.attributes.report.date_planned){
-                                    popoverContent += "<li class='datePlanned'>" + feature.attributes.report.date_planned + "</li>";
+                                    popoverIcons += "<li class='datePlanned'>" + feature.attributes.report.date_planned + "</li>";
                                 }
 
                                 // If Pro, there are priority and citizen values
                                 if (feature.attributes.report.priority) {
                                     if (feature.attributes.report.is_closed != 'null'){
-                                        popoverContent += "<li class='isClosed'><img src='/static/images/isClosed.png' /></li>";
+                                        popoverIcons += "<li class='isClosed'><img src='/static/images/isClosed.png' /></li>";
                                     }
                                     if (feature.attributes.report.citizen != 'null'){
-                                        popoverContent += "<li class='fromPro'><img src='/static/images/fromPro.png' /></li>";
+                                        popoverIcons += "<li class='fromPro'><img src='/static/images/fromPro.png' /></li>";
                                     }
                                     if (feature.attributes.report.priority <= '2'){
-                                        popoverContent += "<li class='priority'><img src='/static/images/lowPriority.png' />" + feature.attributes.report.priority + "</li>";
+                                        popoverIcons += "<li class='priority'><img src='/static/images/lowPriority.png' />" + feature.attributes.report.priority + "</li>";
                                     }
                                     else if (feature.attributes.report.priority <= '6'){
-                                        popoverContent += "<li class='priority'><img src='/static/images/mediumPriority.png' />" + feature.attributes.report.priority + "</li>";
+                                        popoverIcons += "<li class='priority'><img src='/static/images/mediumPriority.png' />" + feature.attributes.report.priority + "</li>";
                                     }
                                     else {
-                                        popoverContent += "<li class='priority'><img src='/static/images/highPriority.png' />" + feature.attributes.report.priority + "</li>";
+                                        popoverIcons += "<li class='priority'><img src='/static/images/highPriority.png' />" + feature.attributes.report.priority + "</li>";
                                     }
-                                    //popoverContent += "<li>" + feature.attributes.report.is_closed + "</li>" +
-                                    //popoverContent += "<li>" + feature.attributes.report.citizen + "</li>" +
-                                    //popoverContent += "<li>" + feature.attributes.report.priority + "</li>";
+                                    //popoverIcons += "<li>" + feature.attributes.report.is_closed + "</li>" +
+                                    //popoverIcons += "<li>" + feature.attributes.report.citizen + "</li>" +
+                                    //popoverIcons += "<li>" + feature.attributes.report.priority + "</li>";
                                 }
-                                popoverContent += "</ul></div>";
+                                popoverIcons += "</ul>";
 
                                 var popup = new OpenLayers.Popup(
                                     "popup",
                                     new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
-                                    new OpenLayers.Size(400,220),
-                                    popoverContent,
+                                    popoverSize,
+                                    '<div class="in-popup">' + popoverTitle + popoverContent + popoverIcons + '</div>',
                                     true,
                                     function closeMe() {
                                         self.selectFeature.onUnselect(feature);

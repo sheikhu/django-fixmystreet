@@ -23,6 +23,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     r.address_fr as street_name_fr,
     r.address_nl as street_name_nl,
     r.postalcode as postalcode,
+    r.address_number as address_number,
     created_by.organisation_id as created_by_entity_id,
     CASE
         WHEN (r.created_by_id IS NULL AND r.citizen_id IS NOT NULL) THEN 0
@@ -55,6 +56,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
             WHERE att_photo.report_id=r.id AND file_type=4
     ) as photos_count
 FROM fixmystreet_historicalreport r
+    RIGHT JOIN fixmystreet_report original_report ON r.id=original_report.id
     LEFT JOIN fixmystreet_fmsuser created_by ON r.created_by_id=created_by.user_ptr_id
     LEFT JOIN fixmystreet_fmsuser citizen ON r.citizen_id=citizen.user_ptr_id
     LEFT JOIN fixmystreet_reportcategory category ON r.secondary_category_id=category.id
