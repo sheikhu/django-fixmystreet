@@ -152,7 +152,10 @@ function getAddressFromPoint(lang, x, y) {
             var popupContent = "<p class='popupHeading'>Déplacez-moi à l'adresse exacte</p>";
             popupContent += "<p class='popupContent'>" + street + ", " + number;
             popupContent += "<br/>" + postCode + " " + municipality + "</p>";
-            popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+
+            if (NEXT_PAGE_URL) {
+                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+            }
             popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
 
             var popup = new OpenLayers.Popup(

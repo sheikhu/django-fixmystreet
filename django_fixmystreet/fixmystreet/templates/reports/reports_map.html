@@ -15,44 +15,29 @@
 
 {% block script %}
 {{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
 
 {% block script_map %}
 {{ block.super }}
 <script>
+var zipcodes = new Object();
+
+{% for zip in zipcodes %}
+    zipcodes[{{zip.code}}] = new Object();
+    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+{% endfor %}
+
+var NEXT_PAGE_URL = null;
+
 $(function(){
-    var defaultX = 148838.00741428943;
-    var defaultY = 171086.0720425099;
-
-    {% if reports.0 %}
-        defaultX = {{reports.0.point.x}}
-        defaultY = {{reports.0.point.y}}
-    {% endif %}
-
-
-    // $('#map-bxl').fmsMap();
- //    $('#map-bxl').fmsMap('highlightArea', '{{ entity.feature_id }}');
-
-    // {% for report in reports %}
-    // $('#map-bxl').fmsMap('addReport',  {{ report.to_JSON|dict_to_json|safe }}, {{ forloop.counter }});
-    // {% endfor %}
-
-    // $('#map-bxl').bind('reportselected',function(evt, point, report){
-    //     window.location.assign('{{report.get_absolute_url}}');
-    // });
-
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    WMS_SERVICE_URL,
-        origin:{
-            x: defaultX,
-            y: defaultY
-        }
+        urbisUrl:    WMS_SERVICE_URL
     });
-    var reportJSON;
     var markers = [];
-
-    fms.filterMapWithStatus();
 
     // Layer switcher
     fms.currentMap.map.addControl(new OpenLayers.Control.LayerSwitcher({'div':OpenLayers.Util.getElement('layerswitcher')}));
@@ -87,35 +72,65 @@ $(function(){
         statusToggleCreated.addEventListener('change', applyFilter);
         statusToggleInProgress.addEventListener('change', applyFilter);
         statusToggleClosed.addEventListener('change', applyFilter);
+
+        // Init map with all reports
+        fms.statusFilter = ['created', 'in_progress', 'closed'];
+        fms.filterMapWithStatus();
     }
 });
 
-// Search a ticket number
-(function() {
+// Override some function from search.js
+function getAddressFromPoint() {}
 
-    var $searchTicketForm = $('#search-ticket-form');
+function cleanMap() {
+    // Remove all popups
+    while(fms.currentMap.map.popups.length) {
+         fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
+    }
 
-    $searchTicketForm.submit(function(event){
-        event.preventDefault();
-        var searchValue = $('#input-ticket-search').val();
+    // Remove all features
+    if (fms.currentMap.homepageMarkersLayer) {
+        fms.currentMap.homepageMarkersLayer.destroyFeatures();
+    }
 
-        if (searchValue && searchValue.length > 0) {
-            //Get current language
-            var currentLng = 'en';
-            if (window.location.href.indexOf('/nl/') != -1) {
-                currentLng = 'nl';
-            } else if (window.location.href.indexOf('/fr/') != -1) {
-                currentLng = 'fr'
-            }
-            if (window.location.href.indexOf('pro') != -1) {
-                window.location = "/"+currentLng+"/pro/report/search?report_id="+searchValue;
-            } else {
-                window.location = "/"+currentLng+"/report/search?report_id="+searchValue;
-            }
+    // Hide results
+    $proposalContainer = $('#proposal-container');
+    $proposalContainer.slideUp();
+}
+
+function initDragMarker(x, y, additionalInfo) {
+        cleanMap();
+
+        // Remove message info
+        var $map = $('#map');
+        map.classList.remove("map-big-message");
+        map.classList.add("map-big");
+
+        var $proposalMessage = $('#proposal-message');
+        $proposalMessage.slideUp();
+
+        draggableMarker = fms.currentMap.addDraggableMarker(x, y);
+        fms.currentMap.centerOnDraggableMarker();
+        fms.currentMap.map.zoomTo(6);
+
+        var popupContent = "<p class='popupHeading'>Vous êtes ici</p>";
+
+        if (additionalInfo) {
+            popupContent += "<p class='popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
+            popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
         }
-    });
 
-})(document);
+        var popup = new OpenLayers.Popup(
+            "popup",
+            new OpenLayers.LonLat(x, y),
+            new OpenLayers.Size(200,150),
+            popupContent,
+            true
+        );
+        popup.panMapIfOutOfView = true;
+
+        fms.currentMap.map.addPopup(popup);
+}
 
 </script>
 {% endblock %}
@@ -172,13 +187,13 @@ $(function(){
                     <div id="layerswitcher" class="olControlLayerSwitcher" style="z-index:999;">
                         <div class="layersDiv">
                             <div class="dataLayersDiv">
-                                <input type="checkbox" id="statusToggleCreated" value="created">
+                                <input type="checkbox" id="statusToggleCreated" value="created" checked="">
                                 <label>{% trans 'Created' %}</label>
                                 <br>
-                                <input type="checkbox" id="statusToggleInProgress" value="in_progress">
+                                <input type="checkbox" id="statusToggleInProgress" value="in_progress" checked="">
                                 <label>{% trans 'In progress' %}</label>
                                 <br>
-                                <input type="checkbox" id="statusToggleClosed" value="closed">
+                                <input type="checkbox" id="statusToggleClosed" value="closed" checked="">
                                 <label>{% trans 'Closed' %}</label>
                             </div>
                         </div>
@@ -194,16 +209,4 @@ $(function(){
 {% endblock %}
 
 {% block content %}
-<div class="">
-<!--
-    <div class='span4'>
-        <form action="{% url 'search_ticket' %}" class="block highlighted" id="search_by_ticket_nr">
-            <h2>{% trans "Search by ticket number:" %}</h2>
-            <div class="form-search">
-                <input id="input-search" type="search" name="report_id" placeholder="{% trans 'Ticket number' %}">
-                <input type="submit" class="btn" id="filterReports" value="{% trans 'Search' %}"/>
-            </div>
-        </div>
-   </div>
--->
 {% endblock %}
