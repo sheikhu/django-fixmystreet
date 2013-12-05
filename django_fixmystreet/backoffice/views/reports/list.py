@@ -115,7 +115,7 @@ def table(request):
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
-    reports = Report.objects.all().filter(merged_with__isnull=True)
+    reports = Report.visibles.all()
     if request.fmsuser.organisation:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
     elif not request.fmsuser.is_superuser:

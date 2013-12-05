@@ -196,6 +196,10 @@ msgstr "Afgewezen"
 msgid "Pending"
 msgstr "Hangende"
 
+#: models.py:430
+msgid "Temp"
+msgstr "Tijdelijk"
+
 #: models.py:451 models.py:452 models.py:632
 msgid "In progress"
 msgstr "In behandeling"

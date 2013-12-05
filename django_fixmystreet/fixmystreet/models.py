@@ -44,7 +44,7 @@ class UserTrackedModel(TimeStampedModel):
             self._history_user = user  # used by simple_history
         else:
             self.modified_by = None
-
+        
         super(UserTrackedModel, self).save(*args, **kwargs)
 
     class Meta:
@@ -412,6 +412,14 @@ class ReportManager(models.GeoManager):
                 'citizen', 'created_by')
 
 
+class VisibleReportManager(ReportManager):
+
+    def get_query_set(self):
+        return super(VisibleReportManager, self).get_query_set() \
+                .filter(merged_with__isnull=True) \
+                .exclude(status__in=Report.REPORT_STATUS_OFF)
+
+
 class Report(UserTrackedModel):
     __metaclass__ = TransMeta
 
@@ -419,6 +427,7 @@ class Report(UserTrackedModel):
     CREATED = 1
     REFUSED = 9
     PENDING = 10
+    TEMP = 11
 
     IN_PROGRESS = 2
     MANAGER_ASSIGNED = 4
@@ -435,12 +444,13 @@ class Report(UserTrackedModel):
     REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_ASSIGNED = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_CLOSED = (PROCESSED, DELETED)
-    REPORT_STATUS_OFF = (DELETED)
+    REPORT_STATUS_OFF = (DELETED, TEMP)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
             (CREATED, _("Created")),
             (REFUSED, _("Refused")),
+            (TEMP, _("Temp")),
         )),
         (_("In progress"), (
             (IN_PROGRESS, _("In progress")),
@@ -504,6 +514,7 @@ class Report(UserTrackedModel):
     terms_of_use_validated = models.BooleanField(default=False)
 
     objects = ReportManager()
+    visibles = VisibleReportManager()
 
     history = HistoricalRecords()
 
@@ -1095,7 +1106,7 @@ def report_notify(sender, instance, **kwargs):
                 subscription.notify_creation = False  # don't send notification for subscription
                 subscription.save()
 
-            if report.status != Report.CREATED:
+            if report.status != Report.CREATED and report.status != Report.TEMP:
                 ReportNotification(
                     content_template='notify-affectation',
                     recipient=report.responsible_manager,
@@ -1106,7 +1117,7 @@ def report_notify(sender, instance, **kwargs):
                     report=report,
                     event_type=ReportEventLog.MANAGER_ASSIGNED,
                     user=report.responsible_manager
-                ).save()
+                ).save() 
 
                 if report.__former['responsible_entity'] != report.responsible_entity:
                     for subscription in report.subscriptions.all():
