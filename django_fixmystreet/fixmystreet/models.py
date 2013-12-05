@@ -44,7 +44,7 @@ class UserTrackedModel(TimeStampedModel):
             self._history_user = user  # used by simple_history
         else:
             self.modified_by = None
-        
+
         super(UserTrackedModel, self).save(*args, **kwargs)
 
     class Meta:
@@ -690,7 +690,7 @@ class Report(UserTrackedModel):
         return OrganisationEntity.objects.get(zipcode__code=self.postalcode)
 
     def subscribe_author_ws(self):
-        user = self.citizen or self.created_by 
+        user = self.citizen or self.created_by
         if not self.subscriptions.filter(subscriber=user).exists():
             subscription = ReportSubscription(subscriber=user)
             subscription.notify_creation = False  # don't send notification for subscription
@@ -801,9 +801,9 @@ class Report(UserTrackedModel):
     def full_marker_detail_JSON(self):
         local_thumbnail = self.thumbnail()
         if local_thumbnail:
-            thumbValue = 'null'
-        else:
             thumbValue = local_thumbnail
+        else:
+            thumbValue = 'null'
 
         return {
             "id": self.id,
@@ -1117,7 +1117,7 @@ def report_notify(sender, instance, **kwargs):
                     report=report,
                     event_type=ReportEventLog.MANAGER_ASSIGNED,
                     user=report.responsible_manager
-                ).save() 
+                ).save()
 
                 if report.__former['responsible_entity'] != report.responsible_entity:
                     for subscription in report.subscriptions.all():

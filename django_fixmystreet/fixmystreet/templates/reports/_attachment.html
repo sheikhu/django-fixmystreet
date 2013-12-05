@@ -57,7 +57,7 @@
         </div>
         <p class="comment-incident">
             <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
-            {{ attachment.reportcomment.text }}</p>
+            {{ attachment.reportcomment.text|linebreaksbr }}</p>
     {% endif %}
 
     {% if privacy == 'private' %}

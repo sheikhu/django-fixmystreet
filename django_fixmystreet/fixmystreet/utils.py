@@ -322,7 +322,7 @@ def dict_to_point(data):
 class RequestFingerprint:
     def __init__(self, request):
         # assume that request.method == "POST":
-        self.request = request
+        self.request = request        
         md5 = hashlib.md5()
         md5.update(request.path)
         md5.update(unicode(request.POST))
@@ -333,7 +333,7 @@ class RequestFingerprint:
             del request.session['request_fingerprint_expire']
 
     def is_duplicate(self):
-        return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint
+        return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint and self.request.POST['isretry'] != 'true'
 
     def save(self):
         self.request.session['request_fingerprint'] = self.request_fingerprint
