@@ -302,12 +302,13 @@ article{
 	height: 498px !important;
     transition: all 1s;
 }
-#popup{
+.home #popup{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius:4px;
+	width:220px !important;
 }
-#popup .popupHeading{
+.home #popup .popupHeading{
 	font-size:12px;
 	font-weight:bold;
 	background:#BCD3F2;
@@ -316,21 +317,21 @@ article{
 	-moz-border-radius: 4px 4px 0 0;
 	border-radius: 4px 4px 0 0;
 }
-#popup #popup_close{
+.home #popup #popup_close{
 	display:none;
 }
-#popup .olPopupContent{
+.home #popup .olPopupContent{
 	padding:1px;
 }
-#popup #popup_contentDiv{
+.home #popup #popup_contentDiv{
 	width:218px !important;
 }
-#popup .popupContent{
+.home #popup .popupContent{
 	font-size:12px;
 	padding:5px;
 	margin-bottom:0;
 }
-#popup a.btn-itshere{
+.home #popup a.btn-itshere{
 	margin-left:5px;
 	margin-top: 30px;
 	display:inline-block;
@@ -345,15 +346,73 @@ article{
 	border-radius: 4px;
 	float: right;
 }
-#popup #btn-streetview{
+.home #popup #btn-streetview{
 	display:inline;
 	float:none;
 	bottom: 1px;
 }
-#popup #btn-streetview a{
+.home #popup #btn-streetview a{
 	font-size: 11px;
 	vertical-align: bottom;
 }
+
+.reports #popup{
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius:4px;
+	width:220px !important;
+}
+.reports #popup h2{
+	font-size:12px;
+	font-weight:bold;
+	background:#BCD3F2;
+	padding:5px;
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+}
+.reports #popup #popup_close{
+	display:none;
+}
+.reports #popup .olPopupContent{
+	padding:1px;
+}
+.reports #popup #popup_contentDiv{
+	width:220px !important;
+}
+.reports #popup .popupContent{
+	font-size:12px;
+	padding:5px;
+	margin-bottom:0;
+}
+.reports #popup a.btn-itshere{
+	margin-left:5px;
+	margin-top: 30px;
+	display:inline-block;
+	background: #FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
+	padding: 4px 12px 4px 30px;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #607C9D;
+	border:1px solid #607C9D;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	float: right;
+}
+.reports #popup #btn-streetview{
+	display:inline;
+	float:none;
+	bottom: 1px;
+}
+.reports #popup #btn-streetview a{
+	font-size: 11px;
+	vertical-align: bottom;
+}
+
+
+
+
 #copyright-urbis{
 	position: absolute;
 	bottom: -2px;
