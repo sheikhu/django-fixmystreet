@@ -231,8 +231,6 @@ article{
     margin: 0px;
     padding: 0px;
     border-bottom: 3px solid #DDDDDD;
-}
-#proposal-container .numberResultsContainer{
 	background:#607C9D;
 	color:#FFF;
 	border:0;
@@ -264,8 +262,8 @@ article{
     font-weight:bold;
 }
 #proposal-container button{
-	background:#607C9D;
-	color:#FFF;
+	background:#607C9D
+;	color:#FFF;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -439,6 +437,60 @@ article{
 	border-radius: 4px 4px 4px 4px;
 	background-color: #607C9D;
     padding: 5px;
+}
+#layerswitcher{
+	left:-1px;
+	right:auto;
+	bottom:14px;
+	top:auto;
+	background:#FFF;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 1px -1px 5px rgba(50, 50, 50, 0.35);
+	-moz-box-shadow:    1px -1px 5px rgba(50, 50, 50, 0.35);
+	box-shadow:         1px -1px 5px rgba(50, 50, 50, 0.35);
+}
+.olControlLayerSwitcher{
+	width:150px !important;
+	color:#000 !important;
+}
+.olControlLayerSwitcher .layersDiv{
+	background:#FFF !important;
+	padding:0 !important;
+}
+.olControlLayerSwitcher .layersDiv .dataLayersDiv{
+	padding:0 !important;	
+}
+#layerswitcher input{
+	float:left;
+	margin-right:10px;
+}
+#layerswitcher input + label{
+	vertical-align:middle !important;
+	display:inline-block;
+}
+#layerswitcher .dataLbl{
+	margin-left:0 !important;
+}
+#layerswitcher h3, .dataLbl{
+	background: #607C9D;
+	color: #FFF;
+	border: 0;
+    font-size: 1.2em;
+    line-height:25px;
+    text-align:center;
+    margin:0;
+}
+#layerswitcher input + label img{
+	margin-right:5px;
+	margin-top: 3px;
+	margin-bottom:3px;
+}
+#layerswitcher h3{
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-right-radius: 4px;
 }
 #instructions ol.steps{
 	margin: 0 0 10px 10px;

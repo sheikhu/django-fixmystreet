@@ -187,14 +187,15 @@ function initDragMarker(x, y, additionalInfo) {
                     <div id="layerswitcher" class="olControlLayerSwitcher" style="z-index:999;">
                         <div class="layersDiv">
                             <div class="dataLayersDiv">
+                                <h3>{% trans 'Statut' %}</h3>
                                 <input type="checkbox" id="statusToggleCreated" value="created" checked="">
-                                <label>{% trans 'Created' %}</label>
+                                <label><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'Created' %}</label>
                                 <br>
                                 <input type="checkbox" id="statusToggleInProgress" value="in_progress" checked="">
-                                <label>{% trans 'In progress' %}</label>
+                                <label><img src="{{ STATIC_URL }}images/marker-orange-xxs.png" />{% trans 'In progress' %}</label>
                                 <br>
                                 <input type="checkbox" id="statusToggleClosed" value="closed" checked="">
-                                <label>{% trans 'Closed' %}</label>
+                                <label><img src="{{ STATIC_URL }}images/marker-green-xxs.png" />{% trans 'Closed' %}</label>
                             </div>
                         </div>
 
