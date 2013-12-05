@@ -49,7 +49,7 @@ def new(request):
                     report_file.created_by = user
                     report_file.save()
 
-                messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
+                messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"), extra_tags="new_report")
                 return HttpResponseRedirect(report.get_absolute_url_pro())
             else:
                 report = None

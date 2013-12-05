@@ -272,6 +272,18 @@ $(document).ready(function() {
     $($(".update_text").find('#imgtoshow')).exifLoad(someCallback);
 });
 
+window.onload = function() {
+    // Handle 'I want to create a new report' checkbox
+    var createNewReport = document.getElementById('createNewReport');
+
+    if (createNewReport) {
+        messageButton.addEventListener('click', function() {
+            if (createNewReport.checked) {
+                window.location.href = "/";
+            }
+        });
+    }
+}
 
 function close(){
     var r=confirm("Are you sure you want to close this report?");
@@ -340,10 +352,62 @@ var someCallback = function(exifObject, index) {
 {% endblock %}
 
 {% block map %}
-<article id="map">
-    <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
-    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-</article>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <article id="map" class="view_incident">
+                <div id="incident-head">
+                    <div class="row">
+                        <div class="span3">
+                            <div class="ticket_infos">
+                                <span class="ticket_number">
+                                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
+                                </span><br />
+                                <span class="ticket_address">
+                                    {{ report.address }}, {{ report.address_number }}<br />
+                                    {{ report.postalcode }} {{ report.get_address_commune_name }}
+                                </span><br />
+                                <span class="ticket_desc">
+                                    {{ report.display_category }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            timeline
+                        </div>
+                        <div class="span3">
+                            {% if report.is_in_progress %}
+                                {% if report.status != report.SOLVED %}
+                                    <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
+                                        <i class="isresolved"> </i>{% trans "Signaler résolu" %}
+                                    </a>
+                                {% endif %}
+
+                                {% if not report.is_closed and not subscribed %}
+                                    <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
+                                        {% if report.subscriptions.all.count %}
+                                            <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
+                                        {% endif %}
+                                        <i class="subscribe"> </i>
+
+                                        {% trans "S'abonner" %}
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+
+                            <a class="lk-download-pdf btn" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Télécharger' %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Agrandir la carte" %}</a></div>
+                <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+            </article>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}

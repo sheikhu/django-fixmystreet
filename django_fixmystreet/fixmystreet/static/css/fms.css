@@ -306,7 +306,14 @@ article{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius:4px;
+<<<<<<< HEAD
 	width:220px !important;
+=======
+
+	-webkit-box-shadow: 0 0 5px rgba(50, 50, 50, 0.35);
+	-moz-box-shadow: -0 0 5px rgba(50, 50, 50, 0.35);
+    box-shadow: 0 0 5px rgba(50, 50, 50, 0.35);
+>>>>>>> bb706bea82a84ade0afef48cc5c3e513aa5608a2
 }
 .home #popup .popupHeading{
 	font-size:12px;
@@ -322,6 +329,7 @@ article{
 }
 .home #popup .olPopupContent{
 	padding:1px;
+	padding:0;
 }
 .home #popup #popup_contentDiv{
 	width:218px !important;
@@ -517,9 +525,10 @@ article{
 .olControlLayerSwitcher .layersDiv{
 	background:#FFF !important;
 	padding:0 !important;
+    border-radius: 0px 4px 0 0;
 }
 .olControlLayerSwitcher .layersDiv .dataLayersDiv{
-	padding:0 !important;	
+	padding:0 !important;
 }
 #layerswitcher input{
 	float:left;

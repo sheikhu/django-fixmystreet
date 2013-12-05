@@ -148,7 +148,7 @@
                                             </a>
                                         </li>
 
-                                    
+
 
                                         <!--li class="divider"></li-->
                                         <li>
@@ -178,18 +178,25 @@
                     <div class="message modal hide" role="dialog">
                         <div class="modal-body">
                             <p class="lead text-{{ message.tags }}">
-                                {% if message.tags == "success" %}
+                                {% if "success" in message.tags %}
                                     <i class="icon-ok-big"> </i>
-                                {% elif message.tags == "warning" %}
+                                {% elif "warning" in message.tags %}
                                     <i class="icon-warning-sign"> </i>
-                                {% elif message.tags == "error" %}
+                                {% elif "error" in message.tags %}
                                     <i class="icon-nok-big"> </i>
                                 {% endif %}
                                 <strong>{{ message }}</strong>
                             </p>
+
+                            {% if "new_report" in message.tags  %}
+                                <p>
+                                    <input type="checkbox" id="createNewReport">
+                                    <label>{% trans 'I want to create a new report' %}</label>
+                                </p>
+                            {% endif %}
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
+                            <input id="messageButton" type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
                         </div>
                     </div>
                     {% endfor %}
