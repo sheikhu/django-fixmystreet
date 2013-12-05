@@ -306,6 +306,10 @@ article{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius:4px;
+
+	-webkit-box-shadow: 0 0 5px rgba(50, 50, 50, 0.35);
+	-moz-box-shadow: -0 0 5px rgba(50, 50, 50, 0.35);
+    box-shadow: 0 0 5px rgba(50, 50, 50, 0.35);
 }
 #popup .popupHeading{
 	font-size:12px;
@@ -320,7 +324,7 @@ article{
 	display:none;
 }
 #popup .olPopupContent{
-	padding:1px;
+	padding:0;
 }
 #popup #popup_contentDiv{
 	width:218px !important;
@@ -458,9 +462,10 @@ article{
 .olControlLayerSwitcher .layersDiv{
 	background:#FFF !important;
 	padding:0 !important;
+    border-radius: 0px 4px 0 0;
 }
 .olControlLayerSwitcher .layersDiv .dataLayersDiv{
-	padding:0 !important;	
+	padding:0 !important;
 }
 #layerswitcher input{
 	float:left;
