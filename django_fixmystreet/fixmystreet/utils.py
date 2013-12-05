@@ -333,7 +333,9 @@ class RequestFingerprint:
             del request.session['request_fingerprint_expire']
 
     def is_duplicate(self):
-        return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint and self.request.POST['isretry'] != 'true'
+        if ('isretry' in self.request.POST):
+           return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint and self.request.POST['isretry'] != 'true'
+        return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint
 
     def save(self):
         self.request.session['request_fingerprint'] = self.request_fingerprint
