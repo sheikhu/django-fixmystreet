@@ -78,6 +78,20 @@ class ReportForm(forms.ModelForm):
 
         return report
 
+    def saveForMobile(self, commit=True):
+        report = super(ReportForm, self).save(commit=False)
+
+        report.point = dict_to_point(self.cleaned_data)
+        report.status = Report.TEMP
+        # report.address = self.cleaned_data["address"].split(", ")[0]
+        # report.address_number = self.cleaned_data["address_number"]
+
+        if commit:
+            report.save()
+
+        return report
+    
+
 #Used by pro version
 class ProReportForm(ReportForm):
     secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.all().order_by('name_'+ get_language()))
@@ -99,6 +113,12 @@ class ProReportForm(ReportForm):
             report.save();
         return report
 
+    def saveForMobile(self,commit=True):
+        report= super(ProReportForm,self).saveForMobile(commit=False)
+        report.private = self.cleaned_data['private']
+        if commit:
+            report.save();
+        return report
 
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
@@ -118,6 +138,17 @@ class CitizenReportForm(ReportForm):
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
+        # report.status = Report.CREATED # default value
+        report.private = False
+        #split address in 2 pieces
+
+        if commit:
+            report.save()
+
+        return report
+
+    def saveForMobile(self, commit=True):
+        report = super(CitizenReportForm, self).saveForMobile(commit=False)
         # report.status = Report.CREATED # default value
         report.private = False
         #split address in 2 pieces

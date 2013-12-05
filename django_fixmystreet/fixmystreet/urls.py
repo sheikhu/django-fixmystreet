@@ -100,6 +100,7 @@ urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
     url(_(r'^api/load_zipcodes/$'),'load_zipcodes',name='load_zipcodes'),
     url(_(r'^api/create-report/$'),Resource(ReportHandler), name="create_report_citizen"),
     url(_(r'^api/create_report_photo/$'),'create_report_photo',name='create_report_photo'),
+    url(_(r'^api/commit-report/$'),'commit_report',name='commit_report'),
 )
 # urlpatterns += patterns('django_fixmystreet.fixmystreet.views.import',
 #     url(_(r'^import/report/close/$'), 'close_report',name='close_report'),

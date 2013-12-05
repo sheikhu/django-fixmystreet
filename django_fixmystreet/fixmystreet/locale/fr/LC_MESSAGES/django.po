@@ -197,6 +197,10 @@ msgstr "Refusé"
 msgid "Pending"
 msgstr "Pending"
 
+#: models.py:430
+msgid "Temp"
+msgstr "Temporaire"
+
 #: models.py:451 models.py:452 models.py:632
 msgid "In progress"
 msgstr "En traitement"

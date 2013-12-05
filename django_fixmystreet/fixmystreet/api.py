@@ -186,7 +186,7 @@ class ReportHandler(BaseHandler):
         comment_form = ReportCommentForm(request.data, prefix='comment')
         if not report_form.is_valid():
             return HttpResponse(unicode(report_form.errors), status=400)
-        report = report_form.save(commit=False)
+        report = report_form.saveForMobile(commit=False)
 
         report.private = True
         report.save()
@@ -217,7 +217,7 @@ class ReportHandler(BaseHandler):
         if not report_form.is_valid():
             return HttpResponse(unicode(report_form.errors), status=400)
 
-        report = report_form.save(commit=False)
+        report = report_form.saveForMobile(commit=False)
         report.citizen = citizen
         #report.category = ReportMainCategoryClass(request.data['secondary_category'])
         #report.secondary_category = ReportCategory(request.data['category'])

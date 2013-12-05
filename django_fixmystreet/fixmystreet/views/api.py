@@ -3,6 +3,8 @@ import urllib2
 import socket
 import logging
 
+from django.shortcuts import get_object_or_404
+
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.utils import simplejson
 from django.db.models import Q
@@ -72,7 +74,15 @@ def login_user(request):
         #Right ! Logged in :-)
         return HttpResponse(user_object.toJSON(),mimetype='application/json')
 
-
+#Method used to put status of a report from temp to submitted as all pictures were successfully sent.
+def commit_report(request):
+    reportID = request.POST['reportId']
+    report = get_object_or_404(Report, id=reportID)
+    report.status = Report.CREATED
+    report.save();
+    return JsonHttpResponse({
+        'status':'success'
+    })
 
 #Method used to retrieve nearest reports for pro
 def near_reports_pro(request):
