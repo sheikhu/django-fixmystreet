@@ -223,10 +223,8 @@ def search_ticket(request):
 
 
 def index(request):
-    all_reports = Report.objects.all().public()
-
     return render_to_response("reports/reports_map.html", {
-        "all_reports":all_reports,
+        'zipcodes' : ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))
 
 def newmap(request):
