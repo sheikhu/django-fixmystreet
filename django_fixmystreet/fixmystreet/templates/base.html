@@ -176,6 +176,10 @@
                 <div id="messages">
                     {% for message in messages %}
                     <div class="message modal hide" role="dialog">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3>{% trans 'Confirmation' %}</h3>
+                        </div>
                         <div class="modal-body">
                             <p class="lead text-{{ message.tags }}">
                                 {% if "success" in message.tags %}
@@ -195,9 +199,9 @@
                                 </p>
                             {% endif %}
                         </div>
-                        <div class="modal-footer">
+                        <!--div class="modal-footer">
                             <input id="messageButton" type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
-                        </div>
+                        </div-->
                     </div>
                     {% endfor %}
                 </div>
