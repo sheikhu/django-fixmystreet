@@ -564,7 +564,7 @@ article{
 	-moz-border-radius-topright: 4px;
 	border-top-right-radius: 4px;
 }
-#search-address-form{
+.reports #search-address-form{
 	margin-top:10px;
 }
 #search-form #widget-search-ticket-button{
