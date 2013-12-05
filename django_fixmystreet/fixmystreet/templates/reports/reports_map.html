@@ -64,6 +64,10 @@ $(function(){
         var statusToggleClosed     = document.getElementById('statusToggleClosed');
 
         function applyFilter() {
+            // Remove all popups
+            while(fms.currentMap.map.popups.length) {
+                 fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
+            }
 
             var value = this.getAttribute('value');
 

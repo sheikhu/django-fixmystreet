@@ -30,7 +30,7 @@ fms.filterMapWithStatus = function(){
                 }
                 var markers = [];
                 for(var i=0; i< data.length; ++i){
-                    markers.push(fms.currentMap.addReport(data[i], i, true));
+                    markers.push(fms.currentMap.addReport(data[i], i, false));
                 }
                 fms.currentMap.markersLayer.addFeatures(markers);
             }
