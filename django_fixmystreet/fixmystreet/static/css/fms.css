@@ -465,6 +465,10 @@ article{
 #layerswitcher input{
 	float:left;
 	margin-right:10px;
+	margin-left:10px;
+}
+#statusToggleCreated, #statusToggleCreated + label{
+	margin-top:10px;
 }
 #layerswitcher input + label{
 	vertical-align:middle !important;
@@ -491,6 +495,29 @@ article{
 	-webkit-border-top-right-radius: 4px;
 	-moz-border-radius-topright: 4px;
 	border-top-right-radius: 4px;
+}
+#search-address-form{
+	margin-top:10px;
+}
+#search-form #widget-search-ticket-button{
+	background:transparent url('../images/btn_search_tickets_header.png') top left no-repeat;
+	border:0;
+	width:35px;
+	height:33px;
+	margin-left: -26px;
+	margin-top: 2px;
+}
+.dataLayersDiv{
+	margin-top:10px;
+}
+#layerswitcher .layersDiv:first-child .dataLayersDiv{
+	margin-top:0;
+}
+#search-form #input-ticket-search{
+	margin-right: -13px;
+}
+#search-form #search-ticket-form{
+	margin-left:10px;
 }
 #instructions ol.steps{
 	margin: 0 0 10px 10px;

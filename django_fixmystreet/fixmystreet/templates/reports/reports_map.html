@@ -165,7 +165,7 @@ function initDragMarker(x, y, additionalInfo) {
 
                                         <form id="search-ticket-form" class="form-inline" action="{% url 'search_ticket' %}">
                                             <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-                                            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="{% trans 'Access Ticket' %}">
+                                            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
                                         </form>
                                     </div>
                                 </div>
@@ -189,13 +189,13 @@ function initDragMarker(x, y, additionalInfo) {
                             <div class="dataLayersDiv">
                                 <h3>{% trans 'Statut' %}</h3>
                                 <input type="checkbox" id="statusToggleCreated" value="created" checked="">
-                                <label><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'Created' %}</label>
+                                <label for="statusToggleCreated"><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'Created' %}</label>
                                 <br>
                                 <input type="checkbox" id="statusToggleInProgress" value="in_progress" checked="">
-                                <label><img src="{{ STATIC_URL }}images/marker-orange-xxs.png" />{% trans 'In progress' %}</label>
+                                <label for="statusToggleInProgress"><img src="{{ STATIC_URL }}images/marker-orange-xxs.png" />{% trans 'In progress' %}</label>
                                 <br>
                                 <input type="checkbox" id="statusToggleClosed" value="closed" checked="">
-                                <label><img src="{{ STATIC_URL }}images/marker-green-xxs.png" />{% trans 'Closed' %}</label>
+                                <label for="statusToggleClosed"><img src="{{ STATIC_URL }}images/marker-green-xxs.png" />{% trans 'Closed' %}</label>
                             </div>
                         </div>
 
