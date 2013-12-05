@@ -29,10 +29,15 @@ fms.filterMapWithStatus = function(){
                     fms.currentMap.markersLayer.destroyFeatures();
                 }
                 var markers = [];
-                for(var i=0; i< data.length; ++i){
+                for(var i=0; i< data.length; ++i) {
                     markers.push(fms.currentMap.addReport(data[i], i, false));
                 }
                 fms.currentMap.markersLayer.addFeatures(markers);
+            },
+            error: function(data) {
+                if(fms.currentMap.markersLayer){
+                    fms.currentMap.markersLayer.destroyFeatures();
+                }
             }
         }
     );
@@ -298,7 +303,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             delete this.draggableLayer;
         }
 
-        this.draggableLayer = new OpenLayers.Layer.Vector( "Dragable Layer" );
+        this.draggableLayer = new OpenLayers.Layer.Vector( "Dragable Layer", {displayInLayerSwitcher: false} );
         this.map.addLayer(this.draggableLayer);
 
         var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{

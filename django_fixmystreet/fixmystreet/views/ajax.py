@@ -57,7 +57,7 @@ def filter_map(request):
     if "closed" in mFilter:
         result+= Report.objects.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
     if mFilter == "":
-        result += Report.objects.all().public()
+        result += Report.objects.none()
 
     jsonString= "["
     for report in result:
