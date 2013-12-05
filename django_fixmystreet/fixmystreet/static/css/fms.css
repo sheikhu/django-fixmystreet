@@ -332,7 +332,7 @@ article{
 	padding:0;
 }
 .home #popup #popup_contentDiv{
-	width:218px !important;
+	width:232px !important;
 }
 .home #popup .popupContent{
 	font-size:12px;
@@ -380,7 +380,7 @@ article{
 	border-radius: 4px 4px 0 0;
 }
 .reports #popup #popup_close{
-	display:none;
+	/*display:none;*/
 }
 .reports #popup .olPopupContent{
 	padding:1px;
@@ -564,7 +564,7 @@ article{
 	-moz-border-radius-topright: 4px;
 	border-top-right-radius: 4px;
 }
-#search-address-form{
+.reports #search-address-form{
 	margin-top:10px;
 }
 #search-form #widget-search-ticket-button{
@@ -1072,6 +1072,14 @@ form#report-form{
 }
 .modal #id_mark_as_done_motivation{
 	width: 98%;
+}
+.modal #createNewReport{
+	float:left;
+}
+.modal #createNewReport + label{
+	vertical-align: middle;
+	display: inline;
+	margin-left: 10px;
 }
 .download-pdf, .subscribe, .isresolved{
 	width: 49px;
