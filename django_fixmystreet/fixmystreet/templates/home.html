@@ -86,7 +86,7 @@ function showResults(type,li){
     <div class="container">
         <div class="row">
             <div class="span12">
-                <article id="map">
+                <article id="map" class="home">
 
                     <div id="searchContainer">
                         <div id="instructions">
@@ -119,7 +119,7 @@ function showResults(type,li){
                                         <form id="search-address-form" class="form-inline search-form">
                                             <div id="address-search-div">
                                                 <!--h2>{% trans "Enter the address where the incident is:" %}</h2-->
-                                                <input id="input-search" class="input-xxlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
+                                                <input id="input-search" class="input-xxlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" autofocus />
                                                 <input id="input-streetnumber"  placeholder="n°" class="input-mini" type="search" />
                                                 <select id="input-ward" class="input-large" name="ward">
                                                     <option value="">{% trans "All communes..." %}</option>
