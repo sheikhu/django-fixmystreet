@@ -483,15 +483,17 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
                                 if (!isIconsOnly) {
                                     popoverSize  = new OpenLayers.Size(400,220);
-                                    popoverTitle = "<h2>Incident #" + feature.attributes.report.id + " (<a class='moreDetails' href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>Details</a>)</h2>";
+                                    popoverTitle = "<h2>Incident #" + feature.attributes.report.id + " </h2>";
 
-                                    popoverContent = '<p style="float: left;margin-right: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
-                                        "<strong>" + feature.attributes.report.address_number + ', ' +
+                                    popoverContent = '<div class="details-popup"><p style="float: right;margin-left: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
+                                        "<a class='moreDetails' style='clear:both; float: right;margin-left: 15px;' href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>Details</a>" +
+                                        "<strong class='popup_adress'>" + feature.attributes.report.address_number + ', ' +
                                         feature.attributes.report.address + ' ' + "<br/>" +
                                         feature.attributes.report.postalcode + ' ' +
                                         feature.attributes.report.address_commune_name + "</strong>" +
+                                        
 
-                                        "<p class='categoryPopup'>" + feature.attributes.report.category + "</p>";
+                                        "<p class='categoryPopup'>" + feature.attributes.report.category + "</p></div>          ";
                                 }
 
                                 var popoverIcons = "<ul class='iconsPopup'>";
