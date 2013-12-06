@@ -346,7 +346,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.id,Report.objects.get(id=report2.id).merged_with.id)
 
         #The first one (oldest one) is kept
-        self.assertEqual(Report.objects.all()[0].id, report.id)
+        self.assertEqual(Report.visibles.all()[0].id, report.id)
 
         #The comment of the second one is added to the first one
         self.assertEqual(Report.objects.get(id=report.id).comments().count(),2)
