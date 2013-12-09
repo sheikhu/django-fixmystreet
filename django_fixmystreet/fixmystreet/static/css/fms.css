@@ -168,7 +168,7 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	color: #495E77;
 }
 footer{
-	font-size: 11px;
+	font-size: 12px;
 	margin-top:30px;
 }
 footer .a-propos{
@@ -658,18 +658,26 @@ article{
 	height: 15px;
     margin-right: 10px;
 }
+.icon-danger-red{
+	background: transparent url('../images/icon-danger-red.png') top left no-repeat;
+	width: 25px;
+	height: 25px;
+	margin-right: 5px;
+	vertical-align: bottom;
+}
 #danger-risk{
 	float: right;
-	margin: 0 10px 0 0;
+	margin: -4px 10px 0 0;
+	color: #FFF;
 }
-#danger-risk a:link, #danger-risk a:visited{
+/*#danger-risk a:link, #danger-risk a:visited{
 	color: #FFDB00;
 	text-decoration: none;
 }
 #danger-risk a:hover, #danger-risk a:active, #danger-risk a:focus{
 	color: #FFDB00;
 	text-decoration: none;
-}
+}*/
 #input-search{
 	width: 580px;
 	margin-left: 10px;
@@ -1118,7 +1126,7 @@ form#report-form{
 }
 #incident-head .ticket_number{
 	color:#D2E2F6;
-	font-size:11px;
+	font-size:12px;
 }
 #incident-head .ticket_address{
 	color:#FFF;
