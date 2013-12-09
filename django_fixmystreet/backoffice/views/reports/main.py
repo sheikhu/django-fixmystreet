@@ -237,3 +237,47 @@ def verify(request):
             context_instance=RequestContext(request))
 
     return new(request)
+
+def document(request, slug, report_id):
+    ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
+    report = get_object_or_404(Report, id=report_id)
+
+    if request.method == "POST":
+        comment = None
+        comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+        file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
+
+        # this checks update is_valid too
+        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
+            # this saves the update as part of the report.
+
+            user = user = FMSUser.objects.get(pk=request.user.id)
+
+            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
+                comment            = comment_form.save(commit=False)
+                comment.report     = report
+                comment.created_by = user
+                comment.save()
+
+            files = file_formset.save()
+
+            for report_file in files:
+                report_file.created_by = user
+                report_file.save()
+
+            report.trigger_updates_added(files=files, comment=comment)
+
+            messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
+        comment_form = ReportCommentForm(prefix='comment')
+
+    return render_to_response("reports/document.html",
+            {
+                "report": report,
+                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+                "file_formset": file_formset,
+                "comment_form": comment_form,
+            },
+            context_instance=RequestContext(request))
