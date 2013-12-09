@@ -25,11 +25,12 @@ function renderResults() {
     $proposal.empty();
     var features = [];
 
+    var iconIdx = 0;
     for(var i=paginationResults*5, length=results.length; i<length && features.length<5; i++) {
         var address = results[i].address;
         var pos = results[i].point;
 
-        var newAddress = new AddressResult(pos.x, pos.y, address);
+        var newAddress = new AddressResult(pos.x, pos.y, address, iconIdx++);
         $proposal.append(newAddress.render());
 
         // Create feature on vectore layer
@@ -42,6 +43,12 @@ function renderResults() {
                         'postCode'     : address.street.postCode,
                         'municipality' : address.street.municipality
                     }
+                },
+                {
+                    externalGraphic: newAddress.iconSrc(),
+                    graphicWidth: 25,
+                    graphicHeight: 32,
+                    graphicYOffset: -32
                 }
             );
         features.push(feature);
@@ -89,7 +96,7 @@ function renderResults() {
     }
 
 }
-function AddressResult(x, y, address)
+function AddressResult(x, y, address, idx)
 {
     var self = this;
 
@@ -100,13 +107,17 @@ function AddressResult(x, y, address)
     this.address = address;
 
     this.render = function() {
-        this.el.innerHTML = '<p>' + this.address.street.name +
+        this.el.innerHTML = '<p><img src=' + this.iconSrc() + '/>' + this.address.street.name +
                             '<br/>' +
                             '<strong>' + this.address.street.postCode + ' ' + this.address.street.municipality + '</strong>' +
                             '</p>';
         this.el.addEventListener('click', this.onclick);
         return  this.el;
     };
+
+    this.iconSrc = function() {
+        return "/static/images/marker/marker-" + idx + ".png";
+    },
 
     this.onclick = function(event) {
         additionalInfo = {
