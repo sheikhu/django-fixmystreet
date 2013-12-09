@@ -1489,6 +1489,7 @@ label strong{
 }
 .changeStatus{
 	float:right;
+	margin-top: -3px;
 }
 .changeStatus .btn{
 	filter: none;
@@ -1501,11 +1502,43 @@ label strong{
 	text-shadow:none;
 }
 .changeStatus .btn.public, .changeStatus.open .btn.public{
-	background:green;
+	background:#51C464;
 }
 .changeStatus .btn.private, .changeStatus.open .btn.private{
-	background:orange;
+	background:#FFA800;
 }
 .changeStatus .btn.confidential, .changeStatus.open .btn.confidential{
-	background:red;
+	background:#FC4C4C;
+}
+.changeStatus .dropdown-menu label input{
+	display:none;
+}
+.changeStatus .dropdown-menu label{
+	color:#607C9D;
+	font-weight:bold;
+	font-size:12px;
+	padding: 5px 10px;
+	margin-bottom:0;
+}
+.changeStatus .dropdown-menu label.makePublic:hover{
+	background:#51C464;
+}
+.changeStatus .dropdown-menu label.makePrivate:hover{
+	background:#FFA800;
+}
+.changeStatus .dropdown-menu label.makeConfidential:hover{
+	background:#FC4C4C;
+}
+.changeStatus ul.dropdown-menu{
+	background:#E0E0E0;
+	min-width:0;
+	margin-top: -1px;
+}
+.changeStatus.btn-group>.btn, .changeStatus.btn-group>.dropdown-menu, .changeStatus.btn-group>.popover {
+	font-size: 12px;
+	font-weight: bold;
+}
+.changeStatus .caret{
+	border-top: 4px solid #FFF;
+	margin-left:5px;
 }

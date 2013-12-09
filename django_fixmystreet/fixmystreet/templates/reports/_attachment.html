@@ -35,21 +35,21 @@
           {% endif %}
           <ul class="dropdown-menu">
             {% if attachment.is_confidential or attachment.is_private %}
-                <li><label>
+                <li><label class="makePublic">
                     <!--input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PUBLIC}}"{% if attachment.is_public %} checked="checked"{% endif %}-->
                     <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PUBLIC}}">
                     {% trans "Public" %}
                 </label></li>
             {% endif %}
             {% if attachment.is_confidential or attachment.is_public %}
-                <li><label>
+                <li><label class="makePrivate">
                     <!--input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PRIVATE}}"{% if attachment.is_private %} checked="checked"{% endif %}-->
                     <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PRIVATE}}">
                     {% trans "Private" %}
                 </label></li>
             {% endif %}
             {% if attachment.is_public or attachment.is_private %}
-                <li><label>
+                <li><label class="makeConfidential">
                     <!--input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.CONFIDENTIAL}}"{% if attachment.is_confidential %} checked="checked"{% endif %}-->
                     <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.CONFIDENTIAL}}">
                     {% trans "Confidential" %}
