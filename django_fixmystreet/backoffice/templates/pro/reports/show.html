@@ -64,19 +64,13 @@ $(function(){
     /****************************************************************/
     /* Implement method when clicking private/public checkbox       */
     /****************************************************************/
-    $("#id_private").bind("click",function(event){
-        var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
-        if (r2==true){
-            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
-        }
-        else {
-            $('#id_public').attr("checked", "checked");
-            window.location = '{{report.get_absolute_url_pro}}';
-        }
-    });
-    $("#id_public").bind("click",function(event){
-            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
-    });
+    var public_private = document.getElementById('public_private');
+    public_private.onchange = function() {
+        window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=' + this.value;
+    }
+    /*Set the checked value*/
+    public_private.value = {{ report.private|yesno:'true,false' }};
+
     {% if subscribed %}
     $("#id_pro-subscription").attr("value","on").prop('checked', true);
     {% else %}
@@ -105,12 +99,6 @@ $(function(){
 $(document).ready(function() {
     /*Set the contractor dropdown*/
     $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
-    /*Set the checked value*/
-    {% if report.private %}
-        $('#id_private').attr("checked", "checked");
-    {% else %}
-        $('#id_public').attr("checked", "checked");
-    {% endif %}
     var markers = [];
     {% for report in reports %}
         var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
@@ -362,14 +350,50 @@ var someCallback = function(exifObject, index) {
                             <div class="ticket_infos">
                                 <span class="ticket_number">
                                     <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
-                                </span><br />
+                                </span>
+
+                                {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
+                                    <select id="public_private">
+                                        <option value="true">{% trans "Private" %}</option>
+                                        <option value="false">{% trans "Public" %}</option>
+                                    </select>
+                                {% else %}
+                                    {% if report.private %}
+                                        {% trans "private" %}
+                                    {% else %}
+                                        {% trans "public" %}
+                                    {% endif %}
+                                {% endif %}
+
+                                <br />
+
                                 <span class="ticket_address">
                                     {{ report.address }}, {{ report.address_number }}<br />
                                     {{ report.postalcode }} {{ report.get_address_commune_name }}
-                                </span><br />
-                                <span class="ticket_desc">
-                                    {{ report.display_category }}
                                 </span>
+
+                                <br />
+
+                                <span class="ticket_desc">
+                                    {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
+                                        <select id="main_cat_select">
+                                            <option value="0">{% trans "Select a Category" %}</option>
+                                            {% for cat in category_list%}
+                                                <option value="{{cat.id}}">{{cat.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <select id="sec_cat_select">
+                                            <option value="0">{% trans "Select a Category" %}</option>
+                                        </select>
+                                    {% else %}
+                                        {{report.display_category}}
+                                    {% endif %}
+                                </span>
+
+                                <br />
+
+                                <span>{{report.get_priority}}</span>
+
                             </div>
                         </div>
                         <div class="span6">
@@ -770,10 +794,6 @@ var someCallback = function(exifObject, index) {
             <!-- # REPORT DETAILS # -->
             <!-- ################## -->
             <table id='report-status'>
-                <tr>
-                    <th><strong>{% trans "Location:" %}</strong></th>
-                    <td colspan="3">{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
-                </tr>
 
                 {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                 <tr>
@@ -790,32 +810,7 @@ var someCallback = function(exifObject, index) {
                         </tr>
                     {% endif %}
                 {% endif %}
-                {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
-                <tr>
-                    <th><strong>{% trans "Category:" %}</strong></th>
-                    <td colspan="4">
-                            <select id="main_cat_select">
-                                <option value="0">{% trans "Select a Category" %}</option>
-                                {% for cat in category_list%}
-                                    <option value="{{cat.id}}">{{cat.name}}</option>
-                                {% endfor %}
-                            </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th><strong>{% trans "Secondary category:" %}</strong></th>
-                    <td colspan="4">
-                        <select id="sec_cat_select"><option value="0">{% trans "Select a Category" %}</option></select>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <th><strong>{% trans "Category:" %}</strong></th>
-                    <td colspan="4">
-                    {{report.display_category}}
-                    </td>
-                </tr>
-                {% endif %}
+
                 <tr>
                     <th><strong>{% trans "Status:" %}</strong></th>
                     <td>{{ report.get_status_display }}</td>
@@ -846,22 +841,6 @@ var someCallback = function(exifObject, index) {
                                     {% endfor %}
                                 </ul>
                                 {% endif %}
-                            </td>
-                        </tr>
-                        <!-- ################################# -->
-                        <!-- # PUBLIC OR PRIVATE CHECKBOX    # -->
-                        <!-- ################################# -->
-                        <tr>
-                            <th>
-                                <strong>{% trans "Visibility:" %}</strong>
-                            </th>
-                            <td colspan="2">
-                                <input type="radio" id="id_private" name="public_private">
-                                {% trans "Private" %}
-                            </td>
-                            <td colspan="2">
-                                <input type="radio" id="id_public" name="public_private">
-                                {% trans "Public" %}
                             </td>
                         </tr>
                     {% else %}
