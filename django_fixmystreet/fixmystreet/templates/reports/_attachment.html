@@ -14,6 +14,58 @@
     {% if attachment.reportfile %}
         <div class="picture-head">
             {% trans "Posted by" %} <strong>{{ attachment.reportfile.get_display_name_as_citizen }}</strong>
+            <!-- If the status allow such interactions -->
+    {% if editable %}
+        <div class="btn-group changeStatus">
+          {% if attachment.is_public %}
+              <a class="btn dropdown-toggle public" data-toggle="dropdown" href="#">
+                {% trans 'Public' %}
+                <span class="caret"></span>
+              </a>
+          {% elif attachment.is_private %}
+              <a class="btn dropdown-toggle private" data-toggle="dropdown" href="#">
+                {% trans 'Private' %}
+                <span class="caret"></span>
+              </a>
+          {% elif attachment.is_confidential %}
+              <a class="btn dropdown-toggle confidential" data-toggle="dropdown" href="#">
+                {% trans 'Confidential' %}
+                <span class="caret"></span>
+              </a>
+          {% endif %}
+          <ul class="dropdown-menu">
+            {% if attachment.is_confidential or attachment.is_private %}
+                <li><label>
+                    <!--input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PUBLIC}}"{% if attachment.is_public %} checked="checked"{% endif %}-->
+                    <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PUBLIC}}">
+                    {% trans "Public" %}
+                </label></li>
+            {% endif %}
+            {% if attachment.is_confidential or attachment.is_public %}
+                <li><label>
+                    <!--input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PRIVATE}}"{% if attachment.is_private %} checked="checked"{% endif %}-->
+                    <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PRIVATE}}">
+                    {% trans "Private" %}
+                </label></li>
+            {% endif %}
+            {% if attachment.is_public or attachment.is_private %}
+                <li><label>
+                    <!--input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.CONFIDENTIAL}}"{% if attachment.is_confidential %} checked="checked"{% endif %}-->
+                    <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.CONFIDENTIAL}}">
+                    {% trans "Confidential" %}
+                </label></li>
+            {% endif %}
+          </ul>
+        </div>
+    {% else %}
+        <!--p>
+        {% if attachment.security_level == attachment.PRIVATE %}
+            {% trans "private" %}
+        {% elif attachment.security_level == attachment.CONFIDENTIAL %}
+            {% trans "confidential" %}
+        {% endif %}
+        </p-->
+    {% endif %}
         </div>
         <span class="picture-caption">
             <!--a href="{{ attachment.reportfile.file.url }}"-->
@@ -84,31 +136,6 @@
     </p-->
     {% endif %}
 
-    <!-- If the status allow such interactions -->
-    {% if editable %}
-        <ul>
-            <li><label>
-                <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PUBLIC}}"{% if attachment.is_public %} checked="checked"{% endif %}>
-                {% trans "Public" %}
-            </label></li>
-
-            <li><label>
-                <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PRIVATE}}"{% if attachment.is_private %} checked="checked"{% endif %}>
-                {% trans "Private" %}
-            </label></li>
-            <li><label>
-                <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.CONFIDENTIAL}}"{% if attachment.is_confidential %} checked="checked"{% endif %}>
-                {% trans "Confidential" %}
-            </label></li>
-        </ul>
-    {% else %}
-        <!--p>
-        {% if attachment.security_level == attachment.PRIVATE %}
-            {% trans "private" %}
-        {% elif attachment.security_level == attachment.CONFIDENTIAL %}
-            {% trans "confidential" %}
-        {% endif %}
-        </p-->
-    {% endif %}
+    
     </div> <!-- update_text -->
 </li> <!-- report_update -->
