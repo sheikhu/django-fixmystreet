@@ -46,10 +46,19 @@ $(document).ready(function() {
         var photos = document.getElementsByClassName("thumbnail");
 
         if (comment.value || (photos.length > 1)) {
-            nextStep.disabled = false;
+
+            if (proVersion) {
+                send.disabled = false;
+            } else {
+                nextStep.disabled = false;
+            }
             return true;
         } else {
-            nextStep.disabled = true;
+            if (proVersion) {
+                send.disabled = true;
+            } else {
+                nextStep.disabled = true;
+            }
         }
         return false;
     }
