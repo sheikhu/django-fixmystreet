@@ -1487,3 +1487,25 @@ label strong{
 .login-btns p{
 	text-align:center;
 }
+.changeStatus{
+	float:right;
+}
+.changeStatus .btn{
+	filter: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border:0;
+	color:#FFF;
+	padding:4px;
+	text-shadow:none;
+}
+.changeStatus .btn.public, .changeStatus.open .btn.public{
+	background:green;
+}
+.changeStatus .btn.private, .changeStatus.open .btn.private{
+	background:orange;
+}
+.changeStatus .btn.confidential, .changeStatus.open .btn.confidential{
+	background:red;
+}
