@@ -376,84 +376,84 @@ var someCallback = function(exifObject, index) {
                             timeline
 
                             <!-- Actions -->
+                            {% if report.is_in_progress %}
+                            {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="display:block">
                                 <li class="dropdown-submenu">
                                      <a tabindex="-1" href="#">{% trans 'Choisir une action' %}</a>
                                      <ul class="dropdown-menu">
-                                        {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                                            <li class="dropdown-submenu">
-                                                <a tabindex="-1" href="#">Transférer à</a>
-                                                <ul class="dropdown-menu">
-                                                    <li class="dropdown-submenu">
-                                                        <a tabindex="-1" href="#">{% trans 'Gestionnaires' %}</a>
-                                                        <ul class="dropdown-menu">
-                                                            {% for department in departments %}
-                                                                <li>
-                                                                    <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
-                                                                        {{department.name}} ({{ department.dependency.name}})
-                                                                    </a>
-                                                                </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </li>
-                                                    <li class="dropdown-submenu">
-                                                        <a tabindex="-1" href="#">{% trans 'Entites' %}</a>
-                                                        <ul class="dropdown-menu">
-                                                            {% for entity in entities %}
-                                                                <li>
-                                                                    <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
-                                                                        {{entity.name}}
-                                                                    </a>
-                                                                </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </li>
-                                                    <li class="dropdown-submenu">
-                                                        <a tabindex="-1" href="#">{% trans 'Organisms' %}</a>
-                                                        <ul class="dropdown-menu">
-                                                            {% for institution in region_institution %}
-                                                                <li>
-                                                                    <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
-                                                                        {{institution.name}}
-                                                                    </a>
-                                                                </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">Transférer à</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">{% trans 'Gestionnaires' %}</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for department in departments %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
+                                                                    {{department.name}} ({{ department.dependency.name}})
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">{% trans 'Entites' %}</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for entity in entities %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
+                                                                    {{entity.name}}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">{% trans 'Organisms' %}</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for institution in region_institution %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
+                                                                    {{institution.name}}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
 
-                                                </ul>
-                                            </li>
+                                            </ul>
+                                        </li>
 
-                                            <li class="dropdown-submenu">
-                                                <a tabindex="-1" href="#">Assigner à</a>
-                                                <ul class="dropdown-menu">
-                                                    <li class="dropdown-submenu">
-                                                        <a tabindex="-1" href="#">Impétrants</a>
-                                                        <ul class="dropdown-menu">
-                                                            {% for organisation in contractors %}
-                                                                <li>
-                                                                    <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}">
-                                                                        {{ organisation.name }}
-                                                                    </a>
-                                                                </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </li>
-                                                    <li class="dropdown-submenu">
-                                                        <a tabindex="-1" href="#">Exécuteurs</a>
-                                                        <ul class="dropdown-menu">
-                                                            {% for applicant in applicants %}
-                                                                <li>
-                                                                    <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}">
-                                                                        {{ applicant.name }}
-                                                                    </a>
-                                                                </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        {% endif %}
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">Assigner à</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">Impétrants</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for organisation in contractors %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}">
+                                                                    {{ organisation.name }}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">Exécuteurs</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for applicant in applicants %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}">
+                                                                    {{ applicant.name }}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
 
                                     <!--  Planification -->
                                         <li class="dropdown-submenu">
@@ -489,8 +489,10 @@ var someCallback = function(exifObject, index) {
                                                 <a href="javascript:close();">{% trans 'Close' %}</a>
                                             </li>
                                         {% endif %}
-                                    </ul>
                                 </li>
+                            </ul>
+                            {% endif %}
+                            {% endif %}
                         </div>
                         <div class="span3">
                             {% if report.is_in_progress %}
