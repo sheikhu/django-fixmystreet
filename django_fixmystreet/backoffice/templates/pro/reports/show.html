@@ -374,6 +374,125 @@ var someCallback = function(exifObject, index) {
                         </div>
                         <div class="span6">
                             timeline
+
+                            <!-- Actions -->
+                            {% if report.is_in_progress %}
+                            {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="display:block">
+                                <li class="dropdown-submenu">
+                                     <a tabindex="-1" href="#">{% trans 'Choisir une action' %}</a>
+                                     <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">Transférer à</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">{% trans 'Gestionnaires' %}</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for department in departments %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
+                                                                    {{department.name}} ({{ department.dependency.name}})
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">{% trans 'Entites' %}</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for entity in entities %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
+                                                                    {{entity.name}}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">{% trans 'Organisms' %}</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for institution in region_institution %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
+                                                                    {{institution.name}}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">Assigner à</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">Impétrants</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for organisation in contractors %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}">
+                                                                    {{ organisation.name }}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a tabindex="-1" href="#">Exécuteurs</a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for applicant in applicants %}
+                                                            <li>
+                                                                <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}">
+                                                                    {{ applicant.name }}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    <!--  Planification -->
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">Planifier</a>
+
+                                        <!-- Dates possible de planification -->
+                                            <ul class="dropdown-menu">
+
+                                                {% if not report.planned %}
+                                                    <li class="active">
+                                                        <a tabindex="-1" href="#">{% trans "Not planned" %}</a>
+                                                    </li>
+                                                {% endif %}
+                                                {% for date in report.get_date_planned_available %}
+                                                    <li {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}class="active"{% endifequal %}>
+                                                        <a tabindex="-1" href="{% url 'report_planned_pro' report.id %}?date_planned={{ date|date:"m/Y" }}">
+                                                            {{ date|date:"m/Y" }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a tabindex="-1" href="#">Fusionner</a>
+                                        </li>
+                                        <li>
+                                            <a tabindex="-1" href="#modalPriority" data-toggle="modal">Priorité</a>
+                                        </li>
+
+                                        {% if not fms_user.contractor %}
+                                            <li>
+                                                <a href="javascript:close();">{% trans 'Close' %}</a>
+                                            </li>
+                                        {% endif %}
+                                </li>
+                            </ul>
+                            {% endif %}
+                            {% endif %}
                         </div>
                         <div class="span3">
                             {% if report.is_in_progress %}
@@ -395,7 +514,7 @@ var someCallback = function(exifObject, index) {
                                 {% endif %}
                             {% endif %}
 
-                            <a class="lk-download-pdf btn" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                            <a class="lk-download-pdf btn" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
                                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Télécharger' %}
                             </a>
                         </div>
@@ -411,15 +530,150 @@ var someCallback = function(exifObject, index) {
 {% endblock %}
 
 {% block content %}
-<div id="divMarkAsDone" class="modal hide fade" role="dialog">
-    <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}?is_fixed=True" method="post" >
-            {% include "_form_horizontal.html" with form=mark_as_done_form %}
-            <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
-            <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
-        </form>
+<!-- Modal -->
+{% if report.is_in_progress %}
+    {% if report.status != report.SOLVED %}
+        <div id="divMarkAsDone" class="modal hide fade">
+            <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}?is_fixed=True" method="post" >
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
+                    {{ mark_as_done_form.as_p }}
+                    <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
+                </div>
+
+                <!--div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div-->
+            </form>
+        </div>
+    {% endif %}
+
+    {% if not report.is_closed and not subscribed %}
+        <div id="modalSubscription" class="modal hide fade">
+            <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>{% trans "Subscription:" %}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    {% blocktrans with count=report.subscriptions.count %}
+                        Subscribe to receive notifications ({{ count }} subscribers to this incident)
+                    {% endblocktrans %}
+                    </p>
+
+                    <div id="report-subscription">
+                        <label class="checkbox">
+                            <input type="checkbox" name="pro-subscription" id="id_pro-subscription"> {% trans "Subscription and report follow-up" %}
+                        </label>
+                    </div>
+                </div>
+
+                <!--div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div-->
+            </form>
+        </div>
+    {% endif %}
+
+    <div id="modalPriority" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Priority:" %}</h3>
+        </div>
+        <div class="modal-body">
+            <tr>
+                <td colspan="2">
+                    <span>{% trans "Probability:" %}</span>
+                    <select style="width:50px;" id="prob" onchange="updatePriority()">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </td>
+                <td colspan="2">
+                    <span>{% trans "Gravity:" %}</span>
+                    <select style="width:50px;" id="grav" onchange="updatePriority()">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td colspan="2">{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></td>
+            </tr>
+        </div>
+
+        <!--div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div-->
     </div>
+
+{% endif %}
+<div id="modalDownloadPDF" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans 'Download a pdf report of this incident' %}</h3>
+        </div>
+
+        <div class="modal-body">
+
+            <p>
+                <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
+                </a>
+
+                {% if request.fmsuser.is_pro %}
+                <a id='mailPDFCitizenButton' class="btn">{% trans 'mail pdf' %}</a>
+                </p>
+            <p>
+                <span id="mail_pdf_citizen" class="hidden">
+                    {% trans 'enter mail address' %}
+                    <textarea id="mail_pdf_emailaddresses_citizen"></textarea>
+                    <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
+                    <br>
+                    {% trans 'enter comment for mail' %}
+                    <textarea id="mail_pdf_emailcomments_citizen"></textarea>
+                </span>
+                {% endif %}
+            </p>
+
+            {% if request.fmsuser.is_pro %}
+                <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a>
+                    <a id='mailPDFProButton' class="btn">{% trans 'mail pdf' %}</a>
+                </p>
+                <span id="mail_pdf" class="hidden">
+                    {% trans 'enter mail address' %}
+                    <textarea id="mail_pdf_emailaddresses"></textarea>
+                    <a class="btn pull-right" id="send_pdf_pro_button">{% trans 'send pdf' %}</a>
+                    <br>
+                    {% trans 'enter comment for mail' %}
+                    <textarea id="mail_pdf_emailcomments"></textarea>
+                </span>
+
+            {% endif %}
+
+            {% if request.fmsuser.manager or request.fmsuser.leader %}
+                <p><a href="{% url 'export_report' 'csv' report.id %}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
+            {% endif %}
+
+        </div>
+
+        <!--div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div-->
 </div>
 
 <div id="divRefuse" class="modal hide fade" role="dialog">
@@ -576,50 +830,12 @@ var someCallback = function(exifObject, index) {
 
                 {% if report.is_in_progress %}
                     {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                        <!-- ############################### -->
-                        <!-- # RESPONSIBLE/ENTITY DROPDOWN # -->
-                        <!-- ############################### -->
-                        <tr>
-                            <th><strong>{% trans "Responsible manager:" %}</strong></th>
-                            <td colspan="4">
-                                <select id="report_responsible_manager_select">
-                                   <optgroup label="{% trans 'Gestionnaires' %}">
-                                    {% for department in departments %}
-                                        <option value="department_{{department.id}}">{{department.name}} ({{ department.dependency.name}})</option>
-                                    {% endfor %}
-                                    </optgroup>
-                                    <optgroup label="{% trans 'Entites' %}">
-                                    {% for entity in entities %}
-                                        <option value="entity_{{entity.id}}">{{entity.name}}</option>
-                                    {% endfor %}
-                                    </optgroup>
-                                    <optgroup label="{% trans 'Organisms' %}">
-                                    {% for institution in region_institution %}
-                                        <option value="entity_{{institution.id}}">{{institution.name}}</option>
-                                    {% endfor %}
-                                    </optgroup>
-                                </select>
-                            </td>
-                        </tr>
                         <!-- ################################# -->
                         <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
                         <!-- ################################# -->
                         <tr>
                             <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
                             <td colspan="4">
-                                <select id="report_responsible_impetrant_contractor_select">
-                                    <option value="None">{% trans 'No selected contractor/applicant' %}</option>
-                                        <optgroup label="Executeur de travaux">
-                                        {% for organisation in contractors %}
-                                        <option value="{{organisation.id}}">{{ organisation.name }}</option>
-                                        {% endfor %}
-                                    </optgroup>
-                                    <optgroup label="Impetrants">
-                                    {% for applicant in applicants %}
-                                        <option value="{{applicant.id}}">{{ applicant.name }}</option>
-                                    {% endfor %}
-                                    </optgroup>
-                                </select>
                                 {% if report.contractor %}
                                 <ul>
                                     {% for contact_person in report.contractor.workers.all %}
@@ -648,51 +864,6 @@ var someCallback = function(exifObject, index) {
                                 {% trans "Public" %}
                             </td>
                         </tr>
-                        <!-- ############ -->
-                        <!-- # PRIORITY # -->
-                        <!-- ############ -->
-                        <tr>
-                            <th>
-                                <strong>{% trans "Priority:" %} </strong>
-                            </th>
-                            <td colspan="2">
-                                <span>{% trans "Probability:" %}</span>
-                                <select style="width:50px;" id="prob" onchange="updatePriority()">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </td>
-                            <td colspan="2">
-                                <span>{% trans "Gravity:" %}</span>
-                                <select style="width:50px;" id="grav" onchange="updatePriority()">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2">{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></td>
-                        </tr>
-                    <tr>
-                        <th>
-                            <strong>{% trans "Planification:" %}</strong>
-                        </th>
-                        <td colspan="4">
-                            <select id="date_planned" onchange="planned()">
-                                {% if not report.planned %}
-                                    <option value="">{% trans "Not planned" %}</option>
-                                {% endif %}
-                                {% for date in report.get_date_planned_available %}
-                                    <option value='{{ date|date:"m/Y" }}' {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}selected{% endifequal %}>{{ date|date:"m/Y" }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </tr>
                     {% else %}
                         <!-- ########################################################### -->
                         <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
@@ -757,45 +928,6 @@ var someCallback = function(exifObject, index) {
             </table>
         </div>
 
-        <p>
-            <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
-            <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
-            </a>
-
-            {% if request.fmsuser.is_pro %}
-            <a id='mailPDFCitizenButton' class="btn">{% trans 'mail pdf' %}</a>
-            </p>
-        <p>
-            <span id="mail_pdf_citizen" class="hidden">
-                {% trans 'enter mail address' %}
-                <textarea id="mail_pdf_emailaddresses_citizen"></textarea>
-                <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
-                <br>
-                {% trans 'enter comment for mail' %}
-                <textarea id="mail_pdf_emailcomments_citizen"></textarea>
-            </span>
-            {% endif %}
-        </p>
-
-        {% if request.fmsuser.is_pro %}
-            <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a>
-                <a id='mailPDFProButton' class="btn">{% trans 'mail pdf' %}</a>
-            </p>
-            <span id="mail_pdf" class="hidden">
-                {% trans 'enter mail address' %}
-                <textarea id="mail_pdf_emailaddresses"></textarea>
-                <a class="btn pull-right" id="send_pdf_pro_button">{% trans 'send pdf' %}</a>
-                <br>
-                {% trans 'enter comment for mail' %}
-                <textarea id="mail_pdf_emailcomments"></textarea>
-            </span>
-
-        {% endif %}
-
-        {% if request.fmsuser.manager or request.fmsuser.leader %}
-            <p><a href="{% url 'export_report' 'csv' report.id %}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
-        {% endif %}
-
         {% if not report.is_created %}
             <p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p>
         {% endif %}
@@ -845,28 +977,11 @@ var someCallback = function(exifObject, index) {
         </form>
     </div>
     <div class="bordered-box">
-        <h4>{% trans "Subscription" %}</h4>
-        <div id="report-subscription">
-            <label class="checkbox">
-                <input type="checkbox" name="pro-subscription" id="id_pro-subscription"> {% trans "Subscription and report follow-up" %}
-            </label>
-        </div>
         <!-- #################################### -->
         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
         <!-- #################################### -->
         {% if report.responsible_department in request.fmsuser.organisations_list %}
             <button onclick="showNearbyReports();" class="btn" id="btn-merge">{% trans 'Merge' %}</button>
-            <!-- ############################################# -->
-            <!-- # DISPLAY WHEN REPORT STATUS IS IN PROGRESS # -->
-            <!-- ############################################# -->
-            {% if report.is_in_progress %}
-                {% if request.fmsuser.is_superuser %}
-                    <a href="{% url 'report_delete_pro' report.id %}" class="btn pull-right clearfix btn-danger" id="btn-del">{% trans 'Delete' %}</a>
-                {% endif %}
-                {% if not fms_user.contractor %}
-                    <a href="javascript:close();" class="btn pull-right btn-success">{% trans 'Close' %}</a>
-                {% endif %}
-            {% endif %}
             <!-- ######################################### -->
             <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
             <!-- ######################################### -->
@@ -878,16 +993,6 @@ var someCallback = function(exifObject, index) {
         {% endif %}
         <div style="clear:both;"></div>
     </div>
-    {% endif %}
-
-    {% if report.is_markable_as_solved and not report.is_merged%}
-        <div class="bordered-box">
-             <h4>{% trans "You think this incident is close. Indicate it!" %}</h4>
-             <div>
-                <button href="#divMarkAsDone" class="pull-right btn" data-toggle="modal" >{% trans 'Solved' %}</button>
-            </div>
-            <div style="clear:both;"></div>
-         </div>
     {% endif %}
 
 </div>
