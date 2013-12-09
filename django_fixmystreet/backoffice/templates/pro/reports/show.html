@@ -733,7 +733,7 @@ var someCallback = function(exifObject, index) {
     {% trans "Report Ticket" %} {{ report.get_ticket_number }}
 </h1>
 
-<div class="span6">
+<div class="">
     <div class="bordered-box">
         {% if not report.is_merged %}
             {% if report.is_created %}
@@ -917,14 +917,16 @@ var someCallback = function(exifObject, index) {
         <!-- ########################## -->
         <!-- # DISPLAY FILES AND COMMENTS SECTION  # -->
         <!-- ########################## -->
-        <div class="bordered-box">
+        <div class="timeline-container">
             {% if report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list %}
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
             {% endif %}
 
             {% if report.attachmentsList %}
-                <h4>{% trans "Photos and files" %}</h4>
-                <div id="report_updates">
+                <!--h4>{% trans "Photos and files" %}</h4-->
+                <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
+                <!--div id="report_updates"-->
+                <ul id="report_updates" class="timeline">
                     {% for attachment in report.attachmentsList %}
                         {% if not attachment.is_confidential or fms_user.can_see_confidential %}
                             {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit %}
