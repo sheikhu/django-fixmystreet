@@ -1491,7 +1491,7 @@ label strong{
 	float:right;
 	margin-top: -3px;
 }
-.changeStatus .btn{
+.changeStatus .btn, .changeReportStatus .btn{
 	filter: none;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -1501,44 +1501,47 @@ label strong{
 	padding:4px;
 	text-shadow:none;
 }
-.changeStatus .btn.public, .changeStatus.open .btn.public{
+.changeStatus .btn.public, .changeStatus.open .btn.public, .changeReportStatus .btn.public, .changeReportStatus.open .btn.public{
 	background:#51C464;
 }
-.changeStatus .btn.private, .changeStatus.open .btn.private{
+.changeStatus .btn.private, .changeStatus.open .btn.private, .changeReportStatus .btn.private, .changeReportStatus.open .btn.private{
 	background:#FFA800;
 }
-.changeStatus .btn.confidential, .changeStatus.open .btn.confidential{
+.changeStatus .btn.confidential, .changeStatus.open .btn.confidential, .changeReportStatus .btn.confidential, .changeReportStatus.open .btn.confidential{
 	background:#FC4C4C;
 }
-.changeStatus .dropdown-menu label input{
+.changeStatus .dropdown-menu label input, .changeReportStatus .dropdown-menu label input{
 	display:none;
 }
-.changeStatus .dropdown-menu label{
+.changeStatus .dropdown-menu label, .changeReportStatus .dropdown-menu label{
 	color:#607C9D;
 	font-weight:bold;
 	font-size:12px;
 	padding: 5px 10px;
 	margin-bottom:0;
 }
-.changeStatus .dropdown-menu label.makePublic:hover{
+.changeStatus .dropdown-menu label.makePublic:hover, .changeReportStatus .dropdown-menu label.makePublic:hover{
 	background:#51C464;
+	color:#FFF;
 }
-.changeStatus .dropdown-menu label.makePrivate:hover{
+.changeStatus .dropdown-menu label.makePrivate:hover, .changeReportStatus .dropdown-menu label.makePrivate:hover{
 	background:#FFA800;
+	color:#FFF;
 }
-.changeStatus .dropdown-menu label.makeConfidential:hover{
+.changeStatus .dropdown-menu label.makeConfidential:hover, .changeReportStatus .dropdown-menu label.makeConfidential:hover{
 	background:#FC4C4C;
+	color:#FFF;
 }
-.changeStatus ul.dropdown-menu{
+.changeStatus ul.dropdown-menu, .changeReportStatus ul.dropdown-menu{
 	background:#E0E0E0;
 	min-width:0;
 	margin-top: -1px;
 }
-.changeStatus.btn-group>.btn, .changeStatus.btn-group>.dropdown-menu, .changeStatus.btn-group>.popover {
+.changeStatus.btn-group>.btn, .changeStatus.btn-group>.dropdown-menu, .changeStatus.btn-group>.popover, .changeReportStatus.btn-group>.btn, .changeReportStatus.btn-group>.dropdown-menu, .changeReportStatus.btn-group>.popover{
 	font-size: 12px;
 	font-weight: bold;
 }
-.changeStatus .caret{
+.changeStatus .caret, .changeReportStatus .caret{
 	border-top: 4px solid #FFF;
 	margin-left:5px;
 }
