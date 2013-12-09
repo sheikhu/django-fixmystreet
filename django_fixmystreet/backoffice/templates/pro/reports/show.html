@@ -410,6 +410,25 @@ var someCallback = function(exifObject, index) {
                             </div>
                         </div>
                         <div class="span6">
+
+                            {% if not report.is_merged %}
+                            <div class="bordered-box">
+                                <!-- #################################### -->
+                                <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
+                                <!-- #################################### -->
+                                {% if report.responsible_department in request.fmsuser.organisations_list %}
+                                    <!-- ######################################### -->
+                                    <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
+                                    <!-- ######################################### -->
+                                    {% if report.is_created %}
+                                        <a href="{% url 'report_accept_pro' report.id %}" class="btn" >{% trans 'Accept' %}</a>
+                                        <a href="{% url 'report_publish_pro' report.id %}" class="btn">{% trans 'Publish' %}</a>
+                                        <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
                             timeline
 
                             <!-- Actions -->
@@ -960,28 +979,6 @@ var someCallback = function(exifObject, index) {
 
 </div>
 
-<div class="span6">
-
-    {% if not report.is_merged %}
-    <div class="bordered-box">
-        <!-- #################################### -->
-        <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
-        <!-- #################################### -->
-        {% if report.responsible_department in request.fmsuser.organisations_list %}
-            <!-- ######################################### -->
-            <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
-            <!-- ######################################### -->
-            {% if report.is_created %}
-                <a href="{% url 'report_accept_pro' report.id %}" class="btn" >{% trans 'Accept' %}</a>
-                <a href="{% url 'report_publish_pro' report.id %}" class="btn">{% trans 'Publish' %}</a>
-                <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
-            {% endif %}
-        {% endif %}
-        <div style="clear:both;"></div>
-    </div>
-    {% endif %}
-
-</div>
 <div id="merge_nearby_reports_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
     <div class="modal-header">
         <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
