@@ -20,11 +20,11 @@ $(function(){
     /**********************************************/
     /* Prepare iphone toogle button look and feel */
     /**********************************************/
-    $("input[type=radio]").bind("click",function(){
-        var id = $(this).data('attachmentId');
-        var level = $(this).val();
-        window.location = '{% url "report_update_attachment" report.id %}?attachmentId='+id+'&updateType='+level;
-    });
+//    $("input[type=radio]").bind("click",function(){
+//        var id = $(this).data('attachmentId');
+//        var level = $(this).val();
+//        window.location = '{% url "report_update_attachment" report.id %}?attachmentId='+id+'&updateType='+level;
+//    });
 
     /***************************/
     /* Set the current manager */
@@ -64,12 +64,25 @@ $(function(){
     /****************************************************************/
     /* Implement method when clicking private/public checkbox       */
     /****************************************************************/
-    var public_private = document.getElementById('public_private');
-    public_private.onchange = function() {
-        window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=' + this.value;
-    }
+    $("#id_private").bind("click",function(event){
+        var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
+        if (r2==true){
+            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
+        }
+        else {
+            $('#id_public').attr("checked", "checked");
+            window.location = '{{report.get_absolute_url_pro}}';
+        }
+    });
+    $("#id_public").bind("click",function(event){
+            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
+    });
     /*Set the checked value*/
-    public_private.value = {{ report.private|yesno:'true,false' }};
+    {% if report.private %}
+        $('#id_private').attr("checked", "checked");
+    {% else %}
+        $('#id_public').attr("checked", "checked");
+    {% endif %}
 
     {% if subscribed %}
     $("#id_pro-subscription").attr("value","on").prop('checked', true);
@@ -353,10 +366,10 @@ var someCallback = function(exifObject, index) {
                                 </span>
 
                                 {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                                    <select id="public_private">
-                                        <option value="true">{% trans "Private" %}</option>
-                                        <option value="false">{% trans "Public" %}</option>
-                                    </select>
+                                    <input type="radio" id="id_private" name="public_private" value="true">
+                                   {% trans "Private" %}
+                                    <input type="radio" id="id_public" name="public_private" value="false">
+                                    {% trans "Public" %}
                                 {% else %}
                                     {% if report.private %}
                                         {% trans "private" %}
