@@ -514,9 +514,13 @@ var someCallback = function(exifObject, index) {
 
                                             </ul>
                                         </li>
+
+                                        {% if report.responsible_department in request.fmsuser.organisations_list %}
                                         <li>
-                                            <a tabindex="-1" href="#">Fusionner</a>
+                                            <a tabindex="-1" href="#" onclick="showNearbyReports();">{% trans 'Merge' %}</a>
                                         </li>
+                                        {% endif %}
+
                                         <li>
                                             <a tabindex="-1" href="#modalPriority" data-toggle="modal">Priorité</a>
                                         </li>
@@ -964,7 +968,6 @@ var someCallback = function(exifObject, index) {
         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
         <!-- #################################### -->
         {% if report.responsible_department in request.fmsuser.organisations_list %}
-            <button onclick="showNearbyReports();" class="btn" id="btn-merge">{% trans 'Merge' %}</button>
             <!-- ######################################### -->
             <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
             <!-- ######################################### -->
