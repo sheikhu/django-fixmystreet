@@ -457,14 +457,19 @@ var someCallback = function(exifObject, index) {
                             </div>
                             {% endif %}
 
-                            timeline
+                            <!--timeline-->
 
                             <!-- Actions -->
                             {% if report.is_in_progress %}
                             {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="display:block">
+                            <!--ul class="dropdown-menu incidentActions" role="menu" aria-labelledby="dLabel" style="display:block">
                                 <li class="dropdown-submenu">
-                                     <a tabindex="-1" href="#">{% trans 'Choisir une action' %}</a>
+                                     <a tabindex="-1" href="#">{% trans 'Choisir une action' %}</a-->
+                            <div class="btn-group incidentActions">
+                              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                {% trans 'Choisir une action' %}
+                                <span class="caret"></span>
+                              </a>
                                      <ul class="dropdown-menu">
                                         <li class="dropdown-submenu">
                                             <a tabindex="-1" href="#">Transférer à</a>
@@ -577,8 +582,8 @@ var someCallback = function(exifObject, index) {
                                                 <a href="javascript:close();">{% trans 'Close' %}</a>
                                             </li>
                                         {% endif %}
-                                </li>
-                            </ul>
+                                <!--/li-->
+                            </div>
                             {% endif %}
                             {% endif %}
                         </div>

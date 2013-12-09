@@ -1545,3 +1545,22 @@ label strong{
 	border-top: 4px solid #FFF;
 	margin-left:5px;
 }
+.incidentActions .dropdown-submenu>.dropdown-menu{
+	margin-top:0;
+}
+.incidentActions > a:link, .incidentActions > a:visited, .incidentActions.btn-group.open .btn.dropdown-toggle{
+	background:#BCD4F1;
+}
+.incidentActions .dropdown-menu>li>a:hover, .incidentActions .dropdown-menu>li>a:focus, .incidentActions .dropdown-submenu:hover>a, .incidentActions .dropdown-submenu:focus>a{
+	background:#9AB7DA;
+}
+.incidentActions .dropdown-menu>.active>a, .incidentActions .dropdown-menu>.active>a:hover, .incidentActions .dropdown-menu>.active>a:focus{
+	background:#7090B7;
+}
+.incidentActions, .incidentActions .dropdown-menu>li>a{
+	white-space:normal;
+}
+.incidentActions > .dropdown-menu{
+	right:auto;
+	left:0;
+}
