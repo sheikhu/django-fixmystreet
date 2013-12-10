@@ -149,7 +149,7 @@
 
 
                 {% for report in reports_nearby %}
-                    <div class="row reportsMergeable" id="{{ report.id }}">
+                    <div class="row reportsMergeable" id="#{{ report.get_ticket_number }}">
                         <div class="span12">
                             <div class="one_incident">
                                 <div class="row">
