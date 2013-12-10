@@ -405,8 +405,7 @@ var someCallback = function(exifObject, index) {
 
                                     {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
 
-
-                                        <div class="btn-group changeCategory">
+                                        <!--div class="btn-group changeCategory">
                                           <a class="btn dropdown-toggle {{report.category.name}}" data-toggle="dropdown" href="#">
                                             {{report.category.name}}
                                             <span class="caret"></span>
@@ -421,15 +420,13 @@ var someCallback = function(exifObject, index) {
                                                 </li>
                                             {% endfor %}
                                           </ul>
-                                        </div>
-<!-- Add secondary category Bootstrap dropdown -->
-
-                                        <!--select id="main_cat_select">
+                                        </div-->
+                                        <select id="main_cat_select">
                                             <option value="0">{% trans "Select a Category" %}</option>
                                             {% for cat in category_list%}
                                                 <option value="{{cat.id}}">{{cat.name}}</option>
                                             {% endfor %}
-                                        </select-->
+                                        </select>
                                         <select id="sec_cat_select">
                                             <option value="0">{% trans "Select a Category" %}</option>
                                         </select>
