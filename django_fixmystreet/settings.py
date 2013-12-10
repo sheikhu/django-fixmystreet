@@ -32,6 +32,10 @@ GA_CODE = os.environ['GA_CODE'] if 'GA_CODE' in os.environ else 'UA-17146775-54'
 SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else 'dev'
 EMAIL_HOST = ("localhost" if ENVIRONMENT == "production" else "relay.irisnet.be")
 ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))
+SERVER_EMAIL = "django_dev@cirb.irisnet.be"
+
+if ENVIRONMENT == 'production':
+    EMAIL_SUBJECT_PREFIX = "[Django-prod] "
 
 if 'MEDIA_ROOT' in os.environ:
     MEDIA_ROOT = os.environ['MEDIA_ROOT']
