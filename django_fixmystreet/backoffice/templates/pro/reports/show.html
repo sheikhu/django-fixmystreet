@@ -424,12 +424,12 @@ var someCallback = function(exifObject, index) {
                                         </div>
 <!-- Add secondary category Bootstrap dropdown -->
 
-                                        <select id="main_cat_select">
-                                            <!--option value="0">{% trans "Select a Category" %}</option-->
+                                        <!--select id="main_cat_select">
+                                            <option value="0">{% trans "Select a Category" %}</option>
                                             {% for cat in category_list%}
                                                 <option value="{{cat.id}}">{{cat.name}}</option>
                                             {% endfor %}
-                                        </select>
+                                        </select-->
                                         <select id="sec_cat_select">
                                             <option value="0">{% trans "Select a Category" %}</option>
                                         </select>
@@ -597,7 +597,7 @@ var someCallback = function(exifObject, index) {
                             {% endif %}
                             {% endif %}
                         </div>
-                        <div class="span3">
+                        <div class="span3 pro">
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
                                     <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
