@@ -105,7 +105,7 @@ def switchPrivacy(request,report_id):
         report.private = ('true' == privacy)
 
     report.save()
-    
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
@@ -175,7 +175,7 @@ def publish(request, report_id):
 
     comments = ReportComment.objects.filter(report_id=report_id)
     for comment in comments:
-        comment.security_level = ReportAttachment.PUBLIC  
+        comment.security_level = ReportAttachment.PUBLIC
         comment.save(publish_report=True)
 
     files = ReportFile.objects.filter(report_id=report_id)
@@ -226,10 +226,10 @@ def deleteAttachment(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-def merge(request,report_id):
+def do_merge(request,report_id):
     #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
-    report_2 = get_object_or_404(Report,id=request.GET["mergeId"])
+    report_2 = get_object_or_404(Report,id=request.POST["mergeId"])
 
     # Constraints for categories match and visibility match when merging
     # #Check that category + subcategory of two reports are equal:

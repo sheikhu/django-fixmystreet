@@ -676,8 +676,8 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 4)
 
         #Merge reports
-        url2 = reverse('report_merge_pro',args=[report_id])
-        response4 = self.client.get(url2,{"mergeId":report2_id})
+        url2 = reverse('report_do_merge_pro',args=[report_id])
+        response4 = self.client.post(url2,{"mergeId":report2_id})
 
         #Reference from merged to kept report
         self.assertEqual(report2_id,Report.objects.get(id=report_id).merged_with.id)

@@ -339,8 +339,8 @@ class ReportViewsTest(SampleFilesTestCase):
         response3 = self.client.post(reverse('login'), params)
 
         #Merge reports
-        url2 = reverse('report_merge_pro',args=[report.id])
-        response4 = self.client.get(url2,{"mergeId":report2.id})
+        url2 = reverse('report_do_merge_pro',args=[report.id])
+        response4 = self.client.post(url2,{"mergeId":report2.id})
 
         #Reference from merged to kept report
         self.assertEqual(report.id,Report.objects.get(id=report2.id).merged_with.id)

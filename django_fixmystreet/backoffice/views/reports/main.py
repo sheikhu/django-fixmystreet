@@ -196,13 +196,7 @@ def show(request,slug, report_id):
         contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR)
 
     applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT)
-    pnt = report.point
-    if report.is_created():
-        nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)
-    elif report.is_closed():
-        nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
-    else:
-        nearby_reports = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
+
     return render_to_response("pro/reports/show.html",
             {
                 "fms_user": request.fmsuser,
@@ -220,7 +214,6 @@ def show(request,slug, report_id):
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),
                 'attachment_edit': report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list() and (report.is_created() or report.is_in_progress()),
-                "nearby_reports":nearby_reports,
                 "category_list":ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()),
             },
             context_instance=RequestContext(request))
@@ -251,7 +244,7 @@ def document(request, slug, report_id):
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
             # this saves the update as part of the report.
 
-            user = user = FMSUser.objects.get(pk=request.user.id)
+            user = FMSUser.objects.get(pk=request.user.id)
 
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
                 comment            = comment_form.save(commit=False)
@@ -279,5 +272,23 @@ def document(request, slug, report_id):
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
                 "file_formset": file_formset,
                 "comment_form": comment_form,
+            },
+            context_instance=RequestContext(request))
+
+def merge(request, slug, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    pnt = report.point
+
+    if report.is_created():
+        reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)
+    elif report.is_closed():
+        reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
+    else:
+        reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
+    return render_to_response("pro/reports/merge.html",
+            {
+                "fms_user": request.fmsuser,
+                "report": report,
+                "reports_nearby":reports_nearby,
             },
             context_instance=RequestContext(request))
