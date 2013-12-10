@@ -416,9 +416,30 @@ var someCallback = function(exifObject, index) {
                                 <br />
 
                                 <span class="ticket_desc">
+
                                     {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
+
+                                    
+                                        <div class="btn-group changeCategory">
+                                          <a class="btn dropdown-toggle {{report.category.name}}" data-toggle="dropdown" href="#">
+                                            {{report.category.name}}
+                                            <span class="caret"></span>
+                                          </a>
+                                          <ul class="dropdown-menu">
+                                            {% for cat in category_list%}
+                                                <li>
+                                                    <label>
+                                                        <input type="radio" id="{{cat.id}}" name="{{cat.id}}" value="false">
+                                                        {{cat.name}}
+                                                    </label>
+                                                </li>
+                                            {% endfor %}
+                                          </ul>
+                                        </div>
+<!-- Add secondary category Bootstrap dropdown -->
+
                                         <select id="main_cat_select">
-                                            <option value="0">{% trans "Select a Category" %}</option>
+                                            <!--option value="0">{% trans "Select a Category" %}</option-->
                                             {% for cat in category_list%}
                                                 <option value="{{cat.id}}">{{cat.name}}</option>
                                             {% endfor %}
@@ -793,14 +814,14 @@ var someCallback = function(exifObject, index) {
     </div>
 </div>
 
-<h1 class="span12">
+<!--h1 class="span12">
     {% if report.is_in_progress %}
         <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
     {% else %}
         <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
     {% endif %}
     {% trans "Report Ticket" %} {{ report.get_ticket_number }}
-</h1>
+</h1-->
 
 <div class="">
     <div class="bordered-box">

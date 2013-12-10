@@ -1519,6 +1519,8 @@ label strong{
 	font-size:12px;
 	padding: 5px 10px;
 	margin-bottom:0;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
 }
 .changeStatus .dropdown-menu label.makePublic:hover, .changeReportStatus .dropdown-menu label.makePublic:hover{
 	background:#51C464;
@@ -1563,4 +1565,4 @@ label strong{
 .incidentActions > .dropdown-menu{
 	right:auto;
 	left:0;
-}
+} 
