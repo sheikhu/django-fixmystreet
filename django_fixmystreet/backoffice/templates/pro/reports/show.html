@@ -359,7 +359,7 @@ var someCallback = function(exifObject, index) {
             <article id="map" class="view_incident">
                 <div id="incident-head">
                     <div class="row">
-                        <div class="span3">
+                        <div class="span5">
                             <div class="ticket_infos">
                                 <span class="ticket_number">
                                     <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
@@ -435,11 +435,19 @@ var someCallback = function(exifObject, index) {
 
                                 <br />
 
-                                <span>{{report.get_priority}}</span>
+                                <!--span>{{report.get_priority}}</span><br /-->
+                                {% if report.get_priority <= 2 %}
+                                    <img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" />
+                                {% elif report.get_priority <= 8 %}
+                                    <img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" />
+                                {% else %}
+                                    <img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" />
+                                {% endif %}
+                                <!--/div-->
 
                             </div>
                         </div>
-                        <div class="span6">
+                        <div class="span4">
 
                             {% if not report.is_merged %}
                             <div class="bordered-box">
