@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% load i18n tags %}
+{% block title %}{% trans 'Incidents signalés dans le même secteur' %}{% endblock %}
+
+{% block meta %}
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/verify.js"></script>
+
+    <script>
+        var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
+        var reportJSONList = [];
+
+        {% for report in reports_nearby %}
+            var reportJSON = {{ report.marker_detail_short|dict_to_json|safe }};
+            reportJSONList.push(reportJSON);
+        {% endfor %}
+    </script>
+
+    <script>
+        var ticketSearch = document.getElementById('input-ticket-search');
+        var ticketForm   = document.getElementById('search-ticket-form');
+
+        function filterReports(event) {
+
+            if (event) {
+                event.preventDefault();
+            }
+
+            var reportsMergeable = document.getElementsByClassName('reportsMergeable');
+
+            for (var i=0, mergeableLength=reportsMergeable.length; i<mergeableLength; i++) {
+                if (reportsMergeable[i].id.contains(ticketSearch.value)) {
+                    reportsMergeable[i].hidden = false;
+                } else {
+                    reportsMergeable[i].hidden = true;
+                }
+            }
+        }
+
+        ticketSearch.addEventListener('keyup', filterReports);
+        ticketForm.addEventListener('submit', filterReports);
+
+        // Filter if browser refresh with default values
+        filterReports();
+    </script>
+
+    <script>
+        var formMerge = document.getElementById('formMerge');
+        var postMethod = "{% url 'report_do_merge_pro' report.id %}"
+
+        var reportToMergeInput = document.getElementById('reportToMergeInput');
+        var reportToMergeString = document.getElementById('reportToMergeString');
+
+        function loadModal(reportId) {
+            reportToMergeInput.value = reportId;
+            reportToMergeString.innerHTML = reportId;
+
+            formMerge.action = postMethod + "?mergeId=" + reportId;
+            $('#modalMerge').modal();
+        }
+    </script>
+
+{% endblock %}
+
+{% block map %}
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div id="searchContainer">
+                    <div id="search-form" class="block highlighted">
+                        <form id="search-ticket-form" class="form-inline">
+                            <input id="input-ticket-search" class="input-large" type="search" name="q" placeholder="{% trans 'Ticket number...' %}" />
+                            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="span10">
+            <h2 class="verify_title">Il y a {{ reports_nearby.count }} incidents signalés dans le même secteur</h2>
+            <p class="lead"></p>
+        </div>
+        <div class="span2">
+            <div class="switch_verify btn-group pull-right">
+                <button class="btn active" id="btn-list">{% trans "List" %}</button>
+                <button class="btn" id="btn-map">{% trans "Map" %}</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <article id="map" class="map-big hide">
+                <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
+                    <a class="olControlZoomIn olButton"></a>
+                </div>
+                <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+            </article>
+            <div id='list'>
+                <div class="row">
+                    <div class="span12">
+                        <div class="one_incident" style="border:3px solid black;">
+                            <div class="row">
+                                <!-- Address and categories -->
+                                <div class="span4 loc_desc">
+                                    <!-- Distance -->
+                                    <p class="distance">{% trans "Report to merge" %}</p>
+                                    <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                                    <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+                                    <span class="ticket_address">
+                                        {{ report.address }}, {{ report.address_number }}<br />
+                                        {{ report.postalcode }} {{ report.territorial_entity.name }}
+                                    </span><br />
+                                    <span class="ticket_desc">
+                                        {{ report.display_category }}
+                                    </span><br />
+                                </div>
+
+                                <!-- Photos -->
+                                <div class="span4 picture">
+                                    {% if report.thumbnail %}
+                                        <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
+                                    {% else %}
+                                        <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+                                    {% endif %}
+                                </div>
+                                <!-- Comments -->
+                                <div class="span4">
+                                    {% for attachment in report.attachments.all %}
+                                        <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                    {% endfor %}
+                                </div>
+                                <!-- Deprecated ? -->
+                                {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% for report in reports_nearby %}
+                    <div class="row reportsMergeable" id="{{ report.id }}">
+                        <div class="span12">
+                            <div class="one_incident">
+                                <div class="row">
+                                    <!-- Address and categories -->
+                                    <div class="span4 loc_desc">
+                                        <!-- Distance -->
+                                        <p class="distance">{% trans "à" %} {{ report.distance.m|floatformat:"0" }} m</p>
+                                        <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                                        <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+                                        <span class="ticket_address">
+                                            {{ report.address }}, {{ report.address_number }}<br />
+                                            {{ report.postalcode }} {{ report.territorial_entity.name }}
+                                        </span><br />
+                                        <span class="ticket_desc">
+                                            {{ report.display_category }}
+                                        </span><br />
+                                    <!-- Button "it's the same" -->
+                                    <a href="javascript:loadModal({{ report.id }});" class="btn_same_incident report" >{% trans "Merge" %}</a>
+                                    </div>
+                                    <!-- Photos -->
+                                    <div class="span4 picture">
+                                        {% if report.thumbnail %}
+                                            <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
+                                        {% else %}
+                                            <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+                                        {% endif %}
+                                    </div>
+                                    <!-- Comments -->
+                                    <div class="span4">
+                                        {% for attachment in report.attachments.all %}
+                                            <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- Deprecated ? -->
+                                    {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <p>
+                {% if BACKOFFICE %}
+                    {% url "report_new_pro" as report_url %}
+                {% else %}
+                    {% url "report_new" as report_url %}
+                {% endif %}
+                <a class="btn_continue pull-right" href='{% url "report_show_pro" report.get_slug report.id %}'>{% trans "Cancel" %}</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div id="modalMerge" class="modal hide fade">
+    <form id="formMerge" title="" method="post" >
+        {% csrf_token %}
+
+        <input type="hidden" id="reportToMergeInput" name="mergeId" value="" />
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Confirm merge" %}</h3>
+        </div>
+        <div class="modal-body">
+            <span>{% trans 'Are you sure you want to merge these incidents?' %}</span>
+            <p>{% trans 'Attention: by merging these incidents the resulting incident will have the following properties:' %}</p>
+            <p> {% trans 'category' %}: {{report.display_category}}</p>
+            {% if report.private %}
+            <p> {% trans 'visibility' %}: {% trans 'private' %}</p>
+            {% else %}
+            <p> {% trans 'visibility' %}: {% trans 'public' %}</p>
+            {% endif %}
+
+            <p>#{{ report.id }}</p>
+            <p id="reportToMergeString"></p>
+        </div>
+
+        <div class="modal-footer">
+            <a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>
+            <input type="submit" class="btn  btn-primary"  value="{% trans 'Merge'%}"/>
+        </div>
+    </form>
+</div>
+{% endblock %}

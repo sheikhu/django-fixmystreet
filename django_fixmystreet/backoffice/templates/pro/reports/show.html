@@ -308,15 +308,6 @@ function updatePriority(){
 
 }
 
-function showNearbyReports(){
-    $("#merge_nearby_reports_popup").modal();
-}
-
-function mergeReport(){
-    $("#merge_confirm_popup").modal("hide");
-
-    window.location = "{% url 'report_merge_pro' report.id %}?mergeId="+selected;
-}
 function planned(){
     var date_planned = document.getElementById('date_planned').value;
 
@@ -324,11 +315,6 @@ function planned(){
         var url = "{% url 'report_planned_pro' report.id %}?date_planned=" + date_planned;
         window.location = url;
     }
-}
-
-function showMergeConfirmation(){
-    $("#merge_nearby_reports_popup").modal("hide");
-    $("#merge_confirm_popup").modal();
 }
 
 var someCallback = function(exifObject, index) {
@@ -397,7 +383,7 @@ var someCallback = function(exifObject, index) {
                                           </ul>
                                         </div>
                                     {% endif %}
-                                    
+
                                 {% else %}
                                     {% if report.private %}
                                         {% trans "Private" %}
@@ -419,7 +405,7 @@ var someCallback = function(exifObject, index) {
 
                                     {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
 
-                                    
+
                                         <div class="btn-group changeCategory">
                                           <a class="btn dropdown-toggle {{report.category.name}}" data-toggle="dropdown" href="#">
                                             {{report.category.name}}
@@ -590,7 +576,10 @@ var someCallback = function(exifObject, index) {
 
                                         {% if report.responsible_department in request.fmsuser.organisations_list %}
                                         <li>
+<!--
                                             <a tabindex="-1" href="#" onclick="showNearbyReports();">{% trans 'Merge' %}</a>
+-->
+                                            <a tabindex="-1" href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Merge' %}</a>
                                         </li>
                                         {% endif %}
 
@@ -1031,60 +1020,5 @@ var someCallback = function(exifObject, index) {
         </div>
     {% endif %}
 
-</div>
-
-<div id="merge_nearby_reports_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
-        <h3>{% trans 'Nearby incidents that are already submitted:' %}</h3>
-    </div>
-    <div class="modal-body">
-        {% if nearby_reports %}
-        <div id='search_results'>
-            {% for report in nearby_reports %}
-                {% include "reports/_selection.html" %}
-            {% endfor %}
-            <script type="text/javascript">
-                var selected;
-                function selectReport(id,elem){
-                    selected = id;
-                    $.each($(elem).parent().children(),function(idx,elem){
-                        $(elem).removeClass("selected");
-                    });
-                    $(elem).addClass("selected");
-                }
-            </script>
-        </div>
-        {% else %}
-            <p>{% trans "No problems have been reported in this area." %}</p>
-        {% endif %}
-    </div>
-    <div class="modal-footer">
-        {% if nearby_reports %}
-        <button class="btn pull-right" onclick="showMergeConfirmation();">Merge selected</button>
-        {% endif %}
-    </div>
-</div>
-
-<div id="merge_confirm_popup" class="modal hide fade" role="dialog" style="z-index: 200000">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal" aria-hidden="true" >&times;</a>
-        <h3>{% trans 'Confirm merge' %}</h3>
-    </div>
-    <div class="modal-body">
-        <span>{% trans 'Are you sure you want to merge these incidents?' %}</span>
-        <p>{% trans 'Attention: by merging these incidents the resulting incident will have the following properties:' %}</p>
-        <p> {% trans 'category' %}: {{report.display_category}}</p>
-        {% if report.private %}
-        <p> {% trans 'visibility' %}: {% trans 'private' %}</p>
-        {% else %}
-        <p> {% trans 'visibility' %}: {% trans 'public' %}</p>
-        {% endif %}
-
-    </div>
-    <div class="modal-footer">
-        <a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>
-        <button class="btn" onclick="mergeReport();">{% trans 'Yes' %}</button>
-    </div>
 </div>
 {% endblock %}
