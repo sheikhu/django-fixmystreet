@@ -1,16 +1,11 @@
-
-
 from collections import OrderedDict
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.conf import settings
 from django.utils.translation import get_language
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.fixmystreet.models import Report, ZipCode
 from django_fixmystreet.fixmystreet.utils import dict_to_point
-from django_fixmystreet.backoffice.forms import SearchIncidentForm
 
 default_position = {
     'x': '148954.431',
@@ -83,35 +78,7 @@ def filter_reports(user, criteria):
     reports = reports.distance(pnt).order_by('-created')
     return (reports, pnt)
 
-
-def list(request):
-    search_form = SearchIncidentForm(request.GET,request.fmsuser)
-    reports, pnt = filter_reports(request.fmsuser, request.GET)
-
-    zipcodes = ZipCode.objects.filter(hide=False).select_related('commune').order_by('name_' + get_language())
-
-    page_number = request.GET.get("page", 1)
-    paginator = Paginator(reports, settings.MAX_ITEMS_PAGE)
-    try:
-        page = paginator.page(page_number)
-    except PageNotAnInteger:
-        page = paginator.page(1)
-    except EmptyPage:
-        page = paginator.page(paginator.num_pages)
-
-    return render_to_response("pro/reports/list.html",
-            {
-                "pnt":pnt,
-                "zipcodes": zipcodes,
-                "reports": page,
-                "all_reports":reports,
-                "search_form": search_form
-            },
-            context_instance=RequestContext(request))
-
-
 def table(request):
-    search_form = SearchIncidentForm(request.GET,request.fmsuser)
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
@@ -123,8 +90,6 @@ def table(request):
 
     reports, pnt = filter_reports(request.fmsuser, request.GET)
 
-
-    # import pdb; pdb.set_trace()
     reports = reports.extra(
         select = OrderedDict([
             ('subscribed',
@@ -145,11 +110,11 @@ def table(request):
     )
 
     zipcodes = ZipCode.objects.order_by('name_' + get_language())
+    zipcodes = dict([(z.code, z.name) for z in zipcodes])
 
     return render_to_response("pro/reports/table.html",
-            {
-                "zipcodes": dict([(z.code, z.name) for z in zipcodes]),
-                "reports": reports,
-                "search_form": search_form
-            },
-            context_instance=RequestContext(request))
+        {
+            "zipcodes": zipcodes,
+            "reports": reports,
+        },
+        context_instance=RequestContext(request))

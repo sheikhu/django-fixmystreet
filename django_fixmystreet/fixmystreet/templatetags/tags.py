@@ -15,7 +15,7 @@ MENU_DEFS = {
                                   ],
     'view':                      ['report_index', 'report_show', 'report_update', 'subscribe',
                                   'unsubscribe', 'flag_success', 'flag_report', 'report_show_pro',
-                                  'report_list_pro', 'report_table_pro'
+                                  'report_table_pro'
                                   ],
     'auth':                      ['list_users', 'edit_user', 'create_user', 'list_groups',
                                   'create_group', 'edit_group',

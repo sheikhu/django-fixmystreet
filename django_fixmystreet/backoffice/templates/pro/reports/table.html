@@ -1,4 +1,4 @@
-{% extends "pro/reports/search.html" %}
+{% extends "base.html" %}
 {% load i18n tags %}
 
 {% block map %}
@@ -65,7 +65,11 @@ $(document).ready(function() {
             {type: "select", values: [
                 '{{ True|yesno:_("yes,no") }}',
                 '{{ False|yesno:_("yes,no") }}'
-            ]} // subscribed
+            ]}, // subscribed
+            {type: "select", values: [
+                '{{ True|yesno:_("yes,no") }}',
+                '{{ False|yesno:_("yes,no") }}'
+            ]}, // pending
         ]
     var table = $('#result-table').dataTable({aoColumns: columns});
     // {
@@ -83,12 +87,7 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 
-{% block results %}
-<form id="incident-filter" method="GET">
-    <span class="span4">{{ search_form.status }}</span>
-    <span class="span4">{{ search_form.ownership }}</span>
-    <span class="span4"><a class="btn" href="{% url 'report_list_pro' %}">{% trans "Display as list" %}</a></span>
-</form>
+{% block content %}
 <div class="span12">
     {% if reports %}
     <ul id="column-visibility">
@@ -105,65 +104,85 @@ $(document).ready(function() {
         <li><label><input type="checkbox" checked /> {% trans "Date planned" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
         <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
+        <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
     </ul>
-    <table id="result-table" class="dataTable">
-        <thead>
-            <tr>
-                <th></th>
-                <th>{% trans "Ticket" %}</th>
-                <th>{% trans "Category" %}</th>
-                <th>{% trans "Sub category" %}</th>
-                <th>{% trans "Address" %}</th>
-                <th>{% trans "Postal code" %}</th>
-                <th>{% trans "Regionnal" %}</th>
-                <th>{% trans "Status" %}</th>
-                <th>{% trans "Responsible" %}</th>
-                <th>{% trans "Responsible department" %}</th>
-                <th>{% trans "Planned" %}</th>
-                <th>{% trans "Date planned" %}</th>
-                <th>{% trans "Priority" %}</th>
-                <th>{% trans "Subscribed" %}</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th>{% trans "Ticket" %}</th>
-                <th>{% trans "Category" %}</th>
-                <th>{% trans "Sub category" %}</th>
-                <th>{% trans "Address" %}</th>
-                <th>{% trans "Postal code" %}</th>
-                <th>{% trans "Regionnal" %}</th>
-                <th>{% trans "Status" %}</th>
-                <th>{% trans "Responsible" %}</th>
-                <th>{% trans "Responsible department" %}</th>
-                <th>{% trans "Planned" %}</th>
-                <th>{% trans "Date planned" %}</th>
-                <th>{% trans "Priority" %}</th>
-                <th>{% trans "Subscribed" %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for report in reports %}
-            <tr>
-                <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
-                <td>{{ report.id }}</td>
-                <td>{{ report.category.name }}</td>
-                <td>{{ report.secondary_category.name }}</td>
-                <td>{{ report.address }}, {{report.address_number}}</td>
-                <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
-                <td>{{ report.address_regional|yesno:_("yes,no") }}</td>
-                <td>{{ report.get_status_display }}</td>
-                <td>{{ report.responsible_entity.name }}</td>
-                <td>{{ report.responsible_department.name }}</td>
-                <td>{{ report.planned|yesno:_("yes,no") }}</td>
-                <td>{{ report.date_planned|date:"d/m/Y" }}</td>
-                <td>{{ report.get_priority }}</td>
-                <td>{{ report.subscribed|yesno:_("yes,no") }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     {% else %}
     <p>{% trans "No reports has been found." %}</p>
     {% endif %}
+
+    <a href="#modalTable" role="button" class="btn" data-toggle="modal">ShowTable</a>
+</div>
+
+<div id="modalTable" class="modal hide fade" style="width: 90%; left: 20%;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Table</h3>
+    </div>
+
+    <div class="modal-body">
+        <table id="result-table" class="dataTable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{% trans "Ticket" %}</th>
+                    <th>{% trans "Category" %}</th>
+                    <th>{% trans "Sub category" %}</th>
+                    <th>{% trans "Address" %}</th>
+                    <th>{% trans "Postal code" %}</th>
+                    <th>{% trans "Regionnal" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Responsible" %}</th>
+                    <th>{% trans "Responsible department" %}</th>
+                    <th>{% trans "Planned" %}</th>
+                    <th>{% trans "Date planned" %}</th>
+                    <th>{% trans "Priority" %}</th>
+                    <th>{% trans "Subscribed" %}</th>
+                    <th>{% trans "Pending" %}</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>{% trans "Ticket" %}</th>
+                    <th>{% trans "Category" %}</th>
+                    <th>{% trans "Sub category" %}</th>
+                    <th>{% trans "Address" %}</th>
+                    <th>{% trans "Postal code" %}</th>
+                    <th>{% trans "Regionnal" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Responsible" %}</th>
+                    <th>{% trans "Responsible department" %}</th>
+                    <th>{% trans "Planned" %}</th>
+                    <th>{% trans "Date planned" %}</th>
+                    <th>{% trans "Priority" %}</th>
+                    <th>{% trans "Subscribed" %}</th>
+                    <th>{% trans "Pending" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
+                    <td>{{ report.id }}</td>
+                    <td>{{ report.category.name }}</td>
+                    <td>{{ report.secondary_category.name }}</td>
+                    <td>{{ report.address }}, {{report.address_number}}</td>
+                    <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
+                    <td>{{ report.address_regional|yesno:_("yes,no") }}</td>
+                    <td>{{ report.get_status_display }}</td>
+                    <td>{{ report.responsible_entity.name }}</td>
+                    <td>{{ report.responsible_department.name }}</td>
+                    <td>{{ report.planned|yesno:_("yes,no") }}</td>
+                    <td>{{ report.date_planned|date:"d/m/Y" }}</td>
+                    <td>{{ report.get_priority }}</td>
+                    <td>{{ report.subscribed|yesno:_("yes,no") }}</td>
+                    <td>{{ report.pending|yesno:_("yes,no") }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <input type="button" class="btn"  value="{% trans 'Close'%}" data-dismiss="modal" aria-hidden="true"/>
+    </div>
 </div>
 {% endblock %}
