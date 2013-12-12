@@ -18,88 +18,101 @@
 
 var table;
 
-$(document).ready(function() {
-    jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-        "date-euro-pre": function ( a ) {
-            if ($.trim(a) != '') {
-                var datea = $.trim(a).split('/');
-                var x = parseInt(datea[2] + datea[1] + datea[0]);
-            } else {
-                var x = 0;
-            }
 
-            return x;
-        },
-
-        "date-euro-asc": function ( a, b ) {
-            return a - b;
-        },
-
-        "date-euro-desc": function ( a, b ) {
-            return b - a;
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "date-euro-pre": function ( a ) {
+        if ($.trim(a) != '') {
+            var datea = $.trim(a).split('/');
+            var x = parseInt(datea[2] + datea[1] + datea[0]);
+        } else {
+            var x = 0;
         }
-    });
-    var columns = [
-            {type: "null", bSortable: false},
-            {type: "number"}, // incidnet number
-            {type: "select"}, // categories
-            {type: "select"}, // sec categories
-            {type: "text"}, // addr
-            {type: "select"}, // postal code
-            {type: "select", values: [
-                '{{ True|yesno:_("yes,no") }}',
-                '{{ False|yesno:_("yes,no") }}'
-            ]}, // regionnal
-            {type: "select", values: [ // status
-                {% for s in 'Report'|model_field_choices:'status' %}
-                    "{{ s }}"{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            ]},
-            {type: "select"}, // resp entity
-            {type: "select"}, // resp manager
-            {type: "select", values: [
-                '{{ True|yesno:_("yes,no") }}',
-                '{{ False|yesno:_("yes,no") }}'
-            ]}, // planned
-            {sType: "date-euro", oSort:"date-eu"}, // date planned
-            {type: "number"}, // priority
-            {type: "select", values: [
-                '{{ True|yesno:_("yes,no") }}',
-                '{{ False|yesno:_("yes,no") }}'
-            ]}, // subscribed
-            {type: "select", values: [
-                '{{ True|yesno:_("yes,no") }}',
-                '{{ False|yesno:_("yes,no") }}'
-            ]}, // pending
-            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
-            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
-            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
-        ]
-    table = $('#result-table').dataTable({aoColumns: columns});
-    // {
-    //     "bStateSave": true
-    // });
 
-    // Refresh markers on map when table sort and filter
-    table.bind('filter', refreshMap);
+        return x;
+    },
 
-    table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
+    "date-euro-asc": function ( a, b ) {
+        return a - b;
+    },
 
-    $('#column-visibility :checkbox').change(function () {
-        var checked = $(this).prop('checked'),
-            index = $(this).closest('li').index() + 1; // show column
-        table.fnSetColumnVis(index, checked);
-    }).change();
+    "date-euro-desc": function ( a, b ) {
+        return b - a;
+    }
+});
 
-    var showHideFilters = document.getElementById('showHideFilters');
-    var tableFilters    = document.getElementById('table-filters');
+var columns = [
+    {type: "null", bSortable: false},
+    {type: "number"}, // incidnet number
+    {type: "select"}, // categories
+    {type: "select"}, // sec categories
+    {type: "text"}, // addr
+    {type: "select"}, // postal code
+    {type: "select", values: [
+        '{{ True|yesno:_("yes,no") }}',
+        '{{ False|yesno:_("yes,no") }}'
+    ]}, // regionnal
+    {type: "select", values: [ // status
+        {% for s in 'Report'|model_field_choices:'status' %}
+            "{{ s }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]},
+    {type: "select"}, // resp entity
+    {type: "select"}, // resp manager
+    {type: "select", values: [
+        '{{ True|yesno:_("yes,no") }}',
+        '{{ False|yesno:_("yes,no") }}'
+    ]}, // planned
+    {sType: "date-euro", oSort:"date-eu"}, // date planned
+    {type: "number"}, // priority
+    {type: "select", values: [
+        '{{ True|yesno:_("yes,no") }}',
+        '{{ False|yesno:_("yes,no") }}'
+    ]}, // subscribed
+    {type: "select", values: [
+        '{{ True|yesno:_("yes,no") }}',
+        '{{ False|yesno:_("yes,no") }}'
+    ]}, // pending
+    {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
+    {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
+    {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
+]
 
-    showHideFilters.addEventListener('click', function() {
-        tableFilters.classList.toggle('table-filters-show');
-    });
+// Get tbody content rendered by django
+$.ajax({
+    url: "{% url 'report_table_content_pro' %}",
+    data: "",
+    dataType: "html",
+    success: function(data) {
+        document.querySelector('tbody').innerHTML = data;
 
-    // Init map markers
-    refreshMap();
+        // Init table
+        table = $('#result-table').dataTable({aoColumns: columns});
+        // {
+        //     "bStateSave": true
+        // });
+
+        // Bind event : refresh markers on map when table sort and filter
+        table.bind('filter', refreshMap);
+
+        table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
+
+        $('#column-visibility :checkbox').change(function () {
+            var checked = $(this).prop('checked'),
+                index = $(this).closest('li').index() + 1; // show column
+            table.fnSetColumnVis(index, checked);
+        }).change();
+
+        // Init map markers
+        refreshMap();
+    }
+});
+
+// Show or hide filters in modal
+var showHideFilters = document.getElementById('showHideFilters');
+var tableFilters    = document.getElementById('table-filters');
+
+showHideFilters.addEventListener('click', function() {
+    tableFilters.classList.toggle('table-filters-show');
 });
 
 // Refresh markers on map when table sorting/filtering
@@ -131,6 +144,7 @@ function refreshMap() {
     fms.currentMap.markersLayer.addFeatures(markers);
 }
 
+// Load map
 (function() {
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
@@ -237,28 +251,6 @@ function refreshMap() {
                 </tr>
             </thead>
             <tbody>
-                {% for report in reports %}
-                <tr>
-                    <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
-                    <td>{{ report.id }}</td>
-                    <td>{{ report.category.name }}</td>
-                    <td>{{ report.secondary_category.name }}</td>
-                    <td>{{ report.address }}, {{report.address_number}}</td>
-                    <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
-                    <td>{{ report.address_regional|yesno:_("yes,no") }}</td>
-                    <td>{{ report.get_status_display }}</td>
-                    <td>{{ report.responsible_entity.name }}</td>
-                    <td>{{ report.responsible_department.name }}</td>
-                    <td>{{ report.planned|yesno:_("yes,no") }}</td>
-                    <td>{{ report.date_planned|date:"d/m/Y" }}</td>
-                    <td>{{ report.get_priority }}</td>
-                    <td>{{ report.subscribed|yesno:_("yes,no") }}</td>
-                    <td>{{ report.pending|yesno:_("yes,no") }}</td>
-                    <td>{{ report.point.x }}</td>
-                    <td>{{ report.point.y }}</td>
-                    <td>{{ report.status }}</td>
-                </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>

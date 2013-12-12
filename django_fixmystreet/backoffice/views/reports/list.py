@@ -78,7 +78,10 @@ def filter_reports(user, criteria):
     reports = reports.distance(pnt).order_by('-created')
     return (reports, pnt)
 
-def table(request):
+def all_reports(request):
+    return render_to_response("pro/reports/table.html", {}, context_instance=RequestContext(request))
+
+def table_content(request):
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
@@ -112,7 +115,7 @@ def table(request):
     zipcodes = ZipCode.objects.order_by('name_' + get_language())
     zipcodes = dict([(z.code, z.name) for z in zipcodes])
 
-    return render_to_response("pro/reports/table.html",
+    return render_to_response("pro/reports/table_content.html",
         {
             "zipcodes": zipcodes,
             "reports": reports,
