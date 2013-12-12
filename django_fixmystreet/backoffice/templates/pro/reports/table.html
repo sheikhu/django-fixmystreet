@@ -8,6 +8,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></link>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/table.css"></link>
 {{ block.super }}
 {% endblock %}
 
@@ -82,6 +83,13 @@ $(document).ready(function() {
             index = $(this).closest('li').index() + 1; // show column
         table.fnSetColumnVis(index, checked);
     }).change();
+
+    var showHideFilters = document.getElementById('showHideFilters');
+    var tableFilters = document.getElementById('table-filters');
+
+    showHideFilters.addEventListener('click', function() {
+        tableFilters.classList.toggle('table-filters-show');
+    });
 });
 
 </script>
@@ -89,26 +97,7 @@ $(document).ready(function() {
 
 {% block content %}
 <div class="span12">
-    {% if reports %}
-    <ul id="column-visibility">
-        <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Regionnal" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Planned" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Date planned" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
-        <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
-    </ul>
-    {% else %}
-    <p>{% trans "No reports has been found." %}</p>
-    {% endif %}
+
 
     <a href="#modalTable" role="button" class="btn" data-toggle="modal">ShowTable</a>
 </div>
@@ -120,6 +109,27 @@ $(document).ready(function() {
     </div>
 
     <div class="modal-body">
+
+        <button id="showHideFilters">Show/hide filters</button>
+        <div id="table-filters" class="table-filters">
+            <ul id="column-visibility">
+                <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Regionnal" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Planned" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Date planned" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
+            </ul>
+        </div>
+
         <table id="result-table" class="dataTable">
             <thead>
                 <tr>
