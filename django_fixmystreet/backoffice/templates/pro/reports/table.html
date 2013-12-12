@@ -40,8 +40,6 @@ $(document).ready(function() {
         }
     });
     var columns = [
-            {type: "null", bSearchable: false, bSortable: false, bVisible: true}, // point.x
-            {type: "null", bSearchable: false, bSortable: false, bVisible: true}, // point.y
             {type: "null", bSortable: false},
             {type: "number"}, // incidnet number
             {type: "select"}, // categories
@@ -73,6 +71,9 @@ $(document).ready(function() {
                 '{{ True|yesno:_("yes,no") }}',
                 '{{ False|yesno:_("yes,no") }}'
             ]}, // pending
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
         ]
     table = $('#result-table').dataTable({aoColumns: columns});
     // {
@@ -97,7 +98,6 @@ $(document).ready(function() {
         tableFilters.classList.toggle('table-filters-show');
     });
 
-
     // Init map markers
     refreshMap();
 });
@@ -118,10 +118,13 @@ function refreshMap() {
         //console.log(data[i]);
 
         var report   = {};
+
         report.point = {};
-        report.point["x"] = data[i][0];
-        report.point["y"] = data[i][1];
-        report.id = data[i][3];
+        report.point["x"] = data[i][15];
+        report.point["y"] = data[i][16];
+
+        report.id = data[i][1];
+        report.status = data[i][17];
 
         markers.push(fms.currentMap.addReport(report, i, false));
     }
@@ -194,8 +197,6 @@ function refreshMap() {
             <thead>
                 <tr>
                     <th></th>
-                    <th></th>
-                    <th></th>
                     <th>{% trans "Ticket" %}</th>
                     <th>{% trans "Category" %}</th>
                     <th>{% trans "Sub category" %}</th>
@@ -210,11 +211,12 @@ function refreshMap() {
                     <th>{% trans "Priority" %}</th>
                     <th>{% trans "Subscribed" %}</th>
                     <th>{% trans "Pending" %}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th></th>
-                    <th></th>
                     <th>{% trans "Ticket" %}</th>
                     <th>{% trans "Category" %}</th>
                     <th>{% trans "Sub category" %}</th>
@@ -229,13 +231,14 @@ function refreshMap() {
                     <th>{% trans "Priority" %}</th>
                     <th>{% trans "Subscribed" %}</th>
                     <th>{% trans "Pending" %}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for report in reports %}
                 <tr>
-                    <td>{{ report.point.x }}</td>
-                    <td>{{ report.point.y }}</td>
                     <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
                     <td>{{ report.id }}</td>
                     <td>{{ report.category.name }}</td>
@@ -251,6 +254,9 @@ function refreshMap() {
                     <td>{{ report.get_priority }}</td>
                     <td>{{ report.subscribed|yesno:_("yes,no") }}</td>
                     <td>{{ report.pending|yesno:_("yes,no") }}</td>
+                    <td>{{ report.point.x }}</td>
+                    <td>{{ report.point.y }}</td>
+                    <td>{{ report.status }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
