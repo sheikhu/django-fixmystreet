@@ -50,11 +50,11 @@ def dict_to_json(values):
 
 
 @register.filter
-def get_element_from_list(list, index):
+def get_element_from_list(myList, index):
     """
     Defined to get an element from a list
     """
-    return list[index]
+    return myList[index]
 
 
 # TODO move it to model and fix it
