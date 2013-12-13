@@ -47,12 +47,12 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     zipcode.commune_id as territorial_entity,
     (
         SELECT count(att_com.id) FROM fixmystreet_reportattachment att_com
-            LEFT JOIN fixmystreet_reportcomment com ON att_com.id=com.reportattachment_ptr_id
+            JOIN fixmystreet_reportcomment com ON att_com.id=com.reportattachment_ptr_id
             WHERE att_com.report_id=r.id
     ) as comments_count,
     (
         SELECT count(att_photo.id) FROM fixmystreet_reportattachment att_photo
-            LEFT JOIN fixmystreet_reportfile photo ON att_photo.id=photo.reportattachment_ptr_id
+            JOIN fixmystreet_reportfile photo ON att_photo.id=photo.reportattachment_ptr_id
             WHERE att_photo.report_id=r.id AND file_type=4
     ) as photos_count
 FROM fixmystreet_historicalreport r
@@ -61,12 +61,13 @@ FROM fixmystreet_historicalreport r
     LEFT JOIN fixmystreet_fmsuser citizen ON r.citizen_id=citizen.user_ptr_id
     LEFT JOIN fixmystreet_reportcategory category ON r.secondary_category_id=category.id
     LEFT JOIN fixmystreet_zipcode zipcode ON r.postalcode=zipcode.code
-    LEFT JOIN fixmystreet_historicalreport previous_row ON previous_row.history_id = (
-        SELECT Max(previous_rows.history_id)
-            FROM fixmystreet_historicalreport previous_rows
-            WHERE previous_rows.history_id < r.history_id AND r.id=previous_rows.id
-        )
-WHERE previous_row.id IS NULL OR r.status != previous_row.status OR r.responsible_manager_id != previous_row.responsible_manager_id;
+    ;
+--     LEFT JOIN fixmystreet_historicalreport previous_row ON previous_row.history_id = (
+--         SELECT Max(previous_rows.history_id)
+--             FROM fixmystreet_historicalreport previous_rows
+--             WHERE previous_rows.history_id < r.history_id AND r.id=previous_rows.id
+--         )
+-- WHERE previous_row.id IS NULL OR r.status != previous_row.status OR r.responsible_manager_id != previous_row.responsible_manager_id;
 
 
 CREATE OR REPLACE VIEW ods_dim_status AS SELECT
@@ -123,7 +124,7 @@ CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
     commune,
     region
 FROM fixmystreet_organisationentity
-WHERE active AND (commune OR region);
+WHERE commune OR region;
 
 CREATE OR REPLACE VIEW ods_dim_entity_contractor AS SELECT
     id,
