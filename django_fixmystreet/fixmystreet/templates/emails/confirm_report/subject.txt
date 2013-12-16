@@ -1,1 +1,0 @@
-{% load i18n %}{% blocktrans with title=update.report.title|safe %}Fix My Street: Please Confirm Report: {{title}}{% endblocktrans %}

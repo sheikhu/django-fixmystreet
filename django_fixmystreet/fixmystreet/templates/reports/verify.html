@@ -90,7 +90,7 @@
                                     <!-- Address and categories -->
                                     <div class="span4 loc_desc">
                                         <!-- Distance -->
-                                        <p class="distance">{% trans "à" %} {{ report.distance.m|floatformat:"0" }} m</p>
+                                        <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
                                         <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
                                         <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
                                         <span class="ticket_address">
@@ -101,7 +101,7 @@
                                             {{ report.display_category }}
                                         </span><br />
                                     <!-- Button "it's the same" -->
-                                    <a href="{{ report.get_absolute_url }}{% if BACKOFFICE %}?page=1{% endif %}" class="btn_same_incident report{% if active %} active{% endif %}">{% trans "C'est le même incident" %}</a>
+                                    <a href="{{ report.get_absolute_url }}{% if BACKOFFICE %}?page=1{% endif %}" class="btn_same_incident report{% if active %} active{% endif %}">{% trans "This is the same incident" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">

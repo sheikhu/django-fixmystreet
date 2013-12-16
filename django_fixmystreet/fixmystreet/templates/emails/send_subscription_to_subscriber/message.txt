@@ -1,7 +1,0 @@
-{% extends 'emails/base_email.txt' %}
-{% load i18n %}
-{% block content %}
-
-Thank you for following the report.
-You can unsubscribe by clicking on the following {{SITE_URL}} link
-{% endblock %}

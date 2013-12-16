@@ -1,9 +1,0 @@
-{% extends 'emails/base_email.txt' %}
-{% load i18n %}
-{% block content %}
-{% blocktrans with reportType=report.category.name date=report.created|date %}
-Your report off type {{reportType}} created at {{date}} is not supported by the FixMyStreet system.
-If necessary, you can contact your town hall.
-{% endblocktrans %}
-{{more_info_text}}
-{% endblock %}

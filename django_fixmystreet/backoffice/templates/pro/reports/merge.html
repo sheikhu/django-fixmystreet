@@ -156,7 +156,7 @@
                                     <!-- Address and categories -->
                                     <div class="span4 loc_desc">
                                         <!-- Distance -->
-                                        <p class="distance">{% trans "à" %} {{ report.distance.m|floatformat:"0" }} m</p>
+                                        <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
                                         <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
                                         <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
                                         <span class="ticket_address">

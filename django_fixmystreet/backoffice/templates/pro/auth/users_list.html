@@ -63,10 +63,10 @@ $(document).ready(function() {
                     <a href="mailto:{{ user.email }}">{{ user.email }}</a>
                 </td>
                 <td>
-                    {% if user.leader %}{% trans 'Entité' %}{% endif %}
-                    {% if user.manager %}{% trans 'Gestionnaire' %}{% endif %}
+                    {% if user.leader %}{% trans 'Entity' %}{% endif %}
+                    {% if user.manager %}{% trans 'Manager' %}{% endif %}
                     {% if user.agent %}{% trans 'Agent' %}{% endif %}
-                    {% if user.contractor %}{% trans 'Exécuteur de travaux' %}{% endif %}
+                    {% if user.contractor %}{% trans 'Contractor' %}{% endif %}
                     {% if user.applicant %}{% trans 'Applicant' %}{% endif %}
 
                 </td>
@@ -78,7 +78,7 @@ $(document).ready(function() {
 {% if can_create %}
 <p class="lead span12">
     <a href="{% url 'create_user' %}" class="btn btn-large">
-        <i class="icon-plus"></i> {% trans 'Create a new user' %}
+        <i class="icon-plus"></i> {% trans 'Create user' %}
     </a>
 </p>
 {% endif %}

@@ -1,5 +1,0 @@
-Report {{report.title}} has been flagged as offensive with comment:
-
-{{ report.flagComment }}
-
-{{ report_url }}
