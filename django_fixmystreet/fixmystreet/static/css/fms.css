@@ -855,10 +855,10 @@ h2.verify_title{
 	background:#7090B7;
 	color:#FFF;
 }
-.switch_verify #btn-list{
+.switch_verify #btn-list, .switch_verify #tableSwitch{
 	background:#E0E0E0 url('../images/switch_list.png') 5px 1px no-repeat;
 }
-.switch_verify #btn-list.active{
+.switch_verify #btn-list.active, .switch_verify #tableSwitch.active{
 	background:#607C9D url('../images/switch_list_active.png') 5px 1px no-repeat;
 }
 .switch_verify #btn-map{
@@ -1580,6 +1580,7 @@ label strong{
 	right:auto;
 	left:0;
 }
+<<<<<<< HEAD
 #main_cat_select, #sec_cat_select{
 	float:left;
 	font-size:12px;
@@ -1596,3 +1597,5 @@ label strong{
 	display:block;
 	clear:both;
 }
+=======
+>>>>>>> a98d4cec728f3288b78cfc5c39f1b2267a8e9f4e

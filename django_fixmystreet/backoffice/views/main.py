@@ -10,7 +10,7 @@ def home(request, location = None, error_msg =None):
 
     #Redirect to pro section: list of reports if the user has the role manager
     if (request.fmsuser.manager):
-        fromUrl = reverse('report_list_pro')
+        fromUrl = reverse('report_table_pro')
         return HttpResponseRedirect(fromUrl)
     else:
         fromUrl = reverse('report_prepare_pro')

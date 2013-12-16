@@ -15,7 +15,7 @@ MENU_DEFS = {
                                   ],
     'view':                      ['report_index', 'report_show', 'report_update', 'subscribe',
                                   'unsubscribe', 'flag_success', 'flag_report', 'report_show_pro',
-                                  'report_list_pro', 'report_table_pro'
+                                  'report_table_pro'
                                   ],
     'auth':                      ['list_users', 'edit_user', 'create_user', 'list_groups',
                                   'create_group', 'edit_group',
@@ -50,11 +50,11 @@ def dict_to_json(values):
 
 
 @register.filter
-def get_element_from_list(list, index):
+def get_element_from_list(myList, index):
     """
     Defined to get an element from a list
     """
-    return list[index]
+    return myList[index]
 
 
 # TODO move it to model and fix it

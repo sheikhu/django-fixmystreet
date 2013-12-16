@@ -426,7 +426,6 @@ class Report(UserTrackedModel):
     # List of status
     CREATED = 1
     REFUSED = 9
-    PENDING = 10
     TEMP = 11
 
     IN_PROGRESS = 2
@@ -440,7 +439,7 @@ class Report(UserTrackedModel):
 
 
     REPORT_STATUS_SETTABLE_TO_SOLVED = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
-    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED, PENDING)
+    REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
     REPORT_STATUS_ASSIGNED = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_CLOSED = (PROCESSED, DELETED)
@@ -457,8 +456,7 @@ class Report(UserTrackedModel):
             (MANAGER_ASSIGNED, _("Manager is assigned")),
             (APPLICANT_RESPONSIBLE, _("Applicant is responsible")),
             (CONTRACTOR_ASSIGNED, _("Contractor is assigned")),
-            (SOLVED, _("Solved")),
-            (PENDING, _("Pending")),
+            (SOLVED, _("Solved"))
         )),
         (_("Processed"), (
             (PROCESSED, _("Processed")),
@@ -483,6 +481,7 @@ class Report(UserTrackedModel):
 
     planned = models.BooleanField(default=False)
     date_planned = models.DateTimeField(null=True, blank=True)
+    pending = models.BooleanField(default=False)
 
     hash_code = models.IntegerField(null=True, blank=True)  # used by external app for secure sync, must be random generated
 

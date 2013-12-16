@@ -107,7 +107,7 @@ function AddressResult(x, y, address, idx)
     this.address = address;
 
     this.render = function() {
-        this.el.innerHTML = '<p><img src=' + this.iconSrc() + '/>' + this.address.street.name +
+        this.el.innerHTML = '<p><img src="' + this.iconSrc() + '" />' + this.address.street.name +
                             '<br/>' +
                             '<strong>' + this.address.street.postCode + ' ' + this.address.street.municipality + '</strong>' +
                             '</p>';

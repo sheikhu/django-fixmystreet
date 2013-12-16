@@ -382,9 +382,13 @@ var someCallback = function(exifObject, index) {
 
                                 {% else %}
                                     {% if report.private %}
-                                        {% trans "Private" %}
+                                        <span class="displayStatus private">
+                                            {% trans 'Private' %}
+                                          </span>
                                     {% else %}
-                                        {% trans "Public" %}
+                                        <span class="displayStatus public">
+                                            {% trans 'Public' %}
+                                          </span>
                                     {% endif %}
                                 {% endif %}
 
@@ -457,9 +461,9 @@ var someCallback = function(exifObject, index) {
                                     <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
                                     <!-- ######################################### -->
                                     {% if report.is_created %}
-                                        <a href="{% url 'report_accept_pro' report.id %}" class="btn" >{% trans 'Accept' %}</a>
-                                        <a href="{% url 'report_publish_pro' report.id %}" class="btn">{% trans 'Publish' %}</a>
-                                        <button onclick="refuse();" class="btn pull-right btn-danger">{% trans 'Reject' %}</button>
+                                        <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
+                                        <!--a href="{% url 'report_publish_pro' report.id %}" class="btn publish">{% trans 'Publish' %}</a-->
+                                        <button onclick="refuse();" class="btn reject">{% trans 'Reject' %}</button>
                                     {% endif %}
                                 {% endif %}
                             </div>
