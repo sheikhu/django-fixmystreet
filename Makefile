@@ -31,6 +31,7 @@ develop: env
 extra:
 	env/bin/pip install -e .[debug]
 
+# generate new migration script
 schemamigration:
 	env/bin/manage.py schemamigration fixmystreet --auto
 
@@ -76,8 +77,12 @@ scratchdb: dropdb createdb
 	env/bin/manage.py loaddata sample
 
 messages:
-	cd django_fixmystreet/fixmystreet; ../../bin/django makemessages -a ; ../../bin/django compilemessages
-	cd django_fixmystreet/backoffice; ../../bin/django makemessages -a ; ../../bin/django compilemessages
+	cd django_fixmystreet; ../env/bin/manage.py makemessages -l en
+	env/bin/tx push -s
+	env/bin/tx pull
+	cd django_fixmystreet; ../env/bin/manage.py compilemessages
+	# cd django_fixmystreet/fixmystreet; ../../bin/django makemessages -a ; ../../bin/django compilemessages
+	# cd django_fixmystreet/backoffice; ../../bin/django makemessages -a ; ../../bin/django compilemessages
 
 clean:
 	rm -rf env

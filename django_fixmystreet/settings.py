@@ -74,20 +74,17 @@ ROOT_URLCONF = 'django_fixmystreet.urls'
 # AUTH_USER_MODEL = "django_fixmystreet.fixmystreet.FMSUser"
 
 SOUTH_LOGGING_ON = True
-SOUTH_LOGGING_FILE = os.path.join(PROJECT_PATH,"south.log")
+SOUTH_LOGGING_FILE = os.path.join(PROJECT_PATH, "south.log")
 
 proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
 VERSION = out
 
-
-
-
 gettext = lambda s: s
 LANGUAGES = (
-#  ('en', gettext('English')),
-  ('fr', gettext('French')),
-  ('nl', gettext('Dutch')),
+    # ('en', gettext('English')),
+    ('fr', gettext('French')),
+    ('nl', gettext('Dutch')),
 )
 
 # include request object in template to determine active page
@@ -135,6 +132,7 @@ INSTALLED_APPS = (
     'django_fixmystreet.backoffice',
     'django_fixmystreet.monitoring',
     'piston',
+    'djangotransifex',
 )
 
 # AUTHENTICATION_BACKENDS = (

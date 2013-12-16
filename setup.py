@@ -21,6 +21,7 @@ install_requires = [
     'markdown',
     'oauth2',
     'simplejson==1.9.3',
+    'transifex-client',
 
     'django-extensions==1.0.1',
     'django-nose==1.1',

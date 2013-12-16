@@ -96,10 +96,11 @@ def table_content(request):
     reports = reports.extra(
         select = OrderedDict([
             ('subscribed',
-                'SELECT COUNT(subscription.ID) \
-                    FROM fixmystreet_reportsubscription subscription \
-                    WHERE subscription.subscriber_id = %s \
-                    AND subscription.report_id = fixmystreet_report.id'),
+                """SELECT COUNT(subscription.ID)
+                    FROM fixmystreet_reportsubscription subscription
+                    WHERE subscription.subscriber_id = %s
+                    AND subscription.report_id = fixmystreet_report.id
+                """),
             # ('transfered',
             #     'SELECT COUNT(previous.ID) \
             #         FROM fixmystreet_report_previous_managers previous \
