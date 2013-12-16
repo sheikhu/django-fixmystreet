@@ -1504,6 +1504,20 @@ label strong{
 .changeStatus .btn.public, .changeStatus.open .btn.public, .changeReportStatus .btn.public, .changeReportStatus.open .btn.public{
 	background:#51C464;
 }
+.displayStatus{
+	border:0;
+	color:#FFF;
+	padding:4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.displayStatus.private{
+	background:#FFA800;
+}
+.displayStatus.public{
+	background:#51C464;
+}
 .changeStatus .btn.private, .changeStatus.open .btn.private, .changeReportStatus .btn.private, .changeReportStatus.open .btn.private{
 	background:#FFA800;
 }
@@ -1565,4 +1579,20 @@ label strong{
 .incidentActions > .dropdown-menu{
 	right:auto;
 	left:0;
-} 
+}
+#main_cat_select, #sec_cat_select{
+	float:left;
+	font-size:12px;
+	height:25px;
+}
+#main_cat_select{
+	width:180px;
+}
+#sec_cat_select{
+	margin-left:5px;
+}
+.priorityLevel{
+	height:18px;
+	display:block;
+	clear:both;
+}
