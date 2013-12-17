@@ -45,7 +45,7 @@
 
 {% if display_citizen_form_comment %}
     <fieldset>
-        <legend>{% trans 'Coordonnées:' %}</legend>
+        <legend>{% trans 'Informations:' context "citizen" %}</legend>
 
             {% include "_form_horizontal.html" with form=citizen_form %}
 

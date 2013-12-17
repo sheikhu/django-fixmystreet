@@ -474,20 +474,17 @@ var someCallback = function(exifObject, index) {
                             <!-- Actions -->
                             {% if report.is_in_progress %}
                             {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                            <!--ul class="dropdown-menu incidentActions" role="menu" aria-labelledby="dLabel" style="display:block">
-                                <li class="dropdown-submenu">
-                                     <a tabindex="-1" href="#">{% trans 'Choisir une action' %}</a-->
                             <div class="btn-group incidentActions">
-                              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                {% trans 'Choisir une action' %}
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                {% trans 'Choose an action' %}
                                 <span class="caret"></span>
                               </a>
                                      <ul class="dropdown-menu">
                                         <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="#">Transférer à</a>
+                                            <a tabindex="-1" href="#">{% trans 'Transfer to' %}</a>
                                             <ul class="dropdown-menu">
                                                 <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Gestionnaires' %}</a>
+                                                    <a tabindex="-1" href="#">{% trans 'Managers' %}</a>
                                                     <ul class="dropdown-menu">
                                                         {% for department in departments %}
                                                             <li>
@@ -499,7 +496,7 @@ var someCallback = function(exifObject, index) {
                                                     </ul>
                                                 </li>
                                                 <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Entites' %}</a>
+                                                    <a tabindex="-1" href="#">{% trans 'Entities' %}</a>
                                                     <ul class="dropdown-menu">
                                                         {% for entity in entities %}
                                                             <li>
@@ -527,10 +524,10 @@ var someCallback = function(exifObject, index) {
                                         </li>
 
                                         <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="#">Assigner à</a>
+                                            <a tabindex="-1" href="#">{% trans 'Assign to' %}</a>
                                             <ul class="dropdown-menu">
                                                 <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">Impétrants</a>
+                                                    <a tabindex="-1" href="#">{% trans 'Applicants' %}</a>
                                                     <ul class="dropdown-menu">
                                                         {% for organisation in contractors %}
                                                             <li>
@@ -542,7 +539,7 @@ var someCallback = function(exifObject, index) {
                                                     </ul>
                                                 </li>
                                                 <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">Exécuteurs</a>
+                                                    <a tabindex="-1" href="#">{% trans 'Contractors' %}</a>
                                                     <ul class="dropdown-menu">
                                                         {% for applicant in applicants %}
                                                             <li>
@@ -558,7 +555,7 @@ var someCallback = function(exifObject, index) {
 
                                     <!--  Planification -->
                                         <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="#">Planifier</a>
+                                            <a tabindex="-1" href="#">{% trans 'Plan' %}</a>
 
                                         <!-- Dates possible de planification -->
                                             <ul class="dropdown-menu">
@@ -606,7 +603,7 @@ var someCallback = function(exifObject, index) {
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
                                     <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
-                                        <i class="isresolved"> </i>{% trans "Signaler résolu" %}
+                                        <i class="isresolved"> </i>{% trans "Report as solved" %}
                                     </a>
                                 {% endif %}
 
@@ -617,19 +614,19 @@ var someCallback = function(exifObject, index) {
                                         {% endif %}
                                         <i class="subscribe"> </i>
 
-                                        {% trans "S'abonner" %}
+                                        {% trans "Subscribe" %}
                                     </a>
                                 {% endif %}
                             {% endif %}
 
                             <a class="lk-download-pdf btn" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
-                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Télécharger' %}
+                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
                             </a>
                         </div>
                     </div>
                 </div>
                 <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Agrandir la carte" %}</a></div>
+                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
                 <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
             </article>
         </div>
@@ -853,11 +850,11 @@ var someCallback = function(exifObject, index) {
                     {% if fms_user.can_see_confidential %}
                         {% if report.citizen.last_name = ''%}
                             {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
-                                Posted by <strong><a href='mailto:{{mail}}'>ANONYMOUS</a></strong> on <strong>{{on}}</strong>
+                                Posted by <strong><a href='mailto:{{mail}}'>a citizen</a></strong> on <strong>{{on}}</strong>
                             {% endblocktrans %}
                         {% else %}
                             {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
-                                Posted on <strong>{{on}}</strong> by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong>
+                                Posted by <strong><a href='mailto:{{mail}}'>{{by}}</a></strong> on <strong>{{on}}</strong>
                             {% endblocktrans %}
                             (tel:{{report.citizen.fmsuser.telephone}})
                         {% endif %}
@@ -1003,7 +1000,7 @@ var someCallback = function(exifObject, index) {
         <!-- ########################## -->
         <div class="timeline-container">
                 <span class="add_info">
-                    <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Ajouter' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
+                    <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
                 </span>
             {% if report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list %}
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>

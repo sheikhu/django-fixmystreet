@@ -4,7 +4,6 @@
 #
 # Translators:
 # jsanchezpando <jsanchezpando@cirb.irisnet.be>, 2013
-# jsanchezpando <jsanchezpando@cirb.irisnet.be>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"

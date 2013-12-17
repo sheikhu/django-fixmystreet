@@ -13,7 +13,7 @@
                 <div class="control-group">
 
                     <label class="control-label" for="category_select">
-                        <strong>{% trans 'Constatation' %}</strong>
+                        <strong>{% trans 'Observation' %}</strong>
                     </label>
                     <div class="controls">
                         {% input_class report_form.category 'span4' %}
@@ -26,7 +26,7 @@
 
             <div class="control-group">
                 <label for="add_comment" class="control-label">
-                    <strong>{% trans 'Commentaire' %}</strong><br />
+                    <strong>{% trans 'Comment' %}</strong><br />
                     {% trans 'Votre commentaire sera validé avant publication sur le site.' %}
                 </label>
                 <div class="controls">
@@ -42,7 +42,7 @@
                     <p class="prevStep"><a href="{% url 'report_show' report_id=report.id slug=report.get_slug %}">{% trans "Cancel" %}</a></p>
                 {% endif %}
 
-                <button id="nextStep" class="btn pull-right" disabled>Etape suivante</button>
+                <button id="nextStep" class="btn pull-right" disabled>{% trans 'Next step' %}</button>
             </p>
         {% else %}
             <div class="control-group">
@@ -54,7 +54,7 @@
                     <div class="controls">
                         <label class="checkbox inline">
                             {% input_class report_form.subscription 'conditions_check' %}
-                            {% trans "J'accepte de recevoir des notifications par emails m'informant de l'évolution de l'incident" %}
+                            {% trans "I want to be notified of the evolution of the incident" %}
                         </label>
                     </div>
                 {% endif %}
@@ -75,7 +75,7 @@
 
                 <div class="control-group">
                     <label for="name" class="control-label">
-                        <strong>{% trans 'Nom' %}</strong>
+                        <strong>{% trans 'Name' %}</strong>
                     </label>
                     <div class="controls">
                         {% input_class citizen_form.last_name 'span10' %}
@@ -84,7 +84,7 @@
 
                 <div class="control-group">
                     <label for="quality" class="control-label">
-                        <strong>{% trans 'Qualité' %}</strong>
+                        <strong>{% trans 'Quality' %}</strong>
                     </label>
                     <div class="controls">
                         {% input_class citizen_form.quality '' %}
@@ -93,7 +93,7 @@
 
                 <div class="control-group">
                     <label for="telephone" class="control-label">
-                        <strong>{% trans 'Téléphone' %}</strong>
+                        <strong>{% trans 'Phone' %}</strong>
                     </label>
                     <div class="controls">
                         {% input_class citizen_form.telephone 'span10' %}
@@ -120,7 +120,7 @@
                         <div class="controls">
                             <label class="checkbox inline">
                                 {% input_class report_form.subscription 'conditions_check' %}
-                                {% trans "J'accepte de recevoir des notifications par emails m'informant de l'évolution de l'incident" %}
+                                {% trans "I want to be notified of the evolution of the incident" %}
                             </label>
                         </div>
                 </div>
@@ -130,13 +130,13 @@
 
                 <div class="control-group">
                     <label for="conditions" class="control-label">
-                        <strong>{% trans 'Conditions' %}</strong>
+                        <strong>{% trans 'Terms of use' %}</strong>
                     </label>
 
                     <div class="controls">
                         <label class="checkbox inline">
                             {% input_class report_form.terms_of_use_validated 'conditions_check' %}
-                            {% trans "J'ai lu et accepté les conditions d'utilisations (+ lien)" %}
+                            {% trans "I have read and agree to the <a href='/terms-of-use'>terms of use</a>" %}
                         </label>
                     </div>
                 </div>
@@ -148,12 +148,12 @@
             <div class="warning_information_form">
 
                 {% if report_form %}
-                    <p class="info_end_form" style="clear:both">{% trans "Un email contenant le rapport vous sera envoyé juste après l'envoi." %}</p>
+                    <p class="info_end_form" style="clear:both">{% trans "The report will be send to you by mail." %}</p>
                 {% endif %}
 
                 <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
             </div>
-            <p class="prevStep"><button id="previousStep">Etape précédente</button></p>
+            <p class="prevStep"><button id="previousStep">{% trans 'Previous step' %}</button></p>
 
         </div>
     {% endif %}
