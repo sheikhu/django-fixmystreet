@@ -132,7 +132,6 @@ INSTALLED_APPS = (
     'django_fixmystreet.backoffice',
     'django_fixmystreet.monitoring',
     'piston',
-    'djangotransifex',
 )
 
 # AUTHENTICATION_BACKENDS = (
