@@ -246,6 +246,11 @@ article{
 	margin: 10px 15px 10px 15px;
     cursor:pointer;
 }
+#proposal img{
+	float:left;
+	margin-right:5px;
+	margin-top:5px;
+}
 #proposal li:hover {
     background:#FFF url('../images/icon-next.png') 200px 22px no-repeat;
 }
