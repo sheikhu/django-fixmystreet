@@ -48,9 +48,9 @@ var columns = [
     {type: "text"}, // addr
     {type: "select"}, // postal code
     {type: "select", values: [
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
-    ]}, // regionnal
+        '{{ True|yesno:_("regional,communal") }}',
+        '{{ False|yesno:_("regional,communal") }}'
+    ]}, // regional
     {type: "select", values: [ // status
         {% for s in 'Report'|model_field_choices:'status' %}
             "{{ s }}"{% if not forloop.last %},{% endif %}
@@ -59,14 +59,14 @@ var columns = [
     {type: "select"}, // resp entity
     {type: "select"}, // resp manager
     {type: "select", values: [
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
+        '{{ True|yesno:_("planned,not planned") }}',
+        '{{ False|yesno:_("planned,not planned") }}'
     ]}, // planned
     {sType: "date-euro", oSort:"date-eu"}, // date planned
     {type: "number"}, // priority
     {type: "select", values: [
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
+        '{{ True|yesno:_("subscribed,not subscribed") }}',
+        '{{ False|yesno:_("subscribed,not subscribed") }}'
     ]}, // subscribed
     {type: "select", values: [
         '{{ True|yesno:_("yes,no") }}',
@@ -195,12 +195,12 @@ function refreshMap() {
                 <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Regionnal" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Road type" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Planned" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Date planned" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
@@ -211,20 +211,20 @@ function refreshMap() {
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans "Ticket" %}</th>
-                    <th>{% trans "Category" %}</th>
-                    <th>{% trans "Sub category" %}</th>
-                    <th>{% trans "Address" %}</th>
-                    <th>{% trans "Postal code" %}</th>
-                    <th>{% trans "Regionnal" %}</th>
-                    <th>{% trans "Status" %}</th>
-                    <th>{% trans "Responsible" %}</th>
-                    <th>{% trans "Responsible department" %}</th>
-                    <th>{% trans "Planned" %}</th>
-                    <th>{% trans "Date planned" %}</th>
-                    <th>{% trans "Priority" %}</th>
-                    <th>{% trans "Subscribed" %}</th>
-                    <th>{% trans "Pending" %}</th>
+                    <th>{% trans "All" context "Ticket" %}</th>
+                    <th>{% trans "All" context "Categories" %}</th>
+                    <th>{% trans "All" context "Sub categories" %}</th>
+                    <th>{% trans "All" context "Address" %}</th>
+                    <th>{% trans "All" context "Postal code" %}</th>
+                    <th>{% trans "All" context "Road type" %}</th>
+                    <th>{% trans "All" context "Status" %}</th>
+                    <th>{% trans "All" context "Responsible entity" %}</th>
+                    <th>{% trans "All" context "Responsible department" %}</th>
+                    <th>{% trans "All" context "Planning" %}</th>
+                    <th>{% trans "All" context "Planning date" %}</th>
+                    <th>{% trans "All" context "Priority" %}</th>
+                    <th>{% trans "All" context "Subscribed" %}</th>
+                    <th>{% trans "All" context "Pending" %}</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -236,14 +236,14 @@ function refreshMap() {
                     <th>{% trans "Sub category" %}</th>
                     <th>{% trans "Address" %}</th>
                     <th>{% trans "Postal code" %}</th>
-                    <th>{% trans "Regionnal" %}</th>
+                    <th>{% trans "Road type" %}</th>
                     <th>{% trans "Status" %}</th>
-                    <th>{% trans "Responsible" %}</th>
+                    <th>{% trans "Responsible entity" %}</th>
                     <th>{% trans "Responsible department" %}</th>
-                    <th>{% trans "Planned" %}</th>
-                    <th>{% trans "Date planned" %}</th>
+                    <th>{% trans "Planning" %}</th>
+                    <th>{% trans "Planning date" %}</th>
                     <th>{% trans "Priority" %}</th>
-                    <th>{% trans "Subscribed" %}</th>
+                    <th>{% trans "Subscribe" %}</th>
                     <th>{% trans "Pending" %}</th>
                     <th></th>
                     <th></th>

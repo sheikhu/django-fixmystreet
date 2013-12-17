@@ -4,12 +4,13 @@
 # 
 # Translators:
 # Translators:
+# Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 14:16+0100\n"
-"PO-Revision-Date: 2013-12-17 13:17+0000\n"
+"POT-Creation-Date: 2013-12-17 16:14+0100\n"
+"PO-Revision-Date: 2013-12-17 15:14+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -18,11 +19,11 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: settings.py:86
+#: settings.py:88
 msgid "French"
 msgstr ""
 
-#: settings.py:87
+#: settings.py:89
 msgid "Dutch"
 msgstr ""
 
@@ -582,6 +583,7 @@ msgid "Report as solved"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:617
+#: backoffice/templates/pro/reports/table.html:246
 #: fixmystreet/templates/reports/show.html:177
 #: fixmystreet/templates/reports/show.html:241
 msgid "Subscribe"
@@ -808,16 +810,12 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:973
 #: backoffice/templates/pro/reports/table.html:204
-#: backoffice/templates/pro/reports/table.html:225
 #: backoffice/templates/pro/reports/table.html:245
 #: fixmystreet/templates/reports/pdf.html:190
 msgid "Priority"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:978
-#: backoffice/templates/pro/reports/table.html:202
-#: backoffice/templates/pro/reports/table.html:223
-#: backoffice/templates/pro/reports/table.html:243 fixmystreet/models.py:1760
+#: backoffice/templates/pro/reports/show.html:978 fixmystreet/models.py:1760
 msgid "Planned"
 msgstr "Gepland"
 
@@ -841,15 +839,24 @@ msgstr "Foto's, documenten en commentaar:"
 
 #: backoffice/templates/pro/reports/table.html:51
 #: backoffice/templates/pro/reports/table.html:52
+#: backoffice/templates/pro/reports/table_content.html:11
+msgid "regional,communal"
+msgstr ""
+
 #: backoffice/templates/pro/reports/table.html:62
 #: backoffice/templates/pro/reports/table.html:63
+#: backoffice/templates/pro/reports/table_content.html:15
+msgid "planned,not planned"
+msgstr ""
+
 #: backoffice/templates/pro/reports/table.html:68
 #: backoffice/templates/pro/reports/table.html:69
+#: backoffice/templates/pro/reports/table_content.html:18
+msgid "subscribed,not subscribed"
+msgstr ""
+
 #: backoffice/templates/pro/reports/table.html:72
 #: backoffice/templates/pro/reports/table.html:73
-#: backoffice/templates/pro/reports/table_content.html:11
-#: backoffice/templates/pro/reports/table_content.html:15
-#: backoffice/templates/pro/reports/table_content.html:18
 #: backoffice/templates/pro/reports/table_content.html:19
 msgid "yes,no"
 msgstr ""
@@ -859,77 +866,142 @@ msgid "Table"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:193
-#: backoffice/templates/pro/reports/table.html:214
 #: backoffice/templates/pro/reports/table.html:234
 msgid "Ticket"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:194
-#: backoffice/templates/pro/reports/table.html:215
 #: backoffice/templates/pro/reports/table.html:235 fixmystreet/models.py:476
 #: fixmystreet/models.py:477 fixmystreet/templates/reports/pdf.html:187
 msgid "Category"
 msgstr "Categorie"
 
 #: backoffice/templates/pro/reports/table.html:195
-#: backoffice/templates/pro/reports/table.html:216
 #: backoffice/templates/pro/reports/table.html:236
 msgid "Sub category"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:196
-#: backoffice/templates/pro/reports/table.html:217
 #: backoffice/templates/pro/reports/table.html:237
 msgid "Address"
 msgstr "Adres:"
 
 #: backoffice/templates/pro/reports/table.html:197
-#: backoffice/templates/pro/reports/table.html:218
 #: backoffice/templates/pro/reports/table.html:238
 msgid "Postal code"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:198
-#: backoffice/templates/pro/reports/table.html:219
 #: backoffice/templates/pro/reports/table.html:239
-msgid "Regionnal"
+msgid "Road type"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:199
-#: backoffice/templates/pro/reports/table.html:220
 #: backoffice/templates/pro/reports/table.html:240
 msgid "Status"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:200
-#: backoffice/templates/pro/reports/table.html:221
-#: backoffice/templates/pro/reports/table.html:241
 msgid "Responsible"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:201
-#: backoffice/templates/pro/reports/table.html:222
 #: backoffice/templates/pro/reports/table.html:242
 msgid "Responsible department"
 msgstr ""
 
+#: backoffice/templates/pro/reports/table.html:202
+#: backoffice/templates/pro/reports/table.html:243
+msgid "Planning"
+msgstr ""
+
 #: backoffice/templates/pro/reports/table.html:203
-#: backoffice/templates/pro/reports/table.html:224
 #: backoffice/templates/pro/reports/table.html:244
-msgid "Date planned"
+msgid "Planning date"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:205
-#: backoffice/templates/pro/reports/table.html:226
-#: backoffice/templates/pro/reports/table.html:246
 msgid "Subscribed"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:206
-#: backoffice/templates/pro/reports/table.html:227
 #: backoffice/templates/pro/reports/table.html:247
 msgid "Pending"
 msgstr "Hangende"
+
+#: backoffice/templates/pro/reports/table.html:214
+msgctxt "Ticket"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:215
+msgctxt "Categories"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:216
+msgctxt "Sub categories"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:217
+msgctxt "Address"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:218
+msgctxt "Postal code"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:219
+msgctxt "Road type"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:220
+msgctxt "Status"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:221
+msgctxt "Responsible entity"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:222
+msgctxt "Responsible department"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:223
+msgctxt "Planning"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:224
+msgctxt "Planning date"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:225
+msgctxt "Priority"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:226
+msgctxt "Subscribed"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:227
+msgctxt "Pending"
+msgid "All"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:241
+msgid "Responsible entity"
+msgstr ""
 
 #: backoffice/templates/pro/reports/table_content.html:5
 msgid "Show"
@@ -2139,3 +2211,34 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: fixmystreet/views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgctxt "Ticket"
+#~ msgid "all"
+#~ msgstr "All"
+
+#~ msgid "Search ticket"
+#~ msgstr "Search ticket"
+
+#~ msgid "All categories"
+#~ msgstr "All categories"
+
+#~ msgid "All sub categories"
+#~ msgstr "All sub categories"
+
+#~ msgid "Search address"
+#~ msgstr "Search address"
+
+#~ msgid "All postal code"
+#~ msgstr "All postal code"
+
+#~ msgid "All status"
+#~ msgstr "All status"
+
+#~ msgid "All entities"
+#~ msgstr "All entities"
+
+#~ msgid "All departments"
+#~ msgstr "All departments"
+
+#~ msgid "All priority"
+#~ msgstr "All priority"

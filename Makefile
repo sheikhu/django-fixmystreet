@@ -79,10 +79,8 @@ scratchdb: dropdb createdb
 messages:
 	cd django_fixmystreet; ../env/bin/manage.py makemessages -l en
 	env/bin/tx push -s
-	env/bin/tx pull
+	env/bin/tx pull -a
 	cd django_fixmystreet; ../env/bin/manage.py compilemessages
-	# cd django_fixmystreet/fixmystreet; ../../bin/django makemessages -a ; ../../bin/django compilemessages
-	# cd django_fixmystreet/backoffice; ../../bin/django makemessages -a ; ../../bin/django compilemessages
 
 clean:
 	rm -rf env
