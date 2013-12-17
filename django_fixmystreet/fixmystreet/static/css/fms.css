@@ -624,6 +624,7 @@ article{
 	height: 22px;
 	margin: 0 0 0 75px;
     text-indent: -15px;
+	line-height: 24px;
 }
 #instructions ol li:first-child{
 	margin: 0;
@@ -1595,4 +1596,9 @@ label strong{
 	height:18px;
 	display:block;
 	clear:both;
+}
+#modalTable .modal-body{
+	/*height: 650px;*/
+	max-height:650px;
+	min-height:445px;
 }
