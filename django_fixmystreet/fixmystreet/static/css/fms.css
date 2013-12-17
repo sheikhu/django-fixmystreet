@@ -224,6 +224,7 @@ article{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+	border:1px solid #607C9D;
 }
 #proposal-container .numberResultsContainer {
     text-align: center;
@@ -315,15 +316,25 @@ article{
 	-webkit-box-shadow: 0 0 5px rgba(50, 50, 50, 0.35);
 	-moz-box-shadow: -0 0 5px rgba(50, 50, 50, 0.35);
     box-shadow: 0 0 5px rgba(50, 50, 50, 0.35);
+    height:auto !important;
+}
+.home .olPopupContent{
+	height:auto !important;
 }
 .home #popup .popupHeading{
 	font-size:12px;
 	font-weight:bold;
-	background:#BCD3F2;
 	padding:5px;
 	-webkit-border-radius: 4px 4px 0 0;
 	-moz-border-radius: 4px 4px 0 0;
 	border-radius: 4px 4px 0 0;
+}
+.popupHeading{
+	background: #BCD3F2 url('../images/popup_header_arrow.png') 5px 5px no-repeat;
+	padding-left: 24px !important;
+}
+.popupMoveMe.popupContent{
+	height:50px;
 }
 .home #popup #popup_close{
 	display:none;
