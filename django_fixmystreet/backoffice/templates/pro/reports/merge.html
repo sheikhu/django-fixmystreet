@@ -71,12 +71,41 @@
     <div class="container">
         <div class="row">
             <div class="span12">
-                <div id="searchContainer">
-                    <div id="search-form" class="block highlighted">
-                        <form id="search-ticket-form" class="form-inline">
-                            <input id="input-ticket-search" class="input-large" type="search" name="q" placeholder="{% trans 'Ticket number...' %}" />
-                            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
-                        </form>
+                <div id="searchContainer" class="mergeIncident">
+                    <div class="one_incident master">
+                        <div class="row">
+                          <!-- Address and categories -->
+                            <div class="span4 loc_desc">
+                                <!-- Distance -->
+                                <p class="distance">{% trans "Report to merge" %}</p>
+                                <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                                <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+                                <span class="ticket_address">
+                                    {{ report.address }}, {{ report.address_number }}<br />
+                                    {{ report.postalcode }} {{ report.territorial_entity.name }}
+                                </span><br />
+                                <span class="ticket_desc">
+                                    {{ report.display_category }}
+                                </span><br />
+                            </div>
+
+                            <!-- Photos -->
+                            <div class="span4 picture">
+                                {% if report.thumbnail %}
+                                    <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
+                                {% else %}
+                                    <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+                                {% endif %}
+                            </div>
+                            <!-- Comments -->
+                            <div class="span4">
+                                {% for attachment in report.attachments.all %}
+                                    <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Deprecated ? -->
+                            {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,9 +116,17 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="span10">
+        <div class="span7">
             <h2 class="verify_title">Il y a {{ reports_nearby.count }} incidents signalés dans le même secteur</h2>
             <p class="lead"></p>
+        </div>
+        <div class="span3">
+            <div id="search-form" class="block highlighted mergeIncident">
+                <form id="search-ticket-form" class="form-inline">
+                    <input id="input-ticket-search" class="input-large" type="search" name="q" placeholder="{% trans 'Ticket number...' %}" />
+                    <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
+                </form>
+            </div>
         </div>
         <div class="span2">
             <div class="switch_verify btn-group pull-right">
@@ -107,45 +144,11 @@
                 <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
             </article>
             <div id='list'>
-                <div class="row">
+                <!--div class="row">
                     <div class="span12">
-                        <div class="one_incident" style="border:3px solid black;">
-                            <div class="row">
-                                <!-- Address and categories -->
-                                <div class="span4 loc_desc">
-                                    <!-- Distance -->
-                                    <p class="distance">{% trans "Report to merge" %}</p>
-                                    <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
-                                    <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
-                                    <span class="ticket_address">
-                                        {{ report.address }}, {{ report.address_number }}<br />
-                                        {{ report.postalcode }} {{ report.territorial_entity.name }}
-                                    </span><br />
-                                    <span class="ticket_desc">
-                                        {{ report.display_category }}
-                                    </span><br />
-                                </div>
-
-                                <!-- Photos -->
-                                <div class="span4 picture">
-                                    {% if report.thumbnail %}
-                                        <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
-                                    {% else %}
-                                        <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
-                                    {% endif %}
-                                </div>
-                                <!-- Comments -->
-                                <div class="span4">
-                                    {% for attachment in report.attachments.all %}
-                                        <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
-                                    {% endfor %}
-                                </div>
-                                <!-- Deprecated ? -->
-                                {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
-                            </div>
-                        </div>
+                        
                     </div>
-                </div>
+                </div-->
 
 
                 {% for report in reports_nearby %}

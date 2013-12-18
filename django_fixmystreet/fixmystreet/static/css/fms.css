@@ -817,7 +817,7 @@ h2.last_reports {
 }
 .tab-pane .ticket_number{
 	color:#7090B7;
-	font-size:11px;
+	font-size:12px;
 }
 .tab-pane .ticket_address{
 	color:#495E77;
@@ -925,7 +925,7 @@ h2.verify_title{
 }
 #list .ticket_number{
 	color:#7090B7;
-	font-size:11px;
+	font-size:12px;
 }
 #list .ticket_address{
 	color:#495E77;
@@ -1619,4 +1619,64 @@ label strong{
 	/*height: 650px;*/
 	max-height:650px;
 	min-height:445px;
+}
+#searchContainer.mergeIncident{
+	margin-top:30px;
+	padding:0;
+}
+.one_incident.master{
+	/*background:#606C9D;*/
+}
+.one_incident.master .distance{
+	background: #BCD3F2;
+	color: #222C37;
+	width:135px;
+	-webkit-border-bottom-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	text-align: center;
+	line-height: 18px;
+	font-size: 13px;
+	margin-top: 1px;
+}
+.one_incident.master .ticket_address{
+	color:#FFF;
+	font-weight: bold;
+}
+.one_incident.master .span4.loc_desc{
+	width: 325px;
+	padding: 0 0 10px 35px;
+}
+.one_incident.master .ticket_number{
+	color:#BCD4F1;
+	font-size: 12px;
+}
+.one_incident.master .ticket_desc{
+	font-size: 12px;
+	color:#FFF;
+}
+.one_incident.master .comment-incident{
+	color:#FFF;
+}
+.one_incident.master .thumbnail{
+	width: auto;
+	height: 80px;
+	margin: 12px auto;
+}
+#search-form.mergeIncident{
+	margin: 22px 0 0 0 !important;
+	float: right;
+}
+#search-form.mergeIncident #widget-search-ticket-button {
+	background: transparent url('../images/btn_search_tickets.png') top left no-repeat;
+}
+#search-form.mergeIncident #input-ticket-search{
+	height: 23px;
+	margin-right: -13px;
+}
+#search-form.mergeIncident #widget-search-ticket-button{
+	margin-top:1px;
 }
