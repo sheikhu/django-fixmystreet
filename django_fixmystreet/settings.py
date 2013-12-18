@@ -44,6 +44,8 @@ else:
 
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
+LOCALE_PATHS = (os.path.join(PROJECT_PATH, 'django_fixmystreet', 'locale') ,)
+
 DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnet.be>"
 
 MEDIA_URL = '/media/'
@@ -132,7 +134,6 @@ INSTALLED_APPS = (
     'django_fixmystreet.backoffice',
     'django_fixmystreet.monitoring',
     'piston',
-    'djangotransifex',
 )
 
 # AUTHENTICATION_BACKENDS = (

@@ -110,22 +110,6 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.get(reverse('terms_of_use'), follow=True)
         self.assertEqual(response.status_code, 200)
 
-    def test_posters_languages(self):
-        """Tests the posters view."""
-        response = self.client.get(reverse('posters'), follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('languages' in response.context)
-
-        frFound = False
-        nlFound = False
-
-        for current in response.context["languages"]:
-             if current[0] == 'fr':
-                  frFound = True
-             if current[0] == 'nl':
-                  nlFound = True
-        self.assertTrue(frFound and nlFound)
-
     def test_new_report(self):
         """Tests the new report page."""
         url = reverse('report_new')

@@ -163,7 +163,7 @@ function markAsDone(){
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
                                     <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
-                                        <i class="isresolved"> </i>{% trans "Signaler résolu" %}
+                                        <i class="isresolved"> </i>{% trans "Report as solved" %}
                                     </a>
                                 {% endif %}
 
@@ -174,19 +174,19 @@ function markAsDone(){
                                         {% endif %}
                                         <i class="subscribe"> </i>
 
-                                        {% trans "S'abonner" %}
+                                        {% trans "Subscribe" %}
                                     </a>
                                 {% endif %}
                             {% endif %}
 
                             <a class="lk-download-pdf btn" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
-                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Télécharger' %}
+                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
                             </a>
                         </div>
                     </div>
                 </div>
                 <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Agrandir la carte" %}</a></div>
+                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
                 <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
             </article>
         </div>
@@ -350,7 +350,7 @@ function markAsDone(){
                 <!-- ################# FILES ############### -->
                 <!--h4>{% trans 'Files' %}</h4-->
                 <span class="add_info">
-                    <a href="{% url 'report_document' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Ajouter' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
+                    <a href="{% url 'report_document' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
                 </span>
                 <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
                 <ul id="report_updates" class="timeline">

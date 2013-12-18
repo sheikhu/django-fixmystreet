@@ -8,14 +8,14 @@
         <td>{{ report.secondary_category.name }}</td>
         <td>{{ report.address }}, {{report.address_number}}</td>
         <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
-        <td>{{ report.address_regional|yesno:_("yes,no") }}</td>
+        <td>{{ report.address_regional|yesno:_("regional,communal") }}</td>
         <td>{{ report.get_status_display }}</td>
         <td>{{ report.responsible_entity.name }}</td>
         <td>{{ report.responsible_department.name }}</td>
-        <td>{{ report.planned|yesno:_("yes,no") }}</td>
+        <td>{{ report.planned|yesno:_("planned,not planned") }}</td>
         <td>{{ report.date_planned|date:"d/m/Y" }}</td>
         <td>{{ report.get_priority }}</td>
-        <td>{{ report.subscribed|yesno:_("yes,no") }}</td>
+        <td>{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
         <td>{{ report.pending|yesno:_("yes,no") }}</td>
         <td>{{ report.point.x }}</td>
         <td>{{ report.point.y }}</td>
