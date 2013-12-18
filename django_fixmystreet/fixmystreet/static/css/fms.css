@@ -1680,3 +1680,6 @@ label strong{
 #search-form.mergeIncident #widget-search-ticket-button{
 	margin-top:1px;
 }
+#map.view_incident.show_report.pro{
+	height:248px;
+}
