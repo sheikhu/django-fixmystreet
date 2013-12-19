@@ -1294,6 +1294,7 @@ ul.timeline{
 	text-align: center;
 	width: 97%;
 }
+/*
 #modal-img{
 	width:800px;
 	height:auto;
@@ -1309,6 +1310,9 @@ ul.timeline{
 }
 #modal-img .close{
 	margin-top: -9px;
+}*/
+#lightbox .lb-image{
+	max-width:none;
 }
 .comment-incident{
 	font-size:12px;
