@@ -571,7 +571,6 @@ class HistoryTest(TestCase):
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(activities.all().count(), 4)
-        import pdb; pdb.set_trace()
         self.assertContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
