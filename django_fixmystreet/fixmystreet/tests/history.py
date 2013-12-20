@@ -541,7 +541,6 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
-    @unittest.skip("just don't works any more...")
     def testAssignToOtherEntity(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
@@ -572,6 +571,7 @@ class HistoryTest(TestCase):
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(activities.all().count(), 4)
+        import pdb; pdb.set_trace()
         self.assertContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
