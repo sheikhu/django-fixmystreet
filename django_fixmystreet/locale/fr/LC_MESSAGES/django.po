@@ -5,14 +5,15 @@
 # Translators:
 # Translators:
 # Translators:
+# ccorbesier <ccorbesier@cirb.irisnet.be>, 2013
 # jsanchezpando <jsanchezpando@cirb.irisnet.be>, 2013
 # jsanchezpando <jsanchezpando@cirb.irisnet.be>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 16:18+0100\n"
-"PO-Revision-Date: 2013-12-17 15:17+0000\n"
+"POT-Creation-Date: 2013-12-20 13:50+0100\n"
+"PO-Revision-Date: 2013-12-20 12:50+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +46,7 @@ msgstr "Déscription du refus"
 #: fixmystreet/forms.py:199
 #: fixmystreet/templates/reports/_documentreport.html:104
 msgid "Email"
-msgstr "email :"
+msgstr "Courriel"
 
 #: backoffice/forms.py:167 backoffice/forms.py:175 backoffice/forms.py:182
 #: backoffice/forms.py:188 backoffice/forms.py:193 backoffice/forms.py:204
@@ -206,23 +207,11 @@ msgstr "^rapport/(\\d+)/s-abonner/"
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr "^rapport/(\\d+)/se-desabonner/"
 
-#: backoffice/urls.py:113
-msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
-msgstr ""
-
-#: backoffice/urls.py:114
-msgid "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
-msgstr ""
-
-#: backoffice/urls.py:115
-msgid "^export_file/reports/(?P<emitter_format>.+)"
-msgstr ""
-
 #: backoffice/templates/pro/change_password.html:4
 #: backoffice/templates/pro/login.html:4 backoffice/templates/pro/login.html:8
 #: fixmystreet/templates/base.html:108
 msgid "Sign in"
-msgstr "S'identifier"
+msgstr "Accès réservé"
 
 #: backoffice/templates/pro/change_password.html:8
 msgid "Change password"
@@ -295,7 +284,7 @@ msgstr "Nouveau groupe"
 #: fixmystreet/templates/contact/new.html:20
 #: fixmystreet/templates/reports/_documentreport.html:146
 msgid "* This fields are required"
-msgstr "* Ces champs sont requis"
+msgstr " * Ces champs sont obligatoires. Vos données personnelles seront uniquement utilisées par l'administration en vue de vous recontacter concernant le suivi de votre plainte."
 
 #: backoffice/templates/pro/auth/group_create.html:142
 msgid "Delete"
@@ -415,7 +404,7 @@ msgstr "Rapport à fusionner"
 #: fixmystreet/templates/reports/show.html:148
 #: fixmystreet/templates/reports/verify.html:95
 msgid "Incident n°"
-msgstr "Numéro d'incident"
+msgstr "Incident n°"
 
 #: backoffice/templates/pro/reports/merge.html:144
 #: backoffice/templates/pro/reports/merge.html:187
@@ -524,7 +513,7 @@ msgstr "Public"
 
 #: backoffice/templates/pro/reports/show.html:464
 msgid "Accept"
-msgstr "Acceprter"
+msgstr "Accepter"
 
 #: backoffice/templates/pro/reports/show.html:465
 msgid "Publish"
@@ -606,7 +595,7 @@ msgstr "Télécharger"
 #: backoffice/templates/pro/reports/show.html:629
 #: fixmystreet/templates/reports/show.html:189
 msgid "Extend map"
-msgstr "Agrandire la carte"
+msgstr "Agrandir la carte"
 
 #: backoffice/templates/pro/reports/show.html:630
 #: fixmystreet/templates/reports/show.html:190
@@ -1105,12 +1094,12 @@ msgstr "nom :"
 
 #: fixmystreet/forms.py:170
 msgid "Tel."
-msgstr "n° de téléphone:"
+msgstr "Téléphone"
 
 #: fixmystreet/forms.py:172
 #: fixmystreet/templates/reports/_documentreport.html:87
 msgid "Quality"
-msgstr "qualité :"
+msgstr "Qualité :"
 
 #: fixmystreet/forms.py:201
 msgid "Message"
@@ -1118,7 +1107,7 @@ msgstr "Message"
 
 #: fixmystreet/forms.py:258
 msgid "Add a comment, please."
-msgstr "Veuillez ajouter un commentaire (ce commentaire sera validé avant publication)."
+msgstr "Veuillez ajouter un commentaire. Nous transmettre un commentaire détaillé permet d'accélérer l'identification et le traitement de votre plainte"
 
 #: fixmystreet/forms.py:263
 msgid "Mark as done"
@@ -1266,8 +1255,8 @@ msgstr "Anonyme"
 #: fixmystreet/models.py:1293 fixmystreet/models.py:1815
 #: fixmystreet/models.py:1833 fixmystreet/models.py:1837
 #: fixmystreet/utils.py:218 fixmystreet/utils.py:231
-#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:746
-#: fixmystreet/tests/history.py:750 fixmystreet/tests/history.py:762
+#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:747
+#: fixmystreet/tests/history.py:751 fixmystreet/tests/history.py:763
 msgid "a citizen"
 msgstr "un citoyen"
 
@@ -1443,21 +1432,13 @@ msgstr "^conditions-d-utilisation/$"
 msgid "^reports/$"
 msgstr ""
 
-#: fixmystreet/urls.py:40
-msgid "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
-msgstr ""
-
 #: fixmystreet/urls.py:43
 msgid "^report/search"
-msgstr ""
+msgstr "rapport/rechechre"
 
 #: fixmystreet/urls.py:44
 msgid "^report/new"
 msgstr "^rapport/nouveau"
-
-#: fixmystreet/urls.py:46
-msgid "^report/prepare"
-msgstr ""
 
 #: fixmystreet/urls.py:47
 msgid "^report/(\\d+)/update/"
@@ -1634,7 +1615,7 @@ msgstr "Nom de rue, numéro..."
 #: fixmystreet/templates/home.html:125
 #: fixmystreet/templates/reports/reports_map.html:157
 msgid "All communes..."
-msgstr "Toutes les communes..."
+msgstr "Toutes les communes"
 
 #: fixmystreet/templates/home.html:130
 msgid "Signaler"
@@ -1650,7 +1631,7 @@ msgstr "Accéder à l'incident"
 
 #: fixmystreet/templates/home.html:157
 msgid "Localiser via la carte"
-msgstr ""
+msgstr "Localiser sur la carte"
 
 #: fixmystreet/templates/home.html:169
 msgid "Last modified reports:"
@@ -1990,7 +1971,7 @@ msgstr "Notifications"
 #: fixmystreet/templates/reports/_documentreport.html:57
 #: fixmystreet/templates/reports/_documentreport.html:123
 msgid "I want to be notified of the evolution of the incident"
-msgstr "J'accepte de recevoir des notifications par emails m'informant de l'évolution de l'incident."
+msgstr "J'accepte de recevoir des notifications par courriel m'informant de l'évolution de l'incident"
 
 #: fixmystreet/templates/reports/_documentreport.html:64
 #: fixmystreet/templates/reports/_documentreport.html:154
@@ -2007,7 +1988,7 @@ msgstr "J'ai lu et accepté les <a href='/terms-of-use'>conditions d'utilisation
 
 #: fixmystreet/templates/reports/_documentreport.html:151
 msgid "The report will be send to you by mail."
-msgstr "Un email contenant le rapport vous sera envoyé juste après l'envoi."
+msgstr "Un courriel contenant le rapport vous sera transmis juste après l'envoi"
 
 #: fixmystreet/templates/reports/_documentreport.html:156
 msgid "Previous step"
@@ -2041,7 +2022,7 @@ msgstr "Photos"
 msgid ""
 "La photo doit permettre de replacer l’incident dans son contexte. Les "
 "visages et plaques d’immatriculation ne peuvent pas être identifiables."
-msgstr ""
+msgstr "Prenez une photo de détail de l'incident ainsi qu'une photo permettant de le replacer dans son contexte. Nous transmettre des photos permet d'accélérer l'identification et le traitement de votre plainte. Les photos comportant des plaques d'immatriculation et les visages de personnes ne seront pas publiées."
 
 #: fixmystreet/templates/reports/document.html:7
 #: fixmystreet/templates/reports/new.html:7
@@ -2055,7 +2036,7 @@ msgstr ""
 #: fixmystreet/templates/reports/new.html:46
 #: fixmystreet/templates/reports/show.html:42
 msgid "Your file description"
-msgstr "Votre description de fichier"
+msgstr "Légendez votre photo"
 
 #: fixmystreet/templates/reports/document.html:104
 #: fixmystreet/templates/reports/index.html:25
@@ -2213,6 +2194,21 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: fixmystreet/views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "^report/prepare"
+#~ msgstr "^report/prepare"
+
+#~ msgid "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
+#~ msgstr "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
+
+#~ msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
+#~ msgstr "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
+
+#~ msgid "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
+#~ msgstr "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
+
+#~ msgid "^export_file/reports/(?P<emitter_format>.+)"
+#~ msgstr "^export_file/reports/(?P<emitter_format>.+)"
 
 #~ msgctxt "Ticket"
 #~ msgid "all"

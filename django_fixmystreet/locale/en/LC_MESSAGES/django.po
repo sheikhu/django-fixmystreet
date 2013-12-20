@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 16:18+0100\n"
+"POT-Creation-Date: 2013-12-20 13:50+0100\n"
 "PO-Revision-Date: 2013-12-17 14:47+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-"
@@ -204,18 +204,6 @@ msgstr "^report/(\\d+)/subscribe/"
 #: backoffice/urls.py:59 fixmystreet/urls.py:59
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr "^report/(\\d+)/unsubscribe/"
-
-#: backoffice/urls.py:113
-msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
-msgstr "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
-
-#: backoffice/urls.py:114
-msgid "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
-msgstr "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
-
-#: backoffice/urls.py:115
-msgid "^export_file/reports/(?P<emitter_format>.+)"
-msgstr "^export_file/reports/(?P<emitter_format>.+)"
 
 #: backoffice/templates/pro/change_password.html:4
 #: backoffice/templates/pro/login.html:4 backoffice/templates/pro/login.html:8
@@ -1321,8 +1309,8 @@ msgstr "ANONYMOUS"
 #: fixmystreet/models.py:1293 fixmystreet/models.py:1815
 #: fixmystreet/models.py:1833 fixmystreet/models.py:1837
 #: fixmystreet/utils.py:218 fixmystreet/utils.py:231
-#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:746
-#: fixmystreet/tests/history.py:750 fixmystreet/tests/history.py:762
+#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:747
+#: fixmystreet/tests/history.py:751 fixmystreet/tests/history.py:763
 msgid "a citizen"
 msgstr "a citizen"
 
@@ -1498,10 +1486,6 @@ msgstr "^terms-of-use/$"
 msgid "^reports/$"
 msgstr "^reports/$"
 
-#: fixmystreet/urls.py:40
-msgid "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
-msgstr "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
-
 #: fixmystreet/urls.py:43
 msgid "^report/search"
 msgstr "^report/search"
@@ -1509,10 +1493,6 @@ msgstr "^report/search"
 #: fixmystreet/urls.py:44
 msgid "^report/new"
 msgstr "^report/new"
-
-#: fixmystreet/urls.py:46
-msgid "^report/prepare"
-msgstr "^report/prepare"
 
 #: fixmystreet/urls.py:47
 msgid "^report/(\\d+)/update/"
@@ -2328,6 +2308,23 @@ msgstr "You have subscribed from updates successfully"
 #: fixmystreet/views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "You have unsubscribed from updates successfully"
+
+#~ msgid "^report/prepare"
+#~ msgstr "^report/prepare"
+
+#~ msgid "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
+#~ msgstr "^reports/(?P<slug>.*)/(?P<commune_id>\\d+)$"
+
+#~ msgid "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
+#~ msgstr "^export_file/reports/(?P<emitter_format>.+)/(?P<id>\\d+)"
+
+#~ msgid ""
+#~ "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
+#~ msgstr ""
+#~ "^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)"
+
+#~ msgid "^export_file/reports/(?P<emitter_format>.+)"
+#~ msgstr "^export_file/reports/(?P<emitter_format>.+)"
 
 #, fuzzy
 #~ msgctxt "Ticket"

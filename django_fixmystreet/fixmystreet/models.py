@@ -295,8 +295,8 @@ class OrganisationEntity(UserTrackedModel):
         required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
         return getattr(user, required_role)
 
-    def get_absolute_url(self):
-        return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 
     def __unicode__(self):
         return self.name
