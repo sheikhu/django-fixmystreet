@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-20 14:28+0100\n"
+"POT-Creation-Date: 2013-12-20 15:23+0100\n"
 "PO-Revision-Date: 2013-12-17 14:47+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-"
@@ -1333,8 +1333,8 @@ msgstr "ANONYMOUS"
 #: fixmystreet/models.py:1293 fixmystreet/models.py:1815
 #: fixmystreet/models.py:1833 fixmystreet/models.py:1837
 #: fixmystreet/utils.py:218 fixmystreet/utils.py:231
-#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:747
-#: fixmystreet/tests/history.py:751 fixmystreet/tests/history.py:763
+#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:746
+#: fixmystreet/tests/history.py:750 fixmystreet/tests/history.py:762
 msgid "a citizen"
 msgstr "a citizen"
 

@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-20 14:28+0100\n"
-"PO-Revision-Date: 2013-12-20 13:28+0000\n"
+"POT-Creation-Date: 2013-12-20 15:23+0100\n"
+"PO-Revision-Date: 2013-12-20 14:07+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -839,7 +839,7 @@ msgstr "Régionale,Communale"
 #: backoffice/templates/pro/reports/table.html:63
 #: backoffice/templates/pro/reports/table_content.html:15
 msgid "planned,not planned"
-msgstr ""
+msgstr "Planifié,Non planifié"
 
 #: backoffice/templates/pro/reports/table.html:68
 #: backoffice/templates/pro/reports/table.html:69
@@ -1279,8 +1279,8 @@ msgstr "Anonyme"
 #: fixmystreet/models.py:1293 fixmystreet/models.py:1815
 #: fixmystreet/models.py:1833 fixmystreet/models.py:1837
 #: fixmystreet/utils.py:218 fixmystreet/utils.py:231
-#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:747
-#: fixmystreet/tests/history.py:751 fixmystreet/tests/history.py:763
+#: fixmystreet/templates/reports/pdf.html:226 fixmystreet/tests/history.py:746
+#: fixmystreet/tests/history.py:750 fixmystreet/tests/history.py:762
 msgid "a citizen"
 msgstr "un citoyen"
 
@@ -1454,7 +1454,7 @@ msgstr "^conditions-d-utilisation/$"
 
 #: fixmystreet/urls.py:39
 msgid "^reports/$"
-msgstr ""
+msgstr "^rapports/$"
 
 #: fixmystreet/urls.py:43
 msgid "^report/search"
