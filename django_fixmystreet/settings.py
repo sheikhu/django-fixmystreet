@@ -2,8 +2,8 @@
 import os, sys
 import subprocess
 
-PROJECT_PATH = os.getcwd()
-
+PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.getcwd()
 
 # supported value of ENVIRONMENT are dev, jenkins, staging, production
 if "ENV" in os.environ:
@@ -26,10 +26,9 @@ if ENVIRONMENT != "production":
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 
-LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] if 'LANGUAGE_CODE' in os.environ else 'fr'
-ADD_THIS_KEY = os.environ['ADD_THIS_KEY'] if 'ADD_THIS_KEY' in os.environ else ''
-GA_CODE = os.environ['GA_CODE'] if 'GA_CODE' in os.environ else 'UA-17146775-54'
-SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else 'dev'
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'fr')
+GA_CODE = os.environ.get('GA_CODE', 'UA-17146775-54')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
 EMAIL_HOST = ("localhost" if ENVIRONMENT == "production" else "relay.irisnet.be")
 ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))
 SERVER_EMAIL = "django_dev@cirb.irisnet.be"
@@ -40,11 +39,12 @@ if ENVIRONMENT == 'production':
 if 'MEDIA_ROOT' in os.environ:
     MEDIA_ROOT = os.environ['MEDIA_ROOT']
 else:
-    MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOCALE_PATHS = (os.path.join(PROJECT_PATH, 'django_fixmystreet', 'locale') ,)
+print LOCALE_PATHS
 
 DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnet.be>"
 
@@ -76,11 +76,15 @@ ROOT_URLCONF = 'django_fixmystreet.urls'
 # AUTH_USER_MODEL = "django_fixmystreet.fixmystreet.FMSUser"
 
 SOUTH_LOGGING_ON = True
-SOUTH_LOGGING_FILE = os.path.join(PROJECT_PATH, "south.log")
+SOUTH_LOGGING_FILE = os.path.join(BASE_DIR, "south.log")
 
-proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
-(out, err) = proc.communicate()
-VERSION = out
+import pkg_resources
+VERSION = pkg_resources.require("django-fixmystreet")[0].version
+
+if not VERSION:
+    proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
+    VERSION = out
 
 gettext = lambda s: s
 LANGUAGES = (
