@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-30 10:42+0100\n"
-"PO-Revision-Date: 2013-12-30 09:36+0000\n"
+"POT-Creation-Date: 2013-12-30 11:32+0100\n"
+"PO-Revision-Date: 2013-12-30 10:33+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -1650,29 +1650,17 @@ msgstr "Les derniers incidents"
 msgid "Last 30 days"
 msgstr "les 30 derniers jours"
 
-#: fixmystreet/templates/home.html:176 fixmystreet/templates/home.html:240
+#: fixmystreet/templates/home.html:176
 msgid "Report Created"
 msgstr "Incidents signalés"
 
-#: fixmystreet/templates/home.html:179 fixmystreet/templates/home.html:245
+#: fixmystreet/templates/home.html:179
 msgid "Report In progress"
 msgstr "Incidents en traitement"
 
-#: fixmystreet/templates/home.html:182 fixmystreet/templates/home.html:250
+#: fixmystreet/templates/home.html:182
 msgid "Report Processed"
 msgstr "Incidents clôturés"
-
-#: fixmystreet/templates/home.html:241 fixmystreet/templates/home.html:246
-msgid "In the 30 last days"
-msgstr "les 30 derniers jours"
-
-#: fixmystreet/templates/home.html:251
-msgid "In the 30 last days "
-msgstr "les 30 derniers jours"
-
-#: fixmystreet/templates/home.html:257
-msgid "Download Fix My Street for your smartphone:"
-msgstr "Téléchargez Fix My Street sur votre smartphone:"
 
 #: fixmystreet/templates/posters.html:4 fixmystreet/templates/posters.html:8
 msgid "Posters"
@@ -2199,6 +2187,15 @@ msgstr "Vous vous êtes abonné aux mises à jour"
 #: fixmystreet/views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "Vous n'êtes plus abonné aux mises à jour"
+
+#~ msgid "In the 30 last days"
+#~ msgstr "In the 30 last days"
+
+#~ msgid "In the 30 last days "
+#~ msgstr "In the 30 last days "
+
+#~ msgid "Download Fix My Street for your smartphone:"
+#~ msgstr "Download Fix My Street for your smartphone:"
 
 #~ msgid "^report/prepare"
 #~ msgstr "^report/prepare"

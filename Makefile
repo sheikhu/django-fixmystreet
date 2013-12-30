@@ -75,5 +75,6 @@ messages:
 
 clean:
 	cd $(INSTALL_PATH); rm -rf bin lib lib64 include # virtualenv
-	rm -rf build dist libs bootstrap.py src # buildout
+	rm -rf bin libs bootstrap.py src # buildout
 	rm -rf reports # Jenkins
+	rm -rf build dist
