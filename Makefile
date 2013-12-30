@@ -1,7 +1,8 @@
-.PHONY        = install init html-doc deploy test run jenkins rpm createdb dropdb scratchdb clean
+.PHONY        = install init html-doc install develop test jenkins createdb dropdb scratchdb clean
 APP_NAME      = fixmystreet backoffice
-BIN_DIR       = bin
-LIBS_DIR      = libs
+INSTALL_PATH  = $(realpath env)
+BIN_PATH      = $(INSTALL_PATH)/bin
+SRC_ROOT      = django_fixmystreet
 
 USER          = fixmystreet
 GROUP         = fixmystreet
@@ -15,57 +16,47 @@ RPM_INPUTS_FILE = rpm-include-files
 DBNAME        = fixmystreet
 DBUSER        = fixmystreet
 
-env:
-	virtualenv --python=python2.7 env --system-site-packages
-	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | env/bin/python
+$(BIN_PATH):
+	echo $(BIN_PATH)
+	virtualenv --python=python2.7 $(INSTALL_PATH) --system-site-packages
+	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | $(BIN_PATH)/python
 
-install: env
-	env/bin/python setup.py install
-	env/bin/manage.py migrate --all
-	env/bin/manage.py collectstatic --noinput
+install: $(BIN_PATH)
+	$(BIN_PATH)/python setup.py install
+	$(BIN_PATH)/manage.py migrate --all
+	$(BIN_PATH)/manage.py collectstatic --noinput
 
-develop: env
-	env/bin/python setup.py develop
-	env/bin/manage.py migrate --all
+develop: $(BIN_PATH)
+	echo $(BIN_PATH)
+	$(BIN_PATH)/python setup.py develop
+	$(BIN_PATH)/manage.py migrate --all
 
 extra:
-	env/bin/pip install -e .[debug]
+	$(BIN_PATH)/pip install -e .[debug]
 
 # generate new migration script
 schemamigration:
-	env/bin/manage.py schemamigration fixmystreet --auto
+	$(BIN_PATH)/manage.py schemamigration fixmystreet --auto
 
 html-doc:
-	bin/sphinx-apidoc -fF -o doc/source/gen django_fixmystreet
-	bin/sphinx-build -d doc/build/doctrees doc/source doc/build/html
+	$(BIN_PATH)/sphinx-apidoc -fF -o doc/source/gen $(SRC_ROOT)
+	$(BIN_PATH)/sphinx-build -d doc/build/doctrees doc/source doc/build/html
 
-test: env/bin/manage.py
-	env/bin/manage.py test $(APP_NAME)
+test: $(BIN_PATH)/manage.py
+	$(BIN_PATH)/manage.py test $(APP_NAME)
 
 lint:
-	find django_fixmystreet -name "*.py" | egrep -v '^django_fixmystreet/*/tests/' | xargs bin/pyflakes
+	flake8 $(SRC_ROOT)
 
-jenkins: install env/bin/manage.py extra
+jenkins: install extra
 	rm -rf reports
 	mkdir reports
-	env/bin/manage.py jenkins $(APP_NAME)
-
-rpm:
-	find . -type f -name "*.pyc" -delete
-	fpm -s dir -t rpm -n $(RPM_NAME) \
-			--url $(SOURCE_URL) \
-			--rpm-user $(USER) \
-			--rpm-group $(GROUP) \
-			-v $(RPM_VERSION) \
-			--prefix $(RPM_PREFIX) \
-			--after-install after-install.sh \
-			`cat $(RPM_INPUTS_FILE)`
-
+	$(BIN_PATH)/manage.py jenkins $(APP_NAME)
 
 createdb:
 	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
-	env/bin/manage.py syncdb --migrate
-	env/bin/manage.py loaddata bootstrap list_items applicants staging_data
+	$(BIN_PATH)/manage.py syncdb --migrate
+	$(BIN_PATH)/manage.py loaddata bootstrap list_items applicants staging_data
 
 dropdb:
 	dropdb $(DBNAME) -U $(DBUSER)
@@ -74,13 +65,15 @@ dropdb:
 # $ make DBNAME=my_fms_db_name scratchdb
 scratchdb: dropdb createdb
 	cp -Rf media/photos-sample/ media/photos/
-	env/bin/manage.py loaddata sample
+	$(BIN_PATH)/manage.py loaddata sample
 
 messages:
-	cd django_fixmystreet; ../env/bin/manage.py makemessages -l en
-	env/bin/tx push -s
-	env/bin/tx pull -a
-	cd django_fixmystreet; ../env/bin/manage.py compilemessages
+	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -l en
+	$(BIN_PATH)/tx push -s
+	$(BIN_PATH)/tx pull -a
+	cd $(SRC_ROOT); $(BIN_PATH)/manage.py compilemessages
 
 clean:
-	rm -rf env
+	cd $(INSTALL_PATH); rm -rf bin lib lib64 include # virtualenv
+	rm -rf build dist libs bootstrap.py src # buildout
+	rm -rf reports # Jenkins
