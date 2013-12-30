@@ -44,7 +44,6 @@ else:
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOCALE_PATHS = (os.path.join(PROJECT_PATH, 'django_fixmystreet', 'locale') ,)
-print LOCALE_PATHS
 
 DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnet.be>"
 

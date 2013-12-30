@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-30 11:32+0100\n"
-"PO-Revision-Date: 2013-12-30 10:33+0000\n"
+"POT-Creation-Date: 2013-12-30 17:56+0100\n"
+"PO-Revision-Date: 2013-12-30 16:57+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: settings.py:88
+#: settings.py:91
 msgid "French"
 msgstr ""
 
-#: settings.py:89
+#: settings.py:92
 msgid "Dutch"
 msgstr ""
 
@@ -96,11 +96,11 @@ msgstr "Afgesloten"
 msgid "^$"
 msgstr ""
 
-#: backoffice/urls.py:18 fixmystreet/urls.py:41
+#: backoffice/urls.py:18 fixmystreet/urls.py:42
 msgid "^report/(?P<slug>.*)/(?P<report_id>\\d+)$"
 msgstr "^rapport/(?P<slug>.*)/(?P<report_id>\\d+)$"
 
-#: backoffice/urls.py:19 fixmystreet/urls.py:42
+#: backoffice/urls.py:19 fixmystreet/urls.py:43
 msgid "^report/(?P<slug>.*)/(?P<report_id>\\d+)/document$"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "^report/new$"
 msgstr ""
 
-#: backoffice/urls.py:22 fixmystreet/urls.py:45
+#: backoffice/urls.py:22 fixmystreet/urls.py:46
 msgid "^report/verify"
 msgstr ""
 
@@ -196,17 +196,17 @@ msgstr ""
 msgid "^report/(\\d+)/pdf/"
 msgstr ""
 
-#: backoffice/urls.py:58 fixmystreet/urls.py:58
+#: backoffice/urls.py:58 fixmystreet/urls.py:59
 msgid "^report/(\\d+)/subscribe/"
 msgstr "^report/(\\d+)/abonneren/"
 
-#: backoffice/urls.py:59 fixmystreet/urls.py:59
+#: backoffice/urls.py:59 fixmystreet/urls.py:60
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr "^report/(\\d+)/deabonneren/"
 
 #: backoffice/templates/pro/change_password.html:4
 #: backoffice/templates/pro/login.html:4 backoffice/templates/pro/login.html:8
-#: fixmystreet/templates/base.html:108
+#: fixmystreet/templates/base.html:96
 msgid "Sign in"
 msgstr "Aanmelden"
 
@@ -241,7 +241,7 @@ msgstr "Configureer de beheerder categorieën"
 #: backoffice/templates/pro/manager_category_configuration.html:73
 #: backoffice/templates/pro/reports/merge.html:203
 #: backoffice/templates/pro/reports/show.html:791
-#: fixmystreet/templates/base.html:232
+#: fixmystreet/templates/base.html:219
 #: fixmystreet/templates/reports/_documentreport.html:42
 msgid "Cancel"
 msgstr "Annuleren"
@@ -255,12 +255,12 @@ msgid "Save"
 msgstr "Bewaren"
 
 #: backoffice/templates/pro/auth/base.html:24
-#: fixmystreet/templates/base.html:125
+#: fixmystreet/templates/base.html:112
 msgid "Users"
 msgstr "Gebruikers"
 
 #: backoffice/templates/pro/auth/base.html:27
-#: fixmystreet/templates/base.html:130
+#: fixmystreet/templates/base.html:117
 msgid "Groups"
 msgstr ""
 
@@ -698,7 +698,7 @@ msgid "incident "
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:806
-#: fixmystreet/templates/base.html:203
+#: fixmystreet/templates/base.html:190
 #: fixmystreet/templates/reports/show.html:262
 msgid "OK"
 msgstr ""
@@ -1446,30 +1446,34 @@ msgid "^about/$"
 msgstr "^over-ons/$"
 
 #: fixmystreet/urls.py:13
+msgid "^faq/$"
+msgstr ""
+
+#: fixmystreet/urls.py:14
 msgid "^terms-of-use/$"
 msgstr ""
 
-#: fixmystreet/urls.py:39
+#: fixmystreet/urls.py:40
 msgid "^reports/$"
 msgstr "^rapporten/$"
 
-#: fixmystreet/urls.py:43
+#: fixmystreet/urls.py:44
 msgid "^report/search"
 msgstr ""
 
-#: fixmystreet/urls.py:44
+#: fixmystreet/urls.py:45
 msgid "^report/new"
 msgstr "^rapport/nieuw"
 
-#: fixmystreet/urls.py:47
+#: fixmystreet/urls.py:48
 msgid "^report/(\\d+)/update/"
 msgstr "^rapport/(\\d+)/update/"
 
-#: fixmystreet/urls.py:48
+#: fixmystreet/urls.py:49
 msgid "^report/newmap/"
 msgstr ""
 
-#: fixmystreet/urls.py:53
+#: fixmystreet/urls.py:54
 msgid "^report/(\\d+)/pdf/(pro)?"
 msgstr ""
 
@@ -1490,64 +1494,71 @@ msgstr "Home"
 msgid "Fix My Street Brussels"
 msgstr "Fix My Street Brussel"
 
-#: fixmystreet/templates/base.html:33 fixmystreet/templates/base.html.py:34
-#: fixmystreet/templates/base.html:38 fixmystreet/templates/base.html.py:39
+#: fixmystreet/templates/base.html:48
 msgid "Fix My Street"
 msgstr "Fix My Street"
 
-#: fixmystreet/templates/base.html:59 fixmystreet/templates/base.html.py:74
+#: fixmystreet/templates/base.html:68 fixmystreet/templates/base.html.py:81
 msgid "Submit a Report"
 msgstr "Een probleem melden"
 
-#: fixmystreet/templates/base.html:64 fixmystreet/templates/base.html.py:78
+#: fixmystreet/templates/base.html:71 fixmystreet/templates/base.html.py:85
 msgid "View Reports"
 msgstr "Alle meldingen bekijken"
 
-#: fixmystreet/templates/base.html:139
+#: fixmystreet/templates/base.html:73 fixmystreet/templates/base.html.py:90
+msgid "Help"
+msgstr ""
+
+#: fixmystreet/templates/base.html:76
+msgid "FAQ"
+msgstr ""
+
+#: fixmystreet/templates/base.html:126
 msgid "Managers dispatching"
 msgstr "Toekenning verantwoordelijke managers"
 
-#: fixmystreet/templates/base.html:147
+#: fixmystreet/templates/base.html:134
 msgid "Change your password"
 msgstr "Paswoord wijzigen"
 
-#: fixmystreet/templates/base.html:156
+#: fixmystreet/templates/base.html:143
 msgid "Log out"
 msgstr "Afmelden"
 
-#: fixmystreet/templates/base.html:181
+#: fixmystreet/templates/base.html:168
 msgid "Confirmation"
 msgstr ""
 
-#: fixmystreet/templates/base.html:198
+#: fixmystreet/templates/base.html:185
 msgid "I want to create a new report"
 msgstr ""
 
-#: fixmystreet/templates/base.html:213
+#: fixmystreet/templates/base.html:200
 msgid "Browser not supported"
 msgstr "Browser wordt niet ondersteund"
 
-#: fixmystreet/templates/base.html:216
+#: fixmystreet/templates/base.html:203
 msgid ""
 "Please download one of the supported browsers below before continuing on the"
 " website."
 msgstr "Download een van de onderstaande browsers alvorens verder te gaan."
 
-#: fixmystreet/templates/base.html:244
+#: fixmystreet/templates/base.html:231
 msgid "A initiative of Bruxelles Mobilite in collaboration with "
 msgstr "Een initiatief van <a href='http://brussel.irisnet.be/over-het-gewest/ministerie-van-het-brussels-hoofdstedelijk-gewest/mobiliteit' target='_blank'>Mobiel Brussel</a> in samenwerking met de "
 
-#: fixmystreet/templates/base.html:245
+#: fixmystreet/templates/base.html:232
 msgid "Communes and Brussels Partner Institutions"
 msgstr "Brusselse gemeenten en partnerinstellingen"
 
-#: fixmystreet/templates/base.html:252
+#: fixmystreet/templates/base.html:239
 #: fixmystreet/templates/terms_of_use.html:4
 #: fixmystreet/templates/terms_of_use.html:8
 msgid "Terms of Use"
 msgstr "Gebruiksvoorwaarden"
 
-#: fixmystreet/templates/base.html:253
+#: fixmystreet/templates/base.html:240
 msgid "A propos de Fix My Street"
 msgstr ""
 
@@ -1612,10 +1623,9 @@ msgid "Description"
 msgstr ""
 
 #: fixmystreet/templates/home.html:107
-#: fixmystreet/templates/reports/document.html:79
-#: fixmystreet/templates/reports/new.html:80
-#: fixmystreet/templates/reports/verify.html:47
-msgid "Coordonnees"
+#: fixmystreet/templates/reports/_attachments_form.html:48
+msgctxt "citizen"
+msgid "Informations"
 msgstr ""
 
 #: fixmystreet/templates/home.html:111
@@ -1888,8 +1898,9 @@ msgid ""
 msgstr "\n       Gemeld door <strong>%(by)s</strong> op <strong>%(on)s</strong>\n "
 
 #: fixmystreet/templates/reports/_attachments_form.html:3
-msgid "Photos:"
-msgstr "Foto's:"
+#: fixmystreet/templates/reports/_photo_form.html:4
+msgid "Photos"
+msgstr ""
 
 #: fixmystreet/templates/reports/_attachments_form.html:23
 #: fixmystreet/templates/reports/_photo_form.html:27
@@ -1921,12 +1932,8 @@ msgid "4- Please do not include people's faces and car registration plates."
 msgstr "Gezichten en nummerplaten mogen niet herkenbaar zijn"
 
 #: fixmystreet/templates/reports/_attachments_form.html:42
-msgid "Comment:"
-msgstr "Commentaar:"
-
-#: fixmystreet/templates/reports/_attachments_form.html:48
-msgctxt "citizen"
-msgid "Informations:"
+#: fixmystreet/templates/reports/_documentreport.html:29
+msgid "Comment"
 msgstr ""
 
 #: fixmystreet/templates/reports/_attachments_form.html:63
@@ -1943,10 +1950,6 @@ msgstr "Ongeldig bestand. Toegelaten bestanden: JPG, PNG, PDF, DOC en XLS"
 
 #: fixmystreet/templates/reports/_documentreport.html:16
 msgid "Observation"
-msgstr ""
-
-#: fixmystreet/templates/reports/_documentreport.html:29
-msgid "Comment"
 msgstr ""
 
 #: fixmystreet/templates/reports/_documentreport.html:30
@@ -2008,10 +2011,6 @@ msgstr "Behandeld door"
 msgid "Subscriptions"
 msgstr "Volger(s)"
 
-#: fixmystreet/templates/reports/_photo_form.html:4
-msgid "Photos"
-msgstr ""
-
 #: fixmystreet/templates/reports/_photo_form.html:5
 msgid ""
 "La photo doit permettre de replacer l’incident dans son contexte. Les "
@@ -2031,6 +2030,12 @@ msgstr ""
 #: fixmystreet/templates/reports/show.html:42
 msgid "Your file description"
 msgstr "Bestand beschrijving"
+
+#: fixmystreet/templates/reports/document.html:79
+#: fixmystreet/templates/reports/new.html:80
+#: fixmystreet/templates/reports/verify.html:47
+msgid "Coordonnees"
+msgstr ""
 
 #: fixmystreet/templates/reports/document.html:104
 #: fixmystreet/templates/reports/index.html:25
@@ -2184,6 +2189,15 @@ msgstr "U bent succesvol geabonneerd voor updates"
 #: fixmystreet/views/reports/subscribers.py:48
 msgid "You have unsubscribed from updates successfully"
 msgstr "U bent succesvol afgemeld voor updates"
+
+#~ msgid "Informations"
+#~ msgstr "Informations:"
+
+#~ msgid "Photos:"
+#~ msgstr "Photos:"
+
+#~ msgid "Comment:"
+#~ msgstr "Comment:"
 
 #~ msgid "In the 30 last days"
 #~ msgstr "In the 30 last days"

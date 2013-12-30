@@ -10,6 +10,7 @@ urlpatterns = patterns(
     'django_fixmystreet.fixmystreet.views.main',
     url(_(r'^$'), 'home', name='home'),
     url(_(r'^about/$'), 'about', name='about'),
+    url(_(r'^faq/$'), 'faq', name='faq'),
     url(_(r'^terms-of-use/$'), 'terms_of_use', name='terms_of_use'),
     url(r'^update-language/', 'update_current_language', name="update_current_language"),
 )

@@ -2,59 +2,55 @@
   COMMON
   ==============================================================*/
 header{
-	margin: 10px 0 0 0;
-	float: right;
+	margin-top: 10px;
 }
 nav{
 	margin: 53px 0 0 0;
 }
 nav ul{
 	/*background:#E0E0E0;*/
-	height: 40px;
 	margin: 0;
 	padding: 0;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
 }
-nav ul li{
-	display: inline-block;
-}
-nav ul li a{
-	display: block;
+
+.navbar .nav li a{
 	padding: 10px 20px;
+	height: 20px;
 	min-width: 55px;
 	text-align: center;
+	text-shadow: none;
+	margin-left: 15px;
 }
-nav ul li a.submit{
-	-webkit-border-top-left-radius: 4px;
-    -webkit-border-bottom-left-radius: 4px;
-    -moz-border-radius-topleft: 4px;
-    -moz-border-radius-bottomleft: 4px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+.navbar .nav .nav-group a{
+	float:left;
+	border-radius: 0;
+	margin-left: 1px;
+	margin-right: 0;
 }
-nav ul li a.help{
-	-webkit-border-top-right-radius: 4px;
-    -webkit-border-bottom-right-radius: 4px;
-    -moz-border-radius-topright: 4px;
-    -moz-border-radius-bottomright: 4px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+.navbar .nav .nav-group a:first-child{
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
 }
-nav ul li a:link, nav ul li a:visited{
+.navbar .nav .nav-group a:last-child{
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+.navbar .nav li a:link, .navbar .nav li a:visited{
 	border: 1px solid #E0E0E0;
 	border-left: 1px solid #FFF;
 	background: #E0E0E0;
 	text-decoration: none;
 	color: #495E77;
 }
-nav ul li a:hover, nav ul li a:active, nav ul li a:focus{
+.navbar .nav li a:hover, .navbar .nav li a:active, .navbar .nav li a:focus{
 	border: 1px solid #BCD4F1;
 	background: #BCD4F1;
 	text-decoration: none;
 	color: #495E77;
 }
-nav ul li a.active{
+.navbar .nav li a.active{
 	border: 1px solid #607C9D;
 	background: #607C9D;
 	text-decoration: none;
@@ -132,28 +128,19 @@ a.lang.selected:link, a.lang.selected:visited{
 a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	color: #495E77;
 }
-#login{
-	clear: both;
-	float: right;
-	-webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-	border-radius: 4px;
-	border: 1px solid #E0E0E0;
-	background: #E0E0E0;
-	font-family: 'Dosis', sans-serif;
-	text-transform: uppercase;
-	color: #495E77;
-	margin: 32px 0 0 0;
-}
 #login .icon-login{
 	background: transparent url('../images/icon-login.png') top left no-repeat;
 	height: 20px;
 }
-#login a{
-	display: block;
-	padding: 8px 10px 10px 10px;
-	height: 20px;
+#login .dropdown-menu{
 	vertical-align: bottom;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #495E77;
+	background: #E0E0E0;
+}
+#login .dropdown-menu a{
+	text-align: left;
 }
 #login a:link, #login a:visited{
 	background: #E0E0E0;
@@ -189,12 +176,8 @@ footer .cirb-cibg img{
    HOME
   ==============================================================*/
 #map{
-	margin: 30px 0 10px 0;
 	position: relative;
 	height: 280px;
-}
-article{
-	margin:30px 0 0 0;
 }
 #map.map-big{
 	height: 610px !important;

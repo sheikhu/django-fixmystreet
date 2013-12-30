@@ -53,17 +53,17 @@ def update_current_language(request):
 
 
 def about(request):
-    return render_to_response("about.html", {'faq_entries' : FaqEntry.objects.all().order_by('order')},
-            context_instance=RequestContext(request))
+    return render_to_response("about.html", {
+        'faq_entries': FaqEntry.objects.all().order_by('order')
+    }, context_instance=RequestContext(request))
 
 
-def posters(request):
-    return render_to_response("posters.html",
-            {'languages': settings.LANGUAGES },
-            context_instance=RequestContext(request))
+def faq(request):
+    return render_to_response("about.html", {
+        'faq_entries': FaqEntry.objects.all().order_by('order')
+    }, context_instance=RequestContext(request))
 
 
 def terms_of_use(request):
-    return render_to_response("terms_of_use.html",
-            context_instance=RequestContext(request))
+    return render_to_response("terms_of_use.html", context_instance=RequestContext(request))
 
