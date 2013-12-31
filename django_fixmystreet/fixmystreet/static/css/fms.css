@@ -35,7 +35,7 @@ nav ul{
 	.navbar .nav .nav-group a{
 		float:left;
 		border-radius: 0;
-		margin-left: 1px;
+		margin-left: 3px;
 		margin-right: 0;
 	}
 	.navbar .nav .nav-group a:first-child{
@@ -69,7 +69,7 @@ nav ul{
 .consult.pro{
 	margin-left:3px;
 }
-ul.dropdown-menu{
+.navbar .nav .dropdown-menu{
 	background:#E0E0E0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -80,6 +80,9 @@ ul.dropdown-menu{
 	padding:0;
 	right:0;
 	left:auto;
+}
+.navbar .nav .dropdown-menu a{
+	margin-left: 0px;
 }
 .btn-group.open .dropdown-toggle{
 	-webkit-box-shadow:none;
@@ -189,7 +192,7 @@ footer .cirb-cibg img{
 	position: relative;
 	height: 280px;
 }
-#map.map-big{
+.map-big #map, #map.map-big{
 	height: 610px !important;
     transition: all 1s;
 }
@@ -526,22 +529,31 @@ footer .cirb-cibg img{
 	bottom: 1px;
 }
 
-#instructions{
-	-webkit-border-top-left-radius: 4px;
-	-webkit-border-top-right-radius: 4px;
-	-moz-border-radius-topleft: 4px;
-	-moz-border-radius-topright: 4px;
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-    padding: 10px 0;
-}
-#searchContainer{
+.lead-container{
+	padding: 5px 15px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px 4px 4px 4px;
 	background-color: #607C9D;
-    padding: 5px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
+.lead-container form{
+	margin: 10px 0;
+}
+.lead-container .instructions{
+    margin: 10px 0;
+}
+
+@media (max-width: 768px){
+	.row-fluid .controls-row [class*="span"],
+	.row-fluid .controls-row [class*="span"] + [class*="span"]{
+		margin-left: 0;
+		margin-bottom: 10px;
+	}
+}
+
 #layerswitcher{
 	left:-1px;
 	right:auto;
@@ -604,7 +616,7 @@ footer .cirb-cibg img{
 .reports #search-address-form{
 	margin-top:10px;
 }
-#search-form #widget-search-ticket-button{
+#map #widget-search-ticket-button{
 	background:transparent url('../images/btn_search_tickets_header.png') top left no-repeat;
 	border:0;
 	width:35px;
@@ -624,43 +636,46 @@ footer .cirb-cibg img{
 #search-form #search-ticket-form{
 	margin-left:10px;
 }
-#instructions ol.steps{
-	margin: 0 0 10px 10px;
-}
-#instructions ol li{
-	display: inline-block;
-	font-family: 'Dosis', sans-serif;
-	text-transform: uppercase;
-	padding: 0 0 0 50px;
-	height: 22px;
-	margin: 0 0 0 75px;
-    text-indent: -15px;
-	line-height: 24px;
-}
-#instructions ol li:first-child{
+.instructions .steps{
 	margin: 0;
 }
-#instructions ol li.stepOne.on{
+.instructions ol li{
+	float: left;
+	list-style-type: none;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	padding: 0 0 0 30px;
+	height: 22px;
+	width: 33.33%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	line-height: 24px;
+}
+.instructions ol li:first-child{
+	margin: 0;
+}
+.instructions ol .stepOne.on{
 	background: transparent url('../images/stepOne_on.png') top left no-repeat;
 	color: #FFF;
 }
-#instructions ol li.stepOne.off{
+.instructions ol .stepOne.off{
 	background: transparent url('../images/stepOne_off.png') top left no-repeat;
 	color: #BCD4F1;
 }
-#instructions ol li.stepTwo.on{
+.instructions ol .stepTwo.on{
 	background: transparent url('../images/stepTwo_on.png') top left no-repeat;
 	color: #FFF;
 }
-#instructions ol li.stepTwo.off{
+.instructions ol .stepTwo.off{
 	background: transparent url('../images/stepTwo_off.png') top left no-repeat;
 	color: #BCD4F1;
 }
-#instructions ol li.stepThree.on{
+.instructions ol .stepThree.on{
 	background: transparent url('../images/stepThree_on.png') top left no-repeat;
 	color: #FFF;
 }
-#instructions ol li.stepThree.off{
+.instructions ol .stepThree.off{
 	background: transparent url('../images/stepThree_off.png') top left no-repeat;
 	color: #BCD4F1;
 }
@@ -690,13 +705,6 @@ footer .cirb-cibg img{
 	color: #FFDB00;
 	text-decoration: none;
 }*/
-#input-search{
-	width: 580px;
-	margin-left: 10px;
-}
-#input-ward{
-	width: 340px;
-}
 #widget-search-button{
 	background: #FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
 	padding: 4px 12px 4px 30px;
@@ -793,12 +801,12 @@ h2.last_reports {
 #search-ticket-form {
 	margin: 5px 0 5px 0;
 }
-#widget-search-ticket-button{
+/*#widget-search-ticket-button{
 	background:transparent url('../images/btn_search_tickets.png') top left no-repeat;
 	border:0;
 	width:35px;
 	height:33px;
-}
+}*/
 #input-ticket-search{
 	height: 23px;
 	margin-right: -13px;
@@ -823,12 +831,13 @@ h2.last_reports {
 /* ==========================
    VERIFY
    ========================== */
-h2.verify_title, .switch_verify{
+/*h2.verify_title, .switch_verify{
 	margin:30px 0 0 0 !important;
 }
 .switch_verify{
 	margin-bottom:30px;
 }
+*/
 .verify_list{
 	height:auto;
 	margin: 30px 0 30px 0;
@@ -1667,14 +1676,14 @@ label strong{
 	margin: 22px 0 0 0 !important;
 	float: right;
 }
-#search-form.mergeIncident #widget-search-ticket-button {
+.mergeIncident #widget-search-ticket-button {
 	background: transparent url('../images/btn_search_tickets.png') top left no-repeat;
 }
 #search-form.mergeIncident #input-ticket-search{
 	height: 23px;
 	margin-right: -13px;
 }
-#search-form.mergeIncident #widget-search-ticket-button{
+.mergeIncident #widget-search-ticket-button{
 	margin-top:1px;
 }
 #map.view_incident.show_report.pro{

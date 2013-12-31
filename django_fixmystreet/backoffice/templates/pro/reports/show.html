@@ -337,302 +337,299 @@ var someCallback = function(exifObject, index) {
 {% endblock %}
 
 {% block map %}
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            <article id="map" class="view_incident show_report pro">
-                <div id="incident-head">
-                    <div class="row">
-                        <div class="span5">
-                            <div class="ticket_infos">
-                                <span class="ticket_number">
-                                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
-                                </span>
+<div class="row">
+    <article id="map" class="span12 view_incident show_report pro">
+        <div id="incident-head" class="container">
+            <div class="row-fluid">
+                <div class="span5">
+                    <div class="ticket_infos">
+                        <span class="ticket_number">
+                            <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
+                        </span>
 
-                                {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                                    {% if report.private %}
-                                        <div class="btn-group changeReportStatus">
-                                          <a class="btn dropdown-toggle private" data-toggle="dropdown" href="#">
-                                            {% trans 'Private' %}
-                                            <span class="caret"></span>
-                                          </a>
-                                          <ul class="dropdown-menu">
-                                            <li>
-                                                <label class="makePublic">
-                                                    <input type="radio" id="id_public" name="public_private" value="false">
-                                                    {% trans "Public" %}
-                                                </label>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                    {% else %}
-                                        <div class="btn-group changeReportStatus">
-                                          <a class="btn dropdown-toggle public" data-toggle="dropdown" href="#">
-                                            {% trans 'Public' %}
-                                            <span class="caret"></span>
-                                          </a>
-                                          <ul class="dropdown-menu">
-                                            <li>
-                                                <label class="makePrivate">
-                                                    <input type="radio" id="id_private" name="public_private" value="false">
-                                                    {% trans "Private" %}
-                                                </label>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                    {% endif %}
-
-                                {% else %}
-                                    {% if report.private %}
-                                        <span class="displayStatus private">
-                                            {% trans 'Private' %}
-                                          </span>
-                                    {% else %}
-                                        <span class="displayStatus public">
-                                            {% trans 'Public' %}
-                                          </span>
-                                    {% endif %}
-                                {% endif %}
-
-                                <br />
-
-                                <span class="ticket_address">
-                                    {{ report.address }}, {{ report.address_number }}<br />
-                                    {{ report.postalcode }} {{ report.get_address_commune_name }}
-                                </span>
-
-                                <br />
-
-                                <span class="ticket_desc">
-
-                                    {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
-
-                                        <!--div class="btn-group changeCategory">
-                                          <a class="btn dropdown-toggle {{report.category.name}}" data-toggle="dropdown" href="#">
-                                            {{report.category.name}}
-                                            <span class="caret"></span>
-                                          </a>
-                                          <ul class="dropdown-menu">
-                                            {% for cat in category_list%}
-                                                <li>
-                                                    <label>
-                                                        <input type="radio" id="{{cat.id}}" name="{{cat.id}}" value="false">
-                                                        {{cat.name}}
-                                                    </label>
-                                                </li>
-                                            {% endfor %}
-                                          </ul>
-                                        </div-->
-                                        <select id="main_cat_select">
-                                            <option value="0">{% trans "Select a Category" %}</option>
-                                            {% for cat in category_list%}
-                                                <option value="{{cat.id}}">{{cat.name}}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <select id="sec_cat_select">
-                                            <option value="0">{% trans "Select a Category" %}</option>
-                                        </select>
-                                    {% else %}
-                                        {{report.display_category}}
-                                    {% endif %}
-                                </span>
-
-                                <br />
-
-                                <!--span>{{report.get_priority}}</span><br /-->
-                                {% if report.get_priority <= 2 %}
-                                    <img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" />
-                                {% elif report.get_priority <= 8 %}
-                                    <img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" />
-                                {% else %}
-                                    <img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" />
-                                {% endif %}
-                                <!--/div-->
-
-                            </div>
-                        </div>
-                        <div class="span4">
-
-                            {% if not report.is_merged %}
-                            <div class="bordered-box">
-                                <!-- #################################### -->
-                                <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
-                                <!-- #################################### -->
-                                {% if report.responsible_department in request.fmsuser.organisations_list %}
-                                    <!-- ######################################### -->
-                                    <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
-                                    <!-- ######################################### -->
-                                    {% if report.is_created %}
-                                        <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
-                                        <!--a href="{% url 'report_publish_pro' report.id %}" class="btn publish">{% trans 'Publish' %}</a-->
-                                        <button onclick="refuse();" class="btn reject">{% trans 'Reject' %}</button>
-                                    {% endif %}
-                                {% endif %}
-                            </div>
+                        {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
+                            {% if report.private %}
+                                <div class="btn-group changeReportStatus">
+                                  <a class="btn dropdown-toggle private" data-toggle="dropdown" href="#">
+                                    {% trans 'Private' %}
+                                    <span class="caret"></span>
+                                  </a>
+                                  <ul class="dropdown-menu">
+                                    <li>
+                                        <label class="makePublic">
+                                            <input type="radio" id="id_public" name="public_private" value="false">
+                                            {% trans "Public" %}
+                                        </label>
+                                    </li>
+                                  </ul>
+                                </div>
+                            {% else %}
+                                <div class="btn-group changeReportStatus">
+                                  <a class="btn dropdown-toggle public" data-toggle="dropdown" href="#">
+                                    {% trans 'Public' %}
+                                    <span class="caret"></span>
+                                  </a>
+                                  <ul class="dropdown-menu">
+                                    <li>
+                                        <label class="makePrivate">
+                                            <input type="radio" id="id_private" name="public_private" value="false">
+                                            {% trans "Private" %}
+                                        </label>
+                                    </li>
+                                  </ul>
+                                </div>
                             {% endif %}
 
-                            <!--timeline-->
+                        {% else %}
+                            {% if report.private %}
+                                <span class="displayStatus private">
+                                    {% trans 'Private' %}
+                                  </span>
+                            {% else %}
+                                <span class="displayStatus public">
+                                    {% trans 'Public' %}
+                                  </span>
+                            {% endif %}
+                        {% endif %}
 
-                            <!-- Actions -->
-                            {% if report.is_in_progress %}
-                            {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                            <div class="btn-group incidentActions">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                {% trans 'Choose an action' %}
-                                <span class="caret"></span>
-                              </a>
-                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="#">{% trans 'Transfer to' %}</a>
-                                            <ul class="dropdown-menu">
-                                                <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Managers' %}</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for department in departments %}
-                                                            <li>
-                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
-                                                                    {{department.name}} ({{ department.dependency.name}})
-                                                                </a>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Entities' %}</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for entity in entities %}
-                                                            <li>
-                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
-                                                                    {{entity.name}}
-                                                                </a>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Organisms' %}</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for institution in region_institution %}
-                                                            <li>
-                                                                <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
-                                                                    {{institution.name}}
-                                                                </a>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
+                        <br />
 
-                                            </ul>
+                        <span class="ticket_address">
+                            {{ report.address }}, {{ report.address_number }}<br />
+                            {{ report.postalcode }} {{ report.get_address_commune_name }}
+                        </span>
+
+                        <br />
+
+                        <span class="ticket_desc">
+
+                            {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
+
+                                <!--div class="btn-group changeCategory">
+                                  <a class="btn dropdown-toggle {{report.category.name}}" data-toggle="dropdown" href="#">
+                                    {{report.category.name}}
+                                    <span class="caret"></span>
+                                  </a>
+                                  <ul class="dropdown-menu">
+                                    {% for cat in category_list%}
+                                        <li>
+                                            <label>
+                                                <input type="radio" id="{{cat.id}}" name="{{cat.id}}" value="false">
+                                                {{cat.name}}
+                                            </label>
                                         </li>
+                                    {% endfor %}
+                                  </ul>
+                                </div-->
+                                <select id="main_cat_select">
+                                    <option value="0">{% trans "Select a Category" %}</option>
+                                    {% for cat in category_list%}
+                                        <option value="{{cat.id}}">{{cat.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <select id="sec_cat_select">
+                                    <option value="0">{% trans "Select a Category" %}</option>
+                                </select>
+                            {% else %}
+                                {{report.display_category}}
+                            {% endif %}
+                        </span>
 
+                        <br />
+
+                        <!--span>{{report.get_priority}}</span><br /-->
+                        {% if report.get_priority <= 2 %}
+                            <img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" />
+                        {% elif report.get_priority <= 8 %}
+                            <img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" />
+                        {% else %}
+                            <img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" />
+                        {% endif %}
+                        <!--/div-->
+
+                    </div>
+                </div>
+                <div class="span4">
+
+                    {% if not report.is_merged %}
+                    <div class="bordered-box">
+                        <!-- #################################### -->
+                        <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
+                        <!-- #################################### -->
+                        {% if report.responsible_department in request.fmsuser.organisations_list %}
+                            <!-- ######################################### -->
+                            <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
+                            <!-- ######################################### -->
+                            {% if report.is_created %}
+                                <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
+                                <!--a href="{% url 'report_publish_pro' report.id %}" class="btn publish">{% trans 'Publish' %}</a-->
+                                <button onclick="refuse();" class="btn reject">{% trans 'Reject' %}</button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!--timeline-->
+
+                    <!-- Actions -->
+                    {% if report.is_in_progress %}
+                    {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
+                    <div class="btn-group incidentActions">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        {% trans 'Choose an action' %}
+                        <span class="caret"></span>
+                      </a>
+                             <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans 'Transfer to' %}</a>
+                                    <ul class="dropdown-menu">
                                         <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="#">{% trans 'Assign to' %}</a>
+                                            <a tabindex="-1" href="#">{% trans 'Managers' %}</a>
                                             <ul class="dropdown-menu">
-                                                <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Applicants' %}</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for organisation in contractors %}
-                                                            <li>
-                                                                <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}">
-                                                                    {{ organisation.name }}
-                                                                </a>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown-submenu">
-                                                    <a tabindex="-1" href="#">{% trans 'Contractors' %}</a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for applicant in applicants %}
-                                                            <li>
-                                                                <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}">
-                                                                    {{ applicant.name }}
-                                                                </a>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-
-                                    <!--  Planification -->
-                                        <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="#">{% trans 'Plan' %}</a>
-
-                                        <!-- Dates possible de planification -->
-                                            <ul class="dropdown-menu">
-
-                                                {% if not report.planned %}
-                                                    <li class="active">
-                                                        <a tabindex="-1" href="#">{% trans "Not planned" %}</a>
-                                                    </li>
-                                                {% endif %}
-                                                {% for date in report.get_date_planned_available %}
-                                                    <li {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}class="active"{% endifequal %}>
-                                                        <a tabindex="-1" href="{% url 'report_planned_pro' report.id %}?date_planned={{ date|date:"m/Y" }}">
-                                                            {{ date|date:"m/Y" }}
+                                                {% for department in departments %}
+                                                    <li>
+                                                        <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
+                                                            {{department.name}} ({{ department.dependency.name}})
                                                         </a>
                                                     </li>
                                                 {% endfor %}
-
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">{% trans 'Entities' %}</a>
+                                            <ul class="dropdown-menu">
+                                                {% for entity in entities %}
+                                                    <li>
+                                                        <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
+                                                            {{entity.name}}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">{% trans 'Organisms' %}</a>
+                                            <ul class="dropdown-menu">
+                                                {% for institution in region_institution %}
+                                                    <li>
+                                                        <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
+                                                            {{institution.name}}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
                                             </ul>
                                         </li>
 
-                                        {% if report.responsible_department in request.fmsuser.organisations_list %}
-                                        <li>
-<!--
-                                            <a tabindex="-1" href="#" onclick="showNearbyReports();">{% trans 'Merge' %}</a>
--->
-                                            <a tabindex="-1" href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Merge' %}</a>
-                                        </li>
-                                        {% endif %}
+                                    </ul>
+                                </li>
 
-                                        <li>
-                                            <a tabindex="-1" href="#modalPriority" data-toggle="modal">Priorité</a>
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans 'Assign to' %}</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">{% trans 'Applicants' %}</a>
+                                            <ul class="dropdown-menu">
+                                                {% for organisation in contractors %}
+                                                    <li>
+                                                        <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}">
+                                                            {{ organisation.name }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
                                         </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="#">{% trans 'Contractors' %}</a>
+                                            <ul class="dropdown-menu">
+                                                {% for applicant in applicants %}
+                                                    <li>
+                                                        <a tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}">
+                                                            {{ applicant.name }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
 
-                                        {% if not fms_user.contractor %}
-                                            <li>
-                                                <a href="javascript:close();">{% trans 'Close' %}</a>
+                            <!--  Planification -->
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans 'Plan' %}</a>
+
+                                <!-- Dates possible de planification -->
+                                    <ul class="dropdown-menu">
+
+                                        {% if not report.planned %}
+                                            <li class="active">
+                                                <a tabindex="-1" href="#">{% trans "Not planned" %}</a>
                                             </li>
                                         {% endif %}
-                                <!--/li-->
-                            </div>
-                            {% endif %}
-                            {% endif %}
-                        </div>
-                        <div class="span3 pro">
-                            {% if report.is_in_progress %}
-                                {% if report.status != report.SOLVED %}
-                                    <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
-                                        <i class="isresolved"> </i>{% trans "Report as solved" %}
-                                    </a>
+                                        {% for date in report.get_date_planned_available %}
+                                            <li {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}class="active"{% endifequal %}>
+                                                <a tabindex="-1" href="{% url 'report_planned_pro' report.id %}?date_planned={{ date|date:"m/Y" }}">
+                                                    {{ date|date:"m/Y" }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </li>
+
+                                {% if report.responsible_department in request.fmsuser.organisations_list %}
+                                <li>
+<!--
+                                    <a tabindex="-1" href="#" onclick="showNearbyReports();">{% trans 'Merge' %}</a>
+-->
+                                    <a tabindex="-1" href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Merge' %}</a>
+                                </li>
                                 {% endif %}
 
-                                {% if not report.is_closed and not subscribed %}
-                                    <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
-                                        {% if report.subscriptions.all.count %}
-                                            <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
-                                        {% endif %}
-                                        <i class="subscribe"> </i>
+                                <li>
+                                    <a tabindex="-1" href="#modalPriority" data-toggle="modal">Priorité</a>
+                                </li>
 
-                                        {% trans "Subscribe" %}
-                                    </a>
+                                {% if not fms_user.contractor %}
+                                    <li>
+                                        <a href="javascript:close();">{% trans 'Close' %}</a>
+                                    </li>
                                 {% endif %}
-                            {% endif %}
-
-                            <a class="lk-download-pdf btn" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
-                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
-                            </a>
-                        </div>
+                        <!--/li-->
                     </div>
+                    {% endif %}
+                    {% endif %}
                 </div>
-                <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
-                <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
-            </article>
+                <div class="span3 pro">
+                    {% if report.is_in_progress %}
+                        {% if report.status != report.SOLVED %}
+                            <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
+                                <i class="isresolved"> </i>{% trans "Report as solved" %}
+                            </a>
+                        {% endif %}
+
+                        {% if not report.is_closed and not subscribed %}
+                            <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
+                                {% if report.subscriptions.all.count %}
+                                    <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
+                                {% endif %}
+                                <i class="subscribe"> </i>
+
+                                {% trans "Subscribe" %}
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    <a class="lk-download-pdf btn" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
+                        <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
+        <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+        <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
+        <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+    </article>
+</div>
 <!--/div-->
 {% endblock %}
 

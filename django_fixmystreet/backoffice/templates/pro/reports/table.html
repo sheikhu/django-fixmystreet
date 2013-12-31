@@ -12,6 +12,7 @@
 
 {% block script %}
 {{ block.super }}
+<script src="{{ STATIC_URL}}js/search.js"></script>
 <script src="{{ STATIC_URL }}lib/dataTables/js/jquery.dataTables.js"></script>
 <script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
 <script>
@@ -158,66 +159,17 @@ function refreshMap() {
 
 {% block map %}
 <div class="row">
-    <div class="span2">
-        <div class="switch_verify btn-group pull-right">
+    <div class="span12">
+        <p class="switch_verify btn-group">
             <a href="#modalTable" id="tableSwitch" role="button" class="btn" data-toggle="modal">{% trans "Table" %}</a>
             <a class="btn active" id="btn-map">{% trans "Map" %}</a>
-        </div>
+        </p>
     </div>
 </div>
 
-
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <article id="map" class="reports map-big">
-
-                    <div id="searchContainer">
-                        <div id="newReport">
-                            <div class="row">
-                                <div class="span12">
-                                    <div id="search-form" class="block highlighted">
-                                        <form id="search-address-form" class="form-inline search-form">
-                                            <div id="address-search-div">
-                                                <!--h2>{% trans "Enter the address where the incident is:" %}</h2-->
-                                                <input id="input-search" class="input-xxlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
-                                                <input id="input-streetnumber"  placeholder="n°" class="input-mini" type="search" />
-                                                <select id="input-ward" class="input-large" name="ward">
-                                                    <option value="">{% trans "All communes..." %}</option>
-                                                    {% for zip in zipcodes %}
-                                                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Rechercher' %}" disabled>
-                                            </div>
-                                        </form>
-
-                                        <form id="search-ticket-form" class="form-inline" action="{% url 'search_ticket' %}">
-                                            <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-                                            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Results -->
-                        <div>
-                            <p id="proposal-message" class="hide"> </p>
-                            <div id="proposal-container" class="inline" hidden>
-                                <h3 class="numberResultsContainer"><span id="numberResults"></span> result(s)</h3>
-                                <ul id="proposal" ></ul>
-                                <p><button id="previousResults" hidden></button> <button id="nextResults" hidden>></button></p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                </article>
-            </div>
-        </div>
-    </div>
+<div class="row">
+    {% include "_map_search.html" with search_report=True %}
+</div>
 {% endblock %}
 
 {% block content %}
@@ -226,7 +178,7 @@ function refreshMap() {
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Table</h3>
     </div>
-            
+
     <div class="modal-body">
 
         <button id="showHideFilters">Edit columns</button>
