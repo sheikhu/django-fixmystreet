@@ -40,11 +40,6 @@ def is_active_menu(context, menu):
     return ''
 
 
-@register.simple_tag
-def addthis_scripts():
-    return '<script src="http://s7.addthis.com/js/250/addthis_widget.js?pub=' + settings.ADD_THIS_KEY + '"></script>'
-
-
 @register.filter
 def dict_to_json(values):
     return json.dumps(values)
