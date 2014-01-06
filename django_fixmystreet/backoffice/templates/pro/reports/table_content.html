@@ -45,7 +45,7 @@
     <tbody>
         {% for report in reports %}
             <tr>
-                <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
+                <td><a href="{{ report.get_absolute_url_pro }}" target="_blank">{% trans "Show" %}</a></td>
                 <td>{{ report.id }}</td>
                 <td>{{ report.category.name }}</td>
                 <td>{{ report.secondary_category.name }}</td>
