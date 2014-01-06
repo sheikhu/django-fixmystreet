@@ -522,9 +522,6 @@ class Report(UserTrackedModel):
         marker_color = "green"  # default color
         if self.is_in_progress():
             marker_color = "orange"
-            if user and user.is_authenticated():
-                if not self.contractor:
-                    marker_color = "orange-executed"
         elif self.is_created():
             marker_color = "red"
 

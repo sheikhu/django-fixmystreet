@@ -121,31 +121,11 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             markerStyle = cloneObj(defaultMarkerStyle),
             fixedMarkerStyle = cloneObj(defaultMarkerStyle),
             pendingMarkerStyle = cloneObj(defaultMarkerStyle),
-            pendingExecutedMarkerStyle = cloneObj(defaultMarkerStyle),
-            draggableMarkerStyle = cloneObj(defaultMarkerStyle),
-            fixedMarkerStyleReg = cloneObj(defaultMarkerStyle),
-            pendingMarkerStyleReg = cloneObj(defaultMarkerStyle),
-            pendingExecutedMarkerStyleReg = cloneObj(defaultMarkerStyle),
-            defaultMarkerStyleReg = cloneObj(defaultMarkerStyle),
-            fixedMarkerStylePro = cloneObj(defaultMarkerStyle),
-            pendingMarkerStylePro = cloneObj(defaultMarkerStyle),
-            pendingExecutedMarkerStylePro = cloneObj(defaultMarkerStyle),
-            defaultMarkerStylePro = cloneObj(defaultMarkerStyle);
+            draggableMarkerStyle = cloneObj(defaultMarkerStyle);
 
         markerStyle.externalGraphic = "/static/images/pin-red-L.png";
         fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png";
         pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-L.png";
-        pendingExecutedMarkerStyle.externalGraphic = "/static/images/pin-orange-executed-L.png";
-
-        defaultMarkerStyleReg.externalGraphic = "/static/images/reg-pin-red-L.png";
-        fixedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-green-L.png";
-        pendingMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-L.png";
-        pendingExecutedMarkerStyleReg.externalGraphic = "/static/images/reg-pin-orange-executed-L.png";
-
-        defaultMarkerStylePro.externalGraphic = "/static/images/pro-pin-red-L.png";
-        fixedMarkerStylePro.externalGraphic = "/static/images/pro-pin-green-L.png";
-        pendingMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-L.png";
-        pendingExecutedMarkerStylePro.externalGraphic = "/static/images/pro-pin-orange-executed-L.png";
 
         draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-L.png";
         fms.statusFilter = [];
@@ -491,7 +471,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                         feature.attributes.report.address + ' ' + "<br/>" +
                                         feature.attributes.report.postalcode + ' ' +
                                         feature.attributes.report.address_commune_name + "</strong>" +
-                                        
+
 
                                         "<p class='categoryPopup'>" + feature.attributes.report.category + "</p></div>          ";
                                 }
@@ -602,31 +582,9 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         //Can be either orange, red or green and in the set of regional route or not.
         var markerConf;
 
-        if (proVersion) {
-            if (!report.address_regional) {
-                //NOT ROUTE REGIONALE
-                if (report.citizen == 'true') {
-                    markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyle : pendingMarkerStyle;
-                } else {
-                   markerConf = (report.status == 3 ||report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStylePro : pendingMarkerStylePro;
-                }
-            } else {
-               //ROUTE REGIONALE
-               markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyleReg : report.status == 1 ? defaultMarkerStyleReg : (report.status==5 || report.status ==6) ? pendingExecutedMarkerStyleReg :pendingMarkerStyleReg;
-            }
-                return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-                // self.markersLayer.addFeatures(vectorOfMarkers);
-        } else {
-            //Non pro version
-            if (report.citizen == 'true') {
-                markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : pendingMarkerStyle;
-            } else {
-                markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStylePro : report.status == 1 ? defaultMarkerStylePro : pendingMarkerStylePro;
-            }
-            var vectorOfMarkers = new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-            return vectorOfMarkers;
-            // self.markersLayer.addFeatures(vectorOfMarkers);
-        }
+        markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingMarkerStyle : pendingMarkerStyle;
+        return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
+        // self.markersLayer.addFeatures(vectorOfMarkers);
     };
 
     /**
