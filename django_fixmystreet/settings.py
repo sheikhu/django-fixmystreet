@@ -27,7 +27,7 @@ if ENVIRONMENT != "production":
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 
 LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'fr')
-GA_CODE = os.environ.get('GA_CODE', 'UA-17146775-54')
+GA_CODE = os.environ.get('GA_CODE', '')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
 EMAIL_HOST = ("localhost" if ENVIRONMENT == "production" else "relay.irisnet.be")
 ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))

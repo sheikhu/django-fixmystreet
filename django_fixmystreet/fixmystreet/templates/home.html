@@ -59,36 +59,32 @@ $(function(){
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <article id="recent-reports" class="home_recent_reports span12">
-                <!--h2>{% trans 'Last modified reports:' %}</h2-->
-                <div class="row">
-                    <ul id="recent_home_nav" class="nav nav-tabs span12">
-                        <li>
-                            <h2 class="last_reports">{% trans 'Last 30 days' %}</h2>
-                        </li>
-                        <li class="">
-                            <a href="#list_created" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_new }}</span><br />{% trans "Report Created" %}</a>
-                        </li>
-                        <li class="active">
-                            <a href="#list_in_progress" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
-                        </li>
-                        <li class="">
-                            <a href="#list_closed" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
-                        </li>
-                        <li class="search-ticket">
-                            <form id="search-ticket-form" class="form-inline">
-                                <!--h2>{% trans "Enter the report ticket:" %}</h2-->
-                                <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-                                <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                <div id="search_results" class="search_results_home tab-content">
-                    <div id="list_created" class="tab-pane">
-                        <div class="row">
+    <div class="row">
+        <article id="recent-reports" class="home_recent_reports span12">
+            <!--h2>{% trans 'Last modified reports:' %}</h2-->
+                <form id="search-ticket-form" class="form-inline pull-right">
+                    <!--h2>{% trans "Enter the report ticket:" %}</h2-->
+                    <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
+                    <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
+                </form>
+            <ul id="recent_home_nav" class="nav nav-tabs">
+                <li class="last_reports">
+                    <h2 class="brand">{% trans 'Last 30 days' %}</h2>
+                </li>
+                <li>
+                    <a href="#list_created" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_new }}</span><br />{% trans "Report Created" %}</a>
+                </li>
+                <li class="active">
+                    <a href="#list_in_progress" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
+                </li>
+                <li>
+                    <a href="#list_closed" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
+                </li>
+            </ul>
+            <div class="container tab-content">
+                <div class="row-fluid">
+                    <div id="search_results" class="search_results_home tab-content">
+                        <div id="list_created" class="tab-pane clearfix">
                             {% for report in reports_created %}
                             {% if not BACKOFFICE %}
                             {% include "reports/_navigation.html" with url=report.get_absolute_url %}
@@ -98,9 +94,7 @@ $(function(){
                             {% endfor %}
                             <div class="clearfloat"></div>
                         </div>
-                    </div>
-                    <div id="list_in_progress" class="tab-pane active">
-                        <div class="row">
+                        <div id="list_in_progress" class="tab-pane clearfix active">
                             {% for report in reports_in_progress %}
                             {% if not BACKOFFICE %}
                             {% include "reports/_navigation.html" with url=report.get_absolute_url %}
@@ -108,11 +102,8 @@ $(function(){
                             {% include "reports/_navigation.html" with url=report.get_absolute_url_pro %}
                             {% endif %}
                             {% endfor %}
-                            <div class="clearfloat"></div>
                         </div>
-                    </div>
-                    <div id="list_closed" class="tab-pane">
-                        <div class="row">
+                        <div id="list_closed" class="tab-pane clearfix">
                             {% for report in reports_closed %}
                             {% if not BACKOFFICE %}
                             {% include "reports/_navigation.html" with url=report.get_absolute_url %}
@@ -124,8 +115,8 @@ $(function(){
                         </div>
                     </div>
                 </div>
-            </article>
-        </div>
+            </div>
+        </article>
     </div>
 {% endblock %}
 

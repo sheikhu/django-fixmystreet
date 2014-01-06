@@ -1,7 +1,6 @@
 {% load i18n %}
 
-<a href="{{ url }}{% if BACKOFFICE %}?page=1{% endif %}" class="report{% if active %} active{% endif %}">
-	<div class="span3">
+<a href="{{ url }}{% if BACKOFFICE %}?page=1{% endif %}" class="span3 report{% if active %} active{% endif %}">
 		<div class="">
 
 			{% if report.thumbnail %}
@@ -32,9 +31,8 @@
 			<!--p class="subscription_data">
 				{{report.get_number_of_subscription}}<br/>{% trans 'Subscriptions' %}
 			</p>
-		</div-->	
-	</div>
-	
+		</div-->
+
 	<!--div class="next_image"></div-->
 	{% if report.is_fixed %}({% trans "fixed" %}){% endif %}
 </a>

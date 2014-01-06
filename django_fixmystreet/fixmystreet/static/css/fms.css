@@ -715,13 +715,7 @@ footer .cirb-cibg img{
 #recent-reports{
 	margin-top:30px;
 }
-.nav-tabs{
-	margin-left: 32px;
-	padding-right: 4px;
-	width: 1162px !important;
-	margin-bottom:0;
-	border-bottom:1px solid #5F7C9C;
-}
+/*
 .nav-tabs>li{
 	width:170px;
 	margin-right:30px;
@@ -752,17 +746,57 @@ footer .cirb-cibg img{
 	border-bottom:0;
 	color:#495E77;
 }
-.nav-tabs>.active>a:hover{
+*/
+.nav-tabs{
+	margin-bottom:0;
+	border-bottom:0;
+}
+.nav-tabs>li>a{
+	border:1px solid #5F7C9C;
+	border-bottom:0;
+	font-family:'Dosis', sans-serif;
+	font-size:14px;
+	text-transform:uppercase;
+	padding:4px 20px;
+	text-align:center;
+	color:#607C9D;
+}
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
 	background:#BCD3F2;
 	border:1px solid #5F7C9C;
 	border-bottom:0;
 	color:#495E77;
 }
-.nav-tabs > .active > a:focus{
-	background:#BCD3F2;
-	border:1px solid #5F7C9C;
-	border-bottom:0;
-	color:#495E77;
+.last_reports {
+	line-height: 50px;
+}
+.last_reports .brand {
+	vertical-align: bottom;
+	display: inline-block;
+	line-height: 17px;
+	/*max-width:180px;*/
+	font-size: 14px;
+	text-transform: uppercase;
+	color:#607C9D;
+	margin: 0;
+	padding: 5px 10px;
+}
+@media (max-width: 1200px) {
+	.last_reports {
+		line-height: 17px;
+	}
+	.last_reports + li {
+		clear: both;
+	}
+	.nav-tabs > li:not(.last_reports){
+		width: 30%;
+		margin: 0 1.6666%;
+	}
+	.nav-tabs > li > a{
+		margin: 0;
+	}
 }
 .num_reports{
 	font-size: 19px;
@@ -770,43 +804,38 @@ footer .cirb-cibg img{
 #search_results{
 	background:#BCD3F2;
 }
-.report .span3{
+.report{
 	background:#FFF;
-	width:240px;
-	height:210px;
+	/*width:240px;*/
+	min-height:230px;
 	padding:0 10px 10px 10px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
-.report:first-child .span3{
+/*.report:first-child .span3{
 	margin-left:50px;
 }
+*/
 .tab-pane{
-    padding: 20px 0;
+    padding: 20px;
 	border:1px solid #5F7C9C;
-	border-top:0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
-h2.last_reports {
-	line-height: 17px;
-	font-size: 14px;
-	text-transform: uppercase;
-	width:170px;
-	color:#607C9D;
-	margin-top: 19px;
-}
 #search-ticket-form {
 	margin: 5px 0 5px 0;
 }
-/*#widget-search-ticket-button{
+#widget-search-ticket-button{
 	background:transparent url('../images/btn_search_tickets.png') top left no-repeat;
 	border:0;
 	width:35px;
 	height:33px;
-}*/
+}
 #input-ticket-search{
 	height: 23px;
 	margin-right: -13px;
