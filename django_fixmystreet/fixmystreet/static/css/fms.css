@@ -27,6 +27,9 @@ nav ul{
 	.navbar .nav {
 		margin-top: 0px;
 	}
+	.navbar .nav li a{
+		text-align: left;
+	}
 }
 @media (min-width: 979px){
 	.navbar .nav li a{
