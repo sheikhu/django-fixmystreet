@@ -15,6 +15,28 @@
 <script src="{{ STATIC_URL}}js/search.js"></script>
 <script src="{{ STATIC_URL }}lib/dataTables/js/jquery.dataTables.js"></script>
 <script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
+
+{% block script-search %}
+  <script type="text/javascript">
+    var NEXT_PAGE_URL = '{% url "report_verify_pro" %}';
+    $(function(){
+      {% if popup_reports%}
+      $("#report_popup").modal();
+      {% endif %}
+    });
+
+    var zipcodes = new Object();
+
+    {% for zip in zipcodes %}
+        zipcodes[{{zip.code}}] = new Object();
+        zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+        zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+        zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+    {% endfor %}
+
+  </script>
+{% endblock %}
+
 <script>
 
 var table;

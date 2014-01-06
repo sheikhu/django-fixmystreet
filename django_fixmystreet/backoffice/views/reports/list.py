@@ -79,7 +79,9 @@ def filter_reports(user, criteria):
     return (reports, pnt)
 
 def all_reports(request):
-    return render_to_response("pro/reports/table.html", {}, context_instance=RequestContext(request))
+    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
+
+    return render_to_response("pro/reports/table.html", {'zipcodes': zipcodes}, context_instance=RequestContext(request))
 
 def table_content(request):
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
