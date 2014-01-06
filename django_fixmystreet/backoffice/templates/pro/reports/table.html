@@ -100,7 +100,7 @@ var columns = [
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
 ]
 
-// Get tbody content rendered by django
+// Get table rendered by django
 function generateTableContent() {
     $.ajax({
         url: "{% url 'report_table_content_pro' %}",
