@@ -375,6 +375,9 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def in_progress(self):
         return self.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
 
+    def unfinished(self):
+        return self.filter(Q(status=Report.CREATED) | Q(status__in=Report.REPORT_STATUS_IN_PROGRESS))
+
     def assigned(self):
         return self.filter(contractor__isnull=False)
 
