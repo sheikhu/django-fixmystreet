@@ -101,33 +101,46 @@ var columns = [
 ]
 
 // Get tbody content rendered by django
-$.ajax({
-    url: "{% url 'report_table_content_pro' %}",
-    data: "",
-    dataType: "html",
-    success: function(data) {
-        document.querySelector('tbody').innerHTML = data;
+function generateTableContent() {
+    $.ajax({
+        url: "{% url 'report_table_content_pro' %}",
+        data: "",
+        dataType: "html",
+        success: function(data) {
+            document.getElementById('table-container').innerHTML = data;
 
-        // Init table
-        table = $('#result-table').dataTable({aoColumns: columns});
-        // {
-        //     "bStateSave": true
-        // });
+            // Init table
+            table = $('#result-table').dataTable({aoColumns: columns});
+            // {
+            //     "bStateSave": true
+            // });
 
-        // Bind event : refresh markers on map when table sort and filter
-        table.bind('filter', refreshMap);
+            // Bind event : refresh markers on map when table sort and filter
+            table.bind('filter', refreshMap);
 
-        table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
+            table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
 
-        $('#column-visibility :checkbox').change(function () {
-            var checked = $(this).prop('checked'),
-                index = $(this).closest('li').index() + 1; // show column
-            table.fnSetColumnVis(index, checked);
-        }).change();
+            $('#column-visibility :checkbox').change(function () {
+                var checked = $(this).prop('checked'),
+                    index = $(this).closest('li').index() + 1; // show column
+                table.fnSetColumnVis(index, checked);
+            }).change();
 
-        // Init map markers
-        refreshMap();
-    }
+            // Init map markers
+            refreshMap();
+        }
+    });
+}
+generateTableContent();
+
+// Refresh table
+var refreshTable = document.getElementById('refreshTable');
+refreshTable.addEventListener('click', function() {
+    // Destroy current table
+    table.fnDestroy(true);
+
+    // Regenerate table
+    generateTableContent();
 });
 
 // Show or hide filters in modal
@@ -203,6 +216,7 @@ function refreshMap() {
 
     <div class="modal-body">
 
+        <button id="refreshTable">Refresh table</button>
         <button id="showHideFilters">Edit columns</button>
         <div id="table-filters" class="table-filters">
             <ul id="column-visibility">
@@ -223,52 +237,7 @@ function refreshMap() {
             </ul>
         </div>
 
-        <table id="result-table" class="dataTable">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>{% trans "All" context "Ticket" %}</th>
-                    <th>{% trans "All" context "Categories" %}</th>
-                    <th>{% trans "All" context "Sub categories" %}</th>
-                    <th>{% trans "All" context "Address" %}</th>
-                    <th>{% trans "All" context "Postal code" %}</th>
-                    <th>{% trans "All" context "Road type" %}</th>
-                    <th>{% trans "All" context "Status" %}</th>
-                    <th>{% trans "All" context "Responsible entity" %}</th>
-                    <th>{% trans "All" context "Responsible department" %}</th>
-                    <th>{% trans "All" context "Planning" %}</th>
-                    <th>{% trans "All" context "Planning date" %}</th>
-                    <th>{% trans "All" context "Priority" %}</th>
-                    <th>{% trans "All" context "Subscribed" %}</th>
-                    <th>{% trans "All" context "Pending" %}</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>{% trans "Ticket" %}</th>
-                    <th>{% trans "Category" %}</th>
-                    <th>{% trans "Sub category" %}</th>
-                    <th>{% trans "Address" %}</th>
-                    <th>{% trans "Postal code" %}</th>
-                    <th>{% trans "Road type" %}</th>
-                    <th>{% trans "Status" %}</th>
-                    <th>{% trans "Responsible entity" %}</th>
-                    <th>{% trans "Responsible department" %}</th>
-                    <th>{% trans "Planning" %}</th>
-                    <th>{% trans "Planning date" %}</th>
-                    <th>{% trans "Priority" %}</th>
-                    <th>{% trans "Subscribe" %}</th>
-                    <th>{% trans "Pending" %}</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div id="table-container"></div>
     </div>
 
     <div class="modal-footer">
