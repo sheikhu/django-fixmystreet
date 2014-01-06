@@ -200,7 +200,7 @@ def update( request, report_id):
             #set default title if not given
             fileTitle = request.POST.get("title")
             if (fileTitle == ""):
-                  request.POST.__setitem__("title",request.FILES.get('file').name)
+                  request.POST.__setitem__("title", request.FILES.get('file').name)
             file_form = ReportFileForm(request.POST,request.FILES)
             if file_form.is_valid:
                 file_form.save(request.user, report)
@@ -214,10 +214,16 @@ def update( request, report_id):
 def search_ticket(request):
     try:
         report_id = request.REQUEST.get('report_id')
-        report = Report.objects.filter(private=False).get(id=report_id)
 
+        if hasattr(request, 'fmsuser') and request.fmsuser.is_pro():
+            report = Report.objects.get(id=report_id)
+
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+
+        report = Report.objects.get(id=report_id, private=False)
         return HttpResponseRedirect(report.get_absolute_url())
-    except:
+
+    except Report.DoesNotExist:
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home'))
 
