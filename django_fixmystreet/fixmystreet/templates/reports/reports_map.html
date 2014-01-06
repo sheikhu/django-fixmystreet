@@ -20,6 +20,8 @@
 {% block script_map %}
 {{ block.super }}
 <script>
+var NEXT_PAGE_URL = '{% url "report_verify" %}';
+
 var zipcodes = new Object();
 
 {% for zip in zipcodes %}
@@ -28,8 +30,6 @@ var zipcodes = new Object();
     zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
     zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
 {% endfor %}
-
-var NEXT_PAGE_URL = null;
 
 $(function(){
     fms.currentMap = new fms.Map('map', {
@@ -80,8 +80,6 @@ $(function(){
 });
 
 // Override some function from search.js
-function getAddressFromPoint() {}
-
 function cleanMap() {
     // Remove all popups
     while(fms.currentMap.map.popups.length) {
@@ -98,39 +96,6 @@ function cleanMap() {
     $proposalContainer.slideUp();
 }
 
-function initDragMarker(x, y, additionalInfo) {
-        cleanMap();
-
-        // Remove message info
-        var $map = $('#map');
-        map.classList.remove("map-big-message");
-        map.classList.add("map-big");
-
-        var $proposalMessage = $('#proposal-message');
-        $proposalMessage.slideUp();
-
-        draggableMarker = fms.currentMap.addDraggableMarker(x, y);
-        fms.currentMap.centerOnDraggableMarker();
-        fms.currentMap.map.zoomTo(6);
-
-        var popupContent = "<p class='popupHeading'>Vous êtes ici</p>";
-
-        if (additionalInfo) {
-            popupContent += "<p class='popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
-            popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
-        }
-
-        var popup = new OpenLayers.Popup(
-            "popup",
-            new OpenLayers.LonLat(x, y),
-            new OpenLayers.Size(200,150),
-            popupContent,
-            true
-        );
-        popup.panMapIfOutOfView = true;
-
-        fms.currentMap.map.addPopup(popup);
-}
 </script>
 {% endblock %}
 {% endblock %}
