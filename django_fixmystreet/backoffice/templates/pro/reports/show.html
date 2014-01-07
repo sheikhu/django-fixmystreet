@@ -13,14 +13,22 @@
 var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
 
 $(function(){
-    /**********************************************/
-    /* Prepare iphone toogle button look and feel */
-    /**********************************************/
-//    $("input[type=radio]").bind("click",function(){
-//        var id = $(this).data('attachmentId');
-//        var level = $(this).val();
-//        window.location = '{% url "report_update_attachment" report.id %}?attachmentId='+id+'&updateType='+level;
-//    });
+
+    $(".changeStatus").delegate("input[type=radio]", "click", function(){
+        var id = $(this).data('attachmentId');
+        var level = $(this).val();
+        var elem = $(this).closest('.changeStatus');
+        elem.addClass('loading');
+        $.get('{% url "report_update_attachment" report.id %}?attachmentId='+id+'&updateType='+level)
+        .success(function (result) {
+            console.log(elem);
+            elem.html(result);
+        }).error(function () {
+            alert("Somethings went wrong...");
+        }).done(function(){
+            elem.removeClass('loading');
+        });
+    });
 
     /***************************/
     /* Set the current manager */

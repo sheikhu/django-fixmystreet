@@ -1544,6 +1544,10 @@ label strong{
 .login-btns p{
 	text-align:center;
 }
+.loading {
+	opacity: 0.5;
+	pointer-events: none;
+}
 .changeStatus{
 	float:right;
 	margin-top: 4px;

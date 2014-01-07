@@ -5,6 +5,8 @@ from django.db import transaction
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
@@ -226,7 +228,11 @@ def updateAttachment(request,report_id):
     a.security_level = int(security_level)
     a.save()
 
-    return HttpResponseRedirect(report.get_absolute_url_pro())
+    return render_to_response("reports/_visibility_control.html",
+            {
+                "attachment": a
+            },
+            context_instance=RequestContext(request))
 
 def deleteAttachment(request, report_id):
     """delete a attachment (pro only)"""
