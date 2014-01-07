@@ -1084,7 +1084,7 @@ form#report-form{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	padding: 10px 0 10px 0;
+	padding: 10px;
 	background:#607C9D;
 }
 .lk-download-pdf, .lk-subscribe, .lk-isresolved{
@@ -1096,7 +1096,6 @@ form#report-form{
 	border-radius: 4px;
 	background: #FFDB00;
 	float:right;
-	margin-right:10px;
 	font-family:'Dosis', sans-serif;
 	font-size:11px;
 	text-transform:uppercase;
@@ -1176,9 +1175,6 @@ form#report-form{
 	height: 49px;
 	margin: 8px auto 0 auto;
 }
-#incident-head .ticket_infos{
-	margin-left:10px;
-}
 #incident-head .ticket_number{
 	color:#D2E2F6;
 	font-size:12px;
@@ -1203,7 +1199,7 @@ form#report-form{
 	position: absolute;
 	background:#7090B7;
 	/*left:58.55%; Try with bootstrap spans */
-	left:57.35%;
+	left:59.8%;
 	width:2px;
 	margin-left:-1px; /* make it center */
 	bottom:10px;	/* margin-bottom space used by li element */
@@ -1212,7 +1208,7 @@ form#report-form{
 }
 
 ul.timeline{
-	width: 1150px; /* total width and plus 20px for triangles */
+	/*width: 1150px;*/ /* total width and plus 20px for triangles */
 	position: relative;
 	list-style:none;
 	overflow: hidden;
@@ -1226,10 +1222,10 @@ ul.timeline{
 	border:1px solid #5F7C9C;
 }
 .timeline > li.left{
-	width:650px;
+	width: 57.4468%;
 }
 .timeline > li.right{
-	width:480px;
+	width:40.4255%;
 }
 .timeline > li{
 	background:#FFF;
@@ -1548,7 +1544,7 @@ label strong{
 }
 .changeStatus{
 	float:right;
-	margin-top: -3px;
+	margin-top: 4px;
 }
 .changeStatus .btn, .changeReportStatus .btn{
 	filter: none;

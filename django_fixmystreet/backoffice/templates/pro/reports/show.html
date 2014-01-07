@@ -338,8 +338,9 @@ var someCallback = function(exifObject, index) {
 
 {% block map %}
 <div class="row">
-    <article id="map" class="span12 view_incident show_report pro">
-        <div id="incident-head" class="container">
+<div class="span12">
+    <article id="map" class="view_incident show_report pro container">
+        <div id="incident-head" class="">
             <div class="row-fluid">
                 <div class="span5">
                     <div class="ticket_infos">
@@ -605,16 +606,16 @@ var someCallback = function(exifObject, index) {
                     {% endif %}
                     {% endif %}
                 </div>
-                <div class="span3 pro">
+                <div class="pro">
                     {% if report.is_in_progress %}
                         {% if report.status != report.SOLVED %}
-                            <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
+                            <a href="#divMarkAsDone" role="button" class="btn lk-isresolved span1" data-toggle="modal">
                                 <i class="isresolved"> </i>{% trans "Report as solved" %}
                             </a>
                         {% endif %}
 
                         {% if not report.is_closed and not subscribed %}
-                            <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
+                            <a href="#modalSubscription" role="button" class="btn lk-subscribe span1" data-toggle="modal">
                                 {% if report.subscriptions.all.count %}
                                     <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
                                 {% endif %}
@@ -625,7 +626,7 @@ var someCallback = function(exifObject, index) {
                         {% endif %}
                     {% endif %}
 
-                    <a class="lk-download-pdf btn" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
+                    <a class="lk-download-pdf btn span1" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
                         <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
                     </a>
                 </div>
@@ -635,6 +636,7 @@ var someCallback = function(exifObject, index) {
         <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
         <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
     </article>
+</div>
 </div>
 <!--/div-->
 {% endblock %}
@@ -1008,6 +1010,7 @@ var someCallback = function(exifObject, index) {
                     <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
                 </span>
             {% if report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list %}
+
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
             {% endif %}
 
@@ -1021,7 +1024,7 @@ var someCallback = function(exifObject, index) {
                             {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit %}
                         {% endif %}
                     {% endfor %}
-                </div>
+                </ul>
             {% endif %}
 
         </div>
