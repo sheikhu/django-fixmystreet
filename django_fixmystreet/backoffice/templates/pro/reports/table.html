@@ -64,7 +64,6 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 });
 
 var columns = [
-    {type: "null", bSortable: false},
     {type: "number"}, // incidnet number
     {type: "select"}, // categories
     {type: "select"}, // sec categories
@@ -117,6 +116,11 @@ function generateTableContent() {
 
             // Bind event : refresh markers on map when table sort and filter
             table.bind('filter', refreshMap);
+            console.log(table.find('tr').length);
+            table.delegate('tr', 'click', function () {
+                console.log(this);
+                window.open($(this).data('href'));
+            });
 
             table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
 

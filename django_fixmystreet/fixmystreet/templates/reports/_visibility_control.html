@@ -1,0 +1,44 @@
+{% load i18n %}
+
+{% if attachment.is_public %}
+  <a class="btn dropdown-toggle public" data-toggle="dropdown" href="#">
+    {% trans 'Public' %}
+    <span class="caret"></span>
+  </a>
+{% elif attachment.is_private %}
+  <a class="btn dropdown-toggle private" data-toggle="dropdown" href="#">
+    {% trans 'Private' %}
+    <span class="caret"></span>
+  </a>
+{% elif attachment.is_confidential %}
+  <a class="btn dropdown-toggle confidential" data-toggle="dropdown" href="#">
+    {% trans 'Confidential' %}
+    <span class="caret"></span>
+  </a>
+{% endif %}
+<ul class="dropdown-menu">
+    {% if attachment.is_confidential or attachment.is_private %}
+    <li>
+        <label class="makePublic">
+        <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PUBLIC}}">
+        {% trans "Public" %}
+        </label>
+    </li>
+    {% endif %}
+    {% if attachment.is_confidential or attachment.is_public %}
+    <li>
+        <label class="makePrivate">
+        <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.PRIVATE}}">
+        {% trans "Private" %}
+        </label>
+    </li>
+    {% endif %}
+    {% if attachment.is_public or attachment.is_private %}
+    <li>
+        <label class="makeConfidential">
+        <input type="radio" name="security_level_{{attachment.id}}" data-attachment-id="{{attachment.id}}" value="{{attachment.CONFIDENTIAL}}">
+        {% trans "Confidential" %}
+        </label>
+    </li>
+    {% endif %}
+</ul>
