@@ -220,15 +220,15 @@ $(document).ready(function() {
         type:"GET",
         success:function(data){
             for(var i = 0; i<data.length;++i){
-                {% if report.private %}
+               /*{% if report.private %}
                     var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
                     $("#sec_cat_select").append(option);
                 {% else %}
-                if(data[i].p === 1){
+                if(data[i].p === 1){*/
                     var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
                     $("#sec_cat_select").append(option);
-                }
-                {% endif %}
+                /*}
+                {% endif %}*/
             }
             $("#sec_cat_select").val("{{report.secondary_category.id}}");
         }
@@ -244,15 +244,15 @@ $(document).ready(function() {
                 type:"GET",
                 success:function(data){
                     for(var i = 0; i<data.length;++i){
-                        {% if report.private %}
+                        /*{% if report.private %}
                             var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
                             $("#sec_cat_select").append(option);
                         {% else %}
-                        if(data[i].p === 1){
+                        if(data[i].p === 1){*/
                             var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
                             $("#sec_cat_select").append(option);
-                        }
-                        {% endif %}
+                        /*}
+                        {% endif %}*/
                     }
 
                 }
