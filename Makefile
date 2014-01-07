@@ -1,6 +1,6 @@
 .PHONY        = install init html-doc install develop test jenkins createdb dropdb scratchdb clean
 APP_NAME      = fixmystreet backoffice
-INSTALL_PATH  = $(realpath env)
+INSTALL_PATH  = $(realpath .)
 BIN_PATH      = $(INSTALL_PATH)/bin
 SRC_ROOT      = django_fixmystreet
 
@@ -18,7 +18,7 @@ DBUSER        = fixmystreet
 
 $(BIN_PATH):
 	echo $(BIN_PATH)
-	virtualenv --python=python2.7 $(INSTALL_PATH) --system-site-packages
+	virtualenv --python=/usr/bin/python2.7 $(INSTALL_PATH) --system-site-packages
 	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | $(BIN_PATH)/python
 
 install: $(BIN_PATH)
