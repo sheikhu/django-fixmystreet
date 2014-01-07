@@ -27,6 +27,7 @@ MENU_DEFS = {
     'users_manager_dispatching': ['category_gestionnaire_configuration'],
     'users_change_password':     ['password_change'],
     'about':                     ['about', 'terms_of_use'],
+    'faq':                       ['faq'],
     'contact':                   ['contact']
 }
 
@@ -37,11 +38,6 @@ def is_active_menu(context, menu):
     if page.url_name in MENU_DEFS[menu]:
         return 'active'
     return ''
-
-
-@register.simple_tag
-def addthis_scripts():
-    return '<script src="http://s7.addthis.com/js/250/addthis_widget.js?pub=' + settings.ADD_THIS_KEY + '"></script>'
 
 
 @register.filter

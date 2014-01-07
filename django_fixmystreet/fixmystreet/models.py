@@ -295,8 +295,8 @@ class OrganisationEntity(UserTrackedModel):
         required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
         return getattr(user, required_role)
 
-    def get_absolute_url(self):
-        return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 
     def __unicode__(self):
         return self.name
@@ -375,7 +375,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def in_progress(self):
         return self.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
 
-    def pending(self):
+    def unfinished(self):
         return self.filter(Q(status=Report.CREATED) | Q(status__in=Report.REPORT_STATUS_IN_PROGRESS))
 
     def assigned(self):
@@ -525,9 +525,6 @@ class Report(UserTrackedModel):
         marker_color = "green"  # default color
         if self.is_in_progress():
             marker_color = "orange"
-            if user and user.is_authenticated():
-                if not self.contractor:
-                    marker_color = "orange-executed"
         elif self.is_created():
             marker_color = "red"
 

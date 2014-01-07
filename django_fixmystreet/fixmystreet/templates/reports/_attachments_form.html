@@ -1,6 +1,6 @@
 {% load i18n %}
 <fieldset>
-    <legend>{% trans 'Photos:' %}</legend>
+    <legend>{% trans 'Photos' %}</legend>
     <div id="form-files">
         {# Good way to display error lists. Thibaut. #}
         {{ file_formset.management_form }}
@@ -39,13 +39,13 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{% trans 'Comment:' %}</legend>
+    <legend>{% trans 'Comment' %}</legend>
     {% include "_form_horizontal.html" with form=comment_form %}
 </fieldset>
 
 {% if display_citizen_form_comment %}
     <fieldset>
-        <legend>{% trans 'Informations:' context "citizen" %}</legend>
+        <legend>{% trans 'Informations' context "citizen" %}</legend>
 
             {% include "_form_horizontal.html" with form=citizen_form %}
 

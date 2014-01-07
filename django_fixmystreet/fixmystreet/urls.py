@@ -10,6 +10,7 @@ urlpatterns = patterns(
     'django_fixmystreet.fixmystreet.views.main',
     url(_(r'^$'), 'home', name='home'),
     url(_(r'^about/$'), 'about', name='about'),
+    url(_(r'^faq/$'), 'faq', name='faq'),
     url(_(r'^terms-of-use/$'), 'terms_of_use', name='terms_of_use'),
     url(r'^update-language/', 'update_current_language', name="update_current_language"),
 )
@@ -37,13 +38,13 @@ urlpatterns += patterns(
 urlpatterns += patterns(
     'django_fixmystreet.fixmystreet.views.reports.main',
     url(_(r'^reports/$'), 'index', name='report_index'),
-    url(_(r'^reports/(?P<slug>.*)/(?P<commune_id>\d+)$'), 'index', name='report_commune_index'),
+    # url(_(r'^reports/(?P<slug>.*)/$'), 'index', name='report_commune_index'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show', name='report_show'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/document$'), 'document', name='report_document'),
     url(_(r'^report/search'), 'search_ticket', name='search_ticket'),
     url(_(r'^report/new'), 'new', name='report_new'),
     url(_(r'^report/verify'), 'verify', name='report_verify'),
-    url(_(r'^report/prepare'), 'report_prepare', name='report_prepare'),
+    # url(_(r'^report/prepare'), 'report_prepare', name='report_prepare'),
     url(_(r'^report/(\d+)/update/'), 'update', name='report_update'),
     url(_(r'^report/newmap/'), 'newmap', name='report_new_map'),
 )

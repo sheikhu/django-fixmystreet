@@ -2,59 +2,68 @@
   COMMON
   ==============================================================*/
 header{
-	margin: 10px 0 0 0;
-	float: right;
+	margin-top: 10px;
 }
-nav{
+.navbar .nav, .navbar .btn-navbar{
 	margin: 53px 0 0 0;
+	clear: right;
 }
 nav ul{
 	/*background:#E0E0E0;*/
-	height: 40px;
 	margin: 0;
 	padding: 0;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
 }
-nav ul li{
-	display: inline-block;
-}
-nav ul li a{
-	display: block;
+
+.navbar .nav li a{
 	padding: 10px 20px;
+	height: 20px;
 	min-width: 55px;
 	text-align: center;
+	text-shadow: none;
 }
-nav ul li a.submit{
-	-webkit-border-top-left-radius: 4px;
-    -webkit-border-bottom-left-radius: 4px;
-    -moz-border-radius-topleft: 4px;
-    -moz-border-radius-bottomleft: 4px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+@media (max-width: 979px){
+	.navbar .nav {
+		margin-top: 0px;
+	}
+	.navbar .nav li a{
+		text-align: left;
+	}
 }
-nav ul li a.help{
-	-webkit-border-top-right-radius: 4px;
-    -webkit-border-bottom-right-radius: 4px;
-    -moz-border-radius-topright: 4px;
-    -moz-border-radius-bottomright: 4px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+@media (min-width: 979px){
+	.navbar .nav li a{
+		margin-left: 20px;
+	}
+	.navbar .nav .nav-group a{
+		float:left;
+		border-radius: 0;
+		margin-left: 3px;
+		margin-right: 0;
+	}
+	.navbar .nav .nav-group a:first-child{
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+	.navbar .nav .nav-group a:last-child{
+		border-top-right-radius: 4px;
+		border-bottom-right-radius: 4px;
+	}
 }
-nav ul li a:link, nav ul li a:visited{
+.navbar .nav li a:link, .navbar .nav li a:visited{
 	border: 1px solid #E0E0E0;
 	border-left: 1px solid #FFF;
 	background: #E0E0E0;
 	text-decoration: none;
 	color: #495E77;
 }
-nav ul li a:hover, nav ul li a:active, nav ul li a:focus{
+.navbar .nav li a:hover, .navbar .nav li a:active, .navbar .nav li a:focus{
 	border: 1px solid #BCD4F1;
 	background: #BCD4F1;
 	text-decoration: none;
 	color: #495E77;
 }
-nav ul li a.active{
+.navbar .nav li a.active{
 	border: 1px solid #607C9D;
 	background: #607C9D;
 	text-decoration: none;
@@ -63,7 +72,7 @@ nav ul li a.active{
 .consult.pro{
 	margin-left:3px;
 }
-ul.dropdown-menu{
+.navbar .nav .dropdown-menu{
 	background:#E0E0E0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -74,6 +83,9 @@ ul.dropdown-menu{
 	padding:0;
 	right:0;
 	left:auto;
+}
+.navbar .nav .dropdown-menu a{
+	margin-left: 0px;
 }
 .btn-group.open .dropdown-toggle{
 	-webkit-box-shadow:none;
@@ -132,28 +144,19 @@ a.lang.selected:link, a.lang.selected:visited{
 a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	color: #495E77;
 }
-#login{
-	clear: both;
-	float: right;
-	-webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-	border-radius: 4px;
-	border: 1px solid #E0E0E0;
-	background: #E0E0E0;
-	font-family: 'Dosis', sans-serif;
-	text-transform: uppercase;
-	color: #495E77;
-	margin: 32px 0 0 0;
-}
 #login .icon-login{
 	background: transparent url('../images/icon-login.png') top left no-repeat;
 	height: 20px;
 }
-#login a{
-	display: block;
-	padding: 8px 10px 10px 10px;
-	height: 20px;
+#login .dropdown-menu{
 	vertical-align: bottom;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	color: #495E77;
+	background: #E0E0E0;
+}
+#login .dropdown-menu a{
+	text-align: left;
 }
 #login a:link, #login a:visited{
 	background: #E0E0E0;
@@ -189,14 +192,10 @@ footer .cirb-cibg img{
    HOME
   ==============================================================*/
 #map{
-	margin: 30px 0 10px 0;
 	position: relative;
 	height: 280px;
 }
-article{
-	margin:30px 0 0 0;
-}
-#map.map-big{
+.map-big #map, #map.map-big{
 	height: 610px !important;
     transition: all 1s;
 }
@@ -533,22 +532,31 @@ article{
 	bottom: 1px;
 }
 
-#instructions{
-	-webkit-border-top-left-radius: 4px;
-	-webkit-border-top-right-radius: 4px;
-	-moz-border-radius-topleft: 4px;
-	-moz-border-radius-topright: 4px;
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-    padding: 10px 0;
-}
-#searchContainer{
+.lead-container{
+	padding: 5px 15px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px 4px 4px 4px;
 	background-color: #607C9D;
-    padding: 5px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
+.lead-container form{
+	margin: 10px 0;
+}
+.lead-container .instructions{
+    margin: 10px 0;
+}
+
+@media (max-width: 768px){
+	.row-fluid .controls-row [class*="span"],
+	.row-fluid .controls-row [class*="span"] + [class*="span"]{
+		margin-left: 0;
+		margin-bottom: 10px;
+	}
+}
+
 #layerswitcher{
 	left:-1px;
 	right:auto;
@@ -611,7 +619,7 @@ article{
 .reports #search-address-form{
 	margin-top:10px;
 }
-#search-form #widget-search-ticket-button{
+#map #widget-search-ticket-button{
 	background:transparent url('../images/btn_search_tickets_header.png') top left no-repeat;
 	border:0;
 	width:35px;
@@ -631,43 +639,46 @@ article{
 #search-form #search-ticket-form{
 	margin-left:10px;
 }
-#instructions ol.steps{
-	margin: 0 0 10px 10px;
-}
-#instructions ol li{
-	display: inline-block;
-	font-family: 'Dosis', sans-serif;
-	text-transform: uppercase;
-	padding: 0 0 0 50px;
-	height: 22px;
-	margin: 0 0 0 75px;
-    text-indent: -15px;
-	line-height: 24px;
-}
-#instructions ol li:first-child{
+.instructions .steps{
 	margin: 0;
 }
-#instructions ol li.stepOne.on{
+.instructions ol li{
+	float: left;
+	list-style-type: none;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	padding: 0 0 0 30px;
+	height: 22px;
+	width: 33.33%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	line-height: 24px;
+}
+.instructions ol li:first-child{
+	margin: 0;
+}
+.instructions ol .stepOne.on{
 	background: transparent url('../images/stepOne_on.png') top left no-repeat;
 	color: #FFF;
 }
-#instructions ol li.stepOne.off{
+.instructions ol .stepOne.off{
 	background: transparent url('../images/stepOne_off.png') top left no-repeat;
 	color: #BCD4F1;
 }
-#instructions ol li.stepTwo.on{
+.instructions ol .stepTwo.on{
 	background: transparent url('../images/stepTwo_on.png') top left no-repeat;
 	color: #FFF;
 }
-#instructions ol li.stepTwo.off{
+.instructions ol .stepTwo.off{
 	background: transparent url('../images/stepTwo_off.png') top left no-repeat;
 	color: #BCD4F1;
 }
-#instructions ol li.stepThree.on{
+.instructions ol .stepThree.on{
 	background: transparent url('../images/stepThree_on.png') top left no-repeat;
 	color: #FFF;
 }
-#instructions ol li.stepThree.off{
+.instructions ol .stepThree.off{
 	background: transparent url('../images/stepThree_off.png') top left no-repeat;
 	color: #BCD4F1;
 }
@@ -697,13 +708,6 @@ article{
 	color: #FFDB00;
 	text-decoration: none;
 }*/
-#input-search{
-	width: 580px;
-	margin-left: 10px;
-}
-#input-ward{
-	width: 340px;
-}
 #widget-search-button{
 	background: #FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
 	padding: 4px 12px 4px 30px;
@@ -714,13 +718,7 @@ article{
 #recent-reports{
 	margin-top:30px;
 }
-.nav-tabs{
-	margin-left: 32px;
-	padding-right: 4px;
-	width: 1162px !important;
-	margin-bottom:0;
-	border-bottom:1px solid #5F7C9C;
-}
+/*
 .nav-tabs>li{
 	width:170px;
 	margin-right:30px;
@@ -751,17 +749,57 @@ article{
 	border-bottom:0;
 	color:#495E77;
 }
-.nav-tabs>.active>a:hover{
+*/
+.nav-tabs{
+	margin-bottom:0;
+	border-bottom:0;
+}
+.nav-tabs>li>a{
+	border:1px solid #5F7C9C;
+	border-bottom:0;
+	font-family:'Dosis', sans-serif;
+	font-size:14px;
+	text-transform:uppercase;
+	padding:4px 20px;
+	text-align:center;
+	color:#607C9D;
+}
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
 	background:#BCD3F2;
 	border:1px solid #5F7C9C;
 	border-bottom:0;
 	color:#495E77;
 }
-.nav-tabs > .active > a:focus{
-	background:#BCD3F2;
-	border:1px solid #5F7C9C;
-	border-bottom:0;
-	color:#495E77;
+.last_reports {
+	line-height: 50px;
+}
+.last_reports .brand {
+	vertical-align: bottom;
+	display: inline-block;
+	line-height: 17px;
+	/*max-width:180px;*/
+	font-size: 14px;
+	text-transform: uppercase;
+	color:#607C9D;
+	margin: 0;
+	padding: 5px 10px;
+}
+@media (max-width: 1200px) {
+	.last_reports {
+		line-height: 17px;
+	}
+	.last_reports + li {
+		clear: both;
+	}
+	.nav-tabs > li:not(.last_reports){
+		width: 30%;
+		margin: 0 1.6666%;
+	}
+	.nav-tabs > li > a{
+		margin: 0;
+	}
 }
 .num_reports{
 	font-size: 19px;
@@ -769,33 +807,28 @@ article{
 #search_results{
 	background:#BCD3F2;
 }
-.report .span3{
+.report{
 	background:#FFF;
-	width:240px;
-	height:210px;
+	/*width:240px;*/
+	min-height:230px;
 	padding:0 10px 10px 10px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
-.report:first-child .span3{
+/*.report:first-child .span3{
 	margin-left:50px;
 }
+*/
 .tab-pane{
-    padding: 20px 0;
+    padding: 20px;
 	border:1px solid #5F7C9C;
-	border-top:0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-}
-h2.last_reports {
-	line-height: 17px;
-	font-size: 14px;
-	text-transform: uppercase;
-	width:170px;
-	color:#607C9D;
-	margin-top: 19px;
 }
 #search-ticket-form {
 	margin: 5px 0 5px 0;
@@ -830,12 +863,13 @@ h2.last_reports {
 /* ==========================
    VERIFY
    ========================== */
-h2.verify_title, .switch_verify{
+/*h2.verify_title, .switch_verify{
 	margin:30px 0 0 0 !important;
 }
 .switch_verify{
 	margin-bottom:30px;
 }
+*/
 .verify_list{
 	height:auto;
 	margin: 30px 0 30px 0;
@@ -1674,14 +1708,14 @@ label strong{
 	margin: 22px 0 0 0 !important;
 	float: right;
 }
-#search-form.mergeIncident #widget-search-ticket-button {
+.mergeIncident #widget-search-ticket-button {
 	background: transparent url('../images/btn_search_tickets.png') top left no-repeat;
 }
 #search-form.mergeIncident #input-ticket-search{
 	height: 23px;
 	margin-right: -13px;
 }
-#search-form.mergeIncident #widget-search-ticket-button{
+.mergeIncident #widget-search-ticket-button{
 	margin-top:1px;
 }
 #map.view_incident.show_report.pro{

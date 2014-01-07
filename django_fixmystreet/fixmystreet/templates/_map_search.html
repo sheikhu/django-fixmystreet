@@ -1,0 +1,74 @@
+{% load i18n %}
+<article id="map" class="home span12">
+    <div class="container lead-container">
+        {% if instructions %}
+        <div class="instructions row-fluid clearfix">
+            <div class="span8">
+                <ol class="steps">
+                    <li class="stepOne on">{% trans "Localisation" %}</li>
+                    <li id="stepDescription" class="stepTwo off">{% trans "Description" %}</li>
+                    <li id="stepCoordonnees" class="stepThree off">{% trans "Informations" context "citizen" %}</li>
+                </ol>
+            </div>
+            <div class="span4">
+                <strong id="danger-risk"><i class="icon-danger-red"></i>{% trans "A big security risk to signal?" %}</strong>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="block clearfix row-fluid">
+            <form id="search-address-form" class="form-inline search-form controls controls-row">
+                <input id="input-search" class="span5" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" autofocus />
+                <input id="input-streetnumber"  placeholder="n°" class="span1" type="search" />
+                <select id="input-ward" class="span4" name="ward">
+                    <option value="">{% trans "All communes..." %}</option>
+                    {% for zip in zipcodes %}
+                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                    {% endfor %}
+                </select>
+                <span class="span2">
+                    <input id="widget-search-button" class="btn pull-right" type="submit" name="submit" value="{% trans 'Signaler' %}" disabled>
+                </span>
+            </form>
+        </div>
+        {% if search_report %}
+        <form id="search-ticket-form" class="form-inline" action="{% url 'search_ticket' %}">
+            <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
+            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
+        </form>
+        {% endif %}
+    </div>
+
+    <!-- Results -->
+    <div>
+        <p id="proposal-message" class="hide"> </p>
+        <div id="proposal-container" class="inline" hidden>
+            <h3 class="numberResultsContainer"><span id="numberResults"></span> result(s)</h3>
+            <ul id="proposal" ></ul>
+            <p><button id="previousResults" hidden>&lt;</button> <button id="nextResults" hidden>&gt;</button></p>
+        </div>
+    </div>
+
+    {% if satus_filter %}
+    <div id="layerswitcher" class="olControlLayerSwitcher" style="z-index:999;">
+        <div class="layersDiv">
+            <div class="dataLayersDiv">
+                <h3>{% trans 'Statut' %}</h3>
+                <input type="checkbox" id="statusToggleCreated" value="created" checked="">
+                <label for="statusToggleCreated"><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'Created' %}</label>
+                <br>
+                <input type="checkbox" id="statusToggleInProgress" value="in_progress" checked="">
+                <label for="statusToggleInProgress"><img src="{{ STATIC_URL }}images/marker-orange-xxs.png" />{% trans 'In progress' %}</label>
+                <br>
+                <input type="checkbox" id="statusToggleClosed" value="closed" checked="">
+                <label for="statusToggleClosed"><img src="{{ STATIC_URL }}images/marker-green-xxs.png" />{% trans 'Closed' %}</label>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div id="btn-localizeviamap"><a href="#"><i class="icon-localizeviamap"></i>{% trans "Localiser via la carte" %}</a></div>
+
+    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+</article>

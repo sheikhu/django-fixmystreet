@@ -1,24 +1,69 @@
 {% load i18n tags %}
-
-{% for report in reports %}
-    <tr>
-        <td><a href="{{ report.get_absolute_url_pro }}">{% trans "Show" %}</a></td>
-        <td>{{ report.id }}</td>
-        <td>{{ report.category.name }}</td>
-        <td>{{ report.secondary_category.name }}</td>
-        <td>{{ report.address }}, {{report.address_number}}</td>
-        <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
-        <td>{{ report.address_regional|yesno:_("regional,communal") }}</td>
-        <td>{{ report.get_status_display }}</td>
-        <td>{{ report.responsible_entity.name }}</td>
-        <td>{{ report.responsible_department.name }}</td>
-        <td>{{ report.planned|yesno:_("planned,not planned") }}</td>
-        <td>{{ report.date_planned|date:"d/m/Y" }}</td>
-        <td>{{ report.get_priority }}</td>
-        <td>{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
-        <td>{{ report.pending|yesno:_("yes,no") }}</td>
-        <td>{{ report.point.x }}</td>
-        <td>{{ report.point.y }}</td>
-        <td>{{ report.status }}</td>
-    </tr>
-{% endfor %}
+<table id="result-table" class="dataTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{% trans "All" context "Ticket" %}</th>
+            <th>{% trans "All" context "Categories" %}</th>
+            <th>{% trans "All" context "Sub categories" %}</th>
+            <th>{% trans "All" context "Address" %}</th>
+            <th>{% trans "All" context "Postal code" %}</th>
+            <th>{% trans "All" context "Road type" %}</th>
+            <th>{% trans "All" context "Status" %}</th>
+            <th>{% trans "All" context "Responsible entity" %}</th>
+            <th>{% trans "All" context "Responsible department" %}</th>
+            <th>{% trans "All" context "Planning" %}</th>
+            <th>{% trans "All" context "Planning date" %}</th>
+            <th>{% trans "All" context "Priority" %}</th>
+            <th>{% trans "All" context "Subscribed" %}</th>
+            <th>{% trans "All" context "Pending" %}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>{% trans "Ticket" %}</th>
+            <th>{% trans "Category" %}</th>
+            <th>{% trans "Sub category" %}</th>
+            <th>{% trans "Address" %}</th>
+            <th>{% trans "Postal code" %}</th>
+            <th>{% trans "Road type" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Responsible entity" %}</th>
+            <th>{% trans "Responsible department" %}</th>
+            <th>{% trans "Planning" %}</th>
+            <th>{% trans "Planning date" %}</th>
+            <th>{% trans "Priority" %}</th>
+            <th>{% trans "Subscribe" %}</th>
+            <th>{% trans "Pending" %}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for report in reports %}
+            <tr>
+                <td><a href="{{ report.get_absolute_url_pro }}" target="_blank">{% trans "Show" %}</a></td>
+                <td>{{ report.id }}</td>
+                <td>{{ report.category.name }}</td>
+                <td>{{ report.secondary_category.name }}</td>
+                <td>{{ report.address }}, {{report.address_number}}</td>
+                <td>{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
+                <td>{{ report.address_regional|yesno:_("regional,communal") }}</td>
+                <td>{{ report.get_status_display }}</td>
+                <td>{{ report.responsible_entity.name }}</td>
+                <td>{{ report.responsible_department.name }}</td>
+                <td>{{ report.planned|yesno:_("planned,not planned") }}</td>
+                <td>{{ report.date_planned|date:"d/m/Y" }}</td>
+                <td>{{ report.get_priority }}</td>
+                <td>{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
+                <td>{{ report.pending|yesno:_("yes,no") }}</td>
+                <td>{{ report.point.x }}</td>
+                <td>{{ report.point.y }}</td>
+                <td>{{ report.status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -20,6 +20,8 @@
 {% block script_map %}
 {{ block.super }}
 <script>
+var NEXT_PAGE_URL = '{% url "report_verify" %}';
+
 var zipcodes = new Object();
 
 {% for zip in zipcodes %}
@@ -28,8 +30,6 @@ var zipcodes = new Object();
     zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
     zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
 {% endfor %}
-
-var NEXT_PAGE_URL = null;
 
 $(function(){
     fms.currentMap = new fms.Map('map', {
@@ -80,8 +80,6 @@ $(function(){
 });
 
 // Override some function from search.js
-function getAddressFromPoint() {}
-
 function cleanMap() {
     // Remove all popups
     while(fms.currentMap.map.popups.length) {
@@ -98,115 +96,14 @@ function cleanMap() {
     $proposalContainer.slideUp();
 }
 
-function initDragMarker(x, y, additionalInfo) {
-        cleanMap();
-
-        // Remove message info
-        var $map = $('#map');
-        map.classList.remove("map-big-message");
-        map.classList.add("map-big");
-
-        var $proposalMessage = $('#proposal-message');
-        $proposalMessage.slideUp();
-
-        draggableMarker = fms.currentMap.addDraggableMarker(x, y);
-        fms.currentMap.centerOnDraggableMarker();
-        fms.currentMap.map.zoomTo(6);
-
-        var popupContent = "<p class='popupHeading'>Vous êtes ici</p>";
-
-        if (additionalInfo) {
-            popupContent += "<p class='popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
-            popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
-        }
-
-        var popup = new OpenLayers.Popup(
-            "popup",
-            new OpenLayers.LonLat(x, y),
-            new OpenLayers.Size(200,150),
-            popupContent,
-            true
-        );
-        popup.panMapIfOutOfView = true;
-
-        fms.currentMap.map.addPopup(popup);
-}
-
 </script>
 {% endblock %}
-
 {% endblock %}
 
 {% block map %}
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <article id="map" class="reports map-big">
-
-                    <div id="searchContainer">
-                        <div id="newReport">
-                            <div class="row">
-                                <div class="span12">
-                                    <div id="search-form" class="block highlighted">
-                                        <form id="search-address-form" class="form-inline search-form">
-                                            <div id="address-search-div">
-                                                <!--h2>{% trans "Enter the address where the incident is:" %}</h2-->
-                                                <input id="input-search" class="input-xxlarge" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" />
-                                                <input id="input-streetnumber"  placeholder="n°" class="input-mini" type="search" />
-                                                <select id="input-ward" class="input-large" name="ward">
-                                                    <option value="">{% trans "All communes..." %}</option>
-                                                    {% for zip in zipcodes %}
-                                                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <input id="widget-search-button" class="btn" type="submit" name="submit" value="{% trans 'Rechercher' %}" disabled>
-                                            </div>
-                                        </form>
-
-                                        <form id="search-ticket-form" class="form-inline" action="{% url 'search_ticket' %}">
-                                            <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-                                            <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Results -->
-                        <div>
-                            <p id="proposal-message" class="hide"> </p>
-                            <div id="proposal-container" class="inline" hidden>
-                                <h3 class="numberResultsContainer"><span id="numberResults"></span> result(s)</h3>
-                                <ul id="proposal" ></ul>
-                                <p><button id="previousResults" hidden></button> <button id="nextResults" hidden>></button></p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div id="layerswitcher" class="olControlLayerSwitcher" style="z-index:999;">
-                        <div class="layersDiv">
-                            <div class="dataLayersDiv">
-                                <h3>{% trans 'Statut' %}</h3>
-                                <input type="checkbox" id="statusToggleCreated" value="created" checked="">
-                                <label for="statusToggleCreated"><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'Created' %}</label>
-                                <br>
-                                <input type="checkbox" id="statusToggleInProgress" value="in_progress" checked="">
-                                <label for="statusToggleInProgress"><img src="{{ STATIC_URL }}images/marker-orange-xxs.png" />{% trans 'In progress' %}</label>
-                                <br>
-                                <input type="checkbox" id="statusToggleClosed" value="closed" checked="">
-                                <label for="statusToggleClosed"><img src="{{ STATIC_URL }}images/marker-green-xxs.png" />{% trans 'Closed' %}</label>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-
-                </article>
-            </div>
-        </div>
-    </div>
+<div class="row map-big">
+    {% include "_map_search.html" with satus_filter=True search_report=True %}
+</div>
 {% endblock %}
 
 {% block content %}

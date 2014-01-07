@@ -40,6 +40,7 @@ urlpatterns += patterns(
     url(_(r'^report/(\d+)/close/$'), 'close', name='report_close_pro'),
     url(_(r'^report/(\d+)/merge/$'), 'do_merge', name='report_do_merge_pro'),
     url(_(r'^report/(\d+)/planned/$'), 'planned', name='report_planned_pro'),
+    url(_(r'^report/(\d+)/pending/$'), 'pending', name='report_pending_pro'),
     url(_(r'^report/(\d+)/validateAll/$'), 'validateAll', name='report_validate_all_pro'),
     url(_(r'^report/(\d+)/updateAttachment$'), 'updateAttachment', name='report_update_attachment'),
     url(_(r'^report/(\d+)/deleteFile$'), 'deleteAttachment', name='report_delete_attachment'),
@@ -110,7 +111,7 @@ urlpatterns += patterns(
 
 urlpatterns += patterns(
     '',
-    url(_(r'^export_file/reports/(?P<emitter_format>.+)/(?P<id>\d+)'), Resource(ReportHandler), name="export_report"),
-    url(_(r'^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)'), Resource(ReportHandler), name="export_report"),
-    url(_(r'^export_file/reports/(?P<emitter_format>.+)'), Resource(ReportHandler), name="export_report"),
+    url(r'^export_file/reports/(?P<emitter_format>.+)/(?P<id>\d+)', Resource(ReportHandler), name="export_report"),
+    url(r'^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)', Resource(ReportHandler), name="export_report"),
+    url(r'^export_file/reports/(?P<emitter_format>.+)', Resource(ReportHandler), name="export_report"),
 )
