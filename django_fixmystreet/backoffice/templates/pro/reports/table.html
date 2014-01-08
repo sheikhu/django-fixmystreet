@@ -116,10 +116,11 @@ function generateTableContent() {
 
             // Bind event : refresh markers on map when table sort and filter
             table.bind('filter', refreshMap);
-            console.log(table.find('tr').length);
+
             table.delegate('tr', 'click', function () {
-                console.log(this);
-                window.open($(this).data('href'));
+                if (this.getAttribute('data-href')) {
+                    window.open($(this).data('href'));
+                }
             });
 
             table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
