@@ -934,7 +934,7 @@ def report_assign_responsible(sender, instance, **kwargs):
         else:
             instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
 
-    if not instance.responsible_manager:
+    if not instance.responsible_department:
         #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
         departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories = instance.secondary_category)
