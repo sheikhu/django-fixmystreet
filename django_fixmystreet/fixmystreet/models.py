@@ -1157,12 +1157,13 @@ def report_notify(sender, instance, **kwargs):
                             reply_to=report.responsible_manager.email,
                         ).save()
 
+            
             if creator != report.responsible_manager:
                 ReportNotification(
                     content_template='notify-merged',
                     recipient=creator,
                     related=report,
-                    reply_to=report.responsible_manager.email,
+                    reply_to=report.responsible_department.email,
                 ).save()
 
             ReportEventLog(
