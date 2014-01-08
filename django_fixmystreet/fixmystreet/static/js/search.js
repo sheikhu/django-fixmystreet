@@ -214,7 +214,7 @@ function initDragMarker(x, y, additionalInfo) {
 
             if (additionalInfo.number) {
                 popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
-                popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
+                popupContent += '<div id="btn-streetview"><i class="icon-streetview"></i>Street View</div>';
             }
         }
 

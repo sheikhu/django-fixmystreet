@@ -45,8 +45,7 @@ urlpatterns += patterns(
     url(_(r'^report/new'), 'new', name='report_new'),
     url(_(r'^report/verify'), 'verify', name='report_verify'),
     # url(_(r'^report/prepare'), 'report_prepare', name='report_prepare'),
-    url(_(r'^report/(\d+)/update/'), 'update', name='report_update'),
-    url(_(r'^report/newmap/'), 'newmap', name='report_new_map'),
+    url(_(r'^report/(\d+)/update/'), 'update', name='report_update')
 )
 
 urlpatterns += patterns(
