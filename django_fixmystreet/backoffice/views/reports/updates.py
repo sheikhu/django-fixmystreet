@@ -107,6 +107,7 @@ def pending(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url())
 
 def switchPrivacy(request,report_id):
+
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")
     if privacy != 'true':
@@ -128,25 +129,22 @@ def changeManager(request,report_id):
     
     report = Report.objects.get(pk=report_id)
     report.status = Report.MANAGER_ASSIGNED
-    old_resp_man = report.responsible_manager
-    report.previous_managers.add(old_resp_man)
+
+    # old_resp_man = report.responsible_manager
+    # report.previous_managers.add(old_resp_man)
     manId = request.REQUEST.get("manId")
 
-    
+
 
     if manId.split("_")[0] == "department":
         newRespMan = OrganisationEntity.objects.get(pk=int(manId.split("_")[1]))
         report.responsible_department = newRespMan
-        report.save()
     if manId.split("_")[0] == "entity":
         orgId = int(manId.split("_")[1])
         report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
-        managers = FMSUser.objects.filter(organisation_id = orgId).filter(manager=True)
-        for manager in managers:
-            if manager.categories.all().filter(id = report.category.id):
-                report.responsible_manager = manager
-                report.save()
-                break
+        report.responsible_department = None
+
+    report.save()
 
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
