@@ -25,6 +25,7 @@
         var ticketSearch = document.getElementById('input-ticket-search');
         var ticketForm   = document.getElementById('search-ticket-form');
 
+        // Filter on keyword
         function filterReports(event) {
 
             if (event) {
@@ -40,10 +41,74 @@
                     reportsMergeable[i].hidden = true;
                 }
             }
+
+            // Reset pagination
+            currentPage = 1;
+            paginateResults();
         }
 
         ticketSearch.addEventListener('keyup', filterReports);
         ticketForm.addEventListener('submit', filterReports);
+
+        // Pagination : a bit tricky
+        var previousPage = document.getElementById('previousPage');
+        var nextPage     = document.getElementById('nextPage');
+
+        var currentPage = 1;
+        var maxItemsPerPage  = 6;
+
+        function paginateResults() {
+
+            var reportsMergeable = document.getElementsByClassName('reportsMergeable');
+            var reportsVisible = [];
+
+            // Get visible reports only
+            for (var i=0, mergeableLength=reportsMergeable.length; i < mergeableLength; i++) {
+
+                if (!reportsMergeable[i].hidden) {
+                    reportsVisible.push(reportsMergeable[i]);
+                }
+
+            }
+
+            // Show only reports in current page
+            var minIndex = (currentPage - 1) * maxItemsPerPage;
+            var maxIndex = currentPage * maxItemsPerPage;
+
+            for (var j=0, visibleLength=reportsVisible.length; j < visibleLength; j++) {
+
+                if ( (j >= minIndex) && (j < maxIndex) ) {
+                    reportsVisible[j].classList.remove('hidden');
+                } else {
+                    reportsVisible[j].classList.add('hidden');
+                }
+
+            }
+
+            // Show/Hide previous button
+            if (currentPage == 1) {
+                previousPage.classList.add('hidden');
+            } else {
+                previousPage.classList.remove('hidden');
+            }
+
+            // Show/Hide next button
+            if (maxIndex >= visibleLength) {
+                nextPage.classList.add('hidden');
+            } else {
+                nextPage.classList.remove('hidden');
+            }
+
+        }
+
+        previousPage.addEventListener('click', function() {
+            currentPage--;
+            paginateResults();
+        });
+        nextPage.addEventListener('click', function() {
+            currentPage++;
+            paginateResults();
+        });
 
         // Filter if browser refresh with default values
         filterReports();
@@ -135,6 +200,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="span12">
             <article id="map" class="map-big hide">
@@ -143,13 +209,12 @@
                 </div>
                 <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
             </article>
-            <div id='list'>
-                <!--div class="row">
-                    <div class="span12">
-                        
-                    </div>
-                </div-->
 
+            <div id='list'>
+                <p>
+                    <a href="#" id="previousPage" class="btn hidden">Previous page</a>
+                    <a href="#" id="nextPage" class="btn pull-right hidden">next page</a>
+                </p>
 
                 {% for report in reports_nearby %}
                     <div class="row reportsMergeable" id="#{{ report.get_ticket_number }}">
