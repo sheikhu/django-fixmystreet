@@ -938,13 +938,10 @@ def report_assign_responsible(sender, instance, **kwargs):
         #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
         departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories = instance.secondary_category)
-        users = instance.responsible_entity.team.filter(manager=True, categories=instance.secondary_category)
-        if len(users) > 0:
-            instance.responsible_manager = users[0]
         if(len(departements) > 0):
             instance.responsible_department = departements[0]
-        # else:
-        #     raise Exception("no responsible manager found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
+        else:
+            raise Exception("no responsible departement found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
 
 @receiver(pre_save, sender=Report)
