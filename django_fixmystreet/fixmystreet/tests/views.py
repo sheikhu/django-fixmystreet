@@ -10,9 +10,12 @@ class ReportViewsTest(SampleFilesTestCase):
     fixtures = ["bootstrap","list_items"]
 
     def setUp(self):
+        
         self.user = FMSUser(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
         self.user.save()
+
         self.client = Client()
+
         self.citizen = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
