@@ -64,10 +64,10 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 });
 
 var columns = [
-    {type: "number"}, // incidnet number
+    {type: "number"}, // incident number
     {type: "select"}, // categories
     {type: "select"}, // sec categories
-    {type: "text"}, // addr
+    {type: "text"},   // addr
     {type: "select"}, // postal code
     {type: "select", values: [
         '{{ True|yesno:_("regional,communal") }}',
@@ -126,7 +126,7 @@ function generateTableContent() {
 
             $('#column-visibility :checkbox').change(function () {
                 var checked = $(this).prop('checked'),
-                    index = $(this).closest('li').index() + 1; // show column
+                    index = $(this).closest('li').index(); // show column
                 table.fnSetColumnVis(index, checked);
             }).change();
 
@@ -173,11 +173,11 @@ function refreshMap() {
         var report   = {};
 
         report.point = {};
-        report.point["x"] = data[i][15];
-        report.point["y"] = data[i][16];
+        report.point["x"] = data[i][14];
+        report.point["y"] = data[i][15];
 
-        report.id = data[i][1];
-        report.status = data[i][17];
+        report.id = data[i][0];
+        report.status = data[i][16];
 
         markers.push(fms.currentMap.addReport(report, i, false));
     }
