@@ -174,6 +174,25 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertTrue(report.accepted_at is not None)
 
+    def test_refuse_report(self):
+        """Tests refuse a report and test the view of it."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url = reverse('report_refuse_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.assertTrue(report.accepted_at is None)
+
     def test_publish_report(self):
         """Tests publishing a report and test the view of it."""
 
