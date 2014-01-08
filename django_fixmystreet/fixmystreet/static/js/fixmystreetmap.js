@@ -3,6 +3,8 @@
 
 if (!('fms' in window)) {
     window.fms = {};
+    //A local cache to avoid multiple calls to backend system when clicking on filters
+    window.fms.cache = {};
 }
 
 function cloneObj (obj) {
@@ -20,27 +22,45 @@ function cloneObj (obj) {
 }
 
 fms.filterMapWithStatus = function(){
-    $.ajax({
-            url:"/nl/ajax/map/filter/?filter="+fms.statusFilter,
-            type:'GET',
-            datatype:"json",
-            success: function(data){
-                if(fms.currentMap.markersLayer){
-                    fms.currentMap.markersLayer.destroyFeatures();
-                }
-                var markers = [];
-                for(var i=0; i< data.length; ++i) {
-                    markers.push(fms.currentMap.addReport(data[i], i, false));
-                }
-                fms.currentMap.markersLayer.addFeatures(markers);
-            },
-            error: function(data) {
-                if(fms.currentMap.markersLayer){
-                    fms.currentMap.markersLayer.destroyFeatures();
+    //Sort the selection as used as key later
+    fms.statusFilter.sort();
+    //Get from cache first
+    if (typeof fms.cache[fms.statusFilter] !== 'undefined') {
+        if(fms.currentMap.markersLayer){
+            fms.currentMap.markersLayer.destroyFeatures();
+        }
+        var markers = [];
+        for(var i=0; i< fms.cache[fms.statusFilter].length; ++i) {
+            markers.push(fms.currentMap.addReport(fms.cache[fms.statusFilter][i], i, false));
+        }
+        fms.currentMap.markersLayer.addFeatures(markers);
+    } else {
+        //Else call the server
+        $.ajax({
+                url:"/nl/ajax/map/filter/?filter="+fms.statusFilter,
+                type:'GET',
+                datatype:"json",
+                success: function(data){
+                    //Store data in cache
+                    fms.cache[fms.statusFilter] = data;
+
+                    if(fms.currentMap.markersLayer){
+                        fms.currentMap.markersLayer.destroyFeatures();
+                    }
+                    var markers = [];
+                    for(var i=0; i< data.length; ++i) {
+                        markers.push(fms.currentMap.addReport(data[i], i, false));
+                    }
+                    fms.currentMap.markersLayer.addFeatures(markers);
+                },
+                error: function(data) {
+                    if(fms.currentMap.markersLayer){
+                        fms.currentMap.markersLayer.destroyFeatures();
+                    }
                 }
             }
-        }
-    );
+        );
+    }
 }
 
 // Controller of regional layer
