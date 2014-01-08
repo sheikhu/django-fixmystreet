@@ -28,7 +28,6 @@ from stdimage import StdImageField
 from markdown import markdown
 
 
-
 class JsonHttpResponse(HttpResponse):
     data = {}
     def __init__(self, *args, **kwargs):
@@ -112,7 +111,7 @@ def render_to_pdf(*args, **kwargs):
     context_instance = kwargs.get('context_instance', None)
     if 'request' in context_instance and 'output' in context_instance.get('request').GET:
         return render_to_response(*args, **kwargs)
-    
+
     pdf_tmp_file = generate_pdf(*args, **kwargs)
     response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=%s%s.pdf' %(u"export-incident-"+str((args[1]['report']).id)+"-date-", datetime.date.today().isoformat())
@@ -213,19 +212,24 @@ class CurrentUserMiddleware:
 #         return response
 
 
-def transform_notification_user_display(user, to_show):
+def transform_notification_user_display(display_pro, to_show):
     if  to_show is None:
         return _("a citizen")
 
-    if to_show.is_pro() and to_show.get_organisation():
+    entity_name = None
+    show_department = to_show.__class__.__name__ == 'OrganisationEntity'
+    if show_department:
+        entity_name = to_show.dependency
+    elif to_show.is_pro() and to_show.get_organisation():
         entity_name = unicode(to_show.get_organisation())
-    else:
-        entity_name = ''
 
-    if user.is_pro():
-        return u"{0} {1} ({2})".format(entity_name, to_show.get_full_name(), to_show.email)
+    if display_pro:
+        if show_department:
+            return u"{0} {1} ({2})".format(entity_name, to_show.name, to_show.email)
+        else:
+            return u"{0} {1} ({2})".format(entity_name, to_show.get_full_name(), to_show.email)
     else:
-        if to_show.is_pro():
+        if entity_name:
             return entity_name
         else:
             return _("a citizen")
@@ -234,6 +238,8 @@ def transform_notification_template(template, report, user, old_responsible=None
     from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
     SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
 
+    display_pro = not user  # send to department
+    display_pro = display_pro or user.is_pro()
     data = {
         "user": user
     }
@@ -251,12 +257,12 @@ def transform_notification_template(template, report, user, old_responsible=None
 
         data["report"] = report
         data["created_at"] = date_filter(report.created)
-        data["created_by"] = transform_notification_user_display(user, report.citizen or report.created_by)
-        data["responsible"] = transform_notification_user_display(user, report.responsible_manager)
+        data["created_by"] = transform_notification_user_display(display_pro, report.citizen or report.created_by)
+        data["responsible"] = transform_notification_user_display(display_pro, report.responsible_department)
         data["address"] = u"{street}, {num} ({code} {commune})".format(street=report.address, num=report.address_number, code=report.postalcode, commune=report.get_address_commune_name())
         data["category"] = report.display_category()
 
-        if user.is_pro():
+        if display_pro:
             data["status"] = report.get_status_display()
         else:
             data["status"] = report.get_public_status_display()
@@ -265,7 +271,7 @@ def transform_notification_template(template, report, user, old_responsible=None
         opening = opening_tmp.content.format(**data)
         closing = closing_tmp.content.format(**data)
 
-        if user.is_pro():
+        if display_pro:
             data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
             data["pdf_url"]     = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
         else:
@@ -273,21 +279,21 @@ def transform_notification_template(template, report, user, old_responsible=None
             data["pdf_url"]     = "{0}{1}".format(SITE_URL, report.get_pdf_url())
 
 
-        if user.is_pro():
+        if display_pro:
             data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro",args=[report.id]))
         else:
             data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe",args=[report.id]), user.email)
 
-        if user.is_active and template.name == "mark-as-done":
+        if template.name == "mark-as-done":
             data["done_motivation"] = report.mark_as_done_motivation
-            data["resolver"] = transform_notification_user_display(user, report.mark_as_done_user)
+            data["resolver"] = transform_notification_user_display(display_pro, report.mark_as_done_user)
 
         if old_responsible:
-            data["old_responsible"] = transform_notification_user_display(user, old_responsible)
+            data["old_responsible"] = transform_notification_user_display(display_pro, old_responsible)
 
         if comment is not None: # can be ''
             data["comment"] = comment
-            data["updater"] = transform_notification_user_display(user, updater)
+            data["updater"] = transform_notification_user_display(display_pro, updater)
 
         if date_planned:
             data["date_planned"] = date_planned
@@ -322,7 +328,7 @@ def dict_to_point(data):
 class RequestFingerprint:
     def __init__(self, request):
         # assume that request.method == "POST":
-        self.request = request        
+        self.request = request
         md5 = hashlib.md5()
         md5.update(request.path)
         md5.update(unicode(request.POST))

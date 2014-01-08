@@ -713,7 +713,7 @@ class Report(UserTrackedModel):
         if files or comment:
             ReportNotification(
                 content_template='notify-updates',
-                recipient=self.responsible_department.email,
+                recipient_mail=self.responsible_department.email,
                 related=self,
             ).save(updater=user, files=files, comment=comment)
 
@@ -1055,7 +1055,7 @@ def report_notify(sender, instance, **kwargs):
             elif report.status == Report.SOLVED:
                 ReportNotification(
                     content_template='mark-as-done',
-                    recipient_email=report.responsible_department.email,
+                    recipient_mail=report.responsible_department.email,
                     related=report,
                 ).save()
 
@@ -1099,15 +1099,16 @@ def report_notify(sender, instance, **kwargs):
         # Responsible manager changed
         if report.__former['responsible_department'] != report.responsible_department:
             # automatic subscription for new responsible manager
-            # if not ReportSubscription.objects.filter(report=instance, subscriber=report.responsible_manager).exists():
-            #     subscription = ReportSubscription(report=instance, subscriber=report.responsible_manager)
-            #     subscription.notify_creation = False  # don't send notification for subscription
-            #     subscription.save()
+            for membership in report.responsible_department.memberships.all():
+                if not instance.subscriptions.filter(subscriber=membership.user).exists():
+                    subscription = ReportSubscription(report=instance, subscriber=membership.user)
+                    subscription.notify_creation = False  # don't send notification for subscription
+                    subscription.save()
 
             if report.status != Report.CREATED and report.status != Report.TEMP:
                 ReportNotification(
                     content_template='notify-affectation',
-                    recipient_email=report.responsible_department.email,
+                    recipient_mail=report.responsible_department.email,
                     related=report,
                 ).save(old_responsible=report.__former['responsible_department'])
 
@@ -1122,7 +1123,7 @@ def report_notify(sender, instance, **kwargs):
                         if subscription.subscriber != event_log_user:
                             ReportNotification(
                                 content_template='announcement-affectation',
-                                recipient_email=report.responsible_department.email,
+                                recipient_mail=report.responsible_department.email,
                                 related=report,
                                 reply_to=report.responsible_department.email,
                             ).save(old_responsible=report.__former['responsible_department'])
@@ -1679,17 +1680,15 @@ class ReportNotification(models.Model):
         if self.related.merged_with:
             merged_with = self.related.merged_with
 
-        if not self.recipient.email:
-            self.error_msg = "No email recipient"
-            self.success = False
-            return
+        if not self.recipient_mail:
+            self.recipient_mail = self.recipient.email
 
         try:
-            if self.recipient_mail:
-                recipients = (self.recipient_mail,)
-            else:
-                recipients = (self.recipient.email,)
-                self.recipient_mail = self.recipient.email
+            if not self.recipient_mail:
+                raise Exception("No email recipient")
+
+            recipients = (self.recipient_mail,)
+
             template = MailNotificationTemplate.objects.get(name=self.content_template)
 
             comment = comment.text if comment else ''
