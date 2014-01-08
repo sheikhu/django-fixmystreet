@@ -48,7 +48,13 @@
                                     </ol>
                                 </div>
                                 <div>
-                                    <strong id="danger-risk"><a href="#"><i class="icon-danger"></i>{% trans "A big security risk to signal?" %}</a></strong>
+                                    {% if not BACKOFFICE %}
+                                        <strong id="danger-risk">
+                                            <a href="#">
+                                                <i class="icon-danger"></i>{% trans "A big security risk to signal?" %}
+                                            </a>
+                                        </strong>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

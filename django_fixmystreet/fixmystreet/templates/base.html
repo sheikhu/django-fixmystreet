@@ -174,8 +174,13 @@
 
                             {% if "new_report" in message.tags  %}
                                 <p>
-                                    <input type="checkbox" id="createNewReport">
-                                    <label>{% trans 'I want to create a new report' %}</label>
+                                    {% if not BACKOFFICE %}
+                                        <input type="checkbox" id="createNewReport">
+                                        <label>{% trans 'I want to create a new report' %}</label>
+                                    {% else %}
+                                        <!-- Invisible for pro Thierry demand 12/2013 -->
+                                        <input class="invisible" type="checkbox" id="createNewReport">
+                                    {% endif %}
                                 </p>
                             {% endif %}
                         </div>
