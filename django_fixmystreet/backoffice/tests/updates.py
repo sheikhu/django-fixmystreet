@@ -19,6 +19,8 @@ class UpdatesTest(TestCase):
         self.category = self.secondary_category.category_class
 
         self.organisation = OrganisationEntity.objects.get(pk=14)
+        self.organisation2 = OrganisationEntity.objects.get(pk=15)
+
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -28,6 +30,18 @@ class UpdatesTest(TestCase):
             email="test@email.com"
             )
         self.group.save()
+
+        self.group2 = OrganisationEntity(
+            type="D",
+            name_nl="Werken2",
+            name_fr="Travaux2",
+            phone="090987",
+            dependency = self.organisation2,
+            email="test2@email.com"
+            )
+        self.group2.save()
+
+
 
         self.manager = FMSUser(
             telephone="0123456789",
@@ -42,7 +56,26 @@ class UpdatesTest(TestCase):
         self.manager.organisation = self.organisation
         self.manager.save()
         self.manager.categories.add(self.secondary_category)
+
+        self.manager2 = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager2",
+            last_name="manager2",
+            email="manager2@a.com",
+            manager=True
+        )
+        self.manager2.set_password('test')
+        self.manager2.organisation = self.organisation
+        self.manager2.save()
+        self.manager2.categories.add(self.secondary_category)
+
+
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
+        self.usergroupmembership.save()
+
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager2.id, organisation_id=self.group2.id, contact_user=True)
         self.usergroupmembership.save()
 
         self.report = Report(
@@ -58,6 +91,29 @@ class UpdatesTest(TestCase):
             accepted_at=datetime.now()
         )
         self.report.save()
+
+    def test_change_manager(self):
+        """Tests manager change assigned to a report and test the view of it."""
+
+        report = self.report
+        report.responsible_manager = self.manager
+        report.save();
+
+        self.client.login(username='manager@a.com', password='test')
+
+        """Change manager department"""
+        url = reverse('report_change_manager_pro', args=[report.id])
+        response = self.client.get(url+'?manId=department_1', follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(report.responsible_department is not None)
+
+        """Change manager entity"""
+        url = reverse('report_change_manager_pro', args=[report.id])
+        response = self.client.get(url+'?manId=entity_14', follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(report.responsible_manager is not None)
 
     def test_update_planned(self):
         self.client.login(username='manager@a.com', password='test')
