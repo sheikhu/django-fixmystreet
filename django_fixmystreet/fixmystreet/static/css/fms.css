@@ -812,14 +812,17 @@ footer .cirb-cibg img{
 .report{
 	background:#FFF;
 	/*width:240px;*/
-	min-height:230px;
+	/*min-height:230px;*/
 	padding:0 10px 10px 10px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+	-webkit-box-sizing: border-box;	
+}
+.span3.report{
+	min-height:230px !important;
 }
 /*.report:first-child .span3{
 	margin-left:50px;
