@@ -125,6 +125,11 @@ function getAddressFromPoint(lang, x, y) {
         },
         success:function(response)
         {
+            //Fix problem with postcode 1041
+            if (response.result.address.street.postCode === "1041") {
+                response.result.address.street.postCode = "1040";
+            }
+            
             if (lang == LANGUAGE_CODE) {
                 fillAdressField(response.result.address);
             }
