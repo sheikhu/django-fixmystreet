@@ -214,7 +214,7 @@ function initDragMarker(x, y, additionalInfo) {
 
             if (additionalInfo.number) {
                 popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
-                popupContent += '<div id="btn-streetview"><a href="/report/newmap/"><i class="icon-streetview"></i>Street View</a></div>';
+                popupContent += '<div id="btn-streetview"><i class="icon-streetview"></i>Street View</div>';
             }
         }
 
@@ -443,7 +443,7 @@ $(function(){
 
     btnLocalizeviamap.addEventListener("click", function() {
         // Hard code center of map (~same value than fms.currentMap.map.getCenter() but as x,y and not lat,lon)
-        initDragMarker(149996,170921);
+        initDragMarker(148894,170714);
         fms.currentMap.map.zoomTo(2);
 
         btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
