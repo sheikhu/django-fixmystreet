@@ -118,8 +118,9 @@ function generateTableContent() {
             table.bind('filter', refreshMap);
 
             table.delegate('tr', 'click', function () {
-                if (this.getAttribute('data-href')) {
-                    window.open($(this).data('href'));
+                var href = $(this).data('href');
+                if(href) {
+                    window.open(href);
                 }
             });
 
