@@ -16,6 +16,14 @@ nav ul{
 	text-transform: uppercase;
 }
 
+.invisible {
+	visibility: hidden;
+}
+
+.not-displayed {
+	display: none;
+}
+
 .navbar .nav li a{
 	padding: 10px 20px;
 	height: 20px;
@@ -195,9 +203,17 @@ footer .cirb-cibg img{
 	position: relative;
 	height: 280px;
 }
+#map.pro{
+	position: relative;
+	height: 300px;
+}
 .map-big #map, #map.map-big{
 	height: 610px !important;
     transition: all 1s;
+}
+
+.map-button-section {
+	right: 1px;
 }
 
 #map.map-big-message {
@@ -517,7 +533,6 @@ footer .cirb-cibg img{
 	background:transparent url('../images/icon-pulldownmap.png') center center no-repeat;
 }
 #btn-streetview{
-    float:right;
 	-webkit-border-bottom-left-radius: 4px;
 	-moz-border-radius-bottomleft: 4px;
 	border-bottom-left-radius: 4px;
@@ -525,6 +540,17 @@ footer .cirb-cibg img{
 	-moz-border-radius-topleft: 4px;
 	border-top-left-radius: 4px;
 }
+
+#map #btn-streetview{
+    right:118px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-left-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	border-top-left-radius: 4px;
+}
+
 .view_incident #btn-streetview{
 	right: 119px;
 }
@@ -1441,7 +1467,9 @@ label strong{
 	display:block;
 }
 .removeThumbnail{
-	margin-top: -45px;
+	margin-top: -53px;
+	right: -37px;
+	position: relative;
 }
 #form-files .file-upload-btn{
 	display:none;
@@ -1723,5 +1751,19 @@ label strong{
 	margin-top:1px;
 }
 #map.view_incident.show_report.pro{
-	height:150px;
+	height:200px;
 }
+
+/*.crop{
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+}
+.crop img{
+    max-height: 100%;
+
+	max-width: 100%;
+	vertical-align: middle;
+	display: inline-block;
+	margin: auto;
+}​*/
