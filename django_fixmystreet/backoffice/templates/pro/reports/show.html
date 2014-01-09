@@ -996,17 +996,21 @@ var someCallback = function(exifObject, index) {
 
     </div>
 
-    {% if report.attachmentsList %}
         <!-- ########################## -->
         <!-- # DISPLAY FILES AND COMMENTS SECTION  # -->
         <!-- ########################## -->
         <div class="timeline-container">
-            {% if report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list %}
+            {% if report.attachmentsList and report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list %}
                 <a href="{% url 'report_validate_all_pro' report.id %}" class="btn pull-right" >{% trans 'Publish all' %}</a>
             {% endif %}
+            {% if report.is_in_progress or report.is_created %}
             <span class="add_info">
                 <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
             </span>
+                {% if not report.attachmentsList %}
+                    <br/><br/>
+                {% endif %}
+            {% endif %}
 
             {% if report.attachmentsList %}
                 <!--h4>{% trans "Photos and files" %}</h4-->
@@ -1022,7 +1026,6 @@ var someCallback = function(exifObject, index) {
             {% endif %}
 
         </div>
-    {% endif %}
 
 </div>
 {% endblock %}
