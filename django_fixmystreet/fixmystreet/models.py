@@ -1317,13 +1317,14 @@ def report_attachment_notify(sender, instance, **kwargs):
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
         ).save()
-        for subscription in report.subscriptions.all().exclude(subscriber__memberships__department=report.responsible_department):
+        for subscription in report.subscriptions.all().exclude(subscriber__memberships__organisation=report.responsible_department):
             ReportNotification(
                 content_template='informations_published',
                 recipient=subscription.subscriber,
                 related=report,
                 reply_to=report.responsible_department.email,
             ).save()
+
 
     #if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
