@@ -21,7 +21,7 @@ function cloneObj (obj) {
     }
 }
 
-fms.filterMapWithStatus = function(){
+fms.filterMapWithStatus = function(callback){
     //Sort the selection as used as key later
     fms.statusFilter.sort();
     //Get from cache first
@@ -52,6 +52,10 @@ fms.filterMapWithStatus = function(){
                         markers.push(fms.currentMap.addReport(data[i], i, false));
                     }
                     fms.currentMap.markersLayer.addFeatures(markers);
+
+                    if (callback) {
+                        callback();
+                    }
                 },
                 error: function(data) {
                     if(fms.currentMap.markersLayer){

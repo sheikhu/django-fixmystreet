@@ -75,7 +75,10 @@ $(function(){
 
         // Init map with all reports
         fms.statusFilter = ['created', 'in_progress', 'closed'];
-        fms.filterMapWithStatus();
+        fms.filterMapWithStatus(function () {
+            var mapLoading = document.getElementById('map-loading');
+            mapLoading.parentNode.removeChild(mapLoading);
+        });
     }
 });
 
