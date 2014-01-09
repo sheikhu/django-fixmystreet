@@ -340,16 +340,20 @@ function markAsDone(){
             {% endif %}
        <!--/div--> <!-- Bordered-box-->
 
-        {% if report.active_attachments %}
+
         <div class="timeline-container">
+
+            {% if report.is_in_progress or report.is_created %}
+                <span class="add_info">
+                    <a href="{% url 'report_document' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
+                </span>
+            {% endif %}
+
             {% if report.active_attachments %}
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
                 <!--h4>{% trans 'Files' %}</h4-->
-                <span class="add_info">
-                    <a href="{% url 'report_document' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
-                </span>
                 <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
                 <ul id="report_updates" class="timeline">
                     {% for attachment in report.active_attachments %}
@@ -361,7 +365,6 @@ function markAsDone(){
             {% endif %}
 
         </div> <!-- Bordered-box -->
-        {% endif %}
 
     </div> <!-- span6 -->
 
