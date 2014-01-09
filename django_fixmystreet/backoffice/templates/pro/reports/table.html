@@ -100,7 +100,7 @@ var columns = [
 ]
 
 // Get table rendered by django
-function generateTableContent() {
+function generateTableContent(finalizeCallback) {
     $.ajax({
         url: "{% url 'report_table_content_pro' %}",
         data: "",
@@ -134,6 +134,10 @@ function generateTableContent() {
 
             // Init map markers
             refreshMap();
+        },
+        complete: function() {
+            //Call the finalizeCallback in any case
+            finalizeCallback();
         }
     });
 }
@@ -142,11 +146,12 @@ generateTableContent();
 // Refresh table
 var refreshTable = document.getElementById('refreshTable');
 refreshTable.addEventListener('click', function() {
+    //Show loading icon
+    $('#map-loading').show();
     // Destroy current table
     table.fnDestroy(true);
-
     // Regenerate table
-    generateTableContent();
+    generateTableContent(function() { $('#map-loading').hide() } );
 });
 
 // Show or hide filters in modal
