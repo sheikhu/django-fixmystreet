@@ -100,7 +100,9 @@ var columns = [
 ]
 
 // Get table rendered by django
-function generateTableContent(finalizeCallback) {
+function generateTableContent() {
+    document.getElementById('table-container').innerHTML = '<div id="table-loading" class="span12"><img src="{{ STATIC_URL }}/images/spinner.gif" /></div>';
+
     $.ajax({
         url: "{% url 'report_table_content_pro' %}",
         data: "",
@@ -134,10 +136,6 @@ function generateTableContent(finalizeCallback) {
 
             // Init map markers
             refreshMap();
-        },
-        complete: function() {
-            //Call the finalizeCallback in any case
-            finalizeCallback();
         }
     });
 }
@@ -147,11 +145,12 @@ generateTableContent();
 var refreshTable = document.getElementById('refreshTable');
 refreshTable.addEventListener('click', function() {
     //Show loading icon
-    $('#map-loading').show();
+    document.getElementById('map-loading').hidden = false;
+
     // Destroy current table
     table.fnDestroy(true);
-    // Regenerate table (with finalizeCallback as function parameter)
-    generateTableContent(function() { $('#map-loading').hide() } );
+    // Regenerate table
+    generateTableContent();
 });
 
 // Show or hide filters in modal
@@ -189,6 +188,8 @@ function refreshMap() {
         markers.push(fms.currentMap.addReport(report, i, false));
     }
     fms.currentMap.markersLayer.addFeatures(markers);
+
+    document.getElementById('map-loading').hidden = true;
 }
 
 // Load map
