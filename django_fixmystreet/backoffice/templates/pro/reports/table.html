@@ -150,7 +150,7 @@ refreshTable.addEventListener('click', function() {
     $('#map-loading').show();
     // Destroy current table
     table.fnDestroy(true);
-    // Regenerate table
+    // Regenerate table (with finalizeCallback as function parameter)
     generateTableContent(function() { $('#map-loading').hide() } );
 });
 
