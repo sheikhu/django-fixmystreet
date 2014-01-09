@@ -1,3 +1,5 @@
+
+from unittest import skip
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
@@ -36,12 +38,10 @@ class UpdatesTest(TestCase):
             name_nl="Werken2",
             name_fr="Travaux2",
             phone="090987",
-            dependency = self.organisation2,
+            dependency=self.organisation2,
             email="test2@email.com"
             )
         self.group2.save()
-
-
 
         self.manager = FMSUser(
             telephone="0123456789",
@@ -71,7 +71,6 @@ class UpdatesTest(TestCase):
         self.manager2.save()
         self.manager2.categories.add(self.secondary_category)
 
-
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
 
@@ -97,29 +96,29 @@ class UpdatesTest(TestCase):
 
         report = self.report
         report.responsible_department = self.group
-        report.save();
+        report.save()
 
         self.client.login(username='manager@a.com', password='test')
 
         """Change manager department"""
         url = reverse('report_change_manager_pro', args=[report.id])
-        response = self.client.get(url+'?manId=department_'+self.group2.id, follow=True)
+        response = self.client.get("{0}?manId=department_{1}".format(url, self.group2.id), follow=True)
         self.assertEqual(response.status_code, 200)
 
-        self.assertTrue(report.responsible_department is not None)
+        self.assertIsNotNone(report.responsible_department)
 
         """Change manager entity"""
         url = reverse('report_change_manager_pro', args=[report.id])
         response = self.client.get(url+'?manId=entity_14', follow=True)
         self.assertEqual(response.status_code, 200)
 
-        self.assertTrue(report.responsible_manager is not None)
+        self.assertIsNotNone(report.responsible_department)
 
     def test_update_planned(self):
         self.client.login(username='manager@a.com', password='test')
 
         date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -133,7 +132,7 @@ class UpdatesTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
 
         max_date_planned = self.report.accepted_at + timedelta(days=450)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), max_date_planned.strftime("%m/%Y"))
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), max_date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -244,6 +243,7 @@ class UpdatesTest(TestCase):
         self.assertEquals(updated_report.probability,4)
         self.assertEquals(updated_report.get_priority(),8)
 
+    @skip("no more available")
     def test_previous_reports(self):
         self.client.login(username='manager@a.com', password='test')
         manager2 = FMSUser(
