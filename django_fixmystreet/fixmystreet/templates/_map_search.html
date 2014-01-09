@@ -1,4 +1,7 @@
 {% load i18n %}
+<div id="map-loading" class="span12">
+    <img src="{{ STATIC_URL }}/images/spinner.gif" />
+</div>
 <article id="map" class="home span12 {{ classes }}">
     <div class="container lead-container">
         {% if instructions %}
