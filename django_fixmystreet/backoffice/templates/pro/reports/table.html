@@ -93,7 +93,7 @@ var columns = [
     {type: "select", values: [
         '{{ True|yesno:_("yes,no") }}',
         '{{ False|yesno:_("yes,no") }}'
-    ]}, // pending
+    ], selected: '{{ False|yesno:_("yes,no") }}'}, // pending
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
