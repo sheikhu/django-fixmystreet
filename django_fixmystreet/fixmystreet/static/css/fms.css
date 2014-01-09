@@ -1771,7 +1771,7 @@ label strong{
 #map-loading{
 	height: 610px;
 	position: absolute;
-	z-index:11000;
+	z-index:1000;
     background-color: gray; /* for demonstration */
     -moz-opacity: 0.30;
 	background-color:rgba(255, 255, 255, 0.30);
@@ -1781,6 +1781,22 @@ label strong{
     left: 50%;
     top: 50%;
     margin-left: -40px; /* -1 * image width / 2 */
-    margin-top: :;px;  /* -1 * image height / 2 */
+    margin-top: -40px;  /* -1 * image height / 2 */
+    display: block;
+}
+#table-loading{
+	height: 80%;
+	position: absolute;
+	z-index:1000;
+    background-color: gray; /* for demonstration */
+    -moz-opacity: 0.30;
+	background-color:rgba(255, 255, 255, 0.30);
+}
+#table-loading img{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -40px; /* -1 * image width / 2 */
+    margin-top: -40px;  /* -1 * image height / 2 */
     display: block;
 }
