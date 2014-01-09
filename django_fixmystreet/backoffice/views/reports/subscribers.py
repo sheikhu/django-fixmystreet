@@ -6,8 +6,9 @@ from django_fixmystreet.fixmystreet.models import Report, ReportSubscription
 
 def create(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    subscriber = ReportSubscription(subscriber=request.user.fmsuser,report=report)
-    subscriber.save()
+    if not report.subscriptions.filter(subscriber=request.user.fmsuser).exists():
+        subscriber = ReportSubscription(subscriber=request.user.fmsuser, report=report)
+        subscriber.save()
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
 def unsubscribe(request, report_id):

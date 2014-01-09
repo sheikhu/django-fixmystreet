@@ -14,9 +14,11 @@ class Migration(DataMigration):
         for report in orm.Report.objects.all():
             if not report.accepted_at and report.status != Report.CREATED and report.status != Report.REFUSED:
                 # Find date for valid status in event_log and save as accepted_at
-                event_log = orm.ReportEventLog.objects.filter(report=report, event_type=ReportEventLog.VALID).order_by('event_at')[0]
-                report.accepted_at = event_log.event_at
-                report.save()
+                event_logs = orm.ReportEventLog.objects.filter(report=report, event_type=ReportEventLog.VALID).order_by('event_at')
+                if event_logs:
+                    event_log = event_logs[0]
+                    report.accepted_at = event_log.event_at
+                    report.save()
 
     def backwards(self, orm):
         "Write your backwards methods here."

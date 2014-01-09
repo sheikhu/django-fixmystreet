@@ -844,7 +844,7 @@ footer .cirb-cibg img{
 	border-radius: 4px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;	
+	-webkit-box-sizing: border-box;
 }
 .span3.report{
 	min-height:230px !important;
@@ -1218,10 +1218,6 @@ form#report-form{
 /* ---
    Timeline
    ---- */
-.timeline-container{
-	position:relative;
-	margin-top:5px;
-}
 .margin{
 	position: absolute;
 	background:#7090B7;
@@ -1246,6 +1242,7 @@ form#report-form{
 	border-radius: 4px;
 	padding-top: 16px;
 	border:1px solid #5F7C9C;
+    min-height: 45px;
 }
 .timeline{
 	margin-top: 50px;
