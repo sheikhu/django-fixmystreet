@@ -184,14 +184,15 @@ def show(request,slug, report_id):
         comment_form = ReportCommentForm(prefix='comment')
 
     organisation = request.fmsuser.organisation
-
+    managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True)
+    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
+    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
+    departments = []
+    contractors = []
     
     if organisation:
         entities.exclude(pk=organisation.id)
-        managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True)
-        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT)
-        region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
-        entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
+        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT)    
         contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR)
     else:
         contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR)
