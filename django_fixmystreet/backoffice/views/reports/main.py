@@ -185,12 +185,13 @@ def show(request,slug, report_id):
 
     organisation = request.fmsuser.organisation
 
-    managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True)
-    departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT)
-    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
-    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
+    
     if organisation:
         entities.exclude(pk=organisation.id)
+        managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True)
+        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT)
+        region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
+        entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
         contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR)
     else:
         contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR)
