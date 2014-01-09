@@ -96,14 +96,14 @@ class UpdatesTest(TestCase):
         """Tests manager change assigned to a report and test the view of it."""
 
         report = self.report
-        report.responsible_manager = self.manager
+        report.responsible_department = self.group
         report.save();
 
         self.client.login(username='manager@a.com', password='test')
 
         """Change manager department"""
         url = reverse('report_change_manager_pro', args=[report.id])
-        response = self.client.get(url+'?manId=department_1', follow=True)
+        response = self.client.get(url+'?manId=department_'+self.group2.id, follow=True)
         self.assertEqual(response.status_code, 200)
 
         self.assertTrue(report.responsible_department is not None)
