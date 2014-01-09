@@ -437,7 +437,6 @@ class Report(UserTrackedModel):
     PROCESSED = 3
     DELETED = 8
 
-
     REPORT_STATUS_SETTABLE_TO_SOLVED = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_IN_PROGRESS = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
@@ -1325,16 +1324,15 @@ def report_attachment_notify(sender, instance, **kwargs):
                 reply_to=report.responsible_department.email,
             ).save()
 
-
     #if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
-            for recipient in report.contractor.workers.all():
-                ReportNotification(
-                    content_template='informations_published',
-                    recipient=recipient,
-                    related=report,
-                    reply_to=report.responsible_department.email,
-                ).save()
+        for recipient in report.contractor.workers.all():
+            ReportNotification(
+                content_template='informations_published',
+                recipient=recipient,
+                related=report,
+                reply_to=report.responsible_department.email,
+            ).save()
 
 
 class ReportComment(ReportAttachment):

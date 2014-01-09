@@ -398,7 +398,7 @@ class MailTest(TestCase):
         #4 mails send 2 for creation, 1 for acceptance and 1 for resolving the issue. The last one should go to the responsible
         self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
         self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.manager.email in mail.outbox[3].to)
+        self.assertIn(self.manager.email, mail.outbox[3].to)
 
     def testAssignToOtherMemberOfSameEntityMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -513,8 +513,9 @@ class MailTest(TestCase):
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
-        #One notification should be sent to contractor to inform him of new comment
-        self.assertEquals(len(mail.outbox), 5)
+        # One notification should be sent to contractor to inform him of new comment
+        # One notification should be sent to department
+        self.assertEquals(len(mail.outbox), 6)
         self.assertTrue(self.contractor.workers.all()[0].email in mail.outbox[4].to)
 
 
@@ -578,7 +579,7 @@ class MailTest(TestCase):
         self.assertEqual(response.status_code, 200)
         #Should be 4 mails: 2 for creation, 1 for acceptance, 1 to responsable to notify change
         self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.manager.email in mail.outbox[3].to)
+        self.assertTrue(self.group.email in mail.outbox[3].to)
 
     def testPublishCommentMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
