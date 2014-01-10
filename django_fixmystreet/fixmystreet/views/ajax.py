@@ -51,11 +51,11 @@ def filter_map(request):
     mFilter = request.GET["filter"]
     result = []
     if "created" in mFilter:
-        result += Report.objects.all().filter(status=Report.CREATED).public()
+        result += Report.visibles.all().filter(status=Report.CREATED).public()
     if "in_progress" in mFilter:
-        result += Report.objects.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).public()
+        result += Report.visibles.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).public()
     if "closed" in mFilter:
-        result+= Report.objects.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
+        result+= Report.visibles.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
     if mFilter == "":
         result += Report.objects.none()
 
@@ -67,3 +67,27 @@ def filter_map(request):
     jsonString+= "]"
 
     return HttpResponse(jsonString,mimetype="application/json")
+
+    # mFilter = request.GET["filter"]
+    # result = []
+    # # if "created" in mFilter:
+    # #     result += Report.objects.all().filter(status=Report.CREATED).public()
+    # # if "in_progress" in mFilter:
+    # #     result += Report.objects.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).public()
+    # # if "closed" in mFilter:
+    # #     result+= Report.objects.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
+    # # if mFilter == "":
+    # #     result += Report.objects.none()
+    # result = Report.visibles.all().public()
+
+    # import time
+    # start = time.time()
+    # jsonArray = []
+    # for report in result:
+    #     jsonArray += report.marker_detail_short()
+    # duration = time.time() - start
+    # print duration
+
+    # jsonString = json.dumps(jsonArray)
+
+    # return HttpResponse(jsonString, mimetype="application/json")
