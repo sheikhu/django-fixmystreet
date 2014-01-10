@@ -65,6 +65,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
 var columns = [
     {type: "number"}, // incident number
+    {sType: "date-euro", oSort:"date-eu"}, // date accepted
     {type: "select"}, // categories
     {type: "select"}, // sec categories
     {type: "text"},   // addr
@@ -233,6 +234,7 @@ function refreshMap() {
         <div id="table-filters" class="table-filters">
             <ul id="column-visibility">
                 <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
