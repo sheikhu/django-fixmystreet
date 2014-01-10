@@ -76,8 +76,8 @@ def new(request):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()
-    reports = Report.objects.all()
+    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()
+    reports = Report.visibles.all()
     return render_to_response("reports/new.html",
             {
                 "report":report,
@@ -96,7 +96,7 @@ def new(request):
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
-    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance').public()[0:6]
+    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance').public()[0:6]
 
     if reports_nearby:
         return render_to_response("reports/verify.html",
