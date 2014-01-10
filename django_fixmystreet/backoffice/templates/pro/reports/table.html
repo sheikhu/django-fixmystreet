@@ -81,8 +81,8 @@ var columns = [
     {type: "select"}, // resp entity
     {type: "select"}, // resp manager
     {type: "select", values: [
-        '{{ True|yesno:_("regional,communal") }}',
-        '{{ False|yesno:_("regional,communal") }}'
+        '{{ True|yesno:_("planned,not planned") }}',
+        '{{ False|yesno:_("planned,not planned") }}'
     ]}, // planned
     {sType: "date-euro", oSort:"date-eu"}, // date planned
     {type: "number"}, // priority
