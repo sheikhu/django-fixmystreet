@@ -479,7 +479,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                 feature.attributes.report = data;
                                 domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
 
-                                var imageLink = "/static/images/no-photo-yellow-line.png";
+                                var imageLink = "/static/images/no-pix.png";
 
                                 if (feature.attributes.report.thumb != 'null') {
                                     imageLink = feature.attributes.report.thumb;
@@ -554,6 +554,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                                         self.selectFeature.onUnselect(feature);
                                     }
                                 );
+                                
+                                popup.div.className = 'reports';
                                 popup.panMapIfOutOfView = true;
 
                                 fms.currentMap.map.addPopup(popup);
