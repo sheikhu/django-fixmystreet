@@ -373,10 +373,11 @@
                 } else {
                     $(this).addClass("search_init");
                 }
+                debugger;
                 if (bRegex)
                     oTable.fnFilter($(this).val(), iColumn, bRegex); //Issue 41
                 else
-                    oTable.fnFilter(unescape($(this).val()), iColumn); //Issue 25
+                    oTable.fnFilter(unescape($(this).val()), iColumn, false,false,false,false); //Issue 25
                 fnOnFiltered();
             });
             if (currentFilter != null && currentFilter != "")//Issue 81
