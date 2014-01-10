@@ -387,6 +387,16 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def subscribed(self, user):
         return self.filter(subscriptions__subscriber=user)
 
+    def related_category(self):
+        return self.select_related('category', 'secondary_category', 'secondary_category__secondary_category_class')
+
+    def related_responsible(self):
+        return self.select_related('responsible_entity', 'responsible_manager', 'contractor')
+
+    def related_citizen(self):
+        return self.select_related('citizen', 'created_by')
+
+
 
 class ReportManager(models.GeoManager):
 
@@ -403,7 +413,6 @@ class ReportManager(models.GeoManager):
 
     def get_query_set(self):
         return ReportQuerySet(self.model) \
-            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
             .exclude(status=Report.DELETED) \
             .select_related(
                 'category', 'secondary_category',
@@ -417,6 +426,7 @@ class VisibleReportManager(ReportManager):
     def get_query_set(self):
         return super(VisibleReportManager, self).get_query_set() \
                 .filter(merged_with__isnull=True) \
+                .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
                 .exclude(status__in=Report.REPORT_STATUS_OFF)
 
 
