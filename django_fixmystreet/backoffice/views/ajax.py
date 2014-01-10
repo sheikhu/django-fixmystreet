@@ -52,13 +52,13 @@ def filter_map(request):
     mFilter = request.GET["filter"]
     result = []
     if "created" in mFilter:
-        result += Report.objects.all().filter(status=Report.CREATED)
+        result += Report.visibles.all().filter(status=Report.CREATED)
     if "in_progress" in mFilter:
-        result += Report.objects.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        result += Report.visibles.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
     if "closed" in mFilter:
-        result += Report.objects.all().filter(status__in=Report.REPORT_STATUS_CLOSED)
+        result += Report.visibles.all().filter(status__in=Report.REPORT_STATUS_CLOSED)
     if mFilter == "":
-        result += Report.objects.all()
+        result += Report.visibles.all()
 
     jsonString = "["
     for report in result:
