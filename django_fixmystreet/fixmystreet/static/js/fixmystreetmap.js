@@ -313,7 +313,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
         var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
             onStart:function(){
-                $(self.element).trigger('markerdrag');
+                //Not used.
+                //$(self.element).trigger('markerdrag');
+                // Remove all popups
+                while(this.map.popups.length) {
+                     this.map.removePopup(this.map.popups[0]);
+                }
             },
             onComplete:function(feature,pixel){
                 var p = feature.geometry.components[0];
