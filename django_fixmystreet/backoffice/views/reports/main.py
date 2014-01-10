@@ -63,8 +63,8 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).unfinished().order_by('distance')
-    reports = Report.objects.all()
+    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).unfinished().order_by('distance')
+    reports = Report.visibles.all()
     return render_to_response("pro/reports/new.html",
             {
                 "report":report,
@@ -106,9 +106,9 @@ def report_prepare_pro(request, location = None, error_msg = None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'location':location,
-                'reports_created': Report.objects.all().created().order_by('-modified')[0:4],
-                'reports_in_progress': Report.objects.all().in_progress().order_by('-modified')[0:4],
-                'reports_closed':Report.objects.all().closed().order_by('-modified')[0:4],
+                'reports_created': Report.visibles.all().created().order_by('-modified')[0:4],
+                'reports_in_progress': Report.visibles.all().in_progress().order_by('-modified')[0:4],
+                'reports_closed':Report.visibles.all().closed().order_by('-modified')[0:4],
                 'stats':stats_result,
                 'popup_reports':popup_reports,
             },
@@ -222,7 +222,7 @@ def show(request,slug, report_id):
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
-    reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance')[0:6]
+    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance')[0:6]
 
     if reports_nearby:
         return render_to_response("reports/verify.html",
@@ -282,11 +282,11 @@ def merge(request, slug, report_id):
     pnt = report.point
 
     if report.is_created():
-        reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)
+        reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)
     elif report.is_closed():
-        reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
+        reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
     else:
-        reports_nearby = Report.objects.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
+        reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
     return render_to_response("pro/reports/merge.html",
             {
                 "fms_user": request.fmsuser,
