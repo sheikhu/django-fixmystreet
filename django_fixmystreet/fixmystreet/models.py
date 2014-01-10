@@ -387,6 +387,9 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def subscribed(self, user):
         return self.filter(subscriptions__subscriber=user)
 
+    def related_all(self):
+        return self.related_category().related_responsible().related_citizen()
+
     def related_category(self):
         return self.select_related('category', 'secondary_category', 'secondary_category__secondary_category_class')
 
@@ -396,6 +399,13 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def related_citizen(self):
         return self.select_related('citizen', 'created_by')
 
+
+class BasicReportManager(models.GeoManager):
+    def get_query_set(self):
+        return ReportQuerySet(self.model) \
+            .filter(merged_with__isnull=True) \
+            .exclude(status=Report.DELETED) \
+            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
 
 
 class ReportManager(models.GeoManager):
@@ -428,6 +438,8 @@ class VisibleReportManager(ReportManager):
                 .filter(merged_with__isnull=True) \
                 .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
                 .exclude(status__in=Report.REPORT_STATUS_OFF)
+
+
 
 
 class Report(UserTrackedModel):
@@ -521,6 +533,7 @@ class Report(UserTrackedModel):
 
     terms_of_use_validated = models.BooleanField(default=False)
 
+    basic_objects = BasicReportManager();
     objects = ReportManager()
     visibles = VisibleReportManager()
 
