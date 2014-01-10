@@ -159,7 +159,7 @@ class ReportHandler(BaseHandler):
         elif 'id' in kwargs:
             return Report.objects.get(pk=kwargs['id'])
         else:
-            return Report.objects.all()
+            return Report.visibles.all()
 
 
 #    @validate(CitizenReportForm, 'POST')
