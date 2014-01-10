@@ -3,6 +3,7 @@
     <thead>
         <tr>
             <th>{% trans "All" context "Ticket" %}</th>
+            <th>{% trans "All" context "Created at" %}</th>
             <th>{% trans "All" context "Categories" %}</th>
             <th>{% trans "All" context "Sub categories" %}</th>
             <th>{% trans "All" context "Address" %}</th>
@@ -22,6 +23,7 @@
         </tr>
         <tr>
             <th>{% trans "Ticket" %}</th>
+            <th>{% trans "Created at" %}</th>
             <th>{% trans "Category" %}</th>
             <th>{% trans "Sub category" %}</th>
             <th>{% trans "Address" %}</th>
@@ -44,6 +46,7 @@
         {% for report in reports %}
             <tr data-href="{{ report.get_absolute_url_pro }}">
                 <td>{{ report.id }}</td>
+                <td>{{ report.accepted_at }}</td>
                 <td>{{ report.category.name }}</td>
                 <td>{{ report.secondary_category.name }}</td>
                 <td>{{ report.address }}, {{report.address_number}}</td>
