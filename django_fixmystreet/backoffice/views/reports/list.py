@@ -27,7 +27,7 @@ def filter_reports(user, criteria):
         pnt = dict_to_point(default_position)
         is_default_position = True
 
-    reports = Report.objects.all().filter(merged_with__isnull=True)
+    reports = Report.visibles.all().filter(merged_with__isnull=True)
 
 
     #if the user is an contractor then user the dependent organisation id
