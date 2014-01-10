@@ -373,7 +373,6 @@
                 } else {
                     $(this).addClass("search_init");
                 }
-                debugger;
                 if (bRegex)
                     oTable.fnFilter($(this).val(), iColumn, bRegex); //Issue 41
                 else
