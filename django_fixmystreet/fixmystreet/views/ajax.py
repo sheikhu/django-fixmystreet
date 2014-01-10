@@ -51,11 +51,11 @@ def filter_map(request):
     mFilter = request.GET["filter"]
     result = []
     if "created" in mFilter:
-        result += Report.visibles.all().filter(status=Report.CREATED).public()
+        result += Report.basic_objects.all().filter(status=Report.CREATED).public()
     if "in_progress" in mFilter:
-        result += Report.visibles.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).public()
+        result += Report.basic_objects.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).public()
     if "closed" in mFilter:
-        result+= Report.visibles.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
+        result+= Report.basic_objects.all().filter(status__in= Report.REPORT_STATUS_CLOSED).public()
     if mFilter == "":
         result += Report.objects.none()
 
