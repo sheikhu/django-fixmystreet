@@ -123,7 +123,7 @@ def near_reports_citizen(request):
 #Method used to retrieve all reports for citizens
 def reports_citizen(request):
     pnt = dict_to_point(request.REQUEST)
-
+   
     #Max 1 month in the past
     timestamp_from = datetime.now().date() - timedelta(days=31)
     reports = Report.objects.filter(Q(created__gte=timestamp_from) & Q(private=False)).distance(pnt).order_by('distance')[:20]
