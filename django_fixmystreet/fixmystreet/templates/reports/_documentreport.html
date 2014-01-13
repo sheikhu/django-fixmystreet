@@ -61,6 +61,9 @@
             </div>
 
             <div class="warning_information_form">
+                {% if not report_form %}
+                    <p class="prevStep"><a href="{% url 'report_show_pro' report_id=report.id slug=report.get_slug %}">{% trans "Cancel" %}</a></p>
+                {% endif %}
                 <button id="validate_button" class="btn pull-right" disabled> {% trans 'Send' %}</button>
             </div>
         {% endif %}

@@ -665,6 +665,12 @@ footer .cirb-cibg img{
 #search-form #search-ticket-form{
 	margin-left:10px;
 }
+.lead-container.no-map{
+	margin-bottom:30px;
+}
+.lead-container.no-map .verify_list{
+	margin:0;
+}
 .instructions .steps{
 	margin: 0;
 }
