@@ -4,7 +4,7 @@
 if (!('fms' in window)) {
     window.fms = {};
     //A local cache to avoid multiple calls to backend system when clicking on filters
-    window.fms.cache = {};
+    window.fms.cachedElements = false;
 }
 
 function cloneObj (obj) {
@@ -21,49 +21,38 @@ function cloneObj (obj) {
     }
 }
 
-fms.filterMapWithStatus = function(callback){
-    //Sort the selection as used as key later
-    fms.statusFilter.sort();
-    //Get from cache first
-    if (typeof fms.cache[fms.statusFilter] !== 'undefined') {
-        if(fms.currentMap.markersLayer){
-            fms.currentMap.markersLayer.destroyFeatures();
-        }
-        var markers = [];
-        for(var i=0; i< fms.cache[fms.statusFilter].length; ++i) {
-            markers.push(fms.currentMap.addReport(fms.cache[fms.statusFilter][i], i, false));
-        }
-        fms.currentMap.markersLayer.addFeatures(markers);
-    } else {
-        //Else call the server
+fms.filterMapWithStatus = function(callback){ 
+    if (fms.cachedElements === false) {  
         $.ajax({
-                url:"/nl/ajax/map/filter/?filter="+fms.statusFilter,
-                type:'GET',
-                datatype:"json",
-                success: function(data){
-                    //Store data in cache
-                    fms.cache[fms.statusFilter] = data;
-
-                    if(fms.currentMap.markersLayer){
-                        fms.currentMap.markersLayer.destroyFeatures();
-                    }
-                    var markers = [];
-                    for(var i=0; i< data.length; ++i) {
-                        markers.push(fms.currentMap.addReport(data[i], i, false));
-                    }
-                    fms.currentMap.markersLayer.addFeatures(markers);
-
-                    if (callback) {
-                        callback();
-                    }
-                },
-                error: function(data) {
-                    if(fms.currentMap.markersLayer){
-                        fms.currentMap.markersLayer.destroyFeatures();
-                    }
+            url:"/ajax/map/filter/",
+            type:'GET',
+            datatype:"json",
+            success: function(data){
+                if (fms.currentMap.markersLayer) {
+                    fms.currentMap.markersLayer.destroyFeatures();
+                }
+                fms.currentMap.addReportCollection(data);
+                fms.cachedElements = true;
+            },
+            error: function(data) {
+                if(fms.currentMap.markersLayer){
+                    fms.currentMap.markersLayer.destroyFeatures();
+                }
+            },
+            complete: function() {
+                if (callback) {
+                    callback();
                 }
             }
-        );
+        });
+    } else {
+        fms.currentMap.markersLayer.redraw(true);
+
+        //As recalculate does not exists in openlayers 2.12
+        //fms.currentMap.strategy.distance=fms.currentMap.strategy.distance===50?49:50;
+        //fms.currentMap.strategy.layer.redraw(true);
+        //fms.currentMap.strategy.recluster();
+        callback();
     }
 }
 
@@ -142,14 +131,19 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
             apiLang = "fr",
             showControl = true,
-            markerStyle = cloneObj(defaultMarkerStyle),
+            createdMarkerStyle = cloneObj(defaultMarkerStyle),
             fixedMarkerStyle = cloneObj(defaultMarkerStyle),
             pendingMarkerStyle = cloneObj(defaultMarkerStyle),
             draggableMarkerStyle = cloneObj(defaultMarkerStyle);
 
-        markerStyle.externalGraphic = "/static/images/pin-red-L.png";
+        createdMarkerStyle.externalGraphic = "/static/images/pin-red-L.png";
+        createdMarkerStyle.display = "";
+
         fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png";
+        fixedMarkerStyle.display = "";
+
         pendingMarkerStyle.externalGraphic = "/static/images/pin-orange-L.png";
+        pendingMarkerStyle.display = "";
 
         draggableMarkerStyle.externalGraphic = "/static/images/pin-fixmystreet-L.png";
         fms.statusFilter = [];
@@ -188,6 +182,11 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             ],
             numZoomLevels:9
         });
+
+        //Filter flags
+        this.flagCreated = true;
+        this.flagInProgress = true;
+        this.flagClosed = true;
 
         // Regional layer
         var filter= new OpenLayers.Filter.Comparison({
@@ -290,6 +289,65 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         this.map.zoomOut();
     };
 
+    /* Method to toogle created filter element */
+    fms.Map.prototype.toogleCreated = function()
+    {
+        fms.currentMap.flagCreated = !fms.currentMap.flagCreated;
+
+        for (cptRules in fms.currentMap.markersLayer.styleMap.styles.default.rules) {
+            if (fms.currentMap.markersLayer.styleMap.styles.default.rules[cptRules].name === 'rule-created') {
+                fms.currentMap.markersLayer.styleMap.styles.default.rules[cptRules].symbolizer.display = (fms.currentMap.flagCreated === true?"":"none");
+            }
+        }
+
+        fms.Map.prototype.refreshCluster();
+    };
+    /* Method to toogle in progress filter element */
+    fms.Map.prototype.toogleInProgress = function()
+    {
+        fms.currentMap.flagInProgress = !fms.currentMap.flagInProgress;
+
+        for (cptRules in fms.currentMap.markersLayer.styleMap.styles.default.rules) {
+            if (fms.currentMap.markersLayer.styleMap.styles.default.rules[cptRules].name === 'rule-in-progress') {
+                fms.currentMap.markersLayer.styleMap.styles.default.rules[cptRules].symbolizer.display = (fms.currentMap.flagInProgress === true?"":"none");
+            }
+        }
+
+        fms.Map.prototype.refreshCluster();
+    };
+    /* Method to toogle closed filter element */
+    fms.Map.prototype.toogleClosed = function()
+    {
+        fms.currentMap.flagClosed = !fms.currentMap.flagClosed;
+
+        for (cptRules in fms.currentMap.markersLayer.styleMap.styles.default.rules) {
+            if (fms.currentMap.markersLayer.styleMap.styles.default.rules[cptRules].name === 'rule-processed') {
+                fms.currentMap.markersLayer.styleMap.styles.default.rules[cptRules].symbolizer.display = (fms.currentMap.flagClosed === true?"":"none");
+            }
+        }
+
+        fms.Map.prototype.refreshCluster();
+    };
+    /* Method to refresh the cluster content */
+    fms.Map.prototype.refreshCluster = function()
+    {
+        fms.currentMap.strategy.features = [];
+        
+        for (featureIndex in fms.currentMap.features) {
+            var rulesTestValue = false;
+            RULES: for (currentRuleIndex in fms.currentMap.markersLayer.styleMap.styles.default.rules) {if (featureIndex === 1) debugger;
+                if (fms.currentMap.markersLayer.styleMap.styles.default.rules[currentRuleIndex].evaluate(fms.currentMap.features[featureIndex])) {
+                    fms.currentMap.strategy.features[fms.currentMap.strategy.features.length] = fms.currentMap.features[featureIndex];
+                    break RULES;
+                }
+            }
+        }
+        fms.currentMap.strategy.layer.removeAllFeatures();
+        fms.currentMap.strategy.layer.redraw(true);
+    };
+
+    
+
     /**
      * Add a draggable marker to the current map. Send a "markermoved" event to
      * the map element when the marker move.
@@ -380,7 +438,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             {
                 self.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer",
                     {
-                        strategies:[new OpenLayers.Strategy.Cluster({distance:10,threshold:2})],
+                        strategies:[new OpenLayers.Strategy.Cluster({
+                            distance:10,
+                            threshold:2
+                        })],
                         displayInLayerSwitcher: false
                     }
                 );
@@ -398,6 +459,15 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     };
 
     /**
+     */
+    fms.Map.prototype.addReportCollection = function(reports)
+    {
+        for (filterCpt in reports) {
+            this.addReport(reports[filterCpt], filterCpt, false);
+        }
+        this.markersLayer.addFeatures(this.features);
+    }
+    /**
      * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
      * @param report the report to add
      * @param index the report index
@@ -408,7 +478,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         var self = this;
         if(!this.markersLayer)
         {
-            var style = new OpenLayers.Style({
+            var clusterStyle = new OpenLayers.Style({
                     pointRadius: "${radius}",
                     fillColor: "#ffcc66",
                     fillOpacity: 0.8,
@@ -433,40 +503,109 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         }
                     }
                 });
-            this.markersLayer = new OpenLayers.Layer.Vector( "Reports Layer",
+            var markerStyle = new OpenLayers.Style({}, {
+                    context: {
+                        width: function(feature) {
+                            return (feature.cluster) ? 2 : 1;
+                        },
+                        radius: function(feature) {
+                            var pix = 2;
+                            if(feature.cluster) {
+                                pix = (feature.attributes.count/10+7);
+                            }
+                            return pix;
+                        },
+                        count: function(feature) {
+                            return feature.attributes.count;
+                        }
+                    },
+                    rules: [
+                        //IN PROGRESS
+                        new OpenLayers.Rule({
+                            name: "rule-in-progress",
+                            filter: new OpenLayers.Filter({
+                                evaluate: function (context) {
+                                    if (fms.currentMap.flagInProgress === false) return false;
+                                    var returnValue = context.report /*&& window.fms.currentMap.flagClosed === true*/ && [2, 4, 5, 6, 7].indexOf(context.report.status) >= 0;                                  
+                                    /*if (typeof context.report !== 'undefined')
+                                        context.report.display = (returnValue === true?"":"none");*/
+                                    return returnValue;
+                                }
+                            }),
+                            symbolizer: pendingMarkerStyle,
+                            elseFilter: true
+                        }),
+                        //CREATED
+                        new OpenLayers.Rule({
+                            name: "rule-created",
+                            filter: new OpenLayers.Filter({
+                                evaluate: function (context) {  
+                                    if (fms.currentMap.flagCreated === false) return false; 
+                                    var returnValue = context.report /*&& window.fms.currentMap.flagClosed === true*/ && context.report.status === 1;
+                                    /*if (typeof context.report !== 'undefined')
+                                        context.report.display = (returnValue === true?"":"none");*/
+                                    return returnValue;
+                                }
+                            }),
+                            symbolizer: createdMarkerStyle,
+                            elseFilter: true
+                        }),
+                        //PROCESSED
+                        new OpenLayers.Rule({
+                            name: "rule-processed",
+                            filter: new OpenLayers.Filter({
+                                evaluate: function (context) {
+                                    if (fms.currentMap.flagClosed === false) return false;
+                                    var returnValue = context.report /*&& window.fms.currentMap.flagClosed === true*/ && [3, 8].indexOf(context.report.status) >= 0;
+                                    /*if (typeof context.report !== 'undefined')
+                                        context.report.display = (returnValue === true?"":"none");*/
+                                    return returnValue;
+                                }
+                            }),
+                            symbolizer: fixedMarkerStyle,
+                            elseFilter: true
+                        }),
+                        //CLUSTER
+                        new OpenLayers.Rule({
+                            name: "rule-cluster",
+                            filter: new OpenLayers.Filter({
+                                evaluate: function (context) {
+                                    return context.count;
+                                }
+                            }),
+                            symbolizer: {
+                                pointRadius: "${radius}",
+                                fillColor: "#ffcc66",
+                                fillOpacity: 0.8,
+                                strokeColor: "#cc6633",
+                                strokeWidth: "${width}",
+                                strokeOpacity: 0.8,
+                                label :"${count}"
+                            },
+                            elseFilter: true
+                        })
+                    ]
+                });
+            self.strategy = new OpenLayers.Strategy.Cluster({
+                distance:50,
+                threshold:2,
+                clustering:false,
+                rules:markerStyle.rules
+            });
+
+            this.markersLayer = new OpenLayers.Layer.Vector("Reports Layer",
                 {
-                    strategies: [new OpenLayers.Strategy.Cluster({distance:50,threshold:2})],
+                    strategies: [self.strategy],
                     styleMap: new OpenLayers.StyleMap({
-                            "default": style,
-                            "select": style
+                            "default": markerStyle,
+                            "select": markerStyle
                     }),
                     displayInLayerSwitcher: false
                 }
             );
-            //NEW APPROACH
-            /*this.markersLayer = new OpenLayers.Layer.Markers( "zaza" );
-            marker  = new OpenLayers.Marker(new OpenLayers.LonLat(report.point.x, report.point.y),
-                new OpenLayers.Icon("/static/images/pin-red-XS.png",32,16).clone());
-            this.markersLayer.addMarker(marker);
-            marker.events.register('click',marker,function(){
-                alert('ok');
-            });
-            this.map.addLayer(this.markersLayer);*/
-            /*
-            !WTF! from http://docs.openlayers.org/library/overlays.html:
-            As of OpenLayers 2.7, there is no support for selecting features from more than a single vector
-            layer at a time. The layer which is currently being used for selection is the last one on which
-            the .activate() method of the attached select feature control was called.
-            */
-            /*this.markersLayer.events.on({featureselected: function(event) {alert('ok');
-                // should be event.xy, but it's not available currently
-                //     var pixel = control.handlers.feature.evt.xy;
-                //         var location = map.getLonLatFromPixel(pixel);
-                //             alert("You clicked near " + location);
-                }});*/
             this.map.addLayer(this.markersLayer);
 
-            var self= this;
+            var self = this;
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 onSelect: function(feature){
                     if(feature.layer.name != "Dragable Layer" && !feature.cluster){
@@ -477,7 +616,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             datatype:"json",
                             success:function(data){
                                 feature.attributes.report = data;
-                                domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry.components[0].id));
+                                domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry/*.components[0]*/.id));
 
                                 var imageLink = "/static/images/no-pix.png";
 
@@ -606,17 +745,21 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
             this.map.addControl(this.selectFeature);
             this.selectFeature.activate();
+            this.features = [];
 
         }
         var markerPoint = new OpenLayers.Geometry.Point(report.point.x,report.point.y);
-        var newMarker = new OpenLayers.Geometry.Collection([markerPoint]);
+        var newMarker = new OpenLayers.Feature.Vector(markerPoint, {'report':report});
+        this.features.push(newMarker);
+
+        return newMarker;
+        // console.log(this.markersLayer);
 
         //Can be either orange, red or green and in the set of regional route or not.
-        var markerConf;
+        // var markerConf;
 
-        markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingMarkerStyle : pendingMarkerStyle;
-        return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
-        // self.markersLayer.addFeatures(vectorOfMarkers);
+        // markerConf = (report.status == 3 || report.status == 9) ? fixedMarkerStyle : report.status == 1 ? defaultMarkerStyle : (report.status==5 || report.status ==6) ? pendingMarkerStyle : pendingMarkerStyle;
+        // return new OpenLayers.Feature.Vector(newMarker, {'report':report}, markerConf);
     };
 
     /**
@@ -674,4 +817,3 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
 
 }());
-
