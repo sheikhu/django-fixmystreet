@@ -423,8 +423,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 //~ }
             }
         });
+
         this.map.addControl(dragControl);
-        //this.superControl.dragControl = dragControl;
         dragControl.activate();
 
         this.draggableMarker = new OpenLayers.Geometry.Collection([new OpenLayers.Geometry.Point(x,y)]);
@@ -436,6 +436,9 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
         //Allow button center on draggable marker when visible
         this.centerPanel.controls[0].activate();
+        //Update size of all layers as when updating main map component size, sometimes openlayers keeps old values
+        this.map.updateSize();
+
         return this.draggableMarker;
     };
 
