@@ -164,6 +164,21 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             x = this.options.origin.x;
             y = this.options.origin.y;
         }
+
+        //Center Button
+        var centerMapButton = new OpenLayers.Control.Button({
+            displayClass: 'olControlBtnCenterOnCursor',
+            id: 'btnCenterOnCursor',
+            trigger: function() {fms.currentMap.centerOnDraggableMarker()}
+        });
+        //centerMapButton.panel_div.innerHTML = "zaza";
+        //Center Panel
+        var centerPanel = new OpenLayers.Control.Panel(
+            {
+                defaultControl: centerMapButton
+            }
+        )
+
         this.map = new OpenLayers.Map(this.id, {
             maxExtent: new OpenLayers.Bounds(16478.795,19244.928,301307.738,304073.87100000004),
 //            maxResolution: 46,
@@ -178,10 +193,16 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 new OpenLayers.Control.Navigation(
                             {dragPanOptions: {enableKinetic: true}}
                     ),
-                new OpenLayers.Control.Zoom()
+                new OpenLayers.Control.Zoom(),
+                //Center button
+                centerPanel
             ],
             numZoomLevels:9
         });
+
+        centerPanel.addControls([centerMapButton]);
+        this.centerPanel = centerPanel;
+
 
         //Filter flags
         this.flagCreated = true;
@@ -413,6 +434,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
         }
 
+        //Allow button center on draggable marker when visible
+        this.centerPanel.controls[0].activate();
         return this.draggableMarker;
     };
 
