@@ -222,6 +222,29 @@ footer .cirb-cibg img{
 #map img {
 	max-width: none;
 }
+
+.olControlBtnCenterOnCursorItemActive {  
+    position: absolute;
+	top: 56px;
+	left: 10px;
+	border-radius: 4px 4px 4px 4px;
+    display: block;
+	margin: 1px;
+	padding: 0;
+	color: white;
+	font-size: 18px;
+	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	height: 22px;
+	width: 22px;
+	line-height: 19px;
+	background: rgba(0, 60, 136, 0.5) url('../images/target.png') no-repeat center;
+	display: inline;
+	filter: alpha(opacity=80);
+}
+
 #proposal-container {
     background-color: #FFFFFF;
     bottom: -13px;
