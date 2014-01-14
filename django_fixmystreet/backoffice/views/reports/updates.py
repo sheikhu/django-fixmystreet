@@ -97,7 +97,7 @@ def planned( request, report_id ):
 
 def pending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    report.pending = True
+    report.pending = not report.pending;
     report.save()
 
     #Redirect to the report show page
