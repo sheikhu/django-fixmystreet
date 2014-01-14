@@ -374,9 +374,8 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(query)
 
     def responsible_contractor(self, user):
-        print user.work_for.all()
-        query = Q(contractor__in=user.work_for.all())
-        # query = Q(contractor__memberships__user=user)
+        # query = Q(contractor__in=user.work_for.all())
+        query = Q(contractor__memberships__user=user)
         return self.filter(query)
 
     def entity_territory(self, organisation):

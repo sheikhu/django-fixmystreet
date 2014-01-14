@@ -1695,6 +1695,10 @@ label strong{
 	max-height:650px;
 	min-height:445px;
 }
+#result-table tr{
+	cursor: pointer;
+
+}
 #searchContainer.mergeIncident{
 	margin-top:30px;
 	padding:0;
