@@ -212,33 +212,47 @@ $(document).ready(function() {
 
     });
 
-    $("#main_cat_select").val("{{report.category.id}}");
+    //$("#main_cat_select").val("{{report.category.id}}");
+
     $.ajax({
         url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
         type:"GET",
         success:function(data){
             for(var i = 0; i<data.length;++i){
-                    var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
-                    $("#sec_cat_select").append(option);
+                var option = "<option value='"+data[i].id+"'>"+data[i]["s_c_n_"+LANGUAGE_CODE]+"/"+data[i]["n_"+LANGUAGE_CODE]+"</option>";
+                $("#sec_cat_select").append(option);
             }
+            $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) { 
+                        var arel = $(a).html();
+                        var brel = $(b).html();
+                        return arel == brel ? 0 : arel < brel ? -1 : 1 
+                    }));
+            $("#sec_cat_select").prepend('<option value="0">{% trans "Select a Category" %}</option>');
+
             $("#sec_cat_select").val("{{report.secondary_category.id}}");
         }
 
     });
+
     $('#main_cat_select').change(function(){
         if(this.value !== "0"){
             $("#sec_cat_select").removeAttr("disabled");
             $("#sec_cat_select").empty();
-            $("#sec_cat_select").append('<option value="0">{% trans "Select a Category" %}</option>');
+            
             $.ajax({
                 url:"{% url 'secondary_category_for_main_category' %}?main_category="+this.value,
                 type:"GET",
                 success:function(data){
                     for(var i = 0; i<data.length;++i){
-                        var option = "<option value='"+data[i].id+"'>"+data[i]["n_"+LANGUAGE_CODE]+"/"+data[i]["s_c_n_"+LANGUAGE_CODE]+"</option>";
+                        var option = "<option value='"+data[i].id+"'>"+data[i]["s_c_n_"+LANGUAGE_CODE]+"/"+data[i]["n_"+LANGUAGE_CODE]+"</option>";
                         $("#sec_cat_select").append(option);
                     }
-
+                    $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) { 
+                        var arel = $(a).html();
+                        var brel = $(b).html();
+                        return arel == brel ? 0 : arel < brel ? -1 : 1 
+                    }));
+                    $("#sec_cat_select").prepend('<option value="0">{% trans "Select a Category" %}</option>');
                 }
             });
         }
@@ -246,6 +260,8 @@ $(document).ready(function() {
             $("#sec_cat_select").attr("disabled","disabled");
         }
     });
+
+    $("#main_cat_select").val("{{report.category.id}}");
 
     $("#sec_cat_select").change(function(){
         $.ajax({
@@ -422,7 +438,6 @@ var someCallback = function(exifObject, index) {
                                     {% endfor %}
                                 </select>
                                 <select id="sec_cat_select">
-                                    <option value="0">{% trans "Select a Category" %}</option>
                                 </select>
                             {% else %}
                                 {{report.display_category}}
