@@ -28,7 +28,7 @@ install_requires = [
     'django-stdimage==0.2.2',
     'django-transmeta==0.6.9',
 
-    'simple_history==1.1.3',
+    'django-simple-history==1.3.0',
     'django-piston==0.2.3',
 ]
 

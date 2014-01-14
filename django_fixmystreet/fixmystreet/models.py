@@ -121,6 +121,7 @@ class FMSUser(User):
         related_name='team',
         null=True,
         blank=True,
+        verbose_name=_("Entity"),
         limit_choices_to={"type__in": ('R', 'C')}
     )  # organisation that can be responsible of reports
     ### deprecated to remove replaced by UserOrganisationMembership ###
@@ -228,7 +229,6 @@ class FMSUser(User):
         return self.get_display_name()
 
 
-
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
     """populate username with email"""
@@ -329,7 +329,18 @@ def organisationentity_delete(sender, instance, **kwargs):
 
 class UserOrganisationMembership(UserTrackedModel):
     user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
-    organisation = models.ForeignKey(OrganisationEntity, related_name='memberships', null=True, blank=True)
+    organisation = models.ForeignKey(
+        OrganisationEntity,
+        related_name='memberships',
+        null=True,
+        blank=True,
+        limit_choices_to={"type__in": (
+            OrganisationEntity.SUBCONTRACTOR,
+            OrganisationEntity.APPLICANT,
+            OrganisationEntity.DEPARTMENT,
+            OrganisationEntity.NEIGHBOUR_HOUSE
+        )}
+    )
     contact_user = models.BooleanField(default=False)
 
     class Meta:
@@ -363,7 +374,9 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(query)
 
     def responsible_contractor(self, user):
-        query = Q(contractor__in = user.organisations_list())
+        print user.work_for.all()
+        query = Q(contractor__in=user.work_for.all())
+        # query = Q(contractor__memberships__user=user)
         return self.filter(query)
 
     def entity_territory(self, organisation):

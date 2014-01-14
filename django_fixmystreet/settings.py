@@ -1,5 +1,6 @@
 # Django settings for fixmystreet project.
-import os, sys
+import os
+import sys
 import subprocess
 
 PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,9 +11,6 @@ if "ENV" in os.environ:
     ENVIRONMENT = os.environ['ENV']
 else:
     ENVIRONMENT = "local"
-    sys.stderr.write( "No ENV specified, using local.\n" )
-
-
 
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     DEBUG = True
@@ -43,7 +41,7 @@ else:
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-LOCALE_PATHS = (os.path.join(PROJECT_PATH, 'django_fixmystreet', 'locale') ,)
+LOCALE_PATHS = (os.path.join(PROJECT_PATH, 'django_fixmystreet', 'locale'),)
 
 DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnet.be>"
 
@@ -90,6 +88,10 @@ LANGUAGES = (
     # ('en', gettext('English')),
     ('fr', gettext('French')),
     ('nl', gettext('Dutch')),
+)
+
+TEMPLATE_DIRS = (
+    "/home/jsanchezpando/Projects/django-fixmystreet/env/lib/python2.7/site-packages/django_simple_history-1.3.0-py2.7.egg/simple_history/templates/",
 )
 
 # include request object in template to determine active page
@@ -203,7 +205,7 @@ LOGGING = {
         }
     },
     'handlers': {
-        'console':{
+        'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
@@ -232,28 +234,27 @@ LOGGING = {
     }
 }
 
-
-if ENVIRONMENT=="local" or ENVIRONMENT=="dev" or ENVIRONMENT=="jenkins":
+if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     SITE_ID = 3
     ALLOWED_HOSTS = ("*", )
     EMAIL_HOST = "localhost"
 
-elif ENVIRONMENT=="staging":
+elif ENVIRONMENT == "staging":
     SITE_ID = 2
     ALLOWED_HOSTS = ("fixmystreet.irisnetlab.be", )
 
-elif ENVIRONMENT=="production":
+elif ENVIRONMENT == "production":
     SITE_ID = 1
     ALLOWED_HOSTS = ("fixmystreet.irisnet.be", )
 
 
 try:
-    from local_settings import *
+    from local_settings import * # flake8: noqa
 except ImportError:
     pass
 if not 'DATABASES' in locals():
     DATABASES = {
-       'default': {
+        'default': {
             'ENGINE': os.environ['DATABASE_ENGINE'],
             'NAME': os.environ['DATABASE_NAME'],
             'USER': os.environ['DATABASE_USER'],
@@ -263,7 +264,7 @@ if not 'DATABASES' in locals():
             'OPTIONS': {
                 'autocommit': True
             }
-       }
+        }
     }
 if 'EMAIL_ADMIN' in os.environ:
     EMAIL_ADMIN = os.environ['EMAIL_ADMIN']

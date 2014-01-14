@@ -88,8 +88,12 @@ def table_content(request):
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
     reports = Report.visibles.all()
+    print request.fmsuser.organisation
+    print request.fmsuser.work_for.all()
     if request.fmsuser.organisation:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
+    elif request.fmsuser.contractor or request.fmsuser.applicant:
+        reports = reports.responsible_contractor(request.fmsuser)
     elif not request.fmsuser.is_superuser:
         raise PermissionDenied()
 
