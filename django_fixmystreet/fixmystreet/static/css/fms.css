@@ -1697,7 +1697,12 @@ label strong{
 }
 #result-table tr{
 	cursor: pointer;
-
+}
+#result-table .number_filter {
+	width: 60px;
+}
+#result-table .select_filter {
+	width: 160px;
 }
 #searchContainer.mergeIncident{
 	margin-top:30px;
