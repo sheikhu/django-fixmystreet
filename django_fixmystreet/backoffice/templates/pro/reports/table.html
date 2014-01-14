@@ -184,15 +184,15 @@ function refreshMap() {
         //console.log(data[i]);
         markers.push({
             id: report[0],
-            status: report[18],
+            status: parseInt(report[18]),
             point: {
                 x: report[16],
                 y: report[17]
             }
         });
     }
-    fms.currentMap.addReportCollection(markers);
     console.log(markers[0]);
+    fms.currentMap.addReportCollection(markers);
 
     document.getElementById('map-loading').hidden = true;
 }
