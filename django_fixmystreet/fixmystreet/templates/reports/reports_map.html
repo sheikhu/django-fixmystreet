@@ -49,12 +49,15 @@ $(function(){
         var statusToggleClosed     = document.getElementById('statusToggleClosed');
 
         function applyFilter() {
+            //Show loading icon
+            document.getElementById('map-loading').hidden = false;
+            
             // Remove all popups
             while(fms.currentMap.map.popups.length) {
                  fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
             }
 
-            var value = this.getAttribute('value');
+            /*var value = this.getAttribute('value');
 
             if(this.checked){
                 fms.statusFilter.push(value);
@@ -64,20 +67,25 @@ $(function(){
                 if(i != -1) {
                     fms.statusFilter.splice(i, 1);
                 }
-            }
+            }*/
 
             // Apply filter
-            fms.filterMapWithStatus();
+            fms.filterMapWithStatus(function () {
+                var mapLoading = document.getElementById('map-loading');
+                //mapLoading.parentNode.removeChild(mapLoading);
+                document.getElementById('map-loading').hidden = true;
+            });
         }
-        statusToggleCreated.addEventListener('change', applyFilter);
-        statusToggleInProgress.addEventListener('change', applyFilter);
-        statusToggleClosed.addEventListener('change', applyFilter);
+        statusToggleCreated.addEventListener('change', function(){fms.currentMap.toogleCreated(); applyFilter()});
+        statusToggleInProgress.addEventListener('change', function(){fms.currentMap.toogleInProgress(); applyFilter()});
+        statusToggleClosed.addEventListener('change', function(){fms.currentMap.toogleClosed(); applyFilter()});
 
         // Init map with all reports
         fms.statusFilter = ['created', 'in_progress', 'closed'];
         fms.filterMapWithStatus(function () {
             var mapLoading = document.getElementById('map-loading');
-            mapLoading.parentNode.removeChild(mapLoading);
+            //mapLoading.parentNode.removeChild(mapLoading);
+            document.getElementById('map-loading').hidden = true;
         });
     }
 });
