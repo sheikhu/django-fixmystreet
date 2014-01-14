@@ -110,6 +110,12 @@ function generateTableContent() {
         data: "",
         dataType: "html",
         success: function(data) {
+            //Retrieve the last used preferences
+            var sortPreferences = fms.restoreTablePreferences();
+            //Default sort by ID desc (first column) when not yet available
+            var sortPreferenceIndex = (sortPreferences !== null)?sortPreferences.idx:0;
+            var sortPreferenceValue = (sortPreferences !== null)?sortPreferences.sortType:'desc';
+
             document.getElementById('table-container').innerHTML = data;
 
             // Init table
@@ -117,6 +123,10 @@ function generateTableContent() {
                 aoColumns: columns,
                 // sScrollX: "100%",
                 // bScrollCollapse: true
+                "aaSorting": [[ sortPreferenceIndex, sortPreferenceValue ]],
+                "fnDrawCallback": function() {
+                    fms.storeTablePreferences(this.fnSettings().aaSorting);
+                }
             });
             // {
             //     "bStateSave": true
