@@ -54,7 +54,7 @@ $(function(){
     {% endblock %}
 {% block map %}
     <div class="row">
-        {% include "_map_search.html" with instructions=True %}
+        {% include "_page_header.html" with map=True instructions=True search_address=True %}
     </div>
 {% endblock %}
 

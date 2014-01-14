@@ -25,26 +25,7 @@
 
 {% block map %}
 <div class="row">
-    <article class="span12">
-        <div class="container lead-container no-map">
-            <div class="instructions row-fluid">
-                <ol class="steps span8">
-                    <li class="stepOne on">{% trans "Localisation" %}</li>
-                    <li class="stepTwo off">{% trans "Description" %}</li>
-                    <li class="stepThree off">{% trans "Coordonnees" %}</li>
-                </ol>
-                <div>
-                    {% if not BACKOFFICE %}
-                        <strong id="danger-risk">
-                            <a href="#">
-                                <i class="icon-danger"></i>{% trans "A big security risk to signal?" %}
-                            </a>
-                        </strong>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </article>
+    {% include "_page_header.html" with instructions=True %}
 </div>
 {% endblock %}
 

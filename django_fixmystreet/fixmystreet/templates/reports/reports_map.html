@@ -51,7 +51,7 @@ $(function(){
         function applyFilter() {
             //Show loading icon
             document.getElementById('map-loading').hidden = false;
-            
+
             // Remove all popups
             while(fms.currentMap.map.popups.length) {
                  fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
@@ -113,7 +113,7 @@ function cleanMap() {
 
 {% block map %}
 <div class="row map-big">
-    {% include "_map_search.html" with satus_filter=True search_report=True loader=True %}
+    {% include "_page_header.html" with map=True satus_filter=True search_report=True search_address=True loader=True %}
 </div>
 {% endblock %}
 

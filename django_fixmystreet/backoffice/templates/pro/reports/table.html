@@ -175,25 +175,24 @@ function refreshMap() {
     }
 
     // Get all row according to filter
-    var data = table._('tr', {"filter":"applied"});
+    var data = table._('tr', {"filter": "applied"});
 
     // For each row, build a report marker
     var markers = [];
-    for (var i=0, dataLength=data.length; i<dataLength; i++) {
+    for (var i in data) {
+        report = data[i];
         //console.log(data[i]);
-
-        var report   = {};
-
-        report.point = {};
-        report.point["x"] = data[i][14];
-        report.point["y"] = data[i][15];
-
-        report.id = data[i][0];
-        report.status = data[i][16];
-
-        markers.push(fms.currentMap.addReport(report, i, false));
+        markers.push({
+            id: report[0],
+            status: report[18],
+            point: {
+                x: report[16],
+                y: report[17]
+            }
+        });
     }
-    fms.currentMap.markersLayer.addFeatures(markers);
+    fms.currentMap.addReportCollection(markers);
+    console.log(markers[0]);
 
     document.getElementById('map-loading').hidden = true;
 }
@@ -205,6 +204,11 @@ function refreshMap() {
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
         urbisUrl:    WMS_SERVICE_URL
     });
+    fms.currentMap.map.addControl(
+        new OpenLayers.Control.LayerSwitcher({
+            'div':OpenLayers.Util.getElement('layerswitcher')
+        })
+    );
 })(document);
 
 </script>
@@ -221,7 +225,7 @@ function refreshMap() {
 </div>
 
 <div class="row">
-    {% include "_map_search.html" with search_report=True classes="map-big" loader=True %}
+    {% include "_page_header.html" with map=True search_report=True search_address=True classes="map-big" loader=True %}
 </div>
 {% endblock %}
 
