@@ -598,11 +598,13 @@ var someCallback = function(exifObject, index) {
                                     <a tabindex="-1" href="#modalPriority" data-toggle="modal">Priorité</a>
                                 </li>
 
+                                <li>
                                 {% if not report.pending %}
-                                    <li>
-                                        <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}" data-toggle="modal">{% trans 'Pending' %}</a>
-                                    </li>
+                                    <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}" data-toggle="modal">{% trans 'Pending' %}</a>
+                                {% else %}
+                                    <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}" data-toggle="modal">{% trans 'Not Pending' %}</a>
                                 {% endif %}
+                                </li>
 
                                 {% if not fms_user.contractor %}
                                     <li>
