@@ -21,6 +21,28 @@ function cloneObj (obj) {
     }
 }
 
+/**
+ * Method used to store datatable sort preferences
+ */
+fms.storeTablePreferences = function(argElement) {
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem("fms-table-column-sort", JSON.stringify({'idx':argElement[0][0], 'sortType':argElement[0][1]/*asc or desc*/}));
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Method used to get datatable sort preferences
+ */
+fms.restoreTablePreferences = function() {
+    if (typeof localStorage !== 'undefined') {
+        return JSON.parse(localStorage.getItem("fms-table-column-sort"));
+    } else {
+        return null;
+    }
+}
+
 fms.filterMapWithStatus = function(callback){
     if (fms.cachedElements === false) {
         $.ajax({
