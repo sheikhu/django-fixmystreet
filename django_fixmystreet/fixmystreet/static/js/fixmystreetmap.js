@@ -24,7 +24,7 @@ function cloneObj (obj) {
 fms.filterMapWithStatus = function(callback){ 
     if (fms.cachedElements === false) {  
         $.ajax({
-            url:"/ajax/map/filter/",
+            url:"/"+LANGUAGE_CODE+"/ajax/map/filter/",
             type:'GET',
             datatype:"json",
             success: function(data){
