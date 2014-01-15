@@ -181,7 +181,7 @@ try:
         'django_jenkins.tasks.with_coverage',
         'django_jenkins.tasks.django_tests',
         # 'django_jenkins.nose_runner.CINoseTestSuiteRunner',
-        'django_jenkins.tasks.run_pyflakes',
+        'django_jenkins.tasks.run_flake8',
         #'django_jenkins.tasks.run_graphmodels',
     )
 except ImportError:

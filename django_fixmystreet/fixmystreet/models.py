@@ -741,7 +741,7 @@ class Report(UserTrackedModel):
             self.subscriptions.add(ReportSubscription(subscriber=user))
 
     def trigger_updates_added(self, user=None, files=None, comment=None):
-        if files or comment:
+        if (files or comment) and not self.responsible_department.memberships.filter(user=user).exists():
             ReportNotification(
                 content_template='notify-updates',
                 recipient_mail=self.responsible_department.email,
@@ -1343,12 +1343,13 @@ def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
-
         ReportEventLog(
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
         ).save()
-        for subscription in report.subscriptions.all().exclude(subscriber__memberships__organisation=report.responsible_department):
+
+        action_user = instance.updated_by
+        for subscription in report.subscriptions.all().exclude(subscriber=action_user):
             ReportNotification(
                 content_template='informations_published',
                 recipient=subscription.subscriber,
@@ -1358,10 +1359,10 @@ def report_attachment_notify(sender, instance, **kwargs):
 
     #if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
-        for recipient in report.contractor.workers.all():
+        for membership in report.contractor.memberships.all():
             ReportNotification(
                 content_template='informations_published',
-                recipient=recipient,
+                recipient=membership.user,
                 related=report,
                 reply_to=report.responsible_department.email,
             ).save()

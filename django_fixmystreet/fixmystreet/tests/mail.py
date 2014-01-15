@@ -378,7 +378,7 @@ class MailTest(TestCase):
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertTrue(self.group.email in mail.outbox[0].to or self.group.email in mail.outbox[1].to)
+        self.assertIn(self.group.email, mail.outbox[0].to + mail.outbox[1].to)
 
     def testReportResolvedAsProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -386,6 +386,8 @@ class MailTest(TestCase):
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
         self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        self.assertIn(self.sample_post['citizen-email'], mail.outbox[0].to + mail.outbox[1].to)
+        self.assertIn(self.group.email, mail.outbox[0].to + mail.outbox[1].to)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
@@ -393,13 +395,14 @@ class MailTest(TestCase):
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
+        self.assertIn(self.sample_post['citizen-email'], mail.outbox[2].to)
 
         response = self.client.post(reverse('report_fix_pro', args=[report_id]), {'is_fixed': 'True'}, follow=True)
         self.assertEquals(response.status_code, 200)
         #4 mails send 2 for creation, 1 for acceptance and 1 for resolving the issue. The last one should go to the responsible
         self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
         self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.manager.email, mail.outbox[3].to)
+        self.assertIn(self.group.email, mail.outbox[3].to)
 
     def testAssignToOtherMemberOfSameEntityMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -415,12 +418,12 @@ class MailTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
 
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=department_' + str(self.group2.id), {}, follow=True)
 
         self.assertEquals(response.status_code, 200)
         #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other person
         self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.manager2.email in mail.outbox[3].to)
+        self.assertTrue(self.group2.email in mail.outbox[3].to)
 
     def testAssignToMemberOfOtherEntityMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -585,6 +588,8 @@ class MailTest(TestCase):
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
         self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        self.assertIn(self.group.email, mail.outbox[0].to + mail.outbox[1].to)
+        self.assertIn(self.sample_post['citizen-email'], mail.outbox[0].to + mail.outbox[1].to)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
@@ -592,6 +597,7 @@ class MailTest(TestCase):
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 3)
+        self.assertIn(self.sample_post['citizen-email'], mail.outbox[2].to)
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'files-TOTAL_FORMS': 0,
@@ -599,14 +605,16 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
+        self.assertEquals(len(mail.outbox), 4)
+        self.assertIn(self.group.email, mail.outbox[3].to)
         report = Report.objects.get(id=report_id)
         #Now make the comment public
         response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
         self.assertEqual(response.status_code, 200)
-        #Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers to inform about publish (citizen), Manager who did the update does not get an email
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.citizen.email in mail.outbox[3].to)
+        # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
+        # 1 to inform about publish (citizen), Manager who did the update does not get an email
+        self.assertEquals(len(mail.outbox), 5)
+        self.assertTrue(self.citizen.email in mail.outbox[4].to)
 
     def testSubscriptionForProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)

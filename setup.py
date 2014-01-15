@@ -38,7 +38,7 @@ debug_require = [
     # 'django-pdb'
     'django-jenkins==0.13.0',
     'coverage==3.6',
-    'pyflakes',
+    'flake8',
     'pylint==0.26.0'
 ]
 
