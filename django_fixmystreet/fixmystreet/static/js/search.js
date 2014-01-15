@@ -272,6 +272,10 @@ $(function(){
         getAddressFromPoint(LANGUAGE_CODE, point.x, point.y);
     });
 
+    /*$searchMunicipality.change(function(event){
+        fms.currentMap.centerOnMunicipality($(this).val());
+    });*/
+
     $searchTicketForm.submit(function(event){
         event.preventDefault();
         var searchValue = $('#input-ticket-search').val();
@@ -430,9 +434,10 @@ $(function(){
     function municipalityChange() {
         enableSearch();
 
-        if ( !(streetKeywords.value) && (postalCode.value) ) {
+        fms.currentMap.centerOnMunicipality(postalCode.value);
+        /*if ( !(streetKeywords.value) && (postalCode.value) ) {
             alert('middle of municipality : ' + postalCode.value);
-        }
+        }*/
     }
     // Enable search button if one of fields contain a value
     streetKeywords.addEventListener('keyup', enableSearch);
