@@ -64,32 +64,24 @@
 {% endblock %}
 
 {% block map %}
-<div class="container lead-container">
-    <div class="row">
-        <div class="span12">
-            <article id="" class="verify_list">
-                <div id="searchContainer">
-                    <div class="instructions">
-                        <div class="row">
-                            <div class="span8">
-                                <ol class="steps">
-                                    <li class="stepOne off">{% trans "Localisation" %}</li>
-                                    <li id="stepDescription" class="stepTwo on">{% trans "Description" %}</li>
+<div class="row">
+    <article class="span12">
+        <div class="container lead-container no-map">
+            <div class="instructions row-fluid">
+                <ol class="steps span8">
+                    <li class="stepOne off">{% trans "Localisation" %}</li>
+                    <li id="stepDescription" class="stepTwo on">{% trans "Description" %}</li>
 
-                                    {% if not BACKOFFICE %}
-                                        <li id="stepCoordonnees" class="stepThree off">{% trans "Coordonnees" %}</li>
-                                    {% endif %}
-                                </ol>
-                            </div>
-                            <div>
-                                <span id="address-text" class="pull-right"></span>
-                            </div>
-                        </div>
-                    </div>
+                    {% if not BACKOFFICE %}
+                        <li id="stepCoordonnees" class="stepThree off">{% trans "Coordonnees" %}</li>
+                    {% endif %}
+                </ol>
+                <div>
+                    <span id="address-text" class="pull-right"></span>
                 </div>
-            </article>
+            </div>
         </div>
-    </div>
+    </article>
 </div>
 {% endblock %}
 

@@ -184,20 +184,20 @@ def show(request,slug, report_id):
         comment_form = ReportCommentForm(prefix='comment')
 
     organisation = request.fmsuser.organisation
-    managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True)
-    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True)
-    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True)
+    managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True).order_by('name_'+ get_language())
+    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True).order_by('name_'+ get_language())
+    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True).order_by('name_'+ get_language())
     departments = []
     contractors = []
     
     if organisation:
         entities.exclude(pk=organisation.id)
-        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT)    
-        contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR)
+        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT).order_by('name_'+ get_language())    
+        contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_'+ get_language())
     else:
-        contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR)
+        contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_'+ get_language())
 
-    applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT)
+    applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT).order_by('name_'+ get_language())
 
     return render_to_response("pro/reports/show.html",
             {
@@ -206,12 +206,12 @@ def show(request,slug, report_id):
                 "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
                 "comment_form": comment_form,
                 "file_formset":file_formset,
-                "region_institution":region_institution.order_by('name_'+ get_language()),
+                "region_institution":region_institution,
                 "managers":managers,
-                "departments":departments.order_by('name_'+ get_language()),
-                "contractors":contractors.order_by('name_'+ get_language()),
-                "applicants":applicants.order_by('name_'+ get_language()),
-                "entities":entities.order_by('name_'+ get_language()),
+                "departments":departments,
+                "contractors":contractors,
+                "applicants":applicants,
+                "entities":entities,
                 "refuse_form": RefuseForm(instance=report),
                 "mark_as_done_form":MarkAsDoneForm(),
                 'activity_list' : report.activities.all(),

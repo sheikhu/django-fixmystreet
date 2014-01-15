@@ -12,6 +12,7 @@
             <th>{% trans "All" context "Status" %}</th>
             <th>{% trans "All" context "Responsible entity" %}</th>
             <th>{% trans "All" context "Responsible department" %}</th>
+            <th>{% trans "All" context "Assigned contractor" %}</th>
             <th>{% trans "All" context "Planning" %}</th>
             <th>{% trans "All" context "Planning date" %}</th>
             <th>{% trans "All" context "Priority" %}</th>
@@ -32,6 +33,7 @@
             <th>{% trans "Status" %}</th>
             <th>{% trans "Responsible entity" %}</th>
             <th>{% trans "Responsible department" %}</th>
+            <th>{% trans "Assigned contractor" %}</th>
             <th>{% trans "Planning" %}</th>
             <th>{% trans "Planning date" %}</th>
             <th>{% trans "Priority" %}</th>
@@ -55,6 +57,7 @@
                 <td>{{ report.get_status_display }}</td>
                 <td>{{ report.responsible_entity.name }}</td>
                 <td>{{ report.responsible_department.name }}</td>
+                <td>{{ report.contractor.name }}</td>
                 <td>{{ report.planned|yesno:_("planned,not planned") }}</td>
                 <td>{{ report.date_planned|date:"d/m/Y" }}</td>
                 <td>{{ report.get_priority }}</td>

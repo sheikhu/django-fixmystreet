@@ -81,6 +81,7 @@ var columns = [
     ]},
     {type: "select"}, // resp entity
     {type: "select"}, // resp manager
+    {type: "select"}, // contractor
     {type: "select", values: [
         '{{ True|yesno:_("planned,not planned") }}',
         '{{ False|yesno:_("planned,not planned") }}'
@@ -109,10 +110,24 @@ function generateTableContent() {
         data: "",
         dataType: "html",
         success: function(data) {
+            //Retrieve the last used preferences
+            var sortPreferences = fms.restoreTablePreferences();
+            //Default sort by ID desc (first column) when not yet available
+            var sortPreferenceIndex = (sortPreferences !== null)?sortPreferences.idx:0;
+            var sortPreferenceValue = (sortPreferences !== null)?sortPreferences.sortType:'desc';
+
             document.getElementById('table-container').innerHTML = data;
 
             // Init table
-            table = $('#result-table').dataTable({aoColumns: columns});
+            table = $('#result-table').dataTable({
+                aoColumns: columns,
+                // sScrollX: "100%",
+                // bScrollCollapse: true
+                "aaSorting": [[ sortPreferenceIndex, sortPreferenceValue ]],
+                "fnDrawCallback": function() {
+                    fms.storeTablePreferences(this.fnSettings().aaSorting);
+                }
+            });
             // {
             //     "bStateSave": true
             // });
@@ -170,25 +185,25 @@ function refreshMap() {
     }
 
     // Get all row according to filter
-    var data = table._('tr', {"filter":"applied"});
+    var data = table._('tr', {"filter": "applied"});
 
     // For each row, build a report marker
     var markers = [];
-    for (var i=0, dataLength=data.length; i<dataLength; i++) {
+    for (var i in data) {
+        report = data[i];
         //console.log(data[i]);
-
-        var report   = {};
-
-        report.point = {};
-        report.point["x"] = data[i][14];
-        report.point["y"] = data[i][15];
-
-        report.id = data[i][0];
-        report.status = data[i][16];
-
-        markers.push(fms.currentMap.addReport(report, i, false));
+        markers.push({
+            id: report[0],
+            status: parseInt(report[18]),
+            point: {
+                x: report[16],
+                y: report[17]
+            }
+        });
     }
-    fms.currentMap.markersLayer.addFeatures(markers);
+
+
+    fms.currentMap.addReportCollection(markers);
 
     document.getElementById('map-loading').hidden = true;
 }
@@ -200,6 +215,11 @@ function refreshMap() {
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
         urbisUrl:    WMS_SERVICE_URL
     });
+    fms.currentMap.map.addControl(
+        new OpenLayers.Control.LayerSwitcher({
+            'div':OpenLayers.Util.getElement('layerswitcher')
+        })
+    );
 })(document);
 
 </script>
@@ -216,12 +236,13 @@ function refreshMap() {
 </div>
 
 <div class="row">
-    {% include "_map_search.html" with search_report=True classes="map-big" loader=True %}
+
+    {% include "_page_header.html" with map=True search_report=True satus_filter=True search_address=True classes="map-big" loader=True %}
 </div>
 {% endblock %}
 
 {% block content %}
-<div id="modalTable" class="modal hide fade" style="width: 95%; left: 20%;">
+<div id="modalTable" class="modal hide fade" style="width: 98%; left: 10px; margin-left: 0px">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Table</h3>
@@ -243,6 +264,7 @@ function refreshMap() {
                 <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>

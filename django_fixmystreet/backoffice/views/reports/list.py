@@ -78,22 +78,28 @@ def filter_reports(user, criteria):
     reports = reports.distance(pnt).order_by('-created')
     return (reports, pnt)
 
+
 def all_reports(request):
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
 
-    return render_to_response("pro/reports/table.html", {'zipcodes': zipcodes}, context_instance=RequestContext(request))
+    return render_to_response("pro/reports/table.html", {
+        'zipcodes': zipcodes
+    }, context_instance=RequestContext(request))
+
 
 def table_content(request):
     # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
     # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
 
     reports = Report.visibles.all()
-    if request.fmsuser.organisation:
+    if request.fmsuser.agent or request.fmsuser.manager or request.fmsuser.leader:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
+    elif request.fmsuser.contractor or request.fmsuser.applicant:
+        reports = reports.responsible_contractor(request.fmsuser)
     elif not request.fmsuser.is_superuser:
         raise PermissionDenied()
 
-    reports, pnt = filter_reports(request.fmsuser, request.GET)
+    # reports, pnt = filter_reports(request.fmsuser, request.GET)
 
     reports = reports.extra(
         select = OrderedDict([
