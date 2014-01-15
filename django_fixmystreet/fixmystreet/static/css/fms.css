@@ -367,6 +367,19 @@ footer .cirb-cibg img{
 	background: #BCD3F2 url('../images/popup_header_arrow.png') 5px 5px no-repeat;
 	padding-left: 24px !important;
 }
+#popup .popupHeadingNonParticipating{
+	font-size:12px;
+	font-weight:bold;
+	padding:5px;
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+}
+.popupHeadingNonParticipating{
+	background: #F2BCC7 url('../images/popup_header_arrow.png') 5px 5px no-repeat;
+	padding-left: 24px !important;
+}
+
 .popupMoveMe.popupContent{
 	height:50px;
 }
