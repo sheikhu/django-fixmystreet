@@ -696,7 +696,7 @@ class Report(UserTrackedModel):
             if reportImages.exists():
                 if reportImages[0].is_public():
                     return reportImages[0].image.thumbnail.url()
-                elif (reportImages[0].is_private() and user.is_authenticated()) or (reportImages[0].is_confidential() and user.is_confidential_visible()):
+                elif (  (reportImages[0].is_private() and (user and user.is_authenticated())) or (reportImages[0].is_confidential() and (user and user.is_confidential_visible()))):
                     return reportImages[0].image.thumbnail.url()
 
     def is_markable_as_solved(self):
