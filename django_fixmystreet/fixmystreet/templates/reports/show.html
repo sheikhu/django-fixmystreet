@@ -89,19 +89,17 @@ function markAsDone(){
             }
         }
 
-    window.onload = function(event) {
-        document.querySelector("#btn-pulldownmap a").addEventListener("click", function() {
-            var mapEl = document.getElementById('map');
-            mapEl.classList.remove('view_incident');
-            mapEl.classList.add('map-big');
-            this.parentNode.removeChild(this);
-
-            // Hack to resize map
-            //setTimeout(function() {
-            //    fms.currentMap.map.updateSize();
-            //}, 1000);
+    $(function(event) {
+        $("#btn-toggle-map a").click(function(evt) {
+            evt.preventDefault();
+            var mapEl = $('#map');
+            if (mapEl.hasClass('map-big')) {
+                mapEl.removeClass('map-big');
+            } else {
+                mapEl.addClass('map-big');
+            }
         });
-    };
+    });
 
 </script>
 
