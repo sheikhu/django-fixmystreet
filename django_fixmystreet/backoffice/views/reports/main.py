@@ -9,10 +9,17 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
-from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, ReportCategory
+from django_fixmystreet.fixmystreet.models import (
+    ZipCode, Report, ReportSubscription, ReportFile,
+    OrganisationEntity, FMSUser
+)
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
-from django_fixmystreet.backoffice.forms import  RefuseForm
+from django_fixmystreet.fixmystreet.forms import (
+    ProReportForm, ReportFileForm, ReportCommentForm,
+    MarkAsDoneForm, ReportMainCategoryClass
+)
+from django_fixmystreet.backoffice.forms import RefuseForm
+
 
 def new(request):
     pnt = dict_to_point(request.REQUEST)
@@ -38,8 +45,8 @@ def new(request):
                 report.save()
 
                 if request.POST["comment-text"]:
-                    comment            = comment_form.save(commit=False)
-                    comment.report     = report
+                    comment = comment_form.save(commit=False)
+                    comment.report = report
                     comment.created_by = user
                     comment.save()
 
@@ -65,22 +72,20 @@ def new(request):
 
     reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).unfinished().order_by('distance')
     reports = Report.visibles.all()
-    return render_to_response("pro/reports/new.html",
-            {
-                "report":report,
-                "all_zips":ZipCode.objects.all(),
-                "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all(),
-                "report_form": report_form,
-                "pnt":pnt,
-                "reports":reports,
-                "file_formset":file_formset,
-                "comment_form":comment_form,
-                "reports_nearby":reports_nearby
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("pro/reports/new.html", {
+        "report": report,
+        "all_zips": ZipCode.objects.all(),
+        "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all(),
+        "report_form": report_form,
+        "pnt": pnt,
+        "reports": reports,
+        "file_formset": file_formset,
+        "comment_form": comment_form,
+        "reports_nearby": reports_nearby
+    }, context_instance=RequestContext(request))
 
 
-def report_prepare_pro(request, location = None, error_msg = None):
+def report_prepare_pro(request, location=None, error_msg=None):
     '''Used to redirect the user to welcome without processing home view controller method. This controller method contain a few redirection logic'''
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
     statsObject = ReportCountStatsPro()
@@ -95,25 +100,24 @@ def report_prepare_pro(request, location = None, error_msg = None):
 
         if str(request.GET["stat_status"]) == 'unpublished':
             popup_reports = popup_reports.created()
-        elif str(request.GET["stat_status"])== 'in_progress':
+        elif str(request.GET["stat_status"]) == 'in_progress':
             popup_reports = popup_reports.in_progress()
         else:
             popup_reports = popup_reports.closed()
 
-    return render_to_response("pro/home.html",
-            {
-                "report_counts": ReportCountQuery('1 year'),
-                'search_error': error_msg,
-                'zipcodes': zipcodes,
-                'all_zipcodes': ZipCode.objects.all(),
-                'location':location,
-                'reports_created': Report.visibles.all().created().order_by('-modified')[0:4],
-                'reports_in_progress': Report.visibles.all().in_progress().order_by('-modified')[0:4],
-                'reports_closed':Report.visibles.all().closed().order_by('-modified')[0:4],
-                'stats':stats_result,
-                'popup_reports':popup_reports,
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("pro/home.html", {
+        "report_counts": ReportCountQuery('1 year'),
+        'search_error': error_msg,
+        'zipcodes': zipcodes,
+        'all_zipcodes': ZipCode.objects.all(),
+        'location': location,
+        'reports_created': Report.visibles.all().created().order_by('-modified')[0:4],
+        'reports_in_progress': Report.visibles.all().in_progress().order_by('-modified')[0:4],
+        'reports_closed': Report.visibles.all().closed().order_by('-modified')[0:4],
+        'stats': stats_result,
+        'popup_reports': popup_reports,
+    }, context_instance=RequestContext(request))
+
 
 def search_ticket_pro(request):
     report_id = request.REQUEST.get('report_id')
@@ -124,23 +128,23 @@ def search_ticket_pro(request):
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home_pro'))
 
+
 def subscription(request):
     """
     Method used to load all my subscription reports
     """
-    subscriptions = ReportSubscription.objects.filter(subscriber_id = request.user.id)
+    subscriptions = ReportSubscription.objects.filter(subscriber_id=request.user.id)
     reports = [None]*len(subscriptions)
     i = 0
     for subscription in subscriptions:
         reports[i] = Report.objects.get(pk=subscription.report_id)
-        i= i+1
-    return render_to_response("pro/reports/subscriptions.html",
-            {
-              "reports":reports
-            },
-            context_instance=RequestContext(request))
+        i = i + 1
+    return render_to_response("pro/reports/subscriptions.html", {
+        "reports": reports
+    }, context_instance=RequestContext(request))
 
-def delete(request,slug, report_id):
+
+def delete(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id, responsible_manager=request.fmsuser)
     report.status = Report.DELETED
     report.save()
@@ -148,8 +152,7 @@ def delete(request,slug, report_id):
     return HttpResponseRedirect(reverse('home_pro'))
 
 
-
-def show(request,slug, report_id):
+def show(request, slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
     report = get_object_or_404(Report, id=report_id)
@@ -166,7 +169,7 @@ def show(request,slug, report_id):
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
                     comment = comment_form.save(commit=False)
                     comment.created_by = user
-                    comment.report     = report
+                    comment.report = report
                     comment.save()
 
             files = file_formset.save()
@@ -185,54 +188,52 @@ def show(request,slug, report_id):
         comment_form = ReportCommentForm(prefix='comment')
 
     organisation = request.fmsuser.organisation
-    managers = FMSUser.objects.filter(organisation = organisation).filter(manager=True).order_by('name_'+ get_language())
-    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True).order_by('name_'+ get_language())
-    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True).order_by('name_'+ get_language())
+    managers = FMSUser.objects.filter(organisation=organisation).filter(manager=True).order_by('name_' + get_language())
+    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True).order_by('name_' + get_language())
+    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True).order_by('name_' + get_language())
     departments = []
     contractors = []
 
     if organisation:
         entities.exclude(pk=organisation.id)
-        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT).order_by('name_'+ get_language())
-        contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_'+ get_language())
+        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT).order_by('name_' + get_language())
+        contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_' + get_language())
     else:
-        contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_'+ get_language())
+        contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_' + get_language())
 
-    applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT).order_by('name_'+ get_language())
+    applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT).order_by('name_' + get_language())
 
-    return render_to_response("pro/reports/show.html",
-            {
-                "fms_user": request.fmsuser,
-                "report": report,
-                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "comment_form": comment_form,
-                "file_formset":file_formset,
-                "region_institution":region_institution,
-                "managers":managers,
-                "departments":departments,
-                "contractors":contractors,
-                "applicants":applicants,
-                "entities":entities,
-                "refuse_form": RefuseForm(instance=report),
-                "mark_as_done_form":MarkAsDoneForm(),
-                'activity_list' : report.activities.all(),
-                'attachment_edit': report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list() and (report.is_created() or report.is_in_progress()),
-                "category_list":ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()),
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("pro/reports/show.html", {
+        "fms_user": request.fmsuser,
+        "report": report,
+        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+        "comment_form": comment_form,
+        "file_formset": file_formset,
+        "region_institution": region_institution,
+        "managers": managers,
+        "departments": departments,
+        "contractors": contractors,
+        "applicants": applicants,
+        "entities": entities,
+        "refuse_form": RefuseForm(instance=report),
+        "mark_as_done_form": MarkAsDoneForm(),
+        'activity_list': report.activities.all(),
+        'attachment_edit': report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list() and (report.is_created() or report.is_in_progress()),
+        "category_list": ReportMainCategoryClass.objects.all().order_by('name_' + get_language()),
+    }, context_instance=RequestContext(request))
+
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
     reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance')[0:6]
 
     if reports_nearby:
-        return render_to_response("reports/verify.html",
-            {
-                "reports_nearby":reports_nearby
-            },
-            context_instance=RequestContext(request))
+        return render_to_response("reports/verify.html", {
+            "reports_nearby": reports_nearby
+        }, context_instance=RequestContext(request))
 
     return new(request)
+
 
 def document(request, slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
@@ -250,8 +251,8 @@ def document(request, slug, report_id):
             user = FMSUser.objects.get(pk=request.user.id)
 
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                comment            = comment_form.save(commit=False)
-                comment.report     = report
+                comment = comment_form.save(commit=False)
+                comment.report = report
                 comment.created_by = user
                 comment.save()
 
@@ -269,14 +270,13 @@ def document(request, slug, report_id):
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')
 
-    return render_to_response("reports/document.html",
-            {
-                "report": report,
-                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "file_formset": file_formset,
-                "comment_form": comment_form,
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("reports/document.html", {
+        "report": report,
+        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+        "file_formset": file_formset,
+        "comment_form": comment_form,
+    }, context_instance=RequestContext(request))
+
 
 def merge(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -288,10 +288,8 @@ def merge(request, slug, report_id):
         reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
     else:
         reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
-    return render_to_response("pro/reports/merge.html",
-            {
-                "fms_user": request.fmsuser,
-                "report": report,
-                "reports_nearby":reports_nearby,
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("pro/reports/merge.html", {
+        "fms_user": request.fmsuser,
+        "report": report,
+        "reports_nearby":reports_nearby,
+    }, context_instance=RequestContext(request))
