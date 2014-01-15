@@ -369,6 +369,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         //Prefixed by M to avoid big array creation (as idnex integer based)
         this.map.panTo(new OpenLayers.LonLat(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y));
         this.map.zoomTo(6);
+        //Show draggable Marker.
+        this.addDraggableMarker(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y);
     };
 
 
