@@ -138,7 +138,7 @@ function markAsDone(){
 {% block map %}
     <div class="row">
         <div class="span12">
-            <article id="map" class="view_incident container">
+            <article class="view_incident container">
                 <div id="incident-head" class="">
                     <div class="row-fluid">
                         <div class="span5">
@@ -182,9 +182,16 @@ function markAsDone(){
                             </a>
                     </div>
                 </div>
-                <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
-                <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+                <div  id="map">
+                    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+                    <div class="map-button-section">
+                        <div id="btn-toggle-map">
+                            <a href="#" class="pulldown-map"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a>
+                            <a href="#" class="pullup-map"><i class="icon-pullupmap"></i>{% trans "Reduce map" %}</a>
+                        </div>
+                        <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+                    </div>
+                </div>
             </article>
         </div>
     </div>
