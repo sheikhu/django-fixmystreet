@@ -143,7 +143,7 @@ function markAsDone(){
             <article id="map" class="view_incident container">
                 <div id="incident-head" class="">
                     <div class="row-fluid">
-                        <div class="span3">
+                        <div class="span5">
                             <div class="ticket_infos">
                                 <span class="ticket_number">
                                     <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
@@ -157,9 +157,9 @@ function markAsDone(){
                                 </span>
                             </div>
                         </div>
-                        <div class="span6">
+                        <!--div class="span6">
                             timeline
-                        </div>
+                        </div-->
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
                                     <a href="#divMarkAsDone" role="button" class="btn lk-isresolved span1" data-toggle="modal">

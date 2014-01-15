@@ -5,7 +5,7 @@ header{
 	margin-top: 10px;
 }
 .navbar .nav, .navbar .btn-navbar{
-	margin: 53px 0 0 0;
+	margin: 42px 0 0 0;
 	clear: right;
 }
 nav ul{
@@ -1139,8 +1139,11 @@ form#report-form{
 	padding: 10px;
 	background:#607C9D;
 }
+.pro .lk-isresolved{
+	margin-left:30px !important;
+}
 .lk-download-pdf, .lk-subscribe, .lk-isresolved{
-	width:80px;
+	width:80px !important;
 	height:80px;
 	display:inline-block;
 	-webkit-border-radius: 4px;
@@ -1155,6 +1158,7 @@ form#report-form{
 	letter-spacing: -0.3px;
 	color:#607C9D;
 	padding:0;
+	float:right !important;
 	border:0;
 }
 .lk-subscribe .badge{
@@ -1229,8 +1233,11 @@ form#report-form{
 }
 #incident-head .ticket_number{
 	color:#D2E2F6;
-	font-size: 1.1em;
+	font-size: 1.2em;
 }
+/*#incident-head .ticket_number .number_only{
+	font-weight:bold;
+}*/
 #incident-head .ticket_address{
 	color:#FFF;
 	font-weight:bold;
@@ -1727,7 +1734,8 @@ label strong{
 	padding:0;
 }
 .one_incident.master{
-	/*background:#606C9D;*/
+	background:#607C9D;
+	margin-bottom:30px;
 }
 .one_incident.master .distance{
 	background: #BCD3F2;
@@ -1769,8 +1777,14 @@ label strong{
 	margin: 12px auto;
 }
 #search-form.mergeIncident{
-	margin: 22px 0 0 0 !important;
+	margin: 0 !important;
 	float: right;
+}
+#search-form.mergeIncident form{
+	margin:0;
+}
+.switch_map_list{
+	margin-bottom:30px;
 }
 .mergeIncident #widget-search-ticket-button {
 	background: transparent url('../images/btn_search_tickets.png') top left no-repeat;

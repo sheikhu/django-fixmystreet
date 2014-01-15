@@ -144,7 +144,7 @@
                                 <!-- Distance -->
                                 <p class="distance">{% trans "Report to merge" %}</p>
                                 <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
-                                <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+                                <span class="ticket_number">{% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span></span><br />
                                 <span class="ticket_address">
                                     {{ report.address }}, {{ report.address_number }}<br />
                                     {{ report.postalcode }} {{ report.territorial_entity.name }}
@@ -180,7 +180,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
+    <div class="row switch_map_list">
         <div class="span7">
             <h2 class="verify_title">Il y a {{ reports_nearby.count }} incidents signalés dans le même secteur</h2>
             <p class="lead"></p>
