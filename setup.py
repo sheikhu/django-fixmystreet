@@ -39,7 +39,6 @@ debug_require = [
     'django-jenkins==0.14.1',
     'coverage==3.6',
     'flake8',
-    'pylint==0.26.0'
 ]
 
 setup(name='django-fixmystreet',

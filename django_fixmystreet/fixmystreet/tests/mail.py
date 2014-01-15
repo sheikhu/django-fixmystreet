@@ -287,7 +287,7 @@ class MailTest(TestCase):
         #FLE is error it should only be send to the responsible
         self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
         self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.manager.email in mail.outbox[3].to)
+        self.assertIn(self.group.email, mail.outbox[3].to)
         #Send another post request to mark the report as done
         response = self.client.post(update_url, update_params)
         self.assertEquals(response.status_code, 302)
@@ -494,7 +494,7 @@ class MailTest(TestCase):
         # Add a worker for this entity
         worker = FMSUser(email="worker@contractor.be", telephone="0123456789")
         worker.save()
-        worker.work_for.add(self.contractor)
+        worker.memberships.add(organisation=self.contractor)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
@@ -518,7 +518,7 @@ class MailTest(TestCase):
         # One notification should be sent to contractor to inform him of new comment
         # One notification should be sent to department
         self.assertEquals(len(mail.outbox), 6)
-        self.assertTrue(self.contractor.workers.all()[0].email in mail.outbox[4].to)
+        self.assertIn(self.contractor.memberships.all()[0].user.email, mail.outbox[4].to)
 
     def testCitizenUpdatesReportMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -545,7 +545,7 @@ class MailTest(TestCase):
         self.assertEqual(response.status_code, 200)
         #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for informing responsible about update
         self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.manager.email in mail.outbox[3].to)
+        self.assertIn(self.group.email, mail.outbox[3].to)
 
     def testProUpdatesReportMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -605,16 +605,15 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.group.email, mail.outbox[3].to)
+        self.assertEquals(len(mail.outbox), 3)  # no new mail, action user is in responsible group
         report = Report.objects.get(id=report_id)
         #Now make the comment public
         response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
         self.assertEqual(response.status_code, 200)
         # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
         # 1 to inform about publish (citizen), Manager who did the update does not get an email
-        self.assertEquals(len(mail.outbox), 5)
-        self.assertTrue(self.citizen.email in mail.outbox[4].to)
+        self.assertEquals(len(mail.outbox), 4)
+        self.assertIn(self.citizen.email, mail.outbox[3].to)
 
     def testSubscriptionForProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
