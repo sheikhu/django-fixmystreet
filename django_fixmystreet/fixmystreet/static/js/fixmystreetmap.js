@@ -245,15 +245,15 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         var centerMapButton = new OpenLayers.Control.Button({
             displayClass: 'olControlBtnCenterOnCursor',
             id: 'btnCenterOnCursor',
-            trigger: function() {fms.currentMap.centerOnDraggableMarker()}
+            trigger: function() {
+                fms.currentMap.centerOnDraggableMarker();
+            }
         });
         //centerMapButton.panel_div.innerHTML = "zaza";
         //Center Panel
-        var centerPanel = new OpenLayers.Control.Panel(
-            {
-                defaultControl: centerMapButton
-            }
-        )
+        var centerPanel = new OpenLayers.Control.Panel({
+            defaultControl: centerMapButton
+        });
 
         this.map = new OpenLayers.Map(this.id, {
             maxExtent: new OpenLayers.Bounds(16478.795,19244.928,301307.738,304073.87100000004),
@@ -437,8 +437,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     {
         var features = [];
 
-        for (var featureIndex in this.features) {
-            var currentFeature = this.features[featureIndex];
+        for (var featureIndex in this.markers) {
+            var currentFeature = this.markers[featureIndex];
             var report = currentFeature.attributes;
             if (
                 (this.flagInProgress && report.inProgress) ||
@@ -450,6 +450,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         }
         this.strategy.features = features;
         this.strategy.layer.removeAllFeatures();
+        console.log('refresh features', this.strategy.features.length);
         this.strategy.layer.redraw(true);
     };
 
@@ -478,8 +479,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
         var dragControl = new OpenLayers.Control.DragFeature(this.draggableLayer,{
             onStart:function(){
-                //Not used.
-                //$(self.element).trigger('markerdrag');
                 // Remove all popups
                 while(this.map.popups.length) {
                      this.map.removePopup(this.map.popups[0]);
@@ -489,24 +488,23 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 var p = feature.geometry.components[0];
                 self.selectedLocation = {x:p.x,y:p.y};
                 $(self.element).trigger('markermoved', self.selectedLocation, self.draggableMarker);
-                // reverse_geocode(point);
             },
             onDrag:function(event){
-                //~ var markerBounds = event.geometry.bounds;
-                //~ var mapBounds = this.map.getExtent();
-                //~ var delta = 100;
-                //~ if(mapBounds.left+delta > markerBounds.left) {
-                    //~ this.map.pan(-100,0,{});
-                //~ }
-                //~ else if (mapBounds.right-delta < markerBounds.right){
-                    //~ this.map.pan(100,0,{});
-                //~ }
-                //~ else if (mapBounds.top-delta < markerBounds.top){
-                    //~ this.map.pan(0,-100,{});
-                //~ }
-                //~ else if(mapBounds.bottom + delta > markerBounds.bottom){
-                    //~ this.map.pan(0,100,{});
-                //~ }
+                // var markerBounds = event.geometry.bounds;
+                // var mapBounds = this.map.getExtent();
+                // var delta = 100;
+                // if(mapBounds.left+delta > markerBounds.left) {
+                //     this.map.pan(-100,0,{});
+                // }
+                // else if (mapBounds.right-delta < markerBounds.right){
+                //     this.map.pan(100,0,{});
+                // }
+                // else if (mapBounds.top-delta < markerBounds.top){
+                //     this.map.pan(0,-100,{});
+                // }
+                // else if(mapBounds.bottom + delta > markerBounds.bottom){
+                //     this.map.pan(0,100,{});
+                // }
             }
         });
 
@@ -574,22 +572,30 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
      */
     fms.Map.prototype.addReportCollection = function(reports)
     {
-        for (var filterCpt in reports) {
-            this.addReport(reports[filterCpt], filterCpt, false);
+        // Clean features
+        if(fms.currentMap.markersLayer) {
+            this.markers = [];
+            fms.currentMap.markersLayer.destroyFeatures();
+            // this.map.removeLayer(this.markersLayer);
+            // this.markersLayer.destroy();
         }
-        this.markersLayer.addFeatures(this.features);
+        for (var filterCpt in reports) {
+            this.addReport(reports[filterCpt]);
+        }
+        this.markersLayer.addFeatures(this.markers);
+        this.refreshCluster();
     };
     /**
      * Add a marker to the current map, if fixed is true, the marker will be green, if not it will be red.
      * @param report the report to add
-     * @param index the report index
      * @param proVersion true if the application is running the pro version
      */
-    fms.Map.prototype.addReport = function(report,index,proVersion,isIconsOnly)
+    fms.Map.prototype.addReport = function(report)
     {
         var self = this;
         if(!this.markersLayer)
         {
+            this.markers = [];
             var markerStyle = new OpenLayers.Style({}, {
                     context: {
                         width: function(feature) {
@@ -631,11 +637,61 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         })
                     ]
                 });
-            self.strategy = new OpenLayers.Strategy.Cluster({
+            this.strategy = new OpenLayers.Strategy.Cluster({
                 distance:50,
                 threshold:2,
                 clustering:false,
-                rules:markerStyle.rules
+                rules:markerStyle.rules,
+                // shouldCluster: function(cluster, feature) {
+                //     if (self.map.getZoom() < 5) {
+                //         return OpenLayers.Strategy.Cluster.prototype.shouldCluster.call(this);
+                //     } else {
+                //         return false;
+                //     }
+                // },
+                deactivate: function() {
+                    var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
+                    if(deactivated) {
+                        console.log('deactive');
+
+                        this.layer.removeAllFeatures();
+                        this.layer.events.un({
+                            "beforefeaturesadded": this.cacheFeatures,
+                            "moveend": this.cluster,
+                            scope: this
+                        });
+                        this.layer.addFeatures(self.strategy.features);
+                        this.clearCache();
+                    }
+                    return deactivated;
+                },
+                activate: function() {
+                    var activated = OpenLayers.Strategy.prototype.activate.call(this);
+                    if(activated) {
+                        console.log('active');
+
+                        this.layer.events.on({
+                            "beforefeaturesadded": this.cacheFeatures,
+                            "moveend": this.cluster,
+                            scope: this
+                        });
+                        this.layer.removeAllFeatures();
+                        this.clearCache();
+                        self.refreshCluster();
+                        this.layer.addFeatures(self.strategy.features);
+                    }
+                    return activated;
+                }
+            });
+
+            this.map.events.register("zoomend", null, function() {
+                var zoom = self.map.getZoom();
+
+                  if (zoom > 5) {
+                    self.strategy.deactivate();
+                 } else {
+                    self.strategy.activate();
+                 }
             });
 
             this.markersLayer = new OpenLayers.Layer.Vector("Reports Layer",
@@ -651,134 +707,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.map.addLayer(this.markersLayer);
 
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-                onSelect: function(feature){
-                    if(feature.layer.name != "Dragable Layer" && !feature.cluster){
-                        $.ajax({
-                            type:'GET',
-                            url:"/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/ajax/reportPopupDetails/",
-                            data:{'report_id':feature.attributes.report.id},
-                            datatype:"json",
-                            success:function(data){
-                                feature.attributes.report = data;
-                                domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry/*.components[0]*/.id));
-
-                                var imageLink = "/static/images/no-pix.png";
-
-                                if (feature.attributes.report.thumb != 'null') {
-                                    imageLink = feature.attributes.report.thumb;
-                                }
-
-                                // Set content of popover
-                                var popoverTitle   = "";
-                                var popoverContent = "";
-                                var popoverIcons   = "";
-                                var popoverSize    = new OpenLayers.Size(200,50);
-
-                                if (!isIconsOnly) {
-                                    popoverSize  = new OpenLayers.Size(400,220);
-                                    popoverTitle = "<h2>Incident #" + feature.attributes.report.id + " </h2>";
-
-                                    popoverContent = '<div class="details-popup"><p style="float: right;margin-left: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
-                                        "<a class='moreDetails' style='clear:both; float: right;margin-left: 15px;' href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.attributes.report.id+"'>Details</a>" +
-                                        "<strong class='popup_adress'>" + feature.attributes.report.address_number + ', ' +
-                                        feature.attributes.report.address + ' ' + "<br/>" +
-                                        feature.attributes.report.postalcode + ' ' +
-                                        feature.attributes.report.address_commune_name + "</strong>" +
-
-
-                                        "<p class='categoryPopup'>" + feature.attributes.report.category + "</p></div>          ";
-                                }
-
-                                var popoverIcons = "<ul class='iconsPopup'>";
-                                        //"<li class='addressRegional'>" + feature.attributes.report.address_regional + "</li>";
-
-                                if (feature.attributes.report.address_regional != 'null'){
-                                    popoverIcons += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
-                                }
-
-                                if (feature.attributes.report.contractor != 'null'){
-                                    popoverIcons += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
-                                }
-
-                                if (feature.attributes.report.date_planned){
-                                    popoverIcons += "<li class='datePlanned'>" + feature.attributes.report.date_planned + "</li>";
-                                }
-
-                                // If Pro, there are priority and citizen values
-                                if (feature.attributes.report.priority) {
-                                    if (feature.attributes.report.is_closed != 'null'){
-                                        popoverIcons += "<li class='isClosed'><img src='/static/images/isClosed.png' /></li>";
-                                    }
-                                    if (feature.attributes.report.citizen != 'null'){
-                                        popoverIcons += "<li class='fromPro'><img src='/static/images/fromPro.png' /></li>";
-                                    }
-                                    if (feature.attributes.report.priority <= '2'){
-                                        popoverIcons += "<li class='priority'><img src='/static/images/lowPriority.png' />" + feature.attributes.report.priority + "</li>";
-                                    }
-                                    else if (feature.attributes.report.priority <= '6'){
-                                        popoverIcons += "<li class='priority'><img src='/static/images/mediumPriority.png' />" + feature.attributes.report.priority + "</li>";
-                                    }
-                                    else {
-                                        popoverIcons += "<li class='priority'><img src='/static/images/highPriority.png' />" + feature.attributes.report.priority + "</li>";
-                                    }
-                                    //popoverIcons += "<li>" + feature.attributes.report.is_closed + "</li>" +
-                                    //popoverIcons += "<li>" + feature.attributes.report.citizen + "</li>" +
-                                    //popoverIcons += "<li>" + feature.attributes.report.priority + "</li>";
-                                }
-                                popoverIcons += "</ul>";
-
-                                var popup = new OpenLayers.Popup(
-                                    "popup",
-                                    new OpenLayers.LonLat(feature.attributes.report.point.x, feature.attributes.report.point.y),
-                                    popoverSize,
-                                    '<div class="in-popup">' + popoverTitle + popoverContent + popoverIcons + '</div>',
-                                    true,
-                                    function closeMe() {
-                                        self.selectFeature.onUnselect(feature);
-                                    }
-                                );
-
-                                popup.div.className = 'reports';
-                                popup.panMapIfOutOfView = true;
-
-                                fms.currentMap.map.addPopup(popup);
-                                fms.currentMap.map.events.register("zoomend", null, function() {
-                                    self.selectFeature.onUnselect(feature);
-                                });
-                            }
-                        });
-                    }
-
-                    if(feature.cluster){
-                        if(this.map.zoom == this.map.numZoomLevels){
-                            var content = "<h2>Reports at this location:</h2><ul>";
-                            for(var i = 0; i< feature.cluster.length; i++){
-                                content +="<li><a href='/"+getCurrentLanguage()+((proVersion)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
-                            }
-                            var popup = new OpenLayers.Popup(
-                                "popup",
-                                new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
-                                new OpenLayers.Size(400,220),
-                                content,
-                                true,
-                                function closeMe() {
-                                    self.selectFeature.onUnselect(feature);
-                                }
-                            );
-                            popup.panMapIfOutOfView = true;
-
-                            fms.currentMap.map.addPopup(popup);
-                            fms.currentMap.map.events.register("zoomend", null, function() {
-                                self.selectFeature.onUnselect(feature);
-                            });
-                        }
-                        else{
-                            this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
-                            this.map.zoomIn();
-                        }
-                    }
+                onSelect: function (feature) {
+                    self.showPopover(feature);
                 },
-                onUnselect: function(feature){
+                onUnselect: function(feature) {
                     for(var i=0, length=this.map.popups.length; i < length; i++) {
                         var popup = this.map.popups[i];
                         this.map.removePopup(popup);
@@ -823,7 +755,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
             this.map.addControl(this.selectFeature);
             this.selectFeature.activate();
-            this.features = [];
 
         }
         var markerPoint = new OpenLayers.Geometry.Point(report.point.x, report.point.y);
@@ -839,9 +770,136 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                            status === 8;
 
         var newMarker = new OpenLayers.Feature.Vector(markerPoint, report);
-        this.features.push(newMarker);
+        this.markers.push(newMarker);
 
         return newMarker;
+    };
+
+    fms.Map.prototype.showPopover = function(feature) {
+        if(feature.layer.name != "Dragable Layer" && !feature.cluster){
+            $.ajax({
+                type:'GET',
+                url:"/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/ajax/reportPopupDetails/",
+                data:{'report_id':feature.attributes.id},
+                datatype:"json",
+                success:function(data){
+                    var report = feature.attributes = data;
+                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry/*.components[0]*/.id));
+
+                    var imageLink = "/static/images/no-pix.png";
+
+                    if (report.thumb != 'null') {
+                        imageLink = report.thumb;
+                    }
+
+                    // Set content of popover
+                    var popoverTitle   = "";
+                    var popoverContent = "";
+                    var popoverIcons   = "";
+                    var popoverSize  = new OpenLayers.Size(400,220);
+
+                    popoverTitle = "<h2>Incident #" + report.id + " </h2>";
+
+                    popoverContent = '<div class="details-popup"><p style="float: right;margin-left: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
+                        "<a class='moreDetails' style='clear:both; float: right;margin-left: 15px;' href='/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/report/search?report_id="+report.id+"'>Details</a>" +
+                        "<strong class='popup_adress'>" + report.address_number + ', ' +
+                        report.address + ' ' + "<br/>" +
+                        report.postalcode + ' ' +
+                        report.address_commune_name + "</strong>" +
+
+
+                        "<p class='categoryPopup'>" + report.category + "</p></div>";
+
+                    popoverIcons += "<ul class='iconsPopup'>";
+                            //"<li class='addressRegional'>" + report.address_regional + "</li>";
+
+                    if (report.address_regional != 'null'){
+                        popoverIcons += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
+                    }
+
+                    if (report.contractor != 'null'){
+                        popoverIcons += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
+                    }
+
+                    if (report.date_planned){
+                        popoverIcons += "<li class='datePlanned'>" + report.date_planned + "</li>";
+                    }
+
+                    // If Pro, there are priority and citizen values
+                    if (report.priority) {
+                        if (report.is_closed != 'null'){
+                            popoverIcons += "<li class='isClosed'><img src='/static/images/isClosed.png' /></li>";
+                        }
+                        if (report.citizen != 'null'){
+                            popoverIcons += "<li class='fromPro'><img src='/static/images/fromPro.png' /></li>";
+                        }
+                        if (report.priority <= '2'){
+                            popoverIcons += "<li class='priority'><img src='/static/images/lowPriority.png' />" + report.priority + "</li>";
+                        }
+                        else if (report.priority <= '6'){
+                            popoverIcons += "<li class='priority'><img src='/static/images/mediumPriority.png' />" + report.priority + "</li>";
+                        }
+                        else {
+                            popoverIcons += "<li class='priority'><img src='/static/images/highPriority.png' />" + report.priority + "</li>";
+                        }
+                        //popoverIcons += "<li>" + feature.attributes.report.is_closed + "</li>" +
+                        //popoverIcons += "<li>" + feature.attributes.report.citizen + "</li>" +
+                        //popoverIcons += "<li>" + feature.attributes.report.priority + "</li>";
+                    }
+                    popoverIcons += "</ul>";
+
+                    var popup = new OpenLayers.Popup(
+                        "popup",
+                        new OpenLayers.LonLat(report.point.x, report.point.y),
+                        popoverSize,
+                        '<div class="in-popup">' + popoverTitle + popoverContent + popoverIcons + '</div>',
+                        true,
+                        function closeMe() {
+                            self.selectFeature.onUnselect(feature);
+                        }
+                    );
+
+                    popup.div.className = 'reports';
+                    popup.panMapIfOutOfView = true;
+
+                    fms.currentMap.map.addPopup(popup);
+                    fms.currentMap.map.events.register("zoomend", null, function() {
+                        if (self.selectFeature) {
+                            self.selectFeature.onUnselect(feature);
+                        }
+                    });
+                }
+            });
+        }
+
+        if(feature.cluster){
+            if(this.map.zoom == this.map.numZoomLevels){
+                var content = "<h2>Reports at this location:</h2><ul>";
+                for(var i = 0; i< feature.cluster.length; i++){
+                    content +="<li><a href='/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
+                }
+                var popup = new OpenLayers.Popup(
+                    "popup",
+                    new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y),
+                    new OpenLayers.Size(400,220),
+                    content,
+                    true,
+                    function closeMe() {
+                        self.selectFeature.onUnselect(feature);
+                    }
+                );
+                popup.panMapIfOutOfView = true;
+
+                fms.currentMap.map.addPopup(popup);
+                fms.currentMap.map.events.register("zoomend", null, function() {
+                    self.selectFeature.onUnselect(feature);
+                });
+            }
+            else{
+                this.map.setCenter(feature.geometry.getBounds().getCenterLonLat());
+                this.map.zoomIn();
+            }
+        }
     };
 
     /**

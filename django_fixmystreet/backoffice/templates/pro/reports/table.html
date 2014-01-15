@@ -110,6 +110,8 @@ function generateTableContent() {
         data: "",
         dataType: "html",
         success: function(data) {
+            $('#map-loading').hide();
+
             //Retrieve the last used preferences
             var sortPreferences = fms.restoreTablePreferences();
             //Default sort by ID desc (first column) when not yet available
@@ -161,7 +163,7 @@ generateTableContent();
 var refreshTable = document.getElementById('refreshTable');
 refreshTable.addEventListener('click', function() {
     //Show loading icon
-    document.getElementById('map-loading').hidden = false;
+    $('#map-loading').show();
 
     // Destroy current table
     table.fnDestroy(true);
@@ -179,11 +181,6 @@ showHideFilters.addEventListener('click', function() {
 
 // Refresh markers on map when table sorting/filtering
 function refreshMap() {
-    // Clean features
-    if(fms.currentMap.markersLayer) {
-        fms.currentMap.markersLayer.destroyFeatures();
-    }
-
     // Get all row according to filter
     var data = table._('tr', {"filter": "applied"});
 
@@ -201,11 +198,7 @@ function refreshMap() {
             }
         });
     }
-
-
     fms.currentMap.addReportCollection(markers);
-
-    document.getElementById('map-loading').hidden = true;
 }
 
 // Load map
@@ -237,7 +230,7 @@ function refreshMap() {
 
 <div class="row">
 
-    {% include "_page_header.html" with map=True search_report=True satus_filter=True search_address=True classes="map-big" loader=True %}
+    {% include "_page_header.html" with map=True search_report=True search_address=True classes="map-big" loader=True %}
 </div>
 {% endblock %}
 
