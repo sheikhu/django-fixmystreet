@@ -65,6 +65,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
 var columns = [
     {type: "number"}, // incident number
+    {type: "text"},   // thumbnail
     {sType: "date-euro", oSort:"date-eu"}, // date accepted
     {type: "select"}, // categories
     {type: "select"}, // sec categories
@@ -128,7 +129,8 @@ function generateTableContent() {
                 "aaSorting": [[ sortPreferenceIndex, sortPreferenceValue ]],
                 "fnDrawCallback": function() {
                     fms.storeTablePreferences(this.fnSettings().aaSorting);
-                }
+                },
+                "fnRowCallback": customFnRowCallback,
             });
             // {
             //     "bStateSave": true
@@ -157,6 +159,14 @@ function generateTableContent() {
         }
     });
 }
+
+function customFnRowCallback( nRow, aData, iDisplayIndex )
+ {
+    //If image then display it as is.
+    $('td:eq(1)', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+    return nRow;
+ }
+
 generateTableContent();
 
 // Refresh table
