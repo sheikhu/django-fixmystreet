@@ -689,16 +689,15 @@ class Report(UserTrackedModel):
         return dates
 
     def thumbnail(self):
-        if not self.is_created():
-            user = get_current_user()
+        user = get_current_user()
+        
+        if not self.is_created() or (user and user.is_authenticated()):
             reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
             if reportImages.exists():
-                if user and user.is_authenticated():
-                    if not reportImages[0].is_confidential():
-                        return reportImages[0].image.thumbnail.url()
-                else:
-                    if reportImages[0].is_public():
-                        return reportImages[0].image.thumbnail.url()
+                if reportImages[0].is_public():
+                    return reportImages[0].image.thumbnail.url()
+                elif (reportImages[0].is_private() and user.is_authenticated()) or (reportImages[0].is_confidential() and user.is_confidential_visible()):
+                    return reportImages[0].image.thumbnail.url()
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
