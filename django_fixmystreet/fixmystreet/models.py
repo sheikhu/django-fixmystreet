@@ -417,7 +417,7 @@ class BasicReportManager(models.GeoManager):
         return ReportQuerySet(self.model) \
             .filter(merged_with__isnull=True) \
             .exclude(status=Report.DELETED) \
-            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30))
 
 
 class ReportManager(models.GeoManager):
@@ -447,11 +447,9 @@ class VisibleReportManager(ReportManager):
 
     def get_query_set(self):
         return super(VisibleReportManager, self).get_query_set() \
-                .filter(merged_with__isnull=True) \
-                .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
-                .exclude(status__in=Report.REPORT_STATUS_OFF)
-
-
+            .filter(merged_with__isnull=True) \
+            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+            .exclude(status__in=Report.REPORT_STATUS_OFF)
 
 
 class Report(UserTrackedModel):
@@ -545,7 +543,7 @@ class Report(UserTrackedModel):
 
     terms_of_use_validated = models.BooleanField(default=False)
 
-    basic_objects = BasicReportManager();
+    basic_objects = BasicReportManager()
     objects = ReportManager()
     visibles = VisibleReportManager()
 
@@ -969,7 +967,7 @@ def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_department:
         #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
-        departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories = instance.secondary_category)
+        departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories=instance.secondary_category)
         if(len(departements) > 0):
             instance.responsible_department = departements[0]
         else:
