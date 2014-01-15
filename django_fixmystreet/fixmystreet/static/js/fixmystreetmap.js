@@ -5,6 +5,29 @@ if (!('fms' in window)) {
     window.fms = {};
     //A local cache to avoid multiple calls to backend system when clicking on filters
     window.fms.cachedElements = false;
+    window.fms.city_geo_center = [];
+    window.fms.city_geo_center["M1070"] = {x:"145367.6654217966",y:"168649.68734662264"}; //Anderlecht
+    window.fms.city_geo_center["M1160"] = {x:"154046.91650777997",y:"167337.15162906327"}; //Auderghem
+    window.fms.city_geo_center["M1082"] = {x:"144863.51262962123",y:"172813.29402682924"}; //Berchem
+    window.fms.city_geo_center["M1130"] = {x:"153831.7823421533",y:"175129.78918397945"}; //Haren
+    window.fms.city_geo_center["M1020"] = {x:"149092.31148122973",y:"175999.01813600562"}; //Laeken
+    window.fms.city_geo_center["M1120"] = {x:"151371.86440791885",y:"176103.325610249"}; //Never
+    window.fms.city_geo_center["M1000"] = {x:"148605.543268095",y:"170874.91346381"}; //Bxl Ville
+    window.fms.city_geo_center["M1040"] = {x:"151510.94104024282",y:"168866.99458462943"}; //Etterbeek
+    window.fms.city_geo_center["M1140"] = {x:"152629.7842298689",y:"173392.55983061116"}; //Evere
+    window.fms.city_geo_center["M1190"] = {x:"147023.54657540703",y:"167176.34427293818"}; //Forest
+    window.fms.city_geo_center["M1083"] = {x:"145841.39520065105",y:"173778.13816357817"}; //Ganshoren
+    window.fms.city_geo_center["M1050"] = {x:"149370.46474587804",y:"167732.65080223506"}; //Ixelles
+    window.fms.city_geo_center["M1090"] = {x:"147375.58430097767",y:"174064.98371774668"}; //Jette
+    window.fms.city_geo_center["M1081"] = {x:"146814.9316269208",y:"172639.4482364241"}; //Koekelberg
+    window.fms.city_geo_center["M1080"] = {x:"146793.20090312013",y:"171522.48903306987"}; //Molenbeek
+    window.fms.city_geo_center["M1060"] = {x:"148283.92855584505",y:"168719.2256627849"}; //Saint Gilles
+    window.fms.city_geo_center["M1210"] = {x:"149842.02145235223",y:"171587.68120447194"}; //Saint Josse
+    window.fms.city_geo_center["M1030"] = {x:"151465.0174341536",y:"172366.8696672201"}; //Schaerbeek
+    window.fms.city_geo_center["M1180"] = {x:"149305.27257447632",y:"165224.92527563902"}; //Uccle
+    window.fms.city_geo_center["M1170"] = {x:"153173.34141099357",y:"165011.96418239252"}; //Watermael
+    window.fms.city_geo_center["M1200"] = {x:"155011.7606445293",y:"170787.99056860784"}; //Woluwe Saint Lambert
+    window.fms.city_geo_center["M1150"] = {x:"154577.14616851608",y:"168788.76397894725"}; //Woluwe Saint Pierre
 }
 
 function cloneObj (obj) {
@@ -340,6 +363,14 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.draggableLayer.addFeatures([new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle)]);
         }
     };
+
+    fms.Map.prototype.centerOnMunicipality = function(argMunicipalityCode)
+    {
+        //Prefixed by M to avoid big array creation (as idnex integer based)
+        this.map.panTo(new OpenLayers.LonLat(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y));
+        this.map.zoomTo(6);
+    };
+
 
     /* Center on the current draggable marker */
     fms.Map.prototype.centerOnDraggableMarker = function()
@@ -755,6 +786,40 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     }
                 }
             });
+
+            /*this.clickFeature = OpenLayers.Class(this.markersLayer, { 
+
+                    defaultHandlerOptions: { 
+                            'single': true, 
+                            'double': true, 
+                            'pixelTolerance': 0, 
+                            'stopSingle': false, 
+                            'stopDouble': true 
+                    }, 
+
+                    initialize: function(options) { console.log('ooo');
+                            this.handlerOptions = OpenLayers.Util.extend( 
+                                    {}, this.defaultHandlerOptions 
+                            ); 
+                            OpenLayers.Control.prototype.initialize.apply( 
+                                    this, arguments 
+                            ); 
+                            this.handler = new OpenLayers.Handler.Click( 
+                                    this, { 
+                                            'click': this.onClick, 
+                                            'dblclick': this.onDblclick 
+                                    }, this.handlerOptions 
+                            ); 
+                    }, 
+                    onClick: function(event) { 
+                            alert("single click"); 
+                    }, 
+                    onDblclick: function(event) {   
+                            alert("double click"); 
+                    }   
+            }); */
+            
+
 
             this.map.addControl(this.selectFeature);
             this.selectFeature.activate();
