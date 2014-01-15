@@ -65,7 +65,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
 var columns = [
     {type: "number"}, // incident number
-    {type: "text"},   // thumbnail
+    {type: "text", "bSortable": false},   // thumbnail
     {sType: "date-euro", oSort:"date-eu"}, // date accepted
     {type: "select"}, // categories
     {type: "select"}, // sec categories
