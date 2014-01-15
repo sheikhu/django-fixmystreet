@@ -89,19 +89,17 @@ function markAsDone(){
             }
         }
 
-    window.onload = function(event) {
-        document.querySelector("#btn-pulldownmap a").addEventListener("click", function() {
-            var mapEl = document.getElementById('map');
-
-            if (mapEl.classList.indexOf('map-big') >= 0) {
-                // mapEl.classList.remove('view_incident');
-                mapEl.classList.add('map-big');
+    $(function(event) {
+        $("#btn-toggle-map a").click(function(evt) {
+            evt.preventDefault();
+            var mapEl = $('#map');
+            if (mapEl.hasClass('map-big')) {
+                mapEl.removeClass('map-big');
             } else {
-                mapEl.classList.remove('map-big');
-
+                mapEl.addClass('map-big');
             }
         });
-    };
+    });
 
 </script>
 
