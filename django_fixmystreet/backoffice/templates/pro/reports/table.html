@@ -118,6 +118,7 @@ function generateTableContent() {
             //Default sort by ID desc (first column) when not yet available
             var sortPreferenceIndex = (sortPreferences !== null)?sortPreferences.idx:0;
             var sortPreferenceValue = (sortPreferences !== null)?sortPreferences.sortType:'desc';
+            var sortPreferenceSelectedColumns = (sortPreferences !== null)?sortPreferences.unselectedColumn:[];
 
             document.getElementById('table-container').innerHTML = data;
 
@@ -132,9 +133,8 @@ function generateTableContent() {
                 },
                 "fnRowCallback": customFnRowCallback,
             });
-            // {
-            //     "bStateSave": true
-            // });
+
+           
 
             // Bind event : refresh markers on map when table sort and filter
             table.bind('filter', refreshMap);
@@ -149,6 +149,7 @@ function generateTableContent() {
             table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
 
             $('#column-visibility :checkbox').change(function () {
+                console.log($(this).closest('li').index()); 
                 var checked = $(this).prop('checked'),
                     index = $(this).closest('li').index(); // show column
                 table.fnSetColumnVis(index, checked);
@@ -201,10 +202,10 @@ function refreshMap() {
         //console.log(data[i]);
         markers.push({
             id: report[0],
-            status: parseInt(report[18]),
+            status: parseInt(report[report.length - 1]),
             point: {
-                x: report[16],
-                y: report[17]
+                x: report[report.length-3],
+                y: report[report.length-2]
             }
         });
     }
@@ -258,6 +259,7 @@ function refreshMap() {
         <div id="table-filters" class="table-filters">
             <ul id="column-visibility">
                 <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
