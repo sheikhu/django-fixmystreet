@@ -83,7 +83,8 @@ def all_reports(request):
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
 
     return render_to_response("pro/reports/table.html", {
-        'zipcodes': zipcodes
+        'zipcodes': zipcodes,
+        'all_zipcodes': ZipCode.objects.all(),
     }, context_instance=RequestContext(request))
 
 

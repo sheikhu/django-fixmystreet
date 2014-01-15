@@ -105,6 +105,7 @@ def report_prepare_pro(request, location = None, error_msg = None):
                 "report_counts": ReportCountQuery('1 year'),
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
+                'all_zipcodes': ZipCode.objects.all(),
                 'location':location,
                 'reports_created': Report.visibles.all().created().order_by('-modified')[0:4],
                 'reports_in_progress': Report.visibles.all().in_progress().order_by('-modified')[0:4],
@@ -189,10 +190,10 @@ def show(request,slug, report_id):
     entities = OrganisationEntity.objects.filter(commune=True).filter(active=True).order_by('name_'+ get_language())
     departments = []
     contractors = []
-    
+
     if organisation:
         entities.exclude(pk=organisation.id)
-        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT).order_by('name_'+ get_language())    
+        departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT).order_by('name_'+ get_language())
         contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_'+ get_language())
     else:
         contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_'+ get_language())

@@ -222,10 +222,10 @@ $(document).ready(function() {
                 var option = "<option value='"+data[i].id+"'>"+data[i]["s_c_n_"+LANGUAGE_CODE]+"/"+data[i]["n_"+LANGUAGE_CODE]+"</option>";
                 $("#sec_cat_select").append(option);
             }
-            $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) { 
+            $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) {
                         var arel = $(a).html();
                         var brel = $(b).html();
-                        return arel == brel ? 0 : arel < brel ? -1 : 1 
+                        return arel == brel ? 0 : arel < brel ? -1 : 1
                     }));
             $("#sec_cat_select").prepend('<option value="0">{% trans "Select a Category" %}</option>');
 
@@ -238,7 +238,7 @@ $(document).ready(function() {
         if(this.value !== "0"){
             $("#sec_cat_select").removeAttr("disabled");
             $("#sec_cat_select").empty();
-            
+
             $.ajax({
                 url:"{% url 'secondary_category_for_main_category' %}?main_category="+this.value,
                 type:"GET",
@@ -247,10 +247,10 @@ $(document).ready(function() {
                         var option = "<option value='"+data[i].id+"'>"+data[i]["s_c_n_"+LANGUAGE_CODE]+"/"+data[i]["n_"+LANGUAGE_CODE]+"</option>";
                         $("#sec_cat_select").append(option);
                     }
-                    $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) { 
+                    $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) {
                         var arel = $(a).html();
                         var brel = $(b).html();
-                        return arel == brel ? 0 : arel < brel ? -1 : 1 
+                        return arel == brel ? 0 : arel < brel ? -1 : 1
                     }));
                     $("#sec_cat_select").prepend('<option value="0">{% trans "Select a Category" %}</option>');
                 }
@@ -348,7 +348,7 @@ var someCallback = function(exifObject, index) {
 <div class="row">
 <div class="span12">
     <!--article id="map" class="view_incident show_report pro container"-->
-    <article id="map" class="pro container">
+    <article class="pro container">
         <div id="incident-head" class="">
             <div class="row-fluid">
                 <div class="span5">
@@ -458,8 +458,8 @@ var someCallback = function(exifObject, index) {
 
                     </div>
                 </div>
-                <div class="span4">
 
+                <div class="span4">
                     {% if not report.is_merged %}
                     <div class="bordered-box">
                         <!-- #################################### -->
@@ -485,9 +485,9 @@ var someCallback = function(exifObject, index) {
                     {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                     <div class="btn-group incidentActions">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        {% trans 'Choose an action' %}
-                        <span class="caret"></span>
-                      </a>
+                            {% trans 'Choose an action' %}
+                            <span class="caret"></span>
+                        </a>
                              <ul class="dropdown-menu">
                                 <li class="dropdown-submenu">
                                     <a tabindex="-1" href="#">{% trans 'Transfer to' %}</a>
@@ -642,10 +642,12 @@ var someCallback = function(exifObject, index) {
                 </div>
             </div>
         </div>
-        <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-        <div class="map-button-section">
-            <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
-            <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+        <div id="map">
+            <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+            <div class="map-button-section">
+                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
+                <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+            </div>
         </div>
     </article>
 </div>

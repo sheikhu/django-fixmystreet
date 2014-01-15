@@ -9,11 +9,11 @@ var draggableMarker;
 previousResults.addEventListener('click', function() {
     paginationResults -= 1;
     renderResults();
-})
+});
 nextResults.addEventListener('click', function() {
     paginationResults += 1;
     renderResults();
-})
+});
 
 function renderResults() {
     var $proposal = $('#proposal');
@@ -117,7 +117,7 @@ function AddressResult(x, y, address, idx)
 
     this.iconSrc = function() {
         return "/static/images/marker/marker-" + idx + ".png";
-    },
+    };
 
     this.onclick = function(event) {
         additionalInfo = {
@@ -125,10 +125,10 @@ function AddressResult(x, y, address, idx)
             'number'       : self.address.number,
             'postCode'     : self.address.street.postCode,
             'municipality' : self.address.street.municipality
-        }
+        };
 
         initDragMarker(self.x, self.y, additionalInfo);
-    }
+    };
 }
 
 function getAddressFromPoint(lang, x, y) {
@@ -145,11 +145,6 @@ function getAddressFromPoint(lang, x, y) {
         },
         success:function(response)
         {
-            //Fix problem with postcode 1041
-            if (response.result.address.street.postCode === "1041") {
-                response.result.address.street.postCode = "1040";
-            }
-
             cleanMap();
 
             var street = response.result.address.street.name;
@@ -286,7 +281,7 @@ $(function(){
             if (window.location.href.indexOf('/nl/') != -1) {
                 currentLng = 'nl';
             } else if (window.location.href.indexOf('/fr/') != -1) {
-                currentLng = 'fr'
+                currentLng = 'fr';
             }
             if (window.location.href.indexOf('pro') != -1) {
                 window.location = "/"+currentLng+"/pro/report/search?report_id="+searchValue;
@@ -351,7 +346,7 @@ $(function(){
                         'number'       : address.number,
                         'postCode'     : address.street.postCode,
                         'municipality' : address.street.municipality
-                    }
+                    };
 
                     initDragMarker(pos.x, pos.y, additionalInfo);
 
@@ -419,7 +414,7 @@ $(function(){
 
     var streetKeywords = document.getElementById('input-search');
     var postalCode = document.getElementById('input-ward');
-    var searchBtn = document.getElementById('widget-search-button')
+    var searchBtn = document.getElementById('widget-search-button');
 
     function enableSearch() {
         var enableSearchBtn = false;
