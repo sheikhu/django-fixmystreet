@@ -352,6 +352,15 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def public(self):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
+    def visible(self):
+        limit_date = datetime.date.today()-datetime.timedelta(30)
+        return self.filter(merged_with__isnull=True) \
+            .exclude(status=Report.PROCESSED, fixed_at__lt=limit_date) \
+            .exclude(status__in=Report.REPORT_STATUS_OFF)
+
+    def near(self, origin, distance):
+        return self.distance(origin).filter(point__distance_lte=(origin, distance)).order_by('distance')
+
     def responsible(self, user):
         query = Q()
         if user.contractor and user.manager:
@@ -399,7 +408,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def subscribed(self, user):
         return self.filter(subscriptions__subscriber=user)
 
-    def related_all(self):
+    def related_fields(self):
         return self.related_category().related_responsible().related_citizen()
 
     def related_category(self):
@@ -412,12 +421,13 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.select_related('citizen', 'created_by')
 
 
-class BasicReportManager(models.GeoManager):
-    def get_query_set(self):
-        return ReportQuerySet(self.model) \
-            .filter(merged_with__isnull=True) \
-            .exclude(status=Report.DELETED) \
-            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30))
+# class BasicReportManager(models.GeoManager):
+
+#     def get_query_set(self):
+#         return ReportQuerySet(self.model) \
+#             .filter(merged_with__isnull=True) \
+#             .exclude(status=Report.DELETED) \
+#             .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30))
 
 
 class ReportManager(models.GeoManager):
@@ -435,21 +445,16 @@ class ReportManager(models.GeoManager):
 
     def get_query_set(self):
         return ReportQuerySet(self.model) \
-            .exclude(status=Report.DELETED) \
-            .select_related(
-                'category', 'secondary_category',
-                'secondary_category__secondary_category_class',
-                'responsible_entity', 'responsible_manager', 'contractor',
-                'citizen', 'created_by')
+            .exclude(status=Report.DELETED)
 
 
-class VisibleReportManager(ReportManager):
+# class VisibleReportManager(ReportManager):
 
-    def get_query_set(self):
-        return super(VisibleReportManager, self).get_query_set() \
-            .filter(merged_with__isnull=True) \
-            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
-            .exclude(status__in=Report.REPORT_STATUS_OFF)
+#     def get_query_set(self):
+#         return super(VisibleReportManager, self).get_query_set() \
+#             .filter(merged_with__isnull=True) \
+#             .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+#             .exclude(status__in=Report.REPORT_STATUS_OFF)
 
 
 class Report(UserTrackedModel):
@@ -543,10 +548,10 @@ class Report(UserTrackedModel):
 
     terms_of_use_validated = models.BooleanField(default=False)
 
-    basic_objects = BasicReportManager()
+    # basic_objects = BasicReportManager()
+    # visibles = VisibleReportManager()
     objects = ReportManager()
-    visibles = VisibleReportManager()
-
+    # _base_manager = objects
     history = HistoricalRecords()
 
     false_address = models.TextField(null=True, blank=True)
@@ -688,7 +693,7 @@ class Report(UserTrackedModel):
 
     def thumbnail(self):
         user = get_current_user()
-        
+
         if not self.is_created() or (user and user.is_authenticated()):
             reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
             if reportImages.exists():
@@ -754,7 +759,7 @@ class Report(UserTrackedModel):
                 user=user,
             ).save()
 
-            self.save()  # set updated date and updated_by
+            self.save()  # set updated date and modified_by
 
     def to_full_JSON(self):
         """
@@ -1100,15 +1105,14 @@ def report_notify(sender, instance, **kwargs):
             #Contractor changed
             if report.__former['contractor'] != report.contractor:
 
-                if report.contractor:
+                if report.contractor and report.contractor.email:
                     #Applicant responsible
-                    for recipient in report.contractor.workers.all():
-                        ReportNotification(
-                            content_template='notify-affectation',
-                            recipient=recipient,
-                            related=report,
-                            reply_to=report.responsible_department.email
-                        ).save(old_responsible=report.responsible_department)
+                    ReportNotification(
+                        content_template='notify-affectation',
+                        recipient_mail=report.contractor.email,
+                        related=report,
+                        reply_to=report.responsible_department.email
+                    ).save(old_responsible=report.responsible_department)
 
                     if report.contractor.applicant:
                         for subscription in report.subscriptions.all():
@@ -1154,7 +1158,7 @@ def report_notify(sender, instance, **kwargs):
                         if subscription.subscriber != event_log_user:
                             ReportNotification(
                                 content_template='announcement-affectation',
-                                recipient_mail=report.responsible_department.email,
+                                recipient=subscription.subscriber,
                                 related=report,
                                 reply_to=report.responsible_department.email,
                             ).save(old_responsible=report.__former['responsible_department'])
@@ -1348,7 +1352,7 @@ def report_attachment_notify(sender, instance, **kwargs):
             event_type=ReportEventLog.UPDATE_PUBLISHED,
         ).save()
 
-        action_user = instance.updated_by
+        action_user = instance.modified_by
         for subscription in report.subscriptions.all().exclude(subscriber=action_user):
             ReportNotification(
                 content_template='informations_published',
@@ -1359,13 +1363,13 @@ def report_attachment_notify(sender, instance, **kwargs):
 
     #if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
-        for membership in report.contractor.memberships.all():
-            ReportNotification(
-                content_template='informations_published',
-                recipient=membership.user,
-                related=report,
-                reply_to=report.responsible_department.email,
-            ).save()
+        # for membership in report.contractor.memberships.all():
+        ReportNotification(
+            content_template='informations_published',
+            recipient_mail=report.contractor.email,
+            related=report,
+            reply_to=report.responsible_department.email,
+        ).save()
 
 
 class ReportComment(ReportAttachment):

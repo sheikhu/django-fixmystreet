@@ -64,10 +64,10 @@ class Migration(SchemaMigration):
                     c.email = member.email
                 if c.dependency:
                     member.organisation = c.dependency
-                else:  # applicant
-                    member.organisation = c
+                # else: applicant
                 member.save()
 
+                c.email = c.workers.all()[0].email
             c.workers.clear()  # for dev
             c.save()  # email
 

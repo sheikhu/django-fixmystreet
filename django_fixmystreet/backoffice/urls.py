@@ -20,6 +20,7 @@ urlpatterns += patterns(
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/merge$'), 'merge', name='report_merge_pro'),
     url(_(r'^report/new$'), 'new', name='report_new_pro'),
     url(_(r'^report/verify'), 'verify', name='report_verify_pro'),
+    # DEPRECATED ??? is it used somwhere ??
     url(_(r'^report/subscription$'), 'subscription', name='report_subscription_pro'),
     url(r'^report/search$', 'search_ticket_pro', name='search_ticket_pro'),
     url(_(r'^report/$'), 'report_prepare_pro', name='report_prepare_pro'),
@@ -72,7 +73,7 @@ urlpatterns += patterns(
     url(r'^ajax/saveSelection', 'saveCategoryConfiguration', name='saveSelection'),
     url(r'^ajax/reportPopupDetails', 'get_report_popup_details', name="get_report_popup_details_pro"),
     url(r'^ajax/report/(\d+)/updatePriority/', 'updatePriority', name="report_update_priority"),
-    url(r'^ajax/map/filter/', 'filter_map', name="filter_map"),
+    # url(r'^ajax/map/filter/', 'filter_map', name="filter_map"),
     url(r'^ajax/report/(\d+)/false_address/', 'report_false_address', name="report_false_address"),
     url(r'^ajax/secondary_category_for_main_category', 'secondary_category_for_main_category', name="secondary_category_for_main_category"),
     url(r'^ajax/update_category_for_report/(\d+)', 'update_category_for_report', name="update_category_for_report"),

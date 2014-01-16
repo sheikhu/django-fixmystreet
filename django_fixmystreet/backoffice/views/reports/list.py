@@ -12,6 +12,8 @@ default_position = {
     'y': '170458.371'
 }
 
+
+# DEPRECATED !!!
 def filter_reports(user, criteria):
     ownership = criteria.get("ownership", "entity")
 
@@ -27,8 +29,7 @@ def filter_reports(user, criteria):
         pnt = dict_to_point(default_position)
         is_default_position = True
 
-    reports = Report.visibles.all().filter(merged_with__isnull=True)
-
+    reports = Report.objects.all().visible()
 
     #if the user is an contractor then user the dependent organisation id
     #If the manager is connected then filter on manager
@@ -49,7 +50,6 @@ def filter_reports(user, criteria):
         #reports = reports.responsible(user)
     # else:
         # raise PermissionDenied()
-
 
     if status == 'created':
         reports = reports.created()
@@ -89,10 +89,8 @@ def all_reports(request):
 
 
 def table_content(request):
-    # reports.annotate(subscribed = Count(subscribers__contains=request.fmsuser))
-    # reports.annotate(transfered = Count(transfered__contains=request.fmsuser))
+    reports = Report.objects.all().visible().related_fields()
 
-    reports = Report.visibles.all()
     if request.fmsuser.agent or request.fmsuser.manager or request.fmsuser.leader:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
     elif request.fmsuser.contractor or request.fmsuser.applicant:
@@ -103,7 +101,7 @@ def table_content(request):
     # reports, pnt = filter_reports(request.fmsuser, request.GET)
 
     reports = reports.extra(
-        select = OrderedDict([
+        select=OrderedDict([
             ('subscribed',
                 """SELECT COUNT(subscription.ID)
                     FROM fixmystreet_reportsubscription subscription
@@ -111,12 +109,12 @@ def table_content(request):
                     AND subscription.report_id = fixmystreet_report.id
                 """),
             # ('transfered',
-            #     'SELECT COUNT(previous.ID) \
-            #         FROM fixmystreet_report_previous_managers previous \
-            #         WHERE previous.fmsuser_id = %s \
+            #     'SELECT COUNT(previous.ID)
+            #         FROM fixmystreet_report_previous_managers previous
+            #         WHERE previous.fmsuser_id = %s
             #         AND previous.report_id = fixmystreet_report.id'),
         ]),
-        select_params = (
+        select_params=(
             str(request.fmsuser.id),
             # str(request.fmsuser.id),
         )
@@ -125,9 +123,7 @@ def table_content(request):
     zipcodes = ZipCode.objects.order_by('name_' + get_language())
     zipcodes = dict([(z.code, z.name) for z in zipcodes])
 
-    return render_to_response("pro/reports/table_content.html",
-        {
-            "zipcodes": zipcodes,
-            "reports": reports,
-        },
-        context_instance=RequestContext(request))
+    return render_to_response("pro/reports/table_content.html", {
+        "zipcodes": zipcodes,
+        "reports": reports,
+    }, context_instance=RequestContext(request))
