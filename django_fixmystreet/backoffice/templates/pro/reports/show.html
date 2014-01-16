@@ -459,7 +459,9 @@ var someCallback = function(exifObject, index) {
                         <br />
 
                         <!--span>{{report.get_priority}}</span><br /-->
-                        {% if report.get_priority <= 2 %}
+                        {% if report.get_priority = 0 %}
+                            <img src="{{STATIC_URL}}../static/images/prior_off.png" class="priorityLevel" />
+                        {% elif report.get_priority <= 2 %}
                             <img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" />
                         {% elif report.get_priority <= 8 %}
                             <img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" />
