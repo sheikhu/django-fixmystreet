@@ -116,9 +116,12 @@ function generateTableContent() {
             //Retrieve the last used preferences
             var sortPreferences = fms.restoreTablePreferences();
             //Default sort by ID desc (first column) when not yet available
-            var sortPreferenceIndex = (sortPreferences !== null)?sortPreferences.idx:0;
-            var sortPreferenceValue = (sortPreferences !== null)?sortPreferences.sortType:'desc';
-            var sortPreferenceSelectedColumns = (sortPreferences !== null)?sortPreferences.unselectedColumn:[];
+            var sortPreferenceIndex = 
+                (sortPreferences !== null && sortPreferences.sort !== null)?sortPreferences.sort.idx:0;
+            var sortPreferenceValue = 
+                (sortPreferences !== null && sortPreferences.sort !== null)?sortPreferences.sort.sortType:'desc';
+            var sortPreferenceUnselectedColumns = 
+                (sortPreferences !== null && sortPreferences.unselectedColumn !== null)?sortPreferences.unselectedColumn:[];
 
             document.getElementById('table-container').innerHTML = data;
 
@@ -128,13 +131,23 @@ function generateTableContent() {
                 // sScrollX: "100%",
                 // bScrollCollapse: true
                 "aaSorting": [[ sortPreferenceIndex, sortPreferenceValue ]],
-                "fnDrawCallback": function() {
-                    fms.storeTablePreferences(this.fnSettings().aaSorting);
-                },
+                /*"fnDrawCallback": function() {
+                    fms.storeTablePreferences({'sort':this.fnSettings().aaSorting});
+                    debugger;
+                },*/
                 "fnRowCallback": customFnRowCallback,
             });
 
-           
+            var checkboxes = $('#column-visibility :checkbox');
+            //Show, Hide columns based on user selection
+            for (var cptColumnVisiblity in sortPreferenceUnselectedColumns) {
+                console.log('restore column visibility');
+                
+                table.fnSetColumnVis(cptColumnVisiblity, !sortPreferenceUnselectedColumns[cptColumnVisiblity]);
+                if (sortPreferenceUnselectedColumns[cptColumnVisiblity]) {
+                    $(checkboxes[cptColumnVisiblity]).attr('checked',null); 
+                }
+            }
 
             // Bind event : refresh markers on map when table sort and filter
             table.bind('filter', refreshMap);
@@ -149,11 +162,25 @@ function generateTableContent() {
             table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
 
             $('#column-visibility :checkbox').change(function () {
-                console.log($(this).closest('li').index()); 
-                var checked = $(this).prop('checked'),
-                    index = $(this).closest('li').index(); // show column
+                //Store column selection
+                var sortPreferences = fms.restoreTablePreferences();
+                var sortPreferenceUnselectedColumns;
+
+                if (sortPreferences !== null && sortPreferences.unselectedColumn !== null) {
+                        sortPreferenceUnselectedColumns = sortPreferences.unselectedColumn;
+                } else {
+                        sortPreferenceUnselectedColumns = {};
+                }
+
+                var checked = $(this).prop('checked');
+                var index = $(this).closest('li').index(); // show column
+
+                //Remove Item
+                sortPreferenceUnselectedColumns[index] = !checked;
+                fms.storeTablePreferences({'unselectedColumn':sortPreferenceUnselectedColumns});
+
                 table.fnSetColumnVis(index, checked);
-            }).change();
+            });//.change();
 
             // Init map markers
             refreshMap();
@@ -164,8 +191,8 @@ function generateTableContent() {
 function customFnRowCallback( nRow, aData, iDisplayIndex )
  {
     //If image then display it as is.
-    $('td:eq(1)', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
-    return nRow;
+   /* $('td:eq(1)', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+    return nRow;*/
  }
 
 generateTableContent();
