@@ -7,21 +7,24 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.utils.translation import get_language
-from django.conf import settings
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from django_fixmystreet.fixmystreet.models import Report, ReportFile, ReportSubscription, OrganisationEntity, ZipCode, ReportMainCategoryClass
-from django_fixmystreet.fixmystreet.forms import CitizenReportForm, CitizenForm, ReportCommentForm, ReportFileForm, MarkAsDoneForm
+from django_fixmystreet.fixmystreet.models import (
+    Report, ReportFile, ReportSubscription,
+    ZipCode, ReportMainCategoryClass)
+from django_fixmystreet.fixmystreet.forms import (
+    CitizenReportForm, CitizenForm,
+    ReportCommentForm, ReportFileForm, MarkAsDoneForm)
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 
 import logging
 logger = logging.getLogger(__name__)
 
+
 def new(request):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
     pnt = dict_to_point(request.REQUEST)
-    report=None
+    report = None
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
 
     if request.method == "POST":
@@ -55,7 +58,6 @@ def new(request):
                     comment.report = report
                     comment.save()
 
-
                 files = file_formset.save(commit=False)
                 for report_file in files:
                     report_file.created_by = citizen
@@ -76,40 +78,33 @@ def new(request):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).order_by('distance').public()
-    reports = Report.visibles.all()
-    return render_to_response("reports/new.html",
-            {
-                "report":report,
-                "available_zips":ZipCode.objects,
-                "all_zips":ZipCode.objects.all(),
-                "category_classes":ReportMainCategoryClass.objects.prefetch_related('categories').all().order_by('name_'+ get_language()),
-                "comment_form":comment_form,
-                "file_formset":file_formset,
-                "report_form": report_form,
-                "citizen_form": citizen_form,
-                "pnt":pnt,
-                "reports":reports,
-                "reports_nearby":reports_nearby
-            },
-            context_instance=RequestContext(request))
+    # reports_nearby = Report.objects.all().visible().public().near(pnt, 150).related_fields()
+    # reports = Report.visibles.all()
+    return render_to_response("reports/new.html", {
+        "report": report,
+        "available_zips": ZipCode.objects,
+        "all_zips": ZipCode.objects.all(),
+        "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all().order_by('name_' + get_language()),
+        "comment_form": comment_form,
+        "file_formset": file_formset,
+        "report_form": report_form,
+        "citizen_form": citizen_form,
+        "pnt": pnt,
+        # "reports": reports,
+        # "reports_nearby": reports_nearby
+    }, context_instance=RequestContext(request))
+
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
-    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance').public()[0:6]
+    reports_nearby = Report.objects.all().visible().public().near(pnt, 20).related_fields()[0:6]
 
     if reports_nearby:
-        return render_to_response("reports/verify.html",
-            {
-                "reports_nearby":reports_nearby
-            },
-            context_instance=RequestContext(request))
+        return render_to_response("reports/verify.html", {
+            "reports_nearby": reports_nearby
+        }, context_instance=RequestContext(request))
 
     return new(request)
-
-def report_prepare(request, location = None, error_msg = None):
-    '''Deprecated, no sense'''
-    return HttpResponseRedirect(reverse('home'))
 
 
 def show(request, slug, report_id):
@@ -119,14 +114,13 @@ def show(request, slug, report_id):
     else:
         user_to_show = report.created_by
 
-    return render_to_response("reports/show.html",
-            {
-                "report": report,
-                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "author": user_to_show,
-                'activity_list' : report.activities.all(),
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("reports/show.html", {
+        "report": report,
+        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+        "author": user_to_show,
+        'activity_list': report.activities.all(),
+    }, context_instance=RequestContext(request))
+
 
 def document(request, slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
@@ -144,8 +138,8 @@ def document(request, slug, report_id):
             citizen = citizen_form.save()
 
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                comment            = comment_form.save(commit=False)
-                comment.report     = report
+                comment = comment_form.save(commit=False)
+                comment.report = report
                 comment.created_by = citizen
                 comment.save()
 
@@ -167,19 +161,19 @@ def document(request, slug, report_id):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    return render_to_response("reports/document.html",
-            {
-                "report": report,
-                "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
-                "file_formset": file_formset,
-                "comment_form": comment_form,
-                "citizen_form": citizen_form,
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("reports/document.html", {
+        "report": report,
+        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+        "file_formset": file_formset,
+        "comment_form": comment_form,
+        "citizen_form": citizen_form,
+    }, context_instance=RequestContext(request))
 
-def update( request, report_id):
+
+def update(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    if request.REQUEST.has_key('is_fixed'):
+
+    if 'is_fixed' in request.REQUEST:
         form = MarkAsDoneForm(request.POST, instance=report)
         #Save the mark as done motivation in the database
         form.save()
@@ -211,6 +205,7 @@ def update( request, report_id):
             return HttpResponseRedirect(report.get_absolute_url())
     raise Http404()
 
+
 def search_ticket(request):
     try:
         report_id = request.REQUEST.get('report_id')
@@ -230,5 +225,5 @@ def search_ticket(request):
 
 def index(request):
     return render_to_response("reports/reports_map.html", {
-        'zipcodes' : ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
+        'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))

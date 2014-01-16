@@ -1,6 +1,6 @@
 .PHONY        = install init html-doc install develop test jenkins createdb dropdb scratchdb clean
 APP_NAME      = fixmystreet backoffice
-INSTALL_PATH  = $(realpath env)
+INSTALL_PATH  = $(abspath env)
 BIN_PATH      = $(INSTALL_PATH)/bin
 SRC_ROOT      = django_fixmystreet
 
@@ -20,17 +20,16 @@ $(BIN_PATH):
 	echo $(BIN_PATH)
 	virtualenv --python=python2.7 $(INSTALL_PATH) --system-site-packages
 	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | $(BIN_PATH)/python
+	$(BIN_PATH)/pip install setuptools==2.1
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install
 	$(BIN_PATH)/manage.py migrate --all
 	$(BIN_PATH)/manage.py collectstatic --noinput
 
-develop: $(BIN_PATH) extra
+develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
 	$(BIN_PATH)/manage.py migrate --all
-
-extra:
 	$(BIN_PATH)/pip install -e .[debug]
 
 # generate new migration script
@@ -47,7 +46,7 @@ test: $(BIN_PATH)/manage.py
 lint:
 	flake8 $(SRC_ROOT)
 
-jenkins: install extra
+jenkins: develop
 	rm -rf reports
 	mkdir reports
 	$(BIN_PATH)/manage.py jenkins $(APP_NAME)

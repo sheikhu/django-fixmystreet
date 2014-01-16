@@ -137,7 +137,7 @@ def switchPrivacy(request,report_id):
             return HttpResponseRedirect(report.get_absolute_url())
 
 def changeManager(request,report_id):
-    
+
     report = Report.objects.get(pk=report_id)
     report.status = Report.MANAGER_ASSIGNED
 
@@ -150,10 +150,12 @@ def changeManager(request,report_id):
     if manId.split("_")[0] == "department":
         newRespMan = OrganisationEntity.objects.get(pk=int(manId.split("_")[1]))
         report.responsible_department = newRespMan
-    if manId.split("_")[0] == "entity":
+    elif manId.split("_")[0] == "entity":
         orgId = int(manId.split("_")[1])
         report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
         report.responsible_department = None
+    else:
+        raise Exception('missing department or entity paramettre')
 
     report.save()
 

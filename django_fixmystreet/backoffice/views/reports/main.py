@@ -70,18 +70,19 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 150)).unfinished().order_by('distance')
-    reports = Report.visibles.all()
+    # reports_nearby = Report.objects.all().visible().unfinished()
+    # reports_nearby = reports_nearby.near(pnt, 150).related_fields()
+
     return render_to_response("pro/reports/new.html", {
         "report": report,
         "all_zips": ZipCode.objects.all(),
         "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all(),
         "report_form": report_form,
         "pnt": pnt,
-        "reports": reports,
+        # "reports": Report.objects.all().visible(),
         "file_formset": file_formset,
         "comment_form": comment_form,
-        "reports_nearby": reports_nearby
+        # "reports_nearby": reports_nearby
     }, context_instance=RequestContext(request))
 
 
@@ -96,7 +97,7 @@ def report_prepare_pro(request, location=None, error_msg=None):
         start_date = stats[str(request.GET["stat_type"])]["start_date"]
         end_date = stats[str(request.GET["stat_type"])]["end_date"]
 
-        popup_reports = Report.objects.created_between(start_date, end_date)
+        popup_reports = Report.objects.all().visible().related_fields().created_between(start_date, end_date)
 
         if str(request.GET["stat_status"]) == 'unpublished':
             popup_reports = popup_reports.created()
@@ -105,15 +106,17 @@ def report_prepare_pro(request, location=None, error_msg=None):
         else:
             popup_reports = popup_reports.closed()
 
+    reports = Report.objects.all().visible().related_fields().order_by('-modified')
+
     return render_to_response("pro/home.html", {
         "report_counts": ReportCountQuery('1 year'),
         'search_error': error_msg,
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
         'location': location,
-        'reports_created': Report.visibles.all().created().order_by('-modified')[0:4],
-        'reports_in_progress': Report.visibles.all().in_progress().order_by('-modified')[0:4],
-        'reports_closed': Report.visibles.all().closed().order_by('-modified')[0:4],
+        'reports_created': reports.created()[0:4],
+        'reports_in_progress': reports.in_progress()[0:4],
+        'reports_closed': reports.closed()[0:4],
         'stats': stats_result,
         'popup_reports': popup_reports,
     }, context_instance=RequestContext(request))
@@ -129,16 +132,13 @@ def search_ticket_pro(request):
         return HttpResponseRedirect(reverse('home_pro'))
 
 
+# DEPRECATED ??? is it used somwhere ??
 def subscription(request):
     """
     Method used to load all my subscription reports
     """
-    subscriptions = ReportSubscription.objects.filter(subscriber_id=request.user.id)
-    reports = [None]*len(subscriptions)
-    i = 0
-    for subscription in subscriptions:
-        reports[i] = Report.objects.get(pk=subscription.report_id)
-        i = i + 1
+    reports = Report.objects.filter(subscriptions__subscriber_id=request.user.id).related_fields()
+
     return render_to_response("pro/reports/subscriptions.html", {
         "reports": reports
     }, context_instance=RequestContext(request))
@@ -225,7 +225,8 @@ def show(request, slug, report_id):
 
 def verify(request):
     pnt = dict_to_point(request.REQUEST)
-    reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 20)).order_by('distance')[0:6]
+    reports_nearby = Report.objects.all().visible().related_fields()
+    reports_nearby = reports_nearby.near(pnt, 20)[0:6]
 
     if reports_nearby:
         return render_to_response("reports/verify.html", {
@@ -282,14 +283,14 @@ def merge(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id)
     pnt = report.point
 
+    reports_nearby = Report.objects.all().visible().related_fields().near(pnt, 250).exclude(id=report.id)
     if report.is_created():
-        reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status = Report.CREATED)
+        reports_nearby = reports_nearby.exclude(status=Report.CREATED)
     elif report.is_closed():
-        reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id).exclude(status__in = Report.REPORT_STATUS_CLOSED)
-    else:
-        reports_nearby = Report.visibles.all().distance(pnt).filter(point__distance_lte=(pnt, 250)).order_by('distance').exclude(id=report.id)
+        reports_nearby = reports_nearby.exclude(status__in=Report.REPORT_STATUS_CLOSED)
+
     return render_to_response("pro/reports/merge.html", {
         "fms_user": request.fmsuser,
         "report": report,
-        "reports_nearby":reports_nearby,
+        "reports_nearby": reports_nearby,
     }, context_instance=RequestContext(request))

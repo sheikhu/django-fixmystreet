@@ -56,11 +56,11 @@ class HistoryTest(TestCase):
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = OrganisationEntity.objects.get(pk=14),
+            dependency=OrganisationEntity.objects.get(pk=14),
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id, contact_user = True)
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
 
         self.manager2 = FMSUser(
@@ -77,7 +77,7 @@ class HistoryTest(TestCase):
         self.manager2.save()
         self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
-        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager2.id, organisation_id = self.group.id)
+        self.usergroupmembership2 = UserOrganisationMembership(user_id=self.manager2.id, organisation_id=self.group.id)
         self.usergroupmembership2.save()
 
         self.manager3 = FMSUser(
@@ -99,11 +99,11 @@ class HistoryTest(TestCase):
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = OrganisationEntity.objects.get(pk=21),
+            dependency=OrganisationEntity.objects.get(pk=21),
             email="test@email.com"
             )
         self.group2.save()
-        self.usergroupmembership3 = UserOrganisationMembership(user_id = self.manager3.id, organisation_id = self.group2.id)
+        self.usergroupmembership3 = UserOrganisationMembership(user_id=self.manager3.id, organisation_id=self.group2.id)
         self.usergroupmembership3.save()
 
         self.impetrant = OrganisationEntity(
@@ -127,37 +127,37 @@ class HistoryTest(TestCase):
         self.client = Client()
 
         self.sample_post_citizen = {
-            'report-x':'150056.538',
-            'report-y':'170907.56',
-            'report-address_fr':'Avenue des Arts, 3',
-            'report-address_nl':'Kunstlaan, 3',
-            'report-address_number':'3',
-            'report-postalcode':'1210',
-            'report-category':'1',
-            'report-secondary_category':'1',
-            'report-subscription':'on',
-            'citizen-quality':'1',
-            'comment-text':'test',
+            'report-x': '150056.538',
+            'report-y': '170907.56',
+            'report-address_fr': 'Avenue des Arts, 3',
+            'report-address_nl': 'Kunstlaan, 3',
+            'report-address_number': '3',
+            'report-postalcode': '1210',
+            'report-category': '1',
+            'report-secondary_category': '1',
+            'report-subscription': 'on',
+            'citizen-quality': '1',
+            'comment-text': 'test',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0,
-            'citizen-email':self.citizen.email,
-            'citizen-firstname':self.citizen.first_name,
-            'citizen-lastname':self.citizen.last_name,
+            'citizen-email': self.citizen.email,
+            'citizen-firstname': self.citizen.first_name,
+            'citizen-lastname': self.citizen.last_name,
             'report-terms_of_use_validated': True
         }
 
         self.sample_post_pro = {
-            'report-x':'150056.538',
-            'report-y':'170907.56',
-            'report-address_fr':'Avenue des Arts, 3',
-            'report-address_nl':'Kunstlaan, 3',
-            'report-address_number':'3',
-            'report-postalcode':'1210',
-            'report-category':'1',
-            'report-secondary_category':'1',
-            'report-subscription':'on',
-            'comment-text':'test',
+            'report-x': '150056.538',
+            'report-y': '170907.56',
+            'report-address_fr': 'Avenue des Arts, 3',
+            'report-address_nl': 'Kunstlaan, 3',
+            'report-address_number': '3',
+            'report-postalcode': '1210',
+            'report-category': '1',
+            'report-secondary_category': '1',
+            'report-subscription': 'on',
+            'comment-text': 'test',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0,
@@ -225,7 +225,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        self.client.logout();
+        self.client.logout()
         #check if the status is updated
         url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
         response = self.client.get(url, follow=True)
@@ -256,7 +256,7 @@ class HistoryTest(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        self.client.logout();
+        self.client.logout()
         #check if the status is updated
         url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
         response = self.client.get(url, follow=True)
@@ -287,7 +287,7 @@ class HistoryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         report = response.context['report']
         self.assertTrue(report.close_date is not None)
-        self.client.logout();
+        self.client.logout()
 
         #check if the status is updated
         url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
@@ -324,7 +324,7 @@ class HistoryTest(TestCase):
 
         self.client.logout()
 
-        response = self.client.post(reverse('report_update', args=[report_id]), {'is_fixed':'True'}, follow=True)
+        response = self.client.post(reverse('report_update', args=[report_id]), {'is_fixed': 'True'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         #check that activity is not visible to citizen
@@ -347,7 +347,6 @@ class HistoryTest(TestCase):
         self.assertEquals(activities.all().count(), 3)
         self.assertContains(response, self.calculatePrintPro(activities[2]))
 
-
     def testResolvedByProReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
@@ -361,7 +360,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        response = self.client.post(reverse('report_fix_pro', args=[report_id]), {'is_fixed':'True'}, follow=True)
+        response = self.client.post(reverse('report_fix_pro', args=[report_id]), {'is_fixed': 'True'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         #first check that pro has right status
@@ -398,10 +397,10 @@ class HistoryTest(TestCase):
         self.assertTrue(report.accepted_at is not None)
 
         self.client.logout()
-        response = self.client.post(reverse('report_document', kwargs={'report_id': report_id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
-            'citizen-email'   : self.citizen.email,
-            'citizen-quality' : 1,
+            'citizen-email': self.citizen.email,
+            'citizen-quality': 1,
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
@@ -442,7 +441,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
@@ -485,14 +484,13 @@ class HistoryTest(TestCase):
         self.assertFalse(report.subscriptions.filter(subscriber=self.manager2).exists())
         self.assertEquals(activities.all().count(), 1)
 
-
     def testProSubscribesToReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
         self.client.login(username='manager2@a.com', password='test2')
-        response = self.client.get(reverse('subscribe_pro',args=[report_id]), {}, follow=True)
+        response = self.client.get(reverse('subscribe_pro', args=[report_id]), {}, follow=True)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertTrue(report.subscriptions.filter(subscriber=self.citizen).exists())
@@ -500,7 +498,6 @@ class HistoryTest(TestCase):
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen3).exists())
         self.assertTrue(report.subscriptions.filter(subscriber=self.manager2).exists())
         self.assertEquals(activities.all().count(), 1)
-
 
     def testAssignToOtherMemberOfSameEntity(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
@@ -515,7 +512,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=department_' + str(self.group.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -553,7 +550,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_manager_pro',args=[report_id]) + '?manId=entity_21', {}, follow=True)
+        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=entity_21', {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -596,26 +593,25 @@ class HistoryTest(TestCase):
         self.assertEquals(response3.status_code, 200)
 
         #Merge reports
-        url2 = reverse('report_do_merge_pro',args=[report_id])
-        response4 = self.client.post(url2,{"mergeId":report2_id})
+        url2 = reverse('report_do_merge_pro', args=[report_id])
+        self.client.post(url2, {"mergeId": report2_id})
 
         #Reference from merged to kept report
-        self.assertEqual(report2_id,Report.objects.get(id=report_id).merged_with.id)
+        self.assertEqual(report2_id, Report.objects.get(id=report_id).merged_with.id)
 
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         #2 activities are present: 1 for creation and 1 for merge
         self.assertEquals(activities.all().count(), 2)
         #Type of the second activity = merge (18)
-        self.assertEqual(18,activities[1].event_type)
+        self.assertEqual(18, activities[1].event_type)
 
         report2 = Report.objects.get(id=report2_id)
         activities2 = report2.activities.all()
         #3 activities are present: 1 for creation, 1 for acception and 1 for merge
-        self.assertEquals(activities2.all().count(),3)
+        self.assertEquals(activities2.all().count(), 3)
         #Type of the third activity = merge (18)
-        self.assertEquals(18,activities2[2].event_type)
-
+        self.assertEquals(18, activities2[2].event_type)
 
     def testAssignToContractor(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
@@ -629,7 +625,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -650,7 +646,6 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
-
     def testAssignToImpetrant(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
@@ -663,7 +658,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_contractor_pro',args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -694,7 +689,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         #now add comment
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
@@ -704,11 +699,11 @@ class HistoryTest(TestCase):
         report = Report.objects.get(id=report_id)
         self.assertEqual(report.comments().count(), 2)
         #Now make the comment public
-        response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True )
+        response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
         self.assertEqual(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
-        self.assertEqual(activities.all().count(), 4) #still does not work as the message is not shown yet
+        self.assertEqual(activities.all().count(), 4)  # still does not work as the message is not shown yet
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
@@ -736,7 +731,7 @@ class HistoryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
-        response = self.client.get(reverse('report_publish_pro', args=[report_id]), {}, follow=True )
+        response = self.client.get(reverse('report_publish_pro', args=[report_id]), {}, follow=True)
         self.assertEqual(response.status_code, 200)
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
         response = self.client.get(url, follow=True)
@@ -766,7 +761,7 @@ class HistoryTest(TestCase):
                 user_to_display = activity.user.get_full_name() or activity.user
 
             if activity.user.fmsuser.is_pro():
-                user_to_display = u'%s %s' %(activity.user.fmsuser.get_organisation(), activity.user.get_full_name() or activity.user)
+                user_to_display = u'%s %s' % (activity.user.fmsuser.get_organisation(), activity.user.get_full_name() or activity.user)
 
         return activity.EVENT_TYPE_TEXT[activity.event_type].format(
             user=user_to_display,

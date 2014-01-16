@@ -65,7 +65,6 @@ class CSVEmitter(Emitter):
 
         writer.writerow(headers)
 
-
         for row in content:
             writer.writerow(self.get_values(row, field_order=headers))
 
@@ -91,6 +90,7 @@ class CategoryHandler(BaseHandler):
         'name',
     )
 
+
 class ReportSecondaryCategoryHandler(BaseHandler):
     allowed_methods = ('GET')
     model = ReportSecondaryCategoryClass
@@ -98,12 +98,14 @@ class ReportSecondaryCategoryHandler(BaseHandler):
         'name',
     )
 
+
 class ReportMainCategoryHandler(BaseHandler):
     allowed_methods = ('GET')
     model = ReportMainCategoryClass
     fields = (
         'name',
     )
+
 
 class FMSUserHandler(BaseHandler):
     allowed_methods = ('GET')
@@ -113,6 +115,7 @@ class FMSUserHandler(BaseHandler):
         'organisation',
         'email',
     )
+
 
 class EntityHandler(BaseHandler):
     allowed_methods = ('GET')
@@ -145,22 +148,20 @@ class ReportHandler(BaseHandler):
         'postalcode'
     )
 
-
     def read(self, request, *args, **kwargs):
 
         if 'time_ago' in kwargs:
             time_ago = kwargs['time_ago']
-            if time_ago=='week':
+            if time_ago == 'week':
                 return Report.objects.one_week_ago()
-            elif time_ago=='month':
+            elif time_ago == 'month':
                 return Report.objects.one_month_ago()
             else:
                 return HttpResponseBadRequest("invalid argument time_ago {0}".format(time_ago))
         elif 'id' in kwargs:
-            return Report.objects.get(pk=kwargs['id'])
+            return Report.objects.get(pk=kwargs['id']).related_fields()
         else:
-            return Report.visibles.all()
-
+            return Report.objects.all().visible().related_fields()
 
 #    @validate(CitizenReportForm, 'POST')
     def create(self, request):
