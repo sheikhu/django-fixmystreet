@@ -131,10 +131,9 @@ function generateTableContent() {
                 // sScrollX: "100%",
                 // bScrollCollapse: true
                 "aaSorting": [[ sortPreferenceIndex, sortPreferenceValue ]],
-                /*"fnDrawCallback": function() {
+                "fnDrawCallback": function() {
                     fms.storeTablePreferences({'sort':this.fnSettings().aaSorting});
-                    debugger;
-                },*/
+                },
                 "fnRowCallback": customFnRowCallback,
             });
 
