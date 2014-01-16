@@ -51,7 +51,7 @@
             <tr data-href="{{ report.get_absolute_url_pro }}">
                 <td class="s{{report.status}}">{{ report.id }}</td>
                 <td>{{ report.thumbnail }}</td>
-                <td class="s{{report.status}}">{{ report.accepted_at }}</td>
+                <td class="s{{report.status}}">{{ report.accepted_at|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.category.name }}</td>
                 <td class="s{{report.status}}">{{ report.secondary_category.name }}</td>
                 <td class="s{{report.status}}">{{ report.address }}, {{report.address_number}}</td>
