@@ -138,8 +138,9 @@ function generateTableContent() {
                     //If image then display using img tag 
                     if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image') {
                         var imageIndex = 0 + (this.fnSettings().aoColumns[0].bVisible === true?1:0);
-                        $('td:eq('+imageIndex+')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+                        $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
                     }
+                    console.log(this.fnSettings().aoColumns[8])
                     return nRow;
                  }
             });
