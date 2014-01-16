@@ -1,15 +1,15 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from django.utils import unittest
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 
+
 class HistoryTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.citizen = FMSUser(
@@ -458,6 +458,7 @@ class HistoryTest(TestCase):
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
+        import pdb; pdb.set_trace()
         self.assertEquals(activities.all().count(), 3)
         self.assertContains(response, self.calculatePrintPro(activities[2]))
 
