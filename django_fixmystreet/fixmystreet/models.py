@@ -417,7 +417,7 @@ class BasicReportManager(models.GeoManager):
         return ReportQuerySet(self.model) \
             .filter(merged_with__isnull=True) \
             .exclude(status=Report.DELETED) \
-            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30))
 
 
 class ReportManager(models.GeoManager):
@@ -447,11 +447,9 @@ class VisibleReportManager(ReportManager):
 
     def get_query_set(self):
         return super(VisibleReportManager, self).get_query_set() \
-                .filter(merged_with__isnull=True) \
-                .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
-                .exclude(status__in=Report.REPORT_STATUS_OFF)
-
-
+            .filter(merged_with__isnull=True) \
+            .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
+            .exclude(status__in=Report.REPORT_STATUS_OFF)
 
 
 class Report(UserTrackedModel):
@@ -545,7 +543,7 @@ class Report(UserTrackedModel):
 
     terms_of_use_validated = models.BooleanField(default=False)
 
-    basic_objects = BasicReportManager();
+    basic_objects = BasicReportManager()
     objects = ReportManager()
     visibles = VisibleReportManager()
 
@@ -689,16 +687,15 @@ class Report(UserTrackedModel):
         return dates
 
     def thumbnail(self):
-        if not self.is_created():
-            user = get_current_user()
+        user = get_current_user()
+        
+        if not self.is_created() or (user and user.is_authenticated()):
             reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
             if reportImages.exists():
-                if user and user.is_authenticated():
-                    if not reportImages[0].is_confidential():
-                        return reportImages[0].image.thumbnail.url()
-                else:
-                    if reportImages[0].is_public():
-                        return reportImages[0].image.thumbnail.url()
+                if reportImages[0].is_public():
+                    return reportImages[0].image.thumbnail.url()
+                elif (  (reportImages[0].is_private() and (user and user.is_authenticated())) or (reportImages[0].is_confidential() and (user and user.is_confidential_visible()))):
+                    return reportImages[0].image.thumbnail.url()
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
@@ -744,7 +741,7 @@ class Report(UserTrackedModel):
             self.subscriptions.add(ReportSubscription(subscriber=user))
 
     def trigger_updates_added(self, user=None, files=None, comment=None):
-        if files or comment:
+        if (files or comment) and not self.responsible_department.memberships.filter(user=user).exists():
             ReportNotification(
                 content_template='notify-updates',
                 recipient_mail=self.responsible_department.email,
@@ -970,7 +967,7 @@ def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_department:
         #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
-        departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories = instance.secondary_category)
+        departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories=instance.secondary_category)
         if(len(departements) > 0):
             instance.responsible_department = departements[0]
         else:
@@ -1346,12 +1343,13 @@ def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         #now create notification
-
         ReportEventLog(
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
         ).save()
-        for subscription in report.subscriptions.all().exclude(subscriber__memberships__organisation=report.responsible_department):
+
+        action_user = instance.updated_by
+        for subscription in report.subscriptions.all().exclude(subscriber=action_user):
             ReportNotification(
                 content_template='informations_published',
                 recipient=subscription.subscriber,
@@ -1361,10 +1359,10 @@ def report_attachment_notify(sender, instance, **kwargs):
 
     #if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
-        for recipient in report.contractor.workers.all():
+        for membership in report.contractor.memberships.all():
             ReportNotification(
                 content_template='informations_published',
-                recipient=recipient,
+                recipient=membership.user,
                 related=report,
                 reply_to=report.responsible_department.email,
             ).save()

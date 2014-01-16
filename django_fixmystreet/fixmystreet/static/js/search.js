@@ -154,24 +154,30 @@ function getAddressFromPoint(lang, x, y) {
 
             var x = response.result.point.x;
             var y = response.result.point.y;
+            //INJECTION
+            if (!BACKOFFICE && response.result.address.street.postCode in zipcodes && !zipcodes[String(response.result.address.street.postCode)].participation) {
+                //var popupContent = "<p>" + street + ", " + number;
+                // Convert the point and url for google street view
+                var popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>Commune non participante</p>";
+                popupContent += "<p class='popupMoveMe popupContent'>" +'Veuillez contacter la commune: '+ zipcodes[String(response.result.address.street.postCode)].phone + "</p>";
+            } else {
+                //var popupContent = "<p>" + street + ", " + number;
+                // Convert the point and url for google street view
+                var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(x, y);
+                var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.x +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
+                var popupContent = "<p class='popupMoveMe popupHeading'>Déplacez-moi à l'adresse exacte</p>";
+                popupContent += "<p class='popupMoveMe popupContent'>" + street + ", " + number;
+                popupContent += "<br/>" + postCode + " " + municipality + "</p>";
 
-
-            //var popupContent = "<p>" + street + ", " + number;
-            // Convert the point and url for google street view
-            var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(x, y);
-            var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.x +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
-            var popupContent = "<p class='popupMoveMe popupHeading'>Déplacez-moi à l'adresse exacte</p>";
-            popupContent += "<p class='popupMoveMe popupContent'>" + street + ", " + number;
-            popupContent += "<br/>" + postCode + " " + municipality + "</p>";
-
-            if (NEXT_PAGE_URL) {
-                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                if (NEXT_PAGE_URL) {
+                    popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                }
+                popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
             }
-            popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
 
             var popup = new OpenLayers.Popup(
                 "popup",
-                new OpenLayers.LonLat(draggableMarker.components[0].x, draggableMarker.components[0].y),
+                new OpenLayers.LonLat(fms.currentMap.draggableMarker.components[0].x, fms.currentMap.draggableMarker.components[0].y),
                 new OpenLayers.Size(200,150),
                 popupContent,
                 true

@@ -156,6 +156,7 @@ function fillI18nAdressField(lang, address) {
     $('#id_report-address_' + lang).val(address.street.name);
 }
 
+//DEPRECEATED?
 function retrieveAddress() {
     var languages = ['fr', 'nl'],
         currLang = LANGUAGE_CODE,

@@ -89,19 +89,17 @@ function markAsDone(){
             }
         }
 
-    window.onload = function(event) {
-        document.querySelector("#btn-pulldownmap a").addEventListener("click", function() {
-            var mapEl = document.getElementById('map');
-            mapEl.classList.remove('view_incident');
-            mapEl.classList.add('map-big');
-            this.parentNode.removeChild(this);
-
-            // Hack to resize map
-            //setTimeout(function() {
-            //    fms.currentMap.map.updateSize();
-            //}, 1000);
+    $(function(event) {
+        $("#btn-toggle-map a").click(function(evt) {
+            evt.preventDefault();
+            var mapEl = $('#map');
+            if (mapEl.hasClass('map-big')) {
+                mapEl.removeClass('map-big');
+            } else {
+                mapEl.addClass('map-big');
+            }
         });
-    };
+    });
 
 </script>
 
@@ -140,7 +138,7 @@ function markAsDone(){
 {% block map %}
     <div class="row">
         <div class="span12">
-            <article id="map" class="view_incident container">
+            <article class="view_incident container">
                 <div id="incident-head" class="">
                     <div class="row-fluid">
                         <div class="span5">
@@ -184,9 +182,16 @@ function markAsDone(){
                             </a>
                     </div>
                 </div>
-                <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
-                <div id="btn-pulldownmap"><a href="#"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a></div>
-                <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+                <div  id="map">
+                    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+                    <div class="map-button-section">
+                        <div id="btn-toggle-map">
+                            <a href="#" class="pulldown-map"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a>
+                            <a href="#" class="pullup-map"><i class="icon-pullupmap"></i>{% trans "Reduce map" %}</a>
+                        </div>
+                        <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+                    </div>
+                </div>
             </article>
         </div>
     </div>

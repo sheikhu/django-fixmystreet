@@ -49,7 +49,12 @@ function cloneObj (obj) {
  */
 fms.storeTablePreferences = function(argElement) {
     if (typeof localStorage !== 'undefined') {
-        localStorage.setItem("fms-table-column-sort", JSON.stringify({'idx':argElement[0][0], 'sortType':argElement[0][1]/*asc or desc*/}));
+        if (typeof argElement.sort !== 'undefined') {
+            localStorage.setItem("fms-table-column-sort", JSON.stringify({'idx':argElement.sort[0][0], 'sortType':argElement.sort[0][1]/*asc or desc*/}));
+        }
+        if (typeof argElement.unselectedColumn !== 'undefined') {
+            localStorage.setItem("fms-table-column-inactive", JSON.stringify(argElement.unselectedColumn));
+        }
     } else {
         return null;
     }
@@ -60,7 +65,12 @@ fms.storeTablePreferences = function(argElement) {
  */
 fms.restoreTablePreferences = function() {
     if (typeof localStorage !== 'undefined') {
-        return JSON.parse(localStorage.getItem("fms-table-column-sort"));
+        var argElements = {};
+        argElements.sort = null;
+        argElements.unselectedColumn = null;
+        argElements.sort = JSON.parse(localStorage.getItem("fms-table-column-sort"));
+        argElements.unselectedColumn = JSON.parse(localStorage.getItem("fms-table-column-inactive"));
+        return argElements;
     } else {
         return null;
     }
@@ -369,6 +379,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         //Prefixed by M to avoid big array creation (as idnex integer based)
         this.map.panTo(new OpenLayers.LonLat(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y));
         this.map.zoomTo(6);
+        //Show draggable Marker.
+        this.addDraggableMarker(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y);
     };
 
 

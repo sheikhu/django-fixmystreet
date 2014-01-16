@@ -222,8 +222,11 @@ footer .cirb-cibg img{
 #map img {
 	max-width: none;
 }
+#map {
+    transition: height 1s;
+}
 
-.olControlBtnCenterOnCursorItemActive {  
+.olControlBtnCenterOnCursorItemActive {
     position: absolute;
 	top: 56px;
 	left: 10px;
@@ -338,9 +341,7 @@ footer .cirb-cibg img{
 	border-bottom-left-radius: 4px;
     z-index:0;
 }
-.map-big .olMapViewport{
-    transition: all 1s;
-}
+
 #popup{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -366,6 +367,19 @@ footer .cirb-cibg img{
 	background: #BCD3F2 url('../images/popup_header_arrow.png') 5px 5px no-repeat;
 	padding-left: 24px !important;
 }
+#popup .popupHeadingNonParticipating{
+	font-size:12px;
+	font-weight:bold;
+	padding:5px;
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+}
+.popupHeadingNonParticipating{
+	background: #F2BCC7 url('../images/popup_header_arrow.png') 5px 5px no-repeat;
+	padding-left: 24px !important;
+}
+
 .popupMoveMe.popupContent{
 	height:50px;
 }
@@ -509,26 +523,26 @@ footer .cirb-cibg img{
 	border-top-right-radius: 4px;
     z-index:1;
 }
-#btn-localizeviamap, #btn-pulldownmap, #btn-streetview {
+#btn-localizeviamap, #btn-toggle-map, #btn-streetview {
 	position: absolute;
 	bottom: 1px;
 	background: #FFF;
 	padding: 0 5px 0 5px;
     z-index:1;
 }
-#btn-localizeviamap a, #btn-pulldownmap a, #btn-streetview a{
+#btn-localizeviamap a, #btn-toggle-map a, #btn-streetview a{
 	font-size: 11px;
 	vertical-align: bottom;
 }
-#btn-localizeviamap a:link, #btn-localizeviamap a:visited, #btn-streetview a:link, #btn-streetview a:visited, #btn-pulldownmap a:link, #btn-pulldownmap a:visited{
+#btn-localizeviamap a:link, #btn-localizeviamap a:visited, #btn-streetview a:link, #btn-streetview a:visited, #btn-toggle-map a:link, #btn-toggle-map a:visited{
 	color:#485D78;
 	text-decoration: none;
 }
-#btn-localizeviamap a:hover, #btn-localizeviamap a:active, #btn-localizeviamap a:focus, #btn-streetview a:hover, #btn-streetview a:active, #btn-streetview a:focus, #btn-pulldownmap a:hover, #btn-pulldownmap a:active, #btn-pulldownmap a:focus{
+#btn-localizeviamap a:hover, #btn-localizeviamap a:active, #btn-localizeviamap a:focus, #btn-streetview a:hover, #btn-streetview a:active, #btn-streetview a:focus, #btn-toggle-map a:hover, #btn-toggle-map a:active, #btn-toggle-map a:focus{
 	color:#7090B7;
 	text-decoration: none;
 }
-#btn-localizeviamap, #btn-pulldownmap{
+#btn-localizeviamap, #btn-toggle-map{
 	right: 1px;
 	-webkit-border-bottom-right-radius: 4px;
 	-moz-border-radius-bottomright: 4px;
@@ -537,7 +551,7 @@ footer .cirb-cibg img{
 	-moz-border-radius-topleft: 4px;
     border-top-left-radius: 4px;
 }
-#btn-localizeviamap i, #btn-streetview i, #btn-pulldownmap i{
+#btn-localizeviamap i, #btn-streetview i, #btn-toggle-map i{
 	width: 25px;
 	height: 25px;
 }
@@ -547,8 +561,11 @@ footer .cirb-cibg img{
 #btn-streetview i{
 	background: transparent url('../images/icon-streetview.png') center center no-repeat;
 }
-#btn-pulldownmap i{
+.pulldown-map i{
 	background:transparent url('../images/icon-pulldownmap.png') center center no-repeat;
+}
+.pullup-map i{
+	background:transparent url('../images/icon-pullupmap.png') center center no-repeat;
 }
 #btn-streetview{
 	-webkit-border-bottom-left-radius: 4px;
@@ -572,8 +589,21 @@ footer .cirb-cibg img{
 .view_incident #btn-streetview{
 	right: 119px;
 }
-.view_incident #btn-streetview, .view_incident #btn-pulldownmap{
+.view_incident #btn-streetview, .view_incident #btn-toggle-map{
 	bottom: 1px;
+}
+
+.pullup-map{
+	display: none;
+}
+.pulldown-map{
+	display: block;
+}
+.map-big .pullup-map{
+	display: block;
+}
+.map-big .pulldown-map{
+	display: none;
 }
 
 .lead-container{
