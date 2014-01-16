@@ -20,6 +20,7 @@ $(BIN_PATH):
 	echo $(BIN_PATH)
 	virtualenv --python=python2.7 $(INSTALL_PATH) --system-site-packages
 	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | $(BIN_PATH)/python
+	$(BIN_PATH)/pip install setuptools==2.1
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install

@@ -512,7 +512,7 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=manager_' + str(self.manager2.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=department_' + str(self.group.id), {}, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
