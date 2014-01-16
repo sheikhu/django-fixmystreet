@@ -535,8 +535,8 @@ class Report(UserTrackedModel):
     ### deprecated not used ###
     valid = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
-    gravity = models.IntegerField(default=1)
-    probability = models.IntegerField(default=1)
+    gravity = models.IntegerField(default=0)
+    probability = models.IntegerField(default=0)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
