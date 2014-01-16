@@ -1769,6 +1769,15 @@ label strong{
 #result-table tr{
 	cursor: pointer;
 }
+#result-table td.s8, td.s3 {
+	color: rgb(58, 201, 92);
+}
+#result-table td.s2, td.s4, td.s5, td.s6, td.s7 {
+	color: orange;
+}
+#result-table td.s1 {
+	color: red;
+}
 #result-table .number_filter {
 	width: 60px;
 }
