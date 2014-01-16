@@ -66,29 +66,43 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 var columns = [
     {type: "number"}, // incident number
     {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
-    {sType: "date-euro", oSort:"date-eu"}, // date accepted
+    
     {type: "select"}, // categories
+    
+    /*{type: "select", values: [
+        '{{ True|yesno:_("regional,communal") }}',
+        '{{ False|yesno:_("regional,communal") }}'
+    ]}, */// regional
+    
+
     {type: "select"}, // sec categories
     {type: "text"},   // addr
     {type: "select"}, // postal code
+    {sType: "date-euro", oSort:"date-eu"}, // date last update
+    {type: "select", values: [ // status
+        {% for s in 'FMSUser'|model_field_choices:'quality' %}
+            "{{ s }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]},
+    {type: "select"}, // contractor
+    {type: "select"}, // resp manager
+    {type: "select"}, // resp entity
+    {sType: "date-euro", oSort:"date-eu"}, // date accepted/created
+    {sType: "date-euro", oSort:"date-eu"}, // date planned
+    {type: "number"}, // priority
     {type: "select", values: [
-        '{{ True|yesno:_("regional,communal") }}',
-        '{{ False|yesno:_("regional,communal") }}'
-    ]}, // regional
+        '{{ True|yesno:_("planned,not planned") }}',
+        '{{ False|yesno:_("planned,not planned") }}'
+    ]}, // planned
     {type: "select", values: [ // status
         {% for s in 'Report'|model_field_choices:'status' %}
             "{{ s }}"{% if not forloop.last %},{% endif %}
         {% endfor %}
     ]},
-    {type: "select"}, // resp entity
-    {type: "select"}, // resp manager
-    {type: "select"}, // contractor
-    {type: "select", values: [
-        '{{ True|yesno:_("planned,not planned") }}',
-        '{{ False|yesno:_("planned,not planned") }}'
-    ]}, // planned
-    {sType: "date-euro", oSort:"date-eu"}, // date planned
-    {type: "number"}, // priority
+    {type: "select", values: [//private
+        '{{ True|yesno:_("yes,no") }}',
+        '{{ False|yesno:_("yes,no") }}'
+    ]},
     {type: "select", values: [
         '{{ True|yesno:_("subscribed,not subscribed") }}',
         '{{ False|yesno:_("subscribed,not subscribed") }}'
@@ -97,10 +111,7 @@ var columns = [
         '{{ True|yesno:_("yes,no") }}',
         '{{ False|yesno:_("yes,no") }}'
     ], selected: '{{ False|yesno:_("yes,no") }}'}, // pending
-    {type: "select", values: [
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
-    ]},
+    
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
@@ -274,19 +285,24 @@ function refreshMap() {
             <ul id="column-visibility">
                 <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
+                
                 <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
+                
+                <!--li><label><input type="checkbox" checked /> {% trans "Road type" %}</label></li-->
                 <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Road type" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li> 
                 <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Private" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
             </ul>
