@@ -528,7 +528,7 @@ class Report(UserTrackedModel):
 
     responsible_entity = models.ForeignKey(OrganisationEntity, related_name='reports_in_charge', null=True, blank=True)
     responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True)  # must be not null after migration
-    
+
     ### deprecated to remove ###
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
     ### deprecated to remove ###
@@ -749,7 +749,7 @@ class Report(UserTrackedModel):
             self.subscriptions.add(ReportSubscription(subscriber=user))
 
     def trigger_updates_added(self, user=None, files=None, comment=None):
-        if (files or comment) and not self.responsible_department.memberships.filter(user=user).exists():
+        if files or comment:
             ReportNotification(
                 content_template='notify-updates',
                 recipient_mail=self.responsible_department.email,
