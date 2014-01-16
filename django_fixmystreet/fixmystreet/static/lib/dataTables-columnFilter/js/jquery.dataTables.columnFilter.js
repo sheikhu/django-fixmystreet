@@ -87,10 +87,11 @@
         }
 
         function _fnColumnIndex(iColumnIndex) {
+            
             if (properties.bUseColVis)
-                return iColumnIndex;
-            else
-                return oTable.fnSettings().oApi._fnVisibleToColumnIndex(oTable.fnSettings(), iColumnIndex);
+              return oTable.fnSettings().oApi._fnVisibleToColumnIndex(oTable.fnSettings(), iColumnIndex);
+              else
+            return iColumnIndex;
             //return iColumnIndex;
             //return oTable.fnSettings().oApi._fnColumnIndexToVisible(oTable.fnSettings(), iColumnIndex);
         }
@@ -154,6 +155,7 @@
                         }
                     }
                     /* Filter on the column (the index) of this element */
+                    //console.log(index);
                     oTable.fnFilter(this.value, _fnColumnIndex(index), regex, smart); //Issue 37
                     fnOnFiltered();
                 });
