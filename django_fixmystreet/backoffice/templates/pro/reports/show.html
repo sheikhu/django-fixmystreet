@@ -351,12 +351,24 @@ var someCallback = function(exifObject, index) {
     <article class="pro container">
         <div id="incident-head" class="">
             <div class="row-fluid">
-                <div class="span5">
+                <div class="span4">
                     <div class="ticket_infos">
-                        <span class="ticket_number">
-                            <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
-                        </span>
+                        {% if report.is_created %}
+                            <span class="ticket_number red_border">
+                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                            </span>
+                        {% elif report.is_in_progress %}
+                            <span class="ticket_number orange_border">
+                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                            </span>
+                        {% else %}
+                            <span class="ticket_number green_border">
+                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                            </span>
+                        {% endif %}
 
+                        <!-- Will be moved to the dropdown "Choisir une action" -->
+                        <!--
                         {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                             {% if report.private %}
                                 <div class="btn-group changeReportStatus">
@@ -401,7 +413,7 @@ var someCallback = function(exifObject, index) {
                                   </span>
                             {% endif %}
                         {% endif %}
-
+                        -->
                         <br />
 
                         <span class="ticket_address">
