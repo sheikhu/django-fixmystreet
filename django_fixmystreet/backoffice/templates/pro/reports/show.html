@@ -85,22 +85,6 @@ $(function(){
             $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
         }
     });
-    /****************************************************************/
-    /* Implement method when clicking private/public checkbox       */
-    /****************************************************************/
-    /*$("#id_private").bind("click",function(event){
-        var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
-        if (r2==true){
-            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
-        }
-        else {
-            $('#id_public').attr("checked", "checked");
-            window.location = '{{report.get_absolute_url_pro}}';
-        }
-    });
-    $("#id_public").bind("click",function(event){
-            window.location = '{% url "report_change_switch_privacy" report.id %}?privacy='+$("#id_private").is(":checked");
-    });*/
 
     /*Set the checked value*/
     {% if report.private %}
@@ -369,8 +353,7 @@ var someCallback = function(exifObject, index) {
 
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
-<!--script src="{{ STATIC_URL}}lib/lightbox/js/lightbox-2.6.min.js"></script>
-<link href="{{ STATIC_URL}}lib/lightbox/css/lightbox.css" rel="stylesheet" /-->
+
 {% endblock %}
 {% endblock %}
 
@@ -413,23 +396,6 @@ var someCallback = function(exifObject, index) {
                         <span class="ticket_desc">
 
                             {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
-
-                                <!--div class="btn-group changeCategory">
-                                  <a class="btn dropdown-toggle {{report.category.name}}" data-toggle="dropdown" href="#">
-                                    {{report.category.name}}
-                                    <span class="caret"></span>
-                                  </a>
-                                  <ul class="dropdown-menu">
-                                    {% for cat in category_list%}
-                                        <li>
-                                            <label>
-                                                <input type="radio" id="{{cat.id}}" name="{{cat.id}}" value="false">
-                                                {{cat.name}}
-                                            </label>
-                                        </li>
-                                    {% endfor %}
-                                  </ul>
-                                </div-->
                                 &nbsp;
                             {% else %}
                                 {{report.display_category}}
@@ -489,7 +455,8 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 {% for department in departments %}
                                                     <li>
-                                                        <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
+                                                        <a {% ifequal report.responsible_department.id department.id %}class="active"{% endifequal %}
+                                                        tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
                                                             {{department.name}} ({{ department.dependency.name}})
                                                         </a>
                                                     </li>
@@ -501,7 +468,7 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 {% for entity in entities %}
                                                     <li>
-                                                        <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
+                                                        <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
                                                             {{entity.name}}
                                                         </a>
                                                     </li>
@@ -513,7 +480,7 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 {% for institution in region_institution %}
                                                     <li>
-                                                        <a tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
+                                                        <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
                                                             {{institution.name}}
                                                         </a>
                                                     </li>
@@ -635,20 +602,11 @@ var someCallback = function(exifObject, index) {
                                     </a>
                                 </li>
 
-                                <!--li>
-                                {% if not report.pending %}
-                                    <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}" data-toggle="modal">{% trans 'Pending' %}</a>
-                                {% else %}
-                                    <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}" data-toggle="modal">{% trans 'Not Pending' %}</a>
-                                {% endif %}
-                                </li-->
-
                                 {% if not fms_user.contractor %}
                                     <li>
                                         <a href="javascript:close();">{% trans 'Close' %}</a>
                                     </li>
                                 {% endif %}
-                        <!--/li-->
                     </div>
                     {% endif %}
                     {% endif %}
