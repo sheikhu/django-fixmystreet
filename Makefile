@@ -26,11 +26,9 @@ install: $(BIN_PATH)
 	$(BIN_PATH)/manage.py migrate --all
 	$(BIN_PATH)/manage.py collectstatic --noinput
 
-develop: $(BIN_PATH) extra
+develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
 	$(BIN_PATH)/manage.py migrate --all
-
-extra:
 	$(BIN_PATH)/pip install -e .[debug]
 
 # generate new migration script
@@ -47,7 +45,7 @@ test: $(BIN_PATH)/manage.py
 lint:
 	flake8 $(SRC_ROOT)
 
-jenkins: install extra
+jenkins: develop
 	rm -rf reports
 	mkdir reports
 	$(BIN_PATH)/manage.py jenkins $(APP_NAME)
