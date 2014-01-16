@@ -146,35 +146,15 @@ INSTALLED_APPS = (
 # )
 
 
-try:
-    __import__('gunicorn')
-    print "using gunicorn"
+if ENVIRONMENT != 'local':
     INSTALLED_APPS += ('gunicorn', )
-except ImportError:
-    pass
-
-try:
-    __import__('debug_toolbar')
-    print "using debug toolbar"
+else:
     INSTALLED_APPS += ('debug_toolbar', )
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-except ImportError:
-    pass
 
-# INSTALLED_APPS += ('django_nose', )
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-# NOSE_PLUGINS = ['django_fixmystreet.fixmystreet.tests.TestDiscoveryPlugin']
+    # INSTALLED_APPS += ('django_pdb', )
+    # MIDDLEWARE_CLASSES += ('django_pdb.middleware.PdbMiddleware',)
 
-try:
-    __import__('django_pdb')
-    print "using django pdb"
-    INSTALLED_APPS += ('django_pdb', )
-    MIDDLEWARE_CLASSES += ('django_pdb.middleware.PdbMiddleware',)
-except ImportError:
-    pass
-
-try:
-    __import__('django_jenkins')
     INSTALLED_APPS += ('django_jenkins',)
     PROJECT_APPS = ('fixmystreet',)
     JENKINS_TASKS = (
@@ -182,9 +162,6 @@ try:
         'django_jenkins.tasks.with_coverage',
         'django_jenkins.tasks.django_tests',
     )
-except ImportError:
-    pass
-
 
 LOGGING = {
     'version': 1,

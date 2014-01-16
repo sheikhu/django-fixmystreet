@@ -1,15 +1,17 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from django.utils import unittest
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import (
+    Report, ReportCategory, OrganisationEntity, FMSUser,
+    UserOrganisationMembership, ReportEventLog)
+
 
 class HistoryTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.citizen = FMSUser(
@@ -432,14 +434,21 @@ class HistoryTest(TestCase):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
+        report = Report.objects.get(id=report_id)
+        activities = report.activities
+        self.assertEquals(activities.count(), 1)
+        self.assertEquals(activities.all()[0].event_type, ReportEventLog.CREATED)
 
         #first accept the report before citizen can update
         self.client.login(username='manager@a.com', password='test')
         url = reverse('report_accept_pro', args=[report_id])
         response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
         report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
+        self.assertIsNotNone(report.accepted_at)
+
+        self.assertEquals(activities.count(), 2)
+        self.assertEquals(activities.all()[1].event_type, ReportEventLog.VALID)
 
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
@@ -449,7 +458,6 @@ class HistoryTest(TestCase):
         }, follow=True)
         self.assertEqual(response.status_code, 200)
         report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
         self.assertEqual(report.comments().count(), 2)
 
         #Check for pro user first
@@ -457,9 +465,11 @@ class HistoryTest(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEquals(activities.all().count(), 3)
-        self.assertContains(response, self.calculatePrintPro(activities[2]))
+
+        self.assertEquals(activities.count(), 3)
+        self.assertEquals(activities.all()[2].event_type, ReportEventLog.UPDATED)
+
+        self.assertContains(response, self.calculatePrintPro(activities.all()[2]))
 
         self.client.logout()
         #Check for citizen user
@@ -467,8 +477,8 @@ class HistoryTest(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEqual(activities.all().count(), 3)
-        self.assertNotContains(response, self.calculatePrint(activities[2]))
-        self.assertNotContains(response, self.calculatePrintPro(activities[2]))
+        self.assertNotContains(response, self.calculatePrint(activities.all()[2]))
+        self.assertNotContains(response, self.calculatePrintPro(activities.all()[2]))
 
     def testCitizenSubscribesToReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
