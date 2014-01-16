@@ -35,7 +35,7 @@
             var reportsMergeable = document.getElementsByClassName('reportsMergeable');
 
             for (var i=0, mergeableLength=reportsMergeable.length; i<mergeableLength; i++) {
-                if (reportsMergeable[i].id.contains(ticketSearch.value)) {
+                if (new String(reportsMergeable[i].id).indexOf(ticketSearch.value) != -1) {
                     reportsMergeable[i].hidden = false;
                 } else {
                     reportsMergeable[i].hidden = true;
