@@ -154,7 +154,6 @@ function getAddressFromPoint(lang, x, y) {
 
             var x = response.result.point.x;
             var y = response.result.point.y;
-debugger;
             //INJECTION
             if (!BACKOFFICE && response.result.address.street.postCode in zipcodes && !zipcodes[String(response.result.address.street.postCode)].participation) {
                 //var popupContent = "<p>" + street + ", " + number;
