@@ -1,16 +1,16 @@
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
 
+
 class ReportViewsTest(SampleFilesTestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
-        
+
         self.user = FMSUser(username='test1', email='test1@fixmystreet.irisnet.be', password='test')
         self.user.save()
 
@@ -30,7 +30,7 @@ class ReportViewsTest(SampleFilesTestCase):
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = OrganisationEntity.objects.get(pk=14),
+            dependency=OrganisationEntity.objects.get(pk=14),
             email="test@email.com"
             )
         self.group.save()
@@ -49,47 +49,47 @@ class ReportViewsTest(SampleFilesTestCase):
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager.id, organisation_id = self.group.id,contact_user = True)
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
 
         self.sample_post = {
-            'report-x':'150056.538',
-            'report-y':'170907.56',
-            'report-address_fr':'Avenue des Arts, 3',
-            'report-address_nl':'Kunstlaan, 3',
-            'report-address_number':'3',
-            'report-postalcode':'1210',
-            'report-category':'1',
-            'report-secondary_category':'1',
-            'report-subscription':'on',
-            'comment-text':'test',
+            'report-x': '150056.538',
+            'report-y': '170907.56',
+            'report-address_fr': 'Avenue des Arts, 3',
+            'report-address_nl': 'Kunstlaan, 3',
+            'report-address_number': '3',
+            'report-postalcode': '1210',
+            'report-category': '1',
+            'report-secondary_category': '1',
+            'report-subscription': 'on',
+            'comment-text': 'test',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0,
-            'citizen-email':self.citizen.email,
-            'citizen-firstname':self.citizen.first_name,
-            'citizen-lastname':self.citizen.last_name,
-            'citizen-quality':'1',
+            'citizen-email': self.citizen.email,
+            'citizen-firstname': self.citizen.first_name,
+            'citizen-lastname': self.citizen.last_name,
+            'citizen-quality': '1',
             'report-terms_of_use_validated': True
         }
         self.sample_post_2 = {
-            'report-x':'150056',
-            'report-y':'170907.56',
-            'report-address_fr':'Avenue des Arts, 3',
-            'report-address_nl':'Kunstlaan, 3',
-            'report-address_number':'5',
-            'report-postalcode':'1210',
-            'report-category':'1',
-            'report-secondary_category':'1',
-            'report-subscription':'on',
-            'comment-text':'test2',
+            'report-x': '150056',
+            'report-y': '170907.56',
+            'report-address_fr': 'Avenue des Arts, 3',
+            'report-address_nl': 'Kunstlaan, 3',
+            'report-address_number': '5',
+            'report-postalcode': '1210',
+            'report-category': '1',
+            'report-secondary_category': '1',
+            'report-subscription': 'on',
+            'comment-text': 'test2',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0,
-            'citizen-email':self.citizen.email,
-            'citizen-firstname':self.citizen.first_name,
-            'citizen-lastname':self.citizen.last_name,
-            'citizen-quality':'1',
+            'citizen-email': self.citizen.email,
+            'citizen-firstname': self.citizen.first_name,
+            'citizen-lastname': self.citizen.last_name,
+            'citizen-quality': '1',
             'report-terms_of_use_validated': True
         }
 
@@ -116,17 +116,16 @@ class ReportViewsTest(SampleFilesTestCase):
     def test_new_report(self):
         """Tests the new report page."""
         url = reverse('report_new')
-        response = self.client.get(url, {'x':'148360','y':'171177'}, follow=True)
+        response = self.client.get(url, {'x': '148360', 'y': '171177'}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('reports' in response.context)
         # Assert that the list view displays minimal information about reports
         last_dist = 0
         for report in response.context['reports']:
             self.assertContains(response, report.get_absolute_url())
-            self.assertTrue(report.distance.m <= 1000) # limit to 1km around
-            self.assertTrue(report.distance.m >= last_dist) # ordered by distance
+            self.assertTrue(report.distance.m <= 1000)  # limit to 1km around
+            self.assertTrue(report.distance.m >= last_dist)  # ordered by distance
             last_dist = report.distance.m
-
 
     def test_create_report(self):
         """Tests the creation of a report and test the view of it."""
@@ -151,10 +150,10 @@ class ReportViewsTest(SampleFilesTestCase):
 
         url = "%s?x=148360&y=171177" % reverse('report_new')
 
-        response = self.client.post(url, self.sample_post, follow=True)
-        response = self.client.post(url, self.sample_post, follow=True)
-        response = self.client.post(url, self.sample_post, follow=True)
-        response = self.client.post(url, self.sample_post, follow=True)
+        self.client.post(url, self.sample_post, follow=True)
+        self.client.post(url, self.sample_post, follow=True)
+        self.client.post(url, self.sample_post, follow=True)
+        self.client.post(url, self.sample_post, follow=True)
 
         self.assertEqual(1, len(Report.objects.all()))
 
@@ -224,10 +223,10 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.comments()[0].created_by, self.citizen)
         report.save()
 
-        response = self.client.post(reverse('report_document', kwargs={'report_id': report.id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report.id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
-            'citizen-email'   : self.user.email,
-            'citizen-quality' : 1,
+            'citizen-email': self.user.email,
+            'citizen-quality': 1,
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
@@ -250,7 +249,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.comments()[0].created_by, self.manager)
         report.save()
 
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report.id, 'slug':'hello'}), {
+        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report.id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
@@ -269,13 +268,13 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.post(url, self.sample_post, follow=True)
         report = response.context['report']
 
-        self.assertEqual(Report.objects.get(id=report.id).category.id,1)
-        self.assertEqual(Report.objects.get(id=report.id).secondary_category.id,1)
+        self.assertEqual(Report.objects.get(id=report.id).category.id, 1)
+        self.assertEqual(Report.objects.get(id=report.id).secondary_category.id, 1)
 
-        response2 = self.client.post(reverse('update_category_for_report',args=[report.id]),{"main_category":"2","secondary_category":"32"})
+        self.client.post(reverse('update_category_for_report', args=[report.id]), {"main_category": "2", "secondary_category": "32"})
 
-        self.assertEqual(Report.objects.get(id=report.id).category.id,2)
-        self.assertEqual(Report.objects.get(id=report.id).secondary_category.id,32)
+        self.assertEqual(Report.objects.get(id=report.id).category.id, 2)
+        self.assertEqual(Report.objects.get(id=report.id).secondary_category.id, 32)
 
     def test_subscription(self):
         """Tests the subscription of a report."""
@@ -290,7 +289,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.client.login(username='manager@a.com', password='test')
 
         #unsubscribe to the report
-        response = self.client.get(reverse('unsubscribe_pro',args=[report.id]), {}, follow=True)
+        response = self.client.get(reverse('unsubscribe_pro', args=[report.id]), {}, follow=True)
         self.assertRedirects(response, report.get_absolute_url_pro())
         self.assertEqual(response.status_code, 200)
 
@@ -305,7 +304,6 @@ class ReportViewsTest(SampleFilesTestCase):
         #current user is subscribed
         self.assertTrue(report.subscriptions.filter(subscriber=self.manager).exists())
 
-
     def test_subscription_citizen(self):
         """Tests the subscription of a report."""
 
@@ -317,13 +315,12 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertTrue(report.subscriptions.filter(subscriber=self.citizen).exists())
 
         #unsubscribe to the report
-        response = self.client.get(reverse('unsubscribe',args=[report.id]) + '?citizen_email=' + self.citizen.email, {}, follow=True)
+        response = self.client.get(reverse('unsubscribe', args=[report.id]) + '?citizen_email=' + self.citizen.email, {}, follow=True)
         self.assertRedirects(response, report.get_absolute_url())
         self.assertEqual(response.status_code, 200)
 
         #current user is no more subscribed
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen).exists())
-
 
     def test_merge_reports(self):
         """Test merge reports. """
@@ -342,21 +339,20 @@ class ReportViewsTest(SampleFilesTestCase):
             'username': self.manager.email,
             'password': 'test'
         }
-        response3 = self.client.post(reverse('login'), params)
+        self.client.post(reverse('login'), params)
 
         #Merge reports
-        url2 = reverse('report_do_merge_pro',args=[report.id])
-        response4 = self.client.post(url2,{"mergeId":report2.id})
+        url2 = reverse('report_do_merge_pro', args=[report.id])
+        self.client.post(url2, {"mergeId": report2.id})
 
         #Reference from merged to kept report
-        self.assertEqual(report.id,Report.objects.get(id=report2.id).merged_with.id)
+        self.assertEqual(report.id, Report.objects.get(id=report2.id).merged_with.id)
 
         #The first one (oldest one) is kept
-        self.assertEqual(Report.visibles.all()[0].id, report.id)
+        self.assertEqual(Report.objects.visible().all()[0].id, report.id)
 
         #The comment of the second one is added to the first one
-        self.assertEqual(Report.objects.get(id=report.id).comments().count(),2)
-
+        self.assertEqual(Report.objects.get(id=report.id).comments().count(), 2)
 
     def test_mark_done(self):
         """Tests marking report as done."""
@@ -368,7 +364,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertFalse(report.mark_as_done_user)
         self.assertFalse(report.fixed_at)
 
-        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed':'True'}, follow=True)
+        self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
@@ -386,7 +382,7 @@ class ReportViewsTest(SampleFilesTestCase):
 
         # Auth as manager
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed':'True'}, follow=True)
+        self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
@@ -432,7 +428,7 @@ class ReportViewsTest(SampleFilesTestCase):
             'password': 'test'
         }
 
-        url = '%s?next=/fr/pro/reports/' %reverse('login')
+        url = '%s?next=/fr/pro/reports/' % reverse('login')
         response = self.client.post(url, params)
 
         self.assertEqual(response.status_code, 302)
@@ -456,7 +452,6 @@ class ReportViewsTest(SampleFilesTestCase):
 
         response = self.client.post(reverse('logout'))
         self.assertEqual(response.status_code, 302)
-
 
     def test_marker_detail_citizen(self):
         url = "%s?x=148360&y=171177" % reverse('report_new')

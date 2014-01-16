@@ -44,7 +44,7 @@ class MailTest(TestCase):
             name_fr="Travaux",
             phone="090987",
             dependency=OrganisationEntity.objects.get(pk=14),
-            email="test@email.com"
+            email="test1@email.com"
             )
         self.group.save()
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
@@ -72,7 +72,7 @@ class MailTest(TestCase):
             name_fr="Travaux",
             phone="090987",
             dependency=OrganisationEntity.objects.get(pk=21),
-            email="test@email.com"
+            email="test2@email.com"
             )
         self.group2.save()
         self.usergroupmembership2 = UserOrganisationMembership(user_id=self.manager2.id, organisation_id=self.group2.id)
@@ -109,6 +109,7 @@ class MailTest(TestCase):
         self.contractor = OrganisationEntity(
             name_nl="Fabricom GDF",
             name_fr="Fabricom GDF",
+            email="contractor@email.com",
             commune=False,
             region=False,
             subcontractor=True,
@@ -378,7 +379,7 @@ class MailTest(TestCase):
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertIn(self.group.email, mail.outbox[0].to + mail.outbox[1].to)
+        self.assertIn(self.group.email, mail.outbox[0].to)
 
     def testReportResolvedAsProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -430,22 +431,28 @@ class MailTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        # one for creator subscription, one for manager
+        self.assertEquals(len(mail.outbox), 2)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
         #Publish the created report
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
+        # Should be 6 mails: 2 for creation, 1 for acceptance and
         self.assertEquals(len(mail.outbox), 3)
+
+        mail.outbox = []  # reset
         response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=entity_21', {}, follow=True)
 
         self.assertEquals(response.status_code, 200)
-        #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other entity, 2 to subcribers (manager, user)
-        self.assertEquals(len(mail.outbox), 6)
-        self.assertTrue(self.manager3.email in mail.outbox[3].to)
-        self.assertIn(self.citizen.email, mail.outbox[4].to + mail.outbox[5].to)
-        self.assertIn(self.manager.email, mail.outbox[4].to + mail.outbox[5].to)
+        # 1 for resolving assigning the issue to other entity,
+        # 3 to subcribers (manager1, manager2, user)
+        self.assertEquals(len(mail.outbox), 4)
+        self.assertIn(self.group2.email, mail.outbox[0].to)
+        self.assertIn(self.citizen.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
+        self.assertIn(self.manager2.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
+        self.assertIn(self.manager3.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
 
     def testAssignToImpetrantMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -457,7 +464,7 @@ class MailTest(TestCase):
         # Add a worker for this entity
         worker = FMSUser(email="worker@impetrant.be", telephone="0123456789")
         worker.save()
-        worker.work_for.add(self.impetrant)
+        worker.memberships.create(organisation=self.impetrant)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
@@ -468,11 +475,13 @@ class MailTest(TestCase):
         response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
 
         self.assertEquals(response.status_code, 200)
-        #Should be 6 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to impetrant, 2 to subcribers (manager, user)
-        self.assertEquals(len(mail.outbox), 6)
-        self.assertTrue(worker.email in mail.outbox[3].to)
-        self.assertIn(self.citizen.email, mail.outbox[4].to + mail.outbox[5].to)
-        self.assertIn(self.manager.email, mail.outbox[4].to + mail.outbox[5].to)
+
+        # Should be 6 mails: 2 for creation, 1 for acceptance and
+        # 1 for assigning the issue to impetrant,
+        # 1 to subcribers (user, not to manager because he comment)
+        self.assertEquals(len(mail.outbox), 5)
+        self.assertIn(self.impetrant.email, mail.outbox[3].to)
+        self.assertIn(self.citizen.email, mail.outbox[4].to)
         #if the gestionnaire updates the report the impetrant should be informed by mail
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
@@ -481,8 +490,8 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         #One notification should be sent to impetrant to inform him of new comment
-        self.assertEquals(len(mail.outbox), 7)
-        self.assertTrue(self.impetrant.workers.all()[0].email in mail.outbox[6].to)
+        self.assertEquals(len(mail.outbox), 6)
+        self.assertIn(self.impetrant.email, mail.outbox[5].to)
 
     def testAssignToContractorMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -494,7 +503,7 @@ class MailTest(TestCase):
         # Add a worker for this entity
         worker = FMSUser(email="worker@contractor.be", telephone="0123456789")
         worker.save()
-        worker.memberships.add(organisation=self.contractor)
+        worker.memberships.create(organisation=self.contractor)
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
@@ -507,7 +516,7 @@ class MailTest(TestCase):
         self.assertEquals(response.status_code, 200)
         #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to contractor
         self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(worker.email in mail.outbox[3].to)
+        self.assertIn(self.contractor.email, mail.outbox[3].to)
         #If gestionaire adds comment the contractor should be notified
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
@@ -516,9 +525,8 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         # One notification should be sent to contractor to inform him of new comment
-        # One notification should be sent to department
-        self.assertEquals(len(mail.outbox), 6)
-        self.assertIn(self.contractor.memberships.all()[0].user.email, mail.outbox[4].to)
+        self.assertEquals(len(mail.outbox), 5)
+        self.assertIn(self.contractor.email, mail.outbox[4].to)
 
     def testCitizenUpdatesReportMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)

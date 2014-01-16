@@ -1745,6 +1745,9 @@ label strong{
 	right:auto;
 	left:0;
 }
+.incidentActions .dropdown-menu .active{
+	background:#7090B7;
+}
 #main_cat_select, #sec_cat_select{
 	float:left;
 	font-size:12px;

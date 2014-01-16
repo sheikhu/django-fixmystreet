@@ -97,7 +97,18 @@ def planned( request, report_id ):
 
 def pending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    report.pending = not report.pending;
+    report.pending = True;
+    report.save()
+
+    #Redirect to the report show page
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
+
+def notpending(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    report.pending = False;
     report.save()
 
     #Redirect to the report show page
@@ -126,7 +137,7 @@ def switchPrivacy(request,report_id):
             return HttpResponseRedirect(report.get_absolute_url())
 
 def changeManager(request,report_id):
-    
+
     report = Report.objects.get(pk=report_id)
     report.status = Report.MANAGER_ASSIGNED
 
@@ -139,10 +150,12 @@ def changeManager(request,report_id):
     if manId.split("_")[0] == "department":
         newRespMan = OrganisationEntity.objects.get(pk=int(manId.split("_")[1]))
         report.responsible_department = newRespMan
-    if manId.split("_")[0] == "entity":
+    elif manId.split("_")[0] == "entity":
         orgId = int(manId.split("_")[1])
         report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
         report.responsible_department = None
+    else:
+        raise Exception('missing department or entity paramettre')
 
     report.save()
 
@@ -258,28 +271,36 @@ def do_merge(request,report_id):
     #     return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
 
     #Determine which report needs to be kept [TO BE REVIEWED SPRINT 2]
-    if report.accepted_at:
-        if report_2.accepted_at:
-            if report.accepted_at < report_2.accepted_at:
-                final_report = report
-                report_to_delete = report_2
-            else:
-                final_report = report_2
-                report_to_delete = report
-        else:
-            final_report = report
-            report_to_delete = report_2
+    #NEW ALGO: 2014/01/12
+    if report.created < report_2.created:
+        final_report = report
+        report_to_delete = report_2
     else:
-        if report_2.accepted_at:
-            final_report = report_2
-            report_to_delete = report
-        else:
-            if report.created < report_2.created:
-                final_report = report
-                report_to_delete = report_2
-            else:
-                final_report = report_2
-                report_to_delete = report
+        final_report = report_2
+        report_to_delete = report
+    #Now the oldest report must remain
+    #if report.accepted_at:
+    #    if report_2.accepted_at:
+    #        if report.accepted_at < report_2.accepted_at:
+    #            final_report = report
+    #            report_to_delete = report_2
+    #        else:
+    #            final_report = report_2
+    #            report_to_delete = report
+    #    else:
+    #        final_report = report
+    #        report_to_delete = report_2
+    #else:
+    #    if report_2.accepted_at:
+    #        final_report = report_2
+    #        report_to_delete = report
+    #    else:
+    #        if report.created < report_2.created:
+    #            final_report = report
+    #            report_to_delete = report_2
+    #        else:
+    #            final_report = report_2
+    #            report_to_delete = report
 
     #Move attachments to new report
     for attachment in report_to_delete.attachments.all():

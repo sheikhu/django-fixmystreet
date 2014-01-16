@@ -1,18 +1,20 @@
 
+import re
 import json
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-
-from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, ReportCategory, Report,ReportMainCategoryClass,MailNotificationTemplate
-from django_fixmystreet.fixmystreet.stats import UserTypeForOrganisation
 from django.utils.translation import ugettext as _
-from django_fixmystreet.fixmystreet.utils import get_current_user, transform_notification_template
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django_fixmystreet.fixmystreet.utils import generate_pdf
 from django.template import RequestContext
-import re
+
+from django_fixmystreet.fixmystreet.models import (
+    OrganisationEntity, ReportCategory,
+    Report, ReportMainCategoryClass, MailNotificationTemplate)
+from django_fixmystreet.fixmystreet.utils import get_current_user, transform_notification_template
+from django_fixmystreet.fixmystreet.utils import generate_pdf
 
 
 def saveCategoryConfiguration(request):
@@ -36,38 +38,17 @@ def saveCategoryConfiguration(request):
 
 def get_report_popup_details(request):
     report_id = request.REQUEST.get("report_id")
-    report = Report.objects.get(id=report_id)
+    report = Report.objects.all().related_fields().get(id=report_id)
     return HttpResponse(json.dumps(report.full_marker_detail_pro_JSON()), mimetype="application/json")
 
 
 def updatePriority(request, report_id):
-    report=get_object_or_404(Report, id=report_id)
+    report = get_object_or_404(Report, id=report_id)
     report.gravity = int(request.GET["gravity"])
     report.probability = int(request.GET["probability"])
     report.save()
     return HttpResponse(json.dumps({"priority": report.get_priority()}), mimetype="application/json")
 
-
-def filter_map(request):
-    mFilter = request.GET["filter"]
-    result = []
-    if "created" in mFilter:
-        result += Report.visibles.all().filter(status=Report.CREATED)
-    if "in_progress" in mFilter:
-        result += Report.visibles.all().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
-    if "closed" in mFilter:
-        result += Report.visibles.all().filter(status__in=Report.REPORT_STATUS_CLOSED)
-    if mFilter == "":
-        result += Report.visibles.all()
-
-    jsonString = "["
-    for report in result:
-        jsonString += json.dumps(report.marker_detail_short())+","
-
-    jsonString = jsonString[:-1]
-    jsonString += "]"
-
-    return HttpResponse(jsonString, mimetype="application/json")
 
 def report_false_address(request, report_id):
     if request.method == "POST":
