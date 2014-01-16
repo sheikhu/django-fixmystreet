@@ -65,7 +65,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
 var columns = [
     {type: "number"}, // incident number
-    {type: "text", "bSortable": false},   // thumbnail
+    {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
     {sType: "date-euro", oSort:"date-eu"}, // date accepted
     {type: "select"}, // categories
     {type: "select"}, // sec categories
@@ -134,7 +134,14 @@ function generateTableContent() {
                 "fnDrawCallback": function() {
                     fms.storeTablePreferences({'sort':this.fnSettings().aaSorting});
                 },
-                "fnRowCallback": customFnRowCallback,
+                "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+                    //If image then display using img tag 
+                    if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image') {
+                        var imageIndex = 0 + (this.fnSettings().aoColumns[0].bVisible === true?1:0);
+                        $('td:eq('+imageIndex+')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+                    }
+                    return nRow;
+                 }
             });
 
             var checkboxes = $('#column-visibility :checkbox');
@@ -187,12 +194,13 @@ function generateTableContent() {
     });
 }
 
-function customFnRowCallback( nRow, aData, iDisplayIndex )
+/*function customFnRowCallback( nRow, aData, iDisplayIndex )
  {
     //If image then display it as is.
-   /* $('td:eq(1)', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
-    return nRow;*/
- }
+    
+    $('td:eq('+iDisplayIndex+')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+    return nRow;
+ }*/
 
 generateTableContent();
 
