@@ -1264,10 +1264,26 @@ form#report-form{
 #incident-head .ticket_number{
 	color:#D2E2F6;
 	font-size: 1.2em;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 2px 5px;
+	margin-bottom: 4px;
+	display: inline-block;
 }
-/*#incident-head .ticket_number .number_only{
+#incident-head .ticket_number.orange_border{
+	border: 2px solid #F79422;
+}
+#incident-head .ticket_number.red_border{
+	border: 2px solid #C3272F;
+}
+#incident-head .ticket_number.green_border{
+	border: 2px solid #3CB64B;
+}
+	
+#incident-head .ticket_number .number_only{
 	font-weight:bold;
-}*/
+}
 #incident-head .ticket_address{
 	color:#FFF;
 	font-weight:bold;
