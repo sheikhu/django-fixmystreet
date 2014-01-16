@@ -523,10 +523,12 @@ class Report(UserTrackedModel):
 
     responsible_entity = models.ForeignKey(OrganisationEntity, related_name='reports_in_charge', null=True, blank=True)
     responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True)  # must be not null after migration
+    
     ### deprecated to remove ###
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
     ### deprecated to remove ###
     responsible_manager_validated = models.BooleanField(default=False)
+
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
     previous_managers = models.ManyToManyField('FMSUser', related_name='previous_reports', null=True, blank=True)
 
@@ -534,6 +536,7 @@ class Report(UserTrackedModel):
 
     ### deprecated not used ###
     valid = models.BooleanField(default=False)
+
     private = models.BooleanField(default=False)
     gravity = models.IntegerField(default=0)
     probability = models.IntegerField(default=0)
