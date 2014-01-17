@@ -570,18 +570,19 @@ class Report(UserTrackedModel):
         elif self.is_refused():
             marker_color = "gray"
 
-        if user and user.is_authenticated():
-            if self.is_regional():
-                return "images/marker-"+marker_color+"-xxs.png"
-            elif self.is_pro():
-                return "images/marker-"+marker_color+"-xxs.png"
-            else:
-                return "images/marker-"+marker_color+"-xxs.png"
-        else:
-            if self.is_pro():
-                return "images/marker-"+marker_color+"-xxs.png"
-            else:
-                return "images/marker-"+marker_color+"-xxs.png"
+        return "images/marker-"+marker_color+"-xxs.png"
+        #if user and user.is_authenticated():
+        #    if self.is_regional():
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #    elif self.is_pro():
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #    else:
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #else:
+        #    if self.is_pro():
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #    else:
+        #        return "images/marker-"+marker_color+"-xxs.png"
 
     def is_regional(self):
         return self.address_regional
