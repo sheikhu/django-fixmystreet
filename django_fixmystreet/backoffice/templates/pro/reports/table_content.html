@@ -58,7 +58,7 @@
         {% for report in reports %}
             <tr data-href="{{ report.get_absolute_url_pro }}">
                 <td class="s{{report.status}}">{{ report.id }}</td>
-                <td>{{ report.thumbnail }}</td>
+                <td>{{ report.thumbnail_url }}</td>
                 <td class="s{{report.status}}">{{ report.category.name }}</td>
                 
                 <!--td class="s{{report.status}}">{{ report.address_regional|yesno:_("regional,communal") }}</td-->
