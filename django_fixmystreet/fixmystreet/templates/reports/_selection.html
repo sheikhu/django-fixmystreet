@@ -3,9 +3,9 @@
 <a href="javascript:void(0);" onclick="selectReport({{report.id}},this);" class="clearfix report{% if active %} active{% endif %}">
 	<div class="left_search_result">
 		<img style="max-width:30px;" src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
-
-		{% if report.thumbnail %}
-		<img width="69px" src="{{ report.thumbnail }}" class="report-preview thumbnail" />
+zaza
+		{% if report.thumbnail_url %}
+		<img width="69px" src="{{ report.thumbnail_url }}" class="report-preview thumbnail" />
 		{% else %}
 		<img src="{{ STATIC_URL }}images/no-photo-yellow-line.png" class="report-preview thumbnail" />
 		{% endif %}
