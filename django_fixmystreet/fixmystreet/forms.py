@@ -90,7 +90,7 @@ class ReportForm(forms.ModelForm):
             report.save()
 
         return report
-    
+
 
 #Used by pro version
 class ProReportForm(ReportForm):
@@ -238,7 +238,7 @@ class ReportFileForm(forms.ModelForm):
         return file_creation_date
 
     def save(self, commit=True):
-        report_file = super(ReportFileForm,self).save(commit=False)
+        report_file = super(ReportFileForm, self).save(commit=False)
 
         if (report_file.title == ''):
             report_file.title = report_file.file.name
@@ -251,31 +251,32 @@ class ReportFileForm(forms.ModelForm):
 
 class ReportCommentForm(forms.ModelForm):
     required_css_class = 'required'
+
     class Meta:
         model = ReportComment
         fields = ('text',)
 
-    text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder':_("Add a comment, please.")}))
+    text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder': _("Add a comment, please.")}))
 
 
 class MarkAsDoneForm(forms.ModelForm):
     mark_as_done_motivation = forms.CharField(
-                label=_("Mark as done"),
-                required=False,
-                widget=forms.Textarea(attrs={
-                    'placeholder': _("Mark as done comments.")
-                })
-            )
+        label=_("Mark as done"),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'placeholder': _("Mark as done comments.")
+        })
+    )
+
     class Meta:
-        model = Report;
+        model = Report
         fields = ('mark_as_done_motivation',)
 
     def save(self, commit=True):
-        report = super(MarkAsDoneForm,self).save(commit=False)
+        report = super(MarkAsDoneForm, self).save(commit=False)
         report.status = Report.SOLVED
         report.mark_as_done_user = get_current_user()
         report.fixed_at = datetime.datetime.now()
-
         if commit:
             report.save()
         return report

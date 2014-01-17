@@ -72,7 +72,10 @@ def close(request, report_id):
     #Update the status and set the close date
     report.status = Report.PROCESSED
     report.close_date = datetime.now()
+    if not report.fixed_at:
+        report.fixed_at = report.close_date
     report.save()
+
     #Redirect to the report show page
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())

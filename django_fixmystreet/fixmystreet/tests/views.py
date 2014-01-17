@@ -348,7 +348,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.id, Report.objects.get(id=report2.id).merged_with.id)
 
         #The first one (oldest one) is kept
-        self.assertEqual(Report.objects.visible().all()[0].id, report.id)
+        self.assertEqual(Report.objects.all().visible()[0].id, report.id)
 
         #The comment of the second one is added to the first one
         self.assertEqual(Report.objects.get(id=report.id).comments().count(), 2)
@@ -360,15 +360,29 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.post(url, self.sample_post, follow=True)
         report = response.context['report']
 
+        self.client.login(username='manager@a.com', password='test')
+        url = reverse('report_accept_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.client.logout()
+
         self.assertFalse(report.mark_as_done_user)
         self.assertFalse(report.fixed_at)
 
-        self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
+        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
         self.assertTrue(report.fixed_at)
+        self.assertFalse(report.mark_as_done_user)
         self.assertEqual(report.status, Report.SOLVED)
+
+        self.client.login(username=self.manager.email, password='test')
+        self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
+        self.assertEqual(response.status_code, 200)
+        report = response.context['report']
+        self.assertTrue(report.fixed_at)
+        self.assertEqual(report.status, Report.PROCESSED)
 
     def test_mark_done_as_user(self):
         """Tests marking report as done."""
@@ -379,15 +393,26 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertFalse(report.mark_as_done_user)
         self.assertFalse(report.fixed_at)
 
-        # Auth as manager
         self.client.login(username='manager@a.com', password='test')
-        self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
+        url = reverse('report_accept_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('report_fix_pro', args=[report.id]), {'is_fixed': 'True'}, follow=True)
+        self.assertEquals(response.status_code, 200)
 
         report = response.context['report']
         self.assertTrue(report.fixed_at)
         self.assertTrue(report.mark_as_done_user)
-        self.assertEqual(report.status, Report.SOLVED)
+        self.assertEquals(report.status, Report.SOLVED)
+
+        self.client.login(username=self.manager.email, password='test')
+        self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        report = response.context['report']
+        self.assertTrue(report.fixed_at)
+        self.assertTrue(report.close_date)
+        self.assertEquals(report.status, Report.PROCESSED)
 
     def test_search_ticket(self):
         """Tests searching ticket."""
@@ -402,15 +427,6 @@ class ReportViewsTest(SampleFilesTestCase):
         report_result = response.context['report']
 
         self.assertEqual(report, report_result)
-
-    #def test_wards_city(self):
-    #    """Tests the city and wards view."""
-    #    response = self.client.get(reverse('bxl_wards'), follow=True)
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertTrue('city' in response.context)
-    #    self.assertEquals(response.context['city'].id,1)
-    #    response = self.client.get(reverse('ward_show',args=[1]), follow=True)
-    #    self.assertEqual(response.status_code, 200)
 
     def test_login_user(self):
         params = {
