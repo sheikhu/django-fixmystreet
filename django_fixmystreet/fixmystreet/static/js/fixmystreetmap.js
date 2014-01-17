@@ -188,6 +188,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         showControl = true,
         createdMarkerStyle = cloneObj(defaultMarkerStyle),
         fixedMarkerStyle = cloneObj(defaultMarkerStyle),
+        rejectedMarkerStyle = cloneObj(defaultMarkerStyle),
         pendingMarkerStyle = cloneObj(defaultMarkerStyle),
         draggableMarkerStyle = cloneObj(defaultMarkerStyle),
 
@@ -220,10 +221,23 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             }),
             symbolizer: fixedMarkerStyle,
             elseFilter: true
+        }),
+        processedRule = new OpenLayers.Rule({
+            name: "rule-rejected",
+            filter: new OpenLayers.Filter({
+                evaluate: function (context) {
+                    return context.rejected;
+                }
+            }),
+            symbolizer: rejectedMarkerStyle,
+            elseFilter: true
         });
 
     createdMarkerStyle.externalGraphic = "/static/images/pin-red-L.png";
     createdMarkerStyle.display = "";
+
+    rejectedMarkerStyle.externalGraphic = "/static/images/pin-gray-L.png";
+    rejectedMarkerStyle.display = "";
 
     fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png";
     fixedMarkerStyle.display = "";
@@ -773,8 +787,9 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             status === 5 ||
                             status === 6 ||
                             status === 7;
-        report.processed = status === 3 ||
-                           status === 8;
+        report.processed = status === 3;
+        report.rejected = status === 8;/* ||
+                           status === 8;*/
 
         var newMarker = new OpenLayers.Feature.Vector(markerPoint, report);
         this.markers.push(newMarker);
