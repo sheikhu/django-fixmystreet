@@ -572,9 +572,8 @@ class Report(UserTrackedModel):
 
     def get_marker(self):
         #user = get_current_user()
-
         marker_color = "green"  # default color
-        
+
         if self.is_in_progress():
             marker_color = "orange"
         elif self.is_created():
@@ -583,18 +582,6 @@ class Report(UserTrackedModel):
             marker_color = "gray"
 
         return "images/marker-"+marker_color+"-xxs.png"
-        #if user and user.is_authenticated():
-        #    if self.is_regional():
-        #        return "images/marker-"+marker_color+"-xxs.png"
-        #    elif self.is_pro():
-        #        return "images/marker-"+marker_color+"-xxs.png"
-        #    else:
-        #        return "images/marker-"+marker_color+"-xxs.png"
-        #else:
-        #    if self.is_pro():
-        #        return "images/marker-"+marker_color+"-xxs.png"
-        #    else:
-        #        return "images/marker-"+marker_color+"-xxs.png"
 
     def is_regional(self):
         return self.address_regional
@@ -1466,10 +1453,10 @@ def report_file_notify(sender, instance, **kwargs):
 @receiver(post_save, sender=ReportFile)
 def init_report_overview(sender,instance,**kwargs):
     user = get_current_user()
-    
+
     images_pro = instance.report.files()
     images_public = instance.report.active_files()
-    
+
     if images_pro.exists():
         instance.report.private_thumbnail = images_pro[0].image.thumbnail.url()
         if images_public.exists():
