@@ -254,6 +254,8 @@ function refreshMap() {
 </script>
 {% endblock %}
 
+
+<!-- ZONE DE CARTE -->
 {% block map %}
 <div class="row">
     <div class="span12">
@@ -270,6 +272,8 @@ function refreshMap() {
 </div>
 {% endblock %}
 
+
+<!-- FILTRE DES COLONNES -->
 {% block content %}
 <div id="modalTable" class="modal hide fade" style="width: 98%; left: 10px; margin-left: 0px">
     <div class="modal-header">
@@ -278,9 +282,15 @@ function refreshMap() {
     </div>
 
     <div class="modal-body">
+        <!-- Top BUTTONS -->
+        <button id="showHideFilters">{% trans "Edit columns" %}</button>
+        <button id="refreshTable">{% trans "Refresh table" %}</button>
 
-        <button id="showHideFilters">Edit columns</button>
-        <button id="refreshTable">Refresh table</button>
+        <button id="refreshTableMyIncidents">{% trans "My incidents" %}</button>
+        <button id="refreshTableMySubscriptions">{% trans "My subscriptions" %}</button>
+        <button id="refreshTableAllIncidents">{% trans "All incidents" %}</button>
+
+
         <div id="table-filters" class="table-filters">
             <ul id="column-visibility">
                 <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
