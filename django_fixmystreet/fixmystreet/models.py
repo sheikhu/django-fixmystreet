@@ -410,16 +410,11 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(subscriptions__subscriber=user)
 
     def related_fields(self):
-        return self.related_category().related_responsible().related_citizen()
-
-    def related_category(self):
-        return self.select_related('category', 'secondary_category', 'secondary_category__secondary_category_class')
-
-    def related_responsible(self):
-        return self.select_related('responsible_entity', 'responsible_manager', 'contractor')
-
-    def related_citizen(self):
-        return self.select_related('citizen', 'created_by')
+        return self.select_related(
+            'category', 'secondary_category', 
+            'secondary_category__secondary_category_class',
+            'responsible_entity', 'responsible_department', 'contractor',
+            'citizen', 'created_by')
 
 
 # class BasicReportManager(models.GeoManager):
