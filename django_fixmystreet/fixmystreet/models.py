@@ -701,7 +701,7 @@ class Report(UserTrackedModel):
     def thumbnail(self):
         user = get_current_user()
 
-        if not self.is_created() or (user and user.is_authenticated()): 
+        if not self.is_created() or (user and user.is_authenticated()):
             #Get all not deleted photo for the given report
             reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
             #If pictures exist for this report
@@ -1118,24 +1118,25 @@ def report_notify(sender, instance, **kwargs):
             #Contractor changed
             if report.__former['contractor'] != report.contractor:
 
-                if report.contractor and report.contractor.email:
-                    #Applicant responsible
-                    ReportNotification(
-                        content_template='notify-affectation',
-                        recipient_mail=report.contractor.email,
-                        related=report,
-                        reply_to=report.responsible_department.email
-                    ).save(old_responsible=report.responsible_department)
+                if report.contractor:
+                    if report.contractor.email:
+                        #Applicant responsible
+                        ReportNotification(
+                            content_template='notify-affectation',
+                            recipient_mail=report.contractor.email,
+                            related=report,
+                            reply_to=report.responsible_department.email
+                        ).save(old_responsible=report.responsible_department)
 
-                    if report.contractor.applicant:
-                        for subscription in report.subscriptions.all():
-                            if subscription.subscriber != event_log_user:
-                                ReportNotification(
-                                    content_template='announcement-affectation',
-                                    recipient=subscription.subscriber,
-                                    related=report,
-                                    reply_to=report.responsible_department.email,
-                                ).save(old_responsible=report.responsible_department)
+                        if report.contractor.applicant:
+                            for subscription in report.subscriptions.all():
+                                if subscription.subscriber != event_log_user:
+                                    ReportNotification(
+                                        content_template='announcement-affectation',
+                                        recipient=subscription.subscriber,
+                                        related=report,
+                                        reply_to=report.responsible_department.email,
+                                    ).save(old_responsible=report.responsible_department)
 
                     ReportEventLog(
                         report=report,
@@ -1163,6 +1164,7 @@ def report_notify(sender, instance, **kwargs):
                 ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.MANAGER_ASSIGNED,
+                    related_new=report.responsible_department,
                     user=event_log_user
                 ).save()
 
@@ -1179,6 +1181,7 @@ def report_notify(sender, instance, **kwargs):
                     ReportEventLog(
                         report=report,
                         event_type=ReportEventLog.ENTITY_ASSIGNED,
+                        related_new=report.responsible_entity,
                         user=event_log_user
                     ).save()
 

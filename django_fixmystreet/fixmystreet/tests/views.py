@@ -2,7 +2,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 
 
 class ReportViewsTest(SampleFilesTestCase):
@@ -47,10 +47,9 @@ class ReportViewsTest(SampleFilesTestCase):
         self.manager.set_password('test')
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
-        self.manager.categories.add(ReportCategory.objects.get(pk=1))
+        self.group.dispatch_categories.add(ReportCategory.objects.get(pk=1))
 
-        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
-        self.usergroupmembership.save()
+        self.manager.memberships.create(organisation=self.group, contact_user=True)
 
         self.sample_post = {
             'report-x': '150056.538',

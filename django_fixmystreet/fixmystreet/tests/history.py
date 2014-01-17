@@ -6,7 +6,7 @@ from django.utils.html import escape
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    UserOrganisationMembership, ReportEventLog)
+    ReportEventLog)
 
 
 class HistoryTest(TestCase):
@@ -167,9 +167,14 @@ class HistoryTest(TestCase):
 
     def testCreateReportHistoryCitizen(self):
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post_citizen,
+            follow=True)
         self.assertEquals(response.status_code, 200)
-        # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
+        # self.assertIn(
+        #    '/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1',
+        #    response['Location'])
         # check the history if it contains 1 line and that the content is correct
         report_id = response.context['report'].id
         report = Report.objects.get(id=report_id)
@@ -195,12 +200,24 @@ class HistoryTest(TestCase):
 
     def testCreateReportHistoryPro(self):
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
+        response = self.client.post(
+            reverse('report_new_pro') + '?x=150056.538&y=170907.56',
+            self.sample_post_pro,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEquals(activities.all().count(), 1)
+
+        url = reverse('report_change_switch_privacy', args=[report_id])
+        response = self.client.get(url, {
+            'privacy': 'false'
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        report = response.context['report']
+        self.assertFalse(report.private)
+
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report.id)
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(url, follow=True)
@@ -211,11 +228,15 @@ class HistoryTest(TestCase):
         url = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
+
         self.assertContains(response, self.calculatePrint(activities[0]))
         self.assertNotContains(response, self.calculatePrintPro(activities[0]))
 
     def testValidateReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post_citizen,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -224,7 +245,7 @@ class HistoryTest(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
         report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
+        self.assertIsNotNone(report.accepted_at)
 
         self.client.logout()
         #check if the status is updated
@@ -495,9 +516,13 @@ class HistoryTest(TestCase):
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(report.subscriptions.filter(subscriber=self.citizen).exists())
         self.assertTrue(report.subscriptions.filter(subscriber=self.citizen2).exists())
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen3).exists())
-        self.assertFalse(report.subscriptions.filter(subscriber=self.manager2).exists())
+        self.assertTrue(report.subscriptions.filter(subscriber=self.manager).exists())
+        self.assertTrue(report.subscriptions.filter(subscriber=self.manager2).exists())
+        self.assertFalse(report.subscriptions.filter(subscriber=self.manager3).exists())
+        self.assertEquals(report.subscriptions.all().count(), 4)
         self.assertEquals(activities.all().count(), 1)
 
     def testProSubscribesToReport(self):
@@ -525,6 +550,9 @@ class HistoryTest(TestCase):
             follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
+        report = Report.objects.get(id=report_id)
+        activities = report.activities
+        self.assertEquals(activities.all().count(), 1)
 
          #first accept the report before citizen can update
         self.client.login(username='manager@a.com', password='test')
@@ -532,12 +560,14 @@ class HistoryTest(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
         report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
+        self.assertIsNotNone(report.accepted_at)
+        self.assertEquals(activities.all().count(), 2)
 
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=department_' + str(self.group.id), {}, follow=True)
+        response = self.client.get(
+            reverse('report_change_manager_pro', args=[report_id]), {
+                'manId': 'department_' + str(self.group2.id)
+            }, follow=True)
         self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
         self.assertEquals(activities.all().count(), 3)
 
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
@@ -561,7 +591,10 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
     def testAssignToOtherEntity(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post_citizen,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
          #first accept the report before citizen can update
@@ -572,7 +605,11 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=entity_21', {}, follow=True)
+        response = self.client.get(
+            reverse('report_change_manager_pro', args=[report_id]) + '?', {
+                'manId': 'entity_21'
+            },
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -643,18 +680,26 @@ class HistoryTest(TestCase):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
+        report = Report.objects.get(id=report_id)
+
+        activities = report.activities.all()
+        self.assertEquals(activities.all().count(), 1)
+
          #first accept the report before citizen can update
         self.client.login(username='manager@a.com', password='test')
         url = reverse('report_accept_pro', args=[report_id])
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertEquals(activities.all().count(), 2)
+
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
+        response = self.client.get(
+            reverse('report_change_contractor_pro', args=[report_id]), {
+                'contractorId': self.contractor.id
+            }, follow=True)
         self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
         self.assertEquals(activities.all().count(), 3)
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
         response = self.client.get(url, follow=True)
