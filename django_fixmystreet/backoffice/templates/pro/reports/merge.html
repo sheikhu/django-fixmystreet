@@ -156,8 +156,8 @@
 
                             <!-- Photos -->
                             <div class="span4 picture">
-                                {% if report.thumbnail %}
-                                    <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
+                                {% if report.thumbnail_url %}
+                                    <img src="{{ report.thumbnail_url }}" class="report-preview thumbnail"  />
                                 {% else %}
                                     <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
                                 {% endif %}
@@ -239,8 +239,8 @@
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
-                                        {% if report.thumbnail %}
-                                            <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
+                                        {% if report.thumbnail_url %}
+                                            <img src="{{ report.thumbnail_url }}" class="report-preview thumbnail"  />
                                         {% else %}
                                             <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
                                         {% endif %}
