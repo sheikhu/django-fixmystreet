@@ -789,8 +789,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             status === 6 ||
                             status === 7;
         report.processed = status === 3;
-        report.rejected = status === 8;/* ||
-                           status === 8;*/
+        report.rejected = status === 9;
 
         var newMarker = new OpenLayers.Feature.Vector(markerPoint, report);
         this.markers.push(newMarker);
