@@ -149,19 +149,25 @@ INSTALLED_APPS = (
 if ENVIRONMENT != 'local':
     INSTALLED_APPS += ('gunicorn', )
 else:
-    INSTALLED_APPS += ('debug_toolbar', )
-    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    try:
+        __import__('debug_toolbar')
+        INSTALLED_APPS += ('debug_toolbar', )
+        MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
-    # INSTALLED_APPS += ('django_pdb', )
-    # MIDDLEWARE_CLASSES += ('django_pdb.middleware.PdbMiddleware',)
+        # INSTALLED_APPS += ('django_pdb', )
+        # MIDDLEWARE_CLASSES += ('django_pdb.middleware.PdbMiddleware',)
 
-    INSTALLED_APPS += ('django_jenkins',)
-    PROJECT_APPS = ('fixmystreet',)
-    JENKINS_TASKS = (
-        'django_jenkins.tasks.run_flake8',
-        'django_jenkins.tasks.with_coverage',
-        'django_jenkins.tasks.django_tests',
-    )
+        __import__('django_jenkins')
+        INSTALLED_APPS += ('django_jenkins',)
+        PROJECT_APPS = ('fixmystreet',)
+        JENKINS_TASKS = (
+            'django_jenkins.tasks.run_flake8',
+            'django_jenkins.tasks.with_coverage',
+            'django_jenkins.tasks.django_tests',
+        )
+    except ImportError, e:
+        print "WARNING: running `make install` in local?"
+        print e
 
 LOGGING = {
     'version': 1,
