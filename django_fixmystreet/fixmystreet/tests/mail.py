@@ -6,7 +6,7 @@ from django.core import mail
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity,
-    FMSUser, UserOrganisationMembership
+    FMSUser
 )
 
 from datetime import datetime, timedelta
@@ -36,7 +36,6 @@ class MailTest(TestCase):
         self.manager.set_password('test')
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
-        self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
         self.group = OrganisationEntity(
             type="D",
@@ -47,8 +46,8 @@ class MailTest(TestCase):
             email="test1@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
-        self.usergroupmembership.save()
+        self.group.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+        self.manager.memberships.create(organisation=self.group, contact_user=True)
 
         self.client = Client()
 
@@ -64,7 +63,6 @@ class MailTest(TestCase):
         self.manager2.set_password('test2')
         self.manager2.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager2.save()
-        self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
         self.group2 = OrganisationEntity(
             type="D",
@@ -75,8 +73,9 @@ class MailTest(TestCase):
             email="test2@email.com"
             )
         self.group2.save()
-        self.usergroupmembership2 = UserOrganisationMembership(user_id=self.manager2.id, organisation_id=self.group2.id)
-        self.usergroupmembership2.save()
+        self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=2))
+        self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+        self.manager2.memberships.create(organisation=self.group2)
 
         self.manager3 = FMSUser(
             telephone="000000000",
@@ -90,10 +89,8 @@ class MailTest(TestCase):
         self.manager3.set_password('test3')
         self.manager3.organisation = OrganisationEntity.objects.get(pk=21)
         self.manager3.save()
-        self.manager3.categories.add(ReportCategory.objects.get(pk=1))
 
-        self.usergroupmembership3 = UserOrganisationMembership(user_id=self.manager3.id, organisation_id=self.group2.id)
-        self.usergroupmembership3.save()
+        self.manager3.memberships.create(organisation=self.group2)
 
         self.impetrant = OrganisationEntity(
             name_nl="MIVB",
@@ -489,9 +486,11 @@ class MailTest(TestCase):
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
-        #One notification should be sent to impetrant to inform him of new comment
-        self.assertEquals(len(mail.outbox), 6)
-        self.assertIn(self.impetrant.email, mail.outbox[5].to)
+        # One notification should be sent to impetrant to inform him of new comment
+        # One notification should be sent to responsible demartment
+        self.assertEquals(len(mail.outbox), 7)
+        self.assertIn(self.impetrant.email, mail.outbox[5].to + mail.outbox[6].to)
+        self.assertIn(self.group.email, mail.outbox[5].to + mail.outbox[6].to)
 
     def testAssignToContractorMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -525,11 +524,16 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         # One notification should be sent to contractor to inform him of new comment
-        self.assertEquals(len(mail.outbox), 5)
+        # One notification should be sent to responsible department
+        self.assertEquals(len(mail.outbox), 6)
         self.assertIn(self.contractor.email, mail.outbox[4].to)
+        self.assertIn(self.group.email, mail.outbox[5].to)
 
     def testCitizenUpdatesReportMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -537,6 +541,7 @@ class MailTest(TestCase):
 
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
+
         #Publish the created report
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
@@ -556,7 +561,10 @@ class MailTest(TestCase):
         self.assertIn(self.group.email, mail.outbox[3].to)
 
     def testProUpdatesReportMail(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
         report_id = response.context['report'].id
@@ -575,8 +583,11 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        #Should be 3 mails: 2 for creation, 1 for acceptance when the responsible updates no mail is sent
-        self.assertEquals(len(mail.outbox), 3)
+        # Should be 4 mails:
+        # 2 for creation,
+        # 1 for acceptance
+        # 1 mail for update
+        self.assertEquals(len(mail.outbox), 4)
         self.client.logout()
         self.client.login(username='manager2@a.com', password='test2')
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
@@ -586,9 +597,13 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        #Should be 4 mails: 2 for creation, 1 for acceptance, 1 to responsable to notify change
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.group.email in mail.outbox[3].to)
+        # Should be 5 mails:
+        # 2 for creation,
+        # 1 for acceptance,
+        # 1 mail for update
+        # 1 to responsable to notify change
+        self.assertEquals(len(mail.outbox), 5)
+        self.assertTrue(self.group.email in mail.outbox[4].to)
 
     def testPublishCommentMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -613,15 +628,17 @@ class MailTest(TestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)  # no new mail, action user is in responsible group
+        # mail to responsible group
+        self.assertEquals(len(mail.outbox), 4)
+        self.assertIn(self.group.email, mail.outbox[3].to)
         report = Report.objects.get(id=report_id)
         #Now make the comment public
         response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
         self.assertEqual(response.status_code, 200)
         # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
         # 1 to inform about publish (citizen), Manager who did the update does not get an email
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.citizen.email, mail.outbox[3].to)
+        self.assertEquals(len(mail.outbox), 5)
+        self.assertIn(self.citizen.email, mail.outbox[4].to)
 
     def testSubscriptionForProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -664,25 +681,26 @@ class MailTest(TestCase):
         self.assertTrue(self.citizen.email in mail.outbox[3].to)
 
     def testMergeReportMail(self):
+        #Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
         #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
 
         report_id = response.context['report'].id
 
-        self.assertEquals(len(mail.outbox),  2)  # one for creator subscription, one for manager
+        self.assertEquals(len(mail.outbox),  1)  # one for creator subscription, one for manager
 
-        #Login to access the pro page
-        self.client.login(username='manager@a.com', password='test')
-
-        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
+        self.client.logout()
+        response2 = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
         self.assertEquals(response.status_code, 200)
         #Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 3)
 
         report2_id = response2.context['report'].id
 
+        self.client.login(username='manager@a.com', password='test')
         #Publish the created report
         response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
         self.assertEquals(response3.status_code, 200)
@@ -692,8 +710,11 @@ class MailTest(TestCase):
         url2 = reverse('report_do_merge_pro', args=[report_id])
         self.client.post(url2, {"mergeId": report2_id})
 
+        self.assertTrue(Report.objects.all().visible().filter(id=report_id).exists())
+        self.assertFalse(Report.objects.all().visible().filter(id=report2_id).exists())
+
         #Reference from merged to kept report
-        self.assertEqual(report2_id, Report.objects.get(id=report_id).merged_with.id)
+        self.assertEqual(report_id, Report.objects.get(id=report2_id).merged_with.id)
         #A mail has been sent to the creator of the first report to notify him that his report has been merged
         self.assertEquals(len(mail.outbox), 5)
 

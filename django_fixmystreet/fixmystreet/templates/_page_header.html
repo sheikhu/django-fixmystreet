@@ -18,8 +18,10 @@
             <div class="span4">
                 {% if not BACKOFFICE %}
                     <strong id="danger-risk">
-                        <i class="icon-danger-red"></i>
-                        {% trans "A big security risk to signal?" %}
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'A big security risk to signal?' %}" title="{% trans 'call police' %}" class="myTooltip">
+                            <i class="icon-danger-red"></i>
+                            {% trans "A big security risk to signal?" %}
+                        </a>
                     </strong>
                 {% endif %}
             </div>
