@@ -778,6 +778,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.selectFeature.activate();
 
         }
+
         var markerPoint = new OpenLayers.Geometry.Point(report.point.x, report.point.y);
 
         var status = report.status;
