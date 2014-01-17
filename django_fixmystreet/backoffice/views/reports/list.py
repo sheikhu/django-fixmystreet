@@ -125,5 +125,5 @@ def table_content(request):
 
     return render_to_response("pro/reports/table_content.html", {
         "zipcodes": zipcodes,
-        "reports": reports,
+        "reports": reports.related_fields(),
     }, context_instance=RequestContext(request))
