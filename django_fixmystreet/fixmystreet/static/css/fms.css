@@ -1271,6 +1271,9 @@ form#report-form{
 	margin-bottom: 4px;
 	display: inline-block;
 }
+#incident-head .ticket_number.gray_border{
+	border: 2px solid gray;
+}
 #incident-head .ticket_number.orange_border{
 	border: 2px solid #F79422;
 }
@@ -1771,6 +1774,9 @@ label strong{
 }
 #result-table tr{
 	cursor: pointer;
+}
+#result-table td.s9{
+	color: gray;
 }
 #result-table td.s8, td.s3 {
 	color: rgb(58, 201, 92);

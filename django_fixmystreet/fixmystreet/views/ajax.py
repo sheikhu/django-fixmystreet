@@ -48,7 +48,7 @@ def uploadFile(request):
 
 def get_report_popup_details(request):
     report_id = request.REQUEST.get("report_id")
-    report = Report.objects.all().visible().pulbic().related_fields().get(id=report_id)
+    report = Report.objects.all().visible().public().related_fields().get(id=report_id)
     return HttpResponse(json.dumps(report.full_marker_detail_JSON()), mimetype="application/json")
 
 
@@ -57,6 +57,6 @@ def filter_map(request):
 
     results = []
     for report in reports:
-        results += report.report.marker_detail_short()
+        results.append(report.marker_detail_short())
 
     return HttpResponse(json.dumps(results), mimetype="application/json")

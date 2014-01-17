@@ -144,7 +144,7 @@ function generateTableContent() {
                 },
                 "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
                     //If image then display using img tag 
-                    if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image'&& aData[1] !== 'None') {
+                    if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image' && aData[1] !== 'None') {
                         var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
                         $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
                     }

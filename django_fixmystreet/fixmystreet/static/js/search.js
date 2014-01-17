@@ -132,7 +132,9 @@ function AddressResult(x, y, address, idx)
 }
 
 function getAddressFromPoint(lang, x, y) {
-    var self = this;
+    var self  = this;
+    var origX = x;
+    var origY = y;
     $.ajax({
         url: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
         type:'POST',
@@ -150,10 +152,12 @@ function getAddressFromPoint(lang, x, y) {
             var street = response.result.address.street.name;
             var number = response.result.address.number;
             var postCode = response.result.address.street.postCode;
-            var municipality = zipcodes[postCode].commune;
-
-            var x = response.result.point.x;
-            var y = response.result.point.y;
+           
+            //console.log(origX,origY);
+            var municipality = zipcodes[(postCode=="1041"?"1040":postCode)].commune;
+            //var origX = response.result.point.x;
+            //var origY= response.result.point.y;
+            //console.log(x,y);
             //INJECTION
             if (!BACKOFFICE && response.result.address.street.postCode in zipcodes && !zipcodes[String(response.result.address.street.postCode)].participation) {
                 //var popupContent = "<p>" + street + ", " + number;
@@ -163,14 +167,14 @@ function getAddressFromPoint(lang, x, y) {
             } else {
                 //var popupContent = "<p>" + street + ", " + number;
                 // Convert the point and url for google street view
-                var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(x, y);
-                var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.x +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
+                var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(origX, y);
+                var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.origY +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
                 var popupContent = "<p class='popupMoveMe popupHeading'>Déplacez-moi à l'adresse exacte</p>";
                 popupContent += "<p class='popupMoveMe popupContent'>" + street + ", " + number;
                 popupContent += "<br/>" + postCode + " " + municipality + "</p>";
 
                 if (NEXT_PAGE_URL) {
-                    popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                    popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + origX + "&y=" + origY + "'>C'est ici !</a>";
                 }
                 popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
             }

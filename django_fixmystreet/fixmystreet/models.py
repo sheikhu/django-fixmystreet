@@ -567,19 +567,22 @@ class Report(UserTrackedModel):
             marker_color = "orange"
         elif self.is_created():
             marker_color = "red"
+        elif self.is_refused():
+            marker_color = "gray"
 
-        if user and user.is_authenticated():
-            if self.is_regional():
-                return "images/marker-"+marker_color+"-xxs.png"
-            elif self.is_pro():
-                return "images/marker-"+marker_color+"-xxs.png"
-            else:
-                return "images/marker-"+marker_color+"-xxs.png"
-        else:
-            if self.is_pro():
-                return "images/marker-"+marker_color+"-xxs.png"
-            else:
-                return "images/marker-"+marker_color+"-xxs.png"
+        return "images/marker-"+marker_color+"-xxs.png"
+        #if user and user.is_authenticated():
+        #    if self.is_regional():
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #    elif self.is_pro():
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #    else:
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #else:
+        #    if self.is_pro():
+        #        return "images/marker-"+marker_color+"-xxs.png"
+        #    else:
+        #        return "images/marker-"+marker_color+"-xxs.png"
 
     def is_regional(self):
         return self.address_regional
@@ -697,13 +700,16 @@ class Report(UserTrackedModel):
     def thumbnail(self):
         user = get_current_user()
 
-        if not self.is_created() or (user and user.is_authenticated()):
+        if not self.is_created() or (user and user.is_authenticated()): 
+            #Get all not deleted photo for the given report
             reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
+            #If pictures exist for this report
             if reportImages.exists():
-                if reportImages[0].is_public():
-                    return reportImages[0].image.thumbnail.url()
-                elif (  (reportImages[0].is_private() and (user and user.is_authenticated())) or (reportImages[0].is_confidential() and (user and user.is_confidential_visible()))):
-                    return reportImages[0].image.thumbnail.url()
+                for currentImage in reportImages:
+                    if currentImage.is_public():
+                        return currentImage.image.thumbnail.url()
+                    elif (  (currentImage.is_private() and (user and user.is_authenticated())) or (currentImage.is_confidential() and (user and user.is_confidential_visible()))):
+                        return currentImage.image.thumbnail.url()
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
