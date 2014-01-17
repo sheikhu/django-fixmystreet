@@ -462,7 +462,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         }
         this.strategy.features = features;
         this.strategy.layer.removeAllFeatures();
-        console.log('refresh features', this.strategy.features.length);
         this.strategy.layer.redraw(true);
     };
 
