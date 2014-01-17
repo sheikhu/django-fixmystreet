@@ -108,14 +108,14 @@ class ProReportForm(ReportForm):
 
     def save (self,commit=True):
         report= super(ProReportForm,self).save(commit=False)
-        report.private = self.cleaned_data['private']
+        report.private = True#self.cleaned_data['private']
         if commit:
             report.save();
         return report
 
     def saveForMobile(self,commit=True):
         report= super(ProReportForm,self).saveForMobile(commit=False)
-        report.private = self.cleaned_data['private']
+        report.private = True#self.cleaned_data['private']
         if commit:
             report.save();
         return report
