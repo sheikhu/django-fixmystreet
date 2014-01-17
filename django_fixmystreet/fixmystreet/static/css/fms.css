@@ -577,7 +577,7 @@ footer .cirb-cibg img{
 }
 
 #map #btn-streetview{
-    right:118px;
+    /*right:118px;*/
 	-webkit-border-bottom-left-radius: 4px;
 	-moz-border-radius-bottomleft: 4px;
 	border-bottom-left-radius: 4px;
