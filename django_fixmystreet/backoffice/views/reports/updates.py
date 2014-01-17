@@ -235,7 +235,7 @@ def validateAll(request,report_id):
 def updateAttachment(request,report_id):
     report = get_object_or_404(Report,id=report_id)
     security_level = request.REQUEST.get('updateType')
-    a = ReportAttachment.objects.get(pk=request.REQUEST.get('attachmentId'))
+    a = ReportFile.objects.get(pk=request.REQUEST.get('attachmentId'))
     a.security_level = int(security_level)
     a.save()
 
