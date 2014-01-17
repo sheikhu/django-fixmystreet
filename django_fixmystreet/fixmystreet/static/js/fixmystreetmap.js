@@ -663,8 +663,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 deactivate: function() {
                     var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
                     if(deactivated) {
-                        console.log('deactive');
-
                         this.layer.removeAllFeatures();
                         this.layer.events.un({
                             "beforefeaturesadded": this.cacheFeatures,
@@ -679,8 +677,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 activate: function() {
                     var activated = OpenLayers.Strategy.prototype.activate.call(this);
                     if(activated) {
-                        console.log('active');
-
                         this.layer.events.on({
                             "beforefeaturesadded": this.cacheFeatures,
                             "moveend": this.cluster,
