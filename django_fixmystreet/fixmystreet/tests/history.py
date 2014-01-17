@@ -51,7 +51,6 @@ class HistoryTest(TestCase):
         self.manager.set_password('test')
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
-        self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
         self.group = OrganisationEntity(
             type="D",
@@ -62,8 +61,10 @@ class HistoryTest(TestCase):
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
-        self.usergroupmembership.save()
+        self.group.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+        self.group.dispatch_categories.add(ReportCategory.objects.get(pk=2))
+
+        self.manager.memberships.create(organisation=self.group, contact_user=True)
 
         self.manager2 = FMSUser(
             telephone="9876543210",
@@ -77,10 +78,8 @@ class HistoryTest(TestCase):
         self.manager2.set_password('test2')
         self.manager2.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager2.save()
-        self.manager2.categories.add(ReportCategory.objects.get(pk=2))
 
-        self.usergroupmembership2 = UserOrganisationMembership(user_id=self.manager2.id, organisation_id=self.group.id)
-        self.usergroupmembership2.save()
+        self.manager2.memberships.create(organisation=self.group)
 
         self.manager3 = FMSUser(
             telephone="000000000",
@@ -94,7 +93,6 @@ class HistoryTest(TestCase):
         self.manager3.set_password('test3')
         self.manager3.organisation = OrganisationEntity.objects.get(pk=21)
         self.manager3.save()
-        self.manager3.categories.add(ReportCategory.objects.get(pk=1))
 
         self.group2 = OrganisationEntity(
             type="D",
@@ -105,8 +103,9 @@ class HistoryTest(TestCase):
             email="test@email.com"
             )
         self.group2.save()
-        self.usergroupmembership3 = UserOrganisationMembership(user_id=self.manager3.id, organisation_id=self.group2.id)
-        self.usergroupmembership3.save()
+        self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+
+        self.manager3.memberships.create(organisation=self.group2)
 
         self.impetrant = OrganisationEntity(
             name_nl="MIVB",
@@ -481,11 +480,18 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrintPro(activities.all()[2]))
 
     def testCitizenSubscribesToReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post_citizen,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
-        response = self.client.get(reverse('subscribe', args=[report_id]) + '?citizen_email=' + self.citizen2.email, {}, follow=True)
+        response = self.client.get(
+            reverse('subscribe', args=[report_id]), {
+                'citizen_email': self.citizen2.email
+            },
+            follow=True)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(response.status_code, 200)
@@ -495,7 +501,10 @@ class HistoryTest(TestCase):
         self.assertEquals(activities.all().count(), 1)
 
     def testProSubscribesToReport(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post_citizen,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -510,7 +519,10 @@ class HistoryTest(TestCase):
         self.assertEquals(activities.all().count(), 1)
 
     def testAssignToOtherMemberOfSameEntity(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post_citizen,
+            follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
 
@@ -592,22 +604,26 @@ class HistoryTest(TestCase):
         #Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
 
-        response2 = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
+        response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
         self.assertEquals(response.status_code, 200)
         #Should send mail only to responsible
 
-        report2_id = response2.context['report'].id
+        report2_id = response.context['report'].id
 
         #Publish the created report
-        response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
-        self.assertEquals(response3.status_code, 200)
+        response = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
+        self.assertEquals(response.status_code, 200)
 
         #Merge reports
         url2 = reverse('report_do_merge_pro', args=[report_id])
-        self.client.post(url2, {"mergeId": report2_id})
+        response = self.client.post(url2, {"mergeId": report2_id}, follow=True)
+        self.assertEquals(response.status_code, 200)
 
-        #Reference from merged to kept report
-        self.assertEqual(report2_id, Report.objects.get(id=report_id).merged_with.id)
+        # keep older, remove newer
+        self.assertTrue(Report.objects.all().visible().filter(id=report_id).exists())
+        self.assertFalse(Report.objects.all().visible().filter(id=report2_id).exists())
+        # Reference from merged to kept report
+        self.assertEqual(report_id, Report.objects.get(id=report2_id).merged_with.id)
 
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -699,17 +715,26 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
         #now add comment
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
-            'comment-text': 'new created comment',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0
-        }, follow=True)
+        response = self.client.post(
+            reverse('report_show_pro', kwargs={
+                'report_id': report_id,
+                'slug': 'hello'
+            }), {
+                'comment-text': 'new created comment',
+                'files-TOTAL_FORMS': 0,
+                'files-INITIAL_FORMS': 0,
+                'files-MAX_NUM_FORMS': 0
+            }, follow=True)
         self.assertEqual(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         self.assertEqual(report.comments().count(), 2)
         #Now make the comment public
-        response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
+        response = self.client.get(
+            reverse('report_update_attachment', args=[report_id]),
+            {
+                'updateType': '1',
+                'attachmentId': report.comments()[1].id
+            }, follow=True)
         self.assertEqual(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
@@ -778,9 +803,6 @@ class HistoryTest(TestCase):
             organisation=activity.organisation,
             related_new=activity.related_new
         )
-
-
-
 
         #Mail to creator and manager must be sent
         #self.assertTrue(self.citizen.email in mail.outbox[0].to or self.citizen.email in mail.outbox[1].to)

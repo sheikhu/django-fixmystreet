@@ -210,7 +210,8 @@ class FMSUser(User):
         return result
 
     def get_quality(self):
-        return self.REPORT_QUALITY_CHOICES[self.quality - 1][1]
+        if self.quality:
+            return dict(self.REPORT_QUALITY_CHOICES)[self.quality]
 
     def toJSON(self):
         d = {}
@@ -981,9 +982,12 @@ def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_department:
         #Detect who is the responsible Manager for the given type
         #Search the right responsible for the current organization.
-        departements = instance.responsible_entity.associates.all().filter(type=OrganisationEntity.DEPARTMENT, dispatch_categories=instance.secondary_category)
-        if(len(departements) > 0):
-            instance.responsible_department = departements[0]
+        departements = instance.responsible_entity.associates.filter(
+            type=OrganisationEntity.DEPARTMENT)
+        departement = departements.get(
+            dispatch_categories=instance.secondary_category)
+        if(departement):
+            instance.responsible_department = departement
         else:
             raise Exception("no responsible departement found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
 
@@ -1355,13 +1359,15 @@ class ReportAttachment(UserTrackedModel):
 def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
+        action_user = instance.modified_by
+
         #now create notification
         ReportEventLog(
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
+            user=action_user
         ).save()
 
-        action_user = instance.modified_by
         for subscription in report.subscriptions.all().exclude(subscriber=action_user):
             ReportNotification(
                 content_template='informations_published',

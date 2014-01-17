@@ -17,8 +17,8 @@ from datetime import datetime, timedelta
 import logging
 logger = logging.getLogger(__name__)
 
-# TODO move to backoffice/views/reports/main.py
 
+# TODO move to backoffice/views/reports/main.py
 @transaction.commit_on_success
 def accept(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -34,7 +34,8 @@ def accept(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-def refuse( request, report_id ):
+
+def refuse(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
     #Test if the report is created...
@@ -52,12 +53,13 @@ def refuse( request, report_id ):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-def fixed( request, report_id ):
+
+def fixed(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    if request.REQUEST.has_key('is_fixed'):
+    if 'is_fixed' in request.REQUEST:
         form = MarkAsDoneForm(request.POST, instance=report)
         # Save the mark as done motivation in the database
-        form.save() # Redirect to the report show page
+        form.save()  # Redirect to the report show page
 
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -65,7 +67,7 @@ def fixed( request, report_id ):
         return HttpResponseRedirect(report.get_absolute_url())
 
 
-def close( request, report_id ):
+def close(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     #Update the status and set the close date
     report.status = Report.PROCESSED
@@ -76,6 +78,7 @@ def close( request, report_id ):
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
+
 
 def planned( request, report_id ):
     report = get_object_or_404(Report, id=report_id)
@@ -95,9 +98,10 @@ def planned( request, report_id ):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+
 def pending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    report.pending = True;
+    report.pending = True
     report.save()
 
     #Redirect to the report show page
@@ -105,10 +109,11 @@ def pending(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
+
 
 def notpending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    report.pending = False;
+    report.pending = False
     report.save()
 
     #Redirect to the report show page
@@ -117,8 +122,8 @@ def notpending(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-def switchPrivacy(request,report_id):
 
+def switchPrivacy(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")
     if privacy != 'true':
@@ -136,16 +141,14 @@ def switchPrivacy(request,report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-def changeManager(request,report_id):
 
+def changeManager(request, report_id):
     report = Report.objects.get(pk=report_id)
     report.status = Report.MANAGER_ASSIGNED
 
     # old_resp_man = report.responsible_manager
     # report.previous_managers.add(old_resp_man)
     manId = request.REQUEST.get("manId")
-
-
 
     if manId.split("_")[0] == "department":
         newRespMan = OrganisationEntity.objects.get(pk=int(manId.split("_")[1]))
@@ -164,7 +167,8 @@ def changeManager(request,report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-def changeContractor(request,report_id):
+
+def changeContractor(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     contractorId = request.REQUEST.get("contractorId")
 
@@ -212,7 +216,8 @@ def publish(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-def validateAll(request,report_id):
+
+def validateAll(request, report_id):
     '''Set all annexes to public'''
     report = get_object_or_404(Report, id=report_id)
 
@@ -232,32 +237,33 @@ def validateAll(request,report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-def updateAttachment(request,report_id):
-    report = get_object_or_404(Report,id=report_id)
+
+def updateAttachment(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
     security_level = request.REQUEST.get('updateType')
     a = ReportAttachment.objects.get(pk=request.REQUEST.get('attachmentId'))
     a.security_level = int(security_level)
     a.save()
 
-    return render_to_response("reports/_visibility_control.html",
-            {
-                "attachment": a
-            },
-            context_instance=RequestContext(request))
+    return render_to_response("reports/_visibility_control.html", {
+        "attachment": a
+    }, context_instance=RequestContext(request))
+
 
 def deleteAttachment(request, report_id):
     """delete a attachment (pro only)"""
-    report = get_object_or_404(Report,id=report_id)
+    report = get_object_or_404(Report, id=report_id)
     a = ReportAttachment.objects.get(pk=request.REQUEST.get('attachmentId'))
     a.logical_deleted = True
     a.save()
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+
 def do_merge(request,report_id):
     #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
-    report_2 = get_object_or_404(Report,id=request.POST["mergeId"])
+    report_2 = get_object_or_404(Report, id=request.POST["mergeId"])
 
     # Constraints for categories match and visibility match when merging
     # #Check that category + subcategory of two reports are equal:
