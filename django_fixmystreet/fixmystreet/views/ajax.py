@@ -57,6 +57,6 @@ def filter_map(request):
 
     results = []
     for report in reports:
-        results += report.marker_detail_short()
+        results.append(report.marker_detail_short())
 
     return HttpResponse(json.dumps(results), mimetype="application/json")
