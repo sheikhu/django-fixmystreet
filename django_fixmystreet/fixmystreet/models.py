@@ -567,6 +567,8 @@ class Report(UserTrackedModel):
             marker_color = "orange"
         elif self.is_created():
             marker_color = "red"
+        elif self.is_refused():
+            marker_color = "gray"
 
         if user and user.is_authenticated():
             if self.is_regional():
