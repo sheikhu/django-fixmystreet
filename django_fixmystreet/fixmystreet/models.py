@@ -547,6 +547,9 @@ class Report(UserTrackedModel):
     probability = models.IntegerField(default=0)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
+    private_thumbnail = models.TextField(null=True, blank=True)
+    thumbnail = models.TextField(null=True, blank=True)
+    #photo = models.ForeignKey(ReportFile, related_name='thumbnail_report', null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
     terms_of_use_validated = models.BooleanField(default=False)
@@ -559,10 +562,18 @@ class Report(UserTrackedModel):
 
     false_address = models.TextField(null=True, blank=True)
 
-    def get_marker(self):
+    def thumbnail_url(self):
         user = get_current_user()
+        if user and user.is_authenticated():
+            return self.private_thumbnail
+        else:
+            return self.thumbnail
+
+    def get_marker(self):
+        #user = get_current_user()
 
         marker_color = "green"  # default color
+        
         if self.is_in_progress():
             marker_color = "orange"
         elif self.is_created():
@@ -697,20 +708,6 @@ class Report(UserTrackedModel):
 
         return dates
 
-    def thumbnail(self):
-        user = get_current_user()
-
-        if not self.is_created() or (user and user.is_authenticated()): 
-            #Get all not deleted photo for the given report
-            reportImages = ReportFile.objects.filter(report_id=self.id, file_type=ReportFile.IMAGE).filter(logical_deleted=False)
-            #If pictures exist for this report
-            if reportImages.exists():
-                for currentImage in reportImages:
-                    if currentImage.is_public():
-                        return currentImage.image.thumbnail.url()
-                    elif (  (currentImage.is_private() and (user and user.is_authenticated())) or (currentImage.is_confidential() and (user and user.is_confidential_visible()))):
-                        return currentImage.image.thumbnail.url()
-
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
 
@@ -775,7 +772,7 @@ class Report(UserTrackedModel):
         Method used to display the whole object content as JSON structure for website
         """
 
-        local_thumbnail = self.thumbnail()
+        local_thumbnail = self.thumbnail_url()
         thumbValue = local_thumbnail or 'null'
 
         return {
@@ -814,7 +811,7 @@ class Report(UserTrackedModel):
         }
 
     def full_marker_detail_pro_JSON(self):
-        local_thumbnail = self.thumbnail()
+        local_thumbnail = self.thumbnail_url()
 
         thumbValue = local_thumbnail or 'null'
 
@@ -839,7 +836,7 @@ class Report(UserTrackedModel):
         }
 
     def full_marker_detail_JSON(self):
-        local_thumbnail = self.thumbnail()
+        local_thumbnail = self.thumbnail_url()
         if local_thumbnail:
             thumbValue = local_thumbnail
         else:
@@ -871,7 +868,7 @@ class Report(UserTrackedModel):
         if self.close_date:
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
 
-        local_thumbnail = self.thumbnail()
+        local_thumbnail = self.thumbnail_url()
         thumbValue = local_thumbnail or 'null'
 
         local_citizen = self.citizen
@@ -1457,6 +1454,31 @@ def report_file_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
 
 
+@receiver(post_save, sender=ReportFile)
+def init_report_overview(sender,instance,**kwargs):
+    user = get_current_user()
+    
+    images_pro = instance.report.files()
+    images_public = instance.report.active_files()
+    
+    if images_pro.exists():
+        instance.report.private_thumbnail = images_pro[0].image.thumbnail.url()
+        if images_public.exists():
+            image = images_public[0]
+            if instance.report.photo != image.image:
+                instance.report.photo = image.image.url
+                instance.report.thumbnail = image.image.thumbnail.url()
+        else:
+            instance.report.photo = None
+            instance.report.thumbnail = None
+        instance.report.save()
+    elif instance.report.photo:
+        instance.report.photo = None
+        instance.report.thumbnail = None
+        instance.report.private_thumbnail = None
+        instance.report.save()
+
+
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender, instance, **kwargs):
     if instance.file_type:
@@ -1474,18 +1496,6 @@ def init_file_type(sender, instance, **kwargs):
 
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name.split('?')[0], instance.file, save=False)
-
-
-# @receiver(post_save, sender=ReportFile)
-# def init_report_overview(sender,instance,**kwargs):
-#     if not instance.report.photo:
-#         if not instance.logical_deleted and instance.is_public():
-#             instance.report = instance.image
-#     elif instance.report.photo == instance.image
-#         if instance.logical_deleted or not instance.is_public():
-#             public_images = instance.files.filter(file_type=ReportFile.IMAGE, logical_deleted=False, security_level=ReportAttachment.PUBLIC)
-#             if public_images.exists():
-#                 instance.report = public_images[0]
 
 
 class ReportSubscription(models.Model):
