@@ -29,8 +29,8 @@ install: $(BIN_PATH)
 
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
-	$(BIN_PATH)/manage.py migrate --all
 	$(BIN_PATH)/pip install -e .[debug]
+	$(BIN_PATH)/manage.py migrate --all
 
 # generate new migration script
 schemamigration:
@@ -75,4 +75,4 @@ clean:
 	cd $(INSTALL_PATH); rm -rf bin lib lib64 include # virtualenv
 	rm -rf bin libs bootstrap.py src # buildout
 	rm -rf reports # Jenkins
-	rm -rf build dist
+	rm -rf build dist static
