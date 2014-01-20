@@ -78,12 +78,18 @@ var columns = [
     {type: "select"}, // sec categories
     {type: "text"},   // addr
     {type: "select"}, // postal code
+
+    {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
     {sType: "date-euro", oSort:"date-eu"}, // date last update
-    {type: "select", values: [ // status
+    {type: "select", values: [ // quality
         {% for s in 'FMSUser'|model_field_choices:'quality' %}
             "{{ s }}"{% if not forloop.last %},{% endif %}
         {% endfor %}
     ]},
+    {type: "select", values: [
+        '{{ True|yesno:_("a pro,a citizen") }}',
+        '{{ False|yesno:_("a pro,a citizen") }}'
+    ]}, // Signaled by
     {type: "select"}, // contractor
     {type: "select"}, // resp manager
     {type: "select"}, // resp entity
@@ -147,6 +153,11 @@ function generateTableContent() {
                     if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image' && aData[1] !== 'None') {
                         var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
                         $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+                    }
+                    //Status icon
+                    if (this.fnSettings().aoColumns[6].bVisible === true && this.fnSettings().aoColumns[6].type === 'image' && aData[6] !== 'None') {
+                        var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 6)
+                        $('td:eq('+imageIndex +')', nRow).html( '<a><img src="/static/' + aData[6] + '" /></a>' );
                     }
                     return nRow;
                  }
@@ -302,8 +313,11 @@ function refreshMap() {
                 <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
+
                 <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li> 
                 <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
