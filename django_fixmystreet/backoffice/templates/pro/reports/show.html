@@ -399,25 +399,56 @@ var someCallback = function(exifObject, index) {
 
                         <span class="ticket_desc">
 
-                            {% if report.responsible_department in request.fmsuser.organisations_list and report.is_in_progress and not report.is_merged %}
-                                &nbsp;
-                            {% else %}
                                 {{report.display_category}}
-                            {% endif %}
+                            
                         </span>
 
                         <br />
+                        <ul class='iconsPopup'>
+                            {% if report.address_regional %}
+                                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/regional_on.png' /></a></li>
+                            {% else %}                                
+                                <!--li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not located on a regional zone" %}'><img src='/static/images/regional_off.png' /></a></li-->
+                            {% endif %}
 
-                        <!--span>{{report.get_priority}}</span><br /-->
-                        {% if report.get_priority = 0 %}
-                            <img src="{{STATIC_URL}}../static/images/prior_off.png" class="priorityLevel" />
-                        {% elif report.get_priority <= 2 %}
-                            <img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" />
-                        {% elif report.get_priority <= 8 %}
-                            <img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" />
-                        {% else %}
-                            <img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" />
-                        {% endif %}
+                            {% if report.is_pro %}
+                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src='/static/images/pro_on.png' /></a></li>
+                            {% endif %}
+
+                            {% if report.contractor != None %}
+                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/contractorAssigned_on.png' /></a></li>
+                            {% else %}
+                                <!--li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not assigned" %}'><img src='/static/images/contractorAssigned_off.png' /></a></li-->
+                            {% endif %}
+                            
+                            {% if report.date_planned %}
+                                <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
+                            {% else %}
+                                <!--li class="datePlanned"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "There is no planification for this incident" %}'><img src="/static/images/planned_off.png" /></a></li-->
+                            {% endif %}
+
+                            {% if BACKOFFICE %}
+                                <li>
+                                {% if report.get_priority = 0 %}
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{{STATIC_URL}}../static/images/prior_off.png" class="priorityLevel" /></a>
+                                {% elif report.get_priority <= 2 %}
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" /></a>
+                                {% elif report.get_priority <= 8 %}
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" /></a>
+                                {% else %}
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" /></a>
+                                {% endif %}
+                                </li>
+
+                                {% if report.is_closed %}
+                                    <li class="isClosed"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is closed" %}'><img src="/static/images/closed_on.png" /></a></li>
+                                {% else %}
+                                    <!--li class="isClosed"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is pending" %}'><img src="/static/images/closed_off.png" /></a></li-->
+                                {% endif %}
+
+                            {% endif %}
+
+                        </ul>
                         <!--/div-->
 
                     </div>
