@@ -440,10 +440,10 @@ var someCallback = function(exifObject, index) {
                                 {% endif %}
                                 </li>
 
-                                {% if report.is_closed %}
-                                    <li class="isClosed"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is closed" %}'><img src="/static/images/closed_on.png" /></a></li>
+                                {% if not report.is_markable_as_solved %}
+                                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="/static/images/is_resolved_on.png" /></a></li>
                                 {% else %}
-                                    <!--li class="isClosed"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is pending" %}'><img src="/static/images/closed_off.png" /></a></li-->
+                                    <!--li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has not been signaled as solved" %}'><img src="/static/images/is_resolved_off.png" /></a></li-->
                                 {% endif %}
 
                             {% endif %}
