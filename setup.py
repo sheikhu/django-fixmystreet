@@ -35,8 +35,9 @@ install_requires = [
 debug_require = [
     'django-debug-toolbar==0.9.4',
     'ipython',
+    'zest.releaser==3.50',
     # 'django-pdb'
-    #'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
+    # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
     'django-jenkins',
     'coverage==3.6',
     'flake8==2.1.0',
