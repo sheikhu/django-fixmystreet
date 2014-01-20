@@ -10,7 +10,7 @@
                     {{ field }}
                 {% endfor %}
 
-                <div class="control-group">
+                <div class="control-group required">
 
                     <label class="control-label" for="category_select">
                         <strong>{% trans 'Observation' %}</strong>
@@ -76,7 +76,7 @@
 
             {% if citizen_form %}
 
-                <div class="control-group">
+                <div class="control-group required">
                     <label for="name" class="control-label">
                         <strong>{% trans 'Name' %}</strong>
                     </label>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
 
-                <div class="control-group">
+                <div class="control-group required">
                     <label for="quality" class="control-label">
                         <strong>{% trans 'Quality' %}</strong>
                     </label>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
 
-                <div class="control-group">
+                <div class="control-group required">
                     <label for="telephone" class="control-label">
                         <strong>{% trans 'Phone' %}</strong>
                     </label>
@@ -102,7 +102,7 @@
                         {% input_class citizen_form.telephone 'span10' %}
                     </div>
                 </div>
-                <div class="control-group">
+                <div class="control-group required">
                     <label for="email" class="control-label">
                         <strong>{% trans 'Email' %}</strong>
                     </label>
