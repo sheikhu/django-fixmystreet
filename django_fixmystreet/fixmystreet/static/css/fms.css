@@ -1931,3 +1931,9 @@ label strong{
     margin-top: -40px;  /* -1 * image height / 2 */
     display: block;
 }
+
+
+
+.required label.control-label::before {
+content: "*";
+}

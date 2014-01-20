@@ -161,7 +161,7 @@ else:
         INSTALLED_APPS += ('django_jenkins',)
         PROJECT_APPS = ('fixmystreet',)
         JENKINS_TASKS = (
-            'django_jenkins.tasks.run_flake8',
+            # 'django_jenkins.tasks.run_flake8',
             'django_jenkins.tasks.with_coverage',
             'django_jenkins.tasks.django_tests',
         )
