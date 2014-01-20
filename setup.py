@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-version = '2.2.8.dev0'
+version = '2.3.0.dev0'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,7 +39,7 @@ debug_require = [
     #'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
     'django-jenkins',
     'coverage==3.6',
-    'flake8==1.7.0',
+    'flake8==2.1.0',
 ]
 
 setup(
