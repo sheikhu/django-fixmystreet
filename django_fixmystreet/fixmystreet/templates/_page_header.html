@@ -60,7 +60,7 @@
         <div>
             <p id="proposal-message" class="hide"> </p>
             <div id="proposal-container" class="inline" hidden>
-                <h3 class="numberResultsContainer"><span id="numberResults"></span> result(s)</h3>
+                <h3 class="numberResultsContainer"><span id="numberResults"></span>{% trans 'results' %}</h3>
                 <ul id="proposal" ></ul>
                 <p><button id="previousResults" hidden>&lt;</button> <button id="nextResults" hidden>&gt;</button></p>
             </div>
@@ -72,7 +72,7 @@
                 <div class="dataLayersDiv">
                     <h3>{% trans 'Statut' %}</h3>
                     <input type="checkbox" id="statusToggleCreated" value="created" checked="">
-                    <label for="statusToggleCreated"><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'Created' %}</label>
+                    <label for="statusToggleCreated"><img src="{{ STATIC_URL }}images/marker-red-xxs.png" />{% trans 'created' %}</label>
                     <br>
                     <input type="checkbox" id="statusToggleInProgress" value="in_progress" checked="">
                     <label for="statusToggleInProgress"><img src="{{ STATIC_URL }}images/marker-orange-xxs.png" />{% trans 'In progress' %}</label>

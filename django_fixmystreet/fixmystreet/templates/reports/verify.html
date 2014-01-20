@@ -33,8 +33,8 @@
 <div class="container">
     <div class="row">
         <div class="span10">
-            <h2 class="verify_title">Nous avons déjà {{ reports_nearby.count }} incidents signalés dans le même secteur</h2>
-            <p class="lead">Merci de vérifier si votre incident n'est pas déjà signalé avant de continuer votre rapport.</p>
+            <h2 class="verify_title">{% trans "we have" %} {{ reports_nearby.count }} {% trans "incident sector" %}</h2>
+            <p class="lead">{% trans "thanks verify" %}</p>
         </div>
         <div class="span2">
             <div class="switch_verify btn-group pull-right">
