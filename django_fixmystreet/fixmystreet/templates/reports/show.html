@@ -198,9 +198,45 @@ function markAsDone(){
 
                             </ul>
                         </div>
-                        <!--div class="span6">
-                            timeline
-                        </div-->
+                        <div class="span4">
+                            <div class="bordered-box">
+                                <!-- ROW CIT 1 -->
+                                <p>
+                                   {% blocktrans with on=report.created mail=report.get_creator.email %}
+                                        on <strong>{{on}}</strong>
+                                   {% endblocktrans %}
+                                </p>
+                                <!-- ROW CIT 2 -->
+                                <p>
+                                 <strong>{% trans "Responsible:" %}</strong>
+                                <!-- responsible-name, responsible-group, responsible-entity -->
+                                {{report.responsible_department.name }} - 
+                                {{report.responsible_entity.name}}
+                                </p>
+                                <!-- ROW CIT 3 -->
+                                <p>
+                                    <th><strong>{% trans "Status:" %}</strong></th>
+                                    <td>{{ report.get_status_display }}</td>
+                                    {% trans 'on' %}
+                                    {{report.last_history_status_event.event_at}}
+                                    
+                                    {% if report.is_contractor_or_applicant_assigned %}
+                                        {{report.contractor.name}}
+                                    {% endif %}
+                                </p>
+                                <!-- ROW CIT 4 -->
+                                {% if report.merged_with %}
+                                    <p>
+                                        {% trans "Merged on" %}
+                                        {{report.last_history_event.event_at}}
+                                        {% trans "with incident" %}
+                                        {{report.merged_with.id}}
+                                    </p>
+                                {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div>
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
                                     <a href="#divMarkAsDone" role="button" class="btn lk-isresolved span1" data-toggle="modal">
@@ -223,6 +259,7 @@ function markAsDone(){
                             <a class="lk-download-pdf btn span1" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
                                 <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
                             </a>
+                        </div>
                     </div>
                 </div>
                 <div  id="map">
