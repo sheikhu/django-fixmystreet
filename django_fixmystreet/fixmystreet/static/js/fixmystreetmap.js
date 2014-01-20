@@ -222,7 +222,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             symbolizer: fixedMarkerStyle,
             elseFilter: true
         }),
-        processedRule = new OpenLayers.Rule({
+        rejectedRule = new OpenLayers.Rule({
             name: "rule-rejected",
             filter: new OpenLayers.Filter({
                 evaluate: function (context) {
@@ -237,7 +237,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     createdMarkerStyle.display = "";
 
     rejectedMarkerStyle.externalGraphic = "/static/images/pin-gray-L.png";
-    rejectedMarkerStyle.display = "";
+    rejectedMarkerStyle.display = true;
 
     fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png";
     fixedMarkerStyle.display = "";
@@ -319,7 +319,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         var filter_1_1 = new OpenLayers.Format.Filter({version: "1.1.0"});
 
         // Add regional limits layer
-        fms.regionalLayer = new OpenLayers.Layer.WMS("regional",
+        fms.regionalLayer = new OpenLayers.Layer.WMS("regional_limits",
             URBIS_URL + "geoserver/wms",
             {
                 layers: "urbis:URB_A_SS",
@@ -641,6 +641,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         inProgressRule,
                         createdRule,
                         processedRule,
+                        rejectedRule,
                         //CLUSTER
                         new OpenLayers.Rule({
                             name: "rule-cluster",
@@ -678,7 +679,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
                     if(deactivated) {
                         this.layer.removeAllFeatures();
-                        this.layer.events.un({
+                        this.layer.events.on({
                             "beforefeaturesadded": this.cacheFeatures,
                             "moveend": this.cluster,
                             scope: this
@@ -788,8 +789,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             status === 5 ||
                             status === 6 ||
                             status === 7;
-        report.processed = status === 3;
         report.rejected = status === 9;
+        report.processed = status === 3;
 
         var newMarker = new OpenLayers.Feature.Vector(markerPoint, report);
         this.markers.push(newMarker);
