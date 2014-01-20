@@ -216,14 +216,14 @@ function initDragMarker(x, y, additionalInfo) {
         fms.currentMap.centerOnDraggableMarker();
         fms.currentMap.map.zoomTo(6);
 
-        var popupContent = "<p class='popupMoveMe popupHeading'>Déplacez-moi à l'adresse exacte</p>";
+        var popupContent = "<p class='popupMoveMe popupHeading'>move the cursor</p>";
 
         if (additionalInfo) {
             popupContent += "<p class='popupMoveMe popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
             popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
 
             if (additionalInfo.number) {
-                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>C'est ici !</a>";
+                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>It is here</a>";
                 popupContent += '<div id="btn-streetview"><i class="icon-streetview"></i>Street View</div>';
             }
         }
