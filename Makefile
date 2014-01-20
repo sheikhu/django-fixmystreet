@@ -1,5 +1,5 @@
 .PHONY        = install init html-doc install develop test jenkins createdb dropdb scratchdb clean
-APP_NAME      = fixmystreet backoffice
+APP_NAME      = backoffice # fixmystreet backoffice
 INSTALL_PATH  = $(abspath env)
 BIN_PATH      = $(INSTALL_PATH)/bin
 SRC_ROOT      = django_fixmystreet
