@@ -296,6 +296,11 @@ class OrganisationEntity(UserTrackedModel):
         required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
         return getattr(user, required_role)
 
+    def contact_user(self):
+        memberships = self.memberships.filter(contact_user=True)
+        if memberships:
+            return memberships[0].user
+
     # def get_absolute_url(self):
     #     return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 
@@ -578,6 +583,9 @@ class Report(UserTrackedModel):
 
         return "images/marker-"+marker_color+"-xxs.png"
 
+    def is_contractor_or_applicant_assigned(self):
+        return self.status == Report.APPLICANT_RESPONSIBLE or self.status == Report.CONTRACTOR_ASSIGNED
+
     def is_regional(self):
         return self.address_regional
 
@@ -619,6 +627,12 @@ class Report(UserTrackedModel):
         slug_ent = self.responsible_entity.slug
         return "{0}-{1}-{2}-{3}".format(slug_sec_cat, slug_sec_cat_class, slug_cat, slug_ent)
 
+    def get_creator(self):
+        if (self.is_pro()):
+            return self.created_by
+        else:
+            return self.citizen
+
     def get_absolute_url(self):
         return reverse("report_show", kwargs={'report_id': self.id, 'slug': self.get_slug()})
 
@@ -639,6 +653,12 @@ class Report(UserTrackedModel):
 
     def has_at_least_one_non_confidential_file(self):
         return ReportFile.objects.filter(report__id=self.id).filter(security_level__in=[1, 2]).count() != 0
+
+    def last_history_event(self):
+        return ReportEventLog.objects.filter(report__id=self.id).latest('event_at')
+
+    def last_history_status_event(self):
+        return ReportEventLog.objects.filter(report__id=self.id).filter(event_type__in=[1,2,3,4,5,6,7,8,9,10,11,12,13]).order_by('event_at').reverse()[0]
 
     def active_comments(self):
         return self.comments().filter(logical_deleted=False).filter(security_level=1)
