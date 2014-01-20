@@ -237,7 +237,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     createdMarkerStyle.display = "";
 
     rejectedMarkerStyle.externalGraphic = "/static/images/pin-gray-L.png";
-    rejectedMarkerStyle.display = true;
+    rejectedMarkerStyle.display = "";
 
     fixedMarkerStyle.externalGraphic = "/static/images/pin-green-L.png";
     fixedMarkerStyle.display = "";
@@ -469,7 +469,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             if (
                 (this.flagInProgress && report.inProgress) ||
                 (this.flagCreated && report.created) ||
-                (this.flagClosed && report.processed)
+                (this.flagClosed && report.processed) || report.rejected
             ) {
                 features.push(currentFeature);
             }
