@@ -146,7 +146,7 @@ class UpdatesTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
 
         min_date_planned = self.report.accepted_at - timedelta(days=366)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%m/%Y"))
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -163,7 +163,7 @@ class UpdatesTest(TestCase):
         self.report.save()
 
         date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -199,7 +199,7 @@ class UpdatesTest(TestCase):
         self.report.save()
 
         date_planned = datetime.now() + timedelta(days=1)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%m/%Y"))
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -224,24 +224,29 @@ class UpdatesTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             created_by=self.manager
         )
         new_report.save()
-        self.assertEquals(new_report.gravity,1)
-        self.assertEquals(new_report.probability,1)
-        self.assertEquals(new_report.get_priority(),1)
+        self.assertEquals(new_report.gravity, 0)
+        self.assertEquals(new_report.probability, 0)
+        self.assertEquals(new_report.get_priority(), 0)
         self.client.login(username='manager@a.com', password='test')
 
         #Test update report priority
-        response = self.client.get(reverse("report_update_priority",args=[new_report.id]), {'gravity':'2','probability':'4'})
+        self.client.get(
+            reverse("report_update_priority", args=[new_report.id]),
+            {
+                'gravity': '2',
+                'probability': '4'
+            })
         updated_report = Report.objects.get(id=new_report.id)
-        self.assertEquals(updated_report.gravity,2)
-        self.assertEquals(updated_report.probability,4)
-        self.assertEquals(updated_report.get_priority(),8)
+        self.assertEquals(updated_report.gravity, 2)
+        self.assertEquals(updated_report.probability, 4)
+        self.assertEquals(updated_report.get_priority(), 8)
 
     @skip("no more available")
     def test_previous_reports(self):
@@ -259,45 +264,49 @@ class UpdatesTest(TestCase):
         manager2.organisation = self.organisation
         manager2.save()
         managerId = "manager_%s" % (manager2.id)
-        response = self.client.post(reverse("report_change_manager_pro",args=[self.report.id])+"?manId="+managerId)
-        self.assertEquals(len(self.manager.previous_reports.all()),1)
+        self.client.post(reverse("report_change_manager_pro", args=[self.report.id])+"?manId="+managerId)
+        self.assertEquals(len(self.manager.previous_reports.all()), 1)
         self.assertEquals(self.manager.previous_reports.all()[0].id, self.report.id)
-        self.assertEquals(len(self.manager.reports_in_charge.all()),0)
+        self.assertEquals(len(self.manager.reports_in_charge.all()), 0)
 
     def test_update_visibility(self):
         #Test switch to public and back
-        self.client.login(username='manager@a.com',password='test')
-        response2 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=true")
+        self.client.login(username='manager@a.com', password='test')
+        self.client.get(
+            reverse("report_change_switch_privacy", args=[self.report.id]),
+            {"privacy": "true"})
         self.assertTrue(Report.objects.get(id=self.report.id).private)
-        response = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
+        self.client.get(
+            reverse("report_change_switch_privacy", args=[self.report.id]),
+            {"privacy": "false"})
         self.assertFalse(self.report.private)
 
         #Test constraint: cannot turn report public if category is private
 
         #Turn report private
-        response3 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=true")
+        self.client.get(reverse("report_change_switch_privacy", args=[self.report.id])+"?privacy=true")
 
         #Change category to private one
         report = Report.objects.get(id=self.report.id)
         report.secondary_category = ReportCategory.objects.get(id=4)
         report.save()
         #Try to set report to public
-        response4 = self.client.get(reverse("report_change_switch_privacy",args=[self.report.id])+"?privacy=false")
+        self.client.get(reverse("report_change_switch_privacy", args=[self.report.id])+"?privacy=false")
         #Report not set to public because private category
         self.assertTrue(Report.objects.get(id=self.report.id).private)
 
     def test_false_address(self):
-        self.client.login(username='manager@a.com',password='test')
+        self.client.login(username='manager@a.com', password='test')
 
         url = reverse("report_false_address", args=[self.report.id])
-        post_data = {'false_address' : 'This is a false address'}
+        post_data = {'false_address': 'This is a false address'}
         response = self.client.post(url, post_data)
 
         report = Report.objects.get(id=self.report.id)
         self.assertEqual(response.content, post_data['false_address'])
         self.assertEqual(report.false_address, post_data['false_address'])
 
-        post_data = {'false_address' : 'Another false address'}
+        post_data = {'false_address': 'Another false address'}
         response = self.client.post(url, post_data)
 
         report = Report.objects.get(id=self.report.id)

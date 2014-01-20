@@ -221,16 +221,15 @@ def validateAll(request, report_id):
     '''Set all annexes to public'''
     report = get_object_or_404(Report, id=report_id)
 
-    comments = ReportComment.objects.filter(report_id=report_id)
-    files = ReportFile.objects.filter(report_id=report_id)
+    attachments = report.attachments.all()
+    attachments.update(security_level=ReportAttachment.PUBLIC)
+    # for comment in comments:
+    #     comment.security_level = ReportAttachment.PUBLIC
+    #     comment.save()
 
-    for comment in comments:
-        comment.security_level = ReportAttachment.PUBLIC
-        comment.save()
-
-    for f in files:
-        f.security_level = ReportAttachment.PUBLIC
-        f.save()
+    # for f in files:
+    #     f.security_level = ReportAttachment.PUBLIC
+    #     f.save()
 
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -241,7 +240,7 @@ def validateAll(request, report_id):
 def updateAttachment(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     security_level = request.REQUEST.get('updateType')
-    a = ReportFile.objects.get(pk=request.REQUEST.get('attachmentId'))
+    a = report.attachments.get(pk=request.REQUEST.get('attachmentId'))
     a.security_level = int(security_level)
     a.save()
 

@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.core import mail
 
 from django_fixmystreet.fixmystreet.models import (
-    Report, ReportCategory, OrganisationEntity,
+    Report, ReportCategory, OrganisationEntity, ReportAttachment,
     FMSUser
 )
 
@@ -633,12 +633,34 @@ class MailTest(TestCase):
         self.assertIn(self.group.email, mail.outbox[3].to)
         report = Report.objects.get(id=report_id)
         #Now make the comment public
-        response = self.client.get(reverse('report_update_attachment', args=[report_id]) + '?updateType=1&attachmentId=' + str(report.comments()[1].id), {}, follow=True)
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get(
+            reverse('report_update_attachment', args=[report_id]),
+            {
+                'updateType': 1,
+                'attachmentId': report.comments()[1].id
+            },
+            follow=True)
         # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
         # 1 to inform about publish (citizen), Manager who did the update does not get an email
         self.assertEquals(len(mail.outbox), 5)
         self.assertIn(self.citizen.email, mail.outbox[4].to)
+
+        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
+            'comment-text': 'new created comment',
+            'files-TOTAL_FORMS': 0,
+            'files-INITIAL_FORMS': 0,
+            'files-MAX_NUM_FORMS': 0
+        }, follow=True)
+
+        self.assertEquals(report.comments()[2].security_level, ReportAttachment.PRIVATE)
+
+        #Now make the comment public
+        response = self.client.get(
+            reverse('report_validate_all_pro', args=[report_id]),
+            follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEquals(report.comments()[2].security_level, ReportAttachment.PUBLIC)
 
     def testSubscriptionForProMail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -693,20 +715,23 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox),  1)  # one for creator subscription, one for manager
 
         self.client.logout()
-        response2 = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post,
+            follow=True)
         self.assertEquals(response.status_code, 200)
-        #Should send mail only to responsible
+        # Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 3)
 
-        report2_id = response2.context['report'].id
+        report2_id = response.context['report'].id
 
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
+        # Publish the created report
         response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
         self.assertEquals(response3.status_code, 200)
         self.assertEquals(len(mail.outbox), 4)
 
-        #Merge reports
+        # Merge reports
         url2 = reverse('report_do_merge_pro', args=[report_id])
         self.client.post(url2, {"mergeId": report2_id})
 

@@ -143,9 +143,27 @@ function markAsDone(){
                     <div class="row-fluid">
                         <div class="span5">
                             <div class="ticket_infos">
-                                <span class="ticket_number">
-                                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %} {{ report.get_ticket_number }}
-                                </span><br />
+                                                                   
+                                {% if report.is_created %}
+                                    <span class="ticket_number red_border">
+                                        <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% elif report.is_in_progress %}
+                                    <span class="ticket_number orange_border">
+                                        <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% elif report.is_refused %}
+                                    <span class="ticket_number gray_border">
+                                        <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% else %}
+                                    <span class="ticket_number green_border">
+                                        <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% endif %}
+                                
+
+                                <br />
                                 <span class="ticket_address">
                                     {{ report.address }}, {{ report.address_number }}<br />
                                     {{ report.postalcode }} {{ report.get_address_commune_name }}
@@ -154,6 +172,31 @@ function markAsDone(){
                                     {{ report.display_category }}
                                 </span>
                             </div>
+
+                            <ul class='iconsPopup'>
+                                {% if report.address_regional %}
+                                    <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/regional_on.png' /></a></li>
+                                {% else %}                                
+                                    <!--li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not located on a regional zone" %}'><img src='/static/images/regional_off.png' /></a></li-->
+                                {% endif %}
+
+                                {% if report.is_pro %}
+                                    <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src='/static/images/pro_on.png' /></a></li>
+                                {% endif %}
+
+                                {% if report.contractor != None %}
+                                    <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/contractorAssigned_on.png' /></a></li>
+                                {% else %}
+                                    <!--li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not assigned" %}'><img src='/static/images/contractorAssigned_off.png' /></a></li-->
+                                {% endif %}
+                                
+                                {% if report.date_planned %}
+                                    <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
+                                {% else %}
+                                    <!--li class="datePlanned"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "There is no planification for this incident" %}'><img src="/static/images/planned_off.png" /></a></li-->
+                                {% endif %}
+
+                            </ul>
                         </div>
                         <!--div class="span6">
                             timeline
