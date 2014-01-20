@@ -693,20 +693,23 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox),  1)  # one for creator subscription, one for manager
 
         self.client.logout()
-        response2 = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
+        response = self.client.post(
+            reverse('report_new') + '?x=150056.538&y=170907.56',
+            self.sample_post,
+            follow=True)
         self.assertEquals(response.status_code, 200)
-        #Should send mail only to responsible
+        # Should send mail only to responsible
         self.assertEquals(len(mail.outbox), 3)
 
-        report2_id = response2.context['report'].id
+        report2_id = response.context['report'].id
 
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
+        # Publish the created report
         response3 = self.client.post(reverse('report_accept_pro', args=[report2_id]), follow=True)
         self.assertEquals(response3.status_code, 200)
         self.assertEquals(len(mail.outbox), 4)
 
-        #Merge reports
+        # Merge reports
         url2 = reverse('report_do_merge_pro', args=[report_id])
         self.client.post(url2, {"mergeId": report2_id})
 
