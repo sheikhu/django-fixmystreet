@@ -455,7 +455,6 @@ var someCallback = function(exifObject, index) {
                 </div>
 
                 <div class="span4">
-                    {% if not report.is_merged %}
                     <div class="bordered-box">
                         <!-- #################################### -->
                         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
@@ -470,8 +469,64 @@ var someCallback = function(exifObject, index) {
                                 <button onclick="refuse();" class="btn reject">{% trans 'Reject' %}</button>
                             {% endif %}
                         {% endif %}
+
+                        <!-- ROW PRO 1 -->
+                        <p>
+                            <strong>
+                                {% trans 'visibility' %}: 
+                            </strong>
+                            {{ report.private|yesno:_("pro,public") }}
+                        </p>
+
+                        <!-- ROW PRO 2 -->
+                        <p>
+                            {% blocktrans with by=report.get_creator.get_full_name on=report.created mail=report.get_creator.email %}
+                                <strong>Posted by</strong> <a href='mailto:{{mail}}'>{{by}}</a> on {{on}}
+                           {% endblocktrans %}
+                           
+                           {% if not report.is_pro %}
+                                {% trans "a citizen" %}
+                                - {{ report.citizen.get_quality_display }}
+                                (tel:{{report.get_creator.fmsuser.telephone}})
+                           {% endif %}
+                        </p>
+                        <!-- ROW PRO 3 -->
+                        <p>
+                        <strong>{% trans "Responsible:" %}</strong>
+                        <!-- responsible-name, responsible-group, responsible-entity -->
+                        {{report.responsible_department.contact_user.get_full_name}} - 
+                        {{report.responsible_department.name }} - 
+                        {{report.responsible_entity.name}}
+                        (tel:{{report.responsible_department.phone }})
+                        </p>
+                        <!-- ROW PRO 4 -->
+                        <p>
+                            <th><strong>{% trans "Status:" %}</strong></th>
+                            <td>{{ report.get_status_display }}</td>
+                            {% trans 'on' %}
+                            {{report.last_history_status_event.event_at}}
+                            
+                            {% if report.is_contractor_or_applicant_assigned %}
+                                {{report.contractor.name}} ({{report.contractor.phone}})
+                            {% endif %}
+                        </p>
+                        <!-- ROW PRO 5 -->
+                        {% if report.merged_with %}
+                            <p>
+                                <strong>
+                                    {% trans "Merged on" %}
+                                </strong>
+                                {{report.last_history_event.event_at}}
+                                {% trans "with incident" %}
+                                {{report.merged_with.id}}
+                            </p>
+                        {% endif %}
+                        
                     </div>
-                    {% endif %}
+
+                   
+                        
+                   
 
                     <!--timeline-->
 
@@ -909,7 +964,7 @@ var someCallback = function(exifObject, index) {
     {% trans "Report Ticket" %} {{ report.get_ticket_number }}
 </h1-->
 
-<div class="">
+<!--div class="">
     <div class="bordered-box">
         {% if not report.is_merged %}
             {% if report.is_created %}
@@ -941,7 +996,6 @@ var someCallback = function(exifObject, index) {
             </p>
             <p class="author-sign">
                 {% if report.citizen %}
-                    <!-- Protect privacy from applicant and contractor when creator is a citizen -->
                     {% if fms_user.can_see_confidential %}
                         {% if report.citizen.last_name = ''%}
                             {% blocktrans with by=report.citizen.last_name on=report.created|date mail=report.citizen.email %}
@@ -966,9 +1020,7 @@ var someCallback = function(exifObject, index) {
                {% endif %}
             </p>
 
-            <!-- ################## -->
-            <!-- # REPORT DETAILS # -->
-            <!-- ################## -->
+           
             <table id='report-status'>
 
                 {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
@@ -987,6 +1039,7 @@ var someCallback = function(exifObject, index) {
                     {% endif %}
                 {% endif %}
 
+
                 <tr>
                     <th><strong>{% trans "Status:" %}</strong></th>
                     <td>{{ report.get_status_display }}</td>
@@ -1001,9 +1054,7 @@ var someCallback = function(exifObject, index) {
 
                 {% if report.is_in_progress %}
                     {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-                        <!-- ################################# -->
-                        <!-- # CONTRACTOR/IMPETRANT DROPDOWN # -->
-                        <!-- ################################# -->
+                        
                         <tr>
                             <th><strong>{% trans "Contractor/Applicant:" %}</strong></th>
                             <td colspan="4">
@@ -1020,9 +1071,7 @@ var someCallback = function(exifObject, index) {
                             </td>
                         </tr>
                     {% else %}
-                        <!-- ########################################################### -->
-                        <!-- # RESPONSIBLE / ENTITY / EXECUTANT/ IMPETRANT (READ ONLY) # -->
-                        <!-- ########################################################### -->
+                        
                         <tr>
                             <th><strong>{% trans "Responsible manager:" %}</strong></th>
                             <td>
@@ -1086,8 +1135,8 @@ var someCallback = function(exifObject, index) {
         {% if not report.is_created %}
             <p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p>
         {% endif %}
-
-    </div>
+    </div-->
+    
 
         <!-- ########################## -->
         <!-- # DISPLAY FILES AND COMMENTS SECTION  # -->
