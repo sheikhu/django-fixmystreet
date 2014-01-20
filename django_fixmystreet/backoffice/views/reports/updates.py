@@ -3,16 +3,13 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db import transaction
 from django.contrib import messages
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from django_fixmystreet.fixmystreet.models import Report, FMSUser, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
+from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
 from django_fixmystreet.backoffice.forms import RefuseForm
-
-from datetime import datetime, timedelta
 
 import logging
 logger = logging.getLogger(__name__)
@@ -83,7 +80,7 @@ def close(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url())
 
 
-def planned( request, report_id ):
+def planned(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
     #Update the status and set the planned
@@ -228,8 +225,8 @@ def validateAll(request, report_id):
     files = ReportFile.objects.filter(report_id=report_id)
 
     for comment in comments:
-       comment.security_level = ReportAttachment.PUBLIC
-       comment.save()
+        comment.security_level = ReportAttachment.PUBLIC
+        comment.save()
 
     for f in files:
         f.security_level = ReportAttachment.PUBLIC
@@ -263,7 +260,7 @@ def deleteAttachment(request, report_id):
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
 
-def do_merge(request,report_id):
+def do_merge(request, report_id):
     #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
     report_2 = get_object_or_404(Report, id=request.POST["mergeId"])

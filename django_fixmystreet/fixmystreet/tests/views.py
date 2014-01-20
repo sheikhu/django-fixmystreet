@@ -117,12 +117,23 @@ class ReportViewsTest(SampleFilesTestCase):
         url = reverse('report_new')
         response = self.client.get(url, {'x': '148360', 'y': '171177'}, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('reports' in response.context)
+
+    def test_verify_report(self):
+        """Tests the new report page get verify existings."""
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        url = reverse('report_verify')
+        response = self.client.get(url, {'x': '150056', 'y': '170907'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertIn('reports_nearby', response.context)
         # Assert that the list view displays minimal information about reports
         last_dist = 0
-        for report in response.context['reports']:
+        for report in response.context['reports_nearby']:
             self.assertContains(response, report.get_absolute_url())
-            self.assertTrue(report.distance.m <= 1000)  # limit to 1km around
+            self.assertTrue(report.distance.m <= 20)  # limit to 1km around
             self.assertTrue(report.distance.m >= last_dist)  # ordered by distance
             last_dist = report.distance.m
 
@@ -378,7 +389,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.status, Report.SOLVED)
 
         self.client.login(username=self.manager.email, password='test')
-        self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
+        response = self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
         self.assertEqual(response.status_code, 200)
         report = response.context['report']
         self.assertTrue(report.fixed_at)
@@ -398,7 +409,10 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('report_fix_pro', args=[report.id]), {'is_fixed': 'True'}, follow=True)
+        response = self.client.post(
+            reverse('report_fix_pro', args=[report.id]),
+            {'is_fixed': 'True'},
+            follow=True)
         self.assertEquals(response.status_code, 200)
 
         report = response.context['report']
@@ -407,7 +421,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEquals(report.status, Report.SOLVED)
 
         self.client.login(username=self.manager.email, password='test')
-        self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
+        response = self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
         self.assertEquals(response.status_code, 200)
         report = response.context['report']
         self.assertTrue(report.fixed_at)
