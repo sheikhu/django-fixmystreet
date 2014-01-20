@@ -146,7 +146,7 @@ class UpdatesTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
 
         min_date_planned = self.report.accepted_at - timedelta(days=366)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%m/%Y"))
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), min_date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -163,7 +163,7 @@ class UpdatesTest(TestCase):
         self.report.save()
 
         date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned)
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), date_planned)
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -199,7 +199,7 @@ class UpdatesTest(TestCase):
         self.report.save()
 
         date_planned = datetime.now() + timedelta(days=1)
-        url = '%s?date_planned=%s' %(reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%m/%Y"))
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[self.report.id]), date_planned.strftime("%m/%Y"))
 
         # Set as planned
         self.client.login(username='manager@a.com', password='test')
@@ -296,17 +296,17 @@ class UpdatesTest(TestCase):
         self.assertTrue(Report.objects.get(id=self.report.id).private)
 
     def test_false_address(self):
-        self.client.login(username='manager@a.com',password='test')
+        self.client.login(username='manager@a.com', password='test')
 
         url = reverse("report_false_address", args=[self.report.id])
-        post_data = {'false_address' : 'This is a false address'}
+        post_data = {'false_address': 'This is a false address'}
         response = self.client.post(url, post_data)
 
         report = Report.objects.get(id=self.report.id)
         self.assertEqual(response.content, post_data['false_address'])
         self.assertEqual(report.false_address, post_data['false_address'])
 
-        post_data = {'false_address' : 'Another false address'}
+        post_data = {'false_address': 'Another false address'}
         response = self.client.post(url, post_data)
 
         report = Report.objects.get(id=self.report.id)
