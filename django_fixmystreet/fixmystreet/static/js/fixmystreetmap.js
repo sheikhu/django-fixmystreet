@@ -317,9 +317,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         });
         var xml = new OpenLayers.Format.XML();
         var filter_1_1 = new OpenLayers.Format.Filter({version: "1.1.0"});
+        var regionalLimitsTitle = gettext("regional_limits")
+        var municipalityLimitsTitle = gettext("municipality_limits")
+
 
         // Add regional limits layer
-        fms.regionalLayer = new OpenLayers.Layer.WMS("regional_limits",
+        fms.regionalLayer = new OpenLayers.Layer.WMS(regionalLimitsTitle,
             URBIS_URL + "geoserver/wms",
             {
                 layers: "urbis:URB_A_SS",
@@ -339,7 +342,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         this.map.addLayer(fms.regionalLayer);
 
         // Add municipality limits layer
-        fms.municipalityLayer = new OpenLayers.Layer.WMS("municipality_limits",
+        fms.municipalityLayer = new OpenLayers.Layer.WMS(municipalityLimitsTitle,
             URBIS_URL + "geoserver/wms",
             {layers: "urbis:URB_A_MU",
                 format: "image/png",
@@ -872,6 +875,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
                         if (report.isSolved) {
                             popoverIcons += "<li class='isSolved'><img src='/static/images/is_resolved_on.png' /></li>";
+
                         }
                         
                     }
