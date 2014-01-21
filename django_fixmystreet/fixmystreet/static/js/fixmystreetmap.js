@@ -730,7 +730,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
             this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
                 onSelect: function (feature) {
-                    self.showPopover(feature);
+                    //Not available in details mode
+                    if (typeof DETAILS_MODE === 'undefined') {
+                        self.showPopover(feature);
+                    }
                 },
                 onUnselect: function(feature) {
                     for(var i=0, length=this.map.popups.length; i < length; i++) {
@@ -834,41 +837,47 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         "<p class='categoryPopup'>" + report.category + "</p></div>";
 
                     popoverIcons += "<ul class='iconsPopup'>";
-                            //"<li class='addressRegional'>" + report.address_regional + "</li>";
 
-                    if (report.address_regional != 'null'){
-                        popoverIcons += "<li class='addressRegional' data-placement='bottom' data-toggle='tooltip' data-original-title='This incident is located on a regional zone'><img src='/static/images/addressRegional.png' /></li>";
+                    //CONTENU DES ICONES
+                    //******************
+                    if (report.address_regional === true){
+                        popoverIcons += "<li class='addressRegional'><img src='/static/images/regional_on.png' /></li>";
                     }
 
-                    if (report.contractor != 'null'){
-                        popoverIcons += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned.png' /></li>";
+                    if (report.citizen === false) {
+                        popoverIcons += "<li class='contractorAssigned'><img src='/static/images/pro_on.png' /></li>";
+                    }
+
+                    if (report.contractor === true){
+                        popoverIcons += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned_on.png' /></li>";
                     }
 
                     if (report.date_planned){
-                        popoverIcons += "<li class='datePlanned'>" + report.date_planned + "</li>";
+                        popoverIcons += "<li class='datePlanned_on'><a href='#'>"+report.date_planned+"</a></li>";  
                     }
 
-                    // If Pro, there are priority and citizen values
-                    if (report.priority) {
-                        if (report.is_closed != 'null'){
-                            popoverIcons += "<li class='isClosed'><img src='/static/images/isClosed.png' /></li>";
+
+                    if (BACKOFFICE) {
+                        popoverIcons += "<li>";
+                        if (report.priority == 0){
+                            popoverIcons += "<img src='/static/images/prior_off.png' class='priorityLevel' />";
+                        } else if (report.priority <= 2){
+                            popoverIcons += "<img src='/static/images/prior_on_1.png' class='priorityLevel' />";
+                        } else if (report.priority <= 8){
+                            popoverIcons += "<img src='/static/images/prior_on_2.png' class='priorityLevel' />";
+                        } else {
+                            popoverIcons += "<img src='/static/images/prior_on_3.png' class='priorityLevel' />";
                         }
-                        if (report.citizen != 'null'){
-                            popoverIcons += "<li class='fromPro'><img src='/static/images/fromPro.png' /></li>";
+                        popoverIcons += "</li>";
+
+                        if (report.isSolved) {
+                            popoverIcons += "<li class='isSolved'><img src='/static/images/is_resolved_on.png' /></li>";
                         }
-                        if (report.priority <= '2'){
-                            popoverIcons += "<li class='priority'><img src='/static/images/lowPriority.png' />" + report.priority + "</li>";
-                        }
-                        else if (report.priority <= '6'){
-                            popoverIcons += "<li class='priority'><img src='/static/images/mediumPriority.png' />" + report.priority + "</li>";
-                        }
-                        else {
-                            popoverIcons += "<li class='priority'><img src='/static/images/highPriority.png' />" + report.priority + "</li>";
-                        }
-                        //popoverIcons += "<li>" + feature.attributes.report.is_closed + "</li>" +
-                        //popoverIcons += "<li>" + feature.attributes.report.citizen + "</li>" +
-                        //popoverIcons += "<li>" + feature.attributes.report.priority + "</li>";
+                        
                     }
+
+                    //FIN CONTENU DES ICONES
+                    //**********************
                     popoverIcons += "</ul>";
 
                     var popup = new OpenLayers.Popup(
