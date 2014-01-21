@@ -11,6 +11,7 @@
 <script type="text/javascript">
 
 var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
+var DETAILS_MODE = true;
 
 function setPrivate() {
     var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
@@ -232,7 +233,7 @@ $(document).ready(function() {
                         var brel = $(b).html();
                         return arel == brel ? 0 : arel < brel ? -1 : 1
                     }));
-            $("#sec_cat_select").prepend('<option value="0">{% trans "Select a Category" %}</option>');
+            $("#sec_cat_select").prepend("<option value='0'>{% trans 'Select a Category' %}</option>");
 
             $("#sec_cat_select").val("{{report.secondary_category.id}}");
         }
@@ -257,7 +258,7 @@ $(document).ready(function() {
                         var brel = $(b).html();
                         return arel == brel ? 0 : arel < brel ? -1 : 1
                     }));
-                    $("#sec_cat_select").prepend('<option value="0">{% trans "Select a secondary Category" %}</option>');
+                    $("#sec_cat_select").prepend("<option value='0'>{% trans 'Select a secondary Category' %}</option>");
                 }
             });
         }
