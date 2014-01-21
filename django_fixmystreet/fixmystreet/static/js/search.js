@@ -96,7 +96,6 @@ function renderResults() {
     }
 
 }
-console.log(gettext('hello world'));
 
 function AddressResult(x, y, address, idx)
 {
@@ -157,6 +156,7 @@ function getAddressFromPoint(lang, x, y) {
            
             //console.log(origX,origY);
             var municipality = zipcodes[(postCode=="1041"?"1040":postCode)].commune;
+            var popupTitleItsHere   = gettext('It is here');
             //var origX = response.result.point.x;
             //var origY= response.result.point.y;
             //console.log(x,y);
@@ -176,7 +176,10 @@ function getAddressFromPoint(lang, x, y) {
                 popupContent += "<br/>" + postCode + " " + municipality + "</p>";
 
                 if (NEXT_PAGE_URL) {
-                    popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + origX + "&y=" + origY + "'>C'est ici !</a>";
+                    popupContent += 
+                    "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + origX + "&y=" + origY + "'>"+
+                    popupTitleItsHere+
+                    "</a>";
                 }
                 popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
             }
@@ -218,14 +221,16 @@ function initDragMarker(x, y, additionalInfo) {
         fms.currentMap.centerOnDraggableMarker();
         fms.currentMap.map.zoomTo(6);
 
-        var popupContent = "<p class='popupMoveMe popupHeading'>move the cursor</p>";
+        var popupTitle = gettext('Move the cursor');
+        var popupTitleItsHere   = gettext('It is here');
+        var popupContent = "<p class='popupMoveMe popupHeading'>"+popupTitle+"</p>";
 
         if (additionalInfo) {
             popupContent += "<p class='popupMoveMe popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
             popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
 
             if (additionalInfo.number) {
-                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>It is here</a>";
+                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>"+popupTitleItsHere+"</a>";
                 popupContent += '<div id="btn-streetview"><i class="icon-streetview"></i>Street View</div>';
             }
         }
