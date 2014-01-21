@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 11:37+0100\n"
+"POT-Creation-Date: 2014-01-21 12:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: backoffice/forms.py:200 backoffice/templates/pro/home.html:54
 #: fixmystreet/models.py:491 fixmystreet/models.py:492
-#: fixmystreet/models.py:691 fixmystreet/templates/_page_header.html:78
+#: fixmystreet/models.py:691 fixmystreet/templates/_page_header.html:80
 msgid "In progress"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgid "In progress and assigned"
 msgstr ""
 
 #: backoffice/forms.py:202 backoffice/templates/pro/home.html:77
-#: fixmystreet/templates/_page_header.html:81
+#: fixmystreet/templates/_page_header.html:83
 msgid "Closed"
 msgstr ""
 
@@ -1751,19 +1751,19 @@ msgstr ""
 msgid "Signaler"
 msgstr ""
 
-#: fixmystreet/templates/_page_header.html:63
+#: fixmystreet/templates/_page_header.html:64
 msgid "results"
 msgstr ""
 
-#: fixmystreet/templates/_page_header.html:73
+#: fixmystreet/templates/_page_header.html:75
 msgid "Statut"
 msgstr ""
 
-#: fixmystreet/templates/_page_header.html:75
+#: fixmystreet/templates/_page_header.html:77
 msgid "created"
 msgstr ""
 
-#: fixmystreet/templates/_page_header.html:88
+#: fixmystreet/templates/_page_header.html:90
 msgid "Localiser via la carte"
 msgstr ""
 

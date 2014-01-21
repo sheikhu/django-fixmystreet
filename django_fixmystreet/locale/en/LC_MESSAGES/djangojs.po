@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 11:37+0100\n"
+"POT-Creation-Date: 2014-01-21 12:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: fixmystreet/static/js/search.js:99
-msgid "hello world"
+#: fixmystreet/static/js/fixmystreetmap.js:320
+msgid "regional_limits"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:321
+msgid "municipality_limits"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:225
+msgid "It is here"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:224
+msgid "Move the cursor"
 msgstr ""
