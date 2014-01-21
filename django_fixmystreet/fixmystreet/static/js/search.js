@@ -96,6 +96,8 @@ function renderResults() {
     }
 
 }
+console.log(gettext('hello world'));
+
 function AddressResult(x, y, address, idx)
 {
     var self = this;
