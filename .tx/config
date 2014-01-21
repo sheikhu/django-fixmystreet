@@ -1,0 +1,13 @@
+[main]
+host = https://www.transifex.com
+
+[django-fixmystreet.djangopo]
+file_filter = django_fixmystreet/locale/<lang>/LC_MESSAGES/django.po
+source_file = django_fixmystreet/locale/en/LC_MESSAGES/django.po
+source_lang = en
+
+[django-fixmystreet.djangojspo]
+file_filter = django_fixmystreet/locale/<lang>/LC_MESSAGES/djangojs.po
+source_file = django_fixmystreet/locale/en/LC_MESSAGES/djangojs.po
+source_lang = en
+
