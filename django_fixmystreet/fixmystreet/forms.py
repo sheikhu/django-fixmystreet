@@ -94,7 +94,7 @@ class ReportForm(forms.ModelForm):
 
 #Used by pro version
 class ProReportForm(ReportForm):
-    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.all().order_by('name_'+ get_language()))
+    secondary_category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.all().order_by('name_' + get_language()))
     private = forms.BooleanField(initial=True, required=False, label=_("Private Report"))
 
     def __init__(self, *args, **kwargs):
@@ -103,22 +103,22 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl','address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode','private', 'subscription')
+        fields = ('x', 'y', 'address_nl', 'address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode', 'private', 'subscription')
 
-
-    def save (self,commit=True):
-        report= super(ProReportForm,self).save(commit=False)
-        report.private = True#self.cleaned_data['private']
+    def save(self, commit=True):
+        report = super(ProReportForm, self).save(commit=False)
+        report.private = True  # self.cleaned_data['private']
         if commit:
-            report.save();
+            report.save()
         return report
 
-    def saveForMobile(self,commit=True):
-        report= super(ProReportForm,self).saveForMobile(commit=False)
-        report.private = True#self.cleaned_data['private']
+    def saveForMobile(self, commit=True):
+        report = super(ProReportForm, self).saveForMobile(commit=False)
+        report.private = True  # self.cleaned_data['private']
         if commit:
-            report.save();
+            report.save()
         return report
+
 
 #Used by citizen version only
 class CitizenReportForm(ReportForm):
@@ -129,7 +129,7 @@ class CitizenReportForm(ReportForm):
     class Meta:
         model = Report
         fields = (
-            'x', 'y', 'address_nl','address_fr',
+            'x', 'y', 'address_nl', 'address_fr',
             'address_number', 'postalcode',
             'category', 'secondary_category',
             'postalcode',
