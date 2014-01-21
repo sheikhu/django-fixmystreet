@@ -55,6 +55,12 @@ def report_false_address(request, report_id):
         report = get_object_or_404(Report, id=report_id)
 
         false_address = request.POST.get('false_address')
+
+        if (false_address):
+            false_address = false_address.strip()
+            if (false_address == ''):
+                false_address == None   
+
         report.false_address = false_address
         report.save()
 
