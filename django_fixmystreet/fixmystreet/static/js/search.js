@@ -458,8 +458,7 @@ $(function(){
 
     btnLocalizeviamap.addEventListener("click", function() {
         // Hard code center of map (~same value than fms.currentMap.map.getCenter() but as x,y and not lat,lon)
-        initDragMarker(148894,170714);
-        fms.currentMap.map.zoomTo(2);
+        initDragMarker(fms.currentMap.map.center.lon,fms.currentMap.map.center.lat);
 
         btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
     });
