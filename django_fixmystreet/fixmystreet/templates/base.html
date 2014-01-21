@@ -245,6 +245,7 @@
             {% endblock %}
         </div>
         {% block script %}
+        <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
         <script type="text/javascript">
             //Test if console.log exists (does not exists on ie8 and <) tips to avoid console.log to block js on those env.
             if (typeof console=='undefined') {
