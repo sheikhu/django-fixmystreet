@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 11:30+0100\n"
-"PO-Revision-Date: 2014-01-21 10:31+0000\n"
+"POT-Creation-Date: 2014-01-21 12:56+0100\n"
+"PO-Revision-Date: 2014-01-21 11:57+0000\n"
 "Last-Translator: tdesany2 <transifex@desany.eu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: fixmystreet/static/js/search.js:99
-msgid "hello world"
+#: fixmystreet/static/js/fixmystreetmap.js:320
+msgid "regional_limits"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:321
+msgid "municipality_limits"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:225
+msgid "It is here"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:224
+msgid "Move the cursor"
 msgstr ""
