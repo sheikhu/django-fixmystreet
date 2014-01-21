@@ -454,8 +454,8 @@ var someCallback = function(exifObject, index) {
                     </div>
                 </div>
 
-                <div class="span4">
-                    <div class="bordered-box">
+                <div class="pro span6 incidentDetailsStatus">
+                    <ul class="">
                         <!-- #################################### -->
                         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
                         <!-- #################################### -->
@@ -471,15 +471,15 @@ var someCallback = function(exifObject, index) {
                         {% endif %}
 
                         <!-- ROW PRO 1 -->
-                        <p>
+                        <li>
                             <strong>
-                                {% trans 'visibility' %}: 
+                                {% trans 'Visibility' %} : 
                             </strong>
                             {{ report.private|yesno:_("pro,public") }}
-                        </p>
+                        </li>
 
                         <!-- ROW PRO 2 -->
-                        <p>
+                        <li>
                             {% blocktrans with by=report.get_creator.get_full_name on=report.created mail=report.get_creator.email %}
                                 <strong>Posted by</strong> <a href='mailto:{{mail}}'>{{by}}</a> on {{on}}
                            {% endblocktrans %}
@@ -489,18 +489,18 @@ var someCallback = function(exifObject, index) {
                                 - {{ report.citizen.get_quality_display }}
                                 (tel:{{report.get_creator.fmsuser.telephone}})
                            {% endif %}
-                        </p>
+                        </li>
                         <!-- ROW PRO 3 -->
-                        <p>
+                        <li>
                         <strong>{% trans "Responsible:" %}</strong>
                         <!-- responsible-name, responsible-group, responsible-entity -->
                         {{report.responsible_department.contact_user.get_full_name}} - 
                         {{report.responsible_department.name }} - 
                         {{report.responsible_entity.name}}
                         (tel:{{report.responsible_department.phone }})
-                        </p>
+                        </li>
                         <!-- ROW PRO 4 -->
-                        <p>
+                        <li>
                             <th><strong>{% trans "Status:" %}</strong></th>
                             <td>{{ report.get_status_display }}</td>
                             {% trans 'on' %}
@@ -509,20 +509,20 @@ var someCallback = function(exifObject, index) {
                             {% if report.is_contractor_or_applicant_assigned %}
                                 {{report.contractor.name}} ({{report.contractor.phone}})
                             {% endif %}
-                        </p>
+                        </li>
                         <!-- ROW PRO 5 -->
                         {% if report.merged_with %}
-                            <p>
+                            <li>
                                 <strong>
                                     {% trans "Merged on" %}
                                 </strong>
                                 {{report.last_history_event.event_at}}
                                 {% trans "with incident" %}
                                 {{report.merged_with.id}}
-                            </p>
+                            </li>
                         {% endif %}
                         
-                    </div>
+                    </ul>
 
                    
                         
@@ -530,13 +530,43 @@ var someCallback = function(exifObject, index) {
 
                     <!--timeline-->
 
+                    
+                </div>
+                <div class="pro span2">
+                    {% if report.is_in_progress %}
+                        {% if report.status != report.SOLVED %}
+                            <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
+                                <i class="isresolved"> </i>{% trans "Report as solved" %}
+                            </a>
+                        {% endif %}
+
+                        {% if not report.is_closed and not subscribed %}
+                            <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
+                                {% if report.subscriptions.all.count %}
+                                    <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
+                                {% endif %}
+                                <i class="subscribe"> </i>
+
+                                {% trans "Subscribe" %}
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    <a class="lk-download-pdf btn" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
+                        <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download PDF' %}
+                    </a>
+                    <a href="#" role="button" class="btn lk-viewHistoric" data-toggle="modal">
+                        <i class="historic"> </i>{% trans "View historic" %}
+                    </a>
+
+
                     <!-- Actions -->
                     {% if report.is_in_progress %}
                     {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
                     <div class="btn-group incidentActions">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                            {% trans 'Choose an action' %}
-                            <span class="caret"></span>
+                            <i class="incidentActionsIcon"></i>
+                            {% trans 'Other actions' %}
                         </a>
                              <ul class="dropdown-menu">
                                 <li class="dropdown-submenu">
@@ -702,30 +732,11 @@ var someCallback = function(exifObject, index) {
                     </div>
                     {% endif %}
                     {% endif %}
-                </div>
-                <div class="pro">
-                    {% if report.is_in_progress %}
-                        {% if report.status != report.SOLVED %}
-                            <a href="#divMarkAsDone" role="button" class="btn lk-isresolved span1" data-toggle="modal">
-                                <i class="isresolved"> </i>{% trans "Report as solved" %}
-                            </a>
-                        {% endif %}
 
-                        {% if not report.is_closed and not subscribed %}
-                            <a href="#modalSubscription" role="button" class="btn lk-subscribe span1" data-toggle="modal">
-                                {% if report.subscriptions.all.count %}
-                                    <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
-                                {% endif %}
-                                <i class="subscribe"> </i>
 
-                                {% trans "Subscribe" %}
-                            </a>
-                        {% endif %}
-                    {% endif %}
 
-                    <a class="lk-download-pdf btn span1" href="#modalDownloadPDF" title="{% trans 'Download a pdf report of this incident' %}" data-toggle="modal">
-                        <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
-                    </a>
+
+
                 </div>
             </div>
         </div>
