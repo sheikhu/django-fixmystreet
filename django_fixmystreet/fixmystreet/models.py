@@ -416,7 +416,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def related_fields(self):
         return self.select_related(
-            'category', 'secondary_category', 
+            'category', 'secondary_category',
             'secondary_category__secondary_category_class',
             'responsible_entity', 'responsible_department', 'contractor',
             'citizen', 'created_by')
@@ -658,7 +658,7 @@ class Report(UserTrackedModel):
         return ReportEventLog.objects.filter(report__id=self.id).latest('event_at')
 
     def last_history_status_event(self):
-        return ReportEventLog.objects.filter(report__id=self.id).filter(event_type__in=[1,2,3,4,5,6,7,8,9,10,11,12,13]).order_by('event_at').reverse()[0]
+        return ReportEventLog.objects.filter(report__id=self.id).filter(event_type__in=ReportEventLog.STATUS_EVENTS).latest('event_at')
 
     def active_comments(self):
         return self.comments().filter(logical_deleted=False).filter(security_level=1)
@@ -1846,6 +1846,7 @@ class ReportEventLog(models.Model):
         PLANNED: _("Report planned to {date_planned}"),
         MERGED: _("Report merged with report #{merged_with_id}"),
     }
+    STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]

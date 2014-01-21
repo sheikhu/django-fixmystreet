@@ -204,6 +204,11 @@ def show(request, slug, report_id):
 
     applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT).order_by('name_' + get_language())
 
+    can_edit_attachment = (
+        report.is_in_progress and
+        request.fmsuser.memberships.filter(organisation=report.responsible_department).exists() and
+        (report.is_created() or report.is_in_progress()))
+
     return render_to_response("pro/reports/show.html", {
         "fms_user": request.fmsuser,
         "report": report,
@@ -219,7 +224,7 @@ def show(request, slug, report_id):
         "refuse_form": RefuseForm(instance=report),
         "mark_as_done_form": MarkAsDoneForm(),
         'activity_list': report.activities.all(),
-        'attachment_edit': report.is_in_progress and report.responsible_department in request.fmsuser.organisations_list() and (report.is_created() or report.is_in_progress()),
+        'attachment_edit': can_edit_attachment,
         "category_list": ReportMainCategoryClass.objects.all().order_by('name_' + get_language()),
     }, context_instance=RequestContext(request))
 
