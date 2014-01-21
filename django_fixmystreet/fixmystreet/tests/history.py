@@ -590,45 +590,45 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrint(activities[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
-    def testAssignToOtherEntity(self):
-        response = self.client.post(
-            reverse('report_new') + '?x=150056.538&y=170907.56',
-            self.sample_post_citizen,
-            follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
-         #first accept the report before citizen can update
-        self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
-        self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(
-            reverse('report_change_manager_pro', args=[report_id]) + '?', {
-                'manId': 'entity_21'
-            },
-            follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEquals(activities.all().count(), 4)
-        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertContains(response, self.calculatePrintPro(activities[2]))
+    #def testAssignToOtherEntity(self):
+    #    response = self.client.post(
+    #        reverse('report_new') + '?x=150056.538&y=170907.56',
+    #        self.sample_post_citizen,
+    #        follow=True)
+    #    self.assertEquals(response.status_code, 200)
+    #    report_id = response.context['report'].id
+    #     #first accept the report before citizen can update
+    #    self.client.login(username='manager@a.com', password='test')
+    #    url = reverse('report_accept_pro', args=[report_id])
+    #    response = self.client.get(url, follow=True)
+    #    self.assertEqual(response.status_code, 200)
+    #    report = response.context['report']
+     #   self.assertTrue(report.accepted_at is not None)
+     #   self.client.login(username='manager@a.com', password='test')
+     #   response = self.client.get(
+     #       reverse('report_change_manager_pro', args=[report_id]) + '?', {
+     #           'manId': 'entity_21'
+     #       },
+     #       follow=True)
+     #   self.assertEquals(response.status_code, 200)
+     #   report = Report.objects.get(id=report_id)
+     #   activities = report.activities.all()
+     #   self.assertEquals(activities.all().count(), 4)
+     #   url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
+     #   response = self.client.get(url, follow=True)
+     #   self.assertEquals(response.status_code, 200)
+     #   self.assertContains(response, self.calculatePrintPro(activities[2]))
 
         #Now test to see that citizen sees the correct information
-        self.client.logout()
-        url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEqual(activities.all().count(), 4)
-        self.assertContains(response, self.calculatePrint(activities[2]))
-        self.assertNotContains(response, self.calculatePrintPro(activities[2]))
+     #   self.client.logout()
+     #   url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
+     #   response = self.client.get(url, follow=True)
+      #  self.assertEquals(response.status_code, 200)
+      #  report = Report.objects.get(id=report_id)
+      #  activities = report.activities.all()
+      #  self.assertEqual(activities.all().count(), 4)
+      #  self.assertContains(response, self.calculatePrint(activities[2]))
+      #  self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
     def testMergeReports(self):
         #Send a post request filling in the form to create a report
