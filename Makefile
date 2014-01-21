@@ -44,12 +44,12 @@ test: $(BIN_PATH)/manage.py
 	$(BIN_PATH)/manage.py test $(APP_NAME)
 
 lint:
-	flake8 $(SRC_ROOT)
+	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) || echo "lint errors"
 
 jenkins: develop
 	rm -rf reports
 	mkdir reports
-	flake8 --exclude migrations opendataApp opendataSite > reports/flake8.report
+	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) > reports/flake8.report || echo "lint errors"
 	$(BIN_PATH)/manage.py jenkins $(APP_NAME)
 
 createdb:
