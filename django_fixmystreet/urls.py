@@ -6,10 +6,14 @@ from django.conf import settings
 from django_fixmystreet.fixmystreet.sitemaps import ReportSitemap
 
 admin.autodiscover()
+js_info_dict = {
+    'packages': ('django_fixmystreet.fixmystreet', 'django_fixmystreet.backoffice', ),
+}
 
 urlpatterns = i18n_patterns('',
     url(r'^', include('django_fixmystreet.fixmystreet.urls')),
     url(r'^pro/', include('django_fixmystreet.backoffice.urls')),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict, name='jsi18n'),
     (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': {
         "reports": ReportSitemap()
     }}),
