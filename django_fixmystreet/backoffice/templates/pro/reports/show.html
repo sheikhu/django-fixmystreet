@@ -24,13 +24,21 @@ function setPublic() {
     window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=false';
 }
 
-function cancelWrongAddress() {
+function cancelWrongAddressUpdate() {
     //Close modal Window
     $('#modalAddress').modal('hide');
 }
 
 function persistWrongAddressUpdate() {
-    
+    var false_address = document.getElementById('false_address').value;
+    var url = '{% url "report_false_address" report.id %}';
+    var data = { 'false_address': false_address };
+
+    var self = this;
+    $.post( url, data, function( result ) {
+        report_false_adress = result;
+        $('#modalAddress').modal('hide');
+    });
 }
 
 function cancelCategoryUpdate() {
@@ -734,6 +742,11 @@ var someCallback = function(exifObject, index) {
                                     </a>
                                 </li>
 
+                                <!--  Wrong address -->
+                                <li>
+                                    <a tabindex="-1" href="#modalAddress" data-toggle="modal">{% trans 'Address' %}...</a>
+                                </li>
+
                                 {% if not fms_user.contractor %}
                                     <li>
                                         <a href="javascript:close();">{% trans 'Close' %}</a>
@@ -906,7 +919,8 @@ var someCallback = function(exifObject, index) {
         <div class="modal-body">
             <tr>
                 <td colspan="4">
-                   &nbsp;
+                <strong>{% trans "Wrong address:" %}</strong>
+                <textarea id="false_address" name="false_address">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea>
                 </td>
             </tr>
             <br/><br/>
