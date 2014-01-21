@@ -1785,6 +1785,19 @@ class ReportNotification(models.Model):
             raise
 
 
+def user_to_display_public(related):
+    if related and hasattr(related, 'fmsuser'):
+        user = related
+        if user.fmsuser.is_citizen():
+            return _("a citizen")
+
+        elif user.fmsuser.is_pro():
+            return user.fmsuser.get_organisation()
+
+    else:
+        return related
+
+
 class ReportEventLog(models.Model):
 
     # List of event types
@@ -1897,19 +1910,11 @@ class ReportEventLog(models.Model):
         )
 
     def get_public_activity_text(self):
-        user_to_display = _("a citizen")
-
-        if self.user:
-            if self.user.fmsuser.is_citizen():
-                user_to_display = _("a citizen")
-
-            if self.user.fmsuser.is_pro():
-                user_to_display = self.user.fmsuser.get_organisation()
 
         return self.EVENT_TYPE_TEXT[self.event_type].format(
-            user=user_to_display,
-            organisation=self.organisation,
-            related_new=self.related_new,
+            user=user_to_display_public(self.user),
+            organisation=user_to_display_public(self.organisation),
+            related_new=user_to_display_public(self.related_new),
             date_planned=self.value_old,
             merged_with_id=self.merged_with_id,
         )
