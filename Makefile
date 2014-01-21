@@ -1,5 +1,5 @@
 .PHONY        = install init html-doc install develop test jenkins createdb dropdb scratchdb clean
-APP_NAME      = backoffice # fixmystreet backoffice
+APP_NAME      = fixmystreet backoffice
 INSTALL_PATH  = $(abspath env)
 BIN_PATH      = $(INSTALL_PATH)/bin
 SRC_ROOT      = django_fixmystreet
@@ -49,6 +49,7 @@ lint:
 jenkins: develop
 	rm -rf reports
 	mkdir reports
+	flake8 --exclude migrations opendataApp opendataSite > reports/flake8.report
 	$(BIN_PATH)/manage.py jenkins $(APP_NAME)
 
 createdb:
