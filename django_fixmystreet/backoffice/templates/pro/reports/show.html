@@ -24,6 +24,15 @@ function setPublic() {
     window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=false';
 }
 
+function cancelWrongAddress() {
+    //Close modal Window
+    $('#modalAddress').modal('hide');
+}
+
+function persistWrongAddressUpdate() {
+    
+}
+
 function cancelCategoryUpdate() {
     //Close modal Window
     $('#modalCategory').modal('hide');
@@ -872,6 +881,30 @@ var someCallback = function(exifObject, index) {
                 </td>
                 <td colspan="2">
                     <input class="btn pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistCategoryUpdate()">
+                </td>
+            </tr>
+        </div>
+    </div>
+
+    <!-- SECTION ABOUT CATEGORY -->
+    <div id="modalAddress" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Address" %}</h3>
+        </div>
+        <div class="modal-body">
+            <tr>
+                <td colspan="4">
+                   &nbsp;
+                </td>
+            </tr>
+            <br/><br/>
+            <tr>
+                <td colspan="2">
+                    <input class="btn pull-left" type="button" name="submit" value="{% trans "Annuler" %}" onclick="cancelWrongAddressUpdate()">
+                </td>
+                <td colspan="2">
+                    <input class="btn pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistWrongAddressUpdate()">
                 </td>
             </tr>
         </div>
