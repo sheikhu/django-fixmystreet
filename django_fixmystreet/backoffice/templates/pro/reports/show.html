@@ -638,7 +638,7 @@ var someCallback = function(exifObject, index) {
                                             <a tabindex="-1" href="#">{% trans 'Contractors' %}</a>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a  tabindex="-1" 
+                                                    <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1" 
                                                         href="{% url 'report_change_contractor_pro' report.id %}?contractorId=None">
                                                         {% trans 'None' %}
                                                     </a>
@@ -656,7 +656,7 @@ var someCallback = function(exifObject, index) {
                                             <a tabindex="-1" href="#">{% trans 'Applicants' %}</a>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a  tabindex="-1" 
+                                                    <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1" 
                                                         href="{% url 'report_change_contractor_pro' report.id %}?contractorId=None">
                                                         {% trans 'None' %}
                                                     </a>
