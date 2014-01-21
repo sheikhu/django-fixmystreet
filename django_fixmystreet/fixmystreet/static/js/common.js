@@ -77,6 +77,12 @@ function validateForm(form) {
         if ($input.is(":checkbox")) {
             value = $input.is(":checked");
         }
+        if ($input.is(":file")) {
+            value = form.find('.thumbnail:visible').length;
+
+        }
+        console.log($input.is(":file"), value);
+        return false;
         if (input.type === 'email' || $input.hasClass("validate-email")) {
             value = UtilValidator.validateEmail($input.val());
         }
