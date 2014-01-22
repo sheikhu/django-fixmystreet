@@ -844,7 +844,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     tooltipRegional     = gettext('This incident is located on a regional zone');
                     tooltipPro          = gettext('This incident has been signaled by a pro');
                     tooltipContractor   = gettext('This incident is assigned to');
-                    tooltipDatePlanned  = gettext('trans "Date planned : '+report.date_planned);
+                    tooltipDatePlanned  = gettext('Date planned')+": "+report.date_planned;
+                    tooltipSolved       = gettext('This incident has been signaled as solved');
+                    tooltipNoPriority   = gettext('This incident has no defined priority');
+                    tooltipLowPriority  = gettext('This incident has a low priority');
+                    tooltipMediumPriority  = gettext('This incident has a medium priority');
+                    tooltipHighPriority = gettext('This incident has a serious priority');
 
                     //CONTENU DES ICONES
                     //******************
@@ -853,7 +858,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     }
 
                     if (report.citizen === false) {
-                        popoverIcons += "<li class='contractorAssigned'><img title='"+tooltipPro+"' src='/static/images/pro_on.png' />/li>";
+                        popoverIcons += "<li class='contractorAssigned'><img title='"+tooltipPro+"' src='/static/images/pro_on.png' /></li>";
                     }
 
                     if (report.contractor === true){
@@ -868,18 +873,18 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     if (BACKOFFICE) {
                         popoverIcons += "<li>";
                         if (report.priority == 0){
-                            popoverIcons += "<img src='/static/images/prior_off.png' class='priorityLevel' />";
+                            popoverIcons += "<img title='"+tooltipNoPriority+"' src='/static/images/prior_off.png' class='priorityLevel' />";
                         } else if (report.priority <= 2){
-                            popoverIcons += "<img src='/static/images/prior_on_1.png' class='priorityLevel' />";
+                            popoverIcons += "<img title='"+tooltipLowPriority+"' src='/static/images/prior_on_1.png' class='priorityLevel' />";
                         } else if (report.priority <= 8){
-                            popoverIcons += "<img src='/static/images/prior_on_2.png' class='priorityLevel' />";
+                            popoverIcons += "<img title='"+tooltipMediumPriority+"' src='/static/images/prior_on_2.png' class='priorityLevel' />";
                         } else {
-                            popoverIcons += "<img src='/static/images/prior_on_3.png' class='priorityLevel' />";
+                            popoverIcons += "<img title='"+tooltipHighPriority+"' src='/static/images/prior_on_3.png' class='priorityLevel' />";
                         }
                         popoverIcons += "</li>";
 
                         if (report.isSolved) {
-                            popoverIcons += "<li class='isSolved'><img src='/static/images/is_resolved_on.png' /></li>";
+                            popoverIcons += "<li class='isSolved'><img title='"+tooltipSolved+"' src='/static/images/is_resolved_on.png' /></li>";
 
                         }
                         
