@@ -478,7 +478,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             }
         }
         this.strategy.features = features;
-        this.strategy.layer.removeAllFeatures();
+        //this.strategy.layer.removeAllFeatures();
         this.strategy.layer.redraw(true);
     };
 
@@ -681,7 +681,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 deactivate: function() {
                     var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
                     if(deactivated) {
-                        this.layer.removeAllFeatures();
+                        //this.layer.removeAllFeatures();
                         this.layer.events.on({
                             "beforefeaturesadded": this.cacheFeatures,
                             "moveend": this.cluster,
@@ -700,7 +700,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             "moveend": this.cluster,
                             scope: this
                         });
-                        this.layer.removeAllFeatures();
+                        //this.layer.removeAllFeatures();
                         this.clearCache();
                         self.refreshCluster();
                         this.layer.addFeatures(self.strategy.features);
