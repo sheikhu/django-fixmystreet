@@ -30,7 +30,7 @@
                 {% if attachment.created_by.is_citizen %}
                     {% if BACKOFFICE %}
                         <a href="mailto:{{attachment.created_by.email}}">
-                            {{attachment.reportcomment.get_display_name}}
+                            {{attachment.created_by.get_display_name}}
                         </a> - 
                         {{attachment.created_by.get_quality}}
                         ({{attachment.created_by.telephone}})

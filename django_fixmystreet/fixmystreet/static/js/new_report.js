@@ -57,11 +57,23 @@ $(document).ready(function() {
     var catego2            = categoriesElements[1];
 
     function checkStep1Validity() {
-        if ( (catego1.value) && (catego2.value) ) {
-            if (proVersion) {
-                send.disabled = false;
+        var photos = document.getElementsByClassName("thumbnail");
+
+        if (photos.length > 1) {
+            if ( (catego1.value) && (catego2.value) ) {
+                if (proVersion) {
+                    send.disabled = false;
+                } else {
+                    nextStep.disabled = false;
+                }
             } else {
-                nextStep.disabled = false;
+                if (proVersion) {
+                    send.disabled = true;
+                } else {
+                    nextStep.disabled = true;
+                }
+
+                return true;
             }
         } else {
             if (proVersion) {
@@ -69,12 +81,19 @@ $(document).ready(function() {
             } else {
                 nextStep.disabled = true;
             }
-
-            return true;
         }
 
         return false;
     }
+
+    // Hack to detect if at least 1 photo is present
+    function checkPhotoValidity() {
+        setTimeout(function() {
+            checkStep1Validity();
+            checkPhotoValidity();
+        }, 500);
+    }
+    checkPhotoValidity();
 
     catego1.addEventListener('change', checkStep1Validity);
     catego2.addEventListener('change', checkStep1Validity);

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 08:45+0100\n"
-"PO-Revision-Date: 2014-01-21 11:57+0000\n"
+"POT-Creation-Date: 2014-01-22 14:25+0100\n"
+"PO-Revision-Date: 2014-01-22 13:25+0000\n"
 "Last-Translator: tdesany2 <transifex@desany.eu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -25,10 +25,26 @@ msgstr ""
 msgid "municipality_limits"
 msgstr ""
 
-#: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:225
+#: fixmystreet/static/js/fixmystreetmap.js:844
+msgid "This incident is located on a regional zone"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:845
+msgid "This incident has been signaled by a pro"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:846
+msgid "This incident is assigned to"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:847
+msgid "trans \"Date planned : "
+msgstr ""
+
+#: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:226
 msgid "It is here"
 msgstr ""
 
-#: fixmystreet/static/js/search.js:224
+#: fixmystreet/static/js/search.js:160 fixmystreet/static/js/search.js.c:225
 msgid "Move the cursor"
 msgstr ""
