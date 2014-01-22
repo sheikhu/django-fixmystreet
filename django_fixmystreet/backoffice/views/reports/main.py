@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -94,6 +96,7 @@ def report_prepare_pro(request, location=None, error_msg=None):
     stats = statsObject.get_stats()
     popup_reports = []
 
+
     if "stat_type" in request.GET:
         start_date = stats[str(request.GET["stat_type"])]["start_date"]
         end_date = stats[str(request.GET["stat_type"])]["end_date"]
@@ -107,7 +110,17 @@ def report_prepare_pro(request, location=None, error_msg=None):
         else:
             popup_reports = popup_reports.closed()
 
-    reports = Report.objects.all().visible().related_fields().order_by('-modified')
+    last_30_days = dt.today() + datetime.timedelta(days=-30)
+    #reports = Report.objects.all().visible().related_fields().order_by('-modified')
+    reports_closed = Report.objects.all().visible().related_fields().filter(
+        status__in=Report.REPORT_STATUS_CLOSED,
+        created__gt=last_30_days).order_by('private_thumbnail').order_by('-modified')
+    reports_progress = Report.objects.all().visible().related_fields().filter(
+        status__in=Report.REPORT_STATUS_IN_PROGRESS,
+        created__gt=last_30_days).order_by('private_thumbnail').order_by('-modified')
+    reports_created = Report.objects.all().visible().related_fields().filter(
+        status=Report.CREATED,
+        created__gt=last_30_days).order_by('private_thumbnail').order_by('-modified')
 
     return render_to_response("pro/home.html", {
         "report_counts": ReportCountQuery('1 year'),
@@ -115,9 +128,9 @@ def report_prepare_pro(request, location=None, error_msg=None):
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
         'location': location,
-        'reports_created': reports.created()[0:4],
-        'reports_in_progress': reports.in_progress()[0:4],
-        'reports_closed': reports.closed()[0:4],
+        'reports_created': reports_created[0:4],
+        'reports_in_progress': reports_progress[0:4],
+        'reports_closed': reports_closed[0:4],
         'stats': stats_result,
         'popup_reports': popup_reports,
     }, context_instance=RequestContext(request))
