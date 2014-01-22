@@ -568,6 +568,7 @@ class Report(UserTrackedModel):
         if user and user.is_authenticated():
             return self.private_thumbnail
         else:
+            print self.thumbnail
             return self.thumbnail
 
     def get_marker(self):
@@ -1358,6 +1359,30 @@ class ReportAttachment(UserTrackedModel):
 
 
 @receiver(post_save, sender=ReportAttachment)
+def init_report_overview(sender, instance, **kwargs):
+    
+    images_pro = instance.report.files()
+    images_public = instance.report.active_files()
+
+    if images_pro.exists():
+        instance.report.private_thumbnail = images_pro[0].image.thumbnail.url()
+        if images_public.exists():
+            image = images_public[0]
+            if instance.report.photo != image.image:
+                instance.report.photo = image.image.url
+                instance.report.thumbnail = image.image.thumbnail.url()
+        else:
+            instance.report.photo = None
+            instance.report.thumbnail = None
+        instance.report.save()
+    elif instance.report.photo:
+        instance.report.photo = None
+        instance.report.thumbnail = None
+        instance.report.private_thumbnail = None
+        instance.report.save()
+
+
+@receiver(post_save, sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
@@ -1463,32 +1488,6 @@ class ReportFile(ReportAttachment):
 @receiver(post_save, sender=ReportFile)
 def report_file_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
-
-
-@receiver(post_save, sender=ReportFile)
-def init_report_overview(sender,instance,**kwargs):
-    user = get_current_user()
-
-    images_pro = instance.report.files()
-    images_public = instance.report.active_files()
-
-    if images_pro.exists():
-        instance.report.private_thumbnail = images_pro[0].image.thumbnail.url()
-        if images_public.exists():
-            image = images_public[0]
-            if instance.report.photo != image.image:
-                instance.report.photo = image.image.url
-                instance.report.thumbnail = image.image.thumbnail.url()
-        else:
-            instance.report.photo = None
-            instance.report.thumbnail = None
-        instance.report.save()
-    elif instance.report.photo:
-        instance.report.photo = None
-        instance.report.thumbnail = None
-        instance.report.private_thumbnail = None
-        instance.report.save()
-
 
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender, instance, **kwargs):
