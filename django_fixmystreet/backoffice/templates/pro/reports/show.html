@@ -498,12 +498,11 @@ var someCallback = function(exifObject, index) {
 
                         <!-- ROW PRO 2 -->
                         <li>
-                            {% blocktrans with by=report.get_creator.get_full_name on=report.created mail=report.get_creator.email %}
+                            {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
                                 <strong>Posted by</strong> <a href='mailto:{{mail}}'>{{by}}</a> on {{on}}
                            {% endblocktrans %}
                            
                            {% if not report.is_pro %}
-                                {% trans "a citizen" %}
                                 - {{ report.citizen.get_quality_display }}
                                 (tel:{{report.get_creator.fmsuser.telephone}})
                            {% endif %}
@@ -513,7 +512,7 @@ var someCallback = function(exifObject, index) {
                         <strong>{% trans "Responsible:" %}</strong>
                         <!-- responsible-name, responsible-group, responsible-entity -->
                         {{report.responsible_department.contact_user.get_full_name}} - 
-                        {{report.responsible_department.name }} - 
+                        <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> - 
                         {{report.responsible_entity.name}}
                         (tel:{{report.responsible_department.phone }})
                         </li>
@@ -522,7 +521,7 @@ var someCallback = function(exifObject, index) {
                             <th><strong>{% trans "Status:" %}</strong></th>
                             <td>{{ report.get_status_display }}</td>
                             {% trans 'on' %}
-                            {{report.last_history_status_event.event_at}}
+                            {{report.last_history_status_event.event_at|date:"d/m/Y"}}
                             
                             {% if report.is_contractor_or_applicant_assigned %}
                                 {{report.contractor.name}} ({{report.contractor.phone}})
@@ -534,7 +533,7 @@ var someCallback = function(exifObject, index) {
                                 <strong>
                                     {% trans "Merged on" %}
                                 </strong>
-                                {{report.last_history_event.event_at}}
+                                {{report.last_history_event.event_at|date:"d/m/Y"}}
                                 {% trans "with incident" %}
                                 {{report.merged_with.id}}
                             </li>
