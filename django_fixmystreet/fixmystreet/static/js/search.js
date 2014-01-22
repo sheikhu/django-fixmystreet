@@ -157,6 +157,7 @@ function getAddressFromPoint(lang, x, y) {
             //console.log(origX,origY);
             var municipality = zipcodes[(postCode=="1041"?"1040":postCode)].commune;
             var popupTitleItsHere   = gettext('It is here');
+            var popupTitle = gettext('Move the cursor');
             //var origX = response.result.point.x;
             //var origY= response.result.point.y;
             //console.log(x,y);
@@ -171,7 +172,7 @@ function getAddressFromPoint(lang, x, y) {
                 // Convert the point and url for google street view
                 var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(origX, y);
                 var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.origY +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
-                var popupContent = "<p class='popupMoveMe popupHeading'>Déplacez-moi à l'adresse exacte</p>";
+                var popupContent = "<p class='popupMoveMe popupHeading'>"+popupTitle+"</p>";
                 popupContent += "<p class='popupMoveMe popupContent'>" + street + ", " + number;
                 popupContent += "<br/>" + postCode + " " + municipality + "</p>";
 

@@ -841,22 +841,27 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
                     popoverIcons += "<ul class='iconsPopup'>";
 
+                    tooltipRegional     = gettext('This incident is located on a regional zone');
+                    tooltipPro          = gettext('This incident has been signaled by a pro');
+                    tooltipContractor   = gettext('This incident is assigned to');
+                    tooltipDatePlanned  = gettext('trans "Date planned : '+report.date_planned);
+
                     //CONTENU DES ICONES
                     //******************
                     if (report.address_regional === true){
-                        popoverIcons += "<li class='addressRegional'><img src='/static/images/regional_on.png' /></li>";
+                        popoverIcons += "<li class='addressRegional'><img title='"+toolTipRegional+"' src='/static/images/regional_on.png' /></li>";
                     }
 
                     if (report.citizen === false) {
-                        popoverIcons += "<li class='contractorAssigned'><img src='/static/images/pro_on.png' /></li>";
+                        popoverIcons += "<li class='contractorAssigned'><img title='"+tooltipPro+"' src='/static/images/pro_on.png' />/li>";
                     }
 
                     if (report.contractor === true){
-                        popoverIcons += "<li class='contractorAssigned'><img src='/static/images/contractorAssigned_on.png' /></li>";
+                        popoverIcons += "<li class='contractorAssigned'><img title='"+tooltipContractor+"' src='/static/images/contractorAssigned_on.png' /></li>";
                     }
 
                     if (report.date_planned){
-                        popoverIcons += "<li class='datePlanned_on'><a href='#'>"+report.date_planned+"</a></li>";  
+                        popoverIcons += "<li class='datePlanned_on'>"+report.date_planned+"</li>";  
                     }
 
 
