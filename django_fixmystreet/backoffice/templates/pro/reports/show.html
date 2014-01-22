@@ -474,19 +474,6 @@ var someCallback = function(exifObject, index) {
 
                 <div class="pro span6 incidentDetailsStatus">
                     <ul class="">
-                        <!-- #################################### -->
-                        <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
-                        <!-- #################################### -->
-                        {% if report.responsible_department in request.fmsuser.organisations_list %}
-                            <!-- ######################################### -->
-                            <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
-                            <!-- ######################################### -->
-                            {% if report.is_created %}
-                                <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
-                                <!--a href="{% url 'report_publish_pro' report.id %}" class="btn publish">{% trans 'Publish' %}</a-->
-                                <button onclick="refuse();" class="btn reject">{% trans 'Reject' %}</button>
-                            {% endif %}
-                        {% endif %}
 
                         <!-- ROW PRO 1 -->
                         <li>
@@ -540,6 +527,20 @@ var someCallback = function(exifObject, index) {
                         {% endif %}
                         
                     </ul>
+                    
+                        <!-- #################################### -->
+                        <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
+                        <!-- #################################### -->
+                        {% if report.responsible_department in request.fmsuser.organisations_list %}
+                            <!-- ######################################### -->
+                            <!-- # DISPLAY WHEN REPORT STATUS IS CREATED # -->
+                            <!-- ######################################### -->
+                            {% if report.is_created %}
+                                <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
+                                <!--a href="{% url 'report_publish_pro' report.id %}" class="btn publish">{% trans 'Publish' %}</a-->
+                                <a class="btn reject" onclick="refuse();">{% trans 'Reject' %}</a>
+                            {% endif %}
+                        {% endif %}
 
                    
                         
@@ -755,7 +756,7 @@ var someCallback = function(exifObject, index) {
                     {% endif %}
                     {% endif %}
 
-
+                    
 
 
 
