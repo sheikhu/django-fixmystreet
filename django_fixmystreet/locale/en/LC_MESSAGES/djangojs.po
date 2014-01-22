@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 14:25+0100\n"
+"POT-Creation-Date: 2014-01-22 16:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,27 @@ msgid "This incident is assigned to"
 msgstr ""
 
 #: fixmystreet/static/js/fixmystreetmap.js:847
-msgid "trans \"Date planned : "
+msgid "Date planned"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:848
+msgid "This incident has been signaled as solved"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:849
+msgid "This incident has no defined priority"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:850
+msgid "This incident has a low priority"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:851
+msgid "This incident has a medium priority"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:852
+msgid "This incident has a serious priority"
 msgstr ""
 
 #: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:226

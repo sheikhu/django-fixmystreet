@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 14:24+0100\n"
+"POT-Creation-Date: 2014-01-22 16:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,8 +219,8 @@ msgstr ""
 #: backoffice/templates/pro/change_password.html:10
 #: fixmystreet/templates/reports/_attachments_form.html:58
 #: fixmystreet/templates/reports/_attachments_form.html:71
-#: fixmystreet/templates/reports/_photo_form.html:36
-#: fixmystreet/templates/reports/_photo_form.html:50
+#: fixmystreet/templates/reports/_photo_form.html:35
+#: fixmystreet/templates/reports/_photo_form.html:49
 msgid "Validation error"
 msgstr ""
 
@@ -2014,7 +2014,7 @@ msgid "Photos"
 msgstr ""
 
 #: fixmystreet/templates/reports/_attachments_form.html:23
-#: fixmystreet/templates/reports/_photo_form.html:27
+#: fixmystreet/templates/reports/_photo_form.html:26
 msgid "Add file"
 msgstr ""
 
@@ -2053,12 +2053,12 @@ msgid "Informations"
 msgstr ""
 
 #: fixmystreet/templates/reports/_attachments_form.html:63
-#: fixmystreet/templates/reports/_photo_form.html:41
+#: fixmystreet/templates/reports/_photo_form.html:40
 msgid "File too large: 10 Mb per image maximum."
 msgstr ""
 
 #: fixmystreet/templates/reports/_attachments_form.html:76
-#: fixmystreet/templates/reports/_photo_form.html:55
+#: fixmystreet/templates/reports/_photo_form.html:54
 msgid ""
 "The type of the file is not correct. You can only upload files of type: jpg, "
 "png, pdf, doc and xls."
