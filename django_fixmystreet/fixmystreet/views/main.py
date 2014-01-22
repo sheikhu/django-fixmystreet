@@ -9,10 +9,9 @@ from django.core.urlresolvers import reverse
 from django_fixmystreet.fixmystreet.models import ZipCode, FaqEntry, Report, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
-from django.conf import settings
 
-def home(request, location = None, error_msg =None):
-    if request.user.is_authenticated() == True:
+def home(request, location=None, error_msg=None):
+    if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('home_pro'))
 
     if request.GET.has_key('q'):
@@ -23,8 +22,10 @@ def home(request, location = None, error_msg =None):
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
 
     # Get report closed with photos only
-    reportWithPhoto = ReportFile.objects.filter(file_type=ReportFile.IMAGE, logical_deleted=False, security_level=ReportAttachment.PUBLIC).values_list('report_id', flat=True).distinct()
-    reports_closed = Report.objects.filter(status__in=Report.REPORT_STATUS_CLOSED, private=False, created__gt=last_30_days, id__in=reportWithPhoto).order_by('-modified')[0:4]
+    reports_closed = Report.objects.filter(
+        status__in=Report.REPORT_STATUS_CLOSED,
+        private=False,
+        created__gt=last_30_days).order_by('thumbnail').order_by('-modified')[0:4]
 
     return render_to_response("home.html",
             {
@@ -33,9 +34,9 @@ def home(request, location = None, error_msg =None):
                 'search_error': error_msg,
                 'zipcodes': zipcodes,
                 'all_zipcodes': ZipCode.objects.all(),
-                'location':location,
-                'reports_created': Report.objects.filter(status=Report.CREATED, private=False, created__gt=last_30_days).order_by('-modified')[0:4],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, private=False, created__gt=last_30_days).order_by('-modified')[0:4],
+                'location': location,
+                'reports_created': Report.objects.filter(status=Report.CREATED, private=False, created__gt=last_30_days).order_by('thumbnail').order_by('-modified')[0:4],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, private=False, created__gt=last_30_days).order_by('thumbnail').order_by('-modified')[0:4],
                 'reports_closed': reports_closed,
             },
             context_instance=RequestContext(request))
