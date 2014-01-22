@@ -4,12 +4,13 @@
 # 
 # Translators:
 # lafif <lafif@cirb.irisnet.be>, 2014
+# tdesany2 <transifex@desany.eu>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 14:25+0100\n"
-"PO-Revision-Date: 2014-01-22 13:25+0000\n"
+"POT-Creation-Date: 2014-01-22 16:43+0100\n"
+"PO-Revision-Date: 2014-01-22 15:43+0000\n"
 "Last-Translator: tdesany2 <transifex@desany.eu>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -28,19 +29,39 @@ msgstr "Limites communales"
 
 #: fixmystreet/static/js/fixmystreetmap.js:844
 msgid "This incident is located on a regional zone"
-msgstr ""
+msgstr "Sur une voirie régionale"
 
 #: fixmystreet/static/js/fixmystreetmap.js:845
 msgid "This incident has been signaled by a pro"
-msgstr ""
+msgstr "Signalé par un professionnel"
 
 #: fixmystreet/static/js/fixmystreetmap.js:846
 msgid "This incident is assigned to"
-msgstr ""
+msgstr "Assigné à"
 
 #: fixmystreet/static/js/fixmystreetmap.js:847
-msgid "trans \"Date planned : "
-msgstr ""
+msgid "Date planned"
+msgstr "Date de planification"
+
+#: fixmystreet/static/js/fixmystreetmap.js:848
+msgid "This incident has been signaled as solved"
+msgstr "Incident signalé comme résolu"
+
+#: fixmystreet/static/js/fixmystreetmap.js:849
+msgid "This incident has no defined priority"
+msgstr "Aucune priorité attribuée"
+
+#: fixmystreet/static/js/fixmystreetmap.js:850
+msgid "This incident has a low priority"
+msgstr "Priorité basse"
+
+#: fixmystreet/static/js/fixmystreetmap.js:851
+msgid "This incident has a medium priority"
+msgstr "Priorité moyenne"
+
+#: fixmystreet/static/js/fixmystreetmap.js:852
+msgid "This incident has a serious priority"
+msgstr "Priorité haute"
 
 #: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:226
 msgid "It is here"
