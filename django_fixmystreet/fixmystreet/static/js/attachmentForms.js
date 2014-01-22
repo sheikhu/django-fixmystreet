@@ -56,7 +56,6 @@
                 return false;
             }
         }
-
         var form_copy = file_form_template.clone();
         var form_new = file_form_template;
         file_form_template = form_copy;
@@ -150,6 +149,13 @@
             AddFileToView(form_new, null);
         }
         
+    }
+
+    /************************************************************************************/
+    /* Add the submitted file to the view and save it in the session and on the server. */
+    /************************************************************************************/
+    function imageRemoved() {
+
     }
 
     /************************************************************************************/

@@ -65,6 +65,7 @@ $(document).ready(function() {
 
     // Hack to detect if at least 1 photo is present
     function checkPhotoValidity() {
+        console.log('check validaity');
         setTimeout(function() {
             checkStep1Validity();
             checkPhotoValidity();
