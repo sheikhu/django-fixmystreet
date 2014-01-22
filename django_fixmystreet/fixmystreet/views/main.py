@@ -25,7 +25,7 @@ def home(request, location=None, error_msg=None):
     reports_closed = Report.objects.filter(
         status__in=Report.REPORT_STATUS_CLOSED,
         private=False,
-        created__gt=last_30_days).order_by('thumbnail').order_by('-modified')[0:4]
+        created__gt=last_30_days).order_by('thumbnail', '-modified')[0:4]
 
     return render_to_response("home.html",
             {
@@ -35,8 +35,8 @@ def home(request, location=None, error_msg=None):
                 'zipcodes': zipcodes,
                 'all_zipcodes': ZipCode.objects.all(),
                 'location': location,
-                'reports_created': Report.objects.filter(status=Report.CREATED, private=False, created__gt=last_30_days).order_by('thumbnail').order_by('-modified')[0:4],
-                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, private=False, created__gt=last_30_days).order_by('thumbnail').order_by('-modified')[0:4],
+                'reports_created': Report.objects.filter(status=Report.CREATED, private=False, created__gt=last_30_days).order_by('thumbnail', '-modified')[0:4],
+                'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, private=False, created__gt=last_30_days).order_by('thumbnail', '-modified')[0:4],
                 'reports_closed': reports_closed,
             },
             context_instance=RequestContext(request))
