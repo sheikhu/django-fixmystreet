@@ -3,7 +3,7 @@
         {% if privacy == 'private' and activity.is_pro_visible %}
             <tr>
                 <td colspan="2">
-                    <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
+                    <strong>- {{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </strong>
                         {{ activity }}
                 </td>
             </tr>
@@ -11,7 +11,7 @@
             {% if privacy == 'public' and activity.is_public_visible %}
                 <tr>
                     <td colspan="2">
-                        <strong>- {{ activity.event_at|date }} : [{{ activity.organisation.name }}] </strong>
+                        <strong>- {{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </strong>
                             {{ activity.get_public_activity_text }}
                     </td>
                 </tr>

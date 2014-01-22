@@ -6,7 +6,6 @@
     </label>
 
     <div class="controls">
-        {# Good way to display error lists. Thibaut. #}
         {{ file_formset.management_form }}
         {% for dict in file_formset.errors %}
             {% for error in dict.values %}
