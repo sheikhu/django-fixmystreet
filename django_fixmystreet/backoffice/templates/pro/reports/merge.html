@@ -165,7 +165,9 @@
                             <!-- Comments -->
                             <div class="span4">
                                 {% for attachment in report.attachments.all %}
-                                    <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                    {% if attachment.reportcomment.text %}
+                                        <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                             <!-- Deprecated ? -->
@@ -248,7 +250,9 @@
                                     <!-- Comments -->
                                     <div class="span4">
                                         {% for attachment in report.attachments.all %}
-                                            <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                            {% if attachment.reportcomment.text %}
+                                                <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                     <!-- Deprecated ? -->
