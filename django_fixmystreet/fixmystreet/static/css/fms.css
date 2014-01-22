@@ -2013,7 +2013,9 @@ label strong{
 #map.view_incident.show_report.pro{
 	height:200px;
 }
-
+#map.show_report_map{
+	height:150px;
+}
 /*.crop{
 	width: 100px;
 	height: 100px;
