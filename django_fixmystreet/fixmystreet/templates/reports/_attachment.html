@@ -26,8 +26,32 @@
     <div class="update_text">
     {% if attachment.reportfile %}
         <div class="picture-head">
-            {% trans "Posted by" %} <strong>{{ attachment.reportfile.get_display_name_as_citizen }}</strong>
-            <!-- If the status allow such interactions -->
+             {{attachment.created|date:"d/m/Y"}}:  
+                {% if attachment.created_by.is_citizen %}
+                    {% if BACKOFFICE %}
+                        <a href="mailto:{{attachment.created_by.email}}">
+                            {{attachment.reportcomment.get_display_name}}
+                        </a> - 
+                        {{attachment.created_by.get_quality}}
+                        ({{attachment.created_by.telephone}})
+                    {% else %}
+                        {% trans 'a citizen' %}
+                    {% endif %}
+                {% else %}
+                    <!-- responsible-name, responsible-group, responsible-entity -->
+                    {% if BACKOFFICE %}
+                    <a href="mailto:{{report.responsible_department.email }}">
+                        {{report.responsible_department.contact_user.get_full_name}} 
+                    </a>
+                    {% endif %}
+                    -
+                        {{report.responsible_department.name }}
+                    - 
+                    {{report.responsible_entity.name}}
+                    {% if BACKOFFICE %}
+                        (tel:{{report.responsible_department.phone }})
+                    {% endif %}
+                {% endif %}
         </div>
         <span class="picture-caption">
             <!--a href="{{ attachment.reportfile.file.url }}"-->
@@ -53,49 +77,55 @@
                 <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
                 {{attachment.reportfile.title}}
             </p>
-            <p class="picture-date">
-            {% trans 'file creation Date' %}
+            {% if BACKOFFICE %}
+                <p class="picture-date">
+                {% trans 'file creation Date' %}
 
-            <span id='imagedate'>
-                {% if attachment.reportfile.file_creation_date != None%}
-                {{attachment.reportfile.file_creation_date}}
-                {% else %} - {% endif %}
-            </span>
-
-            </p>
+                
+                    <span id='imagedate'>
+                        {% if attachment.reportfile.file_creation_date != None%}
+                        {{attachment.reportfile.file_creation_date}}
+                        {% else %} - {% endif %}
+                    </span>
+                </p>
+            {% endif %}
         </span>
 
     {% else %} {# comment #}
-        <div class="comment-head">
-            {% trans "Posted by" %} <strong>{{ attachment.reportcomment.get_display_name_as_citizen }}</strong>
-        </div>
-        <p class="comment-incident">
-            <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
-            {{ attachment.reportcomment.text|linebreaksbr }}</p>
-    {% endif %}
-
-    {% if privacy == 'private' %}
-    <p class="author-sign comment-date">
-        {% trans "Posted by" %}
-            <strong>
-                <a href="mailto:{{attachment.created_by.email}}">
-                    {% if attachment.created_by.is_citizen %}
+        {% if attachment.reportcomment.text %}
+            <!-- ENTETE BLEU -->
+            <div class="comment-head">
+                {{attachment.created|date:"d/m/Y"}}:  
+                {% if attachment.created_by.is_citizen %}
+                    {% if BACKOFFICE %}
+                        <a href="mailto:{{attachment.created_by.email}}">
+                            {{attachment.reportcomment.get_display_name}}
+                        </a> - 
                         {{attachment.created_by.get_quality}}
+                        ({{attachment.created_by.telephone}})
                     {% else %}
-                        {{attachment.created_by.get_organisation}}
+                        {% trans 'a citizen' %}
                     {% endif %}
-                    {{attachment.reportcomment.get_display_name}},
-                    {{attachment.created_by.telephone}}
-                </a>
-            </strong>
-        {% trans "on" %} <strong>{{attachment.created}}</strong>
-    </p>
-    {% else %}
-    <!--p class="author-sign comment-date">
-        {% blocktrans with by=attachment.reportcomment.get_display_name_as_citizen on=report.created %}
-        Posted by <strong>{{by}}</strong> on <strong>{{on}}</strong>
-        {% endblocktrans %}
-    </p-->
+                {% else %}
+                    <!-- responsible-name, responsible-group, responsible-entity -->
+                    {% if BACKOFFICE %}
+                        <a href="mailto:{{report.responsible_department.email }}">
+                            {{report.responsible_department.contact_user.get_full_name}}
+                        </a>
+                    {% endif %}
+                    -
+                        {{report.responsible_department.name }}
+                    - 
+                    {{report.responsible_entity.name}}
+                    {% if BACKOFFICE %}
+                        (tel:{{report.responsible_department.phone }})
+                    {% endif %}
+                {% endif %}
+            </div>
+            <p class="comment-incident">
+                <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
+                {{ attachment.reportcomment.text|linebreaksbr }}</p>
+        {% endif %}
     {% endif %}
 
 
