@@ -1484,6 +1484,10 @@ form#report-form{
 	margin:10px 0px;
 	line-height:1.8em;
 }
+.picture-head a:link, .picture-head a:visited, .picture-head a:active, .picture-head a:hover, .picture-head a:focus, .comment-head a:link, .comment-head a:visited, .comment-head a:active, .comment-head a:hover, .comment-head a:focus{
+	color:#FFF;
+	text-decoration:underline;
+}
 .picture-head, .comment-head{
 	background:#7090B7;
 	/*height:30px;*/
