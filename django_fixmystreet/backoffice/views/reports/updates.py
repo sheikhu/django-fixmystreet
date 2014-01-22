@@ -24,6 +24,9 @@ def accept(request, report_id):
         #Update the status and persist to the database
         report.status = Report.MANAGER_ASSIGNED
         report.accepted_at = datetime.now()
+        #When validating a report created by a citizen set all attachments to public per default.
+        if (report.citizen):
+            validateAll(request, report.id)
         report.save()
 
     if "pro" in request.path:
