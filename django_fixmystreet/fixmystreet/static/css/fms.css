@@ -1284,13 +1284,48 @@ form#report-form{
 	list-style-image:none;
 	font-size:13px;
 }
-.pro.incidentDetailsStatus a:link, .pro.incidentDetailsStatus a:visited{
+.pro.incidentDetailsStatus a:link, .pro.incidentDetailsStatus a:visited,.pro.incidentDetailsStatus a:hover, .pro.incidentDetailsStatus a:active, .pro.incidentDetailsStatus a:focus{
 	color:#FFF;
-	text-decoration:underline;
+	text-decoration:none;
 }
-.pro.incidentDetailsStatus a:hover, .pro.incidentDetailsStatus a:active, .pro.incidentDetailsStatus a:focus{
-	color:#FFF;
-	text-decoration:underline;
+.pro a.accept:link, .pro a.accept:visited,.pro a.accept:hover, .pro a.accept:active, .pro a.accept:focus{
+	/*color:#607C9D;*/
+	height: 23px;			
+	padding: 0;
+	padding-top: 2px;
+	font-size: 13px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #51C464 url('../images/btn_accept.png') 5px 5px no-repeat;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: -0.3px;
+	color: #FFF;
+	border: 0;
+	padding:2px 10px 2px 33px;
+	margin-top:20px;
+}
+.pro a.reject, .pro a.reject, .pro a.reject:hover, .pro a.reject:focus, .pro a.reject:active{
+	height: 23px;			
+	padding: 0;
+	padding-top: 2px;
+	font-size: 13px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #FC4C4C url('../images/btn_reject.png') 5px 5px no-repeat;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: -0.3px;
+	color: #FFF;
+	border: 0;
+	padding:2px 10px 2px 33px;
+	/*float: right;*/
+	margin-left:20px;
+	margin-top:20px;
 }
 .modal form{
 	margin:0;
@@ -1343,7 +1378,7 @@ form#report-form{
 	display: inline-block;
 }
 #incident-head .ticket_number.gray_border{
-	border: 2px solid gray;
+	border: 2px solid #E0E0E0;
 }
 #incident-head .ticket_number.orange_border{
 	border: 2px solid #F79422;
@@ -1978,7 +2013,9 @@ label strong{
 #map.view_incident.show_report.pro{
 	height:200px;
 }
-
+#map.show_report_map{
+	height:150px;
+}
 /*.crop{
 	width: 100px;
 	height: 100px;
