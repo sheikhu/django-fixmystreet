@@ -125,20 +125,7 @@ var columns = [
 
 var previousTableSelection;
 
-<<<<<<< HEAD
-    var mineElements = '{% url "report_table_content_mine_pro" %}';
-    var subscriptionElements = '{% url "report_table_content_subscription_pro" %}';
-    var urlToConnect = "{% url 'report_table_content_pro' %}";
 
-    if (window.location.href.indexOf("type=mine") !== -1) {
-        urlToConnect = mineElements
-    } else if (window.location.href.indexOf("type=sub") !== -1) {
-        urlToConnect = subscriptionElements
-    }
-
-    $.ajax({
-        url: urlToConnect,
-=======
 // Get table rendered by django
 function generateTableContent(selection) {
     $('#table-container').html('<div id="table-loading" class="span12"><img src="{{ STATIC_URL }}/images/spinner.gif" /></div>');
@@ -152,7 +139,6 @@ function generateTableContent(selection) {
     $(".refresh-table[data-selection=" + selection + "]").addClass('active');
     $.ajax({
         url: "{% url 'report_table_content_pro' %}" + selection,
->>>>>>> table selection content & fix table size
         data: "",
         dataType: "html",
         success: function(data) {

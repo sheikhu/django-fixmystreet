@@ -1927,7 +1927,7 @@ label strong{
 	bottom: 10px;
 	margin-left: 0;
 }
-#modalTable .modal-body{
+#modalTable .table-container{
 	height: auto;
 	max-height: none;
 	position: absolute;
