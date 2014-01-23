@@ -28,6 +28,7 @@ MENU_DEFS = {
     'users_change_password':     ['password_change'],
     'about':                     ['about', 'terms_of_use'],
     'faq':                       ['faq'],
+    'help':                       ['help'],
     'contact':                   ['contact']
 }
 
