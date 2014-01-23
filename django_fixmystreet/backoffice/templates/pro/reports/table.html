@@ -153,6 +153,7 @@ function generateTableContent(selection) {
             // Init table
             //Method table.oApi._fnColumnIndexToVisible could be useful to match the datacolumn to visible one about indexes
             table = $('#result-table').dataTable({
+                "sDom": '<"table-top"f><"table-content"rt><"table-bottom"ilp>',
                 aoColumns: columns,
                 "aaSorting": [[ sortPreferences.idx, sortPreferences.order ]],
                 "fnDrawCallback": function() {
@@ -195,20 +196,6 @@ function generateTableContent(selection) {
                 }
             });
 
-            //Event implementation for checkbox value change
-            $('#column-visibility').delegate(':checkbox', 'change', function () {
-                //Store column selection
-                var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
-                var checked = $(this).prop('checked');
-                var index = $(this).closest('li').index(); // show column
-
-                //Remove Item
-                sortPreferenceUnselectedColumns[index] = !checked;
-                fms_store.setTableVisibleColumns(sortPreferenceUnselectedColumns);
-
-                table.fnSetColumnVis(index, checked);
-            });
-
             // Init map markers
             refreshMap();
         },
@@ -239,14 +226,22 @@ $(document).ready(function() {
         // Regenerate table
         generateTableContent($(this).data('selection'));
     });
-});
+    //Event implementation for checkbox value change
+    $('#column-visibility').delegate(':checkbox', 'change', function () {
+        //Store column selection
+        var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
+        var checked = $(this).prop('checked');
+        var index = $(this).closest('li').index(); // show column
 
-// Show or hide filters in modal
-var showHideFilters = document.getElementById('showHideFilters');
-var tableFilters    = document.getElementById('table-filters');
+        //Remove Item
+        sortPreferenceUnselectedColumns[index] = !checked;
+        fms_store.setTableVisibleColumns(sortPreferenceUnselectedColumns);
 
-showHideFilters.addEventListener('click', function() {
-    tableFilters.classList.toggle('table-filters-show');
+        table.fnSetColumnVis(index, checked);
+    });
+    $('#column-visibility input, #column-visibility label').click(function(e) {
+        e.stopPropagation();
+    });
 });
 
 // Refresh markers on map when table sorting/filtering
@@ -316,18 +311,14 @@ function refreshMap() {
 
     <div class="modal-body">
         <!-- Top BUTTONS -->
-        <p>
-            <button id="showHideFilters" class="btn">{% trans "Edit columns" %}</button>
-            <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
-            {% if request.fmsuser.manager %}
-            <button class="refresh-table btn" data-selection="responsible">{% trans "My incidents" %}</button>
-            {% endif %}
-            <button class="refresh-table btn" data-selection="subscribed">{% trans "My subscriptions" %}</button>
-            <button class="refresh-table btn" data-selection="all">{% trans "All incidents" %}</button>
-        </p>
+        <div id="table-container"></div>
 
-        <div id="table-filters" class="table-filters">
-            <ul id="column-visibility">
+        <div class="table-controls">
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                {% trans "Edit columns" %}
+                <span class="caret"></span>
+            </button>
+            <ul id="column-visibility" class="dropdown-menu">
                 <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
 
@@ -354,9 +345,13 @@ function refreshMap() {
                 <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
             </ul>
+            <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
+            {% if request.fmsuser.manager %}
+            <button class="refresh-table btn" data-selection="responsible">{% trans "My incidents" %}</button>
+            {% endif %}
+            <button class="refresh-table btn" data-selection="subscribed">{% trans "My subscriptions" %}</button>
+            <button class="refresh-table btn" data-selection="all">{% trans "All incidents" %}</button>
         </div>
-
-        <div id="table-container"></div>
     </div>
 
     <div class="modal-footer">

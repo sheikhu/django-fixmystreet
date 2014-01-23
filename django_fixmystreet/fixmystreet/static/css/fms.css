@@ -1927,7 +1927,7 @@ label strong{
 	bottom: 10px;
 	margin-left: 0;
 }
-#modalTable .table-container{
+#modalTable .modal-body{
 	height: auto;
 	max-height: none;
 	position: absolute;
@@ -1935,8 +1935,44 @@ label strong{
 	bottom: 58px;
 	left: 0;
 	right: 0;
+	overflow: hidden;
+}
+#table-container, .dataTables_wrapper{
+	height: 100%;
+	clear: none;
+}
+.table-content{
+	position: absolute;
+	top: 44px;
+	bottom: 48px;
+	left: 0;
+	right: 0;
 	overflow: auto;
 }
+.table-controls {
+	position: absolute;
+	top: 10px;
+}
+.table-controls ul {
+	padding: 5px 16px;
+}
+.table-bottom{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.dataTables_info {
+	float: right;
+}
+.dataTables_length {
+    clear: left;
+    height: 30px;
+}
+.dataTables_paginate {
+    clear: right;
+}
+
 #modalTable .modal-footer{
 	position: absolute;
 	bottom: 0;
