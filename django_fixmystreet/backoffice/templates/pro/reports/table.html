@@ -262,6 +262,22 @@ function refreshMap() {
     );
 })(document);
 
+function isTableSwitchActive() {
+    return window.location.href.indexOf('tableSwitch') !== -1;
+}
+
+/* When JQUERY is ready*/
+$(document).ready(function() {
+    $("#refreshTableAllIncidents").on('click',function() {
+        console.log('reload all');
+        window.location = '{% url "report_table_pro" %}'+'?tableSwitch=active';
+    });
+    if (isTableSwitchActive() === true) {
+        $('#tableSwitch').trigger('click');
+    }
+});
+
+
 </script>
 {% endblock %}
 
