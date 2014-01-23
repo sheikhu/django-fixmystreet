@@ -374,7 +374,7 @@ var someCallback = function(exifObject, index) {
 
                         <br />
                         <ul class='iconsPopup'>
-                            {% if report.address_regional %}
+                            {% if report.responsible_entity.id == 20 %}
                                 <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/regional_on.png' /></a></li>
                             {% endif %}
 

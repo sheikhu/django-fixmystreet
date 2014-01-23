@@ -854,7 +854,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     //CONTENU DES ICONES
                     //******************
                     if (report.address_regional === true){
-                        popoverIcons += "<li class='addressRegional'><img title='"+toolTipRegional+"' src='/static/images/regional_on.png' /></li>";
+                        popoverIcons += "<li class='addressRegional'><img title='"+tooltipRegional+"' src='/static/images/regional_on.png' /></li>";
                     }
 
                     if (report.citizen === false) {

@@ -830,7 +830,7 @@ class Report(UserTrackedModel):
             "address_number": self.address_number,
             "postalcode": self.postalcode,
             "address_commune_name": self.get_address_commune_name(),
-            "address_regional": self.address_regional,
+            "address_regional": self.responsible_entity.id == 20,
             "contractor": True if self.contractor else False,
             "date_planned": self.get_date_planned(),
             "thumb": thumbValue,
@@ -857,7 +857,7 @@ class Report(UserTrackedModel):
             "address_number": self.address_number,
             "postalcode": self.postalcode,
             "address_commune_name": self.get_address_commune_name(),
-            "address_regional": self.address_regional,
+            "address_regional": self.responsible_entity.id == 20,
             "thumb": thumbValue,
             "contractor": True if self.contractor else False,
             "date_planned": self.get_date_planned()
