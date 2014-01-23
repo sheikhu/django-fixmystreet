@@ -194,6 +194,18 @@ def changeContractor(request, report_id):
             return HttpResponseRedirect(report.get_absolute_url())
 
 
+def updatePriority(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    report.gravity = int(request.GET["gravity"])
+    report.probability = int(request.GET["probability"])
+    report.save()
+    
+    if "pro" in request.path:
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+            return HttpResponseRedirect(report.get_absolute_url())
+
+
 def publish(request, report_id):
     # Accept first
     accept(request, report_id)

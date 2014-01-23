@@ -50,7 +50,9 @@ urlpatterns += patterns(
     url(_(r'^report/(\d+)/changeContractor/'), 'changeContractor', name='report_change_contractor_pro'),
     url(_(r'^report/(\d+)/switchPrivacy/'), 'switchPrivacy', name='report_change_switch_privacy'),
     url(_(r'^report/(\d+)/publish/'), 'publish', name='report_publish_pro'),
+    url(_(r'^report/(\d+)/updatePriority/'), 'updatePriority', name="report_update_priority")
 )
+
 urlpatterns += patterns(
     'django_fixmystreet.fixmystreet.views.reports.updates',
     url(_(r'^report/(\d+)/pdf/'), 'report_pdf', {"pro_version": True}, name='report_pdf_pro'),
@@ -73,7 +75,6 @@ urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.ajax',
     url(r'^ajax/saveSelection', 'saveCategoryConfiguration', name='saveSelection'),
     url(r'^ajax/reportPopupDetails', 'get_report_popup_details', name="get_report_popup_details_pro"),
-    url(r'^ajax/report/(\d+)/updatePriority/', 'updatePriority', name="report_update_priority"),
     # url(r'^ajax/map/filter/', 'filter_map', name="filter_map"),
     url(r'^ajax/report/(\d+)/false_address/', 'report_false_address', name="report_false_address"),
     url(r'^ajax/secondary_category_for_main_category', 'secondary_category_for_main_category', name="secondary_category_for_main_category"),

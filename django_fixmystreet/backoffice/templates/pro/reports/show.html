@@ -282,7 +282,9 @@ function cancelPriorityUpdate(){
 function persistPriorityUpdate(){
     var a = parseInt($("#grav").val());
     var b = parseInt($("#prob").val());
-    $.ajax({url:"{% url 'report_update_priority' report.id %}",
+
+    window.location = "{% url 'report_update_priority' report.id %}"+"?gravity="+a+"&probability="+b
+    /*$.ajax({url:"{% url 'report_update_priority' report.id %}",
         data:{"gravity":a,"probability":b},
         type:'GET',
         datatype:"json",
@@ -291,7 +293,7 @@ function persistPriorityUpdate(){
             //Close modal Window
             $('#modalPriority').modal('hide');
         }
-    });
+    });*/
 }
 
 function planned(){
