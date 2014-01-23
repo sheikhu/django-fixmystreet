@@ -5,7 +5,6 @@ from django.utils.translation import get_language
 from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.fixmystreet.models import Report, ZipCode
-from django_fixmystreet.fixmystreet.utils import dict_to_point, get_current_user
 
 default_position = {
     'x': '148954.431',
@@ -13,73 +12,7 @@ default_position = {
 }
 
 
-# DEPRECATED !!!
-def filter_reports(user, criteria):
-    ownership = criteria.get("ownership", "entity")
-
-    search_street = criteria.get("street", "")
-    search_street_number = criteria.get("streetNumber", "")
-    search_radius = int(criteria.get("rayon", 0))
-    status = criteria.get("status", "")
-    is_default_position = False
-
-    if 'x' in criteria and 'y' in criteria:
-        pnt = dict_to_point(criteria)
-    else:
-        pnt = dict_to_point(default_position)
-        is_default_position = True
-
-    reports = Report.objects.all().visible()
-
-    #if the user is an contractor then user the dependent organisation id
-    #If the manager is connected then filter on manager
-    # if user.agent or user.manager or user.leader:
-    if ownership == "responsible":
-        reports = reports.responsible(user)
-    elif ownership == "subscribed":
-        reports = reports.subscribed(user)
-    elif ownership == "transfered":
-        #List of transfered reports (previous reports)
-        reports = user.previous_reports.all()
-    elif ownership == "contractor_responsible":
-        reports = reports.responsible_contractor(user)
-    elif user.organisation:  # ownership == entity
-        reports = reports.entity_responsible(user)
-    # elif user.contractor or user.applicant:
-        #if the user is an contractor then display only report where He is responsible
-        #reports = reports.responsible(user)
-    # else:
-        # raise PermissionDenied()
-
-    if status == 'created':
-        reports = reports.created()
-    elif status == 'in_progress':
-        reports = reports.in_progress()
-    elif status == 'in_progress_and_assigned':
-        reports = reports.in_progress().assigned()
-    elif status == 'closed':
-        reports = reports.closed()
-    # else: # all
-
-    if search_street:
-        reports = reports.filter(address__contains=search_street)
-
-        if search_street_number:
-            reports = reports.filter(address_number=search_street_number)
-
-    if len(reports) > 0 and is_default_position:
-        pnt = reports[0].point
-
-    reports = reports.distance(pnt)
-
-    if search_radius:
-        reports = reports.filter(point__distance_lte=(pnt, search_radius))
-
-    reports = reports.distance(pnt).order_by('-created')
-    return (reports, pnt)
-
-
-def all_reports(request):
+def table(request):
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
 
     return render_to_response("pro/reports/table.html", {
@@ -88,13 +21,28 @@ def all_reports(request):
     }, context_instance=RequestContext(request))
 
 
-def process_table_content_request(request, reports):
-    if request.fmsuser.agent or request.fmsuser.manager or request.fmsuser.leader:
-        reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
-    elif request.fmsuser.contractor or request.fmsuser.applicant:
-        reports = reports.responsible_contractor(request.fmsuser)
-    elif not request.fmsuser.is_superuser:
+def table_content(request, selection=""):
+    user = request.fmsuser
+    reports = Report.objects.all().visible().related_fields()
+
+    if user.agent or user.manager or user.leader:
+        reports = reports.entity_responsible(user) | reports.entity_territory(user.organisation)
+    elif user.contractor or user.applicant:
+        reports = reports.responsible_contractor(user)
+    elif not user.is_superuser:
         raise PermissionDenied()
+
+    if selection == "responsible" and user.manager:
+        reports = reports.responsible(user)
+    elif selection == "subscribed":
+        reports = reports.subscribed(user)
+    elif selection == "contractor_responsible":
+        reports = reports.responsible_contractor(user)
+    elif selection == "all":
+        # all reports
+        pass
+    else:
+        raise Exception('Bad paramettre selection ' + selection)
 
     reports = reports.extra(
         select=OrderedDict([
@@ -124,17 +72,3 @@ def process_table_content_request(request, reports):
         "reports": reports.related_fields(),
     }, context_instance=RequestContext(request))
 
-
-def table_content(request):
-    reports = Report.objects.all().visible().related_fields()
-    return process_table_content_request(request, reports);
-
-
-def table_subscription_content(request):
-    reports = Report.objects.all().visible().subscribed(get_current_user()).related_fields()
-    return process_table_content_request(request, reports);
-
-
-def table_mine_content(request):
-    reports = Report.objects.all().visible().responsible(get_current_user()).related_fields()
-    return process_table_content_request(request, reports);

@@ -66,14 +66,14 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 var columns = [
     {type: "number"}, // incident number
     {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
-    
+
     {type: "select"}, // categories
-    
+
     /*{type: "select", values: [
         '{{ True|yesno:_("regional,communal") }}',
         '{{ False|yesno:_("regional,communal") }}'
     ]}, */// regional
-    
+
 
     {type: "select"}, // sec categories
     {type: "text"},   // addr
@@ -117,16 +117,15 @@ var columns = [
         '{{ True|yesno:_("yes,no") }}',
         '{{ False|yesno:_("yes,no") }}'
     ], selected: '{{ False|yesno:_("yes,no") }}'}, // pending
-    
+
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
-]
+];
 
-// Get table rendered by django
-function generateTableContent() {
-    document.getElementById('table-container').innerHTML = '<div id="table-loading" class="span12"><img src="{{ STATIC_URL }}/images/spinner.gif" /></div>';
+var previousTableSelection;
 
+<<<<<<< HEAD
     var mineElements = '{% url "report_table_content_mine_pro" %}';
     var subscriptionElements = '{% url "report_table_content_subscription_pro" %}';
     var urlToConnect = "{% url 'report_table_content_pro' %}";
@@ -139,10 +138,26 @@ function generateTableContent() {
 
     $.ajax({
         url: urlToConnect,
+=======
+// Get table rendered by django
+function generateTableContent(selection) {
+    $('#table-container').html('<div id="table-loading" class="span12"><img src="{{ STATIC_URL }}/images/spinner.gif" /></div>');
+    $("button").prop('disabled', true);
+    if (selection !== 'current') {
+        previousTableSelection = selection;
+    } else {
+        selection = previousTableSelection;
+    }
+    $(".refresh-table").removeClass('active');
+    $(".refresh-table[data-selection=" + selection + "]").addClass('active');
+    $.ajax({
+        url: "{% url 'report_table_content_pro' %}" + selection,
+>>>>>>> table selection content & fix table size
         data: "",
         dataType: "html",
         success: function(data) {
             $('#map-loading').hide();
+            $("button").prop('disabled', false);
 
             //Retrieve the last used preferences
             var sortPreferences = fms_store.getTablePreferedSortedColumn();
@@ -158,7 +173,7 @@ function generateTableContent() {
                     fms_store.setTablePreferedSortedColumn(this.fnSettings().aaSorting.sort()[0][0], this.fnSettings().aaSorting.sort()[0][1]);
                 },
                 "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
-                    //If image then display using img tag 
+                    //If image then display using img tag
                     if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image' && aData[1] !== 'None') {
                         var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
                         $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
@@ -171,16 +186,16 @@ function generateTableContent() {
                     return nRow;
                  }
             });
-            
+
             //Generate filters FIRST
             table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
-            
+
             //And THEN show/hide columns
             var checkboxes = $('#column-visibility :checkbox');
             //Show, Hide columns based on user selection
             for (var index in sortPreferenceUnselectedColumns) {
                 selected = !sortPreferenceUnselectedColumns[index];
-                checkboxes.eq(index).prop('checked', selected); 
+                checkboxes.eq(index).prop('checked', selected);
                 table.fnSetColumnVis(index, selected);
             }
 
@@ -210,22 +225,34 @@ function generateTableContent() {
 
             // Init map markers
             refreshMap();
+        },
+        error: function () {
+            $('#map-loading').hide();
+            $("button").prop('disabled', false);
+            $('#table-container').html("<h1 class='text-error'>An error occurred...</h1>");
         }
     });
 }
 
-generateTableContent();
+{% if request.fmsuser.manager %}
+generateTableContent('responsible');
+{% else %}
+generateTableContent('all');
+{% endif %}
 
-// Refresh table
-var refreshTable = document.getElementById('refreshTable');
-refreshTable.addEventListener('click', function() {
-    //Show loading icon
-    $('#map-loading').show();
+$(document).ready(function() {
+    // Refresh table
+    $('.refresh-table').click(function() {
+        //Show loading icon
+        $('#map-loading').show();
 
-    // Destroy current table
-    table.fnDestroy(true);
-    // Regenerate table
-    generateTableContent();
+        if (table) {
+            // Destroy current table
+            table.fnDestroy(true);
+        }
+        // Regenerate table
+        generateTableContent($(this).data('selection'));
+    });
 });
 
 // Show or hide filters in modal
@@ -271,28 +298,6 @@ function refreshMap() {
     );
 })(document);
 
-function isTableSwitchActive() {
-    return window.location.href.indexOf('tableSwitch') !== -1;
-}
-
-/* When JQUERY is ready*/
-$(document).ready(function() {
-    $("#refreshTableAllIncidents").on('click',function() {
-        window.location = '{% url "report_table_pro" %}'+'?tableSwitch=active';
-    });
-    $("#refreshTableMyIncidents").on('click',function() {
-        window.location = '{% url "report_table_pro" %}'+'?type=mine&tableSwitch=active';
-    });
-    $("#refreshTableMySubscriptions").on('click',function() {
-        window.location = '{% url "report_table_pro" %}'+'?type=sub&tableSwitch=active';
-    });
-    //Show table content per default when this url parameter is given
-    if (isTableSwitchActive() === true) {
-        $('#tableSwitch').trigger('click');
-    }
-});
-
-
 </script>
 {% endblock %}
 
@@ -317,7 +322,7 @@ $(document).ready(function() {
 
 <!-- FILTRE DES COLONNES -->
 {% block content %}
-<div id="modalTable" class="modal hide fade" style="width: 98%; left: 10px; margin-left: 0px">
+<div id="modalTable" class="modal hide fade">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Table</h3>
@@ -325,21 +330,23 @@ $(document).ready(function() {
 
     <div class="modal-body">
         <!-- Top BUTTONS -->
-        <button id="showHideFilters">{% trans "Edit columns" %}</button>
-        <button id="refreshTable">{% trans "Refresh table" %}</button>
-
-        <button id="refreshTableMyIncidents">{% trans "My incidents" %}</button>
-        <button id="refreshTableMySubscriptions">{% trans "My subscriptions" %}</button>
-        <button id="refreshTableAllIncidents">{% trans "All incidents" %}</button>
-
+        <p>
+            <button id="showHideFilters" class="btn">{% trans "Edit columns" %}</button>
+            <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
+            {% if request.fmsuser.manager %}
+            <button class="refresh-table btn" data-selection="responsible">{% trans "My incidents" %}</button>
+            {% endif %}
+            <button class="refresh-table btn" data-selection="subscribed">{% trans "My subscriptions" %}</button>
+            <button class="refresh-table btn" data-selection="all">{% trans "All incidents" %}</button>
+        </p>
 
         <div id="table-filters" class="table-filters">
             <ul id="column-visibility">
                 <li><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
-                
+
                 <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
-                
+
                 <!--li><label><input type="checkbox" checked /> {% trans "Road type" %}</label></li-->
                 <li><label><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
@@ -349,7 +356,7 @@ $(document).ready(function() {
                 <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
 
-                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li> 
+                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
