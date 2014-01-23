@@ -10,7 +10,7 @@
                     {{ field }}
                 {% endfor %}
 
-                <div class="control-group required ">
+                <div class="control-group required">
 
                     <label class="control-label" for="category_select">
                         <strong>{% trans 'Observation' %}</strong>
@@ -35,8 +35,10 @@
                     <strong>{% trans 'Comment' %}</strong><br />
                     {% trans 'Votre commentaire sera validé avant publication sur le site.' %}
                 </label>
-                <div class="controls">
-                    {% input_class comment_form.text 'fullsize_field' %}
+                <div class="controls container-fluid">
+                    <div class="row-fluid">
+                    {% input_class comment_form.text 'span12' %}
+                    </div>
                 </div>
             </div>
 
@@ -150,7 +152,7 @@
                     </div>
                 </div>
 
-            {% endif %}     
+            {% endif %}
 
             <div id="required-note" >{% trans "* This fields are required" %}</div>
 
