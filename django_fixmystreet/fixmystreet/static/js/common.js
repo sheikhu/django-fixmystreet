@@ -27,6 +27,7 @@ $(document).ready(function(){
 
 
     /* form validation */
+    // $(":input, :select, ").submit(function(evt) {});
     $("form").submit(function(evt) {
         if (!validateForm($(this))) {
             evt.preventDefault();
@@ -70,38 +71,40 @@ $(document).ready(function(){
 function validateForm(form) {
     var valid = true;
 
-    form.find('.required input, .required select, .required textarea').each(function(ind,input) {
-        var $input = $(input);
-        var value = $input.val();
+    form.find('.required').each(function(ind, field) {
+        var value = true;
+        var $field = $(field);
+        var $input = $field.find('input, select, textarea');
 
-        if ($input.is(":checkbox")) {
-            value = $input.is(":checked");
-        }
-        if ($input.is(":file")) {
+        if ($field.find(":file").length) {
             value = form.find('.thumbnail:visible').length;
-
-        }
-        console.log($input.is(":file"), value);
-        return false;
-        if (input.type === 'email' || $input.hasClass("validate-email")) {
+            $field = form.find('#file-form-template');
+        } else if ($input.is(":checkbox")) {
+            value = $input.is(":checked");
+        } else if ($input[0].type === 'email' || $input.hasClass("validate-email")) {
             value = UtilValidator.validateEmail($input.val());
+        } else {
+            $input.each(function (ind, input) {
+                if (!$(input).val()) {
+                    value = false;
+                }
+            });
         }
         if(!value) {
             valid = false;
-            $input.closest('.required').addClass('invalid');
+            $field.addClass('invalid');
         } else {
-            $input.closest('.required').removeClass('invalid');
+            $field.removeClass('invalid');
         }
+        console.log(valid? 'valid':'not valid');
     });
 
     if(!valid) {
         form.find('.invalid input, .invalid select').first().focus();
         form.find('.required-error-msg').fadeIn();
         form.addClass('required-invalid');
-
-        return false;
     }
-    return true;
+    return valid;
 }
 function updateMenuEntries(x,y) {
     //Update the left menu coordinates
@@ -114,14 +117,7 @@ function updateMenuEntries(x,y) {
 }
 
 function getCurrentLanguage() {
-	//Get current language
-	var currentLng = 'en';
-	if (window.location.href.indexOf('/nl/') != -1) {
-	    currentLng = 'nl';
-	} else if (window.location.href.indexOf('/fr/') != -1) {
-	    currentLng = 'fr'
-	}
-	return currentLng;
+    return LANGUAGE_CODE;
 }
 
 

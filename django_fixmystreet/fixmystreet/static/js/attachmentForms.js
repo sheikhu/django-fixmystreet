@@ -26,7 +26,7 @@
 /* This function used to retrieve the exif data from an image asynchronously                */
 /********************************************************************************************/
 
-    
+
 /********************************************************************************************/
 /* This function checks the size of the current selected file in the file form input field. */
 /********************************************************************************************/
@@ -56,7 +56,7 @@
                 return false;
             }
         }
-        var form_copy = file_form_template.clone();
+
         var form_new = file_form_template;
         file_form_template = form_copy;
             // if (file.name) {
@@ -72,7 +72,7 @@
                 var minute;
                 if (exifObject.DateTimeOriginal){
                     var datetosplit = exifObject.DateTimeOriginal;
-                    var splitted = datetosplit.split(/[:,\/ ]/)
+                    var splitted = datetosplit.split(/[:,\/ ]/);
                     var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
                     day = pictureDate.getDate();
                     month = pictureDate.getMonth()+1;
@@ -98,8 +98,8 @@
                 form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
                 $('#form-files').find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
                 AddFileToView(form_new, file);
-                form_new.attr('id', '');
-                
+                form_new.attr('id', '').removeClass('required').removeClass('invalid');
+
                 form_new.find("label").each(function(index, label) {
                     $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
                 });
@@ -116,21 +116,21 @@
                     });
 
                 var removeThumbnail = form_new.find('.removeThumbnail')[0];
-                removeThumbnail.classList.remove('hidden');
                 removeThumbnail.addEventListener('click', function() {
                     $(this.parentNode).remove();
                 });
 
+                form_new.find('.container-fluid').removeClass('hidden');
                 $('#form-files').append(form_new);
                 $('#form-files').append(file_form_template);
 
-                file_count++;       
+                file_count++;
                 $("#id_files-TOTAL_FORMS").val(file_count);
 
-                };
+            };
 
-                
-                $(inputFile).fileExif(exifCallback);
+
+            $(inputFile).fileExif(exifCallback);
 
             /*if(file.lastModifiedDate) {
                 // Append file creation date
@@ -142,13 +142,13 @@
                 minute = fileDate.getMinutes();
 
                 form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
-            }*/ 
+            }*/
 
-            
+
         } else {
             AddFileToView(form_new, null);
         }
-        
+
     }
 
     /************************************************************************************/
@@ -166,7 +166,7 @@
         var type = (file && file.type.split("/")[1]) || null;
         //Structured Data of the file to add
         var title = elem.find(":file").val();
-        if (title == ""){
+        if (title === ""){
             title = file.name;
         }
 

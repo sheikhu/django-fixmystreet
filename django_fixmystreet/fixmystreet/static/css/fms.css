@@ -1271,7 +1271,7 @@ form#report-form{
 	background:#FFDB00 url('../images/pro_show-historic.png') center right no-repeat;
 }
 .pro .incidentActionsIcon{
-	background:#FFDB00 url('../images/pro_other-actions.png') center right no-repeat;	
+	background:#FFDB00 url('../images/pro_other-actions.png') center right no-repeat;
 }
 .pro.incidentDetailsStatus{
 	color:#FFF;
@@ -1389,7 +1389,7 @@ form#report-form{
 #incident-head .ticket_number.green_border{
 	border: 2px solid #3CB64B;
 }
-	
+
 #incident-head .ticket_number .number_only{
 	font-weight:bold;
 }
@@ -1632,8 +1632,8 @@ label{
 label strong{
 	font-size:15px;
 }
-#id_report-secondary_category{
-	width:61%;
+#id_report-category, #id_report-secondary_category{
+	width:100%;
 }
 .control-group .thumbnail{
 	max-height: 100px;
@@ -1658,11 +1658,6 @@ label strong{
 .file-upload-btn input#id_files-__prefix__-file{
 	display:block;
 }
-.removeThumbnail{
-	margin-top: -53px;
-	right: -37px;
-	position: relative;
-}
 #form-files .file-upload-btn{
 	display:none;
 }
@@ -1673,9 +1668,10 @@ label strong{
 	display:none;
 }
 #form-files textarea{
-	margin-top: 78px;
+/*	margin-top: 78px;
 	margin-left: -18px;
-	width:750px;
+*/
+	width: 100%;
 }
 #report-form .btn {
 	position:relative;
@@ -1714,10 +1710,10 @@ label strong{
 	vertical-align:bottom;
 }
 /* Input form not valid */
-.required.invalid input, .required.invalid textarea {
+.invalid input, .invalid textarea {
     background-color: #FFDDDD;
 }
-.required.invalid input, .required.invalid select, .required.invalid textarea {
+.invalid input, .invalid select, .invalid textarea, .invalid .file-upload-btn {
     border: 2px solid #FF0000 !important;
 }
 .form-signin{

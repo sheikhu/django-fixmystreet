@@ -10,14 +10,20 @@
                     {{ field }}
                 {% endfor %}
 
-                <div class="control-group required">
+                <div class="control-group required ">
 
                     <label class="control-label" for="category_select">
                         <strong>{% trans 'Observation' %}</strong>
                     </label>
-                    <div class="controls">
-                        {% input_class report_form.category 'span4' %}
-                        {% input_class report_form.secondary_category 'span6' %}
+                    <div class="controls container-fluid">
+                        <div class="row-fluid">
+                            <span class="span5">
+                                {{ report_form.category }}
+                            </span>
+                            <span class="span7">
+                                {{ report_form.secondary_category }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             {% endif %}
