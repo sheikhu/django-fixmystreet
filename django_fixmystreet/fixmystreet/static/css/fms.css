@@ -1673,6 +1673,12 @@ label strong{
 */
 	width: 100%;
 }
+.row-prevent-clear:after {
+	clear: none;
+}
+.row-prevent-clear {
+	overflow: hidden;
+}
 #report-form .btn {
 	position:relative;
 	margin-top: 15px;
