@@ -497,11 +497,13 @@ var someCallback = function(exifObject, index) {
                         <!-- ROW PRO 3 -->
                         <li>
                         <strong>{% trans "Responsible:" %}</strong>
-                        <!-- responsible-name, responsible-group, responsible-entity -->
+                        <!-- responsible-name=report.responsible_department.contact_user, responsible-group=report.responsible_department, responsible-entity=report.responsible_entity -->
                         {{report.responsible_department.contact_user.get_full_name}} - 
                         <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> - 
                         {{report.responsible_entity.name}}
-                        (tel:{{report.responsible_department.phone }})
+                        {% if report.responsible_department.phone %}
+                            (tel:{{report.responsible_department.phone }})
+                        {% endif %}
                         </li>
                         <!-- ROW PRO 4 -->
                         <li>

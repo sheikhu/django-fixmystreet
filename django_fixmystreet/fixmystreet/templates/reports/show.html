@@ -213,7 +213,10 @@ function markAsDone(){
                                  <strong>{% trans "Responsible:" %}</strong>
                                 <!-- responsible-name, responsible-group, responsible-entity -->
                                 {{report.responsible_department.name }} - 
-                                {{report.responsible_entity.name}}
+                                {{report.responsible_entity.name}} 
+                                {% if report.responsible_department.phone %}
+                                    (tel:{{report.responsible_department.phone }})
+                                {% endif %}
                                 </p>
                                 <!-- ROW CIT 3 -->
                                 <p>
