@@ -1290,7 +1290,7 @@ form#report-form{
 }
 .pro a.accept:link, .pro a.accept:visited,.pro a.accept:hover, .pro a.accept:active, .pro a.accept:focus{
 	/*color:#607C9D;*/
-	height: 23px;			
+	height: 23px;
 	padding: 0;
 	padding-top: 2px;
 	font-size: 13px;
@@ -1308,7 +1308,7 @@ form#report-form{
 	margin-top:20px;
 }
 .pro a.reject, .pro a.reject, .pro a.reject:hover, .pro a.reject:focus, .pro a.reject:active{
-	height: 23px;			
+	height: 23px;
 	padding: 0;
 	padding-top: 2px;
 	font-size: 13px;
@@ -1658,7 +1658,7 @@ label strong{
 .file-upload-btn input#id_files-__prefix__-file{
 	display:block;
 }
-#form-files .file-upload-btn{
+.row-fluid .file-upload-btn{
 	display:none;
 }
 #file-form-template .file-upload-btn{
@@ -1667,11 +1667,17 @@ label strong{
 #file-form-template .thumbnail, #file-form-template textarea{
 	display:none;
 }
-#form-files textarea{
+.file-field textarea{
 /*	margin-top: 78px;
 	margin-left: -18px;
 */
 	width: 100%;
+}
+.row-prevent-clear:after {
+	clear: none;
+}
+.row-prevent-clear {
+	overflow: hidden;
 }
 #report-form .btn {
 	position:relative;

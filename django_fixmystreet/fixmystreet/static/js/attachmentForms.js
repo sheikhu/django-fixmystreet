@@ -39,6 +39,7 @@
         }
 
 
+        var filesContainer = file_form_template.closest('.container-fluid');
         var form_copy = file_form_template.clone();
 
         if (file) {
@@ -57,13 +58,11 @@
             }
         }
 
+
         var form_new = file_form_template;
         file_form_template = form_copy;
-            // if (file.name) {
-            //     $("#id_files-"+file_count+"-title").val(file.name);
-            // }
 
-        if (file) {
+        if (file) { // WARNING: this code must run in IE and input.filers is not supported by IE9
             var exifCallback = function(exifObject) {
                 var day;
                 var month;
@@ -96,7 +95,7 @@
                     input.name = input.name.replace(/__prefix__/g, file_count);
                 });
                 form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
-                $('#form-files').find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+                filesContainer.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
                 AddFileToView(form_new, file);
                 form_new.attr('id', '').removeClass('required').removeClass('invalid');
 
@@ -117,12 +116,12 @@
 
                 var removeThumbnail = form_new.find('.removeThumbnail')[0];
                 removeThumbnail.addEventListener('click', function() {
-                    $(this.parentNode).remove();
+                    $(this).closest('.row-fluid').remove();
                 });
 
-                form_new.find('.container-fluid').removeClass('hidden');
-                $('#form-files').append(form_new);
-                $('#form-files').append(file_form_template);
+                form_new.find('.file-field').removeClass('hidden');
+                filesContainer.append(form_new);
+                filesContainer.append(file_form_template);
 
                 file_count++;
                 $("#id_files-TOTAL_FORMS").val(file_count);
