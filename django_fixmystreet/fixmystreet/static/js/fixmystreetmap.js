@@ -490,10 +490,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
      * @param x float define the position of the marker (in Lambert72 coordinate system)
      * @param y float define the position of the marker (in Lambert72 coordinate system)
      */
-    fms.Map.prototype.addDraggableMarker = function(x,y)
+    fms.Map.prototype.addDraggableMarker = function(x, y)
     {
         var self = this;
-        this.selectedLocation = {x:x,y:y};
+        this.selectedLocation = {x:x, y:y};
 
         // If one draggableLayer already exists, remove it
         if(this.draggableLayer)
@@ -543,7 +543,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         this.dragfeature = new OpenLayers.Feature.Vector(this.draggableMarker, null, draggableMarkerStyle);
         this.draggableLayer.addFeatures([this.dragfeature]);
         if(this.selectFeature) {
-            this.selectFeature.setLayer([this.markersLayer,this.draggableLayer]);
+            this.selectFeature.setLayer([this.markersLayer, this.draggableLayer]);
         }
 
         //Allow button center on draggable marker when visible
@@ -747,38 +747,38 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 }
             });
 
-            /*this.clickFeature = OpenLayers.Class(this.markersLayer, { 
+            /*this.clickFeature = OpenLayers.Class(this.markersLayer, {
 
-                    defaultHandlerOptions: { 
-                            'single': true, 
-                            'double': true, 
-                            'pixelTolerance': 0, 
-                            'stopSingle': false, 
-                            'stopDouble': true 
-                    }, 
+                    defaultHandlerOptions: {
+                            'single': true,
+                            'double': true,
+                            'pixelTolerance': 0,
+                            'stopSingle': false,
+                            'stopDouble': true
+                    },
 
                     initialize: function(options) { console.log('ooo');
-                            this.handlerOptions = OpenLayers.Util.extend( 
-                                    {}, this.defaultHandlerOptions 
-                            ); 
-                            OpenLayers.Control.prototype.initialize.apply( 
-                                    this, arguments 
-                            ); 
-                            this.handler = new OpenLayers.Handler.Click( 
-                                    this, { 
-                                            'click': this.onClick, 
-                                            'dblclick': this.onDblclick 
-                                    }, this.handlerOptions 
-                            ); 
-                    }, 
-                    onClick: function(event) { 
-                            alert("single click"); 
-                    }, 
-                    onDblclick: function(event) {   
-                            alert("double click"); 
-                    }   
+                            this.handlerOptions = OpenLayers.Util.extend(
+                                    {}, this.defaultHandlerOptions
+                            );
+                            OpenLayers.Control.prototype.initialize.apply(
+                                    this, arguments
+                            );
+                            this.handler = new OpenLayers.Handler.Click(
+                                    this, {
+                                            'click': this.onClick,
+                                            'dblclick': this.onDblclick
+                                    }, this.handlerOptions
+                            );
+                    },
+                    onClick: function(event) {
+                            alert("single click");
+                    },
+                    onDblclick: function(event) {
+                            alert("double click");
+                    }
             }); */
-            
+
 
 
             this.map.addControl(this.selectFeature);
@@ -866,7 +866,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     }
 
                     if (report.date_planned){
-                        popoverIcons += "<li class='datePlanned_on'>"+report.date_planned+"</li>";  
+                        popoverIcons += "<li class='datePlanned_on'>"+report.date_planned+"</li>";
                     }
 
 
@@ -887,7 +887,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             popoverIcons += "<li class='isSolved'><img title='"+tooltipSolved+"' src='/static/images/is_resolved_on.png' /></li>";
 
                         }
-                        
+
                     }
 
                     //FIN CONTENU DES ICONES

@@ -153,7 +153,7 @@ function getAddressFromPoint(lang, x, y) {
             var street = response.result.address.street.name;
             var number = response.result.address.number;
             var postCode = response.result.address.street.postCode;
-           
+
             //console.log(origX,origY);
             var municipality = zipcodes[(postCode=="1041"?"1040":postCode)].commune;
             var popupTitleItsHere   = gettext('It is here');
@@ -177,7 +177,7 @@ function getAddressFromPoint(lang, x, y) {
                 popupContent += "<br/>" + postCode + " " + municipality + "</p>";
 
                 if (NEXT_PAGE_URL) {
-                    popupContent += 
+                    popupContent +=
                     "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + origX + "&y=" + origY + "'>"+
                     popupTitleItsHere+
                     "</a>";
@@ -207,7 +207,7 @@ function getAddressFromPoint(lang, x, y) {
     });
 }
 
-function initDragMarker(x, y, additionalInfo) {
+function initDragMarker(x, y, additionalInfo, preventZoomIn) {
         cleanMap();
 
         // Remove message info
@@ -220,7 +220,11 @@ function initDragMarker(x, y, additionalInfo) {
 
         draggableMarker = fms.currentMap.addDraggableMarker(x, y);
         fms.currentMap.centerOnDraggableMarker();
-        fms.currentMap.map.zoomTo(6);
+
+        console.log(preventZoomIn);
+        if (!preventZoomIn) {
+            fms.currentMap.map.zoomTo(6);
+        }
 
         var popupTitle = gettext('Move the cursor');
         var popupTitleItsHere   = gettext('It is here');
@@ -464,9 +468,11 @@ $(function(){
 
     var btnLocalizeviamap = document.getElementById('btn-localizeviamap');
 
-    btnLocalizeviamap.addEventListener("click", function() {
-        // Hard code center of map (~same value than fms.currentMap.map.getCenter() but as x,y and not lat,lon)
-        initDragMarker(fms.currentMap.map.center.lon,fms.currentMap.map.center.lat);
+    btnLocalizeviamap.addEventListener("click", function(evt) {
+        evt.preventDefault();
+        var center = fms.currentMap.map.getCenter();
+        // Hard code center of map
+        initDragMarker(center.lon, center.lat, null, true);
 
         btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
     });
