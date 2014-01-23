@@ -29,10 +29,8 @@ urlpatterns += patterns(
 
 urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.reports.list',
-    url(_(r'^report/table/$'), 'all_reports', name='report_table_pro'),
-    url(_(r'^report/table-subscription-content/$'), 'table_subscription_content', name='report_table_content_subscription_pro'),
-    url(_(r'^report/table-mine-content/$'), 'table_mine_content', name='report_table_content_mine_pro'),
-    url(_(r'^report/table-content/$'), 'table_content', name='report_table_content_pro'),
+    url(_(r'^report/table/$'), 'table', name='report_table_pro'),
+    url(_(r'^report/table-content/(?P<selection>\w+)?$'), 'table_content', name='report_table_content_pro'),
 )
 
 urlpatterns += patterns(

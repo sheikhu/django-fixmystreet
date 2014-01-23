@@ -1919,10 +1919,29 @@ label strong{
 	display:inline-block;
 	padding-left:15px;
 }
-#modalTable .modal-body{
-	/*height: 650px;*/
-	max-height:650px;
-	min-height:445px;
+#modalTable{
+	width: auto;
+	right: 10px;
+	left: 10px;
+	top: 10px;
+	bottom: 10px;
+	margin-left: 0;
+}
+#modalTable .table-container{
+	height: auto;
+	max-height: none;
+	position: absolute;
+	top: 48px;
+	bottom: 58px;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+#modalTable .modal-footer{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
 #result-table tr{
 	cursor: pointer;
