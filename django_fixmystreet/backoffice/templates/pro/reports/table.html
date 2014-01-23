@@ -127,8 +127,18 @@ var columns = [
 function generateTableContent() {
     document.getElementById('table-container').innerHTML = '<div id="table-loading" class="span12"><img src="{{ STATIC_URL }}/images/spinner.gif" /></div>';
 
+    var mineElements = '{% url "report_table_content_mine_pro" %}';
+    var subscriptionElements = '{% url "report_table_content_subscription_pro" %}';
+    var urlToConnect = "{% url 'report_table_content_pro' %}";
+
+    if (window.location.href.indexOf("type=mine") !== -1) {
+        urlToConnect = mineElements
+    } else if (window.location.href.indexOf("type=sub") !== -1) {
+        urlToConnect = subscriptionElements
+    }
+
     $.ajax({
-        url: "{% url 'report_table_content_pro' %}",
+        url: urlToConnect,
         data: "",
         dataType: "html",
         success: function(data) {
@@ -139,7 +149,6 @@ function generateTableContent() {
             var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
 
             document.getElementById('table-container').innerHTML = data;
-
             // Init table
             //Method table.oApi._fnColumnIndexToVisible could be useful to match the datacolumn to visible one about indexes
             table = $('#result-table').dataTable({
@@ -269,9 +278,15 @@ function isTableSwitchActive() {
 /* When JQUERY is ready*/
 $(document).ready(function() {
     $("#refreshTableAllIncidents").on('click',function() {
-        console.log('reload all');
         window.location = '{% url "report_table_pro" %}'+'?tableSwitch=active';
     });
+    $("#refreshTableMyIncidents").on('click',function() {
+        window.location = '{% url "report_table_pro" %}'+'?type=mine&tableSwitch=active';
+    });
+    $("#refreshTableMySubscriptions").on('click',function() {
+        window.location = '{% url "report_table_pro" %}'+'?type=sub&tableSwitch=active';
+    });
+    //Show table content per default when this url parameter is given
     if (isTableSwitchActive() === true) {
         $('#tableSwitch').trigger('click');
     }
