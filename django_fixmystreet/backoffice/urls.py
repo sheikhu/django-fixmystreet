@@ -30,6 +30,8 @@ urlpatterns += patterns(
 urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.reports.list',
     url(_(r'^report/table/$'), 'all_reports', name='report_table_pro'),
+    url(_(r'^report/table-subscription-content/$'), 'table_subscription_content', name='report_table_content_subscription_pro'),
+    url(_(r'^report/table-mine-content/$'), 'table_mine_content', name='report_table_content_mine_pro'),
     url(_(r'^report/table-content/$'), 'table_content', name='report_table_content_pro'),
 )
 
@@ -91,7 +93,7 @@ urlpatterns += patterns(
 
     url(r'^users/$', 'list_users', name='list_users'),
     url(r'^users/(?P<user_id>\d+)/$', 'edit_user', name='edit_user'),
-    url(r'^users/create$',   'create_user', name='create_user'),
+    url(r'^users/create$', 'create_user', name='create_user'),
     url(r'^users/(?P<user_id>\d+)/delete$', 'delete_user', name="delete_user"),
 
     # url(r'^contractors/$', 'list_contractors', name='list_contractors'),
@@ -101,15 +103,15 @@ urlpatterns += patterns(
 
 urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.groups',
-    url(r'^groups/$',        'list_groups',  name='list_groups'),
+    url(r'^groups/$', 'list_groups', name='list_groups'),
     url(r'^groups/create/$', 'create_group', name='create_group'),
 
-    url(r'^groups/(?P<group_id>\d+)/$', 'edit_group',   name='edit_group'),
-    url(r'^groups/(?P<group_id>\d+)/delete/$', 'delete_group',   name='delete_group'),
+    url(r'^groups/(?P<group_id>\d+)/$', 'edit_group', name='edit_group'),
+    url(r'^groups/(?P<group_id>\d+)/delete/$', 'delete_group', name='delete_group'),
 
-    url(r'^groups/membership/add/(?P<group_id>\d+)/(?P<user_id>\d+)/$', 'add_membership',   name='add_membership'),
-    url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership',   name='remove_membership'),
-    url(r'^groups/membership/contact/(?P<membership_id>\d+)/$', 'contact_membership',   name='contact_membership'),
+    url(r'^groups/membership/add/(?P<group_id>\d+)/(?P<user_id>\d+)/$', 'add_membership', name='add_membership'),
+    url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership', name='remove_membership'),
+    url(r'^groups/membership/contact/(?P<membership_id>\d+)/$', 'contact_membership', name='contact_membership'),
 )
 
 urlpatterns += patterns(
