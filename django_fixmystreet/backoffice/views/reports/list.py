@@ -5,7 +5,7 @@ from django.utils.translation import get_language
 from django.core.exceptions import PermissionDenied
 
 from django_fixmystreet.fixmystreet.models import Report, ZipCode
-from django_fixmystreet.fixmystreet.utils import dict_to_point
+from django_fixmystreet.fixmystreet.utils import dict_to_point, get_current_user
 
 default_position = {
     'x': '148954.431',
@@ -88,17 +88,13 @@ def all_reports(request):
     }, context_instance=RequestContext(request))
 
 
-def table_content(request):
-    reports = Report.objects.all().visible().related_fields()
-
+def process_table_content_request(request, reports):
     if request.fmsuser.agent or request.fmsuser.manager or request.fmsuser.leader:
         reports = reports.entity_responsible(request.fmsuser) | reports.entity_territory(request.fmsuser.organisation)
     elif request.fmsuser.contractor or request.fmsuser.applicant:
         reports = reports.responsible_contractor(request.fmsuser)
     elif not request.fmsuser.is_superuser:
         raise PermissionDenied()
-
-    # reports, pnt = filter_reports(request.fmsuser, request.GET)
 
     reports = reports.extra(
         select=OrderedDict([
@@ -127,3 +123,18 @@ def table_content(request):
         "zipcodes": zipcodes,
         "reports": reports.related_fields(),
     }, context_instance=RequestContext(request))
+
+
+def table_content(request):
+    reports = Report.objects.all().visible().related_fields()
+    return process_table_content_request(request, reports);
+
+
+def table_subscription_content(request):
+    reports = Report.objects.all().visible().subscribed(get_current_user()).related_fields()
+    return process_table_content_request(request, reports);
+
+
+def table_mine_content(request):
+    reports = Report.objects.all().visible().responsible(get_current_user()).related_fields()
+    return process_table_content_request(request, reports);
