@@ -470,7 +470,9 @@ var someCallback = function(exifObject, index) {
                                 </strong>
                                 {{report.last_history_event.event_at|date:"d/m/Y"}}
                                 {% trans "with incident" %}
-                                {{report.merged_with.id}}
+                                 <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
+                                    {{report.merged_with.id}}
+                                </a>
                             </li>
                         {% endif %}
                         

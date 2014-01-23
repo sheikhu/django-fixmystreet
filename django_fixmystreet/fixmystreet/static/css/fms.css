@@ -1286,7 +1286,7 @@ form#report-form{
 }
 .pro.incidentDetailsStatus a:link, .pro.incidentDetailsStatus a:visited,.pro.incidentDetailsStatus a:hover, .pro.incidentDetailsStatus a:active, .pro.incidentDetailsStatus a:focus{
 	color:#FFF;
-	text-decoration:none;
+	text-decoration:underline;
 }
 .pro a.accept:link, .pro a.accept:visited,.pro a.accept:hover, .pro a.accept:active, .pro a.accept:focus{
 	/*color:#607C9D;*/
