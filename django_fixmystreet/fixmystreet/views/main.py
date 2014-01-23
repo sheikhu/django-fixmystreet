@@ -66,6 +66,10 @@ def faq(request):
     }, context_instance=RequestContext(request))
 
 
+def help(request):
+    return render_to_response("help.html", {}, context_instance=RequestContext(request))
+
+
 def terms_of_use(request):
     return render_to_response("terms_of_use.html", context_instance=RequestContext(request))
 
