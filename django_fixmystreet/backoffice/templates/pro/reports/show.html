@@ -41,6 +41,20 @@ function persistWrongAddressUpdate() {
     });
 }
 
+function confirmTransfer(argUrl) {
+    var r=confirm("{% trans 'Are you sure you want to change the responsable manager? This action cannot be undone.' %}");
+    if (r==true){
+        window.location = argUrl
+    }
+}
+
+function confirmAssign(argUrl) {
+    var r=confirm("Are you sure you want to change the contractor/applicant?");
+    if (r==true){
+        window.location = argUrl
+    }
+}
+
 function cancelCategoryUpdate() {
     //Close modal Window
     $('#modalCategory').modal('hide');
@@ -68,41 +82,6 @@ $(function(){
         });
     });
 
-    /***************************/
-    /* Set the current manager */
-    /***************************/
-    $("#report_responsible_manager_select").val("department_{{report.responsible_department.id}}");
-
-    /*************************************************************/
-    /* Implement method when changing manager using the dropdown */
-    /*************************************************************/
-    $("#report_responsible_manager_select").bind("change",function(event){
-        var r=confirm("{% trans 'Are you sure you want to change the responsable manager? This action cannot be undone.' %}");
-        if (r==true){
-            window.location = '{% url "report_change_manager_pro" report.id %}?manId='+$("#report_responsible_manager_select").val();
-        }
-        else{
-            $("#report_responsible_manager_select").val("department_{{report.responsible_department.id}}");
-        }
-    });
-    /******************************/
-    /* Set the current contractor */
-    /******************************/
-    $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
-
-    /****************************************************************/
-    /* Implement method when changing contractor using the dropdown */
-    /****************************************************************/
-    $("#report_responsible_impetrant_contractor_select").bind("change",function(event){
-
-        var r=confirm("Are you sure you want to change the contractor/applicant?");
-        if (r==true){
-            window.location = '{% url "report_change_contractor_pro" report.id %}?contractorId='+$("#report_responsible_impetrant_contractor_select").val();
-        }
-        else{
-            $("#report_responsible_impetrant_contractor_select").val("contractor_{{report.subcontractor.id}}");
-        }
-    });
 
     /*Set the checked value*/
     {% if report.private %}
@@ -176,39 +155,6 @@ $(document).ready(function() {
     });
 
 
-
-    /*var isFalseAddressCheckBox = document.getElementById('is_false_address');
-    isFalseAddressCheckBox.addEventListener('change', function() {
-        var falseAddress_Reason = document.getElementById('false_address');
-        if (this.checked) {
-            falseAddress_Reason.classList.remove('hidden');
-        } else {
-            falseAddress_Reason.classList.add('hidden');
-        }
-    });*/
-
-    /*document.getElementById('false_address').addEventListener('keyup', function() {
-        if (this.value != report_false_adress) {
-            document.getElementById('submit_false_address').classList.remove('hidden');
-        } else {
-            document.getElementById('submit_false_address').classList.add('hidden');
-        }
-    });*/
-
-    /*document.getElementById('submit_false_address').addEventListener('click', function() {
-        // Ajax request to set false_address
-        var false_address = document.getElementById('false_address').value;
-        var url = '{% url "report_false_address" report.id %}';
-        var data = { 'false_address': false_address };
-
-        var self = this;
-        $.post( url, data, function( result ) {
-            // Do nothing
-            self.classList.add('hidden');
-            report_false_adress = result;
-        });
-    });*/
-
     document.getElementById("send_pdf_citizen_button").addEventListener('click', function(event){
         $.ajax({
             url:"{% url 'send_pdf' report.id %}",
@@ -221,6 +167,7 @@ $(document).ready(function() {
 
 
     });
+
 
     document.getElementById("send_pdf_pro_button").addEventListener('click', function(event){
         $.ajax({
@@ -235,7 +182,6 @@ $(document).ready(function() {
 
     });
 
-    //$("#main_cat_select").val("{{report.category.id}}");
 
     $.ajax({
         url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
@@ -357,6 +303,9 @@ function planned(){
     }
 }
 
+/**
+ * ExifCallback method
+ */
 var someCallback = function(exifObject, index) {
         if (exifObject && exifObject.DateTimeOriginal){
             textAreas = $($(".update_text").find('#imagedate'));
@@ -425,8 +374,6 @@ var someCallback = function(exifObject, index) {
                         <ul class='iconsPopup'>
                             {% if report.address_regional %}
                                 <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/regional_on.png' /></a></li>
-                            {% else %}                                
-                                <!--li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not located on a regional zone" %}'><img src='/static/images/regional_off.png' /></a></li-->
                             {% endif %}
 
                             {% if report.is_pro %}
@@ -435,14 +382,10 @@ var someCallback = function(exifObject, index) {
 
                             {% if report.contractor != None %}
                                 <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/contractorAssigned_on.png' /></a></li>
-                            {% else %}
-                                <!--li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not assigned" %}'><img src='/static/images/contractorAssigned_off.png' /></a></li-->
                             {% endif %}
                             
                             {% if report.date_planned %}
                                 <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
-                            {% else %}
-                                <!--li class="datePlanned"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "There is no planification for this incident" %}'><img src="/static/images/planned_off.png" /></a></li-->
                             {% endif %}
 
                             {% if BACKOFFICE %}
@@ -460,8 +403,6 @@ var someCallback = function(exifObject, index) {
 
                                 {% if not report.is_markable_as_solved %}
                                     <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="/static/images/is_resolved_on.png" /></a></li>
-                                {% else %}
-                                    <!--li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has not been signaled as solved" %}'><img src="/static/images/is_resolved_off.png" /></a></li-->
                                 {% endif %}
 
                             {% endif %}
@@ -513,7 +454,10 @@ var someCallback = function(exifObject, index) {
                             {{report.last_history_status_event.event_at|date:"d/m/Y"}}
                             
                             {% if report.is_contractor_or_applicant_assigned %}
-                                {{report.contractor.name}} ({{report.contractor.phone}})
+                                {{report.contractor.name}} 
+                                {% if report.contractor.phone %}
+                                    ({{report.contractor.phone}})
+                                {% endif %}    
                             {% endif %}
                         </li>
                         <!-- ROW PRO 5 -->
@@ -598,7 +542,7 @@ var someCallback = function(exifObject, index) {
                                                 {% for department in departments %}
                                                     <li>
                                                         <a {% ifequal report.responsible_department.id department.id %}class="active"{% endifequal %}
-                                                        tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}">
+                                                        tabindex="-1" href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}')">
                                                             {{department.name}} ({{ department.dependency.name}})
                                                         </a>
                                                     </li>
@@ -610,7 +554,7 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 {% for entity in entities %}
                                                     <li>
-                                                        <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}">
+                                                        <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}')">
                                                             {{entity.name}}
                                                         </a>
                                                     </li>
@@ -622,7 +566,7 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 {% for institution in region_institution %}
                                                     <li>
-                                                        <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}">
+                                                        <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}')">
                                                             {{institution.name}}
                                                         </a>
                                                     </li>
@@ -641,13 +585,13 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1" 
-                                                        href="{% url 'report_change_contractor_pro' report.id %}?contractorId=None">
+                                                        href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId=None')">
                                                         {% trans 'None' %}
                                                     </a>
                                                 </li>
                                                 {% for organisation in contractors %}
                                                     <li>
-                                                        <a {% ifequal report.contractor.id organisation.id %}class="active"{% endifequal %} tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}">
+                                                        <a {% ifequal report.contractor.id organisation.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}')">
                                                             {{ organisation.name }}
                                                         </a>
                                                     </li>
@@ -659,13 +603,13 @@ var someCallback = function(exifObject, index) {
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1" 
-                                                        href="{% url 'report_change_contractor_pro' report.id %}?contractorId=None">
+                                                        href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId=None')">
                                                         {% trans 'None' %}
                                                     </a>
                                                 </li>
                                                 {% for applicant in applicants %}
                                                     <li>
-                                                        <a {% ifequal report.contractor.id applicant.id %}class="active"{% endifequal %} tabindex="-1" href="{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}">
+                                                        <a {% ifequal report.contractor.id applicant.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}')">
                                                             {{ applicant.name }}
                                                         </a>
                                                     </li>
