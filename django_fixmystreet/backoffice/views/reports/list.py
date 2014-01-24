@@ -23,7 +23,7 @@ def table(request):
 
 def table_content(request, selection=""):
     user = request.fmsuser
-    reports = Report.objects.all().visible_and_temporary().related_fields()
+    reports = Report.objects.all().visible().related_fields()
 
     if user.agent or user.manager or user.leader:
         reports = reports.entity_responsible(user) | reports.entity_territory(user.organisation)
