@@ -30,6 +30,7 @@ from markdown import markdown
 
 class JsonHttpResponse(HttpResponse):
     data = {}
+
     def __init__(self, *args, **kwargs):
         args = list(args)
         data = args.pop(0)
@@ -105,7 +106,8 @@ add_introspection_rules(
             },
         ),
     ],
-    ["^django_fixmystreet.fixmystreet.utils.FixStdImageField",])
+    ["^django_fixmystreet.fixmystreet.utils.FixStdImageField", ])
+
 
 def render_to_pdf(*args, **kwargs):
     context_instance = kwargs.get('context_instance', None)
@@ -114,35 +116,37 @@ def render_to_pdf(*args, **kwargs):
 
     pdf_tmp_file = generate_pdf(*args, **kwargs)
     response = HttpResponse(pdf_tmp_file.read(), mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=%s%s.pdf' %(u"export-incident-"+str((args[1]['report']).id)+"-date-", datetime.date.today().isoformat())
+    response['Content-Disposition'] = 'attachment; filename=%s%s.pdf' % (u"export-incident-"+str((args[1]['report']).id)+"-date-", datetime.date.today().isoformat())
     pdf_tmp_file.close()
     return response
 
+
 def generate_pdf(*args, **kwargs):
     tmpfolder = tempfile.mkdtemp()
-    html_tmp_file_path = "%s/export.html" %(tmpfolder)
+    html_tmp_file_path = "%s/export.html" % (tmpfolder)
     html_tmp_file = file(html_tmp_file_path, "w")
     html_tmp_file.write(render_to_string(*args, **kwargs).encode("utf-8"))
     html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
     cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10\
-            --encoding utf-8 \
-            --footer-font-size 8 \
-            --footer-left '{0}' \
-            --footer-center 'Incident: {1}' \
-            --footer-right '[page]/[toPage]' {2} {3}
-            """.format(
-                datetime.date.today().strftime("%d/%m/%y"),
-                args[1]['report'].get_ticket_number(),
-                html_tmp_file_path,
-                pdf_tmp_file_path
-            )
+    --encoding utf-8 \
+    --footer-font-size 8 \
+    --footer-left '{0}' \
+    --footer-center 'Incident: {1}' \
+    --footer-right '[page]/[toPage]' {2} {3}
+    """.format(
+        datetime.date.today().strftime("%d/%m/%y"),
+        args[1]['report'].get_ticket_number(),
+        html_tmp_file_path,
+        pdf_tmp_file_path
+    )
     logging.info(cmd)
     os.system(cmd)
 
     pdf_tmp_file = file(pdf_tmp_file_path, "r")
     return pdf_tmp_file
+
 
 def autoslug_transmeta(populate_from, populate_to):
     """
@@ -161,19 +165,18 @@ def autoslug_transmeta(populate_from, populate_to):
 
     return autoslug_transmeta_func
 
-
-
-
-
 _thread_locals = local()
 
+
 def set_current_user(user):
-    _thread_locals.user=user
+    _thread_locals.user = user
+
 
 def get_current_user():
     return getattr(_thread_locals, 'user', None)
 
 from django.contrib.auth import authenticate, login
+
 
 class CurrentUserMiddleware:
     def process_request(self, request):
@@ -183,37 +186,20 @@ class CurrentUserMiddleware:
             if user and user.is_active:
                 login(request, user)
             else:
-                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_PARAMETERS","username":request.POST.get('username')}),mimetype='application/json')
+                return HttpResponseForbidden(simplejson.dumps({"error_key": "ERROR_LOGIN_INVALID_PARAMETERS", "username": request.POST.get('username')}), mimetype='application/json')
 
             set_current_user(user.fmsuser)
             request.fmsuser = user.fmsuser
         else:
             set_current_user(getattr(request, 'fmsuser', None))
 
-
     def process_response(self, request, response):
         set_current_user(None)
         return response
 
 
-# class AccessControlAllowOriginMiddleware:
-
-#     def process_request(self, request):
-#         if 'HTTP_ACCESS_CONTROL_REQUEST_METHOD' in request.META:
-#             response = HttpResponse()
-#             response['Access-Control-Allow-Methods'] = "GET,POST,OPTIONS"
-#             response['Access-Control-Allow-Origin'] = "http://gis.irisnet.be"
-#             return response
-
-#     def process_response(self, request, response):
-#         '''Add the respective CORS headers'''
-#         response['Access-Control-Allow-Methods'] = "GET,POST,OPTIONS"
-#         response['Access-Control-Allow-Origin'] = "http://gis.irisnet.be"
-#         return response
-
-
 def transform_notification_user_display(display_pro, to_show):
-    if  to_show is None:
+    if to_show is None:
         return _("a citizen")
 
     entity_name = None
@@ -233,6 +219,7 @@ def transform_notification_user_display(display_pro, to_show):
             return entity_name
         else:
             return _("a citizen")
+
 
 def transform_notification_template(template, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
     from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
@@ -273,16 +260,15 @@ def transform_notification_template(template, report, user, old_responsible=None
 
         if display_pro:
             data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
-            data["pdf_url"]     = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
+            data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
         else:
             data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url())
-            data["pdf_url"]     = "{0}{1}".format(SITE_URL, report.get_pdf_url())
-
+            data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url())
 
         if display_pro:
-            data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro",args=[report.id]))
+            data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
         else:
-            data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe",args=[report.id]), user.email)
+            data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
 
         if template.name == "mark-as-done":
             data["done_motivation"] = report.mark_as_done_motivation
@@ -291,7 +277,7 @@ def transform_notification_template(template, report, user, old_responsible=None
         if old_responsible:
             data["old_responsible"] = transform_notification_user_display(display_pro, old_responsible)
 
-        if comment is not None: # can be ''
+        if comment is not None:  # can be ''
             data["comment"] = comment
             data["updater"] = transform_notification_user_display(display_pro, updater)
 
@@ -311,13 +297,11 @@ def transform_notification_template(template, report, user, old_responsible=None
     text = "\n\n---------------------------\n\n".join(content)
     html = markdown(urlize(text))
 
-
     return (subject, html, text)
 
 
-
 def dict_to_point(data):
-    if not data.has_key('x') or not data.has_key('y'):
+    if 'x' not in data or 'y' not in data:
         raise Http404('<h1>Location not found</h1>')
     px = data.get('x')
     py = data.get('y')
@@ -340,7 +324,7 @@ class RequestFingerprint:
 
     def is_duplicate(self):
         if ('isretry' in self.request.POST):
-           return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint and self.request.POST['isretry'] != 'true'
+            return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint and self.request.POST['isretry'] != 'true'
         return 'request_fingerprint' in self.request.session and self.request.session['request_fingerprint'] == self.request_fingerprint
 
     def save(self):
@@ -376,7 +360,7 @@ def export_as_csv_action(description="Export selected objects as CSV file",
         if header:
             writer.writerow(list(field_names))
         for obj in queryset:
-            writer.writerow([unicode(getattr(obj, field)).encode("utf-8","replace") for field in field_names])
+            writer.writerow([unicode(getattr(obj, field)).encode("utf-8", "replace") for field in field_names])
         return response
     export_as_csv.short_description = description
     return export_as_csv
