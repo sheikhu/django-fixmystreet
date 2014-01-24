@@ -358,6 +358,11 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def public(self):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
+    def visible_and_temporary(self):
+        limit_date = datetime.date.today()-datetime.timedelta(30)
+        return self.filter(merged_with__isnull=True) \
+            .exclude(status=Report.DELETED, fixed_at__lt=limit_date)
+
     def visible(self):
         limit_date = datetime.date.today()-datetime.timedelta(30)
         return self.filter(merged_with__isnull=True) \
@@ -579,7 +584,7 @@ class Report(UserTrackedModel):
             marker_color = "orange"
         elif self.is_created():
             marker_color = "red"
-        elif self.is_refused():
+        elif self.is_refused() or self.is_temporary():
             marker_color = "gray"
 
         return "images/marker-"+marker_color+"-xxs.png"
@@ -675,6 +680,9 @@ class Report(UserTrackedModel):
 
     def is_refused(self):
         return self.status == Report.REFUSED
+
+    def is_temporary(self):
+        return self.status == Report.TEMP
 
     def is_in_progress(self):
         return self.status in Report.REPORT_STATUS_IN_PROGRESS
