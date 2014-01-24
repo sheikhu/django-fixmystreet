@@ -10,7 +10,8 @@ js_info_dict = {
     'packages': ('django_fixmystreet.fixmystreet', 'django_fixmystreet.backoffice', ),
 }
 
-urlpatterns = i18n_patterns('',
+urlpatterns = i18n_patterns(
+    '',
     url(r'^', include('django_fixmystreet.fixmystreet.urls')),
     url(r'^pro/', include('django_fixmystreet.backoffice.urls')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict, name='jsi18n'),
@@ -18,16 +19,18 @@ urlpatterns = i18n_patterns('',
         "reports": ReportSitemap()
     }}),
 )
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', admin.site.urls),
+    (r'^ckeditor/', include('ckeditor.urls')),
     (r'^monitoring/', include('django_fixmystreet.monitoring.urls')),
 )
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'
-    urlpatterns += patterns('',
-        (
+    urlpatterns += patterns(
+        '', (
             baseurlregex,
             'django.views.static.serve',
             {'document_root':  settings.MEDIA_ROOT}
@@ -35,6 +38,7 @@ if settings.DEBUG:
     )
 
 if settings.DEBUG:
-    urlpatterns += patterns('django_fixmystreet.fixmystreet.views.api',
+    urlpatterns += patterns(
+        'django_fixmystreet.fixmystreet.views.api',
         ('^urbis/(?P<path>.*)$', 'proxy'),
     )

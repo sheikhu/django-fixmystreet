@@ -23,6 +23,7 @@ from django.conf import settings
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
+from ckeditor.fields import RichTextField
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
 
@@ -1366,7 +1367,7 @@ class ReportAttachment(UserTrackedModel):
 
 @receiver(post_save, sender=ReportAttachment)
 def init_report_overview(sender, instance, **kwargs):
-    
+
     images_pro = instance.report.files()
     images_public = instance.report.active_files()
 
@@ -2103,3 +2104,14 @@ class MailNotificationTemplate(models.Model):
         translate = ('content', 'title')
 
 
+class Page(models.Model):
+    __metaclass__ = TransMeta
+
+    title = models.CharField(max_length=100, verbose_name="Title")
+    slug = models.CharField(max_length=100, verbose_name="Slug")
+    content = RichTextField(verbose_name="Content")
+
+    class Meta:
+        translate = ('content', 'title', 'slug')
+
+pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=OrganisationEntity)

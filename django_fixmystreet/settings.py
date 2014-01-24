@@ -32,12 +32,14 @@ ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca'
 SERVER_EMAIL = "django_dev@cirb.irisnet.be"
 
 if ENVIRONMENT == 'production':
-    EMAIL_SUBJECT_PREFIX = "[Django-prod] "
+    EMAIL_SUBJECT_PREFIX = "[Django-{0}] ".format(ENVIRONMENT)
 
-if 'MEDIA_ROOT' in os.environ:
-    MEDIA_ROOT = os.environ['MEDIA_ROOT']
-else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+
+# CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads')
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -135,6 +137,7 @@ INSTALLED_APPS = (
     'south',
     'simple_history',
     'django_extensions',
+    'ckeditor',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
     'django_fixmystreet.monitoring',

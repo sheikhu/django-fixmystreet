@@ -19,22 +19,19 @@ from django.conf.urls.defaults import patterns
 from markdown import markdown
 from simple_history.admin import SimpleHistoryAdmin
 
-from django_fixmystreet.fixmystreet.models import ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportAttachment, FaqEntry, OrganisationEntity, ReportNotification, ReportEventLog, MailNotificationTemplate, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import (
+        ReportCategory, Report, FMSUser, ReportMainCategoryClass,
+        ReportAttachment, Page, OrganisationEntity, ReportNotification, ReportEventLog,
+        MailNotificationTemplate, UserOrganisationMembership)
 from django_fixmystreet.fixmystreet.utils import export_as_csv_action
 
 admin.site.unregister(User)
 admin.site.unregister(Group)
 
 
-class FaqEntryAdmin(admin.ModelAdmin):
-    list_display = ('q', 'order')
-
-admin.site.register(FaqEntry, FaqEntryAdmin)
-
-
 class ReportsInline(admin.TabularInline):
     model = Report
-    fk_name = "responsible_manager"
+    fk_name = "responsible_department"
     extra = 10
 
     fields = ("status", "address_fr", "address_number", "responsible_entity", "admin_url")
@@ -81,7 +78,6 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     list_display = ("get_full_name", "username", "organisation", "leader", "manager", "agent", "applicant", "contractor")
     inlines = (
         MembershipsInline,
-        ReportsInline,
         NotificationsInline,
         UserEventsInline
     )
@@ -138,8 +134,6 @@ class FMSUserAdmin(SimpleHistoryAdmin):
             )
         })
     )
-
-
 
     actions = (
         export_as_csv_action(fields=list_display),
@@ -204,6 +198,9 @@ class OrgaUsersInline(admin.TabularInline):
     fields = ("get_full_name", "username", "leader", "manager", "agent")
     readonly_fields = ("get_full_name", "username", "leader", "manager", "agent")
     extra = 10
+    inlines = (
+        ReportsInline
+    )
 
 
 class OrganisationEntityAdmin(SimpleHistoryAdmin):
@@ -239,7 +236,8 @@ admin.site.register(Report, ReportAdmin)
 
 
 class ReportNotificationAdmin(admin.ModelAdmin):
-    list_display = ('recipient', 'sent_at', 'success')
+    list_display = ('recipient_mail', 'sent_at', 'success')
+    list_filter = ("success",)
 
 admin.site.register(ReportNotification, ReportNotificationAdmin)
 
@@ -273,3 +271,9 @@ class MailNotificationTemplateAdmin(admin.ModelAdmin):
 admin.site.register(MailNotificationTemplate, MailNotificationTemplateAdmin)
 
 admin.site.register(UserOrganisationMembership)
+
+
+class PageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'content')
+
+admin.site.register(Page, PageAdmin)

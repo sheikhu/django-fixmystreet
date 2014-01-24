@@ -30,6 +30,7 @@ install_requires = [
 
     'django-simple-history==1.3.0',
     'django-piston==0.2.3',
+    'django-ckeditor==4.0.2',
 ]
 
 debug_require = [
