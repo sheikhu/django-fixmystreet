@@ -122,7 +122,9 @@ CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
     name_fr,
     name_nl,
     commune,
-    region
+    region,
+    slug_fr,
+    slug_nl
 FROM fixmystreet_organisationentity
 WHERE commune OR region;
 
@@ -131,7 +133,9 @@ CREATE OR REPLACE VIEW ods_dim_entity_contractor AS SELECT
     name_fr,
     name_nl,
     subcontractor,
-    applicant
+    applicant,
+    slug_fr,
+    slug_nl
 FROM fixmystreet_organisationentity
     WHERE subcontractor OR applicant;
 
