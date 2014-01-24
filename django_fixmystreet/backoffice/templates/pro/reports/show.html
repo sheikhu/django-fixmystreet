@@ -402,8 +402,7 @@ var someCallback = function(exifObject, index) {
                                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" /></a>
                                 {% endif %}
                                 </li>
-
-                                {% if not report.is_markable_as_solved %}
+                                {% if report.is_solved %}
                                     <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="/static/images/is_resolved_on.png" /></a></li>
                                 {% endif %}
 

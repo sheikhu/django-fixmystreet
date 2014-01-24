@@ -590,6 +590,9 @@ class Report(UserTrackedModel):
     def is_regional(self):
         return self.address_regional
 
+    def is_solved(self):
+        return self.status == Report.SOLVED
+
     def is_pro(self):
         """
         Return if the report is pro.
