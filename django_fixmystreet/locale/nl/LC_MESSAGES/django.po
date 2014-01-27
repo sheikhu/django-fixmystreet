@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-27 16:40+0100\n"
-"PO-Revision-Date: 2014-01-27 15:40+0000\n"
+"POT-Creation-Date: 2014-01-27 16:45+0100\n"
+"PO-Revision-Date: 2014-01-27 15:45+0000\n"
 "Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -903,18 +903,21 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:109
 #: backoffice/templates/pro/reports/table.html:110
-#: backoffice/templates/pro/reports/table.html:117
-#: backoffice/templates/pro/reports/table.html:118
-#: backoffice/templates/pro/reports/table.html:119
 #: backoffice/templates/pro/reports/table_content.html:90
-#: backoffice/templates/pro/reports/table_content.html:92
-msgid "yes,no"
+msgid "private,public"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:113
 #: backoffice/templates/pro/reports/table.html:114
 #: backoffice/templates/pro/reports/table_content.html:91
 msgid "subscribed,not subscribed"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:117
+#: backoffice/templates/pro/reports/table.html:118
+#: backoffice/templates/pro/reports/table.html:119
+#: backoffice/templates/pro/reports/table_content.html:92
+msgid "yes,no"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:291
