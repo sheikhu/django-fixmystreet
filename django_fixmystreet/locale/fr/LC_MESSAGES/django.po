@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-27 13:38+0100\n"
-"PO-Revision-Date: 2014-01-27 12:38+0000\n"
-"Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-01-27 16:32+0100\n"
+"PO-Revision-Date: 2014-01-27 15:18+0000\n"
+"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,8 +42,8 @@ msgstr "Déscription du refus"
 #: backoffice/templates/pro/auth/groups_list.html:39
 #: backoffice/templates/pro/auth/groups_list.html:44
 #: backoffice/templates/pro/auth/users_list.html:41
-#: backoffice/templates/pro/auth/users_list.html:47 fixmystreet/forms.py:171
-#: fixmystreet/forms.py:199
+#: backoffice/templates/pro/auth/users_list.html:47 fixmystreet/forms.py:176
+#: fixmystreet/forms.py:206
 #: fixmystreet/templates/reports/_documentreport.html:115
 msgid "Email"
 msgstr "Courriel"
@@ -216,6 +216,7 @@ msgid "^report/(\\d+)/unsubscribe/"
 msgstr "^rapport/(\\d+)/se-desabonner/"
 
 #: backoffice/templates/pro/change_password.html:4
+#: backoffice/templates/pro/list_reporting.html:4
 #: backoffice/templates/pro/login.html:4 backoffice/templates/pro/login.html:8
 #: fixmystreet/templates/base.html:89
 msgid "Sign in"
@@ -306,7 +307,7 @@ msgstr "Groupes"
 #: backoffice/templates/pro/auth/groups_list.html:38
 #: backoffice/templates/pro/auth/groups_list.html:43
 #: backoffice/templates/pro/auth/users_list.html:39
-#: backoffice/templates/pro/auth/users_list.html:45 fixmystreet/forms.py:196
+#: backoffice/templates/pro/auth/users_list.html:45 fixmystreet/forms.py:203
 #: fixmystreet/models.py:270 fixmystreet/models.py:1547
 #: fixmystreet/models.py:1581 fixmystreet/models.py:1614
 #: fixmystreet/templates/reports/_documentreport.html:89
@@ -464,10 +465,10 @@ msgstr "Voulez-vous fusionner ces incidents ?"
 msgid ""
 "Attention: by merging these incidents the resulting incident will have the "
 "following properties:"
-msgstr "Attention: Voici le resultat de la fusion que vous vous apraitez à faire."
+msgstr "Attention: Voici le résultat de la fusion que vous vous apprêtez à faire."
 
-#: backoffice/templates/pro/reports/merge.html:292 fixmystreet/forms.py:50
-#: fixmystreet/forms.py:65 fixmystreet/forms.py:97
+#: backoffice/templates/pro/reports/merge.html:292 fixmystreet/forms.py:53
+#: fixmystreet/forms.py:68 fixmystreet/forms.py:100
 msgid "category"
 msgstr "catégorie :"
 
@@ -512,13 +513,13 @@ msgid ""
 msgstr "Cet incident va être transféré à un autre gestionnaire. Cette action ne pourra pas être annulée ! Voulez-vous continuer ?"
 
 #: backoffice/templates/pro/reports/show.html:199
-#: backoffice/templates/pro/reports/show.html:841 fixmystreet/forms.py:50
-#: fixmystreet/forms.py:65
+#: backoffice/templates/pro/reports/show.html:841 fixmystreet/forms.py:53
+#: fixmystreet/forms.py:68
 msgid "Select a Category"
 msgstr "Localisation de l'incident"
 
-#: backoffice/templates/pro/reports/show.html:224 fixmystreet/forms.py:24
-#: fixmystreet/forms.py:51 fixmystreet/forms.py:97
+#: backoffice/templates/pro/reports/show.html:224 fixmystreet/forms.py:27
+#: fixmystreet/forms.py:54 fixmystreet/forms.py:100
 msgid "Select a secondary Category"
 msgstr "Type d'incident"
 
@@ -787,7 +788,7 @@ msgid ""
 "                    "
 msgstr "\nAbonnez-vous pour suivre l’évolution de l’incident et recevoir des notifications\n(%(count)s personne(s) sont déjà abonnée(s) à cet incident)"
 
-#: backoffice/templates/pro/reports/show.html:774 fixmystreet/forms.py:52
+#: backoffice/templates/pro/reports/show.html:774 fixmystreet/forms.py:55
 msgid "Subscription and report follow-up"
 msgstr "Je souhaite suivre l'évolution de l'incident et recevoir des notifications par mail."
 
@@ -964,7 +965,7 @@ msgstr "Dernière action"
 
 #: backoffice/templates/pro/reports/table.html:333
 #: backoffice/templates/pro/reports/table_content.html:46
-#: fixmystreet/forms.py:172
+#: fixmystreet/forms.py:177
 #: fixmystreet/templates/reports/_documentreport.html:98
 msgid "Quality"
 msgstr "Qualité"
@@ -1214,65 +1215,65 @@ msgstr "Mot de passe correctement modifié"
 msgid "Change password: %s"
 msgstr "Modifier le mot de passe: %s"
 
-#: fixmystreet/forms.py:51
+#: fixmystreet/forms.py:54
 msgid "Secondary category"
 msgstr "sous-catégorie :"
 
-#: fixmystreet/forms.py:98
+#: fixmystreet/forms.py:101
 msgid "Private Report"
 msgstr "Rapport privé"
 
-#: fixmystreet/forms.py:127
+#: fixmystreet/forms.py:130
 msgid ""
 "I have read and accepted <a href=\"/terms-of-use/\" target=\"_blank\">the "
 "terms of use</a>"
 msgstr "J'ai lu et accepté les <a href=\"/fr/conditions-d-utilisation/\" target=\"_blank\">Conditions d'utilisation</a>"
 
-#: fixmystreet/forms.py:169
+#: fixmystreet/forms.py:174
 msgid "Identity"
 msgstr "nom :"
 
-#: fixmystreet/forms.py:170
+#: fixmystreet/forms.py:175
 msgid "Tel."
 msgstr "Téléphone"
 
-#: fixmystreet/forms.py:201
+#: fixmystreet/forms.py:209
 msgid "Message"
 msgstr "Message"
 
-#: fixmystreet/forms.py:259
+#: fixmystreet/forms.py:272
 msgid "Add a comment, please."
 msgstr "Veuillez ajouter un commentaire. Nous transmettre un commentaire détaillé permet d'accélérer l'identification et le traitement de votre plainte"
 
-#: fixmystreet/forms.py:264
+#: fixmystreet/forms.py:277
 msgid "Mark as done"
 msgstr "Signaler comme résolu"
 
-#: fixmystreet/forms.py:267
+#: fixmystreet/forms.py:280
 msgid "Mark as done comments."
 msgstr "Votre commentaire (optionnel)."
 
-#: fixmystreet/forms.py:286
+#: fixmystreet/forms.py:299
 msgid "Username"
-msgstr "Ideitifiant"
+msgstr "Identifiant"
 
-#: fixmystreet/forms.py:287
+#: fixmystreet/forms.py:300
 msgid "Password"
 msgstr "Mot de passe"
 
-#: fixmystreet/forms.py:290
+#: fixmystreet/forms.py:303
 msgid ""
 "Please enter a correct username and password. Note that both fields are "
 "case-sensitive."
 msgstr ""
 
-#: fixmystreet/forms.py:292
+#: fixmystreet/forms.py:305
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr ""
 
-#: fixmystreet/forms.py:294
+#: fixmystreet/forms.py:307
 msgid "This account is inactive."
 msgstr "Ce compte est inactif"
 
@@ -1758,7 +1759,7 @@ msgstr "Incidents signalés"
 
 #: fixmystreet/templates/home.html:78
 msgid "Report In progress"
-msgstr "En traitement"
+msgstr "Incidents en traitement"
 
 #: fixmystreet/templates/home.html:81
 msgid "Report Processed"

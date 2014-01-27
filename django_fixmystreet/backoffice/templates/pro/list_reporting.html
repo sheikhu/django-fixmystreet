@@ -7,7 +7,7 @@
 	{% for file in files %}
 		<p>
 		{{ file.path }}
-		{{ file.stat }}
+		{{ file.modified_date|date }}
 		</p>
 	{% endfor %}
 {% endblock %}

@@ -738,10 +738,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         lastpopup.destroy();
                     }
                 });
+                this.map.addControl(this.selectFeature);
+                this.selectFeature.activate();
             }
 
-            this.map.addControl(this.selectFeature);
-            this.selectFeature.activate();
 
         }
 

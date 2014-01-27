@@ -17,8 +17,9 @@ def list(request):
             'path': path,
             'stat': os.stat(os.path.join(reporting_root, path))
         }
-        files.modified_date = date(f['stat'].st_mtime)
-        files.push(f)
+        f['modified_date'] = date.fromtimestamp(int(f['stat'].st_mtime))
+        print f['modified_date']
+        files.append(f)
 
     return render_to_response('pro/list_reporting.html', {
         'files': files
