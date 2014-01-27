@@ -34,8 +34,8 @@ SERVER_EMAIL = "django_dev@cirb.irisnet.be"
 if ENVIRONMENT == 'production':
     EMAIL_SUBJECT_PREFIX = "[Django-{0}] ".format(ENVIRONMENT)
 
-
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+REPORTING_ROOT = os.environ.get('REPORTING_ROOT', os.path.join(BASE_DIR, 'reports'))
 
 # CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads')
 CKEDITOR_UPLOAD_PATH = MEDIA_ROOT

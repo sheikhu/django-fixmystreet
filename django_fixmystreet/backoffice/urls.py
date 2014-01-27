@@ -118,3 +118,9 @@ urlpatterns += patterns(
     url(r'^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)', Resource(ReportHandler), name="export_report"),
     url(r'^export_file/reports/(?P<emitter_format>.+)', Resource(ReportHandler), name="export_report"),
 )
+
+urlpatterns += patterns(
+    'django_fixmystreet.backoffice.views.reporting',
+    url(r'^reporting/$', 'list', name='reporting_list'),
+    url(r'^reporting/(?P<path>.+)$', 'download', name='reporting_download'),
+)

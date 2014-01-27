@@ -74,7 +74,7 @@ function validateForm(form) {
     form.find('.required').each(function(ind, field) {
         var value = true;
         var $field = $(field);
-        var $input = $field.find('input, select, textarea');
+        var $input = $field.find('input:visible, select:visible, textarea:visible');
 
         if ($field.find(":file").length) {
             value = form.find('.thumbnail:visible').length;
@@ -96,7 +96,7 @@ function validateForm(form) {
         } else {
             $field.removeClass('invalid');
         }
-        console.log(valid? 'valid':'not valid');
+        console.log(this, valid? 'valid':'not valid');
     });
 
     if(!valid) {

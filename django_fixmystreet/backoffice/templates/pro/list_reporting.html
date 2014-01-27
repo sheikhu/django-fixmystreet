@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tags %}
+{% block title %}{% trans 'Sign in' %} {% endblock %}
+
+{% block content %}
+	{% for file in files %}
+		<p>
+		{{ file.path }}
+		{{ file.stat }}
+		</p>
+	{% endfor %}
+{% endblock %}
