@@ -96,7 +96,6 @@ function validateForm(form) {
         } else {
             $field.removeClass('invalid');
         }
-        console.log(this, valid? 'valid':'not valid');
     });
 
     if(!valid) {
