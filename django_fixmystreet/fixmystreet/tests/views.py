@@ -1,3 +1,4 @@
+from unittest import skip
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
@@ -101,12 +102,13 @@ class ReportViewsTest(SampleFilesTestCase):
         #Are the zipcodes well loaded from DB??
         self.assertTrue(len(response.context['zipcodes']) > 0)
 
+    @skip('replaced by database pages')
     def test_about(self):
         """Tests the about view."""
         response = self.client.get(reverse('about'), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('faq_entries' in response.context)
 
+    @skip('replaced by database pages')
     def test_term_of_use(self):
         """Tests the term of use view."""
         response = self.client.get(reverse('terms_of_use'), follow=True)

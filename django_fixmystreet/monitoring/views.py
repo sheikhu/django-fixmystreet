@@ -17,28 +17,24 @@ logger = logging.getLogger(__name__)
 
 class Monitoring:
 
-    STATUS = ("OK","INFO","WARNING","KO")
+    STATUS = ("OK", "INFO", "WARNING", "KO")
     STATUS_CODE = {"OK": 200, "INFRA": 413, "APP": 414}
-
 
     def check_django_version(self):
         import django
         return (0, ".".join(map(lambda n: str(n), django.VERSION)))
     check_django_version.label = "Django version : %s"
 
-
     def check_app_version(self):
         return (0, settings.VERSION)
     check_app_version.label = "App version %s"
 
-
     def check_uptime(self):
-        process = os.popen("/usr/bin/uptime","r")
+        process = os.popen("/usr/bin/uptime", "r")
         uptime = process.read()
         process.close()
         return (0, uptime)
     check_uptime.label = "Uptime: %s"
-
 
     def check_db_connection(self):
         from django.db import connection
@@ -46,7 +42,6 @@ class Monitoring:
         return (0, )
     check_db_connection.label = "Database connection %s"
     check_db_connection.status_type = 'INFRA'
-
 
     def check_db_timing(self):
         from django.contrib.auth.models import User
@@ -58,7 +53,7 @@ class Monitoring:
 
         if delay > 30:
             return (3, "extremely slow ( > 30 sec )")
-        elif delay > 10 :
+        elif delay > 10:
             return (2, "slow ( > 10 sec )")
         elif delay > 2:
             return (1, "delay > 2 sec")
@@ -66,7 +61,6 @@ class Monitoring:
         return (0, "%f sec" % delay)
     check_db_timing.label = "Database access speed %s"
     check_db_timing.status_type = 'INFO'
-
 
     def check_db_count(self):
         from django.contrib.auth.models import User
@@ -79,18 +73,16 @@ class Monitoring:
     check_db_count.label = "Database records ... %s"
     check_db_count.status_type = 'INFO'
 
-
     def check_permissions(self):
-        if not access(settings.MEDIA_ROOT,os.R_OK):
+        if not access(settings.MEDIA_ROOT, os.R_OK):
             return (3, "cannot be read")
 
-        if not access(settings.MEDIA_ROOT,os.W_OK):
+        if not access(settings.MEDIA_ROOT, os.W_OK):
             return (2, "is not writable")
 
         return (0, "read/write ok")
     check_permissions.label = "/static directory %s"
     check_permissions.status_type = 'APP'
-
 
     def check_charge(self):
         load = os.getloadavg()
@@ -109,7 +101,7 @@ class Monitoring:
 
     def check_freespace(self):
         import re
-        process = os.popen("/bin/df %s" % settings.MEDIA_ROOT,"r")
+        process = os.popen("/bin/df %s" % settings.MEDIA_ROOT, "r")
         df_line = process.read()
         process.close()
 
@@ -123,12 +115,9 @@ class Monitoring:
         elif freespace < 30:
             return (1, freespace)
 
-
         return (0, "%s" % freespace)
     check_freespace.label = "free space on /static directory %s%%"
     check_freespace.status_type = 'INFO'
-
-
 
     def __init__(self):
         self.status = []
@@ -145,7 +134,7 @@ class Monitoring:
 
                 severity = result[0]
                 if len(result) > 1:
-                    description = "%s" % str(result[1]).replace(":","|").strip()
+                    description = "%s" % str(result[1]).replace(":", "|").strip()
                 else:
                     description = "(%s)" % self.STATUS[severity]
 
@@ -183,11 +172,16 @@ class Monitoring:
             socket.setdefaulttimeout(oldtimeout)
         return (status, response)
 
+
 @never_cache
 def happy_page(request):
     monitoring = Monitoring()
-    response = render_to_response('monitoring/happy_page.txt', { 'status': monitoring.status },
-              context_instance=RequestContext(request), mimetype='text/plain; charset=utf-8')
+    response = render_to_response(
+        'monitoring/happy_page.txt',
+        {'status': monitoring.status},
+        context_instance=RequestContext(request),
+        mimetype='text/plain; charset=utf-8')
+
     response.status_code = monitoring.status_code_final
     return response
 
@@ -195,5 +189,8 @@ def happy_page(request):
 @never_cache
 def cpu(request):
     import cpu_benchmark
-    return render_to_response('monitoring/cpu.txt', { 'times': cpu_benchmark.benchmark()},
-              context_instance=RequestContext(request), mimetype='text/plain; charset=utf-8')
+    return render_to_response(
+        'monitoring/cpu.txt',
+        {'times': cpu_benchmark.benchmark()},
+        context_instance=RequestContext(request),
+        mimetype='text/plain; charset=utf-8')

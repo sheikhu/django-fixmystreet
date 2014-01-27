@@ -569,7 +569,6 @@ class Report(UserTrackedModel):
         if user and user.is_authenticated():
             return self.private_thumbnail
         else:
-            print self.thumbnail
             return self.thumbnail
 
     def get_marker(self):
@@ -2114,4 +2113,4 @@ class Page(models.Model):
     class Meta:
         translate = ('content', 'title', 'slug')
 
-pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=OrganisationEntity)
+pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=Page)
