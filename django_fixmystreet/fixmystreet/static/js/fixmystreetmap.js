@@ -44,6 +44,19 @@ function cloneObj (obj) {
     }
 }
 
+var tooltipRegional       = gettext('This incident is located on a regional zone'),
+    tooltipPro            = gettext('This incident has been signaled by a pro'),
+    tooltipContractor     = gettext('This incident is assigned to'),
+    tooltipDatePlanned    = gettext('Date planned'),
+    tooltipSolved         = gettext('This incident has been signaled as solved'),
+    tooltipNoPriority     = gettext('This incident has no defined priority'),
+    tooltipLowPriority    = gettext('This incident has a low priority'),
+    tooltipMediumPriority = gettext('This incident has a medium priority'),
+    tooltipHighPriority   = gettext('This incident has a serious priority');
+
+var lastpopup;
+
+
 /**
  * Method used to store datatable sort preferences
  */
@@ -58,7 +71,7 @@ fms.storeTablePreferences = function(argElement) {
     } else {
         return null;
     }
-}
+};
 
 /**
  * Method used to get datatable sort preferences
@@ -74,7 +87,7 @@ fms.restoreTablePreferences = function() {
     } else {
         return null;
     }
-}
+};
 
 fms.filterMapWithStatus = function(callback){
     if (fms.cachedElements === false) {
@@ -109,7 +122,7 @@ fms.filterMapWithStatus = function(callback){
         //fms.currentMap.strategy.recluster();
         callback();
     }
-}
+};
 
 // Controller of regional layer
 fms.regionalLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
@@ -427,38 +440,21 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     fms.Map.prototype.toogleCreated = function(show)
     {
         this.flagCreated = show;
-
-        if(show) {
-            createdRule.symbolizer.display = true;
-        } else {
-            createdRule.symbolizer.display = "none";
-        }
+        createdRule.symbolizer.display = show || "none";
         this.refreshCluster();
     };
     /* Method to toogle in progress filter element */
     fms.Map.prototype.toogleInProgress = function(show)
     {
         this.flagInProgress = show;
-
-        if(show) {
-            inProgressRule.symbolizer.display = true;
-        } else {
-            inProgressRule.symbolizer.display = "none";
-        }
-
+        inProgressRule.symbolizer.display = show || "none";
         this.refreshCluster();
     };
     /* Method to toogle closed filter element */
     fms.Map.prototype.toogleClosed = function(show)
     {
         this.flagClosed = show;
-
-        if(show) {
-            processedRule.symbolizer.display = true;
-        } else {
-            processedRule.symbolizer.display = "none";
-        }
-
+        processedRule.symbolizer.display = show || "none";
         this.refreshCluster();
     };
     /* Method to refresh the cluster content */
@@ -478,7 +474,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             }
         }
         this.strategy.features = features;
-        //this.strategy.layer.removeAllFeatures();
+        // this.strategy.layer.removeAllFeatures();
         this.strategy.layer.redraw(true);
     };
 
@@ -671,13 +667,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 threshold:2,
                 clustering:false,
                 rules:markerStyle.rules,
-                // shouldCluster: function(cluster, feature) {
-                //     if (self.map.getZoom() < 5) {
-                //         return OpenLayers.Strategy.Cluster.prototype.shouldCluster.call(this);
-                //     } else {
-                //         return false;
-                //     }
-                // },
                 deactivate: function() {
                     var deactivated = OpenLayers.Strategy.prototype.deactivate.call(this);
                     if(deactivated) {
@@ -731,55 +720,25 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             );
             this.map.addLayer(this.markersLayer);
 
-            this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer,{
-                onSelect: function (feature) {
-                    //Not available in details mode
-                    if (typeof DETAILS_MODE === 'undefined') {
+            if (typeof DETAILS_MODE === 'undefined') {
+                this.selectFeature = new OpenLayers.Control.SelectFeature(this.markersLayer, {
+                    onSelect: function (feature) {
+                        //Not available in details mode
                         self.showPopover(feature);
-                    }
-                },
-                onUnselect: function(feature) {
-                    for(var i=0, length=this.map.popups.length; i < length; i++) {
-                        var popup = this.map.popups[i];
-                        this.map.removePopup(popup);
-                        popup.destroy();
-                    }
-                }
-            });
-
-            /*this.clickFeature = OpenLayers.Class(this.markersLayer, {
-
-                    defaultHandlerOptions: {
-                            'single': true,
-                            'double': true,
-                            'pixelTolerance': 0,
-                            'stopSingle': false,
-                            'stopDouble': true
                     },
-
-                    initialize: function(options) { console.log('ooo');
-                            this.handlerOptions = OpenLayers.Util.extend(
-                                    {}, this.defaultHandlerOptions
-                            );
-                            OpenLayers.Control.prototype.initialize.apply(
-                                    this, arguments
-                            );
-                            this.handler = new OpenLayers.Handler.Click(
-                                    this, {
-                                            'click': this.onClick,
-                                            'dblclick': this.onDblclick
-                                    }, this.handlerOptions
-                            );
-                    },
-                    onClick: function(event) {
-                            alert("single click");
-                    },
-                    onDblclick: function(event) {
-                            alert("double click");
+                    onUnselect: function(feature) {
+                        this.map.removePopup(lastpopup);
+                        lastpopup.destroy();
                     }
-            }); */
+                });
 
-
+                self.map.events.register("zoomend", null, function() {
+                    if (self.selectFeature) {
+                        self.map.removePopup(lastpopup);
+                        lastpopup.destroy();
+                    }
+                });
+            }
 
             this.map.addControl(this.selectFeature);
             this.selectFeature.activate();
@@ -805,6 +764,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     };
 
     fms.Map.prototype.showPopover = function(feature) {
+        var self = this;
+
         if(feature.layer.name != "Dragable Layer" && !feature.cluster){
             $.ajax({
                 type:'GET',
@@ -812,8 +773,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                 data:{'report_id':feature.attributes.id},
                 datatype:"json",
                 success:function(data){
-                    var report = feature.attributes = data;
-                    domElementUsedToAnchorTooltip = $(document.getElementById(feature.geometry/*.components[0]*/.id));
+                    var report = data;
 
                     var imageLink = "/static/images/no-pix.png";
 
@@ -841,15 +801,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
                     popoverIcons += "<ul class='iconsPopup'>";
 
-                    tooltipRegional     = gettext('This incident is located on a regional zone');
-                    tooltipPro          = gettext('This incident has been signaled by a pro');
-                    tooltipContractor   = gettext('This incident is assigned to');
-                    tooltipDatePlanned  = gettext('Date planned')+": "+report.date_planned;
-                    tooltipSolved       = gettext('This incident has been signaled as solved');
-                    tooltipNoPriority   = gettext('This incident has no defined priority');
-                    tooltipLowPriority  = gettext('This incident has a low priority');
-                    tooltipMediumPriority  = gettext('This incident has a medium priority');
-                    tooltipHighPriority = gettext('This incident has a serious priority');
 
                     //CONTENU DES ICONES
                     //******************
@@ -872,7 +823,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
                     if (BACKOFFICE) {
                         popoverIcons += "<li>";
-                        if (report.priority == 0){
+                        if (report.priority === 0){
                             popoverIcons += "<img title='"+tooltipNoPriority+"' src='/static/images/prior_off.png' class='priorityLevel' />";
                         } else if (report.priority <= 2){
                             popoverIcons += "<img title='"+tooltipLowPriority+"' src='/static/images/prior_on_1.png' class='priorityLevel' />";
@@ -904,16 +855,12 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                             self.selectFeature.onUnselect(feature);
                         }
                     );
+                    lastpopup = popup;
 
                     popup.div.className = 'reports';
                     popup.panMapIfOutOfView = true;
 
-                    fms.currentMap.map.addPopup(popup);
-                    fms.currentMap.map.events.register("zoomend", null, function() {
-                        if (self.selectFeature) {
-                            self.selectFeature.onUnselect(feature);
-                        }
-                    });
+                    self.map.addPopup(popup);
                 }
             });
         }
