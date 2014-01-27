@@ -106,8 +106,8 @@ var columns = [
         {% endfor %}
     ]},
     {type: "select", values: [//private
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
+        '{{ True|yesno:_("private,public") }}',
+        '{{ False|yesno:_("private,public") }}'
     ]},
     {type: "select", values: [
         '{{ True|yesno:_("subscribed,not subscribed") }}',

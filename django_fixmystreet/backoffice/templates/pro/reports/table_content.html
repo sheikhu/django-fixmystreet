@@ -87,7 +87,7 @@
                 <td class="s{{report.status}}">{{ report.get_priority }}</td>
                 <td class="s{{report.status}}">{{ report.planned|yesno:_("planned,not planned") }}</td>
                 <td class="s{{report.status}}">{{ report.get_status_display }}</td>
-                <td class="s{{report.status}}">{{ report.private|yesno:_("yes,no") }}</td>
+                <td class="s{{report.status}}">{{ report.private|yesno:_("private,public") }}</td>
                 <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
                 <td class="s{{report.status}}">{{ report.pending|yesno:_("yes,no") }}</td>
                 <td>{{ report.point.x }}</td>
