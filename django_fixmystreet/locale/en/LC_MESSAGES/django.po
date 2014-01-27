@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-27 16:32+0100\n"
+"POT-Creation-Date: 2014-01-27 16:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -560,6 +560,8 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:423
 #: backoffice/templates/pro/reports/show.html:666
+#: backoffice/templates/pro/reports/table.html:344
+#: backoffice/templates/pro/reports/table_content.html:56
 msgid "Visibility"
 msgstr ""
 
@@ -1009,14 +1011,6 @@ msgstr ""
 msgid "Planning"
 msgstr ""
 
-#: backoffice/templates/pro/reports/table.html:344
-#: backoffice/templates/pro/reports/table_content.html:56
-#: fixmystreet/models.py:1302
-#: fixmystreet/templates/reports/_visibility_control.html:10
-#: fixmystreet/templates/reports/_visibility_control.html:32
-msgid "Private"
-msgstr ""
-
 #: backoffice/templates/pro/reports/table.html:345
 #: backoffice/templates/pro/reports/table_content.html:57
 msgid "Subscribed"
@@ -1126,7 +1120,7 @@ msgid "All"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table_content.html:27
-msgctxt "Private"
+msgctxt "Visibility"
 msgid "All"
 msgstr ""
 
@@ -1378,6 +1372,12 @@ msgstr ""
 #: fixmystreet/templates/reports/_visibility_control.html:5
 #: fixmystreet/templates/reports/_visibility_control.html:24
 msgid "Public"
+msgstr ""
+
+#: fixmystreet/models.py:1302
+#: fixmystreet/templates/reports/_visibility_control.html:10
+#: fixmystreet/templates/reports/_visibility_control.html:32
+msgid "Private"
 msgstr ""
 
 #: fixmystreet/models.py:1303

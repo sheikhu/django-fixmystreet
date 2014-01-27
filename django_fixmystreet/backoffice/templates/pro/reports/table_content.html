@@ -5,7 +5,7 @@
             <th>{% trans "All" context "Ticket" %}</th>
             <th>{% trans "All" context "Thumbnail" %}</th>
             <th>{% trans "All" context "Categories" %}</th>
-            
+
             <!--th>{% trans "All" context "Road type" %}</th-->
             <th>{% trans "All" context "Sub categories" %}</th>
             <th>{% trans "All" context "Address" %}</th>
@@ -24,7 +24,7 @@
             <th>{% trans "All" context "Priority" %}</th>
             <th>{% trans "All" context "Planning" %}</th>
             <th>{% trans "All" context "Status" %}</th>
-            <th>{% trans "All" context "Private" %}</th>
+            <th>{% trans "All" context "Visibility" %}</th>
             <th>{% trans "All" context "Subscribed" %}</th>
             <th>{% trans "All" context "Pending" %}</th>
             <th></th>
@@ -35,7 +35,7 @@
             <th>{% trans "Ticket" %}</th>
             <th>{% trans "Thumbnail" %}</th>
             <th>{% trans "Category" %}</th>
-            
+
             <!--th>{% trans "Road type" %}</th-->
             <th>{% trans "Sub category" %}</th>
             <th>{% trans "Address" %}</th>
@@ -44,7 +44,7 @@
             <th>{% trans "Status" %}</th>
             <th>{% trans "Last modified" %}</th>
             <th>{% trans "Quality" %}</th>
-            <th>{% trans "Signaled by" %}</th>            
+            <th>{% trans "Signaled by" %}</th>
             <th>{% trans "Assigned contractor" %}</th>
             <th>{% trans "Responsible department" %}</th>
             <th>{% trans "Responsible entity" %}</th>
@@ -53,7 +53,7 @@
             <th>{% trans "Priority" %}</th>
             <th>{% trans "Planning" %}</th>
             <th>{% trans "Status" %}</th>
-            <th>{% trans "Private" %}</th>
+            <th>{% trans "Visibility" %}</th>
             <th>{% trans "Subscribed" %}</th>
             <th>{% trans "Pending" %}</th>
             <th></th>
@@ -67,7 +67,7 @@
                 <td class="s{{report.status}}">{{ report.id }}</td>
                 <td>{{ report.thumbnail_url }}</td>
                 <td class="s{{report.status}}">{{ report.category.name }}</td>
-                
+
                 <!--td class="s{{report.status}}">{{ report.address_regional|yesno:_("regional,communal") }}</td-->
                 <td class="s{{report.status}}">{{ report.secondary_category.name }}</td>
                 <td class="s{{report.status}}">{{ report.address }}, {{report.address_number}}</td>
