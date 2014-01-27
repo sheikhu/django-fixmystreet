@@ -10,8 +10,10 @@ from django.contrib.auth import authenticate
 from django.utils.translation import get_language
 from django.utils.safestring import mark_safe
 
-from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Report, ReportFile, ReportComment, \
-                ReportCategory, ReportSecondaryCategoryClass, FMSUser
+from django_fixmystreet.fixmystreet.models import (
+    ReportMainCategoryClass, Report,
+    ReportFile, ReportComment,
+    ReportCategory, ReportSecondaryCategoryClass, FMSUser)
 from django_fixmystreet.fixmystreet.utils import dict_to_point, get_current_user
 
 # tricky stuff
@@ -19,15 +21,16 @@ from django.utils.functional import lazy
 from django.utils import six
 mark_safe_lazy = lazy(mark_safe, six.text_type)
 
+
 def secondaryCategoryChoices(show_private):
     choices = []
     choices.append(('', _("Select a secondary Category")))
-    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_'+ get_language())
+    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_' + get_language())
 
     for category_class in category_classes:
         values = []
 
-        categories = category_class.categories.all().order_by('name_'+ get_language())
+        categories = category_class.categories.all().order_by('name_' + get_language())
         if not show_private:
             categories = categories.filter(public=True)
 
@@ -47,8 +50,8 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
 
-    category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_'+ get_language()))
-    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_'+ get_language()))
+    category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_' + get_language()))
+    secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_' + get_language()))
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
 
     # hidden inputs
@@ -62,7 +65,7 @@ class ReportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
         #Ensure the good sortering when switching language.
-        self.fields['category'].choices = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_'+ get_language())).choices
+        self.fields['category'].choices = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_' + get_language())).choices
         self.fields['secondary_category'].choices = secondaryCategoryChoices(False)
 
     def save(self, commit=True):
@@ -160,15 +163,17 @@ class CitizenReportForm(ReportForm):
 
 qualities = list(FMSUser.REPORT_QUALITY_CHOICES)
 
+
 class CitizenForm(forms.Form):
     required_css_class = 'required'
+
     class Meta:
         model = FMSUser
         fields = ('last_name', 'telephone', 'email', 'quality')
 
     last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
-    email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={ 'type': 'email', 'class': 'validate-email' }))
+    email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'type': 'email', 'class': 'validate-email'}))
     quality = forms.ChoiceField(label=_('Quality'), widget=forms.RadioSelect, choices=qualities)
     #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
 
@@ -188,32 +193,40 @@ class CitizenForm(forms.Form):
         """ disable unique validation, save will retrieve existing instance """
         pass
 
+
 class ContactForm(forms.Form):
     required_css_class = 'required'
 
-    name = forms.CharField(max_length=100,
-                           widget=forms.TextInput(attrs={ 'class': 'required' }),
-                           label=_('Name'))
-    email = forms.EmailField(widget=forms.TextInput(attrs=dict({ 'class': 'required' },
-                                                               maxlength=200)),
-                             label=_('Email'))
-    body = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'required' }),
-                              label=_('Message'))
+    name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'required'}),
+        label=_('Name'))
+    email = forms.EmailField(
+        widget=forms.TextInput(attrs=dict({'class': 'required'}, maxlength=200)),
+        label=_('Email'))
+    body = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'required'}),
+        label=_('Message'))
 
     def save(self, fail_silently=False):
         message = render_to_string("emails/contact/message.txt", self.cleaned_data)
-        send_mail('FixMyStreet User Message from %s' % self.cleaned_data['email'], message,
-                   settings.DEFAULT_FROM_EMAIL,[settings.ADMIN_EMAIL], fail_silently=False)
+        send_mail(
+            'FixMyStreet User Message from %s' % self.cleaned_data['email'],
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.ADMIN_EMAIL],
+            fail_silently=False)
 
 
 class ReportFileForm(forms.ModelForm):
     required_css_class = 'required'
+
     class Meta:
         model = ReportFile
         fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
 
     file_creation_date = forms.CharField(widget=forms.HiddenInput(), required=False)
-    title = forms.CharField ( widget=forms.widgets.Textarea(attrs={'rows':1, 'cols':40}), required=False)
+    title = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows': 1, 'cols': 40}), required=False)
 
     def clean_file(self):
         file = self.cleaned_data['file']
@@ -222,8 +235,8 @@ class ReportFileForm(forms.ModelForm):
                 raise ValidationError("File is too large")
 
         flength = len(file.name)
-        if flength > 70: # If filenameis longer than 70, truncate filename
-            offset = flength - (flength % 40 + 20) # modulus of file name + 20 to prevent file type truncation
+        if flength > 70:  # If filenameis longer than 70, truncate filename
+            offset = flength - (flength % 40 + 20)  # modulus of file name + 20 to prevent file type truncation
             file.name = file.name[offset:]
 
         return file

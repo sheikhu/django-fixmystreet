@@ -3,6 +3,7 @@ from django.template import RequestContext
 
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, ReportMainCategoryClass, ReportSecondaryCategoryClass, ReportCategory
 
+
 # Build the table of groups dispatching.
 def getTable(organisation):
     table = []
@@ -20,17 +21,18 @@ def getTable(organisation):
             for cat in categories:
                 groups.append(cat.assigned_to_department.filter(dependency=organisation))
 
-            mainCategories.append({ 'id': mainCat.id, 'groups' : groups})
+            mainCategories.append({'id': mainCat.id, 'groups': groups})
 
-        table.append({ 'secondCategory' : secCat, 'mainCategories' : mainCategories })
+        table.append({'secondCategory': secCat, 'mainCategories': mainCategories})
 
     return table
+
 
 def show(request):
     # Return the current selected list so that the buttons in the matrix have as label all names of selected managers
     return render_to_response("pro/manager_category_configuration.html",
         {
-            "maincategories" : ReportMainCategoryClass.objects.all(),
+            "maincategories": ReportMainCategoryClass.objects.all(),
             "table": getTable(request.fmsuser.organisation)
         },
         context_instance=RequestContext(request))
@@ -46,13 +48,11 @@ def update(request):
 
     mainCategory = ReportMainCategoryClass.objects.get(id=request.REQUEST.get('main'))
     secondCategory = ReportSecondaryCategoryClass.objects.get(id=request.REQUEST.get('second'))
-    return render_to_response("pro/manager_category_configuration.html",
-        {
-            "maincategories" : maincategories,
-            "table": getTable(organisation),
-            "categories":categories,
-            "groupDropDown":OrganisationEntity.objects.filter(type=OrganisationEntity.DEPARTMENT, dependency=organisation),
-            "firstCateg":mainCategory,
-            "secondCateg":secondCategory
-        },
-        context_instance=RequestContext(request))
+    return render_to_response("pro/manager_category_configuration.html", {
+        "maincategories": maincategories,
+        "table": getTable(organisation),
+        "categories": categories,
+        "groupDropDown": OrganisationEntity.objects.filter(type=OrganisationEntity.DEPARTMENT, dependency=organisation),
+        "firstCateg": mainCategory,
+        "secondCateg": secondCategory
+    }, context_instance=RequestContext(request))

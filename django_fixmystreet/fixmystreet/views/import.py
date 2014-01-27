@@ -18,7 +18,7 @@ def close_report(request):
 
         report_object = None
         entity_object = None
-        
+
         #Get objects in the POST request
         ################################
         try:
@@ -38,12 +38,12 @@ def close_report(request):
 
         #Get objects in the DB to verify if it exists
         #############################################
-        try:            
+        try:
             report_object   = Report.objects.get(id=report_id)
         except ObjectDoesNotExist:
             #The report is unknown
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CLOSE_REPORT_REPORT_NOT_FOUND","report": report_id}),mimetype='application/json')
-        try:            
+        try:
             entity_object   = FMSUser.objects.get(username=entity_username)
         except ObjectDoesNotExist:
             #The report is unknown
@@ -52,7 +52,7 @@ def close_report(request):
         #Verify is the given user are actives
         if entity_object.is_active == False:
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CLOSE_REPORT_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),mimetype='application/json')
-        
+
         #Verify if the report is not already closed
         ###########################################
         if (report_object.status == Report.PROCESSED):
@@ -82,7 +82,7 @@ def close_report(request):
         report_object.status = Report.PROCESSED
         report_object.close_date = datetime.now()
         report_object.save()
-        
+
         #Job Done
         #Return signal to the caller
         return JsonHttpResponse({
@@ -100,7 +100,7 @@ def change_manager_report(request):
         report_object = None
         entity_object = None
         manager_object = None
-        
+
         #Get objects in the POST request
         ################################
         try:
@@ -123,22 +123,22 @@ def change_manager_report(request):
 
         #Get objects in the DB to verify if it exists
         #############################################
-        try:            
+        try:
             report_object   = Report.objects.get(id=report_id)
         except ObjectDoesNotExist:
             #The report is unknown
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CHANGE_MANAGER_REPORT_REPORT_NOT_FOUND","report": report_id}),mimetype='application/json')
-        try:            
+        try:
             entity_object   = FMSUser.objects.get(username=entity_username)
         except ObjectDoesNotExist:
             #The report is unknown
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CHANGE_MANAGER_REPORT_ENTITY_NOT_FOUND","entity": entity_username}),mimetype='application/json')
-        try:           
+        try:
             manager_object   = FMSUser.objects.get(username=manager_username)
         except ObjectDoesNotExist:
             #The report is unknown
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CHANGE_MANAGER_REPORT_MANAGER_NOT_FOUND","manager": manager_username}),mimetype='application/json')
-       
+
         #Verify is the given user are actives
         if entity_object.is_active == False:
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CHANGE_MANAGER_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),mimetype='application/json')
@@ -150,13 +150,13 @@ def change_manager_report(request):
         ############################################################
         if report_object.is_in_progress() == False:
             return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_IMPORT_CHANGE_MANAGER_REPORT_REPORT_STATUS_DOES_NOT_ALLOW_MANAGER_CHANGE","report": report_id}),mimetype='application/json')
-        
+
         #Verify if the given entity username has the right entity / Leader
         ##################################################################
         if (not entity_object.leader):
             #Bad role
             return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_IMPORT_CHANGE_MANAGER_REPORT_ENTITY_NOT_LEADER","entity": entity_username}),mimetype='application/json')
-        #Verify if the given manager username has the right gestionnaire / manager  
+        #Verify if the given manager username has the right gestionnaire / manager
         ##########################################################################
         if (not manager_object.manager):
             #Bad role
@@ -179,7 +179,7 @@ def change_manager_report(request):
         report_object.responsible_manager = manager_object
         report_object.status = Report.MANAGER_ASSIGNED
         report_object.save()
-        
+
         #Job Done
         #Return signal to the caller
         return JsonHttpResponse({
