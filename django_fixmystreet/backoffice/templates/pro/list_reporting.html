@@ -6,8 +6,9 @@
 {% block content %}
 	{% for file in files %}
 		<p>
-		{{ file.path }}
-		{{ file.modified_date|date }}
+		<a href="{% url 'reporting_download' file.path %}">
+		{{ file.path }} - {{ file.modified_date|date:"d/m/Y" }}
+		</a>
 		</p>
 	{% endfor %}
 {% endblock %}
