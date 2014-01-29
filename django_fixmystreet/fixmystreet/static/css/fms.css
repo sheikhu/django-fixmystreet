@@ -1114,7 +1114,7 @@ form#report-form{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	padding:5px 0;
+	padding:5px 18px;
 	/*min-height: 370px;*/
 }
 #required-note, .info_end_form{
@@ -1716,11 +1716,14 @@ label strong{
 	vertical-align:bottom;
 }
 /* Input form not valid */
-.invalid input, .invalid textarea {
+input.invalid, textarea.invalid {
     background-color: #FFDDDD;
 }
-.invalid input, .invalid select, .invalid textarea, .invalid .file-upload-btn {
+input.invalid, select.invalid, textarea.invalid {
     border: 2px solid #FF0000 !important;
+}
+input[type=checkbox].invalid{
+    outline: 2px solid #FF0000;
 }
 .form-signin{
 	max-width: 300px;

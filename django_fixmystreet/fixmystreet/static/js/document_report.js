@@ -1,4 +1,4 @@
-
+/*
 $(document).ready(function() {
     var description = document.getElementById('description');
     var send        = document.getElementById('validate_button');
@@ -105,3 +105,4 @@ $(document).ready(function() {
         checkStep2Validity();
     }
 });
+*/

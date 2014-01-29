@@ -71,20 +71,16 @@ $(document).ready(function(){
 function validateForm(form) {
     var valid = true;
 
-    form.find('.required').each(function(ind, field) {
+    form.find('.required input:visible, .required select:visible, .required textarea:visible').each(function(ind, field) {
         var value = true;
         var $field = $(field);
-        var $input = $field.find('input:visible, select:visible, textarea:visible');
 
-        if ($field.find(":file").length) {
-            value = form.find('.thumbnail:visible').length;
-            $field = form.find('#file-form-template');
-        } else if ($input.is(":checkbox")) {
-            value = $input.is(":checked");
-        } else if ($input[0].type === 'email' || $input.hasClass("validate-email")) {
-            value = UtilValidator.validateEmail($input.val());
+        if ($field.is(":checkbox")) {
+            value = $field.is(":checked");
+        } else if ($field[0].type === 'email' || $field.hasClass("validate-email")) {
+            value = UtilValidator.validateEmail($field.val());
         } else {
-            $input.each(function (ind, input) {
+            $field.each(function (ind, input) {
                 if (!$(input).val()) {
                     value = false;
                 }
@@ -96,6 +92,7 @@ function validateForm(form) {
         } else {
             $field.removeClass('invalid');
         }
+        console.log($field[0].name, valid);
     });
 
     if(!valid) {
@@ -105,6 +102,7 @@ function validateForm(form) {
     }
     return valid;
 }
+
 function updateMenuEntries(x,y) {
     //Update the left menu coordinates
     var currentHref;

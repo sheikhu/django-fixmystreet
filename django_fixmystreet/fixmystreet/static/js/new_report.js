@@ -1,10 +1,9 @@
-
 $(document).ready(function() {
     // Get point x y from url
     $.urlParam = function(name){
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         return results[1] || 0;
-    }
+    };
 
     var x = $.urlParam('x');
     var y = $.urlParam('y');
@@ -12,6 +11,7 @@ $(document).ready(function() {
     getAddressFromPoint('fr', x, y);
     getAddressFromPoint('nl', x, y);
 
+/*
     var description = document.getElementById('description');
     var send        = document.getElementById('validate_button');
 
@@ -128,6 +128,21 @@ $(document).ready(function() {
         // Check validity in refresh browser.
         checkStep2Validity();
     }
+*/
+    var description = $('#description'),
+        coordonnees = $('#coordonnees');
+    $('#report-form').submit(function (evt) {
+        if(coordonnees.length && description.is(':visible')) {
+            evt.preventDefault();
+            description.hide();
+            coordonnees.show();
+        }
+    });
+    $('#previousStep').click(function (evt) {
+        evt.preventDefault();
+        coordonnees.hide();
+        description.show();
+    });
 });
 
 function getAddressFromPoint(lang, x, y) {
@@ -148,7 +163,7 @@ function getAddressFromPoint(lang, x, y) {
             if (response.result.address.street.postCode === "1041") {
                 response.result.address.street.postCode = "1040";
             }
-            
+
             if (lang == LANGUAGE_CODE) {
                 fillAdressField(response.result.address);
             }
