@@ -129,20 +129,7 @@ $(document).ready(function() {
         checkStep2Validity();
     }
 */
-    var description = $('#description'),
-        coordonnees = $('#coordonnees');
-    $('#report-form').submit(function (evt) {
-        if(coordonnees.length && description.is(':visible')) {
-            evt.preventDefault();
-            description.hide();
-            coordonnees.show();
-        }
-    });
-    $('#previousStep').click(function (evt) {
-        evt.preventDefault();
-        coordonnees.hide();
-        description.show();
-    });
+
 });
 
 function getAddressFromPoint(lang, x, y) {

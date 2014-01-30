@@ -65,6 +65,23 @@ $(document).ready(function(){
             }
         });
     }
+
+    var description = $('#description'),
+        coordonnees = $('#coordonnees');
+    if(description.length){
+        $('#description').closest('form').submit(function (evt) {
+            if(coordonnees.length && description.is(':visible')) {
+                evt.preventDefault();
+                description.hide();
+                coordonnees.show();
+            }
+        });
+        $('#previousStep').click(function (evt) {
+            evt.preventDefault();
+            coordonnees.hide();
+            description.show();
+        });
+    }
 });
 
 
