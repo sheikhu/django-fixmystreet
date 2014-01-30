@@ -28,8 +28,8 @@ LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'fr')
 GA_CODE = os.environ.get('GA_CODE', '')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
 EMAIL_HOST = ("localhost" if ENVIRONMENT == "production" else "relay.irisnet.be")
-ADMINS = (('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))
-SERVER_EMAIL = "django_dev@cirb.irisnet.be"
+ADMINS = (('Django Team', 'django.dev@cirb.irisnet.be'), ('Jonathan Sanchez', 'jsanchezpando@cirb.irisnet.be'), ('Alfonso Fuca', 'afuca@cirb.irisnet.be'), ('Lahcen Afif', 'lafif@cirb.irisnet.be'))
+SERVER_EMAIL = "fixmystreet@cirb.irisnet.be"
 
 if ENVIRONMENT == 'production':
     EMAIL_SUBJECT_PREFIX = "[Django-{0}] ".format(ENVIRONMENT)
