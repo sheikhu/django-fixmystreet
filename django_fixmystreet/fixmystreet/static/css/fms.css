@@ -2003,6 +2003,16 @@ input[type=checkbox].invalid{
 #result-table .select_filter {
 	width: 160px;
 }
+
+.no-filter input {
+	display: none;
+}
+table.dataTable thead th {
+	padding: 3px 5px 3px 5px;
+}
+.filter-date input{
+	width: 80px;
+}
 #searchContainer.mergeIncident{
 	margin-top:30px;
 	padding:0;
