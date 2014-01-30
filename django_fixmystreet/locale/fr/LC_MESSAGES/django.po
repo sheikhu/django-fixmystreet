@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-27 16:52+0100\n"
-"PO-Revision-Date: 2014-01-27 15:52+0000\n"
-"Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-01-30 15:08+0100\n"
+"PO-Revision-Date: 2014-01-30 14:07+0000\n"
+"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -427,7 +427,7 @@ msgstr "incident(s) signalé(s) dans le même secteur"
 #: fixmystreet/templates/_page_header.html:51
 #: fixmystreet/templates/home.html:67
 msgid "Ticket number..."
-msgstr "Numéro de l'incident"
+msgstr "Numéro de l'incident..."
 
 #: backoffice/templates/pro/reports/merge.html:200
 #: fixmystreet/templates/reports/verify.html:41
@@ -1615,7 +1615,7 @@ msgstr "Description"
 #: fixmystreet/templates/_page_header.html:16
 msgctxt "citizen"
 msgid "Coordonnees"
-msgstr ""
+msgstr "Coordonnées"
 
 #: fixmystreet/templates/_page_header.html:21
 #: fixmystreet/templates/_page_header.html:23
@@ -1636,7 +1636,7 @@ msgstr "Toutes les communes"
 
 #: fixmystreet/templates/_page_header.html:43
 msgid "Signaler"
-msgstr ""
+msgstr "Signaler"
 
 #: fixmystreet/templates/_page_header.html:64
 msgid "results"
@@ -1644,7 +1644,7 @@ msgstr "Résultats"
 
 #: fixmystreet/templates/_page_header.html:75
 msgid "Statut"
-msgstr ""
+msgstr "Statut"
 
 #: fixmystreet/templates/_page_header.html:77
 msgid "created"
@@ -1730,7 +1730,7 @@ msgstr "Conditions d'utilisation"
 
 #: fixmystreet/templates/base.html:240
 msgid "A propos de Fix My Street"
-msgstr ""
+msgstr "A propos de Fix My Street"
 
 #: fixmystreet/templates/home.html:6
 msgid "Meta description for home page"
@@ -2304,4 +2304,4 @@ msgstr "Vous êtes abonné aux notifications concernant cet incident"
 #: fixmystreet/views/reports/subscribers.py:46
 #: fixmystreet/views/reports/subscribers.py:49
 msgid "You have unsubscribed from updates successfully"
-msgstr "Vous n'êtes plus abonné aux mises à jour"
+msgstr "Vous n'êtes plus abonné aux notifications concernant cet incident"
