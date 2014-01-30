@@ -1180,7 +1180,6 @@ form#report-form{
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	background: #FFDB00;
-	float:right;
 	font-family:'Dosis', sans-serif;
 	font-size:11px;
 	text-transform:uppercase;
@@ -1188,7 +1187,6 @@ form#report-form{
 	letter-spacing: -0.3px;
 	color:#607C9D;
 	padding:0;
-	float:right !important;
 	border:0;
 }
 .lk-subscribe .badge{
@@ -1224,7 +1222,6 @@ form#report-form{
 .pro .lk-download-pdf, .pro .lk-subscribe, .pro .lk-isresolved, .pro .lk-viewHistoric, .pro .incidentActions, .pro .incidentActions .btn{
 	height:23px;
 	display:block;
-	float: right;
 	clear: both;
 	width:100% !important;
 	padding:0;

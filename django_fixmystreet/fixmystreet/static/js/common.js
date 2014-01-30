@@ -68,7 +68,7 @@ $(document).ready(function(){
 
     var description = $('#description'),
         coordonnees = $('#coordonnees');
-    if(description.length){
+    if(description.length) {
         $('#description').closest('form').submit(function (evt) {
             if(coordonnees.length && description.is(':visible')) {
                 evt.preventDefault();

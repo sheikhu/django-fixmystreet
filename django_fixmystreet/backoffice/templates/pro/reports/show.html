@@ -134,27 +134,6 @@ $(document).ready(function() {
     // False address
     var report_false_adress = "{{ report.false_address }}";
 
-    document.getElementById('mailPDFProButton').addEventListener('click', function() {
-        mailbox = document.getElementById('mail_pdf');
-        if (mailbox.classList.contains('hidden'))
-            mailbox.classList.remove('hidden');
-        else
-            mailbox.classList.add('hidden');
-            document.getElementById('mail_pdf_emailaddresses').value = '';
-            document.getElementById('mail_pdf_emailcomments').value ='';
-    });
-
-    document.getElementById('mailPDFCitizenButton').addEventListener('click', function() {
-        mailbox = document.getElementById('mail_pdf_citizen');
-        if (mailbox.classList.contains('hidden'))
-            mailbox.classList.remove('hidden');
-        else
-            mailbox.classList.add('hidden');
-            document.getElementById('mail_pdf_emailaddresses_citizen').value = '';
-            document.getElementById('mail_pdf_emailcomments_citizen').value ='';
-    });
-
-
     document.getElementById("send_pdf_citizen_button").addEventListener('click', function(event){
         $.ajax({
             url:"{% url 'send_pdf' report.id %}",
@@ -289,7 +268,7 @@ function persistPriorityUpdate(){
         type:'GET',
         datatype:"json",
         success: function(data){
-            
+
             //Close modal Window
             $('#modalPriority').modal('hide');
         }
@@ -369,7 +348,7 @@ var someCallback = function(exifObject, index) {
                         <span class="ticket_desc">
 
                                 {{report.display_category}}
-                            
+
                         </span>
 
                         <br />
@@ -385,7 +364,7 @@ var someCallback = function(exifObject, index) {
                             {% if report.contractor != None %}
                                 <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/contractorAssigned_on.png' /></a></li>
                             {% endif %}
-                            
+
                             {% if report.date_planned %}
                                 <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
                             {% endif %}
@@ -420,7 +399,7 @@ var someCallback = function(exifObject, index) {
                         <!-- ROW PRO 1 -->
                         <li>
                             <strong>
-                                {% trans 'Visibility' %} : 
+                                {% trans 'Visibility' %} :
                             </strong>
                             {{ report.private|yesno:_("pro,public") }}
                         </li>
@@ -430,7 +409,7 @@ var someCallback = function(exifObject, index) {
                             {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
                                 <strong>Posted by</strong> <a href='mailto:{{mail}}'>{{by}}</a> on {{on}}
                            {% endblocktrans %}
-                           
+
                            {% if not report.is_pro %}
                                 - {{ report.citizen.get_quality_display }}
                                 (tel:{{report.get_creator.fmsuser.telephone}})
@@ -440,8 +419,8 @@ var someCallback = function(exifObject, index) {
                         <li>
                         <strong>{% trans "Responsible:" %}</strong>
                         <!-- responsible-name=report.responsible_department.contact_user, responsible-group=report.responsible_department, responsible-entity=report.responsible_entity -->
-                        {{report.responsible_department.contact_user.get_full_name}} - 
-                        <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> - 
+                        {{report.responsible_department.contact_user.get_full_name}} -
+                        <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> -
                         {{report.responsible_entity.name}}
                         {% if report.responsible_department.phone %}
                             (tel:{{report.responsible_department.phone }})
@@ -453,12 +432,12 @@ var someCallback = function(exifObject, index) {
                             <td>{{ report.get_status_display }}</td>
                             {% trans 'on' %}
                             {{report.last_history_status_event.event_at|date:"d/m/Y"}}
-                            
+
                             {% if report.is_contractor_or_applicant_assigned %}
-                                {{report.contractor.name}} 
+                                {{report.contractor.name}}
                                 {% if report.contractor.phone %}
                                     ({{report.contractor.phone}})
-                                {% endif %}    
+                                {% endif %}
                             {% endif %}
                         </li>
                         <!-- ROW PRO 5 -->
@@ -474,9 +453,9 @@ var someCallback = function(exifObject, index) {
                                 </a>
                             </li>
                         {% endif %}
-                        
+
                     </ul>
-                    
+
                         <!-- #################################### -->
                         <!-- # ONLY THE MANAGER CAN USE BUTTONS # -->
                         <!-- #################################### -->
@@ -491,13 +470,13 @@ var someCallback = function(exifObject, index) {
                             {% endif %}
                         {% endif %}
 
-                   
-                        
-                   
+
+
+
 
                     <!--timeline-->
 
-                    
+
                 </div>
                 <div class="pro span2">
                     {% if report.is_in_progress %}
@@ -587,7 +566,7 @@ var someCallback = function(exifObject, index) {
                                             <a tabindex="-1" href="#">{% trans 'Contractors' %}</a>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1" 
+                                                    <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1"
                                                         href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId=None')">
                                                         {% trans 'None' %}
                                                     </a>
@@ -605,7 +584,7 @@ var someCallback = function(exifObject, index) {
                                             <a tabindex="-1" href="#">{% trans 'Applicants' %}</a>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1" 
+                                                    <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1"
                                                         href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId=None')">
                                                         {% trans 'None' %}
                                                     </a>
@@ -704,11 +683,6 @@ var someCallback = function(exifObject, index) {
                     </div>
                     {% endif %}
                     {% endif %}
-
-                    
-
-
-
                 </div>
             </div>
         </div>
@@ -891,47 +865,48 @@ var someCallback = function(exifObject, index) {
             <h3>{% trans 'Download a pdf report of this incident' %}</h3>
         </div>
 
-        <div class="modal-body">
-
+        <div class="modal-body pro">
             <p>
-                <a href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
-                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'report pdf' context 'pro' %}
+                <a href="{% url 'report_pdf' report.id %}" class="lk-download-pdf" title="{% trans 'Download a pdf report of this incident' %}">
+                    {% trans 'report pdf' context 'pro' %}
+                    <i class="icon download-pdf"> </i>
                 </a>
-
-                {% if request.fmsuser.is_pro %}
-                <a id='mailPDFCitizenButton' class="btn">{% trans 'mail pdf' %}</a>
-                </p>
-            <p>
-                <span id="mail_pdf_citizen" class="hidden">
-                    {% trans 'enter mail address' %}
-                    <textarea id="mail_pdf_emailaddresses_citizen"></textarea>
-                    <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
-                    <br>
-                    {% trans 'enter comment for mail' %}
-                    <textarea id="mail_pdf_emailcomments_citizen"></textarea>
-                </span>
-                {% endif %}
+                <a href="{% url 'report_pdf_pro' report.id %}" class="btn incidentActions">
+                    {% trans 'report pdf pro' %}
+                    <i class="download-pdf"> </i>
+                </a>
             </p>
 
             {% if request.fmsuser.is_pro %}
-                <p><a href="{% url 'report_pdf_pro' report.id %}"><i class="download-pdf-pro"> </i>{% trans 'report pdf pro' %}</a>
-                    <a id='mailPDFProButton' class="btn">{% trans 'mail pdf' %}</a>
-                </p>
-                <span id="mail_pdf" class="hidden">
-                    {% trans 'enter mail address' %}
-                    <textarea id="mail_pdf_emailaddresses"></textarea>
+            <p>
+                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail_pdf_citizen">
+                    {% trans 'mail pdf' %}
+                </button>
+
+                <div id="mail_pdf_citizen" class="collapse">
+                    <label for="mail_pdf_emailaddresses_citizen">{% trans 'enter mail address' %}</label>
+                    <textarea id="mail_pdf_emailaddresses_citizen" class="input-block-level"></textarea>
+                    <label for="mail_pdf_emailcomments_citizen">{% trans 'enter comment for mail' %}</label>
+                    <textarea id="mail_pdf_emailcomments_citizen" class="input-block-level"></textarea>
+                    <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
+                </div>
+            </p>
+            {% endif %}
+
+            {% if request.fmsuser.is_pro %}
+            <p>
+                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail_pdf_pro">
+                    {% trans 'mail pdf pro' %}
+                </button>
+                <div id="mail_pdf_pro" class="collapse">
+                    <label for="mail_pdf_emailaddresses">{% trans 'enter mail address' %}</label>
+                    <textarea id="mail_pdf_emailaddresses" class="input-block-level"></textarea>
+                    <label for="mail_pdf_emailcomments">{% trans 'enter comment for mail' %}</label>
+                    <textarea id="mail_pdf_emailcomments" class="input-block-level"></textarea>
                     <a class="btn pull-right" id="send_pdf_pro_button">{% trans 'send pdf' %}</a>
-                    <br>
-                    {% trans 'enter comment for mail' %}
-                    <textarea id="mail_pdf_emailcomments"></textarea>
-                </span>
-
+                </div>
+            </p>
             {% endif %}
-
-            {% if request.fmsuser.manager or request.fmsuser.leader %}
-                <p><a href="{% url 'export_report' 'csv' report.id %}" target="_blank"><i class="download-xls"> </i>{% trans 'Export Csv' %}</a></p>
-            {% endif %}
-
         </div>
 
         <!--div class="modal-footer">
