@@ -1324,9 +1324,23 @@ form#report-form{
 	margin-left:20px;
 	margin-top:20px;
 }
-.modal form{
-	margin:0;
+.ajax-form {
+	padding: 5px;
+	margin: 8px 0;
+	border: 3px solid transparent;
+	border-radius: 5px;
+	transition-property: border-color;
+	transition-duration: .5s;
 }
+.form-error{
+	border: 3px solid red;
+}
+.form-success{
+	border: 3px solid #468847;
+}
+/*.modal form{
+	margin:0;
+}*/
 .modal .modal-header{
 	background:#607C9D;
 	color:#FFDB00;

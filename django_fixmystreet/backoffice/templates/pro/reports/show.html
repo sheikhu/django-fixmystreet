@@ -109,11 +109,8 @@ $(function(){
 
     $("#grav").val("{{report.gravity}}");
     $("#prob").val("{{report.probability}}");
-
-
-
-
 });
+
 /* When JQUERY is ready*/
 $(document).ready(function() {
     /*Set the contractor dropdown*/
@@ -134,34 +131,6 @@ $(document).ready(function() {
     // False address
     var report_false_adress = "{{ report.false_address }}";
 
-    document.getElementById("send_pdf_citizen_button").addEventListener('click', function(event){
-        $.ajax({
-            url:"{% url 'send_pdf' report.id %}",
-            data:{"to":$('#mail_pdf_emailaddresses_citizen').val(), "comments":$('#mail_pdf_emailcomments_citizen').val(), "privacy":"public"},
-            type:"POST",
-            success:function(data){
-                document.getElementById('mailPDFCitizenButton').click();
-            }
-        });
-
-
-    });
-
-
-    document.getElementById("send_pdf_pro_button").addEventListener('click', function(event){
-        $.ajax({
-            url:"{% url 'send_pdf' report.id %}",
-            data:{"to":$('#mail_pdf_emailaddresses').val(), "comments":$('#mail_pdf_emailcomments').val(), "privacy":"private"},
-            type:"POST",
-            success:function(data){
-                document.getElementById('mailPDFProButton').click();
-            }
-        });
-
-
-    });
-
-
     $.ajax({
         url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
         type:"GET",
@@ -179,7 +148,6 @@ $(document).ready(function() {
 
             $("#sec_cat_select").val("{{report.secondary_category.id}}");
         }
-
     });
 
     $('#main_cat_select').change(function(){
@@ -221,9 +189,9 @@ $(document).ready(function() {
                 $('#modalCategory').modal('hide');
             }
         });
-    })
+    });
 
-    $($(".update_text").find('#imgtoshow')).exifLoad(someCallback);
+    $(".update_text").find('#imgtoshow').exifLoad(someCallback);
 });
 
 window.onload = function() {
@@ -288,14 +256,15 @@ function planned(){
  * ExifCallback method
  */
 var someCallback = function(exifObject, index) {
-        if (exifObject && exifObject.DateTimeOriginal){
-            textAreas = $($(".update_text").find('#imagedate'));
-            var datetosplit = exifObject.DateTimeOriginal;
-            var splitted = datetosplit.split(/[:,\/ ]/)
-            var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
-            }
-        }
+    // realy used ???
+    if (exifObject && exifObject.DateTimeOriginal){
+        textAreas = $(".update_text").find('#imagedate');
+        var datetosplit = exifObject.DateTimeOriginal;
+        var splitted = datetosplit.split(/[:,\/ ]/)
+        var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
+        textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
+    }
+}
 
 
 
@@ -866,11 +835,16 @@ var someCallback = function(exifObject, index) {
         </div>
 
         <div class="modal-body pro">
+            <h2>
+                {% trans 'Download' %}
+            </h2>
             <p>
                 <a href="{% url 'report_pdf' report.id %}" class="lk-download-pdf" title="{% trans 'Download a pdf report of this incident' %}">
                     {% trans 'report pdf' context 'pro' %}
                     <i class="icon download-pdf"> </i>
                 </a>
+            </p>
+            <p>
                 <a href="{% url 'report_pdf_pro' report.id %}" class="btn incidentActions">
                     {% trans 'report pdf pro' %}
                     <i class="download-pdf"> </i>
@@ -878,34 +852,36 @@ var someCallback = function(exifObject, index) {
             </p>
 
             {% if request.fmsuser.is_pro %}
-            <p>
-                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail_pdf_citizen">
-                    {% trans 'mail pdf' %}
+            <h2>
+                {% trans 'mail pdf' %}
+            </h2>
+            <div>
+                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail-pdf-citizen">
+                    {% trans 'report pdf' context 'pro' %}
                 </button>
 
-                <div id="mail_pdf_citizen" class="collapse">
-                    <label for="mail_pdf_emailaddresses_citizen">{% trans 'enter mail address' %}</label>
-                    <textarea id="mail_pdf_emailaddresses_citizen" class="input-block-level"></textarea>
-                    <label for="mail_pdf_emailcomments_citizen">{% trans 'enter comment for mail' %}</label>
-                    <textarea id="mail_pdf_emailcomments_citizen" class="input-block-level"></textarea>
-                    <a class="btn pull-right" id="send_pdf_citizen_button">{% trans 'send pdf' %}</a>
-                </div>
-            </p>
-            {% endif %}
-
-            {% if request.fmsuser.is_pro %}
-            <p>
-                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail_pdf_pro">
-                    {% trans 'mail pdf pro' %}
+                <form id="mail-pdf-citizen" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
+                    <input type="hidden" name="privacy" value="private"/>
+                    <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>
+                    <textarea id="pdf-email-citizen" name="to" class="input-block-level"></textarea>
+                    <label for="pdf-comments-citizen">{% trans 'enter comment for mail' %}</label>
+                    <textarea id="pdf-comments-citizen" name="comments" class="input-block-level"></textarea>
+                    <input type="submit" class="btn pull-right" id="send_pdf_citizen_button" value="{% trans 'send pdf' %}"/>
+                </form>
+            </div>
+            <div>
+                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail-pdf-pro">
+                    {% trans 'report pdf pro' %}
                 </button>
-                <div id="mail_pdf_pro" class="collapse">
-                    <label for="mail_pdf_emailaddresses">{% trans 'enter mail address' %}</label>
-                    <textarea id="mail_pdf_emailaddresses" class="input-block-level"></textarea>
-                    <label for="mail_pdf_emailcomments">{% trans 'enter comment for mail' %}</label>
-                    <textarea id="mail_pdf_emailcomments" class="input-block-level"></textarea>
-                    <a class="btn pull-right" id="send_pdf_pro_button">{% trans 'send pdf' %}</a>
-                </div>
-            </p>
+                <form id="mail-pdf-pro" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
+                    <input type="hidden" name="privacy" value="public"/>
+                    <label for="pdf-email">{% trans 'enter mail address' %}</label>
+                    <textarea id="pdf-email" name="to" class="input-block-level"></textarea>
+                    <label for="pdf-comments">{% trans 'enter comment for mail' %}</label>
+                    <textarea id="pdf-comments" name="comments" class="input-block-level"></textarea>
+                    <input type="submit" class="btn pull-right" id="send_pdf_pro_button" value="{% trans 'send pdf' %}"/>
+                </form>
+            </div>
             {% endif %}
         </div>
 
