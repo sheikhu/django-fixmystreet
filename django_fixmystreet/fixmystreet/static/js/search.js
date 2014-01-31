@@ -221,7 +221,6 @@ function initDragMarker(x, y, additionalInfo, preventZoomIn) {
         draggableMarker = fms.currentMap.addDraggableMarker(x, y);
         fms.currentMap.centerOnDraggableMarker();
 
-        console.log(preventZoomIn);
         if (!preventZoomIn) {
             fms.currentMap.map.zoomTo(6);
         }
@@ -270,6 +269,36 @@ function cleanMap() {
     $proposalContainer = $('#proposal-container');
     $proposalContainer.slideUp();
 }
+
+var streetKeywords = document.getElementById('input-search');
+var postalCode = document.getElementById('input-ward');
+var searchBtn = document.getElementById('widget-search-button');
+
+function enableSearch() {
+    var enableSearchBtn = false;
+
+    if (streetKeywords.value || postalCode.value) {
+        enableSearchBtn = true;
+    }
+
+    searchBtn.disabled = !enableSearchBtn;
+}
+
+function municipalityChange() {
+    enableSearch();
+    fms.currentMap.centerOnMunicipality(postalCode.value);
+    /*if ( !(streetKeywords.value) && (postalCode.value) ) {
+        alert('middle of municipality : ' + postalCode.value);
+    }*/
+}
+// Enable search button if one of fields contain a value
+streetKeywords.addEventListener('keyup', enableSearch);
+streetKeywords.addEventListener('change', enableSearch);
+postalCode.addEventListener('change', enableSearch);
+
+
+
+
 
 $(function(){
 
@@ -320,6 +349,15 @@ $(function(){
         paginationResults = 0;
 
         var searchValue = $searchStreet.val();
+        var searchMunicipalityValue = $searchMunicipality.val();
+        var searchStreetNumberValue = $searchStreetNumber.val();
+
+        //If only municipality as input then center on it
+        if (!searchValue && !searchStreetNumberValue && searchMunicipalityValue) {
+            municipalityChange();
+            return;
+        }
+
         $proposalContainer.slideUp();
 
         if (!$searchStreet.val()) {
@@ -431,37 +469,6 @@ $(function(){
 
     $searchAddressForm.submit();
 });
-
-(function() {
-
-    var streetKeywords = document.getElementById('input-search');
-    var postalCode = document.getElementById('input-ward');
-    var searchBtn = document.getElementById('widget-search-button');
-
-    function enableSearch() {
-        var enableSearchBtn = false;
-
-        if (streetKeywords.value) {
-            enableSearchBtn = true;
-        }
-
-        searchBtn.disabled = !enableSearchBtn;
-    }
-
-    function municipalityChange() {
-        enableSearch();
-
-        fms.currentMap.centerOnMunicipality(postalCode.value);
-        /*if ( !(streetKeywords.value) && (postalCode.value) ) {
-            alert('middle of municipality : ' + postalCode.value);
-        }*/
-    }
-    // Enable search button if one of fields contain a value
-    streetKeywords.addEventListener('keyup', enableSearch);
-    streetKeywords.addEventListener('change', enableSearch);
-    postalCode.addEventListener('change', municipalityChange);
-
-})(document);
 
 // Localize report with map
 (function() {

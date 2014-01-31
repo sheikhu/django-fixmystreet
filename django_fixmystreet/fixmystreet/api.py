@@ -195,7 +195,7 @@ class ReportHandler(BaseHandler):
         report.subscribe_author()
 
         #Create the comment is a comment has been given'''
-        if (request.data["comment-text"] or comment_form.is_valid()):
+        if ((request.data["comment-text"] or comment_form.is_valid()) and request.data["comment-text"] != ''):
             comment = comment_form.save(commit=False)
             comment.report = report
             comment.save()
@@ -227,7 +227,8 @@ class ReportHandler(BaseHandler):
             report.subscribe_author_ws()
 
         #Create the comment is a comment has been given'''
-        if (request.data["comment-text"] or comment_form.is_valid()):
+        
+        if ((request.data["comment-text"] or comment_form.is_valid()) and request.data["comment-text"] != ''):
             comment = comment_form.save(commit=False)
             comment.created_by = citizen
             comment.report = report

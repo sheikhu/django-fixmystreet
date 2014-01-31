@@ -408,7 +408,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
     {
         //Prefixed by M to avoid big array creation (as idnex integer based)
         this.map.panTo(new OpenLayers.LonLat(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y));
-        this.map.zoomTo(6);
+
+        //this.map.zoomTo(6);
         //Show draggable Marker.
         this.addDraggableMarker(window.fms.city_geo_center["M"+argMunicipalityCode].x, window.fms.city_geo_center["M"+argMunicipalityCode].y);
     };
@@ -727,13 +728,15 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                         self.showPopover(feature);
                     },
                     onUnselect: function(feature) {
-                        this.map.removePopup(lastpopup);
-                        lastpopup.destroy();
+                        if (lastpopup) {
+                            this.map.removePopup(lastpopup);
+                            lastpopup.destroy();
+                        }
                     }
                 });
 
                 self.map.events.register("zoomend", null, function() {
-                    if (self.selectFeature) {
+                    if (self.selectFeature && lastpopup) {
                         self.map.removePopup(lastpopup);
                         lastpopup.destroy();
                     }
