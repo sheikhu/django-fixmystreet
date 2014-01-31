@@ -266,7 +266,20 @@ var someCallback = function(exifObject, index) {
     }
 }
 
+$('.dropdown-menu li a').mouseover(function(evt) {
+    evt.stopPropagation();
+    var $this = $(this);
+    $this.closest('li').siblings().each(function() {
+        jQuery(this).removeClass('open');
+    });
+    $this.closest('li').addClass('open');
+});
 
+$('.dropdown-toggle').click(function(e) {
+    jQuery(this).parent().find('li').each(function() {
+        jQuery(this).removeClass('open');
+    });
+});
 
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>

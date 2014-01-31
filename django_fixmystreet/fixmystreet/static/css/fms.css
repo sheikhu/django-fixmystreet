@@ -1422,7 +1422,6 @@ form#report-form{
 	left:59.5%;
 	width:2px;
 	margin-left:-1px; /* make it center */
-	z-index:1000;
 	top:50px;
 	bottom:30px;	/* margin-bottom space used by li element */
 }
@@ -1612,7 +1611,6 @@ form#report-form{
 	display:inline-block;
 	left: 51.5%;
 	position: absolute;
-	z-index: 1001;
 	top:15px;
 }
 .add_info a:link, .add_info a:visited, .add_info a:hover, .add_info a:active, .add_info a:focus{
@@ -1871,23 +1869,27 @@ input[type=checkbox].invalid{
 	background:#7090B7;
 }
 .incidentActions, .incidentActions .dropdown-menu>li>a{
-	white-space:normal;
+	white-space:nowrap;
+	text-align: left;
 }
 .incidentActions .dropdown-menu{
 	font-size:12px !important;
 }
 .incidentActions > .dropdown-menu{
-	right:auto;
-	left:0;
+	right: auto;
+	left: 0;
 }
 .incidentActions .dropdown-menu .active{
 	background:#7090B7;
 }
 .incidentActions .dropdown-submenu>.dropdown-menu{
-	left:-100%;
+	right: 100%;
+	left: auto;
 }
 .incidentActions .dropdown-submenu>a:after{
-	float:left;
+	position: absolute;
+	top: 2px;
+	left: 5px;
 	width: 0px;
 	height: 0px;
 	border-style:solid;
