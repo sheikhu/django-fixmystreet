@@ -86,32 +86,31 @@ class FmsUserForm(forms.ModelForm):
 class FmsUserCreateForm(FmsUserForm):
 
     def save(self, commit=True):
-        user = self.retrive_user()
+        self.instance = self.retrive_user()
         self.password = False
 
-        if not user:
-            user = super(FmsUserCreateForm, self).save(commit=False)
-            user.lastUsedLanguage = "FR"
+        if not self.instance:
+            self.instance.lastUsedLanguage = "FR"
 
-        if user.logical_deleted:
-            user.logical_deleted = False
+        if self.instance.logical_deleted:
+            self.instance.logical_deleted = False
 
-        if not user.is_active:
-            user.is_active = True
+        if not self.instance.is_active:
+            self.instance.is_active = True
 
-        if not user.password:
+        if not self.instance.password:
             self.password = User.objects.make_random_password()
-            user.set_password(self.password)
-            user.is_active = True
+            self.instance.set_password(self.password)
+            self.instance.is_active = True
 
-        if not user.username:
-            user.username = self.cleaned_data["email"]
+        if not self.instance.username:
+            self.instance.username = self.cleaned_data["email"]
 
         if commit:
-            user.save()
+            self.instance.save()
             self.notify_user()
-        self.instance = user
-        return user
+
+        return self.instance
 
     def validate_unique(self):
         """ disable unique validation, save will retrieve existing instance """
@@ -120,11 +119,13 @@ class FmsUserCreateForm(FmsUserForm):
     def retrive_user(self):
         try:
             user = FMSUser.objects.get(email=self.cleaned_data['email'])
+            user.__dict__.update(self.cleaned_data)
+            print "retrieved"
             self.instance_retrived = True
             return user
         except FMSUser.DoesNotExist:
             self.instance_retrived = False
-            return None
+            return FMSUser(**self.cleaned_data)
 
     def notify_user(self):
         """
@@ -152,7 +153,7 @@ class FmsUserCreateForm(FmsUserForm):
 
             subject = subject.rstrip(' \n\t').lstrip(' \n\t')
 
-            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": user.created_by.email})
+            msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": user.modified_by.email})
             if html:
                 msg.attach_alternative(html, "text/html")
 

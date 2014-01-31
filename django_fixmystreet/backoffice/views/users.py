@@ -90,7 +90,8 @@ def edit_user(request, user_id):
         user_form = FmsUserForm(request.POST, instance=user_to_edit)
         if user_form.is_valid():
             user_form.save()
-            return HttpResponseRedirect('')
+            messages.add_message(request, messages.SUCCESS, _("User has been updated successfully"))
+            return HttpResponseRedirect(reverse('list_users'))
     else:
         user_form = FmsUserForm(instance=user_to_edit)
 
@@ -112,7 +113,7 @@ def create_user(request):
                 user_form.notify_user()
                 if user:
                     messages.add_message(request, messages.SUCCESS, _("User has been created successfully"))
-                    return HttpResponseRedirect(user.get_absolute_url())
+                    return HttpResponseRedirect(reverse('list_users'))
             except SMTPException as e:
                 logger.error("email not sent successfully: {0}".format(e))
                 messages.add_message(request, messages.ERROR, _("An error occurd during the email sending"))
