@@ -96,7 +96,6 @@ def report_prepare_pro(request, location=None, error_msg=None):
     stats = statsObject.get_stats()
     popup_reports = []
 
-
     if "stat_type" in request.GET:
         start_date = stats[str(request.GET["stat_type"])]["start_date"]
         end_date = stats[str(request.GET["stat_type"])]["end_date"]

@@ -42,23 +42,6 @@ def get_report_popup_details(request):
     return HttpResponse(json.dumps(report.full_marker_detail_pro_JSON()), mimetype="application/json")
 
 
-def report_false_address(request, report_id):
-    if request.method == "POST":
-        report = get_object_or_404(Report, id=report_id)
-
-        false_address = request.POST.get('false_address')
-
-        if (false_address):
-            false_address = false_address.strip()
-            if (false_address == ''):
-                false_address == None   
-
-        report.false_address = false_address
-        report.save()
-
-        return HttpResponse(report.false_address)
-
-
 def secondary_category_for_main_category(request):
     main_category_id = int(request.GET["main_category"])
     secondary_categories = ReportCategory.objects.filter(category_class=main_category_id)

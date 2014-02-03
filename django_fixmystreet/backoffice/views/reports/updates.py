@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http import Http404
 
 from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
@@ -199,7 +200,7 @@ def updatePriority(request, report_id):
     report.gravity = int(request.GET["gravity"])
     report.probability = int(request.GET["probability"])
     report.save()
-    
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
@@ -340,7 +341,25 @@ def do_merge(request, report_id):
     #Send message of confirmation
     # messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
     if "pro" in request.path:
-            return HttpResponseRedirect(final_report.get_absolute_url_pro()+"?page=1")
+            return HttpResponseRedirect(final_report.get_absolute_url_pro())
     else:
             return HttpResponseRedirect(final_report.get_absolute_url())
 
+
+def report_false_address(request, report_id):
+    if request.method == "POST":
+        report = get_object_or_404(Report, id=report_id)
+
+        false_address = request.POST.get('false_address')
+
+        if (false_address):
+            false_address = false_address.strip()
+            if (false_address == ''):
+                false_address = None
+
+        report.false_address = false_address
+        report.save()
+
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        raise Http404

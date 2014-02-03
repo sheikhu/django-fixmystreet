@@ -142,11 +142,11 @@ function markAsDone(){
     <div class="row">
         <div class="span12">
             <article class="view_incident container">
-                <div id="incident-head" class="">
+                <div class="lead-container">
                     <div class="row-fluid">
-                        <div class="span5">
+                        <div class="span4">
                             <div class="ticket_infos">
-                                                                   
+
                                 {% if report.is_created %}
                                     <span class="ticket_number red_border">
                                         <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
@@ -164,7 +164,7 @@ function markAsDone(){
                                         <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                                     </span>
                                 {% endif %}
-                                
+
 
                                 <br />
                                 <span class="ticket_address">
@@ -179,7 +179,7 @@ function markAsDone(){
                             <ul class='iconsPopup'>
                                 {% if report.responsible_entity.id == 20 %}
                                     <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/regional_on.png' /></a></li>
-                                {% else %}                                
+                                {% else %}
                                     <!--li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not located on a regional zone" %}'><img src='/static/images/regional_off.png' /></a></li-->
                                 {% endif %}
 
@@ -192,7 +192,7 @@ function markAsDone(){
                                 {% else %}
                                     <!--li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not assigned" %}'><img src='/static/images/contractorAssigned_off.png' /></a></li-->
                                 {% endif %}
-                                
+
                                 {% if report.date_planned %}
                                     <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
                                 {% else %}
@@ -201,70 +201,71 @@ function markAsDone(){
 
                             </ul>
                         </div>
-                        <div class="pro span6 incidentDetailsStatus">
-                            <div class="bordered-box">
-                                <!-- ROW CIT 1 -->
-                                <p>   
-                                    <strong>{% trans "Posted on" %}</strong>:
-                                   {{report.created|date:"d/m/Y"}}
-                                </p>
-                                <!-- ROW CIT 2 -->
-                                <p>
-                                 <strong>{% trans "Responsible:" %}</strong>
+                        <div class="span6 incidentDetailsStatus">
+                            <!-- ROW CIT 1 -->
+                            <p>
+                                <strong>{% trans "Posted on" %}</strong>:
+                               {{report.created|date:"d/m/Y"}}
+                            </p>
+                            <!-- ROW CIT 2 -->
+                            <p>
+                                <strong>{% trans "Responsible:" %}</strong>
                                 <!-- responsible-name, responsible-group, responsible-entity -->
-                                {{report.responsible_department.name }} - 
-                                {{report.responsible_entity.name}} 
+                                {{report.responsible_department.name }} -
+                                {{report.responsible_entity.name}}
                                 {% if report.responsible_department.phone %}
                                     (tel:{{report.responsible_department.phone }})
                                 {% endif %}
-                                </p>
-                                <!-- ROW CIT 3 -->
-                                <p>
-                                    <th><strong>{% trans "Status:" %}</strong></th>
-                                    <td>{{ report.get_status_display }}</td>
-                                    {% trans 'on' %}
-                                    {{report.last_history_status_event.event_at|date:"d/m/Y"}}
-                                    
-                                    {% if report.is_contractor_or_applicant_assigned %}
-                                        {{report.contractor.name}}
-                                    {% endif %}
-                                </p>
-                                <!-- ROW CIT 4 -->
-                                {% if report.merged_with %}
-                                    <p>
-                                        {% trans "Merged on" %}
-                                        {{report.last_history_event.event_at|date:"d/m/Y"}}
-                                        {% trans "with incident" %}
-                                        <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
-                                            {{report.merged_with.id}}
-                                        </a>
-                                    </p>
+                            </p>
+                            <!-- ROW CIT 3 -->
+                            <p>
+                                <th><strong>{% trans "Status:" %}</strong></th>
+                                <td>{{ report.get_status_display }}</td>
+                                {% trans 'on' %}
+                                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+
+                                {% if report.is_contractor_or_applicant_assigned %}
+                                    {{report.contractor.name}}
                                 {% endif %}
-                                </p>
-                            </div>
+                            </p>
+                            <!-- ROW CIT 4 -->
+                            {% if report.merged_with %}
+                            <p>
+                                {% trans "Merged on" %}
+                                {{report.last_history_event.event_at|date:"d/m/Y"}}
+                                {% trans "with incident" %}
+                                <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
+                                    {{report.merged_with.id}}
+                                </a>
+                            </p>
+                            {% endif %}
                         </div>
-                        <div>
+                        <div class="span2 btn-group-vertical">
                             {% if report.is_in_progress %}
                                 {% if report.status != report.SOLVED %}
-                                    <a href="#divMarkAsDone" role="button" class="btn lk-isresolved span1" data-toggle="modal">
-                                        <i class="isresolved"> </i>{% trans "Report as solved" %}
+                                    <a href="#divMarkAsDone" class="btn" data-toggle="modal">
+                                        {% trans "Report as solved" %}
+                                        <i class="icon-isresolved"> </i>
                                     </a>
                                 {% endif %}
 
                                 {% if not report.is_closed and not subscribed %}
-                                    <a href="#modalSubscription" role="button" class="btn lk-subscribe span1" data-toggle="modal">
+                                    <a href="#modalSubscription" class="btn" data-toggle="modal">
                                         {% if report.subscriptions.all.count %}
                                             <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
                                         {% endif %}
-                                        <i class="subscribe"> </i>
-
                                         {% trans "Subscribe" %}
+                                        <i class="icon-subscribe"> </i>
                                     </a>
                                 {% endif %}
                             {% endif %}
 
-                            <a class="lk-download-pdf btn span1" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
-                                <!--i class="icon-download" /--><i class="download-pdf"> </i>{% trans 'Download' %}
+                            <a class="btn" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                                {% trans 'Download' %}
+                                <i class="icon-download-pdf"> </i>
+                            </a>
+                            <a id="show-history" href="#" role="button" class="btn lk-viewHistoric" data-toggle="modal">
+                                <i class="icon-historic"> </i>{% trans "View historic" %}
                             </a>
                         </div>
                     </div>

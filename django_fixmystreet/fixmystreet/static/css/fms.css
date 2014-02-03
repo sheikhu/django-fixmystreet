@@ -608,9 +608,9 @@ footer .cirb-cibg img{
 .map-big .pulldown-map{
 	display: none;
 }
-
 .lead-container{
-	padding: 5px 15px;
+	color: #FFF;
+	padding: 10px 15px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px 4px 4px 4px;
@@ -1162,69 +1162,26 @@ form#report-form{
 #map.view_incident .olMapViewport{
 	height:107px !important;
 }
-#incident-head{
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	padding: 10px;
-	background:#607C9D;
-}
-/*.pro .lk-isresolved{
-	margin-left:30px !important;
-}*/
-.lk-download-pdf, .lk-subscribe, .lk-isresolved{
-	width:80px !important;
-	height:80px;
-	display:inline-block;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #FFDB00;
-	font-family:'Dosis', sans-serif;
-	font-size:11px;
-	text-transform:uppercase;
-	text-align:center;
-	letter-spacing: -0.3px;
-	color:#607C9D;
-	padding:0;
-	border:0;
-}
-.lk-subscribe .badge{
-	top: -6px;
-	float: right;
-	border-radius: 50%;
-	padding: 4px 8px;
-	right: -6px;
-	background:#607C9D;
-	border: 2px solid #FFDB00;
-	color:#FFDB00;
-}
-.lk-download-pdf:link, .lk-download-pdf:visited, .lk-download-pdf:hover, .lk-download-pdf:active, .lk-download-pdf:focus,
-.lk-subscribe:link, .lk-subscribe:visited, .lk-subscribe:hover, .lk-subscribe:active, .lk-subscribe:focus,
-.lk-isresolved:link, .lk-isresolved:visited, .lk-isresolved:hover, .lk-isresolved:active, .lk-isresolved:focus{
+
+.lead-container .btn {
 	background: #FFDB00;
 }
-.download-pdf{
-	background: #FFDB00 url('../images/icon-downloadpdf.png') top left no-repeat;
+.lead-container .btn-group-vertical > .btn:first-child {
+	margin-top: 0;
 }
-.subscribe{
-	background:#FFDB00 url('../images/icon-subscribe.png') top left no-repeat;
+.lead-container .btn-group-vertical > .btn-group{
+	width:100%;
 }
-.isresolved{
-	background:#FFDB00 url('../images/icon-isresolved.png') top left no-repeat;
-}
-.download-pdf, .subscribe, .isresolved{
-	width: 49px;
-	display: block;
-	height: 49px;
-	margin: 8px auto 0 auto;
-}
-.pro .lk-download-pdf, .pro .lk-subscribe, .pro .lk-isresolved, .pro .lk-viewHistoric, .pro .incidentActions, .pro .incidentActions .btn{
-	height:23px;
+.lead-container .btn-group-vertical > .btn-group > .btn,
+.lead-container .btn-group-vertical > .btn {
+	width:100%;
+	margin-top: 10px;
 	display:block;
 	clear: both;
-	width:100% !important;
-	padding:0;
+	padding:5px 2px 2px 5px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	padding-top:2px;
 	font-size:13px;
 	-webkit-border-radius: 4px;
@@ -1232,60 +1189,67 @@ form#report-form{
 	border-radius: 4px;
 	background: #FFDB00;
 	font-family:'Dosis', sans-serif;
-	text-transform:uppercase;
-	text-align:center;
 	letter-spacing: -0.3px;
 	color:#607C9D;
 	border:0;
+	text-transform:uppercase;
+	text-align: left;
 }
-.pro .lk-download-pdf, .pro .lk-subscribe, .pro .lk-viewHistoric, .pro .incidentActions{
-	margin-top:10px;
-}
-/*.pro .lk-download-pdf i, .pro .lk-subscribe i, .pro .lk-isresolved i{
-	background:none;
-}*/
-.pro .download-pdf, .pro .subscribe, .pro .isresolved, .pro .historic, .pro .incidentActionsIcon{
-	width:30px;
+.lead-container [class^="icon-"] {
+	width:25px;
 	height:20px;
 	float:right;
 	margin:0 auto 0 5px;
 }
-.pro .lk-subscribe .badge{
+.lead-container .btn .icon-incident-actions{
+	width:29px;
+}
+.lead-container .badge{
 	top: -11px;
 	float: left;
 	left: -11px;
+	border-radius: 50%;
+	padding: 4px 8px;
+	background:#607C9D;
+	border: 2px solid #FFDB00;
+	color:#FFDB00;
 }
-.pro .download-pdf{
+.lead-container .icon-download-pdf{
 	background:#FFDB00 url('../images/pro_download-pdf.png') center right no-repeat;
 }
-.pro .subscribe{
+.lead-container .icon-subscribe{
 	background:#FFDB00 url('../images/pro_subscribe.png') center right no-repeat;
 }
-.pro .isresolved{
+.lead-container .icon-isresolved{
 	background:#FFDB00 url('../images/pro_signaler-resolu.png') center right no-repeat;
 }
-.pro .historic{
+.lead-container .icon-historic{
 	background:#FFDB00 url('../images/pro_show-historic.png') center right no-repeat;
 }
-.pro .incidentActionsIcon{
+.lead-container .icon-incident-actions{
 	background:#FFDB00 url('../images/pro_other-actions.png') center right no-repeat;
 }
-.pro.incidentDetailsStatus{
-	color:#FFF;
-}
-.pro.incidentDetailsStatus ul{
+.lead-container ul{
 	margin:0;
 }
-.pro.incidentDetailsStatus li{
+.lead-container li{
 	list-style-type:none;
 	list-style-image:none;
 	font-size:13px;
 }
-.pro.incidentDetailsStatus a:link, .pro.incidentDetailsStatus a:visited,.pro.incidentDetailsStatus a:hover, .pro.incidentDetailsStatus a:active, .pro.incidentDetailsStatus a:focus{
+.lead-container .incidentDetailsStatus a:link,
+.lead-container .incidentDetailsStatus a:visited,
+.lead-container .incidentDetailsStatus a:hover,
+.lead-container .incidentDetailsStatus a:active,
+.lead-container .incidentDetailsStatus a:focus{
 	color:#FFF;
 	text-decoration:underline;
 }
-.pro a.accept:link, .pro a.accept:visited,.pro a.accept:hover, .pro a.accept:active, .pro a.accept:focus{
+.lead-container .incidentDetailsStatus a.accept:link,
+.lead-container .incidentDetailsStatus a.accept:visited,
+.lead-container .incidentDetailsStatus a.accept:hover,
+.lead-container .incidentDetailsStatus a.accept:active,
+.lead-container .incidentDetailsStatus a.accept:focus{
 	/*color:#607C9D;*/
 	height: 23px;
 	padding: 0;
@@ -1304,7 +1268,10 @@ form#report-form{
 	padding:2px 10px 2px 33px;
 	margin-top:20px;
 }
-.pro a.reject, .pro a.reject, .pro a.reject:hover, .pro a.reject:focus, .pro a.reject:active{
+.lead-container a.reject,
+.lead-container a.reject:hover,
+.lead-container a.reject:focus,
+.lead-container a.reject:active{
 	height: 23px;
 	padding: 0;
 	padding-top: 2px;
@@ -1348,7 +1315,12 @@ form#report-form{
 .modal .modal-body{
 	color:#607C9D;
 }
-.modal .close, .modal .close:link, .modal .close:visited, .modal .close:hover, .modal .close:active, .modal .close:focus{
+.modal .close,
+.modal .close:link,
+.modal .close:visited,
+.modal .close:hover,
+.modal .close:active,
+.modal .close:focus{
 	color:#FFDB00 !important;
 	opacity:1;
 }
@@ -1378,7 +1350,7 @@ form#report-form{
 	display: inline;
 	margin-left: 10px;
 }
-#incident-head .ticket_number{
+.lead-container .ticket_number{
 	color:#D2E2F6;
 	font-size: 17px;
 	-webkit-border-radius: 4px;
@@ -1388,30 +1360,31 @@ form#report-form{
 	margin-bottom: 4px;
 	display: inline-block;
 }
-#incident-head .ticket_number.gray_border{
+.gray_border{
 	border: 2px solid #E0E0E0;
 }
-#incident-head .ticket_number.orange_border{
+.orange_border{
 	border: 2px solid #F79422;
 }
-#incident-head .ticket_number.red_border{
+.red_border{
 	border: 2px solid #C3272F;
 }
-#incident-head .ticket_number.green_border{
+.green_border{
 	border: 2px solid #3CB64B;
 }
-
-#incident-head .ticket_number .number_only{
+.number_only{
 	font-weight:bold;
 }
-#incident-head .ticket_address{
+
+.lead-container .ticket_address{
 	color:#FFF;
 	font-weight:bold;
 }
-#incident-head .ticket_desc{
+.lead-container .ticket_desc{
 	color:#FFF;
 	font-size:12px;
 }
+
 /* ---
    Timeline
    ---- */
@@ -1859,34 +1832,40 @@ input[type=checkbox].invalid{
 .incidentActions .dropdown-submenu>.dropdown-menu{
 	margin-top:0;
 }
-.incidentActions > a:link, .incidentActions > a:visited, .incidentActions.btn-group.open .btn.dropdown-toggle{
+.lead-container > a:link,
+.lead-container > a:visited,
+.lead-container.btn-group.open .btn.dropdown-toggle{
 	background:#FFDB00;
 }
-.incidentActions .dropdown-menu>li>a:hover, .incidentActions .dropdown-menu>li>a:focus, .incidentActions .dropdown-submenu:hover>a, .incidentActions .dropdown-submenu:focus>a{
+.lead-container .dropdown-menu>li>a:hover,
+.lead-container .dropdown-menu>li>a:focus,
+.lead-container .dropdown-submenu:hover>a,
+.lead-container .dropdown-submenu:focus>a{
 	background:#9AB7DA;
 }
 .incidentActions .dropdown-menu>.active>a, .incidentActions .dropdown-menu>.active>a:hover, .incidentActions .dropdown-menu>.active>a:focus{
 	background:#7090B7;
 }
-.incidentActions, .incidentActions .dropdown-menu>li>a{
-	white-space:nowrap;
+
+.lead-container .dropdown-menu > li > a{
+	white-space: nowrap;
 	text-align: left;
 }
-.incidentActions .dropdown-menu{
+.lead-container .dropdown-menu{
 	font-size:12px !important;
 }
-.incidentActions > .dropdown-menu{
+.lead-container .dropdown-menu{
 	right: auto;
 	left: 0;
 }
-.incidentActions .dropdown-menu .active{
+.lead-container .dropdown-menu .active{
 	background:#7090B7;
 }
-.incidentActions .dropdown-submenu>.dropdown-menu{
+.lead-container .dropdown-submenu>.dropdown-menu{
 	right: 100%;
 	left: auto;
 }
-.incidentActions .dropdown-submenu>a:after{
+.lead-container .dropdown-submenu>a:after{
 	position: absolute;
 	top: 2px;
 	left: 5px;
