@@ -102,13 +102,13 @@ class UsersTest(TestCase):
 
     def testUpdateUserAsLeader(self):
         self.client.login(username='leader@a.com', password='test')
-        response = self.client.post(reverse('edit_user', args=[self.manager.id]), self.edituser_post, follow=True)
+        response = self.client.get(reverse('edit_user', args=[self.manager.id]), follow=True)
 
         self.assertEquals(response.status_code, 200)
         self.assertTrue('can_edit' in response.context)
         self.assertTrue(response.context['can_edit'])
 
-        response = self.client.post(reverse('list_users'), follow=True)
+        response = self.client.post(reverse('edit_user', args=[self.manager.id]), self.edituser_post, follow=True)
 
         self.assertEquals(response.status_code, 200)
         self.assertTrue('users' in response.context)
