@@ -834,20 +834,20 @@ $('.dropdown-toggle').click(function(e) {
             <h3>{% trans 'Download a pdf report of this incident' %}</h3>
         </div>
 
-        <div class="modal-body pro">
+        <div class="modal-body">
             <h2>
                 {% trans 'Download' %}
             </h2>
             <p>
-                <a href="{% url 'report_pdf' report.id %}" class="lk-download-pdf" title="{% trans 'Download a pdf report of this incident' %}">
+                <a href="{% url 'report_pdf' report.id %}" class="btn input-block-level" title="{% trans 'Download a pdf report of this incident' %}">
                     {% trans 'report pdf' context 'pro' %}
-                    <i class="icon download-pdf"> </i>
+                    <i class="icon-download-pdf"> </i>
                 </a>
             </p>
             <p>
-                <a href="{% url 'report_pdf_pro' report.id %}" class="btn incidentActions">
+                <a href="{% url 'report_pdf_pro' report.id %}" class="btn input-block-level">
                     {% trans 'report pdf pro' %}
-                    <i class="download-pdf"> </i>
+                    <i class="icon-download-pdf"> </i>
                 </a>
             </p>
 
@@ -856,7 +856,7 @@ $('.dropdown-toggle').click(function(e) {
                 {% trans 'mail pdf' %}
             </h2>
             <div>
-                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail-pdf-citizen">
+                <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-citizen">
                     {% trans 'report pdf' context 'pro' %}
                 </button>
 
@@ -870,7 +870,7 @@ $('.dropdown-toggle').click(function(e) {
                 </form>
             </div>
             <div>
-                <button type="button" class="btn incidentActions" data-toggle="collapse" data-target="#mail-pdf-pro">
+                <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-pro">
                     {% trans 'report pdf pro' %}
                 </button>
                 <form id="mail-pdf-pro" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
