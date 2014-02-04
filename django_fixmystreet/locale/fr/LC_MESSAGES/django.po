@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-30 15:08+0100\n"
-"PO-Revision-Date: 2014-01-30 14:07+0000\n"
-"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-02-04 11:22+0100\n"
+"PO-Revision-Date: 2014-02-04 10:22+0000\n"
+"Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "Motivation de refus:"
 msgid "Refusal motivation description."
 msgstr "Déscription du refus"
 
-#: backoffice/forms.py:70 backoffice/forms.py:222
+#: backoffice/forms.py:70 backoffice/forms.py:223
 #: backoffice/templates/pro/auth/groups_list.html:39
 #: backoffice/templates/pro/auth/groups_list.html:44
 #: backoffice/templates/pro/auth/users_list.html:41
@@ -48,49 +48,49 @@ msgstr "Déscription du refus"
 msgid "Email"
 msgstr "Courriel"
 
-#: backoffice/forms.py:167 backoffice/forms.py:175 backoffice/forms.py:182
-#: backoffice/forms.py:188 backoffice/forms.py:193 backoffice/forms.py:204
+#: backoffice/forms.py:168 backoffice/forms.py:176 backoffice/forms.py:183
+#: backoffice/forms.py:189 backoffice/forms.py:194 backoffice/forms.py:205
 msgid "All reports in my entity"
 msgstr "Tous les incidents dans mon entitée"
 
-#: backoffice/forms.py:168 backoffice/forms.py:176 backoffice/forms.py:183
-#: backoffice/forms.py:189
+#: backoffice/forms.py:169 backoffice/forms.py:177 backoffice/forms.py:184
+#: backoffice/forms.py:190
 msgid "My responbsible reports"
 msgstr "Mes incidents"
 
-#: backoffice/forms.py:169
+#: backoffice/forms.py:170
 msgid "My responbsible reports as contractor"
 msgstr "Mes incidents pour travaux"
 
-#: backoffice/forms.py:170 backoffice/forms.py:177 backoffice/forms.py:184
-#: backoffice/forms.py:190 backoffice/forms.py:193 backoffice/forms.py:204
+#: backoffice/forms.py:171 backoffice/forms.py:178 backoffice/forms.py:185
+#: backoffice/forms.py:191 backoffice/forms.py:194 backoffice/forms.py:205
 #: backoffice/templates/pro/reports/table.html:352
 msgid "My subscriptions"
 msgstr "Mes abonnements"
 
-#: backoffice/forms.py:171 backoffice/forms.py:178
+#: backoffice/forms.py:172 backoffice/forms.py:179
 msgid "My transfered reports"
 msgstr "Mes incidents transféré"
 
-#: backoffice/forms.py:198
+#: backoffice/forms.py:199
 msgid "All Status"
 msgstr "Tous les status"
 
-#: backoffice/forms.py:199 backoffice/templates/pro/home.html:32
+#: backoffice/forms.py:200 backoffice/templates/pro/home.html:32
 msgid "Unpublished"
 msgstr "Incidents signalés"
 
-#: backoffice/forms.py:200 backoffice/templates/pro/home.html:54
+#: backoffice/forms.py:201 backoffice/templates/pro/home.html:54
 #: fixmystreet/models.py:492 fixmystreet/models.py:493
 #: fixmystreet/models.py:698 fixmystreet/templates/_page_header.html:80
 msgid "In progress"
 msgstr "En traitement"
 
-#: backoffice/forms.py:201
+#: backoffice/forms.py:202
 msgid "In progress and assigned"
 msgstr "Mis à jour et assigné"
 
-#: backoffice/forms.py:202 backoffice/templates/pro/home.html:77
+#: backoffice/forms.py:203 backoffice/templates/pro/home.html:77
 #: fixmystreet/templates/_page_header.html:83
 msgid "Closed"
 msgstr "Clôturé"
@@ -168,50 +168,54 @@ msgid "^report/(\\d+)/pending/$"
 msgstr ""
 
 #: backoffice/urls.py:45
-msgid "^report/(\\d+)/notpending/$"
+msgid "^report/(\\d+)/not-pending/$"
 msgstr ""
 
 #: backoffice/urls.py:46
-msgid "^report/(\\d+)/validateAll/$"
-msgstr "^rapport/(\\d+)/tout-valider/"
+msgid "^report/(\\d+)/validate-all/$"
+msgstr ""
 
 #: backoffice/urls.py:47
-msgid "^report/(\\d+)/updateAttachment$"
-msgstr "^rapport/(\\d+)/piece-jouinte$"
+msgid "^report/(\\d+)/update-attachment$"
+msgstr ""
 
 #: backoffice/urls.py:48
-msgid "^report/(\\d+)/deleteFile$"
-msgstr "^rapport/(\\d+)/fichier-supprimer/"
+msgid "^report/(\\d+)/delete-file$"
+msgstr ""
 
 #: backoffice/urls.py:49
-msgid "^report/(\\d+)/changeManager/"
-msgstr "^rapport/(\\d+)/changer-gestionnaire/"
+msgid "^report/(\\d+)/change-responsible/"
+msgstr ""
 
 #: backoffice/urls.py:50
-msgid "^report/(\\d+)/changeContractor/"
-msgstr "^rapport/(\\d+)/changer-executeur/"
+msgid "^report/(\\d+)/change-contractor/"
+msgstr ""
 
 #: backoffice/urls.py:51
-msgid "^report/(\\d+)/switchPrivacy/"
-msgstr "^rapport/(\\d+)/changer-vibilite/"
+msgid "^report/(\\d+)/switch-privacy/"
+msgstr ""
 
 #: backoffice/urls.py:52
 msgid "^report/(\\d+)/publish/"
 msgstr "^rapport/(\\d+)/publier/"
 
 #: backoffice/urls.py:53
-msgid "^report/(\\d+)/updatePriority/"
+msgid "^report/(\\d+)/update-priority/"
 msgstr ""
 
-#: backoffice/urls.py:58
+#: backoffice/urls.py:54
+msgid "^report/(\\d+)/false-address/"
+msgstr ""
+
+#: backoffice/urls.py:59
 msgid "^report/(\\d+)/pdf/"
 msgstr "^rapport/(\\d+)/pdf/"
 
-#: backoffice/urls.py:63 fixmystreet/urls.py:59
+#: backoffice/urls.py:64 fixmystreet/urls.py:59
 msgid "^report/(\\d+)/subscribe/"
 msgstr "^rapport/(\\d+)/s-abonner/"
 
-#: backoffice/urls.py:64 fixmystreet/urls.py:60
+#: backoffice/urls.py:65 fixmystreet/urls.py:60
 msgid "^report/(\\d+)/unsubscribe/"
 msgstr "^rapport/(\\d+)/se-desabonner/"
 
@@ -252,7 +256,7 @@ msgstr "Configuration des catégories des gestionnaires"
 
 #: backoffice/templates/pro/manager_category_configuration.html:73
 #: backoffice/templates/pro/reports/merge.html:272
-#: backoffice/templates/pro/reports/show.html:947
+#: backoffice/templates/pro/reports/show.html:896
 #: fixmystreet/templates/base.html:219
 #: fixmystreet/templates/reports/_documentreport.html:50
 #: fixmystreet/templates/reports/_documentreport.html:73
@@ -263,7 +267,7 @@ msgstr "Annuler"
 #: backoffice/templates/pro/auth/group_create.html:139
 #: backoffice/templates/pro/auth/user_edit.html:88
 #: fixmystreet/templates/contact/new.html:24
-#: fixmystreet/templates/reports/show.html:469
+#: fixmystreet/templates/reports/show.html:470
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -392,10 +396,10 @@ msgstr "Rapport à fusionner"
 
 #: backoffice/templates/pro/reports/merge.html:147
 #: backoffice/templates/pro/reports/merge.html:231
-#: backoffice/templates/pro/reports/show.html:344
-#: backoffice/templates/pro/reports/show.html:348
-#: backoffice/templates/pro/reports/show.html:352
-#: backoffice/templates/pro/reports/show.html:356
+#: backoffice/templates/pro/reports/show.html:283
+#: backoffice/templates/pro/reports/show.html:287
+#: backoffice/templates/pro/reports/show.html:291
+#: backoffice/templates/pro/reports/show.html:295
 #: fixmystreet/templates/reports/_navigation.html:13
 #: fixmystreet/templates/reports/show.html:152
 #: fixmystreet/templates/reports/show.html:156
@@ -448,8 +452,8 @@ msgstr "à"
 
 #: backoffice/templates/pro/reports/merge.html:240
 #: backoffice/templates/pro/reports/merge.html:305
-#: backoffice/templates/pro/reports/show.html:651
-#: backoffice/templates/pro/reports/show.html:653
+#: backoffice/templates/pro/reports/show.html:598
+#: backoffice/templates/pro/reports/show.html:600
 msgid "Merge"
 msgstr "Fusionner..."
 
@@ -506,75 +510,75 @@ msgid ""
 "public subscribers."
 msgstr "Voulez-vous rendre cet incident privé ? Cela notifiera les abonnés public."
 
-#: backoffice/templates/pro/reports/show.html:45
+#: backoffice/templates/pro/reports/show.html:28
 msgid ""
 "Are you sure you want to change the responsable manager? This action cannot "
 "be undone."
 msgstr "Cet incident va être transféré à un autre gestionnaire. Cette action ne pourra pas être annulée ! Voulez-vous continuer ?"
 
-#: backoffice/templates/pro/reports/show.html:199
-#: backoffice/templates/pro/reports/show.html:841 fixmystreet/forms.py:53
+#: backoffice/templates/pro/reports/show.html:125
+#: backoffice/templates/pro/reports/show.html:784 fixmystreet/forms.py:53
 #: fixmystreet/forms.py:68
 msgid "Select a Category"
 msgstr "Localisation de l'incident"
 
-#: backoffice/templates/pro/reports/show.html:224 fixmystreet/forms.py:27
+#: backoffice/templates/pro/reports/show.html:149 fixmystreet/forms.py:27
 #: fixmystreet/forms.py:54 fixmystreet/forms.py:100
 msgid "Select a secondary Category"
 msgstr "Type d'incident"
 
-#: backoffice/templates/pro/reports/show.html:378
+#: backoffice/templates/pro/reports/show.html:325
 #: fixmystreet/templates/reports/show.html:181
 msgid "This incident is located on a regional zone"
 msgstr "Sur une voirie régionale"
 
-#: backoffice/templates/pro/reports/show.html:382
+#: backoffice/templates/pro/reports/show.html:329
 #: fixmystreet/templates/reports/show.html:187
 msgid "This incident has been signaled by a pro"
 msgstr "Signalé par un professionnel"
 
-#: backoffice/templates/pro/reports/show.html:386
+#: backoffice/templates/pro/reports/show.html:333
 #: fixmystreet/templates/reports/show.html:191
 msgid "This incident is assigned to"
 msgstr "Assigné à"
 
-#: backoffice/templates/pro/reports/show.html:390
+#: backoffice/templates/pro/reports/show.html:337
 #: fixmystreet/templates/reports/show.html:197
 msgid "Date planned : "
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:396
+#: backoffice/templates/pro/reports/show.html:343
 msgid "This incident has no defined priority"
 msgstr "Aucune priorité attribuée"
 
-#: backoffice/templates/pro/reports/show.html:398
+#: backoffice/templates/pro/reports/show.html:345
 msgid "This incident has a low priority"
 msgstr "Priorité basse"
 
-#: backoffice/templates/pro/reports/show.html:400
+#: backoffice/templates/pro/reports/show.html:347
 msgid "This incident has a medium priority"
 msgstr "Priorité moyenne"
 
-#: backoffice/templates/pro/reports/show.html:402
+#: backoffice/templates/pro/reports/show.html:349
 msgid "This incident has a serious priority"
 msgstr "Priorité haute"
 
-#: backoffice/templates/pro/reports/show.html:406
+#: backoffice/templates/pro/reports/show.html:353
 msgid "This incident has been signaled as solved"
 msgstr "Incident signalé comme résolu"
 
-#: backoffice/templates/pro/reports/show.html:423
-#: backoffice/templates/pro/reports/show.html:666
+#: backoffice/templates/pro/reports/show.html:370
+#: backoffice/templates/pro/reports/show.html:613
 #: backoffice/templates/pro/reports/table.html:344
 #: backoffice/templates/pro/reports/table_content.html:56
 msgid "Visibility"
 msgstr "Visibilité"
 
-#: backoffice/templates/pro/reports/show.html:425
+#: backoffice/templates/pro/reports/show.html:372
 msgid "pro,public"
 msgstr "Pros,Tous"
 
-#: backoffice/templates/pro/reports/show.html:430
+#: backoffice/templates/pro/reports/show.html:377
 #, python-format
 msgid ""
 "\n"
@@ -582,122 +586,123 @@ msgid ""
 "                           "
 msgstr "\n<strong>Signalé par</strong> <a href='mailto:%(mail)s'>%(by)s</a> le %(on)s"
 
-#: backoffice/templates/pro/reports/show.html:441
-#: fixmystreet/templates/reports/show.html:213
-#: fixmystreet/templates/reports/show.html:420
+#: backoffice/templates/pro/reports/show.html:388
+#: fixmystreet/templates/reports/show.html:212
+#: fixmystreet/templates/reports/show.html:421
 msgid "Responsible:"
 msgstr "Traité par :"
 
-#: backoffice/templates/pro/reports/show.html:452
-#: fixmystreet/templates/reports/show.html:223
-#: fixmystreet/templates/reports/show.html:416
+#: backoffice/templates/pro/reports/show.html:399
+#: fixmystreet/templates/reports/show.html:222
+#: fixmystreet/templates/reports/show.html:417
 msgid "Status:"
 msgstr "Statut :"
 
-#: backoffice/templates/pro/reports/show.html:454
-#: fixmystreet/templates/reports/show.html:225
+#: backoffice/templates/pro/reports/show.html:401
+#: fixmystreet/templates/reports/show.html:224
 msgid "on"
 msgstr "le"
 
-#: backoffice/templates/pro/reports/show.html:468
-#: fixmystreet/templates/reports/show.html:235
+#: backoffice/templates/pro/reports/show.html:415
+#: fixmystreet/templates/reports/show.html:234
 msgid "Merged on"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:471
-#: fixmystreet/templates/reports/show.html:237
+#: backoffice/templates/pro/reports/show.html:418
+#: fixmystreet/templates/reports/show.html:236
 msgid "with incident"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:488
+#: backoffice/templates/pro/reports/show.html:435
 msgid "Accept"
 msgstr "Accepter"
 
-#: backoffice/templates/pro/reports/show.html:489
+#: backoffice/templates/pro/reports/show.html:436
 msgid "Publish"
 msgstr "Publier"
 
-#: backoffice/templates/pro/reports/show.html:490
+#: backoffice/templates/pro/reports/show.html:437
 msgid "Reject"
 msgstr "Sans suite"
 
-#: backoffice/templates/pro/reports/show.html:506
-#: fixmystreet/templates/reports/show.html:250
+#: backoffice/templates/pro/reports/show.html:453
+#: fixmystreet/templates/reports/show.html:247
 msgid "Report as solved"
 msgstr "Signaler résolu"
 
-#: backoffice/templates/pro/reports/show.html:517
-#: fixmystreet/templates/reports/show.html:261
-#: fixmystreet/templates/reports/show.html:331
+#: backoffice/templates/pro/reports/show.html:464
+#: fixmystreet/templates/reports/show.html:257
+#: fixmystreet/templates/reports/show.html:332
 msgid "Subscribe"
 msgstr "S'abonner"
 
-#: backoffice/templates/pro/reports/show.html:522
-#: backoffice/templates/pro/reports/show.html:891
-#: backoffice/templates/pro/reports/show.html:897
-#: fixmystreet/templates/reports/show.html:266
+#: backoffice/templates/pro/reports/show.html:469
+#: backoffice/templates/pro/reports/show.html:832
+#: backoffice/templates/pro/reports/show.html:840
+#: fixmystreet/templates/reports/show.html:263
 msgid "Download a pdf report of this incident"
 msgstr "Télécharger une copie de l'incident sous format pdf."
 
-#: backoffice/templates/pro/reports/show.html:523
+#: backoffice/templates/pro/reports/show.html:470
 msgid "Download PDF"
 msgstr "Télécharger PDF"
 
-#: backoffice/templates/pro/reports/show.html:526
+#: backoffice/templates/pro/reports/show.html:473
+#: fixmystreet/templates/reports/show.html:268
 msgid "View historic"
 msgstr "Historique"
 
-#: backoffice/templates/pro/reports/show.html:536
+#: backoffice/templates/pro/reports/show.html:483
 msgid "Other actions"
 msgstr "Actions"
 
-#: backoffice/templates/pro/reports/show.html:540
+#: backoffice/templates/pro/reports/show.html:487
 msgid "Transfer to"
 msgstr "Transférer à"
 
-#: backoffice/templates/pro/reports/show.html:543
+#: backoffice/templates/pro/reports/show.html:490
 msgid "Managers"
 msgstr "Gestionnaires"
 
-#: backoffice/templates/pro/reports/show.html:556
+#: backoffice/templates/pro/reports/show.html:503
 msgid "Entities"
 msgstr "Entités"
 
-#: backoffice/templates/pro/reports/show.html:568
+#: backoffice/templates/pro/reports/show.html:515
 msgid "Organisms"
 msgstr "Institutions"
 
-#: backoffice/templates/pro/reports/show.html:584
+#: backoffice/templates/pro/reports/show.html:531
 msgid "Assign to"
 msgstr "Assigner à"
 
-#: backoffice/templates/pro/reports/show.html:587
+#: backoffice/templates/pro/reports/show.html:534
 msgid "Contractors"
 msgstr "Exécuteurs de travaux"
 
-#: backoffice/templates/pro/reports/show.html:592
-#: backoffice/templates/pro/reports/show.html:610
+#: backoffice/templates/pro/reports/show.html:539
+#: backoffice/templates/pro/reports/show.html:557
 msgid "None"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:605
+#: backoffice/templates/pro/reports/show.html:552
 msgid "Applicants"
 msgstr "Impétrants"
 
-#: backoffice/templates/pro/reports/show.html:627
+#: backoffice/templates/pro/reports/show.html:574
 msgid "Plan"
 msgstr "Planifier"
 
-#: backoffice/templates/pro/reports/show.html:634
+#: backoffice/templates/pro/reports/show.html:581
 msgid "Not planned"
 msgstr "Non planifié"
 
-#: backoffice/templates/pro/reports/show.html:658
+#: backoffice/templates/pro/reports/show.html:605
 msgid "Priorité"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:662
-#: backoffice/templates/pro/reports/show.html:835
+#: backoffice/templates/pro/reports/show.html:609
+#: backoffice/templates/pro/reports/show.html:778
 #: backoffice/templates/pro/reports/table.html:325
 #: backoffice/templates/pro/reports/table_content.html:37
 #: fixmystreet/models.py:514 fixmystreet/models.py:515
@@ -705,84 +710,83 @@ msgstr ""
 msgid "Category"
 msgstr "Catégorie"
 
-#: backoffice/templates/pro/reports/show.html:669
+#: backoffice/templates/pro/reports/show.html:616
 msgid "AllPersons"
 msgstr "Tous"
 
-#: backoffice/templates/pro/reports/show.html:672
+#: backoffice/templates/pro/reports/show.html:619
 msgid "Pro"
 msgstr "Pros"
 
-#: backoffice/templates/pro/reports/show.html:675
+#: backoffice/templates/pro/reports/show.html:622
 msgid "Publish All"
 msgstr "Tout publier"
 
-#: backoffice/templates/pro/reports/show.html:682
+#: backoffice/templates/pro/reports/show.html:629
 #: backoffice/templates/pro/reports/table.html:346
 #: backoffice/templates/pro/reports/table_content.html:58
 msgid "Pending"
 msgstr "Masqué"
 
-#: backoffice/templates/pro/reports/show.html:685
+#: backoffice/templates/pro/reports/show.html:632
 msgid "Oui"
 msgstr "Oui"
 
-#: backoffice/templates/pro/reports/show.html:688
+#: backoffice/templates/pro/reports/show.html:635
 msgid "Non"
 msgstr "Non"
 
-#: backoffice/templates/pro/reports/show.html:696
-#: backoffice/templates/pro/reports/show.html:866
+#: backoffice/templates/pro/reports/show.html:643
+#: backoffice/templates/pro/reports/show.html:809
 #: backoffice/templates/pro/reports/table.html:329
 #: backoffice/templates/pro/reports/table_content.html:41
 msgid "Address"
 msgstr "Adresse"
 
-#: backoffice/templates/pro/reports/show.html:701
-#: backoffice/templates/pro/reports/table.html:358 fixmystreet/models.py:1829
+#: backoffice/templates/pro/reports/show.html:648 fixmystreet/models.py:1829
 msgid "Close"
 msgstr "Clôturer"
 
-#: backoffice/templates/pro/reports/show.html:719
-#: fixmystreet/templates/reports/show.html:276
+#: backoffice/templates/pro/reports/show.html:662
+#: fixmystreet/templates/reports/show.html:277
 msgid "Extend map"
 msgstr "Agrandir la carte"
 
-#: backoffice/templates/pro/reports/show.html:720
-#: fixmystreet/templates/reports/show.html:277
+#: backoffice/templates/pro/reports/show.html:663
+#: fixmystreet/templates/reports/show.html:278
 msgid "Reduce map"
 msgstr "Réduire la carte"
 
-#: backoffice/templates/pro/reports/show.html:722
-#: fixmystreet/templates/reports/show.html:279
+#: backoffice/templates/pro/reports/show.html:665
+#: fixmystreet/templates/reports/show.html:280
 msgid "Street View"
 msgstr "Street View"
 
-#: backoffice/templates/pro/reports/show.html:741
-#: fixmystreet/templates/reports/show.html:298
+#: backoffice/templates/pro/reports/show.html:684
+#: fixmystreet/templates/reports/show.html:299
 msgid "You think this incident is close. Indicate it!"
 msgstr "Vous constatez que l'incident est résolu ?"
 
-#: backoffice/templates/pro/reports/show.html:744
-#: fixmystreet/templates/reports/show.html:301
+#: backoffice/templates/pro/reports/show.html:687
+#: fixmystreet/templates/reports/show.html:302
 msgid ""
 "Indicate that the incident is fixed. By pressing this button a mail will be "
 "send to the responsible manager."
 msgstr "Signalez la résolution de l'incident. En cliquant sur ce bouton, vous envoyez un mail de confirmation au gestionnaire de voirie"
 
-#: backoffice/templates/pro/reports/show.html:746
-#: backoffice/templates/pro/reports/show.html:948
-#: fixmystreet/templates/reports/show.html:303
+#: backoffice/templates/pro/reports/show.html:689
+#: backoffice/templates/pro/reports/show.html:897
+#: fixmystreet/templates/reports/show.html:304
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: backoffice/templates/pro/reports/show.html:763
-#: fixmystreet/templates/reports/show.html:320
+#: backoffice/templates/pro/reports/show.html:706
+#: fixmystreet/templates/reports/show.html:321
 msgid "Subscription:"
 msgstr "Abonnez-vous"
 
-#: backoffice/templates/pro/reports/show.html:767
-#: fixmystreet/templates/reports/show.html:324
+#: backoffice/templates/pro/reports/show.html:710
+#: fixmystreet/templates/reports/show.html:325
 #, python-format
 msgid ""
 "\n"
@@ -790,99 +794,107 @@ msgid ""
 "                    "
 msgstr "\nAbonnez-vous pour suivre l’évolution de l’incident et recevoir des notifications\n(%(count)s personne(s) sont déjà abonnée(s) à cet incident)"
 
-#: backoffice/templates/pro/reports/show.html:774 fixmystreet/forms.py:55
+#: backoffice/templates/pro/reports/show.html:717 fixmystreet/forms.py:55
 msgid "Subscription and report follow-up"
 msgstr "Je souhaite suivre l'évolution de l'incident et recevoir des notifications par mail."
 
-#: backoffice/templates/pro/reports/show.html:790
+#: backoffice/templates/pro/reports/show.html:733
 msgid "Priority:"
 msgstr "Priorité:"
 
-#: backoffice/templates/pro/reports/show.html:795
+#: backoffice/templates/pro/reports/show.html:738
 msgid "Probability:"
 msgstr "Survenance:"
 
-#: backoffice/templates/pro/reports/show.html:805
+#: backoffice/templates/pro/reports/show.html:748
 msgid "Gravity:"
 msgstr "Impacte:"
 
-#: backoffice/templates/pro/reports/show.html:817
+#: backoffice/templates/pro/reports/show.html:760
 msgid "Total priority:"
 msgstr "Facteur de risque:"
 
-#: backoffice/templates/pro/reports/show.html:822
-#: backoffice/templates/pro/reports/show.html:853
-#: backoffice/templates/pro/reports/show.html:878
+#: backoffice/templates/pro/reports/show.html:765
+#: backoffice/templates/pro/reports/show.html:796
 msgid "Annuler"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:825
-#: backoffice/templates/pro/reports/show.html:856
-#: backoffice/templates/pro/reports/show.html:881
+#: backoffice/templates/pro/reports/show.html:768
+#: backoffice/templates/pro/reports/show.html:799
 msgid "Accepter"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:871
+#: backoffice/templates/pro/reports/show.html:814
 msgid "Wrong address:"
 msgstr "Adresse éronné"
 
-#: backoffice/templates/pro/reports/show.html:898
+#: backoffice/templates/pro/reports/show.html:819
+msgid "Cancel wrong address"
+msgstr ""
+
+#: backoffice/templates/pro/reports/show.html:822
+msgid "Signal wrong address"
+msgstr ""
+
+#: backoffice/templates/pro/reports/show.html:837
+#: fixmystreet/templates/reports/show.html:264
+msgid "Download"
+msgstr "Télécharger"
+
+#: backoffice/templates/pro/reports/show.html:841
+#: backoffice/templates/pro/reports/show.html:858
 msgctxt "pro"
 msgid "report pdf"
 msgstr "Rapport PDF"
 
-#: backoffice/templates/pro/reports/show.html:902
-#: backoffice/templates/pro/reports/show.html:918
-msgid "mail pdf"
-msgstr "envoyer le PDF par mail"
-
-#: backoffice/templates/pro/reports/show.html:906
-#: backoffice/templates/pro/reports/show.html:921
-msgid "enter mail address"
-msgstr "Adresse email"
-
-#: backoffice/templates/pro/reports/show.html:908
-#: backoffice/templates/pro/reports/show.html:923
-msgid "send pdf"
-msgstr "Envoyer le PDF"
-
-#: backoffice/templates/pro/reports/show.html:910
-#: backoffice/templates/pro/reports/show.html:925
-msgid "enter comment for mail"
-msgstr "Message:"
-
-#: backoffice/templates/pro/reports/show.html:917
+#: backoffice/templates/pro/reports/show.html:847
+#: backoffice/templates/pro/reports/show.html:872
 msgid "report pdf pro"
 msgstr "Rapport PDF pro"
 
-#: backoffice/templates/pro/reports/show.html:932
-msgid "Export Csv"
-msgstr "Export csv"
+#: backoffice/templates/pro/reports/show.html:854
+msgid "mail pdf"
+msgstr "envoyer le PDF par mail"
 
-#: backoffice/templates/pro/reports/show.html:956
+#: backoffice/templates/pro/reports/show.html:863
+#: backoffice/templates/pro/reports/show.html:876
+msgid "enter mail address"
+msgstr "Adresse email"
+
+#: backoffice/templates/pro/reports/show.html:865
+#: backoffice/templates/pro/reports/show.html:878
+msgid "enter comment for mail"
+msgstr "Message:"
+
+#: backoffice/templates/pro/reports/show.html:867
+#: backoffice/templates/pro/reports/show.html:880
+msgid "send pdf"
+msgstr "Envoyer le PDF"
+
+#: backoffice/templates/pro/reports/show.html:905
 #: fixmystreet/templates/admin/fixmystreet/fmsuser/change_form.html:9
 #: fixmystreet/templates/reports/pdf.html:277
-#: fixmystreet/templates/reports/show.html:346
+#: fixmystreet/templates/reports/show.html:347
 msgid "History"
 msgstr "Historique"
 
-#: backoffice/templates/pro/reports/show.html:956
-#: fixmystreet/templates/reports/show.html:346
+#: backoffice/templates/pro/reports/show.html:905
+#: fixmystreet/templates/reports/show.html:347
 msgid "incident "
 msgstr "Incident"
 
-#: backoffice/templates/pro/reports/show.html:962
+#: backoffice/templates/pro/reports/show.html:911
 #: fixmystreet/templates/base.html:190
-#: fixmystreet/templates/reports/show.html:352
+#: fixmystreet/templates/reports/show.html:353
 msgid "OK"
 msgstr "OK"
 
-#: backoffice/templates/pro/reports/show.html:972
-#: fixmystreet/templates/reports/show.html:440
+#: backoffice/templates/pro/reports/show.html:921
+#: fixmystreet/templates/reports/show.html:441
 msgid "Add"
 msgstr "Ajouter"
 
-#: backoffice/templates/pro/reports/show.html:980
+#: backoffice/templates/pro/reports/show.html:929
 msgid "Photos and files"
 msgstr "Photos et fichiers"
 
@@ -1034,6 +1046,11 @@ msgstr ""
 msgid "All incidents"
 msgstr ""
 
+#: backoffice/templates/pro/reports/table.html:358
+msgctxt "button"
+msgid "Close"
+msgstr ""
+
 #: backoffice/templates/pro/reports/table_content.html:5
 msgctxt "Ticket"
 msgid "All"
@@ -1144,7 +1161,7 @@ msgstr "Tous"
 msgid "Responsible entity"
 msgstr "Entité responsable"
 
-#: backoffice/views/ajax.py:112
+#: backoffice/views/ajax.py:95
 msgid "PDF sent as email"
 msgstr ""
 
@@ -1164,19 +1181,23 @@ msgstr ""
 msgid "Password changed successfully"
 msgstr ""
 
-#: backoffice/views/users.py:114
+#: backoffice/views/users.py:93
+msgid "User has been updated successfully"
+msgstr ""
+
+#: backoffice/views/users.py:115
 msgid "User has been created successfully"
 msgstr ""
 
-#: backoffice/views/users.py:118
+#: backoffice/views/users.py:119
 msgid "An error occurd during the email sending"
 msgstr ""
 
-#: backoffice/views/users.py:141
+#: backoffice/views/users.py:142
 msgid "User deleted successfully"
 msgstr ""
 
-#: backoffice/views/users.py:143
+#: backoffice/views/users.py:144
 msgid "You can not delete this user"
 msgstr ""
 
@@ -1184,20 +1205,20 @@ msgstr ""
 msgid "Newly created report successfull"
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné.\nUn mail contenant les informations du rapport vous a été envoyé"
 
-#: backoffice/views/reports/main.py:145 fixmystreet/views/reports/main.py:222
+#: backoffice/views/reports/main.py:144 fixmystreet/views/reports/main.py:222
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
-#: backoffice/views/reports/main.py:165
+#: backoffice/views/reports/main.py:164
 msgid "Report successfully deleted"
 msgstr "Incident suppimé"
 
-#: backoffice/views/reports/main.py:197 backoffice/views/reports/main.py:287
+#: backoffice/views/reports/main.py:196 backoffice/views/reports/main.py:286
 #: fixmystreet/views/reports/main.py:157
 msgid "You attachments has been sent"
 msgstr "Vos attachements ont été envoyés"
 
-#: backoffice/views/reports/updates.py:136
+#: backoffice/views/reports/updates.py:137
 msgid ""
 "Cannot turn incident public. The category of this incident may not be shown "
 "to the citizens."
@@ -1604,7 +1625,7 @@ msgstr ""
 #: fixmystreet/templates/_page_header.html:14
 #: fixmystreet/templates/reports/new.html:72
 msgid "Localisation"
-msgstr ""
+msgstr "Localisation"
 
 #: fixmystreet/templates/_page_header.html:15
 #: fixmystreet/templates/reports/document.html:76
@@ -2149,12 +2170,12 @@ msgid "Fix My Street Pro"
 msgstr "Fix My Street Pro"
 
 #: fixmystreet/templates/reports/pdf.html:148
-#: fixmystreet/templates/reports/show.html:365
+#: fixmystreet/templates/reports/show.html:366
 msgid "Report Ticket"
 msgstr "Incident n° "
 
 #: fixmystreet/templates/reports/pdf.html:157
-#: fixmystreet/templates/reports/show.html:378
+#: fixmystreet/templates/reports/show.html:379
 msgid "This incident is not validated."
 msgstr "L'incident est en cours de validation"
 
@@ -2163,12 +2184,12 @@ msgid "This problem has been refused."
 msgstr "Cet incident n'a pas été valdé."
 
 #: fixmystreet/templates/reports/pdf.html:168
-#: fixmystreet/templates/reports/show.html:381
+#: fixmystreet/templates/reports/show.html:382
 msgid "This incident is in progress."
 msgstr "En cours de traitement."
 
 #: fixmystreet/templates/reports/pdf.html:172
-#: fixmystreet/templates/reports/show.html:384
+#: fixmystreet/templates/reports/show.html:385
 msgid "This incident has been closed."
 msgstr "L'incident a été clôturé."
 
@@ -2236,23 +2257,19 @@ msgstr ""
 msgid "There is no planification for this incident"
 msgstr ""
 
-#: fixmystreet/templates/reports/show.html:208
+#: fixmystreet/templates/reports/show.html:207
 msgid "Posted on"
 msgstr "Signalé le"
 
-#: fixmystreet/templates/reports/show.html:267
-msgid "Download"
-msgstr "Télécharger"
-
-#: fixmystreet/templates/reports/show.html:330
+#: fixmystreet/templates/reports/show.html:331
 msgid "Your email"
 msgstr "Votre email"
 
-#: fixmystreet/templates/reports/show.html:369
+#: fixmystreet/templates/reports/show.html:370
 msgid "This report has been merged with report: "
 msgstr "Cet incident a été fusionné avec:"
 
-#: fixmystreet/templates/reports/show.html:397
+#: fixmystreet/templates/reports/show.html:398
 #, python-format
 msgid ""
 "\n"
@@ -2260,19 +2277,19 @@ msgid ""
 "                    "
 msgstr "\nSignalé le <strong>%(on)s</strong>"
 
-#: fixmystreet/templates/reports/show.html:408
+#: fixmystreet/templates/reports/show.html:409
 msgid "Location:"
 msgstr "Localisation :"
 
-#: fixmystreet/templates/reports/show.html:412
+#: fixmystreet/templates/reports/show.html:413
 msgid "Category:"
 msgstr "Catégorie :"
 
-#: fixmystreet/templates/reports/show.html:431
+#: fixmystreet/templates/reports/show.html:432
 msgid "Show history"
 msgstr "Afficher l'historique de l'incident."
 
-#: fixmystreet/templates/reports/show.html:448
+#: fixmystreet/templates/reports/show.html:449
 msgid "Files"
 msgstr "Photos, fichiers et commentaires"
 

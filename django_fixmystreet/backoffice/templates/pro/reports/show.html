@@ -48,7 +48,6 @@ function persistCategoryUpdate() {
 }
 
 $(function(){
-
     $(".changeStatus").delegate("input[type=radio]", "click", function(){
         var id = $(this).data('attachmentId');
         var level = $(this).val();
@@ -64,7 +63,6 @@ $(function(){
             elem.removeClass('loading');
         });
     });
-
 
     /*Set the checked value*/
     {% if report.private %}
