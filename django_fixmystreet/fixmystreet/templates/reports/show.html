@@ -79,30 +79,31 @@ function markAsDone(){
     $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
 }
 
-</script>
 
-<script>
-    var someCallback = function(exifObject, index) {
-        if (exifObject && exifObject.DateTimeOriginal){
-            textAreas = $($(".update_text").find('#imagedate'));
-            var datetosplit = exifObject.DateTimeOriginal;
-            var splitted = datetosplit.split(/[:,\/ ]/)
-            var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
-            }
+var someCallback = function(exifObject, index) {
+    if (exifObject && exifObject.DateTimeOriginal){
+        textAreas = $($(".update_text").find('#imagedate'));
+        var datetosplit = exifObject.DateTimeOriginal;
+        var splitted = datetosplit.split(/[:,\/ ]/)
+        var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
+        textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
+    }
+}
+
+$(function(event) {
+    $("#btn-toggle-map a").click(function(evt) {
+        evt.preventDefault();
+        var mapEl = $('#map');
+        if (mapEl.hasClass('map-big')) {
+            mapEl.removeClass('map-big');
+        } else {
+            mapEl.addClass('map-big');
         }
-
-    $(function(event) {
-        $("#btn-toggle-map a").click(function(evt) {
-            evt.preventDefault();
-            var mapEl = $('#map');
-            if (mapEl.hasClass('map-big')) {
-                mapEl.removeClass('map-big');
-            } else {
-                mapEl.addClass('map-big');
-            }
-        });
     });
+    $('#map').on('transitionend', function () {
+        fms.currentMap.map.updateSize();
+    })
+});
 
 </script>
 
