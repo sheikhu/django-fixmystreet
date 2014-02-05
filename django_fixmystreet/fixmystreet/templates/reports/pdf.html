@@ -44,11 +44,8 @@
     </script>
 {% endblock %}
 
-
 {% block nav %}
-    {% if BACKOFFICE %}
-        <img id="banner-pro" src="{{ STATIC_URL }}images/fixmystreet-pro.png" alt="{% trans 'Fix My Street Pro' %}">
-    {% endif %}
+
 {% endblock %}
 {% block lng %}{% endblock %}
 
@@ -71,10 +68,10 @@
         {
             border-color: #999;
         }
-        div > p
+        /*div > p
         {
             margin-left:30px;
-        }
+        }*/
         .p_title
         {
             margin-left: 0;
@@ -106,10 +103,10 @@
         }
 
         .block-full, .report_update {
-            width: 660px;
+            /*width: 660px;
             border: 1px solid #999;
             padding:20px;
-            border-radius: 0;
+            border-radius: 0;*/
         }
 
         .report_update a {
@@ -122,37 +119,284 @@
 
         #banner-pro {
             position: absolute;
-            bottom: 0;
-            right: 30px;
+            top: 10px;
+            right: 180px;
             z-index: 1000000;
         }
         .history, .report_update{
             page-break-inside: avoid;
         }
+
+        
+
+        .clearfloat{
+            height:0;
+            clear:both;
+        }
+        #map{
+            width: 46%;
+            border: 1px solid #CCC;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            float:left;
+        }
+        #map img {
+            max-width: none;
+        }
+        #right-side-map{
+            width: 50%;
+            float: left;
+            margin-left: 3%;
+        }
+        h1{
+            font-size:14pt;
+            margin:0;
+            line-height:30px;
+            margin-bottom:10px;
+        }
+        h1 span{
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            padding:4px;
+        }
+        p{
+            font-size:10pt;
+            line-height: 17px;
+        }
+        table{
+            width:100%;
+            margin-bottom:10px;
+        }
+        table tr th, table tr td{
+            border:1px solid #DDD;
+            padding:5px;
+        }
+        table tr th{
+            background:#EEE;
+        }
+        table p{
+            margin:0;
+        }
+        .categories p + p{
+            text-transform:capitalize;
+        }
+        .incidentDetails ul{
+            list-style-type:none;
+            margin-left:0;
+            font-size:10pt;
+        }
+        h2{
+            font-size:13pt;
+            margin: 0;
+            line-height:20px;
+        }
+        .history table.historyTable{
+            width:100%;
+            font-size:10pt;
+        }
+        .history table.historyTable tr th, .history table.historyTable tr td{
+            border:0;
+            padding:2px;
+        }
+        .report_update{
+            border:1px solid #DDD;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+        .report_update .comment-head, .report_update .picture-head{
+            background:#EEE;
+            color:#000;
+        }
+        .report_update .comment-head a:link, .report_update .comment-head a:visited, .report_update .comment-head a:hover, .report_update .comment-head a:active, .report_update .comment-head a:focus, .report_update .picture-head a:link, .report_update .picture-head a:visited, .report_update .picture-head a:hover, .report_update .picture-head a:active, .report_update .picture-head a:focus{
+            color:#000;
+            text-decoration:none;
+        }
+        .comments li{
+            list-style-type:none;
+            margin-top:10px;
+        }
+        .comments li:first-child{
+            margin:0;
+        }
+        .comments p{
+            margin:0;
+        }
+        .comment-incident, .picture-caption{
+            color:#000;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-    <div id="map">
+    {% if BACKOFFICE %}
+        <img id="banner-pro" src="{{ STATIC_URL }}images/fixmystreet-pro.png" alt="{% trans 'Fix My Street Pro' %}">
+    {% endif %}
+    <div id="map" class="pdf">
         <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
     </div>
+    <div id="right-side-map" class='pdf'>
     <!--
         Title
     -->
-    <h1 style="position:relative;">
-        {% if report.is_in_progress %}
-            <img src="{{STATIC_URL}}{{report.get_marker}}" style="width:40px;" />
-        {% else %}
-            <img src="{{STATIC_URL}}{{report.get_marker}}" style="width:40px;" />
-        {% endif %}
-        {% trans "Report Ticket" %} {{ report.get_ticket_number }}
-    </h1>
+        <h1 style="position:relative;">
+            {% if report.is_created %}
+                <span class="ticket_number red_border">
+                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                </span>
+            {% elif report.is_in_progress %}
+                <span class="ticket_number orange_border">
+                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                </span>
+            {% elif report.is_refused or report.is_temporary %}
+                <span class="ticket_number gray_border">
+                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                </span>
+            {% else %}
+                <span class="ticket_number green_border">
+                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                </span>
+            {% endif %}
+        </h1>
+    <!-- 
+        Adress
+    -->    
+        <div class="adress">
+            <p>{{report.address}}, {{report.address_number}} <br />
+                {{report.postalcode}} {{report.get_address_commune_name}}</p>
+            {% if privacy == 'private' and report.false_address %}
+                <p>{{ report.false_address }}</p>
+            {% endif %}
+        </div>
+    <!--
+        Categories
+    -->
+        <div class="categories">
+            <p>{{report.display_category}}</p>
+            {% if privacy == 'private' %}
+            <p>{% trans 'Priority' %} : {{report.get_priority}}</p>
+            {% endif %}
+        </div>
+    <!--
+        Geolocalisation
+    -->
+        <div class="geolocalisation">
+            <table>
+                <tr>
+                    <th>{% trans 'Lambert 72 Belgium'%}</th>
+                    <th>WGS84</th>
+                </tr>
+                <tr>
+                    <td><p>L:{{report.point.x}}<br/> l:{{report.point.y}}</p></td>
+                    <td><p id="wgs84"></p></td>
+                </tr>
+            </table>
+        </div>
+
+    <!--
+        Details
+    -->
+        <div class="incidentDetails">
+            <ul class="">
+
+            <!-- ROW PRO 1 -->
+            <li>
+                <strong>
+                    {% trans 'Visibility' %} :
+                </strong>
+                {{ report.private|yesno:_("pro,public") }}
+            </li>
+
+            <!-- ROW PRO 2 -->
+            <li>
+                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
+                    <strong>Posted by</strong> {{by}} on {{on}}
+               {% endblocktrans %}
+
+               {% if not report.is_pro %}
+                    - {{ report.citizen.get_quality_display }}
+                    (tel:{{report.get_creator.fmsuser.telephone}})
+               {% endif %}
+            </li>
+            <!-- ROW PRO 3 -->
+            <li>
+            <strong>{% trans "Responsible:" %}</strong>
+            <!-- responsible-name=report.responsible_department.contact_user, responsible-group=report.responsible_department, responsible-entity=report.responsible_entity -->
+            {{report.responsible_department.contact_user.get_full_name}} -
+            {{report.responsible_department.name }} -
+            {{report.responsible_entity.name}}
+            {% if report.responsible_department.phone %}
+                (tel:{{report.responsible_department.phone }})
+            {% endif %}
+            </li>
+            <!-- ROW PRO 4 -->
+            <li>
+                <th><strong>{% trans "Status:" %}</strong></th>
+                <td>{{ report.get_status_display }}</td>
+                {% trans 'on' %}
+                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+
+                {% if report.is_contractor_or_applicant_assigned %}
+                    {{report.contractor.name}}
+                    {% if report.contractor.phone %}
+                        ({{report.contractor.phone}})
+                    {% endif %}
+                {% endif %}
+            </li>
+            <!-- ROW PRO 5 -->
+            {% if report.merged_with %}
+                <li>
+                    <strong>
+                        {% trans "Merged on" %}
+                    </strong>
+                    {{report.last_history_event.event_at|date:"d/m/Y"}}
+                    {% trans "with incident" %}
+                     <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
+                        {{report.merged_with.id}}
+                    </a>
+                </li>
+            {% endif %}
+
+            </ul>
+        </div>
+
+    </div>
+
+    <!--
+        History
+    -->
+        <div class="history">
+            <h2>{% trans 'History' %}</h2>
+            {% include "reports/_activity_list.html" with privacy=privacy %}
+        </div>
+
+    <!--
+        Comments
+    -->
+    <div class="comments">
+        <h2>{% trans 'Comments and pictures' %}</h2>
+        {% for attachment in comments %}
+            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+        {% endfor %}
+
+        {% for attachment in files %}
+            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+        {% endfor %}
+    </div>
+    
+    {% block footer %}{% endblock %}
+    
+
+{% endblock %}
 
     <!--
         Status
     -->
 
-    <div>
+    <!--div-->
+        <!--
         {% if report.is_created %}
             <div class='is_created'>{% trans "This incident is not validated." %}</div>
         {% endif %}
@@ -171,44 +415,44 @@
         {% if report.is_closed %}
             <div class='is_fixed'>{% trans "This incident has been closed." %}</div>
         {% endif %}
-
-    </div>
+        -->
+    <!--/div-->
 
     <!--
         Localisation
     -->
 
-    <div class="block-left">
-        <p class="p_title"><strong>{% trans 'Location' %}</strong></p>
+    <!--div class="block-left"-->
+        <!--p class="p_title"><strong>{% trans 'Location' %}</strong></p>
         <p>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</p>
         {% if privacy == 'private' and report.false_address %}
             <p>{{ report.false_address }}</p>
-        {% endif %}
+        {% endif %}-->
 
-        <p class="p_title"><strong>{% trans 'Category' %}</strong></p>
+        <!--p class="p_title"><strong>{% trans 'Category' %}</strong></p>
         <p>{{report.display_category}}</p>
         {% if privacy == 'private' %}
         <p class="p_title"><strong>{% trans 'Priority' %}</strong></p>
         <p>{{report.get_priority}}</p>
-        {% endif %}
-    </div>
+        {% endif %}-->
+    <!--/div-->
 
-    <div class="block-right">
-        <p class="p_title"><strong>{% trans 'Geolocation' %} ({% trans 'Lambert 72 Belgium'%})</strong></p>
+    <!--div class="block-right"-->
+        <!--p class="p_title"><strong>{% trans 'Geolocation' %} ({% trans 'Lambert 72 Belgium'%})</strong></p>
         <p>L:{{report.point.x}}<br/> l:{{report.point.y}}</p>
 
         <p class="p_title"><strong>{% trans 'Geolocation' %} (WGS84)</strong></p>
-        <p id="wgs84"></p>
-    </div>
+        <p id="wgs84"></p-->
+    <!--/div-->
 
-    <div style="clear:both;"></div>
+    <!--div style="clear:both;"></div-->
 
     <!--
         Reporter
     -->
 
-    <br/>
-    <div class="block-left">
+    <!--br/-->
+    <!--div class="block-left">
         <h2>{% trans 'Created'%}</h2>
 
         <p>
@@ -241,14 +485,14 @@
             </strong>
             {{report.created|date:"d/m/Y"}}
         </p>
-    </div>
+    </div-->
 
 
     <!--
         Responsible
     -->
 
-    <div class="block-right">
+    <!--div class="block-right">
         <h2>{% trans 'Treated'%}</h2>
 
         <p>
@@ -264,25 +508,25 @@
                 {{report.responsible_manager.organisation.name}}
             {% endif %}
         </p>
-    </div>
+    </div-->
 
-    <div style="clear:both;"></div>
+    <!--div style="clear:both;"></div-->
 
     <!--
         History
     -->
 
-    <br/>
-    <div class="block-full history" style="padding-top:10px;">
+    <!--br/-->
+    <!--div class="block-full history" style="padding-top:10px;">
         <h2>{% trans 'History' %}</h2>
         {% include "reports/_activity_list.html" with privacy=privacy %}
-    </div>
+    </div-->
 
     <!--
         Comments
     -->
 
-    <h2>{% trans 'Comments' %}</h2>
+    <!--h2>{% trans 'Comments' %}</h2>
     {% for attachment in comments %}
         {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
     {% endfor %}
@@ -291,5 +535,4 @@
         {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
     {% endfor %}
 
-    {% block footer %}{% endblock %}
-{% endblock %}
+-->
