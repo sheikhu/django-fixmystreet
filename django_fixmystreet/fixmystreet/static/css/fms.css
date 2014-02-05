@@ -2043,10 +2043,16 @@ input[type=checkbox].invalid{
 	width: 40px;
 }
 #result-table .select_filter {
-	width: 140px;
+	width: 130px;
 }
 #result-table .text_filter {
-	width: 156px;
+	width: 140px;
+}
+#result-table .text_filter,
+#result-table .number_filter,
+#result-table .select_filter,
+#result-table .text_filter {
+	padding: 2px 3px;
 }
 
 .no-filter input {
@@ -2056,7 +2062,7 @@ input[type=checkbox].invalid{
 	width: 70px;
 }
 table.dataTable thead th {
-	padding: 3px 5px 3px 5px;
+	padding: 2px;
 }
 #searchContainer.mergeIncident{
 	margin-top:30px;
