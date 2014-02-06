@@ -57,15 +57,15 @@
             width: auto;
             background-color: white;
         }
-        body{
+        /*body{
             width: 100%;
-        }
+        }*/
         h2
         {
             font-size: 26px;
         }
         hr
-        {
+        {           
             border-color: #999;
         }
         /*div > p
@@ -120,7 +120,7 @@
         #banner-pro {
             position: absolute;
             top: 10px;
-            right: 180px;
+            left: 790px;
             z-index: 1000000;
         }
         .history, .report_update{
@@ -128,8 +128,14 @@
         }
 
         
-
-        .clearfloat{
+        body{
+            width:95%;
+            padding:2%;
+        }
+        .container, .row{
+            width:auto;
+        }
+        .clearFloat{
             height:0;
             clear:both;
         }
@@ -140,6 +146,7 @@
             -moz-border-radius: 4px;
             border-radius: 4px;
             float:left;
+            height:340px;
         }
         #map img {
             max-width: none;
@@ -192,6 +199,9 @@
             margin: 0;
             line-height:20px;
         }
+        .history{
+            margin-top:10px;
+        }
         .history table.historyTable{
             width:100%;
             font-size:10pt;
@@ -200,11 +210,21 @@
             border:0;
             padding:2px;
         }
-        .report_update{
+        .comment-container, .picture-container{
             border:1px solid #DDD;
             -webkit-border-radius: 4px;
             -moz-border-radius: 4px;
             border-radius: 4px;
+        }
+        .picture-container{
+            width:49%;
+            float:left;
+            margin-bottom:10px;
+            /*height:140mm;*/
+        }
+        .report_update:nth-child(even) .picture-container{
+            float:right;
+            clear:both;
         }
         .report_update .comment-head, .report_update .picture-head{
             background:#EEE;
@@ -213,6 +233,12 @@
         .report_update .comment-head a:link, .report_update .comment-head a:visited, .report_update .comment-head a:hover, .report_update .comment-head a:active, .report_update .comment-head a:focus, .report_update .picture-head a:link, .report_update .picture-head a:visited, .report_update .picture-head a:hover, .report_update .picture-head a:active, .report_update .picture-head a:focus{
             color:#000;
             text-decoration:none;
+        }
+        .report_update.left:nth-child(1){
+            page-break-before:always;
+        }
+        .report_update.left:nth-child(4){
+            page-break-before:always;
         }
         .comments li{
             list-style-type:none;
@@ -226,6 +252,9 @@
         }
         .comment-incident, .picture-caption{
             color:#000;
+        }
+        a:link:after{ 
+            content:""; 
         }
     </style>
 {% endblock %}
@@ -363,6 +392,7 @@
         </div>
 
     </div>
+    <div class="clearFloat"></div>
 
     <!--
         History
