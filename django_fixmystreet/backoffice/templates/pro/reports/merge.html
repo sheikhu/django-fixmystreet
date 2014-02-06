@@ -118,12 +118,20 @@
         var formMerge = document.getElementById('formMerge');
         var postMethod = "{% url 'report_do_merge_pro' report.id %}"
 
-        var reportToMergeInput = document.getElementById('reportToMergeInput');
-        var reportToMergeString = document.getElementById('reportToMergeString');
+        var reportToMergeInput    = document.getElementById('reportToMergeInput');
+        var reportToMergeNumber   = document.getElementById('reportToMergeNumber');
+        var reportToMergeCategory = document.getElementById('reportToMergeCategory');
+        var reportToMergeAddress  = document.getElementById('reportToMergeAddress');
+        var reportToMergeMarker   = document.getElementById('reportToMergeMarker');
 
-        function loadModal(reportId) {
-            reportToMergeInput.value = reportId;
-            reportToMergeString.innerHTML = reportId;
+        function loadModal(reportId, reportCategory, reportAddress, marker) {
+            reportToMergeInput.value        = reportId;
+            reportToMergeNumber.innerHTML   = reportId;
+            reportToMergeCategory.innerHTML = reportCategory;
+            reportToMergeAddress.innerHTML  = reportAddress;
+
+            var markerUrl = "{{ STATIC_URL }}" + marker;
+            reportToMergeMarker.setAttribute('src', markerUrl);
 
             formMerge.action = postMethod + "?mergeId=" + reportId;
             $('#modalMerge').modal();
@@ -237,7 +245,7 @@
                                             {{ report.display_category }}
                                         </span><br />
                                     <!-- Button "it's the same" -->
-                                    <a href="javascript:loadModal({{ report.id }});" class="btn_same_incident report" >{% trans "Merge" %}</a>
+                                    <a href='javascript:loadModal({{ report.id }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");' class="btn_same_incident report" >{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
@@ -284,20 +292,49 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h3>{% trans "Confirm merge" %}</h3>
+            <h3>{% trans 'Are you sure you want to merge these incidents?' %}</h3>
         </div>
         <div class="modal-body">
-            <span>{% trans 'Are you sure you want to merge these incidents?' %}</span>
-            <p>{% trans 'Attention: by merging these incidents the resulting incident will have the following properties:' %}</p>
-            <p> {% trans 'category' %}: {{report.display_category}}</p>
-            {% if report.private %}
-            <p> {% trans 'visibility' %}: {% trans 'private' %}</p>
-            {% else %}
-            <p> {% trans 'visibility' %}: {% trans 'public' %}</p>
-            {% endif %}
+            <div class="text-center well one_incident">
+                <p>{% trans "Fusionner l'incident courant qui sera gardé" %} :</p>
 
-            <p>#{{ report.id }}</p>
-            <p id="reportToMergeString"></p>
+                <p>
+                    <strong>
+                        <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                        N°{{ report.id }}
+                        <br/>
+                        {{ report.display_category }}
+                        <br/>
+                        {{ report.display_address }}
+                    </strong>
+                </p>
+            </div>
+
+            <div class="text-center well">
+                <p>{% trans "Avec le contenu de l'incident que vous venez de sélectionner" %} :</p>
+
+                <p>
+                    <strong>
+                        <img id="reportToMergeMarker" src="" class="report-counter"/>
+                        N°<span id="reportToMergeNumber"></span>
+                        <br/>
+                        <span id="reportToMergeCategory"></span>
+                        <br/>
+                        <span id="reportToMergeAddress"></span>
+                    </strong>
+                </p>
+            </div>
+
+            <p>{% trans "Le résultat de la fusion sera visible pour" %} :
+
+                <strong>
+                    {% if report.private %}
+                        {% trans 'private' %}
+                    {% else %}
+                        {% trans 'public' %}
+                    {% endif %}
+                </strong>
+            </p>
         </div>
 
         <div class="modal-footer">

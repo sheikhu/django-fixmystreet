@@ -2068,8 +2068,12 @@ table.dataTable thead th {
 	margin-top:30px;
 	padding:0;
 }
-.one_incident.master{
+.one_incident {
 	background:#607C9D;
+    color: white;
+}
+.one_incident.master{
+
 	margin-bottom:30px;
 }
 .one_incident.master .distance{
