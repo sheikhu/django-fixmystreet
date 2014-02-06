@@ -612,6 +612,9 @@ class Report(UserTrackedModel):
     def display_category(self):
         return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
 
+    def display_address(self):
+        return "%s, %s (%s %s)" % (self.address, self.address_number, self.postalcode, self.get_address_commune_name())
+
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
         report_ticket_id = str(self.id)
