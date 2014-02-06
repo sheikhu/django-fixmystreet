@@ -1,0 +1,38 @@
+[
+{
+    "pk": 1, 
+    "model": "fixmystreet.page", 
+    "fields": {
+        "content_fr": "<p>TODO</p>\r\n", 
+        "content_nl": "<p>TODO</p>\r\n", 
+        "title_nl": "help", 
+        "slug_nl": "help", 
+        "slug_fr": "help", 
+        "title_fr": "help"
+    }
+},
+{
+    "pk": 2, 
+    "model": "fixmystreet.page", 
+    "fields": {
+        "content_fr": "<p>TODO</p>\r\n", 
+        "content_nl": "<p>TODO</p>\r\n", 
+        "title_nl": "faq", 
+        "slug_nl": "faq", 
+        "slug_fr": "faq", 
+        "title_fr": "faq"
+    }
+},
+{
+    "pk": 3, 
+    "model": "fixmystreet.page", 
+    "fields": {
+        "content_fr": "<p>TODO</p>\r\n", 
+        "content_nl": "<p>TODO</p>\r\n", 
+        "title_nl": "over-ons", 
+        "slug_nl": "over-ons", 
+        "slug_fr": "a-propos", 
+        "title_fr": "a-propos"
+    }
+}
+]
