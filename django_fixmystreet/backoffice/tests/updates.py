@@ -300,16 +300,16 @@ class UpdatesTest(TestCase):
 
         url = reverse("report_false_address", args=[self.report.id])
         post_data = {'false_address': 'This is a false address'}
-        response = self.client.post(url, post_data)
-
+        response = self.client.post(url, post_data, follow=True)
         report = Report.objects.get(id=self.report.id)
-        self.assertEqual(response.content, post_data['false_address'])
+
+        self.assertEquals(response.status_code, 200)
         self.assertEqual(report.false_address, post_data['false_address'])
 
         post_data = {'false_address': 'Another false address'}
-        response = self.client.post(url, post_data)
+        response = self.client.post(url, post_data, follow=True)
 
         report = Report.objects.get(id=self.report.id)
-        self.assertEqual(response.content, post_data['false_address'])
+        self.assertEquals(response.status_code, 200)
         self.assertEqual(report.false_address, post_data['false_address'])
 
