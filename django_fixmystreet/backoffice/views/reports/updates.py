@@ -239,6 +239,9 @@ def validateAll(request, report_id):
 
     attachments = report.attachments.all()
     attachments.update(security_level=ReportAttachment.PUBLIC)
+
+    report.private = False
+    report.save()
     # for comment in comments:
     #     comment.security_level = ReportAttachment.PUBLIC
     #     comment.save()

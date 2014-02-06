@@ -34,6 +34,7 @@ def table_content(request, selection=""):
 
     if selection == "responsible" and user.manager:
         reports = reports.responsible(user)
+        reports = reports.filter(pending=False)
     elif selection == "subscribed":
         reports = reports.subscribed(user)
     elif selection == "contractor_responsible":
