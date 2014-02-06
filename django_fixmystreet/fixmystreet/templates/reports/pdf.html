@@ -189,6 +189,8 @@
         }
         table tr th{
             background:#EEE;
+            font-weight:normal;
+            font-size:10pt;    
         }
         table p{
             margin:0;
@@ -303,6 +305,10 @@
         .comment-incident{
             min-height:20px;
         }
+        .categories{
+            border-bottom:1px solid #DDD;
+            padding-bottom:5px;
+        }
     </style>
 {% endblock %}
 
@@ -378,6 +384,13 @@
             {% endif %}
 
         </ul>
+    <div class="clearFloat"></div>
+    <!--
+        Categories
+    -->
+        <div class="categories">
+            <p>{{report.display_category}}</p>            
+        </div>
     <!-- 
         Adress
     -->    
@@ -386,15 +399,6 @@
                 {{report.postalcode}} {{report.get_address_commune_name}}</p>
             {% if privacy == 'private' and report.false_address %}
                 <p>{{ report.false_address }}</p>
-            {% endif %}
-        </div>
-    <!--
-        Categories
-    -->
-        <div class="categories">
-            <p>{{report.display_category}}</p>
-            {% if privacy == 'private' %}
-            <p>{% trans 'Priority' %} : {{report.get_priority}}</p>
             {% endif %}
         </div>
     <!--
@@ -417,6 +421,8 @@
         Details
     -->
         <div class="incidentDetails">
+            
+{% if BACKOFFICE %}
             <ul class="">
 
             <!-- ROW PRO 1 -->
@@ -478,18 +484,49 @@
             {% endif %}
 
             </ul>
+{% else %}
+ <!-- ROW CIT 1 -->
+                            <p>
+                                <strong>{% trans "Posted on" %}</strong>:
+                               {{report.created|date:"d/m/Y"}}
+                            </p>
+                            <!-- ROW CIT 2 -->
+                            <p>
+                                <strong>{% trans "Responsible:" %}</strong>
+                                <!-- responsible-name, responsible-group, responsible-entity -->
+                                {{report.responsible_department.name }} -
+                                {{report.responsible_entity.name}}
+                                {% if report.responsible_department.phone %}
+                                    (tel:{{report.responsible_department.phone }})
+                                {% endif %}
+                            </p>
+                            <!-- ROW CIT 3 -->
+                            <p>
+                                <th><strong>{% trans "Status:" %}</strong></th>
+                                <td>{{ report.get_status_display }}</td>
+                                {% trans 'on' %}
+                                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+
+                                {% if report.is_contractor_or_applicant_assigned %}
+                                    {{report.contractor.name}}
+                                {% endif %}
+                            </p>
+                            <!-- ROW CIT 4 -->
+                            {% if report.merged_with %}
+                            <p>
+                                {% trans "Merged on" %}
+                                {{report.last_history_event.event_at|date:"d/m/Y"}}
+                                {% trans "with incident" %}
+                                <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
+                                    {{report.merged_with.id}}
+                                </a>
+                            </p>                
+                            {% endif %}               
+{% endif %}
         </div>
 
     </div>
     <div class="clearFloat"></div>
-
-    <!--
-        History
-    -->
-        <div class="history">
-            <h2>{% trans 'History' %}</h2>
-            {% include "reports/_activity_list.html" with privacy=privacy %}
-        </div>
 
     <!--
         Comments
@@ -504,6 +541,16 @@
             {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
         {% endfor %}
     </div>
+
+    <div class="clearFloat"></div>
+
+    <!--
+        History
+    -->
+        <div class="history">
+            <h2>{% trans 'History' %}</h2>
+            {% include "reports/_activity_list.html" with privacy=privacy %}
+        </div>
     
     {% block footer %}{% endblock %}
     
