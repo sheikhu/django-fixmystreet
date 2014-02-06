@@ -2111,6 +2111,10 @@ table.dataTable thead th {
 	height: 80px;
 	margin: 12px auto;
 }
+
+.modal form {
+    margin: 0;
+}
 #search-form.mergeIncident{
 	margin: 0 !important;
 	float: right;
@@ -2184,8 +2188,6 @@ table.dataTable thead th {
     margin-top: -40px;  /* -1 * image height / 2 */
     display: block;
 }
-
-
 
 .required label.control-label::before {
 content: "*";
