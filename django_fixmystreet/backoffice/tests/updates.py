@@ -303,13 +303,14 @@ class UpdatesTest(TestCase):
         response = self.client.post(url, post_data, folow=True)
 
         report = Report.objects.get(id=self.report.id)
-        self.assertContains(response, post_data['false_address'])
+
+        self.assertEquals(response.status_code, 302)
         self.assertEqual(report.false_address, post_data['false_address'])
 
         post_data = {'false_address': 'Another false address'}
         response = self.client.post(url, post_data, folow=True)
 
         report = Report.objects.get(id=self.report.id)
-        self.assertContains(response, post_data['false_address'])
+        self.assertEquals(response.status_code, 302)
         self.assertEqual(report.false_address, post_data['false_address'])
 
