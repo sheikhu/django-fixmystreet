@@ -923,7 +923,9 @@ $.fn.fileExif = function(callback) {
         callback(EXIF.readFromBinaryFile(binaryResponse));
     };
 
-    reader.readAsBinaryString(getFilePart(this[0].files[0]));
+    // ! Patch for IE10 !
+    //~ reader.readAsBinaryString(getFilePart(this[0].files[0]));
+    reader.readAsText(getFilePart(this[0].files[0]));
 };
 
 $.fileExif = function(file, callback) {
@@ -937,7 +939,9 @@ $.fileExif = function(file, callback) {
         callback(EXIF.readFromBinaryFile(binaryResponse));
     };
 
-    reader.readAsBinaryString(getFilePart(file));
+    // ! Patch for IE10 !
+    //~ reader.readAsBinaryString(getFilePart(file));
+    reader.readAsText(getFilePart(file));
 };
 
 })();
