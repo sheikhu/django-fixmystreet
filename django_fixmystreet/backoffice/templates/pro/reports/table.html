@@ -153,9 +153,31 @@ function generateTableContent(selection) {
             // Init table
             //Method table.oApi._fnColumnIndexToVisible could be useful to match the datacolumn to visible one about indexes
             table = $('#result-table').dataTable({
-                "sDom": '<"table-top"f><"table-content"rt><"table-bottom"ilp>',
+                sDom: '<"table-top"f><"table-content"rt><"table-bottom"ilp>',
                 aoColumns: columns,
-                "aaSorting": [[ sortPreferences.idx, sortPreferences.order ]],
+                aaSorting: [[ sortPreferences.idx, sortPreferences.order ]],
+                oLanguage: {
+                    oAria: {
+                        sSortAscending: gettext(": activate to sort column ascending"),
+                        sSortDescending: gettext(": activate to sort column descending")
+                    },
+                    oPaginate: {
+                            sFirst: gettext('Fist page'),
+                            sLast: gettext('Last page'),
+                            sNext: gettext('Next page'),
+                            sPrevious: gettext('Previous page')
+                    },
+                    sEmptyTable: gettext("No data available in table"),
+                    sInfo: gettext("Got a total of _TOTAL_ incidents to show (_START_ to _END_)"),
+                    sInfo: gettext("Showing _START_ to _END_ of _TOTAL_ incidents"),
+                    sInfoEmpty: gettext("Showing 0 to 0 of 0 incidents"),
+                    sInfoFiltered: gettext("(filtered from _MAX_ total incidents)"),
+                    sLengthMenu: gettext("Show _MENU_ incidents"),
+                    sLoadingRecords: gettext("Loading..."),
+                    sProcessing: gettext("Processing..."),
+                    sSearch: gettext("Search:"),
+                    sZeroRecords: gettext("No matching incidents found")
+                },
                 "fnDrawCallback": function() {
                     fms_store.setTablePreferedSortedColumn(this.fnSettings().aaSorting.sort()[0][0], this.fnSettings().aaSorting.sort()[0][1]);
                 },
