@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-07 14:02+0100\n"
+"POT-Creation-Date: 2014-02-07 15:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,6 +59,10 @@ msgstr ""
 
 #: fixmystreet/static/js/fixmystreetmap.js:334
 msgid "municipality_limits"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:384
+msgid "Overlayers"
 msgstr ""
 
 #: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:229

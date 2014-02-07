@@ -330,8 +330,8 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         });
         var xml = new OpenLayers.Format.XML();
         var filter_1_1 = new OpenLayers.Format.Filter({version: "1.1.0"});
-        var regionalLimitsTitle = gettext("regional_limits")
-        var municipalityLimitsTitle = gettext("municipality_limits")
+        var regionalLimitsTitle = gettext("regional_limits");
+        var municipalityLimitsTitle = gettext("municipality_limits");
 
 
         // Add regional limits layer
@@ -374,6 +374,15 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         );
         base.setZIndex(-100);
         this.map.addLayer(base);
+
+        var layerSwitcherDiv = OpenLayers.Util.getElement('layerswitcher');
+        if(layerSwitcherDiv) {
+            var layerSwitcher = new OpenLayers.Control.LayerSwitcher({
+                'div': layerSwitcherDiv
+            });
+            this.map.addControl(layerSwitcher);
+            layerSwitcher.dataLbl.innerHTML = gettext("Overlayers");
+        }
 
         if(x && y) {
             this.map.setCenter(new OpenLayers.LonLat(x,y));

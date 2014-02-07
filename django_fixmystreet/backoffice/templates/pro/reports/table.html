@@ -272,11 +272,7 @@ function refreshMap() {
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
         urbisUrl:    WMS_SERVICE_URL
     });
-    fms.currentMap.map.addControl(
-        new OpenLayers.Control.LayerSwitcher({
-            'div':OpenLayers.Util.getElement('layerswitcher')
-        })
-    );
+
 })(document);
 
 </script>

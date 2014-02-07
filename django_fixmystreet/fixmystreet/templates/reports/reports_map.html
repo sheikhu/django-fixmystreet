@@ -39,13 +39,6 @@ $(function(){
     });
     var markers = [];
 
-    // Layer switcher
-    fms.currentMap.map.addControl(
-        new OpenLayers.Control.LayerSwitcher({
-            'div':OpenLayers.Util.getElement('layerswitcher')
-        })
-    );
-
     function applyFilter() {
         //Show loading icon
         // $('#map-loading').show();

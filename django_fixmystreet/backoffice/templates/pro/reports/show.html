@@ -856,7 +856,7 @@ $('.dropdown-toggle').click(function(e) {
             </h2>
             <div>
                 <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-citizen">
-                    {% trans 'report pdf' context 'pro' %}
+                    {% trans 'send report pdf' context 'pro' %}
                 </button>
 
                 <form id="mail-pdf-citizen" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
@@ -870,7 +870,7 @@ $('.dropdown-toggle').click(function(e) {
             </div>
             <div>
                 <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-pro">
-                    {% trans 'report pdf pro' %}
+                    {% trans 'send report pdf pro' %}
                 </button>
                 <form id="mail-pdf-pro" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
                     <input type="hidden" name="privacy" value="public"/>
