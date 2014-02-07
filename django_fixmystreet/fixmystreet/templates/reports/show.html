@@ -188,7 +188,7 @@ $(function(event) {
                                     <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src='/static/images/pro_on.png' /></a></li>
                                 {% endif %}
 
-                                {% if report.contractor != None %}
+                                {% if report.contractor != None and report.contractor.type == 'A' %}
                                     <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/contractorAssigned_on.png' /></a></li>
                                 {% else %}
                                     <!--li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is not assigned" %}'><img src='/static/images/contractorAssigned_off.png' /></a></li-->
@@ -221,11 +221,8 @@ $(function(event) {
                             <!-- ROW CIT 3 -->
                             <p>
                                 <th><strong>{% trans "Status:" %}</strong></th>
-                                <td>{{ report.get_status_display }}</td>
-                                {% trans 'on' %}
-                                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
-
-                                {% if report.is_contractor_or_applicant_assigned %}
+                                <td>{{ report.get_public_status_display }}</td>
+                                {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
                                     {{report.contractor.name}}
                                 {% endif %}
                             </p>
