@@ -503,11 +503,8 @@
                             <!-- ROW CIT 3 -->
                             <p>
                                 <th><strong>{% trans "Status:" %}</strong></th>
-                                <td>{{ report.get_status_display }}</td>
-                                {% trans 'on' %}
-                                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
-
-                                {% if report.is_contractor_or_applicant_assigned %}
+                                <td>{{ report.get_public_status_display }}</td>
+                                {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
                                     {{report.contractor.name}}
                                 {% endif %}
                             </p>

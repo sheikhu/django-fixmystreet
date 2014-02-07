@@ -2116,4 +2116,4 @@ class Page(models.Model):
     class Meta:
         translate = ('content', 'title', 'slug')
 
-pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=Page)
+#pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=Page)
