@@ -65,7 +65,7 @@
             font-size: 26px;
         }
         hr
-        {           
+        {
             border-color: #999;
         }
         /*div > p
@@ -127,7 +127,7 @@
             page-break-inside: avoid;
         }
 
-        
+
         body{
             width:95%;
             padding:2%;
@@ -140,7 +140,7 @@
             clear:both;
         }
         #map{
-            width: 46%;
+            width: 397px;
             border: 1px solid #CCC;
             -webkit-border-radius: 4px;
             -moz-border-radius: 4px;
@@ -190,7 +190,7 @@
         table tr th{
             background:#EEE;
             font-weight:normal;
-            font-size:10pt;    
+            font-size:10pt;
         }
         table p{
             margin:0;
@@ -293,13 +293,13 @@
         .comment-incident, .picture-caption{
             color:#000;
         }
-        a:link:after{ 
-            content:""; 
+        a:link:after{
+            content:"";
         }
         .datePlanned_on {
             font-size:10pt;
         }
-        .btn-navbar{
+        .btn.btn-navbar{
             display:none;
         }
         .comment-incident{
@@ -389,11 +389,11 @@
         Categories
     -->
         <div class="categories">
-            <p>{{report.display_category}}</p>            
+            <p>{{report.display_category}}</p>
         </div>
-    <!-- 
+    <!--
         Adress
-    -->    
+    -->
         <div class="adress">
             <p>{{report.address}}, {{report.address_number}} <br />
                 {{report.postalcode}} {{report.get_address_commune_name}}</p>
@@ -421,7 +421,7 @@
         Details
     -->
         <div class="incidentDetails">
-            
+
 {% if BACKOFFICE %}
             <ul class="">
 
@@ -520,8 +520,8 @@
                                 <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
                                     {{report.merged_with.id}}
                                 </a>
-                            </p>                
-                            {% endif %}               
+                            </p>
+                            {% endif %}
 {% endif %}
         </div>
 
@@ -551,9 +551,9 @@
             <h2>{% trans 'History' %}</h2>
             {% include "reports/_activity_list.html" with privacy=privacy %}
         </div>
-    
+
     {% block footer %}{% endblock %}
-    
+
 
 {% endblock %}
 

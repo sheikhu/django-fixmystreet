@@ -51,7 +51,7 @@
                             <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 2px; left: 493px;" />
                             {% endif %}
                             {% if ENVIRONMENT == "staging" or ENVIRONMENT == "dev" or ENVIRONMENT == "local" %}
-                            <br /><strong style="position: absolute;">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
+                            <strong class="current-app-version">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
                             {% endif %}
                         </a>
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
