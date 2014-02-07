@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils.translation import get_language, activate
 from django.core.urlresolvers import reverse
+from django.http import Http404
 
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, Page
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
@@ -42,8 +43,12 @@ def home(request, location=None, error_msg=None):
 
 
 def page(request):
+    try:
+        page = Page.objects.get(**{'slug_'+get_language(): request.path[3:].strip('/')})
+    except Page.DoesNotExists:
+        raise Http404()
     return render_to_response("page.html", {
-        'page': Page.objects.get(**{'slug_'+get_language(): request.path[3:].strip('/')})
+        'page': page
     }, context_instance=RequestContext(request))
 
 
