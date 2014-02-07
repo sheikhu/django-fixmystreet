@@ -3,6 +3,7 @@
   ==============================================================*/
 header{
 	margin-top: 10px;
+	position: relative;
 }
 .navbar .nav, .navbar .btn-navbar{
 	margin: 42px 0 0 0;
@@ -99,6 +100,13 @@ nav ul{
 	-webkit-box-shadow:none;
 	-moz-box-shadow:none;
 	box-shadow:none;
+}
+.current-app-version {
+	position: absolute;
+	top: 30px;
+	right: 0;
+	font-size: 18px;
+	color: #777;
 }
 #login.btn-group:active{
 	-webkit-box-shadow:none;
