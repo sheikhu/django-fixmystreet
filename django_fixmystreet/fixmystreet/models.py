@@ -549,7 +549,6 @@ class Report(UserTrackedModel):
     probability = models.IntegerField(default=0)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
-    private_thumbnail = models.TextField(null=True, blank=True)
     thumbnail = models.TextField(null=True, blank=True)
     #photo = models.ForeignKey(ReportFile, related_name='thumbnail_report', null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
@@ -565,11 +564,7 @@ class Report(UserTrackedModel):
     false_address = models.TextField(null=True, blank=True)
 
     def thumbnail_url(self):
-        user = get_current_user()
-        if user and user.is_authenticated():
-            return self.private_thumbnail
-        else:
-            return self.thumbnail
+        return self.thumbnail
 
     def get_marker(self):
         #user = get_current_user()
@@ -1366,30 +1361,15 @@ class ReportAttachment(UserTrackedModel):
             self.publish_update = False
         super(ReportAttachment, self).save(*args, **kwargs)
 
-
+# Initialise instance.report.thumbnail with the first public photo. For pro and citizen
 @receiver(post_save, sender=ReportAttachment)
 def init_report_overview(sender, instance, **kwargs):
 
-    images_pro = instance.report.files()
     images_public = instance.report.active_files()
 
-    if images_pro.exists():
-        instance.report.private_thumbnail = images_pro[0].image.thumbnail.url()
-        if images_public.exists():
-            image = images_public[0]
-            if instance.report.photo != image.image:
-                instance.report.photo = image.image.url
-                instance.report.thumbnail = image.image.thumbnail.url()
-        else:
-            instance.report.photo = None
-            instance.report.thumbnail = None
+    if images_public.exists():
+        instance.report.thumbnail = images_public[0].image.thumbnail.url()
         instance.report.save()
-    elif instance.report.photo:
-        instance.report.photo = None
-        instance.report.thumbnail = None
-        instance.report.private_thumbnail = None
-        instance.report.save()
-
 
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
