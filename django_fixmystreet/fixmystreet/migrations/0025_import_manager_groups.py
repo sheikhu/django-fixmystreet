@@ -8,11 +8,11 @@ class Migration(SchemaMigration):
         managers = orm['fixmystreet.FMSUser'].objects.filter(manager=True)
 
         #~ table_line_format = u"{0:5} {1:30.30} {2:15.15} {3:4} {4:4}"
-        #~ table_line_separator = ''.join(['-' for i in range(62)])
+        table_line_separator = ''.join(['-' for i in range(62)])
 
         # pint a table of datas (for debug)
         #~ print table_line_format.format("id", "email", "communes", "cat", "rep")
-        #~ print table_line_separator
+        print table_line_separator
 
         #~ for m in managers:
             #~ print table_line_format.format(
