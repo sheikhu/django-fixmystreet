@@ -26,7 +26,16 @@ class Migration(SchemaMigration):
         for m in managers:
             if m.categories.count() > 0 or m.reports_in_charge.count() > 0:
                 # Syntax group name for Henry Dupont : Service HDup
-                name = u"Service {0}{1}".format(m.first_name[0], m.last_name[:3])
+                print "%s - %s" % (m.first_name, m.last_name)
+
+                name = "Service "
+                if m.first_name:
+                    name += m.first_name[0]
+
+                if m.last_name:
+                    name += m.last_name[:3]
+
+
                 print u"--- creating grp for", name
                 group = orm['fixmystreet.OrganisationEntity'].objects.create(
                     name_fr=name,
