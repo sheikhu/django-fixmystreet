@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import os
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
@@ -10,20 +11,25 @@ class Migration(DataMigration):
         # Note: Remember to use orm['appname.ModelName'] rather than "from appname.models..."
 
         errors = {}
-        for report_attachment in orm['fixmystreet.ReportAttachment'].objects.all():
-            report = report_attachment.report
+        for report in orm['fixmystreet.Report'].objects.all():
 
-            files         = orm['fixmystreet.ReportFile'].objects.filter(report_id=report.id).filter(logical_deleted=False)
-            images_public = files.filter(logical_deleted=False).filter(security_level=1)
+            images_public = report.attachments.filter(logical_deleted=False, security_level=1, reportcomment=None)
 
             if images_public.exists():
 
                 try:
-                    report.thumbnail = images_public[0].image.thumbnail.url()
+                    splitted_filename = list(os.path.splitext(images_public[0].reportfile.image.url))
+                    splitted_filename.insert(1, '.thumbnail')
+                    thumbnail = ''.join(splitted_filename)
+
+                    report.thumbnail = thumbnail
                     report.save()
-                except AttributeError:
-                    print 'error : no thumbnail attribute in image on report', report.id
+                except AttributeError, e:
+                    print e, report.id
                     errors[report.id] = report.id
+                except ValueError, e:
+                    print e, report.id
+                    errors[report.id] = e
 
         print "\n-----"
         print 'errors', errors
