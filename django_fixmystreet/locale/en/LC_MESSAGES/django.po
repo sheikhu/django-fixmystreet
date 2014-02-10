@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-07 16:25+0100\n"
+"POT-Creation-Date: 2014-02-07 16:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -953,6 +953,66 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:119
 #: backoffice/templates/pro/reports/table_content.html:92
 msgid "yes,no"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:161
+msgctxt "table"
+msgid ": activate to sort column ascending"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:162
+msgctxt "table"
+msgid ": activate to sort column descending"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:170
+msgctxt "table"
+msgid "No data available in table"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:171
+msgctxt "table"
+msgid "Got a total of _TOTAL_ incidents to show (_START_ to _END_)"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:172
+msgctxt "table"
+msgid "Showing _START_ to _END_ of _TOTAL_ incidents"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:173
+msgctxt "table"
+msgid "Showing 0 to 0 of 0 incidents"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:174
+msgctxt "table"
+msgid "(filtered from _MAX_ total incidents)"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:175
+msgctxt "table"
+msgid "Show _MENU_ incidents"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:176
+msgctxt "table"
+msgid "Loading..."
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:177
+msgctxt "table"
+msgid "Processing..."
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:178
+msgctxt "table"
+msgid "Search:"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:179
+msgctxt "table"
+msgid "No matching incidents found"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:309

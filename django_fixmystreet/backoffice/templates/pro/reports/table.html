@@ -158,8 +158,8 @@ function generateTableContent(selection) {
                 aaSorting: [[ sortPreferences.idx, sortPreferences.order ]],
                 oLanguage: {
                     oAria: {
-                        sSortAscending: pgettext('table', ": activate to sort column ascending"),
-                        sSortDescending: pgettext('table', ": activate to sort column descending")
+                        sSortAscending: "{% trans ': activate to sort column ascending' context 'table' %}",
+                        sSortDescending: "{% trans ': activate to sort column descending' context 'table' %}"
                     },
                     oPaginate: {
                             sFirst: pgettext('table', 'Fist page'),
@@ -167,16 +167,16 @@ function generateTableContent(selection) {
                             sNext: pgettext('table', 'Next page'),
                             sPrevious: pgettext('table', 'Previous page')
                     },
-                    sEmptyTable: pgettext('table', "No data available in table"),
-                    sInfo: pgettext('table', "Got a total of _TOTAL_ incidents to show (_START_ to _END_)"),
-                    sInfo: pgettext('table', "Showing _START_ to _END_ of _TOTAL_ incidents"),
-                    sInfoEmpty: pgettext('table', "Showing 0 to 0 of 0 incidents"),
-                    sInfoFiltered: pgettext('table', "(filtered from _MAX_ total incidents)"),
-                    sLengthMenu: pgettext('table', "Show _MENU_ incidents"),
-                    sLoadingRecords: pgettext('table', "Loading..."),
-                    sProcessing: pgettext('table', "Processing..."),
-                    sSearch: pgettext('table', "Search:"),
-                    sZeroRecords: pgettext('table', "No matching incidents found")
+                    sEmptyTable: "{% trans 'No data available in table' context 'table' %}",
+                    sInfo: "{% trans 'Got a total of _TOTAL_ incidents to show (_START_ to _END_)' context 'table' %}",
+                    sInfo: "{% trans 'Showing _START_ to _END_ of _TOTAL_ incidents' context 'table' %}",
+                    sInfoEmpty: "{% trans 'Showing 0 to 0 of 0 incidents' context 'table' %}",
+                    sInfoFiltered: "{% trans '(filtered from _MAX_ total incidents)' context 'table' %}",
+                    sLengthMenu: "{% trans 'Show _MENU_ incidents' context 'table' %}",
+                    sLoadingRecords: "{% trans 'Loading...' context 'table' %}",
+                    sProcessing: "{% trans 'Processing...' context 'table' %}",
+                    sSearch: "{% trans 'Search:' context 'table' %}",
+                    sZeroRecords: "{% trans 'No matching incidents found' context 'table' %}"
                 },
                 "fnDrawCallback": function() {
                     fms_store.setTablePreferedSortedColumn(this.fnSettings().aaSorting.sort()[0][0], this.fnSettings().aaSorting.sort()[0][1]);

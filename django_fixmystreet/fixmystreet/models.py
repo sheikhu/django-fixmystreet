@@ -693,6 +693,8 @@ class Report(UserTrackedModel):
     def get_public_status_display(self):
         if self.is_created():
             return ugettext("Created")
+        if self.is_temporary():
+            return ugettext("Temporary")
         elif self.is_in_progress():
             return ugettext("In progress")
         else:
