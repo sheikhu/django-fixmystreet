@@ -22,11 +22,38 @@
         {% endblock %}
 
         {% block meta %}{% endblock %}
+        <style type="text/css">
+            .alertBrowserSupport{
+                padding:0;
+            }
+            .alertBrowserSupport .close{
+                right:21px;
+            }
+            .inAlert{
+                padding:20px 20px 0 20px;
+            }
+            .alertBrowserSupport ul li{
+                display:inline;
+                margin-right:60px;
+            }
+        </style>
     </head>
 
     <body>
         <div class="container">
             <div class="row">
+                    <div class="alert alert-block fade in alertBrowserSupport span12" id="browser_support_popup" style="display:none;">
+                        <div class="inAlert">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <h4>{% trans 'Browser not supported' %}. {% trans 'Please download one of the supported browsers below before continuing on the website.' %}</h4>
+                            <ul>
+                                <li><a href="http://www.mozilla.org/fr/firefox/fx/" target="_blank">Firefox (26+)</a></li>
+                                <li><a href="http://windows.microsoft.com/fr-BE/internet-explorer/downloads/ie-9/worldwide-languages" target="_blank">Internet Explorer (10+)</a></li>
+                                <li><a href="http://www.google.com/intl/fr/chrome/browser/" target="_blank">Google Chrome (31+)</a></li>
+                                <li><a href="http://extensions.apple.com/" target="_blank">Apple Safari (6+)</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 <header>
                     <div class="span12 navbar">
                         {% block lng %}
@@ -195,7 +222,9 @@
                 </div>
                 {% endif %}
                 {% block content %}{% endblock %}
-                <div id="browser_support_popup" class="modal hide fade" role="dialog">
+
+
+                <!--div id="browser_support_popup" class="modal hide fade" role="dialog">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h1>{% trans 'Browser not supported' %}</h1>
@@ -219,7 +248,7 @@
                     <div class="modal-footer">
                         <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
                     </div>
-                </div>
+                </div-->
             </section>
 
             {% block footer %}
@@ -297,8 +326,9 @@
 
         <script type="text/javascript">
             $(function(){
-                if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 9)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 10) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 20) {
-                    $('#browser_support_popup').modal();
+                if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 10)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 24) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 31) {
+                    //$('#browser_support_popup').alert();
+                    $('#browser_support_popup').css('display', "block");
                 }
                 // If on iphone ==> redirect to mobile page
                 // if(navigator.platform.indexOf("iPhone") != -1){
