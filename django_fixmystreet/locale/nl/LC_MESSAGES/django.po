@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 16:05+0100\n"
-"PO-Revision-Date: 2014-02-10 15:05+0000\n"
-"Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-02-10 17:10+0100\n"
+"PO-Revision-Date: 2014-02-10 16:06+0000\n"
+"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -482,7 +482,7 @@ msgstr "Pro"
 
 #: backoffice/templates/pro/reports/merge.html:334
 msgid "public"
-msgstr "publiek"
+msgstr "Iedereen"
 
 #: backoffice/templates/pro/reports/merge.html:341
 msgid "No"
@@ -576,12 +576,12 @@ msgstr "Dit incident is gemeld als opgelost"
 #: backoffice/templates/pro/reports/table_content.html:56
 #: fixmystreet/templates/reports/pdf.html:431
 msgid "Visibility"
-msgstr ""
+msgstr "Zichbaarheid"
 
 #: backoffice/templates/pro/reports/show.html:373
 #: fixmystreet/templates/reports/pdf.html:433
 msgid "pro,public"
-msgstr ""
+msgstr "Pro,Iedereen"
 
 #: backoffice/templates/pro/reports/show.html:378
 #, python-format
@@ -624,7 +624,7 @@ msgstr "Samengevoegd op"
 #: fixmystreet/templates/reports/pdf.html:516
 #: fixmystreet/templates/reports/show.html:234
 msgid "with incident"
-msgstr ""
+msgstr "met incident"
 
 #: backoffice/templates/pro/reports/show.html:436
 msgid "Accept"
@@ -941,7 +941,7 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:110
 #: backoffice/templates/pro/reports/table_content.html:90
 msgid "private,public"
-msgstr ""
+msgstr "Pro,Iedereen"
 
 #: backoffice/templates/pro/reports/table.html:113
 #: backoffice/templates/pro/reports/table.html:114
@@ -1488,7 +1488,7 @@ msgstr ""
 #: fixmystreet/templates/reports/_visibility_control.html:5
 #: fixmystreet/templates/reports/_visibility_control.html:24
 msgid "Public"
-msgstr "Publiek"
+msgstr "Iedereen"
 
 #: fixmystreet/models.py:1303
 #: fixmystreet/templates/reports/_visibility_control.html:10
