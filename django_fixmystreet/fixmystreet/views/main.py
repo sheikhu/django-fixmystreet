@@ -45,7 +45,7 @@ def home(request, location=None, error_msg=None):
 def page(request):
     try:
         page = Page.objects.get(**{'slug_'+get_language(): request.path[3:].strip('/')})
-    except Page.DoesNotExists:
+    except Page.DoesNotExist:
         raise Http404()
     return render_to_response("page.html", {
         'page': page
