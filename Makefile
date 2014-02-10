@@ -78,3 +78,6 @@ clean:
 	rm -rf bin libs bootstrap.py src # buildout
 	rm -rf reports # Jenkins
 	rm -rf build dist static
+
+initcache:
+	$(BIN_PATH)/manage.py createcachetable fms_cache
