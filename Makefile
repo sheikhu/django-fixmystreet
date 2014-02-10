@@ -26,11 +26,13 @@ install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install
 	$(BIN_PATH)/manage.py migrate --all
 	$(BIN_PATH)/manage.py collectstatic --noinput
+	$(MAKE) fixtures
 
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
 	$(BIN_PATH)/pip install --no-use-wheel -e .[debug]
 	$(BIN_PATH)/manage.py migrate --all
+	$(MAKE) fixtures
 
 # generate new migration script
 schemamigration:
@@ -81,3 +83,6 @@ clean:
 
 initcache:
 	$(BIN_PATH)/manage.py createcachetable fms_cache
+
+fixtures:
+	$(BIN_PATH)/manage.py loaddata pages.json mail_templates.json
