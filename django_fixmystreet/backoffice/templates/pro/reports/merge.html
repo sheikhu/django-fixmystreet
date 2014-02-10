@@ -116,24 +116,54 @@
 
     <script>
         var formMerge = document.getElementById('formMerge');
-        var postMethod = "{% url 'report_do_merge_pro' report.id %}"
+        var postMethod  = "{% url 'report_do_merge_pro' report.id %}";
 
-        var reportToMergeInput    = document.getElementById('reportToMergeInput');
-        var reportToMergeNumber   = document.getElementById('reportToMergeNumber');
-        var reportToMergeCategory = document.getElementById('reportToMergeCategory');
-        var reportToMergeAddress  = document.getElementById('reportToMergeAddress');
-        var reportToMergeMarker   = document.getElementById('reportToMergeMarker');
+        var currentReport = {};
+        currentReport.date     = {{ report.created|date:'YmdHis' }};
+        currentReport.marker   = "{{ STATIC_URL }}{{report.get_marker}}";
+        currentReport.id       = {{ report.id }};
+        currentReport.category = "{{ report.display_category }}";
+        currentReport.address  = "{{ report.display_address }}";
 
-        function loadModal(reportId, reportCategory, reportAddress, marker) {
-            reportToMergeInput.value        = reportId;
-            reportToMergeNumber.innerHTML   = reportId;
-            reportToMergeCategory.innerHTML = reportCategory;
-            reportToMergeAddress.innerHTML  = reportAddress;
+        function loadModal(reportId, reportDate, reportCategory, reportAddress, marker) {
+            var selectedReport      = {};
+            selectedReport.date     = reportDate;
+            selectedReport.marker   = "{{ STATIC_URL }}" + marker;
+            selectedReport.id       = reportId;
+            selectedReport.category = reportCategory;
+            selectedReport.address  = reportAddress;
 
-            var markerUrl = "{{ STATIC_URL }}" + marker;
-            reportToMergeMarker.setAttribute('src', markerUrl);
+            var olderReport;
+            var newerReport;
 
+            // Set one_incident to current
+            if (currentReport.date < selectedReport.date) {
+                olderReport = currentReport;
+                newerReport = selectedReport;
+
+                document.getElementById('olderToMerge').classList.add("one_incident");
+                document.getElementById('newerToMerge').classList.remove("one_incident");
+            } else {
+                olderReport = selectedReport;
+                newerReport = currentReport;
+
+                document.getElementById('newerToMerge').classList.add("one_incident");
+                document.getElementById('olderToMerge').classList.remove("one_incident");
+            }
+
+            document.getElementById('oldertoMergeMarker').setAttribute('src', olderReport.marker);
+            document.getElementById('oldertoMergeNumber').innerHTML   = olderReport.id;
+            document.getElementById('oldertoMergeCategory').innerHTML = olderReport.category;
+            document.getElementById('oldertoMergeAddress').innerHTML  = olderReport.address;
+
+            document.getElementById('newertoMergeMarker').setAttribute('src', newerReport.marker);
+            document.getElementById('newertoMergeNumber').innerHTML   = newerReport.id;
+            document.getElementById('newertoMergeCategory').innerHTML = newerReport.category;
+            document.getElementById('newertoMergeAddress').innerHTML  = newerReport.address;
+
+            document.getElementById('reportToMergeInput').value = reportId;
             formMerge.action = postMethod + "?mergeId=" + reportId;
+
             $('#modalMerge').modal();
         }
     </script>
@@ -222,8 +252,8 @@
 
             <div id='list'>
                 <p>
-                    <a href="#" id="previousPage" class="btn hidden">Previous page</a>
-                    <a href="#" id="nextPage" class="btn pull-right hidden">next page</a>
+                    <a href="#" id="previousPage" class="btn hidden">{% trans "Previous page" %}</a>
+                    <a href="#" id="nextPage" class="btn pull-right hidden">{% trans "Next page" %}</a>
                 </p>
 
                 {% for report in reports_nearby %}
@@ -245,7 +275,7 @@
                                             {{ report.display_category }}
                                         </span><br />
                                     <!-- Button "it's the same" -->
-                                    <a href='javascript:loadModal({{ report.id }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");' class="btn_same_incident report" >{% trans "Merge" %}</a>
+                                    <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");' class="btn_same_incident report" >{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
@@ -294,33 +324,32 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h3>{% trans 'Are you sure you want to merge these incidents?' %}</h3>
         </div>
-        <div class="modal-body">
-            <div class="text-center well one_incident">
-                <p>{% trans "Fusionner l'incident courant qui sera gardé" %} :</p>
-
+        <div id="mergeModalBody" class="modal-body">
+            <div class="text-center well" id="olderToMerge">
                 <p>
+                    {% trans 'Incident' %} :
                     <strong>
-                        <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
-                        N°{{ report.id }}
+                        <img id="oldertoMergeMarker" src="" class="report-counter"/>
+                        N°<span id="oldertoMergeNumber"></span>
                         <br/>
-                        {{ report.display_category }}
+                        <span id="oldertoMergeCategory"></span>
                         <br/>
-                        {{ report.display_address }}
+                        <span id="oldertoMergeAddress"></span>
                     </strong>
                 </p>
             </div>
 
-            <div class="text-center well">
-                <p>{% trans "Avec le contenu de l'incident que vous venez de sélectionner" %} :</p>
-
+            <div class="text-center well" id="newerToMerge">
                 <p>
+                    {% trans "Sera fusionné avec l'incident" %} :
+                    <br/>
                     <strong>
-                        <img id="reportToMergeMarker" src="" class="report-counter"/>
-                        N°<span id="reportToMergeNumber"></span>
+                        <img id="newertoMergeMarker" src="" class="report-counter"/>
+                        N°<span id="newertoMergeNumber"></span>
                         <br/>
-                        <span id="reportToMergeCategory"></span>
+                        <span id="newertoMergeCategory"></span>
                         <br/>
-                        <span id="reportToMergeAddress"></span>
+                        <span id="newertoMergeAddress"></span>
                     </strong>
                 </p>
             </div>
