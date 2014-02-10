@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-07 15:35+0100\n"
-"PO-Revision-Date: 2014-02-07 14:35+0000\n"
-"Last-Translator: jsanchezpando <jsanchezpando@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-02-10 16:05+0100\n"
+"PO-Revision-Date: 2014-02-07 15:52+0000\n"
+"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +64,7 @@ msgstr "Gemeentegrenzen"
 
 #: fixmystreet/static/js/fixmystreetmap.js:384
 msgid "Overlayers"
-msgstr ""
+msgstr "Weergave"
 
 #: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:229
 msgid "It is here"
