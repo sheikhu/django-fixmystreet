@@ -255,3 +255,9 @@ else:
     EMAIL_ADMIN = 'jsanchezpando@cirb.irisnet.be'
 ADMIN_EMAIL = EMAIL_ADMIN
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'fms_cache',
+    }
+}

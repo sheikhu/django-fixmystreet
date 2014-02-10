@@ -48,11 +48,12 @@ to install GeoDjango for PostgreSql:
 - Create PostGIS template https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#spatialdb-template
 
 
-after install, create the database:
+after install, create the database and init the cache:
 
 ```bash
 
 $ make createdb
+$ make initcache
 $ bin/django loaddata sample # if you want some sample data to work with
 $ cp local_settings_staging.py local_settings.py # and edit db connection settings
 ```
