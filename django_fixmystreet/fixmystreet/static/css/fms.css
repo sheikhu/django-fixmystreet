@@ -2204,3 +2204,8 @@ table.dataTable thead th {
 .required label.control-label::before {
 content: "*";
 }
+
+
+.alert a:link, .alert a:visited, .alert a:hover, .alert a:active, .alert a:focus{
+	color:#c09853;
+}
