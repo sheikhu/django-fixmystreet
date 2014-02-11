@@ -46,6 +46,9 @@ def new(request):
 
                 report.save()
 
+                if report_form.cleaned_data['subscription']:
+                    report.subscribe_author()
+
                 if request.POST["comment-text"]:
                     comment = comment_form.save(commit=False)
                     comment.report = report
