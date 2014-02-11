@@ -23,6 +23,7 @@ class ReportProViewsTest(TestCase):
         self.citizen.save()
 
         self.manager = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
@@ -37,6 +38,7 @@ class ReportProViewsTest(TestCase):
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
         self.super_user = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             first_name="superuser",

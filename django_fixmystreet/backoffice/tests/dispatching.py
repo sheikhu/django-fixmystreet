@@ -29,6 +29,7 @@ class DispatchingTest(TestCase):
         self.department.save()
 
         self.manager = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
@@ -55,6 +56,7 @@ class DispatchingTest(TestCase):
         self.applicant_group.save()
 
         self.applicant = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',

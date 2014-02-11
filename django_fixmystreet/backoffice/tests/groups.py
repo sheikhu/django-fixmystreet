@@ -10,6 +10,7 @@ class GroupsTest(TestCase):
 
     def setUp(self):
         self.manager = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
@@ -23,6 +24,7 @@ class GroupsTest(TestCase):
         self.manager.save()
 
         self.leader = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
