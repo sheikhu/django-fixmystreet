@@ -6,7 +6,7 @@ from django_fixmystreet.fixmystreet.models import OrganisationEntity
 
 class OrganisationEntityTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         '''Create organisation test structure'''

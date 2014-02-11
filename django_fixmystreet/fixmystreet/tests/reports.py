@@ -80,14 +80,14 @@ class NotificationTest(TestCase):
         self.assertFalse(reportFile.is_image())
         self.assertTrue(reportFile.is_document())
 
-        reportFile = ReportFile(file_type=ReportFile.EXCEL, report = new_report)
+        reportFile = ReportFile(file_type=ReportFile.EXCEL, report=new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertTrue(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
         self.assertTrue(reportFile.is_document())
 
-        reportFile = ReportFile(file_type=ReportFile.IMAGE, report = new_report)
+        reportFile = ReportFile(file_type=ReportFile.IMAGE, report=new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
@@ -102,9 +102,9 @@ class NotificationTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             created_by=self.manager_etterbeek
         )
@@ -118,9 +118,9 @@ class NotificationTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             citizen=self.citizen
         )
@@ -132,7 +132,7 @@ class NotificationTest(TestCase):
 
 class PhotosTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.user = User.objects.create_user('test', 'test@fixmystreet.irisnet.be', 'pwd')
@@ -140,20 +140,21 @@ class PhotosTest(TestCase):
         self.category = ReportMainCategoryClass.objects.all()[0]
         #Create a FMSUser
         self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", agent=False, manager=False, leader=False, applicant=False, contractor=False)
-        self.fmsuser.save();
+        self.fmsuser.save()
         #self.ward = Ward.objects.all()[0]
+
 
 class ValueUpdate(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
         #Create a FMSUser
-        self.etterbeek = OrganisationEntity.objects.get(id=5) # postal code = 1040 Etterbeek
+        self.etterbeek = OrganisationEntity.objects.get(id=5)  # postal code = 1040 Etterbeek
         self.etterbeek.save()
-        self.bxl = OrganisationEntity.objects.get(id=4) # postal code = 1000 Bxl
+        self.bxl = OrganisationEntity.objects.get(id=4)  # postal code = 1000 Bxl
         self.bxl.save()
         self.manager_etterbeek = FMSUser(email="manager@etterbeek.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.etterbeek)
         self.manager_etterbeek.save()

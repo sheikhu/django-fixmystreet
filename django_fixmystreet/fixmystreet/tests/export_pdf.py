@@ -92,7 +92,7 @@ class ExportPDFTest(SampleFilesTestCase):
         self.assertEqual(response.context['privacy'], 'private')
 
     def test_show_attachment(self):
-        response = self.client.get(reverse('report_show', kwargs={'report_id': self.report.id, 'slug':''}), follow=True)
+        response = self.client.get(reverse('report_show', kwargs={'report_id': self.report.id, 'slug': ''}), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'test comment 1')
         self.assertContains(response, 'test comment 2')
@@ -101,7 +101,7 @@ class ExportPDFTest(SampleFilesTestCase):
     def test_show_attachment_private(self):
         self.assertTrue(self.client.login(username=self.manager_bxl.email, password='test'))
 
-        response = self.client.get(reverse('report_show_pro', kwargs={'report_id': self.report.id, 'slug':''}), follow=True)
+        response = self.client.get(reverse('report_show_pro', kwargs={'report_id': self.report.id, 'slug': ''}), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test comment 1')
         self.assertContains(response, 'test comment 2')
