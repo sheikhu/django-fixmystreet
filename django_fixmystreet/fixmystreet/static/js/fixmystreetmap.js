@@ -391,6 +391,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             this.map.setCenter(new OpenLayers.LonLat(148894,170714));
             this.map.zoomTo(3);
         }
+
+        this.element.addEventListener('transitionend', function () {
+            fms.currentMap.map.updateSize();
+        });
     };
 
     fms.Map.prototype.reset = function(){
