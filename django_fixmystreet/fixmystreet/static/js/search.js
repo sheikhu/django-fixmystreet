@@ -422,7 +422,9 @@ $(function(){
 
                     if (!fms.currentMap.homepageMarkersLayer) {
                         // Create vector layer
-                        fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay");
+                        fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay", {
+                            displayInLayerSwitcher: false
+                        });
 
                         // Add layer to map
                         fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
