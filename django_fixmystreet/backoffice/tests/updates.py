@@ -58,6 +58,7 @@ class UpdatesTest(TestCase):
         self.manager.categories.add(self.secondary_category)
 
         self.manager2 = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
