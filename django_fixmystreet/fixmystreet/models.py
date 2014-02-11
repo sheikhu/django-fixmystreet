@@ -1791,6 +1791,9 @@ def user_to_display_public(related):
         elif user.fmsuser.is_pro():
             return user.fmsuser.get_organisation()
 
+    elif hasattr(related, 'dependency'):
+        return related.dependency
+
     else:
         return related
 

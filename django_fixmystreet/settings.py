@@ -76,13 +76,14 @@ ROOT_URLCONF = 'django_fixmystreet.urls'
 SOUTH_LOGGING_ON = True
 SOUTH_LOGGING_FILE = os.path.join(BASE_DIR, "south.log")
 
-import pkg_resources
-VERSION = pkg_resources.require("django-fixmystreet")[0].version
 
-if not VERSION:
+if ENVIRONMENT == "local":
     proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
     VERSION = out
+else:
+    import pkg_resources
+    VERSION = pkg_resources.require("django-fixmystreet")[0].version
 
 gettext = lambda s: s
 LANGUAGES = (
