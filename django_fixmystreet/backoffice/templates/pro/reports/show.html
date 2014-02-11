@@ -511,7 +511,7 @@ $(document).ready(function() {
                             </a>
                         {% endif %}
 
-                        {% if not report.is_closed and not subscribed %}
+                        {% if not report.is_closed %}
                             <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
                                 {% if report.subscriptions.all.count %}
                                     <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
@@ -753,7 +753,7 @@ $(document).ready(function() {
         </div>
     {% endif %}
 
-    {% if not report.is_closed and not subscribed %}
+    {% if not report.is_closed %}
         <div id="modalSubscription" class="modal hide fade">
             <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
                 {% csrf_token %}
