@@ -39,7 +39,13 @@ class ListTest(TestCase):
         self.stib.dependency = self.bxl
         self.stib.save()
 
-        self.contractor = FMSUser(email="contractor@bxl.be", telephone="0123456789", last_used_language="fr", contractor=True, organisation=self.bxl)
+        self.contractor = FMSUser(
+            is_active=True,
+            email="contractor@bxl.be",
+            telephone="0123456789",
+            last_used_language="fr",
+            contractor=True,
+            organisation=self.bxl)
         self.contractor.save()
 
         self.contractor_manager = FMSUser(
@@ -93,9 +99,9 @@ class ListTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             citizen=self.citizen
         )
@@ -112,9 +118,9 @@ class ListTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             citizen=self.citizen
         )
@@ -132,9 +138,9 @@ class ListTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             citizen=self.citizen
         )
@@ -149,9 +155,9 @@ class ListTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005.2'}),
+            point=dict_to_point({"x": '149776', "y": '170005.2'}),
             address_number='6',
             citizen=self.citizen
         )
@@ -161,9 +167,9 @@ class ListTest(TestCase):
 
         reports = Report.objects.all()
         # Entity of contractor has 2 reports
-        self.assertEquals(2,len(reports.entity_responsible(self.contractor_manager)))
+        self.assertEquals(2, len(reports.entity_responsible(self.contractor_manager)))
         #contractor is responsible for 2 reports (1 as manager, 1 as contractor)
-        self.assertEquals(2,len(reports.responsible(self.contractor_manager)))
+        self.assertEquals(2, len(reports.responsible(self.contractor_manager)))
 
     def test_list_entity_manager_reports(self):
         new_report = Report(
@@ -171,9 +177,9 @@ class ListTest(TestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             citizen=self.citizen
         )
@@ -182,12 +188,12 @@ class ListTest(TestCase):
         new_report.save()
 
         reports = Report.objects.all()
-        self.assertEquals(1,len(reports.entity_responsible(self.entity_manager)))
-        self.assertEquals(1,len(reports.responsible(self.entity_manager)))
+        self.assertEquals(1, len(reports.entity_responsible(self.entity_manager)))
+        self.assertEquals(1, len(reports.responsible(self.entity_manager)))
 
         new_report.responsible_manager = self.entity_manager
         new_report.responsible_department = self.group
         new_report.save()
 
         reports = Report.objects.all()
-        self.assertEquals(1,len(reports.responsible(self.entity_manager)))
+        self.assertEquals(1, len(reports.responsible(self.entity_manager)))
