@@ -5,11 +5,18 @@ from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report, ReportComment, ReportCategory, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
+
 class ExportPDFTest(SampleFilesTestCase):
 
     def setUp(self):
         self.bxl = OrganisationEntity.objects.get(id=4)
-        self.manager_bxl = FMSUser(email="manager@bxl.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.bxl)
+        self.manager_bxl = FMSUser(
+            is_active=True,
+            email="manager@bxl.be",
+            telephone="0123456789",
+            last_used_language="fr",
+            manager=True,
+            organisation=self.bxl)
         self.manager_bxl.set_password('test')
         self.manager_bxl.save()
         self.group = OrganisationEntity(
@@ -17,11 +24,11 @@ class ExportPDFTest(SampleFilesTestCase):
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = self.bxl,
+            dependency=self.bxl,
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager_bxl.id, organisation_id = self.group.id,contact_user = True)
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager_bxl.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
         self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")
         self.citizen.save()
@@ -35,9 +42,9 @@ class ExportPDFTest(SampleFilesTestCase):
             secondary_category=self.secondary_category,
             category=self.category,
             description='Just a test',
-            postalcode = 1000,
+            postalcode=1000,
             address='my address',
-            point=dict_to_point({"x":'149776', "y":'170005'}),
+            point=dict_to_point({"x": '149776', "y": '170005'}),
             address_number='6h',
             created_by=self.manager_bxl
         )

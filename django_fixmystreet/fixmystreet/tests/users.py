@@ -6,20 +6,26 @@ from django_fixmystreet.fixmystreet.models import ReportCategory, OrganisationEn
 
 class FMSUserTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
-       self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
-       self.user.save()
+        self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
+        self.user.save()
 
-       # these are from the fixtures file.
-       self.category = ReportCategory.objects.all()[0]
-       self.categoryclass = self.category.category_class
+        # these are from the fixtures file.
+        self.category = ReportCategory.objects.all()[0]
+        self.categoryclass = self.category.category_class
 
-       self.commune = OrganisationEntity(name='test ward')
-       #Create a FMSUser
-       self.fmsuser = FMSUser(telephone="0123456789", last_used_language="fr", username="aaa", first_name="aaa", last_name="aaa", email="a@a.com")
-       self.fmsuser.save();
+        self.commune = OrganisationEntity(name='test ward')
+        #Create a FMSUser
+        self.fmsuser = FMSUser(
+            telephone="0123456789",
+            last_used_language="fr",
+            username="aaa",
+            first_name="aaa",
+            last_name="aaa",
+            email="a@a.com")
+        self.fmsuser.save()
 
     def testCreationOfFMSUser(self):
        '''Create a user and check if the row in database has been created'''

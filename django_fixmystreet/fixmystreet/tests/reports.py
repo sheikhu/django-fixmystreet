@@ -2,7 +2,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test.client import Client
-from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile, UserOrganisationMembership
 from django_fixmystreet.fixmystreet.utils import dict_to_point
@@ -16,50 +15,65 @@ class NotificationTest(TestCase):
         self.secondary_category = ReportCategory.objects.all()[0]
         self.category = self.secondary_category.category_class
         #Create a FMSUser
-        self.etterbeek = OrganisationEntity.objects.get(id=5) # postal code = 1040 Etterbeek
+        self.etterbeek = OrganisationEntity.objects.get(id=5)  # postal code = 1040 Etterbeek
         self.etterbeek.save()
-        self.bxl = OrganisationEntity.objects.get(id=4) # postal code = 1000 Bxl
+        self.bxl = OrganisationEntity.objects.get(id=4)  # postal code = 1000 Bxl
         self.bxl.save()
-        self.manager_etterbeek = FMSUser(email="manager@etterbeek.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.etterbeek)
+        self.manager_etterbeek = FMSUser(
+            is_active=True,
+            email="manager@etterbeek.be",
+            telephone="0123456789",
+            last_used_language="fr",
+            manager=True,
+            organisation=self.etterbeek)
         self.manager_etterbeek.save()
-        self.manager_bxl = FMSUser(email="manager@bxl.be", telephone="0123456789", last_used_language="fr", manager=True, organisation=self.bxl)
+        self.manager_bxl = FMSUser(
+            is_active=True,
+            email="manager@bxl.be",
+            telephone="0123456789",
+            last_used_language="fr",
+            manager=True,
+            organisation=self.bxl)
         self.manager_bxl.save()
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = self.bxl,
+            dependency=self.bxl,
             email="test@email.com"
             )
         self.group.save()
-        self.usergroupmembership = UserOrganisationMembership(user_id = self.manager_bxl.id, organisation_id = self.group.id, contact_user = True)
+        self.usergroupmembership = UserOrganisationMembership(user_id=self.manager_bxl.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
         self.group2 = OrganisationEntity(
             type="D",
             name_nl="Werken",
             name_fr="Travaux",
             phone="090987",
-            dependency = self.etterbeek,
+            dependency=self.etterbeek,
             email="test@email.com"
             )
         self.group2.save()
-        self.usergroupmembership2 = UserOrganisationMembership(user_id = self.manager_etterbeek.id, organisation_id = self.group2.id, contact_user = True)
+        self.usergroupmembership2 = UserOrganisationMembership(user_id=self.manager_etterbeek.id, organisation_id=self.group2.id, contact_user=True)
         self.usergroupmembership2.save()
-        self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")
+        self.citizen = FMSUser(
+            email="citizen@fms.be",
+            telephone="0123456789",
+            last_used_language="fr")
         self.citizen.save()
 
     def testReportFileType(self):
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.manager_bxl)
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode=1000, responsible_manager=self.manager_bxl)
 
-        reportFile = ReportFile(file_type=ReportFile.PDF, report = new_report)
+        reportFile = ReportFile(file_type=ReportFile.PDF, report=new_report)
         self.assertTrue(reportFile.is_pdf())
         self.assertFalse(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())
         self.assertFalse(reportFile.is_image())
         self.assertTrue(reportFile.is_document())
 
-        reportFile = ReportFile(file_type=ReportFile.WORD, report = new_report)
+        reportFile = ReportFile(file_type=ReportFile.WORD, report=new_report)
         self.assertFalse(reportFile.is_pdf())
         self.assertTrue(reportFile.is_word())
         self.assertFalse(reportFile.is_excel())

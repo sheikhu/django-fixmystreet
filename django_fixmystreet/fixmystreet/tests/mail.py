@@ -25,6 +25,7 @@ class MailTest(TestCase):
         )
         self.citizen.save()
         self.manager = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
@@ -52,6 +53,7 @@ class MailTest(TestCase):
         self.client = Client()
 
         self.manager2 = FMSUser(
+            is_active=True,
             telephone="9876543210",
             last_used_language="nl",
             password='test',
@@ -78,6 +80,7 @@ class MailTest(TestCase):
         self.manager2.memberships.create(organisation=self.group2)
 
         self.manager3 = FMSUser(
+            is_active=True,
             telephone="000000000",
             last_used_language="nl",
             password='test',

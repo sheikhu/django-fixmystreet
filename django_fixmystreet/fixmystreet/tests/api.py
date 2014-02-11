@@ -22,7 +22,14 @@ class ApiTest(SampleFilesTestCase):
 
         #user_auth = User.objects.create_user(username='superuser', email='test1@fixmystreet.irisnet.be', password='test')
         #user_auth.save()
-        user = FMSUser(password="test", first_name="zaza", telephone="00000000", last_used_language="fr", organisation=organisation, username='superuser')
+        user = FMSUser(
+            is_active=True,
+            password="test",
+            first_name="zaza",
+            telephone="00000000",
+            last_used_language="fr",
+            organisation=organisation,
+            username='superuser')
         user.save()
 
         #~ main_category = ReportMainCategoryClass(id=2,name_en='test main en',name_nl='test main nl',name_fr='test main fr')
@@ -43,6 +50,7 @@ class ApiTest(SampleFilesTestCase):
         self.citizen.save()
 
         self.manager = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
