@@ -1793,7 +1793,7 @@ def user_to_display_public(related):
         elif user.fmsuser.is_pro():
             return user.fmsuser.get_organisation()
 
-    elif hasattr(related, 'dependency'):
+    elif hasattr(related, 'dependency') and related.dependency:
         return related.dependency
 
     else:
