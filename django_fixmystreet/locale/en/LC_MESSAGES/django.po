@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 17:10+0100\n"
+"POT-Creation-Date: 2014-02-11 10:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -217,7 +217,7 @@ msgstr ""
 #: backoffice/templates/pro/change_password.html:4
 #: backoffice/templates/pro/list_reporting.html:4
 #: backoffice/templates/pro/login.html:4 backoffice/templates/pro/login.html:8
-#: fixmystreet/templates/base.html:90
+#: fixmystreet/templates/base.html:117
 msgid "Sign in"
 msgstr ""
 
@@ -250,9 +250,9 @@ msgid "Configure gestionnaire categories"
 msgstr ""
 
 #: backoffice/templates/pro/manager_category_configuration.html:73
-#: backoffice/templates/pro/reports/merge.html:280
+#: backoffice/templates/pro/reports/merge.html:310
 #: backoffice/templates/pro/reports/show.html:897
-#: fixmystreet/templates/base.html:220
+#: fixmystreet/templates/base.html:249
 #: fixmystreet/templates/reports/_documentreport.html:50
 #: fixmystreet/templates/reports/_documentreport.html:73
 msgid "Cancel"
@@ -267,12 +267,12 @@ msgid "Save"
 msgstr ""
 
 #: backoffice/templates/pro/auth/base.html:24
-#: fixmystreet/templates/base.html:106
+#: fixmystreet/templates/base.html:133
 msgid "Users"
 msgstr ""
 
 #: backoffice/templates/pro/auth/base.html:27
-#: fixmystreet/templates/base.html:111
+#: fixmystreet/templates/base.html:138
 msgid "Groups"
 msgstr ""
 
@@ -385,12 +385,12 @@ msgstr ""
 msgid "Incidents signalés dans le même secteur"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:153
+#: backoffice/templates/pro/reports/merge.html:183
 msgid "Report to merge"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:155
-#: backoffice/templates/pro/reports/merge.html:239
+#: backoffice/templates/pro/reports/merge.html:185
+#: backoffice/templates/pro/reports/merge.html:269
 #: backoffice/templates/pro/reports/show.html:284
 #: backoffice/templates/pro/reports/show.html:288
 #: backoffice/templates/pro/reports/show.html:292
@@ -408,80 +408,88 @@ msgstr ""
 msgid "Incident n°"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:182
-#: backoffice/templates/pro/reports/merge.html:267
+#: backoffice/templates/pro/reports/merge.html:212
+#: backoffice/templates/pro/reports/merge.html:297
 #: fixmystreet/templates/reports/_navigation.html:36
 #: fixmystreet/templates/reports/_selection.html:28
 #: fixmystreet/templates/reports/verify.html:93
 msgid "fixed"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:195
+#: backoffice/templates/pro/reports/merge.html:225
 #: fixmystreet/templates/reports/verify.html:36
 msgid "we have"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:195
+#: backoffice/templates/pro/reports/merge.html:225
 #: fixmystreet/templates/reports/verify.html:36
 msgid "incident sector"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:201
+#: backoffice/templates/pro/reports/merge.html:231
 #: fixmystreet/templates/_page_header.html:51
-#: fixmystreet/templates/home.html:67
+#: fixmystreet/templates/home.html:61
 msgid "Ticket number..."
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:208
+#: backoffice/templates/pro/reports/merge.html:238
 #: fixmystreet/templates/reports/verify.html:41
 msgid "List"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:209
+#: backoffice/templates/pro/reports/merge.html:239
 #: backoffice/templates/pro/reports/table.html:310
 #: fixmystreet/templates/reports/verify.html:42
 msgid "Map"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:237
+#: backoffice/templates/pro/reports/merge.html:255
+msgid "Previous page"
+msgstr ""
+
+#: backoffice/templates/pro/reports/merge.html:256
+msgid "Next page"
+msgstr ""
+
+#: backoffice/templates/pro/reports/merge.html:267
 #: fixmystreet/templates/reports/verify.html:63
 msgctxt "distance"
 msgid "to"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:248
-#: backoffice/templates/pro/reports/merge.html:342
+#: backoffice/templates/pro/reports/merge.html:278
+#: backoffice/templates/pro/reports/merge.html:371
 #: backoffice/templates/pro/reports/show.html:599
 #: backoffice/templates/pro/reports/show.html:601
 msgid "Merge"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:295
+#: backoffice/templates/pro/reports/merge.html:325
 msgid "Are you sure you want to merge these incidents?"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:299
-msgid "Fusionner l'incident courant qui sera gardé"
+#: backoffice/templates/pro/reports/merge.html:330
+msgid "Incident"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:314
-msgid "Avec le contenu de l'incident que vous venez de sélectionner"
+#: backoffice/templates/pro/reports/merge.html:344
+msgid "Sera fusionné avec l'incident"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:328
+#: backoffice/templates/pro/reports/merge.html:357
 msgid "Le résultat de la fusion sera visible pour"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:332
+#: backoffice/templates/pro/reports/merge.html:361
 #: fixmystreet/templates/reports/_attachment.html:22
 msgid "private"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:334
+#: backoffice/templates/pro/reports/merge.html:363
 msgid "public"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:341
+#: backoffice/templates/pro/reports/merge.html:370
 msgid "No"
 msgstr ""
 
@@ -904,7 +912,7 @@ msgid "incident "
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:912
-#: fixmystreet/templates/base.html:191
+#: fixmystreet/templates/base.html:218
 #: fixmystreet/templates/reports/show.html:351
 msgid "OK"
 msgstr ""
@@ -1775,69 +1783,69 @@ msgstr ""
 msgid "Fix My Street Brussels"
 msgstr ""
 
-#: fixmystreet/templates/base.html:49
-msgid "Fix My Street"
-msgstr ""
-
-#: fixmystreet/templates/base.html:68 fixmystreet/templates/base.html.py:79
-msgid "Submit a Report"
-msgstr ""
-
-#: fixmystreet/templates/base.html:71 fixmystreet/templates/base.html.py:82
-msgid "View Reports"
-msgstr ""
-
-#: fixmystreet/templates/base.html:73 fixmystreet/templates/base.html.py:84
-msgid "Help"
-msgstr ""
-
-#: fixmystreet/templates/base.html:74
-msgid "FAQ"
-msgstr ""
-
-#: fixmystreet/templates/base.html:120
-msgid "Managers dispatching"
-msgstr ""
-
-#: fixmystreet/templates/base.html:128
-msgid "Change your password"
-msgstr ""
-
-#: fixmystreet/templates/base.html:137
-msgid "Log out"
-msgstr ""
-
-#: fixmystreet/templates/base.html:162
-msgid "Confirmation"
-msgstr ""
-
-#: fixmystreet/templates/base.html:182
-msgid "I want to create a new report"
-msgstr ""
-
-#: fixmystreet/templates/base.html:201
+#: fixmystreet/templates/base.html:48 fixmystreet/templates/base.html:230
 msgid "Browser not supported"
 msgstr ""
 
-#: fixmystreet/templates/base.html:204
+#: fixmystreet/templates/base.html:48 fixmystreet/templates/base.html:233
 msgid ""
 "Please download one of the supported browsers below before continuing on the "
 "website."
 msgstr ""
 
-#: fixmystreet/templates/base.html:232
+#: fixmystreet/templates/base.html:76
+msgid "Fix My Street"
+msgstr ""
+
+#: fixmystreet/templates/base.html:95 fixmystreet/templates/base.html:106
+msgid "Submit a Report"
+msgstr ""
+
+#: fixmystreet/templates/base.html:98 fixmystreet/templates/base.html:109
+msgid "View Reports"
+msgstr ""
+
+#: fixmystreet/templates/base.html:100 fixmystreet/templates/base.html:111
+msgid "Help"
+msgstr ""
+
+#: fixmystreet/templates/base.html:101
+msgid "FAQ"
+msgstr ""
+
+#: fixmystreet/templates/base.html:147
+msgid "Managers dispatching"
+msgstr ""
+
+#: fixmystreet/templates/base.html:155
+msgid "Change your password"
+msgstr ""
+
+#: fixmystreet/templates/base.html:164
+msgid "Log out"
+msgstr ""
+
+#: fixmystreet/templates/base.html:189
+msgid "Confirmation"
+msgstr ""
+
+#: fixmystreet/templates/base.html:209
+msgid "I want to create a new report"
+msgstr ""
+
+#: fixmystreet/templates/base.html:261
 msgid "A initiative of Bruxelles Mobilite in collaboration with "
 msgstr ""
 
-#: fixmystreet/templates/base.html:233
+#: fixmystreet/templates/base.html:262
 msgid "Communes and Brussels Partner Institutions"
 msgstr ""
 
-#: fixmystreet/templates/base.html:240
+#: fixmystreet/templates/base.html:269
 msgid "Terms of Use"
 msgstr ""
 
-#: fixmystreet/templates/base.html:241
+#: fixmystreet/templates/base.html:270
 msgid "A propos de Fix My Street"
 msgstr ""
 
@@ -1845,35 +1853,35 @@ msgstr ""
 msgid "Meta description for home page"
 msgstr ""
 
-#: fixmystreet/templates/home.html:53
+#: fixmystreet/templates/home.html:47
 msgid "Report an incident"
 msgstr ""
 
-#: fixmystreet/templates/home.html:53
+#: fixmystreet/templates/home.html:47
 msgid "Hole, degradations, subsidence, invisible marks..."
 msgstr ""
 
-#: fixmystreet/templates/home.html:64
+#: fixmystreet/templates/home.html:58
 msgid "Last modified reports:"
 msgstr ""
 
-#: fixmystreet/templates/home.html:66
+#: fixmystreet/templates/home.html:60
 msgid "Enter the report ticket:"
 msgstr ""
 
-#: fixmystreet/templates/home.html:72
+#: fixmystreet/templates/home.html:66
 msgid "Last 30 days"
 msgstr ""
 
-#: fixmystreet/templates/home.html:75
+#: fixmystreet/templates/home.html:69
 msgid "Report Created"
 msgstr ""
 
-#: fixmystreet/templates/home.html:78
+#: fixmystreet/templates/home.html:72
 msgid "Report In progress"
 msgstr ""
 
-#: fixmystreet/templates/home.html:81
+#: fixmystreet/templates/home.html:75
 msgid "Report Processed"
 msgstr ""
 

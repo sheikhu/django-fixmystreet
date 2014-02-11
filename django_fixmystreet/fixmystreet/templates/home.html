@@ -31,13 +31,7 @@ $(function(){
     fms.currentMap = new fms.Map('map', {
         apiLang:     LANGUAGE_CODE,
         localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    WMS_SERVICE_URL,
-        {% if reports_created.0 %}
-        origin:{
-            x:{{ reports_created.0.point.x }},
-            y:{{ reports_created.0.point.y }}
-        }
-        {% endif %}
+        urbisUrl:    WMS_SERVICE_URL
     });
 
     var proVersion = false;
