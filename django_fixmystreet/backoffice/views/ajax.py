@@ -1,4 +1,4 @@
-
+import datetime
 import re
 import json
 
@@ -88,7 +88,8 @@ def send_pdf(request, report_id):
 
         #reset the seek to 0 to be able to read multiple times the same file
         pdffile.seek(0)
-        msg.attach(pdffile.name, pdffile.read(), 'application/pdf')
+        name = "export-incident-%s-date-%s.pdf" % (report.id, datetime.date.today().isoformat())
+        msg.attach(name, pdffile.read(), 'application/pdf')
 
         msg.send()
 
