@@ -35,27 +35,6 @@ $(document).ready(function(){
         }
     });
 
-    $('.ajax-form').submit(function(evt) {
-        evt.preventDefault();
-        $form = $(this);
-        $form.removeClass('form-success form-error').addClass('loading');
-
-        $.ajax({
-            url:$form.prop("action"),
-            data: $form.serializeArray(),
-            type:"POST"
-        }).success(function () {
-            $form.addClass('form-success');
-            setTimeout(function () {
-                $form.removeClass('form-success');
-            }, 3000);
-        }).error(function () {
-            $form.addClass('form-error');
-        }).always(function () {
-            $form.removeClass('loading');
-        });
-    });
-
     $("[data-toggle=popover]")
         .popover({
             html : true,

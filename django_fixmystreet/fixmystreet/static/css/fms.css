@@ -1349,8 +1349,8 @@ form#report-form{
 	margin-left:20px;
 	margin-top:20px;
 }
-.ajax-form {
-	padding: 5px;
+.async-form  {
+	padding: 3px;
 	margin: 8px 0;
 	border: 3px solid transparent;
 	border-radius: 5px;

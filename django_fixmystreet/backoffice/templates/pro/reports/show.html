@@ -260,6 +260,60 @@ $('.dropdown-toggle').click(function(e) {
     });
 });
 
+$(document).ready(function() {
+
+    function sendPdf(event) {
+        event.preventDefault();
+
+        this.classList.add('loading');
+
+        var self = this;
+        var url  = "{% url 'send_pdf' report.id %}";
+
+        var statusMessage = document.getElementById(self.id + '-status');
+        var status        = statusMessage.parentNode;
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $(this).serialize(),
+            success: function(response) {
+                console.log("send mail success");
+
+                statusMessage.innerHTML = response;
+
+                status.classList.remove('alert-error');
+                status.classList.add('alert-success');
+            },
+            error: function(response) {
+                console.log("send mail error");
+
+                statusMessage.innerHTML = "Error";
+
+                status.classList.remove('alert-success');
+                status.classList.add('alert-error');
+
+            },
+            complete: function() {
+                status.classList.remove('hidden');
+
+                setTimeout(function() {
+                    status.classList.add('hidden');
+                }, 5000);
+
+                self.classList.remove('loading');
+            }
+        });
+    }
+
+    $('#mail-pdf-pro').submit(function(event) {
+        sendPdf.call(this, event);
+    });
+
+    $('#mail-pdf-citizen').submit(function(event) {
+        sendPdf.call(this, event);
+    });
+});
 </script>
 <script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
 
@@ -861,7 +915,11 @@ $('.dropdown-toggle').click(function(e) {
                     {% trans 'send report pdf' context 'pro' %}
                 </button>
 
-                <form id="mail-pdf-citizen" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
+                <form id="mail-pdf-citizen" class="collapse async-form" >
+                    <div class="alert hidden">
+                        <span id="mail-pdf-citizen-status"></span>
+                    </div>
+
                     <input type="hidden" name="privacy" value="private"/>
                     <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>
                     <textarea id="pdf-email-citizen" name="to" class="input-block-level"></textarea>
@@ -874,7 +932,11 @@ $('.dropdown-toggle').click(function(e) {
                 <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-pro">
                     {% trans 'send report pdf pro' %}
                 </button>
-                <form id="mail-pdf-pro" class="collapse ajax-form" action="{% url 'send_pdf' report.id %}">
+                <form id="mail-pdf-pro" class="collapse async-form">
+                    <div class="alert hidden">
+                        <span id="mail-pdf-pro-status"></span>
+                    </div>
+
                     <input type="hidden" name="privacy" value="public"/>
                     <label for="pdf-email">{% trans 'enter mail address' %}</label>
                     <textarea id="pdf-email" name="to" class="input-block-level"></textarea>
