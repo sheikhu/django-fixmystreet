@@ -37,6 +37,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.group.save()
 
         self.manager = FMSUser(
+            is_active=True,
             telephone="0123456789",
             last_used_language="fr",
             password='test',
