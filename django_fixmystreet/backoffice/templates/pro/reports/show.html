@@ -399,8 +399,10 @@ $('.dropdown-toggle').click(function(e) {
                         <li>
                             <th><strong>{% trans "Status:" %}</strong></th>
                             <td>{{ report.get_status_display }}</td>
-                            {% trans 'on' %}
-                            {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+                            {% if report.last_history_status_event %}
+                                {% trans 'on' %}
+                                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+                            {% endif %}
 
                             {% if report.is_contractor_or_applicant_assigned %}
                                 {{report.contractor.name}}
