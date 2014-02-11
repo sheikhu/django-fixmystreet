@@ -25,12 +25,13 @@ def table_content(request, selection=""):
     user = request.fmsuser
     reports = Report.objects.all().visible().related_fields()
 
-    if user.agent or user.manager or user.leader:
-        reports = reports.entity_responsible(user) | reports.entity_territory(user.organisation)
-    elif user.contractor or user.applicant:
-        reports = reports.responsible_contractor(user)
-    elif not user.is_superuser:
-        raise PermissionDenied()
+    if selection != "subscribed":
+        if user.agent or user.manager or user.leader:
+            reports = reports.entity_responsible(user) | reports.entity_territory(user.organisation)
+        elif user.contractor or user.applicant:
+            reports = reports.responsible_contractor(user)
+        elif not user.is_superuser:
+            raise PermissionDenied()
 
     if selection == "responsible" and user.manager:
         reports = reports.responsible(user)
