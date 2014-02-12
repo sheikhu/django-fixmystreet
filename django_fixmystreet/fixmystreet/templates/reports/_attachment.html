@@ -45,7 +45,7 @@
                     <!-- responsible-name, responsible-group, responsible-entity -->
                     {% if BACKOFFICE %}
                     <a href="mailto:{{report.responsible_department.email }}">
-                        {{report.responsible_department.contact_user.get_full_name}}
+                        {{attachment.created_by.get_display_name}}
                     </a>
                     {% endif %}
                     -
@@ -109,7 +109,7 @@
                     <!-- responsible-name, responsible-group, responsible-entity -->
                     {% if BACKOFFICE %}
                         <a href="mailto:{{report.responsible_department.email }}">
-                            {{report.responsible_department.contact_user.get_full_name}}
+                            {{attachment.created_by.get_display_name}}
                         </a>
                     {% endif %}
                     -
