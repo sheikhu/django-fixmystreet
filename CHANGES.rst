@@ -4,13 +4,15 @@ Changelog of django-fixmystreet
 2.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Translation of refused
 
 
 2.4.1 (2014-02-12)
 ------------------
 
-- Nothing changed yet.
+- subscription for pro in incident creation not working
+- fix image does not exist bug when attachment is a file
+- "subscribed" table selection is teritorial and responsible independant
 
 
 2.4.0 (2014-02-11)
