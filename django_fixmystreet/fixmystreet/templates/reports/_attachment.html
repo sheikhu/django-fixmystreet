@@ -59,7 +59,7 @@
         </div>
         <span class="picture-caption">
             <!--a href="{{ attachment.reportfile.file.url }}"-->
-            <a href="{{attachment.reportfile.file.url}}" data-lightbox="image-1" title="{{attachment.reportfile.title}}">
+            <a href="{{attachment.reportfile.file.url}}" {% if attachment.reportfile.is_image %}data-lightbox="image-1"{% endif %} title="{{attachment.reportfile.title}}">
                 {% if attachment.reportfile.is_image %}
                     <img id='imgtoshow' src='{{attachment.reportfile.file.url}}' class="view-image"/>
                 {% elif attachment.reportfile.is_pdf %}
@@ -71,12 +71,6 @@
                 {% endif %}
             </a>
             <!-- Modal -->
-            <!--div id="modal-img" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-img-label" aria-hidden="true">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <img src="{{ attachment.reportfile.image.url }}" />
-                </div>
-            </div-->
             <p class="comment-incident">
                 <img src="{{STATIC_URL}}images/comment-bg.png" class="comment-deco" />
                 {{attachment.reportfile.title}}

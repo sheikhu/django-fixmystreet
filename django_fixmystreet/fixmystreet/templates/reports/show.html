@@ -352,82 +352,7 @@ $(function(event) {
 <!-- ######################### -->
 <!-- # MAIN CONTENT DEFINITION -->
 <!-- ######################### -->
-    <!--h1 class="span12">
-    {% if report.is_in_progress %}
-        <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
-    {% else %}
-        <img src="{{STATIC_URL}}{{report.get_marker}}" style="max-width:30px;" />
-    {% endif %}
-    {% trans "Report Ticket" %} {{ report.get_ticket_number }}
-    </h1-->
-    <!--h3 class="span12">
-        {% if report.merged_with %}
-            {% trans "This report has been merged with report: " %}<a href="{{report.merged_with.get_absolute_url}}" >{{report.merged_with.get_ticket_number}}</a>
-        {% endif %}
-    </h3-->
-    <!--div class="span6"-->
-        <!--div class="bordered-box"-->
-            <!-- ######### -->
-            <!-- IS FIXED  -->
-            <!-- ######### -->
-            {% if report.is_created %}
-            <!--div class='is_created'>{% trans "This incident is not validated." %}</div-->
-            {% endif %}
-            {% if report.is_in_progress %}
-            <!--div class="is_in_progress">{% trans "This incident is in progress." %}</div-->
-            {% endif %}
-            {% if report.is_closed %}
-            <!--div class='is_fixed'>{% trans "This incident has been closed." %}</div-->
-            {% endif %}
-
-            <div id='report-body'>
-                <!--p>
-                    {% if report.description %}
-                        {{report.description|linebreaks}}
-                    {% endif %}
-                </p-->
-                <!-- ################### -->
-                <!-- REPORT CREATOR ZONE -->
-                <!-- ################### -->
-                <!--p class="author-sign">
-                    {% blocktrans with on=report.created %}
-                        Posted on <strong>{{on}}</strong>
-                    {% endblocktrans %}
-                </p-->
-
-
-                <!-- ################## -->
-                <!-- REPORT STATUS ZONE -->
-                <!-- ################## -->
-                <!--table id='report-status'>
-                    <tr>
-                        <th><strong>{% trans "Location:" %}</strong></th>
-                        <td>{{report.address}}, {{report.address_number}} ({{report.postalcode}} {{report.get_address_commune_name}})</td>
-                    </tr>
-                    <tr>
-                        <th><strong>{% trans "Category:" %}</strong></th>
-                        <td>{{report.display_category}}</td>
-                    </tr>
-                    <tr>
-                        <th><strong>{% trans "Status:" %}</strong></th>
-                        <td>{{ report.get_public_status_display }}&nbsp;&nbsp;</td>
-                    </tr>
-                    <tr>
-                       <th><strong>{% trans "Responsible:" %}</strong></th>
-                       <td>{{report.responsible_manager.organisation.name}}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                    </tr>
-                </table-->
-            <!--/div--> <!-- report-body -->
-
-            {% if not report.is_created %}
-            <!-- This will be the link on the timeline of incident-head -->
-                <!--p><a id="show-history" href="#"><i> </i> {% trans 'Show history' %}</a></p-->
-            {% endif %}
-       <!--/div--> <!-- Bordered-box-->
-
+    <div id='report-body'>
 
         <div class="timeline-container">
 
@@ -441,7 +366,6 @@ $(function(event) {
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
                 <!-- ################# FILES ############### -->
-                <!--h4>{% trans 'Files' %}</h4-->
                 <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
                 <ul id="report_updates" class="timeline">
                     {% for attachment in report.active_attachments %}
@@ -456,17 +380,6 @@ $(function(event) {
 
     </div> <!-- span6 -->
 
-    <!--div class="span6">
-        <div class="bordered-box">
-            <form enctype="multipart/form-data" method="post" action="" id="report-form" class="form-horizontal">
-                {% include "reports/_attachments_form.html" with display_citizen_form_comment=True %}
 
-                <div style="overflow:hidden;">
-                    <input type="submit" class='pull-right btn' value="{% trans 'Save' %}" />
-                </div>
-            </form--> <!-- report-form-->
-        <!--/div--> <!-- bordered-box-->
-
-    <!--/div--> <!-- span6 -->
 
 {% endblock %}
