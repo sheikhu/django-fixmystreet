@@ -1,7 +1,7 @@
 Changelog of django-fixmystreet
 ===================================================
 
-2.4.2 (unreleased)
+2.4.2 (2014-02-12)
 ------------------
 
 - Translation of refused
