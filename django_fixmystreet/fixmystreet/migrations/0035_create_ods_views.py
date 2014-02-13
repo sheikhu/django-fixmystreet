@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-import os
-current_dir = os.path.dirname(__file__)
 
-class Migration(DataMigration):
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        pass
+        db.execute_many(open("{0}/ods-views.sql".format(current_dir)).read())
 
     def backwards(self, orm):
-        pass
+        db.execute_many(open("{0}/ods-views-drop.sql".format(current_dir)).read())
 
     models = {
         u'auth.group': {
@@ -36,12 +34,12 @@ class Migration(DataMigration):
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'password': ('django.db.models.fields.CharField', [], {'default': "'!'", 'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '75'})
         },
@@ -83,21 +81,21 @@ class Migration(DataMigration):
             'work_for': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'workers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['fixmystreet.OrganisationEntity']"})
         },
         u'fixmystreet.historicalfmsuser': {
-            'Meta': {'ordering': "('-history_date', '-history_id')", 'object_name': 'HistoricalFMSUser'},
+            'Meta': {'ordering': "(u'-history_date', u'-history_id')", 'object_name': 'HistoricalFMSUser'},
             'agent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'applicant': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'contractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'db_index': 'True', 'max_length': '75', 'null': 'True', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'history_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
-            'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'}),
+            u'history_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            u'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            u'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'}),
             u'id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'blank': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
@@ -107,75 +105,88 @@ class Migration(DataMigration):
             'logical_deleted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'manager': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'organisation_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            u'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'organisation_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'default': "'!'", 'max_length': '128'}),
             'quality': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'telephone': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True'}),
             u'user_ptr_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'max_length': '75', 'db_index': 'True'})
         },
         u'fixmystreet.historicalorganisationentity': {
-            'Meta': {'ordering': "('-history_date', '-history_id')", 'object_name': 'HistoricalOrganisationEntity'},
+            'Meta': {'ordering': "(u'-history_date', u'-history_id')", 'object_name': 'HistoricalOrganisationEntity'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'applicant': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'commune': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
-            'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'dependency_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            'department': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'dependency_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'null': 'True', 'blank': 'True'}),
             'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '25', 'null': 'True', 'blank': 'True'}),
-            'history_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
-            'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'}),
+            u'history_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            u'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            u'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'}),
             u'id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'blank': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
-            'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'name_fr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name_nl': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             'region': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'slug_fr': ('django.db.models.fields.SlugField', [], {'max_length': '100'}),
             'slug_nl': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'type': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1'})
         },
         u'fixmystreet.historicalreport': {
-            'Meta': {'ordering': "('-history_date', '-history_id')", 'object_name': 'HistoricalReport'},
+            'Meta': {'ordering': "(u'-history_date', u'-history_id')", 'object_name': 'HistoricalReport'},
+            'accepted_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'address_fr': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'address_nl': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'address_number': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'address_number_as_int': ('django.db.models.fields.IntegerField', [], {'max_length': '255'}),
             'address_regional': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'category_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'citizen_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'category_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'citizen_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'close_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'contractor_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'contractor_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
-            'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'created_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            'date_planned': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'false_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fixed_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gravity': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'hash_code': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'history_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
-            'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'}),
+            u'history_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'history_id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            u'history_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            u'history_user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True'}),
             u'id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'blank': 'True'}),
             'mark_as_done_motivation': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'mark_as_done_user_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'mark_as_done_user_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'merged_with_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
-            'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'modified_by_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            'pending': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'photo': ('django.db.models.fields.TextField', [], {'max_length': '100', 'blank': 'True'}),
+            'planned': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'point': ('django.contrib.gis.db.models.fields.PointField', [], {'srid': '31370', 'null': 'True', 'blank': 'True'}),
             'postalcode': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
             'private': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'probability': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'quality': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'refusal_motivation': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'responsible_entity_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
-            'responsible_manager_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'responsible_department_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'responsible_entity_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'responsible_manager_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'responsible_manager_validated': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'secondary_category_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
+            u'secondary_category_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'terms_of_use_validated': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'thumbnail': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'valid': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         },
         u'fixmystreet.listitem': {
@@ -203,7 +214,10 @@ class Migration(DataMigration):
             'commune': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'organisationentity_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            'department': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'dependency': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'associates'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
+            'dispatch_categories': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'assigned_to_department'", 'blank': 'True', 'to': u"orm['fixmystreet.ReportCategory']"}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'null': 'True', 'blank': 'True'}),
             'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '25', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
@@ -214,10 +228,22 @@ class Migration(DataMigration):
             'region': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'slug_fr': ('django.db.models.fields.SlugField', [], {'max_length': '100'}),
             'slug_nl': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+            'subcontractor': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'type': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '1'})
+        },
+        u'fixmystreet.page': {
+            'Meta': {'object_name': 'Page'},
+            'content_fr': ('ckeditor.fields.RichTextField', [], {}),
+            'content_nl': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'slug_fr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'slug_nl': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'title_fr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'title_nl': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
         },
         u'fixmystreet.report': {
             'Meta': {'object_name': 'Report'},
+            'accepted_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'address_fr': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'address_nl': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'address_number': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
@@ -229,26 +255,36 @@ class Migration(DataMigration):
             'contractor': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'assigned_reports'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'report_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            'date_planned': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'false_address': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fixed_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gravity': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'hash_code': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mark_as_done_motivation': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'mark_as_done_user': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'reports_solved'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            'merged_with': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'merged_reports'", 'null': 'True', 'to': u"orm['fixmystreet.Report']"}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'report_modified'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            'pending': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'photo': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'planned': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'point': ('django.contrib.gis.db.models.fields.PointField', [], {'srid': '31370', 'null': 'True', 'blank': 'True'}),
             'postalcode': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
+            'previous_managers': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'previous_reports'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['fixmystreet.FMSUser']"}),
             'private': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'probability': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'quality': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'refusal_motivation': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'responsible_department': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'reports_in_department'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'responsible_entity': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'reports_in_charge'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'responsible_manager': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'reports_in_charge'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
             'responsible_manager_validated': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'secondary_category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['fixmystreet.ReportCategory']", 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'terms_of_use_validated': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'thumbnail': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'valid': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         },
         u'fixmystreet.reportattachment': {
@@ -293,6 +329,7 @@ class Migration(DataMigration):
             'event_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'event_type': ('django.db.models.fields.IntegerField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'merged_with_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
             'organisation': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'activities'", 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'related_content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']", 'null': 'True'}),
             'related_new_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
@@ -300,7 +337,8 @@ class Migration(DataMigration):
             'report': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'activities'", 'to': u"orm['fixmystreet.Report']"}),
             'status_new': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'status_old': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'activities'", 'null': 'True', 'to': u"orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'activities'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'value_old': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'})
         },
         u'fixmystreet.reportfile': {
             'Meta': {'object_name': 'ReportFile', '_ormbases': [u'fixmystreet.ReportAttachment']},
@@ -329,7 +367,8 @@ class Migration(DataMigration):
             'content_template': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
             'error_msg': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'recipient': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'notifications'", 'to': u"orm['fixmystreet.FMSUser']"}),
+            'recipient': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'notifications'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            'recipient_mail': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True'}),
             'related_content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
             'related_object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'reply_to': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True'}),
@@ -365,10 +404,21 @@ class Migration(DataMigration):
             'urbis_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'version_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
+        u'fixmystreet.userorganisationmembership': {
+            'Meta': {'unique_together': "(('user', 'organisation'),)", 'object_name': 'UserOrganisationMembership'},
+            'contact_user': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
+            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'userorganisationmembership_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
+            'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'userorganisationmembership_modified'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
+            'organisation': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'memberships'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'memberships'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"})
+        },
         u'fixmystreet.zipcode': {
             'Meta': {'object_name': 'ZipCode'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
-            'commune': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['fixmystreet.OrganisationEntity']"}),
+            'commune': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'zipcode'", 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'hide': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name_fr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -377,4 +427,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['fixmystreet']
-    symmetrical = True
