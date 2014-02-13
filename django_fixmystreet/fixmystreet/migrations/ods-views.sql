@@ -34,7 +34,10 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
         WHEN (r.responsible_entity_id IS NULL) THEN -1
         ELSE r.responsible_entity_id
     END as responsible_entity_id,
-    r.responsible_manager_id,
+    CASE
+        WHEN (r.responsible_department_id IS NOT NULL) THEN r.responsible_department_id
+        ELSE 100000 + r.responsible_manager_id
+    END as responsible_manager_id,
     CASE
         WHEN (r.contractor_id IS NULL) THEN 0
         ELSE r.contractor_id
@@ -93,9 +96,8 @@ FROM fixmystreet_fmsuser fmsuser
     WHERE agent OR manager OR leader;
 
 
-
 CREATE OR REPLACE VIEW ods_dim_manager AS SELECT
-    ID,
+    100000 + ID as ID,
     CASE WHEN (first_name != '')
         THEN first_name || ' ' || last_name
         ELSE last_name
@@ -105,7 +107,15 @@ CREATE OR REPLACE VIEW ods_dim_manager AS SELECT
     leader as entity_flag
 FROM fixmystreet_fmsuser fmsuser
     LEFT JOIN auth_user u ON user_ptr_id=u.id
-    WHERE manager;
+    WHERE manager
+UNION SELECT
+    ID,
+    name_fr || ' / ' || name_nl as user_name,
+    FALSE as agent_flag,
+    TRUE as manager_flag,
+    FALSE as entity_flag
+FROM fixmystreet_organisationentity manager
+    WHERE type='D';
 
 
 CREATE OR REPLACE VIEW ods_dim_quality AS SELECT
