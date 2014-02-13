@@ -183,7 +183,8 @@ def changeContractor(request, report_id):
     else:
         organisation = OrganisationEntity.objects.get(pk=int(contractorId))
         report.contractor = organisation
-        if organisation.subcontractor:
+
+        if organisation.type == OrganisationEntity.SUBCONTRACTOR:
             report.status = Report.CONTRACTOR_ASSIGNED
         else:
             report.status = Report.APPLICANT_RESPONSIBLE

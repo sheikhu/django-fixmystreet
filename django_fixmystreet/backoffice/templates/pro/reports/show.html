@@ -451,8 +451,8 @@ $(document).ready(function() {
                         </li>
                         <!-- ROW PRO 4 -->
                         <li>
-                            <th><strong>{% trans "Status:" %}</strong></th>
-                            <td>{{ report.get_status_display }}</td>
+                            <strong>{% trans "Status:" %}</strong>
+                            {{ report.get_status_display }}
                             {% if report.last_history_status_event %}
                                 {% trans 'on' %}
                                 {{report.last_history_status_event.event_at|date:"d/m/Y"}}

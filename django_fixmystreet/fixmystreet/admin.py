@@ -204,9 +204,9 @@ class OrgaUsersInline(admin.TabularInline):
 
 
 class OrganisationEntityAdmin(SimpleHistoryAdmin):
-    list_display = ("name", "commune", "region", "applicant", "subcontractor", "active")
+    list_display = ("name", "type", "active")
     search_fields = ("name_fr", "name_nl",)
-    list_filter = ("commune", "region", "applicant", "subcontractor")
+    list_filter = ("type",)
     inlines = (
         OrgaUsersInline,
     )

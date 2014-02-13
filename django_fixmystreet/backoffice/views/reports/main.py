@@ -205,8 +205,8 @@ def show(request, slug, report_id):
 
     organisation = request.fmsuser.organisation
     managers = FMSUser.objects.filter(organisation=organisation).filter(manager=True).order_by('name_' + get_language())
-    region_institution = OrganisationEntity.objects.filter(region=True).filter(active=True).order_by('name_' + get_language())
-    entities = OrganisationEntity.objects.filter(commune=True).filter(active=True).order_by('name_' + get_language())
+    region_institution = OrganisationEntity.objects.filter(type=OrganisationEntity.REGION).filter(active=True).order_by('name_' + get_language())
+    entities = OrganisationEntity.objects.filter(type=OrganisationEntity.COMMUNE).filter(active=True).order_by('name_' + get_language())
     departments = []
     contractors = []
 

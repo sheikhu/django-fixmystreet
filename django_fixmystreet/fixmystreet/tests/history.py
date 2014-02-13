@@ -113,19 +113,13 @@ class HistoryTest(TestCase):
         self.impetrant = OrganisationEntity(
             name_nl="MIVB",
             name_fr="STIB",
-            commune=False,
-            region=False,
-            subcontractor=False,
-            applicant=True)
+            type=OrganisationEntity.APPLICANT)
         self.impetrant.save()
 
         self.contractor = OrganisationEntity(
             name_nl="Fabricom GDF",
             name_fr="Fabricom GDF",
-            commune=False,
-            region=False,
-            subcontractor=True,
-            applicant=False)
+            type=OrganisationEntity.SUBCONTRACTOR)
         self.contractor.save()
 
         self.client = Client()
