@@ -98,7 +98,7 @@ class FmsUserCreateForm(FmsUserForm):
         if not self.instance.is_active:
             self.instance.is_active = True
 
-        if not self.instance.password:
+        if not self.instance.password or self.instance.password == "!":
             self.password = User.objects.make_random_password()
             self.instance.set_password(self.password)
             self.instance.is_active = True

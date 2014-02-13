@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
 from django.utils import unittest
-
+from django.core import mail
 
 class UsersTest(TestCase):
 
@@ -86,6 +86,7 @@ class UsersTest(TestCase):
         response = self.client.post(reverse('create_user'), self.createuser_post, follow=True)
         self.assertEquals(response.status_code, 200)
         response = self.client.post(reverse('list_users'), follow=True)
+
         self.assertEquals(response.status_code, 200)
         self.assertTrue('users' in response.context)
         self.assertTrue('can_create' in response.context)
@@ -94,6 +95,11 @@ class UsersTest(TestCase):
         self.assertTrue(can_create)
         self.assertEquals(users.count(), 3)
         self.assertContains(response, self.createuser_post["email"])
+
+        new_user = FMSUser.objects.get(email=self.createuser_post['email'])
+        self.assertTrue(new_user.password)
+        self.assertNotEqual('!', new_user.password)
+        self.assertEquals(len(mail.outbox), 1)
 
     def testUpdateLeaderAsLeader(self):
         self.client.login(username='leader@a.com', password='test')
