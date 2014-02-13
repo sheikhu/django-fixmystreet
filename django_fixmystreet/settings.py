@@ -34,7 +34,7 @@ SERVER_EMAIL = "fixmystreet@cirb.irisnet.be"
 EMAIL_SUBJECT_PREFIX = "[DJA-{0}] ".format(ENVIRONMENT[0:4])
 
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
-REPORTING_ROOT = os.environ.get('REPORTING_ROOT', os.path.join(BASE_DIR, 'reports'))
+REPORTING_ROOT = os.environ.get('REPORTING_ROOT', os.path.join(BASE_DIR, 'reporting'))
 
 # CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads')
 CKEDITOR_UPLOAD_PATH = MEDIA_ROOT

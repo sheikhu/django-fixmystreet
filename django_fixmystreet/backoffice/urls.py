@@ -127,6 +127,6 @@ urlpatterns += patterns(
 
 urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.reporting',
-    url(r'^reporting/$', 'list', name='reporting_list'),
-    url(r'^reporting/(?P<path>.+)$', 'download', name='reporting_download'),
+    url(r'^reporting/$', 'reporting_list', name='reporting_list'),
+    url(r'^reporting/(?P<path>.+)$', 'reporting_download', name='reporting_download'),
 )

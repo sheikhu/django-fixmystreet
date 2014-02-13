@@ -4,11 +4,27 @@
 {% block title %}{% trans 'Sign in' %} {% endblock %}
 
 {% block content %}
-	{% for file in files %}
-		<p>
-		<a href="{% url 'reporting_download' file.path %}">
-		{{ file.path }} - {{ file.modified_date|date:"d/m/Y" }}
-		</a>
-		</p>
-	{% endfor %}
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>{% trans 'Filename' %}</th>
+                <th>{% trans 'File date' %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for file in files %}
+                <tr onclick="document.location = '{% url 'reporting_download' file.path %}';" class="pointer">
+                    <td>
+                        {{ file.path }}
+                    </td>
+                    <td>
+                        {{ file.modified_date|date:"d/m/Y" }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
