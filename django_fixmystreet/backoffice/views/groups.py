@@ -85,11 +85,20 @@ def delete_group(request, group_id):
     can_edit = request.fmsuser.leader
 
     instance = OrganisationEntity.objects.get(id=group_id)
-    if request.method == "GET" and can_edit:
-            # Delete group and memberships (in pre_delete)
-            instance.delete()
+    if (instance.dispatch_categories.count() or 
+            instance.reports_in_department.count() or
+            instance.assigned_reports.count()):
+        messages.add_message(request, messages.ERROR, _("""
+        Group has some reports or categories associeted, 
+        remove them first and then try again
+        """))
+        return HttpResponseRedirect(reverse('edit_group', args=(instance.id,)))
 
-            messages.add_message(request, messages.SUCCESS, _("Group has been deleted successfully"))
+    if request.method == "GET" and can_edit:
+        # Delete group and memberships (in pre_delete)
+        instance.delete()
+
+        messages.add_message(request, messages.SUCCESS, _("Group has been deleted successfully"))
 
     return HttpResponseRedirect(reverse('list_groups'))
 
