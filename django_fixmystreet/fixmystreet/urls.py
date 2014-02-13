@@ -36,6 +36,12 @@ urlpatterns += patterns(
     (r'^accounts/password/done/$', 'password_reset_complete', {'template_name': 'admin/registration/password_reset_complete.html'}),
 )
 
+# Legacy url : old syntax with report keyword
+urlpatterns += patterns(
+    'django_fixmystreet.fixmystreet.views.reports.main',
+    url(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$', 'show'),
+)
+
 urlpatterns += patterns(
     'django_fixmystreet.fixmystreet.views.reports.main',
     url(_(r'^reports/$'), 'index', name='report_index'),

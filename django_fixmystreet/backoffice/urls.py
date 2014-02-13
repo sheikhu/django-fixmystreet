@@ -13,6 +13,12 @@ urlpatterns = patterns(
     url(_(r'^$'), 'home', name='home_pro'),
 )
 
+# Legacy url : old syntax with report keyword
+urlpatterns += patterns(
+    'django_fixmystreet.backoffice.views.reports.main',
+    url(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$', 'show'),
+)
+
 urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.reports.main',
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show', name='report_show_pro'),
