@@ -1368,6 +1368,7 @@ class ReportAttachment(UserTrackedModel):
             self.publish_update = False
         super(ReportAttachment, self).save(*args, **kwargs)
 
+
 # Initialise instance.report.thumbnail with the first public photo. For pro and citizen
 @receiver(post_save, sender=ReportAttachment)
 def init_report_overview(sender, instance, **kwargs):
@@ -1378,12 +1379,13 @@ def init_report_overview(sender, instance, **kwargs):
         instance.report.thumbnail = images_public[0].image.thumbnail.url()
         instance.report.save()
 
+
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
 
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
-        action_user = instance.modified_by
+        action_user = instance.created_by
 
         #now create notification
         ReportEventLog(
