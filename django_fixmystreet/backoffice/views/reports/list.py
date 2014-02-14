@@ -26,7 +26,7 @@ def table_content(request, selection=""):
     reports = Report.objects.all().visible().related_fields()
 
     if selection != "subscribed":
-        if user.agent or user.manager or user.leader:
+        if user.organisation:
             reports = reports.entity_responsible(user) | reports.entity_territory(user.organisation)
         elif user.contractor or user.applicant:
             reports = reports.responsible_contractor(user)
