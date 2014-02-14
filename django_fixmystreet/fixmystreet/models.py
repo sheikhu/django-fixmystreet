@@ -305,6 +305,9 @@ class OrganisationEntity(UserTrackedModel):
         if memberships:
             return memberships[0].user
 
+    def is_responsible(self):
+        return self.active or self.associates.filter(type='D').exists()
+
     # def get_absolute_url(self):
     #     return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 

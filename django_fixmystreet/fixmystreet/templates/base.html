@@ -140,14 +140,12 @@
                                                 </li>
                                             {% endif %}
 
-                                            {% if request.fmsuser.leader %}
-                                                {% if request.user.id|hasAtLeastAManager %}
+                                            {% if request.fmsuser.leader and request.fmsuser.organisation.is_responsible %}
                                                 <li>
                                                     <a class="{% is_active_menu 'users_manager_dispatching' %}"  href="{% url 'category_gestionnaire_configuration' %}">
                                                         {% trans "Managers dispatching" %}
                                                     </a>
                                                 </li>
-                                                {% endif %}
                                             {% endif %}
 
                                             <li>

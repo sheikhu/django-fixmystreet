@@ -54,7 +54,7 @@ def get_element_from_list(myList, index):
     return myList[index]
 
 
-# TODO move it to model and fix it
+# DEPRECATED
 @register.filter
 def hasAtLeastAManager(userId):
     connectedUser = FMSUser.objects.get(id=userId)

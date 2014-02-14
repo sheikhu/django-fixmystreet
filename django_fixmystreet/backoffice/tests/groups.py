@@ -6,7 +6,7 @@ from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrgani
 
 class GroupsTest(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
         self.manager = FMSUser(
@@ -32,7 +32,7 @@ class GroupsTest(TestCase):
             last_name="leader",
             email="leader@a.com",
             manager=True,
-            leader = True
+            leader=True
         )
         self.leader.set_password('test')
         self.leader.organisation = OrganisationEntity.objects.get(pk=14)
@@ -46,7 +46,7 @@ class GroupsTest(TestCase):
             type='D',
             dependency=OrganisationEntity.objects.get(pk=14)
         )
-        self.group1.save();
+        self.group1.save()
 
         self.group2 = OrganisationEntity(
             name_fr="groupe2",
@@ -56,37 +56,37 @@ class GroupsTest(TestCase):
             type='D',
             dependency=OrganisationEntity.objects.get(pk=11)
         )
-        self.group2.save();
+        self.group2.save()
 
         self.creategroup_post = {
-            'name_fr':'groupe3',
-            'name_nl':'groep3',
-            'phone':'0000000000',
-            'email':'group3@test.com',
-            'type':'D'
+            'name_fr': 'groupe3',
+            'name_nl': 'groep3',
+            'phone': '0000000000',
+            'email': 'group3@test.com',
+            'type': 'D'
         }
 
         self.creategroup_post2 = {
-            'name_fr':'groupe4',
-            'name_nl':'groep4',
-            'phone':'0000000000',
-            'email':'group4@test.com',
-            'type':'S'
+            'name_fr': 'groupe4',
+            'name_nl': 'groep4',
+            'phone': '0000000000',
+            'email': 'group4@test.com',
+            'type': 'S'
         }
 
         self.editgroup_post = {
-            'name_fr':'groupe1nouveau',
-            'name_nl':'groep1nieuw',
-            'phone':'111111',
-            'email':'group1new@test.com',
-            'type':'D'
+            'name_fr': 'groupe1nouveau',
+            'name_nl': 'groep1nieuw',
+            'phone': '111111',
+            'email': 'group1new@test.com',
+            'type': 'D'
         }
         self.editgroup_post2 = {
-            'name_fr':'groupe2nouveau',
-            'name_nl':'groep2nieuw',
-            'phone':'2222222',
-            'email':'group2new@test.com',
-            'type':'S'
+            'name_fr': 'groupe2nouveau',
+            'name_nl': 'groep2nieuw',
+            'phone': '2222222',
+            'email': 'group2new@test.com',
+            'type': 'S'
         }
 
     def testListGroups(self):
@@ -243,8 +243,37 @@ class GroupsTest(TestCase):
         groups = response.context['groups']
         can_create = response.context['can_create']
         self.assertTrue(can_create)
-        self.assertEquals(groups.count(), 0)
-        self.assertNotIn(self.group1, groups)
+        self.assertEquals(groups.count(), 1)  # not deleted, linked to categories
+        self.assertGreater(groups[0].dispatch_categories.count(), 0)
+        self.assertIn(self.group1, groups)
+
+        group2 = OrganisationEntity(
+            name_fr="group2",
+            name_nl="group2",
+            phone="00000000",
+            email="group@test.be",
+            type='D',
+            dependency=OrganisationEntity.objects.get(pk=14)
+        )
+        group2.save()
+
+        response = self.client.post(reverse('list_groups'), follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('groups' in response.context)
+        groups = response.context['groups']
+        self.assertEquals(groups.count(), 2)
+        self.assertEquals(group2.dispatch_categories.count(), 0)
+
+        response = self.client.get(reverse('delete_group', args=[group2.id]), follow=True)
+        self.assertEquals(response.status_code, 200)
+        response = self.client.post(reverse('list_groups'), follow=True)
+
+        #now check if we have 2 groups and that the 2nd is group3
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('groups' in response.context)
+        groups = response.context['groups']
+        self.assertEquals(groups.count(), 1)
+        self.assertNotIn(group2, groups)
 
     def testAssignMemberToGroup(self):
         #first try to add with user who has not enough rights
