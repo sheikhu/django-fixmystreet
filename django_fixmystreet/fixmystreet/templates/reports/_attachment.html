@@ -7,6 +7,7 @@
 {% endif %}
 
     {% if editable %}
+
         <a class="pull-right" onclick="return confirm('{% trans 'Please confirm deletion' %}')" href="{% url 'report_delete_attachment' report.id %}?attachmentId={{attachment.id}}">
             <img src="{{STATIC_URL}}images/delete_documentation.png" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" style="margin-left:15px; margin-right:5px; margin-top:3px;"/>
         </a>
@@ -16,14 +17,7 @@
                 {%include 'reports/_visibility_control.html' %}
             </div>
         {% endif %}
-    {% else %}
-    <!--p>
-    {% if attachment.security_level == attachment.PRIVATE %}
-        {% trans "private" %}
-    {% elif attachment.security_level == attachment.CONFIDENTIAL %}
-        {% trans "confidential" %}
-    {% endif %}
-    </p-->
+
     {% endif %}
 
     <div class="update_text">
@@ -31,32 +25,44 @@
     <div class="picture-container">
         <div class="picture-head">
              {{attachment.created|date:"d/m/Y"}}:
-                {% if attachment.created_by.is_citizen %}
-                    {% if BACKOFFICE %}
-                        <a href="mailto:{{attachment.created_by.email}}">
-                            {{attachment.created_by.get_display_name}}
-                        </a> -
-                        {{attachment.created_by.get_quality}}
-                        ({{attachment.created_by.telephone}})
-                    {% else %}
-                        {% trans 'a citizen' %}
-                    {% endif %}
-                {% else %}
-                    <!-- responsible-name, responsible-group, responsible-entity -->
-                    {% if BACKOFFICE %}
-                    <a href="mailto:{{report.responsible_department.email }}">
+
+            {% if attachment.created_by.is_citizen %}
+
+                {% if BACKOFFICE %}
+
+                    <a href="mailto:{{attachment.created_by.email}}">
                         {{attachment.created_by.get_display_name}}
-                    </a>
-                    {% endif %}
-                    -
-                        {{report.responsible_department.name }}
-                    -
-                    {{report.responsible_entity.name}}
-                    {% if BACKOFFICE %}
-                        (tel:{{report.responsible_department.phone }})
-                    {% endif %}
+                    </a> -
+                    {{ attachment.created_by.get_quality }}
+                    ({{attachment.created_by.telephone}})
+
+                {% else %}
+
+                    {% trans 'a citizen' %}
+
                 {% endif %}
+
+            {% else %}
+
+                {% if BACKOFFICE %}
+
+                    <a href="mailto:{{ attachment.created_by.email }}">
+                        {{ attachment.get_display_name }}
+                    </a>
+                    -
+                    {{ attachment.created_by.get_organisation }}
+                    (tel:{{ attachment.created_by.telephone }})
+
+                {% else %}
+
+                    {{ attachment.get_display_name_as_citizen }}
+
+                {% endif %}
+
+            {% endif %}
+
         </div>
+
         <span class="picture-caption">
             <!--a href="{{ attachment.reportfile.file.url }}"-->
             <a href="{{attachment.reportfile.file.url}}" {% if attachment.reportfile.is_image %}data-lightbox="image-1"{% endif %} title="{{attachment.reportfile.title}}">
@@ -95,30 +101,40 @@
             <!-- ENTETE BLEU -->
             <div class="comment-head">
                 {{attachment.created|date:"d/m/Y"}}:
+
                 {% if attachment.created_by.is_citizen %}
+
                     {% if BACKOFFICE %}
                         <a href="mailto:{{attachment.created_by.email}}">
-                            {{attachment.reportcomment.get_display_name}}
-                        </a> -
-                        {{attachment.created_by.get_quality}}
-                        ({{attachment.created_by.telephone}})
-                    {% else %}
-                        {% trans 'a citizen' %}
-                    {% endif %}
-                {% else %}
-                    <!-- responsible-name, responsible-group, responsible-entity -->
-                    {% if BACKOFFICE %}
-                        <a href="mailto:{{report.responsible_department.email }}">
                             {{attachment.created_by.get_display_name}}
                         </a>
+                        -
+                        {{ attachment.created_by.get_quality }}
+                        ({{attachment.created_by.telephone}})
+
+                    {% else %}
+
+                        {% trans 'a citizen' %}
+
                     {% endif %}
-                    -
-                        {{report.responsible_department.name }}
-                    -
-                    {{report.responsible_entity.name}}
+
+                {% else %}
+
                     {% if BACKOFFICE %}
-                        (tel:{{report.responsible_department.phone }})
+
+                        <a href="mailto:{{ attachment.created_by.email }}">
+                            {{ attachment.get_display_name }}
+                        </a>
+                        -
+                        {{ attachment.created_by.get_organisation }}
+                        (tel:{{ attachment.created_by.telephone }})
+
+                    {% else %}
+
+                        {{ attachment.get_display_name_as_citizen }}
+
                     {% endif %}
+
                 {% endif %}
             </div>
             <p class="comment-incident">

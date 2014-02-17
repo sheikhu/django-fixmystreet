@@ -1359,8 +1359,10 @@ class ReportAttachment(UserTrackedModel):
         if self.created_by:
             if self.created_by.is_citizen():
                 return _("a citizen")
-            else:
+            elif self.created_by.get_organisation():
                 return self.created_by.get_organisation()
+            else:
+                return self.created_by.get_display_name()
 
         return _('ANONYMOUS')
 
