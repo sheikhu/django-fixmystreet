@@ -75,6 +75,8 @@ ROOT_URLCONF = 'django_fixmystreet.urls'
 
 SOUTH_LOGGING_ON = True
 SOUTH_LOGGING_FILE = os.path.join(BASE_DIR, "south.log")
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/.*'
 
 
 if ENVIRONMENT == "local":
@@ -118,6 +120,7 @@ MIDDLEWARE_CLASSES = (
     'django_fixmystreet.backoffice.middleware.LoginRequiredMiddleware',
     'django_fixmystreet.backoffice.middleware.LoadUserMiddleware',
     'django_fixmystreet.fixmystreet.utils.CurrentUserMiddleware',
+    'django_fixmystreet.fixmystreet.utils.CorsMiddleware',
     # 'django_fixmystreet.fixmystreet.utils.AccessControlAllowOriginMiddleware',
 )
 

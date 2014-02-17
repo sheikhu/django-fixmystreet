@@ -365,3 +365,9 @@ def export_as_csv_action(description="Export selected objects as CSV file",
     export_as_csv.short_description = description
     return export_as_csv
 
+
+class CorsMiddleware(object):
+
+    def process_response(self, request, response):
+        response['Access-Control-Allow-Origin'] = "*"
+        return response
