@@ -1,7 +1,7 @@
 Changelog of django-fixmystreet
 ===================================================
 
-2.4.5 (unreleased)
+2.4.5 (2014-02-17)
 ------------------
 
 - fix history display name of user
