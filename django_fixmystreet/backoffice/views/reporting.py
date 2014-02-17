@@ -13,6 +13,7 @@ def reporting_list(request):
     reporting_root = os.path.join(settings.REPORTING_ROOT, str(organisation.id))
 
     pdf = []
+    xls = None
     try:
         ls = os.listdir(reporting_root)
 

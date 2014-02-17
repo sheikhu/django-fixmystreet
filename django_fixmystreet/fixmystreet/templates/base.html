@@ -140,11 +140,13 @@
                                                 </li>
                                             {% endif %}
 
-                                            <li>
-                                                <a href="{% url 'reporting_list' %}">
-                                                    {% trans "Reporting" %}
-                                                </a>
-                                            </li>
+                                            {% if request.fmsuser.organisation %}
+                                                <li>
+                                                    <a href="{% url 'reporting_list' %}">
+                                                        {% trans "Reporting" %}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
 
                                             {% if request.fmsuser.leader %}
                                                 {% if request.user.id|hasAtLeastAManager %}

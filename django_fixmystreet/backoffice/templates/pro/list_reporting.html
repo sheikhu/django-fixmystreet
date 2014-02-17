@@ -9,22 +9,24 @@
 
     <br/>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>{% trans 'Rapport quotidien' %}</th>
-            </tr>
-        </thead>
-
-        <tbody>
-                <tr onclick="document.location = '{% url 'reporting_download' xls.path %}';" class="pointer">
-                    <td>
-                        {% trans 'Télécharger le rapport quotidien du' %}
-                        <strong>{{ xls.modified_date|date:"d/m/Y" }}</strong>
-                    </td>
+    {% if xls %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans 'Rapport quotidien' %}</th>
                 </tr>
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                    <tr onclick="document.location = '{% url 'reporting_download' xls.path %}';" class="pointer">
+                        <td>
+                            {% trans 'Télécharger le rapport quotidien du' %}
+                            <strong>{{ xls.modified_date|date:"d/m/Y" }}</strong>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    {% endif %}
 
     <table class="table table-hover">
         <thead>
