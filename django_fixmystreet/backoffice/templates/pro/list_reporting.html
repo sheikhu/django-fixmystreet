@@ -5,22 +5,40 @@
 
 {% block content %}
 
+    <h2>{% trans 'Reporting' %} <small>{{ request.fmsuser.organisation }}</small></h2>
+
+    <br/>
+
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>{% trans 'Filename' %}</th>
-                <th>{% trans 'File date' %}</th>
+                <th>{% trans 'Rapport quotidien' %}</th>
             </tr>
         </thead>
 
         <tbody>
-            {% for file in files %}
+                <tr onclick="document.location = '{% url 'reporting_download' xls.path %}';" class="pointer">
+                    <td>
+                        {% trans 'Télécharger le rapport quotidien du' %}
+                        <strong>{{ xls.modified_date|date:"d/m/Y" }}</strong>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>{% trans 'Rapports mensuels' %} <span class="badge badge-info">{{ pdf|length }}</span></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for file in pdf|dictsortreversed:"modified_date" %}
                 <tr onclick="document.location = '{% url 'reporting_download' file.path %}';" class="pointer">
                     <td>
-                        {{ file.path }}
-                    </td>
-                    <td>
-                        {{ file.modified_date|date:"d/m/Y" }}
+                        {% trans 'Télécharger le rapport mensuel du' %}
+                        <strong>{{ file.modified_date|date:"d/m/Y" }}</strong>
                     </td>
                 </tr>
             {% endfor %}

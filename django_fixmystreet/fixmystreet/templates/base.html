@@ -79,9 +79,7 @@
                             {% endif %}
                         </a>
                         {% if ENVIRONMENT == "staging" or ENVIRONMENT == "dev" or ENVIRONMENT == "local" %}
-                        <a href="https://github.com/CIRB/django-fixmystreet/blob/master/CHANGES.rst">
-                            <strong class="current-app-version">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
-                        </a>
+                        <strong class="current-app-version">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
                         {% endif %}
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                             <span class="icon-bar"></span>
@@ -142,12 +140,20 @@
                                                 </li>
                                             {% endif %}
 
-                                            {% if request.fmsuser.leader and request.fmsuser.organisation.is_responsible %}
+                                            <li>
+                                                <a href="{% url 'reporting_list' %}">
+                                                    {% trans "Reporting" %}
+                                                </a>
+                                            </li>
+
+                                            {% if request.fmsuser.leader %}
+                                                {% if request.user.id|hasAtLeastAManager %}
                                                 <li>
                                                     <a class="{% is_active_menu 'users_manager_dispatching' %}"  href="{% url 'category_gestionnaire_configuration' %}">
                                                         {% trans "Managers dispatching" %}
                                                     </a>
                                                 </li>
+                                                {% endif %}
                                             {% endif %}
 
                                             <li>

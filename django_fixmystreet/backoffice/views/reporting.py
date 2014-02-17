@@ -1,4 +1,4 @@
-import os
+import os, re
 from datetime import date
 
 from django.http import HttpResponse
@@ -12,7 +12,7 @@ def reporting_list(request):
     organisation = request.fmsuser.organisation
     reporting_root = os.path.join(settings.REPORTING_ROOT, str(organisation.id))
 
-    files = []
+    pdf = []
     try:
         ls = os.listdir(reporting_root)
 
@@ -22,12 +22,19 @@ def reporting_list(request):
                 'stat': os.stat(os.path.join(reporting_root, path))
             }
             f['modified_date'] = date.fromtimestamp(int(f['stat'].st_mtime))
-            files.append(f)
+
+            # Check if xls or pdf
+            extension = re.search(r'xls$', path)
+            if extension:
+                xls = f
+            else:
+                pdf.append(f)
     except OSError:
         messages.add_message(request, messages.ERROR, _("Reporting currently unavailable"))
 
     return render_to_response('pro/list_reporting.html', {
-        'files': files
+        'pdf': pdf,
+        'xls': xls
     }, context_instance=RequestContext(request))
 
 import mimetypes
