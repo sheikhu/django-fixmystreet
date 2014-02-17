@@ -39,7 +39,7 @@ debug_require = [
     'zest.releaser==3.50',
     # 'django-pdb'
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
-    'django-jenkins',
+    'django-jenkins==0.13.0',
     'coverage==3.6',
     'flake8==2.1.0',
 ]
