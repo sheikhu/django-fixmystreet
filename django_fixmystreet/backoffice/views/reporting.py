@@ -45,7 +45,6 @@ def reporting_list(request, message=""):
     }, context_instance=RequestContext(request))
 
 import mimetypes
-from django.contrib import messages
 
 def reporting_download(request, path):
     # Filter on organisation entity
