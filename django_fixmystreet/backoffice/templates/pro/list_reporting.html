@@ -9,24 +9,34 @@
 
     <br/>
 
-    {% if xls %}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>{% trans 'Rapport quotidien' %}</th>
-                </tr>
-            </thead>
+    {% if message %}
 
-            <tbody>
-                    <tr onclick="document.location = '{% url 'reporting_download' xls.path %}';" class="pointer">
-                        <td>
-                            {% trans 'Télécharger le rapport quotidien du' %}
-                            <strong>{{ xls.modified_date|date:"d/m/Y" }}</strong>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
+        <div class="alert alert-block">
+            {{ message|safe }}
+        </div>
+
     {% endif %}
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>{% trans 'Rapport quotidien' %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if xls %}
+                <tr onclick="document.location = '{% url 'reporting_download' xls.path %}';" class="pointer">
+                    <td>
+                        {% trans 'Télécharger le rapport quotidien du' %}
+                        <strong>{{ xls.modified_date|date:"d/m/Y" }}</strong>
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="loading"><td>{% trans 'Aucun rapport disponible' %}</td></tr>
+            {% endif %}
+        </tbody>
+    </table>
 
     <table class="table table-hover">
         <thead>
@@ -36,14 +46,23 @@
         </thead>
 
         <tbody>
-            {% for file in pdf|dictsortreversed:"modified_date" %}
-                <tr onclick="document.location = '{% url 'reporting_download' file.path %}';" class="pointer">
-                    <td>
-                        {% trans 'Télécharger le rapport mensuel du' %}
-                        <strong>{{ file.modified_date|date:"d/m/Y" }}</strong>
-                    </td>
-                </tr>
-            {% endfor %}
+            {% if pdf %}
+
+                {% for file in pdf|dictsortreversed:"modified_date" %}
+                    <tr onclick="document.location = '{% url 'reporting_download' file.path %}';" class="pointer">
+                        <td>
+                            {% trans 'Télécharger le rapport mensuel du' %}
+                            <strong>{{ file.modified_date|date:"d/m/Y" }}</strong>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            {% else %}
+
+                <tr class="loading"><td>{% trans 'Aucun rapport disponible' %}</td></tr>
+
+            {% endif %}
+
         </tbody>
     </table>
 

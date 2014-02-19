@@ -1,15 +1,20 @@
 import os, re
 from datetime import date
 
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-def reporting_list(request):
+def reporting_list(request, message=""):
     # Filter on organisation entity
     organisation = request.fmsuser.organisation
+
+    if not organisation:
+        raise PermissionDenied
+
     reporting_root = os.path.join(settings.REPORTING_ROOT, str(organisation.id))
 
     pdf = []
@@ -31,11 +36,12 @@ def reporting_list(request):
             else:
                 pdf.append(f)
     except OSError:
-        messages.add_message(request, messages.ERROR, _("Reporting currently unavailable"))
+        message = _("Reporting currently unavailable")
 
     return render_to_response('pro/list_reporting.html', {
-        'pdf': pdf,
-        'xls': xls
+        'pdf'     : pdf,
+        'xls'     : xls,
+        'message' : message
     }, context_instance=RequestContext(request))
 
 import mimetypes
@@ -44,6 +50,11 @@ from django.contrib import messages
 def reporting_download(request, path):
     # Filter on organisation entity
     organisation = request.fmsuser.organisation
+
+    if not organisation:
+        raise PermissionDenied
+
+    message =""
 
     try:
         reporting_file_path = os.path.join(settings.REPORTING_ROOT, str(organisation.id), str(path))
@@ -57,6 +68,6 @@ def reporting_download(request, path):
 
         return response
     except IOError:
-        messages.add_message(request, messages.ERROR, _("An error occured by opening file"))
+        message = _("An error occured by opening file <strong>%s</strong>" % path)
 
-    return reporting_list(request)
+    return reporting_list(request, message)
