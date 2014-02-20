@@ -152,7 +152,7 @@ INSTALLED_APPS = (
 # )
 
 
-if ENVIRONMENT != 'local':
+if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':
     INSTALLED_APPS += ('gunicorn', )
 else:
     try:
