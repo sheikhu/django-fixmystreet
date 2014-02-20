@@ -20,13 +20,11 @@ def create(request, report_id):
         user = FMSUser.objects.create(username=request.REQUEST.get('citizen_email'), email=request.REQUEST.get('citizen_email'), first_name='ANONYMOUS', last_name='ANONYMOUS', agent=False, contractor=False, manager=False, leader=False)
 
     #VERIFY THAT A SUBSCRIPTION DOES NOT ALREADY EXIST
-    try:
+    if not ReportSubscription.objects.filter(subscriber=user, report=report).exists():
         subscriber = ReportSubscription(subscriber=user, report=report)
         subscriber.save()
-        messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
-    except IntegrityError:
-        #Do nothing. A subscription for this user already exists...
-        messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
+
+    messages.add_message(request, messages.SUCCESS, _("You have subscribed from updates successfully"))
 
     return HttpResponseRedirect(report.get_absolute_url())
 
