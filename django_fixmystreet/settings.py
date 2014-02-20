@@ -4,7 +4,7 @@ import sys
 import subprocess
 
 PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.getcwd()
+BASE_DIR = os.path.join(PROJECT_PATH, os.pardir)
 
 # supported value of ENVIRONMENT are dev, jenkins, staging, production
 if "ENV" in os.environ:
