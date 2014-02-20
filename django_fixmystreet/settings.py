@@ -268,4 +268,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     }
 }
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+if not DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
