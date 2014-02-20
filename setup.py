@@ -32,6 +32,7 @@ install_requires = [
     'django-piston==0.2.3',
     'django-ckeditor-updated==4.2.6',
     'gunicorn==18.0',
+    'setproctitle==1.1.8',
 ]
 
 debug_require = [
