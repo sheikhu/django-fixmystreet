@@ -30,7 +30,7 @@ install_requires = [
 
     'django-simple-history==1.3.0',
     'django-piston==0.2.3',
-    'django-ckeditor==4.0.2',
+    'django-ckeditor-updated==4.2.6',
 ]
 
 debug_require = [
@@ -66,6 +66,7 @@ setup(
     dependency_links=[
         'https://github.com/CIRB/django-simple-history/archive/3da627f01398fd88f812d789d21197cd622633a7.zip#egg=simple_history-1.1.3',
         'https://pypi.python.org/packages/source/d/django-piston/django-piston-0.2.3.tar.gz#md5=8b040d426793cf22ce89543e059cd6e1#egg=django-piston-0.2.3',
+        'https://github.com/riklaunim/django-ckeditor/archive/a3669f731145154efb7de52f79f1eb50ae4e54cf.zip#egg=django-ckeditor-updated-4.2.6',
     ],
     extras_require={
         'debug': debug_require

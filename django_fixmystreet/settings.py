@@ -263,5 +263,9 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'fms_cache',
+    },
+    'staticfiles': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     }
 }
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
