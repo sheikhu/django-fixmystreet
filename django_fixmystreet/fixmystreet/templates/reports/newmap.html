@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load i18n tags %}
+{% load static from staticfiles %}
+
 {% block title %}{% trans "New Report" %}{% endblock %}
 
 {% block meta %}
@@ -10,9 +12,9 @@
 
 {% block script %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
-<script src="{{ STATIC_URL }}js/categorySelection.js"></script>
-<script src="{{STATIC_URL}}js/new_report.js"></script>
+<script src="{% static 'js/attachmentForms.js' %}"></script>
+<script src="{% static 'js/categorySelection.js' %}"></script>
+<script src="{% static 'js/new_report.js' %}"></script>
 <script>
 var zipcodes = new Object();
 
@@ -49,13 +51,13 @@ $(function(){
             fms.currentMap.getSelectedLocation().x = fms.currentMap.dragfeature.geometry.components[0].x;
             fms.currentMap.getSelectedLocation().y = fms.currentMap.dragfeature.geometry.components[0].y;
         }
-        
+
     });
 
 
-    document.getElementById('continueButton').addEventListener('click', function() {  
-        
-        {% if not pro_user %}      
+    document.getElementById('continueButton').addEventListener('click', function() {
+
+        {% if not pro_user %}
         window.location = "{% url 'report_new' %}?x="+fms.currentMap.getSelectedLocation().x + "&y=" + fms.currentMap.getSelectedLocation().y;
         {% else %}
          window.location = "{% url 'report_new_pro' %}?x="+fms.currentMap.getSelectedLocation().x + "&y=" + fms.currentMap.getSelectedLocation().y;
@@ -73,7 +75,7 @@ $(function(){
 {% block map %}
 
 <article id="map" class="bigMap" style="height:600px">
-    
+
     <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
 </article>
 {% endblock %}

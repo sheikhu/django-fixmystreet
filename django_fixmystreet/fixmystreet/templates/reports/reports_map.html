@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static from staticfiles %}
 {% load tags %}
+
 {% block title %}{% trans "Reports for" %} {{entity.name}}{% endblock %}
 {% block css %}
 {{ block.super }}
@@ -15,7 +17,7 @@
 
 {% block script %}
 {{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+<script type="text/javascript" src="{% static 'js/search.js' %}"></script>
 
 {% block script_map %}
 {{ block.super }}

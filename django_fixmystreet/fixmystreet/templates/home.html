@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n tags %}
+{% load static from staticfiles %}
 
 {% block meta %}
 <meta property="og:title" content="{% trans 'Home' %}" />
@@ -8,7 +9,7 @@
 
 {% block script %}
 {{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL}}js/search.js"></script>
+<script type="text/javascript" src="{% static 'js/search.js' %}"></script>
 
 {% block script-search %}
 <script type="text/javascript">

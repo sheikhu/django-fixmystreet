@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load i18n tags %}
+{% load static from staticfiles %}
 
 {% block base %}
 <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
@@ -11,12 +12,12 @@
 <!-- ############################################################## -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}OpenLayers-2.11/OpenLayers.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/proj4js/engine/proj4js-compressed.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/proj4js/defs/EPSG31370.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/geolocation.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/fixmystreetmap.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/fixmystreetstore.js"></script>
+<script type="text/javascript" src="{% static 'OpenLayers-2.11/OpenLayers.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/proj4js/engine/proj4js-compressed.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/proj4js/defs/EPSG31370.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/geolocation.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/fixmystreetmap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/fixmystreetstore.js' %}"></script>
 
 <!-- ############################################################## -->
 <!-- #######################JQUERY INIT METHOD #################### -->
@@ -314,7 +315,7 @@
 
 {% block content %}
     {% if BACKOFFICE %}
-        <img id="banner-pro" src="{{ STATIC_URL }}images/fixmystreet-pro.png" alt="{% trans 'Fix My Street Pro' %}">
+        <img id="banner-pro" src="{% static 'images/fixmystreet-pro.png' %}" alt="{% trans 'Fix My Street Pro' %}">
     {% endif %}
     <div id="map" class="pdf">
         <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
@@ -326,19 +327,19 @@
         <h1 style="position:relative;">
             {% if report.is_created %}
                 <span class="ticket_number red_border">
-                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                 </span>
             {% elif report.is_in_progress %}
                 <span class="ticket_number orange_border">
-                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                 </span>
             {% elif report.is_refused or report.is_temporary %}
                 <span class="ticket_number gray_border">
-                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                 </span>
             {% else %}
                 <span class="ticket_number green_border">
-                    <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                 </span>
             {% endif %}
         </h1>
@@ -347,38 +348,38 @@
     -->
         <ul class='iconsPopup'>
             {% if report.responsible_entity.id == 20 %}
-                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/pdf/regional.png' /></a></li>
+                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src="{% static 'images/pdf/regional.png' %}" /></a></li>
             {% endif %}
 
             {% if report.is_pro %}
-                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src='/static/images/pdf/pro.png' /></a></li>
+                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src="{% static 'images/pdf/pro.png' %}" /></a></li>
             {% endif %}
 
             {% if report.contractor != None %}
-                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/pdf/assigne.png' /></a></li>
+                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src="{% static 'images/pdf/assigne.png' %}" /></a></li>
             {% endif %}
 
             {% if report.date_planned %}
                 <li class='datePlanned_on'>
                     <!--a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a-->
-                    <img src='/static/images/pdf/planned.png' /> {{report.date_planned|date:"m/Y"}}
+                    <img src="{% static 'images/pdf/planned.png' %} /> {{report.date_planned|date:"m/Y"}}
                 </li>
             {% endif %}
 
             {% if BACKOFFICE %}
                 <li>
                 {% if report.get_priority = 0 %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{{STATIC_URL}}../static/images/pdf/prior_0.png" class="priorityLevel" /></a>
+                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/pdf/prior_0.png' %}" class="priorityLevel" /></a>
                 {% elif report.get_priority <= 2 %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{{STATIC_URL}}../static/images/pdf/prior_1.png" class="priorityLevel" /></a>
+                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/pdf/prior_1.png' %}" class="priorityLevel" /></a>
                 {% elif report.get_priority <= 8 %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{{STATIC_URL}}../static/images/pdf/prior_2.png" class="priorityLevel" /></a>
+                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{% static 'images/pdf/prior_2.png' %}" class="priorityLevel" /></a>
                 {% else %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{{STATIC_URL}}../static/images/pdf/prior_3.png" class="priorityLevel" /></a>
+                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{% static 'images/pdf/prior_3.png' %}" class="priorityLevel" /></a>
                 {% endif %}
                 </li>
                 {% if report.is_solved %}
-                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="/static/images/pdf/resolu.png" /></a></li>
+                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/pdf/resolu.png' %}" /></a></li>
                 {% endif %}
 
             {% endif %}

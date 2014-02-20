@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load static from staticfiles %}
+
 <fieldset>
     <legend>{% trans 'Photos' %}</legend>
     <div id="form-files">
@@ -26,7 +28,7 @@
                         data-toggle="popover"
                         data-trigger="hover"
                         title="{% trans 'Recommendations'%}">
-                <img src="{{STATIC_URL}}images/info_icon.png" width="16px"/>
+                <img src="{% static 'images/info_icon.png' %}" width="16px"/>
             </a>
             <div id="photo-recommendations" class="hide">
                 <p>{% trans '1- Supported formats' %}: jpeg, png. </p>

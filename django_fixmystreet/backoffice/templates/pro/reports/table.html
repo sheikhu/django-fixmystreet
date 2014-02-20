@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 {% load i18n tags %}
+{% load static from staticfiles %}
 
 {% block script_map %}
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></link>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/table.css"></link>
+<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
+<link rel="stylesheet" href="{% static 'css/table.css' %}"></link>
 {{ block.super }}
 {% endblock %}
 
 {% block script %}
 {{ block.super }}
-<script src="{{ STATIC_URL}}js/search.js"></script>
-<script src="{{ STATIC_URL }}lib/dataTables/js/jquery.dataTables.js"></script>
-<script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
+<script src="{% static 'js/search.js' %}"></script>
+<script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
 
 {% block script-search %}
   <script type="text/javascript">
@@ -128,7 +129,7 @@ var previousTableSelection;
 
 // Get table rendered by django
 function generateTableContent(selection) {
-    $('#table-container').html('<div id="table-loading" class="span12"><img src="{{ STATIC_URL }}/images/spinner.gif" /></div>');
+    $('#table-container').html('<div id="table-loading" class="span12"><img src="{% static 'images/spinner.gif' %}" /></div>');
     $("button").prop('disabled', true);
     if (selection !== 'current') {
         previousTableSelection = selection;

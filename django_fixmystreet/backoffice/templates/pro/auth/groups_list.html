@@ -1,17 +1,18 @@
 {% extends "pro/auth/base.html" %}
 {% load i18n tags %}
+{% load static from staticfiles %}
 
 {% block title %}{% trans "Groups admin" %}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}lib/dataTables/css/jquery.dataTables.css"></link>
+<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
 {{ block.super }}
 {% endblock %}
 
 {% block script %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}lib/dataTables/js/jquery.dataTables.js"></script>
-<script src="{{ STATIC_URL }}lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js"></script>
+<script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
 <script>
 
 $(document).ready(function() {

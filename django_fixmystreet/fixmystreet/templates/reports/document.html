@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load i18n tags %}
+{% load static from staticfiles %}
+
 {% block title %}{% trans "New Report" %}{% endblock %}
 
 {% block meta %}
@@ -10,10 +12,10 @@
 
 {% block script %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}js/attachmentForms.js"></script>
-<script src="{{ STATIC_URL }}js/categorySelection.js"></script>
-<script src="{{STATIC_URL}}js/document_report.js"></script>
-<script src="{{ STATIC_URL }}js/jquery.exif.js"></script>
+<script src="{% static 'js/attachmentForms.js' %}"></script>
+<script src="{% static 'js/categorySelection.js' %}"></script>
+<script src="{% static 'js/document_report.js' %}"></script>
+<script src="{% static 'js/jquery.exif.js' %}"></script>
 
 <script>
     var proVersion = {{ BACKOFFICE|yesno:'true,false' }};

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load i18n tags %}
+{% load static from staticfiles %}
+
 {% block title %}{% trans 'Incidents signalés dans le même secteur' %}{% endblock %}
 
 {% block meta %}
@@ -9,7 +11,7 @@
 
 {% block script %}
     {{ block.super }}
-    <script src="{{ STATIC_URL }}js/verify.js"></script>
+    <script src="{% static 'js/verify.js' %}"></script>
 
     <script>
         var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
@@ -120,7 +122,7 @@
 
         var currentReport = {};
         currentReport.date     = {{ report.created|date:'YmdHis' }};
-        currentReport.marker   = "{{ STATIC_URL }}{{report.get_marker}}";
+        currentReport.marker   = "{% static report.get_marker %}";
         currentReport.id       = {{ report.id }};
         currentReport.category = "{{ report.display_category }}";
         currentReport.address  = "{{ report.display_address }}";
@@ -181,7 +183,7 @@
                             <div class="span4 loc_desc">
                                 <!-- Distance -->
                                 <p class="distance">{% trans "Report to merge" %}</p>
-                                <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                                <img src="{% static report.get_marker %}" class="report-counter"/>
                                 <span class="ticket_number">{% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span></span><br />
                                 <span class="ticket_address">
                                     {{ report.address }}, {{ report.address_number }}<br />
@@ -197,7 +199,7 @@
                                 {% if report.thumbnail_url %}
                                     <img src="{{ report.thumbnail_url }}" class="report-preview thumbnail"  />
                                 {% else %}
-                                    <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+                                    <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                 {% endif %}
                             </div>
                             <!-- Comments -->
@@ -265,7 +267,7 @@
                                     <div class="span4 loc_desc">
                                         <!-- Distance -->
                                         <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
-                                        <img src="{{ STATIC_URL }}{{report.get_marker}}" class="report-counter"/>
+                                        <img src="{% static report.get_marker %}" class="report-counter"/>
                                         <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
                                         <span class="ticket_address">
                                             {{ report.address }}, {{ report.address_number }}<br />
@@ -282,7 +284,7 @@
                                         {% if report.thumbnail_url %}
                                             <img src="{{ report.thumbnail_url }}" class="report-preview thumbnail"  />
                                         {% else %}
-                                            <img src="{{ STATIC_URL }}images/no-pix.png" class="report-preview thumbnail" />
+                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                         {% endif %}
                                     </div>
                                     <!-- Comments -->

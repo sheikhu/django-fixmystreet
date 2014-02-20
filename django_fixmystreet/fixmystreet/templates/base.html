@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load tags i18n %}
+{% load static from staticfiles %}
 <html>
     <head>
         {% block base %}{% endblock %}
@@ -7,17 +8,16 @@
         <!-- <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/> -->
         <title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
         <!--[if lt IE 9]>
-        <script src="{{ STATIC_URL }}lib/html5shiv.js"></script>
+        <script src="{% static 'lib/html5shiv.js' %}"></script>
         <![endif]-->
         {% block css %}
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap-responsive.min.css" />
-        <!--link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" /-->
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.qtip.min.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fms.css" />
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/ie_compat.css" />
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap/css/bootstrap-responsive.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.qtip.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/fms.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/ie_compat.css' %}" />
 
-        <link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico" />
+        <link rel="Shortcut Icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
         <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
         {% endblock %}
 
@@ -73,9 +73,9 @@
                         {% else %}
                         <a class="brand" href="{% url 'home_pro' %}">
                         {% endif %}
-                            <img id="banner" src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/logo_fixmystreet.png" alt="{% trans 'Fix My Street' %}">
+                            <img id="banner" src="{% static 'images/'|add:LANGUAGE_CODE|add:'/logo_fixmystreet.png' %}" alt="{% trans 'Fix My Street' %}">
                             {% if ENVIRONMENT == "staging" %}
-                            <img id="staging-badge" src="{{ STATIC_URL }}images/Staging_badge.png" style="position: absolute; top: 2px; left: 493px;" />
+                            <img id="staging-badge" src="{% static 'images/Staging_badge.png' %}" style="position: absolute; top: 2px; left: 493px;" />
                             {% endif %}
                         </a>
                         {% if ENVIRONMENT == "staging" or ENVIRONMENT == "dev" or ENVIRONMENT == "local" %}
@@ -230,33 +230,6 @@
                 </div>
                 {% endif %}
                 {% block content %}{% endblock %}
-
-
-                <!--div id="browser_support_popup" class="modal hide fade" role="dialog">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h1>{% trans 'Browser not supported' %}</h1>
-                    </div>
-                    <div class="modal-body">
-                        <h4>{% trans 'Please download one of the supported browsers below before continuing on the website.' %}</h4>
-                            <center>
-                            <div class="row">
-                            <div class="span2"><a target="_blank" href="http://www.mozilla.org/en-US/firefox/new/"><img src="{{STATIC_URL}}images/firefox.png"></a></div>
-                            <div class="span2"><a target="_blank" href="http://windows.miﬁosoft.com/en-US/internet-explorer/download-ie"><img src="{{STATIC_URL}}images/internet_explorer.png"></a></div>
-                            <div class="span2"><a target="_blank" href="https://www.google.com/intl/en/chrome/browser/"><img src="{{STATIC_URL}}images/chrome.jpeg"></a></div>
-                            </div>
-                            <div class="row">
-                            <div class="span2"><a target="_blank" href="http://www.mozilla.org/en-US/firefox/new/">Firefox (17+)</a></div>
-                            <div class="span2"><a target="_blank" href="http://windows.microsoft.com/en-US/internet-explorer/download-ie">Internet Explorer (9+)</a></div>
-                            <div class="span2"><a target="_blank" href="https://www.google.com/intl/en/chrome/browser/">Google Chrome (20+)</a></div>
-                            </div>
-                        </center>
-
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
-                    </div>
-                </div-->
             </section>
 
             {% block footer %}
@@ -265,13 +238,8 @@
                 <div class="row">
                     {% block content_third %}{% endblock %}
 
-                    <!--p>
-                        {% trans 'A initiative of Bruxelles Mobilite in collaboration with '%}
-                        <a href="{% url 'about' %}#3">{% trans 'Communes and Brussels Partner Institutions'%}</a>
-                    </p-->
-
                     <div class="span4">
-                        <a href="http://www.bruxelles.irisnet.be/" target="_blank"><img src="{{ STATIC_URL }}images/{{ LANGUAGE_CODE }}/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png"></a>
+                        <a href="http://www.bruxelles.irisnet.be/" target="_blank"><img src="{% static 'images/'|add:LANGUAGE_CODE|add:'/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png' %}"></a>
                     </div>
                     <div class="span4 a-propos">
                         <!--a href="{% url 'terms_of_use' %}" target="_blank">{% trans "Terms of Use" %}</a-->
@@ -279,7 +247,7 @@
                         <p class="muted">{{ APP_VERSION }}</p>
                     </div>
                     <div class="span4 cirb-cibg">
-                        <a href="http://www.cirb.irisnet.be" target="_blank"><img src="{{ STATIC_URL }}images/created-and-hosted-by-cirb-cibg.png"/></a>
+                        <a href="http://www.cirb.irisnet.be" target="_blank"><img src="{% static 'images/created-and-hosted-by-cirb-cibg.png' %}"/></a>
                     </div>
                 </div>
             </footer>
@@ -309,21 +277,21 @@
             {% endif %}
             var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
         </script>
-        <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.8.3.min.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}lib/qtip/jquery.qtip.min.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}lib/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/UtilValidator.js"></script>
+        <script type="text/javascript" src="{% static 'lib/jquery-1.8.3.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/qtip/jquery.qtip.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/UtilValidator.js' %}"></script>
 
         {% block mapscript %}
-        <script type="text/javascript" src="{{ STATIC_URL }}lib/proj4js/engine/proj4js-compressed.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}lib/proj4js/defs/EPSG31370.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}lib/OpenLayers-2.12/OpenLayers.js"></script>
-        <script type="text/javascript" src="{{STATIC_URL}}js/geolocation.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/fixmystreetmap.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/fixmystreetstore.js"></script>
+        <script type="text/javascript" src="{% static 'lib/proj4js/engine/proj4js-compressed.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/proj4js/defs/EPSG31370.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/OpenLayers-2.12/OpenLayers.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/geolocation.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/fixmystreetmap.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/fixmystreetstore.js' %}"></script>
         {% endblock %}
 
-        <script type="text/javascript" src="{{ STATIC_URL }}js/common.js"></script>
+        <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
 
         {% if messages %}
         <script>

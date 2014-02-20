@@ -1,12 +1,13 @@
 {% extends "reports/show.html" %}
 {% load i18n %}
 {% load tags %}
+{% load static from staticfiles %}
 
 {% block script %}
 {{ block.super }}
 
 {% block specific_scripts %}
-<script src="{{ STATIC_URL }}js/jquery.exif.js"></script>
+<script src="{% static 'js/jquery.exif.js' %}"></script>
 
 <script type="text/javascript">
 
@@ -315,7 +316,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<script src="{{ STATIC_URL}}js/reports_show_pro.js"></script>
+<script src="{% static 'js/reports_show_pro.js' %}"></script>
 
 {% endblock %}
 {% endblock %}
@@ -335,19 +336,19 @@ $(document).ready(function() {
                     <div class="ticket_infos">
                         {% if report.is_created %}
                             <span class="ticket_number red_border">
-                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                             </span>
                         {% elif report.is_in_progress %}
                             <span class="ticket_number orange_border">
-                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                             </span>
                         {% elif report.is_refused or report.is_temporary %}
                             <span class="ticket_number gray_border">
-                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                             </span>
                         {% else %}
                             <span class="ticket_number green_border">
-                                <img src="{{STATIC_URL}}{{ report.get_marker}}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
                             </span>
                         {% endif %}
 
@@ -358,7 +359,7 @@ $(document).ready(function() {
                             {{ report.postalcode }} {{ report.get_address_commune_name }}
                             {% if report.false_address %}
                                 <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{{ report.false_address }}'>
-                                    <img src="{{STATIC_URL}}images/icon-false-address.png" />
+                                    <img src="{% static 'images/icon-false-address.png' %}" />
                                 </a>
                                 <br />
                             {% endif %}
@@ -377,15 +378,15 @@ $(document).ready(function() {
                         <br />
                         <ul class='iconsPopup'>
                             {% if report.responsible_entity.id == 20 %}
-                                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src='/static/images/regional_on.png' /></a></li>
+                                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src="{% static 'images/regional_on.png' %}" /></a></li>
                             {% endif %}
 
                             {% if report.is_pro %}
-                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src='/static/images/pro_on.png' /></a></li>
+                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src="{% static 'images/pro_on.png' %}" /></a></li>
                             {% endif %}
 
                             {% if report.contractor != None %}
-                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src='/static/images/contractorAssigned_on.png' /></a></li>
+                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src="{% static 'images/contractorAssigned_on.png' %}" /></a></li>
                             {% endif %}
 
                             {% if report.date_planned %}
@@ -395,17 +396,17 @@ $(document).ready(function() {
                             {% if BACKOFFICE %}
                                 <li>
                                 {% if report.get_priority = 0 %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{{STATIC_URL}}../static/images/prior_off.png" class="priorityLevel" /></a>
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/prior_off.png' %}" class="priorityLevel" /></a>
                                 {% elif report.get_priority <= 2 %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_1.png" class="priorityLevel" /></a>
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/prior_on_1.png' %}" class="priorityLevel" /></a>
                                 {% elif report.get_priority <= 8 %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_2.png" class="priorityLevel" /></a>
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{% static 'images/prior_on_2.png' %}" class="priorityLevel" /></a>
                                 {% else %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{{STATIC_URL}}../static/images/prior_on_3.png" class="priorityLevel" /></a>
+                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{% static 'images/prior_on_3.png' %}" class="priorityLevel" /></a>
                                 {% endif %}
                                 </li>
                                 {% if report.is_solved %}
-                                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="/static/images/is_resolved_on.png" /></a></li>
+                                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/is_resolved_on.png' %}" /></a></li>
                                 {% endif %}
 
                             {% endif %}
@@ -983,7 +984,7 @@ $(document).ready(function() {
         <div class="timeline-container">
             {% if report.is_in_progress or report.is_created %}
             <span class="add_info">
-                <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{{STATIC_URL}}images/add-img.png" />{% trans 'Add' %}<img src="{{STATIC_URL}}images/add-comment.png"></a>
+                <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{% static 'images/add-img.png' %}" />{% trans 'Add' %}<img src="{% static 'images/add-comment.png' %}"></a>
             </span>
                 {% if not report.attachmentsList %}
                     <br/><br/>
