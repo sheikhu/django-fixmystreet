@@ -77,8 +77,10 @@
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
-                                        {% if report.thumbnail_url %}
-                                            <img src="{{ report.thumbnail_url }}" class="report-preview thumbnail"  />
+                                        {% if BACKOFFICE and report.thumbnail_pro %}
+                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
+                                        {% elif report.thumbnail %}
+                                            <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
                                         {% else %}
                                             <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                         {% endif %}

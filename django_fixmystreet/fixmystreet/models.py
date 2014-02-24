@@ -555,7 +555,8 @@ class Report(UserTrackedModel):
     probability = models.IntegerField(default=0)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
-    thumbnail = models.TextField(null=True, blank=True)
+    thumbnail     = models.TextField(null=True, blank=True)
+    thumbnail_pro = models.TextField(null=True, blank=True)
     #photo = models.ForeignKey(ReportFile, related_name='thumbnail_report', null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
@@ -568,9 +569,6 @@ class Report(UserTrackedModel):
     history = HistoricalRecords()
 
     false_address = models.TextField(null=True, blank=True)
-
-    def thumbnail_url(self):
-        return self.thumbnail
 
     def get_marker(self):
         #user = get_current_user()
@@ -790,7 +788,7 @@ class Report(UserTrackedModel):
         Method used to display the whole object content as JSON structure for website
         """
 
-        local_thumbnail = self.thumbnail_url()
+        local_thumbnail = self.thumbnail
         thumbValue = local_thumbnail or 'null'
 
         return {
@@ -829,7 +827,7 @@ class Report(UserTrackedModel):
         }
 
     def full_marker_detail_pro_JSON(self):
-        local_thumbnail = self.thumbnail_url()
+        local_thumbnail = self.thumbnail_pro
 
         thumbValue = local_thumbnail or 'null'
 
@@ -854,7 +852,7 @@ class Report(UserTrackedModel):
         }
 
     def full_marker_detail_JSON(self):
-        local_thumbnail = self.thumbnail_url()
+        local_thumbnail = self.thumbnail
         if local_thumbnail:
             thumbValue = local_thumbnail
         else:
@@ -886,7 +884,7 @@ class Report(UserTrackedModel):
         if self.close_date:
             close_date_as_string = self.close_date.strftime("%Y-%m-%d %H:%M:%S")
 
-        local_thumbnail = self.thumbnail_url()
+        local_thumbnail = self.thumbnail
         thumbValue = local_thumbnail or 'null'
 
         local_citizen = self.citizen
@@ -1378,12 +1376,21 @@ class ReportAttachment(UserTrackedModel):
 @receiver(post_save, sender=ReportAttachment)
 def init_report_overview(sender, instance, **kwargs):
 
-    images_public = instance.report.active_files()
-
+    # Thumbnail for citizen
+    images_public = instance.report.active_files().filter(file_type=ReportFile.IMAGE)
     if images_public.exists():
         instance.report.thumbnail = images_public[0].image.thumbnail.url()
-        instance.report.save()
+    else:
+        instance.report.thumbnail = None
 
+    # Thumbnail for pro
+    images_pro = instance.report.files().filter(logical_deleted=False, file_type=ReportFile.IMAGE)
+    if images_pro.exists():
+        instance.report.thumbnail_pro = images_pro[0].image.thumbnail.url()
+    else:
+        instance.report.thumbnail_pro = None
+
+    instance.report.save()
 
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
@@ -1497,6 +1504,7 @@ class ReportFile(ReportAttachment):
 @receiver(post_save, sender=ReportFile)
 def report_file_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
+    init_report_overview(sender, instance, **kwargs)
 
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender, instance, **kwargs):

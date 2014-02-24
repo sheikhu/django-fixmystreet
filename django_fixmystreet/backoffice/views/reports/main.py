@@ -116,13 +116,13 @@ def report_prepare_pro(request, location=None, error_msg=None):
     #reports = Report.objects.all().visible().related_fields().order_by('-modified')
     reports_closed = Report.objects.all().visible().related_fields().filter(
         status__in=Report.REPORT_STATUS_CLOSED,
-        created__gt=last_30_days).order_by('thumbnail', '-modified')
+        created__gt=last_30_days).order_by('thumbnail_pro', '-modified')
     reports_progress = Report.objects.all().visible().related_fields().filter(
         status__in=Report.REPORT_STATUS_IN_PROGRESS,
-        created__gt=last_30_days).order_by('thumbnail', '-modified')
+        created__gt=last_30_days).order_by('thumbnail_pro', '-modified')
     reports_created = Report.objects.all().visible().related_fields().filter(
         status=Report.CREATED,
-        created__gt=last_30_days).order_by('thumbnail', '-modified')
+        created__gt=last_30_days).order_by('thumbnail_pro', '-modified')
 
     return render_to_response("pro/home.html", {
         "report_counts": ReportCountQuery('1 year'),
