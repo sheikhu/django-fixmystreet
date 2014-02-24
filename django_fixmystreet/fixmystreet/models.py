@@ -128,8 +128,6 @@ class FMSUser(User):
         verbose_name=_("Entity"),
         limit_choices_to={"type__in": ('R', 'C')}
     )  # organisation that can be responsible of reports
-    ### deprecated to remove replaced by UserOrganisationMembership ###
-    work_for = models.ManyToManyField('OrganisationEntity', related_name='workers', null=True, blank=True)  # list of contractors/services that user work with
 
     history = HistoricalRecords()
 
@@ -177,7 +175,7 @@ class FMSUser(User):
         if self.organisation:
             return self.organisation
         elif self.contractor or self.applicant:
-            return u", ".join([unicode(o) for o in self.work_for.all()])
+            return u", ".join([unicode(membership.organisation) for membership in UserOrganisationMembership.objects.filter(user=self)])
 
     def is_pro(self):
         return self.agent or self.manager or self.leader or self.applicant or self.contractor
@@ -396,7 +394,6 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(query)
 
     def responsible_contractor(self, user):
-        # query = Q(contractor__in=user.work_for.all())
         query = Q(contractor__memberships__user=user)
         return self.filter(query)
 
