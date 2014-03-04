@@ -982,7 +982,10 @@ def init_regional_street(sender, instance, **kwargs):
 def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_entity:
         #Detect who is the responsible Manager for the given type
-        if instance.created_by and hasattr(instance.created_by, 'fmsuser') and instance.created_by.fmsuser.organisation:
+        if (instance.created_by and
+            hasattr(instance.created_by, 'fmsuser') and
+            instance.created_by.fmsuser.organisation and
+            instance.created_by.fmsuser.organisation.is_responsible()):
             # assign entity of the creator
             instance.responsible_entity = instance.created_by.fmsuser.organisation
         else:
