@@ -123,7 +123,7 @@ def near_reports_citizen(request):
 #Method used to retrieve all reports for citizens
 def reports_citizen(request):
     pnt = dict_to_point(request.REQUEST)
-   
+
     #Max 1 month in the past
     timestamp_from = datetime.now().date() - timedelta(days=31)
     reports = Report.objects.filter(Q(created__gte=timestamp_from) & Q(private=False)).distance(pnt).order_by('distance')[:20]
@@ -178,13 +178,13 @@ def reports_pro(request):
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''
     #Test the submit content size (max 2MB)
+
     if (int(request.META.get('CONTENT_LENGTH')) > 15000000):
         return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_EXCEED_SIZE", "request":request.POST}),mimetype='application/json')
 
     data_report_id = request.POST.get('report_id')
     data_file_content = request.FILES.get('report_file')
 
-    report_file = ReportFile()
     #Verify that everything has been posted to create a citizen report.
     if (data_report_id == None):
         return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_MISSING_DATA_REPORT_ID", "request":request.POST}),mimetype='application/json')
@@ -196,17 +196,22 @@ def create_report_photo(request):
         reference_report = Report.objects.get(id=data_report_id)
     except Exception:
         return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_NOT_FOUND", "request":request.POST}),mimetype='application/json')
+
+    report_file = ReportFile()
     try:
-        report_file.title = "Mobile Upload"
-        report_file.file = data_file_content
+        report_file.title  = "Mobile Upload"
+        report_file.file   = data_file_content
         report_file.report = reference_report
         report_file.file_creation_date = datetime.now()
 
+        # Set same creator than report creator
+        report_file.created_by = reference_report.citizen or reference_report.created_by
+
         #Save given data
         report_file.save()
-
     except Exception:
         return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_PROBLEM_DATA", "request":request.POST}),mimetype='application/json')
+
     #Return the report ID
     return JsonHttpResponse({
         'report_photo': report_file.id
