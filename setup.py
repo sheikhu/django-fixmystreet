@@ -33,6 +33,8 @@ install_requires = [
     'django-ckeditor-updated==4.2.6',
     'gunicorn==18.0',
     'setproctitle==1.1.8',
+
+    'mobileserverstatus'
 ]
 
 debug_require = [
@@ -69,6 +71,7 @@ setup(
         'https://github.com/CIRB/django-simple-history/archive/3da627f01398fd88f812d789d21197cd622633a7.zip#egg=simple_history-1.1.3',
         'https://pypi.python.org/packages/source/d/django-piston/django-piston-0.2.3.tar.gz#md5=8b040d426793cf22ce89543e059cd6e1#egg=django-piston-0.2.3',
         'https://github.com/riklaunim/django-ckeditor/archive/a3669f731145154efb7de52f79f1eb50ae4e54cf.zip#egg=django-ckeditor-updated-4.2.6',
+        'https://github.com/afuca/mobileserverstatus/archive/1.0.zip#egg=mobileserverstatus',
     ],
     extras_require={
         'debug': debug_require

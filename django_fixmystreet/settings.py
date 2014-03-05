@@ -144,6 +144,7 @@ INSTALLED_APPS = (
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
     'django_fixmystreet.monitoring',
+    'mobileserverstatus',
     'piston',
 )
 
