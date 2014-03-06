@@ -80,6 +80,7 @@ def send_pdf(request, report_id):
     recepients = re.compile("[\\s,;]+").split(recipients)
 
     for recepient in recepients:
+        recepient = recepient.strip()
 
         msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, (recepient,))
 
