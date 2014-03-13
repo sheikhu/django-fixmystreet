@@ -178,7 +178,7 @@ class FMSUser(User):
             return u", ".join([unicode(membership.organisation) for membership in UserOrganisationMembership.objects.filter(user=self)])
 
     def is_pro(self):
-        return self.agent or self.manager or self.leader or self.applicant or self.contractor
+        return self.agent or self.manager or self.leader or self.applicant or self.contractor or self.organisation
 
     def is_citizen(self):
         return not self.is_pro()
