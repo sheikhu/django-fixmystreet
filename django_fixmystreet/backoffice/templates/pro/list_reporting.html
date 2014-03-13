@@ -52,7 +52,7 @@
                     <tr onclick="document.location = '{% url 'reporting_download' file.path %}';" class="pointer">
                         <td>
                             {% trans 'Télécharger le rapport mensuel du' %}
-                            <strong>{{ file.modified_date|date:"d/m/Y" }}</strong>
+                            <strong>{{ file.modified_date|date:"m/Y" }}</strong>
                         </td>
                     </tr>
                 {% endfor %}
