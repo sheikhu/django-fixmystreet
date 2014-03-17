@@ -2213,3 +2213,16 @@ content: "*";
 .pointer {
     cursor: pointer;
 }
+
+.configTable td {
+    padding: 10px;
+}
+.configTable tr:nth-child(odd){
+    background-color: #fff;
+}
+.configTable tr:nth-child(even){
+    background-color: #f0f0f0;
+}
+.configTable tr:hover{
+    background-color: #FCFCE2;
+}

@@ -99,9 +99,11 @@ $(document).ready(function(){
                                 no group
                             {% else %}
                                 <a id="{{mainCategory.id}}{{line.secondCategory.id}}" class="matrixButton" href="{% url 'gestionnaire_selection_dialog' %}?main={{mainCategory.id}}&second={{line.secondCategory.id}}">
-                                {% for group in mainCategory.groups %}
-                                    {{ group.0.name }}
-                                {% endfor %}
+                                    <ul>
+                                        {% for group in mainCategory.groups %}
+                                            <li><small>{{ group.0.name }}</small></li>
+                                        {% endfor %}
+                                    </ul>
                                 </a>
                             {% endif %}
                             </td>
