@@ -2226,3 +2226,6 @@ content: "*";
 .configTable tr:hover{
     background-color: #FCFCE2;
 }
+.configTable li.dispatchingNotCorrect {
+    color: red;
+}
