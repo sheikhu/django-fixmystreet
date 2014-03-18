@@ -95,7 +95,7 @@ $(document).ready(function(){
 
                         {% for mainCategory in line.mainCategories %}
                             <td>
-                            {% if not mainCategory.groups.0 %}
+                            {% if not mainCategory.groups %}
                                 no group
                             {% else %}
                                 <a id="{{mainCategory.id}}{{line.secondCategory.id}}" class="matrixButton" href="{% url 'gestionnaire_selection_dialog' %}?main={{mainCategory.id}}&second={{line.secondCategory.id}}">
