@@ -1065,6 +1065,15 @@ def report_notify(sender, instance, **kwargs):
 
             ### REFUSED
             if report.status == Report.REFUSED:
+                for subscription in report.subscriptions.all():
+                    if subscription.subscriber != event_log_user:
+                        ReportNotification(
+                            content_template='notify-refused',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_department.email,
+                        ).save()
+
                 ReportNotification(
                     content_template='notify-refused',
                     recipient=report.citizen or report.created_by,

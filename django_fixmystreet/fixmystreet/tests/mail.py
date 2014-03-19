@@ -234,7 +234,7 @@ class MailTest(TestCase):
         refused_params = {'refusal_motivation': 'more info'}
         response = self.client.post(refused_url, refused_params, follow=True)
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
+        self.assertEquals(len(mail.outbox), 4)
         #The status of the report must now be REFUSED
         report = Report.objects.get(id=report_id)
         self.assertEquals(report.status, Report.REFUSED)

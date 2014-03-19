@@ -39,14 +39,12 @@ def accept(request, report_id):
 def refuse(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
-    #Test if the report is created...
-    if report.status == Report.CREATED:
-        #Update the status
-        report.status = Report.REFUSED
-        form = RefuseForm(request)
-        #Save the refusal motivation in the database
-        report.refusal_motivation = form.data.POST.get('refusal_motivation')
-        report.save()
+    #Update the status
+    report.status = Report.REFUSED
+    form = RefuseForm(request)
+    #Save the refusal motivation in the database
+    report.refusal_motivation = form.data.POST.get('refusal_motivation')
+    report.save()
 
     #Redirect to the report show page
     if "pro" in request.path:
