@@ -1,4 +1,6 @@
 from collections import OrderedDict
+
+from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import get_language
@@ -20,7 +22,6 @@ def table(request):
         'all_zipcodes': ZipCode.objects.all(),
     }, context_instance=RequestContext(request))
 
-
 def table_content(request, selection=""):
     user = request.fmsuser
     reports = Report.objects.all().visible().related_fields()
@@ -35,11 +36,13 @@ def table_content(request, selection=""):
 
     if selection == "responsible" and user.manager:
         reports = reports.responsible(user)
-        reports = reports.filter(pending=False)
+        reports = reports.filter(pending=False).exclude(Q(status__in=Report.REPORT_STATUS_CLOSED) | Q(status__in=Report.REPORT_STATUS_OFF) | Q(status=Report.REFUSED))
     elif selection == "subscribed":
         reports = reports.subscribed(user)
     elif selection == "contractor_responsible":
         reports = reports.responsible_contractor(user)
+    elif selection == "creator":
+        reports = reports.filter(created_by=user)
     elif selection == "all":
         # all reports
         pass
