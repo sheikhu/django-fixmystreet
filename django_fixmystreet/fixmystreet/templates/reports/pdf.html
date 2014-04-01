@@ -29,8 +29,8 @@
             fms.currentMap = new fms.Map(
                 'map',
                 {apiLang:'nl',
-                    localizeUrl: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
-                    urbisUrl: 'http://geoserver.gis.irisnet.be/geoserver/wms',
+                    localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+                    urbisUrl: WMS_SERVICE_URL,
                     origin: {
                     x:{{report.point.x}},
                     y:{{report.point.y}}

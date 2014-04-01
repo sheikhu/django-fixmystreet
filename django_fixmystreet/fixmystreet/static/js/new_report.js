@@ -135,7 +135,7 @@ $(document).ready(function() {
 function getAddressFromPoint(lang, x, y) {
     var self = this;
     $.ajax({
-        url: 'http://service.gis.irisnet.be/urbis/Rest/Localize/getaddressfromxy',
+        url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
         type:'POST',
         dataType:'jsonp',
         data: {

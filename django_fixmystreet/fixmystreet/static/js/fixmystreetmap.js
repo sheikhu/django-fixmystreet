@@ -196,7 +196,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         },
         apiRootUrl = "/api/",
         localizeUrl = "/api/locate/",
-        urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
+        // urbisUrl = "http://geoserver.gis.irisnet.be/geoserver/wms",
         apiLang = "fr",
         showControl = true,
         createdMarkerStyle = cloneObj(defaultMarkerStyle),
