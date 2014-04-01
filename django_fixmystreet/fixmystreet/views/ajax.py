@@ -18,7 +18,6 @@ def report_category_note(request, id):
         cat.hint.label
     ))
 
-
 def create_comment(request):
     SessionManager.createComment(request.POST.get('title'), request.POST.get('text'), request.session)
     hh = HttpResponse(content='True', mimetype='text/html')
