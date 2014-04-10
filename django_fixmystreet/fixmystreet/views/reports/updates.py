@@ -12,9 +12,6 @@ def report_pdf(request, report_id, pro_version=False):
     if pro_version and not (request.user.is_authenticated() and request.fmsuser.is_pro()):
         raise PermissionDenied
 
-    #Set pro version to 0 per default as this view method should always be called by the citizen version of the webapp
-    # pro_Version = 0
-
     return render_to_pdf("reports/pdf.html", {
         'report' : report,
         'files': report.files() if pro_version else report.active_files(),

@@ -64,15 +64,20 @@ def send_pdf(request, report_id):
     recipients = request.POST.get('to')
     comments = request.POST.get('comments')
     # Only set privacy as private if user is auth and privacy POST param is private
-    privacy = 'private' if request.fmsuser.is_pro() and "private" == request.POST.get('privacy') else 'public'
+    if request.fmsuser.is_pro() and "private" == request.POST.get('privacy'):
+        pro_version = True
+    else:
+        pro_version = False
+
     report = get_object_or_404(Report, id=report_id)
     #generate the pdf
     pdffile = generate_pdf("reports/pdf.html", {
         'report': report,
-        'files': report.files(),
-        'comments': report.comments(),
+        'files': report.files() if pro_version else report.active_files(),
+        'comments': report.comments() if pro_version else report.active_comments(),
         'activity_list': report.activities.all(),
-        'privacy': privacy
+        'privacy': 'private' if pro_version else 'public',
+        'BACKOFFICE': pro_version
     }, context_instance=RequestContext(request))
 
     template = MailNotificationTemplate.objects.get(name="mail-pdf")
