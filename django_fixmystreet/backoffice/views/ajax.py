@@ -63,7 +63,8 @@ def send_pdf(request, report_id):
     user = get_current_user()
     recipients = request.POST.get('to')
     comments = request.POST.get('comments')
-    privacy = request.POST.get('privacy')
+    # Only set privacy as private if user is auth and privacy POST param is private
+    privacy = 'private' if request.fmsuser.is_pro() and "private" == request.POST.get('privacy') else 'public'
     report = get_object_or_404(Report, id=report_id)
     #generate the pdf
     pdffile = generate_pdf("reports/pdf.html", {
