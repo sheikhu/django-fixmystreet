@@ -491,7 +491,8 @@ class MailTest(TestCase):
         }, follow=True)
         # One notification should be sent to impetrant to inform him of new comment
         # One notification should be sent to responsible demartment
-        self.assertEquals(len(mail.outbox), 7)
+        # A cache prevents to send too much mail during publication if already sent
+        self.assertEquals(len(mail.outbox), 6)
         self.assertIn(self.impetrant.email, mail.outbox[5].to + mail.outbox[6].to)
         self.assertIn(self.group.email, mail.outbox[5].to + mail.outbox[6].to)
 
@@ -528,7 +529,8 @@ class MailTest(TestCase):
         }, follow=True)
         # One notification should be sent to contractor to inform him of new comment
         # One notification should be sent to responsible department
-        self.assertEquals(len(mail.outbox), 6)
+        # A cache prevents to send too much mail during publication if already sent
+        self.assertEquals(len(mail.outbox), 5)
         self.assertIn(self.contractor.email, mail.outbox[4].to)
         self.assertIn(self.group.email, mail.outbox[5].to)
 
@@ -645,7 +647,8 @@ class MailTest(TestCase):
             follow=True)
         # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
         # 1 to inform about publish (citizen), Manager who did the update does not get an email
-        self.assertEquals(len(mail.outbox), 5)
+        # A cache prevents to send too much mail during publication if already sent
+        self.assertEquals(len(mail.outbox), 4)
         self.assertIn(self.citizen.email, mail.outbox[4].to)
 
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {

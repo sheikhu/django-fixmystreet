@@ -785,7 +785,8 @@ class HistoryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
-        self.assertEqual(activities.all().count(), 4)  # still does not work as the message is not shown yet
+        # A cache prevents to create too much log during publication if already sent
+        self.assertEqual(activities.all().count(), 3)  # still does not work as the message is not shown yet
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)

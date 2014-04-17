@@ -1406,6 +1406,13 @@ def init_report_overview(sender, instance, **kwargs):
 def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
 
+    # To not spam users, check that mails are not send recently
+    if cache.get(report.id):
+        return
+
+    # Cache for 10 minutes
+    cache.set(report.id, True, 36000)
+
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         action_user = instance.created_by
 
@@ -1416,18 +1423,13 @@ def report_attachment_notify(sender, instance, **kwargs):
             user=action_user
         ).save()
 
-        # To not spam users, check that mails are not send recently
-        if not cache.get(report.id):
-            # Cache for 10 minutes
-            cache.set(report.id, True, 36000)
-
-            for subscription in report.subscriptions.all().exclude(subscriber=action_user):
-                ReportNotification(
-                    content_template='informations_published',
-                    recipient=subscription.subscriber,
-                    related=report,
-                    reply_to=report.responsible_department.email,
-                ).save()
+        for subscription in report.subscriptions.all().exclude(subscriber=action_user):
+            ReportNotification(
+                content_template='informations_published',
+                recipient=subscription.subscriber,
+                related=report,
+                reply_to=report.responsible_department.email,
+            ).save()
 
     #if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
