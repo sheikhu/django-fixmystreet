@@ -93,6 +93,42 @@ $(function(){
     $("#prob").val("{{report.probability}}");
 });
 
+function sortAndAppendSecCat(data) {
+    // Sort sec_cat
+    var sortedSecCat = data.sort(function(a,b) {
+        var aSecCat = a["s_c_n_"+LANGUAGE_CODE] + a["n_"+LANGUAGE_CODE];
+        var bSecCat = b["s_c_n_"+LANGUAGE_CODE] + b["n_"+LANGUAGE_CODE];
+
+        return aSecCat == bSecCat ? 0 : aSecCat < bSecCat ? -1 : 1;
+    });
+
+    // Create select with optgroups
+    var currentOptGroup = null;
+    for(var i = 0; i<sortedSecCat.length;++i) {
+        if (sortedSecCat[i]["s_c_n_"+LANGUAGE_CODE] != currentOptGroup) {
+            // Close previous optgroup if not the first
+            if (currentOptGroup) {
+                $("#sec_cat_select").append('</optgroup>');
+            }
+            // Add new optgroup
+            $("#sec_cat_select").append('<optgroup label="' + sortedSecCat[i]["s_c_n_"+LANGUAGE_CODE] + '">');
+
+            currentOptGroup = sortedSecCat[i]["s_c_n_"+LANGUAGE_CODE];
+        }
+
+        // options
+        var option = "<option value='"+sortedSecCat[i].id+"'>" + sortedSecCat[i]["n_"+LANGUAGE_CODE] + "</option>";
+        $("#sec_cat_select").append(option);
+    }
+    // Close previous optgroup if exists
+    if (currentOptGroup) {
+        $("#sec_cat_select").append('</optgroup>');
+    }
+
+    $("#sec_cat_select").prepend("<option value='0'>{% trans 'Select a Category' %}</option>");
+
+    $("#sec_cat_select").val("{{report.secondary_category.id}}");
+}
 /* When JQUERY is ready*/
 $(document).ready(function() {
     /*Set the contractor dropdown*/
@@ -114,18 +150,7 @@ $(document).ready(function() {
         url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
         type:"GET",
         success:function(data){
-            for(var i = 0; i<data.length;++i){
-                var option = "<option value='"+data[i].id+"'>"+data[i]["s_c_n_"+LANGUAGE_CODE]+"/"+data[i]["n_"+LANGUAGE_CODE]+"</option>";
-                $("#sec_cat_select").append(option);
-            }
-            $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) {
-                        var arel = $(a).html();
-                        var brel = $(b).html();
-                        return arel == brel ? 0 : arel < brel ? -1 : 1
-                    }));
-            $("#sec_cat_select").prepend("<option value='0'>{% trans 'Select a Category' %}</option>");
-
-            $("#sec_cat_select").val("{{report.secondary_category.id}}");
+            sortAndAppendSecCat(data);
         }
     });
 
@@ -138,16 +163,7 @@ $(document).ready(function() {
                 url:"{% url 'secondary_category_for_main_category' %}?main_category="+this.value,
                 type:"GET",
                 success:function(data){
-                    for(var i = 0; i<data.length;++i){
-                        var option = "<option value='"+data[i].id+"'>"+data[i]["s_c_n_"+LANGUAGE_CODE]+"/"+data[i]["n_"+LANGUAGE_CODE]+"</option>";
-                        $("#sec_cat_select").append(option);
-                    }
-                    $("#sec_cat_select").html($("option", $("#sec_cat_select")).sort(function(a, b) {
-                        var arel = $(a).html();
-                        var brel = $(b).html();
-                        return arel == brel ? 0 : arel < brel ? -1 : 1
-                    }));
-                    $("#sec_cat_select").prepend("<option value='0'>{% trans 'Select a secondary Category' %}</option>");
+                    sortAndAppendSecCat(data);
                 }
             });
         }
