@@ -26,7 +26,7 @@ def table_content(request, selection=""):
     user = request.fmsuser
     reports = Report.objects.all().visible().related_fields()
 
-    if selection != "subscribed":
+    if selection != "subscribed" and selection != "creator":
         if user.organisation:
             reports = reports.entity_responsible(user) | reports.entity_territory(user.organisation)
         elif user.contractor or user.applicant:
