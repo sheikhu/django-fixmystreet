@@ -10,7 +10,7 @@ from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy as _p
+from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.contrib.auth.models import User
 
 from django.contrib.gis.db import models
@@ -507,18 +507,18 @@ class Report(UserTrackedModel):
 
     PROBABILITY_CHOICES = (
         (0, "-"),
-        (1, _p("probability", "Unlikely")),
-        (2, _p("probability", "Rare")),
-        (3, _p("probability", "Possible")),
-        (4, _p("probability", "Occasionnel"))
+        (1, pgettext_lazy("probability", "Unlikely")),
+        (2, pgettext_lazy("probability", "Rare")),
+        (3, pgettext_lazy("probability", "Possible")),
+        (4, pgettext_lazy("probability", "Occasionnel"))
     )
 
     GRAVITY_CHOICES = (
         (0, "-"),
-        (1, _p("gravity", "Moderate")),
-        (2, _p("gravity", "Serious")),
-        (3, _p("gravity", "Grave")),
-        (4, _p("gravity", "Major"))
+        (1, pgettext_lazy("gravity", "Moderate")),
+        (2, pgettext_lazy("gravity", "Serious")),
+        (3, pgettext_lazy("gravity", "Grave")),
+        (4, pgettext_lazy("gravity", "Major"))
     )
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
