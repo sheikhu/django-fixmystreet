@@ -89,8 +89,8 @@ $(function(){
         }
     });
 
-    $("#grav").val("{{report.gravity}}");
-    $("#prob").val("{{report.probability}}");
+    // $("#grav").val("{{report.gravity}}");
+    // $("#prob").val("{{report.probability}}");
 });
 
 function sortAndAppendSecCat(data) {
@@ -174,7 +174,7 @@ $(document).ready(function() {
 
     $("#main_cat_select").val("{{report.category.id}}");
 
-    $("#sec_cat_select").bind('submit',function(){
+    $("#sec_cat_select").bind('submit', function(){
         $.ajax({
             url:"{% url 'update_category_for_report' report.id %}",
             data:{"main_category":$('#main_cat_select').val(),"secondary_category":this.value},
@@ -188,6 +188,11 @@ $(document).ready(function() {
     });
 
     $(".update_text").find('#imgtoshow').exifLoad(someCallback);
+
+    $('.priority select').change(function () {
+        $("#prio_result").html(parseInt($("#id_probability").val()) * parseInt($("#id_gravity").val()));
+    });
+
 });
 
 window.onload = function() {
@@ -210,21 +215,18 @@ function close(){
     }
 }
 
-function computePriorityUpdate() {
-    $("#prio_result").html(parseInt($("#grav").val()) * parseInt($("#prob").val()));
-}
 
 function cancelPriorityUpdate(){
     //Restore original values
-    $("#grav").val("{{report.gravity}}");
-    $("#prob").val("{{report.probability}}");
+    $("#id_probability").val("{{report.gravity}}");
+    $("#id_gravity").val("{{report.probability}}");
     //Close modal Window
     $('#modalPriority').modal('hide');
 }
 
 function persistPriorityUpdate(){
-    var a = parseInt($("#grav").val());
-    var b = parseInt($("#prob").val());
+    var a = parseInt($("#id_probability").val());
+    var b = parseInt($("#id_gravity").val());
 
     window.location = "{% url 'report_update_priority' report.id %}"+"?gravity="+a+"&probability="+b
     /*$.ajax({url:"{% url 'report_update_priority' report.id %}",
@@ -806,42 +808,19 @@ $(document).ready(function() {
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h3>{% trans "Priority:" %}</h3>
         </div>
-        <div class="modal-body">
-            <tr>
-                <td colspan="2">
-                    <span>{% trans "Probability:" %}</span>
-                    <select style="width:50px;" id="prob" onchange="computePriorityUpdate()">
-                        <option value="0" selected>0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </td>
-                <td colspan="2">
-                    <span>{% trans "Gravity:" %}</span>
-                    <select style="width:50px;" id="grav" onchange="computePriorityUpdate()">
-                        <option value="0" selected>0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th></th>
-                <td colspan="2">{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></td>
-            </tr>
+        <div class="modal-body priority">
+            <p>
+                <span>{% trans "Probability:" %}</span>
+                {{ priority_form.probability }}
+                <span>{% trans "Gravity:" %}</span>
+                {{ priority_form.gravity }}
+            </p>
+            <p>{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></p>
             <br/><br/>
-            <tr>
-                <td colspan="3">
-                    <input class="btn pull-left" type="button" name="submit" value="{% trans "Annuler" %}" onclick="cancelPriorityUpdate()">
-                </td>
-                <td colspan="3">
-                    <input class="btn pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistPriorityUpdate()">
-                </td>
-            </tr>
+            <p>
+                <input class="btn btn-primary pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistPriorityUpdate()">
+                <input class="btn pull-right" type="button" name="submit" value="{% trans "Annuler" %}" onclick="cancelPriorityUpdate()">
+            </p>
         </div>
     </div>
 

@@ -10,7 +10,7 @@ from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, pgettext_lazy as _p
 from django.contrib.auth.models import User
 
 from django.contrib.gis.db import models
@@ -505,6 +505,22 @@ class Report(UserTrackedModel):
         ))
     )
 
+    PROBABILITY_CHOICES = (
+        (0, "-"),
+        (1, _p("probability", "Unlikely")),
+        (2, _p("probability", "Rare")),
+        (3, _p("probability", "Possible")),
+        (4, _p("probability", "Occasionnel"))
+    )
+
+    GRAVITY_CHOICES = (
+        (0, "-"),
+        (1, _p("gravity", "Moderate")),
+        (2, _p("gravity", "Serious")),
+        (3, _p("gravity", "Grave")),
+        (4, _p("gravity", "Major"))
+    )
+
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
     quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
@@ -548,8 +564,8 @@ class Report(UserTrackedModel):
     valid = models.BooleanField(default=False)
 
     private = models.BooleanField(default=False)
-    gravity = models.IntegerField(default=0)
-    probability = models.IntegerField(default=0)
+    gravity = models.IntegerField(default=0, choices=GRAVITY_CHOICES)
+    probability = models.IntegerField(default=0, choices=PROBABILITY_CHOICES)
     #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
     thumbnail     = models.TextField(null=True, blank=True)

@@ -20,7 +20,7 @@ from django_fixmystreet.fixmystreet.forms import (
     ProReportForm, ReportFileForm, ReportCommentForm,
     MarkAsDoneForm, ReportMainCategoryClass
 )
-from django_fixmystreet.backoffice.forms import RefuseForm
+from django_fixmystreet.backoffice.forms import RefuseForm, PriorityForm
 
 
 def new(request):
@@ -238,6 +238,7 @@ def show(request, slug, report_id):
         "entities": entities,
         "refuse_form": RefuseForm(instance=report),
         "mark_as_done_form": MarkAsDoneForm(),
+        "priority_form": PriorityForm(instance=report),
         'activity_list': report.activities.all(),
         'attachment_edit': can_edit_attachment,
         "category_list": ReportMainCategoryClass.objects.all().order_by('name_' + get_language()),

@@ -48,6 +48,12 @@ class RefuseForm(forms.ModelForm):
         return report
 
 
+class PriorityForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ('gravity', 'probability',)
+
+
 class FmsUserForm(forms.ModelForm):
     required_css_class = 'required'
 

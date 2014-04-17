@@ -1954,6 +1954,9 @@ input[type=checkbox].invalid{
 	clear:both;
 }
 */
+.priority select {
+	width: 80px;
+}
 .iconsPopup {
 	margin: 0;
 }
