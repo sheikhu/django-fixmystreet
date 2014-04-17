@@ -1410,8 +1410,8 @@ def report_attachment_notify(sender, instance, **kwargs):
     if cache.get(report.id):
         return
 
-    # Cache for 10 minutes
-    cache.set(report.id, True, 36000)
+    # Set cache
+    cache.set(report.id, True, settings.CACHE_TIMEOUT)
 
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         action_user = instance.created_by

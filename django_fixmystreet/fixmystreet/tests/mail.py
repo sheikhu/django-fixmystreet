@@ -1,6 +1,7 @@
 
 from django.test import TestCase
 from django.test.client import Client
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core import mail
 
@@ -455,6 +456,8 @@ class MailTest(TestCase):
         self.assertIn(self.manager3.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
 
     def testAssignToImpetrantMail(self):
+        settings.CACHE_TIMEOUT = 0;
+
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
@@ -491,12 +494,13 @@ class MailTest(TestCase):
         }, follow=True)
         # One notification should be sent to impetrant to inform him of new comment
         # One notification should be sent to responsible demartment
-        # A cache prevents to send too much mail during publication if already sent
-        self.assertEquals(len(mail.outbox), 6)
+        self.assertEquals(len(mail.outbox), 7)
         self.assertIn(self.impetrant.email, mail.outbox[5].to + mail.outbox[6].to)
         self.assertIn(self.group.email, mail.outbox[5].to + mail.outbox[6].to)
 
     def testAssignToContractorMail(self):
+        settings.CACHE_TIMEOUT = 0;
+
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
@@ -529,8 +533,7 @@ class MailTest(TestCase):
         }, follow=True)
         # One notification should be sent to contractor to inform him of new comment
         # One notification should be sent to responsible department
-        # A cache prevents to send too much mail during publication if already sent
-        self.assertEquals(len(mail.outbox), 5)
+        self.assertEquals(len(mail.outbox), 6)
         self.assertIn(self.contractor.email, mail.outbox[4].to)
         self.assertIn(self.group.email, mail.outbox[5].to)
 
@@ -611,6 +614,8 @@ class MailTest(TestCase):
         self.assertTrue(self.group.email in mail.outbox[4].to)
 
     def testPublishCommentMail(self):
+        settings.CACHE_TIMEOUT = 0;
+
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertIn('report', response.context)
@@ -647,8 +652,7 @@ class MailTest(TestCase):
             follow=True)
         # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
         # 1 to inform about publish (citizen), Manager who did the update does not get an email
-        # A cache prevents to send too much mail during publication if already sent
-        self.assertEquals(len(mail.outbox), 4)
+        self.assertEquals(len(mail.outbox), 5)
         self.assertIn(self.citizen.email, mail.outbox[4].to)
 
         response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {

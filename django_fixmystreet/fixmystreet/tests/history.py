@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test.client import Client
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
@@ -751,6 +752,8 @@ class HistoryTest(TestCase):
         self.assertContains(response, self.calculatePrint(activities[2]))
 
     def testMakeCommentPublic(self):
+        settings.CACHE_TIMEOUT = 0;
+
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
         report_id = response.context['report'].id
@@ -786,7 +789,7 @@ class HistoryTest(TestCase):
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         # A cache prevents to create too much log during publication if already sent
-        self.assertEqual(activities.all().count(), 3)  # still does not work as the message is not shown yet
+        self.assertEqual(activities.all().count(), 4)  # still does not work as the message is not shown yet
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
