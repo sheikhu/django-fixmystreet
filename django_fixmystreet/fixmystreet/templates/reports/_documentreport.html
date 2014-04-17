@@ -6,6 +6,9 @@
         {% block report_form %}
 
             {% if report_form %}
+                {% if report_form.errors %}
+                    <div class="text-error">{{ report_form.errors }}</div>
+                {% endif %}
                 {% for field in report_form.hidden_fields %}
                     {{ field }}
                 {% endfor %}
