@@ -39,7 +39,7 @@
             "model_class":"fixmystreet.report",
             "model_field":"status",
             "label_nl":"Gestionnaire is toegekend",
-            "label_fr":"Gestionnaire est assigné",
+            "label_fr":"Gestionnaire est responsable",
             "code":"4"
         }
     },
