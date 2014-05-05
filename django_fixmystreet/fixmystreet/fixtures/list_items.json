@@ -50,7 +50,7 @@
             "model_class":"fixmystreet.report",
             "model_field":"status",
             "label_nl":"Impetrant is verantwoordelijk",
-            "label_fr":"Impetrant est responsable",
+            "label_fr":"Impetrant est assigné",
             "code":"5"
         }
     },
