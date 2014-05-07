@@ -30,7 +30,7 @@ install: $(BIN_PATH)
 
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
-	$(BIN_PATH)/pip install --no-use-wheel -e .[debug]
+	$(BIN_PATH)/pip install -e .[debug]
 	$(BIN_PATH)/manage.py migrate --all
 	$(MAKE) fixtures
 
