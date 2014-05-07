@@ -194,7 +194,7 @@ def show(request, slug, report_id):
                 report_file.created_by = user
                 report_file.save()
 
-            report.trigger_updates_added(request.fmsuser, files=files, comment=comment, user=request.fmsuser)
+            report.trigger_updates_added(files=files, comment=comment, user=request.fmsuser)
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url_pro())
