@@ -23,7 +23,8 @@ def reporting_list(request, message=""):
         ls = os.listdir(reporting_root)
 
         for path in ls:
-            if re.match(r"\d+_\d+\.\w+", path):
+            xsl_file = re.search(r'xls$', path)
+            if xsl_file or re.match(r"\d+_\d+\.\w+", path):
                 f = {
                     'path': path,
                     'stat': os.stat(os.path.join(reporting_root, path))
@@ -31,8 +32,7 @@ def reporting_list(request, message=""):
                 f['modified_date'] = date.fromtimestamp(int(f['stat'].st_mtime))
 
                 # Check if xls or pdf
-                extension = re.search(r'xls$', path)
-                if extension:
+                if xsl_file:
                     xls = f
                 else:
                     pdf.append(f)
