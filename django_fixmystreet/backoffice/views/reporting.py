@@ -23,18 +23,19 @@ def reporting_list(request, message=""):
         ls = os.listdir(reporting_root)
 
         for path in ls:
-            f = {
-                'path': path,
-                'stat': os.stat(os.path.join(reporting_root, path))
-            }
-            f['modified_date'] = date.fromtimestamp(int(f['stat'].st_mtime))
+            if re.search(r".*/\d+_\d+\.\w+", path):
+                f = {
+                    'path': path,
+                    'stat': os.stat(os.path.join(reporting_root, path))
+                }
+                f['modified_date'] = date.fromtimestamp(int(f['stat'].st_mtime))
 
-            # Check if xls or pdf
-            extension = re.search(r'xls$', path)
-            if extension:
-                xls = f
-            else:
-                pdf.append(f)
+                # Check if xls or pdf
+                extension = re.search(r'xls$', path)
+                if extension:
+                    xls = f
+                else:
+                    pdf.append(f)
     except OSError:
         message = _("Reporting currently unavailable")
 
