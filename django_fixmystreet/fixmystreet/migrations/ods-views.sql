@@ -57,7 +57,8 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
         SELECT count(att_photo.id) FROM fixmystreet_reportattachment att_photo
             JOIN fixmystreet_reportfile photo ON att_photo.id=photo.reportattachment_ptr_id
             WHERE att_photo.report_id=r.id AND file_type=4
-    ) as photos_count
+    ) as photos_count,
+    r.merged_with_id
 FROM fixmystreet_historicalreport r
     RIGHT JOIN fixmystreet_report original_report ON r.id=original_report.id
     LEFT JOIN fixmystreet_fmsuser created_by ON r.created_by_id=created_by.user_ptr_id
