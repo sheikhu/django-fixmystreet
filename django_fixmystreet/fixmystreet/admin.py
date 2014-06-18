@@ -273,7 +273,7 @@ admin.site.register(MailNotificationTemplate, MailNotificationTemplateAdmin)
 admin.site.register(UserOrganisationMembership)
 
 
-class PageAdmin(admin.ModelAdmin):
+class PageAdmin(SimpleHistoryAdmin):
     list_display = ('title', 'content')
 
 admin.site.register(Page, PageAdmin)

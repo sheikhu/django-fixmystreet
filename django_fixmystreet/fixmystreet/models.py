@@ -2152,6 +2152,8 @@ class Page(models.Model):
     slug = models.CharField(max_length=100, verbose_name="Slug")
     content = RichTextField(verbose_name="Content")
 
+    history = HistoricalRecords()
+
     class Meta:
         translate = ('content', 'title', 'slug')
 
