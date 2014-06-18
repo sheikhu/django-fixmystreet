@@ -305,7 +305,7 @@
 
         <script type="text/javascript">
             $(function(){
-                if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 10)|| ($.browser.mozilla && parseInt($.browser.version.split(".")[0]) < 24) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 31) {
+                if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 10) || ($.browser.mozilla && !navigator.userAgent.match(/Trident.*rv\:11\./) && parseInt($.browser.version.split(".")[0]) < 24) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 31) {
                     //$('#browser_support_popup').alert();
                     $('#browser_support_popup').css('display', "block");
                 }
