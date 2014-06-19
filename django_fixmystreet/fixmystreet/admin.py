@@ -75,7 +75,8 @@ class MembershipsInline(admin.TabularInline):
 
 
 class FMSUserAdmin(SimpleHistoryAdmin):
-    list_display = ("get_full_name", "username", "organisation", "leader", "manager", "agent", "applicant", "contractor")
+    list_display = ("id", "get_full_name", "username", "organisation", "leader", "manager", "agent", "applicant", "contractor")
+    list_display_links = list_display[:2]
     inlines = (
         MembershipsInline,
         NotificationsInline,
