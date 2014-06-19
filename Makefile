@@ -19,28 +19,30 @@ DBUSER        = fixmystreet
 $(BIN_PATH):
 	echo $(BIN_PATH)
 	virtualenv --python=python2.7 $(INSTALL_PATH) --system-site-packages
-	curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | $(BIN_PATH)/python
-	wget https://bootstrap.pypa.io/ez_setup.py -O - | $(BIN_PATH)/python
+	curl https://bootstrap.pypa.io/ez_setup.py | $(BIN_PATH)/python
+	curl https://bootstrap.pypa.io/get-pip.py  | $(BIN_PATH)/python
+
+collectstatic:
+	$(BIN_PATH)/manage.py collectstatic --noinput
+
+migrate:
+	$(BIN_PATH)/manage.py sycdb --migrate
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install
-	$(BIN_PATH)/manage.py migrate --all
-	$(BIN_PATH)/manage.py collectstatic --noinput
-	$(MAKE) fixtures
+	$(MAKE) migrate collectstatic
 
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
-	$(BIN_PATH)/pip install -e .[debug]
-	$(BIN_PATH)/manage.py migrate --all
-	$(MAKE) fixtures
+	$(BIN_PATH)/pip install -e .[dev]
+	$(MAKE) migrate
+
+run: $(BIN_PATH)
+	$(BIN_PATH)/manage.py runserver
 
 # generate new migration script
 schemamigration:
-	$(BIN_PATH)/manage.py schemamigration fixmystreet --auto
-
-html-doc:
-	$(BIN_PATH)/sphinx-apidoc -fF -o doc/source/gen $(SRC_ROOT)
-	$(BIN_PATH)/sphinx-build -d doc/build/doctrees doc/source doc/build/html
+	$(BIN_PATH)/manage.py schemamigration $(APP_NAME) --auto
 
 test: $(BIN_PATH)/manage.py
 	$(BIN_PATH)/manage.py test $(APP_NAME)
@@ -56,17 +58,10 @@ jenkins: develop
 
 createdb:
 	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
-	$(BIN_PATH)/manage.py syncdb --migrate
-	$(BIN_PATH)/manage.py loaddata bootstrap list_items applicants staging_data
 
 dropdb:
 	dropdb $(DBNAME) -U $(DBUSER)
 
-# for scratching another db call:
-# $ make DBNAME=my_fms_db_name scratchdb
-scratchdb: dropdb createdb
-	cp -Rf media/photos-sample/ media/photos/
-	$(BIN_PATH)/manage.py loaddata sample
 
 messages:
 	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -l en
@@ -84,5 +79,3 @@ clean:
 initcache:
 	$(BIN_PATH)/manage.py createcachetable fms_cache
 
-fixtures:
-	$(BIN_PATH)/manage.py loaddata pages.json mail_templates.json

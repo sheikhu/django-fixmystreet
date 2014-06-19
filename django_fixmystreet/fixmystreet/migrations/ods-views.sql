@@ -65,6 +65,7 @@ FROM fixmystreet_historicalreport r
     LEFT JOIN fixmystreet_fmsuser citizen ON r.citizen_id=citizen.user_ptr_id
     LEFT JOIN fixmystreet_reportcategory category ON r.secondary_category_id=category.id
     LEFT JOIN fixmystreet_zipcode zipcode ON r.postalcode=zipcode.code
+    WHERE original_report.merged_with_id IS NULL
     ;
 --     LEFT JOIN fixmystreet_historicalreport previous_row ON previous_row.history_id = (
 --         SELECT Max(previous_rows.history_id)

@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-version = '2.4.28.dev0'
+version = '3.0.0.dev0'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -37,7 +37,7 @@ install_requires = [
     'mobileserverstatus'
 ]
 
-debug_require = [
+dev_require = [
     'django-debug-toolbar==0.9.4',
     'ipython',
     'zest.releaser==3.50',
@@ -74,7 +74,7 @@ setup(
         'https://github.com/afuca/mobileserverstatus/archive/1.0.zip#egg=mobileserverstatus',
     ],
     extras_require={
-        'debug': debug_require
+        'dev': dev_require
     },
     entry_points={
         'console_scripts': []
