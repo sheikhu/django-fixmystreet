@@ -7,7 +7,8 @@
             <th>{% trans "All" context "Categories" %}</th>
 
             <!--th>{% trans "All" context "Road type" %}</th-->
-            <th>{% trans "All" context "Sub categories" %}</th>
+            <th>{% trans "All" context "Category path" %}</th>
+            {#<th>{% trans "All" context "Sub categories" %}</th>#}
             <th>{% trans "All" context "Address" %}</th>
             <th>{% trans "All" context "Postal code" %}</th>
 
@@ -37,7 +38,8 @@
             <th>{% trans "Category" %}</th>
 
             <!--th>{% trans "Road type" %}</th-->
-            <th>{% trans "Sub category" %}</th>
+            <th>{% trans "Category path" %}</th>
+            {#<th>{% trans "Sub category" %}</th>#}
             <th>{% trans "Address" %}</th>
             <th>{% trans "Postal code" %}</th>
 
@@ -69,7 +71,8 @@
                 <td class="s{{report.status}}">{{ report.category.name }}</td>
 
                 <!--td class="s{{report.status}}">{{ report.address_regional|yesno:_("regional,communal") }}</td-->
-                <td class="s{{report.status}}">{{ report.secondary_category.name }}</td>
+                <td class="s{{report.status}}">{{ report.get_category_path }}</td>
+                {#<td class="s{{report.status}}">{{ report.secondary_category.name }}</td>#}
                 <td class="s{{report.status}}">{{ report.address }}, {{report.address_number}}</td>
                 <td class="s{{report.status}}">{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
                 <td class="s{{report.status}}">{{ report.get_marker }}</td>

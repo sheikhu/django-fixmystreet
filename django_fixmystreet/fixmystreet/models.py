@@ -584,6 +584,9 @@ class Report(UserTrackedModel):
     false_address = models.TextField(null=True, blank=True)
     source = models.TextField(null=False, blank=False, default="web") # provider of the report (mobile / web / osiris...)
 
+    def get_category_path(self):
+        return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
+
     def get_marker(self):
         #user = get_current_user()
         marker_color = "green"  # default color
