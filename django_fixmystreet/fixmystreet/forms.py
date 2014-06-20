@@ -177,15 +177,27 @@ class CitizenForm(forms.Form):
     quality = forms.ChoiceField(label=_('Quality'), widget=forms.RadioSelect, choices=qualities)
     #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
 
+    def clean(self):
+        cleaned_data = super(CitizenForm, self).clean()
+        for k in cleaned_data:
+            if isinstance(cleaned_data[k], basestring):
+                cleaned_data[k] = cleaned_data[k].strip()
+        return cleaned_data
+
     def save(self):
         try:
             instance = FMSUser.objects.get(email=self.cleaned_data["email"])
+            if instance.last_name.lower() != self.cleaned_data["last_name"].lower() or instance.telephone != self.cleaned_data["telephone"]:
+                instance.last_name = self.cleaned_data["last_name"]
+                instance.telephone = self.cleaned_data["telephone"]
+                instance.clean()
+                instance.save()
         except FMSUser.DoesNotExist:
             data = self.cleaned_data.copy()
             #For unique constraints
             data['username'] = data['email']
+            data['is_active'] = False
             instance = FMSUser.objects.create(**data)
-            instance.is_active = False
 
         return instance
 
