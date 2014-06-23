@@ -442,7 +442,7 @@
 
                {% if not report.is_pro %}
                     - {{ report.citizen.get_quality_display }}
-                    (tel:{{report.get_creator.fmsuser.telephone}})
+                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
                {% endif %}
             </li>
             <!-- ROW PRO 3 -->
@@ -453,7 +453,7 @@
             {{report.responsible_department.name }} -
             {{report.responsible_entity.name}}
             {% if report.responsible_department.phone %}
-                (tel:{{report.responsible_department.phone }})
+                ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
             {% endif %}
             </li>
             <!-- ROW PRO 4 -->
@@ -498,7 +498,7 @@
                                 {{report.responsible_department.name }} -
                                 {{report.responsible_entity.name}}
                                 {% if report.responsible_department.phone %}
-                                    (tel:{{report.responsible_department.phone }})
+                                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
                                 {% endif %}
                             </p>
                             <!-- ROW CIT 3 -->

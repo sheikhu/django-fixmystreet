@@ -52,7 +52,7 @@
                     </a>
                     -
                     {{ attachment.created_by.get_organisation }}
-                    (tel:{{ attachment.created_by.telephone }})
+                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{ attachment.created_by.telephone }})
 
                 {% else %}
 
@@ -128,7 +128,7 @@
                         </a>
                         -
                         {{ attachment.created_by.get_organisation }}
-                        (tel:{{ attachment.created_by.telephone }})
+                        ({% trans 'Phone' context 'telephone abbreviation' %}: {{ attachment.created_by.telephone }})
 
                     {% else %}
 
