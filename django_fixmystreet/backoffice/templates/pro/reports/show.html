@@ -449,12 +449,12 @@ $(document).ready(function() {
                         <!-- ROW PRO 2 -->
                         <li>
                             {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
-                                <strong>Posted by</strong> <a href='mailto:{{mail}}'>{{by}}</a> on {{on}}
+                                <strong>{% trans 'Posted by' %}</strong> <a href='mailto:{{mail}}'>{{by}}</a> {% trans 'on' context 'date' %} {{on}}
                            {% endblocktrans %}
 
                            {% if not report.is_pro %}
                                 - {{ report.citizen.get_quality_display }}
-                                (tel:{{report.get_creator.fmsuser.telephone}})
+                                ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
                            {% endif %}
                         </li>
                         <!-- ROW PRO 3 -->
@@ -465,7 +465,7 @@ $(document).ready(function() {
                         <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> -
                         {{report.responsible_entity.name}}
                         {% if report.responsible_department.phone %}
-                            (tel:{{report.responsible_department.phone }})
+                            ({% trans 'Phone' context 'telephone abbreviation' %}:{{report.responsible_department.phone }})
                         {% endif %}
                         </li>
                         <!-- ROW PRO 4 -->
@@ -473,7 +473,7 @@ $(document).ready(function() {
                             <strong>{% trans "Status:" %}</strong>
                             {{ report.get_status_display }}
                             {% if report.last_history_status_event %}
-                                {% trans 'on' %}
+                                {% trans 'on' context 'date' %}
                                 {{report.last_history_status_event.event_at|date:"d/m/Y"}}
                             {% endif %}
 
@@ -732,7 +732,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div id="map" class="show_report_map">
-            <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+            <div id="copyright-urbis">{% trans 'Realized by means of Brussels UrbIS' %}®©</div>
             <div class="map-button-section">
                 <div id="btn-toggle-map">
                     <a href="#" class="pulldown-map"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a>
