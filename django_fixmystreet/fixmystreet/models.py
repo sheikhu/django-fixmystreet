@@ -1167,7 +1167,7 @@ def report_notify(sender, instance, **kwargs):
                             recipient_mail=report.contractor.email,
                             related=report,
                             reply_to=report.responsible_department.email
-                        ).save(old_responsible=report.responsible_department)
+                        ).save(old_responsible=report.__former['responsible_department'])
 
                         if report.contractor.applicant:
                             for subscription in report.subscriptions.all():
@@ -1177,7 +1177,7 @@ def report_notify(sender, instance, **kwargs):
                                         recipient=subscription.subscriber,
                                         related=report,
                                         reply_to=report.responsible_department.email,
-                                    ).save(old_responsible=report.responsible_department)
+                                    ).save(old_responsible=report.__former['responsible_department'])
 
                     ReportEventLog(
                         report=report,
