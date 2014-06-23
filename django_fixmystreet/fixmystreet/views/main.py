@@ -12,7 +12,7 @@ from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
 
 DEFAULT_TIMEDELTA_CITIZEN = {"days": -30}
-#DEFAULT_TIMEDELTA_PRO = 5 years
+DEFAULT_SQL_INTERVAL_CITIZEN = "30 days"
 REPORTS_MAX_RESULTS = 4
 
 
@@ -32,14 +32,14 @@ def home(request, location=None, error_msg=None):
 
     return render_to_response("home.html", {
         #"report_counts": ReportCountQuery("1 year"),
-        "report_counts": ReportCountQuery("1 month"),
+        "report_counts": ReportCountQuery(interval=DEFAULT_SQL_INTERVAL_CITIZEN, citizen=True),
         'search_error': error_msg,
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
         'location': location,
         'reports_created': qs.filter(status=Report.CREATED)[:REPORTS_MAX_RESULTS],
         'reports_in_progress': qs.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)[:REPORTS_MAX_RESULTS],
-        'reports_closed': qs.filter(status__in=Report.REPORT_STATUS_CLOSED)[:REPORTS_MAX_RESULTS],
+        'reports_closed': qs.filter(status=Report.PROCESSED)[:REPORTS_MAX_RESULTS],
     }, context_instance=RequestContext(request))
 
 
