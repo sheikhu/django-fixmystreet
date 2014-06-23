@@ -8,6 +8,9 @@ from django.utils.translation import ugettext_lazy as _
 from django_fixmystreet.fixmystreet.models import Report
 
 
+DEFAULT_SQL_INTERVAL = "30 days"
+
+
 class ReportCount(object):
 
     def __init__(self, interval):
@@ -99,8 +102,16 @@ class TypesWithUsersOfOrganisation(SqlQuery):
 
 
 class ReportCountQuery(SqlQuery):
+    """
+    Report counts.
 
-    def __init__(self, interval='1 month'):
+    recent_new: Number of incidents in status ``CREATED`` that were created within 30 days.
+    recent_fixed: Number of incidents in status ``PROCESSED`` that were closed within 30 days.
+    recent_updated: Number of incidents in one of the statuses ``REPORT_STATUS_IN_PROGRESS`` that were modified within 30 days.
+    For citizens, restrict to "not private".
+    """
+
+    def __init__(self, interval=DEFAULT_SQL_INTERVAL, citizen=False):
         SqlQuery.__init__(self)
 
         #5 years for pro, 1 month for citizens
@@ -110,15 +121,16 @@ class ReportCountQuery(SqlQuery):
         #interval = '1 day'
 
         progress = ','.join([str(s) for s in Report.REPORT_STATUS_IN_PROGRESS])
+        citizen_filter = "AND NOT private" if citizen else ""
         self.sql = """
             SELECT
-                COUNT( CASE WHEN age(clock_timestamp(), reports.created) < interval '{interval}' THEN 1 ELSE NULL END ) AS recent_new,
-                COUNT( CASE WHEN age(clock_timestamp(), reports.close_date) < interval '{interval}' AND reports.status = {closed} THEN 1 ELSE NULL END ) AS recent_fixed,
-                COUNT( CASE WHEN age(clock_timestamp(), reports.modified) < interval '{interval}' AND reports.status IN ({progress}) AND reports.modified != reports.created THEN 1 ELSE NULL END ) AS recent_updated,
-                COUNT( CASE WHEN age(clock_timestamp(), reports.close_date) > interval '{interval}' AND reports.status = {closed} THEN 1 ELSE NULL END ) AS old_fixed,
-                COUNT( CASE WHEN age(clock_timestamp(), reports.created) > interval '{interval}' AND reports.status IN ({progress}) THEN 1 ELSE NULL END ) AS old_unfixed
-            FROM fixmystreet_report AS reports;
-        """.format(interval=interval, progress=progress, closed=Report.PROCESSED)
+                COUNT( CASE WHEN age(clock_timestamp(), reports.created) < interval '{interval}' AND reports.status = {created} {citizen_filter} THEN 1 ELSE NULL END ) AS recent_new,
+                COUNT( CASE WHEN age(clock_timestamp(), reports.close_date) < interval '{interval}' AND reports.status = {closed} {citizen_filter} THEN 1 ELSE NULL END ) AS recent_fixed,
+                COUNT( CASE WHEN age(clock_timestamp(), reports.modified) < interval '{interval}' AND reports.status IN ({progress}) {citizen_filter} AND reports.modified != reports.created THEN 1 ELSE NULL END ) AS recent_updated,
+                COUNT( CASE WHEN age(clock_timestamp(), reports.close_date) > interval '{interval}' AND reports.status = {closed} {citizen_filter} THEN 1 ELSE NULL END ) AS old_fixed,
+                COUNT( CASE WHEN age(clock_timestamp(), reports.created) > interval '{interval}' AND reports.status IN ({progress}) {citizen_filter} THEN 1 ELSE NULL END ) AS old_unfixed
+            FROM fixmystreet_report AS reports
+        """.format(interval=interval, created=Report.CREATED, closed=Report.PROCESSED, progress=progress, citizen_filter=citizen_filter)
 
     def name(self):
         return self.get_results()[self.index][5]
@@ -142,7 +154,7 @@ class ReportCountQuery(SqlQuery):
 class CityTotals(ReportCountQuery):
 
     def __init__(self, interval, city):
-        ReportCountQuery.__init__(self, interval)
+        super(CityTotals, self).__init__(interval)
         self.sql = self.base_query + """
             FROM fixmystreet_report AS reports
                 LEFT JOIN fixmystreet_ward AS wards ON reports.ward_id = wards.id
@@ -154,7 +166,7 @@ class CityTotals(ReportCountQuery):
 class CityWardsTotals(ReportCountQuery):
 
     def __init__(self, city):
-        super(CityWardsTotals, self).__init__(self, "1 month")
+        super(CityWardsTotals, self).__init__(DEFAULT_SQL_INTERVAL)
         self.url_prefix = "/wards/"
         self.sql = self.base_query + """, wards.name, wards.id
             FROM fixmystreet_ward AS wards
@@ -175,7 +187,7 @@ class CityWardsTotals(ReportCountQuery):
 class AllCityTotals(ReportCountQuery):
 
     def __init__(self):
-        super(AllCityTotals, self).__init__(self, "1 month")
+        super(AllCityTotals, self).__init__(DEFAULT_SQL_INTERVAL)
         self.url_prefix = "/cities/"
         self.sql = self.base_query + """, cities.name, cities.id, province.name
             FROM cities
@@ -208,7 +220,7 @@ class AllCityTotals(ReportCountQuery):
 class ReportCountBetweenDates(SqlQuery):
 
     def __init__(self, start_date, end_date):
-        super(ReportCountBetweenDates, self).__init__(self)
+        super(ReportCountBetweenDates, self).__init__()
         progress = ','.join([str(s) for s in Report.REPORT_STATUS_IN_PROGRESS])
         self.sql = """
             SELECT
@@ -259,6 +271,6 @@ class ReportCountStatsPro(object):
             result[stats[stat]["order"]] = {
                 "stat_value": ReportCountBetweenDates(stats[stat]["start_date"], stats[stat]["end_date"]),
                 "stat_name": self.TRANSLATIONS[stat],
-                "stat_key":stat,
+                "stat_key": stat,
             }
         return result
