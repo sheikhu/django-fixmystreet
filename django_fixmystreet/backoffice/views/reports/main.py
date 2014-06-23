@@ -1,5 +1,4 @@
-from datetime import datetime as dt
-import datetime
+from datetime import datetime, timedelta
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -11,16 +10,15 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
-from django_fixmystreet.fixmystreet.models import (
-    ZipCode, Report, ReportSubscription, ReportFile,
-    OrganisationEntity, FMSUser
-)
+from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
-from django_fixmystreet.fixmystreet.forms import (
-    ProReportForm, ReportFileForm, ReportCommentForm,
-    MarkAsDoneForm, ReportMainCategoryClass
-)
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import RefuseForm, PriorityForm
+
+
+DEFAULT_TIMEDELTA_PRO = {"days": -30}
+DEFAULT_SQL_INTERVAL_PRO = "30 days"
+REPORTS_MAX_RESULTS = 4
 
 
 def new(request):
@@ -93,7 +91,7 @@ def new(request):
 
 def report_prepare_pro(request, location=None, error_msg=None):
     '''Used to redirect the user to welcome without processing home view controller method. This controller method contain a few redirection logic'''
-    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
+    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     statsObject = ReportCountStatsPro()
     stats_result = statsObject.get_result()
     stats = statsObject.get_stats()
@@ -112,27 +110,20 @@ def report_prepare_pro(request, location=None, error_msg=None):
         else:
             popup_reports = popup_reports.closed()
 
-    last_30_days = dt.today() + datetime.timedelta(days=-30)
-    #reports = Report.objects.all().visible().related_fields().order_by('-modified')
-    reports_closed = Report.objects.all().visible().related_fields().filter(
-        status__in=Report.REPORT_STATUS_CLOSED,
-        created__gt=last_30_days).order_by('thumbnail_pro', '-modified')
-    reports_progress = Report.objects.all().visible().related_fields().filter(
-        status__in=Report.REPORT_STATUS_IN_PROGRESS,
-        created__gt=last_30_days).order_by('thumbnail_pro', '-modified')
-    reports_created = Report.objects.all().visible().related_fields().filter(
-        status=Report.CREATED,
-        created__gt=last_30_days).order_by('thumbnail_pro', '-modified')
+    last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_PRO)
+
+    # Queryset common to all reports
+    qs = Report.objects.all().visible().filter(created__gt=last_30_days).related_fields().order_by('thumbnail_pro', '-modified')
 
     return render_to_response("pro/home.html", {
-        "report_counts": ReportCountQuery('1 year'),
+        "report_counts": ReportCountQuery(DEFAULT_SQL_INTERVAL_PRO),
         'search_error': error_msg,
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
         'location': location,
-        'reports_created': reports_created[0:4],
-        'reports_in_progress': reports_progress[0:4],
-        'reports_closed': reports_closed[0:4],
+        'reports_created': qs.filter(status=Report.CREATED)[:REPORTS_MAX_RESULTS],
+        'reports_in_progress': qs.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)[:REPORTS_MAX_RESULTS],
+        'reports_closed': qs.filter(status__in=Report.REPORT_STATUS_CLOSED)[:REPORTS_MAX_RESULTS],
         'stats': stats_result,
         'popup_reports': popup_reports,
     }, context_instance=RequestContext(request))
@@ -183,10 +174,10 @@ def show(request, slug, report_id):
 
             user = FMSUser.objects.get(pk=request.user.id)
             if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                    comment = comment_form.save(commit=False)
-                    comment.created_by = user
-                    comment.report = report
-                    comment.save()
+                comment = comment_form.save(commit=False)
+                comment.created_by = user
+                comment.report = report
+                comment.save()
 
             files = file_formset.save()
 
