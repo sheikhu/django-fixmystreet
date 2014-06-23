@@ -113,7 +113,7 @@ def report_prepare_pro(request, location=None, error_msg=None):
     last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_PRO)
 
     # Queryset common to all reports
-    qs = Report.objects.all().visible().filter(created__gt=last_30_days).related_fields().order_by('thumbnail_pro', '-modified')
+    qs = Report.objects.all().visible().related_fields().order_by('thumbnail_pro', '-modified')
 
     return render_to_response("pro/home.html", {
         "report_counts": ReportCountQuery(interval=DEFAULT_SQL_INTERVAL_PRO),
@@ -121,9 +121,9 @@ def report_prepare_pro(request, location=None, error_msg=None):
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
         'location': location,
-        'reports_created': qs.filter(status=Report.CREATED)[:REPORTS_MAX_RESULTS],
-        'reports_in_progress': qs.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)[:REPORTS_MAX_RESULTS],
-        'reports_closed': qs.filter(status=Report.PROCESSED)[:REPORTS_MAX_RESULTS],
+        'reports_created': qs.filter(status=Report.CREATED, created__gte=last_30_days)[:REPORTS_MAX_RESULTS],
+        'reports_in_progress': qs.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, modified__gte=last_30_days)[:REPORTS_MAX_RESULTS],
+        'reports_closed': qs.filter(status=Report.PROCESSED, close_date__gte=last_30_days)[:REPORTS_MAX_RESULTS],
         'stats': stats_result,
         'popup_reports': popup_reports,
     }, context_instance=RequestContext(request))
