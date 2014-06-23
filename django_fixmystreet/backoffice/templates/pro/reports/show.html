@@ -448,9 +448,7 @@ $(document).ready(function() {
 
                         <!-- ROW PRO 2 -->
                         <li>
-                            {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
-                                <strong>{% trans 'Posted by' %}</strong> <a href='mailto:{{mail}}'>{{by}}</a> {% trans 'on' context 'date' %} {{on}}
-                           {% endblocktrans %}
+                            <strong>{% trans 'Posted by' %}</strong> <a href='mailto:{{ report.get_creator.email }}'>{{ report.get_creator.get_full_name }}</a> {% trans 'on' context 'date' %} {{ report.created|date:"d/m/Y" }}
 
                            {% if not report.is_pro %}
                                 - {{ report.citizen.get_quality_display }}
@@ -465,7 +463,7 @@ $(document).ready(function() {
                         <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> -
                         {{report.responsible_entity.name}}
                         {% if report.responsible_department.phone %}
-                            ({% trans 'Phone' context 'telephone abbreviation' %}:{{report.responsible_department.phone }})
+                            ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
                         {% endif %}
                         </li>
                         <!-- ROW PRO 4 -->
