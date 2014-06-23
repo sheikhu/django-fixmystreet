@@ -219,8 +219,8 @@ $(function(event) {
                             </p>
                             <!-- ROW CIT 3 -->
                             <p>
-                                <th><strong>{% trans "Status:" %}</strong></th>
-                                <td>{{ report.get_public_status_display }}</td>
+                                <strong>{% trans "Status:" %}</strong>
+                                {{ report.get_public_status_display }}
                                 {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
                                     {{report.contractor.name}}
                                 {% endif %}
