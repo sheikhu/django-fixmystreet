@@ -2251,3 +2251,10 @@ content: "*";
     visibility:visible;
   }
 }
+
+.row-fluid .input-file-button {
+	display: none;
+}
+#file-form-template .input-file-button {
+	display: inline-block;
+}
