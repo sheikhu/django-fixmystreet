@@ -68,7 +68,7 @@
             <!--a href="{{ attachment.reportfile.file.url }}"-->
             <a href="{{attachment.reportfile.file.url}}" {% if attachment.reportfile.is_image %}data-lightbox="image-1"{% endif %} title="{{attachment.reportfile.title}}">
                 {% if attachment.reportfile.is_image %}
-                    <img id='imgtoshow' src='{{attachment.reportfile.file.url}}' class="view-image"/>
+                    <img id='imgtoshow' src='{{attachment.reportfile.image.url}}' class="view-image"/>
                 {% elif attachment.reportfile.is_pdf %}
                     <img src="{% static 'images/icon-pdf.png' %}" />
                 {% elif attachment.reportfile.is_word %}
