@@ -1695,7 +1695,8 @@ label strong{
 #file-form-template .thumbnail, #file-form-template textarea{
 	display:none;
 }
-.file-field textarea{
+.file-field textarea,
+.file-field input[type="text"]{
 /*	margin-top: 78px;
 	margin-left: -18px;
 */
