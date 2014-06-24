@@ -684,13 +684,13 @@ class Report(UserTrackedModel):
         return ReportEventLog.objects.filter(report__id=self.id).filter(event_type__in=ReportEventLog.STATUS_EVENTS).latest('event_at')
 
     def active_comments(self):
-        return self.comments().filter(logical_deleted=False).filter(security_level=1)
+        return self.comments().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
     def active_files(self):
-        return self.files().filter(logical_deleted=False).filter(security_level=1)
+        return self.files().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
     def active_attachments(self):
-        return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1)
+        return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
     def is_created(self):
         return self.status == Report.CREATED
