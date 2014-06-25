@@ -20,10 +20,10 @@
             {{ file_formset.empty_form.file_creation_date }}
 
             {# { file_formset.empty_form.file } #}
-            <div  class="file-upload-btn btn">
-                <input type="file" id="id_files-__prefix__-file" name="files-__prefix__-file"/>
-                {% trans 'Add file' %}
-            </div>
+            <label class="input-file-button btn" for="id_files-__prefix__-file">{% trans 'Add file' %}</label>
+            <span class="input-file-button2">
+                <input id="id_files-__prefix__-file" class="input-file-button2" type="file" name="files-__prefix__-file"/>
+            </span>
             <a href="#" style="margin: 15px 0 20px; display: inline-block; vertical-align: top;"
                         data-toggle="popover"
                         data-trigger="hover"

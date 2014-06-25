@@ -166,7 +166,7 @@ class FMSUser(User):
 
     def get_display_name(self):
         if not self.first_name and not self.last_name:
-            return _('An anonymous citizen')
+            return _('A citizen')
         else:
             return self.get_full_name()
 
@@ -684,13 +684,13 @@ class Report(UserTrackedModel):
         return ReportEventLog.objects.filter(report__id=self.id).filter(event_type__in=ReportEventLog.STATUS_EVENTS).latest('event_at')
 
     def active_comments(self):
-        return self.comments().filter(logical_deleted=False).filter(security_level=1)
+        return self.comments().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
     def active_files(self):
-        return self.files().filter(logical_deleted=False).filter(security_level=1)
+        return self.files().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
     def active_attachments(self):
-        return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1)
+        return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
     def is_created(self):
         return self.status == Report.CREATED
@@ -1167,7 +1167,7 @@ def report_notify(sender, instance, **kwargs):
                             recipient_mail=report.contractor.email,
                             related=report,
                             reply_to=report.responsible_department.email
-                        ).save(old_responsible=report.responsible_department)
+                        ).save(old_responsible=report.__former['responsible_department'])
 
                         if report.contractor.applicant:
                             for subscription in report.subscriptions.all():
@@ -1177,7 +1177,7 @@ def report_notify(sender, instance, **kwargs):
                                         recipient=subscription.subscriber,
                                         related=report,
                                         reply_to=report.responsible_department.email,
-                                    ).save(old_responsible=report.responsible_department)
+                                    ).save(old_responsible=report.__former['responsible_department'])
 
                     ReportEventLog(
                         report=report,

@@ -224,9 +224,9 @@
                                 </p>
                             {% endif %}
                         </div>
-                        <!--div class="modal-footer">
+                        <div class="modal-footer">
                             <input id="messageButton" type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
-                        </div-->
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
@@ -241,7 +241,7 @@
                     {% block content_third %}{% endblock %}
 
                     <div class="span4">
-                        <a href="http://www.bruxelles.irisnet.be/" target="_blank"><img src="{% static 'images/'|add:LANGUAGE_CODE|add:'/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png' %}"></a>
+                        <a href="{% if LANGUAGE_CODE == 'nl' %}http://www.brussel.irisnet.be/{% else %}http://www.bruxelles.irisnet.be/{% endif %}" target="_blank"><img src="{% static 'images/'|add:LANGUAGE_CODE|add:'/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png' %}"></a>
                     </div>
                     <div class="span4 a-propos">
                         <!--a href="{% url 'terms_of_use' %}" target="_blank">{% trans "Terms of Use" %}</a-->
@@ -249,7 +249,7 @@
                         <p class="muted">{{ APP_VERSION }}</p>
                     </div>
                     <div class="span4 cirb-cibg">
-                        <a href="http://www.cirb.irisnet.be" target="_blank"><img src="{% static 'images/created-and-hosted-by-cirb-cibg.png' %}"/></a>
+                        <a href="{% if LANGUAGE_CODE == 'nl' %}http://www.cibg.irisnet.be/{% else %}http://www.cirb.irisnet.be/{% endif %}" target="_blank"><img src="{% static 'images/created-and-hosted-by-cirb-cibg.png' %}"/></a>
                     </div>
                 </div>
             </footer>

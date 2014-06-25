@@ -47,6 +47,7 @@ def new(request):
                 citizen = citizen_form.save()
 
                 report.citizen = citizen
+                report.quality = citizen_form.cleaned_data["quality"]
                 report.save()
 
                 if report_form.cleaned_data['subscription']:

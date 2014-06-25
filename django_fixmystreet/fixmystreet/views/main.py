@@ -1,64 +1,66 @@
-from datetime import datetime as dt
-import datetime
+from datetime import datetime, timedelta
 
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from django.template import RequestContext
-from django.utils.translation import get_language, activate
 from django.core.urlresolvers import reverse
 from django.http import Http404
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.utils.translation import get_language, activate
 
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, Page
 from django_fixmystreet.fixmystreet.stats import ReportCountQuery
 
 
+DEFAULT_TIMEDELTA_CITIZEN = {"days": -30}
+DEFAULT_SQL_INTERVAL_CITIZEN = "30 days"
+REPORTS_MAX_RESULTS = 4
+
+
 def home(request, location=None, error_msg=None):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('home_pro'))
+        return HttpResponseRedirect(reverse("home_pro"))
 
-    if 'q' in request.GET:
+    if "q" in request.GET:
         location = request.GET["q"]
-    last_30_days = dt.today() + datetime.timedelta(days=-30)
+    last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_CITIZEN)
 
-    #wards = Ward.objects.all().order_by('name')
-    zipcodes = ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
+    #wards = Ward.objects.all().order_by("name")
+    zipcodes = ZipCode.objects.filter(hide=False).order_by("name_" + get_language())
 
-    # Get report closed with photos only
-    reports_closed = Report.objects.filter(
-        status__in=Report.REPORT_STATUS_CLOSED,
-        private=False,
-        created__gt=last_30_days).order_by('thumbnail', '-modified')[0:4]
+    # Queryset common to all reports
+    qs = Report.objects.filter(private=False).order_by("thumbnail", "-modified")
 
     return render_to_response("home.html", {
-        #"report_counts": ReportCountQuery('1 year'),
-        "report_counts": ReportCountQuery('1 month'),
+        #"report_counts": ReportCountQuery("1 year"),
+        "report_counts": ReportCountQuery(interval=DEFAULT_SQL_INTERVAL_CITIZEN, citizen=True),
         'search_error': error_msg,
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
         'location': location,
-        'reports_created': Report.objects.filter(status=Report.CREATED, private=False, created__gt=last_30_days).order_by('thumbnail', '-modified')[0:4],
-        'reports_in_progress': Report.objects.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, private=False, created__gt=last_30_days).order_by('thumbnail', '-modified')[0:4],
-        'reports_closed': reports_closed,
+        'reports_created': qs.filter(status=Report.CREATED, created__gte=last_30_days)[:REPORTS_MAX_RESULTS],
+        'reports_in_progress': qs.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, modified__gte=last_30_days)[:REPORTS_MAX_RESULTS],
+        'reports_closed': qs.filter(status=Report.PROCESSED, close_date__gte=last_30_days)[:REPORTS_MAX_RESULTS],
     }, context_instance=RequestContext(request))
 
 
 def page(request):
     try:
-        page = Page.objects.get(**{'slug_'+get_language(): request.path[3:].strip('/')})
+        params = {"slug_" + get_language(): request.path[3:].strip("/")}
+        p = Page.objects.get(**params)
     except Page.DoesNotExist:
         raise Http404()
     return render_to_response("page.html", {
-        'page': page
+        "page": p
     }, context_instance=RequestContext(request))
 
 
 def update_current_language(request):
-    activate(request.REQUEST.get('language'))
+    activate(request.REQUEST.get("language"))
 
     if request.user.is_authenticated():
-        fmsUser = request.user.fmsuser
-        fmsUser.last_used_language = request.REQUEST.get('language').upper()
-        fmsUser.save()
-        return HttpResponseRedirect(reverse('home_pro'))
+        fms_user = request.user.fmsuser
+        fms_user.last_used_language = request.REQUEST.get("language").upper()
+        fms_user.save()
+        return HttpResponseRedirect(reverse("home_pro"))
 
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse("home"))
