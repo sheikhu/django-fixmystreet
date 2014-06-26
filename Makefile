@@ -26,7 +26,7 @@ collectstatic:
 	$(BIN_PATH)/manage.py collectstatic --noinput
 
 migrate:
-	$(BIN_PATH)/manage.py sycdb --migrate
+	$(BIN_PATH)/manage.py syncdb --migrate
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install
