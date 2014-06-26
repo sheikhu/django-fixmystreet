@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# afuca <afuca@cirb.irisnet.be>, 2014
 # Jonathan Sanchez <jsanchezpando@cirb.irisnet.be>, 2014
 # lafif <lafif@cirb.irisnet.be>, 2014
 # tdesany2 <transifex@desany.eu>, 2014
@@ -10,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-26 10:41+0200\n"
-"PO-Revision-Date: 2014-06-26 08:42+0000\n"
+"POT-Creation-Date: 2014-06-26 10:57+0200\n"
+"PO-Revision-Date: 2014-06-26 08:57+0000\n"
 "Last-Translator: afuca <afuca@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1824,63 +1825,63 @@ msgstr ""
 
 #: fixmystreet/utils.py:225
 msgid "acknowledge-creation"
-msgstr ""
+msgstr "gemeld via  Fix My Street"
 
 #: fixmystreet/utils.py:227
 msgid "announcement-affectation"
-msgstr ""
+msgstr "in behandeling op Fix My Street is veranderd van beheerder"
 
 #: fixmystreet/utils.py:228
 msgid "announcement-processed"
-msgstr ""
+msgstr "afgesloten op  Fix My Street"
 
 #: fixmystreet/utils.py:230
 msgid "informations_published"
-msgstr ""
+msgstr "info werd gepubliceerd op Fix My Street"
 
 #: fixmystreet/utils.py:232
 msgid "mail-pdf"
-msgstr ""
+msgstr "{user} stuurt u deze PDF"
 
 #: fixmystreet/utils.py:233
 msgid "mark-as-done"
-msgstr ""
+msgstr "gemeld als opgelost op Fix My Street"
 
 #: fixmystreet/utils.py:235
 msgid "notify-affectation"
-msgstr ""
+msgstr "werd aan u toegewezen voor behandeling op Fix My Street"
 
 #: fixmystreet/utils.py:236
 msgid "notify-became-private"
-msgstr ""
+msgstr "is prive geworden op Fix My Street"
 
 #: fixmystreet/utils.py:237
 msgid "notify-creation"
-msgstr ""
+msgstr "gemeld via Fix My Street"
 
 #: fixmystreet/utils.py:238
 msgid "notify-merged"
-msgstr ""
+msgstr "is samengevoegd op Fix My Street"
 
 #: fixmystreet/utils.py:239
 msgid "notify-planned"
-msgstr ""
+msgstr "werd gepland op Fix My Street"
 
 #: fixmystreet/utils.py:240
 msgid "notify-refused"
-msgstr ""
+msgstr "niet goedgekeurd door Fix My Street"
 
 #: fixmystreet/utils.py:241
 msgid "notify-subscription"
-msgstr ""
+msgstr "abonnement op Fix My Street"
 
 #: fixmystreet/utils.py:242
 msgid "notify-updates"
-msgstr ""
+msgstr "werd geactualiseerd op Fix My Street"
 
 #: fixmystreet/utils.py:243
 msgid "notify-validation"
-msgstr ""
+msgstr "goedgekeurd door Fix My Street"
 
 #: fixmystreet/templates/_page_header.html:14
 #: fixmystreet/templates/emails/notifications/html.bak/_report_overview.html:6
