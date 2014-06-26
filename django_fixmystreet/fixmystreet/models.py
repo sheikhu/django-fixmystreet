@@ -1802,10 +1802,10 @@ class ReportNotification(models.Model):
 
             recipients = (self.recipient_mail,)
 
-            template = MailNotificationTemplate.objects.get(name=self.content_template)
+            template_mail = self.content_template
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with)
+            subject, html, text = transform_notification_template(template_mail, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with)
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": self.reply_to})

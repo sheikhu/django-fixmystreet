@@ -1,0 +1,44 @@
+{% extends 'emails/notifications/base.html' %}
+
+{% block content_mail_fr %}
+<p>Un incident a été mis à jour par {{updater}}</p>
+<hr>
+
+<h2>{{comment}}</h2>
+
+{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}
+
+<p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
+
+<ul>
+    <li>{{display_url}}</li>
+</ul>
+
+<p>Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :</p>
+
+<ul>
+    <li>{{unsubscribe_url}}</li>
+</ul>
+{% endblock %}
+
+
+{% block content_mail_nl %}
+<p>Een probleem werd geactualiseerd door {{updater}}</p>
+<hr>
+
+<h2>{{comment}}</h2>
+
+{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}
+
+<p>U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:</p>
+
+<ul>
+    <li>{{display_url}}</li>
+</ul>
+
+<p>Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:</p>
+
+<ul>
+    <li>{{unsubscribe_url}}</li>
+</ul>
+{% endblock %}

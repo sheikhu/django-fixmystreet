@@ -1,0 +1,19 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+- Incident n° {{report.id}}
+- Signalé le {{created_at}}
+- Localisation {{address}}
+- Catégorie {{category}}
+- Status {{status}}
+- Traité par {{responsible}}
+{% endblock %}
+
+{% block content_mail_nl %}
+- Incident n° {{report.id}}
+- Gemeld op {{created_at}}
+- Plaats {{address}}
+- Categorie {{category}}
+- Status {{status}}
+- Beheerder {{responsible}}
+{% endblock %}

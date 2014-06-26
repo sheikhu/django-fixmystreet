@@ -16,7 +16,7 @@ from django.conf import settings
 from django.template.defaultfilters import slugify, urlize, date as date_filter
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from django.utils.translation import activate, deactivate
+from django.utils.translation import activate, deactivate, get_language
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import fromstr
@@ -25,7 +25,6 @@ from django.http import Http404
 from south.modelsinspector import add_introspection_rules
 import transmeta
 from stdimage import StdImageField
-from markdown import markdown
 
 
 class JsonHttpResponse(HttpResponse):
@@ -221,10 +220,11 @@ def transform_notification_user_display(display_pro, to_show):
             return _("a citizen")
 
 
-def transform_notification_template(template, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
-    from django_fixmystreet.fixmystreet.models import MailNotificationTemplate
+def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
+    # Define site url
     SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
 
+    # Prepare data for mail
     display_pro = not user  # send to department
     display_pro = display_pro or user.is_pro()
     data = {
@@ -233,71 +233,62 @@ def transform_notification_template(template, report, user, old_responsible=None
     title = list()
     content = list()
 
-    overview_tmp = MailNotificationTemplate.objects.get(name='report-overview')
-    opening_tmp = MailNotificationTemplate.objects.get(name='opening')
-    closing_tmp = MailNotificationTemplate.objects.get(name='closing')
+    data["report"] = report
+    data["created_at"] = date_filter(report.created)
+    data["created_by"] = transform_notification_user_display(display_pro, report.citizen or report.created_by)
+    data["responsible"] = transform_notification_user_display(display_pro, report.responsible_department)
+    data["address"] = u"{street}, {num} ({code} {commune})".format(street=report.address, num=report.address_number, code=report.postalcode, commune=report.get_address_commune_name())
+    data["category"] = report.display_category()
 
-    from django.utils.translation import get_language
+    if display_pro:
+        data["status"] = report.get_status_display()
+    else:
+        data["status"] = report.get_public_status_display()
+
+    if display_pro:
+        data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
+        data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
+    else:
+        data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url())
+        data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url())
+
+    if display_pro:
+        data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
+    else:
+        data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
+
+    if template_mail == "mark_as_done":
+        data["done_motivation"] = report.mark_as_done_motivation
+        data["resolver"] = transform_notification_user_display(display_pro, report.mark_as_done_user)
+
+    if old_responsible:
+        data["old_responsible"] = transform_notification_user_display(display_pro, old_responsible)
+
+    if comment is not None:  # can be ''
+        data["comment"] = comment
+        data["updater"] = transform_notification_user_display(display_pro, updater)
+
+    if date_planned:
+        data["date_planned"] = date_planned
+
+    if merged_with:
+        data["merged_with"] = merged_with.id
+
+    # Subject mail for each languages
     trickystuff = get_language()
     for l in settings.LANGUAGES:
         activate(l[0])
-
-        data["report"] = report
-        data["created_at"] = date_filter(report.created)
-        data["created_by"] = transform_notification_user_display(display_pro, report.citizen or report.created_by)
-        data["responsible"] = transform_notification_user_display(display_pro, report.responsible_department)
-        data["address"] = u"{street}, {num} ({code} {commune})".format(street=report.address, num=report.address_number, code=report.postalcode, commune=report.get_address_commune_name())
-        data["category"] = report.display_category()
-
-        if display_pro:
-            data["status"] = report.get_status_display()
-        else:
-            data["status"] = report.get_public_status_display()
-
-        data["report_overview"] = overview_tmp.content.format(**data)
-        opening = opening_tmp.content.format(**data)
-        closing = closing_tmp.content.format(**data)
-
-        if display_pro:
-            data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
-            data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
-        else:
-            data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url())
-            data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url())
-
-        if display_pro:
-            data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
-        else:
-            data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
-
-        if template.name == "mark-as-done":
-            data["done_motivation"] = report.mark_as_done_motivation
-            data["resolver"] = transform_notification_user_display(display_pro, report.mark_as_done_user)
-
-        if old_responsible:
-            data["old_responsible"] = transform_notification_user_display(display_pro, old_responsible)
-
-        if comment is not None:  # can be ''
-            data["comment"] = comment
-            data["updater"] = transform_notification_user_display(display_pro, updater)
-
-        if date_planned:
-            data["date_planned"] = date_planned
-
-        if merged_with:
-            data["merged_with"] = merged_with.id
-        title.append(template.title.format(**data))
-        content.append(u"{opening}\n\n{content}\n\n{closing}\n".format(content=template.content.format(**data), opening=opening, closing=closing))
-
+        title.append(_(template_mail))
         deactivate()
-
     activate(trickystuff)
 
     subject = u"incident #{0} - {1}".format(report.id, " / ".join(title))
-    text = "\n\n---------------------------\n\n".join(content)
-    html = markdown(urlize(text))
 
-    return (subject, html, text)
+    # Content mail
+    content_html = render_to_string("emails/notifications/html/%s.html" % template_mail, data)
+    content_txt  = render_to_string("emails/notifications/txt/%s.txt" % template_mail, data)
+
+    return (subject, content_html, content_txt)
 
 
 def dict_to_point(data):

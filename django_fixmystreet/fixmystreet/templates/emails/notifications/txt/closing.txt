@@ -1,0 +1,9 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+*Disclaimer : Fix My Street a pour objectif de faciliter la communication entre les citoyens et les différents gestionnaires de l’espace public. Les informations fournies par les citoyens doivent être considérées comme des documents de travail qui aideront les autorités compétentes à organiser leur action. En aucun cas, cela n’engage les communes bruxelloises, Bruxelles Mobilité ou les autres gestionnaires  de l’espace public  à intervenir dans un délai donné. Pour toute information complémentaire, nous vous invitons à lire les [Conditions Générales](http://fixmystreet.irisnet.be/fr/conditions-d-utilisation/).*
+{% endblock %}
+
+{% block content_mail_nl %}
+*Disclaimer: Fix My Street heeft tot doel de communicatie tussen de bevolking en de verschillende beheerders van de openbare ruimte te vereenvoudigen. De door de bevolking bezorgde informatie dient beschouwd te worden als een werkdocument om de bevoegde overheden te helpen hun actie te organiseren. In geen geval verbindt het de Brusselse gemeenten, Mobiel Brussel of andere beheerders van de openbare ruimte om in te grijpen binnen een gegeven tijdspanne. Voor alle bijkomende informatie kunt u de [Algemene voorwaarden](http://fixmystreet.irisnet.be/nl/terms-of-use/) lezen.*
+{% endblock %}

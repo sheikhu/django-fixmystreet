@@ -12,7 +12,7 @@ from django.template import RequestContext
 
 from django_fixmystreet.fixmystreet.models import (
     OrganisationEntity, ReportCategory,
-    Report, ReportMainCategoryClass, MailNotificationTemplate)
+    Report, ReportMainCategoryClass)
 from django_fixmystreet.fixmystreet.utils import get_current_user, transform_notification_template
 from django_fixmystreet.fixmystreet.utils import generate_pdf
 
@@ -80,9 +80,7 @@ def send_pdf(request, report_id):
         'BACKOFFICE': pro_version
     }, context_instance=RequestContext(request))
 
-    template = MailNotificationTemplate.objects.get(name="mail-pdf")
-
-    subject, html, text = transform_notification_template(template, report, user, comment=comments)
+    subject, html, text = transform_notification_template("mail-pdf", report, user, comment=comments)
     recepients = re.compile("[\\s,;]+").split(recipients)
 
     for recepient in recepients:

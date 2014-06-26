@@ -1,0 +1,13 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+{{user}} a envoyé ce PDF avec le message suivant:
+
+ {{comment}}
+{% endblock %}
+
+{% block content_mail_nl %}
+{{user}} heeft je deze PDF gestuurd met volgend bericht:
+
+ {{comment}}
+{% endblock %}
