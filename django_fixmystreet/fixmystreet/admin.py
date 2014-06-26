@@ -14,15 +14,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.template.response import TemplateResponse
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 
-from markdown import markdown
 from simple_history.admin import SimpleHistoryAdmin
 
 from django_fixmystreet.fixmystreet.models import (
-        ReportCategory, Report, FMSUser, ReportMainCategoryClass,
-        ReportAttachment, Page, OrganisationEntity, ReportNotification, ReportEventLog,
-        UserOrganisationMembership)
+    ReportCategory, Report, FMSUser, ReportMainCategoryClass,
+    ReportAttachment, Page, OrganisationEntity, ReportNotification, ReportEventLog,
+    UserOrganisationMembership
+)
 from django_fixmystreet.fixmystreet.utils import export_as_csv_action
 
 admin.site.unregister(User)
@@ -143,14 +143,24 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     def get_urls(self):
         urls = super(FMSUserAdmin, self).get_urls()
 
-        my_urls = patterns(
+        urls += patterns(
             '',
             (
                 r'^(\d+)/reset-password/$',
                 self.admin_site.admin_view(self.reset_password)
             ),
         )
-        return my_urls + urls
+        user_mock_urls = []
+        for user_url in urls:
+            if user_url.name and 'fixmystreet_fmsuser' in user_url.name:
+                user_mock_urls.append(url(
+                    user_url._regex,
+                    user_url.callback,
+                    name=user_url.name.replace('fixmystreet_fmsuser', 'auth_user')
+                ))
+        urls += patterns('', *user_mock_urls)
+
+        return urls
 
     @method_decorator(sensitive_post_parameters())
     def reset_password(self, request, id, form_url=''):
@@ -224,10 +234,20 @@ class ReportEventsInline(admin.TabularInline):
 
 
 class ReportAdmin(SimpleHistoryAdmin):
-    list_display = ('id', 'responsible_entity', 'status', 'created', 'modified', 'category', 'secondary_category')
-    ordering = ['modified']
-    #exclude = ['photo']
-    readonly_fields = ('created', 'modified', 'created_by', 'modified_by')
+    list_display = (
+        'id', 'responsible_entity', 'status', 'created', 'modified',
+        'category', 'secondary_category'
+    )
+    ordering = ('modified', )
+    exclude = (
+        # deprecated
+        'responsible_manager', 'valid', 'photo',
+        'responsible_manager_validated'
+    )
+    readonly_fields = (
+        'created', 'modified', 'created_by', 'modified_by', 'citizen',
+        'merged_with'
+    )
     inlines = (
         AttachmentsInline,
         ReportEventsInline,

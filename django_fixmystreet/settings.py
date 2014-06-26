@@ -148,6 +148,12 @@ INSTALLED_APPS = (
     'piston',
 )
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader'
+)
+
 # AUTHENTICATION_BACKENDS = (
 #     'django.contrib.auth.backends.ModelBackend',
 # )
@@ -168,8 +174,9 @@ else:
         INSTALLED_APPS += ('django_jenkins',)
         PROJECT_APPS = ('fixmystreet',)
         JENKINS_TASKS = (
-            'django_jenkins.tasks.run_flake8',
+            # 'django_jenkins.tasks.run_flake8',
             'django_jenkins.tasks.with_coverage',
+            'django_jenkins.tasks.django_tests',
         )
     except ImportError, e:
         print "WARNING: running `make install` in local?"
