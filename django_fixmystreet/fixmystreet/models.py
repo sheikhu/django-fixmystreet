@@ -87,7 +87,7 @@ class FMSUser(User):
         CONTRACTOR,
     )
 
-    #List of qualities
+    # List of qualities
     RESIDENT = 1
     TRADE = 2
     SYNDICATE = 3
@@ -106,7 +106,7 @@ class FMSUser(User):
 
     telephone = models.CharField(max_length=20, null=True)
     last_used_language = models.CharField(max_length=10, null=True, default="FR")
-    #hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
+    # hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
 
     agent = models.BooleanField(default=False)
@@ -153,7 +153,11 @@ class FMSUser(User):
         super(FMSUser, self).save(*args, **kwargs)
 
     def display_category(self):
-        return self.secondary_category.secondary_category_class.name+" / "+self.category.name+" : "+self.secondary_category.name
+        return (
+            self.secondary_category.secondary_category_class.name +
+            " / " + self.category.name +
+            " : " + self.secondary_category.name
+        )
 
     def get_ticket_number(self):
         '''Return the report ticket as a usable string'''
@@ -162,7 +166,7 @@ class FMSUser(User):
 
     def get_ticket_as_string(self):
         '''Return the report ticket as a displayable component'''
-        return "#"+self.get_ticket_number()
+        return "#" + self.get_ticket_number()
 
     def get_display_name(self):
         if not self.first_name and not self.last_name:
@@ -364,7 +368,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
     def visible(self):
-        limit_date = datetime.date.today()-datetime.timedelta(30)
+        limit_date = datetime.date.today() - datetime.timedelta(30)
         return self.filter(merged_with__isnull=True) \
             .exclude(status=Report.PROCESSED, fixed_at__lt=limit_date) \
             .exclude(status__in=Report.REPORT_STATUS_OFF)
@@ -566,11 +570,11 @@ class Report(UserTrackedModel):
     private = models.BooleanField(default=False)
     gravity = models.IntegerField(default=0, choices=GRAVITY_CHOICES)
     probability = models.IntegerField(default=0, choices=PROBABILITY_CHOICES)
-    #photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
+    # photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
-    thumbnail     = models.TextField(null=True, blank=True)
+    thumbnail = models.TextField(null=True, blank=True)
     thumbnail_pro = models.TextField(null=True, blank=True)
-    #photo = models.ForeignKey(ReportFile, related_name='thumbnail_report', null=True, blank=True)
+    # photo = models.ForeignKey(ReportFile, related_name='thumbnail_report', null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
     terms_of_use_validated = models.BooleanField(default=False)
@@ -582,13 +586,14 @@ class Report(UserTrackedModel):
     history = HistoricalRecords()
 
     false_address = models.TextField(null=True, blank=True)
-    source = models.TextField(null=False, blank=False, default="web") # provider of the report (mobile / web / osiris...)
+    # provider of the report (mobile / web / osiris...)
+    source = models.TextField(null=False, blank=False, default="web")
 
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 
     def get_marker(self):
-        #user = get_current_user()
+        # user = get_current_user()
         marker_color = "green"  # default color
 
         if self.is_in_progress():
@@ -598,7 +603,7 @@ class Report(UserTrackedModel):
         elif self.is_refused() or self.is_temporary():
             marker_color = "gray"
 
-        return "images/marker-"+marker_color+"-xxs.png"
+        return "images/marker-" + marker_color + "-xxs.png"
 
     def is_contractor_or_applicant_assigned(self):
         return self.status == Report.APPLICANT_RESPONSIBLE or self.status == Report.CONTRACTOR_ASSIGNED
@@ -635,13 +640,13 @@ class Report(UserTrackedModel):
         '''Return the report ticket as a usable string'''
         report_ticket_id = str(self.id)
         if (report_ticket_id.__len__() <= 6):
-            for i in range(6-(report_ticket_id.__len__())):
+            for i in range(6 - (report_ticket_id.__len__())):
                 report_ticket_id = "0" + report_ticket_id
         return report_ticket_id
 
     def get_ticket_as_string(self):
         '''Return the report ticket as a displayable component'''
-        return "#"+self.get_ticket_number()
+        return "#" + self.get_ticket_number()
 
     def get_slug(self):
         slug_sec_cat = self.secondary_category.slug
@@ -827,7 +832,7 @@ class Report(UserTrackedModel):
             "responsible_entity": self.responsible_entity.id,
             "contractor": self.contractor,
             "responsible_manager": self.responsible_manager.username,
-            "close_date":  str(self.close_date),
+            "close_date": str(self.close_date),
             "private": self.private,
             "valid": self.valid,
             "thumb": thumbValue
@@ -968,7 +973,7 @@ class Report(UserTrackedModel):
 
     class Meta:
         translate = ('address',)
-        #unique_together = (("point", "citizen"), ("point", "created_by"))
+        # unique_together = (("point", "citizen"), ("point", "created_by"))
 
 
 @receiver(pre_save, sender=Report)
@@ -1001,19 +1006,21 @@ def init_regional_street(sender, instance, **kwargs):
 @receiver(pre_save, sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_entity:
-        #Detect who is the responsible Manager for the given type
-        if (instance.created_by and
-            hasattr(instance.created_by, 'fmsuser') and
-            instance.created_by.fmsuser.organisation and
-            instance.created_by.fmsuser.organisation.is_responsible()):
+        # Detect who is the responsible Manager for the given type
+        if (
+                instance.created_by and
+                hasattr(instance.created_by, 'fmsuser') and
+                instance.created_by.fmsuser.organisation and
+                instance.created_by.fmsuser.organisation.is_responsible()
+        ):
             # assign entity of the creator
             instance.responsible_entity = instance.created_by.fmsuser.organisation
         else:
             instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
 
     if not instance.responsible_department:
-        #Detect who is the responsible Manager for the given type
-        #Search the right responsible for the current organization.
+        # Detect who is the responsible Manager for the given type
+        # Search the right responsible for the current organization.
         departements = instance.responsible_entity.associates.filter(
             type=OrganisationEntity.DEPARTMENT)
         departement = departements.get(
@@ -1036,9 +1043,9 @@ def check_planned(sender, instance, **kwargs):
         if (not dates_exists or date_too_small or date_too_big):
             instance.planned = old_report.planned
             instance.date_planned = old_report.date_planned
-    #~ else:
-        #~ instance.planned = False
-        #~ instance.date_planned = None
+    # else:
+        # instance.planned = False
+        # instance.date_planned = None
 
 
 @receiver(post_save, sender=Report)
@@ -1080,7 +1087,7 @@ def report_notify(sender, instance, **kwargs):
                 user=event_log_user,
             ).save()
         ###
-        #Status changed
+        # Status changed
         if report.__former['status'] != report.status:
 
             ### REFUSED
@@ -1156,12 +1163,12 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
             ###
 
-            #Contractor changed
+            # Contractor changed
             if report.__former['contractor'] != report.contractor:
 
                 if report.contractor:
                     if report.contractor.email:
-                        #Applicant responsible
+                        # Applicant responsible
                         ReportNotification(
                             content_template='notify-affectation',
                             recipient_mail=report.contractor.email,
@@ -1279,7 +1286,7 @@ def report_notify(sender, instance, **kwargs):
 
         # Switched to private
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
-            #inform all subscribers
+            # inform all subscribers
             for subscription in report.subscriptions.all():
                 if not subscription.subscriber.is_pro():
                         ReportNotification(
@@ -1346,22 +1353,22 @@ class ReportAttachment(UserTrackedModel):
 
     publish_update = True
 
-    #is_validated = models.BooleanField(default=False)
-    #is_visible = models.BooleanField(default=False)
+    # is_validated = models.BooleanField(default=False)
+    # is_visible = models.BooleanField(default=False)
 
-    #def is_deleted(self):
-    #    '''Returns true if the attachment is deleted'''
-    #    return self.logical_deleted
+    # def is_deleted(self):
+    #     '''Returns true if the attachment is deleted'''
+    #     return self.logical_deleted
 
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
-        #return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        # return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
         return (self.security_level != ReportAttachment.CONFIDENTIAL and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
 
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''
-        #return self.is_validated and self.is_visible
+        # return self.is_validated and self.is_visible
         return self.security_level == ReportAttachment.PUBLIC
 
     def is_public(self):
@@ -1393,7 +1400,7 @@ class ReportAttachment(UserTrackedModel):
 
         return _('ANONYMOUS')
 
-    #needed to make sure that no mail is sent when a complete report is published only when individual reports are updated
+    # needed to make sure that no mail is sent when a complete report is published only when individual reports are updated
     def save(self, *args, **kwargs):
         if 'publish_report' in kwargs:
             del kwargs['publish_report']
@@ -1421,6 +1428,7 @@ def init_report_overview(sender, instance, **kwargs):
 
     instance.report.save()
 
+
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_notify(sender, instance, **kwargs):
     report = instance.report
@@ -1435,7 +1443,7 @@ def report_attachment_notify(sender, instance, **kwargs):
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
         action_user = instance.created_by
 
-        #now create notification
+        # now create notification
         ReportEventLog(
             report=report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
@@ -1450,7 +1458,7 @@ def report_attachment_notify(sender, instance, **kwargs):
                 reply_to=report.responsible_department.email,
             ).save()
 
-    #if report is assigned to impetrant or executeur de travaux also inform them
+    # if report is assigned to impetrant or executeur de travaux also inform them
     if kwargs['created'] and report.contractor:
         # for membership in report.contractor.memberships.all():
         ReportNotification(
@@ -1481,19 +1489,19 @@ class ReportFile(ReportAttachment):
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
-    #def _save_FIELD_file(self, field, filename, raw_contents, save=True):
-    #   import pdb
-    #   pdb.set_trace()
-    #   original_upload_to = field.upload_to
-    #   field.upload_to = '%s/%s' % (field.upload_to, self.user.username)
-    #   super(Patch, self)._save_FIELD_file(field, filename, raw_contents, save)
-    #field.upload_to = original_upload_to
-    #def generate_filename(instance, old_filename):
-    #    import pdb
-    #    pdb.set_trace()
-    #    extension = os.path.splitext(old_filename)[1]
-    #    filename = old_filename+'_'+str(time.time()) + extension
-    #    return 'files/' + filename
+    # def _save_FIELD_file(self, field, filename, raw_contents, save=True):
+    #     import pdb
+    #     pdb.set_trace()
+    #     original_upload_to = field.upload_to
+    #     field.upload_to = '%s/%s' % (field.upload_to, self.user.username)
+    #     super(Patch, self)._save_FIELD_file(field, filename, raw_contents, save)
+    # field.upload_to = original_upload_to
+    # def generate_filename(instance, old_filename):
+    #     import pdb
+    #     pdb.set_trace()
+    #     extension = os.path.splitext(old_filename)[1]
+    #     filename = old_filename+'_'+str(time.time()) + extension
+    #     return 'files/' + filename
 
     def move_to(instance, filename):
         path = unicode("files/{0}/{1:02d}/{2:02d}/{3}").format(
@@ -1505,16 +1513,16 @@ class ReportFile(ReportAttachment):
 
     file = models.FileField(upload_to=move_to, blank=True)
     image = FixStdImageField(upload_to=move_to, blank=True, size=(1200, 800), thumbnail_size=(80, 120))
-    #file = models.FileField(upload_to=generate_filename)
+    # file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)
 
-    #def file(self):
-    #    if (self.attach == None):
-    #        return self.image
-    #    else:
-    #        return self.attach
+    # def file(self):
+    #     if (self.attach == None):
+    #         return self.image
+    #     else:
+    #         return self.attach
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
@@ -1536,6 +1544,7 @@ class ReportFile(ReportAttachment):
 def report_file_notify(sender, instance, **kwargs):
     report_attachment_notify(sender, instance, **kwargs)
     init_report_overview(sender, instance, **kwargs)
+
 
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender, instance, **kwargs):
@@ -1697,32 +1706,32 @@ class ReportCategory(UserTrackedModel):
             else:
                 d['p'] = 0
 
-            #Optimize data transfered removing duplicates on main class names
-            #m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
+            # Optimize data transfered removing duplicates on main class names
+            # m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
             m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
             if is_it_public or not prev_d['m_c_n_en'] == m_c_n_en_value:
                 prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
-            #m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
+            # m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
             m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
             if is_it_public or not prev_d['m_c_n_fr'] == m_c_n_fr_value:
                 prev_d['m_c_n_fr'] = d['m_c_n_fr'] = m_c_n_fr_value
 
-            #m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
+            # m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
             m_c_n_nl_value = getattr(getattr(current_element, 'category_class'), 'name_nl')
             if is_it_public or not prev_d['m_c_n_nl'] == m_c_n_nl_value:
                 prev_d['m_c_n_nl'] = d['m_c_n_nl'] = m_c_n_nl_value
             d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'), 'id')
 
-            #Optimize data transfered removing duplicates on main class names
-            #s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
+            # Optimize data transfered removing duplicates on main class names
+            # s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
             s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
                 d['s_c_n_en'] = s_c_n_en_value
-            #s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
+            # s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
             if is_it_public or not prev_d['s_c_n_fr'] == s_c_n_fr_value:
                 d['s_c_n_fr'] = s_c_n_fr_value
-            #s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
+            # s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
                 d['s_c_n_nl'] = s_c_n_nl_value
@@ -1874,10 +1883,10 @@ class ReportEventLog(models.Model):
         (CLOSE, _("Close")),
         (SOLVE_REQUEST, _("Mark as Done")),
         (MANAGER_ASSIGNED, _("Manager assigned")),
-        #(MANAGER_CHANGED,_("Manager changed")),
+        # (MANAGER_CHANGED,_("Manager changed")),
         (VALID, _("Valid")),
         (ENTITY_ASSIGNED, _('Organisation assigned')),
-        #(ENTITY_CHANGED, _('Organisation changed')),
+        # (ENTITY_CHANGED, _('Organisation changed')),
         (CONTRACTOR_ASSIGNED, _('Contractor assigned')),
         (CONTRACTOR_CHANGED, _('Contractor changed')),
         (APPLICANT_ASSIGNED, _('Applicant assigned')),
@@ -1894,10 +1903,10 @@ class ReportEventLog(models.Model):
         CLOSE: _("Report closed by {user}"),
         SOLVE_REQUEST: _("Report pointed as solved"),
         MANAGER_ASSIGNED: _("Report as been assigned to {related_new}"),
-        #MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
+        # MANAGER_CHANGED: _("Report as change manager from {related_old} to {related_new}"),
         VALID: _("Report has been approved by {user}"),
         ENTITY_ASSIGNED: _('{related_new} is responsible for the report'),
-        #ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
+        # ENTITY_CHANGED: _('{related_old} give responsibility to {related_new}'),
         APPLICANT_ASSIGNED: _('Applicant {related_new} is assigned to the report'),
         APPLICANT_CHANGED: _('Applicant changed from {related_old} to {related_new}'),
         CONTRACTOR_ASSIGNED: _('Contractor {related_new} is assigned to the report'),
@@ -2070,11 +2079,11 @@ class FaqMgr(object):
     def incr_order(self, faq_entry):
         if faq_entry.order == 1:
             return
-        other = FaqEntry.objects.get(order=faq_entry.order-1)
+        other = FaqEntry.objects.get(order=faq_entry.order - 1)
         self.swap_order(other[0], faq_entry)
 
     def decr_order(self, faq_entry):
-        other = FaqEntry.objects.filter(order=faq_entry.order+1)
+        other = FaqEntry.objects.filter(order=faq_entry.order + 1)
         if len(other) == 0:
             return
         self.swap_order(other[0], faq_entry)
@@ -2160,4 +2169,4 @@ class Page(models.Model):
     class Meta:
         translate = ('content', 'title', 'slug')
 
-#pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=Page)
+# pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=Page)
