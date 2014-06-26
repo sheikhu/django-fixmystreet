@@ -78,4 +78,3 @@ clean:
 
 initcache:
 	$(BIN_PATH)/manage.py createcachetable fms_cache
-

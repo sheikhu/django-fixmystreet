@@ -43,9 +43,14 @@ dev_require = [
     'zest.releaser==3.50',
     # 'django-pdb'
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
-    'django-jenkins==0.13.0',
+    'django-jenkins==0.15.0',
     'coverage==3.6',
     'flake8==2.1.0',
+
+    # this following package depend on system requirements,
+    # must be installed on system for prod
+    'pillow',
+    'psycopg2'
 ]
 
 setup(
@@ -68,7 +73,6 @@ setup(
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=[
-        'https://github.com/CIRB/django-simple-history/archive/3da627f01398fd88f812d789d21197cd622633a7.zip#egg=simple_history-1.1.3',
         'https://pypi.python.org/packages/source/d/django-piston/django-piston-0.2.3.tar.gz#md5=8b040d426793cf22ce89543e059cd6e1#egg=django-piston-0.2.3',
         'https://github.com/riklaunim/django-ckeditor/archive/a3669f731145154efb7de52f79f1eb50ae4e54cf.zip#egg=django-ckeditor-updated-4.2.6',
         'https://github.com/afuca/mobileserverstatus/archive/1.0.zip#egg=mobileserverstatus',
