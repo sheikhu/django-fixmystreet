@@ -220,6 +220,29 @@ def transform_notification_user_display(display_pro, to_show):
             return _("a citizen")
 
 
+# ! Unused, but needed. It just to generate translations in .po
+mail_titles = {
+    _('acknowledge-creation'),
+
+    _('announcement-affectation'),
+    _('announcement-processed'),
+
+    _('informations_published'),
+
+    _('mail-pdf'),
+    _('mark-as-done'),
+
+    _('notify-affectation'),
+    _('notify-became-private'),
+    _('notify-creation'),
+    _('notify-merged'),
+    _('notify-planned'),
+    _('notify-refused'),
+    _('notify-subscription'),
+    _('notify-updates'),
+    _('notify-validation'),
+}
+
 def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
     # Define site url
     SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
@@ -274,7 +297,8 @@ def transform_notification_template(template_mail, report, user, old_responsible
     if merged_with:
         data["merged_with"] = merged_with.id
 
-    # Subject mail for each languages
+    # Subject mail for each languages.
+    # Don't forget to update mail_titles variable (above) to support translations in .po.
     trickystuff = get_language()
     for l in settings.LANGUAGES:
         activate(l[0])
@@ -355,7 +379,6 @@ def export_as_csv_action(description="Export selected objects as CSV file",
         return response
     export_as_csv.short_description = description
     return export_as_csv
-
 
 class CorsMiddleware(object):
 
