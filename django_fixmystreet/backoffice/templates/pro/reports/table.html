@@ -180,6 +180,14 @@ function generateTableContent(selection) {
                     sSearch: "{% trans 'Search:' context 'table' %}",
                     sZeroRecords: "{% trans 'No matching incidents found' context 'table' %}"
                 },
+                "fnInitComplete": function(oSettings) {
+                    oSettings._iDisplayLength = fms_store.getTableMaxRows(10);
+                    $('#result-table_length select')
+                        .val(oSettings._iDisplayLength)
+                        .change(function(e) {
+                            fms_store.setTableMaxRows($(this).find(':selected').val());
+                        });
+                },
                 "fnDrawCallback": function() {
                     fms_store.setTablePreferedSortedColumn(this.fnSettings().aaSorting.sort()[0][0], this.fnSettings().aaSorting.sort()[0][1]);
                 },

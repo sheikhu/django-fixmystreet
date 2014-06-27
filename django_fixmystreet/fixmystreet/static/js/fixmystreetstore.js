@@ -5,6 +5,7 @@ if (!('fms_store' in window)) {
     window.fms_store = {};
     window.fms_store.KEY_PREFERRED_DATA_TABLE_COLUMN_SORT = "fms-table-column-sort";
     window.fms_store.KEY_DATA_TABLE_INACTIVE_COLUMN = "fms-table-column-inactive";
+    window.fms_store.KEY_DATA_TABLE_MAX_ROWS = "fms-table-max-rows";
 }
 
 /**
@@ -13,7 +14,7 @@ if (!('fms_store' in window)) {
 fms_store.setTablePreferedSortedColumn = function(argSortIdx, argSortOrder) {
     if (localStorage) {
         localStorage.setItem(
-            this.KEY_PREFERRED_DATA_TABLE_COLUMN_SORT, 
+            this.KEY_PREFERRED_DATA_TABLE_COLUMN_SORT,
             JSON.stringify({'idx':argSortIdx, 'order':argSortOrder/*asc or desc*/})
         );
     }
@@ -25,7 +26,7 @@ fms_store.setTablePreferedSortedColumn = function(argSortIdx, argSortOrder) {
 fms_store.setTableVisibleColumns = function(argUnselectedColumns) {
     if (localStorage) {
         localStorage.setItem(
-            this.KEY_DATA_TABLE_INACTIVE_COLUMN, 
+            this.KEY_DATA_TABLE_INACTIVE_COLUMN,
             JSON.stringify(argUnselectedColumns)
         );
     }
@@ -57,4 +58,23 @@ fms_store.getTableInvisibleColumns = function() {
             return {};
         }
     }
+};
+
+/**
+ * Method used to store datatable max number of records in the result set
+ */
+fms_store.setTableMaxRows = function(argMaxRows) {
+    if (localStorage) {
+        localStorage.setItem(this.KEY_DATA_TABLE_MAX_ROWS, argMaxRows);
+    }
+};
+
+/**
+ * Method used to get datatable max number of records in the result set
+ */
+fms_store.getTableMaxRows = function(argMaxRows) {
+    if (localStorage) {
+        return localStorage.getItem(this.KEY_DATA_TABLE_MAX_ROWS) || argMaxRows;
+    }
+    return argMaxRows;
 };
