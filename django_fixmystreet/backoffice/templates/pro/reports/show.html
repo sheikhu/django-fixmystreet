@@ -989,7 +989,7 @@ $(document).ready(function() {
                 <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
                 <!--div id="report_updates"-->
                 <ul id="report_updates" class="timeline">
-                    {% for attachment in report.attachmentsList %}
+                    {% for attachment in report.active_attachments_pro %}
                         {% if not attachment.is_confidential or fms_user.can_see_confidential %}
                             {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit report_is_created=report.is_created %}
                         {% endif %}

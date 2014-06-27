@@ -697,6 +697,9 @@ class Report(UserTrackedModel):
     def active_attachments(self):
         return self.attachmentsList().filter(logical_deleted=False).filter(security_level=1).order_by("created")
 
+    def active_attachments_pro(self):
+        return self.attachmentsList().filter(logical_deleted=False).order_by("-created")
+
     def is_created(self):
         return self.status == Report.CREATED
 
