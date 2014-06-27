@@ -255,7 +255,7 @@ $(document).ready(function() {
         //Store column selection
         var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
         var checked = $(this).prop('checked');
-        var index = $(this).closest('li').index() - 1; // show column
+        var index = $(this).closest('li').index(); // show column
 
         //Remove Item
         sortPreferenceUnselectedColumns[index] = !checked;
@@ -267,7 +267,11 @@ $(document).ready(function() {
         e.stopPropagation();
     });
     $('#column-visibility .actions a.unselect').click(function(e) {
-        $('#column-visibility li.column input:checked').click();
+        $('#column-visibility li input:checked').click();
+        e.stopPropagation();
+    });
+    $('#column-visibility .actions a.select').click(function(e) {
+        $('#column-visibility li input:not(:checked)').click();
         e.stopPropagation();
     });
 });
@@ -343,35 +347,38 @@ function refreshMap() {
                 <span class="caret"></span>
             </button>
             <ul id="column-visibility" class="dropdown-menu">
-                <li class="actions">
-                    <a class="unselect" href="#">{% trans "Unselect all" %}</a>
+                <li>
+                    <div class="actions">
+                        <a class="unselect" href="#">{% trans "Unselect all" %}</a>
+                        - <a class="select" href="#">{% trans "Select all" %}</a>
+                    </div>
+                    <label><input type="checkbox" checked /> {% trans "Ticket" %}</label>
                 </li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Ticket" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
 
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
 
                 <!--li><label class="column"><input type="checkbox" checked /> {% trans "Road type" %}</label></li-->
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Category path" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Category path" %}</label></li>
                 {#<li><label class="column"><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>#}
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
 
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Visibility" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
-                <li class="column"><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Visibility" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
             </ul>
             <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
             {% if request.fmsuser.manager %}
