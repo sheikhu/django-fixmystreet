@@ -28,7 +28,9 @@ def home(request, location=None, error_msg=None):
     zipcodes = ZipCode.objects.filter(hide=False).order_by("name_" + get_language())
 
     # Queryset common to all reports
-    qs = Report.objects.filter(private=False).order_by("thumbnail", "-modified")
+    qs = Report.objects.filter(private=False) \
+         .extra(select={"has_thumbnail": "CASE WHEN thumbnail IS NULL OR thumbnail = '' THEN 0 ELSE 1 END"}) \
+         .order_by("-has_thumbnail", "-modified")
 
     return render_to_response("home.html", {
         #"report_counts": ReportCountQuery("1 year"),

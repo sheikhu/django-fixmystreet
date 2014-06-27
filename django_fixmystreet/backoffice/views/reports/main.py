@@ -113,7 +113,9 @@ def report_prepare_pro(request, location=None, error_msg=None):
     last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_PRO)
 
     # Queryset common to all reports
-    qs = Report.objects.all().visible().related_fields().order_by('thumbnail_pro', '-modified')
+    qs = Report.objects.all().visible() \
+         .extra(select={"has_thumbnail_pro": "CASE WHEN fixmystreet_report.thumbnail_pro IS NULL OR fixmystreet_report.thumbnail_pro = '' THEN 0 ELSE 1 END"}) \
+         .related_fields().order_by('-has_thumbnail_pro', '-modified')
 
     return render_to_response("pro/home.html", {
         "report_counts": ReportCountQuery(interval=DEFAULT_SQL_INTERVAL_PRO),
