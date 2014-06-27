@@ -2259,3 +2259,21 @@ content: "*";
 #file-form-template .input-file-button {
 	display: inline-block;
 }
+
+#column-visibility .actions {
+	font-size: 11px;
+	line-height: 15px;
+	text-align: right;
+}
+#column-visibility .actions a {
+	color: #607C9B;
+	padding-left: 0;
+	padding-right: 0;
+}
+#column-visibility .actions a:focus,
+#column-visibility .actions a:hover {
+	background-color: transparent;
+	background-image: none;
+	color: inherit;
+	text-decoration: underline;
+}
