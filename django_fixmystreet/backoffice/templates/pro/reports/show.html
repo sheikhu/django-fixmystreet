@@ -448,7 +448,9 @@ $(document).ready(function() {
 
                         <!-- ROW PRO 2 -->
                         <li>
-                            <strong>{% trans 'Posted by' %}</strong> <a href='mailto:{{ report.get_creator.email }}'>{{ report.get_creator.get_full_name }}</a> {% trans 'on' context 'date' %} {{ report.created|date:"d/m/Y" }}
+                            <strong>{% trans 'Posted by' %}</strong> <a href='mailto:{{ report.get_creator.email }}'>{{ report.get_creator.get_full_name }}</a>
+                            {% trans 'on' context 'date' %} {{ report.created|date:"d/m/Y" }}
+                            {% trans 'via' context 'source/origin' %} {{ report.source }}
 
                            {% if not report.is_pro %}
                                 - {{ report.citizen.get_quality_display }}
