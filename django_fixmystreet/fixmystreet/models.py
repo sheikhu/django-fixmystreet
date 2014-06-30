@@ -755,12 +755,12 @@ class Report(UserTrackedModel):
     def comments(self):
         # return self.attachments.get_query_set().comments().filter(logical_deleted=False)
         # ==> is wrong
-        return ReportComment.objects.filter(report_id=self.id).filter(logical_deleted=False)
+        return ReportComment.objects.filter(report_id=self.id).filter(logical_deleted=False, security_level__in=[1, 2])
 
     def files(self):
         # return self.attachments.get_query_set().files().filter(logical_deleted=False)
         # ==> is wrong
-        return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False)
+        return ReportFile.objects.filter(report_id=self.id).filter(logical_deleted=False, security_level__in=[1, 2])
 
     def attachmentsList(self):
         return ReportAttachment.objects.filter(report_id=self.id).filter(logical_deleted=False)
