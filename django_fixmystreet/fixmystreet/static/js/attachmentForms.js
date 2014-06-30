@@ -3,10 +3,9 @@
 (function() {
 
     var allowed_file_types = [
-            "image/png","image/jpeg","application/pdf","application/msword","application/vnd.ms-excel",
-            "application/vnd.oasis.opendocument.text",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/vnd.oasis.opendocument.spreadsheet"
+            "image/png","image/jpeg","application/pdf",
+            "application/vnd.oasis.opendocument.text","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-excel","application/vnd.oasis.opendocument.spreadsheet","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         ],
         file_max_size = 10000000, // 10MB
         file_count = 0,
