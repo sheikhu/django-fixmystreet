@@ -91,5 +91,13 @@ $(function() {
             {% endif %}
         </div>
     </div>
+    {% if user_form.instance.memberships.count %}
+        <h2>{% trans "Groups" %}</h2>
+        <ul>
+        {% for membership in user_form.instance.memberships.all %}
+            <li>{{ membership.organisation.name }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 </form>
 {% endblock %}
