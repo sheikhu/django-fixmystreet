@@ -2,7 +2,7 @@
 {% load i18n tags %}
 {% load static from staticfiles %}
 
-{% block title %}{% trans 'Incidents signalés dans le même secteur' %}{% endblock %}
+{% block title %}{% trans 'Reports reported in the same area' %}{% endblock %}
 
 {% block meta %}
     <meta property="og:title" content="" />
@@ -329,7 +329,7 @@
         <div id="mergeModalBody" class="modal-body">
             <div class="text-center well" id="olderToMerge">
                 <p>
-                    {% trans 'Incident' %} :
+                    {% trans 'Report' %} :
                     <strong>
                         <img id="oldertoMergeMarker" src="" class="report-counter"/>
                         N°<span id="oldertoMergeNumber"></span>
@@ -343,7 +343,7 @@
 
             <div class="text-center well" id="newerToMerge">
                 <p>
-                    {% trans "Sera fusionné avec l'incident" %} :
+                    {% trans "Will be merged with the report" %} :
                     <br/>
                     <strong>
                         <img id="newertoMergeMarker" src="" class="report-counter"/>
@@ -356,7 +356,7 @@
                 </p>
             </div>
 
-            <p>{% trans "Le résultat de la fusion sera visible pour" %} :
+            <p>{% trans "The result of the merge will be visible to" %} :
 
                 <strong>
                     {% if report.private %}
