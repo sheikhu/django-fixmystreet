@@ -238,14 +238,14 @@ $(function(event) {
                             {% endif %}
                         </div>
                         <div class="span2 btn-group-vertical">
-                            {% if report.is_in_progress %}
-                                {% if report.status != report.SOLVED %}
-                                    <a href="#divMarkAsDone" class="btn" data-toggle="modal">
-                                        {% trans "Report as solved" %}
-                                        <i class="icon-isresolved"> </i>
-                                    </a>
-                                {% endif %}
+                            {% if report.status != report.SOLVED %}
+                                <a href="#divMarkAsDone" class="btn" data-toggle="modal">
+                                    {% trans "Report as solved" %}
+                                    <i class="icon-isresolved"> </i>
+                                </a>
+                            {% endif %}
 
+                            {% if report.is_in_progress %}
                                 {% if not report.is_closed and not subscribed %}
                                     <a href="#modalSubscription" class="btn" data-toggle="modal">
                                         {% if report.subscriptions.all.count %}
@@ -283,31 +283,30 @@ $(function(event) {
 {% endblock %}
 
 {% block content %}
-
 <!-- Modal -->
+{% if report.status != report.SOLVED %}
+    <div id="divMarkAsDone" class="modal hide fade">
+        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_update' report.id %}?is_fixed=True" method="post" >
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
+                {{ mark_as_done_form.as_p }}
+                <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
+            </div>
+
+            <!--div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div-->
+        </form>
+    </div>
+{% endif %}
+
 {% if report.is_in_progress %}
-    {% if report.status != report.SOLVED %}
-        <div id="divMarkAsDone" class="modal hide fade">
-            <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_update' report.id %}?is_fixed=True" method="post" >
-                {% csrf_token %}
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
-                </div>
-                <div class="modal-body">
-                    <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
-                    {{ mark_as_done_form.as_p }}
-                    <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
-                </div>
-
-                <!--div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                </div-->
-            </form>
-        </div>
-    {% endif %}
-
     {% if not report.is_closed and not subscribed %}
         <div id="modalSubscription" class="modal hide fade">
             <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
