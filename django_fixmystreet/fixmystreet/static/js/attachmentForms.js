@@ -2,12 +2,15 @@
 
 (function() {
 
-    var allowed_file_types = [
-            "image/png","image/jpeg","application/pdf",
-            "application/vnd.oasis.opendocument.text","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/vnd.ms-excel","application/vnd.oasis.opendocument.spreadsheet","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        ],
-        file_max_size = 10000000, // 10MB
+    var file_types = {
+        image: ["image/png","image/jpeg"],
+        pdf: ["application/pdf"],
+        document: ["application/vnd.oasis.opendocument.text","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+        spreadsheet: ["application/vnd.ms-excel","application/vnd.oasis.opendocument.spreadsheet","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+    };
+    var allowed_file_types = [];
+    for (var k in file_types) { allowed_file_types = allowed_file_types.concat(file_types[k]); }
+    var file_max_size = 10000000, // 10MB
         file_count = 0,
         file_form_template = null;
 
@@ -20,6 +23,10 @@
         /**********************************************************/
         $(document.body).delegate(":file", "change", fileSelected);
     });
+
+    function isFileType(type, allowed) {
+        return file_types[allowed].indexOf(type) > -1;
+    }
 
 /********************************************************************************************/
 /* This function used to retrieve the exif data from an image asynchronously                */
@@ -161,7 +168,7 @@
     /************************************************************************************/
     function AddFileToView(elem, file){
         //Determine the type of the submited file
-        var type = (file && file.type.split("/")[1]) || null;
+        var type = (file && file.type) || null;
         //Structured Data of the file to add
         var title = elem.find(":file").val();
         if (title === ""){
@@ -169,22 +176,17 @@
         }
 
         var thumbnails = "", img = elem.find(".thumbnail");
-        if (type == "pdf"){
+        if (isFileType(type, 'pdf')){
             thumbnails = "/static/images/icon-pdf.png";
-        }
-        else if (type == "msword"){
+        } else if (isFileType(type, 'document')){
             thumbnails = "/static/images/icon-word.jpg";
-        }
-        else if(type == "vnd.ms-excel"){
+        } else if (isFileType(type, 'spreadsheet')){
             thumbnails = "/static/images/icon-excel.png";
-        }
-        else if (type == "vnd.openxmlformats-officedocument.wordprocessingml.document"){
-            thumbnails = "/static/images/icon-word.jpg";
         } else {
             thumbnails = "/static/images/icon-generic.png";
         }
 
-        if (typeof window.FileReader != 'undefined' && (type == "jpeg" || type == "png")) {
+        if (typeof window.FileReader != 'undefined' && isFileType(type, 'image')) {
             img[0].file = file;
 
             var reader = new FileReader();
