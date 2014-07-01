@@ -19,27 +19,16 @@ Installation
 
 ```bash
 $ git clone git@github.com:CIRB/django-fixmystreet.git
-$ make install
-$ bin/django runserver
-$ bin/django-debug runserver # debug toolbar mode
+$ make develop
+$ make run
+$ env/bin/manage.py shell
 ```
 
 Ensure libxml2-dev, psycopg2 and GeoDjango are installed.
 
-For GeoDjango installation:
+You need a Postgis server, for GeoDjango installation:
 
 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
-
-may be incompatibility between postgis and psycopg2 on postgresql 9.1
-if message is like "invalid byte sequence for encoding UTF8: 0x00"
-need to apply this patch:
-
-https://code.djangoproject.com/ticket/16778
-
-
-This project has been developed and tested with PostgreSQL
-
-To install GeoDjango for PostgreSQL:
 
 - GEOS https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#geos
 - PROJ.4 https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#proj4
@@ -47,6 +36,11 @@ To install GeoDjango for PostgreSQL:
 - (install psycopg2?)
 - Create PostGIS template https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#spatialdb-template
 
+may be incompatibility between postgis and psycopg2 on postgresql 9.1
+if message is like "invalid byte sequence for encoding UTF8: 0x00"
+need to apply this patch:
+
+https://code.djangoproject.com/ticket/16778
 
 After install, create the database and init the cache:
 
@@ -58,19 +52,12 @@ $ bin/django loaddata sample # if you want some sample data to work with
 $ cp local_settings_staging.py local_settings.py # and edit db connection settings
 ```
 
-Recreate the database from clean state:
-
-```bash
-$ make scratchdb # also import default and samples data.
-```
-
 In deploy environment, settings are given by system environment variables.
 
 Available variables:
 
 ```bash
 ENV # environment that is running, supported values are local / dev / staging / production
-ADD_THIS_KEY # code from add_this service
 MEDIA_ROOT # path to dynamic files upload location
 GA_CODE # code Google Analytic
 
@@ -88,8 +75,6 @@ To initialize variables on the server:
 ```bash
 $ . ~/env
 ```
-
-
 
 
 Continuous Integration, Deployment and Delivery
@@ -112,7 +97,7 @@ production will be manually updated with the fixed tagged commit from GitHub
 
 
 Useful commands
-================
+===============
 
 To generate po files, run the following command:
 
