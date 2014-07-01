@@ -51,7 +51,7 @@
         if (file) {
             // validation of the file
             if(file.size === 0) {
-                alert('Filesize must be greater than 0');
+                alert(gettext('Filesize must be greater than 0'));
                 return false;
             }
             else if(file.size > file_max_size) {

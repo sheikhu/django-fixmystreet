@@ -19,7 +19,7 @@ $(function(){
             evt.preventDefault();
         }
     });
-    
+
     $('#map-bxl').hide();
 });
 
@@ -36,7 +36,7 @@ function showMap() {
 /****************************************************************************/
 function refuse(){
     $("#divRefuse").modal();
-    $('#more_information_text').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
+    $('#more_information_text').val(gettext("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed."))
 }
 
 /***************************************************************************/

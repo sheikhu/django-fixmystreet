@@ -161,7 +161,7 @@ function getAddressFromPoint(lang, x, y) {
             // Error
             var msg = 'Error: ' + response.status;
             if(response.status == 'error') {
-                msg = 'Unable to locate this address';
+                msg = gettext('Unable to locate this address');
             }
             $('#address-text').html(msg);
         }
@@ -227,9 +227,9 @@ function retrieveAddress() {
             // regDetection(pointX, pointY);
 
         } else {
-            var msg = 'Error: ' + response.status;
+            var msg = gettext('Error') + ': ' + response.status;
             if(response.status == 'error') {
-                msg = 'Unable to locate this address';
+                msg = gettext('Unable to locate this address');
             }
             $('#address-text').removeClass('loading');
             $form.prepend('<p class="text-error">' + msg + '</p>');

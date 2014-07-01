@@ -600,7 +600,7 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
             {
                 callback(language, {
                     error:true,
-                    status:"Unexpected error"
+                    status:gettext("Unexpected error")
                 });
             }
         });
@@ -803,10 +803,10 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
                     var popoverIcons   = "";
                     var popoverSize  = new OpenLayers.Size(400,220);
 
-                    popoverTitle = "<h2>Incident #" + report.id + " </h2>";
+                    popoverTitle = "<h2>" + gettext('Report') + " #" + report.id + " </h2>";
 
                     popoverContent = '<div class="details-popup"><p style="float: right;margin-left: 15px;"><img class="thumbnail" src="' + imageLink +'"/></p>' +
-                        "<a class='moreDetails' style='clear:both; float: right;margin-left: 15px;' href='/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/report/search?report_id="+report.id+"'>Details</a>" +
+                        "<a class='moreDetails' style='clear:both; float: right;margin-left: 15px;' href='/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/report/search?report_id="+report.id+"'>" + gettext('Details') + "</a>" +
                         "<strong class='popup_adress'>" + report.address_number + ', ' +
                         report.address + ' ' + "<br/>" +
                         report.postalcode + ' ' +
@@ -883,9 +883,9 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
 
         if(feature.cluster){
             if(this.map.zoom == this.map.numZoomLevels){
-                var content = "<h2>Reports at this location:</h2><ul>";
+                var content = "<h2>" + gettext('Reports at this location') + ":</h2><ul>";
                 for(var i = 0; i< feature.cluster.length; i++){
-                    content +="<li><a href='/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>Report #"+feature.cluster[i].data.report.id+"</a></li>";
+                    content +="<li><a href='/"+getCurrentLanguage()+((BACKOFFICE)?"/pro":"")+"/report/search?report_id="+feature.cluster[i].data.report.id+"'>" + gettext('Report') + " #"+feature.cluster[i].data.report.id+"</a></li>";
                 }
                 var popup = new OpenLayers.Popup(
                     "popup",

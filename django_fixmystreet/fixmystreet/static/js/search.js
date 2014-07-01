@@ -55,9 +55,9 @@ function renderResults() {
 
         // Define message if needed
         if ($searchMunicipality.val()) {
-            $proposalMessage.html("Cette rue n'est pas répertoriée dans cette commune");
+            $proposalMessage.html(gettext('This street is not listed in this municipality.'));
         } else if ($searchStreet.val().toLowerCase() == address.street.name.toLowerCase()) {
-            $proposalMessage.html("Cette rue existe dans plusieurs communes, merci de préciser");
+            $proposalMessage.html(gettext('This street exists in several municipalities, please be more specific.'));
         }
     }
 
@@ -165,8 +165,8 @@ function getAddressFromPoint(lang, x, y) {
             if (!BACKOFFICE && response.result.address.street.postCode in zipcodes && !zipcodes[String(response.result.address.street.postCode)].participation) {
                 //var popupContent = "<p>" + street + ", " + number;
                 // Convert the point and url for google street view
-                var popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>Commune non participante</p>";
-                popupContent += "<p class='popupMoveMe popupContent'>" +'Veuillez contacter la commune: '+ zipcodes[String(response.result.address.street.postCode)].phone + "</p>";
+                var popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
+                popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(response.result.address.street.postCode)].phone + "</p>";
             } else {
                 //var popupContent = "<p>" + street + ", " + number;
                 // Convert the point and url for google street view
@@ -454,7 +454,7 @@ $(function(){
                 $searchButton.prop('disabled',false);
                 if(response.status == "noresult" || response.status == "success")
                 {
-                    $proposalMessage.html('<span class="error-msg">No corresponding address has been found</span>').slideDown();
+                    $proposalMessage.html('<span class="error-msg">' + gettext('No corresponding address has been found') + '.</span>').slideDown();
                 }
                 else
                 {
@@ -465,7 +465,7 @@ $(function(){
             $searchStreet.removeClass('loading');
             $searchButton.prop('disabled',false);
 
-            $proposalMessage.html('<span class="error-msg">Unexpected error.</span>').slideDown();
+            $proposalMessage.html('<span class="error-msg">' + gettext('Unexpected error') + '.</span>').slideDown();
         });
     });
 
