@@ -78,7 +78,8 @@ function setFileCreationDate(){
  */
 function markAsDone(){
     // $("#divMarkAsDone").show();
-    $('#id_mark_as_done_motivation').val("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed.")
+    {% trans "This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed." as str %}
+    $('#id_mark_as_done_motivation').val('{{ str|escapejs }}');
 }
 
 
