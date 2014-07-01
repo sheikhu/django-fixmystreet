@@ -14,15 +14,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.template.response import TemplateResponse
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 
-from markdown import markdown
 from simple_history.admin import SimpleHistoryAdmin
 
 from django_fixmystreet.fixmystreet.models import (
-        ReportCategory, Report, FMSUser, ReportMainCategoryClass,
-        ReportAttachment, Page, OrganisationEntity, ReportNotification, ReportEventLog,
-        UserOrganisationMembership)
+    ReportCategory, Report, FMSUser, ReportMainCategoryClass,
+    ReportAttachment, Page, OrganisationEntity, ReportNotification, ReportEventLog,
+    UserOrganisationMembership
+)
 from django_fixmystreet.fixmystreet.utils import export_as_csv_action
 
 admin.site.unregister(User)
@@ -48,7 +48,7 @@ class NotificationsInline(admin.TabularInline):
     fk_name = "recipient"
     fields = ("content_template", "success")
     readonly_fields = ("content_template", "success")
-    extra = 10
+    extra = 0
 
 
 class UserEventsInline(admin.TabularInline):
@@ -56,7 +56,7 @@ class UserEventsInline(admin.TabularInline):
     fk_name = "user"
     fields = ("event_type", "event_at", "status_old", "status_new")
     readonly_fields = ("event_type", "event_at", "status_old", "status_new")
-    extra = 10
+    extra = 0
 
 
 class AttachmentsInline(admin.TabularInline):
@@ -64,7 +64,7 @@ class AttachmentsInline(admin.TabularInline):
     fk_name = "report"
     fields = ("security_level", "created", "created_by")
     readonly_fields = ("security_level", "created", "created_by")
-    # extra = 10
+    extra = 0
 
 
 class MembershipsInline(admin.TabularInline):
@@ -143,14 +143,24 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     def get_urls(self):
         urls = super(FMSUserAdmin, self).get_urls()
 
-        my_urls = patterns(
+        urls += patterns(
             '',
             (
                 r'^(\d+)/reset-password/$',
                 self.admin_site.admin_view(self.reset_password)
             ),
         )
-        return my_urls + urls
+        user_mock_urls = []
+        for user_url in urls:
+            if user_url.name and 'fixmystreet_fmsuser' in user_url.name:
+                user_mock_urls.append(url(
+                    user_url._regex,
+                    user_url.callback,
+                    name=user_url.name.replace('fixmystreet_fmsuser', 'auth_user')
+                ))
+        urls += patterns('', *user_mock_urls)
+
+        return urls
 
     @method_decorator(sensitive_post_parameters())
     def reset_password(self, request, id, form_url=''):
@@ -196,12 +206,15 @@ admin.site.register(FMSUser, FMSUserAdmin)
 class OrgaUsersInline(admin.TabularInline):
     model = FMSUser
     fk_name = "organisation"
-    fields = ("get_full_name", "username", "leader", "manager", "agent")
-    readonly_fields = ("get_full_name", "username", "leader", "manager", "agent")
-    extra = 10
-    inlines = (
-        ReportsInline
-    )
+    fields = ("get_full_name", "username", "leader", "manager", "agent", "is_active")
+    readonly_fields = ("get_full_name", "username", "leader", "manager", "agent", "is_active")
+    extra = 0
+
+class GroupsInline(admin.TabularInline):
+    model = OrganisationEntity
+    fk_name = "dependency"
+    fields = ('name_fr', 'type')
+    extra = 0
 
 
 class OrganisationEntityAdmin(SimpleHistoryAdmin):
@@ -210,6 +223,7 @@ class OrganisationEntityAdmin(SimpleHistoryAdmin):
     list_filter = ("type",)
     inlines = (
         OrgaUsersInline,
+        GroupsInline,
     )
 
 admin.site.register(OrganisationEntity, OrganisationEntityAdmin)
@@ -220,14 +234,26 @@ class ReportEventsInline(admin.TabularInline):
     fk_name = "report"
     fields = ("event_type", "event_at", "status_old", "status_new")
     readonly_fields = ("event_at",)
-    extra = 10
+    extra = 0
 
 
 class ReportAdmin(SimpleHistoryAdmin):
-    list_display = ('id', 'responsible_entity', 'status', 'created', 'modified', 'category', 'secondary_category')
-    ordering = ['modified']
-    #exclude = ['photo']
-    readonly_fields = ('created', 'modified', 'created_by', 'modified_by')
+    list_display = (
+        'id', 'responsible_entity', 'responsible_department', 'status',
+        'get_category_path'
+    )
+    search_fields = ('id',)
+    list_filter = ('status',)
+    ordering = ('-id', )
+    exclude = (
+        # deprecated
+        'responsible_manager', 'valid', 'photo',
+        'responsible_manager_validated'
+    )
+    readonly_fields = (
+        'created', 'modified', 'created_by', 'modified_by', 'citizen',
+        'merged_with', 'mark_as_done_user'
+    )
     inlines = (
         AttachmentsInline,
         ReportEventsInline,

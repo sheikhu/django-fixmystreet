@@ -235,6 +235,8 @@ class FMSUser(User):
     def __unicode__(self):
         return self.get_display_name()
 
+    class Meta:
+        ordering = ['last_name']
 
 @receiver(pre_save, sender=FMSUser)
 def populate_username(sender, instance, **kwargs):
@@ -297,6 +299,7 @@ class OrganisationEntity(UserTrackedModel):
 
     class Meta:
         translate = ('name', 'slug')
+        ordering = ['name_fr']
 
     def accepted_user(self, user):
         required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
@@ -551,8 +554,23 @@ class Report(UserTrackedModel):
     mark_as_done_motivation = models.TextField(null=True, blank=True)
     mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True)
 
-    responsible_entity = models.ForeignKey(OrganisationEntity, related_name='reports_in_charge', null=True, blank=True)
-    responsible_department = models.ForeignKey(OrganisationEntity, related_name='reports_in_department', null=True)  # must be not null after migration
+    responsible_entity = models.ForeignKey(
+        OrganisationEntity,
+        related_name='reports_in_charge',
+        null=True, blank=True,
+        limit_choices_to={
+            'type__in': (OrganisationEntity.REGION, OrganisationEntity.COMMUNE),
+            'active': True
+        }
+    )
+    responsible_department = models.ForeignKey(
+        OrganisationEntity,
+        related_name='reports_in_department',
+        null=True,
+        limit_choices_to={
+            'type': OrganisationEntity.DEPARTMENT
+        }
+    )
 
     ### deprecated to remove ###
     responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
