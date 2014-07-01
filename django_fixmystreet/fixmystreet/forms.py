@@ -187,7 +187,7 @@ class CitizenForm(forms.Form):
     def save(self):
         try:
             instance = FMSUser.objects.get(email=self.cleaned_data["email"])
-            if instance.last_name.lower() != self.cleaned_data["last_name"].lower() or instance.telephone != self.cleaned_data["telephone"]:
+            if not instance.is_pro and instance.last_name.lower() != self.cleaned_data["last_name"].lower() or instance.telephone != self.cleaned_data["telephone"]:
                 instance.last_name = self.cleaned_data["last_name"]
                 instance.telephone = self.cleaned_data["telephone"]
                 instance.clean()
