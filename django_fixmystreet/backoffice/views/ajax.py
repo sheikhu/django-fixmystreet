@@ -62,7 +62,7 @@ def update_category_for_report(request, report_id):
 def send_pdf(request, report_id):
     user = get_current_user()
     recipients = request.POST.get('to')
-    comments = request.POST.get('comments')
+    comments = request.POST.get('comments', '')
     # Only set privacy as private if user is auth and privacy POST param is private
     if request.fmsuser.is_pro() and "private" == request.POST.get('privacy'):
         pro_version = True
