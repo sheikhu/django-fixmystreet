@@ -280,9 +280,10 @@ $('.dropdown-toggle').click(function(e) {
 });
 
 function setStatusMessage(e, type, msg) {
-    $(e).html(msg)
-        .removeClass(function (index, css) { return (css.match(/\balert-\S+/g) || []).join(' '); })
-        .addClass('alert-' + type);
+    var $e = $(e);
+    $e.html(msg);
+    $e.parent().removeClass(function (index, css) { return (css.match(/\balert-\S+/g) || []).join(' '); })
+               .addClass('alert-' + type);
 }
 
 $(document).ready(function() {
