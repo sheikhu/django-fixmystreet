@@ -1184,35 +1184,35 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
             ###
 
-            # Contractor changed
-            if report.__former['contractor'] != report.contractor:
+        # Contractor changed
+        if report.__former['contractor'] != report.contractor:
 
-                if report.contractor:
-                    if report.contractor.email:
-                        # Applicant responsible
-                        ReportNotification(
-                            content_template='notify-affectation',
-                            recipient_mail=report.contractor.email,
-                            related=report,
-                            reply_to=report.responsible_department.email
-                        ).save(old_responsible=report.__former['responsible_department'])
+            if report.contractor:
+                if report.contractor.email:
+                    # Applicant responsible
+                    ReportNotification(
+                        content_template='notify-affectation',
+                        recipient_mail=report.contractor.email,
+                        related=report,
+                        reply_to=report.responsible_department.email
+                    ).save(old_responsible=report.__former['responsible_department'])
 
-                        if report.contractor.applicant:
-                            for subscription in report.subscriptions.all():
-                                if subscription.subscriber != event_log_user:
-                                    ReportNotification(
-                                        content_template='announcement-affectation',
-                                        recipient=subscription.subscriber,
-                                        related=report,
-                                        reply_to=report.responsible_department.email,
-                                    ).save(old_responsible=report.__former['responsible_department'])
+                    if report.contractor.applicant:
+                        for subscription in report.subscriptions.all():
+                            if subscription.subscriber != event_log_user:
+                                ReportNotification(
+                                    content_template='announcement-affectation',
+                                    recipient=subscription.subscriber,
+                                    related=report,
+                                    reply_to=report.responsible_department.email,
+                                ).save(old_responsible=report.__former['responsible_department'])
 
-                    ReportEventLog(
-                        report=report,
-                        event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
-                        related_new=report.contractor,
-                        user=event_log_user
-                    ).save()
+                ReportEventLog(
+                    report=report,
+                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
+                    related_new=report.contractor,
+                    user=event_log_user
+                ).save()
 
         # Responsible manager changed
         if report.__former['responsible_department'] != report.responsible_department:
