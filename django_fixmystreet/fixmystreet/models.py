@@ -1885,15 +1885,15 @@ class ReportEventLog(models.Model):
     CLOSE = 2
     SOLVE_REQUEST = 3
     MANAGER_ASSIGNED = 4
-    MANAGER_CHANGED = 5
+    MANAGER_CHANGED = 5  # deprecated
     VALID = 6
     ENTITY_ASSIGNED = 7
-    ENTITY_CHANGED = 8
+    ENTITY_CHANGED = 8  # deprecated
     CONTRACTOR_ASSIGNED = 9
     CONTRACTOR_CHANGED = 10
     APPLICANT_ASSIGNED = 11
     APPLICANT_CHANGED = 12
-    APPLICANT_CONTRACTOR_CHANGE = 13
+    APPLICANT_CONTRACTOR_CHANGE = 13  # deprecated
     CREATED = 14
     UPDATED = 15
     UPDATE_PUBLISHED = 16
@@ -1985,6 +1985,7 @@ class ReportEventLog(models.Model):
             user=user_to_display,
             organisation=self.organisation,
             related_new=self.related_new,
+            related_old=self.related_old,
             date_planned=self.value_old,
             merged_with_id=self.merged_with_id,
         )
@@ -1995,6 +1996,7 @@ class ReportEventLog(models.Model):
             user=user_to_display_public(self.user),
             organisation=user_to_display_public(self.organisation),
             related_new=user_to_display_public(self.related_new),
+            related_old=user_to_display_public(self.related_old),
             date_planned=self.value_old,
             merged_with_id=self.merged_with_id,
         )
