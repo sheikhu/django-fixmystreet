@@ -1684,7 +1684,7 @@ form#report-form{
     font-family: 'Dosis',sans-serif;
     margin: 0px 1em;
 }
-label{
+label, .help-block {
 	font-size:11px;
 	line-height:15px;
 }

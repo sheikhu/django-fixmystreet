@@ -932,6 +932,7 @@ $(document).ready(function() {
                     <input type="hidden" name="privacy" value="public"/>
                     <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>
                     <textarea id="pdf-email-citizen" name="to" class="input-block-level"></textarea>
+                    <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>
                     <label for="pdf-comments-citizen">{% trans 'enter comment for mail' %}</label>
                     <textarea id="pdf-comments-citizen" name="comments" class="input-block-level"></textarea>
                     <input type="submit" class="btn pull-right" id="send_pdf_citizen_button" value="{% trans 'send pdf' %}"/>
@@ -949,6 +950,7 @@ $(document).ready(function() {
                     <input type="hidden" name="privacy" value="private"/>
                     <label for="pdf-email">{% trans 'enter mail address' %}</label>
                     <textarea id="pdf-email" name="to" class="input-block-level"></textarea>
+                    <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>
                     <label for="pdf-comments">{% trans 'enter comment for mail' %}</label>
                     <textarea id="pdf-comments" name="comments" class="input-block-level"></textarea>
                     <input type="submit" class="btn pull-right" id="send_pdf_pro_button" value="{% trans 'send pdf' %}"/>
