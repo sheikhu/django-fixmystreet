@@ -101,22 +101,21 @@ Useful commands
 
 To generate po files, run the following command:
 
-    $ django-admin.py makemessages -a -e .html,.txt --ignore=templates/admin/* --ignore=templates/posters.html --ignore=templates/promotions/*
-    $ django-admin.py compilemessages
+    $ make messages
 
 For sample data set loading:
 
-    $ python manage.py loaddata sample.json
+    $ env/bin/manage.py loaddata sample.json
     $ cp -Rf media/photos-sample/ media/photos/
 
-    $ python manage.py testserver sample.json
+    $ env/bin/manage.py testserver sample.json
 
-    $ python manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
+    $ env/bin/manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
 
 
 To generate data model image:
 
-    $ bin/django graph_models fixmystreet -g -o data-model.png
+    $ env/bin/manage.py graph_models fixmystreet -g -o data-model.png
 
 
 Dump DB:
