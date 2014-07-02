@@ -279,6 +279,12 @@ $('.dropdown-toggle').click(function(e) {
     });
 });
 
+function setStatusMessage(e, type, msg) {
+    $(e).html(msg)
+        .removeClass(function (index, css) { return (css.match(/\balert-\S+/g) || []).join(' '); })
+        .addClass('alert-' + type);
+}
+
 $(document).ready(function() {
 
     function sendPdf(event) {
@@ -293,8 +299,11 @@ $(document).ready(function() {
         var status        = statusMessage.parentNode;
 
         var formData = $(this).serialize();
-        {% trans "Unable to send your request." as error_message %}
-        if (!formData) { alert('{% trans "ERROR" %}: {{ error_message|escapejs }}'); return; }
+        if (!formData) {
+            {% trans "Unable to send your request." as error_message %}
+            setStatusMessage(statusMessage, 'error', '{{ error_message|escapejs }}');
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -302,20 +311,11 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 console.log("send mail success");
-
-                statusMessage.innerHTML = response;
-
-                status.classList.remove('alert-error');
-                status.classList.add('alert-success');
+                setStatusMessage(statusMessage, 'success', response);
             },
             error: function(response) {
                 console.log("send mail error");
-
-                statusMessage.innerHTML = "Error";
-
-                status.classList.remove('alert-success');
-                status.classList.add('alert-error');
-
+                setStatusMessage(statusMessage, 'error', '{% trans "Error" %}');
             },
             complete: function() {
                 status.classList.remove('hidden');
