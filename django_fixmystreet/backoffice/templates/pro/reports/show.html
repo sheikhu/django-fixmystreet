@@ -294,7 +294,7 @@ $(document).ready(function() {
 
         var formData = $(this).serialize();
         {% trans "Unable to send your request." as error_message %}
-        if (!formData) { alert('{% trans "ERROR" %}: {{ error_message|escapejs }}'); }
+        if (!formData) { alert('{% trans "ERROR" %}: {{ error_message|escapejs }}'); return; }
 
         $.ajax({
             type: 'POST',
