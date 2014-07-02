@@ -1382,6 +1382,19 @@ form#report-form{
 	color:#FFDB00 !important;
 	opacity:1;
 }
+.modal-body .col {
+	display: block;
+	float: left;
+	width: 50%;
+}
+.modal-body .col label {
+	font-size: inherit;
+}
+.modal-body .col input,
+.modal-body .col select {
+	width: 90%;
+}
+
 /*#modalSubscription .modal-footer{
     background:#FFF;
     border:0;
@@ -1407,6 +1420,12 @@ form#report-form{
 	vertical-align: middle;
 	display: inline;
 	margin-left: 10px;
+}
+#modalPriority .modal-body .huge {
+	font-size: 4em;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 0.5em;
 }
 .lead-container .ticket_number{
 	color:#D2E2F6;

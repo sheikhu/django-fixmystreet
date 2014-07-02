@@ -809,13 +809,22 @@ $(document).ready(function() {
             <h3>{% trans "Priority:" %}</h3>
         </div>
         <div class="modal-body priority">
-            <p>
-                <span>{% trans "Probability:" %}</span>
-                {{ priority_form.probability }}
-                <span>{% trans "Gravity:" %}</span>
-                {{ priority_form.gravity }}
-            </p>
-            <p>{% trans "Total priority:" %} <span id="prio_result">{{report.get_priority}}</span></p>
+            <div class="clearfix">
+                <div class="col col1">
+                    <div class="control-group">
+                        <label for="id_probability">{% trans "Probability:" %}</label>
+                        {{ priority_form.probability }}
+                    </div>
+                    <div class="control-group">
+                        <label for="id_probability">{% trans "Gravity:" %}</label>
+                        {{ priority_form.gravity }}
+                    </div>
+                </div>
+                <div class="col col2">
+                    <p>{% trans "Total priority:" %}</p>
+                    <p class="huge"><span id="prio_result">{{report.get_priority}}</span></p>
+                </div>
+            </div>
             <br/><br/>
             <p>
                 <input class="btn btn-primary pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistPriorityUpdate()">
