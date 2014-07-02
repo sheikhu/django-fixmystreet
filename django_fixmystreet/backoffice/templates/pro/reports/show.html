@@ -312,7 +312,12 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 console.log("send mail success");
-                setStatusMessage(statusMessage, 'success', response);
+                var statusType = response.status == 'success' ? 'success' : 'error';
+                var msg = '<strong>' + response.message + '</strong>';
+                for (var i = 0; i < response.logMessages.length; i++) {
+                    msg += '<br />' + response.logMessages[i];
+                }
+                setStatusMessage(statusMessage, statusType, msg);
             },
             error: function(response) {
                 console.log("send mail error");

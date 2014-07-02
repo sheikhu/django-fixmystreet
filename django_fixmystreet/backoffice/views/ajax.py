@@ -3,10 +3,12 @@ import re
 import json
 
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.core.mail import EmailMultiAlternatives
+from django.core.validators import validate_email
 from django.conf import settings
 from django.template import RequestContext
 
@@ -14,7 +16,7 @@ from django_fixmystreet.fixmystreet.models import (
     OrganisationEntity, ReportCategory,
     Report, ReportMainCategoryClass)
 from django_fixmystreet.fixmystreet.utils import get_current_user, transform_notification_template
-from django_fixmystreet.fixmystreet.utils import generate_pdf
+from django_fixmystreet.fixmystreet.utils import generate_pdf, JsonHttpResponse
 
 
 def saveCategoryConfiguration(request):
@@ -60,6 +62,12 @@ def update_category_for_report(request, report_id):
 
 
 def send_pdf(request, report_id):
+    to_return = {
+        "status": "success",
+        "message": "",
+        "logMessages": [],
+    }
+
     user = get_current_user()
     recipients = request.POST.get('to')
     comments = request.POST.get('comments', '')
@@ -85,6 +93,14 @@ def send_pdf(request, report_id):
 
     for recepient in recepients:
         recepient = recepient.strip()
+        if not recepient:
+            continue
+        try:
+            validate_email(recepient)
+        except ValidationError:
+            to_return["status"] = "error"
+            to_return["logMessages"].append(_("'{email}' is not a valid email address.").format(email=recepient))
+            continue
 
         msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, (recepient,))
 
@@ -97,5 +113,10 @@ def send_pdf(request, report_id):
         msg.attach(name, pdffile.read(), 'application/pdf')
 
         msg.send()
+        to_return["logMessages"].append(_("Successfully sent to '{email}'.").format(email=recepient))
 
-    return HttpResponse(_("PDF sent as email"), mimetype="application/text")
+    if "status" == "success":
+        to_return["message"] = _("PDF sent as email.")
+    else:
+        to_return["message"] = _("There were errors.")
+    return JsonHttpResponse(to_return)
