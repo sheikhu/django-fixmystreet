@@ -292,10 +292,14 @@ $(document).ready(function() {
         var statusMessage = document.getElementById(self.id + '-status');
         var status        = statusMessage.parentNode;
 
+        var formData = $(this).serialize();
+        {% trans "Unable to send your request." as error_message %}
+        if (!formData) { alert('{% trans "ERROR" %}: {{ error_message|escapejs }}'); }
+
         $.ajax({
             type: 'POST',
             url: url,
-            data: $(this).serialize(),
+            data: formData,
             success: function(response) {
                 console.log("send mail success");
 
