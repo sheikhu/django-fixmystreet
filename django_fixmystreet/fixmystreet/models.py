@@ -1381,11 +1381,16 @@ class ReportAttachment(UserTrackedModel):
     #     '''Returns true if the attachment is deleted'''
     #     return self.logical_deleted
 
+    # DEPRECATED !!!
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
         # return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
-        return (self.security_level != ReportAttachment.CONFIDENTIAL and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        return (
+            self.security_level != ReportAttachment.CONFIDENTIAL and
+            (current_user.contractor or current_user.applicant) or
+            (current_user.manager or current_user.leader)
+        )
 
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''
