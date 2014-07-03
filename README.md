@@ -1,4 +1,5 @@
 
+[![Requirements Status](https://requires.io/github/CIRB/django-fixmystreet/requirements.png?branch=master)](https://requires.io/github/CIRB/django-fixmystreet/requirements/?branch=master)
 
 Thanks
 ======

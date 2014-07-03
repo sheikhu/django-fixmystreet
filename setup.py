@@ -19,12 +19,10 @@ install_requires = [
     'django-extensions',
     'docutils',
     'markdown',
-    'oauth2',
     'simplejson==1.9.3',
     'transifex-client',
 
     'django-extensions==1.0.1',
-    'django-nose==1.1',
     'django-stdimage==0.2.2',
     'django-transmeta==0.6.9',
 
