@@ -18,6 +18,7 @@ def report_category_note(request, id):
         cat.hint.label
     ))
 
+
 def create_comment(request):
     SessionManager.createComment(request.POST.get('title'), request.POST.get('text'), request.session)
     hh = HttpResponse(content='True', mimetype='text/html')
@@ -25,7 +26,6 @@ def create_comment(request):
 
 
 def create_file(request):
-    print request.POST
     SessionManager.createFile(request.POST.get('title'), request.POST.get('file'), request.POST.get("file_creation_date"), request.session)
     hh = HttpResponse(content='True', mimetype='text/html')
     return hh
@@ -35,10 +35,9 @@ def uploadFile(request):
     for file_code in request.FILES:
         upfile = request.FILES[file_code]
         path = os.path.join(settings.PROJECT_PATH, 'media/files/')
-        print os.path.exists(path)
         if not os.path.exists(path):
             os.makedirs(path)
-        with open(path+upfile.name, 'wb+') as destination:
+        with open(path + upfile.name, 'wb+') as destination:
             for chunk in upfile.chunks():
                 destination.write(chunk)
     hh = HttpResponse(content='True', mimetype='text/html')
@@ -54,8 +53,22 @@ def get_report_popup_details(request):
 def filter_map(request):
     reports = Report.objects.all().visible().public()
 
-    results = []
+    features = []
     for report in reports:
-        results.append(report.marker_detail_short())
+        features.append({
+            'type': 'Feature',
+            'properties': {
+                'id': report.id,
+                'status': report.status
+            },
+            'geometry': {
+                'type': 'Point',
+                'oordinates': [report.point.x, report.point.y]
+            }
+        })
 
-    return HttpResponse(json.dumps(results), mimetype="application/json")
+    geo = {
+        'type': 'FeatureCollection',
+        'features': features
+    }
+    return HttpResponse(json.dumps(geo), mimetype="application/json")
