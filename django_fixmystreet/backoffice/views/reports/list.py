@@ -76,4 +76,3 @@ def table_content(request, selection=""):
         "zipcodes": zipcodes,
         "reports": reports.related_fields(),
     }, context_instance=RequestContext(request))
-
