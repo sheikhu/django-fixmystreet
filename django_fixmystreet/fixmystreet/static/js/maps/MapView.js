@@ -1,14 +1,14 @@
 var MapView = Backbone.View.extend({
     render: function () {
-        var map = L.map(this.el).setView([50.84331852979277,4.357895514064874], 12);
+        this.map = L.map(this.el).setView([50.84535101789271, 4.351873397827148], 14);
 
-        var nexrad = L.tileLayer.wms("http://geoserver.gis.irisnet.be/urbis/wms/gwc", {
+        var nexrad = L.tileLayer.wms("/urbis/geoserver/gwc/service/wms", {
             layers: 'urbisFR', // + LANGUAGE_ODE
             format: 'image/png',
             transparent: true,
         	crs: L.CRS.EPSG31370,
             attribution: "Realized by means of Brussels UrbIS &copy; &reg;"
-        }).addTo(map);
+        }).addTo(this.map);
 
         return this;
     }
