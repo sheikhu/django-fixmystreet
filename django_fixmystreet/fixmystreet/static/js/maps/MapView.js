@@ -1,6 +1,5 @@
 var MapView = Backbone.View.extend({
     render: function () {
-        console.log(this.el);
         var map = L.map(this.el).setView([55.75, 37.58], 10);
 
         var nexrad = L.tileLayer.wms("http://geoserver.gis.irisnet.be/urbis/wms/gwc", {

@@ -45,9 +45,11 @@ $(function(){
     //     urbisUrl:    WMS_SERVICE_URL
     // });
 
-    fms.currentMap = new MapView();
-    $("#map").append(fms.currentMap.render().el);
-    var markers = [];
+    fms.currentMap = new MapView({
+        el: '#map'
+    });
+    fms.currentMap.render();
+//     var markers = [];
 //
 //     function applyFilter() {
 //         //Show loading icon
