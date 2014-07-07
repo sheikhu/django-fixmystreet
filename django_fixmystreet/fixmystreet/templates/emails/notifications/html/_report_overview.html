@@ -1,5 +1,4 @@
-{% extends 'emails/notifications/base.html' %}
-
+{% ifequal lang "fr" %}
 {% block content_mail_fr %}
 <ul>
 <li><strong>Incident n°</strong> {{report.id}}</li>
@@ -10,7 +9,8 @@
 <li><strong>Traité par</strong> {{responsible}}</li>
 </ul>
 {% endblock %}
-
+{% endifequal %}
+{% ifequal lang "nl" %}
 {% block content_mail_nl %}
 <ul>
 <li><strong>Incident n°</strong> {{report.id}}</li>
@@ -21,3 +21,4 @@
 <li><strong>Beheerder</strong> {{responsible}}</li>
 </ul>
 {% endblock %}
+{% endifequal %}
