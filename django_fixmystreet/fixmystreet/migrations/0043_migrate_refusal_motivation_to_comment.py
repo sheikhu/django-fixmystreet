@@ -31,23 +31,21 @@ class Migration(DataMigration):
             print '   Motivation', report.refusal_motivation
             print '   User', contact_user
 
-            comment        = orm['fixmystreet.ReportComment']()
-            comment.text   = report.refusal_motivation
-
-            if contact_user:
+            if report.refusal_motivation and contact_user:
+                comment        = orm['fixmystreet.ReportComment']()
+                comment.text   = report.refusal_motivation
                 comment.user   = contact_user
+                comment.report = report
+                comment.save()
 
-            comment.report = report
-            comment.save()
-
-            report.refusal_comment = comment
-            report.save()
+                report.refusal_comment = comment
+                report.save()
 
         print 'refusal_comment migrated:', len(to_migrate)
 
     def backwards(self, orm):
         "Write your backwards methods here."
-        to_delete = orm['fixmystreet.Report'].objects.filter(refusal_motivation__isnull=False)
+        to_delete = orm['fixmystreet.Report'].objects.filter(refusal_motivation__isnull=False, refusal_comment__isnull=False)
 
         for report in to_delete:
             contact_user = get_contact_user(report)
