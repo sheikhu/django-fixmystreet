@@ -230,12 +230,14 @@ class MailTest(TestCase):
 
         #Login to access the pro page to create a user
         self.client.login(username='manager@a.com', password='test')
+
         #Refuse the created report
         refused_url = reverse('report_refuse_pro', args=[report_id])
-        refused_params = {'refusal_motivation': 'more info'}
+        refused_params = {'text': 'more info'}
         response = self.client.post(refused_url, refused_params, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(mail.outbox), 4)
+
         #The status of the report must now be REFUSED
         report = Report.objects.get(id=report_id)
         self.assertEquals(report.status, Report.REFUSED)
@@ -399,8 +401,13 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 3)
         self.assertIn(self.sample_post['citizen-email'], mail.outbox[2].to)
 
-        response = self.client.post(reverse('report_fix_pro', args=[report_id]), {'is_fixed': 'True'}, follow=True)
+        params = {
+            'text' : 'Ceci est un commentaire',
+            'is_fixed': 'True'
+        }
+        response = self.client.post(reverse('report_fix_pro', args=[report_id]), params, follow=True)
         self.assertEquals(response.status_code, 200)
+
         #4 mails send 2 for creation, 1 for acceptance and 1 for resolving the issue. The last one should go to the responsible
         self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
         self.assertEquals(len(mail.outbox), 4)

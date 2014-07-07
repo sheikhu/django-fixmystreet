@@ -283,30 +283,6 @@ class ReportCommentForm(forms.ModelForm):
 
     text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder': _("Add a comment, please.")}))
 
-
-class MarkAsDoneForm(forms.ModelForm):
-    mark_as_done_motivation = forms.CharField(
-        label=_("Mark as done"),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'placeholder': _("Mark as done comments.")
-        })
-    )
-
-    class Meta:
-        model = Report
-        fields = ('mark_as_done_motivation',)
-
-    def save(self, commit=True):
-        report = super(MarkAsDoneForm, self).save(commit=False)
-        report.status = Report.SOLVED
-        report.mark_as_done_user = get_current_user()
-        report.fixed_at = datetime.datetime.now()
-        if commit:
-            report.save()
-        return report
-
-
 class LoginForm(forms.Form):
     username = forms.CharField(label=_("Username"))
     password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)

@@ -163,6 +163,10 @@ class HistoryTest(TestCase):
             'report-terms_of_use_validated': True
         }
 
+        self.sample_post_comment = {
+            'text' : 'Ceci est un commentaire'
+        }
+
     def testCreateReportHistoryCitizen(self):
         #Send a post request filling in the form to create a report
         response = self.client.post(
@@ -273,16 +277,17 @@ class HistoryTest(TestCase):
 
         self.client.login(username='manager@a.com', password='test')
         url = reverse('report_refuse_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
+        response = self.client.post(url, self.sample_post_comment, follow=True)
         self.assertEqual(response.status_code, 200)
-
         self.client.logout()
+
         #check if the status is updated
         url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
         response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
+
+        self.assertEquals(response.status_code, 200)
         self.assertEquals(activities.all().count(), 2)
         self.assertContains(response, self.calculatePrint(activities[1]))
         self.assertNotContains(response, self.calculatePrintPro(activities[1]))
@@ -380,7 +385,8 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        response = self.client.post(reverse('report_fix_pro', args=[report_id]), {'is_fixed': 'True'}, follow=True)
+        self.sample_post_comment['is_fixed'] = 'True'
+        response = self.client.post(reverse('report_fix_pro', args=[report_id]), self.sample_post_comment, follow=True)
         self.assertEqual(response.status_code, 200)
 
         #first check that pro has right status

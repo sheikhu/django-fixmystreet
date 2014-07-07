@@ -380,15 +380,15 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(response.status_code, 200)
         self.client.logout()
 
-        self.assertFalse(report.mark_as_done_user)
+        self.assertFalse(report.mark_as_done_comment)
         self.assertFalse(report.fixed_at)
 
-        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
+        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True', 'text': 'commentaire'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
         self.assertTrue(report.fixed_at)
-        self.assertFalse(report.mark_as_done_user)
+        self.assertFalse(report.mark_as_done_comment)
         self.assertEqual(report.status, Report.SOLVED)
 
         self.client.login(username=self.manager.email, password='test')
@@ -404,7 +404,7 @@ class ReportViewsTest(SampleFilesTestCase):
         url = "%s?x=148360&y=171177" % reverse('report_new')
         response = self.client.post(url, self.sample_post, follow=True)
         report = response.context['report']
-        self.assertFalse(report.mark_as_done_user)
+        self.assertFalse(report.mark_as_done_comment)
         self.assertFalse(report.fixed_at)
 
         self.client.login(username='manager@a.com', password='test')
@@ -414,13 +414,13 @@ class ReportViewsTest(SampleFilesTestCase):
 
         response = self.client.post(
             reverse('report_fix_pro', args=[report.id]),
-            {'is_fixed': 'True'},
+            {'is_fixed': 'True', 'text': 'commentaire'},
             follow=True)
         self.assertEquals(response.status_code, 200)
 
         report = response.context['report']
         self.assertTrue(report.fixed_at)
-        self.assertTrue(report.mark_as_done_user)
+        self.assertTrue(report.mark_as_done_comment)
         self.assertEquals(report.status, Report.SOLVED)
 
         self.client.login(username=self.manager.email, password='test')

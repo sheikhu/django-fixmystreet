@@ -550,8 +550,10 @@ class Report(UserTrackedModel):
     hash_code = models.IntegerField(null=True, blank=True)  # used by external app for secure sync, must be random generated
 
     citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
-    mark_as_done_motivation = models.TextField(null=True, blank=True)
-    mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True)
+
+    mark_as_done_motivation = models.TextField(null=True, blank=True) # deprecated
+    mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True) # deprecated
+    mark_as_done_comment = models.ForeignKey('ReportComment', related_name='report_mark_as_done', on_delete=models.SET_NULL, null=True, blank=True)
 
     refusal_motivation = models.TextField(null=True, blank=True) # deprecated
     refusal_comment = models.ForeignKey('ReportComment', related_name='report_refusal', on_delete=models.SET_NULL, null=True, blank=True)

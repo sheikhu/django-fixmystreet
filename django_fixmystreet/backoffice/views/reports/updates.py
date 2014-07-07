@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django.http import Http404
 
 from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
-from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm, ReportCommentForm
+from django_fixmystreet.fixmystreet.forms import ReportCommentForm
 
 import logging
 logger = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ def refuse(request, report_id):
     report       = get_object_or_404(Report, id=report_id)
     comment_form = ReportCommentForm(request.POST)
 
-    # Validate form
+    # TOFIX: Validate form
     if comment_form.is_valid() and request.POST.get('text'):
         comment = comment_form.save(commit=False)
 
@@ -61,10 +61,23 @@ def refuse(request, report_id):
 
 def fixed(request, report_id):
     report = get_object_or_404(Report, id=report_id)
+
     if 'is_fixed' in request.REQUEST:
-        form = MarkAsDoneForm(request.POST, instance=report)
-        # Save the mark as done motivation in the database
-        form.save()  # Redirect to the report show page
+        comment_form = ReportCommentForm(request.POST)
+
+        # TOFIX: Validate form
+        if comment_form.is_valid() and request.POST.get('text'):
+            comment = comment_form.save(commit=False)
+
+            # Save refusal motivation
+            comment.report = report
+            comment.save()
+
+            #Update the status of report
+            report.status               = Report.SOLVED
+            report.mark_as_done_comment = comment
+            report.fixed_at             = datetime.now()
+            report.save()
 
     if "pro" in request.path:
         return HttpResponseRedirect(report.get_absolute_url_pro())

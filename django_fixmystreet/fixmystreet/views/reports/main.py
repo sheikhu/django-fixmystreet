@@ -1,3 +1,4 @@
+import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
@@ -13,7 +14,7 @@ from django_fixmystreet.fixmystreet.models import (
     ZipCode, ReportMainCategoryClass)
 from django_fixmystreet.fixmystreet.forms import (
     CitizenReportForm, CitizenForm,
-    ReportCommentForm, ReportFileForm, MarkAsDoneForm)
+    ReportCommentForm, ReportFileForm)
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 
 import logging
@@ -170,14 +171,14 @@ def document(request, slug, report_id):
         "citizen_form": citizen_form,
     }, context_instance=RequestContext(request))
 
-
 def update(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
     if 'is_fixed' in request.REQUEST:
-        form = MarkAsDoneForm(request.POST, instance=report)
-        #Save the mark as done motivation in the database
-        form.save()
+        #Update the status of report
+        report.status   = Report.SOLVED
+        report.fixed_at = datetime.datetime.now()
+        report.save()
 
         if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())

@@ -12,7 +12,7 @@ from django.utils.translation import get_language
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import PriorityForm
 
 
@@ -230,7 +230,7 @@ def show(request, slug, report_id):
         "applicants": applicants,
         "entities": entities,
         "refuse_form": ReportCommentForm(),
-        "mark_as_done_form": MarkAsDoneForm(),
+        "mark_as_done_form": ReportCommentForm(),
         "priority_form": PriorityForm(instance=report),
         'activity_list': report.activities.all(),
         'attachment_edit': can_edit_attachment,

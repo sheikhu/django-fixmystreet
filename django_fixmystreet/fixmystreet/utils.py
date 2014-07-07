@@ -281,8 +281,8 @@ def transform_notification_template(template_mail, report, user, old_responsible
         data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
 
     if template_mail == "mark_as_done":
-        data["done_motivation"] = report.mark_as_done_motivation
-        data["resolver"] = transform_notification_user_display(display_pro, report.mark_as_done_user)
+        data["done_motivation"] = report.mark_as_done_comment.text if report.mark_as_done_comment else None
+        data["resolver"] = transform_notification_user_display(display_pro, report.mark_as_done_comment.user if report.mark_as_done_comment else None)
 
     if old_responsible:
         data["old_responsible"] = transform_notification_user_display(display_pro, old_responsible)
