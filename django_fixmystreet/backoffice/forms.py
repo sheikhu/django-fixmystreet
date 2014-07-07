@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report, ReportComment
 
 #Increase username size
 AuthenticationForm.base_fields['username'].max_length = 150
@@ -25,28 +25,6 @@ class ManagersListForm(forms.Form):
         self.manager = forms.ModelChoiceField(queryset=FMSUser.objects.filter(manager=True, organisation=user.organisation).order_by('last_name', 'first_name'))
 
         super(ManagersListForm, self).__init__(*args, **kwargs)
-
-
-class RefuseForm(forms.ModelForm):
-    class Meta:
-        model = Report
-        fields = ('refusal_motivation',)
-
-    refusal_motivation = forms.CharField(
-        required=True,
-        label=_('Refusal motivation'),
-        widget=forms.Textarea(attrs={
-            'placeholder': _("Refusal motivation description.")
-        })
-    )
-
-    def save(self, commit=True):
-        report = super(RefuseForm, self).save(commit=False)
-        report.status = Report.REFUSED
-        if commit:
-            report.save()
-        return report
-
 
 class PriorityForm(forms.ModelForm):
     class Meta:

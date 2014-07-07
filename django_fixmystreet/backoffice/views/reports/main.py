@@ -13,7 +13,7 @@ from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCoun
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, MarkAsDoneForm, ReportMainCategoryClass
-from django_fixmystreet.backoffice.forms import RefuseForm, PriorityForm
+from django_fixmystreet.backoffice.forms import PriorityForm
 
 
 DEFAULT_TIMEDELTA_PRO = {"days": -30}
@@ -229,7 +229,7 @@ def show(request, slug, report_id):
         "contractors": contractors,
         "applicants": applicants,
         "entities": entities,
-        "refuse_form": RefuseForm(instance=report),
+        "refuse_form": ReportCommentForm(),
         "mark_as_done_form": MarkAsDoneForm(),
         "priority_form": PriorityForm(instance=report),
         'activity_list': report.activities.all(),

@@ -9,8 +9,7 @@ from django.template import RequestContext
 from django.http import Http404
 
 from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
-from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm
-from django_fixmystreet.backoffice.forms import RefuseForm
+from django_fixmystreet.fixmystreet.forms import MarkAsDoneForm, ReportCommentForm
 
 import logging
 logger = logging.getLogger(__name__)
@@ -37,14 +36,21 @@ def accept(request, report_id):
 
 
 def refuse(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
+    report       = get_object_or_404(Report, id=report_id)
+    comment_form = ReportCommentForm(request.POST)
 
-    #Update the status
-    report.status = Report.REFUSED
-    form = RefuseForm(request)
-    #Save the refusal motivation in the database
-    report.refusal_motivation = form.data.POST.get('refusal_motivation')
-    report.save()
+    # Validate form
+    if comment_form.is_valid() and request.POST.get('text'):
+        comment = comment_form.save(commit=False)
+
+        # Save refusal motivation
+        comment.report = report
+        comment.save()
+
+        #Update the status of report
+        report.status = Report.REFUSED
+        report.refusal_comment = comment
+        report.save()
 
     #Redirect to the report show page
     if "pro" in request.path:
