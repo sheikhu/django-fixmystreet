@@ -17,7 +17,7 @@ class Migration(DataMigration):
 
             print 'Report', report.id
             print '   Motivation', report.mark_as_done_motivation
-            print '   User', contact_user.username
+            print '   User', contact_user
 
             # If it's a citizen who did the action, no comment
             if report.mark_as_done_motivation and contact_user:
