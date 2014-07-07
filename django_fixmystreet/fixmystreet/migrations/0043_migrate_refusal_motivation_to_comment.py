@@ -24,7 +24,7 @@ class Migration(DataMigration):
 
         to_migrate = orm['fixmystreet.Report'].objects.filter(refusal_motivation__isnull=False)
 
-        for report in to_migrate[1:2]:
+        for report in to_migrate:
             contact_user = get_contact_user(report)
 
             print 'Report', report.id
