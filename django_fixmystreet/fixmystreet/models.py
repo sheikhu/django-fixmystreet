@@ -382,15 +382,17 @@ class ReportQuerySet(models.query.GeoQuerySet):
     # Because it returns a list and not a queryset, use it at the end of your ORM request: MyClass.objects.filter().exclude().rank()
     # params: report point, secondary_category, created date
     def rank(self, report_point, report_category, report_date):
-        # Get all reports 250m around the point
-        nearby_reports = self.near(report_point, 250)
+        DISTANCE_MAX = 250
+
+        # Get all reports DISTANCE_MAX around the point
+        nearby_reports = self.near(report_point, DISTANCE_MAX)
 
         for report_near in nearby_reports:
             rank = 0
 
-            # Distance : (250 - distance) / 250 * 4
+            # Distance : (DISTANCE_MAX - distance) / DISTANCE_MAX * 4
             # (valeur entre 0 et 1 * 4)
-            rank += (250 - report_near.distance) / 250 * 4
+            rank += (DISTANCE_MAX - report_near.distance) / DISTANCE_MAX * 4
 
             # Category : 1 point par bon niveau de categorie en cascade depuis le premier niveau.
             # (valeur entre 0 et 3)
