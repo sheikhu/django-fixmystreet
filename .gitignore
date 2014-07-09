@@ -1,9 +1,14 @@
 *.pyc
 *.egg-info
 *.log
+.vagrant
+hiera.yaml
+Vagrantfile
 env/
 doc/build/
 doc/source/gen/
 django_fixmystreet/local_settings.py
 media/photos/
 media/files/
+hieradata/
+reporting/
