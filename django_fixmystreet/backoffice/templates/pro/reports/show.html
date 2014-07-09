@@ -523,15 +523,8 @@ $(document).ready(function() {
                                 <a class="btn reject" onclick="refuse();">{% trans 'Reject' %}</a>
                             {% endif %}
                         {% endif %}
-
-
-
-
-
-                    <!--timeline-->
-
-
                 </div>
+
                 <div class="span2 btn-group-vertical">
                     {% if report.is_in_progress %}
                         {% if report.status != report.SOLVED %}
@@ -683,7 +676,14 @@ $(document).ready(function() {
 <!--
                                 <a tabindex="-1" href="#" onclick="showNearbyReports();">{% trans 'Merge' %}</a>
 -->
-                                <a tabindex="-1" href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Merge' %}...</a>
+                                <a tabindex="-1" href="{% url 'report_merge_pro' report.get_slug report.id %}">
+                                    {% trans 'Merge' %}
+
+                                    {# Potential duplicates count #}
+                                    {% if report.is_in_progress and reports_nearby_count %}
+                                        ({{ reports_nearby_count }})
+                                    {% endif %}
+                                </a>
                             </li>
                             {% endif %}
 
@@ -758,6 +758,19 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
+
+{# Potential duplicates count #}
+    {% if report.is_created and reports_nearby_count %}
+
+        <br/>
+
+        <div class="alert alert-error text-center">
+            <a href="{% url 'report_merge_pro' report.get_slug report.id %}">
+                <strong>{{ reports_nearby_count }} {% trans "potential duplicates" %}</strong>
+            </a>
+        </div>
+    {% endif %}
+
 <!-- Modal -->
 {% if report.is_in_progress %}
     {% if report.status != report.SOLVED %}

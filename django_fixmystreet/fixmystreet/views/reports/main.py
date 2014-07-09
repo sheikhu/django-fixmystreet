@@ -89,9 +89,7 @@ def new(request):
         "file_formset": file_formset,
         "report_form": report_form,
         "citizen_form": citizen_form,
-        "pnt": pnt,
-        # "reports": reports,
-        # "reports_nearby": reports_nearby
+        "pnt": pnt
     }, context_instance=RequestContext(request))
 
 

@@ -79,10 +79,8 @@ def new(request):
         "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all(),
         "report_form": report_form,
         "pnt": pnt,
-        # "reports": Report.objects.all().visible(),
         "file_formset": file_formset,
         "comment_form": comment_form,
-        # "reports_nearby": reports_nearby
     }, context_instance=RequestContext(request))
 
 
@@ -214,9 +212,13 @@ def show(request, slug, report_id):
         request.fmsuser.memberships.filter(organisation=report.responsible_department).exists() and
         (report.is_created() or report.is_in_progress()))
 
+    # Get count of nearby reports
+    reports_nearby_count = len(Report.objects.all().rank(report.point, report.secondary_category, report.created))
+
     return render_to_response("pro/reports/show.html", {
         "fms_user": request.fmsuser,
         "report": report,
+        "reports_nearby_count": reports_nearby_count,
         "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
         "comment_form": comment_form,
         "file_formset": file_formset,
@@ -294,11 +296,14 @@ def document(request, slug, report_id):
 def merge(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id)
 
-    reports_nearby = Report.objects.all().visible().related_fields().exclude(id=report.id).rank(report.point, report.secondary_category, report.created)
+    reports_nearby = Report.objects.all().visible().related_fields().exclude(id=report.id)
+
     if report.is_created():
         reports_nearby = reports_nearby.exclude(status=Report.CREATED)
     elif report.is_closed():
         reports_nearby = reports_nearby.exclude(status__in=Report.REPORT_STATUS_CLOSED)
+
+    reports_nearby = reports_nearby.rank(report.point, report.secondary_category, report.created)
 
     return render_to_response("pro/reports/merge.html", {
         "fms_user": request.fmsuser,

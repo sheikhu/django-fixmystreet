@@ -2220,6 +2220,10 @@ content: "*";
 .alert a:link, .alert a:visited, .alert a:hover, .alert a:active, .alert a:focus{
 	color:#c09853;
 }
+.alert-error a:link, .alert-error a:visited, .alert-error a:hover, .alert-error a:active, .alert-error a:focus{
+	color:#B94A48;
+    text-decoration:underline;
+}
 
 .pointer {
     cursor: pointer;
