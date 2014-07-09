@@ -390,7 +390,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
             # Distance : (250 - distance) / 250 * 4
             # (valeur entre 0 et 1 * 4)
-            rank += (250 - report_near.point.distance(report_point)) / 250 * 4
+            rank += (250 - report_near.distance) / 250 * 4
 
             # Category : 1 point par bon niveau de categorie en cascade depuis le premier niveau.
             # (valeur entre 0 et 3)
