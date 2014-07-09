@@ -80,8 +80,6 @@ def new(request):
         comment_form = ReportCommentForm(prefix='comment')
         citizen_form = CitizenForm(prefix='citizen')
 
-    # reports_nearby = Report.objects.all().visible().public().near(pnt, 150).related_fields()
-    # reports = Report.visibles.all()
     return render_to_response("reports/new.html", {
         "report": report,
         "available_zips": ZipCode.objects,

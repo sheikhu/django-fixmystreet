@@ -379,6 +379,56 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def near(self, origin, distance):
         return self.distance(origin).filter(point__distance_lte=(origin, distance)).order_by('distance')
 
+    # Because it returns a list and not a queryset, use it at the end of your ORM request: MyClass.objects.filter().exclude().rank()
+    # params: report point, secondary_category, created date
+    def rank(self, report_point, report_category, report_date):
+        # Get all reports 250m around the point
+        nearby_reports = self.near(report_point, 250)
+
+        for report_near in nearby_reports:
+            rank = 0
+
+            # Distance : (250 - distance) / 250 * 4
+            # (valeur entre 0 et 1 * 4)
+            rank += (250 - report_near.point.distance(report_point)) / 250 * 4
+
+            # Category : 1 point par bon niveau de categorie en cascade depuis le premier niveau.
+            # (valeur entre 0 et 3)
+            if report_near.category == report_category.category_class:
+                rank += 1
+
+                if report_near.secondary_category.secondary_category_class == report_category.secondary_category_class:
+                    rank += 1
+
+                    if report_near.secondary_category == report_category:
+                        rank += 1
+
+            # Date : 1 / abs(nbre de mois de difference)+1
+            # (valeur entre 0 et 1)
+            abs_days = abs((report_date - report_near.created).days)
+            months   = float(abs_days) / 30
+
+            # ! With the +1, the total can be 2. So I check if months are > 1.
+            if months > 1:
+                rank += 1 / months
+            else:
+                rank += 1
+
+            # Mobile : Si mobile risque eleve donc +1.
+            # (valeur 0 OU 1)
+            if report_near.source == "mobile":
+                rank += 1
+
+            # Status : Si signale +1 point.
+            # (valeur 0 OU 1)
+            if report_near.status == Report.CREATED:
+                rank += 1
+
+            # Set rank to report_near
+            report_near.rank = rank
+
+        return sorted(nearby_reports, key=lambda report: report.rank, reverse=True)
+
     def responsible(self, user):
         query = Q()
         if user.contractor and user.manager:

@@ -73,9 +73,6 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
     comment_form = ReportCommentForm(prefix='comment')
 
-    # reports_nearby = Report.objects.all().visible().unfinished()
-    # reports_nearby = reports_nearby.near(pnt, 150).related_fields()
-
     return render_to_response("pro/reports/new.html", {
         "report": report,
         "all_zips": ZipCode.objects.all(),
@@ -296,9 +293,8 @@ def document(request, slug, report_id):
 
 def merge(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id)
-    pnt = report.point
 
-    reports_nearby = Report.objects.all().visible().related_fields().near(pnt, 250).exclude(id=report.id)
+    reports_nearby = Report.objects.all().visible().related_fields().exclude(id=report.id).rank(report.point, report.secondary_category, report.created)
     if report.is_created():
         reports_nearby = reports_nearby.exclude(status=Report.CREATED)
     elif report.is_closed():

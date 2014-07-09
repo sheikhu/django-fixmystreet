@@ -277,7 +277,10 @@
                                             {{ report.display_category }}
                                         </span><br />
                                     <!-- Button "it's the same" -->
-                                    <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");' class="btn_same_incident report" >{% trans "Merge" %}</a>
+                                    <a
+                                        href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
+                                        class="btn_same_incident report"
+                                        title="Rank of {{ report.rank }}" >{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
