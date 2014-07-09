@@ -199,13 +199,9 @@ def show(request, slug, report_id):
         request.fmsuser.memberships.filter(organisation=report.responsible_department).exists() and
         (report.is_created() or report.is_in_progress()))
 
-    # Get count of nearby reports
-    reports_nearby_count = len(Report.objects.all().rank(report.point, report.secondary_category, report.created))
-
     return render_to_response("pro/reports/show.html", {
         "fms_user": request.fmsuser,
         "report": report,
-        "reports_nearby_count": reports_nearby_count,
         "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
         "comment_form": comment_form,
         "file_formset": file_formset,

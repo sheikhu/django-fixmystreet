@@ -680,8 +680,8 @@ $(document).ready(function() {
                                     {% trans 'Merge' %}
 
                                     {# Potential duplicates count #}
-                                    {% if report.is_in_progress and reports_nearby_count %}
-                                        ({{ reports_nearby_count }})
+                                    {% if report.is_in_progress and report.get_nearby_report_count %}
+                                        ({{ report.get_nearby_report_count }})
                                     {% endif %}
                                 </a>
                             </li>
@@ -760,13 +760,13 @@ $(document).ready(function() {
 {% block content %}
 
 {# Potential duplicates count #}
-    {% if report.is_created and reports_nearby_count %}
+    {% if report.is_created and report.get_nearby_report_count %}
 
         <br/>
 
         <div class="alert alert-error text-center">
             <a href="{% url 'report_merge_pro' report.get_slug report.id %}">
-                <strong>{{ reports_nearby_count }} {% trans "potential duplicates" %}</strong>
+                <strong>{{ report.get_nearby_report_count }} {% trans "potential duplicates" %}</strong>
             </a>
         </div>
     {% endif %}
