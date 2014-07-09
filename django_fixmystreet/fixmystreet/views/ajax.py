@@ -63,7 +63,7 @@ def filter_map(request):
             },
             'geometry': {
                 'type': 'Point',
-                'oordinates': [report.point.x, report.point.y]
+                'coordinates': [report.point.x, report.point.y]
             }
         })
 

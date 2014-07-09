@@ -7,14 +7,28 @@
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="../lib/jquery-1.8.3.js"></script>
-  <script src="should.js"></script>
+
+  <!-- requirements -->
+  <script src="../lib/jquery-1.8.3.min.js"></script>
+  <script src="../lib/underscore/underscore.js"></script>
+  <script src="../lib/backbone/backbone.js"></script>
+  <script src="../lib/leaflet/leaflet-src.js"></script>
+  <script src="../lib/leaflet.markercluster/leaflet.markercluster-src.js"></script>
+
+  <!-- app -->
+  <script src="../js/maps/FMSMapView.js"></script>
+
+  <!-- test libs -->
+  <script src="chai.js"></script>
   <script src="mocha.js"></script>
   <script src="/testem.js"></script>
-  <script>mocha.setup('bdd');</script>
+  <script>
+  mocha.setup('bdd');
+  </script>
+
+  <!-- unit tests -->
   <script src="test.maps.js"></script>
   <script>
-    mocha.checkLeaks();
     mocha.globals(['jQuery']);
     mocha.run();
   </script>
