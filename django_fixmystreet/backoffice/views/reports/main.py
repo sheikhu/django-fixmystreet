@@ -135,19 +135,6 @@ def search_ticket_pro(request):
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home_pro'))
 
-
-# DEPRECATED ??? is it used somwhere ??
-def subscription(request):
-    """
-    Method used to load all my subscription reports
-    """
-    reports = Report.objects.filter(subscriptions__subscriber_id=request.user.id).related_fields()
-
-    return render_to_response("pro/reports/subscriptions.html", {
-        "reports": reports
-    }, context_instance=RequestContext(request))
-
-
 def delete(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id, responsible_manager=request.fmsuser)
     report.status = Report.DELETED

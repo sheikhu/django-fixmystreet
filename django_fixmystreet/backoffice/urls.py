@@ -26,8 +26,6 @@ urlpatterns += patterns(
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/merge$'), 'merge', name='report_merge_pro'),
     url(_(r'^report/new$'), 'new', name='report_new_pro'),
     url(_(r'^report/verify'), 'verify', name='report_verify_pro'),
-    # DEPRECATED ??? is it used somwhere ??
-    url(_(r'^report/subscription$'), 'subscription', name='report_subscription_pro'),
     url(r'^report/search$', 'search_ticket_pro', name='search_ticket_pro'),
     url(_(r'^report/$'), 'report_prepare_pro', name='report_prepare_pro'),
     url(_(r'^report/(\d+)/delete/$'), 'delete', name='report_delete_pro'),
