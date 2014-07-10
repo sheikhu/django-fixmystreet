@@ -388,22 +388,21 @@ class ReportQuerySet(models.query.GeoQuerySet):
         nearby_reports = self.near(report_point, DISTANCE_MAX)
 
         for report_near in nearby_reports:
-            rank = 0
-
             # Distance : (DISTANCE_MAX - distance) / DISTANCE_MAX * 4
             # (valeur entre 0 et 1 * 4)
-            rank += (DISTANCE_MAX - report_near.distance.m) / DISTANCE_MAX * 4
+            rank_distance = (DISTANCE_MAX - report_near.distance.m) / DISTANCE_MAX * 4
 
             # Category : 1 point par bon niveau de categorie en cascade depuis le premier niveau.
             # (valeur entre 0 et 3)
+            rank_catego = 0
             if report_near.category == report_category.category_class:
-                rank += 1
+                rank_catego += 1
 
                 if report_near.secondary_category.secondary_category_class == report_category.secondary_category_class:
-                    rank += 1
+                    rank_catego += 1
 
                     if report_near.secondary_category == report_category:
-                        rank += 1
+                        rank_catego += 1
 
             # Date : 1 / abs(nbre de mois de difference)+1
             # (valeur entre 0 et 1)
@@ -412,22 +411,29 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
             # ! With the +1, the total can be 2. So I check if months are > 1.
             if months > 1:
-                rank += 1 / months
+                rank_date = 1 / months
             else:
-                rank += 1
+                rank_date = 1
 
             # Mobile : Si mobile risque eleve donc +1.
             # (valeur 0 OU 1)
+            rank_source = 0
             if report_near.source == "mobile":
-                rank += 1
+                rank_source = 1
 
             # Status : Si signale +1 point.
             # (valeur 0 OU 1)
+            rank_status = 0
             if report_near.status == Report.CREATED:
-                rank += 1
+                rank_status = 1
 
             # Set rank to report_near
-            report_near.rank = rank
+            report_near.rank          = rank_distance + rank_catego + rank_date + rank_source + rank_status
+            report_near.rank_distance = rank_distance
+            report_near.rank_catego   = rank_catego
+            report_near.rank_date     = rank_date
+            report_near.rank_source   = rank_source
+            report_near.rank_status   = rank_status
 
         return sorted(nearby_reports, key=lambda report: report.rank, reverse=True)
 

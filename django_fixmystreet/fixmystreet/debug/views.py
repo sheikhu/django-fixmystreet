@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 from django_fixmystreet.fixmystreet.models import Report
 
@@ -21,27 +22,18 @@ def rank(request):
     # Prepare results
     output = ""
     for report in reports_merge[page:page+10]:
-        output += "Report %s" % report.merged_with.id
-        output += "<br/>"
-
         # Rank merged
         rank_merged = Report.objects.filter(id=report.id).rank(report.merged_with.point, report.merged_with.secondary_category, report.merged_with.created)[0].rank
-        output += "merged with %s rank %s" %(report.id, rank_merged)
 
-        output += "<ol>"
+        # Potential duplicates
         reports_ranked = Report.objects.all().exclude(id=report.merged_with.id).rank(report.merged_with.point, report.merged_with.secondary_category, report.merged_with.created)
-        for ranked in reports_ranked[:10]:
-            output += "<li>"
-            if ranked.id == report.id:
-                output += "<strong>"
-            output += "potential duplicate %s rank %s" % (ranked.id, ranked.rank)
+        output += render_to_string("debug/rank.html", {
+            'report': report,
+            'rank_merged': rank_merged,
+            'reports_ranked': reports_ranked[:10],
+            'total': len(reports_ranked)
 
-            if ranked.id == report.id:
-                output += "</strong>"
-            output += "</li>"
-
-        output += "</ol>"
-        output += "Total: %s <br/>" % len(reports_ranked)
-        output += "<br/><br/>"
+        })
 
     return HttpResponse(output)
+
