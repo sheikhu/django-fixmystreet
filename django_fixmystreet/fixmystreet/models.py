@@ -404,12 +404,11 @@ class ReportQuerySet(models.query.GeoQuerySet):
                     if report_near.secondary_category == report_category:
                         rank_catego += 1
 
-            # Date : 1 / abs(nbre de mois de difference)+1
+            # Date : 1 / abs(nbre de mois de difference +1)
             # (valeur entre 0 et 1)
             abs_days = abs((report_date - report_near.created).days)
             months   = float(abs_days) / 30
 
-            # ! With the +1, the total can be 2. So I check if months are > 1.
             if months > 1:
                 rank_date = 1 / months
             else:
