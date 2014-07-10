@@ -61,9 +61,12 @@
 <table>
 
     <caption>
-        Report {{ report.merged_with.id }}
+        <a href="?id={{ report.merged_with.id }}" target="_blank">
+            Report {{ report.merged_with.id }}
+        </a>
         <br/><br/>
         merged with {{ report.id }} rank {{ rank_merged|floatformat:2 }}
+
     </caption>
 
     <thead>
