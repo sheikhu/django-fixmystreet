@@ -36,6 +36,7 @@ if settings.DEBUG:
             'django.views.static.serve',
             {'document_root':  settings.MEDIA_ROOT}
         ),
+        (r'^debug/', include('django_fixmystreet.fixmystreet.debug.urls'))
     )
 
 if settings.DEBUG:
