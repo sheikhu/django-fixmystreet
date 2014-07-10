@@ -22,11 +22,13 @@ def rank(request):
     # Prepare results
     output = ""
     for report in reports_merge[page:page+10]:
-        # Rank merged
+        # Generate the rank for the related merged report
         rank_merged = Report.objects.filter(id=report.id).rank(report.merged_with.point, report.merged_with.secondary_category, report.merged_with.created)[0].rank
 
         # Potential duplicates
         reports_ranked = Report.objects.all().exclude(id=report.merged_with.id).rank(report.merged_with.point, report.merged_with.secondary_category, report.merged_with.created)
+
+        # Rendering
         output += render_to_string("debug/rank.html", {
             'report': report,
             'rank_merged': rank_merged,

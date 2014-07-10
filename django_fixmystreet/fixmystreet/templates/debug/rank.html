@@ -3,7 +3,7 @@
         font-family:Arial, Helvetica, sans-serif;
     }
     .original td {
-        color: blue;
+        background: #ededed;
         font-weight: bold;
     }
     .same {
@@ -71,11 +71,12 @@
 
     <thead>
         <tr>
+            <th></th>
             <th>ID</th>
             <th>RANK</th>
-            <th>RANK DISTANCE<br/><i>value</i></th>
-            <th>RANK CATEGORY<br/><i>value</i></th>
-            <th>RANK DATE<br/><i>value</i></th>
+            <th>RANK DISTANCE</th>
+            <th>RANK CATEGORY</th>
+            <th>RANK DATE</th>
             <th>RANK SOURCE</th>
             <th>RANK STATUS</th>
         </tr>
@@ -83,11 +84,12 @@
 
     <tbody>
         <tr class="original">
+            <td></td>
             <td><a href="{% url 'report_show_pro' report.merged_with.get_slug report.merged_with.id %}" target="_blank">{{ report.merged_with.id }}</a></td>
             <td></td>
             <td></td>
-            <td><br/><i>{{ report.merged_with.get_category_path }}</i></td>
-            <td><br/><i>{{ report.merged_with.created }}</i></td>
+            <td>{{ report.merged_with.get_category_path }}</td>
+            <td>{{ report.merged_with.created }}</td>
             <td></td>
             <td></td>
         </tr>
@@ -100,6 +102,7 @@
                 <tr>
             {% endifequal %}
 
+                <td>{{ forloop.counter }}</td>
                 <td><a href="{% url 'report_show_pro' ranked.get_slug ranked.id %}" target="_blank">{{ ranked.id }}</a></td>
                 <td>{{ ranked.rank|floatformat:2 }}</td>
                 <td>
