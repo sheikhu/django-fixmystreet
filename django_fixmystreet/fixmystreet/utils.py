@@ -302,7 +302,7 @@ def transform_notification_template(template_mail, report, user, old_responsible
     trickystuff = get_language()
     for l in settings.LANGUAGES:
         activate(l[0])
-        title.append(_(template_mail))
+        title.append(_(template_mail).format(user=user))
         deactivate()
     activate(trickystuff)
 
