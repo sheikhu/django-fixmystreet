@@ -145,7 +145,8 @@ class ReportHandler(BaseHandler):
         'address',
         'address_number',
         'address_regional',
-        'postalcode'
+        'postalcode',
+        'source'
     )
 
     def read(self, request, *args, **kwargs):
@@ -168,10 +169,17 @@ class ReportHandler(BaseHandler):
         fingerprint = RequestFingerprint(request)
         if not fingerprint.is_duplicate():
             fingerprint.save()
+
             if request.data.get('username', False):
-                return self.create_pro(request)
+                report = self.create_pro(request)
             else:
-                return self.create_citizen(request)
+                report = self.create_citizen(request)
+
+            # Set source
+            report.source = Report.SOURCES['MOBILE']
+            report.save()
+
+            return report
 
     def create_pro(self, request):
         '''Create pro report'''

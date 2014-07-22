@@ -417,7 +417,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
             # Mobile : Si mobile risque eleve donc +1.
             # (valeur 0 OU 1)
             rank_source = 0
-            if report_near.source == "mobile":
+            if report_near.source == Report.SOURCES['MOBILE']:
                 rank_source = 1
 
             # Status : Si signale +1 point.
@@ -585,6 +585,11 @@ class Report(UserTrackedModel):
         (4, pgettext_lazy("gravity", "Major"))
     )
 
+    SOURCES = {
+        'WEB' : 'web',
+        'MOBILE': 'mobile'
+    }
+
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
     quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
@@ -666,7 +671,7 @@ class Report(UserTrackedModel):
 
     false_address = models.TextField(null=True, blank=True)
     # provider of the report (mobile / web / osiris...)
-    source = models.TextField(null=False, blank=False, default="web")
+    source = models.TextField(null=False, blank=False, default=SOURCES['WEB'])
 
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])

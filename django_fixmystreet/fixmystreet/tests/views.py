@@ -158,6 +158,12 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertEqual(1, len(Report.objects.all()))
 
+        # Get in the DB the created report
+        report = Report.objects.all()[0]
+
+        # Check that source is correct
+        self.assertEqual(Report.SOURCES['WEB'], report.source)
+
     def test_create_report_double(self):
         """Tests the creation of a double report and test the view of it."""
 

@@ -134,14 +134,15 @@ class ApiTest(SampleFilesTestCase):
         """
 
     def testCreateReportCitizen(self):
-        #Parameters to save the report in database.
-
         #Create a client to launch requests
         client = Client()
+
         #Get the request response
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
+
         #Test the http response code (200 = OK)
         self.assertEqual(response.status_code, 200)
+
         #Test if the response if JSON structured.
         self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
 
@@ -149,6 +150,12 @@ class ApiTest(SampleFilesTestCase):
 
         #Load the response data as JSON object
         result = simplejson.loads(response.content)
+
+        # Get in the DB the created report
+        report = Report.objects.get(id=result['id'])
+
+        # Check that source is correct
+        self.assertEqual(Report.SOURCES['MOBILE'], report.source)
 
     def testCreateReportDoubleCitizen(self):
         #Parameters to save the report in database.
@@ -195,11 +202,16 @@ class ApiTest(SampleFilesTestCase):
 
         #Verify if the report_id is returned by the webservice
         self.assertTrue(result['id'])
+
         #Get in the DB the created report
         report = Report.objects.get(id=result['id'])
+
         #Verify the persisted data for the new created report
         self.assertEquals(report.address, self.sample_post['report-address_fr'])
         self.assertTrue(report.is_pro())
+
+        # Check that source is correct
+        self.assertEqual(Report.SOURCES['MOBILE'], report.source)
 
     def testCreateReportDoublePro(self):
         self.sample_post['username'] = self.manager.username
