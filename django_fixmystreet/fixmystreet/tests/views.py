@@ -335,8 +335,8 @@ class ReportViewsTest(SampleFilesTestCase):
         #current user is no more subscribed
         self.assertFalse(report.subscriptions.filter(subscriber=self.citizen).exists())
 
-    def test_merge_reports(self):
-        """Test merge reports. """
+    def test_do_merge_reports(self):
+        """Test do merge reports. """
 
         #Add first report
         url = "%s?x=148360&y=171177" % reverse('report_new')
@@ -366,6 +366,61 @@ class ReportViewsTest(SampleFilesTestCase):
 
         #The comment of the second one is added to the first one
         self.assertEqual(Report.objects.get(id=report.id).comments().count(), 2)
+
+    def test_merge_reports(self):
+        """Test merge reports. """
+
+        # Add first report
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        # Add second report
+        response2      = self.client.post(url, self.sample_post_2, follow=True)
+        report2        = response2.context['report']
+        report2.status = Report.IN_PROGRESS
+        report2.save()
+
+        # Login user
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+        self.client.post(reverse('login'), params)
+
+        # Display mergeable reports list
+        url = reverse('report_merge_pro', args=[report.get_slug(), report.id])
+        response = self.client.get(url)
+
+        self.assertEqual(report, response.context['report'])
+        self.assertEqual(1, len(response.context['reports_nearby']))
+
+    def test_merge_reports_search_ticket(self):
+        """Test merge reports with search of ticket number """
+
+        # Add first report
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        # Add second report
+        response2 = self.client.post(url, self.sample_post_2, follow=True)
+        report2 = response2.context['report']
+
+        # Login user
+        params = {
+            'username': self.manager.email,
+            'password': 'test'
+        }
+        self.client.post(reverse('login'), params)
+
+        # Display mergeable report according to ticket number
+        url2 = reverse('report_merge_pro', args=[report.get_slug(), report.id])
+        response = self.client.get("%s?ticketNumber=%s" % (url2, report2.id))
+
+        self.assertEqual(report, response.context['report'])
+        self.assertEqual(1, len(response.context['reports_nearby']))
+        self.assertEqual(report2.id, response.context['reports_nearby'][0].id)
 
     def test_mark_done(self):
         """Tests marking report as done."""

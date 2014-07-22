@@ -721,9 +721,6 @@ footer .cirb-cibg img{
 #search-form #input-ticket-search{
 	margin-right: -13px;
 }
-#search-form #search-ticket-form{
-	margin-left:10px;
-}
 .lead-container.no-map{
 	margin-bottom:30px;
 }
@@ -922,9 +919,6 @@ footer .cirb-cibg img{
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-}
-#search-ticket-form {
-	margin: 5px 0 5px 0;
 }
 #widget-search-ticket-button{
 	background:transparent url('../images/btn_search_tickets.png') top left no-repeat;
@@ -2138,25 +2132,11 @@ table.dataTable thead th {
 .modal form {
     margin: 0;
 }
-#search-form.mergeIncident{
-	margin: 0 !important;
-	float: right;
-}
-#search-form.mergeIncident form{
-	margin:0;
-}
 .switch_map_list{
 	margin-bottom:30px;
 }
 .mergeIncident #widget-search-ticket-button {
 	background: transparent url('../images/btn_search_tickets.png') top left no-repeat;
-}
-#search-form.mergeIncident #input-ticket-search{
-	height: 23px;
-	margin-right: -13px;
-}
-.mergeIncident #widget-search-ticket-button{
-	margin-top:1px;
 }
 #map.view_incident.show_report.pro{
 	height:200px;

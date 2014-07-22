@@ -24,34 +24,6 @@
     </script>
 
     <script>
-        var ticketSearch = document.getElementById('input-ticket-search');
-        var ticketForm   = document.getElementById('search-ticket-form');
-
-        // Filter on keyword
-        function filterReports(event) {
-
-            if (event) {
-                event.preventDefault();
-            }
-
-            var reportsMergeable = document.getElementsByClassName('reportsMergeable');
-
-            for (var i=0, mergeableLength=reportsMergeable.length; i<mergeableLength; i++) {
-                if (new String(reportsMergeable[i].id).indexOf(ticketSearch.value) != -1) {
-                    reportsMergeable[i].hidden = false;
-                } else {
-                    reportsMergeable[i].hidden = true;
-                }
-            }
-
-            // Reset pagination
-            currentPage = 1;
-            paginateResults();
-        }
-
-        ticketSearch.addEventListener('keyup', filterReports);
-        ticketForm.addEventListener('submit', filterReports);
-
         // Pagination : a bit tricky
         var previousPage = document.getElementById('previousPage');
         var nextPage     = document.getElementById('nextPage');
@@ -111,9 +83,6 @@
             currentPage++;
             paginateResults();
         });
-
-        // Filter if browser refresh with default values
-        filterReports();
     </script>
 
     <script>
@@ -227,15 +196,7 @@
             <h2 class="verify_title">{% trans "we have" %} {{ reports_nearby|length }} {% trans "incident sector" %}</h2>
             <p class="lead"></p>
         </div>
-        <div class="span3">
-            <div id="search-form" class="block highlighted mergeIncident">
-                <form id="search-ticket-form" class="form-inline">
-                    <input id="input-ticket-search" class="input-large" type="search" name="q" placeholder="{% trans 'Ticket number...' %}" />
-                    <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
-                </form>
-            </div>
-        </div>
-        <div class="span2">
+        <div class="span5">
             <div class="switch_verify btn-group pull-right">
                 <button class="btn active" id="btn-list">{% trans "List" %}</button>
                 <button class="btn" id="btn-map">{% trans "Map" %}</button>
@@ -243,6 +204,20 @@
         </div>
     </div>
 
+    <div class="row text-center">
+        <div id="search-form" class="block highlighted mergeIncident span12">
+            <form id="search-ticket-form" class="form-inline">
+                <input id="input-ticket-search" class="input-large" type="search" name="ticketNumber" placeholder="{% trans 'Ticket number...' %}" value="{{ request.GET.ticketNumber }}" />
+                <input id="widget-search-ticket-button" class="btn" type="submit" value="">
+            </form>
+
+            {% if request.GET.ticketNumber %}
+                <p>
+                    <a href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Clear search' %}</a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
     <div class="row">
         <div class="span12">
             <article id="map" class="map-big hide">
@@ -257,6 +232,10 @@
                     <a href="#" id="previousPage" class="btn hidden">{% trans "Previous page" %}</a>
                     <a href="#" id="nextPage" class="btn pull-right hidden">{% trans "Next page" %}</a>
                 </p>
+
+                {% if not reports_nearby %}
+                    <p class="text-center">{% trans 'No report' %}</p>
+                {% endif %}
 
                 {% for report in reports_nearby %}
                     <div class="row reportsMergeable" id="#{{ report.get_ticket_number }}">
