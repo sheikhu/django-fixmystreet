@@ -834,7 +834,7 @@ class Report(UserTrackedModel):
         return dates
 
     def get_nearby_report_count(self):
-        return len(Report.objects.all().exclude(id=self.id).rank(self.point, self.secondary_category, self.created))
+        return len(Report.objects.all().visible().exclude(id=self.id).rank(self.point, self.secondary_category, self.created))
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED
