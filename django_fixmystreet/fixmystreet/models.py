@@ -2262,6 +2262,15 @@ class StreetSurface(models.Model):
     objects = models.GeoManager()
 
 
+class OrganisationEntitySurface(models.Model):
+    urbis_id = models.IntegerField(null=True, blank=True)
+    version_id = models.IntegerField(null=True, blank=True)
+    owner = models.ForeignKey(OrganisationEntity)
+    geom = models.GeometryField(null=False, srid=31370, blank=False)
+
+    objects = models.GeoManager()
+
+
 class MailNotificationTemplate(models.Model):
     name = models.CharField(max_length=50, help_text="Technical name")
     __metaclass__ = TransMeta
