@@ -238,6 +238,7 @@ mail_titles = {
     _('notify-merged'),
     _('notify-planned'),
     _('notify-refused'),
+    _('notify-reopen'),
     _('notify-subscription'),
     _('notify-updates'),
     _('notify-validation'),

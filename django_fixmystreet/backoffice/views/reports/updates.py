@@ -100,6 +100,17 @@ def close(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+def reopen(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+
+    if report.is_closed() or report.is_refused():
+        report.status = Report.IN_PROGRESS
+        report.save()
+
+    if "pro" in request.path:
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        return HttpResponseRedirect(report.get_absolute_url())
 
 def planned(request, report_id):
     report = get_object_or_404(Report, id=report_id)

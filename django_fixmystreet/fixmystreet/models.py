@@ -1251,6 +1251,23 @@ def report_notify(sender, instance, **kwargs):
                     event_type=ReportEventLog.SOLVE_REQUEST,
                     user=event_log_user
                 ).save()
+
+            ### REOPEN
+            elif (report.__former['status'] in Report.REPORT_STATUS_CLOSED or report.__former['status'] == Report.REFUSED) and report.status == Report.IN_PROGRESS:
+                for subscription in report.subscriptions.all():
+                    if subscription.subscriber != event_log_user:
+                        ReportNotification(
+                            content_template='notify-reopen',
+                            recipient=subscription.subscriber,
+                            related=report,
+                            reply_to=report.responsible_department.email,
+                        ).save()
+
+                ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.REOPEN,
+                    user=event_log_user
+                ).save()
             ###
 
         # Contractor changed
@@ -1662,6 +1679,9 @@ class ReportSubscription(models.Model):
     report = models.ForeignKey(Report, related_name="subscriptions")
     subscriber = models.ForeignKey(FMSUser, null=False)
 
+    def __unicode__(self):
+        return self.subscriber.email
+
     class Meta:
         unique_together = (("report", "subscriber"),)
 
@@ -1968,6 +1988,7 @@ class ReportEventLog(models.Model):
     UPDATE_PUBLISHED = 16
     PLANNED = 17
     MERGED = 18
+    REOPEN = 19
     EVENT_TYPE_CHOICES = (
         (REFUSE, _("Refuse")),
         (CLOSE, _("Close")),
@@ -1987,6 +2008,7 @@ class ReportEventLog(models.Model):
         (UPDATE_PUBLISHED, _("Update published")),
         (PLANNED, _("Planned")),
         (MERGED, _("Merged")),
+        (REOPEN, _("Reopen")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -2007,10 +2029,11 @@ class ReportEventLog(models.Model):
         UPDATE_PUBLISHED: _("Informations published by {user}"),
         PLANNED: _("Report planned to {date_planned}"),
         MERGED: _("Report merged with report #{merged_with_id}"),
+        REOPEN: _("Report reopen by {user}"),
     }
     STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
-    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED]
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED, REOPEN]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
 
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)

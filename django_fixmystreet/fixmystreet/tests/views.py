@@ -2,6 +2,8 @@ from unittest import skip
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
+from datetime import datetime
+
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
 
@@ -600,4 +602,88 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertIn('citizen', jsonResult)
         self.assertIn('priority', jsonResult)
 
+    def test_reopen_report_refused(self):
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
 
+        report = response.context['report']
+        report.status = Report.REFUSED
+        report.accepted_at = datetime.now()
+        report.save()
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url = reverse('report_reopen_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report_reopen = response.context['report']
+
+        self.assertEqual(Report.IN_PROGRESS, report_reopen.status)
+        self.assertNotEqual(report.status  , report_reopen.status)
+        self.assertEqual(report.created    , report_reopen.created)
+        self.assertEqual(report.accepted_at, report_reopen.accepted_at)
+        self.assertEqual(report.close_date , report_reopen.close_date)
+
+        self.assertEqual(report.subscriptions.all().count(), report_reopen.subscriptions.all().count())
+        self.assertEqual(report.responsible_entity         , report_reopen.responsible_entity)
+        self.assertEqual(report.responsible_department     , report_reopen.responsible_department)
+
+    def test_reopen_report_processed(self):
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+        report.status = Report.PROCESSED
+        report.accepted_at = datetime.now()
+        report.save()
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url = reverse('report_reopen_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+        report_reopen = response.context['report']
+
+        self.assertEqual(Report.IN_PROGRESS, report_reopen.status)
+        self.assertNotEqual(report.status  , report_reopen.status)
+        self.assertEqual(report.created    , report_reopen.created)
+        self.assertEqual(report.accepted_at, report_reopen.accepted_at)
+        self.assertEqual(report.close_date , report_reopen.close_date)
+
+        self.assertEqual(report.subscriptions.all().count(), report_reopen.subscriptions.all().count())
+        self.assertEqual(report.responsible_entity         , report_reopen.responsible_entity)
+        self.assertEqual(report.responsible_department     , report_reopen.responsible_department)
+
+    def test_reopen_report_badstatus(self):
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+        report.accepted_at = datetime.now()
+        report.save()
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url = reverse('report_reopen_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+        report_not_reopen = response.context['report']
+
+        self.assertNotEqual(Report.IN_PROGRESS, report_not_reopen.status)
+        self.assertEqual(report.status        , report_not_reopen.status)
+        self.assertEqual(report.created       , report_not_reopen.created)
+        self.assertEqual(report.modified      , report_not_reopen.modified)
+        self.assertEqual(report.accepted_at   , report_not_reopen.accepted_at)
+        self.assertEqual(report.close_date    , report_not_reopen.close_date)
+
+        self.assertEqual(report.subscriptions.all().count(), report_not_reopen.subscriptions.all().count())
+        self.assertEqual(report.responsible_entity         , report_not_reopen.responsible_entity)
+        self.assertEqual(report.responsible_department     , report_not_reopen.responsible_department)

@@ -43,6 +43,7 @@ urlpatterns += patterns(
     url(_(r'^report/(\d+)/refuse/$'), 'refuse', name='report_refuse_pro'),
     url(_(r'^report/(\d+)/fixed/$'), 'fixed', name='report_fix_pro'),
     url(_(r'^report/(\d+)/close/$'), 'close', name='report_close_pro'),
+    url(_(r'^report/(\d+)/reopen/$'), 'reopen', name='report_reopen_pro'),
     url(_(r'^report/(\d+)/merge/$'), 'do_merge', name='report_do_merge_pro'),
     url(_(r'^report/(\d+)/planned/$'), 'planned', name='report_planned_pro'),
     url(_(r'^report/(\d+)/pending/$'), 'pending', name='report_pending_pro'),
