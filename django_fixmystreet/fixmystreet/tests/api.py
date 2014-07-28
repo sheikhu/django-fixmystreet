@@ -31,7 +31,7 @@ class ApiTest(SampleFilesTestCase):
 
         surface = OrganisationEntitySurface(
             geom=Polygon([p1, p2, p3, p4, p1]),
-            owner=organisation
+            owner=OrganisationEntity.objects.get(pk=14)
         )
         surface.save()
 
