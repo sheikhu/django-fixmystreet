@@ -115,8 +115,8 @@ def send_pdf(request, report_id):
         msg.send()
         to_return["logMessages"].append(_("Successfully sent to '{email}'.").format(email=recepient))
 
-    if "status" == "success":
-        to_return["message"] = _("PDF sent as email.")
+    if to_return["status"] == "success":
+        to_return["message"] = _("PDF sent by email.")
     else:
         to_return["message"] = _("There were errors.")
     return JsonHttpResponse(to_return)
