@@ -379,14 +379,60 @@ class ReportQuerySet(models.query.GeoQuerySet):
     def near(self, origin, distance):
         return self.distance(origin).filter(point__distance_lte=(origin, distance)).order_by('distance')
 
-    # Because it returns a list and not a queryset, use it at the end of your ORM request: MyClass.objects.filter().exclude().rank()
-    # params: report point, secondary_category, created date
-    def rank(self, report_point, report_category, report_date):
+    # Because it returns a list and not a queryset, use it at the end of your ORM request: MyClass.objects.filter().rank()
+    # params: Either arg or kwds
+    # arg = 1 report object
+    # kwds = report_point, report_category, report_date, created (optional), closed (optional)
+    def rank(self, *arg, **kwds):
         DISTANCE_MAX = 250
+        created      = False
+        closed       = False
+        params       = {
+            'created' : False,
+            'closed'  : False,
 
-        # Get all reports DISTANCE_MAX around the point
-        nearby_reports = self.near(report_point, DISTANCE_MAX)
+            # For /debug/rank, we have to avoid visible filters
+            'debug'   : True if 'debug' in kwds else False
+        }
 
+        # Prepare data according to params
+        # 1 report object as arg
+        if len(arg) == 1:
+            report = arg[0]
+
+            # Get report in DB and exclude it
+            nearby_reports = self.exclude(id=report.id)
+
+            params.update({
+                'report_point'    : report.point,
+                'report_category' : report.secondary_category,
+                'report_date'     : report.created,
+                'created'         : report.is_created(),
+                'closed'          : report.is_closed()
+            })
+
+        # At least 3 params as kwargs
+        else:
+            # Get specific attributes
+            params.update(kwds)
+
+            # And fetch all reports
+            nearby_reports = self.all()
+
+        # Get related fields and only visible
+        if not params['debug']:
+            nearby_reports = nearby_reports.visible().related_fields()
+
+        # Exclude CREATED or CLOSED reports according to status of the base report
+        if params['created']:
+            nearby_reports = nearby_reports.exclude(status=Report.CREATED)
+        elif params['closed']:
+            nearby_reports = nearby_reports.exclude(status__in=Report.REPORT_STATUS_CLOSED)
+
+        # Get all reports in DISTANCE_MAX around the point
+        nearby_reports = nearby_reports.near(params['report_point'], DISTANCE_MAX)
+
+        # Ranking
         for report_near in nearby_reports:
             # Distance : (DISTANCE_MAX - distance) / DISTANCE_MAX * 4
             # (valeur entre 0 et 1 * 4)
@@ -395,18 +441,18 @@ class ReportQuerySet(models.query.GeoQuerySet):
             # Category : 1 point par bon niveau de categorie en cascade depuis le premier niveau.
             # (valeur entre 0 et 3)
             rank_catego = 0
-            if report_near.category == report_category.category_class:
+            if report_near.category == params['report_category'].category_class:
                 rank_catego += 1
 
-                if report_near.secondary_category.secondary_category_class == report_category.secondary_category_class:
+                if report_near.secondary_category.secondary_category_class == params['report_category'].secondary_category_class:
                     rank_catego += 1
 
-                    if report_near.secondary_category == report_category:
+                    if report_near.secondary_category == params['report_category']:
                         rank_catego += 1
 
             # Date : 1 / abs(nbre de mois de difference +1)
             # (valeur entre 0 et 1)
-            abs_days = abs((report_date - report_near.created).days)
+            abs_days = abs((params['report_date'] - report_near.created).days)
             months   = float(abs_days) / 30
 
             if months > 1:
@@ -434,6 +480,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
             report_near.rank_source   = rank_source
             report_near.rank_status   = rank_status
 
+        # Sort the list according to rank and return it
         return sorted(nearby_reports, key=lambda report: report.rank, reverse=True)
 
     def responsible(self, user):
@@ -834,7 +881,8 @@ class Report(UserTrackedModel):
         return dates
 
     def get_nearby_report_count(self):
-        return len(Report.objects.all().visible().exclude(id=self.id).rank(self.point, self.secondary_category, self.created))
+        count_nearby_reports = Report.objects.all().rank(self)
+        return len(count_nearby_reports)
 
     def is_markable_as_solved(self):
         return self.status in Report.REPORT_STATUS_SETTABLE_TO_SOLVED

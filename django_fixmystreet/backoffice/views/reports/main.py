@@ -283,14 +283,7 @@ def merge(request, slug, report_id):
     if ticketNumber:
         reports_nearby = Report.objects.filter(id=ticketNumber).visible().related_fields().exclude(id=report.id)
     else:
-        reports_nearby = Report.objects.all().visible().related_fields().exclude(id=report.id)
-
-        if report.is_created():
-            reports_nearby = reports_nearby.exclude(status=Report.CREATED)
-        elif report.is_closed():
-            reports_nearby = reports_nearby.exclude(status__in=Report.REPORT_STATUS_CLOSED)
-
-        reports_nearby = reports_nearby.rank(report.point, report.secondary_category, report.created)
+        reports_nearby = Report.objects.all().rank(report)
 
     return render_to_response("pro/reports/merge.html", {
         "fms_user": request.fmsuser,
