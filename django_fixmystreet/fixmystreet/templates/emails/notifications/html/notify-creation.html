@@ -10,10 +10,10 @@
 {% endblock %}
 
 {% block content_mail_nl %}
-<p>Un nouvel incident vous a été signalé.</p>
-<p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
-<p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
+<p>Er werd u een nieuw probleem gemeld. </p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
+<p>U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken: </p>
 <ul>
-<li><a href="{{display_url}}">{{display_url}}</a></li>
+<li><a href="{{display_url}}">{{display_url}}</a>
 </ul>
 {% endblock %}
