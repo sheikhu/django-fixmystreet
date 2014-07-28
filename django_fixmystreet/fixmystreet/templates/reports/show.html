@@ -297,12 +297,8 @@ $(function(event) {
             <div class="modal-body">
                 <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
                 {{ mark_as_done_form.as_p }}
-                <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
+                <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary" name="submit" value="{% trans 'Confirm'%}"/>
             </div>
-
-            <!--div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div-->
         </form>
     </div>
 {% endif %}
