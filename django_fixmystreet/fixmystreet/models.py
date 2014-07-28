@@ -1154,7 +1154,11 @@ def report_assign_responsible(sender, instance, **kwargs):
             # assign entity of the creator
             instance.responsible_entity = instance.created_by.fmsuser.organisation
         else:
-            instance.responsible_entity = OrganisationEntity.objects.get(zipcode__code=instance.postalcode)
+            reponsibles = OrganisationEntitySurface.objects.filter(geom__contains=instance.point)
+            if len(reponsibles) == 1:
+                instance.responsible_entity = reponsibles[0].owner
+            else:
+                raise Exception("point does not match any entity surface")
 
     if not instance.responsible_department:
         # Detect who is the responsible Manager for the given type
