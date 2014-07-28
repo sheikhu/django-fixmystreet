@@ -1,9 +1,4 @@
 
-Search = Backbone.View.extend(function () {
-    events: {}
-});
-
-
 var results           = [];
 var paginationResults;
 
