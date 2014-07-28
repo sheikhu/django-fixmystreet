@@ -1,7 +1,11 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.gis.geos import Polygon
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import (
+    Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity,
+    FMSUser, ReportFile, UserOrganisationMembership,
+    OrganisationEntitySurface
+)
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
@@ -16,6 +20,17 @@ class ListTest(TestCase):
         self.bxl = OrganisationEntity.objects.get(id=4)  # postal code = 1000 Bxl
         self.bxl.save()
 
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=self.bxl,
+        )
+        surface.save()
+
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -23,7 +38,7 @@ class ListTest(TestCase):
             phone="090987",
             dependency=self.bxl,
             email="test@email.com"
-            )
+        )
         self.group.save()
 
         self.agent = FMSUser(

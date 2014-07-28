@@ -1,11 +1,15 @@
 from unittest import skip
-from django.test.client import Client
-from django.core.urlresolvers import reverse
-
 from datetime import datetime
 
+from django.test.client import Client
+from django.core.urlresolvers import reverse
+from django.contrib.gis.geos import Polygon
+
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import (
+    Report, ReportCategory, OrganisationEntity, FMSUser,
+    OrganisationEntitySurface
+)
 
 
 class ReportViewsTest(SampleFilesTestCase):
@@ -52,6 +56,17 @@ class ReportViewsTest(SampleFilesTestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.group.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=OrganisationEntity.objects.get(pk=14),
+        )
+        surface.save()
 
         self.manager.memberships.create(organisation=self.group, contact_user=True)
 

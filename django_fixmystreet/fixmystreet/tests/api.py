@@ -1,8 +1,12 @@
 from django.utils import simplejson
 from django.test.client import Client
 from django.core.urlresolvers import reverse
+from django.contrib.gis.geos import Polygon
 
-from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, FMSUser, ReportCategory, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import (
+    Report, OrganisationEntity, FMSUser, ReportCategory,
+    UserOrganisationMembership, OrganisationEntitySurface
+)
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,6 +23,17 @@ class ApiTest(SampleFilesTestCase):
         except ObjectDoesNotExist:
             organisation = OrganisationEntity(id=1, name="Test organisation")
             organisation.save()
+
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=organisation
+        )
+        surface.save()
 
         #user_auth = User.objects.create_user(username='superuser', email='test1@fixmystreet.irisnet.be', password='test')
         #user_auth.save()

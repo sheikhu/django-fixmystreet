@@ -4,10 +4,12 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
+from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    ReportEventLog)
+    ReportEventLog, OrganisationEntitySurface
+)
 
 
 class HistoryTest(TestCase):
@@ -53,6 +55,17 @@ class HistoryTest(TestCase):
         self.manager.set_password('test')
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
+
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=OrganisationEntity.objects.get(pk=14),
+        )
+        surface.save()
 
         self.group = OrganisationEntity(
             type="D",

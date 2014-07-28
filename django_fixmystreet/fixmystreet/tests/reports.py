@@ -2,8 +2,12 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test.client import Client
+from django.contrib.gis.geos import Polygon
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity, FMSUser, ReportFile, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import (
+    Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity,
+    FMSUser, ReportFile, UserOrganisationMembership, OrganisationEntitySurface
+)
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
@@ -19,6 +23,29 @@ class NotificationTest(TestCase):
         self.etterbeek.save()
         self.bxl = OrganisationEntity.objects.get(id=4)  # postal code = 1000 Bxl
         self.bxl.save()
+
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 170005)
+        p4 = (148776, 170005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=self.bxl
+        )
+        surface.save()
+
+        p1 = (148776, 170005)
+        p2 = (150776, 170005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=self.etterbeek
+        )
+        surface.save()
+
         self.manager_etterbeek = FMSUser(
             is_active=True,
             email="manager@etterbeek.be",
@@ -104,7 +131,7 @@ class NotificationTest(TestCase):
             description='Just a test',
             postalcode=1000,
             address='my address',
-            point=dict_to_point({"x": '149776', "y": '170005'}),
+            point=dict_to_point({"x": '149776', "y": '170105'}),
             address_number='6h',
             created_by=self.manager_etterbeek
         )
@@ -120,7 +147,7 @@ class NotificationTest(TestCase):
             description='Just a test',
             postalcode=1000,
             address='my address',
-            point=dict_to_point({"x": '149776', "y": '170005'}),
+            point=dict_to_point({"x": '149776', "y": '170105'}),
             address_number='6h',
             citizen=self.citizen
         )
@@ -221,5 +248,3 @@ class ValueUpdate(TestCase):
             # new_pix = new_img.load()
             # self.assertEquals(former_pix[0,0],new_pix[0,0]) # no image rotation but resized, how to test it ??
             # TODO check the image is correctly rotated
-
-

@@ -7,8 +7,9 @@ from django.core import mail
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, ReportAttachment,
-    FMSUser
+    FMSUser, OrganisationEntitySurface
 )
+from django.contrib.gis.geos import Polygon
 
 from datetime import datetime, timedelta
 
@@ -74,10 +75,22 @@ class MailTest(TestCase):
             phone="090987",
             dependency=OrganisationEntity.objects.get(pk=21),
             email="test2@email.com"
-            )
+        )
         self.group2.save()
         self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=2))
         self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=OrganisationEntity.objects.get(pk=14),
+        )
+        surface.save()
+
         self.manager2.memberships.create(organisation=self.group2)
 
         self.manager3 = FMSUser(
@@ -795,4 +808,3 @@ class MailTest(TestCase):
         response = self.client.post(reverse('send_pdf', args=[report_id]), self.sample_post_mail_pdf_citzen)
         #Now 3 additional mails should be sent
         self.assertEquals(len(mail.outbox), 6)
-

@@ -1,7 +1,11 @@
 from django.test import TestCase
 from django.test.client import Client
+from django.contrib.gis.geos import Polygon
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import (
+    Report, ReportCategory, OrganisationEntity, FMSUser,
+    UserOrganisationMembership, OrganisationEntitySurface
+)
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 from datetime import datetime
@@ -27,6 +31,17 @@ class DispatchingTest(TestCase):
             email="test@email.com"
         )
         self.department.save()
+
+        p1 = (148776, 171005)
+        p2 = (150776, 171005)
+        p3 = (150776, 169005)
+        p4 = (148776, 169005)
+
+        surface = OrganisationEntitySurface(
+            geom=Polygon([p1, p2, p3, p4, p1]),
+            owner=self.organisation,
+        )
+        surface.save()
 
         self.manager = FMSUser(
             is_active=True,
@@ -130,4 +145,3 @@ class DispatchingTest(TestCase):
         self.report.save()
         self.assertEquals(self.report.responsible_entity, self.organisation)
         self.assertEquals(self.report.responsible_department, self.department)
-
