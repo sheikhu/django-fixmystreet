@@ -758,8 +758,7 @@ $(document).ready(function() {
 {% block content %}
 
 {# Potential duplicates count #}
-    {% if report.is_created and report.get_nearby_report_count %}
-
+    {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged and report.is_created and report.get_nearby_report_count %}
         <br/>
 
         <div class="alert alert-error text-center">
