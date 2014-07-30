@@ -242,7 +242,6 @@ L.FixMyStreet.Map = L.Map.extend({
       return;
     }
 
-    latlng = this.toLatLng(latlng);
     options = options || {};
 
     var that = this;
@@ -277,8 +276,8 @@ L.FixMyStreet.Map = L.Map.extend({
 
   toLatLng : function (latlng) {  // (L.LatLng or String or Object)
     if (latlng === undefined || latlng instanceof L.LatLng) { return latlng; }
+    if ('lat' in latlng && 'lng' in latlng) { return new L.LatLng(latlng.lat, latlng.lng); }
     if (typeof latlng === 'string') { return this.latLngFromString(latlng); }
-    if (typeof latlng === 'object' && 'lat' in latlng && 'lng' in latlng) { return new L.LatLng(latlng.lat, latlng.lng); }
     throw new Error('Invalid parameter. Expect L.LatLng or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678})');
   },
 

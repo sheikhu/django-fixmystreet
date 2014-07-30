@@ -1,28 +1,29 @@
 
 $(function () {
-    fms.map = new fms.MapView();
-    fms.map.render();
+    fms.map = new L.FixMyStreet.Map('map');
+    fms.dragMarker = new fms.DragMarkerView();
+    fms.dragMarker.render();
 });
 
-fms.MapView = Backbone.View.extend({
+fms.ReportMapView = Backbone.View.extend({
+    el: '.report-map',
     render: function () {
         var self = this;
 
-        this.map = L.FixMyStreet.Map('map');
-
-        this.$el.addClass('loading');
-        $.get('/fr/ajax/map/filter/', function (data) {
-            self.$el.removeClass('loading');
-            L.geoJson(data, {
-                style: function (feature) {
-                    return {color: 'red'};
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.description);
-                }
-            }).addTo(self.map);
-        });
-
+        if (this.el) {
+            this.$el.addClass('loading');
+            $.get('/fr/ajax/map/filter/', function (data) {
+                self.$el.removeClass('loading');
+                L.geoJson(data, {
+                    style: function (feature) {
+                        return {color: 'red'};
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(feature.properties.description);
+                    }
+                }).addTo(self.map);
+            });
+        }
 
         return this;
     }
@@ -32,7 +33,8 @@ fms.MapView = Backbone.View.extend({
 fms.DragMarkerView = Backbone.View.extend({
     el: '#map',
     events: {
-        'markermoved': 'loadAddress'
+        'markermoved': 'loadAddress',
+        'click #btn-localizeviamap': 'localizeViaMap'
     },
     moveMePopupTemplate: _.template([
         '<p class="popupMoveMe popupHeading"><%= gettext("Move the cursor") %></p>',
@@ -51,8 +53,19 @@ fms.DragMarkerView = Backbone.View.extend({
         '  <% } %>',
         '<% } %>',
     ].join('\n')),
+
+    localizeViaMap: function (evt) {
+        evt.preventDefault();
+        var center = fms.map.getCenter();
+        // Hard code center of map
+        this.drop({
+            x: center.lon,
+            y: center.lat
+        }, null, true);
+    },
+
     drop: function (position, address, preventZoomIn) {
-        cleanMap();
+        this.trigger('drop-marker');
 
         draggableMarker = fms.currentMap.addDraggableMarker(position.x, position.y);
         fms.currentMap.centerOnDraggableMarker();
