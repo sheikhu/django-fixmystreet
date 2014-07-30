@@ -16,7 +16,9 @@
   <script src="../lib/leaflet.markercluster/leaflet.markercluster-src.js"></script>
 
   <!-- app -->
+  <script>var fms={};</script>
   <script src="../js/maps/FMSMapView.js"></script>
+  <script src="../js/search.js"></script>
 
   <!-- test libs -->
   <script src="chai.js"></script>
@@ -28,6 +30,7 @@
 
   <!-- unit tests -->
   <script src="test.maps.js"></script>
+  <script src="test.search.js"></script>
   <script>
     mocha.globals(['jQuery']);
     mocha.run();

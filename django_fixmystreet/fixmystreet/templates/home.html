@@ -57,11 +57,11 @@ $(function(){
     <div class="row">
         <article id="recent-reports" class="home_recent_reports span12">
             <!--h2>{% trans 'Last modified reports:' %}</h2-->
-                <form id="search-ticket-form" class="form-inline pull-right">
-                    <!--h2>{% trans "Enter the report ticket:" %}</h2-->
-                    <input id="input-ticket-search" class="input-large" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
-                    <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
-                </form>
+            <form id="search-ticket-form" class="form-inline pull-right" action="/report/search">
+                <!--h2>{% trans "Enter the report ticket:" %}</h2-->
+                <input id="input-ticket-search" class="input-large" type="search" name="report_id" placeholder="{% trans 'Ticket number...' %}" />
+                <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
+            </form>
             <ul id="recent_home_nav" class="nav nav-tabs">
                 <li class="last_reports">
                     <h2 class="brand">{% trans 'Last 30 days' %}</h2>
