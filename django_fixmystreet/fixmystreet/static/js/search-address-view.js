@@ -36,9 +36,6 @@ fms.AddressSearchView = Backbone.View.extend({
         this.addressProposal = new fms.AddressProposalView();
         this.addressProposal.render();
 
-        this.dragMarker = new fms.DragMarkerView();
-        this.dragMarker.render();
-
         return this;
     },
 
@@ -96,14 +93,14 @@ fms.AddressSearchView = Backbone.View.extend({
         if(response.status == 'success' && response.result.length > 0) {
 
             $('#map').addClass("map-big");
-            cleanMap();
+            this.addressProposal.cleanMap();
 
             // Urbis response 1 result
             if(response.result.length == 1) {
                 var position = response.result[0].point;
                 var address = response.result[0].address;
 
-                initDragMarker(position, address);
+                fms.newIncidentMarker.putMarker(position, address);
             } else {
                 results = response.result;
                 this.addressProposal.open(results);
@@ -144,7 +141,7 @@ fms.AddressSearchView = Backbone.View.extend({
     },
 
     municipalityChange: function (postalCode) {
-        fms.currentMap.centerOnMunicipality(postalCode);
+        fms.map.centerOnMunicipality(postalCode);
     }
 });
 
@@ -175,7 +172,7 @@ fms.AddressResultView = Backbone.View.extend({
         return this;
     },
     selectAddress: function(event) {
-        fms.search.dragMarker.drop(this.position, this.address);
+        fms.newIncidentMarker.putMarker(this.position, this.address);
     }
 });
 
@@ -191,10 +188,16 @@ fms.AddressProposalView = Backbone.View.extend({
     },
 
     render: function () {
+        var self = this;
+
         this.$proposal = this.$('#proposal');
         this.$numberResults = this.$('#numberResults');
         this.$previousResults = this.$('#previousResults');
         this.$nextResults = this.$('#nextResults');
+
+        fms.newIncidentMarker.on('put-marker', function () {
+            self.cleanMap();
+        });
         return this;
     },
 
@@ -216,25 +219,22 @@ fms.AddressProposalView = Backbone.View.extend({
         this.$numberResults.html(this.addresses.length);
         this.paginationResults = 0;
 
-        if (!fms.currentMap.homepageMarkersLayer) {
+        if (!fms.map.homepageMarkersLayer) {
             // Create vector layer
-            fms.currentMap.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay", {
+            fms.map.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay", {
                 displayInLayerSwitcher: false
             });
 
             // Add layer to map
-            fms.currentMap.map.addLayer(fms.currentMap.homepageMarkersLayer);
-
-            // Function to bind selector to initDragMarker
-
+            fms.map.addLayer(fms.map.homepageMarkersLayer);
 
             // Add the selector control to the vectorLayer
             var clickCtrl = new OpenLayers.Control.SelectFeature(
-                fms.currentMap.homepageMarkersLayer, {
+                fms.map.homepageMarkersLayer, {
                     onSelect: this.onSelect
                 }
             );
-            fms.currentMap.map.addControl(clickCtrl);
+            fms.map.map.addControl(clickCtrl);
             clickCtrl.activate();
         }
 
@@ -245,7 +245,7 @@ fms.AddressProposalView = Backbone.View.extend({
     onSelect: function (feature) {
         this.close();
 
-        fms.search.dragMarker.drop(feature.geometry, feature.attributes);
+        fms.newIncidentMarker.putMarker(feature.geometry, feature.attributes);
     },
 
     renderAddresses: function () {
@@ -282,42 +282,28 @@ fms.AddressProposalView = Backbone.View.extend({
         this.$nextResults.toggle(this.addresses.length > (this.paginationResults + 1) * 5);
 
         // Add features to layer
-        cleanMap();
-        fms.currentMap.homepageMarkersLayer.addFeatures(features);
+        this.cleanMap();
+        fms.map.homepageMarkersLayer.addFeatures(features);
 
         // Zoom to markers
-        var markersBound = fms.currentMap.homepageMarkersLayer.getDataExtent();
-        fms.currentMap.map.zoomToExtent(markersBound);
+        var markersBound = fms.map.homepageMarkersLayer.getDataExtent();
+        fms.map.zoomToExtent(markersBound);
+    },
+
+    cleanMap: function () {
+        if (fms.map.popups) {
+            // Remove all popups
+            while(fms.map.popups.length) {
+                 fms.map.removePopup(fms.map.map.popups[0]);
+            }
+        }
+
+        // Remove all features
+        if (fms.map.markersLayer) {
+            fms.map.markersLayer.destroyFeatures();
+        }
+        if (fms.map.homepageMarkersLayer) {
+            fms.map.homepageMarkersLayer.destroyFeatures();
+        }
     }
 });
-
-function cleanMap() {
-    // Remove all popups
-    while(fms.currentMap.map.popups.length) {
-         fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
-    }
-
-    // Remove all features
-    if (fms.currentMap.markersLayer) {
-        fms.currentMap.markersLayer.destroyFeatures();
-    }
-    if (fms.currentMap.homepageMarkersLayer) {
-        fms.currentMap.homepageMarkersLayer.destroyFeatures();
-    }
-}
-
-// Localize report with map
-(function() {
-    $('#btn-localizeviamap').click(function(evt) {
-        evt.preventDefault();
-        var center = fms.currentMap.map.getCenter();
-        // Hard code center of map
-        fms.search.dragMarker.drop({
-            x: center.lon,
-            y: center.lat
-        }, null, true);
-
-        btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
-    });
-
-})(document);

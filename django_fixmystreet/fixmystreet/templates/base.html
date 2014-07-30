@@ -13,6 +13,7 @@
         {% block css %}
         <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap/css/bootstrap-responsive.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/leaflet/leaflet.css' %}"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.qtip.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/fms.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/ie_compat.css' %}" />
@@ -299,7 +300,6 @@
 
         <script type="text/javascript" src="{% static 'js/map-view.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/fixmystreetstore.js' %}"></script>
-
         <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
 
         {% if messages %}

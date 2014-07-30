@@ -1,38 +1,40 @@
 
 $(function () {
-    fms.map = new fms.MapView();
-    fms.map.render();
+    fms.map = new L.FixMyStreet.Map('map');
+    fms.newIncidentMarker = new fms.NewIncidentMarkerView();
+    fms.newIncidentMarker.render();
 });
 
-fms.MapView = Backbone.View.extend({
+fms.ReportMapView = Backbone.View.extend({
+    el: '.report-map',
     render: function () {
         var self = this;
 
-        this.map = L.FixMyStreet.Map('map');
-
-        this.$el.addClass('loading');
-        $.get('/fr/ajax/map/filter/', function (data) {
-            self.$el.removeClass('loading');
-            L.geoJson(data, {
-                style: function (feature) {
-                    return {color: 'red'};
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.description);
-                }
-            }).addTo(self.map);
-        });
-
+        if (this.el) {
+            this.$el.addClass('loading');
+            $.get('/fr/ajax/map/filter/', function (data) {
+                self.$el.removeClass('loading');
+                L.geoJson(data, {
+                    style: function (feature) {
+                        return {color: 'red'};
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(feature.properties.description);
+                    }
+                }).addTo(self.map);
+            });
+        }
 
         return this;
     }
 });
 
 
-fms.DragMarkerView = Backbone.View.extend({
+fms.NewIncidentMarkerView = Backbone.View.extend({
     el: '#map',
     events: {
-        'markermoved': 'loadAddress'
+        'markermoved': 'loadAddress',
+        'click #btn-localizeviamap': 'localizeViaMap'
     },
     moveMePopupTemplate: _.template([
         '<p class="popupMoveMe popupHeading"><%= gettext("Move the cursor") %></p>',
@@ -51,11 +53,18 @@ fms.DragMarkerView = Backbone.View.extend({
         '  <% } %>',
         '<% } %>',
     ].join('\n')),
-    drop: function (position, address, preventZoomIn) {
-        cleanMap();
 
-        draggableMarker = fms.currentMap.addDraggableMarker(position.x, position.y);
-        fms.currentMap.centerOnDraggableMarker();
+    localizeViaMap: function (evt) {
+        evt.preventDefault();
+        this.$el.addClass("map-big");
+
+        this.putMarker(fms.map.getCenter(), null, true);
+    },
+
+    putMarker: function (position, address, preventZoomIn) {
+        this.trigger('put-marker');
+
+        draggableMarker = fms.map.addNewIncidentMarker(position);
 
         if (!preventZoomIn) {
             fms.currentMap.map.zoomTo(6);
@@ -74,7 +83,7 @@ fms.DragMarkerView = Backbone.View.extend({
             googleStreetViewLink: googleStreetViewLink
         });
 
-        if (!BACKOFFICE && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
+        if (!BACKOFFICE && address && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
             popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
             popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(address.street.postCode)].phone + "</p>";
         }
