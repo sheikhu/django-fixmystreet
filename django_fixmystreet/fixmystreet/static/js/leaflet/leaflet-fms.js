@@ -97,29 +97,29 @@ L.FixMyStreet.Map = L.Map.extend({
     }
   },
 
-  // LAYERS --------------------------------------------------------------------
+  // NAMED LAYERS --------------------------------------------------------------
 
-  toggleLayer: function (key, visibility) {  // (String, Boolean)
-    if (this.hasLayer(key)) {
+  toggleNamedLayer: function (key, visibility) {  // (String, Boolean)
+    if (this.hasNamedLayer(key)) {
       $(this._namedLayers[key].getContainer()).toggle(visibility);
     } else if (visibility !== false) {
-      this.loadLayer(key);
+      this.loadNamedLayer(key);
     }
   },
 
-  hasLayer: function (key) {  // (String)
+  hasNamedLayer: function (key) {  // (String)
     return (key in this._namedLayers);
   },
 
-  getLayer: function (key) {  // (String)
-    if (!this.hasLayer(key)) { return; }
+  getNamedLayer: function (key) {  // (String)
+    if (!this.hasNamedLayer(key)) { return; }
     return this._namedLayers[key];
   },
 
-  loadLayer: function (key, options) {  // (String, Object)
+  loadNamedLayer: function (key, options) {  // (String, Object)
     var layer;
     if (options === undefined) {
-      options = this.getLayerSettings(key);
+      options = this.getNamedLayerSettings(key);
     }
 
     // If options contains a `key` parameter, use it for named layers.
@@ -142,7 +142,7 @@ L.FixMyStreet.Map = L.Map.extend({
     this._setNamedLayer(key, layer);
   },
 
-  unloadLayer: function (key) {  // (String)
+  unloadNamedLayer: function (key) {  // (String)
     this._unsetNamedLayer(this.getNamedLayerKey(key));
   },
 
@@ -150,21 +150,21 @@ L.FixMyStreet.Map = L.Map.extend({
     if (key in this._namedLayers) {
       return key;
     }
-    if (key in L.FixMyStreet.Map.layersSettings && L.FixMyStreet.Map.layersSettings[key].key) {
-      return L.FixMyStreet.Map.layersSettings[key].key;
+    if (key in L.FixMyStreet.Map.namedLayersSettings && L.FixMyStreet.Map.namedLayersSettings[key].key) {
+      return L.FixMyStreet.Map.namedLayersSettings[key].key;
     }
     throw new Error('Invalid key "' + key + '".');
   },
 
-  getLayerSettings: function (key) {  // (String)
-    if (!(key in L.FixMyStreet.Map.layersSettings)) {
+  getNamedLayerSettings: function (key) {  // (String)
+    if (!(key in L.FixMyStreet.Map.namedLayersSettings)) {
       throw new Error('Layer settings not found for "' + key + '".');
     }
-    return L.FixMyStreet.Map.layersSettings[key];
+    return L.FixMyStreet.Map.namedLayersSettings[key];
   },
 
   _setNamedLayer: function (key, layer) {  // (String, L.ILayer)
-    if (this.hasLayer(key)) {
+    if (this.hasNamedLayer(key)) {
       if (this._namedLayers[key] === layer) { return; }
       this._unsetNamedLayer(key);
     }
@@ -174,7 +174,7 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   _unsetNamedLayer: function (key) {  // (String)
-    if (!this.hasLayer(key)) { return; }
+    if (!this.hasNamedLayer(key)) { return; }
     this.removeLayer(this._namedLayers[key]);
     delete this._namedLayers[key];
   },
@@ -298,9 +298,9 @@ L.FixMyStreet.Map = L.Map.extend({
   _initUrbisLayers: function () {
     var that = this;
 
-    // Customize `L.FixMyStreet.Map.layersSettings`
-    L.FixMyStreet.Map.layersSettings['regional-roads']['options']['opacity'] = 0.5;
-    L.FixMyStreet.Map.layersSettings['regional-roads']['options']['filter'] =
+    // Customize `L.FixMyStreet.Map.namedLayersSettings`
+    L.FixMyStreet.Map.namedLayersSettings['regional-roads']['options']['opacity'] = 0.5;
+    L.FixMyStreet.Map.namedLayersSettings['regional-roads']['options']['filter'] =
       '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +
         '<ogc:PropertyIsEqualTo matchCase="true">' +
           '<ogc:PropertyName>ADMINISTRATOR</ogc:PropertyName>' +
@@ -310,7 +310,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
     // Load initial UrbIS layers
     $.each(this.options.urbisLayersToLoad, function (k, v) {
-      that.loadLayer(v, L.FixMyStreet.Map.layersSettings[v]);
+      that.loadNamedLayer(v, L.FixMyStreet.Map.namedLayersSettings[v]);
     });
   },
 
@@ -345,7 +345,7 @@ L.FixMyStreet.Map = L.Map.extend({
   // STATIC --------------------------------------------------------------------
 
   statics: {
-    layersSettings: {},
+    namedLayersSettings: {},
   },
 });
 

@@ -96,7 +96,7 @@
       $(document).ready(function() {
         // Load UrbIS layers in dropdown.
         var $selectUrbisLayer = $('#urbis-layer');
-        $.each(L.FixMyStreet.Map.layersSettings, function (k, v) {
+        $.each(L.FixMyStreet.Map.namedLayersSettings, function (k, v) {
           $selectUrbisLayer.append(
             $('<option></option>').attr('value', k).text(v.title)
           );
@@ -135,13 +135,13 @@
         // Toggle the visibility (of a named layer).
         $('#btn-toggle').click(function (evt) {
           evt.preventDefault();
-          map.toggleLayer(currentLayerUrbisKey());
+          map.toggleNamedLayer(currentLayerUrbisKey());
         });
 
         // Unload the given named layer.
         $('#btn-unload').click(function (evt) {
           evt.preventDefault();
-          map.unloadLayer(currentLayerUrbisKey());
+          map.unloadNamedLayer(currentLayerUrbisKey());
         });
 
         // Reset the options of the map (e.g. center, zoom).

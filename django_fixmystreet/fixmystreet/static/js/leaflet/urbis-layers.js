@@ -1,4 +1,4 @@
-L.FixMyStreet.Map.layersSettings['base-map-fr'] = {
+L.FixMyStreet.Map.namedLayersSettings['base-map-fr'] = {
   key: 'base-map',
   title: 'Street map (FR)',
   language: 'fr',
@@ -17,7 +17,7 @@ L.FixMyStreet.Map.layersSettings['base-map-fr'] = {
   }
 };
 
-L.FixMyStreet.Map.layersSettings['base-map-nl'] = {
+L.FixMyStreet.Map.namedLayersSettings['base-map-nl'] = {
   key: 'base-map',
   title: 'Street map (NL)',
   language: 'nl',
@@ -36,7 +36,7 @@ L.FixMyStreet.Map.layersSettings['base-map-nl'] = {
   }
 };
 
-L.FixMyStreet.Map.layersSettings['base-map-ortho'] = {
+L.FixMyStreet.Map.namedLayersSettings['base-map-ortho'] = {
   key: 'base-map',
   title: 'Orthographic',
   type: 'wms',
@@ -54,7 +54,7 @@ L.FixMyStreet.Map.layersSettings['base-map-ortho'] = {
   }
 };
 
-L.FixMyStreet.Map.layersSettings['regional-roads'] = {
+L.FixMyStreet.Map.namedLayersSettings['regional-roads'] = {
   title: 'Regional roads',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/wms',
@@ -66,7 +66,7 @@ L.FixMyStreet.Map.layersSettings['regional-roads'] = {
   }
 };
 
-L.FixMyStreet.Map.layersSettings['municipal-boundaries'] = {
+L.FixMyStreet.Map.namedLayersSettings['municipal-boundaries'] = {
   title: 'Municipal boundaries',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/wms',
