@@ -240,6 +240,7 @@ L.FixMyStreet.Map = L.Map.extend({
       return;
     }
 
+    latlng = this.toLatLng(latlng);
     options = options || {};
 
     var that = this;
