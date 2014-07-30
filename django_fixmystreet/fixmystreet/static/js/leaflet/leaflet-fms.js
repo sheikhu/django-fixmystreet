@@ -227,6 +227,15 @@ L.FixMyStreet.Map = L.Map.extend({
     this.incidents.push(m);
   },
 
+  removeAllIncidents: function () {
+    for (var incidentType in this.incidentTypes) {
+      this._incidentLayers[incidentType].clearLayers();
+    }
+    while (this.incidents.length > 0) {
+      this.incidents.pop();
+    }
+  },
+
   addNewIncidentMarker: function (latlng, options) {
     if (this.newIncidentMarker) {
       console.log('WARNING: A new incident marker is already loaded.');
@@ -317,6 +326,7 @@ L.FixMyStreet.Map = L.Map.extend({
   _initIncidentLayers: function () {
     var that = this;
 
+    this._incidentLayers = {};
     $.each(this.incidentTypes, function (k, v) {
       that._incidentLayers[k] = new L.FixMyStreet.Map.MarkerClusterGroup();
       that._incidentLayers[k].on('clusterclick', function (evt) {

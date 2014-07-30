@@ -64,6 +64,7 @@
       <div class="group">
         <strong>Incidents:</strong>
         <button id="btn-add-random-incidents">Add Random</button>
+        <button id="btn-remove-all-incidents">Remove All</button>
       </div>
       <div class="group">
         <strong>Sizes:</strong>
@@ -179,6 +180,12 @@
 
             map.addIncident(model, options);
           }
+        });
+
+        // Remove all incidents.
+        $('#btn-remove-all-incidents').click(function (evt) {
+          evt.preventDefault();
+          map.removeAllIncidents();
         });
 
         // Add a new incident when clicking on the map.
