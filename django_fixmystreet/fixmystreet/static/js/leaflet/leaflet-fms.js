@@ -31,6 +31,7 @@ L.FixMyStreet.Map = L.Map.extend({
     reported: {
       title: 'Reported',
       color: '#c3272f',
+      // filterTitle: '<span class="type-reported">Reported</span>',
       icon: L.icon({
         iconUrl: 'http://fixmystreet.irisnetlab.be/static/images/pin-red-L.png',
         iconAnchor: [20, 52],
@@ -75,6 +76,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
     this._initUrbisLayers();
     this._initIncidentLayers();
+    this.initIncidentTypeFilter();
   },
 
   setOptions: function (options) {
@@ -260,6 +262,28 @@ L.FixMyStreet.Map = L.Map.extend({
   removeNewIncidentMarker: function () {
     this.removeLayer(this.newIncidentMarker);
     this.newIncidentMarker = null;
+  },
+
+  // CONTROLS ------------------------------------------------------------------
+
+  initIncidentTypeFilter: function (options) {
+    if ($.isEmptyObject(this._incidentLayers)) { return; }
+
+    var that = this;
+    var baseLayers = null;
+    var overlays = {};
+
+    options = $.extend({
+      collapsed: false,
+      position: 'bottomleft',
+    }, options);
+
+    $.each(this.incidentTypes, function (k, v) {
+      var title = v.filterTitle || v.title || k;
+      overlays[title] = that._incidentLayers[k];
+    });
+
+    L.control.layers(baseLayers, overlays, options).addTo(this);
   },
 
   // HELPERS -------------------------------------------------------------------
