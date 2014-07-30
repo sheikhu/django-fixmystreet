@@ -808,3 +808,25 @@ class MailTest(TestCase):
         response = self.client.post(reverse('send_pdf', args=[report_id]), self.sample_post_mail_pdf_citzen)
         #Now 3 additional mails should be sent
         self.assertEquals(len(mail.outbox), 6)
+
+    def test_reopen_report(self):
+        # New report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        report = response.context['report']
+
+        # Set status to REFUSED
+        report.status = Report.REFUSED
+        report.save()
+
+        # Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+
+        # Clear mail outbox
+        mail.outbox = []
+
+        # Reopen reports
+        url = reverse('report_reopen_pro', args=[report.id])
+        response = self.client.get(url)
+
+        # Assert
+        self.assertEquals(len(mail.outbox), 1)
