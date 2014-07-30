@@ -1,8 +1,8 @@
 
 $(function () {
     fms.map = new L.FixMyStreet.Map('map');
-    fms.dragMarker = new fms.DragMarkerView();
-    fms.dragMarker.render();
+    fms.newIncidentMarker = new fms.NewIncidentMarkerView();
+    fms.newIncidentMarker.render();
 });
 
 fms.ReportMapView = Backbone.View.extend({
@@ -30,7 +30,7 @@ fms.ReportMapView = Backbone.View.extend({
 });
 
 
-fms.DragMarkerView = Backbone.View.extend({
+fms.NewIncidentMarkerView = Backbone.View.extend({
     el: '#map',
     events: {
         'markermoved': 'loadAddress',
@@ -56,19 +56,15 @@ fms.DragMarkerView = Backbone.View.extend({
 
     localizeViaMap: function (evt) {
         evt.preventDefault();
-        var center = fms.map.getCenter();
-        // Hard code center of map
-        this.drop({
-            x: center.lon,
-            y: center.lat
-        }, null, true);
+        this.$el.addClass("map-big");
+
+        this.putMarker(fms.map.getCenter(), null, true);
     },
 
-    drop: function (position, address, preventZoomIn) {
-        this.trigger('drop-marker');
+    putMarker: function (position, address, preventZoomIn) {
+        this.trigger('put-marker');
 
-        draggableMarker = fms.currentMap.addDraggableMarker(position.x, position.y);
-        fms.currentMap.centerOnDraggableMarker();
+        draggableMarker = fms.map.addNewIncidentMarker(position);
 
         if (!preventZoomIn) {
             fms.currentMap.map.zoomTo(6);
@@ -87,7 +83,7 @@ fms.DragMarkerView = Backbone.View.extend({
             googleStreetViewLink: googleStreetViewLink
         });
 
-        if (!BACKOFFICE && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
+        if (!BACKOFFICE && address && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
             popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
             popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(address.street.postCode)].phone + "</p>";
         }

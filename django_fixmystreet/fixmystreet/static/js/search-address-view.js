@@ -100,7 +100,7 @@ fms.AddressSearchView = Backbone.View.extend({
                 var position = response.result[0].point;
                 var address = response.result[0].address;
 
-                fms.dragMarker.drop(position, address);
+                fms.newIncidentMarker.putMarker(position, address);
             } else {
                 results = response.result;
                 this.addressProposal.open(results);
@@ -172,7 +172,7 @@ fms.AddressResultView = Backbone.View.extend({
         return this;
     },
     selectAddress: function(event) {
-        fms.dragMarker.drop(this.position, this.address);
+        fms.newIncidentMarker.putMarker(this.position, this.address);
     }
 });
 
@@ -195,7 +195,7 @@ fms.AddressProposalView = Backbone.View.extend({
         this.$previousResults = this.$('#previousResults');
         this.$nextResults = this.$('#nextResults');
 
-        fms.dragMarker.on('drop-marker', function () {
+        fms.newIncidentMarker.on('put-marker', function () {
             self.cleanMap();
         });
         return this;
@@ -226,10 +226,7 @@ fms.AddressProposalView = Backbone.View.extend({
             });
 
             // Add layer to map
-            fms.map.map.addLayer(fms.map.homepageMarkersLayer);
-
-            // Function to bind selector to initDragMarker
-
+            fms.map.addLayer(fms.map.homepageMarkersLayer);
 
             // Add the selector control to the vectorLayer
             var clickCtrl = new OpenLayers.Control.SelectFeature(
@@ -248,7 +245,7 @@ fms.AddressProposalView = Backbone.View.extend({
     onSelect: function (feature) {
         this.close();
 
-        fms.dragMarker.drop(feature.geometry, feature.attributes);
+        fms.newIncidentMarker.putMarker(feature.geometry, feature.attributes);
     },
 
     renderAddresses: function () {
@@ -294,9 +291,11 @@ fms.AddressProposalView = Backbone.View.extend({
     },
 
     cleanMap: function () {
-        // Remove all popups
-        while(fms.map.popups.length) {
-             fms.map.removePopup(fms.map.map.popups[0]);
+        if (fms.map.popups) {
+            // Remove all popups
+            while(fms.map.popups.length) {
+                 fms.map.removePopup(fms.map.map.popups[0]);
+            }
         }
 
         // Remove all features
