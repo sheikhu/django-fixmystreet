@@ -9,7 +9,7 @@
 
 {% block script %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
 
 {% block script-search %}
 <script type="text/javascript">
@@ -26,22 +26,6 @@
 
 </script>
 {% endblock %}
-
-<script type="text/javascript">
-$(function(){
-    fms.currentMap = new fms.Map('map', {
-        apiLang:     LANGUAGE_CODE,
-        localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    WMS_SERVICE_URL
-    });
-
-    var proVersion = false;
-    {% if BACKOFFICE %}
-	proVersion = true;
-    {% endif %}
-});
-
-</script>
 {% endblock %}
 
 {% block header-banner %}
