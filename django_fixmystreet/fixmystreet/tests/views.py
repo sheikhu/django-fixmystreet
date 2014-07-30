@@ -624,7 +624,6 @@ class ReportViewsTest(SampleFilesTestCase):
 
         report = response.context['report']
         report.status = Report.REFUSED
-        report.accepted_at = datetime.now()
         report.save()
 
         self.client.login(username='manager@a.com', password='test')
@@ -638,8 +637,11 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(Report.IN_PROGRESS, report_reopen.status)
         self.assertNotEqual(report.status  , report_reopen.status)
         self.assertEqual(report.created    , report_reopen.created)
-        self.assertEqual(report.accepted_at, report_reopen.accepted_at)
         self.assertEqual(report.close_date , report_reopen.close_date)
+
+        # accepted_at need to be initialized
+        self.assertFalse(report.accepted_at)
+        self.assertTrue(report_reopen.accepted_at)
 
         self.assertEqual(report.subscriptions.all().count(), report_reopen.subscriptions.all().count())
         self.assertEqual(report.responsible_entity         , report_reopen.responsible_entity)

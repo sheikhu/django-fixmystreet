@@ -104,6 +104,15 @@ def reopen(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
     if report.is_closed() or report.is_refused():
+
+        # If the report was rejected, no accepted_at date exists. Need to init it.
+        if report.is_refused() and not report.accepted_at:
+            report.accepted_at = datetime.now()
+
+            # When validating a report created by a citizen set all attachments to public per default.
+            if (report.citizen):
+                validateAll(request, report.id)
+
         report.status = Report.IN_PROGRESS
         report.save()
 
