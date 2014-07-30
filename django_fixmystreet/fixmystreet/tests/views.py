@@ -634,7 +634,7 @@ class ReportViewsTest(SampleFilesTestCase):
 
         report_reopen = response.context['report']
 
-        self.assertEqual(Report.IN_PROGRESS, report_reopen.status)
+        self.assertEqual(Report.MANAGER_ASSIGNED, report_reopen.status)
         self.assertNotEqual(report.status  , report_reopen.status)
         self.assertEqual(report.created    , report_reopen.created)
         self.assertEqual(report.close_date , report_reopen.close_date)
@@ -666,7 +666,7 @@ class ReportViewsTest(SampleFilesTestCase):
 
         report_reopen = response.context['report']
 
-        self.assertEqual(Report.IN_PROGRESS, report_reopen.status)
+        self.assertEqual(Report.MANAGER_ASSIGNED, report_reopen.status)
         self.assertNotEqual(report.status  , report_reopen.status)
         self.assertEqual(report.created    , report_reopen.created)
         self.assertEqual(report.accepted_at, report_reopen.accepted_at)
@@ -694,7 +694,7 @@ class ReportViewsTest(SampleFilesTestCase):
 
         report_not_reopen = response.context['report']
 
-        self.assertNotEqual(Report.IN_PROGRESS, report_not_reopen.status)
+        self.assertNotEqual(Report.MANAGER_ASSIGNED, report_not_reopen.status)
         self.assertEqual(report.status        , report_not_reopen.status)
         self.assertEqual(report.created       , report_not_reopen.created)
         self.assertEqual(report.modified      , report_not_reopen.modified)

@@ -1305,7 +1305,7 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
             ### REOPEN
-            elif (report.__former['status'] in Report.REPORT_STATUS_CLOSED or report.__former['status'] == Report.REFUSED) and report.status == Report.IN_PROGRESS:
+            elif (report.__former['status'] in Report.REPORT_STATUS_CLOSED or report.__former['status'] == Report.REFUSED) and report.status == Report.MANAGER_ASSIGNED:
                 for subscription in report.subscriptions.all():
                     if subscription.subscriber != event_log_user:
                         ReportNotification(

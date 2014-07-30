@@ -113,7 +113,7 @@ def reopen(request, report_id):
             if (report.citizen):
                 validateAll(request, report.id)
 
-        report.status = Report.IN_PROGRESS
+        report.status = Report.MANAGER_ASSIGNED
         report.save()
 
     if "pro" in request.path:
