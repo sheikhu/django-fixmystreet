@@ -53,10 +53,18 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         '  <% } %>',
         '<% } %>',
     ].join('\n')),
-
+    render: function () {
+        this.$el.on('transitionend',function () {
+            fms.map.invalidateSize();
+        });
+        return this;
+    },
+    enlarge: function () {
+        fms.map.setCssSize('map-size-big');
+    },
     localizeViaMap: function (evt) {
         evt.preventDefault();
-        this.$el.addClass("map-big");
+        this.enlarge();
 
         this.putMarker(fms.map.getCenter(), null, true);
     },
@@ -74,8 +82,7 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
     },
 
     renderPopup: function(position, address) {
-        var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(position.x, position.y);
-        var googleStreetViewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y + ',' + pointStreetView.y + '&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
+        var googleStreetViewLink = 'https://maps.google.be/maps?q=' + position.y + ',' + position.y + '&layer=c&z=17&iwloc=A&sll='+ position.y + ',' + position.x + '&cbp=13,240.6,0,0,0&cbll=' + position.y + ',' + position.x;
 
         var popupContent = this.moveMePopupTemplate({
             position: position,
@@ -83,7 +90,10 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
             googleStreetViewLink: googleStreetViewLink
         });
 
-        if (!BACKOFFICE && address && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
+        if (!BACKOFFICE &&
+                address &&
+                address.street.postCode in zipcodes &&
+                !zipcodes[String(address.street.postCode)].participation) {
             popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
             popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(address.street.postCode)].phone + "</p>";
         }

@@ -215,7 +215,8 @@ footer .cirb-cibg img{
 	position: relative;
 	height: 300px;
 }
-.map-big #map, #map.map-big{
+
+.map-size-big {
 	height: 610px !important;
     transition: all 1s;
 }

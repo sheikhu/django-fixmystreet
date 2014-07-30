@@ -92,7 +92,7 @@ fms.AddressSearchView = Backbone.View.extend({
     processSeachResults: function (response) {
         if(response.status == 'success' && response.result.length > 0) {
 
-            $('#map').addClass("map-big");
+            fms.newIncidentMarker.enlarge();
             this.addressProposal.cleanMap();
 
             // Urbis response 1 result
