@@ -217,6 +217,10 @@
           evt.preventDefault();
           map.setCssSize($selectMapSizes.val());
         });
+
+        map.on('resize', function (evt) {
+          console.log('Map resized:', evt.newSize, evt.oldSize);
+        });
       });
     </script>
   </body>
