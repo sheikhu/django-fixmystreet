@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Example</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <link rel="stylesheet" href="../../../lib/leaflet/leaflet.css" />
+      <link rel="stylesheet" href="../../../lib/leaflet.markercluster/MarkerCluster.Default.css" />
+      <style>
+        .cf:before, .cf:after { content: " "; display: table; }
+        .cf:after { clear: both; }
+        .cf { *zoom: 1; }
+        body, select {
+          font-family: Sans-Serif;
+        }
+        #map {
+          height: 500px;
+        }
+        #map.map-size-small {
+          height: 200px;
+        }
+        #map.map-size-500x300 {
+          height: 300px;
+          width: 500px;
+        }
+        .actions {
+          margin-top: 10px;
+        }
+        .group {
+          background-color: #eee;
+          float: left;
+          padding: 3px 6px;
+        }
+        .group:not(:first-child) {
+          margin-left: 10px;
+        }
+        .marker-in-black {
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 4px;
+        }
+        .popup-yellow .leaflet-popup-content-wrapper,
+        .popup-yellow .leaflet-popup-tip {
+          background-color: #ffb442;
+        }
+      </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="actions cf">
+      <div class="group">
+        <strong>Layers:</strong>
+        <select id="urbis-layer"></select>
+        <button id="btn-toggle">Toggle</button>
+        <button id="btn-unload">Unload</button>
+      </div>
+      <div class="group">
+        <button id="btn-reset-options">Reset map options</button>
+      </div>
+      <div class="group">
+        <strong>Markers:</strong>
+        <button id="btn-add-random-markers">Add Random</button>
+        <button id="btn-new-incident">New Incident</button>
+        <button id="btn-remove-new-incident">Remove New Incident</button>
+      </div>
+      <div class="group">
+        <strong>Sizes:</strong>
+        <select id="map-sizes"></select>
+      </div>
+    </div>
+
+    <script src="../../../lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../lib/leaflet/leaflet.js"></script>
+    <script src="../../../lib/leaflet.markercluster/leaflet.markercluster.js"></script>
+    <script src="../leaflet-fms.js"></script>
+    <script src="../urbis-layers.js"></script>
+    <script src="leaflet-dev.js"></script>
+    <script>
+      var map;
+
+      // Initialize an UrbIS map (empty by default, no layers loaded).
+      map = new L.FixMyStreet.Map('map');
+
+      $(document).ready(function() {
+        // Load UrbIS layers in dropdown.
+        var $selectUrbisLayer = $('#urbis-layer');
+        $.each(L.FixMyStreet.Map.layersSettings, function (k, v) {
+          $selectUrbisLayer.append(
+            $('<option></option>').attr('value', k).text(v.title)
+          );
+        });
+
+        // Initialize available map sizes.
+        var mapSizes = {
+          '': 'Default',
+          'map-size-small': 'Small',
+          'map-size-500x300': '500x300',
+        };
+        var $selectMapSizes = $('#map-sizes');
+        $.each(mapSizes, function (k, v) {
+          $selectMapSizes.append(
+            $('<option></option>').attr('value', k).text(v)
+          );
+        });
+
+        // Get all incident types.
+        var incidentTypes = [];
+        for (var k in map.incidentTypes) {
+          incidentTypes.push(k);
+        }
+
+
+        // HELPERS...
+
+        // Key of the currently selected layer.
+        function currentLayerUrbisKey() {
+          return $selectUrbisLayer.val();
+        }
+
+
+        // CLICK HANDLERS...
+
+        // Toggle the visibility (of a named layer).
+        $('#btn-toggle').click(function (evt) {
+          evt.preventDefault();
+          map.toggleLayer(currentLayerUrbisKey());
+        });
+
+        // Unload the given named layer.
+        $('#btn-unload').click(function (evt) {
+          evt.preventDefault();
+          map.unloadLayer(currentLayerUrbisKey());
+        });
+
+        // Reset the options of the map (e.g. center, zoom).
+        $('#btn-reset-options').click(function (evt) {
+          evt.preventDefault();
+          map.setOptions();
+        });
+
+        // Add random incidents.
+        $('#btn-add-random-markers').click(function (evt) {
+          evt.preventDefault();
+          var n, model, options;
+          for (var i = 0; i < 100; i++) {
+            n = Math.floor(Math.random() * 10) % incidentTypes.length;
+            model = {
+              id: i,
+              type: incidentTypes[n],
+              latlng: getRandomLatLng(map),
+            }
+            options = {};
+            switch (n) {
+              case 0: break;
+              case 1:
+                options.popupOptions = {
+                  className: 'popup-yellow',
+                  closeButton: false,
+                };
+                break;
+              case 2:
+                options.iconOptions = {
+                  className: 'marker-in-black',
+                };
+                break;
+            }
+
+            map.addIncident(model, options);
+          }
+        });
+
+        // Add a new incident when clicking on the map.
+        // map.on('click', function (options) {
+        //   map.addNewincideNtmarker(options.latlng);
+        // });
+
+        // Add a new incident draggable marker.
+        $('#btn-new-incident').click(function (evt) {
+          evt.preventDefault();
+          map.addNewIncidentMarker();
+        });
+
+        // Remove the new incident marker.
+        $('#btn-remove-new-incident').click(function (evt) {
+          evt.preventDefault();
+          map.removeNewIncidentMarker();
+        });
+
+        // Change map dimensions.
+        $selectMapSizes.change(function (evt) {
+          evt.preventDefault();
+          map.setCssSize($selectMapSizes.val());
+        });
+      });
+    </script>
+  </body>
+</html>
