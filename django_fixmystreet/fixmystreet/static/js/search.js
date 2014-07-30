@@ -36,6 +36,9 @@ fms.AddressSearchView = Backbone.View.extend({
         this.addressProposal = new fms.AddressProposalView();
         this.addressProposal.render();
 
+        this.dragMarker = new fms.DragMarkerView();
+        this.dragMarker.render();
+
         return this;
     },
 
@@ -97,17 +100,10 @@ fms.AddressSearchView = Backbone.View.extend({
 
             // Urbis response 1 result
             if(response.result.length == 1) {
-                var pos    = response.result[0].point;
+                var position = response.result[0].point;
                 var address = response.result[0].address;
 
-                additionalInfo = {
-                    'streetName'   : address.street.name,
-                    'number'       : address.number,
-                    'postCode'     : address.street.postCode,
-                    'municipality' : address.street.municipality
-                };
-
-                initDragMarker(pos.x, pos.y, additionalInfo);
+                initDragMarker(position, address);
             } else {
                 results = response.result;
                 this.addressProposal.open(results);
@@ -146,80 +142,7 @@ fms.AddressSearchView = Backbone.View.extend({
             fms.message.show(gettext('This street exists in several municipalities, please be more specific.'));
         }
     },
-    getAddressFromPoint: function (lang, x, y) {
-        var self  = this;
-        var origX = x;
-        var origY = y;
-        $.ajax({
-            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
-            type:'POST',
-            dataType:'jsonp',
-            data: {
-                json: ['{',
-                    '"language": "' + lang + '",',
-                    '"point":{x:' + x + ',y:' + y + '}',
-                    '}'].join('\n')
-            },
-            success:function(response)
-            {
-                cleanMap();
 
-                var street = response.result.address.street.name;
-                var number = response.result.address.number;
-                var postCode = response.result.address.street.postCode;
-
-                //console.log(origX,origY);
-                var municipality = zipcodes[(postCode=="1041"?"1040":postCode)].commune;
-                var popupTitleItsHere   = gettext('It is here');
-                var popupTitle = gettext('Move the cursor');
-                //var origX = response.result.point.x;
-                //var origY= response.result.point.y;
-                //console.log(x,y);
-                //INJECTION
-                if (!BACKOFFICE && response.result.address.street.postCode in zipcodes && !zipcodes[String(response.result.address.street.postCode)].participation) {
-                    //var popupContent = "<p>" + street + ", " + number;
-                    // Convert the point and url for google street view
-                    var popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
-                    popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(response.result.address.street.postCode)].phone + "</p>";
-                } else {
-                    //var popupContent = "<p>" + street + ", " + number;
-                    // Convert the point and url for google street view
-                    var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(origX, y);
-                    var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.origY +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
-                    var popupContent = "<p class='popupMoveMe popupHeading'>"+popupTitle+"</p>";
-                    popupContent += "<p class='popupMoveMe popupContent'>" + street + ", " + number;
-                    popupContent += "<br/>" + postCode + " " + municipality + "</p>";
-
-                    if (NEXT_PAGE_URL) {
-                        popupContent +=
-                        "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + origX + "&y=" + origY + "'>"+
-                        popupTitleItsHere+
-                        "</a>";
-                    }
-                    popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
-                }
-
-                var popup = new OpenLayers.Popup(
-                    "popup",
-                    new OpenLayers.LonLat(fms.currentMap.draggableMarker.components[0].x, fms.currentMap.draggableMarker.components[0].y),
-                    new OpenLayers.Size(200,150),
-                    popupContent,
-                    true
-                );
-                popup.panMapIfOutOfView = true;
-
-                fms.currentMap.map.addPopup(popup);
-            },
-            error:function(response)
-            {
-                // Error
-                //~ var msg = 'Error: ' + response.status;
-                //~ if(response.status == 'error') {
-                    //~ msg = 'Unable to locate this address';
-                //~ }
-            }
-        });
-    },
     municipalityChange: function (postalCode) {
         fms.currentMap.centerOnMunicipality(postalCode);
     }
@@ -243,8 +166,7 @@ fms.AddressResultView = Backbone.View.extend({
     constructor: function (options) {
         Backbone.View.apply(this, arguments);
 
-        this.x = options.pos.x;
-        this.y = options.pos.y;
+        this.position = options.position;
         this.address = options.address;
         this.address.icon = "/static/images/marker/marker-" + options.index + ".png";
     },
@@ -253,14 +175,7 @@ fms.AddressResultView = Backbone.View.extend({
         return this;
     },
     selectAddress: function(event) {
-        var additionalInfo = {
-            'streetName'   : this.address.street.name,
-            'number'       : this.address.number,
-            'postCode'     : this.address.street.postCode,
-            'municipality' : this.address.street.municipality
-        };
-
-        initDragMarker(self.x, self.y, additionalInfo);
+        fms.search.dragMarker.drop(this.position, this.address);
     }
 });
 
@@ -272,7 +187,7 @@ fms.AddressProposalView = Backbone.View.extend({
     events: {
         'click #previousResults': 'paginateResultsPrev',
         'click #nextResults': 'paginateResultsNext',
-        'click .address-result': 'paginateResultsNext',
+        'click .address-result': 'close',
     },
 
     render: function () {
@@ -316,12 +231,7 @@ fms.AddressProposalView = Backbone.View.extend({
             // Add the selector control to the vectorLayer
             var clickCtrl = new OpenLayers.Control.SelectFeature(
                 fms.currentMap.homepageMarkersLayer, {
-                    onSelect: function (feature) {
-                        var x = feature.geometry.x;
-                        var y = feature.geometry.y;
-
-                        initDragMarker(x, y, feature.attributes.additionalInfo);
-                    }
+                    onSelect: this.onSelect
                 }
             );
             fms.currentMap.map.addControl(clickCtrl);
@@ -332,6 +242,12 @@ fms.AddressProposalView = Backbone.View.extend({
         this.$el.slideDown();
     },
 
+    onSelect: function (feature) {
+        this.close();
+
+        fms.search.dragMarker.drop(feature.geometry, feature.attributes);
+    },
+
     renderAddresses: function () {
         var features = [],
              iconIdx = 0;
@@ -340,10 +256,10 @@ fms.AddressProposalView = Backbone.View.extend({
 
         for(var i = this.paginationResults * 5; i < this.addresses.length && features.length < 5; i++) {
             var address = this.addresses[i].address;
-            var pos = this.addresses[i].point;
+            var position = this.addresses[i].point;
 
             var newAddress = new fms.AddressResultView({
-                pos: pos,
+                position: position,
                 address: address,
                 index: iconIdx++
             });
@@ -351,15 +267,8 @@ fms.AddressProposalView = Backbone.View.extend({
 
             // Create feature on vectore layer
             var feature = new OpenLayers.Feature.Vector(
-                    new OpenLayers.Geometry.Point(pos.x, pos.y),
-                    { 'additionalInfo' :
-                        {
-                            'streetName'   : address.street.name,
-                            'number'       : address.number,
-                            'postCode'     : address.street.postCode,
-                            'municipality' : address.street.municipality
-                        }
-                    },
+                    new OpenLayers.Geometry.Point(position.x, position.y),
+                    address,
                     {
                         externalGraphic: newAddress.address.icon,
                         graphicWidth: 25,
@@ -382,41 +291,59 @@ fms.AddressProposalView = Backbone.View.extend({
     }
 });
 
-function initDragMarker(x, y, additionalInfo, preventZoomIn) {
+fms.DragMarkerView = Backbone.View.extend({
+    el: '#map',
+    events: {
+        'markermoved': 'loadAddress'
+    },
+    moveMePopupTemplate: _.template([
+        '<p class="popupMoveMe popupHeading"><%= gettext("Move the cursor") %></p>',
+        '<% if (address) { %>',
+        '  <p class="popupMoveMe popupContent">',
+        '    <%= address.street.name %>, <%= address.street.number %><br/>',
+        '    <%= address.street.postCode %> <%= address.street.municipality %>',
+        '  </p>',
+        '  <% if (address.number) { %>',
+        '    <a class="btn-itshere" href="<%= NEXT_PAGE_URL %>?x=<%= position.x %>&y=<%= position.y %>"><%= gettext("It is here") %></a>',
+        '    <div id="btn-streetview">',
+        '      <a href="<%= googleStreetViewLink %>" target="_blank">',
+        '        <i class="icon-streetview"></i>Street View',
+        '      </a>',
+        '    </div>',
+        '  <% } %>',
+        '<% } %>',
+    ].join('\n')),
+    drop: function (position, address, preventZoomIn) {
         cleanMap();
 
-        // Remove message info
-        var $map = $('#map');
-        map.classList.remove("map-big-message");
-        map.classList.add("map-big");
-
-        var $proposalMessage = $('#proposal-message');
-        $proposalMessage.slideUp();
-
-        draggableMarker = fms.currentMap.addDraggableMarker(x, y);
+        draggableMarker = fms.currentMap.addDraggableMarker(position.x, position.y);
         fms.currentMap.centerOnDraggableMarker();
 
         if (!preventZoomIn) {
             fms.currentMap.map.zoomTo(6);
         }
 
-        var popupTitle = gettext('Move the cursor');
-        var popupTitleItsHere   = gettext('It is here');
-        var popupContent = "<p class='popupMoveMe popupHeading'>"+popupTitle+"</p>";
+        this.renderPopup(position, address);
+    },
 
-        if (additionalInfo) {
-            popupContent += "<p class='popupMoveMe popupContent'>" + additionalInfo.streetName + ", " + additionalInfo.number;
-            popupContent += "<br/>" + additionalInfo.postCode + " " + additionalInfo.municipality + "</p>";
+    renderPopup: function(position, address) {
+        var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(position.x, position.y);
+        var googleStreetViewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y + ',' + pointStreetView.y + '&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
 
-            if (additionalInfo.number) {
-                popupContent += "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + x + "&y=" + y + "'>"+popupTitleItsHere+"</a>";
-                popupContent += '<div id="btn-streetview"><i class="icon-streetview"></i>Street View</div>';
-            }
+        var popupContent = this.moveMePopupTemplate({
+            position: position,
+            address: address,
+            googleStreetViewLink: googleStreetViewLink
+        });
+
+        if (!BACKOFFICE && address.street.postCode in zipcodes && !zipcodes[String(address.street.postCode)].participation) {
+            popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
+            popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(address.street.postCode)].phone + "</p>";
         }
 
         var popup = new OpenLayers.Popup(
             "popup",
-            new OpenLayers.LonLat(x, y),
+            new OpenLayers.LonLat(fms.currentMap.draggableMarker.components[0].x, fms.currentMap.draggableMarker.components[0].y),
             new OpenLayers.Size(200,150),
             popupContent,
             true
@@ -424,7 +351,71 @@ function initDragMarker(x, y, additionalInfo, preventZoomIn) {
         popup.panMapIfOutOfView = true;
 
         fms.currentMap.map.addPopup(popup);
-}
+    },
+
+    loadAddress: function (evt, position) {
+        var self  = this;
+        var origX = position.x;
+        var origY = position.y;
+        $.ajax({
+            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+            type:'POST',
+            dataType:'jsonp',
+            data: {
+                json: JSON.stringify({
+                    "language": LANGUAGE_CODE,
+                    "point": position,
+                })
+            },
+            success:function(response)
+            {
+                cleanMap();
+                self.renderPopup(position, response.result.address);
+
+                // var street = response.result.address.street.name;
+                // var number = response.result.address.number;
+                // var postCode = response.result.address.street.postCode;
+                //
+                // //console.log(origX,origY);
+                // var municipality = zipcodes[(postCode=="1041"?"1040":postCode)].commune;
+                // var popupTitleItsHere   = gettext('It is here');
+                // var popupTitle = gettext('Move the cursor');
+                // //var origX = response.result.point.x;
+                // //var origY= response.result.point.y;
+                // //console.log(x,y);
+                // //INJECTION
+                // if (!BACKOFFICE && response.result.address.street.postCode in zipcodes && !zipcodes[String(response.result.address.street.postCode)].participation) {
+                //     var popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
+                //     popuContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(response.result.address.street.postCode)].phone + "</p>";
+                // } else {
+                //     //var popupContent = "<p>" + street + ", " + number;
+                //     // Convert the point and url for google street view
+                //     var pointStreetView = UtilGeolocation.convertCoordinatesToWGS84(origX, y);
+                //     var streetBiewLink = 'https://maps.google.be/maps?q=' + pointStreetView.y +','+ pointStreetView.origY +'&layer=c&z=17&iwloc=A&sll='+ pointStreetView.y + ',' + pointStreetView.x + '&cbp=13,240.6,0,0,0&cbll=' + pointStreetView.y + ',' + pointStreetView.x;
+                //     var popupContent = "<p class='popupMoveMe popupHeading'>"+popupTitle+"</p>";
+                //     popupContent += "<p class='popupMoveMe popupContent'>" + street + ", " + number;
+                //     popupContent += "<br/>" + postCode + " " + municipality + "</p>";
+                //
+                //     if (NEXT_PAGE_URL) {
+                //         popupContent +=
+                //         "<a class='btn-itshere' href='" + NEXT_PAGE_URL + "?x=" + origX + "&y=" + origY + "'>"+
+                //         popupTitleItsHere+
+                //         "</a>";
+                //     }
+                //     popupContent += '<div id="btn-streetview"><a href="' + streetBiewLink + '" target="_blank"><i class="icon-streetview"></i>Street View</a></div>';
+                // }
+            },
+            error:function(response)
+            {
+                // Error
+                //~ var msg = 'Error: ' + response.status;
+                //~ if(response.status == 'error') {
+                    //~ msg = 'Unable to locate this address';
+                //~ }
+            }
+        });
+    }
+});
 
 function cleanMap() {
     // Remove all popups
@@ -441,22 +432,16 @@ function cleanMap() {
     }
 }
 
-
-
-$(function(){
-    var $map = $('#map');
-    $map.bind('markermoved',function(evt,point) {
-        getAddressFromPoint(LANGUAGE_CODE, point.x, point.y);
-    });
-});
-
 // Localize report with map
 (function() {
     $('#btn-localizeviamap').click(function(evt) {
         evt.preventDefault();
         var center = fms.currentMap.map.getCenter();
         // Hard code center of map
-        initDragMarker(center.lon, center.lat, null, true);
+        fms.search.dragMarker.drop({
+            x: center.lon,
+            y: center.lat
+        }, null, true);
 
         btnLocalizeviamap.parentNode.removeChild(btnLocalizeviamap);
     });
