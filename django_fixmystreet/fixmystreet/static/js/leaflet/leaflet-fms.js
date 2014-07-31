@@ -204,7 +204,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
   // INCIDENTS -----------------------------------------------------------------
 
-  addIncident: function (model, options) {  // ([L.LatLng or Object], [Object], [L.ILayer])
+  addIncident: function (model, options) {  // (Object, [Object])
     if (!(model.type in this.incidentTypes)) {
       console.log('ERROR: Invalid incident type "' + model.type + '".');
       return;
