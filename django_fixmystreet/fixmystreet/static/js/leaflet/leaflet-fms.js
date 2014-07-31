@@ -68,7 +68,7 @@ L.FixMyStreet.Map = L.Map.extend({
   incidents: [],
 
   initialize: function (id, options) {  // (HTMLElement or String, Object)
-    options = $.extend(this.DEFAULTS, options);
+    options = $.extend(true, {}, this.DEFAULTS, options);
     L.Map.prototype.initialize.call(this, id, options);
 
     this._namedLayers = {};
@@ -213,10 +213,10 @@ L.FixMyStreet.Map = L.Map.extend({
     options = options || {};
 
     var that = this;
-    var markerOptions = $.extend(options, {
+    var markerOptions = $.extend(true, {
       icon: this.incidentTypes[model.type].icon,
-      popupTemplate: options.popupTemplate || this.incidentTypes[model.type].popupTemplate,
-    });
+      popupTemplate: this.incidentTypes[model.type].popupTemplate,
+    }, options);
 
     var m = this.addMarker(model, markerOptions, this._incidentLayers[model.type]);
 
@@ -246,11 +246,11 @@ L.FixMyStreet.Map = L.Map.extend({
     options = options || {};
 
     var that = this;
-    var markerOptions = $.extend(options, {
+    var markerOptions = $.extend(true, {
       draggable: true,
       icon: this.options.newIncidentMarker.icon,
-      popupTemplate: options.popupTemplate || this.options.newIncidentMarker.popupTemplate,
-    });
+      popupTemplate: this.options.newIncidentMarker.popupTemplate,
+    }, options);
 
     this.newIncidentMarker = this.addMarker(latlng, markerOptions);
 
