@@ -228,6 +228,17 @@ L.FixMyStreet.Map = L.Map.extend({
     this.incidents.push(m);
   },
 
+  addIncidents: function (incidents, baseOptions) {  // (Object, [Object])
+    baseOptions = baseOptions || {};
+
+    for (var i = 0; i < incidents.length; i++) {
+      var model = 'model' in incidents[i] ? incidents[i].model
+                                          : incidents[i];
+      var options = $.extend(true, {}, baseOptions, incidents[i].options || {});
+      this.addIncident(model, options);
+    }
+  },
+
   removeAllIncidents: function () {
     for (var incidentType in this.incidentTypes) {
       this._incidentLayers[incidentType].clearLayers();

@@ -145,6 +145,68 @@
           return $selectUrbisLayer.val();
         }
 
+        // Add random incidents (one by one using `map.addIncident()`).
+        function addRandomIncidents() {
+          var n, model, options;
+          for (var i = 0; i < 100; i++) {
+            n = Math.floor(Math.random() * 10) % incidentTypes.length;
+            model = {
+              id: i,
+              type: incidentTypes[n],
+              latlng: getRandomLatLng(map),
+            }
+            options = {};
+            switch (model.type) {
+              case 'reported': break;
+              case 'ongoing':
+                options.popupOptions = {
+                  className: 'popup-yellow',
+                  closeButton: false,
+                };
+                break;
+              case 'closed':
+                options.iconOptions = {
+                  className: 'marker-in-black',
+                };
+                break;
+            }
+
+            map.addIncident(model, options);
+          }
+        }
+
+        // Add random incidents (bulk using `map.addIncidents()`).
+        function addRandomIncidentsBulk() {
+          var incidents = [];
+          var n, model, options;
+          for (var i = 0; i < 100; i++) {
+            n = Math.floor(Math.random() * 10) % incidentTypes.length;
+            model = {
+              id: i,
+              type: incidentTypes[n],
+              latlng: getRandomLatLng(map),
+            }
+            options = {};
+            switch (model.type) {
+              case 'reported': break;
+              case 'ongoing':
+                options.popupOptions = {
+                  className: 'popup-yellow',
+                  closeButton: false,
+                };
+                break;
+              case 'closed':
+                options.iconOptions = {
+                  className: 'marker-in-black',
+                };
+                break;
+            }
+            incidents.push({model: model, options: options});
+          }
+
+          map.addIncidents(incidents);
+        }
+
 
         // CLICK HANDLERS...
 
@@ -169,32 +231,10 @@
         // Add random incidents.
         $('#btn-add-random-incidents').click(function (evt) {
           evt.preventDefault();
-          var n, model, options;
-          for (var i = 0; i < 100; i++) {
-            n = Math.floor(Math.random() * 10) % incidentTypes.length;
-            model = {
-              id: i,
-              type: incidentTypes[n],
-              latlng: getRandomLatLng(map),
-            }
-            options = {};
-            switch (n) {
-              case 0: break;
-              case 1:
-                options.popupOptions = {
-                  className: 'popup-yellow',
-                  closeButton: false,
-                };
-                break;
-              case 2:
-                options.iconOptions = {
-                  className: 'marker-in-black',
-                };
-                break;
-            }
+          // addRandomIncidents();
+          addRandomIncidentsBulk();
+        });
 
-            map.addIncident(model, options);
-          }
         });
 
         // Remove all incidents.
