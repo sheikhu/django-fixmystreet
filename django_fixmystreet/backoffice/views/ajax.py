@@ -2,6 +2,7 @@ import datetime
 import re
 import json
 
+from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -52,14 +53,20 @@ def secondary_category_for_main_category(request):
 
 
 def update_category_for_report(request, report_id):
-    main_category_id = int(request.POST["main_category"])
+    main_category_id      = int(request.POST["main_category"])
     secondary_category_id = int(request.POST["secondary_category"])
-    report = get_object_or_404(Report, id=report_id)
-    report.category = ReportMainCategoryClass.objects.get(id=main_category_id)
-    report.secondary_category = ReportCategory.objects.get(id=secondary_category_id)
-    report.save()
-    return HttpResponse(json.dumps({"returntype": "ok"}), mimetype="application/json")
 
+    report             = get_object_or_404(Report, id=report_id)
+    secondary_category = ReportCategory.objects.get(id=secondary_category_id)
+
+    if not report.private and not secondary_category.public:
+        messages.add_message(request, messages.ERROR, _("Cannot set a private category to a public report"))
+    else:
+        report.category = ReportMainCategoryClass.objects.get(id=main_category_id)
+        report.secondary_category = secondary_category
+        report.save()
+
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 def send_pdf(request, report_id):
     to_return = {

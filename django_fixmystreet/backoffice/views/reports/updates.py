@@ -167,13 +167,16 @@ def notpending(request, report_id):
 def switchPrivacy(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")
-    if privacy != 'true':
+
+    if privacy == 'true':
+        # Is private
+        report.private = True
+    else:
+        # Is public
         if report.secondary_category.public:
-            report.private = ('true' == privacy)
+            report.private = False
         else:
             messages.add_message(request, messages.ERROR, _("Cannot turn incident public. The category of this incident may not be shown to the citizens."))
-    else:
-        report.private = ('true' == privacy)
 
     report.save()
 
@@ -273,20 +276,13 @@ def publish(request, report_id):
 
 def validateAll(request, report_id):
     '''Set all annexes to public'''
+    switchPrivacy(request, report_id)
+
     report = get_object_or_404(Report, id=report_id)
 
-    attachments = report.attachments.all()
-    attachments.update(security_level=ReportAttachment.PUBLIC)
-
-    report.private = False
-    report.save()
-    # for comment in comments:
-    #     comment.security_level = ReportAttachment.PUBLIC
-    #     comment.save()
-
-    # for f in files:
-    #     f.security_level = ReportAttachment.PUBLIC
-    #     f.save()
+    if not report.private:
+        attachments = report.attachments.all()
+        attachments.update(security_level=ReportAttachment.PUBLIC)
 
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())

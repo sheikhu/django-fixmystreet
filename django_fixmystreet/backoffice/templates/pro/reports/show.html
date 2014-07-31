@@ -44,10 +44,6 @@ function cancelCategoryUpdate() {
     $('#modalCategory').modal('hide');
 }
 
-function persistCategoryUpdate() {
-    $('#sec_cat_select').trigger('submit');
-}
-
 $(function(){
     $(".changeStatus").delegate("input[type=radio]", "click", function(){
         var id = $(this).data('attachmentId');
@@ -173,19 +169,6 @@ $(document).ready(function() {
     });
 
     $("#main_cat_select").val("{{report.category.id}}");
-
-    $("#sec_cat_select").bind('submit', function(){
-        $.ajax({
-            url:"{% url 'update_category_for_report' report.id %}",
-            data:{"main_category":$('#main_cat_select').val(),"secondary_category":this.value},
-            type:"POST",
-            success:function(data){
-                //Close modal Window
-                $('#modalCategory').modal('hide');
-                location.reload();
-            }
-        });
-    });
 
     $(".update_text").find('#imgtoshow').exifLoad(someCallback);
 
@@ -851,28 +834,31 @@ $(document).ready(function() {
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h3>{% trans "Category" %}</h3>
         </div>
+
         <div class="modal-body">
-            <tr>
-                <td colspan="4">
-                    <select id="main_cat_select">
-                        <option value="0">{% trans "Select a Category" %}</option>
-                        {% for cat in category_list%}
-                            <option value="{{cat.id}}">{{cat.name}}</option>
-                        {% endfor %}
-                    </select>
-                    <select id="sec_cat_select">
-                    </select>
-                </td>
-            </tr>
-            <br/><br/>
-            <tr>
-                <td colspan="2">
-                    <input class="btn pull-left" type="button" name="submit" value="{% trans "Annuler" %}" onclick="cancelCategoryUpdate()">
-                </td>
-                <td colspan="2">
-                    <input class="btn pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistCategoryUpdate()">
-                </td>
-            </tr>
+            <form method="POST" action="{% url 'update_category_for_report' report.id %}">
+                <tr>
+                    <td colspan="4">
+                        <select id="main_cat_select" name="main_category">
+                            <option value="0">{% trans "Select a Category" %}</option>
+                            {% for cat in category_list%}
+                                <option value="{{cat.id}}">{{cat.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select id="sec_cat_select" name="secondary_category">
+                        </select>
+                    </td>
+                </tr>
+                <br/><br/>
+                <tr>
+                    <td colspan="2">
+                        <input class="btn pull-left" type="button" name="submit" value="{% trans 'Annuler' %}" onclick="cancelCategoryUpdate()">
+                    </td>
+                    <td colspan="2">
+                        <input class="btn pull-left" type="submit" name="submit" value="{% trans 'Accepter' %}">
+                    </td>
+                </tr>
+            </form>
         </div>
     </div>
 
