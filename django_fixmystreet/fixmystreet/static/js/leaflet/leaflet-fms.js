@@ -399,7 +399,7 @@ L.FixMyStreet.Marker = L.Marker.extend({
     if (this.options.popupTemplate) {
       var that = this;
       L.FixMyStreet.Template.render(this.options.popupTemplate, this.model, function (error, html) {
-        that._popup.setContent(html);
+        that.setPopupContent(html);
       });
     }
     L.Marker.prototype.openPopup.call(this, latlng);
