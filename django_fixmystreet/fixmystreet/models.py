@@ -384,7 +384,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
     # arg = 1 report object
     # kwds = report_point, report_category, report_date, created (optional), closed (optional)
     def rank(self, *arg, **kwds):
-        DISTANCE_MAX = 250
+        DISTANCE_MAX = 50
         created      = False
         closed       = False
         params       = {
