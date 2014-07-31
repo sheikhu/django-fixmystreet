@@ -184,6 +184,7 @@ L.FixMyStreet.Map = L.Map.extend({
   addMarker: function (latlng, options, container) {  // ([L.LatLng or Object], [Object], [L.ILayer])
     var model = null;
 
+    // @FIXME: Fix arguments detection/swapping. Or use an "options" arg for all non-mandatory parameters.
     if (latlng !== undefined && !(latlng instanceof L.LatLng)) {
       model = latlng;
       latlng = this.toLatLng(model.latlng);
