@@ -17,6 +17,9 @@
         #map {
           height: 500px;
         }
+        #map.map-size-big {
+          height: 800px;
+        }
         #map.map-size-small {
           height: 200px;
         }
@@ -71,13 +74,15 @@
         <button id="btn-reset-options">Reset map options</button>
       </div>
       <div class="group">
+        <strong>Sizes:</strong>
+        <select id="map-sizes"></select>
+      </div>
+    </div>
+    <div class="actions cf">
+      <div class="group">
         <strong>Incidents:</strong>
         <button id="btn-add-random-incidents">Add Random</button>
         <button id="btn-remove-all-incidents">Remove All</button>
-      </div>
-      <div class="group">
-        <strong>Sizes:</strong>
-        <select id="map-sizes"></select>
       </div>
     </div>
     <div class="actions cf">
@@ -115,6 +120,7 @@
         // Initialize available map sizes.
         var mapSizes = {
           '': 'Default',
+          'map-size-big': 'Big',
           'map-size-small': 'Small',
           'map-size-500x300': '500x300',
         };
