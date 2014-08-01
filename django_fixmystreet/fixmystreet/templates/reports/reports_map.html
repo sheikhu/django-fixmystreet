@@ -12,14 +12,9 @@
     <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 {% endblock %}
 
-{% block css %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/leaflet/leaflet.css' %}"></link>
-{% endblock %}
-
 {% block script %}
     {{ block.super }}
-    <script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/map-view.js' %}"></script>
 
     {% block script_map %}
         {{ block.super }}
