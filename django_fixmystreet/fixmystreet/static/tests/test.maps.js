@@ -3,13 +3,10 @@ describe('Urbis Map', function(){
     var expect = chai.expect;
     describe('Default Layers', function(){
         it('should init', function(){
-            var mapView = new MapView();
+            var $mapEl = $('<div id="map"> </div>');
+            var map = new L.FixMyStreet.Map($mapEl[0]);
 
-            expect(mapView).to.have.property('layers');
-
-            mapView.render();
-            expect(mapView).to.have.property('map');
-            expect(mapView.$el.hasClass('loading')).equal(true);
+            expect(L.FixMyStreet.Map).to.have.property('namedLayersSettings');
         });
     });
 });

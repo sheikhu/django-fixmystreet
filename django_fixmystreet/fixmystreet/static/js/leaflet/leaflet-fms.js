@@ -187,7 +187,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
   // MARKERS -------------------------------------------------------------------
 
-  addMarker: function (latlng, options, container) {  // ([L.LatLng or Object], [Object], [L.ILayer])
+  addMarker: function (latlng, options) {  // ([L.LatLng or Object], [Object], [L.ILayer])
     var model = null;
 
     // @FIXME: Fix arguments detection/swapping. Or use an "options" arg for all non-mandatory parameters.
@@ -202,10 +202,10 @@ L.FixMyStreet.Map = L.Map.extend({
 
     latlng = latlng || this.getCenter();
     options = options || {};
-    container = container || this;
+    // container = container || this;
 
     var m = new L.FixMyStreet.Marker(latlng, options, model);
-    container.addLayer(m);
+    // container.addLayer(m);
     return m;
   },
 
@@ -225,7 +225,7 @@ L.FixMyStreet.Map = L.Map.extend({
       popupTemplate: this.incidentTypes[model.type].popupTemplate,
     }, options);
 
-    var m = this.addMarker(model, markerOptions, this._incidentLayers[model.type]);
+    var m = this.addMarker(model, markerOptions).addTo(this._incidentLayers[model.type]);
 
     m.on('click', function (evt) {
       that._incident_onClick(evt);
@@ -279,11 +279,13 @@ L.FixMyStreet.Map = L.Map.extend({
       popupTemplate: this.options.newIncidentMarker.popupTemplate,
     }, options);
 
-    this.newIncidentMarker = this.addMarker(latlng, markerOptions);
+    this.newIncidentMarker = this.addMarker(latlng, markerOptions).addTo(this);
 
     this.newIncidentMarker.on('dragend', function (evt) {
       that._newIncidentMarker_onDragEnd(evt);
     });
+
+    return this.newIncidentMarker;
   },
 
   removeNewIncidentMarker: function () {
