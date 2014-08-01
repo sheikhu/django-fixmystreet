@@ -231,6 +231,7 @@ L.FixMyStreet.Map = L.Map.extend({
     });
 
     this.incidents.push(m);
+    return m;
   },
 
   addIncidents: function (incidents, baseOptions) {  // (Object, [Object])
