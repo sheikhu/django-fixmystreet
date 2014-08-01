@@ -79,6 +79,7 @@ L.FixMyStreet.Map = L.Map.extend({
     this._namedLayers = {};
     this._templateCache = {};
 
+    this.attributionControl.setPosition('bottomleft');
     this._initUrbisLayers();
     this._initIncidentLayers();
     this.initIncidentTypeFilter();
