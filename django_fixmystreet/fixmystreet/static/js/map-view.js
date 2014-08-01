@@ -56,9 +56,6 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         '</div>',
     ].join('\n')),
     render: function () {
-        // this.$el.on('transitionend',function () {
-        //     fms.map.invalidateSize();
-        // });
         return this;
     },
     enlarge: function () {
@@ -74,10 +71,10 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
     putMarker: function (position, address, preventZoomIn) {
         var self = this;
         this.trigger('put-marker');
-        this.position = position;
+        this.position = new L.LatLng(position.y, position.x);
         this.address = address;
 
-        this.draggableMarker = fms.map.addNewIncidentMarker(position, {
+        this.draggableMarker = fms.map.addNewIncidentMarker(this.position, {
             popup: this.renderPopup(),
             popupTemplate: null
         });
@@ -88,7 +85,7 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         });
 
         if (!preventZoomIn) {
-            fms.map.zoomTo(6);
+            fms.map.setZoom(6);
         }
         this.draggableMarker.openPopup();
         // this.renderPopup();
@@ -97,8 +94,8 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
     loadAddress: function () {
         var self  = this;
 
-        this.latlng = this.draggableMarker.getLatLng();
-        this.position = UtilGeolocation.convertCoordinatesToWMS(latlng.lat, latlng.lng);
+        this.position = this.draggableMarker.getLatLng();
+        // this.position = UtilGeolocation.convertCoordinatesToWMS(this.latlng);
 
         $.ajax({
             url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
@@ -106,8 +103,8 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
             dataType:'jsonp',
             data: {
                 json: JSON.stringify({
-                    "language": LANGUAGE_CODE,
-                    "point": this.position
+                    language: LANGUAGE_CODE,
+                    point: {x: this.position.lat, y: this.position.lng}
                 })
             },
             success:function(response)
@@ -132,11 +129,10 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
 
     renderPopup: function() {
         var googleStreetViewLink = 'https://maps.google.be/maps?q=' +
-                this.position.x + ',' + this.position.y + '&layer=c&z=17&iwloc=A&sll='+
-                this.position.x + ',' + this.position.y + '&cbp=13,240.6,0,0,0&cbll=' +
-                this.position.x + ',' + this.position.y;
+                this.position.lat + ',' + this.position.lng + '&layer=c&z=17&iwloc=A&sll='+
+                this.position.lat + ',' + this.position.lng + '&cbp=13,240.6,0,0,0&cbll=' +
+                this.position.lat + ',' + this.position.lng;
 
-        console.log(this.position, this.address);
         var popupContent = this.moveMePopupTemplate({
             position: this.position,
             address: this.address,
