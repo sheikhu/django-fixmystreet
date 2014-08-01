@@ -318,8 +318,11 @@ L.FixMyStreet.Map = L.Map.extend({
   toLatLng : function (latlng) {  // (L.LatLng or String or Object)
     if (latlng === undefined || latlng instanceof L.LatLng) { return latlng; }
     if (typeof latlng === 'string') { return this.latLngFromString(latlng); }
-    if (typeof latlng === 'object' && 'lat' in latlng && 'lng' in latlng) { return new L.LatLng(latlng.lat, latlng.lng); }
-    throw new Error('Invalid parameter. Expect L.LatLng or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678})');
+    if (typeof latlng === 'object') {
+      if ('lat' in latlng && 'lng' in latlng) { return new L.LatLng(latlng.lat, latlng.lng); }
+      else if (0 in latlng && 1 in latlng) { return new L.LatLng(latlng[0], latlng[1]); }
+    }
+    throw new Error('Invalid parameter. Expect L.LatLng or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678}) or Object ([0.123, -45.678]).');
   },
 
   centerMapOnMarker: function (marker) {
