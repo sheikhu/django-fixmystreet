@@ -7,110 +7,108 @@
 
 
 {% block meta %}
-{{ block.super }}
-<meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
-<meta property="og:description" content="{% trans 'Meta description for list page' %}" />
+    {{ block.super }}
+    <meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
+    <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 {% endblock %}
 
 {% block css %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'lib/leaflet/leaflet.css' %}"></link>
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/leaflet/leaflet.css' %}"></link>
 {% endblock %}
 
 {% block script %}
-{{ block.super }}
-<script type="text/javascript" src="{% static 'js/maps/FMSMapView.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/search.js' %}"></script>
 
-{% block script_map %}
-{{ block.super }}
-<script>
-var NEXT_PAGE_URL = '{% url "report_verify" %}';
+    {% block script_map %}
+        {{ block.super }}
+        <script>
+            var NEXT_PAGE_URL = '{% url "report_verify" %}';
 
-var zipcodes = new Object();
+            var zipcodes = new Object();
 
-{% for zip in zipcodes %}
-    zipcodes[{{zip.code}}] = new Object();
-    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-{% endfor %}
+            {% for zip in zipcodes %}
+                zipcodes[{{zip.code}}] = new Object();
+                zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+                zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+                zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
+            {% endfor %}
 
-$(function(){
-    // fms.currentMap = new fms.Map('map', {
-    //     apiLang:     LANGUAGE_CODE,
-    //     localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-    //     urbisUrl:    WMS_SERVICE_URL
-    // });
+            $(function(){
+                // fms.currentMap = new fms.Map('map', {
+                //     apiLang:     LANGUAGE_CODE,
+                //     localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+                //     urbisUrl:    WMS_SERVICE_URL
+                // });
 
-//     var markers = [];
-//
-//     function applyFilter() {
-//         //Show loading icon
-//         // $('#map-loading').show();
-//
-//         // Remove all popups
-//         while(fms.currentMap.map.popups.length) {
-//              fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
-//         }
-//
-//         // Apply filter
-//         // fms.filterMapWithStatus();//function () {
-//         //     $('#map-loading').hide();
-//         // });
-//     }
-//     window.onload = function() {
-//
-//         var statusToggleCreated    = document.getElementById('statusToggleCreated');
-//         var statusToggleInProgress = document.getElementById('statusToggleInProgress');
-//         var statusToggleClosed     = document.getElementById('statusToggleClosed');
-//
-//         statusToggleCreated.addEventListener('change', function(){
-//             fms.currentMap.toogleCreated(this.checked);
-//             applyFilter();
-//         });
-//         statusToggleInProgress.addEventListener('change', function(){
-//             fms.currentMap.toogleInProgress(this.checked);
-//             applyFilter();
-//         });
-//         statusToggleClosed.addEventListener('change', function(){
-//             fms.currentMap.toogleClosed(this.checked);
-//             applyFilter();
-//         });
-//
-//         // Init map with all reports
-//         fms.statusFilter = ['created', 'in_progress', 'closed'];
-//         fms.filterMapWithStatus(function () {
-//             $('#map-loading').hide();
-//         });
-//     }
-});
-//
-// // Override some function from search.js
-// function cleanMap() {
-//     // Remove all popups
-//     while(fms.currentMap.map.popups.length) {
-//          fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
-//     }
-//
-//     // Remove all features
-//     if (fms.currentMap.homepageMarkersLayer) {
-//         fms.currentMap.homepageMarkersLayer.destroyFeatures();
-//     }
-//
-//     // Hide results
-//     $proposalContainer = $('#proposal-container');
-//     $proposalContainer.slideUp();
-// }
-
-</script>
-{% endblock %}
+                //     var markers = [];
+                //
+                //     function applyFilter() {
+                //         //Show loading icon
+                //         // $('#map-loading').show();
+                //
+                //         // Remove all popups
+                //         while(fms.currentMap.map.popups.length) {
+                //              fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
+                //         }
+                //
+                //         // Apply filter
+                //         // fms.filterMapWithStatus();//function () {
+                //         //     $('#map-loading').hide();
+                //         // });
+                //     }
+                //     window.onload = function() {
+                //
+                //         var statusToggleCreated    = document.getElementById('statusToggleCreated');
+                //         var statusToggleInProgress = document.getElementById('statusToggleInProgress');
+                //         var statusToggleClosed     = document.getElementById('statusToggleClosed');
+                //
+                //         statusToggleCreated.addEventListener('change', function(){
+                //             fms.currentMap.toogleCreated(this.checked);
+                //             applyFilter();
+                //         });
+                //         statusToggleInProgress.addEventListener('change', function(){
+                //             fms.currentMap.toogleInProgress(this.checked);
+                //             applyFilter();
+                //         });
+                //         statusToggleClosed.addEventListener('change', function(){
+                //             fms.currentMap.toogleClosed(this.checked);
+                //             applyFilter();
+                //         });
+                //
+                //         // Init map with all reports
+                //         fms.statusFilter = ['created', 'in_progress', 'closed'];
+                //         fms.filterMapWithStatus(function () {
+                //             $('#map-loading').hide();
+                //         });
+                //     }
+            });
+            //
+            // // Override some function from search.js
+            // function cleanMap() {
+            //     // Remove all popups
+            //     while(fms.currentMap.map.popups.length) {
+            //          fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
+            //     }
+            //
+            //     // Remove all features
+            //     if (fms.currentMap.homepageMarkersLayer) {
+            //         fms.currentMap.homepageMarkersLayer.destroyFeatures();
+            //     }
+            //
+            //     // Hide results
+            //     $proposalContainer = $('#proposal-container');
+            //     $proposalContainer.slideUp();
+            // }
+        </script>
+    {% endblock %}
 {% endblock %}
 
 {% block map %}
-<div class="row map-big">
-    {% include "_page_header.html" with map=True satus_filter=True search_report=True search_address=True loader=True %}
-</div>
+    <div class="row map-big">
+        {% include "_page_header.html" with map=True satus_filter=True search_report=True search_address=True loader=True %}
+    </div>
 {% endblock %}
 
 {% block content %}
