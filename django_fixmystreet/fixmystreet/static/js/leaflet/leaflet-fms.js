@@ -5,6 +5,11 @@ L.FixMyStreet.Map = L.Map.extend({
     animate: true,
     center: [50.84535101789271, 4.351873397827148],
     cssSizeRegex: /(^|\s)map-size-\S+/g,
+    minZoom: 10,
+    maxBounds: [
+      [50.95323634832283, 4.7618865966796875],
+      [50.736455137010665, 3.9420318603515625],
+    ],
     zoom: 14,
 
     // Layers loaded during initialize
