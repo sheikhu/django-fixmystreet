@@ -9,6 +9,12 @@ from django_fixmystreet.fixmystreet.models import ReportMainCategoryClass, Repor
 from django_fixmystreet.fixmystreet.session_manager import SessionManager
 
 
+SRID_SPHERICAL_MERCATOR = 3857
+SRID_EQUIRECTANGULAR = 4326
+SRID_ELLIPTICAL_MERCATOR = 3395
+DEFAULT_SRID = SRID_EQUIRECTANGULAR
+
+
 def report_category_note(request, id):
     cat = ReportMainCategoryClass.objects.get(id=id)
     if not cat.hint:
@@ -55,6 +61,7 @@ def filter_map(request):
 
     features = []
     for report in reports:
+        report.point.transform(DEFAULT_SRID)
         features.append({
             'type': 'Feature',
             'properties': {
