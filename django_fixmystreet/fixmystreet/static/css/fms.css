@@ -218,7 +218,6 @@ footer .cirb-cibg img{
 
 .map-size-big {
 	height: 610px !important;
-    transition: all 1s;
 }
 
 .map-button-section {
@@ -230,9 +229,6 @@ footer .cirb-cibg img{
 }
 #map img {
 	max-width: none;
-}
-#map {
-    transition: height 1s;
 }
 
 .olControlBtnCenterOnCursorItemActive {

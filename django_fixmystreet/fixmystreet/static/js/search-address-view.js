@@ -13,7 +13,7 @@ fms.MessageView = Backbone.View.extend({
         this.$el.append('<p>' + message + '</p>').slideDown();
     },
     error: function (message) {
-        this.show('<span class="text-error">' + message + '.</span>');
+        this.show('<span class="text-error">' + message + '</span>');
     },
     clear: function () {
         this.$el.empty().slideUp();
@@ -186,6 +186,7 @@ fms.AddressProposalView = Backbone.View.extend({
         'click #nextResults': 'paginateResultsNext',
         'click .address-result': 'close',
     },
+    proposalMarkers: [],
 
     render: function () {
         var self = this;
@@ -219,25 +220,6 @@ fms.AddressProposalView = Backbone.View.extend({
         this.$numberResults.html(this.addresses.length);
         this.paginationResults = 0;
 
-        if (!fms.map.homepageMarkersLayer) {
-            // Create vector layer
-            fms.map.homepageMarkersLayer = new OpenLayers.Layer.Vector("Overlay", {
-                displayInLayerSwitcher: false
-            });
-
-            // Add layer to map
-            fms.map.addLayer(fms.map.homepageMarkersLayer);
-
-            // Add the selector control to the vectorLayer
-            var clickCtrl = new OpenLayers.Control.SelectFeature(
-                fms.map.homepageMarkersLayer, {
-                    onSelect: this.onSelect
-                }
-            );
-            fms.map.map.addControl(clickCtrl);
-            clickCtrl.activate();
-        }
-
         this.renderAddresses();
         this.$el.slideDown();
     },
@@ -250,11 +232,12 @@ fms.AddressProposalView = Backbone.View.extend({
 
     renderAddresses: function () {
         var features = [],
-             iconIdx = 0;
+             iconIdx = 0,
+             i = this.paginationResults * 5;
 
         this.$proposal.empty();
 
-        for(var i = this.paginationResults * 5; i < this.addresses.length && features.length < 5; i++) {
+        for(; i < this.addresses.length && this.proposalMarkers.length < 5; i++) {
             var address = this.addresses[i].address;
             var position = this.addresses[i].point;
 
@@ -266,17 +249,13 @@ fms.AddressProposalView = Backbone.View.extend({
             this.$proposal.append(newAddress.render().$el);
 
             // Create feature on vectore layer
-            var feature = new OpenLayers.Feature.Vector(
-                    new OpenLayers.Geometry.Point(position.x, position.y),
-                    address,
-                    {
-                        externalGraphic: newAddress.address.icon,
-                        graphicWidth: 25,
-                        graphicHeight: 32,
-                        graphicYOffset: -32
-                    }
-                );
-            features.push(feature);
+            var feature = fms.map.addMarker(
+                L.point(position.x, position.y), {
+                    icon: newAddress.address.icon,
+                    model: address
+                }
+            );
+            this.proposalMarkers.push(feature);
         }
         this.$previousResults.toggle(this.paginationResults !== 0);
         this.$nextResults.toggle(this.addresses.length > (this.paginationResults + 1) * 5);

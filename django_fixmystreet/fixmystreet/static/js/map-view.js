@@ -6,7 +6,7 @@ $(function () {
 });
 
 fms.ReportMapView = Backbone.View.extend({
-    el: '.report-map',
+    el: '#map.report-map',
     render: function () {
         var self = this;
 
@@ -33,10 +33,11 @@ fms.ReportMapView = Backbone.View.extend({
 fms.NewIncidentMarkerView = Backbone.View.extend({
     el: '#map',
     events: {
-        'markermoved': 'loadAddress',
+        'drag': 'loadAddress',
         'click #btn-localizeviamap': 'localizeViaMap'
     },
     moveMePopupTemplate: _.template([
+        '<div>',
         '<p class="popupMoveMe popupHeading"><%= gettext("Move the cursor") %></p>',
         '<% if (address) { %>',
         '  <p class="popupMoveMe popupContent">',
@@ -52,11 +53,12 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         '    </div>',
         '  <% } %>',
         '<% } %>',
+        '</div>',
     ].join('\n')),
     render: function () {
-        this.$el.on('transitionend',function () {
-            fms.map.invalidateSize();
-        });
+        // this.$el.on('transitionend',function () {
+        //     fms.map.invalidateSize();
+        // });
         return this;
     },
     enlarge: function () {
@@ -70,50 +72,34 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
     },
 
     putMarker: function (position, address, preventZoomIn) {
+        var self = this;
         this.trigger('put-marker');
+        this.position = position;
+        this.address = address;
 
-        draggableMarker = fms.map.addNewIncidentMarker(position);
-
-        if (!preventZoomIn) {
-            fms.currentMap.map.zoomTo(6);
-        }
-
-        this.renderPopup(position, address);
-    },
-
-    renderPopup: function(position, address) {
-        var googleStreetViewLink = 'https://maps.google.be/maps?q=' + position.y + ',' + position.y + '&layer=c&z=17&iwloc=A&sll='+ position.y + ',' + position.x + '&cbp=13,240.6,0,0,0&cbll=' + position.y + ',' + position.x;
-
-        var popupContent = this.moveMePopupTemplate({
-            position: position,
-            address: address,
-            googleStreetViewLink: googleStreetViewLink
+        this.draggableMarker = fms.map.addNewIncidentMarker(position, {
+            popup: this.renderPopup(),
+            popupTemplate: null
         });
 
-        if (!BACKOFFICE &&
-                address &&
-                address.street.postCode in zipcodes &&
-                !zipcodes[String(address.street.postCode)].participation) {
-            popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
-            popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(address.street.postCode)].phone + "</p>";
+        this.latlng = this.draggableMarker.getLatLng();
+        this.draggableMarker.on('dragend', function () {
+            self.loadAddress();
+        });
+
+        if (!preventZoomIn) {
+            fms.map.zoomTo(6);
         }
-
-        var popup = new OpenLayers.Popup(
-            "popup",
-            new OpenLayers.LonLat(fms.currentMap.draggableMarker.components[0].x, fms.currentMap.draggableMarker.components[0].y),
-            new OpenLayers.Size(200,150),
-            popupContent,
-            true
-        );
-        popup.panMapIfOutOfView = true;
-
-        fms.currentMap.map.addPopup(popup);
+        this.draggableMarker.openPopup();
+        // this.renderPopup();
     },
 
-    loadAddress: function (evt, position) {
+    loadAddress: function () {
         var self  = this;
-        var origX = position.x;
-        var origY = position.y;
+
+        this.latlng = this.draggableMarker.getLatLng();
+        this.position = UtilGeolocation.convertCoordinatesToWMS(latlng.lat, latlng.lng);
+
         $.ajax({
             url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
             type:'POST',
@@ -121,13 +107,17 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
             data: {
                 json: JSON.stringify({
                     "language": LANGUAGE_CODE,
-                    "point": position,
+                    "point": this.position
                 })
             },
             success:function(response)
             {
-                cleanMap();
-                self.renderPopup(position, response.result.address);
+                // cleanMap();
+                self.address = response.result.address;
+                var content = self.renderPopup();
+                self.draggableMarker.setPopupContent(content);
+                self.draggableMarker.openPopup();
+
             },
             error:function(response)
             {
@@ -138,5 +128,39 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
                 }
             }
         });
+    },
+
+    renderPopup: function() {
+        var googleStreetViewLink = 'https://maps.google.be/maps?q=' +
+                this.position.x + ',' + this.position.y + '&layer=c&z=17&iwloc=A&sll='+
+                this.position.x + ',' + this.position.y + '&cbp=13,240.6,0,0,0&cbll=' +
+                this.position.x + ',' + this.position.y;
+
+        console.log(this.position, this.address);
+        var popupContent = this.moveMePopupTemplate({
+            position: this.position,
+            address: this.address,
+            googleStreetViewLink: googleStreetViewLink
+        });
+
+        if (!BACKOFFICE &&
+                this.address &&
+                this.address.street.postCode in zipcodes &&
+                !zipcodes[String(this.address.street.postCode)].participation) {
+            popupContent = "<p class='popupMoveMe popupHeadingNonParticipating'>" + gettext('Non-participating municipality') + ".</p>";
+            popupContent += "<p class='popupMoveMe popupContent'>" + gettext('Please contact the municipality') + ': '+ zipcodes[String(address.street.postCode)].phone + "</p>";
+        }
+
+        return popupContent;
+        // var popup = new OpenLayers.Popup(
+        //     "popup",
+        //     new OpenLayers.LonLat(fms.currentMap.draggableMarker.components[0].x, fms.currentMap.draggableMarker.components[0].y),
+        //     new OpenLayers.Size(200,150),
+        //     popupContent,
+        //     true
+        // );
+        // popup.panMapIfOutOfView = true;
+        //
+        // fms.currentMap.map.addPopup(popup);
     }
 });

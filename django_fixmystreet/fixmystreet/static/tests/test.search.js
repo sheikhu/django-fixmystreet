@@ -58,6 +58,11 @@ describe('Search Address Page', function () {
         ];
 
         beforeEach(function () {
+            var $mapEl = $('<div id="map"> </div>');
+            fms.map = new L.FixMyStreet.Map($mapEl[0]);
+            fms.newIncidentMarker = new fms.NewIncidentMarkerView();
+            fms.newIncidentMarker.render();
+
             addressProposal = new fms.AddressProposalView({
                 el: $('<div> </div>')
             });
@@ -72,7 +77,7 @@ describe('Search Address Page', function () {
             expect(addressProposal).to.have.property('$el');
         });
 
-        xit('should show addresses', function () {
+        it('should show addresses', function () {
             addressProposal.open(addessFixtures);
             expect(addressProposal.render().$el.is(':visible')).to.be.true;
         });
