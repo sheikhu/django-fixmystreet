@@ -27,7 +27,7 @@ L.FixMyStreet.Map = L.Map.extend({
         iconAnchor: [20, 52],
         popupAnchor: [0, -35],
       }),
-      popupTemplate: '<h5>Nex Incident</h5>',
+      popupTemplate: '<h5>New Incident</h5>',
     },
   },
 
