@@ -64,21 +64,25 @@
 }
 .leaflet-control-layers-list label {
   margin: 0;
-  line-height: 16px;
 }
 .leaflet-control-layers-list input[type="checkbox"] {
-  height: 16px;
+  height: 20px;
   margin: 0 5px 0 0;
 }
 .leaflet-control-layers-list label > span {
-  line-height: 16px;
+  line-height: 20px;
 }
-.leaflet-control-layers-list .leaflet-control-layers-overlays > label:nth-child(1) {
+.leaflet-control-layers-list label > span img {
+  margin-right: 5px;
+}
+/*
+.leaflet-control-layers-list .leaflet-control-layers-overlays .type-reported {
   color: #c3272f;
 }
-.leaflet-control-layers-list .leaflet-control-layers-overlays > label:nth-child(2) {
+.leaflet-control-layers-list .leaflet-control-layers-overlays .type-ongoing {
   color: #f79422;
 }
-.leaflet-control-layers-list .leaflet-control-layers-overlays > label:nth-child(3) {
+.leaflet-control-layers-list .leaflet-control-layers-overlays .type-closed {
   color: #3cb64b;
 }
+*/

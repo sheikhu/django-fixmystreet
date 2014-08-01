@@ -23,7 +23,7 @@ L.FixMyStreet.Map = L.Map.extend({
   options: {
     newIncidentMarker: {
       icon: L.icon({
-        iconUrl: 'http://fixmystreet.irisnetlab.be/static/images/pin-fixmystreet-L.png',
+        iconUrl: STATIC_URL + 'images/pin-fixmystreet-L.png',
         iconAnchor: [20, 52],
         popupAnchor: [0, -35],
       }),
@@ -34,11 +34,11 @@ L.FixMyStreet.Map = L.Map.extend({
   // Config per incident type
   incidentTypes: {
     reported: {
-      title: 'Reported',
+      title: gettext('Created'),
       color: '#c3272f',
-      // filterTitle: '<span class="type-reported">Reported</span>',
+      filterTitle: '<span class="type-reported"><img src="' + STATIC_URL + 'images/marker-red-xxs.png" />' + gettext('Created') + '</span>',
       icon: L.icon({
-        iconUrl: 'http://fixmystreet.irisnetlab.be/static/images/pin-red-L.png',
+        iconUrl: STATIC_URL + 'images/pin-red-L.png',
         iconAnchor: [20, 52],
         popupAnchor: [0, -35],
       }),
@@ -46,10 +46,11 @@ L.FixMyStreet.Map = L.Map.extend({
                      '<div><strong>ID:</strong> <%this.id%></div>',
     },
     ongoing: {
-      title: 'Ongoing',
+      title: gettext('In progress'),
       color: '#f79422',
+      filterTitle: '<span class="type-ongoing"><img src="' + STATIC_URL + 'images/marker-orange-xxs.png" />' + gettext('In progress') + '</span>',
       icon: L.icon({
-        iconUrl: 'http://fixmystreet.irisnetlab.be/static/images/pin-orange-L.png',
+        iconUrl: STATIC_URL + 'images/pin-orange-L.png',
         iconAnchor: [20, 52],
         popupAnchor: [0, -35],
       }),
@@ -57,10 +58,11 @@ L.FixMyStreet.Map = L.Map.extend({
                      '<div><strong>ID:</strong> <%this.id%></div>',
     },
     closed: {
-      title: 'Closed',
+      title: gettext('Closed'),
       color: '#3cb64b',
+      filterTitle: '<span class="type-closed"><img src="' + STATIC_URL + 'images/marker-green-xxs.png" />' + gettext('Closed') + '</span>',
       icon: L.icon({
-        iconUrl: 'http://fixmystreet.irisnetlab.be/static/images/pin-green-L.png',
+        iconUrl: STATIC_URL + 'images/pin-green-L.png',
         iconAnchor: [20, 52],
         popupAnchor: [0, -35],
       }),
