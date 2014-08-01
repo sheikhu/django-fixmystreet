@@ -82,6 +82,7 @@
       <div class="group">
         <strong>Incidents:</strong>
         <button id="btn-add-random-incidents">Add Random</button>
+        <button id="btn-load-geojson">Load GeoJSON</button>
         <button id="btn-remove-all-incidents">Remove All</button>
       </div>
     </div>
@@ -235,6 +236,10 @@
           addRandomIncidentsBulk();
         });
 
+        // Add incidents from GeoJSON.
+        $('#btn-load-geojson').click(function (evt) {
+          evt.preventDefault();
+          map.addIncidentsFromGeoJson('http://localhost:8000/fr/ajax/map/filter/');
         });
 
         // Remove all incidents.

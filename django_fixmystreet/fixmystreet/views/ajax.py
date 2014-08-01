@@ -66,7 +66,7 @@ def filter_map(request):
             'type': 'Feature',
             'properties': {
                 'id': report.id,
-                'status': report.get_status_for_js_map()
+                'type': report.get_status_for_js_map()
             },
             'geometry': {
                 'type': 'Point',

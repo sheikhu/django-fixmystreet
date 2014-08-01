@@ -245,6 +245,14 @@ L.FixMyStreet.Map = L.Map.extend({
     }
   },
 
+  addIncidentsFromGeoJson: function (data, baseOptions) {  // (String or Object, [Object])
+    if (typeof data === 'string') {
+      this._addIncidentsFromGeoJsonUrl(data, baseOptions);
+    } else {
+      this._addIncidentsFromGeoJson(data, baseOptions);
+    }
+  },
+
   removeAllIncidents: function () {
     for (var incidentType in this.incidentTypes) {
       this._incidentLayers[incidentType].clearLayers();
@@ -280,6 +288,34 @@ L.FixMyStreet.Map = L.Map.extend({
   removeNewIncidentMarker: function () {
     this.removeLayer(this.newIncidentMarker);
     this.newIncidentMarker = null;
+  },
+
+  _addIncidentsFromGeoJson: function (geoJson, baseOptions) {  // (Object, [Object])
+    var that = this;
+    baseOptions = baseOptions || {};
+
+    var geoJsonOptions = {
+      pointToLayer: function (featureData, latlng) {
+        var model = $.extend({}, featureData.properties, {
+          latlng: latlng,
+        });
+        return that.addIncident(model);
+      },
+    };
+
+    L.geoJson(geoJson, geoJsonOptions);
+  },
+
+  _addIncidentsFromGeoJsonUrl: function (url, baseOptions) {  // (String, [Object])
+    var that = this;
+
+    console.log('Loading GeoJSON from %s...', url);
+    $.get(url, function (geoJson) {
+      console.log('GeoJSON received...');
+      that._addIncidentsFromGeoJson(geoJson, baseOptions);
+    }).fail(function() {
+      console.log('ERROR:', argument);
+    });
   },
 
   // CONTROLS ------------------------------------------------------------------
