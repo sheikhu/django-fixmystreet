@@ -69,13 +69,12 @@ fms.AddressSearchView = Backbone.View.extend({
         this.$searchButton.prop('disabled', true);
 
         $.ajax({
-            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
+            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddresses',
             dataType:'jsonp',
             data: {
-                json: JSON.stringify({
-                    "language": LANGUAGE_CODE,
-                    "address": this.search
-                })
+                language: LANGUAGE_CODE,
+                address: this.search.number + ' ' + this.search.street.name + ' ' + this.search.street.postcode,
+                spatialReference:"4326"
             }
         }).success(function(response) {
             self.$searchStreet.removeClass('loading');
@@ -219,6 +218,8 @@ fms.AddressProposalView = Backbone.View.extend({
         this.addresses = addresses;
         this.$numberResults.html(this.addresses.length);
         this.paginationResults = 0;
+        this.proposalMarkerLayer = new L.FeatureGroup();
+        this.proposalMarkerLayer.addTo(fms.map);
 
         this.renderAddresses();
         this.$el.slideDown();
@@ -236,6 +237,8 @@ fms.AddressProposalView = Backbone.View.extend({
              i = this.paginationResults * 5;
 
         this.$proposal.empty();
+        this.proposalMarkers = [];
+        this.cleanMap();
 
         for(; i < this.addresses.length && this.proposalMarkers.length < 5; i++) {
             var address = this.addresses[i].address;
@@ -250,23 +253,25 @@ fms.AddressProposalView = Backbone.View.extend({
 
             // Create feature on vectore layer
             var feature = fms.map.addMarker(
-                L.point(position.x, position.y), {
-                    icon: newAddress.address.icon,
+                new L.LatLng(position.y, position.x), {
+                    icon: L.icon({
+                        iconUrl: newAddress.address.icon
+                    }),
                     model: address
                 }
             );
+
+            feature.addTo(this.proposalMarkerLayer);
             this.proposalMarkers.push(feature);
         }
         this.$previousResults.toggle(this.paginationResults !== 0);
         this.$nextResults.toggle(this.addresses.length > (this.paginationResults + 1) * 5);
 
         // Add features to layer
-        this.cleanMap();
-        fms.map.homepageMarkersLayer.addFeatures(features);
+        // fms.map.homepageMarkersLayer.addFeatures(features);
 
-        // Zoom to markers
-        var markersBound = fms.map.homepageMarkersLayer.getDataExtent();
-        fms.map.zoomToExtent(markersBound);
+        var bounds = this.proposalMarkerLayer.getBounds();
+        fms.map.fitBounds(bounds);
     },
 
     cleanMap: function () {
@@ -277,12 +282,8 @@ fms.AddressProposalView = Backbone.View.extend({
             }
         }
 
-        // Remove all features
-        if (fms.map.markersLayer) {
-            fms.map.markersLayer.destroyFeatures();
-        }
-        if (fms.map.homepageMarkersLayer) {
-            fms.map.homepageMarkersLayer.destroyFeatures();
+        if (this.proposalMarkerLayer) {
+            this.proposalMarkerLayer.clearLayers();
         }
     }
 });
