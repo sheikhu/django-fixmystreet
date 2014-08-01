@@ -59,12 +59,26 @@
   line-height: 30px;
   }
 
-.leaflet-bottom.leaflet-left .leaflet-control-layers-overlays > label:nth-child(1) {
+.leaflet-control-layers-list {
+  margin: 0;
+}
+.leaflet-control-layers-list label {
+  margin: 0;
+  line-height: 16px;
+}
+.leaflet-control-layers-list input[type="checkbox"] {
+  height: 16px;
+  margin: 0 5px 0 0;
+}
+.leaflet-control-layers-list label > span {
+  line-height: 16px;
+}
+.leaflet-control-layers-list .leaflet-control-layers-overlays > label:nth-child(1) {
   color: #c3272f;
 }
-.leaflet-bottom.leaflet-left .leaflet-control-layers-overlays > label:nth-child(2) {
+.leaflet-control-layers-list .leaflet-control-layers-overlays > label:nth-child(2) {
   color: #f79422;
 }
-.leaflet-bottom.leaflet-left .leaflet-control-layers-overlays > label:nth-child(3) {
+.leaflet-control-layers-list .leaflet-control-layers-overlays > label:nth-child(3) {
   color: #3cb64b;
 }
