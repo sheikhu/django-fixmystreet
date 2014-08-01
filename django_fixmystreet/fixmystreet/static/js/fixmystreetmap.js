@@ -375,15 +375,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         base.setZIndex(-100);
         this.map.addLayer(base);
 
-        var layerSwitcherDiv = OpenLayers.Util.getElement('layerswitcher');
-        if(layerSwitcherDiv) {
-            var layerSwitcher = new OpenLayers.Control.LayerSwitcher({
-                'div': layerSwitcherDiv
-            });
-            this.map.addControl(layerSwitcher);
-            layerSwitcher.dataLbl.innerHTML = gettext("Overlayers");
-        }
-
         if(x && y) {
             this.map.setCenter(new OpenLayers.LonLat(x,y));
             this.map.zoomTo(6);
