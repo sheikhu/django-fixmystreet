@@ -748,6 +748,18 @@ class Report(UserTrackedModel):
         else:
             return ugettext("Processed")
 
+    def get_status_for_js_map(self):
+        if self.is_created():
+            return "reported"
+        elif self.is_refused():
+            return "refused"
+        elif self.is_temporary():
+            return "temporary"
+        elif self.is_in_progress():
+            return "ongoing"
+        else:
+            return "closed"
+
     def get_date_planned(self):
         if self.date_planned:
             return self.date_planned.strftime('%m/%Y')
