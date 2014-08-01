@@ -227,7 +227,7 @@ L.FixMyStreet.Map = L.Map.extend({
     var m = this.addMarker(model, markerOptions, this._incidentLayers[model.type]);
 
     m.on('click', function (evt) {
-      that._incident_onClick(that, evt);
+      that._incident_onClick(evt);
     });
 
     this.incidents.push(m);
@@ -281,7 +281,7 @@ L.FixMyStreet.Map = L.Map.extend({
     this.newIncidentMarker = this.addMarker(latlng, markerOptions);
 
     this.newIncidentMarker.on('dragend', function (evt) {
-      that._newIncidentMarker_onDragEnd(that, evt);
+      that._newIncidentMarker_onDragEnd(evt);
     });
   },
 
@@ -409,7 +409,7 @@ L.FixMyStreet.Map = L.Map.extend({
     $.each(this.incidentTypes, function (k, v) {
       that._incidentLayers[k] = new L.FixMyStreet.Map.MarkerClusterGroup();
       that._incidentLayers[k].on('clusterclick', function (evt) {
-        that._cluster_onClick(that, evt);
+        that._cluster_onClick(evt);
       });
       that._incidentLayers[k].addTo(that);
     });
@@ -417,18 +417,18 @@ L.FixMyStreet.Map = L.Map.extend({
 
   // EVENT HANDLERS ------------------------------------------------------------
 
-  _cluster_onClick: function (that, evt) {  // layer.clusterclick
+  _cluster_onClick: function (evt) {  // layer.clusterclick
   },
 
-  _incident_onClick: function (that, evt) {  // marker.click
-    that.centerMapOnMarker(evt.target);
+  _incident_onClick: function (evt) {  // marker.click
+    this.centerMapOnMarker(evt.target);
   },
 
-  _newIncidentMarker_onDragEnd: function (that, evt) {  // marker.dragend
+  _newIncidentMarker_onDragEnd: function (evt) {  // marker.dragend
     var marker = evt.target;
     var position = marker.getLatLng();
     marker.setLatLng(new L.LatLng(position.lat, position.lng), {draggable: 'true'});
-    that.panTo(new L.LatLng(position.lat, position.lng));
+    this.panTo(new L.LatLng(position.lat, position.lng));
   },
 
   // STATIC --------------------------------------------------------------------
