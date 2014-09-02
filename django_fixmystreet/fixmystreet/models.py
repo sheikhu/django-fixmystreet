@@ -563,6 +563,14 @@ class ReportManager(models.GeoManager):
         return ReportQuerySet(self.model) \
             .exclude(status=Report.DELETED)
 
+    def with_distance(self, origin):
+        """
+        Return a queryset with the distance between the report and the provided origin.
+
+        Args: origin must be a ``Point``.
+        """
+        return self.get_query_set().distance(origin)
+
 
 # class VisibleReportManager(ReportManager):
 
