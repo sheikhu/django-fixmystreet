@@ -21,9 +21,9 @@
       <script type="text/javascript">
         var NEXT_PAGE_URL = '{% url "report_verify_pro" %}';
         $(function(){
-          {% if popup_reports%}
-          $("#report_popup").modal();
-          {% endif %}
+            {% if popup_reports%}
+                $("#report_popup").modal();
+            {% endif %}
         });
 
         var zipcodes = new Object();
@@ -161,10 +161,10 @@
                                 sSortDescending: "{% trans ': activate to sort column descending' context 'table' %}"
                             },
                             oPaginate: {
-                                    sFirst: pgettext('table', 'Fist page'),
-                                    sLast: pgettext('table', 'Last page'),
-                                    sNext: pgettext('table', 'Next page'),
-                                    sPrevious: pgettext('table', 'Previous page')
+                                sFirst: pgettext('table', 'Fist page'),
+                                sLast: pgettext('table', 'Last page'),
+                                sNext: pgettext('table', 'Next page'),
+                                sPrevious: pgettext('table', 'Previous page')
                             },
                             sEmptyTable: "{% trans 'No data available in table' context 'table' %}",
                             sInfo: "{% trans 'Got a total of _TOTAL_ incidents to show (_START_ to _END_)' context 'table' %}",
@@ -220,7 +220,7 @@
 
                     table.delegate('tr', 'click', function () {
                         var href = $(this).data('href');
-                        if(href) {
+                        if (href) {
                             window.open(href);
                         }
                     });
@@ -237,9 +237,9 @@
         }
 
         {% if request.fmsuser.manager %}
-        generateTableContent('responsible');
+            generateTableContent('responsible');
         {% else %}
-        generateTableContent('all');
+            generateTableContent('all');
         {% endif %}
 
         $(document).ready(function() {
