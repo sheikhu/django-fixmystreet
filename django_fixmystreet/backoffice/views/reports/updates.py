@@ -45,6 +45,11 @@ def refuse(request, report_id):
 
         # Save refusal motivation
         comment.report = report
+
+        # If the report is public, make the refusal motivation public too
+        if not report.is_pro():
+            comment.security_level = ReportComment.PUBLIC
+
         comment.save()
 
         #Update the status of report

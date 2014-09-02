@@ -224,12 +224,13 @@ class ReportViewsTest(SampleFilesTestCase):
         self.client.login(username='manager@a.com', password='test')
 
         url = reverse('report_refuse_pro', args=[report.id])
-        response = self.client.get(url, follow=True)
+        response = self.client.post(url, {'text': "Message de refus"}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
 
         self.assertTrue(report.accepted_at is None)
+        self.assertEqual(report.status, Report.REFUSED)
 
     def test_publish_report(self):
         """Tests publishing a report and test the view of it."""
