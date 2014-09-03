@@ -76,7 +76,6 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
 
         this.draggableMarker = fms.map.addNewIncidentMarker(this.position, {
             popup: this.renderPopup(),
-            popupTemplate: null
         });
 
         this.latlng = this.draggableMarker.getLatLng();

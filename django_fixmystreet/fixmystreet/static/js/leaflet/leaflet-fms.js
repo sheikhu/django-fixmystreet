@@ -291,6 +291,7 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   removeNewIncidentMarker: function () {
+    if (!this.newIncidentMarker) { return; }
     this.removeLayer(this.newIncidentMarker);
     this.newIncidentMarker = null;
   },
@@ -458,7 +459,7 @@ L.FixMyStreet.Marker = L.Marker.extend({
   },
 
   openPopup: function (latlng) {
-    if (this.options.popupTemplate) {
+    if (!this.options.popup && this.options.popupTemplate) {
       var that = this;
       L.FixMyStreet.Template.render(this.options.popupTemplate, this.model, function (error, html) {
         that.setPopupContent(html);
