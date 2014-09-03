@@ -65,7 +65,8 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         evt.preventDefault();
         this.enlarge();
 
-        this.putMarker(fms.map.getCenter(), null, true);
+        var center = fms.map.getCenter();
+        this.putMarker({x: center.lng, y: center.lat}, null, true);
     },
 
     putMarker: function (position, address, preventZoomIn) {
