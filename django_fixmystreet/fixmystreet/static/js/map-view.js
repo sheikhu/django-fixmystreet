@@ -85,7 +85,7 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         });
 
         if (!preventZoomIn) {
-            fms.map.setZoom(6);
+            fms.map.setView(this.position, 18);  // max zoom
         }
         this.draggableMarker.openPopup();
         // this.renderPopup();
