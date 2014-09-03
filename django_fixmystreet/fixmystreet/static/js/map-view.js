@@ -74,6 +74,7 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         this.position = new L.LatLng(position.y, position.x);
         this.address = address;
 
+        fms.map.removeNewIncidentMarker();
         this.draggableMarker = fms.map.addNewIncidentMarker(this.position, {
             popup: this.renderPopup(),
         });
@@ -87,7 +88,6 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
             fms.map.setView(this.position, 18);  // max zoom
         }
         this.draggableMarker.openPopup();
-        // this.renderPopup();
     },
 
     loadAddress: function () {

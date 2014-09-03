@@ -102,6 +102,7 @@ fms.AddressSearchView = Backbone.View.extend({
                 fms.newIncidentMarker.putMarker(position, address);
             } else {
                 results = response.result;
+                fms.map.removeNewIncidentMarker();
                 this.addressProposal.open(results);
                 this.showResultIntegrityMessage(results);
             }
