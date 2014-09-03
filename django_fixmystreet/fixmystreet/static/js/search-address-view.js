@@ -23,7 +23,7 @@ fms.MessageView = Backbone.View.extend({
 fms.AddressSearchView = Backbone.View.extend({
     el: '#search-address-form',
     events: {
-        'submit': 'submitSeach',
+        'submit': 'submitSearch',
     },
 
     render: function () {
@@ -39,7 +39,7 @@ fms.AddressSearchView = Backbone.View.extend({
         return this;
     },
 
-    submitSeach: function (evt) {
+    submitSearch: function (evt) {
         evt.preventDefault();
         this.search = {
             street: {
@@ -49,10 +49,10 @@ fms.AddressSearchView = Backbone.View.extend({
             number: this.$searchStreetNumber.val()
         };
 
-        this.requestSeachResults();
+        this.requestSearchResults();
     },
 
-    requestSeachResults: function () {
+    requestSearchResults: function () {
         var self = this;
 
         $('#btn-localizeviamap').hide();
@@ -80,7 +80,7 @@ fms.AddressSearchView = Backbone.View.extend({
             self.$searchStreet.removeClass('loading');
             self.$searchButton.prop('disabled',false);
 
-            self.processSeachResults(response);
+            self.processSearchResults(response);
         }).error(function(xhr,msg,error){
             self.$searchStreet.removeClass('loading');
             self.$searchButton.prop('disabled',false);
@@ -88,7 +88,7 @@ fms.AddressSearchView = Backbone.View.extend({
             fms.message.error(gettext('Unexpected error'));
         });
     },
-    processSeachResults: function (response) {
+    processSearchResults: function (response) {
         if(response.status == 'success' && response.result.length > 0) {
 
             fms.newIncidentMarker.enlarge();
