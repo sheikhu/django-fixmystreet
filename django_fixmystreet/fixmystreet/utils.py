@@ -246,7 +246,7 @@ mail_titles = {
 
 def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
     # Define site url
-    SITE_URL = "http://{0}".format(Site.objects.get_current().domain)
+    SITE_URL = "https://{0}".format(Site.objects.get_current().domain)
 
     # Prepare data for mail
     display_pro = not user  # send to department

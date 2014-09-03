@@ -125,7 +125,7 @@ class FmsUserCreateForm(FmsUserForm):
             data = {
                 "user": user,
                 "password": self.password,
-                "SITE_URL": 'http://{0}'.format(Site.objects.get_current().domain),
+                "SITE_URL": 'https://{0}'.format(Site.objects.get_current().domain),
             }
 
             # MAIL SENDING...
