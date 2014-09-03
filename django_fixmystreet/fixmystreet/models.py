@@ -670,10 +670,10 @@ class Report(UserTrackedModel):
 
     mark_as_done_motivation = models.TextField(null=True, blank=True) # deprecated
     mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True) # deprecated
-    mark_as_done_comment = models.ForeignKey('ReportComment', related_name='report_mark_as_done', on_delete=models.SET_NULL, null=True, blank=True)
+    mark_as_done_comment = models.ForeignKey('ReportComment', related_name='report_mark_as_done', on_delete=models.SET_NULL, null=True, blank=True) # deprecated. NEED migration before delete
 
     refusal_motivation = models.TextField(null=True, blank=True) # deprecated
-    refusal_comment = models.ForeignKey('ReportComment', related_name='report_refusal', on_delete=models.SET_NULL, null=True, blank=True)
+    refusal_comment = models.ForeignKey('ReportComment', related_name='report_refusal', on_delete=models.SET_NULL, null=True, blank=True) # deprecated. NEED migration before delete
 
     responsible_entity = models.ForeignKey(
         OrganisationEntity,
@@ -727,6 +727,9 @@ class Report(UserTrackedModel):
     false_address = models.TextField(null=True, blank=True)
     # provider of the report (mobile / web / osiris...)
     source = models.TextField(null=False, blank=False, default=SOURCES['WEB'])
+
+    def get_rank_percentage(self):
+        return "%0.2f" % (self.rank * 10)
 
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
@@ -888,7 +891,11 @@ class Report(UserTrackedModel):
 
         return dates
 
-    def get_nearby_report_count(self):
+    def get_nearby_reports(self):
+        nearby_reports = Report.objects.all().rank(self)
+        return nearby_reports
+
+    def get_nearby_reports_count(self):
         count_nearby_reports = Report.objects.all().rank(self)
         return len(count_nearby_reports)
 
@@ -1506,12 +1513,26 @@ class ReportAttachment(UserTrackedModel):
     PRIVATE = 2
     CONFIDENTIAL = 3
 
+    #type
+    DOCUMENTATION = 1
+    CLOSED = 2
+    REFUSED = 3
+    MARK_AS_DONE = 4
+
     REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES = (
         (PUBLIC, _("Public")),
         (PRIVATE, _("Private")),
         (CONFIDENTIAL, _("Confidential"))
     )
 
+    REPORT_ATTACHMENT_TYPE_CHOICES = (
+        (DOCUMENTATION, _("Documentation")),
+        (CLOSED, _("Closing message")),
+        (REFUSED, _("Refusing message")),
+        (MARK_AS_DONE, _("Mark as done message"))
+    )
+
+    type = models.IntegerField(choices=REPORT_ATTACHMENT_TYPE_CHOICES, default=DOCUMENTATION, null=False)
     logical_deleted = models.BooleanField(default=False)
     security_level = models.IntegerField(choices=REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES, default=PRIVATE, null=False)
     report = models.ForeignKey(Report, related_name="attachments")
@@ -1573,6 +1594,14 @@ class ReportAttachment(UserTrackedModel):
             del kwargs['publish_report']
             self.publish_update = False
         super(ReportAttachment, self).save(*args, **kwargs)
+
+    def get_type_message(self):
+        if self.type == self.REFUSED:
+            return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.REFUSED)
+        elif self.type == self.MARK_AS_DONE:
+            return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.MARK_AS_DONE)
+        else:
+            return ""
 
 
 # Initialise instance.report.thumbnail with the first public photo. For pro and citizen

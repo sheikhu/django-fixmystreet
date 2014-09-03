@@ -175,7 +175,10 @@
                             <div class="span4">
                                 {% for attachment in report.attachments.all %}
                                     {% if attachment.reportcomment.text %}
-                                        <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                        <p class="comment-incident">
+                                            {{ attachment.get_type_message }}
+                                            {{ attachment.reportcomment.text|truncatechars:200 }}
+                                        </p>
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -192,11 +195,25 @@
 {% block content %}
 <div class="container">
     <div class="row switch_map_list">
-        <div class="span7">
+        <div class="span6">
             <h2 class="verify_title">{% trans "we have" %} {{ reports_nearby|length }} {% trans "incident sector" %}</h2>
             <p class="lead"></p>
         </div>
-        <div class="span5">
+        <div class="span3">
+            <div id="search-form" class="highlighted mergeIncident text-right">
+                <form id="search-ticket-form" class="input-append form-inline">
+                    <input id="input-ticket-search" class="input-medium" type="search" name="ticketNumber" placeholder="{% trans 'Ticket number...' %}" value="{{ request.GET.ticketNumber }}" />
+                    <input id="widget-search-ticket-button" class="btn" type="submit" value="">
+                </form>
+
+                {% if request.GET.ticketNumber %}
+                    <p>
+                        <a href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Clear search' %}</a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="span3">
             <div class="switch_verify btn-group pull-right">
                 <button class="btn active" id="btn-list">{% trans "List" %}</button>
                 <button class="btn" id="btn-map">{% trans "Map" %}</button>
@@ -204,20 +221,7 @@
         </div>
     </div>
 
-    <div class="row text-center">
-        <div id="search-form" class="block highlighted mergeIncident span12">
-            <form id="search-ticket-form" class="form-inline">
-                <input id="input-ticket-search" class="input-large" type="search" name="ticketNumber" placeholder="{% trans 'Ticket number...' %}" value="{{ request.GET.ticketNumber }}" />
-                <input id="widget-search-ticket-button" class="btn" type="submit" value="">
-            </form>
 
-            {% if request.GET.ticketNumber %}
-                <p>
-                    <a href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Clear search' %}</a>
-                </p>
-            {% endif %}
-        </div>
-    </div>
     <div class="row">
         <div class="span12">
             <article id="map" class="map-big hide">
@@ -259,7 +263,7 @@
                                     <a
                                         href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
                                         class="btn_same_incident report"
-                                        title="Rank of {{ report.rank }}" >{% trans "Merge" %}</a>
+                                        title="Matching {{ report.get_rank_percentage }}%" >{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
@@ -273,7 +277,10 @@
                                     <div class="span4">
                                         {% for attachment in report.attachments.all %}
                                             {% if attachment.reportcomment.text %}
-                                                <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                                <p class="comment-incident">
+                                                    {{ attachment.get_type_message }}
+                                                    {{ attachment.reportcomment.text|truncatechars:200 }}
+                                                </p>
                                             {% endif %}
                                         {% endfor %}
                                     </div>

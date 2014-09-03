@@ -8,8 +8,8 @@ from django.contrib.gis.geos import Polygon
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    OrganisationEntitySurface
-)
+    OrganisationEntitySurface,
+    ReportComment, ReportAttachment)
 
 
 class ReportViewsTest(SampleFilesTestCase):
@@ -231,6 +231,7 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertTrue(report.accepted_at is None)
         self.assertEqual(report.status, Report.REFUSED)
+        self.assertTrue(ReportComment.objects.get(report_id=report.id, type=ReportAttachment.REFUSED))
 
     def test_publish_report(self):
         """Tests publishing a report and test the view of it."""

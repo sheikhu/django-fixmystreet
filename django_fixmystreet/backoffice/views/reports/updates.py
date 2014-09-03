@@ -50,11 +50,11 @@ def refuse(request, report_id):
         if not report.is_pro():
             comment.security_level = ReportComment.PUBLIC
 
+        comment.type = ReportAttachment.REFUSED
         comment.save()
 
         #Update the status of report
         report.status = Report.REFUSED
-        report.refusal_comment = comment
         report.save()
 
     #Redirect to the report show page
@@ -76,6 +76,7 @@ def fixed(request, report_id):
 
             # Save refusal motivation
             comment.report = report
+            comment.type = ReportAttachment.MARK_AS_DONE
             comment.save()
 
             #Update the status of report

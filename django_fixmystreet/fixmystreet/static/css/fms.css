@@ -708,9 +708,12 @@ footer .cirb-cibg img{
 	background:transparent url('../images/btn_search_tickets_header.png') top left no-repeat;
 	border:0;
 	width:35px;
-	height:33px;
-	margin-left: -26px;
-	margin-top: 2px;
+	height:30px;
+    background-size:100%;
+    border: 1px solid #ccc;
+    border-left:0px;
+	/*margin-left: -26px;*/
+	/*margin-top: 1px;*/
 }
 .dataLayersDiv{
 	margin-top:10px;
@@ -718,9 +721,9 @@ footer .cirb-cibg img{
 #layerswitcher .layersDiv:first-child .dataLayersDiv{
 	margin-top:0;
 }
-#search-form #input-ticket-search{
-	margin-right: -13px;
-}
+/*#search-form #input-ticket-search{*/
+	/*margin-right: -13px;*/
+/*}*/
 .lead-container.no-map{
 	margin-bottom:30px;
 }
@@ -924,12 +927,13 @@ footer .cirb-cibg img{
 	background:transparent url('../images/btn_search_tickets.png') top left no-repeat;
 	border:0;
 	width:35px;
-	height:33px;
+	height:30px;
+    background-size:100%;
 }
-#input-ticket-search{
-	height: 23px;
-	margin-right: -13px;
-}
+/*#input-ticket-search{*/
+	/*height: 23px;*/
+	/*margin-right: -13px;*/
+/*}*/
 .tab-pane .thumbnail{
 	width: auto;
 	height:80px;

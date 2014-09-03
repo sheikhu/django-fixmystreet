@@ -140,6 +140,7 @@
 
                 {% endif %}
             </div>
+            <p>{{ attachment.get_type_message }}</p>
             <p class="comment-incident">
                 <img src="{% static 'images/comment-bg.png' %}" class="comment-deco" />
                 {{ attachment.reportcomment.text|linebreaksbr }}</p>

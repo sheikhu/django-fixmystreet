@@ -90,7 +90,10 @@
                                         {% for attachment in report.attachments.all %}
                                             {% if attachment.reportcomment.text %}
                                                 {% if attachment.is_public or BACKOFFICE and attachment.is_private %}
-                                                    <p class="comment-incident">{{ attachment.reportcomment.text|truncatechars:200 }}</p>
+                                                    <p class="comment-incident">
+                                                        {{ attachment.get_type_message }}
+                                                        {{ attachment.reportcomment.text|truncatechars:200 }}
+                                                    </p>
                                                 {% endif %}
                                             {% endif %}
                                         {% endfor %}

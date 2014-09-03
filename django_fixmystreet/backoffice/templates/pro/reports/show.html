@@ -661,8 +661,8 @@ $(document).ready(function() {
                                     {% trans 'Merge' %}
 
                                     {# Potential duplicates count #}
-                                    {% if report.is_in_progress and report.get_nearby_report_count %}
-                                        ({{ report.get_nearby_report_count }})
+                                    {% if report.is_in_progress and report.get_nearby_reports_count %}
+                                        ({{ report.get_nearby_reports_count }})
                                     {% endif %}
                                 </a>
                             </li>
@@ -741,12 +741,12 @@ $(document).ready(function() {
 {% block content %}
 
 {# Potential duplicates count #}
-    {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged and report.is_created and report.get_nearby_report_count %}
+    {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged and report.is_created and report.get_nearby_reports_count %}
         <br/>
 
         <div class="alert alert-error text-center">
             <a href="{% url 'report_merge_pro' report.get_slug report.id %}">
-                <strong>{{ report.get_nearby_report_count }} {% trans "potential duplicates" %}</strong>
+                <strong>{{ report.get_nearby_reports_count }} {% trans "potential duplicates" %} ({{ report.get_nearby_reports.0.get_rank_percentage }}%) </strong>
             </a>
         </div>
     {% endif %}

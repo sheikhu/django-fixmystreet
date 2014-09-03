@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-26 10:57+0200\n"
+"POT-Creation-Date: 2014-09-02 15:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: fixmystreet/static/js/attachmentForms.js:54
+msgid "Filesize must be greater than 0"
+msgstr ""
 
 #: fixmystreet/static/js/fixmystreetmap.js:47
 msgid "This incident is located on a regional zone"
@@ -65,10 +69,63 @@ msgstr ""
 msgid "Overlayers"
 msgstr ""
 
-#: fixmystreet/static/js/search.js:159 fixmystreet/static/js/search.js.c:229
+#: fixmystreet/static/js/fixmystreetmap.js:603
+#: fixmystreet/static/js/search.js:469
+msgid "Unexpected error"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:806
+#: fixmystreet/static/js/fixmystreetmap.js:888
+msgid "Report"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:809
+msgid "Details"
+msgstr ""
+
+#: fixmystreet/static/js/fixmystreetmap.js:886
+msgid "Reports at this location"
+msgstr ""
+
+#: fixmystreet/static/js/new_report.js:164
+#: fixmystreet/static/js/new_report.js:232
+msgid "Unable to locate this address"
+msgstr ""
+
+#: fixmystreet/static/js/new_report.js:230
+msgid "Error"
+msgstr ""
+
+#: fixmystreet/static/js/reports_show_pro.js:39
+msgid ""
+"This is the initial text that needs to be defined. It's a suggestion for the "
+"gestionnaire. He can be edited as needed."
+msgstr ""
+
+#: fixmystreet/static/js/search.js:59
+msgid "This street is not listed in this municipality."
+msgstr ""
+
+#: fixmystreet/static/js/search.js:61
+msgid "This street exists in several municipalities, please be more specific."
+msgstr ""
+
+#: fixmystreet/static/js/search.js:160 fixmystreet/static/js/search.js.c:230
 msgid "It is here"
 msgstr ""
 
-#: fixmystreet/static/js/search.js:160 fixmystreet/static/js/search.js.c:228
+#: fixmystreet/static/js/search.js:161 fixmystreet/static/js/search.js.c:229
 msgid "Move the cursor"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:169
+msgid "Non-participating municipality"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:170
+msgid "Please contact the municipality"
+msgstr ""
+
+#: fixmystreet/static/js/search.js:458
+msgid "No corresponding address has been found"
 msgstr ""
