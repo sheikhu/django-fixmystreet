@@ -45,7 +45,7 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         '    <%= address.street.postCode %> <%= address.street.municipality %>',
         '  </p>',
         '  <% if (address.number) { %>',
-        '    <a class="btn-itshere" href="<%= NEXT_PAGE_URL %>?x=<%= position.lat %>&y=<%= position.lng %>"><%= gettext("It is here") %></a>',
+        '    <a class="btn-itshere" href="<%= NEXT_PAGE_URL %>?x=<%= position.lng %>&y=<%= position.lat %>"><%= gettext("It is here") %></a>',
         '    <div id="btn-streetview">',
         '      <a href="<%= googleStreetViewLink %>" target="_blank">',
         '        <i class="icon-streetview"></i>Street View',
