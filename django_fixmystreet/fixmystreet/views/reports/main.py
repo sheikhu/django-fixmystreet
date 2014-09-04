@@ -171,16 +171,16 @@ def document(request, slug, report_id):
 def update(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
-    if 'is_fixed' in request.REQUEST:
-        #Update the status of report
-        report.status   = Report.SOLVED
-        report.fixed_at = datetime.datetime.now()
-        report.save()
-
-        if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-        else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    # if 'is_fixed' in request.REQUEST:
+    #     #Update the status of report
+    #     report.status   = Report.SOLVED
+    #     report.fixed_at = datetime.datetime.now()
+    #     report.save()
+    #
+    #     if "pro" in request.path:
+    #         return HttpResponseRedirect(report.get_absolute_url_pro())
+    #     else:
+    #         return HttpResponseRedirect(report.get_absolute_url())
 
     # ????? DEPRECATED ?????
     if request.method == 'POST':
