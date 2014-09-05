@@ -17,23 +17,27 @@
 
         <div class="control-group">
             <div class="container-fluid">
-                <div id="file-form-template" class="row-fluid row-prevent-clear">
-                    <div class="file-field hidden">
-                        <img class="thumbnail span3" />
-                        {{ file_formset.empty_form.reportattachment_ptr }}
+                <div id="file-form-files"></div>
+                <div id="file-form-btn-add-container">
+                    <label class="input-file-button btn" for="file-form-input-add">{% trans 'Add file' %}</label>
+                    <span class="input-file-button2">
+                        <input id="file-form-input-add" class="input-file-button2" type="file" multiple />
+                    </span>
+                </div>
+
+                <div id="file-form-row-tpl" class="hidden">
+                    <div class="row-fluid clearfix">
+                        <div class="span3 thumb"></div>
                         <div class="span8">
                             {{ file_formset.empty_form.title }}
                         </div>
                         <div class="span1">
                             <img class="removeThumbnail pull-right" src="{% static 'images/delete_documentation.png' %}" title="Remove"/>
                         </div>
+                        {{ file_formset.empty_form.reportattachment_ptr }}
+                        {{ file_formset.empty_form.file_creation_date }}
+                        {# { file_formset.empty_form.file } #}
                     </div>
-                    {{ file_formset.empty_form.file_creation_date }}
-                    {# { file_formset.empty_form.file } #}
-                    <label class="input-file-button btn" for="id_files-__prefix__-file">{% trans 'Add file' %}</label>
-                    <span class="input-file-button2">
-                        <input id="id_files-__prefix__-file" class="input-file-button2" type="file" name="files-__prefix__-file"/>
-                    </span>
                 </div>
             </div>
         </div>

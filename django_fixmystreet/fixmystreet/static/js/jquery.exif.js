@@ -920,7 +920,7 @@ $.fn.fileExif = function(callback) {
 
         var binaryResponse = new BinaryFile(content);
 
-        callback(EXIF.readFromBinaryFile(binaryResponse));
+        callback(this[0].files[0], EXIF.readFromBinaryFile(binaryResponse));
     };
 
     // ! Patch for IE10 !
@@ -936,7 +936,7 @@ $.fileExif = function(file, callback) {
 
         var binaryResponse = new BinaryFile(content);
 
-        callback(EXIF.readFromBinaryFile(binaryResponse));
+        callback(file, EXIF.readFromBinaryFile(binaryResponse));
     };
 
     // ! Patch for IE10 !

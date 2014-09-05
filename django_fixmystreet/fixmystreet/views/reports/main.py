@@ -1,7 +1,7 @@
 import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import inlineformset_factory
 from django.template import RequestContext
 from django.contrib import messages
@@ -29,6 +29,8 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
 
     if request.method == "POST":
+        request_files = hack_multi_file(request)
+
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
@@ -40,7 +42,7 @@ def new(request):
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
-            file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
+            file_formset = ReportFileFormSet(request.POST, request_files, instance=report, prefix='files', queryset=ReportFile.objects.none())
 
             if file_formset.is_valid():
                 fingerprint.save()
@@ -226,3 +228,28 @@ def index(request):
     return render_to_response("reports/reports_map.html", {
         'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))
+
+
+def hack_multi_file(request):
+    files_keys = []
+    qd = {}
+
+    for k in request.FILES.keys():
+        if k.startswith("files-files-"):
+            files_keys.append(k)
+        else:
+            qd[k] = request.FILES[k]  # Or request.FILES.getlist(k) ?
+    files_keys.sort()
+
+    file_index = 0
+    for k in files_keys:
+        #for i in range(0, len(request.FILES.getlist(k))):
+        for f in request.FILES.getlist(k):
+            if request.POST.has_key("files-{}-title".format(file_index)):
+                qd["files-{}-file".format(file_index)] = f
+            file_index += 1
+
+    request_files = QueryDict("")
+    request_files = request_files.copy()
+    request_files.update(qd)
+    return request_files
