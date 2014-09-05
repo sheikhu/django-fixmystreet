@@ -728,6 +728,9 @@ class Report(UserTrackedModel):
     # provider of the report (mobile / web / osiris...)
     source = models.TextField(null=False, blank=False, default=SOURCES['WEB'])
 
+    #indicates whether the responsibility of the incident should be associated to a third party or not.
+    third_party_responsibility = models.BooleanField(default=False)
+
     def get_rank_percentage(self):
         return "%0.2f" % (self.rank * 10)
 

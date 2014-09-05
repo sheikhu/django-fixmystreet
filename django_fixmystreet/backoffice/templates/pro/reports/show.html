@@ -14,6 +14,18 @@
 var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
 var DETAILS_MODE = true;
 
+function setThirdPartyResponsibility(boolVal) {
+    if(boolVal){ //asking to switch the incident cause to a third party
+        var r2=confirm("{% trans 'Are you sure you want to declare that the source of this incident is a third party' %}");
+    }
+    else{ //source of incident is not a third party
+        var r2=confirm("{% trans 'Are you sure you want to declare that the source of this incident is not a third party' %}");
+    }
+    if (r2==true){
+        window.location = '{% url "report_change_switch_third_party_responsibility" report.id %}?thirdPartyResponsibility=' + boolVal;
+    }
+}
+
 function setPrivate() {
     var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
     if (r2==true){
@@ -676,7 +688,7 @@ $(document).ready(function() {
                                 <a tabindex="-1" href="#modalCategory" data-toggle="modal">{% trans "Category" %}...</a>
                             </li>
 
-                           <li class="dropdown-submenu">
+                            <li class="dropdown-submenu">
                                 <a tabindex="-1" href="#">{% trans "Visibility" %}</a>
                                     <ul class="dropdown-menu">
                                         <li {% ifequal report.private False %}class="active"{% endifequal %}>
@@ -704,7 +716,19 @@ $(document).ready(function() {
                                     </ul>
                                 </a>
                             </li>
-
+                            <!-- Responsibility belongs to third party-->
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#">{% trans "ThirdPartyResponsibility" %}</a>
+                                    <ul class="dropdown-menu">
+                                        <li {% ifequal report.third_party_responsibility True %}class="active"{% endifequal %}>
+                                            <a tabindex="-1" href="javascript:setThirdPartyResponsibility(true)">{% trans 'Oui' %}</a>
+                                        </li>
+                                        <li {% ifequal report.third_party_responsibility False %}class="active"{% endifequal %}>
+                                            <a tabindex="-1" href="javascript:setThirdPartyResponsibility(false)">{% trans 'Non' %}</a>
+                                        </li>
+                                    </ul>
+                                </a>
+                            </li>
                             <!--  Wrong address -->
                             <li>
                                 <a tabindex="-1" href="#modalAddress" data-toggle="modal">{% trans 'Address' %}...</a>

@@ -54,6 +54,7 @@ urlpatterns += patterns(
     url(_(r'^report/(\d+)/change-responsible/'), 'changeManager', name='report_change_manager_pro'),
     url(_(r'^report/(\d+)/change-contractor/'), 'changeContractor', name='report_change_contractor_pro'),
     url(_(r'^report/(\d+)/switch-privacy/'), 'switchPrivacy', name='report_change_switch_privacy'),
+    url(_(r'^report/(\d+)/switch-third-party-responsibility/'), 'switchThirdPartyResponsibility', name='report_change_switch_third_party_responsibility'),
     url(_(r'^report/(\d+)/publish/'), 'publish', name='report_publish_pro'),
     url(_(r'^report/(\d+)/update-priority/'), 'updatePriority', name="report_update_priority"),
     url(_(r'^report/(\d+)/false-address/'), 'report_false_address', name="report_false_address"),
