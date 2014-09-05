@@ -1692,12 +1692,6 @@ label strong{
 #id_report-category, #id_report-secondary_category{
 	width:100%;
 }
-.control-group .thumb img {
-	max-height: 100px;
-	max-width: 200px;
-	margin-left: 20px;
-	display: inline-block;
-}
 #file-form-template input[type=file]{
 	position: absolute;
 	display: block;
@@ -1712,11 +1706,17 @@ label strong{
 #file-form-files input[type=file] {
 	display: none;
 }
-.file-field textarea,
-.file-field input[type="text"]{
-/*	margin-top: 78px;
-	margin-left: -18px;
-*/
+#file-form-files .row-fluid {
+	height: 120px;
+}
+#file-form-files .thumb img {
+	max-height: 100px;
+	max-width: 200px;
+	margin-left: 20px;
+	display: inline-block;
+}
+#file-form-files textarea,
+#file-form-files input[type="text"]{
 	width: 100%;
 }
 .row-prevent-clear:after {
