@@ -12,11 +12,10 @@
     for (var k in file_types) { allowed_file_types = allowed_file_types.concat(file_types[k]); }
     var file_max_size = 10000000, // 10MB
         file_count = 0,
-        file_form_template = null;
+        inputfile_count = 0;
 
 
     $(function() {
-        file_form_template = $("#file-form-template");
         /**********************************************************/
         /* Attach a onchange listener to the file input field.    */
         /* This listener will verify the validity of the filesize */
@@ -38,104 +37,87 @@
 /********************************************************************************************/
     function fileSelected(evt) {
         var inputFile = evt.currentTarget;
-        var file;
+        var filesContainer = $('<div />').appendTo('#file-form-files');
 
-        if (typeof inputFile.files != 'undefined' && inputFile.files.length) {
-            file = inputFile.files[0];
+        if (typeof inputFile.files == 'undefined' || inputFile.files.length === 0) {
+            return;
         }
 
+        // WARNING: this code must run in IE and input.filers is not supported by IE9
+        var exifCallback = function(file, exifObject) {
+            var day;
+            var month;
+            var year;
+            var hour;
+            var minute;
+            if (exifObject.DateTimeOriginal){
+                var datetosplit = exifObject.DateTimeOriginal;
+                var splitted = datetosplit.split(/[:,\/ ]/);
+                var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
+                day = pictureDate.getDate();
+                month = pictureDate.getMonth()+1;
+                if (month < 10)
+                    month = '0' + month;
+                year = pictureDate.getFullYear();
+                hour = pictureDate.getHours();
+                minute = pictureDate.getMinutes();
+            } else if (file.lastModifiedDate){
+                // Append file creation date
+                var fileDate = new Date(file.lastModifiedDate);
+                day = fileDate.getDate();
+                month = fileDate.getMonth()+1;
+                year = fileDate.getFullYear();
+                hour = fileDate.getHours();
+                minute = fileDate.getMinutes();
+            }
 
-        var filesContainer = file_form_template.closest('.container-fluid');
-        var form_copy = file_form_template.clone();
+            var form_new = $($('#file-form-row-tpl').html().replace(/__prefix__/g, file_count));
+            form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+            form_new.removeClass('required').removeClass('invalid');
 
-        if (file) {
+            form_new.find("[data-toggle=popover]").remove();
+            form_new.find("[data-toggle=popover]")
+                .popover({
+                    html : true,
+                    content: function() { return $(this).next().html(); }
+                }).click(function(e) { e.preventDefault(); });
+
+            var removeThumbnail = form_new.find('.removeThumbnail')[0];
+            removeThumbnail.addEventListener('click', function() {
+                $(this).closest('.row-fluid').remove();
+                // @TODO: Remove file from <input:file>
+            });
+
+            AddFileToView(form_new, file);
+            filesContainer.append(form_new);
+
+            file_count++;
+            $("#id_files-TOTAL_FORMS").val(file_count);
+        };
+
+        for (var i = 0; i < inputFile.files.length; i++) {
+            var file = inputFile.files[i];
+
+            if (!file) {
+                AddFileToView(form_new, null);
+                continue;
+            }
+
             // validation of the file
             if(file.size === 0) {
                 alert(gettext('Filesize must be greater than 0'));
-                return false;
+                continue;
             }
             else if(file.size > file_max_size) {
                 $('#file-too-large-error').modal();
-                return false;
+                continue;
             }
             else if(allowed_file_types.indexOf(file.type)==-1 ){
                 $('#file-type-error').modal();
-                return false;
+                continue;
             }
-        }
 
-
-        var form_new = file_form_template;
-        file_form_template = form_copy;
-
-        if (file) { // WARNING: this code must run in IE and input.filers is not supported by IE9
-            var exifCallback = function(exifObject) {
-                var day;
-                var month;
-                var year;
-                var hour;
-                var minute;
-                if (exifObject.DateTimeOriginal){
-                    var datetosplit = exifObject.DateTimeOriginal;
-                    var splitted = datetosplit.split(/[:,\/ ]/);
-                    var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-                    day = pictureDate.getDate();
-                    month = pictureDate.getMonth()+1;
-                    if (month < 10)
-                        month = '0' + month;
-                    year = pictureDate.getFullYear();
-                    hour = pictureDate.getHours();
-                    minute = pictureDate.getMinutes();
-                } else if (file.lastModifiedDate){
-                    // Append file creation date
-                    var fileDate = new Date(file.lastModifiedDate);
-                    day = fileDate.getDate();
-                    month = fileDate.getMonth()+1;
-                    year = fileDate.getFullYear();
-                    hour = fileDate.getHours();
-                    minute = fileDate.getMinutes();
-                }
-
-                form_new.find(":input").each(function(index, input) {
-                    input.id = input.id.replace(/__prefix__/g, file_count);
-                    input.name = input.name.replace(/__prefix__/g, file_count);
-                });
-                form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
-                filesContainer.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
-                AddFileToView(form_new, file);
-                form_new.attr('id', '').removeClass('required').removeClass('invalid');
-
-                form_new.find("label").each(function(index, label) {
-                    $(label).attr('for', $(label).attr('for').replace(/__prefix__/g, file_count));
-                });
-
-                form_new.find("[data-toggle=popover]").remove();
-                file_form_template.find("[data-toggle=popover]")
-                    .popover({
-                        html : true,
-                        content: function() {
-                           return $(this).next().html();
-                     }
-                    }).click(function(e) {
-                        e.preventDefault();
-                    });
-
-                var removeThumbnail = form_new.find('.removeThumbnail')[0];
-                removeThumbnail.addEventListener('click', function() {
-                    $(this).closest('.row-fluid').remove();
-                });
-
-                form_new.find('.file-field').removeClass('hidden');
-                filesContainer.append(form_new);
-                filesContainer.append(file_form_template);
-
-                file_count++;
-                $("#id_files-TOTAL_FORMS").val(file_count);
-
-            };
-
-
-            $(inputFile).fileExif(exifCallback);
+            $.fileExif(file, exifCallback);
 
             /*if(file.lastModifiedDate) {
                 // Append file creation date
@@ -148,12 +130,14 @@
 
                 form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
             }*/
-
-
-        } else {
-            AddFileToView(form_new, null);
         }
 
+        var oldInput = $(inputFile).remove();
+        var newInput = oldInput.clone();
+        oldInput.attr({id: null, name: 'files-files-'+inputfile_count}).removeClass();
+        filesContainer.attr('id', 'files-group-'+inputfile_count).append(oldInput);
+        $('#file-form-btn-add-container .input-file-button2').append(newInput);
+        inputfile_count++;
     }
 
     /************************************************************************************/
@@ -175,7 +159,10 @@
             title = file.name;
         }
 
-        var thumbnails = "", img = elem.find(".thumbnail");
+        var thumbnails = "";
+        var imgContainer = elem.find(".thumb");
+        var img = $('<img />');
+        imgContainer.append(img);
         if (isFileType(type, 'pdf')){
             thumbnails = "/static/images/icon-pdf.png";
         } else if (isFileType(type, 'document')){

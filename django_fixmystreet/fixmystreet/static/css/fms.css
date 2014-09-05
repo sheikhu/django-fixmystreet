@@ -1692,9 +1692,9 @@ label strong{
 #id_report-category, #id_report-secondary_category{
 	width:100%;
 }
-.control-group .thumbnail{
+.control-group .thumb img {
 	max-height: 100px;
-	max-width:200px;
+	max-width: 200px;
 	margin-left: 20px;
 	display: inline-block;
 }
@@ -1709,8 +1709,8 @@ label strong{
 	/*font-size: 500px;*/
 	cursor: pointer;
 }
-#file-form-template .thumbnail, #file-form-template textarea{
-	display:none;
+#file-form-files input[type=file] {
+	display: none;
 }
 .file-field textarea,
 .file-field input[type="text"]{
