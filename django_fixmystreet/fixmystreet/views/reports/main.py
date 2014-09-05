@@ -42,6 +42,7 @@ def new(request):
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
+            # Cf. `hack_multi_file`, use ``request_files`` instead of ``request.FILES``.
             file_formset = ReportFileFormSet(request.POST, request_files, instance=report, prefix='files', queryset=ReportFile.objects.none())
 
             if file_formset.is_valid():
@@ -231,25 +232,43 @@ def index(request):
 
 
 def hack_multi_file(request):
-    files_keys = []
-    qd = {}
+    """
+    Transform a ``request.FILES`` containing several lists of files into independent single files.
 
+    Goal: Allow users to select multiple files at once, and to perform that action several times.
+    Constraint: A single HTTP request containing form data and files. No Ajax calls.
+    Problem: <input:file> cannot be modified in JavaScript.
+    Solution:
+        Use several <input:file multiple> from which user can have removed some files.
+        ``request.FILES`` can therefore contain multiple keys that contains each several files.
+        Scan ``request.FILES``, extract (only) the files we need and name keys according to ``ReportFileFormSet``.
+        Return a ``QueryDict`` equivalent to ``request.FILES``.
+    """
+    qd = {}  # The hacked request.FILES that will be returned.
+
+    # Collect keys related to this hack and copy as-is the others in `qd`.
+    files_keys = []
     for k in request.FILES.keys():
         if k.startswith("files-files-"):
             files_keys.append(k)
         else:
+            # Copy as-is the keys that are not related to this hack.
             qd[k] = request.FILES[k]  # Or request.FILES.getlist(k) ?
+    # Sort the keys to keep the file index coherent with the JS side.
     files_keys.sort()
 
+    # Loop over uploaded files and keep only the ones that have not been removed by the user.
     file_index = 0
     for k in files_keys:
-        #for i in range(0, len(request.FILES.getlist(k))):
         for f in request.FILES.getlist(k):
+            # If there is a "title" field for this file_index, assume the file has not been removed from the form.
             if request.POST.has_key("files-{}-title".format(file_index)):
                 qd["files-{}-file".format(file_index)] = f
             file_index += 1
 
+    # Convert dict to QueryDict (to be equivalent to request.FILES).
     request_files = QueryDict("")
     request_files = request_files.copy()
     request_files.update(qd)
+
     return request_files
