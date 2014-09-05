@@ -243,6 +243,40 @@ def hack_multi_file(request):
         ``request.FILES`` can therefore contain multiple keys that contains each several files.
         Scan ``request.FILES``, extract (only) the files we need and name keys according to ``ReportFileFormSet``.
         Return a ``QueryDict`` equivalent to ``request.FILES``.
+
+    Example:
+        request.POST: {
+            ...
+            'files-0-file_creation_date': [u'2005-4-1 4:32'],
+            'files-0-reportattachment_ptr': [u''],
+            'files-0-title': [u''],
+
+            // User has removed "files-1"
+
+            'files-2-file_creation_date': [u'2011-8-18 23:34'],
+            'files-2-reportattachment_ptr': [u''],
+            'files-2-title': [u''],
+
+            'files-3-file_creation_date': [u'2005-4-5 1:46'],
+            'files-3-reportattachment_ptr': [u''],
+            'files-3-title': [u''],
+            ...
+        }
+        request.FILES: {
+            'files-files-0': [
+                <InMemoryUploadedFile: filename-0.jpg (image/jpeg)>,
+                <InMemoryUploadedFile: filename-1.jpg (image/jpeg)>,  // Removed by user but sent anyway in request, cf. "problem"
+                <InMemoryUploadedFile: filename-2.jpg (image/jpeg)>
+            ],
+            'files-files-1': [
+                <InMemoryUploadedFile: filename-3.jpg (image/jpeg)>
+            ]
+        }
+        request_files: {
+            'files-0-file': [<InMemoryUploadedFile: filename-0.jpg (image/jpeg)>],
+            'files-2-file': [<InMemoryUploadedFile: filename-2.jpg (image/jpeg)>],
+            'files-3-file': [<InMemoryUploadedFile: filename-3.jpg (image/jpeg)>]
+        }
     """
     qd = {}  # The hacked request.FILES that will be returned.
 
