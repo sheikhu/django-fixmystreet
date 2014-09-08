@@ -779,7 +779,7 @@ $(document).ready(function() {
 {% if report.is_in_progress %}
     {% if report.status != report.SOLVED %}
         <div id="divMarkAsDone" class="modal hide fade">
-            <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}?is_fixed=True" method="post" >
+            <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}" method="post" >
                 {% csrf_token %}
 
                 <div class="modal-header">

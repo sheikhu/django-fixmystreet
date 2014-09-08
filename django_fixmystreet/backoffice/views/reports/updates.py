@@ -67,28 +67,24 @@ def refuse(request, report_id):
 def fixed(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
-    if 'is_fixed' in request.REQUEST:
-        comment_form = ReportCommentForm(request.POST)
+    comment_form = ReportCommentForm(request.POST)
 
-        # TOFIX: Validate form
-        if comment_form.is_valid() and request.POST.get('text'):
-            comment = comment_form.save(commit=False)
+    # TOFIX: Validate form
+    if comment_form.is_valid() and request.POST.get('text'):
+        comment = comment_form.save(commit=False)
 
-            # Save refusal motivation
-            comment.report = report
-            comment.type = ReportAttachment.MARK_AS_DONE
-            comment.save()
+        # Save refusal motivation
+        comment.report = report
+        comment.type = ReportAttachment.MARK_AS_DONE
+        comment.save()
 
-            #Update the status of report
-            report.status               = Report.SOLVED
-            report.mark_as_done_comment = comment
-            report.fixed_at             = datetime.now()
-            report.save()
+        #Update the status of report
+        report.status               = Report.SOLVED
+        report.mark_as_done_comment = comment
+        report.fixed_at             = datetime.now()
+        report.save()
 
-    if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-        return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 
 def close(request, report_id):

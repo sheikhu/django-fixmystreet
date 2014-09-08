@@ -464,7 +464,8 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(1, len(response.context['reports_nearby']))
         self.assertEqual(report2.id, response.context['reports_nearby'][0].id)
 
-    def test_mark_done(self):
+    @skip("mark as done is actually disabled for citizen")
+    def test_mark_done_as_user(self):
         """Tests marking report as done."""
 
         url = "%s?x=148360&y=171177" % reverse('report_new')
@@ -495,7 +496,7 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertTrue(report.fixed_at)
         self.assertEqual(report.status, Report.PROCESSED)
 
-    def test_mark_done_as_user(self):
+    def test_mark_done_as_pro(self):
         """Tests marking report as done."""
 
         url = "%s?x=148360&y=171177" % reverse('report_new')
@@ -509,10 +510,7 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(
-            reverse('report_fix_pro', args=[report.id]),
-            {'is_fixed': 'True', 'text': 'commentaire'},
-            follow=True)
+        response = self.client.post(reverse('report_fix_pro', args=[report.id]), {'text': 'commentaire'}, follow=True)
         self.assertEquals(response.status_code, 200)
 
         report = response.context['report']
