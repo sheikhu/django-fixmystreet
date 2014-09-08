@@ -107,7 +107,7 @@ var columns = [
             "{{ s }}"{% if not forloop.last %},{% endif %}
         {% endfor %}
     ]},
-    {type: "select", values: [//private
+    {type: "select", values: [//Visibility
         '{{ True|yesno:_("private,public") }}',
         '{{ False|yesno:_("private,public") }}'
     ]},
@@ -119,6 +119,10 @@ var columns = [
         '{{ True|yesno:_("yes,no") }}',
         '{{ False|yesno:_("yes,no") }}'
     ], selected: '{{ False|yesno:_("yes,no") }}'}, // pending
+    {type: "select", values: [
+        '{{ True|yesno:_("yes,no") }}',
+        '{{ False|yesno:_("yes,no") }}'
+    ]}, // ThirdPartyResponsibility
 
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
     {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
@@ -387,6 +391,7 @@ function refreshMap() {
                 <li><label><input type="checkbox" checked /> {% trans "Visibility" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
                 <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
+                <li><label><input type="checkbox" checked /> {% trans "ThirdPartyResponsibility" %}</label></li>
             </ul>
             <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
             {% if request.fmsuser.manager %}

@@ -28,6 +28,7 @@
             <th>{% trans "All" context "Visibility" %}</th>
             <th>{% trans "All" context "Subscribed" %}</th>
             <th>{% trans "All" context "Pending" %}</th>
+            <th>{% trans "All" context "ThirdPartyResponsibility" %}</th>
             <th></th>
             <th></th>
             <th></th>
@@ -58,6 +59,7 @@
             <th>{% trans "Visibility" %}</th>
             <th>{% trans "Subscribed" %}</th>
             <th>{% trans "Pending" %}</th>
+            <th>{% trans "ThirdPartyResponsibility" %}</th>
             <th></th>
             <th></th>
             <th></th>
@@ -93,6 +95,7 @@
                 <td class="s{{report.status}}">{{ report.private|yesno:_("private,public") }}</td>
                 <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
                 <td class="s{{report.status}}">{{ report.pending|yesno:_("yes,no") }}</td>
+                <td class="s{{report.status}}">{{ report.third_party_responsibility|yesno:_("yes,no") }}</td>
                 <td>{{ report.point.x }}</td>
                 <td>{{ report.point.y }}</td>
                 <td>{{ report.status }}</td>
