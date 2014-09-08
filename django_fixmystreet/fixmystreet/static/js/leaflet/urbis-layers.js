@@ -1,6 +1,6 @@
 L.FixMyStreet.Map.namedLayersSettings['base-map-fr'] = {
-  key: 'base-map',
-  title: 'Street map (FR)',
+  /*key: 'base-map',*/
+  title: 'Street (FR)',
   language: 'fr',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/gwc/service/wms',
@@ -18,8 +18,8 @@ L.FixMyStreet.Map.namedLayersSettings['base-map-fr'] = {
 };
 
 L.FixMyStreet.Map.namedLayersSettings['base-map-nl'] = {
-  key: 'base-map',
-  title: 'Street map (NL)',
+  /*key: 'base-map',*/
+  title: 'Street (NL)',
   language: 'nl',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/gwc/service/wms',
@@ -37,7 +37,7 @@ L.FixMyStreet.Map.namedLayersSettings['base-map-nl'] = {
 };
 
 L.FixMyStreet.Map.namedLayersSettings['base-map-ortho'] = {
-  key: 'base-map',
+  /*key: 'base-map',*/
   title: 'Orthographic',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/gwc/service/wms',
@@ -55,6 +55,7 @@ L.FixMyStreet.Map.namedLayersSettings['base-map-ortho'] = {
 };
 
 L.FixMyStreet.Map.namedLayersSettings['regional-roads'] = {
+  overlay: true,
   title: 'Regional roads',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/wms',
@@ -67,6 +68,7 @@ L.FixMyStreet.Map.namedLayersSettings['regional-roads'] = {
 };
 
 L.FixMyStreet.Map.namedLayersSettings['municipal-boundaries'] = {
+  overlay: true,
   title: 'Municipal boundaries',
   type: 'wms',
   url: 'http://gis.irisnet.be/geoserver/wms',

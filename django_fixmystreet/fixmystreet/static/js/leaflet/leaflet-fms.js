@@ -13,11 +13,13 @@ L.FixMyStreet.Map = L.Map.extend({
     zoom: 14,
 
     // Layers loaded during initialize
-    urbisLayersToLoad: [
-      'base-map-fr',
-      'municipal-boundaries',
-      'regional-roads',
-    ],
+    urbisLayersToLoad: {
+      'base-map-fr': {visible: true},
+      'base-map-nl': {visible: false},
+      'base-map-ortho': {visible: false},
+      'municipal-boundaries': {visible: false},
+      'regional-roads': {visible: false},
+    },
   },
 
   options: {
@@ -78,6 +80,7 @@ L.FixMyStreet.Map = L.Map.extend({
     options = $.extend(true, {}, this.DEFAULTS, options);
     L.Map.prototype.initialize.call(this, id, options);
 
+    this.baseLayers = {};
     this._namedLayers = {};
     this._templateCache = {};
 
@@ -108,7 +111,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
   toggleNamedLayer: function (key, visibility) {  // (String, Boolean)
     if (this.hasNamedLayer(key)) {
-      $(this._namedLayers[key].getContainer()).toggle(visibility);
+      this._toggleLayer(this._namedLayers[key], visibility);
     } else if (visibility !== false) {
       this.loadNamedLayer(key);
     }
@@ -123,7 +126,7 @@ L.FixMyStreet.Map = L.Map.extend({
     return this._namedLayers[key];
   },
 
-  loadNamedLayer: function (key, options) {  // (String, Object)
+  loadNamedLayer: function (key, options, visibility) {  // (String, Object, Boolean)
     var layer;
     if (options === undefined) {
       options = this.getNamedLayerSettings(key);
@@ -146,7 +149,7 @@ L.FixMyStreet.Map = L.Map.extend({
     }
 
     // Register as named layer
-    this._setNamedLayer(key, layer);
+    return this._setNamedLayer(key, layer, visibility);
   },
 
   unloadNamedLayer: function (key) {  // (String)
@@ -170,20 +173,28 @@ L.FixMyStreet.Map = L.Map.extend({
     return L.FixMyStreet.Map.namedLayersSettings[key];
   },
 
-  _setNamedLayer: function (key, layer) {  // (String, L.ILayer)
+  _setNamedLayer: function (key, layer, visibility) {  // (String, L.ILayer, Boolean)
     if (this.hasNamedLayer(key)) {
       if (this._namedLayers[key] === layer) { return; }
       this._unsetNamedLayer(key);
     }
 
     this.addLayer(layer);
+    if (visibility !== true) {
+      this._toggleLayer(layer, false);
+    }
     this._namedLayers[key] = this._layers[L.stamp(layer)];
+    return this._namedLayers[key];
   },
 
   _unsetNamedLayer: function (key) {  // (String)
     if (!this.hasNamedLayer(key)) { return; }
     this.removeLayer(this._namedLayers[key]);
     delete this._namedLayers[key];
+  },
+
+  _toggleLayer: function (layer, visibility) {  // (String, Boolean)
+    $(layer.getContainer()).toggle(visibility);
   },
 
   // MARKERS -------------------------------------------------------------------
@@ -325,6 +336,34 @@ L.FixMyStreet.Map = L.Map.extend({
 
   // CONTROLS ------------------------------------------------------------------
 
+  initNamedLayersFilter: function (options) {
+    if ($.isEmptyObject(this._namedLayers)) { return; }
+
+    var that = this;
+    var baseLayers = {};
+    var overlays = {};
+
+    options = $.extend({
+      collapsed: true,
+      position: 'topright',
+    }, options);
+
+    $.each(L.FixMyStreet.Map.namedLayersSettings, function (k, v) {
+      var l = that.getNamedLayer(k);
+      if (l === undefined) {
+        l = that.loadNamedLayer(k, v);
+      }
+      var title = v.filterTitle || v.title || k;
+      if (v.overlay === undefined) {
+        baseLayers[title] = l;
+      } else {
+        overlays[title] = l;
+      }
+    });
+
+    L.control.layers(baseLayers, overlays, options).addTo(this);
+  },
+
   initIncidentTypeFilter: function (options) {
     if ($.isEmptyObject(this._incidentLayers)) { return; }
 
@@ -403,7 +442,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
     // Load initial UrbIS layers
     $.each(this.options.urbisLayersToLoad, function (k, v) {
-      that.loadNamedLayer(v, L.FixMyStreet.Map.namedLayersSettings[v]);
+      that.baseLayers[k] = that.loadNamedLayer(k, L.FixMyStreet.Map.namedLayersSettings[k], v.visible === true);
     });
   },
 
