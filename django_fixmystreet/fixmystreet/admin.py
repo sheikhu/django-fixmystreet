@@ -79,7 +79,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     list_display_links = list_display[:2]
     inlines = (
         MembershipsInline,
-        NotificationsInline,
+        # NotificationsInline,
         UserEventsInline
     )
     readonly_fields = ("date_joined", "last_login", "created", "created_by", "modified", "modified_by", "password", "username")
