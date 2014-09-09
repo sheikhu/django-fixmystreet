@@ -294,11 +294,11 @@ class MailTest(TestCase):
         self.assertEquals(len(mail.outbox), 3)
 
         #Send a post request to mark the report as done
-        self.client.logout()
-        update_url = reverse('report_update', args=[report_id])
-        update_params = {'is_fixed': 'True'}
+        update_url = reverse('report_fix_pro', args=[report_id])
+        update_params = {'text':'My comment'}
         response = self.client.post(update_url, update_params)
         self.assertEquals(response.status_code, 302)
+
         # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
         #4 mails have been sent, 2 for the report creation and 1 for telling the responsible manager that the report is marked as done, and 1 for the report change to the citizen subscriber
         #FLE is error it should only be send to the responsible
@@ -415,8 +415,7 @@ class MailTest(TestCase):
         self.assertIn(self.sample_post['citizen-email'], mail.outbox[2].to)
 
         params = {
-            'text' : 'Ceci est un commentaire',
-            'is_fixed': 'True'
+            'text' : 'Ceci est un commentaire'
         }
         response = self.client.post(reverse('report_fix_pro', args=[report_id]), params, follow=True)
         self.assertEquals(response.status_code, 200)

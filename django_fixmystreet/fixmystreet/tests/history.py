@@ -6,6 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from django.contrib.gis.geos import Polygon
 
+from unittest import skip
+
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
     ReportEventLog, OrganisationEntitySurface
@@ -347,6 +349,7 @@ class HistoryTest(TestCase):
         self.assertEquals(activities.all().count(), 2)
         self.assertContains(response, self.calculatePrintPro(activities[1]))
 
+    @skip("mark as done is actually disabled for citizen")
     def testResolvedByCitizenReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
@@ -398,7 +401,6 @@ class HistoryTest(TestCase):
         report = response.context['report']
         self.assertTrue(report.accepted_at is not None)
 
-        self.sample_post_comment['is_fixed'] = 'True'
         response = self.client.post(reverse('report_fix_pro', args=[report_id]), self.sample_post_comment, follow=True)
         self.assertEqual(response.status_code, 200)
 
