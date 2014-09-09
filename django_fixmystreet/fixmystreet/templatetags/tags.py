@@ -5,6 +5,7 @@ from django import template
 from django.core.urlresolvers import resolve
 from django_fixmystreet.fixmystreet.models import FMSUser
 from django_fixmystreet.fixmystreet import models
+from django.template.defaultfilters import floatformat
 
 
 register = template.Library()
@@ -109,3 +110,9 @@ def model_field_choices(model_name, field):
             unicode(choices.append(value[1]))
 
     return choices
+
+@register.filter
+def percentage(value):
+    if value is None:
+        return None
+    return floatformat(value * 100.0, 2) + '%'

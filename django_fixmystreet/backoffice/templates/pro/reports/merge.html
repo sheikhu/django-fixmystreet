@@ -263,7 +263,7 @@
                                     <a
                                         href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
                                         class="btn_same_incident report"
-                                        title="Matching {{ report.get_rank_percentage }}%" >{% trans "Merge" %}</a>
+                                        title="Matching {{ report.rank|percentage }}" >{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">

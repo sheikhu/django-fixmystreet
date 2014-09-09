@@ -382,7 +382,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
     # Because it returns a list and not a queryset, use it at the end of your ORM request: MyClass.objects.filter().rank()
     # params: Either arg or kwds
     # arg = 1 report object
-    # kwds = report_point, report_category, report_date, created (optional), closed (optional)
+    # kwds = report_point, report_category, report_date, created (optional), closed (optional), ignore_distance (optional)
     def rank(self, *arg, **kwds):
         DISTANCE_MAX = 50
         created      = False
@@ -392,7 +392,8 @@ class ReportQuerySet(models.query.GeoQuerySet):
             'closed'  : False,
 
             # For /debug/rank, we have to avoid visible filters
-            'debug'   : True if 'debug' in kwds else False
+            'debug'   : True if 'debug' in kwds else False,
+            'ignore_distance': True if 'ignore_distance' in kwds and 'ignore_distance' is True else False
         }
 
         # Prepare data according to params
@@ -429,30 +430,41 @@ class ReportQuerySet(models.query.GeoQuerySet):
         elif params['closed']:
             nearby_reports = nearby_reports.exclude(status__in=Report.REPORT_STATUS_CLOSED)
 
-        # Get all reports in DISTANCE_MAX around the point
-        nearby_reports = nearby_reports.near(params['report_point'], DISTANCE_MAX)
+        #ticketnumber params means we want to merge with a specific incident and distance_max should be ignored
+        if not params['ignore_distance']:
+            # Get all reports in DISTANCE_MAX around the point
+            nearby_reports = nearby_reports.near(params['report_point'], DISTANCE_MAX)
 
+        #compute and fill the ranks of nearby reports
+        nearby_reports.compute_ranks(params['report_category'], params['report_date'], DISTANCE_MAX)
+
+        # Sort the list according to rank and return it
+        return sorted(nearby_reports, key=lambda report: report.rank, reverse=True)
+
+    def compute_ranks(self, report_category, report_date, distance_max):
         # Ranking
-        for report_near in nearby_reports:
+        for report_near in self:
             # Distance : (DISTANCE_MAX - distance) / DISTANCE_MAX * 4
             # (valeur entre 0 et 1 * 4)
-            rank_distance = (DISTANCE_MAX - report_near.distance.m) / DISTANCE_MAX * 4
-
+            rank_distance = (distance_max - report_near.distance.m) / distance_max * 4
+            if rank_distance < 0:
+               rank_distance = 0    #If there is a ticketnumber param, distance between reports could be > DISTANCE_MAX
+                                    #and thus rand_distance could be < 0
             # Category : 1 point par bon niveau de categorie en cascade depuis le premier niveau.
             # (valeur entre 0 et 3)
             rank_catego = 0
-            if report_near.category == params['report_category'].category_class:
+            if report_near.category == report_category.category_class:
                 rank_catego += 1
 
-                if report_near.secondary_category.secondary_category_class == params['report_category'].secondary_category_class:
+                if report_near.secondary_category.secondary_category_class == report_category.secondary_category_class:
                     rank_catego += 1
 
-                    if report_near.secondary_category == params['report_category']:
+                    if report_near.secondary_category == report_category:
                         rank_catego += 1
 
             # Date : 1 / abs(nbre de mois de difference +1)
             # (valeur entre 0 et 1)
-            abs_days = abs((params['report_date'] - report_near.created).days)
+            abs_days = abs((report_date - report_near.created).days)
             months   = float(abs_days) / 30
 
             if months > 1:
@@ -472,16 +484,19 @@ class ReportQuerySet(models.query.GeoQuerySet):
             if report_near.status == Report.CREATED:
                 rank_status = 1
 
+            #David 9/9/2014
+            #this is the rank in percent (number between 0 and 1). Number is divided by 10 because the sum
+            #of all the other numbers is a number between 0 and 10 at the moment. If someone changes the rank
+            # calculation,they should also change the sum just below
+            rank_in_percent = (rank_distance + rank_catego + rank_date + rank_source + rank_status)/10
+
             # Set rank to report_near
-            report_near.rank          = rank_distance + rank_catego + rank_date + rank_source + rank_status
+            report_near.rank          = rank_in_percent
             report_near.rank_distance = rank_distance
             report_near.rank_catego   = rank_catego
             report_near.rank_date     = rank_date
             report_near.rank_source   = rank_source
             report_near.rank_status   = rank_status
-
-        # Sort the list according to rank and return it
-        return sorted(nearby_reports, key=lambda report: report.rank, reverse=True)
 
     def responsible(self, user):
         query = Q()
@@ -730,9 +745,6 @@ class Report(UserTrackedModel):
 
     #indicates whether the responsibility of the incident should be associated to a third party or not.
     third_party_responsibility = models.BooleanField(default=False)
-
-    def get_rank_percentage(self):
-        return "%0.2f" % (self.rank * 10)
 
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])

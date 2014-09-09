@@ -448,6 +448,9 @@ class ReportViewsTest(SampleFilesTestCase):
         # Add second report
         response2 = self.client.post(url, self.sample_post_2, follow=True)
         report2 = response2.context['report']
+        report2.status = Report.IN_PROGRESS #necessary otherwise both report will be with "CREATED" status
+                                            # and you can't merge 2 reports with 2 "CREATED" status
+        report2.save()
 
         # Login user
         params = {

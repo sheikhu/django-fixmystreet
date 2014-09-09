@@ -770,7 +770,7 @@ $(document).ready(function() {
 
         <div class="alert alert-error text-center">
             <a href="{% url 'report_merge_pro' report.get_slug report.id %}">
-                <strong>{{ report.get_nearby_reports_count }} {% trans "potential duplicates" %} ({{ report.get_nearby_reports.0.get_rank_percentage }}%) </strong>
+                <strong>{{ report.get_nearby_reports_count }} {% trans "potential duplicates" %} ({{ report.get_nearby_reports.0.rank|percentage }}) </strong>
             </a>
         </div>
     {% endif %}
