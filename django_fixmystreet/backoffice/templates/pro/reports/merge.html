@@ -251,7 +251,7 @@
                                         <!-- Distance -->
                                         <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
                                         <img src="{% static report.get_marker %}" class="report-counter"/>
-                                        <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+                                        <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }} ({{ report.rank|percentage }})</span><br />
                                         <span class="ticket_address">
                                             {{ report.address }}, {{ report.address_number }}<br />
                                             {{ report.postalcode }} {{ report.territorial_entity.name }}
@@ -262,8 +262,7 @@
                                     <!-- Button "it's the same" -->
                                     <a
                                         href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
-                                        class="btn_same_incident report"
-                                        title="Matching {{ report.rank|percentage }}" >{% trans "Merge" %}</a>
+                                        class="btn_same_incident report">{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
