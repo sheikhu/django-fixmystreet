@@ -418,7 +418,7 @@ $(document).ready(function() {
 
                             {% if BACKOFFICE %}
                                 <li>
-                                {% if report.get_priority = 0 %}
+                                {% if report.get_priority == 0 %}
                                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/prior_off.png' %}" class="priorityLevel" /></a>
                                 {% elif report.get_priority <= 2 %}
                                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/prior_on_1.png' %}" class="priorityLevel" /></a>
@@ -430,6 +430,9 @@ $(document).ready(function() {
                                 </li>
                                 {% if report.is_solved %}
                                     <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/is_resolved_on.png' %}" /></a></li>
+                                {% endif %}
+                                {% if report.third_party_responsibility %}
+                                     <li><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "A third party is responsible" %}'>tiers</a></li>
                                 {% endif %}
 
                             {% endif %}
