@@ -8,6 +8,9 @@
 
 {% block specific_scripts %}
 <script src="{% static 'js/jquery.exif.js' %}"></script>
+<script src="{% static 'js/report_refused.js' %}"></script>
+
+<script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 
 <script type="text/javascript">
 
@@ -432,7 +435,7 @@ $(document).ready(function() {
                                     <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/is_resolved_on.png' %}" /></a></li>
                                 {% endif %}
                                 {% if report.third_party_responsibility %}
-                                     <li><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "A third party is responsible" %}'>tiers</a></li>
+                                     <li class="third_party_resp"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "A third party is responsible" %}'>tiers</a></li>
                                 {% endif %}
 
                             {% endif %}
@@ -985,6 +988,13 @@ $(document).ready(function() {
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialog" title="Please enter more information about rejecting the report" action="{% url 'report_refuse_pro' report.id %}" method="post">
+            <!-- when changing the value,-->
+            <select name="sel_refuse" class="span5">
+                <option value="opt_refuse_0" selected="selected">{% trans "Select a pre-formatted reason" %}</option>
+                <option value="opt_refuse_1">test 1</option>
+                <option value="opt_refuse_2">test 2</option>
+                <option value="opt_refuse_3">test 3</option>
+            </select>
             {% include "_form_horizontal.html" with form=refuse_form %}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
             <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>

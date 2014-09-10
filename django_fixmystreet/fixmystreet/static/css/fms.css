@@ -2284,3 +2284,7 @@ content: "*";
 	color: inherit;
 	text-decoration: underline;
 }
+
+.third_party_resp a {
+    color: white;
+}
