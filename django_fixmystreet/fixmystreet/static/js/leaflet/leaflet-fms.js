@@ -395,7 +395,7 @@ L.FixMyStreet.Map = L.Map.extend({
     return new L.LatLng(parseFloat(chunks[0]), parseFloat(chunks[1]));
   },
 
-  toLatLng : function (latlng) {  // (L.LatLng or String or Object)
+  toLatLng: function (latlng) {  // (L.LatLng or String or Object)
     if (latlng === undefined || latlng instanceof L.LatLng) { return latlng; }
     if (typeof latlng === 'string') { return this.latLngFromString(latlng); }
     if (typeof latlng === 'object') {
@@ -496,7 +496,7 @@ L.FixMyStreet.Marker = L.Marker.extend({
     }
   },
 
-  openPopup: function (latlng) {
+  openPopup: function (latlng) {  // ([L.LatLng])
     if (!this.options.popup && this.options.popupTemplate) {
       var that = this;
       L.FixMyStreet.Template.render(this.options.popupTemplate, this.model, function (error, html) {
