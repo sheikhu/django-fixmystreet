@@ -221,6 +221,10 @@ class ReportViewsTest(SampleFilesTestCase):
 
         report = response.context['report']
 
+        # Be sure it's private
+        report.private = True
+        report.save()
+
         self.client.login(username='manager@a.com', password='test')
 
         url = reverse('report_refuse_pro', args=[report.id])
@@ -231,7 +235,36 @@ class ReportViewsTest(SampleFilesTestCase):
 
         self.assertTrue(report.accepted_at is None)
         self.assertEqual(report.status, Report.REFUSED)
-        self.assertTrue(ReportComment.objects.get(report_id=report.id, type=ReportAttachment.REFUSED))
+
+        comment = ReportComment.objects.get(report_id=report.id, type=ReportAttachment.REFUSED)
+        self.assertEqual(comment.security_level, ReportComment.PRIVATE)
+
+    def test_refuse_report_comment_visible_for_citizen(self):
+        """Tests refuse a report and test the view of it."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        # Be sure it's public
+        report.private = False
+        report.save()
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url = reverse('report_refuse_pro', args=[report.id])
+        response = self.client.post(url, {'text': "Message de refus"}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.assertTrue(report.accepted_at is None)
+        self.assertEqual(report.status, Report.REFUSED)
+
+        comment = ReportComment.objects.get(report_id=report.id, type=ReportAttachment.REFUSED)
+        self.assertEqual(comment.security_level, ReportComment.PUBLIC)
 
     def test_publish_report(self):
         """Tests publishing a report and test the view of it."""
