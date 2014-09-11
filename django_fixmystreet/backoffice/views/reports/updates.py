@@ -47,7 +47,7 @@ def refuse(request, report_id):
         comment.report = report
 
         # If the report is public, make the refusal motivation public too
-        if not report.is_pro():
+        if not report.private:
             comment.security_level = ReportComment.PUBLIC
 
         comment.type = ReportAttachment.REFUSED
