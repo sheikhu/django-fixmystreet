@@ -67,19 +67,25 @@ $(document).ready(function(){
     }
 
     var description = $('#description'),
-        coordonnees = $('#coordonnees');
+        coordonnees = $('#coordonnees'),
+        stepDescription = $('#stepDescription'),
+        stepCoordonnees = $('#stepCoordonnees');
     if(description.length) {
         $('#description').closest('form').submit(function (evt) {
             if(coordonnees.length && description.is(':visible')) {
                 evt.preventDefault();
                 description.hide();
                 coordonnees.show();
+                stepDescription.removeClass("on").addClass("off");
+                stepCoordonnees.removeClass("off").addClass("on");
             }
         });
         $('#previousStep').click(function (evt) {
             evt.preventDefault();
             coordonnees.hide();
             description.show();
+            stepDescription.removeClass("off").addClass("on");
+            stepCoordonnees.removeClass("on").addClass("off");
         });
     }
 });
