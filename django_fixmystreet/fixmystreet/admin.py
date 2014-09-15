@@ -278,6 +278,7 @@ admin.site.register(ReportMainCategoryClass, ReportCategoryClassAdmin)
 
 class ReportCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category_class', 'secondary_category_class')
+    list_filter  = ('secondary_category_class',)
 
 admin.site.register(ReportCategory, ReportCategoryAdmin)
 
