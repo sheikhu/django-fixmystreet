@@ -11,7 +11,10 @@ class Migration(DataMigration):
     def forwards(self, orm):
 
         # 0/ Retrieve the current sibelga applicant
-        sibelga_applicant = orm['fixmystreet.OrganisationEntity'].objects.get(name_fr='Sibelga Eclairage', type=OrganisationEntity.APPLICANT)
+        try:
+            sibelga_applicant = orm['fixmystreet.OrganisationEntity'].objects.get(name_fr='Sibelga Eclairage', type=OrganisationEntity.APPLICANT)
+        except OrganisationEntity.DoesNotExist:
+            return
 
         # 1/ Migrate Sibelga applicant to region entity
         sibelga_entity           = sibelga_applicant
