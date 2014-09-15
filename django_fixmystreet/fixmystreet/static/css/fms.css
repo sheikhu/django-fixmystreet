@@ -1768,7 +1768,7 @@ input.invalid, textarea.invalid {
 input.invalid, select.invalid, textarea.invalid {
     border: 2px solid #FF0000 !important;
 }
-input[type=checkbox].invalid{
+input[type=checkbox].invalid, input[type=radio].invalid{
     outline: 2px solid #FF0000;
 }
 .form-signin{

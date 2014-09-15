@@ -98,7 +98,11 @@ function validateForm(form) {
         var value = true;
         var $field = $(field);
 
-        if ($field.is(":checkbox")) {
+        if ($field.is(":radio")) {
+            //check all the value of the current radio button group and return true if one of them is checked
+            value = !!($(':radio[name=' + $field[0].name + ']:checked', form).val());
+        }
+        else if ($field.is(":checkbox")) {
             value = $field.is(":checked");
         } else if ($field[0].type === 'email' || $field.hasClass("validate-email")) {
             value = UtilValidator.validateEmail($field.val());
