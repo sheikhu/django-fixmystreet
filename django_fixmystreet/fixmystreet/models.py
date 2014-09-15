@@ -282,11 +282,16 @@ class OrganisationEntity(UserTrackedModel):
     active = models.BooleanField(default=False)
 
     ### DEPRECATED use type instead ###
-    commune = models.BooleanField(default=False)
-    region = models.BooleanField(default=False)
     subcontractor = models.BooleanField(default=False)
     department = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
+
+    # FMS-282 and FMS-283.
+    # These following are not deprecated. It's re-used for auto-dispatching and check if the group have to support regional or communal.
+    # For more detail see pre_save Report signal report_auto_assign_responsible and ReportCategory group field.
+    # For example, Sibelga Eclairage Service is commune.
+    commune = models.BooleanField(default=False, help_text="Used for auto-dispatching")
+    region  = models.BooleanField(default=False, help_text="Used for auto-dispatching")
 
     type = models.CharField(max_length=1, choices=ENTITY_TYPE, default='')
 
@@ -1172,6 +1177,15 @@ def init_regional_street(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=Report)
+def report_auto_assign_responsible(sender, instance, **kwargs):
+    # Auto-dispatching according to group and regional or communal address
+
+    if instance.secondary_category.group and (not instance.address_regional == instance.secondary_category.group.commune or instance.address_regional == instance.secondary_category.group.region) :
+        instance.responsible_department = instance.secondary_category.group
+        instance.responsible_entity     = instance.responsible_department.dependency
+
+
+@receiver(pre_save, sender=Report)
 def report_assign_responsible(sender, instance, **kwargs):
     if not instance.responsible_entity:
         # Detect who is the responsible Manager for the given type
@@ -1195,6 +1209,9 @@ def report_assign_responsible(sender, instance, **kwargs):
         # Search the right responsible for the current organization.
         departements = instance.responsible_entity.associates.filter(
             type=OrganisationEntity.DEPARTMENT)
+
+        # Get the responsible according to dispatching category
+        # TODO: Following lines are incorrect if 'get' not working. Use Try catch instead.
         departement = departements.get(
             dispatch_categories=instance.secondary_category)
         if(departement):
@@ -1882,6 +1899,8 @@ class ReportCategory(UserTrackedModel):
     category_class = models.ForeignKey(ReportMainCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
+
+    group = models.ForeignKey(OrganisationEntity, related_name="categories", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, null=True, blank=True)
 
     def __unicode__(self):
         return self.category_class.name + ":" + self.name
