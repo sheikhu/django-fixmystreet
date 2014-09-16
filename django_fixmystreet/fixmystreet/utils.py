@@ -8,7 +8,7 @@ import re
 import logging
 from threading import local
 
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, QueryDict
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
@@ -386,3 +386,80 @@ class CorsMiddleware(object):
     def process_response(self, request, response):
         response['Access-Control-Allow-Origin'] = "*"
         return response
+
+
+def hack_multi_file(request):
+    """
+    Transform a ``request.FILES`` containing several lists of files into independent single files.
+
+    Goal: Allow users to select multiple files at once, and to perform that action several times.
+    Constraint: A single HTTP request containing form data and files. No Ajax calls.
+    Problem: <input:file> cannot be modified in JavaScript.
+    Solution:
+        Use several <input:file multiple> from which user can have removed some files.
+        ``request.FILES`` can therefore contain multiple keys that contains each several files.
+        Scan ``request.FILES``, extract (only) the files we need and name keys according to ``ReportFileFormSet``.
+        Return a ``QueryDict`` equivalent to ``request.FILES``.
+
+    Example:
+        request.POST: {
+            ...
+            'files-0-file_creation_date': [u'2005-4-1 4:32'],
+            'files-0-reportattachment_ptr': [u''],
+            'files-0-title': [u''],
+
+            // User has removed "files-1"
+
+            'files-2-file_creation_date': [u'2011-8-18 23:34'],
+            'files-2-reportattachment_ptr': [u''],
+            'files-2-title': [u''],
+
+            'files-3-file_creation_date': [u'2005-4-5 1:46'],
+            'files-3-reportattachment_ptr': [u''],
+            'files-3-title': [u''],
+            ...
+        }
+        request.FILES: {
+            'files-files-0': [
+                <InMemoryUploadedFile: filename-0.jpg (image/jpeg)>,
+                <InMemoryUploadedFile: filename-1.jpg (image/jpeg)>,  // Removed by user but sent anyway in request, cf. "problem"
+                <InMemoryUploadedFile: filename-2.jpg (image/jpeg)>
+            ],
+            'files-files-1': [
+                <InMemoryUploadedFile: filename-3.jpg (image/jpeg)>
+            ]
+        }
+        request_files: {
+            'files-0-file': [<InMemoryUploadedFile: filename-0.jpg (image/jpeg)>],
+            'files-2-file': [<InMemoryUploadedFile: filename-2.jpg (image/jpeg)>],
+            'files-3-file': [<InMemoryUploadedFile: filename-3.jpg (image/jpeg)>]
+        }
+    """
+    qd = {}  # The hacked request.FILES that will be returned.
+
+    # Collect keys related to this hack and copy as-is the others in `qd`.
+    files_keys = []
+    for k in request.FILES.keys():
+        if k.startswith("files-files-"):
+            files_keys.append(k)
+        else:
+            # Copy as-is the keys that are not related to this hack.
+            qd[k] = request.FILES[k]  # Or request.FILES.getlist(k) ?
+    # Sort the keys to keep the file index coherent with the JS side.
+    files_keys.sort()
+
+    # Loop over uploaded files and keep only the ones that have not been removed by the user.
+    file_index = 0
+    for k in files_keys:
+        for f in request.FILES.getlist(k):
+            # If there is a "title" field for this file_index, assume the file has not been removed from the form.
+            if request.POST.has_key("files-{}-title".format(file_index)):
+                qd["files-{}-file".format(file_index)] = f
+            file_index += 1
+
+    # Convert dict to QueryDict (to be equivalent to request.FILES).
+    request_files = QueryDict("")
+    request_files = request_files.copy()
+    request_files.update(qd)
+
+    return request_files

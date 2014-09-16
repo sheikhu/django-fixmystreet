@@ -1,7 +1,7 @@
 import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, Http404, QueryDict
+from django.http import HttpResponseRedirect, Http404
 from django.forms.models import inlineformset_factory
 from django.template import RequestContext
 from django.contrib import messages
@@ -15,13 +15,14 @@ from django_fixmystreet.fixmystreet.models import (
 from django_fixmystreet.fixmystreet.forms import (
     CitizenReportForm, CitizenForm,
     ReportCommentForm, ReportFileForm)
-from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
+from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 
 import logging
 logger = logging.getLogger(__name__)
 
 
 def new(request):
+    ratata = None
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
     pnt = dict_to_point(request.REQUEST)
@@ -38,12 +39,18 @@ def new(request):
         fingerprint = RequestFingerprint(request)
 
         # this checks update is_valid too
-        if report_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid() and not fingerprint.is_duplicate():
+        if (report_form.is_valid()
+            and (not request.POST["comment-text"] or comment_form.is_valid())
+            and citizen_form.is_valid()
+            and not fingerprint.is_duplicate()
+        ):
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
             # Cf. `hack_multi_file`, use ``request_files`` instead of ``request.FILES``.
+            file_formset_orig = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
             file_formset = ReportFileFormSet(request.POST, request_files, instance=report, prefix='files', queryset=ReportFile.objects.none())
+
 
             if file_formset.is_valid():
                 fingerprint.save()
@@ -230,79 +237,3 @@ def index(request):
         'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))
 
-
-def hack_multi_file(request):
-    """
-    Transform a ``request.FILES`` containing several lists of files into independent single files.
-
-    Goal: Allow users to select multiple files at once, and to perform that action several times.
-    Constraint: A single HTTP request containing form data and files. No Ajax calls.
-    Problem: <input:file> cannot be modified in JavaScript.
-    Solution:
-        Use several <input:file multiple> from which user can have removed some files.
-        ``request.FILES`` can therefore contain multiple keys that contains each several files.
-        Scan ``request.FILES``, extract (only) the files we need and name keys according to ``ReportFileFormSet``.
-        Return a ``QueryDict`` equivalent to ``request.FILES``.
-
-    Example:
-        request.POST: {
-            ...
-            'files-0-file_creation_date': [u'2005-4-1 4:32'],
-            'files-0-reportattachment_ptr': [u''],
-            'files-0-title': [u''],
-
-            // User has removed "files-1"
-
-            'files-2-file_creation_date': [u'2011-8-18 23:34'],
-            'files-2-reportattachment_ptr': [u''],
-            'files-2-title': [u''],
-
-            'files-3-file_creation_date': [u'2005-4-5 1:46'],
-            'files-3-reportattachment_ptr': [u''],
-            'files-3-title': [u''],
-            ...
-        }
-        request.FILES: {
-            'files-files-0': [
-                <InMemoryUploadedFile: filename-0.jpg (image/jpeg)>,
-                <InMemoryUploadedFile: filename-1.jpg (image/jpeg)>,  // Removed by user but sent anyway in request, cf. "problem"
-                <InMemoryUploadedFile: filename-2.jpg (image/jpeg)>
-            ],
-            'files-files-1': [
-                <InMemoryUploadedFile: filename-3.jpg (image/jpeg)>
-            ]
-        }
-        request_files: {
-            'files-0-file': [<InMemoryUploadedFile: filename-0.jpg (image/jpeg)>],
-            'files-2-file': [<InMemoryUploadedFile: filename-2.jpg (image/jpeg)>],
-            'files-3-file': [<InMemoryUploadedFile: filename-3.jpg (image/jpeg)>]
-        }
-    """
-    qd = {}  # The hacked request.FILES that will be returned.
-
-    # Collect keys related to this hack and copy as-is the others in `qd`.
-    files_keys = []
-    for k in request.FILES.keys():
-        if k.startswith("files-files-"):
-            files_keys.append(k)
-        else:
-            # Copy as-is the keys that are not related to this hack.
-            qd[k] = request.FILES[k]  # Or request.FILES.getlist(k) ?
-    # Sort the keys to keep the file index coherent with the JS side.
-    files_keys.sort()
-
-    # Loop over uploaded files and keep only the ones that have not been removed by the user.
-    file_index = 0
-    for k in files_keys:
-        for f in request.FILES.getlist(k):
-            # If there is a "title" field for this file_index, assume the file has not been removed from the form.
-            if request.POST.has_key("files-{}-title".format(file_index)):
-                qd["files-{}-file".format(file_index)] = f
-            file_index += 1
-
-    # Convert dict to QueryDict (to be equivalent to request.FILES).
-    request_files = QueryDict("")
-    request_files = request_files.copy()
-    request_files.update(qd)
-
-    return request_files

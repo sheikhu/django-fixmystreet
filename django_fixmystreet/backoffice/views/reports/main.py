@@ -11,7 +11,7 @@ from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
-from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint
+from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import PriorityForm
 
@@ -26,6 +26,7 @@ def new(request):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = None
     if request.method == "POST":
+        request_files = hack_multi_file(request)
         report_form = ProReportForm(request.POST, request.FILES, prefix='report')
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
 
@@ -36,7 +37,7 @@ def new(request):
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
-            file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
+            file_formset = ReportFileFormSet(request.POST, request_files, instance=report, prefix='files', queryset=ReportFile.objects.none())
             if file_formset.is_valid():
                 user = FMSUser.objects.get(pk=request.user.id)
 
