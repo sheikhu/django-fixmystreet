@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 
 def new(request):
-    ratata = None
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
 
     pnt = dict_to_point(request.REQUEST)
