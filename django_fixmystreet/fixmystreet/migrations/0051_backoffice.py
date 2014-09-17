@@ -8,15 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'ReportCategory.group'
-        db.add_column(u'fixmystreet_reportcategory', 'group',
-                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='categories', null=True, to=orm['fixmystreet.OrganisationEntity']),
+        # Adding field 'ReportCategory.organisation_communal'
+        db.add_column(u'fixmystreet_reportcategory', 'organisation_communal',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='categories_communal', null=True, to=orm['fixmystreet.OrganisationEntity']),
+                      keep_default=False)
+
+        # Adding field 'ReportCategory.organisation_regional'
+        db.add_column(u'fixmystreet_reportcategory', 'organisation_regional',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='categories_regional', null=True, to=orm['fixmystreet.OrganisationEntity']),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'ReportCategory.group'
-        db.delete_column(u'fixmystreet_reportcategory', 'group_id')
+        # Deleting field 'ReportCategory.organisation_communal'
+        db.delete_column(u'fixmystreet_reportcategory', 'organisation_communal_id')
+
+        # Deleting field 'ReportCategory.organisation_regional'
+        db.delete_column(u'fixmystreet_reportcategory', 'organisation_regional_id')
 
 
     models = {
@@ -341,12 +349,13 @@ class Migration(SchemaMigration):
             'category_class': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'categories'", 'to': u"orm['fixmystreet.ReportMainCategoryClass']"}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'reportcategory_created'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
-            'group': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'categories'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'reportcategory_modified'", 'null': 'True', 'to': u"orm['fixmystreet.FMSUser']"}),
             'name_fr': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name_nl': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'organisation_communal': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'categories_communal'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
+            'organisation_regional': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'categories_regional'", 'null': 'True', 'to': u"orm['fixmystreet.OrganisationEntity']"}),
             'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'secondary_category_class': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'categories'", 'to': u"orm['fixmystreet.ReportSecondaryCategoryClass']"}),
             'slug_fr': ('django.db.models.fields.SlugField', [], {'max_length': '100'}),

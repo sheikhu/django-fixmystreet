@@ -285,13 +285,8 @@ class OrganisationEntity(UserTrackedModel):
     subcontractor = models.BooleanField(default=False)
     department = models.BooleanField(default=False)
     applicant = models.BooleanField(default=False)
-
-    # FMS-282 and FMS-283.
-    # These following are not deprecated. It's re-used for auto-dispatching and check if the group have to support regional or communal.
-    # For more detail see pre_save Report signal report_auto_assign_responsible and ReportCategory group field.
-    # For example, Sibelga Eclairage Service is commune.
-    commune = models.BooleanField(default=False, help_text="Used for auto-dispatching")
-    region  = models.BooleanField(default=False, help_text="Used for auto-dispatching")
+    commune = models.BooleanField(default=False)
+    region  = models.BooleanField(default=False)
 
     type = models.CharField(max_length=1, choices=ENTITY_TYPE, default='')
 
@@ -1179,9 +1174,8 @@ def init_regional_street(sender, instance, **kwargs):
 @receiver(pre_save, sender=Report)
 def report_auto_assign_responsible(sender, instance, **kwargs):
     # Auto-dispatching according to group and regional or communal address
-
-    if instance.secondary_category.group and (not instance.address_regional == instance.secondary_category.group.commune or instance.address_regional == instance.secondary_category.group.region) :
-        instance.responsible_department = instance.secondary_category.group
+    if instance.secondary_category.get_organisation(instance.address_regional):
+        instance.responsible_department = instance.secondary_category.get_organisation(instance.address_regional)
         instance.responsible_entity     = instance.responsible_department.dependency
 
 
@@ -1900,10 +1894,22 @@ class ReportCategory(UserTrackedModel):
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
 
-    group = models.ForeignKey(OrganisationEntity, related_name="categories", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, null=True, blank=True)
+    organisation_communal = models.ForeignKey(OrganisationEntity, related_name="categories_communal", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, null=True, blank=True)
+    organisation_regional = models.ForeignKey(OrganisationEntity, related_name="categories_regional", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.DEPARTMENT, "dependency__type": OrganisationEntity.REGION}, null=True, blank=True)
 
     def __unicode__(self):
         return self.category_class.name + ":" + self.name
+
+    def get_organisation(self, region):
+        # If this category has a regional organisation assigned and that the target is regional
+        if region:
+            return self.organisation_regional
+
+        # If this category has a communal organisation assigned and that the target is communal
+        if not region:
+            return self.organisation_communal
+
+        return False
 
     @staticmethod
     def listToJSON(list_of_elements):

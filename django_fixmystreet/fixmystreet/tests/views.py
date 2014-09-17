@@ -757,3 +757,51 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(report.subscriptions.all().count(), report_not_reopen.subscriptions.all().count())
         self.assertEqual(report.responsible_entity         , report_not_reopen.responsible_entity)
         self.assertEqual(report.responsible_department     , report_not_reopen.responsible_department)
+
+    def auto_assign(self):
+        # Associate a category to an organisation for auto-dispatching
+        organisation            = OrganisationEntity()
+        organisation.name_fr    = "My group"
+        organisation.type       = OrganisationEntity.DEPARTMENT
+        organisation.dependency = OrganisationEntity.objects.exclude(type__in=OrganisationEntity.ENTITY_TYPE)[0]
+        organisation.email      = "no-reply@cirb.irisnet.be"
+        organisation.save()
+
+        category                       = ReportCategory.objects.get(id=self.sample_post['report-category'])
+        category.organisation_communal = organisation
+        category.save()
+
+        # Create new report
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        # Auto-dispatching working for commune
+        self.assertFalse(report.is_regional())
+        self.assertEqual(report.responsible_department, organisation)
+
+    def auto_assign_irrelevant(self):
+        # Associate a category to an organisation for auto-dispatching
+        organisation            = OrganisationEntity()
+        organisation.name_fr    = "My group"
+        organisation.type       = OrganisationEntity.DEPARTMENT
+        organisation.dependency = OrganisationEntity.objects.exclude(type__in=OrganisationEntity.ENTITY_TYPE)[0]
+        organisation.email      = "no-reply@cirb.irisnet.be"
+        organisation.save()
+
+        category                       = ReportCategory.objects.get(id=self.sample_post['report-category'])
+        category.organisation_regional = organisation
+        category.save()
+
+        # Create new report
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        # Auto-dispatching working for commune
+        self.assertFalse(report.is_regional())
+        self.assertNotEqual(report.responsible_department, organisation)
