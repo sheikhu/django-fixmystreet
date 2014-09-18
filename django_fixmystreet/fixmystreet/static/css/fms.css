@@ -576,17 +576,23 @@ footer .cirb-cibg img{
 	width: 25px;
 	height: 25px;
 }
-#btn-localizeviamap i{
+#btn-localizeviamap i, .icon-localizeviamap {
 	background: transparent url('../images/icon-localizeviamap.png') center center no-repeat;
 }
-#btn-streetview i{
+#btn-streetview i, .icon-streetview {
 	background: transparent url('../images/icon-streetview.png') center center no-repeat;
 }
-.pulldown-map i{
+.pulldown-map i, .icon-pulldown-map {
 	background:transparent url('../images/icon-pulldownmap.png') center center no-repeat;
 }
-.pullup-map i{
+.pullup-map i, .icon-pullup-map {
 	background:transparent url('../images/icon-pullupmap.png') center center no-repeat;
+}
+.icon-localizeviamap, .icon-streetview, .icon-pulldown-map, .icon-pullup-map {
+	background-position: 50% 50%;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
 }
 #btn-streetview{
 	-webkit-border-bottom-left-radius: 4px;

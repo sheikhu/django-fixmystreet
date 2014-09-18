@@ -1,261 +1,362 @@
+/* @TODO
+# Bugs & co
+- Weird behavior of auto panning, especially with open pop-ups.
+    - L.FixMyStreet.centerMapOnMarker(): Check if popup is opened and adapt LatLng accordingly.
+- Bug CSS: Search Panel
+- L.FixMyStreet.SearchPanel.onAdd(): Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
+
+# Improvements
+- Review cluster CSS
+- L.FixMyStreet.Map.options.myLayers: Rename variable.
+- Document library (inline?)
+
+# Refactoring
+- Split this file?
+- Review what's in this.options => should be an object attribute?
+- L.FixMyStreet.Marker.toggle(): Refactor?
+- L.FixMyStreet.Map "controls": Refactor as L.FixMyStreet.*Control.
+- L.FixMyStreet._toggleLayer(): Refactor?
+- L.FixMyStreet.NewIncidentMarker.onAdd(): Workaround, otherwise LocateOnMap doesn't work.
+- L.FixMyStreet.NewIncidentMarker._onDragEnd() & L.FixMyStreet.NewIncidentPopup.activate(): Bug but workaround in place.
+- L.FixMyStreet.NewIncidentPopup.autoPanDisabled: Refactor? Isn't there a better way?
+- L.FixMyStreet.Util.mergeExtendedOptions(): Refactor? Isn't there a better way?
+- L.FixMyStreet.Util.openStreetView(): Refactor? Improve URL generation?
+
+# Discarded
+- UrbIS layer 'street-names': Not working well. Names not displayed at zoom > 16.
+- UrbIS layer 'street-numbers': Not working. Nothing visible.
+*/
+
+
+// COMPAT
+
+if (LANGUAGE_CODE === undefined) { var LANGUAGE_CODE = 'fr'; }
+if (STATIC_URL === undefined) { var STATIC_URL = '/static/'; }
+if (gettext === undefined) { function gettext(s) { return s; } }
+
+
+// INIT
+
 L.FixMyStreet = L.FixMyStreet || {};
 
+
+// URBIS LAYERS ================================================================
+
+if (URBIS_URL === undefined) {
+  var URBIS_URL = 'http://gis.irisnet.be/';
+}
+
+L.FixMyStreet.UrbisLayersSettings = {
+  'map-street-fr': {
+    title: 'Street',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/gwc/service/wms',
+    options: {
+      layers: 'urbisFR',
+      format: 'image/png',
+      transparent: true,
+      crs: L.CRS.EPSG31370,
+      attribution: 'Realized by means of Brussels UrbIS &copy; &reg;',
+    },
+  },
+
+  'map-street-nl': {
+    title: 'Street',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/gwc/service/wms',
+    options: {
+      layers: 'urbisNL',
+      format: 'image/png',
+      transparent: true,
+      crs: L.CRS.EPSG31370,
+      attribution: 'Realized by means of Brussels UrbIS &copy; &reg;',
+    },
+  },
+
+  'map-ortho': {
+    title: 'Orthographic',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/gwc/service/wms',
+    options: {
+      layers: 'urbisORTHO',
+      format: 'image/png',
+      transparent: true,
+      crs: L.CRS.EPSG31370,
+      attribution: 'Realized by means of Brussels UrbIS &copy; &reg;',
+    },
+  },
+
+  'regional-roads': {
+    overlay: true,
+    title: 'Regional roads',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/wms',
+    options: {
+      layers: 'urbis:URB_A_SS',
+      styles: 'URB_A_SS_FIXMYSTREET',
+      format: 'image/png',
+      transparent: true,
+      opacity: 0.5,
+      filter: '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +
+                '<ogc:PropertyIsEqualTo matchCase="true">' +
+                  '<ogc:PropertyName>ADMINISTRATOR</ogc:PropertyName>' +
+                  '<ogc:Literal>REG</ogc:Literal>' +
+                '</ogc:PropertyIsEqualTo>' +
+              '</ogc:Filter>',
+    },
+  },
+
+  'municipal-boundaries': {
+    overlay: true,
+    title: 'Municipal boundaries',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/wms',
+    options: {
+      layers: 'urbis:URB_A_MU',
+      styles: 'fixmystreet_municipalities',
+      format: 'image/png',
+      transparent: true,
+    },
+  },
+
+  'street-names': {  // @TODO: Not working well. Names not displayed at zoom > 16.
+    overlay: true,
+    title: 'Street names',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/wms',
+    options: {
+      layers: 'urbis:URB_A_MY_SA',
+      format: 'image/png',
+      transparent: true,
+    },
+  },
+
+  'street-numbers': {  // @TODO: Not working. Nothing visible.
+    overlay: true,
+    title: 'Street numbers',
+    type: 'wms',
+    url: URBIS_URL + 'geoserver/wms',
+    options: {
+      layers: 'urbis:URB_A_ADPT',
+      format: 'image/png',
+      transparent: true,
+    },
+  },
+};
+
+
+// TEMPLATE ====================================================================
+
+L.FixMyStreet.Template = {
+  _cache: {},
+
+  partialTemplateRegex: /^_.*_$/,
+
+  _render: function(data, key, done) {  // ([Object], [String], [Function])
+    if (!this.options.templates) { return; }
+
+    data = data || {};
+    key = key || 'base';
+    var template = this.options.templates[key] || this.options.templates.base;
+
+    for (var k in this.options.templates) {
+      if (this.partialTemplateRegex.test(k) === false) { continue; }
+      template = template.replace(new RegExp('\\{' + k + '\\}', 'g'), this.options.templates[k]);
+    }
+
+    this._renderTemplate(template, data, done);
+  },
+
+  _renderTemplate: function(html, options, done) {
+    // See: https://github.com/tunnckoCore/octet (+ added cache)
+    // Alternative: http://ejohn.org/blog/javascript-micro-templating/
+    if (!(html in L.FixMyStreet.Template._cache)) {
+      var re = /<%([^%>]+)?%>/g;
+      var reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g;
+      var code = 'var r=[];\n';
+      var cursor = 0;
+      var add = function(line, js) {
+        if (js) {
+          code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n';
+        } else {
+          code += line ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '';
+        }
+        return add;
+      };
+      while ((match = re.exec(html))) {
+        add(html.slice(cursor, match.index))(match[1], true);
+        cursor = match.index + match[0].length;
+      }
+      add(html.substr(cursor, html.length - cursor));
+      code += 'return r.join("");';
+      L.FixMyStreet.Template._cache[html] = new Function(code.replace(/[\r\t\n]/g, ''));
+    }
+    try {
+      var result = L.FixMyStreet.Template._cache[html].apply(options, [options]);
+      if (typeof done === 'function') {
+        return done(null, result);
+      } else {
+        return {error: null, result: result};
+      }
+    } catch (error) {
+      if (typeof done === 'function') {
+        return done(error, null);
+      }
+      console.error("ERROR: '" + error.message + "'", " in \n\nCode:\n", code, "\n");
+      return {error: error, result: null};
+    }
+  },
+};
+
+
+// MAP =========================================================================
+
 L.FixMyStreet.Map = L.Map.extend({
-  DEFAULTS: {
+  options: {
     animate: true,
     center: [50.84535101789271, 4.351873397827148],
-    cssSizeRegex: /(^|\s)map-size-\S+/g,
     minZoom: 10,
     maxBounds: [
       [50.95323634832283, 4.7618865966796875],
       [50.736455137010665, 3.9420318603515625],
     ],
+    //maxZoom: 18,  // Auto-detected
     zoom: 14,
 
-    // Layers loaded during initialize
-    urbisLayersToLoad: {
-      'base-map-fr': {visible: true},
-      'base-map-nl': {visible: false},
-      'base-map-ortho': {visible: false},
-      'municipal-boundaries': {visible: false},
-      'regional-roads': {visible: false},
+    cssSizePrefix: 'fmsmap-size-',
+    cssSizeRegex: /(^|\s)fmsmap-size-\S+/g,
+    cssClasses: {
+      button: 'fmsmap-button',
+      buttonLocateOnMap: 'fmsmap-button-locateonmap',
+      buttonSize: 'fmsmap-button-size',
+      buttonStreetView: 'fmsmap-button-streetview',
+      control: 'leaflet-control',
+      controlButtons: 'fmsmap-control-buttons',
+      panel: 'fmsmap-panel',
+      panelSearch: 'fmsmap-panel-search',
+    },
+    controlsPosition: {
+      attribution: 'bottomleft',
+      buttons: 'bottomright',
+      panels: 'bottomright',
+      incident: 'bottomleft',
+      layer: 'topright',
+      opacitySlider: 'topleft',
+      incidentType: 'bottomleft',
+    },
+    controlsLabel: {  // this.options.controlsLabel.
+      locateOnMap: '<i class="icon-localizeviamap"></i> ' + gettext('Locate on map'),
+      streetView: '<i class="icon-streetview"></i> Street View',
+      sizeToggleExpand: '<i class="icon-pulldown-map"></i> ' + gettext('Expand'),
+      sizeToggleReduce: '<i class="icon-pullup-map"></i> ' + gettext('Reduce'),
+    },
+    newIncidentZoom: 17,
+
+    myLayers: {  // @TODO: Rename variable.
+      'map-street': {
+        visible: true,
+        settings: L.FixMyStreet.UrbisLayersSettings['map-street-' + LANGUAGE_CODE],
+      },
+      'map-ortho': {
+        visible: false,
+        overlay: true,  // Make it an overlay...
+        opacityControl: true,  // ... with an opacity slider
+        settings: L.FixMyStreet.UrbisLayersSettings['map-ortho'],
+      },
+      'municipal-boundaries': {
+        visible: false,
+        settings: L.FixMyStreet.UrbisLayersSettings['municipal-boundaries'],
+      },
+      'regional-roads': {
+        visible: false,
+        settings: L.FixMyStreet.UrbisLayersSettings['regional-roads'],
+      },
+      // 'street-names': {  // @TODO: Not working well.
+      //   visible: false,
+      //   settings: L.FixMyStreet.UrbisLayersSettings['street-names'],
+      // },
+      // 'street-numbers': {  // @TODO: Not working.
+      //   visible: false,
+      //   settings: L.FixMyStreet.UrbisLayersSettings['street-numbers'],
+      // },
+    },
+
+    incidentTypes: {
+      reported: {
+        title: gettext('Created'),
+        color: '#c3272f',
+        controlTitle: '<span class="type-reported"><img src="' + STATIC_URL + 'images/marker-red-xxs.png" />' + gettext('Created') + '</span>',
+      },
+      ongoing: {
+        title: gettext('In progress'),
+        color: '#f79422',
+        controlTitle: '<span class="type-ongoing"><img src="' + STATIC_URL + 'images/marker-orange-xxs.png" />' + gettext('In progress') + '</span>',
+      },
+      closed: {
+        title: gettext('Closed'),
+        color: '#3cb64b',
+        controlTitle: '<span class="type-closed"><img src="' + STATIC_URL + 'images/marker-green-xxs.png" />' + gettext('Closed') + '</span>',
+      },
+      // discarded: {
+      //   title: gettext('Discarded'),
+      //   color: '#9b9b9b',
+      //   controlTitle: '<span class="type-discarded"><img src="' + STATIC_URL + 'images/marker-gray-xxs.png" />' + gettext('Discarded') + '</span>',
+      //   filtering: false,
+      // },
     },
   },
 
-  options: {
-    newIncidentMarker: {
-      icon: L.icon({
-        iconUrl: STATIC_URL + 'images/pin-fixmystreet-L.png',
-        iconAnchor: [20, 52],
-        popupAnchor: [0, -35],
-      }),
-      popupTemplate: '<h5>New Incident</h5>',
-    },
-  },
-
-  // Config per incident type
-  incidentTypes: {
-    reported: {
-      title: gettext('Created'),
-      color: '#c3272f',
-      filterTitle: '<span class="type-reported"><img src="' + STATIC_URL + 'images/marker-red-xxs.png" />' + gettext('Created') + '</span>',
-      icon: L.icon({
-        iconUrl: STATIC_URL + 'images/pin-red-L.png',
-        iconAnchor: [20, 52],
-        popupAnchor: [0, -35],
-      }),
-      popupTemplate: '<h3><%this.type%></h3>' +
-                     '<div><strong>ID:</strong> <%this.id%></div>',
-    },
-    ongoing: {
-      title: gettext('In progress'),
-      color: '#f79422',
-      filterTitle: '<span class="type-ongoing"><img src="' + STATIC_URL + 'images/marker-orange-xxs.png" />' + gettext('In progress') + '</span>',
-      icon: L.icon({
-        iconUrl: STATIC_URL + 'images/pin-orange-L.png',
-        iconAnchor: [20, 52],
-        popupAnchor: [0, -35],
-      }),
-      popupTemplate: '<h3><%this.type%></h3>' +
-                     '<div><strong>ID:</strong> <%this.id%></div>',
-    },
-    closed: {
-      title: gettext('Closed'),
-      color: '#3cb64b',
-      filterTitle: '<span class="type-closed"><img src="' + STATIC_URL + 'images/marker-green-xxs.png" />' + gettext('Closed') + '</span>',
-      icon: L.icon({
-        iconUrl: STATIC_URL + 'images/pin-green-L.png',
-        iconAnchor: [20, 52],
-        popupAnchor: [0, -35],
-      }),
-      popupTemplate: '<h3><%this.type%></h3>' +
-                     '<div><strong>ID:</strong> <%this.id%></div>',
-    },
-  },
-
-  _incidentLayers: {},
-  incidents: [],
-
-  initialize: function (id, options) {  // (HTMLElement or String, Object)
-    options = $.extend(true, {}, this.DEFAULTS, options);
+  initialize: function (id, options) {  // (HTMLElement or String, [Object])
+    L.setOptions(this, options);
     L.Map.prototype.initialize.call(this, id, options);
 
-    this.baseLayers = {};
-    this._namedLayers = {};
-    this._templateCache = {};
-
-    this.attributionControl.setPosition('bottomleft');
-    this._initUrbisLayers();
-    this._initIncidentLayers();
-  },
-
-  setOptions: function (options) {
-    options = options || this.DEFAULTS;
-
-    // Center AND zoom available
-    if (options.center && options.zoom !== undefined) {
-      this.setView(L.latLng(options.center), options.zoom, {reset: true});
-    } else {
-      // Only zoom available
-      if (options.zoom) {
-        this.setZoom(options.zoom);
-      }
-      // Only center available
-      if (options.center) {
-        this.panTo(L.latLng(options.center));
-      }
-    }
-  },
-
-  // NAMED LAYERS --------------------------------------------------------------
-
-  toggleNamedLayer: function (key, visibility) {  // (String, Boolean)
-    if (this.hasNamedLayer(key)) {
-      this._toggleLayer(this._namedLayers[key], visibility);
-    } else if (visibility !== false) {
-      this.loadNamedLayer(key);
-    }
-  },
-
-  hasNamedLayer: function (key) {  // (String)
-    return (key in this._namedLayers);
-  },
-
-  getNamedLayer: function (key) {  // (String)
-    if (!this.hasNamedLayer(key)) { return; }
-    return this._namedLayers[key];
-  },
-
-  loadNamedLayer: function (key, options, visibility) {  // (String, Object, Boolean)
-    var layer;
-    if (options === undefined) {
-      options = this.getNamedLayerSettings(key);
+    // Leaflet handles only if both center and zoom are defined.
+    if (this.options.center && this.options.zoom !== undefined) {
+      // Handled by Leaflet
+    } else if (this.options.zoom !== undefined) {
+      this.setZoom(this.options.zoom);
+    } else if (this.options.center) {
+      this.panTo(L.latLng(this.options.center));
     }
 
-    // If options contains a `key` parameter, use it for named layers.
-    // This allows to define groups of layers that act like a "singleton" (only one of them is loaded).
-    // Example: Base map available in different languages or visualizations (map or satellite view).
-    key = options.key || key;
-
-    // Factory based on layer type
-    switch (options.type) {
-      case 'wms': layer = L.tileLayer.wms(options.url, options.options); break;
-      default: layer = L.tileLayer(options.url, options.options);
+    this.$container = $(this._container);
+    this.incidents = {};
+    for (var k in this.options.incidentTypes) {
+      this.incidents[k] = [];
     }
+    this.newIncidentMarker = null;
+    this.opacitySlider = null;
 
-    // Load map options provided by the layer
-    if (options.mapOptions !== undefined) {
-      this.setOptions(options.mapOptions);
-    }
-
-    // Register as named layer
-    return this._setNamedLayer(key, layer, visibility);
-  },
-
-  unloadNamedLayer: function (key) {  // (String)
-    this._unsetNamedLayer(this.getNamedLayerKey(key));
-  },
-
-  getNamedLayerKey: function (key) {  // (String)
-    if (key in this._namedLayers) {
-      return key;
-    }
-    if (key in L.FixMyStreet.Map.namedLayersSettings && L.FixMyStreet.Map.namedLayersSettings[key].key) {
-      return L.FixMyStreet.Map.namedLayersSettings[key].key;
-    }
-    throw new Error('Invalid key "' + key + '".');
-  },
-
-  getNamedLayerSettings: function (key) {  // (String)
-    if (!(key in L.FixMyStreet.Map.namedLayersSettings)) {
-      throw new Error('Layer settings not found for "' + key + '".');
-    }
-    return L.FixMyStreet.Map.namedLayersSettings[key];
-  },
-
-  _setNamedLayer: function (key, layer, visibility) {  // (String, L.ILayer, Boolean)
-    if (this.hasNamedLayer(key)) {
-      if (this._namedLayers[key] === layer) { return; }
-      this._unsetNamedLayer(key);
-    }
-
-    this.addLayer(layer);
-    if (visibility !== true) {
-      this._toggleLayer(layer, false);
-    }
-    this._namedLayers[key] = this._layers[L.stamp(layer)];
-    return this._namedLayers[key];
-  },
-
-  _unsetNamedLayer: function (key) {  // (String)
-    if (!this.hasNamedLayer(key)) { return; }
-    this.removeLayer(this._namedLayers[key]);
-    delete this._namedLayers[key];
-  },
-
-  _toggleLayer: function (layer, visibility) {  // (String, Boolean)
-    $(layer.getContainer()).toggle(visibility);
-  },
-
-  // MARKERS -------------------------------------------------------------------
-
-  addMarker: function (latlng, options) {  // ([L.LatLng or Object], [Object])
-    var model = null;
-
-    // @FIXME: Fix arguments detection/swapping. Or use an "options" arg for all non-mandatory parameters.
-    if (latlng !== undefined && !(latlng instanceof L.LatLng)) {
-      model = latlng;
-      latlng = this.toLatLng(model.latlng);
-    }
-    if ('_layerAdd' in options) {  // @FIXME: Should test `instanceof L.ILayer`
-      container = options;
-      options = {};
-    }
-
-    latlng = latlng || this.getCenter();
-    options = options || {};
-    // container = container || this;
-
-    var m = new L.FixMyStreet.Marker(latlng, options, model);
-    // container.addLayer(m);
-    return m;
+    this._initLayers();
+    this._initControls();
+    this._initPopups();
   },
 
   // INCIDENTS -----------------------------------------------------------------
 
   addIncident: function (model, options) {  // (Object, [Object])
-    if (!(model.type in this.incidentTypes)) {
-      console.log('ERROR: Invalid incident type "' + model.type + '".');
-      return;
+    var isNew = model.type === 'new';
+    if (!isNew && !(model.type in this.incidents)) {
+      throw new Error('Invalid incident type (' + model.type + ').');
     }
-
-    options = options || {};
+    if (isNew && this.newIncidentMarker !== null) {
+      throw new Error('New incident marker already present, remove it first.');
+    }
 
     var that = this;
-    var markerOptions = $.extend(true, {
-      icon: this.incidentTypes[model.type].icon,
-      popupTemplate: this.incidentTypes[model.type].popupTemplate,
-    }, options);
+    var container = isNew ? this : this._incidentLayer;
 
-    var m = this.addMarker(model, markerOptions).addTo(this._incidentLayers[model.type]);
+    var marker = this._markerFactory(model);
 
-    m.on('click', function (evt) {
-      that._incident_onClick(evt);
-    });
-
-    this.incidents.push(m);
-    return m;
-  },
-
-  addIncidents: function (incidents, baseOptions) {  // (Object, [Object])
-    baseOptions = baseOptions || {};
-
-    for (var i = 0; i < incidents.length; i++) {
-      var model = 'model' in incidents[i] ? incidents[i].model
-                                          : incidents[i];
-      var options = $.extend(true, {}, baseOptions, incidents[i].options || {});
-      this.addIncident(model, options);
+    marker.addTo(container);
+    if (isNew) {
+      this.newIncidentMarker = marker;
+      this.setView(marker.getLatLng(), this.options.newIncidentZoom, {animate: true});
+    } else {
+      this.incidents[model.type].push(marker);
     }
+
+    return marker;
   },
 
   addIncidentsFromGeoJson: function (data, baseOptions) {  // (String or Object, [Object])
@@ -267,43 +368,29 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   removeAllIncidents: function () {
-    for (var incidentType in this.incidentTypes) {
-      this._incidentLayers[incidentType].clearLayers();
-    }
-    while (this.incidents.length > 0) {
-      this.incidents.pop();
+    this._incidentLayer.clearLayers();
+    for (var k in this.incidents) {
+      while (this.incidents[k].length > 0) {  // See http://stackoverflow.com/a/1232046/101831
+        this.incidents[k].pop();
+      }
     }
   },
 
-  addNewIncidentMarker: function (latlng, options) {
-    if (this.newIncidentMarker) {
-      console.log('WARNING: A new incident marker is already loaded.');
-      return;
-    }
-
-    latlng = this.toLatLng(latlng);
-    options = options || {};
-
-    var that = this;
-    var markerOptions = $.extend(true, {
-      draggable: true,
-      icon: this.options.newIncidentMarker.icon,
-      popupTemplate: this.options.newIncidentMarker.popupTemplate,
-    }, options);
-
-    this.newIncidentMarker = this.addMarker(latlng, markerOptions).addTo(this);
-
-    this.newIncidentMarker.on('dragend', function (evt) {
-      that._newIncidentMarker_onDragEnd(evt);
-    });
-
-    return this.newIncidentMarker;
-  },
-
-  removeNewIncidentMarker: function () {
+  removeNewIncident: function () {
     if (!this.newIncidentMarker) { return; }
     this.removeLayer(this.newIncidentMarker);
     this.newIncidentMarker = null;
+  },
+
+  toggleIncidentType: function (type, visibility) {  // (String, [Boolean])
+    if (!(type in this.incidents)) { throw new Error('Invalid incident type (' + type + ').'); }
+    $.each(this.incidents[type], function (i, layer) {
+      if (visibility) {
+        layer.addTo(map._incidentLayer);
+      } else {
+        map._incidentLayer.removeLayer(layer);
+      }
+    });
   },
 
   _addIncidentsFromGeoJson: function (geoJson, baseOptions) {  // (Object, [Object])
@@ -327,85 +414,325 @@ L.FixMyStreet.Map = L.Map.extend({
 
     console.log('Loading GeoJSON from %s...', url);
     $.get(url, function (geoJson) {
-      console.log('GeoJSON received...');
+      console.log('GeoJSON received from %s...', url);
       that._addIncidentsFromGeoJson(geoJson, baseOptions);
     }).fail(function() {
-      console.log('ERROR:', argument);
+      throw new Error('Failed to load GeoJSON from ' + url + ': ' + argument);
     });
+  },
+
+  // SEARCH -----------------------------------------------------------------
+
+  addSearchResult: function (model, options) {  // (Object, [Object])
+    var latlng = L.FixMyStreet.Util.toLatLng(model.latlng) || this.getCenter();
+    var marker = new L.FixMyStreet.SearchResultMarker(latlng, options, model);
+    marker.addTo(this._searchLayer);
+    this.searchResults.push(marker);
+  },
+
+  addSearchResults: function (models, options) {  // (Object, [Object])
+    var that = this;
+    this.initSearchLayer();
+    $.each(models, function (i, model) {
+      that.addSearchResult(model, options);
+    });
+
+    options = $.extend(true, {
+      position: this.options.controlsPosition.panels,
+    }, options);
+    this.searchPanel = new L.FixMyStreet.SearchPanel(options);
+    this.searchPanel.addTo(this);
+  },
+
+  removeSearchResults: function () {
+    if (this._searchLayer === undefined) { return; }
+    this._searchLayer.clearLayers();
+    this.searchPanel.remove();
+    while (this.searchResults.length > 0) {  // See http://stackoverflow.com/a/1232046/101831
+      this.searchResults.pop();
+    }
   },
 
   // CONTROLS ------------------------------------------------------------------
+  // @TODO: Refactor controls (filters, buttons, toggles) as L.FixMyStreet.*Control
 
-  initNamedLayersFilter: function (options) {
-    if ($.isEmptyObject(this._namedLayers)) { return; }
-
-    var that = this;
-    var baseLayers = {};
-    var overlays = {};
-
+  addButton: function (options) {  // ([Object])
     options = $.extend({
-      collapsed: true,
-      position: 'topright',
+      position: this.options.controlsPosition.buttons,
+      prepend: true,
     }, options);
 
-    $.each(L.FixMyStreet.Map.namedLayersSettings, function (k, v) {
-      var l = that.getNamedLayer(k);
-      if (l === undefined) {
-        l = that.loadNamedLayer(k, v);
+    var that = this;
+    var $container = this._getButtonsContainer();
+
+    var $btn = $('<a />');
+    $btn.html(options.label);
+    if (options.attr) {
+      $btn.attr(options.attr);
+    }
+    $btn.addClass(this.options.cssClasses.button);
+    if (options.cls) {
+      $btn.addClass(options.cls);
+    }
+
+    if (options.prepend === true) {
+      $container.prepend($btn);
+    } else {
+      $container.append($btn);
+    }
+
+    return $btn;
+  },
+
+  addLocateOnMapButton: function (options) {  // ([Object])
+    var that = this;
+
+    options = $.extend({
+      label: this.options.controlsLabel.locateOnMap,
+    }, options);
+
+    var buttonOptions = this._prepareButtonOptions({
+      cls: this.options.cssClasses.buttonLocateOnMap,
+    }, options);
+    var $btn = this.addButton(buttonOptions);
+
+    $btn.click(function (evt) {
+      that._locateOnMapButton_onClick(evt);
+    });
+
+    return $btn;
+  },
+
+  addStreetViewButton: function (options) {  // ([Object])
+    var that = this;
+
+    options = $.extend({
+      label: this.options.controlsLabel.streetView,
+      //latlng: this.getCenter(),  // This fixes the latlng when the button is added. If undefined, latlng = map.center when clicking.
+    }, options);
+
+    var buttonOptions = this._prepareButtonOptions({
+      cls: this.options.cssClasses.buttonStreetView,
+    }, options);
+    var $btn = this.addButton(buttonOptions);
+
+    $btn.click(function (evt) {
+      that._streetViewButton_onClick(evt, options.latlng);
+    });
+
+    return $btn;
+  },
+
+  addSizeToggle: function (options) {  // ([Object])
+    var that = this;
+
+    options = $.extend(true, {
+      state1: {
+        label: this.options.controlsLabel.sizeToggleExpand,
+        size: '',
+      },
+      state2: {
+        label: this.options.controlsLabel.sizeToggleReduce,
+        size: 'large',
+      },
+    }, options);
+
+    var buttonOptions = this._prepareButtonOptions({
+      label: options.state1.label,
+      cls: this.options.cssClasses.buttonSize,
+    }, options);
+    var $btn = this.addButton(buttonOptions);
+
+    $btn.click(function (evt) {
+      that._sizeToggle_onClick(evt, $(this), options);
+    });
+
+    this.setCssSize(options.state1.size);
+
+    return $btn;
+  },
+
+  addIncidentTypeControl: function (options) {  // ([Object])
+    var that = this;
+    options = $.extend(true, {
+      position: this.options.controlsPosition.incidentType,
+    }, options);
+
+    var $container = this._getButtonsContainer();
+
+    var $panel = $('<div/>').addClass('leaflet-control fmsmap-panel fmsmap-panel-incident-filter');
+    $panel.append($('<div/>').addClass('fmsmap-panel-header').html(gettext('Incident filter')));
+    var $body = $('<div/>').addClass('fmsmap-panel-body');
+    $.each(this.options.incidentTypes, function (k, v) {
+      var $input = $('<input type="checkbox" value="' + k + '" checked />');
+      var $e = $('<label class="type-' + k +'">' + v.controlTitle + '</label>');
+      $input.change(function (evt) {
+        var $this = $(this);
+        that.toggleIncidentType($this.val(), $this.prop('checked'));
+      });
+      $body.append($e.prepend($input));
+    });
+    $panel.append($body);
+
+    this.insertByPosition(this.getLeafletCorner(options.position), $panel, options.position);
+
+    $panel.find('input[type="checkbox"]').click(function (evt) {
+    });
+  },
+
+  _prepareButtonOptions: function (buttonOptions, options) {  // ([Object], [Object])
+    buttonOptions = buttonOptions || {};
+    if (options !== undefined) {
+      buttonOptions = $.extend({
+        position: options.position,
+        label: options.label,
+        prepend: options.prepend,
+      }, buttonOptions);
+    }
+    return buttonOptions;
+  },
+
+  // INIT ----------------------------------------------------------------------
+
+  initSearchLayer: function () {
+    if (this._searchLayer !== undefined) { return; }
+    this._searchLayer = new L.FeatureGroup();
+    this._searchLayer.addTo(this);
+    this.searchResults = [];
+  },
+
+  _initLayers: function() {
+    var that = this;
+    $.each(this.options.myLayers, function (k, v) {
+      v._layer = that._layerFactory(v.settings);
+      if (v.visible === true) {
+        that.addLayer(v._layer);
       }
-      var title = v.filterTitle || v.title || k;
-      if (v.overlay === undefined) {
-        baseLayers[title] = l;
-      } else {
-        overlays[title] = l;
+      if (v.opacityControl === true) {
+        that._initOpacityControl(v._layer);
       }
     });
+
+    this._initIncidentLayer();
+  },
+
+  _initIncidentLayer: function () {
+    if (this._incidentLayer !== undefined) { return; }
+    var that = this;
+    this._incidentLayer = new L.MarkerClusterGroup();
+    this._incidentLayer.on('clusterclick', function (evt) {
+      that._cluster_onClick(evt);
+    });
+    this._incidentLayer.addTo(this);
+  },
+
+  _initControls: function() {
+    if (this.options.controlsPosition.attribution !== undefined) {
+      this.attributionControl.setPosition(this.options.controlsPosition.attribution);
+    }
+
+    this._initLayerControl();
+  },
+
+  _initLayerControl: function() {
+    var that = this;
+    var baseLayers = {};
+    var baseLayersCount = 0;
+    var overlays = {};
+    var options = {
+      collapsed: true,
+      position: this.options.controlsPosition.layer,
+    };
+
+    $.each(this.options.myLayers, function (k, v) {
+      var title = v.controlTitle || v.title || v.settings.title;
+      if (v.overlay === true || (v.overlay === undefined && v.settings.overlay === true)) {
+        overlays[title] = v._layer;
+      } else {
+        baseLayers[title] = v._layer;
+        baseLayersCount++;
+      }
+    });
+
+    if (baseLayersCount < 2) {
+      baseLayers = null;
+    }
 
     L.control.layers(baseLayers, overlays, options).addTo(this);
   },
 
-  initIncidentTypeFilter: function (options) {
-    if ($.isEmptyObject(this._incidentLayers)) { return; }
+  _initOpacityControl: function (layer) {  // (L.ILayer)
+    if (this.opacitySlider !== null) {
+      throw new Error('Opacity slider already initialized.');
+    }
 
     var that = this;
-    var baseLayers = null;
-    var overlays = {};
+    this.opacitySlider = new L.Control.opacitySlider({position: this.options.controlsPosition.opacitySlider});
+    layer.setOpacity(0.6);  // Default value in `L.Control.opacitySlider`.
+    this.opacitySlider.setOpacityLayer(layer);
 
-    options = $.extend({
-      collapsed: false,
-      position: 'bottomleft',
-    }, options);
-
-    $.each(this.incidentTypes, function (k, v) {
-      var title = v.filterTitle || v.title || k;
-      overlays[title] = that._incidentLayers[k];
+    this.on('overlayadd', function (evt) {
+      if (evt.layer === layer) {
+        that.addControl(that.opacitySlider);
+      }
     });
+    this.on('overlayremove', function (evt) {
+      if (evt.layer === layer) {
+        that.removeControl(that.opacitySlider);
+      }
+    });
+  },
 
-    L.control.layers(baseLayers, overlays, options).addTo(this);
+  _initPopups: function() {
+    var that = this;
+    this.on('popupopen', function(evt) {
+      window.setTimeout(function () {  // Use timeout to wait that any previous "pan" is finished.
+        evt.popup.saveDimensions();
+        that.panBy([0, -(evt.popup._dimensions.height / 2)]);
+      }, 500);
+    });
+    this.on('popupclose', function(evt) {
+      window.setTimeout(function () {  // Use timeout to wait that any previous "pan" is finished.
+        if (evt.popup.autoPanDisabled === true) { return; }
+        that.panBy([0, (evt.popup._dimensions.height / 2)]);
+      }, 500);
+    });
+  },
+
+  _getButtonsContainer: function () {
+    var $e = this.$container.find('.' + this.options.cssClasses.controlButtons);
+    if ($e.length === 0) {
+      $e = $('<div/>').addClass(this.options.cssClasses.control + ' ' + this.options.cssClasses.controlButtons);
+      var position = this.options.controlsPosition.buttons;
+      this.insertByPosition(this.getLeafletCorner(position), $e, position);
+    }
+    return $e;
+  },
+
+  // EVENT HANDLERS ------------------------------------------------------------
+
+  _locateOnMapButton_onClick: function (evt) {  // locateOnMapButton.click
+    this.addIncident({type: 'new'});
+  },
+
+  _streetViewButton_onClick: function (evt, latlng) {  // streetViewButton.click
+    L.FixMyStreet.Util.openStreetView(latlng);
+  },
+
+  _sizeToggle_onClick: function (evt, $e, options) {  // sizeToggle.click
+    var i = $e.data('state') === 2 ? 1 : 2;
+    this.setCssSize(options['state' + i].size);
+    $e.html(options['state' + i].label);
+    $e.data('state', i);
+  },
+
+  _cluster_onClick: function (evt) {  // layer.clusterclick
   },
 
   // HELPERS -------------------------------------------------------------------
 
-  latLngToString: function (latlng) {
-    return latlng.lat + ',' + latlng.lng;
-  },
-
-  latLngFromString: function (s) {
-    var chunks = s.split(/,\s*/);
-    return new L.LatLng(parseFloat(chunks[0]), parseFloat(chunks[1]));
-  },
-
-  toLatLng: function (latlng) {  // (L.LatLng or String or Object)
-    if (latlng === undefined || latlng instanceof L.LatLng) { return latlng; }
-    if (typeof latlng === 'string') { return this.latLngFromString(latlng); }
-    if (typeof latlng === 'object') {
-      if ('lat' in latlng && 'lng' in latlng) { return new L.LatLng(latlng.lat, latlng.lng); }
-      else if (0 in latlng && 1 in latlng) { return new L.LatLng(latlng[0], latlng[1]); }
-    }
-    throw new Error('Invalid parameter. Expect L.LatLng or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678}) or Object ([0.123, -45.678]).');
-  },
-
-  centerMapOnMarker: function (marker) {
+  centerMapOnMarker: function (marker) {  // (Object)
+    // @TODO: Check if popup is opened and adapt LatLng accordingly.
     this.panTo(marker.getLatLng());
   },
 
@@ -415,143 +742,842 @@ L.FixMyStreet.Map = L.Map.extend({
       return (css.match(that.options.cssSizeRegex) || []).join(' ');
     });
     if (cls) {
-      this.$container.addClass(cls);
+      this.$container.addClass(this.options.cssSizePrefix + cls);
     }
     this.invalidateSize(this.options.animate);
   },
 
-  // INITIALIZATION ------------------------------------------------------------
-
-  _initContainer: function (id) {  // (String)
-    L.Map.prototype._initContainer.call(this, id);
-    this.$container = $(this._container);
+  getLeafletCorner: function (position) {  // (String)
+    var corner = this._controlCorners[position];
+    if (corner === undefined) { throw new Error('Invalid position (' + position + ').'); }
+    return $(corner);
   },
 
-  _initUrbisLayers: function () {
-    var that = this;
-
-    // Customize `L.FixMyStreet.Map.namedLayersSettings`
-    L.FixMyStreet.Map.namedLayersSettings['regional-roads']['options']['opacity'] = 0.5;
-    L.FixMyStreet.Map.namedLayersSettings['regional-roads']['options']['filter'] =
-      '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +
-        '<ogc:PropertyIsEqualTo matchCase="true">' +
-          '<ogc:PropertyName>ADMINISTRATOR</ogc:PropertyName>' +
-          '<ogc:Literal>REG</ogc:Literal>' +
-        '</ogc:PropertyIsEqualTo>' +
-      '</ogc:Filter>';
-
-    // Load initial UrbIS layers
-    $.each(this.options.urbisLayersToLoad, function (k, v) {
-      that.baseLayers[k] = that.loadNamedLayer(k, L.FixMyStreet.Map.namedLayersSettings[k], v.visible === true);
-    });
+  insertByPosition: function ($container, $e, position, reference) {  // ($Element, $Element, String, String)
+    reference = reference || 'bottom';
+    if (position.indexOf(reference) !== -1) {
+      $container.prepend($e);
+    } else {
+      $container.append($e);
+    }
   },
 
-  _initIncidentLayers: function () {
-    var that = this;
-
-    this._incidentLayers = {};
-    $.each(this.incidentTypes, function (k, v) {
-      that._incidentLayers[k] = new L.FixMyStreet.Map.MarkerClusterGroup();
-      that._incidentLayers[k].on('clusterclick', function (evt) {
-        that._cluster_onClick(evt);
-      });
-      that._incidentLayers[k].addTo(that);
-    });
+  _layerFactory: function(settings) {  // (Object)
+    switch (settings.type) {
+      case 'wms': return L.tileLayer.wms(settings.url, settings.options);
+      default: return L.tileLayer(settings.url, settings.options);
+    }
   },
 
-  // EVENT HANDLERS ------------------------------------------------------------
+  _markerFactory: function(model, options) {  // (Object, Object)
+    var marker;
+    var latlng = L.FixMyStreet.Util.toLatLng(model.latlng) || this.getCenter();
 
-  _cluster_onClick: function (evt) {  // layer.clusterclick
+    switch (model.type) {
+      case 'new':
+        marker = new L.FixMyStreet.NewIncidentMarker(latlng, options, model);
+        break;
+      case 'reported':
+        marker = new L.FixMyStreet.ReportedIncidentMarker(latlng, options, model);
+        break;
+      case 'ongoing':
+        marker = new L.FixMyStreet.OngoingIncidentMarker(latlng, options, model);
+        break;
+      case 'closed':
+        marker = new L.FixMyStreet.ClosedIncidentMarker(latlng, options, model);
+        break;
+      default: throw new Error('Invalid marker type (' + model.type + ').');
+    }
+
+    return marker;
   },
 
-  _incident_onClick: function (evt) {  // marker.click
-    this.centerMapOnMarker(evt.target);
-  },
-
-  _newIncidentMarker_onDragEnd: function (evt) {  // marker.dragend
-    var marker = evt.target;
-    var position = marker.getLatLng();
-    marker.setLatLng(new L.LatLng(position.lat, position.lng), {draggable: 'true'});
-    this.panTo(new L.LatLng(position.lat, position.lng));
-  },
-
-  // STATIC --------------------------------------------------------------------
-
-  statics: {
-    namedLayersSettings: {},
+  _toggleLayer: function (layer, visibility) {  // (String, Boolean)
+    // @TODO: Isn't there a better way?
+    if (typeof layer !== undefined) {
+      layer.toggle(visibility);
+    } else if (typeof layer.getContainer !== undefined) {
+      $(layer.getContainer()).toggle(visibility);
+    } else {
+      $(layer).toggle(visibility);
+    }
   },
 });
 
 
+// CONTROLS ====================================================================
+
+/* @TODO
+See: http://gis.stackexchange.com/questions/60576/custom-leaflet-controls
+
+L.FixMyStreet.Control = L.FixMyStreet.Control || {};
+
+
+L.FixMyStreet.Control.Toggle = L.Control.extend({
+  onAdd: function (map) {
+    ...
+  },
+});
+
+
+L.FixMyStreet.Control.toggle = function (options) {
+  return new L.FixMyStreet.Control.Toggle(options);
+};
+*/
+
+
+// ICONS =======================================================================
+
+L.FixMyStreet.Icon = L.Icon.extend({
+  options: {
+    iconUrl: STATIC_URL + 'images/pin-fixmystreet-L.png',
+    iconAnchor: [20, 52],
+    popupAnchor: [0, -35],
+  },
+});
+
+
+L.FixMyStreet.NewIncidentIcon = L.FixMyStreet.Icon.extend({});
+
+
+L.FixMyStreet.ReportedIncidentIcon = L.FixMyStreet.Icon.extend({
+  options: {
+    iconUrl: STATIC_URL + 'images/pin-red-L.png',
+  },
+});
+
+
+L.FixMyStreet.OngoingIncidentIcon = L.FixMyStreet.Icon.extend({
+  options: {
+    iconUrl: STATIC_URL + 'images/pin-orange-L.png',
+  },
+});
+
+
+L.FixMyStreet.ClosedIncidentIcon = L.FixMyStreet.Icon.extend({
+  options: {
+    iconUrl: STATIC_URL + 'images/pin-green-L.png',
+  },
+});
+
+
+L.FixMyStreet.DiscardedIncidentIcon = L.FixMyStreet.Icon.extend({
+  options: {
+    iconUrl: STATIC_URL + 'images/pin-gray-L.png',
+  },
+});
+
+
+L.FixMyStreet.NumberedIcon = L.FixMyStreet.Icon.extend({
+  // Inspired by https://gist.github.com/comp615/2288108
+
+  options: {
+    iconUrl: STATIC_URL + 'images/pin-blue-XS.png',
+    iconAnchor: [15, 40],
+    popupAnchor: [0, -28],
+    number: 'A',
+    className: 'fmsmap-numbered-icon',
+  },
+
+  createIcon: function () {
+    var div = document.createElement('div');
+
+    var img = this._createImg(this.options.iconUrl);
+    div.appendChild(img);
+
+    var label = document.createElement('div');
+    label.setAttribute('class', 'number');
+    label.innerHTML = this.options.number;
+    div.appendChild(label);
+
+    this._setIconStyles(div, 'icon');
+    return div;
+  },
+});
+
+
+L.FixMyStreet.SearchResultIcon = L.FixMyStreet.NumberedIcon.extend({
+  options: {
+    className: 'fmsmap-search-result-icon',
+  },
+
+  createIcon: function () {
+    var div = L.FixMyStreet.NumberedIcon.prototype.createIcon.call(this);
+    var $div = $(div);
+    $div.attr('data-search-result', this.options.number);  // Doesn't work with .data('search-result')
+    $div.mouseover(function (evt) {
+      $('.fmsmap-panel-search').find('[data-search-result="' + $(this).data('search-result') + '"]').addClass('hover');
+    });
+    $div.mouseout(function (evt) {
+      $('.fmsmap-panel-search').find('[data-search-result="' + $(this).data('search-result') + '"]').removeClass('hover');
+    });
+    return div;
+  },
+});
+
+
+// MARKERS =====================================================================
+
+L.MarkerClusterGroup.include({
+});
+
+
 L.FixMyStreet.Marker = L.Marker.extend({
-  initialize: function (latlng, options, model) {
+  initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
+    var that = this;
+
+    L.setOptions(this, options);
     L.Marker.prototype.initialize.call(this, latlng, options);
+
+    this.$container = $(this._container);
     this.model = model || {};
 
     if (this.options.iconOptions) {
       L.setOptions(this.options.icon, this.options.iconOptions);
     }
     if (this.options.popup || this.options.popupTemplate) {
+      this.options.popup.attachMarker(this);
       this.bindPopup(this.options.popup, this.options.popupOptions);
     }
+    if (this.options.draggable) {
+      this.on('dragstart', function (evt) {
+        that._onDragStart(evt);
+      });
+      this.on('dragend', function (evt) {
+        that._onDragEnd(evt);
+      });
+    }
+    this.on('click', function (evt) {
+      that._onClick(evt);
+    });
+  },
+
+  getMap: function() {
+    if (!this._map) { throw new Error('Marker is not visible on map, probably in a closed cluster.'); }
+    return this._map;
+  },
+
+  toggle: function (visibility) {  // ([Boolean])
+    $(this._icon).toggle(visibility);  // @TODO: Isn't there a better way?
   },
 
   openPopup: function (latlng) {  // ([L.LatLng])
-    if (!this.options.popup && this.options.popupTemplate) {
-      var that = this;
-      L.FixMyStreet.Template.render(this.options.popupTemplate, this.model, function (error, html) {
-        that.setPopupContent(html);
-      });
-    }
+    if (!this._popup) { return; }
+    this._popup.renderContent(this.model);
     L.Marker.prototype.openPopup.call(this, latlng);
     return this;
+  },
+
+  updatePopup: function () {
+    this.closePopup();
+    this.openPopup();
+    return this;
+  },
+
+  // EVENT HANDLERS ------------------------------------------------------------
+
+  _onClick: function (evt) {  // click
+    this.centerMap();
+  },
+
+  _onDragStart: function (evt) {  // dragstart
+  },
+
+  _onDragEnd: function (evt) {  // dragend
+    var marker = evt.target;
+    var latlng = marker.getLatLng();
+    marker.setLatLng(latlng);
+    if (marker._map) {
+      marker._map.panTo(latlng);
+    }
+  },
+
+  // HELPERS -------------------------------------------------------------------
+
+  centerMap: function() {
+    this.getMap().centerMapOnMarker(this);
+  },
+
+  openStreetView: function() {
+    L.FixMyStreet.Util.openStreetView(this.getLatLng());
   },
 });
 
 
-L.FixMyStreet.Map.MarkerClusterGroup = L.MarkerClusterGroup.extend({
-  iconCreateFunction: function(cluster) {
-    return new L.DivIcon({ html: '<b style="">' + cluster.getChildCount() + '</b>' });
-  }
+L.FixMyStreet.SearchResultMarker = L.FixMyStreet.Marker.extend({
+  options: {
+    icon: new L.FixMyStreet.SearchResultIcon(),
+  },
+
+  initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
+    model = model || {};
+    if (model.number !== undefined) {
+      this.options.iconOptions = this.options.iconOptions || {};
+      this.options.iconOptions.number = model.number;
+    }
+    options = options || {};
+    if (options.popup === undefined) {
+      options.popup = new L.FixMyStreet.SearchResultPopup(options.popupOptions, this);
+    }
+    L.FixMyStreet.Marker.prototype.initialize.call(this, latlng, options, model);
+  },
 });
 
 
-L.FixMyStreet.IncidentMarker = L.Marker.extend({
+L.FixMyStreet.IncidentMarker = L.FixMyStreet.Marker.extend({
+  initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
+    options = options || {};
+    if (options.popup === undefined) {
+      options.popup = this._popupFactory(options.popupOptions);
+    }
+    L.setOptions(this, options);
+    L.FixMyStreet.Marker.prototype.initialize.call(this, latlng, options, model);
+  },
+
+  _popupFactory: function(options) {  // ([Object])
+      return new L.FixMyStreet.IncidentPopup(options, this);
+  },
 });
 
 
-L.FixMyStreet.Template = {
-  _cache: {},
+L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+  options: {
+    draggable: true,
+    icon: new L.FixMyStreet.NewIncidentIcon({
+      popupAnchor: [0, -43],
+    }),
+  },
 
-  render: function(html, options, done) {
-    // See: https://github.com/tunnckoCore/octet (+ added cache)
-    // Alternative: http://ejohn.org/blog/javascript-micro-templating/
-    if (!(html in L.FixMyStreet.Template._cache)) {
-      var re = /<%([^%>]+)?%>/g;
-      var reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g;
-      var code = 'var r=[];\n';
-      var cursor = 0;
-      var add = function(line, js) {
-        js? (code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n') :
-            (code += line ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
-        return add;
-      };
-      while (match = re.exec(html)) {
-        add(html.slice(cursor, match.index))(match[1], true);
-        cursor = match.index + match[0].length;
+  initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
+    L.FixMyStreet.IncidentMarker.prototype.initialize.call(this, latlng, options, model);
+    this._dragged = false;
+  },
+
+  onAdd: function (map) {  // (L.Map)
+    var that = this;
+    L.FixMyStreet.IncidentMarker.prototype.onAdd.call(this, map);
+    window.setTimeout(function () { that.openPopup(); }, 250);  // @TODO: Workaround, otherwise LocateOnMap doesn't work.
+  },
+
+  _onDragStart: function (evt) {  // dragend
+    var that = evt.target;
+    that._dragged = true;
+    that.getPopup().autoPanDisabled = true;  // @TODO: Isn't there a better way?
+  },
+
+  _onDragEnd: function (evt) {  // dragend
+    var that = evt.target;
+    var latlng = that.getLatLng();
+    // @TODO: Not working. See L.FixMyStreet.NewIncidentPopup.activate()
+    // if (that._dragged) {
+    //   that.getPopup().activate();
+    // }
+    that.setLatLng(latlng);
+    if (that._map) {
+      that._map.panTo(latlng);
+    }
+    that.openPopup();
+    that.getPopup().autoPanDisabled = false;  // @TODO: Isn't there a better way?
+    if (that._dragged) {  // @TODO: Workaround, see above.
+      that.getPopup().activate();
+    }
+    this._updateAddress();
+  },
+
+  _updateAddress: function() {
+    var that = this;
+    L.FixMyStreet.Util.getAddress(this.getLatLng(), function (address) {
+      that.getPopup().updateAddress(address);
+    });
+  },
+
+  _popupFactory: function(options) {  // ([Object])
+    return new L.FixMyStreet.NewIncidentPopup(options, this);
+  },
+});
+
+
+L.FixMyStreet.ReportedIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+  options: {
+    icon: new L.FixMyStreet.ReportedIncidentIcon(),
+  },
+});
+
+
+L.FixMyStreet.OngoingIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+  options: {
+    icon: new L.FixMyStreet.OngoingIncidentIcon(),
+  },
+});
+
+
+L.FixMyStreet.ClosedIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+  options: {
+    icon: new L.FixMyStreet.ClosedIncidentIcon(),
+  },
+});
+
+
+L.FixMyStreet.DiscardedIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+  options: {
+    icon: new L.FixMyStreet.DiscardedIncidentIcon(),
+  },
+});
+
+
+// POP-UPS =====================================================================
+
+L.FixMyStreet.Popup = L.Popup.extend({
+  options: {
+    partialTemplateRegex: /^_.*_$/,
+    templates: {
+      base:
+        '<div class="fmsmap-popup">' +
+          '{_header_}' +
+          '<div class="fmsmap-popup-body">{_body_}</div>' +
+          '{_footer_}' +
+        '</div>',
+      _header_: '',  // <div class="fmsmap-popup-header">...</div>
+      _footer_: '',  // <div class="fmsmap-popup-footer">...</div>
+      _body_: '',
+      _address_:
+        '<% if (this.address) { %>' +
+          '<% this.address.street %> <% this.address.number %><br />' +
+          '<% this.address.postalCode %> <% this.address.city %>' +
+        '<% } %>',
+    }
+  },
+
+  initialize: function (options, source) {  // ([Object], [L.ILayer])
+    L.FixMyStreet.Util.mergeExtendedOptions(this);
+    L.setOptions(this, options);
+    L.Popup.prototype.initialize.call(this, options, source);
+
+    if (this._container) {
+      this.$container = $(this._container);
+    }
+    this._marker = null;
+  },
+
+  onAdd: function (map) {  // (L.Map)
+    L.Popup.prototype.onAdd.call(this, map);
+    if (this.$container === undefined && this._container) {
+      this.$container = $(this._container);
+    }
+    this._bindActions();
+  },
+
+  attachMarker: function (marker) {  // (L.Marker)
+    this._marker = marker;
+  },
+
+  detachMarker: function () {
+    this._marker = null;
+  },
+
+  renderContent: function(data, key) {  // ([Object], [String])
+    var that = this;
+    this._render(data, key, function (error, html) {
+      if (!error) {
+        that.setContent(html);
+        that.saveDimensions();
+        that.fire('popuprendered', {popup: that});
       }
-      add(html.substr(cursor, html.length - cursor));
-      code += 'return r.join("");';
-      L.FixMyStreet.Template._cache[html] = new Function(code.replace(/[\r\t\n]/g, ''));
+    });
+  },
+
+  updateAddress: function (address) {
+    var that = this;
+    this.renderTemplate(this.options.templates._address_, {address: address}, function (error, html) {
+      if (!error) {
+        that.$container.find('.address').html(html);
+      }
+    });
+  },
+
+  saveDimensions: function () {
+    this._dimensions = {
+      height: this._container.clientHeight,
+      width: this._container.clientWidth,
+    };
+    return this;
+  },
+
+  _bindActions: function (handlers) {
+    if (!this._marker) { return; }
+    if (!this._container) { return; }
+    var that = this;
+
+    $(this._container).find('a[data-bind]').each(function (i, e) {
+      var $this = $(this);
+      var action = $this.data('bind');
+
+      if (handlers !== undefined && handlers[action]) {
+        $this.click(handlers[action]);
+      } else {
+        switch (action) {
+          case 'center-map':
+            $this.click(function (evt) {
+              evt.preventDefault();
+              that._marker.centerMap();
+            });
+            break;
+          case 'street-view':
+            $this.click(function (evt) {
+              evt.preventDefault();
+              that._marker.openStreetView();
+            });
+            break;
+          case 'new-incident':  // @TODO: Here or only in L.FixMyStreet.SearchResultPopup
+            $this.click(function (evt) {
+              evt.preventDefault();
+              that._marker.openStreetView();
+            });
+            break;
+          default:
+            console.log('ERROR: Unknown bind type (%s).', $this.data('bind'));
+        }
+      }
+    });
+  },
+});
+L.FixMyStreet.Popup.include(L.FixMyStreet.Template);
+
+
+L.FixMyStreet.SearchResultPopup = L.FixMyStreet.Popup.extend({
+  extendedOptions: {
+    templates: {
+      base:
+        '<div class="fmsmap-popup new">' +
+          '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
+          '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
+          '<div class="fmsmap-popup-footer clearfix">{_footer_}</div>' +
+        '</div>',
+      _header_:
+        gettext('Search result <% this.number %>'),
+      _body_:
+        '<p class="address">{_address_}</p>',
+      _footer_:
+        '<div class="pull-left">' +
+          '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
+          '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
+        '</div>' +
+        '<div class="pull-right">' +
+          '<% if (this.url) { %>' +
+            '<a class="button" href="<% this.url %>">' + gettext('Go') + '</a>' +
+          '<% } else { %>' +
+            '<a class="button" href="#" data-bind="new-incident">' + gettext('New incident') + '</a>' +
+          '<% } %>' +
+        '</div>',
+    },
+  },
+
+  initialize: function (options, source) {  // ([Object], [L.ILayer])
+    L.FixMyStreet.Util.mergeExtendedOptions(this);
+    L.setOptions(this, options);
+    L.FixMyStreet.Popup.prototype.initialize.call(this, options, source);
+  },
+
+  _bindActions: function (handlers) {
+    var that = this;
+    var theseHandlers = {};
+    theseHandlers['new-incident'] = function (evt) {
+      evt.preventDefault();
+      var map = that._map;
+      map.removeSearchResults();
+      var model = {
+        type: 'new',
+        latlng: that._marker.model.latlng,
+        address: that._marker.model.address,
+      };
+      map.addIncident(model);
+    };
+    handlers = $.extend(true, {}, theseHandlers, handlers);
+    L.FixMyStreet.Popup.prototype._bindActions.call(this, handlers);
+  },
+});
+
+
+L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
+  extendedOptions: {
+    templates: {
+      base:
+        '<div class="fmsmap-popup new">' +
+          '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
+          '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
+          '<div class="fmsmap-popup-footer clearfix">{_footer_}</div>' +
+        '</div>',
+      _header_:
+        gettext('Place me at the exact position of the incident'),
+      _body_:
+        '<p class="address">{_address_}</p>',
+      _footer_:
+        '<div class="pull-left">' +
+          '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
+          '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
+        '</div>' +
+        '<div class="pull-right">' +
+          '<a class="button button-itshere hidden" href="<% this.url %>">' + gettext('It\'s here') + '</a>' +
+        '</div>',
+    },
+  },
+
+  initialize: function (options, source) {  // ([Object], [L.ILayer])
+    L.FixMyStreet.Popup.prototype.initialize.call(this, options, source);
+    this._activated = false;
+  },
+
+  activate: function () {
+    if (this._activated) { return; }
+    this._activated = true;
+    // @TODO: Not working. See L.FixMyStreet.NewIncidentMarker._onDragEnd()
+    // this.on('popuprendered', function (data) {
+    //   data.popup.$container.find('.button-itshere').removeClass('hidden');
+    // });
+    this.$container.find('.button-itshere').removeClass('hidden');  // @TODO: Workaround, see above.
+  },
+});
+
+
+L.FixMyStreet.IncidentPopup = L.FixMyStreet.Popup.extend({
+  extendedOptions: {
+    templates: {
+      base:
+        '<div class="fmsmap-popup">' +
+          '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
+          '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
+          '<div class="fmsmap-popup-footer clearfix">{_footer_}</div>' +
+        '</div>',
+      _header_:
+        gettext('Report #<% this.id %>'),
+      _body_:
+        '<div class="pull-left">' +
+          '<% if (this.address) { %>' +
+            '<p class="address">{_address_}</p>' +
+          '<% } %>' +
+          '<% if (this.categories) { %>' +
+            '<p class="categories"><% this.categories %></p>' +
+          '<% } %>' +
+        '</div>' +
+        '<% if (this.photo) { %>' +
+          '<div class="pull-right">' +
+            '<img class="photo" src="<% this.photo %>" alt="" />' +
+          '</div>' +
+        '<% } %>',
+      _footer_:
+        '<% if (this.icons) { %>' +
+          '<div class="pull-left">' +
+            '<ul class="icons inline">' +
+              '<li><img src="' + STATIC_URL + '/images/regional_<% (this.icons.regionalRoads ? "on" : "off") %>.png" title="' + gettext('On regional roads') + '"></li>' +
+              '<li><img src="' + STATIC_URL + '/images/pro_<% (this.icons.pro ? "on" : "off") %>.png" title="' + gettext('Reported by a professional') + '"></li>' +
+              '<li><img src="' + STATIC_URL + '/images/contractorAssigned_<% (this.icons.assigned ? "on" : "off") %>.png" title="' + gettext('Assigned') + '"></li>' +
+              '<li><img src="' + STATIC_URL + '/images/prior_<% (this.icons.priority ? "on_" + this.icons.priority : "off") %>.png" title="' + gettext('Priority level') + '"></li>' +
+            '</ul>' +
+          '</div>' +
+        '<% } %>' +
+        '<% if (this.url) { %>' +
+          '<div class="pull-right">' +
+            '<a class="button" href="<% this.url %>">' + gettext('Details') + '</a>' +
+          '</div>' +
+        '<% } %>',
+    },
+  },
+});
+
+
+// PANELS ======================================================================
+// @TODO: Look for existing plugins.
+
+L.FixMyStreet.Panel = L.Control.extend({
+  _getContainer: function (map) {
+    var $e = map.$container.find('.fmsmap-panel-container');
+    if ($e.length === 0) {
+      $e = $('<div/>').addClass('fmsmap-panel-container');
+      map.$container.append($e);
     }
-    try {
-      var result = L.FixMyStreet.Template._cache[html].apply(options, [options]);
-      if ('function' === typeof done) return done(null, result);
-      else return {err: null, res: result};
-    } catch(err) {
-      if ('function' === typeof done) return done(err, null);
-      console.error("'" + err.message + "'", " in \n\nCode:\n", code, "\n");
-      return {err: err, res: null};
+    return $e;
+  },
+});
+
+
+L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
+  extendedOptions: {
+    templates: {
+      base:
+        '<div class="fmsmap-panel fmsmap-panel-search">' +
+          '<div class="fmsmap-panel-header clearfix">{_header_}</div>' +
+          '<div class="fmsmap-panel-body clearfix">{_body_}</div>' +
+        '</div>',
+      _header_:
+        '<% if (this.results.length === 0) { %>' +
+          gettext('No results') +
+        '<% } else { %>' +
+          gettext('<% this.results.length %> results') +
+        '<% } %>',
+      _body_:
+        '<% if (this.results.length === 0) { %>' +
+          gettext('Please refine your search criteria.') +
+        '<% } else { %>' +
+          '<ul>' +
+            '<% for (var i in this.results) { %>' +
+              '<li data-search-result="<% this.results[i].number %>">' +
+                '<div class="number"><% this.results[i].number %></div>' +
+                '<p class="address">' +
+                  '<% this.results[i].address.street %> <% this.results[i].address.number %><br />' +
+                  '<% this.results[i].address.postalCode %> <% this.results[i].address.city %>' +
+                '</p>' +
+              '</li>' +
+            '<% } %>' +
+          '</ul>' +
+        '<% } %>',
+    },
+  },
+
+  initialize: function (options, source) {  // ([Object], [L.ILayer])
+    L.FixMyStreet.Util.mergeExtendedOptions(this);
+    L.setOptions(this, options);
+    L.Control.prototype.initialize.call(this, options, source);
+  },
+
+  onAdd: function (map) {
+    var results = [];
+    $.each(map.searchResults, function (i, marker) {
+      results.push(marker.model);
+    });
+    this.renderContent({results: results});
+    this.$container = $(this._container);
+
+    this.$container.find('li[data-search-result]').each(function (i, e) {
+      var $e = $(e);
+      $e.mouseover(function (evt) {
+        $('.fmsmap-search-result-icon[data-search-result="' + $e.data('search-result') + '"]').addClass('hover');
+      });
+      $e.mouseout(function (evt) {
+        $('.fmsmap-search-result-icon[data-search-result="' + $e.data('search-result') + '"]').removeClass('hover');
+      });
+    });
+
+    $panelContainer = this._getContainer(map);
+    $panelContainer.append(this.$container);
+
+    return this._container;  // @TODO: Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
+  },
+
+  remove: function() {
+    this.$container.remove();
+  },
+
+  setContent: function(html) {  // (String)
+    this._container = html;
+  },
+
+  renderContent: function(data, key) {  // ([Object], [String])
+    var that = this;
+    this._render(data, key, function (error, html) {
+      if (!error) {
+        that.setContent(html);
+      }
+    });
+  },
+});
+
+L.FixMyStreet.SearchPanel.include(L.FixMyStreet.Template);
+
+
+// UTILS =======================================================================
+
+L.FixMyStreet.Util = {
+  mergeExtendedOptions: function(that) {  // @TODO: Isn't there a better way?
+    if (that.extendedOptions !== undefined) {
+      $.extend(true, that.options, that.extendedOptions);
+      delete that.extendedOptions;
     }
+  },
+
+  toLatLng: function (latlng) {  // (L.LatLng or String or Object)
+    if (latlng === undefined || latlng instanceof L.LatLng) {
+      return latlng;
+    }
+
+    if (typeof latlng === 'string') {
+      var chunks = latlng.split(/,\s*/);
+      return new L.LatLng(parseFloat(chunks[0]), parseFloat(chunks[1]));
+    }
+
+    if (typeof latlng === 'object') {
+      if ('lat' in latlng && 'lng' in latlng) {
+        return new L.LatLng(latlng.lat, latlng.lng);
+      } else if (0 in latlng && 1 in latlng) {
+        return new L.LatLng(latlng[0], latlng[1]);
+      }
+    }
+
+    throw new Error('Invalid parameter. Expect L.LatLng or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678}) or Object ([0.123, -45.678]).');
+  },
+
+  toXY: function (latlng) {  // (L.LatLng)
+    var point = L.Projection.LonLat.project(latlng);
+    return {x: point.x, y: point.y};  // {x: lng, y: lat}
+  },
+
+  toWMS: function (latlng) {  // (L.LatLng)
+    // EPSG:4326 to EPSG:31370 (Belgium Lambert 72)
+    // http://proj4js.org/  |  http://zoologie.umh.ac.be/tc/algorithms.aspx
+    // Avenue des Arts 21, 1000 Brussels: (50.8461603, 4.3691917) => (150030.9884557725, 170639.46667259652)
+    if (this.PROJ4JS_4326 === undefined) {
+      this.PROJ4JS_4326 = new Proj4js.Proj('EPSG:4326');
+      this.PROJ4JS_31370 = new Proj4js.Proj('EPSG:31370');
+    }
+    var point = new Proj4js.Point(latlng.lng, latlng.lat);
+    Proj4js.transform(this.PROJ4JS_4326, this.PROJ4JS_31370, point);
+    return {x: point.x, y: point.y};
+  },
+
+  getAddress: function (latlng, success, error) {  // (L.LatLng or Object or String, Function, [Function])
+    var that = this;
+    $.ajax({
+      url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+      type: 'POST',
+      dataType: 'jsonp',
+      data: {
+        json: JSON.stringify({
+          language: LANGUAGE_CODE,
+          point: this.toWMS(this.toLatLng(latlng)),
+        }),
+      },
+
+      success: function (response) {
+        var address = {
+          street: response.result.address.street.name,
+          number: response.result.address.number,
+          postalCode: response.result.address.street.postCode,
+          city: gettext('Brussels'),
+          lat: latlng.lat,
+          lng: latlng.lng,
+        };
+        success(address);
+      },
+
+      error: function (response) {
+        if (error !== undefined) {
+          error(response);
+        } else if (response.status === 'error') {
+          throw new Error('Unable to locate this address');
+        } else {
+          throw new Error('Error: ' + response.status);
+        }
+      },
+    });
+  },
+
+  openStreetView: function (latlng) {  // (L.LatLng or Object or String)
+    // See: https://developers.google.com/maps/documentation/streetview/#url_parameters
+    // @TODO: Improve URL generation?
+      // Generated URL: https://maps.google.be/maps?q=50.84535101789271,4.351873397827148&layer=c&z=17&iwloc=A&sll=50.84535101789271,4.351873397827148&cbp=13,240.6,0,0,0&cbll=50.84535101789271,4.351873397827148
+      // Final URL: https://www.google.be/maps/@50.8452712,4.3519753,3a,75y,240.6h,90t/data=!3m5!1e1!3m3!1s2j5CXi5mCN_SzkuGhDGL0w!2e0!3e5
+    xy = this.toXY(this.toLatLng(latlng));
+    var url = 'https://maps.google.be/maps?q=%(y)s,%(x)s&layer=c&z=17&iwloc=A&sll=%(y)s,%(x)s&cbp=13,240.6,0,0,0&cbll=%(y)s,%(x)s';
+    url = url.replace(/%\(x\)s/g, xy.x).replace(/%\(y\)s/g, xy.y);
+    window.open(url, '_blank');
   },
 };

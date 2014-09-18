@@ -9,7 +9,3 @@ function getRandomLatLng(map) {
 
   return new L.LatLng(southWest.lat + latSpan * Math.random(), southWest.lng + lngSpan * Math.random());
 }
-
-function gettext(s) {
-  return s;
-}

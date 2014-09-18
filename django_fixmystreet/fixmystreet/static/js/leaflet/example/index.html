@@ -5,76 +5,48 @@
     <title>Example</title>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <link rel="stylesheet" href="../../../lib/bootstrap/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="../../../lib/bootstrap/css/bootstrap-responsive.min.css" />
+      <link rel="stylesheet" href="../../../css/fms.css" />
+      <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/flick/jquery-ui.css" />
       <link rel="stylesheet" href="../../../lib/leaflet/leaflet.css" />
+      <link rel="stylesheet" href="../../../lib/leaflet.opacitycontrols/control.opacity.css" />
       <link rel="stylesheet" href="../../../css/leaflet-fms.css" />
-      <style>
-        .cf:before, .cf:after { content: " "; display: table; }
-        .cf:after { clear: both; }
-        .cf { *zoom: 1; }
-        body, select {
-          font-family: Sans-Serif;
-        }
-        #map {
-          height: 500px;
-        }
-        #map.map-size-big {
-          height: 800px;
-        }
-        #map.map-size-small {
-          height: 200px;
-        }
-        #map.map-size-500x300 {
-          height: 300px;
-          width: 500px;
-        }
-        .actions {
-          margin-top: 10px;
-        }
-        .group {
-          background-color: #eee;
-          float: left;
-          padding: 3px 6px;
-        }
-        .group:not(:first-child) {
-          margin-left: 10px;
-        }
-        #new-incident-latlng {
-          width: 150px;
-        }
-        .marker-in-black {
-          background-color: rgba(0, 0, 0, 0.5);
-          border-radius: 4px;
-        }
-        .popup-yellow .leaflet-popup-content-wrapper,
-        .popup-yellow .leaflet-popup-tip {
-          background-color: #ffb442;
-        }
-      </style>
+      <link rel="stylesheet" href="example.css" />
+      <link rel="stylesheet" href="example2.css" />
   </head>
   <body>
     <div id="map"></div>
 
     <div class="actions cf">
       <div class="group">
-        <strong>Layers:</strong>
-        <select id="urbis-layer"></select>
-        <button id="btn-toggle">Toggle</button>
-        <button id="btn-unload">Unload</button>
-      </div>
-      <div class="group">
-        <button id="btn-reset-options">Reset map options</button>
-      </div>
-      <div class="group">
         <strong>Sizes:</strong>
         <select id="map-sizes"></select>
+      </div>
+      <div class="group">
+        <strong>Buttons:</strong>
+        <label><input id="button-prepend" type="checkbox" checked /> Prepend</label>
+        <button id="btn-add-button-size">Size</button>
+        <button id="btn-add-button-locateonmap">Locate on Map</button>
+        <button id="btn-add-button-streetview">Street View</button>
+        <button id="btn-add-incident-type">Incident Types</button>
+        Custom:
+        <input id="button-label" value="Google" />
+        <input id="button-url" value="http://google.be/" />
+        <button id="btn-add-button">Add</button>
       </div>
     </div>
     <div class="actions cf">
       <div class="group">
         <strong>Incidents:</strong>
-        <button id="btn-add-random-incidents">Add Random</button>
-        <button id="btn-load-geojson">Load GeoJSON</button>
+        <button id="btn-add-real-incident">Add Real</button>
+        <button id="btn-add-random-incidents">Add 10 Random</button>
+        <button id="btn-add-random-incidents">Add 10 Random Bulk</button>
         <button id="btn-remove-all-incidents">Remove All</button>
+        <br />
+        GeoJSON:
+        <input id="load-geojson-url" value="http://localhost:8000/fr/ajax/map/filter/" />
+        <button id="btn-load-geojson">Load</button>
       </div>
     </div>
     <div class="actions cf">
@@ -83,69 +55,108 @@
         <button id="btn-new-incident">New Incident</button>
         <button id="btn-remove-new-incident">Remove New Incident</button>
         <strong>At:</strong>
-        Lat,Lng: <input id="new-incident-latlng" value="50.8461603,4.3691917">
+        Lat,Lng: <input id="new-incident-latlng" value="50.8461603,4.3691917" />
         <button id="btn-new-incident-at-latlng">Add</button>
+      </div>
+      <div class="group">
+        <strong>Numbered Marker:</strong>
+        Number: <input id="numbered-marker-number" value="A" style="width:50px" />
+        <button id="btn-add-numbered-marker">Add</button>
+        <button id="btn-remove-numbered-marker">Remove</button>
+      </div>
+    </div>
+    <div class="actions cf">
+      <div class="group">
+        <strong>Search:</strong>
+        <button id="btn-add-search-result">Add 1 Random</button>
+        <button id="btn-add-search-results-bulk">Add 10 Random Bulk</button>
+        <button id="btn-search-no-results">Show no results</button>
+        <button id="btn-remove-search-results">Remove Results</button>
       </div>
     </div>
 
     <script src="../../../lib/jquery-1.8.3.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="../../../lib/leaflet/leaflet.js"></script>
     <script src="../../../lib/leaflet.markercluster/leaflet.markercluster.js"></script>
-    <script src="../leaflet-fms.js"></script>
-    <script src="../urbis-layers.js"></script>
+    <script src="../../../lib/leaflet.opacitycontrols/control.opacity.js"></script>
+    <script src="../../../lib/proj4js/engine/proj4js-compressed.js"></script>
+    <script src="../../../lib/proj4js/defs/EPSG31370.js"></script>
     <script src="leaflet-dev.js"></script>
+    <script src="../leaflet-fms2.js"></script>
     <script>
       var map;
+      var numberedMarker = null;
+var toto;
 
       // Initialize an UrbIS map (empty by default, no layers loaded).
       map = new L.FixMyStreet.Map('map');
 
-      $(document).ready(function() {
-        // Load UrbIS layers in dropdown.
-        var $selectUrbisLayer = $('#urbis-layer');
-        $.each(L.FixMyStreet.Map.namedLayersSettings, function (k, v) {
-          $selectUrbisLayer.append(
-            $('<option></option>').attr('value', k).text(v.title)
-          );
-        });
+      // map.on('resize', function (evt) {
+      //   console.log('Map resized:', evt.newSize, evt.oldSize);
+      // });
 
+
+      $(document).ready(function() {
         // Initialize available map sizes.
         var mapSizes = {
-          '': 'Default',
-          'map-size-big': 'Big',
-          'map-size-small': 'Small',
-          'map-size-500x300': '500x300',
+          'large': 'Large',
+          '': 'Default (medium)',
+          'small': 'Small',
+          '500x300': '500x300',
         };
         var $selectMapSizes = $('#map-sizes');
         $.each(mapSizes, function (k, v) {
           $selectMapSizes.append(
-            $('<option></option>').attr('value', k).text(v)
+            $('<option></option>').attr('value', k).prop('selected', k === '').text(v)
           );
         });
 
         // Get all incident types.
         var incidentTypes = [];
-        for (var k in map.incidentTypes) {
+        for (var k in map.options.incidentTypes) {
           incidentTypes.push(k);
         }
 
 
         // HELPERS...
 
-        // Key of the currently selected layer.
-        function currentLayerUrbisKey() {
-          return $selectUrbisLayer.val();
+        // Add a real incident
+        function addRealIncident() {
+          map.addIncident({
+            id: 15745,
+            type: 'ongoing',
+            latlng: '50.8461603,4.3691917',
+            url: 'http://fixmystreet.irisnet.be/fr/rapport/trou-revetement-chaussee-woluwe-saint-pierre/15745',
+            address: {
+              street: 'Rue David Van Bever',
+              number: '1',
+              postalCode: '1150',
+              city: 'Woluwe-Saint-Pierre ',
+            },
+            categories: 'Chaussée / Revêtement : Trou',
+            photo: 'http://fixmystreet.irisnet.be/media/files/2014/08/15745/1407926734544_1.jpg',
+            icons: {
+              regionalRoads: true,
+              pro: false,
+              assigned: true,
+              priority: 2,
+            },
+          });
         }
 
         // Add random incidents (one by one using `map.addIncident()`).
         function addRandomIncidents() {
           var n, model, options;
-          for (var i = 0; i < 100; i++) {
+          for (var i = 0; i < 10; i++) {
             n = Math.floor(Math.random() * 10) % incidentTypes.length;
             model = {
               id: i,
               type: incidentTypes[n],
               latlng: getRandomLatLng(map),
+              icons: {
+                regionalRoads: false,
+              }
             }
             options = {};
             switch (model.type) {
@@ -171,7 +182,7 @@
         function addRandomIncidentsBulk() {
           var incidents = [];
           var n, model, options;
-          for (var i = 0; i < 100; i++) {
+          for (var i = 0; i < 10; i++) {
             n = Math.floor(Math.random() * 10) % incidentTypes.length;
             model = {
               id: i,
@@ -199,38 +210,118 @@
           map.addIncidents(incidents);
         }
 
+        // Add a random search result.
+        function addRandomSearchResult(model) {
+          var options = {};
+          var model = $.extend(true, {
+            number: '?',
+            latlng: getRandomLatLng(map),
+            address: null,
+          }, model);
+          L.FixMyStreet.Util.getAddress(model.latlng, function (address) {
+            model.address = address;
+          });
+          map.initSearchLayer();
+          map.addSearchResult(model, options);
+        }
+
+        // Add random search results.
+        function addRandomSearchResultsBulk() {
+          var options = {};
+          var models = [];
+          for (var i = 0; i < 10; i++) {
+            var closure = function (i, latlng) {
+              L.FixMyStreet.Util.getAddress(latlng, function (address) {
+                var model = {
+                  number: String.fromCharCode(65 + i),
+                  latlng: L.FixMyStreet.Util.toLatLng(address),
+                  address: address,
+                };
+                models.push(model);
+                if (models.length == 10) {
+                  map.addSearchResults(models);
+                }
+              });
+            };
+            closure(i, getRandomLatLng(map));
+          }
+        }
+
 
         // CLICK HANDLERS...
 
-        // Toggle the visibility (of a named layer).
-        $('#btn-toggle').click(function (evt) {
+        // Change map dimensions.
+        $selectMapSizes.change(function (evt) {
           evt.preventDefault();
-          map.toggleNamedLayer(currentLayerUrbisKey());
+          map.setCssSize($selectMapSizes.val());
         });
 
-        // Unload the given named layer.
-        $('#btn-unload').click(function (evt) {
+        // Add map size control.
+        $('#btn-add-button-size').click(function (evt) {
           evt.preventDefault();
-          map.unloadNamedLayer(currentLayerUrbisKey());
+          var options = {
+            prepend: $('#button-prepend').prop('checked'),
+          };
+          map.addSizeToggle(options);
         });
 
-        // Reset the options of the map (e.g. center, zoom).
-        $('#btn-reset-options').click(function (evt) {
+        // Add "locate on map" control.
+        $('#btn-add-button-locateonmap').click(function (evt) {
           evt.preventDefault();
-          map.setOptions();
+          var options = {
+            prepend: $('#button-prepend').prop('checked'),
+          };
+          map.addLocateOnMapButton(options);
+        });
+
+        // Add "Street View" control.
+        $('#btn-add-button-streetview').click(function (evt) {
+          evt.preventDefault();
+          var options = {
+            prepend: $('#button-prepend').prop('checked'),
+          };
+          map.addStreetViewButton(options);
+        });
+
+        // Add custom button control.
+        $('#btn-add-button').click(function (evt) {
+          evt.preventDefault();
+          var options = {
+            label: $('#button-label').val(),
+            prepend: $('#button-prepend').prop('checked'),
+            attr: {
+              href: $('#button-url').val(),
+              target: '_blank',
+            },
+          };
+          map.addButton(options);
+        });
+
+        // Add "incident type" filter.
+        $('#btn-add-incident-type').click(function (evt) {
+          evt.preventDefault();
+          map.addIncidentTypeControl();
         });
 
         // Add random incidents.
+        $('#btn-add-real-incident').click(function (evt) {
+          evt.preventDefault();
+          addRealIncident();
+        });
         $('#btn-add-random-incidents').click(function (evt) {
           evt.preventDefault();
-          // addRandomIncidents();
+          addRandomIncidents();
+        });
+        $('#btn-add-random-incidents-bulk').click(function (evt) {
+          evt.preventDefault();
           addRandomIncidentsBulk();
         });
 
         // Add incidents from GeoJSON.
         $('#btn-load-geojson').click(function (evt) {
           evt.preventDefault();
-          map.addIncidentsFromGeoJson('http://localhost:8000/fr/ajax/map/filter/');
+          var url = $('#load-geojson-url').val();
+          map.addIncidentsFromGeoJson(url);
         });
 
         // Remove all incidents.
@@ -247,30 +338,64 @@
         // Add a new incident draggable marker.
         $('#btn-new-incident').click(function (evt) {
           evt.preventDefault();
-          map.addNewIncidentMarker();
+          map.addIncident({type: 'new'});
         });
 
         // Add a new incident draggable marker, at a given LatLng.
         $('#btn-new-incident-at-latlng').click(function (evt) {
           evt.preventDefault();
           var latlng = $('#new-incident-latlng').val();
-          map.addNewIncidentMarker(latlng);
+          map.addIncident({type: 'new', latlng: latlng});
         });
 
         // Remove the new incident marker.
         $('#btn-remove-new-incident').click(function (evt) {
           evt.preventDefault();
-          map.removeNewIncidentMarker();
+          map.removeNewIncident();
         });
 
-        // Change map dimensions.
-        $selectMapSizes.change(function (evt) {
+        // Add a new numbered marker.
+        $('#btn-add-numbered-marker').click(function (evt) {
           evt.preventDefault();
-          map.setCssSize($selectMapSizes.val());
+          $('#btn-remove-numbered-marker').click();
+          var options = null;
+          var model = {
+            number: $('#numbered-marker-number').val(),
+          };
+          numberedMarker = new L.FixMyStreet.SearchResultMarker(map.getCenter(), options, model);
+          numberedMarker.addTo(map);
         });
 
-        map.on('resize', function (evt) {
-          console.log('Map resized:', evt.newSize, evt.oldSize);
+        // Add a new numbered marker.
+        $('#btn-remove-numbered-marker').click(function (evt) {
+          evt.preventDefault();
+          if (!numberedMarker) { return; }
+          map.removeLayer(numberedMarker);
+          numberedMarker = null;
+        });
+
+        // Add a search result.
+        $('#btn-add-search-result').click(function (evt) {
+          evt.preventDefault();
+          addRandomSearchResult();
+        });
+
+        // Add random search results.
+        $('#btn-add-search-results-bulk').click(function (evt) {
+          evt.preventDefault();
+          addRandomSearchResultsBulk();
+        });
+
+        // Show no results search.
+        $('#btn-search-no-results').click(function (evt) {
+          evt.preventDefault();
+          map.addSearchResults([]);
+        });
+
+        // Remove search results.
+        $('#btn-remove-search-results').click(function (evt) {
+          evt.preventDefault();
+          map.removeSearchResults();
         });
       });
     </script>
