@@ -169,7 +169,7 @@ body, select {
   padding: 10px;
 }
 .fmsmap-popup-footer .button {
-  background: #ffdb00 url('../../../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
+  background: #ffdb00 url('../../../images/icon-circle-right-arrow.png') 5px 50% no-repeat;
   border: 1px solid #607c9d;
   border-radius: 4px;
   -moz-border-radius: 4px;
@@ -177,7 +177,7 @@ body, select {
   color: #607c9d;
   display: inline-block;
   font-family: 'Dosis', sans-serif;
-  padding: 4px 12px;
+  padding: 4px 12px 4px 27px;
   text-transform: uppercase;
 }
 .fmsmap-popup-footer .button:hover,

@@ -217,7 +217,7 @@ var toto;
             latlng: getRandomLatLng(map),
             address: null,
           }, model);
-          L.FixMyStreet.Util.getAddress(model.latlng, function (address) {
+          L.FixMyStreet.Util.getAddressFromLatLng(model.latlng, function (address) {
             model.address = address;
           });
           map.initSearchLayer();
@@ -230,10 +230,10 @@ var toto;
           var models = [];
           for (var i = 0; i < 10; i++) {
             var closure = function (i, latlng) {
-              L.FixMyStreet.Util.getAddress(latlng, function (address) {
+              L.FixMyStreet.Util.getAddressFromLatLng(latlng, function (address) {
                 var model = {
                   number: String.fromCharCode(65 + i),
-                  latlng: L.FixMyStreet.Util.toLatLng(address),
+                  latlng: address.latlng,
                   address: address,
                 };
                 models.push(model);

@@ -428,6 +428,7 @@ L.FixMyStreet.Map = L.Map.extend({
     var marker = new L.FixMyStreet.SearchResultMarker(latlng, options, model);
     marker.addTo(this._searchLayer);
     this.searchResults.push(marker);
+    // @TODO: Zoom on all results
   },
 
   addSearchResults: function (models, options) {  // (Object, [Object])
@@ -918,10 +919,6 @@ L.FixMyStreet.SearchResultIcon = L.FixMyStreet.NumberedIcon.extend({
 
 // MARKERS =====================================================================
 
-L.MarkerClusterGroup.include({
-});
-
-
 L.FixMyStreet.Marker = L.Marker.extend({
   initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
     var that = this;
@@ -1086,7 +1083,7 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
 
   _updateAddress: function() {
     var that = this;
-    L.FixMyStreet.Util.getAddress(this.getLatLng(), function (address) {
+    L.FixMyStreet.Util.getAddressFromLatLng(this.getLatLng(), function (address) {
       that.getPopup().updateAddress(address);
     });
   },
@@ -1188,7 +1185,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
 
   updateAddress: function (address) {
     var that = this;
-    this.renderTemplate(this.options.templates._address_, {address: address}, function (error, html) {
+    this._renderTemplate(this.options.templates._address_, {address: address}, function (error, html) {
       if (!error) {
         that.$container.find('.address').html(html);
       }
@@ -1228,10 +1225,14 @@ L.FixMyStreet.Popup = L.Popup.extend({
               that._marker.openStreetView();
             });
             break;
-          case 'new-incident':  // @TODO: Here or only in L.FixMyStreet.SearchResultPopup
+          case 'new-incident':
             $this.click(function (evt) {
               evt.preventDefault();
-              that._marker.openStreetView();
+              that.removeNewIncident();
+              that.addIncident({
+                type: 'new',
+                latlng: that._marker.getLatLng(),
+              });
             });
             break;
           default:
@@ -1323,6 +1324,8 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
   },
 
   initialize: function (options, source) {  // ([Object], [L.ILayer])
+    L.FixMyStreet.Util.mergeExtendedOptions(this);
+    L.setOptions(this, options);
     L.FixMyStreet.Popup.prototype.initialize.call(this, options, source);
     this._activated = false;
   },
@@ -1416,7 +1419,8 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
         '<% } %>',
       _body_:
         '<% if (this.results.length === 0) { %>' +
-          gettext('Please refine your search criteria.') +
+          '<p>' + gettext('No corresponding address has been found.') + '</p>' +
+          '<p>' + gettext('Please refine your search criteria.') + '</p>' +
         '<% } else { %>' +
           '<ul>' +
             '<% for (var i in this.results) { %>' +
@@ -1440,6 +1444,7 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
   },
 
   onAdd: function (map) {
+    var that = this;
     var results = [];
     $.each(map.searchResults, function (i, marker) {
       results.push(marker.model);
@@ -1454,6 +1459,14 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
       });
       $e.mouseout(function (evt) {
         $('.fmsmap-search-result-icon[data-search-result="' + $e.data('search-result') + '"]').removeClass('hover');
+      });
+      $e.click(function (evt) {
+        that._map.removeNewIncident();
+        that._map.addIncident({
+          type: 'new',
+          latlng: results[i].latlng,
+          address: results[i].address,
+        });
       });
     });
 
@@ -1499,6 +1512,10 @@ L.FixMyStreet.Util = {
       return latlng;
     }
 
+    if (latlng instanceof L.Point) {
+      return L.Projection.LonLat.unproject(latlng);
+    }
+
     if (typeof latlng === 'string') {
       var chunks = latlng.split(/,\s*/);
       return new L.LatLng(parseFloat(chunks[0]), parseFloat(chunks[1]));
@@ -1507,6 +1524,8 @@ L.FixMyStreet.Util = {
     if (typeof latlng === 'object') {
       if ('lat' in latlng && 'lng' in latlng) {
         return new L.LatLng(latlng.lat, latlng.lng);
+      } else if ('x' in latlng && 'y' in latlng) {
+        return L.Projection.LonLat.unproject(L.point(latlng.x, latlng.y));
       } else if (0 in latlng && 1 in latlng) {
         return new L.LatLng(latlng[0], latlng[1]);
       }
@@ -1533,7 +1552,7 @@ L.FixMyStreet.Util = {
     return {x: point.x, y: point.y};
   },
 
-  getAddress: function (latlng, success, error) {  // (L.LatLng or Object or String, Function, [Function])
+  getAddressFromLatLng: function (latlng, success, error) {  // (L.LatLng or Object or String, Function, [Function])
     var that = this;
     $.ajax({
       url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
@@ -1542,20 +1561,13 @@ L.FixMyStreet.Util = {
       data: {
         json: JSON.stringify({
           language: LANGUAGE_CODE,
-          point: this.toWMS(this.toLatLng(latlng)),
+          point: L.Projection.LonLat.project(this.toLatLng(latlng)),
+          spatialReference: '4326',
         }),
       },
 
       success: function (response) {
-        var address = {
-          street: response.result.address.street.name,
-          number: response.result.address.number,
-          postalCode: response.result.address.street.postCode,
-          city: gettext('Brussels'),
-          lat: latlng.lat,
-          lng: latlng.lng,
-        };
-        success(address);
+        success(that.urbisResultToAddress(response.result));
       },
 
       error: function (response) {
@@ -1568,6 +1580,19 @@ L.FixMyStreet.Util = {
         }
       },
     });
+  },
+
+  urbisResultToAddress: function (result) {  // (Object)
+    var address = {
+      street: result.address.street.name,
+      number: result.address.number,
+      postalCode: result.address.street.postCode,
+      city: gettext('Brussels'),
+    };
+    if (result.point !== undefined) {
+      address.latlng = L.FixMyStreet.Util.toLatLng(result.point);
+    }
+    return address;
   },
 
   openStreetView: function (latlng) {  // (L.LatLng or Object or String)
