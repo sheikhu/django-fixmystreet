@@ -72,11 +72,16 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
     putMarker: function (position, address, preventZoomIn) {
         var self = this;
         this.trigger('put-marker');
-        this.position = new L.LatLng(position.y, position.x);
-        this.address = address;
+        this.position = L.FixMyStreet.Util.toLatLng(position);
+        this.address = L.FixMyStreet.Util.urbisResultToAddress(address);
+        var model = {
+            type: 'new',
+            latlng: this.position,
+            address: this.address,
+        };
 
-        fms.map.removeNewIncidentMarker();
-        this.draggableMarker = fms.map.addNewIncidentMarker(this.position, {
+        fms.map.removeNewIncident();
+        this.draggableMarker = fms.map.addIncident(model, {
             popup: this.renderPopup(),
         });
 

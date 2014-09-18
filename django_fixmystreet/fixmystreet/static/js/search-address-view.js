@@ -36,6 +36,8 @@ fms.AddressSearchView = Backbone.View.extend({
         this.addressProposal = new fms.AddressProposalView();
         this.addressProposal.render();
 
+        fms.map.addLocateOnMapButton();
+
         return this;
     },
 
@@ -89,29 +91,36 @@ fms.AddressSearchView = Backbone.View.extend({
         });
     },
     processSearchResults: function (response) {
-        if(response.status == 'success' && response.result.length > 0) {
+        if (response.status == 'success' && response.result.length > 0) {
+            //fms.newIncidentMarker.enlarge();
+            fms.map.removeSearchResults();
+            fms.map.removeNewIncident();
 
-            fms.newIncidentMarker.enlarge();
-            this.addressProposal.cleanMap();
-
-            // Urbis response 1 result
-            if(response.result.length == 1) {
-                var position = response.result[0].point;
-                var address = response.result[0].address;
-
-                fms.newIncidentMarker.putMarker(position, address);
+            if (response.result.length === 1) {
+                var model = {
+                    type: 'new',
+                    latlng: L.FixMyStreet.Util.toLatLng(response.result[0].point),
+                    address: L.FixMyStreet.Util.urbisResultToAddress(response.result[0]),
+                };
+                fms.map.addIncident(model);
             } else {
-                results = response.result;
-                fms.map.removeNewIncidentMarker();
-                this.addressProposal.open(results);
+                var models = [];
+                $.each(response.result, function (i, result) {
+                    var model = {
+                        number: String.fromCharCode(65 + i),
+                        latlng: L.FixMyStreet.Util.toLatLng(result.point),
+                        address: L.FixMyStreet.Util.urbisResultToAddress(result),
+                    };
+                    models.push(model);
+                });
+                fms.map.addSearchResults(models);
                 this.showResultIntegrityMessage(results);
             }
+        } else if (response.status == "noresult" || response.status == "success") {
+            fms.map.removeSearchResults();
+            fms.map.addSearchResults([]);
         } else {
-            if(response.status == "noresult" || response.status == "success") {
-                fms.message.error(gettext('No corresponding address has been found'));
-            } else {
-                fms.message.error(response.status);
-            }
+            fms.message.error(response.status);
         }
     },
     showResultIntegrityMessage: function (results) {
