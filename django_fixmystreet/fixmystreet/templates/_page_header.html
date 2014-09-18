@@ -30,7 +30,7 @@
                 <select id="input-ward" class="span4" name="ward">
                     <option value="">{% trans "All communes..." %}</option>
                     {% for zip in zipcodes %}
-                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                        <option value="{{zip.code}}"{% if zip.code == request.GET.ward %} selected{% endif %}>{{zip.code}} {{zip.name}}</option>
                     {% endfor %}
                 </select>
                 <span class="span2">
