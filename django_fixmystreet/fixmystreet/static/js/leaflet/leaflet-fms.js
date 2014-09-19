@@ -1507,7 +1507,7 @@ L.FixMyStreet.Util = {
     }
   },
 
-  toLatLng: function (latlng) {  // (L.LatLng or String or Object)
+  toLatLng: function (latlng) {  // (L.LatLng or L.Point or String or Object)
     if (latlng === undefined || latlng instanceof L.LatLng) {
       return latlng;
     }
@@ -1531,7 +1531,27 @@ L.FixMyStreet.Util = {
       }
     }
 
-    throw new Error('Invalid parameter. Expect L.LatLng or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678}) or Object ([0.123, -45.678]).');
+    throw new Error('Invalid parameter. Expect L.LatLng or L.Point or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678} or [0.123, -45.678]).');
+  },
+
+  toPoint: function(point) {  // (L.Point or L.LatLng or String or Object)
+    if (point === undefined || point instanceof L.Point) {
+      return point;
+    }
+
+    if (point instanceof L.LatLng) {
+      return L.Projection.LonLat.project(point);
+    }
+
+    if (typeof point === 'object') {
+      if ('x' in point && 'y' in point) {
+        return L.point(point.x, point.y);
+      } else if (0 in point && 1 in point) {
+        return L.point(point[0], point[1]);
+      }
+    }
+
+    throw new Error('Invalid parameter. Expect L.Point or L.LatLng or String ("123456.789,165432.987") or Object ({x: 123456.789, y: 165432.987} or [123456.789, 165432.987]).');
   },
 
   toXY: function (latlng) {  // (L.LatLng)
@@ -1539,15 +1559,19 @@ L.FixMyStreet.Util = {
     return {x: point.x, y: point.y};  // {x: lng, y: lat}
   },
 
-  toWMS: function (latlng) {  // (L.LatLng)
+  fromWMS: function (value) {  // (L.Point)
+    this._initProj4js();
+    var point = this.toPoint(value);
+    Proj4js.transform(this.PROJ4JS_31370, this.PROJ4JS_4326, point);
+    return {x: point.x, y: point.y};
+  },
+
+  toWMS: function (latlng) {  // (L.LatLng or L.Point)
     // EPSG:4326 to EPSG:31370 (Belgium Lambert 72)
     // http://proj4js.org/  |  http://zoologie.umh.ac.be/tc/algorithms.aspx
     // Avenue des Arts 21, 1000 Brussels: (50.8461603, 4.3691917) => (150030.9884557725, 170639.46667259652)
-    if (this.PROJ4JS_4326 === undefined) {
-      this.PROJ4JS_4326 = new Proj4js.Proj('EPSG:4326');
-      this.PROJ4JS_31370 = new Proj4js.Proj('EPSG:31370');
-    }
-    var point = new Proj4js.Point(latlng.lng, latlng.lat);
+    this._initProj4js();
+    var point = latlng instanceof L.Point ? latlng : new Proj4js.Point(latlng.lng, latlng.lat);
     Proj4js.transform(this.PROJ4JS_4326, this.PROJ4JS_31370, point);
     return {x: point.x, y: point.y};
   },
@@ -1604,5 +1628,12 @@ L.FixMyStreet.Util = {
     var url = 'https://maps.google.be/maps?q=%(y)s,%(x)s&layer=c&z=17&iwloc=A&sll=%(y)s,%(x)s&cbp=13,240.6,0,0,0&cbll=%(y)s,%(x)s';
     url = url.replace(/%\(x\)s/g, xy.x).replace(/%\(y\)s/g, xy.y);
     window.open(url, '_blank');
+  },
+
+  _initProj4js: function () {
+    if (this.PROJ4JS_4326 === undefined) {
+      this.PROJ4JS_4326 = new Proj4js.Proj('EPSG:4326');
+      this.PROJ4JS_31370 = new Proj4js.Proj('EPSG:31370');
+    }
   },
 };
