@@ -11,7 +11,7 @@ body, select {
   height: 610px;
 }
 #map.fmsmap-size-small {
-  height: 200px;
+  height: 150px;
 }
 #map.fmsmap-size-500x300 {
   height: 300px;
