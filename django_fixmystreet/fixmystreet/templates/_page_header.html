@@ -49,20 +49,6 @@
     </div>
 
     {% if map %}
-    <div id="map">
-        <!-- Results -->
-        <div>
-            <div id="proposal-message" class="hide"> </div>
-            <div id="proposal-container" class="inline" hidden>
-                <h3 class="numberResultsContainer"><span id="numberResults"></span>
-                    {% trans 'results' %}
-                </h3>
-                <ul id="proposal" ></ul>
-                <p><button id="previousResults" hidden>&lt;</button> <button id="nextResults" hidden>&gt;</button></p>
-            </div>
-        </div>
-
-        <div id="btn-localizeviamap"><a href="#"><i class="icon-localizeviamap"></i>{% trans "Localiser via la carte" %}</a></div>
-    </div>
+        <div id="map"></div>
     {% endif %}
 </article>
