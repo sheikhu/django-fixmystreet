@@ -29,7 +29,7 @@ $(function(){
         type: '{{ report.get_status_for_js_map }}',
         latlng: latlng,
     }, {popup: null});
-    marker.centerMap();
+    fms.map.centerMapOnMarker(marker);
     fms.map.addSizeToggle({state1: {size: 'small'}});
     fms.map.addStreetViewButton({latlng: marker.getLatLng()});
 
