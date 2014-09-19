@@ -226,5 +226,7 @@ def search_ticket(request):
 
 def index(request):
     return render_to_response("reports/reports_map.html", {
+        'location': request.GET.get("q"),
+        'zipcode': request.GET.get("ward"),
         'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))
