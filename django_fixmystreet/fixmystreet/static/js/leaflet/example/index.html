@@ -40,7 +40,7 @@
         <strong>Incidents:</strong>
         <button id="btn-add-real-incident">Add Real</button>
         <button id="btn-add-random-incidents">Add 10 Random</button>
-        <button id="btn-add-random-incidents">Add 10 Random Bulk</button>
+        <!-- <button id="btn-add-random-incidents-bulk">Add 10 Random Bulk</button> -->
         <button id="btn-remove-all-incidents">Remove All</button>
         <br />
         GeoJSON:
@@ -178,36 +178,36 @@ var toto;
         }
 
         // Add random incidents (bulk using `map.addIncidents()`).
-        function addRandomIncidentsBulk() {
-          var incidents = [];
-          var n, model, options;
-          for (var i = 0; i < 10; i++) {
-            n = Math.floor(Math.random() * 10) % incidentTypes.length;
-            model = {
-              id: i,
-              type: incidentTypes[n],
-              latlng: getRandomLatLng(map),
-            }
-            options = {};
-            switch (model.type) {
-              case 'reported': break;
-              case 'ongoing':
-                options.popupOptions = {
-                  className: 'popup-yellow',
-                  closeButton: false,
-                };
-                break;
-              case 'closed':
-                options.iconOptions = {
-                  className: 'marker-in-black',
-                };
-                break;
-            }
-            incidents.push({model: model, options: options});
-          }
+        // function addRandomIncidentsBulk() {
+        //   var incidents = [];
+        //   var n, model, options;
+        //   for (var i = 0; i < 10; i++) {
+        //     n = Math.floor(Math.random() * 10) % incidentTypes.length;
+        //     model = {
+        //       id: i,
+        //       type: incidentTypes[n],
+        //       latlng: getRandomLatLng(map),
+        //     }
+        //     options = {};
+        //     switch (model.type) {
+        //       case 'reported': break;
+        //       case 'ongoing':
+        //         options.popupOptions = {
+        //           className: 'popup-yellow',
+        //           closeButton: false,
+        //         };
+        //         break;
+        //       case 'closed':
+        //         options.iconOptions = {
+        //           className: 'marker-in-black',
+        //         };
+        //         break;
+        //     }
+        //     incidents.push({model: model, options: options});
+        //   }
 
-          map.addIncidents(incidents);
-        }
+        //   map.addIncidents(incidents);
+        // }
 
         // Add a random search result.
         function addRandomSearchResult(model) {
@@ -228,21 +228,25 @@ var toto;
         function addRandomSearchResultsBulk() {
           var options = {};
           var models = [];
+          var toProcess = 10;
           for (var i = 0; i < 10; i++) {
-            var closure = function (i, latlng) {
-              L.FixMyStreet.Util.getAddressFromLatLng(latlng, function (address) {
-                var model = {
-                  number: String.fromCharCode(65 + i),
-                  latlng: address.latlng,
-                  address: address,
-                };
-                models.push(model);
-                if (models.length == 10) {
+            var model = {
+              number: String.fromCharCode(65 + i),
+              latlng: getRandomLatLng(map),
+              address: null,
+            };
+            models.push(model);
+          }
+          for (i = 0; i < 10; i++) {
+            (function (i) {
+              L.FixMyStreet.Util.getAddressFromLatLng(models[i].latlng, function (address) {
+                toProcess--;
+                models[i].address = address;
+                if (toProcess <= 0) {
                   map.addSearchResults(models);
                 }
               });
-            };
-            closure(i, getRandomLatLng(map));
+            })(i);
           }
         }
 
@@ -311,10 +315,11 @@ var toto;
           evt.preventDefault();
           addRandomIncidents();
         });
-        $('#btn-add-random-incidents-bulk').click(function (evt) {
-          evt.preventDefault();
-          addRandomIncidentsBulk();
-        });
+        // $('#btn-add-random-incidents-bulk').click(function (evt) {
+        //   evt.preventDefault();
+        //   addRandomIncidentsBulk();
+        // });
+
 
         // Add incidents from GeoJSON.
         $('#btn-load-geojson').click(function (evt) {
