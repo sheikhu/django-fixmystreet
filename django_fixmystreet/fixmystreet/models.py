@@ -751,14 +751,13 @@ class Report(UserTrackedModel):
     def get_status_for_js_map(self):
         if self.is_created():
             return "reported"
-        elif self.is_refused():
-            return "refused"
-        elif self.is_temporary():
-            return "temporary"
         elif self.is_in_progress():
             return "ongoing"
-        else:
+        elif self.is_closed():
             return "closed"
+        #elif self.is_refused() or self.is_temporary():
+        else:
+            return "other"
 
     def get_date_planned(self):
         if self.date_planned:
