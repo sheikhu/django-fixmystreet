@@ -294,7 +294,7 @@ def merge(request, slug, report_id):
     }, context_instance=RequestContext(request))
 
 def reopen_request(request, slug, report_id):
-    report = get_object_or_404(Report, id=report_id, private=True)
+    report = get_object_or_404(Report, id=report_id)
 
     if request.method == "POST":
         comment = None
