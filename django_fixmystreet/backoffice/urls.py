@@ -23,6 +23,7 @@ urlpatterns += patterns(
     'django_fixmystreet.backoffice.views.reports.main',
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show', name='report_show_pro'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/document$'), 'document', name='report_document_pro'),
+    url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/reopen$'), 'reopen_request', name='report_reopen_request_pro'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/merge$'), 'merge', name='report_merge_pro'),
     url(_(r'^report/new$'), 'new', name='report_new_pro'),
     url(_(r'^report/verify'), 'verify', name='report_verify_pro'),

@@ -48,6 +48,7 @@ urlpatterns += patterns(
     # url(_(r'^reports/(?P<slug>.*)/$'), 'index', name='report_commune_index'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)$'), 'show', name='report_show'),
     url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/document$'), 'document', name='report_document'),
+    url(_(r'^report/(?P<slug>.*)/(?P<report_id>\d+)/reopen$'), 'reopen_request', name='report_reopen_request'),
     url(r'^report/search', 'search_ticket', name='search_ticket'),
     url(_(r'^report/new'), 'new', name='report_new'),
     url(_(r'^report/verify'), 'verify', name='report_verify'),

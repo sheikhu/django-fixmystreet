@@ -1,0 +1,36 @@
+{% extends 'emails/notifications/base.txt' %}
+{% load i18n %}
+
+{% block content_mail_fr %}
+Une demande de réouverture d'un incident a été effectuée par {{updater}}.
+
+{% language 'fr' %}
+Raison : {% trans reason %}
+{% endlanguage %}
+
+{{ comment }}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
+
+{{display_url}}
+
+{% endblock %}
+
+{% block content_mail_nl %}
+
+Aanvraag tot heropening van de melding gedaan door {{updater}}.
+
+{% language 'nl' %}
+Reden : {% trans reason %}
+{% endlanguage %}
+
+{{ comment }}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+
+U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:
+
+{{display_url}}
+
+{% endblock %}

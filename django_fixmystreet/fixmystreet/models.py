@@ -973,6 +973,22 @@ class Report(UserTrackedModel):
 
             self.save()  # set updated date and modified_by
 
+    def trigger_reopen_request(self, user=None, comment=None, reason=None):
+
+        ReportNotification(
+            content_template='notify-reopen-request',
+            recipient_mail=self.responsible_department.email,
+            related=self,
+        ).save(updater=user, comment=comment, reason=reason)
+
+        ReportEventLog(
+            report=self,
+            event_type=ReportEventLog.REOPEN_REQUEST,
+            user=user,
+        ).save()
+
+        self.save()  # set updated date and modified_by
+
     def to_full_JSON(self):
         """
         Method used to display the whole object content as JSON structure for website
@@ -1544,6 +1560,7 @@ class ReportAttachment(UserTrackedModel):
     CLOSED = 2
     REFUSED = 3
     MARK_AS_DONE = 4
+    REOPEN_REQUEST = 5
 
     REPORT_ATTACHMENT_SECURITY_LEVEL_CHOICES = (
         (PUBLIC, _("Public")),
@@ -1555,7 +1572,8 @@ class ReportAttachment(UserTrackedModel):
         (DOCUMENTATION, _("Documentation")),
         (CLOSED, _("Closing message")),
         (REFUSED, _("Refusing message")),
-        (MARK_AS_DONE, _("Mark as done message"))
+        (MARK_AS_DONE, _("Mark as done message")),
+        (REOPEN_REQUEST, _("Reopen request message")),
     )
 
     type = models.IntegerField(choices=REPORT_ATTACHMENT_TYPE_CHOICES, default=DOCUMENTATION, null=False)
@@ -1626,6 +1644,8 @@ class ReportAttachment(UserTrackedModel):
             return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.REFUSED)
         elif self.type == self.MARK_AS_DONE:
             return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.MARK_AS_DONE)
+        elif self.type == self.REOPEN_REQUEST:
+            return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.REOPEN_REQUEST)
         else:
             return ""
 
@@ -2022,6 +2042,7 @@ class ReportNotification(models.Model):
         files = None
         date_planned = None
         merged_with = None
+        reason = None
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -2037,6 +2058,9 @@ class ReportNotification(models.Model):
         if 'date_planned' in kwargs:
             date_planned = kwargs['date_planned']
             del kwargs['date_planned']
+        if 'reason' in kwargs:
+            reason = kwargs['reason']
+            del kwargs['reason']
 
         if self.related.merged_with:
             merged_with = self.related.merged_with
@@ -2053,7 +2077,7 @@ class ReportNotification(models.Model):
             template_mail = self.content_template
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template_mail, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with)
+            subject, html, text = transform_notification_template(template_mail, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with, reason=reason)
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": self.reply_to})
@@ -2118,6 +2142,7 @@ class ReportEventLog(models.Model):
     PLANNED = 17
     MERGED = 18
     REOPEN = 19
+    REOPEN_REQUEST = 20
     EVENT_TYPE_CHOICES = (
         (REFUSE, _("Refuse")),
         (CLOSE, _("Close")),
@@ -2138,6 +2163,7 @@ class ReportEventLog(models.Model):
         (PLANNED, _("Planned")),
         (MERGED, _("Merged")),
         (REOPEN, _("Reopen")),
+        (REOPEN_REQUEST, _("Reopen request")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -2159,10 +2185,11 @@ class ReportEventLog(models.Model):
         PLANNED: _("Report planned to {date_planned}"),
         MERGED: _("Report merged with report #{merged_with_id}"),
         REOPEN: _("Report reopen by {user}"),
+        REOPEN_REQUEST: _("Request to reopen report made by {user}"),
     }
     STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
-    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED, REOPEN]
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
 
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)

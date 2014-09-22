@@ -10,7 +10,8 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
-from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, \
+    ReportAttachment
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import PriorityForm
@@ -290,4 +291,30 @@ def merge(request, slug, report_id):
         "fms_user": request.fmsuser,
         "report": report,
         "reports_nearby": reports_nearby
+    }, context_instance=RequestContext(request))
+
+def reopen_request(request, slug, report_id):
+    report = get_object_or_404(Report, id=report_id, private=False)
+
+    if request.method == "POST":
+        comment = None
+        reason = request.POST["reason"]
+        comment_form = ReportCommentForm(request.POST, prefix='comment')
+        user = FMSUser.objects.get(pk=request.user.id)
+        if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0 and comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.report = report
+            comment.created_by = user
+            comment.type = ReportAttachment.REOPEN_REQUEST
+            comment.save()
+
+        report.trigger_reopen_request(user=user, comment=comment, reason=reason)
+
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    else:
+        comment_form = ReportCommentForm(prefix='comment')
+
+    return render_to_response("reports/reopen.html", {
+        "report": report,
+        "comment_form": comment_form,
     }, context_instance=RequestContext(request))

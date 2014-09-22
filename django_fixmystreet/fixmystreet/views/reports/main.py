@@ -11,7 +11,7 @@ from django.utils.translation import get_language
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportFile, ReportSubscription,
-    ZipCode, ReportMainCategoryClass)
+    ZipCode, ReportMainCategoryClass, ReportAttachment)
 from django_fixmystreet.fixmystreet.forms import (
     CitizenReportForm, CitizenForm,
     ReportCommentForm, ReportFileForm)
@@ -236,3 +236,36 @@ def index(request):
         'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))
 
+def reopen_request(request, slug, report_id):
+    report = get_object_or_404(Report, id=report_id, private=False)
+
+    if request.method == "POST":
+        comment = None
+        reason = request.POST["reason"]
+        comment_form = ReportCommentForm(request.POST, prefix='comment')
+        citizen_form = CitizenForm(request.POST, prefix='citizen')
+
+        # this checks update is_valid too
+        if citizen_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) :
+
+            citizen = citizen_form.save()
+
+            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
+                comment = comment_form.save(commit=False)
+                comment.report = report
+                comment.created_by = citizen
+                comment.type = ReportAttachment.REOPEN_REQUEST
+                comment.save()
+
+            report.trigger_reopen_request(user=citizen, comment=comment, reason=reason)
+
+            return HttpResponseRedirect(report.get_absolute_url())
+    else:
+        comment_form = ReportCommentForm(prefix='comment')
+        citizen_form = CitizenForm(prefix='citizen')
+
+    return render_to_response("reports/reopen.html", {
+        "report": report,
+        "comment_form": comment_form,
+        "citizen_form": citizen_form,
+    }, context_instance=RequestContext(request))

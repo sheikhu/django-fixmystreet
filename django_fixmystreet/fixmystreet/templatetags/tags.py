@@ -16,7 +16,7 @@ MENU_DEFS = {
                                   ],
     'view':                      ['report_index', 'report_show', 'report_update', 'subscribe',
                                   'unsubscribe', 'flag_success', 'flag_report', 'report_show_pro',
-                                  'report_table_pro'
+                                  'report_table_pro', 'report_reopen_request', 'report_reopen_request_pro'
                                   ],
     'auth':                      ['list_users', 'edit_user', 'create_user', 'list_groups',
                                   'create_group', 'edit_group',
@@ -29,7 +29,7 @@ MENU_DEFS = {
     'users_change_password':     ['password_change'],
     'about':                     ['about', 'terms_of_use'],
     'faq':                       ['faq'],
-    'help':                       ['help'],
+    'help':                      ['help'],
     'contact':                   ['contact']
 }
 

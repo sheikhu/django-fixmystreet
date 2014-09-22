@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tags %}
+{% load static from staticfiles %}
+
+{% block title %}{% trans 'Reopen request' %}{% endblock %}
+
+{% block script %}
+
+{{ block.super }}
+
+{% block specific_scripts %}
+    <script type="text/javascript">
+    /******************************/
+    /* QUERY READY INITIALIZATION */
+    /******************************/
+    $(function(){
+        fms.currentMap = new fms.Map('map', {
+            apiLang:     LANGUAGE_CODE,
+            localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
+            urbisUrl:    WMS_SERVICE_URL,
+            origin:{
+                x:{{ report.point.x }},
+                y:{{ report.point.y }}
+            }
+        });
+
+        var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
+
+        {% if BACKOFFICE %}
+            reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
+        {%endif%}
+        var markers = [];
+        markers.push(fms.currentMap.addReport(reportJSON, 1, {% if BACKOFFICE %}true{%else%}false{%endif%}, true));
+        fms.currentMap.markersLayer.addFeatures(markers);
+
+
+        document.getElementById('btn-streetview').addEventListener('click', function(){
+            var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
+            window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
+        })
+    });
+
+    $(function(event) {
+    $("#btn-toggle-map a").click(function(evt) {
+        evt.preventDefault();
+        var mapEl = $('#map');
+        if (mapEl.hasClass('map-big')) {
+            mapEl.removeClass('map-big');
+        } else {
+            mapEl.addClass('map-big');
+        }
+    });
+});
+
+    </script>
+{% endblock %}
+
+{% endblock %} <!--endblock script-->
+
+{% block css %}
+{{ block.super }}
+{% endblock %}
+
+{% block map %}
+
+   <div class="row">
+        <div class="span12">
+            <article class="view_incident container">
+                <div class="lead-container">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <h3>{% trans 'Reopen request' %}</h3>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <div class="ticket_infos">
+
+                                {% if report.is_created %}
+                                    <span class="ticket_number red_border">
+                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% elif report.is_in_progress %}
+                                    <span class="ticket_number orange_border">
+                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% elif report.is_refused %}
+                                    <span class="ticket_number gray_border">
+                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% else %}
+                                    <span class="ticket_number green_border">
+                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                    </span>
+                                {% endif %}
+
+
+                                <br />
+                                <span class="ticket_address">
+                                    {{ report.address }}, {{ report.address_number }}<br />
+                                    {{ report.postalcode }} {{ report.get_address_commune_name }}
+                                </span><br />
+                                <span class="ticket_desc">
+                                    {{ report.display_category }}
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="span8 incidentDetailsStatus">
+                            <!-- ROW CIT 1 -->
+                            <p>
+                                <strong>{% trans "Posted on" %}</strong>:
+                               {{report.created|date:"d/m/Y"}}
+                            </p>
+                            <!-- ROW CIT 2 -->
+                            <p>
+                                <strong>{% trans "Responsible:" %}</strong>
+                                <!-- responsible-name, responsible-group, responsible-entity -->
+                                {{report.responsible_department.name }} -
+                                {{report.responsible_entity.name}}
+                                {% if report.responsible_department.phone %}
+                                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
+                                {% endif %}
+                            </p>
+                            <!-- ROW CIT 3 -->
+                            <p>
+                                <strong>{% trans "Status:" %}</strong>
+                                {{ report.get_public_status_display }}
+                                {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
+                                    {{report.contractor.name}}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div  id="map" class="show_report_map">
+                    <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+                    <div class="map-button-section">
+                        <div id="btn-toggle-map">
+                            <a href="#" class="pulldown-map"><i class="icon-pulldownmap"></i>{% trans "Extend map" %}</a>
+                            <a href="#" class="pullup-map"><i class="icon-pullupmap"></i>{% trans "Reduce map" %}</a>
+                        </div>
+                        <div id="btn-streetview"><a href="#"><i class="icon-streetview"></i>{% trans "Street View" %}</a></div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="reopen-request-container">
+{#        {% trans "I request the reopening of this incident for the following reason : " %}#}
+        {% if BACKOFFICE %}
+            <form id="reopen_request_form"  action="{% url 'report_reopen_request_pro'  report.get_slug report.id %}" method="post" class="form-horizontal">
+        {% else %}
+            <form id="reopen_request_form"  action="{% url 'report_reopen_request'  report.get_slug report.id %}" method="post" class="form-horizontal">
+        {% endif %}
+            <div class="control-group required">
+                <label for="reason" class="control-label">
+                    <strong>{% trans 'Reason' %}</strong>
+                </label>
+                <div class="controls">
+                     <ul class="ul-reopen-request">
+                        <li>
+                            <input id= "not_repaired" type="radio" name="reason" value="Not repaired" />
+                            <label for="not_repaired">{% trans 'Not repaired' %}</label>
+                        </li>
+                        <li>
+                            <input id= "badly_repaired" type="radio" name="reason"  value="Badly repaired" />
+                            <label for="badly_repaired">{% trans 'Badly repaired' %}</label>
+                        </li>
+                        <li>
+                            <input id= "other" type="radio" name="reason"  value="Other" />
+                            <label for="other">{% trans 'Other' %}</label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+           <div class="control-group required">
+                <label for="text" class="control-label">
+                    <strong>{% trans 'Comment' %}</strong>
+                </label>
+                <div class="controls">
+                    {% input_class comment_form.text 'input-block-level' %}
+                </div>
+            </div>
+
+             <!-- Coordonnées. Only for citizen -->
+            {% if not BACKOFFICE %}
+                <div id="coordonnees" class="" style="margin-top: 30px;">
+
+
+                    {% if citizen_form %}
+
+                        <div class="control-group required">
+                            <label for="name" class="control-label">
+                                <strong>{% trans 'Name' %}</strong>
+                            </label>
+                            <div class="controls">
+                                {% input_class citizen_form.last_name 'input-block-level' %}
+                            </div>
+                        </div>
+
+                        <div class="control-group required">
+                            <label for="quality" class="control-label">
+                                <strong>{% trans 'Quality' %}</strong>
+                            </label>
+                            <div class="controls">
+                                {% input_class citizen_form.quality '' %}
+                            </div>
+                        </div>
+
+                        <div class="control-group required">
+                            <label for="telephone" class="control-label">
+                                <strong>{% trans 'Phone' %}</strong>
+                            </label>
+                            <div class="controls">
+                                {% input_class citizen_form.telephone 'input-block-level' %}
+                            </div>
+                        </div>
+                        <div class="control-group required">
+                            <label for="email" class="control-label">
+                                <strong>{% trans 'Email' %}</strong>
+                            </label>
+                            <div class="controls">
+                                {% input_class citizen_form.email 'input-block-level' %}
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                    <div id="required-note" >{% trans "* This fields are required" %}</div>
+                </div>
+            {% endif %}
+
+
+            <input id="validate_reopen_request" type="submit" class="btn pull-right"  value="{% trans 'Send'%}"/>
+        </form>
+    </div>
+
+{% endblock %}

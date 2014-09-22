@@ -1152,7 +1152,7 @@ form#report-form{
 	text-transform: uppercase;
 	color: #607C9D;
 }
-#report-form #validate_button{
+#report-form #validate_button, #reopen_request_form #validate_reopen_request{
 	background:#FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
 	padding: 4px 12px 4px 30px;
 	font-family: 'Dosis', sans-serif;
@@ -1474,7 +1474,7 @@ form#report-form{
 	bottom:30px;	/* margin-bottom space used by li element */
 }
 
-.timeline-container{
+.timeline-container, .reopen-request-container{
 	/*width: 1150px;*/ /* total width and plus 20px for triangles */
 	position: relative;
 	overflow: hidden;
@@ -1725,7 +1725,7 @@ label strong{
 .row-prevent-clear {
 	overflow: hidden;
 }
-#report-form .btn {
+#report-form .btn, #reopen_request_form .btn {
 	position:relative;
 	margin-top: 15px;
 	margin-bottom: 20px;
@@ -2287,4 +2287,28 @@ content: "*";
 
 .third_party_resp a {
     color: white;
+}
+
+/*.ul-reopen-request{*/
+    /*list-style: none;*/
+    /*margin-top: 30px;*/
+/*}*/
+
+.ul-reopen-request li label{
+    display : inline;
+    position : relative;
+    vertical-align: bottom;
+    font-size: 13px;
+}
+
+.ul-reopen-request li{
+	display:inline;
+	float:left;
+	margin-left:30px;
+}
+.ul-reopen-request li:first-child{
+	margin-left:0;
+}
+.ul-reopen-request{
+	margin:0;
 }

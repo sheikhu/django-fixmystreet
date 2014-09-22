@@ -242,9 +242,10 @@ mail_titles = {
     _('notify-subscription'),
     _('notify-updates'),
     _('notify-validation'),
+    _('notify-reopen-request'),
 }
 
-def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None):
+def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None, reason=None):
     # Define site url
     SITE_URL = "https://{0}".format(Site.objects.get_current().domain)
 
@@ -297,6 +298,9 @@ def transform_notification_template(template_mail, report, user, old_responsible
 
     if merged_with:
         data["merged_with"] = merged_with.id
+
+    if reason:
+        data["reason"] = reason
 
     # Subject mail for each languages.
     # Don't forget to update mail_titles variable (above) to support translations in .po.
