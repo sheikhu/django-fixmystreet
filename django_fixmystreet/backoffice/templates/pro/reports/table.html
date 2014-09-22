@@ -13,7 +13,7 @@
 
 {% block script %}
     {{ block.super }}
-    <script src="{% static 'js/search.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
     <script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
     <script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
 
@@ -283,33 +283,19 @@
 
         // Refresh markers on map when table sorting/filtering
         function refreshMap() {
+            fms.map.removeAllIncidents();
+
             // Get all row according to filter
             var data = table._('tr', {"filter": "applied"});
-
-            // For each row, build a report marker
-            var markers = [];
-            for (var i in data) {
-                report = data[i];
-                markers.push({
-                    id: report[0],
-                    status: parseInt(report[report.length - 1]),
-                    point: {
-                        x: report[report.length-3],
-                        y: report[report.length-2]
-                    }
-                });
-            }
-            fms.currentMap.addReportCollection(markers);
-        }
-
-        // Load map
-        (function() {
-            fms.currentMap = new fms.Map('map', {
-                apiLang:     LANGUAGE_CODE,
-                localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-                urbisUrl:    WMS_SERVICE_URL
+            $.each(data, function (k, v) {
+                var model = {
+                    id: v[0],
+                    type: v[v.length - 1],
+                    latlng: L.FixMyStreet.Util.WMSToLatLng({x: v[v.length - 3], y: v[v.length - 2]}),
+                };
+                fms.map.addIncident(model);
             });
-        })(document);
+        }
     </script>
 {% endblock %}
 

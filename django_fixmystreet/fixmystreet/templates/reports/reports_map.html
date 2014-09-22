@@ -78,6 +78,10 @@
                 //             $('#map-loading').hide();
                 //         });
                 //     }
+                $('#map-loading').show();
+                fms.loadAllIncidents(function () {
+                    $('#map-loading').hide();
+                });
             });
             //
             // // Override some function from search.js

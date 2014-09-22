@@ -1,6 +1,7 @@
 import os
 import json
 
+#from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
@@ -63,19 +64,35 @@ def filter_map(request):
     for report in reports:
         report.point.transform(DEFAULT_SRID)
         features.append({
-            'type': 'Feature',
-            'properties': {
-                'id': report.id,
-                'type': report.get_status_for_js_map()
+            "type": "Feature",
+            "properties": {
+                "id": report.id,
+                "type": report.get_status_for_js_map(),
+                #"address": {
+                #    "street": report.address,
+                #    "number": report.address_number,
+                #    "postalCode": report.postalcode,
+                #    "city": report.get_address_commune_name(),
+                #},
+                #"categories": report.get_category_path(),
+                #"photo": report.thumbnail,
+                #"icons": {
+                #    "regionalRoads": report.is_regional(),
+                #    "pro": report.is_pro(),
+                #    "assigned": report.is_contractor_or_applicant_assigned(),
+                #    "priority": report.get_priority(),
+                #    "solved": report.is_solved(),
+                #},
+                #"url": reverse("report_show", args=[report.get_slug(), report.id]),
             },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [report.point.x, report.point.y]
+            "geometry": {
+                "type": "Point",
+                "coordinates": [report.point.x, report.point.y]
             }
         })
 
     geo = {
-        'type': 'FeatureCollection',
-        'features': features
+        "type": "FeatureCollection",
+        "features": features
     }
     return HttpResponse(json.dumps(geo), mimetype="application/json")

@@ -165,3 +165,8 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         // fms.currentMap.map.addPopup(popup);
     }
 });
+
+
+fms.loadAllIncidents = function (next) {
+    fms.map.addIncidentsFromGeoJson('/' + LANGUAGE_CODE + '/ajax/map/filter/', null, next);
+};

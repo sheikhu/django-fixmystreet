@@ -96,11 +96,11 @@ fms.filterMapWithStatus = function(callback){
             type:'GET',
             datatype:"json",
             success: function(data){
-                if (fms.currentMap.markersLayer) {
-                    fms.currentMap.markersLayer.destroyFeatures();
-                }
-                fms.currentMap.addReportCollection(data);
-                fms.cachedElements = true;
+                // if (fms.currentMap.markersLayer) {
+                //     fms.currentMap.markersLayer.destroyFeatures();
+                // }
+                // fms.currentMap.addReportCollection(data);
+                // fms.cachedElements = true;
             },
             error: function(data) {
                 if(fms.currentMap.markersLayer){
