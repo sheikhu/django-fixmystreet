@@ -307,7 +307,7 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   initialize: function (id, options) {  // (HTMLElement or String, [Object])
-    L.setOptions(this, options);
+    options = $.extend(true, {}, this.options, options);
     L.Map.prototype.initialize.call(this, id, options);
 
     // Leaflet handles only if both center and zoom are defined.
@@ -337,8 +337,7 @@ L.FixMyStreet.Map = L.Map.extend({
   addIncident: function (model, options) {  // (Object, [Object])
     var isNew = model.type === 'new';
     if (!isNew && !(model.type in this.incidents)) {
-      // throw new Error('Invalid incident type (' + model.type + ').');
-      model.type = 'other';
+      throw new Error('Invalid incident type (' + model.type + ').');
     }
     if (isNew && this.newIncidentMarker !== null) {
       throw new Error('New incident marker already present, remove it first.');
@@ -794,6 +793,9 @@ L.FixMyStreet.Map = L.Map.extend({
         break;
       case 'closed':
         marker = new L.FixMyStreet.ClosedIncidentMarker(latlng, options, model);
+        break;
+      case 'other':
+        marker = new L.FixMyStreet.OtherIncidentMarker(latlng, options, model);
         break;
       default: throw new Error('Invalid marker type (' + model.type + ').');
     }

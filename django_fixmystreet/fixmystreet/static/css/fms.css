@@ -9,6 +9,10 @@ header{
 	margin: 42px 0 0 0;
 	clear: right;
 }
+header > .navbar {
+	position: relative;
+	z-index: 100;
+}
 nav ul{
 	/*background:#E0E0E0;*/
 	margin: 0;
@@ -210,6 +214,7 @@ footer .cirb-cibg img{
 #map{
 	position: relative;
 	height: 280px;
+	z-index: 10;
 }
 #map.pro{
 	position: relative;
