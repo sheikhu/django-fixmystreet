@@ -245,10 +245,10 @@ L.FixMyStreet.Map = L.Map.extend({
       incidentType: 'bottomleft',
     },
     controlsLabel: {  // this.options.controlsLabel.
-      locateOnMap: '<i class="icon-localizeviamap"></i> ' + gettext('Locate on map'),
-      streetView: '<i class="icon-streetview"></i> Street View',
-      sizeToggleExpand: '<i class="icon-pulldown-map"></i> ' + gettext('Expand'),
-      sizeToggleReduce: '<i class="icon-pullup-map"></i> ' + gettext('Reduce'),
+      locateOnMap: gettext('Locate on map'),
+      streetView: 'Street View',
+      sizeToggleExpand: gettext('Expand'),
+      sizeToggleReduce: gettext('Reduce'),
     },
     newIncidentZoom: 17,
 
@@ -297,12 +297,12 @@ L.FixMyStreet.Map = L.Map.extend({
         color: '#3cb64b',
         controlTitle: '<span class="type-closed"><img src="' + STATIC_URL + 'images/marker-green-xxs.png" />' + gettext('Closed') + '</span>',
       },
-      // discarded: {
-      //   title: gettext('Discarded'),
-      //   color: '#9b9b9b',
-      //   controlTitle: '<span class="type-discarded"><img src="' + STATIC_URL + 'images/marker-gray-xxs.png" />' + gettext('Discarded') + '</span>',
-      //   filtering: false,
-      // },
+      other: {
+        title: gettext('Other'),
+        color: '#9b9b9b',
+        controlTitle: '<span class="type-other"><img src="' + STATIC_URL + 'images/marker-gray-xxs.png" />' + gettext('Other') + '</span>',
+        filtering: false,
+      },
     },
   },
 
@@ -337,7 +337,8 @@ L.FixMyStreet.Map = L.Map.extend({
   addIncident: function (model, options) {  // (Object, [Object])
     var isNew = model.type === 'new';
     if (!isNew && !(model.type in this.incidents)) {
-      throw new Error('Invalid incident type (' + model.type + ').');
+      // throw new Error('Invalid incident type (' + model.type + ').');
+      model.type = 'other';
     }
     if (isNew && this.newIncidentMarker !== null) {
       throw new Error('New incident marker already present, remove it first.');
@@ -359,11 +360,11 @@ L.FixMyStreet.Map = L.Map.extend({
     return marker;
   },
 
-  addIncidentsFromGeoJson: function (data, baseOptions) {  // (String or Object, [Object])
+  addIncidentsFromGeoJson: function (data, baseOptions, next) {  // (String or Object, [Object], [Function])
     if (typeof data === 'string') {
-      this._addIncidentsFromGeoJsonUrl(data, baseOptions);
+      this._addIncidentsFromGeoJsonUrl(data, baseOptions, next);
     } else {
-      this._addIncidentsFromGeoJson(data, baseOptions);
+      this._addIncidentsFromGeoJson(data, baseOptions, next);
     }
   },
 
@@ -384,16 +385,17 @@ L.FixMyStreet.Map = L.Map.extend({
 
   toggleIncidentType: function (type, visibility) {  // (String, [Boolean])
     if (!(type in this.incidents)) { throw new Error('Invalid incident type (' + type + ').'); }
+    var that = this;
     $.each(this.incidents[type], function (i, layer) {
       if (visibility) {
-        layer.addTo(map._incidentLayer);
+        layer.addTo(that._incidentLayer);
       } else {
-        map._incidentLayer.removeLayer(layer);
+        that._incidentLayer.removeLayer(layer);
       }
     });
   },
 
-  _addIncidentsFromGeoJson: function (geoJson, baseOptions) {  // (Object, [Object])
+  _addIncidentsFromGeoJson: function (geoJson, baseOptions, next) {  // (Object, [Object], [Function])
     var that = this;
     baseOptions = baseOptions || {};
 
@@ -407,15 +409,16 @@ L.FixMyStreet.Map = L.Map.extend({
     };
 
     L.geoJson(geoJson, geoJsonOptions);
+    next();
   },
 
-  _addIncidentsFromGeoJsonUrl: function (url, baseOptions) {  // (String, [Object])
+  _addIncidentsFromGeoJsonUrl: function (url, baseOptions, next) {  // (String, [Object], [Function])
     var that = this;
 
     console.log('Loading GeoJSON from %s...', url);
     $.get(url, function (geoJson) {
       console.log('GeoJSON received from %s...', url);
-      that._addIncidentsFromGeoJson(geoJson, baseOptions);
+      that._addIncidentsFromGeoJson(geoJson, baseOptions, next);
     }).fail(function() {
       throw new Error('Failed to load GeoJSON from ' + url + ': ' + argument);
     });
@@ -530,7 +533,7 @@ L.FixMyStreet.Map = L.Map.extend({
     options = $.extend(true, {
       state1: {
         label: this.options.controlsLabel.sizeToggleExpand,
-        size: '',
+        size: 'medium',
       },
       state2: {
         label: this.options.controlsLabel.sizeToggleReduce,
@@ -540,7 +543,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
     var buttonOptions = this._prepareButtonOptions({
       label: options.state1.label,
-      cls: this.options.cssClasses.buttonSize,
+      cls: this.options.cssClasses.buttonSize + ' size-' + options.state1.size + '-to-' + options.state2.size,
     }, options);
     var $btn = this.addButton(buttonOptions);
 
@@ -565,6 +568,7 @@ L.FixMyStreet.Map = L.Map.extend({
     $panel.append($('<div/>').addClass('fmsmap-panel-header').html(gettext('Incident filter')));
     var $body = $('<div/>').addClass('fmsmap-panel-body');
     $.each(this.options.incidentTypes, function (k, v) {
+      if (v.filtering === false) { return; }
       var $input = $('<input type="checkbox" value="' + k + '" checked />');
       var $e = $('<label class="type-' + k +'">' + v.controlTitle + '</label>');
       $input.change(function (evt) {
@@ -721,10 +725,14 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   _sizeToggle_onClick: function (evt, $e, options) {  // sizeToggle.click
-    var i = $e.data('state') === 2 ? 1 : 2;
-    this.setCssSize(options['state' + i].size);
-    $e.html(options['state' + i].label);
-    $e.data('state', i);
+    var currentState = $e.data('state') || 1;
+    var nextState = currentState == 2 ? 1 : 2;
+    var opts = options['state' + nextState];
+    this.setCssSize(opts.size);
+    $e.html(opts.label);
+    $e.removeClass('size-' + options['state' + currentState].size);
+    $e.addClass('size-' + opts.size);
+    $e.data('state', nextState);
   },
 
   _cluster_onClick: function (evt) {  // layer.clusterclick
@@ -862,7 +870,7 @@ L.FixMyStreet.ClosedIncidentIcon = L.FixMyStreet.Icon.extend({
 });
 
 
-L.FixMyStreet.DiscardedIncidentIcon = L.FixMyStreet.Icon.extend({
+L.FixMyStreet.OtherIncidentIcon = L.FixMyStreet.Icon.extend({
   options: {
     iconUrl: STATIC_URL + 'images/pin-gray-L.png',
   },
@@ -1115,9 +1123,9 @@ L.FixMyStreet.ClosedIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
 });
 
 
-L.FixMyStreet.DiscardedIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+L.FixMyStreet.OtherIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
   options: {
-    icon: new L.FixMyStreet.DiscardedIncidentIcon(),
+    icon: new L.FixMyStreet.OtherIncidentIcon(),
   },
 });
 
@@ -1582,6 +1590,10 @@ L.FixMyStreet.Util = {
     var point = latlng instanceof L.Point ? latlng : new Proj4js.Point(latlng.lng, latlng.lat);
     Proj4js.transform(this.PROJ4JS_4326, this.PROJ4JS_31370, point);
     return {x: point.x, y: point.y};
+  },
+
+  WMSToLatLng: function (value) {  // (L.Point)
+    return this.toLatLng(this.fromWMS(value));
   },
 
   getAddressFromLatLng: function (latlng, success, error) {  // (L.LatLng or Object or String, Function, [Function])
