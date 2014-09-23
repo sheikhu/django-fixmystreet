@@ -27,23 +27,22 @@
 */
 
 
-// COMPAT
+// DJANGO COMPAT
 
 if (LANGUAGE_CODE === undefined) { var LANGUAGE_CODE = 'fr'; }
 if (STATIC_URL === undefined) { var STATIC_URL = '/static/'; }
+if (DEBUG === undefined) { var DEBUG = false; }
 if (gettext === undefined) { function gettext(s) { return s; } }
 
 
 // INIT
 
 L.FixMyStreet = L.FixMyStreet || {};
+if (NEW_INCIDENT_URL === undefined) { var NEW_INCIDENT_URL = ''; }
+if (URBIS_URL === undefined) { var URBIS_URL = 'http://gis.irisnet.be/'; }
 
 
 // URBIS LAYERS ================================================================
-
-if (URBIS_URL === undefined) {
-  var URBIS_URL = 'http://gis.irisnet.be/';
-}
 
 L.FixMyStreet.UrbisLayersSettings = {
   'map-street-fr': {
@@ -413,10 +412,9 @@ L.FixMyStreet.Map = L.Map.extend({
 
   _addIncidentsFromGeoJsonUrl: function (url, baseOptions, next) {  // (String, [Object], [Function])
     var that = this;
-
-    console.log('Loading GeoJSON from %s...', url);
+    if (DEBUG) { console.log('Loading GeoJSON from %s...', url); }
     $.get(url, function (geoJson) {
-      console.log('GeoJSON received from %s...', url);
+      if (DEBUG) { console.log('GeoJSON received from %s...', url); }
       that._addIncidentsFromGeoJson(geoJson, baseOptions, next);
     }).fail(function() {
       throw new Error('Failed to load GeoJSON from ' + url + ': ' + argument);
