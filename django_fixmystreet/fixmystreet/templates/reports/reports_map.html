@@ -12,6 +12,11 @@
     <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
 {% endblock %}
 
+{% block js_vars %}
+    {{ block.super }}
+    var NEW_INCIDENT_URL = '{% url "report_verify" %}';
+{% endblock %}
+
 {% block script %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
@@ -19,8 +24,6 @@
     {% block script_map %}
         {{ block.super }}
         <script>
-            var NEXT_PAGE_URL = '{% url "report_verify" %}';
-
             var zipcodes = new Object();
 
             {% for zip in zipcodes %}

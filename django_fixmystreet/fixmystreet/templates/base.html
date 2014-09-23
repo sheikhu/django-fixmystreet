@@ -270,18 +270,13 @@
             var URBIS_URL = '{{ URBIS_URL }}';
             var WMS_SERVICE_URL = '{{ WMS_SERVICE_URL }}';
             var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
-            if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') {
-                LANGUAGE_CODE = 'fr'
-            }
+            if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') { LANGUAGE_CODE = 'fr'; }
             var GEOSERVER_URL = '//{{ GEOSERVER }}';
             var STATIC_URL = '{{ STATIC_URL }}';
-            {% if request.GET.debug %}
-            var DEBUG =  true;
-            {% else %}
-            var DEBUG =  {{ DEBUG|yesno:"true,false" }};
-            {% endif %}
+            var DEBUG = {% if request.GET.debug %}true{% else %}{{ DEBUG|yesno:"true,false" }}{% endif %};
             var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
             var fms = {};
+            {% block js_vars %}{% endblock %}
         </script>
 
         <script type="text/javascript" src="{% static 'lib/jquery-1.8.3.min.js' %}"></script>
