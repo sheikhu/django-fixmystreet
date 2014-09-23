@@ -56,7 +56,6 @@ fms.AddressSearchView = Backbone.View.extend({
         var self = this;
 
         $('#btn-localizeviamap').hide();
-        this.addressProposal.close();
         fms.message.clear();
 
         //If only municipality as input then center on it
