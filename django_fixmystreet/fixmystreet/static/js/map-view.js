@@ -1,10 +1,12 @@
 
 $(function () {
-    var mapOptions = {};
-    if (BACKOFFICE) {
-        mapOptions.incidentTypes = {other: {filtering: true}};
+    if ($('#map').length !== 0) {
+        var mapOptions = {};
+        if (BACKOFFICE) {
+            mapOptions.incidentTypes = {other: {filtering: true}};
+        }
+        fms.map = new L.FixMyStreet.Map('map', mapOptions);
     }
-    fms.map = new L.FixMyStreet.Map('map', mapOptions);
     fms.newIncidentMarker = new fms.NewIncidentMarkerView();
     fms.newIncidentMarker.render();
 });
