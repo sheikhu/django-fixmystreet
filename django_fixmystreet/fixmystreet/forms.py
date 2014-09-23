@@ -241,17 +241,17 @@ class ReportFileForm(forms.ModelForm):
     title = forms.CharField(max_length=80, required=False)
 
     def clean_file(self):
-        file = self.cleaned_data['file']
-        if (file):
-            if file._size > int(settings.MAX_UPLOAD_SIZE) and file._size == 0:
+        f = self.cleaned_data['file']
+        if f:
+            if f.size > int(settings.MAX_UPLOAD_SIZE):
                 raise ValidationError("File is too large")
 
-        flength = len(file.name)
-        if flength > 70:  # If filenameis longer than 70, truncate filename
-            offset = flength - (flength % 40 + 20)  # modulus of file name + 20 to prevent file type truncation
-            file.name = file.name[offset:]
+            flength = len(f.name)
+            if flength > 70:  # If filenameis longer than 70, truncate filename
+                offset = flength - (flength % 40 + 20)  # modulus of file name + 20 to prevent file type truncation
+                f.name = f.name[offset:]
 
-        return file
+        return f
 
     def clean_file_creation_date(self):
         file_creation_date = self.cleaned_data.get('file_creation_date')

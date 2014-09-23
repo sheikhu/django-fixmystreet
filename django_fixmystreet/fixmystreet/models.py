@@ -1790,7 +1790,7 @@ def report_file_notify(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender, instance, **kwargs):
-    if instance.file_type:
+    if instance.file_type or not instance.file:
         return
     content_type = instance.file.file.content_type
 

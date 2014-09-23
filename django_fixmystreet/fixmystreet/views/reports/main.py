@@ -29,8 +29,6 @@ def new(request):
     file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
 
     if request.method == "POST":
-        request_files = hack_multi_file(request)
-
         report_form = CitizenReportForm(request.POST, request.FILES, prefix='report')
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
@@ -38,17 +36,16 @@ def new(request):
         fingerprint = RequestFingerprint(request)
 
         # this checks update is_valid too
-        if (report_form.is_valid()
-            and (not request.POST["comment-text"] or comment_form.is_valid())
-            and citizen_form.is_valid()
-            and not fingerprint.is_duplicate()
-        ):
+        if report_form.is_valid() \
+            and (not request.POST["comment-text"] or comment_form.is_valid()) \
+            and citizen_form.is_valid() \
+            and not fingerprint.is_duplicate():
+
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
-            # Cf. `hack_multi_file`, use ``request_files`` instead of ``request.FILES``.
-            file_formset_orig = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
-            file_formset = ReportFileFormSet(request.POST, request_files, instance=report, prefix='files', queryset=ReportFile.objects.none())
+            # Use `hack_multi_file` instead of ``request.FILES``.
+            file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
 
 
             if file_formset.is_valid():
@@ -137,8 +134,10 @@ def document(request, slug, report_id):
     if request.method == "POST":
         comment = None
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
-        file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+
+        # Use `hack_multi_file` instead of ``request.FILES``.
+        file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
 
         # this checks update is_valid too
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():

@@ -27,7 +27,6 @@ def new(request):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = None
     if request.method == "POST":
-        request_files = hack_multi_file(request)
         report_form = ProReportForm(request.POST, request.FILES, prefix='report')
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
 
@@ -38,7 +37,9 @@ def new(request):
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
-            file_formset = ReportFileFormSet(request.POST, request_files, instance=report, prefix='files', queryset=ReportFile.objects.none())
+            # Use `hack_multi_file` instead of ``request.FILES``.
+            file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
+
             if file_formset.is_valid():
                 user = FMSUser.objects.get(pk=request.user.id)
 
@@ -150,7 +151,7 @@ def show(request, slug, report_id):
 
     report = get_object_or_404(Report, id=report_id)
     if request.method == "POST":
-        file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
+        file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
         comment = None
 
@@ -242,7 +243,9 @@ def document(request, slug, report_id):
     if request.method == "POST":
         comment = None
         comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
-        file_formset = ReportFileFormSet(request.POST, request.FILES, instance=report, prefix='files', queryset=ReportFile.objects.none())
+
+        # Use `hack_multi_file` instead of ``request.FILES``.
+        file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
 
         # this checks update is_valid too
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
