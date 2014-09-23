@@ -171,6 +171,7 @@
 
 .fmsmap-search-result-icon {
   position: relative;
+  width: 30px !important;
 }
 .fmsmap-search-result-icon .number {
   position: absolute;
@@ -185,14 +186,23 @@
   color: #ffdb00;
   font-weight: bold;
   line-height: 20px;
+  height: 20px;
   font-size: 14px;
+}
+.fmsmap-search-result-icon:hover,
+.fmsmap-search-result-icon.hover {
+  margin-top: -52px !important;
+  margin-left: -20px !important;
+  width: 40px !important;
 }
 .fmsmap-search-result-icon:hover .number,
 .fmsmap-search-result-icon.hover .number {
-  color: #fff;
+  line-height: 30px;
+  height: 30px;
+  font-size: 21px;
 }
-.fmsmap-search-result-icon.hover img {
-  content: url('../images/pin-green-XS.png');
+.fmsmap-search-result-icon.hover > img {
+  content: url('../images/pin-blue-L.png');
 }
 
 
