@@ -6,7 +6,6 @@
 - L.FixMyStreet.SearchPanel.onAdd(): Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
 
 # Improvements
-- Review cluster CSS
 - L.FixMyStreet.Map.options.myLayers: Rename variable.
 - Document library (inline?)
 
@@ -251,6 +250,7 @@ L.FixMyStreet.Map = L.Map.extend({
       sizeToggleReduce: gettext('Reduce'),
     },
     newIncidentZoom: 17,
+    newIncidentUrl: NEW_INCIDENT_URL,
 
     myLayers: {  // @TODO: Rename variable.
       'map-street': {
@@ -783,6 +783,9 @@ L.FixMyStreet.Map = L.Map.extend({
 
     switch (model.type) {
       case 'new':
+        if (model.url === undefined) {
+          model.url = this.options.newIncidentUrl;
+        }
         marker = new L.FixMyStreet.NewIncidentMarker(latlng, options, model);
         break;
       case 'reported':
@@ -1316,7 +1319,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
         '<div class="fmsmap-popup new">' +
           '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
           '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
-          '<div class="fmsmap-popup-footer clearfix">{_footer_}</div>' +
+          '<div class="fmsmap-popup-footer clearfix hidden">{_footer_}</div>' +
         '</div>',
       _header_:
         gettext('Place me at the exact position of the incident'),
@@ -1328,7 +1331,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
           '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
         '</div>' +
         '<div class="pull-right">' +
-          '<a class="button button-itshere hidden" href="<% this.url %>">' + gettext('It\'s here') + '</a>' +
+          '<a class="button button-itshere" href="#" data-bind="itshere">' + gettext('It\'s here') + '</a>' +
         '</div>',
     },
   },
@@ -1347,7 +1350,19 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
     // this.on('popuprendered', function (data) {
     //   data.popup.$container.find('.button-itshere').removeClass('hidden');
     // });
-    this.$container.find('.button-itshere').removeClass('hidden');  // @TODO: Workaround, see above.
+    this.$container.find('.fmsmap-popup-footer').removeClass('hidden');  // @TODO: Workaround, see above.
+  },
+
+  _bindActions: function (handlers) {
+    var that = this;
+    var theseHandlers = {};
+    theseHandlers['itshere'] = function (evt) {
+      var point = L.FixMyStreet.Util.toWMS(that._marker.model.latlng);
+      var url = this.model.url + '?x=' + point.x + '&y=' + point.y;
+      $(this).attr('href', url);
+    };
+    handlers = $.extend(true, {}, theseHandlers, handlers);
+    L.FixMyStreet.Popup.prototype._bindActions.call(this, handlers);
   },
 });
 
