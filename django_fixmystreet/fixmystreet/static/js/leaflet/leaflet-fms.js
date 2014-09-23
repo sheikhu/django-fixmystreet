@@ -540,7 +540,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
     var buttonOptions = this._prepareButtonOptions({
       label: options.state1.label,
-      cls: this.options.cssClasses.buttonSize + ' size-' + options.state1.size + '-to-' + options.state2.size,
+      cls: this.options.cssClasses.buttonSize + ' size-' + options.state1.size + ' size-to-' + options.state2.size,
     }, options);
     var $btn = this.addButton(buttonOptions);
 
@@ -728,7 +728,9 @@ L.FixMyStreet.Map = L.Map.extend({
     this.setCssSize(opts.size);
     $e.html(opts.label);
     $e.removeClass('size-' + options['state' + currentState].size);
+    $e.removeClass('size-to-' + options['state' + nextState].size);
     $e.addClass('size-' + opts.size);
+    $e.addClass('size-to-' + options['state' + currentState].size);
     $e.data('state', nextState);
   },
 

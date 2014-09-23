@@ -13,6 +13,9 @@
 #map.fmsmap-size-large {
   height: 610px;
 }
+#map.fmsmap-size-medium {
+  height: 280px;
+}
 #map.fmsmap-size-small {
   height: 150px;
 }
@@ -142,11 +145,18 @@
   padding-left: 35px;
 }
 
-/* @TODO */
-
-.fmsmap-button-size.size-small {
-  background-image: url('../images/icon-streetview.png');
+.fmsmap-button-size {
   padding-left: 35px;
+}
+.fmsmap-button-size.size-small.size-to-medium,
+.fmsmap-button-size.size-small.size-to-large,
+.fmsmap-button-size.size-medium.size-to-large {
+  background-image: url('../images/icon-pulldownmap.png');
+}
+.fmsmap-button-size.size-medium.size-to-small,
+.fmsmap-button-size.size-large.size-to-small,
+.fmsmap-button-size.size-large.size-to-medium {
+  background-image: url('../images/icon-pullupmap.png');
 }
 
 
