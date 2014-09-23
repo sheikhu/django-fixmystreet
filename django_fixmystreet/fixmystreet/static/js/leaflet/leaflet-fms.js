@@ -1357,8 +1357,8 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
     var that = this;
     var theseHandlers = {};
     theseHandlers['itshere'] = function (evt) {
-      var point = L.FixMyStreet.Util.toWMS(that._marker.model.latlng);
-      var url = this.model.url + '?x=' + point.x + '&y=' + point.y;
+      var point = L.FixMyStreet.Util.toWMS(that._marker.getLatLng());
+      var url = that._marker.model.url + '?x=' + point.x + '&y=' + point.y;
       $(this).attr('href', url);
     };
     handlers = $.extend(true, {}, theseHandlers, handlers);
