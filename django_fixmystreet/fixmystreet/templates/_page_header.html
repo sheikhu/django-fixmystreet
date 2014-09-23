@@ -33,12 +33,12 @@
         {% if search_address %}
         <div class="block clearfix row-fluid">
             <form id="search-address-form" class="form-inline search-form controls controls-row">
-                <input id="input-search" class="span5" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" autofocus />
+                <input id="input-search" class="span5" type="search" name="street" {% if street %}value="{{ street }}"{% endif %} placeholder="{% trans 'Street name, Street number...' %}" autofocus />
                 <input id="input-streetnumber"  placeholder="n°" class="span1" type="search" />
                 <select id="input-ward" class="span4" name="ward">
                     <option value="">{% trans "All communes..." %}</option>
                     {% for zip in zipcodes %}
-                        <option value={{zip.code}}>{{zip.code}} {{zip.name}}</option>
+                        <option value="{{ zip.code }}"{% if zip.code == zipcode %} selected{% endif %}>{{ zip.code }} {{ zip.name }}</option>
                     {% endfor %}
                 </select>
                 <span class="span2">
@@ -50,7 +50,7 @@
 
         {% if search_report %}
         <form id="search-ticket-form" class="input-append form-inline" action="{% url 'search_ticket' %}">
-            <input id="input-ticket-search" class="input-medium" type="search" name="q" {% if location %}value="{{location}}"{% endif %} placeholder="{% trans 'Ticket number...' %}" />
+            <input id="input-ticket-search" class="input-medium" type="search" name="report_id" placeholder="{% trans 'Ticket number...' %}" />
             <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
         </form>
         {% endif %}
