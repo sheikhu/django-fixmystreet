@@ -15,7 +15,6 @@ from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscri
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportReopenReasonForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import PriorityForm
-from pip._vendor.requests import HTTPError
 
 
 DEFAULT_TIMEDELTA_PRO = {"days": -30}
