@@ -248,6 +248,7 @@ L.FixMyStreet.Map = L.Map.extend({
       sizeToggleExpand: gettext('Expand'),
       sizeToggleReduce: gettext('Reduce'),
     },
+    overviewZoom: 12,
     newIncidentZoom: 17,
     newIncidentUrl: NEW_INCIDENT_URL,
 
@@ -1232,7 +1233,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
     if (!this._container) { return; }
     var that = this;
 
-    $(this._container).find('a[data-bind]').each(function (i, e) {
+    $(this._container).find('[data-bind]').each(function (i, e) {
       var $this = $(this);
       var action = $this.data('bind');
 
@@ -1447,6 +1448,24 @@ L.FixMyStreet.Panel = L.Control.extend({
     }
     return $e;
   },
+
+  remove: function() {
+    this.$container.remove();
+  },
+
+  setContent: function(html) {  // (String)
+    this._container = html;
+    this._bindActions();
+  },
+
+  renderContent: function(data, key) {  // ([Object], [String])
+    var that = this;
+    this._render(data, key, function (error, html) {
+      if (!error) {
+        that.setContent(html);
+      }
+    });
+  },
 });
 
 
@@ -1523,22 +1542,6 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     return this._container;  // @TODO: Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
   },
 
-  remove: function() {
-    this.$container.remove();
-  },
-
-  setContent: function(html) {  // (String)
-    this._container = html;
-  },
-
-  renderContent: function(data, key) {  // ([Object], [String])
-    var that = this;
-    this._render(data, key, function (error, html) {
-      if (!error) {
-        that.setContent(html);
-      }
-    });
-  },
 });
 
 L.FixMyStreet.SearchPanel.include(L.FixMyStreet.Template);
