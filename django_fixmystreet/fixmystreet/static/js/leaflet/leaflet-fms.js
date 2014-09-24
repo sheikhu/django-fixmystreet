@@ -1511,12 +1511,27 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
 
   onAdd: function (map) {
     var that = this;
+    this._map = map;
+
     var results = [];
     $.each(map.searchResults, function (i, marker) {
       results.push(marker.model);
     });
     this.renderContent({results: results});
     this.$container = $(this._container);
+
+    this.$container.mouseover(function (evt) {
+      map.dragging.disable();
+      map.touchZoom.disable();
+      map.doubleClickZoom.disable();
+      map.scrollWheelZoom.disable();
+    });
+    this.$container.mouseout(function (evt) {
+      map.dragging.enable();
+      map.touchZoom.enable();
+      map.doubleClickZoom.enable();
+      map.scrollWheelZoom.enable();
+    });
 
     this.$container.find('li[data-search-result]').each(function (i, e) {
       var $e = $(e);
