@@ -428,7 +428,6 @@ L.FixMyStreet.Map = L.Map.extend({
     var marker = new L.FixMyStreet.SearchResultMarker(latlng, options, model);
     marker.addTo(this._searchLayer);
     this.searchResults.push(marker);
-    // @TODO: Zoom on all results
   },
 
   addSearchResults: function (models, options) {  // (Object, [Object])
@@ -437,6 +436,7 @@ L.FixMyStreet.Map = L.Map.extend({
     $.each(models, function (i, model) {
       that.addSearchResult(model, options);
     });
+    this.fitToMarkers(this._searchLayer);
 
     options = $.extend(true, {
       position: this.options.controlsPosition.panels,
@@ -738,6 +738,20 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   // HELPERS -------------------------------------------------------------------
+
+  fitToMarkers: function (layer) {  // ([L.Layer])
+    layer = layer || this._incidentLayer;
+    this.fitBounds(layer.getBounds().pad(0.5));
+  },
+
+  centerOnLayer: function (layer, zoom) {  // (L.Layer, [Integer])
+    var center = layer.getBounds().getCenter();
+    if (zoom === undefined) {
+      this.panTo(center);
+    } else {
+      this.setView(center, zoom, {animate: true});
+    }
+  },
 
   centerOnMarker: function (marker) {  // (Object)
     // @TODO: Check if popup is opened and adapt LatLng accordingly.
