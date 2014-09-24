@@ -1,7 +1,7 @@
 /* @TODO
 # Bugs & co
 - Weird behavior of auto panning, especially with open pop-ups.
-    - L.FixMyStreet.centerMapOnMarker(): Check if popup is opened and adapt LatLng accordingly.
+    - L.FixMyStreet.centerOnMarker(): Check if popup is opened and adapt LatLng accordingly.
 - Bug CSS: Search Panel
 - L.FixMyStreet.SearchPanel.onAdd(): Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
 
@@ -739,7 +739,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
   // HELPERS -------------------------------------------------------------------
 
-  centerMapOnMarker: function (marker) {  // (Object)
+  centerOnMarker: function (marker) {  // (Object)
     // @TODO: Check if popup is opened and adapt LatLng accordingly.
     this.panTo(marker.getLatLng());
   },
@@ -1005,7 +1005,7 @@ L.FixMyStreet.Marker = L.Marker.extend({
   // HELPERS -------------------------------------------------------------------
 
   centerMap: function() {
-    this.getMap().centerMapOnMarker(this);
+    this.getMap().centerOnMarker(this);
   },
 
   openStreetView: function() {
