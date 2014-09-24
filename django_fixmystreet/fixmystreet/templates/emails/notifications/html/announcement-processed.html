@@ -1,4 +1,5 @@
 {% extends 'emails/notifications/base.html' %}
+{% load i18n %}
 
 {% block content_mail_fr %}
 <p>{{responsible}} à clôturé l’incident.</p>
@@ -6,6 +7,10 @@
 <p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
 <ul>
 <li><a href="{{display_url}}">{{display_url}}</a></li>
+</ul>
+<p>Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :</p>
+<ul>
+<li><a href="{{display_url}}/reouverture">{{display_url}}/reouverture</a></li>
 </ul>
 {% endblock %}
 
@@ -15,5 +20,9 @@
 <p>U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:</p>
 <ul>
 <li><a href="{{display_url}}">{{display_url}}</a></li>
+</ul>
+<p>TODO NL : Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :</p>
+<ul>
+<li><a href="{{display_url}}/heropening">{{display_url}}/heropening</a></li>
 </ul>
 {% endblock %}

@@ -239,7 +239,7 @@ $(function(event) {
                             {% endif %}
                         </div>
                         <div class="span2 btn-group-vertical">
-                             {% if report.is_closed or report.is_refused %}
+                             {% if report.is_closed %}
                                  <a href="{% url 'report_reopen_request' report.get_slug report.id %}" role="button" class="btn lk-subscribe">
                                         <i class="icon-subscribe"> </i>{% trans "Reopen request" %}
                                     </a>

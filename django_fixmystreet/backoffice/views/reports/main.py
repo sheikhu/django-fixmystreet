@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.forms.models import inlineformset_factory
 from django.template import RequestContext
 from django.contrib import messages
@@ -13,8 +13,9 @@ from django_fixmystreet.fixmystreet.stats import ReportCountStatsPro, ReportCoun
 from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, \
     ReportAttachment
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
-from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportMainCategoryClass
+from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportReopenReasonForm, ReportMainCategoryClass
 from django_fixmystreet.backoffice.forms import PriorityForm
+from pip._vendor.requests import HTTPError
 
 
 DEFAULT_TIMEDELTA_PRO = {"days": -30}
@@ -297,27 +298,38 @@ def merge(request, slug, report_id):
     }, context_instance=RequestContext(request))
 
 def reopen_request(request, slug, report_id):
-    report = get_object_or_404(Report, id=report_id)
+    try:
+        report = get_object_or_404(Report, id=report_id)
+        if report.status != Report.PROCESSED:
+            messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        elif request.method == "POST":
+            reopen_reason = None
+            # comment_form = ReportCommentForm(request.POST, prefix='comment')
+            reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
+            user = FMSUser.objects.get(pk=request.user.id)
+            if (request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0
+                and request.POST["reopen-reason"] and reopen_form.is_valid()):
 
-    if request.method == "POST":
-        comment = None
-        reason = request.POST["reason"]
-        comment_form = ReportCommentForm(request.POST, prefix='comment')
-        user = FMSUser.objects.get(pk=request.user.id)
-        if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0 and comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.report = report
-            comment.created_by = user
-            comment.type = ReportAttachment.REOPEN_REQUEST
-            comment.save()
+                reopen_reason = reopen_form.save(commit=False)
+                reopen_reason.text = request.POST["reopen-text"]
+                reopen_reason.report = report
+                reopen_reason.created_by = user
+                reopen_reason.type = ReportAttachment.REOPEN_REQUEST
+                reopen_reason.save()
 
-        report.trigger_reopen_request(user=user, comment=comment, reason=reason)
+            report.trigger_reopen_request(user=user, reopen_reason=reopen_reason)
 
-        return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-        comment_form = ReportCommentForm(prefix='comment')
+            messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        else:
+            comment_form = ReportCommentForm(prefix='comment')
+            reopen_form = ReportReopenReasonForm(prefix='reopen')
 
-    return render_to_response("reports/reopen.html", {
-        "report": report,
-        "comment_form": comment_form,
-    }, context_instance=RequestContext(request))
+        return render_to_response("reports/reopen.html", {
+            "report": report,
+            "reopen_form": reopen_form,
+        }, context_instance=RequestContext(request))
+    except Http404:
+        messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
+        return HttpResponseRedirect(reverse('home_pro'))

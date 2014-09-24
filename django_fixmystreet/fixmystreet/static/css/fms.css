@@ -2314,21 +2314,21 @@ content: "*";
     /*margin-top: 30px;*/
 /*}*/
 
-.ul-reopen-request li label{
+#reason-reopen-request ul li label{
     display : inline;
     position : relative;
     vertical-align: bottom;
     font-size: 13px;
 }
 
-.ul-reopen-request li{
+#reason-reopen-request ul li{
 	display:inline;
 	float:left;
 	margin-left:30px;
 }
-.ul-reopen-request li:first-child{
+#reason-reopen-request ul li:first-child{
 	margin-left:0;
 }
-.ul-reopen-request{
+#reason-reopen-request ul{
 	margin:0;
 }

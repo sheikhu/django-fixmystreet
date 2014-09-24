@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-19 16:43+0200\n"
-"PO-Revision-Date: 2014-09-19 14:43+0000\n"
+"POT-Creation-Date: 2014-09-23 14:52+0200\n"
+"PO-Revision-Date: 2014-09-23 12:52+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgstr "Nederlands"
 #: backoffice/templates/pro/auth/users_list.html:48 fixmystreet/forms.py:176
 #: fixmystreet/forms.py:218
 #: fixmystreet/templates/reports/_documentreport.html:118
-#: fixmystreet/templates/reports/reopen.html:227
+#: fixmystreet/templates/reports/reopen.html:234
 msgid "Email"
 msgstr "E-mail"
 
@@ -323,7 +323,7 @@ msgstr "Nieuwe groep"
 #: backoffice/templates/pro/auth/user_edit.html:75
 #: fixmystreet/templates/contact/new.html:20
 #: fixmystreet/templates/reports/_documentreport.html:160
-#: fixmystreet/templates/reports/reopen.html:236
+#: fixmystreet/templates/reports/reopen.html:243
 msgid "* This fields are required"
 msgstr "* Deze velden zijn verplicht. De administratie gebruikt uw persoonlijke gegevens alleen om u te contacteren over de opvoging van uw klacht. "
 
@@ -340,10 +340,10 @@ msgstr "Groep administratie"
 #: backoffice/templates/pro/auth/groups_list.html:44
 #: backoffice/templates/pro/auth/users_list.html:40
 #: backoffice/templates/pro/auth/users_list.html:46 fixmystreet/forms.py:215
-#: fixmystreet/models.py:277 fixmystreet/models.py:1843
-#: fixmystreet/models.py:1877 fixmystreet/models.py:1910
+#: fixmystreet/models.py:277 fixmystreet/models.py:1848
+#: fixmystreet/models.py:1882 fixmystreet/models.py:1915
 #: fixmystreet/templates/reports/_documentreport.html:92
-#: fixmystreet/templates/reports/reopen.html:201
+#: fixmystreet/templates/reports/reopen.html:208
 msgid "Name"
 msgstr "Naam"
 
@@ -386,7 +386,7 @@ msgstr ""
 #: backoffice/templates/pro/auth/users_list.html:41
 #: backoffice/templates/pro/auth/users_list.html:47
 #: fixmystreet/templates/reports/_documentreport.html:110
-#: fixmystreet/templates/reports/reopen.html:219
+#: fixmystreet/templates/reports/reopen.html:226
 msgid "Phone"
 msgstr "Tel."
 
@@ -724,11 +724,11 @@ msgstr "Publiceren"
 msgid "Reject"
 msgstr "Afkeuren"
 
-#: backoffice/templates/pro/reports/show.html:525 fixmystreet/models.py:2165
+#: backoffice/templates/pro/reports/show.html:525 fixmystreet/models.py:2182
 msgid "Reopen"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:533 fixmystreet/models.py:2166
+#: backoffice/templates/pro/reports/show.html:533 fixmystreet/models.py:2183
 #: fixmystreet/templates/reports/reopen.html:6
 #: fixmystreet/templates/reports/reopen.html:73
 #: fixmystreet/templates/reports/show.html:244
@@ -861,7 +861,7 @@ msgstr "Verantwoordelijkheid van een derde"
 msgid "Address"
 msgstr "Adres:"
 
-#: backoffice/templates/pro/reports/show.html:751 fixmystreet/models.py:2148
+#: backoffice/templates/pro/reports/show.html:751 fixmystreet/models.py:2165
 msgid "Close"
 msgstr "Afsluiten"
 
@@ -1199,7 +1199,7 @@ msgstr ""
 #: backoffice/templates/pro/reports/table_content.html:49
 #: fixmystreet/forms.py:177
 #: fixmystreet/templates/reports/_documentreport.html:101
-#: fixmystreet/templates/reports/reopen.html:210
+#: fixmystreet/templates/reports/reopen.html:217
 msgid "Quality"
 msgstr "Hoedanigheid"
 
@@ -1460,22 +1460,31 @@ msgstr ""
 msgid "You can not delete this user"
 msgstr ""
 
-#: backoffice/views/reports/main.py:64 fixmystreet/views/reports/main.py:77
+#: backoffice/views/reports/main.py:65 fixmystreet/views/reports/main.py:79
 msgid "Newly created report successfull"
 msgstr "Bedankt! Uw probleem is gemeld aan de bevoegde dienst. U ontvangt een e-mail met meer informatie."
 
-#: backoffice/views/reports/main.py:137 fixmystreet/views/reports/main.py:230
+#: backoffice/views/reports/main.py:138 backoffice/views/reports/main.py:331
+#: fixmystreet/views/reports/main.py:232 fixmystreet/views/reports/main.py:279
 msgid "No incident found with this ticket number"
 msgstr "Geen incident gevonden met dit nummer"
 
-#: backoffice/views/reports/main.py:144
+#: backoffice/views/reports/main.py:145
 msgid "Report successfully deleted"
 msgstr ""
 
-#: backoffice/views/reports/main.py:176 backoffice/views/reports/main.py:267
-#: fixmystreet/views/reports/main.py:165
+#: backoffice/views/reports/main.py:177 backoffice/views/reports/main.py:268
+#: fixmystreet/views/reports/main.py:167
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
+
+#: backoffice/views/reports/main.py:301 fixmystreet/views/reports/main.py:245
+msgid "You can only request to reopen a closed incident."
+msgstr ""
+
+#: backoffice/views/reports/main.py:320 fixmystreet/views/reports/main.py:267
+msgid "A request to reopen this ticket was sent to the person in charge."
+msgstr ""
 
 #: backoffice/views/reports/subscribers.py:24
 msgid "You have unsubscribed successfully"
@@ -1538,27 +1547,27 @@ msgstr "Boodschap"
 msgid "Add a comment, please."
 msgstr "Voeg commentaar toe. Hoe gedetailleerder het commentaar, hoe sneller het probleem geïdentificeerd en behandeld kan worden."
 
-#: fixmystreet/forms.py:287
+#: fixmystreet/forms.py:299
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: fixmystreet/forms.py:288
+#: fixmystreet/forms.py:300
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: fixmystreet/forms.py:291
+#: fixmystreet/forms.py:303
 msgid ""
 "Please enter a correct username and password. Note that both fields are "
 "case-sensitive."
 msgstr ""
 
-#: fixmystreet/forms.py:293
+#: fixmystreet/forms.py:305
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr ""
 
-#: fixmystreet/forms.py:295
+#: fixmystreet/forms.py:307
 msgid "This account is inactive."
 msgstr ""
 
@@ -1578,7 +1587,7 @@ msgstr "Beheerder van een gebouw"
 msgid "Association"
 msgstr "Vereniging"
 
-#: fixmystreet/models.py:101 fixmystreet/templates/reports/reopen.html:177
+#: fixmystreet/models.py:101 fixmystreet/models.py:2029
 msgid "Other"
 msgstr "Andere"
 
@@ -1606,13 +1615,13 @@ msgstr "Beheerder"
 msgid "Neighbour house"
 msgstr ""
 
-#: fixmystreet/models.py:278 fixmystreet/models.py:1844
-#: fixmystreet/models.py:1878 fixmystreet/models.py:1911
+#: fixmystreet/models.py:278 fixmystreet/models.py:1849
+#: fixmystreet/models.py:1883 fixmystreet/models.py:1916
 msgid "Slug"
 msgstr ""
 
 #: fixmystreet/models.py:624 fixmystreet/models.py:625
-#: fixmystreet/models.py:880 fixmystreet/models.py:2160
+#: fixmystreet/models.py:880 fixmystreet/models.py:2177
 #: fixmystreet/templates/reports/pdf.html:620
 msgid "Created"
 msgstr "Gemeld"
@@ -1742,187 +1751,195 @@ msgstr "Gemeld als opgelost : "
 
 #: fixmystreet/models.py:1576
 msgid "Reopen request message"
-msgstr "Aanvraag tot heropening : "
+msgstr "Aanvraag tot heropening"
 
 #: fixmystreet/models.py:1620 fixmystreet/models.py:1633
 msgid "ANONYMOUS"
 msgstr "ANONIEM"
 
-#: fixmystreet/models.py:1627 fixmystreet/models.py:2111
-#: fixmystreet/models.py:2223 fixmystreet/utils.py:202
-#: fixmystreet/utils.py:220 fixmystreet/templates/reports/_attachment.html:42
+#: fixmystreet/models.py:1627 fixmystreet/models.py:2128
+#: fixmystreet/models.py:2240 fixmystreet/utils.py:202
+#: fixmystreet/utils.py:221 fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:120
 #: fixmystreet/templates/reports/pdf.html:635 fixmystreet/tests/history.py:871
 #: fixmystreet/tests/history.py:875 fixmystreet/tests/history.py:888
 msgid "a citizen"
 msgstr "een burger"
 
-#: fixmystreet/models.py:1913 fixmystreet/models.py:1914
+#: fixmystreet/models.py:1918 fixmystreet/models.py:1919
 msgid "Category group"
 msgstr "Categorie group"
 
-#: fixmystreet/models.py:2011 fixmystreet/models.py:2374
+#: fixmystreet/models.py:2016 fixmystreet/models.py:2391
 msgid "Label"
 msgstr "Label"
 
-#: fixmystreet/models.py:2147
+#: fixmystreet/models.py:2027
+msgid "Not repaired"
+msgstr "Niet hersteld"
+
+#: fixmystreet/models.py:2028
+msgid "Badly repaired"
+msgstr "Slecht hersteld"
+
+#: fixmystreet/models.py:2164
 msgid "Refuse"
 msgstr "Afgewezen"
 
-#: fixmystreet/models.py:2149
+#: fixmystreet/models.py:2166
 msgid "Mark as Done"
 msgstr "Markeer als behandeld"
 
-#: fixmystreet/models.py:2150
+#: fixmystreet/models.py:2167
 msgid "Manager assigned"
 msgstr "Beheerder is toegekend"
 
-#: fixmystreet/models.py:2152
+#: fixmystreet/models.py:2169
 msgid "Valid"
 msgstr ""
 
-#: fixmystreet/models.py:2153
+#: fixmystreet/models.py:2170
 msgid "Organisation assigned"
 msgstr "Beheerder is toegekend"
 
-#: fixmystreet/models.py:2155
+#: fixmystreet/models.py:2172
 msgid "Contractor assigned"
 msgstr "Aannemer is toegewezen"
 
-#: fixmystreet/models.py:2156
+#: fixmystreet/models.py:2173
 msgid "Contractor changed"
 msgstr "Aannemer is toegewezen"
 
-#: fixmystreet/models.py:2157
+#: fixmystreet/models.py:2174
 msgid "Applicant assigned"
 msgstr "Aannemer is verantwoordelijk"
 
-#: fixmystreet/models.py:2158
+#: fixmystreet/models.py:2175
 msgid "Applicant changed"
 msgstr "Beheerder is toegekend"
 
-#: fixmystreet/models.py:2159
+#: fixmystreet/models.py:2176
 msgid "Applicant contractor changed"
 msgstr "Applicant contractor aangepast"
 
-#: fixmystreet/models.py:2161
+#: fixmystreet/models.py:2178
 msgid "Updated"
 msgstr ""
 
-#: fixmystreet/models.py:2162
+#: fixmystreet/models.py:2179
 msgid "Update published"
 msgstr ""
 
-#: fixmystreet/models.py:2163
+#: fixmystreet/models.py:2180
 msgid "Planned"
 msgstr "Gepland"
 
-#: fixmystreet/models.py:2164
+#: fixmystreet/models.py:2181
 msgid "Merged"
 msgstr "Samengevoegd"
 
-#: fixmystreet/models.py:2169
+#: fixmystreet/models.py:2186
 #, python-brace-format
 msgid "Report refused by {user}"
 msgstr "Probleem niet goedgekeurd door {user}"
 
-#: fixmystreet/models.py:2170
+#: fixmystreet/models.py:2187
 #, python-brace-format
 msgid "Report closed by {user}"
 msgstr "Probleem afgesloten door {user}"
 
-#: fixmystreet/models.py:2171
+#: fixmystreet/models.py:2188
 msgid "Report pointed as solved"
 msgstr "Probleem gemeld als opgelost door {user}"
 
-#: fixmystreet/models.py:2172
+#: fixmystreet/models.py:2189
 #, python-brace-format
 msgid "Report as been assigned to {related_new}"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: fixmystreet/models.py:2174
+#: fixmystreet/models.py:2191
 #, python-brace-format
 msgid "Report has been approved by {user}"
 msgstr "Probleem goedgekeurd door {user}"
 
-#: fixmystreet/models.py:2175
+#: fixmystreet/models.py:2192
 #, python-brace-format
 msgid "{related_new} is responsible for the report"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: fixmystreet/models.py:2177
+#: fixmystreet/models.py:2194
 #, python-brace-format
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Probleem toegewezen aan {related_new}"
 
-#: fixmystreet/models.py:2178
+#: fixmystreet/models.py:2195
 #, python-brace-format
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Probleem van {related_old} toegewezen aan {related_new}"
 
-#: fixmystreet/models.py:2179
+#: fixmystreet/models.py:2196
 #, python-brace-format
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Probleem toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: fixmystreet/models.py:2180
+#: fixmystreet/models.py:2197
 #, python-brace-format
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Probleem van {related_old} toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: fixmystreet/models.py:2181
+#: fixmystreet/models.py:2198
 #, python-brace-format
 msgid "Applicant contractor change from {related_old} to {related_new}"
 msgstr "Probleem van {related_old} toegewezen aan de uitvoerder van de werken {related_new}"
 
-#: fixmystreet/models.py:2182
+#: fixmystreet/models.py:2199
 #, python-brace-format
 msgid "Report created by {user}"
 msgstr "Probleem gemeld door {user}"
 
-#: fixmystreet/models.py:2183
+#: fixmystreet/models.py:2200
 #, python-brace-format
 msgid "Report updated by {user}"
 msgstr "Probleem geactualiseerd door {user}"
 
-#: fixmystreet/models.py:2184
+#: fixmystreet/models.py:2201
 #, python-brace-format
 msgid "Informations published by {user}"
 msgstr "Informatie gepubliceerd door {user}"
 
-#: fixmystreet/models.py:2185
+#: fixmystreet/models.py:2202
 #, python-brace-format
 msgid "Report planned to {date_planned}"
 msgstr "Gepland op {date_planned}"
 
-#: fixmystreet/models.py:2186
+#: fixmystreet/models.py:2203
 #, python-brace-format
 msgid "Report merged with report #{merged_with_id}"
 msgstr "Incident samengvoegd met #{merged_with_id}"
 
-#: fixmystreet/models.py:2187
+#: fixmystreet/models.py:2204
 #, python-brace-format
 msgid "Report reopen by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2188
+#: fixmystreet/models.py:2205
 #, python-brace-format
 msgid "Request to reopen report made by {user}"
 msgstr "Aanvraag tot heropening van de melding gedaan door {user}"
 
-#: fixmystreet/models.py:2331
+#: fixmystreet/models.py:2348
 msgid "Question"
 msgstr "Vraag"
 
-#: fixmystreet/models.py:2332
+#: fixmystreet/models.py:2349
 msgid "Answere"
 msgstr "Antwoord"
 
-#: fixmystreet/models.py:2375
+#: fixmystreet/models.py:2392
 msgid "Related model class name"
 msgstr ""
 
-#: fixmystreet/models.py:2376
+#: fixmystreet/models.py:2393
 msgid "Related model field"
 msgstr ""
 
@@ -1978,73 +1995,73 @@ msgstr "^rapport/(\\d+)/update/"
 msgid "^report/(\\d+)/pdf/(pro)?"
 msgstr ""
 
-#: fixmystreet/utils.py:225
+#: fixmystreet/utils.py:226
 msgid "acknowledge-creation"
 msgstr "gemeld via  Fix My Street"
 
-#: fixmystreet/utils.py:227
+#: fixmystreet/utils.py:228
 msgid "announcement-affectation"
 msgstr "in behandeling op Fix My Street is veranderd van beheerder"
 
-#: fixmystreet/utils.py:228
+#: fixmystreet/utils.py:229
 msgid "announcement-processed"
 msgstr "afgesloten op  Fix My Street"
 
-#: fixmystreet/utils.py:230
+#: fixmystreet/utils.py:231
 msgid "informations_published"
 msgstr "info werd gepubliceerd op Fix My Street"
 
-#: fixmystreet/utils.py:232
+#: fixmystreet/utils.py:233
 msgid "mail-pdf"
 msgstr "{user} stuurt u deze PDF"
 
-#: fixmystreet/utils.py:233
+#: fixmystreet/utils.py:234
 msgid "mark-as-done"
 msgstr "gemeld als opgelost op Fix My Street"
 
-#: fixmystreet/utils.py:235
+#: fixmystreet/utils.py:236
 msgid "notify-affectation"
 msgstr "werd aan u toegewezen voor behandeling op Fix My Street"
 
-#: fixmystreet/utils.py:236
+#: fixmystreet/utils.py:237
 msgid "notify-became-private"
 msgstr "is prive geworden op Fix My Street"
 
-#: fixmystreet/utils.py:237
+#: fixmystreet/utils.py:238
 msgid "notify-creation"
 msgstr "gemeld via Fix My Street"
 
-#: fixmystreet/utils.py:238
+#: fixmystreet/utils.py:239
 msgid "notify-merged"
 msgstr "is samengevoegd op Fix My Street"
 
-#: fixmystreet/utils.py:239
+#: fixmystreet/utils.py:240
 msgid "notify-planned"
 msgstr "werd gepland op Fix My Street"
 
-#: fixmystreet/utils.py:240
+#: fixmystreet/utils.py:241
 msgid "notify-refused"
 msgstr "niet goedgekeurd door Fix My Street"
 
-#: fixmystreet/utils.py:241
+#: fixmystreet/utils.py:242
 msgid "notify-reopen"
 msgstr ""
 
-#: fixmystreet/utils.py:242
+#: fixmystreet/utils.py:243
 msgid "notify-subscription"
 msgstr "abonnement op Fix My Street"
 
-#: fixmystreet/utils.py:243
+#: fixmystreet/utils.py:244
 msgid "notify-updates"
 msgstr "werd geactualiseerd op Fix My Street"
 
-#: fixmystreet/utils.py:244
+#: fixmystreet/utils.py:245
 msgid "notify-validation"
 msgstr "goedgekeurd door Fix My Street"
 
-#: fixmystreet/utils.py:245
+#: fixmystreet/utils.py:246
 msgid "notify-reopen-request"
-msgstr ""
+msgstr "aanvraag tot heropening"
 
 #: fixmystreet/templates/_page_header.html:14
 #: fixmystreet/templates/emails/notifications/html.bak/_report_overview.html:6
@@ -2448,7 +2465,7 @@ msgstr "Gezichten en nummerplaten mogen niet herkenbaar zijn"
 
 #: fixmystreet/templates/reports/_attachments_form.html:44
 #: fixmystreet/templates/reports/_documentreport.html:38
-#: fixmystreet/templates/reports/reopen.html:185
+#: fixmystreet/templates/reports/reopen.html:192
 msgid "Comment"
 msgstr "Commentaar"
 
@@ -2493,7 +2510,7 @@ msgstr "Ik wens via e-mail op de hoogte gehouden te worden over de evolutie van 
 
 #: fixmystreet/templates/reports/_documentreport.html:78
 #: fixmystreet/templates/reports/_documentreport.html:168
-#: fixmystreet/templates/reports/reopen.html:241
+#: fixmystreet/templates/reports/reopen.html:248
 msgid "Send"
 msgstr "Verzenden"
 
@@ -2665,17 +2682,9 @@ msgstr "Behandeld"
 msgid "Comments"
 msgstr "Commentaren"
 
-#: fixmystreet/templates/reports/reopen.html:163
+#: fixmystreet/templates/reports/reopen.html:184
 msgid "Reason"
 msgstr "Reden"
-
-#: fixmystreet/templates/reports/reopen.html:169
-msgid "Not repaired"
-msgstr "Niet hersteld"
-
-#: fixmystreet/templates/reports/reopen.html:173
-msgid "Badly repaired"
-msgstr "Slecht hersteld"
 
 #: fixmystreet/templates/reports/reports_map.html:6
 #: fixmystreet/templates/reports/reports_map.html:14

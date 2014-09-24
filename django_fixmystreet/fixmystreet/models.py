@@ -9,7 +9,7 @@ from datetime import timedelta
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, string_concat
 from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.contrib.auth.models import User
 
@@ -973,13 +973,13 @@ class Report(UserTrackedModel):
 
             self.save()  # set updated date and modified_by
 
-    def trigger_reopen_request(self, user=None, comment=None, reason=None):
+    def trigger_reopen_request(self, user=None, reopen_reason=None):
 
         ReportNotification(
             content_template='notify-reopen-request',
             recipient_mail=self.responsible_department.email,
             related=self,
-        ).save(updater=user, comment=comment, reason=reason)
+        ).save(updater=user, reopen_reason=reopen_reason)
 
         ReportEventLog(
             report=self,
@@ -1645,7 +1645,11 @@ class ReportAttachment(UserTrackedModel):
         elif self.type == self.MARK_AS_DONE:
             return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.MARK_AS_DONE)
         elif self.type == self.REOPEN_REQUEST:
-            return dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.REOPEN_REQUEST)
+            reason_int = ReportReopenReason.objects.get(pk=self.id).reason
+            reason = dict(ReportReopenReason.REASON_CHOICES).get(reason_int)
+            message = dict(self.REPORT_ATTACHMENT_TYPE_CHOICES).get(self.REOPEN_REQUEST)
+            final_msg = string_concat(message," (", reason, ") :")
+            return final_msg
         else:
             return ""
 
@@ -2014,6 +2018,18 @@ class ReportCategoryHint(models.Model):
         translate = ('label', )
 
 
+class ReportReopenReason(ReportComment):
+    NOT_REPAIRED = 1
+    BADLY_REPAIRED = 2
+    OTHER = 3
+    REASON_CHOICES = (
+        (NOT_REPAIRED, _("Not repaired")),
+        (BADLY_REPAIRED, _("Badly repaired")),
+        (OTHER, _("Other"))
+    )
+    reason = models.IntegerField(choices=REASON_CHOICES)
+
+
 # class ManagerCategories(UserTrackedModel):
 #     help_text="""
 #     Defines the relation of a user and a category
@@ -2042,7 +2058,7 @@ class ReportNotification(models.Model):
         files = None
         date_planned = None
         merged_with = None
-        reason = None
+        reopen_reason = None
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -2058,9 +2074,9 @@ class ReportNotification(models.Model):
         if 'date_planned' in kwargs:
             date_planned = kwargs['date_planned']
             del kwargs['date_planned']
-        if 'reason' in kwargs:
-            reason = kwargs['reason']
-            del kwargs['reason']
+        if 'reopen_reason' in kwargs:
+            reopen_reason = kwargs['reopen_reason']
+            del kwargs['reopen_reason']
 
         if self.related.merged_with:
             merged_with = self.related.merged_with
@@ -2077,7 +2093,7 @@ class ReportNotification(models.Model):
             template_mail = self.content_template
 
             comment = comment.text if comment else ''
-            subject, html, text = transform_notification_template(template_mail, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with, reason=reason)
+            subject, html, text = transform_notification_template(template_mail, self.related, self.recipient, old_responsible=old_responsible, updater=updater, comment=comment, date_planned=date_planned, merged_with=merged_with, reopen_reason=reopen_reason)
 
             if self.reply_to:
                 msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, recipients, headers={"Reply-To": self.reply_to})

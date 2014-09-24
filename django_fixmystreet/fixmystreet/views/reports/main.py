@@ -18,6 +18,8 @@ from django_fixmystreet.fixmystreet.forms import (
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 
 import logging
+from pip._vendor.requests import HTTPError
+
 logger = logging.getLogger(__name__)
 
 
@@ -236,35 +238,42 @@ def index(request):
     }, context_instance=RequestContext(request))
 
 def reopen_request(request, slug, report_id):
-    report = get_object_or_404(Report, id=report_id, private=False)
-
-    if request.method == "POST":
-        comment = None
-        reason = request.POST["reason"]
-        comment_form = ReportCommentForm(request.POST, prefix='comment')
-        citizen_form = CitizenForm(request.POST, prefix='citizen')
-
-        # this checks update is_valid too
-        if citizen_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) :
-
-            citizen = citizen_form.save()
-
-            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                comment = comment_form.save(commit=False)
-                comment.report = report
-                comment.created_by = citizen
-                comment.type = ReportAttachment.REOPEN_REQUEST
-                comment.save()
-
-            report.trigger_reopen_request(user=citizen, comment=comment, reason=reason)
-
+    try:
+        report = get_object_or_404(Report, id=report_id, private=False)
+        if report.status != report.PROCESSED:
+            messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
             return HttpResponseRedirect(report.get_absolute_url())
-    else:
-        comment_form = ReportCommentForm(prefix='comment')
-        citizen_form = CitizenForm(prefix='citizen')
+        elif request.method == "POST":
+            comment = None
+            reason = request.POST["reason"]
+            comment_form = ReportCommentForm(request.POST, prefix='comment')
+            citizen_form = CitizenForm(request.POST, prefix='citizen')
 
-    return render_to_response("reports/reopen.html", {
-        "report": report,
-        "comment_form": comment_form,
-        "citizen_form": citizen_form,
-    }, context_instance=RequestContext(request))
+            # this checks update is_valid too
+            if citizen_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) :
+
+                citizen = citizen_form.save()
+
+                if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
+                    comment = comment_form.save(commit=False)
+                    comment.report = report
+                    comment.created_by = citizen
+                    comment.type = ReportAttachment.REOPEN_REQUEST
+                    comment.save()
+
+                report.trigger_reopen_request(user=citizen, comment=comment, reason=reason)
+
+                messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
+                return HttpResponseRedirect(report.get_absolute_url())
+        else:
+            comment_form = ReportCommentForm(prefix='comment')
+            citizen_form = CitizenForm(prefix='citizen')
+
+        return render_to_response("reports/reopen.html", {
+            "report": report,
+            "comment_form": comment_form,
+            "citizen_form": citizen_form,
+        }, context_instance=RequestContext(request))
+    except Http404:
+        messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
+        return HttpResponseRedirect(reverse('home'))

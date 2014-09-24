@@ -158,34 +158,41 @@
         {% else %}
             <form id="reopen_request_form"  action="{% url 'report_reopen_request'  report.get_slug report.id %}" method="post" class="form-horizontal">
         {% endif %}
+{#            <div class="control-group required">#}
+{#                <label for="reason" class="control-label">#}
+{#                    <strong>{% trans 'Reason' %}</strong>#}
+{#                </label>#}
+{#                <div class="controls">#}
+{#                     <ul class="ul-reopen-request">#}
+{#                        <li>#}
+{#                            <input id= "not_repaired" type="radio" name="reason" value="Not repaired" />#}
+{#                            <label for="not_repaired">{% trans 'Not repaired' %}</label>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <input id= "badly_repaired" type="radio" name="reason"  value="Badly repaired" />#}
+{#                            <label for="badly_repaired">{% trans 'Badly repaired' %}</label>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <input id= "other" type="radio" name="reason"  value="Other" />#}
+{#                            <label for="other">{% trans 'Other' %}</label>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
             <div class="control-group required">
-                <label for="reason" class="control-label">
+                <label for="reopen-reason" class="control-label">
                     <strong>{% trans 'Reason' %}</strong>
                 </label>
-                <div class="controls">
-                     <ul class="ul-reopen-request">
-                        <li>
-                            <input id= "not_repaired" type="radio" name="reason" value="Not repaired" />
-                            <label for="not_repaired">{% trans 'Not repaired' %}</label>
-                        </li>
-                        <li>
-                            <input id= "badly_repaired" type="radio" name="reason"  value="Badly repaired" />
-                            <label for="badly_repaired">{% trans 'Badly repaired' %}</label>
-                        </li>
-                        <li>
-                            <input id= "other" type="radio" name="reason"  value="Other" />
-                            <label for="other">{% trans 'Other' %}</label>
-                        </li>
-                    </ul>
+                <div id="reason-reopen-request" class="controls">
+                    {% input_class reopen_form.reason '' %}
                 </div>
             </div>
-
-           <div class="control-group required">
+            <div class="control-group required">
                 <label for="text" class="control-label">
                     <strong>{% trans 'Comment' %}</strong>
                 </label>
                 <div class="controls">
-                    {% input_class comment_form.text 'input-block-level' %}
+                    {% input_class reopen_form.text 'input-block-level' %}
                 </div>
             </div>
 

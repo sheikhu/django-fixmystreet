@@ -201,8 +201,9 @@ def transform_notification_user_display(display_pro, to_show):
     if to_show is None:
         return _("a citizen")
 
-    entity_name = None
+    entity_name = ''
     show_department = to_show.__class__.__name__ == 'OrganisationEntity'
+
     if show_department:
         entity_name = to_show.dependency
     elif to_show.is_pro() and to_show.get_organisation():
@@ -210,9 +211,9 @@ def transform_notification_user_display(display_pro, to_show):
 
     if display_pro:
         if show_department:
-            return u"{0} {1} ({2})".format(entity_name, to_show.name, to_show.email)
+            return u"{0} {1} ({2})".format(entity_name, to_show.name, to_show.email).strip()
         else:
-            return u"{0} {1} ({2})".format(entity_name, to_show.get_full_name(), to_show.email)
+            return u"{0} {1} ({2})".format(entity_name, to_show.get_full_name(), to_show.email).strip()
     else:
         if entity_name:
             return entity_name
@@ -245,7 +246,7 @@ mail_titles = {
     _('notify-reopen-request'),
 }
 
-def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None, reason=None):
+def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None, reopen_reason=None):
     # Define site url
     SITE_URL = "https://{0}".format(Site.objects.get_current().domain)
 
@@ -278,6 +279,13 @@ def transform_notification_template(template_mail, report, user, old_responsible
         data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url())
 
     if display_pro:
+        data["reopen_request_url_fr"] = ""
+        data["reopen_request_url_nl"] = ""
+    else:
+        data["reopen_request_url_fr"] = ""
+        data["reopen_request_url_nl"] = ""
+
+    if display_pro:
         data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
     else:
         data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
@@ -299,8 +307,10 @@ def transform_notification_template(template_mail, report, user, old_responsible
     if merged_with:
         data["merged_with"] = merged_with.id
 
-    if reason:
-        data["reason"] = reason
+    if reopen_reason:
+        # data["reopen_reason_fr"] = dict(ReportReopenReason.REASON_CHOICES).get(reopen_reason.reason)
+        # data["reopen_reason_nl"] =
+        data["reopen_comment"] = reopen_reason.comment
 
     # Subject mail for each languages.
     # Don't forget to update mail_titles variable (above) to support translations in .po.

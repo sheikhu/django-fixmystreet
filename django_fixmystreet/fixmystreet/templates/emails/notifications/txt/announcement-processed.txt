@@ -1,4 +1,5 @@
 {% extends 'emails/notifications/base.txt' %}
+{% load i18n %}
 
 {% block content_mail_fr %}
 {{responsible}} à clôturé l’incident.
@@ -8,6 +9,11 @@
 Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
 
 - {{display_url}}
+
+Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :
+
+- {{display_url}}/reouverture/
+
 {% endblock %}
 
 {% block content_mail_nl %}
@@ -18,4 +24,10 @@ Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
 U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:
 
 - {{display_url}}
+
+
+TO translate NL : Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :
+
+- {{display_url}}/heropening/
+
 {% endblock %}

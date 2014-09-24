@@ -13,7 +13,7 @@ from django.utils.safestring import mark_safe
 from django_fixmystreet.fixmystreet.models import (
     ReportMainCategoryClass, Report,
     ReportFile, ReportComment,
-    ReportCategory, ReportSecondaryCategoryClass, FMSUser)
+    ReportCategory, ReportSecondaryCategoryClass, FMSUser, ReportReopenReason)
 from django_fixmystreet.fixmystreet.utils import dict_to_point, get_current_user
 
 # tricky stuff
@@ -282,6 +282,18 @@ class ReportCommentForm(forms.ModelForm):
         fields = ('text',)
 
     text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder': _("Add a comment, please.")}))
+
+
+class ReportReopenReasonForm(ReportCommentForm):
+    required_css_class = 'required'
+
+    class Meta:
+        model = ReportReopenReason
+        fields = ('reason',)
+
+    reason = forms.ChoiceField(choices=ReportReopenReason.REASON_CHOICES, widget=forms.RadioSelect())
+
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=_("Username"))
