@@ -18,8 +18,6 @@ from django_fixmystreet.fixmystreet.forms import (
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 
 import logging
-from pip._vendor.requests import HTTPError
-
 logger = logging.getLogger(__name__)
 
 
