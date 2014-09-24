@@ -2,7 +2,6 @@
 # Bugs & co
 - Weird behavior of auto panning, especially with open pop-ups.
     - L.FixMyStreet.centerOnMarker(): Check if popup is opened and adapt LatLng accordingly.
-- Bug CSS: Search Panel
 
 # Improvements
 - L.FixMyStreet.Map.options.myLayers: Rename variable.
@@ -1263,7 +1262,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
             });
             break;
           default:
-            console.log('ERROR: Unknown bind type (%s).', $this.data('bind'));
+            console.error('ERROR: Unknown bind type (%s).', $this.data('bind'));
         }
       }
     });
@@ -1466,6 +1465,31 @@ L.FixMyStreet.Panel = L.Control.extend({
       }
     });
   },
+
+  _bindActions: function (handlers) {
+    if (!this._container) { return; }
+    var that = this;
+
+    $(this._container).find('[data-bind]').each(function (i, e) {
+      var $this = $(this);
+      var action = $this.data('bind');
+
+      if (handlers !== undefined && handlers[action]) {
+        $this.click(handlers[action]);
+      } else {
+        switch (action) {
+          case 'close':
+            $this.click(function (evt) {
+              evt.preventDefault();
+              that.remove();
+            });
+            break;
+          default:
+            console.error('ERROR: Unknown bind type (%s).', $this.data('bind'));
+        }
+      }
+    });
+  },
 });
 
 
@@ -1474,7 +1498,10 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     templates: {
       base:
         '<div class="fmsmap-panel fmsmap-panel-search">' +
-          '<div class="fmsmap-panel-header clearfix">{_header_}</div>' +
+          '<div class="fmsmap-panel-header clearfix">' +
+            '<button class="close" type="button" data-bind="close">&times;</button>' +
+            '{_header_}' +
+          '</div>' +
           '<div class="fmsmap-panel-body clearfix">{_body_}</div>' +
         '</div>',
       _header_:
@@ -1559,6 +1586,16 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     return this._container;
   },
 
+  _bindActions: function (handlers) {
+    var that = this;
+    var theseHandlers = {};
+    theseHandlers['close'] = function (evt) {
+      evt.preventDefault();
+      that._map.removeSearchResults();
+    };
+    handlers = $.extend(true, {}, theseHandlers, handlers);
+    L.FixMyStreet.Panel.prototype._bindActions.call(this, handlers);
+  },
 });
 
 L.FixMyStreet.SearchPanel.include(L.FixMyStreet.Template);

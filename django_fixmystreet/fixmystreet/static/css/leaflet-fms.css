@@ -339,6 +339,9 @@
   right: 0;
   height: 17px;
 }
+.fmsmap-panel-search .fmsmap-panel-header .close {
+  margin: -8px -3px 0 0;
+}
 .fmsmap-panel-search ul {
   position: absolute;
   top: 43px;
