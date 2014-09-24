@@ -3,7 +3,6 @@
 - Weird behavior of auto panning, especially with open pop-ups.
     - L.FixMyStreet.centerOnMarker(): Check if popup is opened and adapt LatLng accordingly.
 - Bug CSS: Search Panel
-- L.FixMyStreet.SearchPanel.onAdd(): Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
 
 # Improvements
 - L.FixMyStreet.Map.options.myLayers: Rename variable.
@@ -1454,7 +1453,8 @@ L.FixMyStreet.Panel = L.Control.extend({
   },
 
   setContent: function(html) {  // (String)
-    this._container = html;
+    this._container = $(html).get(0);
+    this.$container = $(this._container);
     this._bindActions();
   },
 
@@ -1509,16 +1509,21 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     L.Control.prototype.initialize.call(this, options, source);
   },
 
-  onAdd: function (map) {
-    var that = this;
+  addTo: function (map) {  // (L.Map)
     this._map = map;
+    this.onAdd(map);
+    $panelContainer = this._getContainer(map);
+    $panelContainer.append(this.$container);
+  },
+
+  onAdd: function (map) {  // (L.Map)
+    var that = this;
 
     var results = [];
     $.each(map.searchResults, function (i, marker) {
       results.push(marker.model);
     });
     this.renderContent({results: results});
-    this.$container = $(this._container);
 
     this.$container.mouseover(function (evt) {
       map.dragging.disable();
@@ -1551,10 +1556,7 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
       });
     });
 
-    $panelContainer = this._getContainer(map);
-    $panelContainer.append(this.$container);
-
-    return this._container;  // @TODO: Bug: "Uncaught TypeError: Cannot read property 'baseVal' of undefined"
+    return this._container;
   },
 
 });
