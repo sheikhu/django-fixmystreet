@@ -111,7 +111,7 @@ fms.AddressSearchView = Backbone.View.extend({
                     models.push(model);
                 });
                 fms.map.addSearchResults(models);
-                this.showResultIntegrityMessage(results);
+                this.showResultIntegrityMessage(response.result);
             }
         } else if (response.status == "noresult" || response.status == "success") {
             fms.map.removeSearchResults();
