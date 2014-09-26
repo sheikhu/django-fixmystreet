@@ -244,14 +244,14 @@ $(function(event) {
                                         <i class="icon-subscribe"> </i>{% trans "Reopen request" %}
                                     </a>
                             {% endif %}
-                            {% if report.status != report.SOLVED and report.status != report.CREATED %}
-                                <a href="#divMarkAsDone" class="btn" data-toggle="modal">
-                                    {% trans "Report as solved" %}
-                                    <i class="icon-isresolved"> </i>
-                                </a>
-                            {% endif %}
 
                             {% if report.is_in_progress %}
+                                {% if report.status != report.SOLVED %}
+                                    <a href="#divMarkAsDone" class="btn" data-toggle="modal">
+                                        {% trans "Report as solved" %}
+                                        <i class="icon-isresolved"> </i>
+                                    </a>
+                                {% endif %}
                                 {% if not report.is_closed and not subscribed %}
                                     <a href="#modalSubscription" class="btn" data-toggle="modal">
                                         {% if report.subscriptions.all.count %}

@@ -5,10 +5,9 @@
 {{responsible}} à clôturé l’incident.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :
 
-Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :
-
-- {{display_url}}/reouverture/
+- {{reopen_request_url}}
 
 {% endblock %}
 
@@ -17,8 +16,8 @@ Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 
-TO translate NL : Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :
+TO translate NL : Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :
 
-- {{display_url}}/heropening/
+- {{reopen_request_url}}
 
 {% endblock %}

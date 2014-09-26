@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
@@ -108,7 +108,7 @@ def report_prepare_pro(request, location=None, error_msg=None):
         else:
             popup_reports = popup_reports.closed()
 
-    last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_PRO)
+    last_30_days = datetime.datetime.today() + datetime.timedelta(**DEFAULT_TIMEDELTA_PRO)
 
     # Queryset common to all reports
     qs = Report.objects.all().visible() \
@@ -299,8 +299,12 @@ def merge(request, slug, report_id):
 def reopen_request(request, slug, report_id):
     try:
         report = get_object_or_404(Report, id=report_id)
+        limit_date = datetime.datetime.now() - datetime.timedelta(days=90)
         if report.status != Report.PROCESSED:
             messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+        elif report.close_date < limit_date:
+            messages.add_message(request, messages.ERROR, _("You cannot request to reopen an incident closed more than 90 days ago."))
             return HttpResponseRedirect(report.get_absolute_url_pro())
         elif request.method == "POST":
             reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')

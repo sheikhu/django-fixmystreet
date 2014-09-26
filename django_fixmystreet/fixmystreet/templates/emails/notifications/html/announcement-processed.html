@@ -3,17 +3,17 @@
 {% block content_mail_fr %}
 <p>{{responsible}} à clôturé l’incident.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
-<p>Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :</p>
+<p>Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :</p>
 <ul>
-<li><a href="{{display_url}}/reouverture">{{display_url}}/reouverture</a></li>
+<li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
 </ul>
 {% endblock %}
 
 {% block content_mail_nl %}
 <p>{{responsible}} heeft het probleem als opgelost gemeld.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>s
-<p>TODO NL : Vous pouvez demander de rouvrir cet incident en suivant le lien ci-dessous :</p>
+<p>TODO NL : Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :</p>
 <ul>
-<li><a href="{{display_url}}/heropening">{{display_url}}/heropening</a></li>
+<li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
 </ul>
 {% endblock %}

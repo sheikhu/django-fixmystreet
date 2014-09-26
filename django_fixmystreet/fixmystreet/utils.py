@@ -281,18 +281,17 @@ def transform_notification_template(template_mail, report, user, old_responsible
         data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url())
 
     if display_pro:
-        data["reopen_request_url"] = ""
-    else:
-        data["reopen_request_url"] = ""
-
-    if display_pro:
         data["unsubscribe_url"] = lambda: "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
     else:
         data["unsubscribe_url"] = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
 
+    if template_mail == "announcement-processed":
+        if display_pro:
+            data["reopen_request_url"] = lambda: "{0}{1}".format(SITE_URL,reverse('report_reopen_request_pro', kwargs={'report_id': report.id, 'slug':report.get_slug()}))
+        else:
+            data["reopen_request_url"] = lambda: "{0}{1}".format(SITE_URL,reverse('report_reopen_request', kwargs={'report_id': report.id, 'slug':report.get_slug()}))
+
     if template_mail == "mark-as-done":
-
-
         if updater and updater.is_pro():
             from django_fixmystreet.fixmystreet.models import ReportAttachment, ReportComment
             data["done_motivation"] = ReportComment.objects.filter(report=report, type=ReportAttachment.MARK_AS_DONE).latest('created').text
