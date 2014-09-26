@@ -4,6 +4,29 @@
   <meta charset="utf-8">
   <title>Mocha Tests</title>
   <link rel="stylesheet" href="mocha.css" />
+  <link rel="stylesheet" href="../lib/leaflet/leaflet.css" />
+  <link rel="stylesheet" href="../lib/leaflet.opacitycontrols/control.opacity.css" />
+  <link rel="stylesheet" href="../css/leaflet-fms.css" />
+  <style>
+    #map {
+      height: 400px;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+    }
+    #__testem_ui__ {
+      top: 2px;
+      left: 2px;
+      bottom: auto !important;
+      right: auto !important;
+      font-size: 10px;
+    }
+    #mocha {
+      margin-bottom: 450px;
+    }
+  </style>
 </head>
 <body>
   <div id="mocha"></div>
@@ -12,13 +35,17 @@
   <script src="../lib/jquery-1.8.3.min.js"></script>
   <script src="../lib/underscore/underscore.js"></script>
   <script src="../lib/backbone/backbone.js"></script>
-  <script src="../lib/leaflet/leaflet-src.js"></script>
-  <script src="../lib/leaflet.markercluster/leaflet.markercluster-src.js"></script>
+
+  <!-- leaflet -->
+  <script src="../lib/leaflet/leaflet.js"></script>
+  <script src="../lib/leaflet.markercluster/leaflet.markercluster.js"></script>
+  <script src="../lib/leaflet.opacitycontrols/control.opacity.js"></script>
+  <script src="../lib/proj4js/engine/proj4js-compressed.js"></script>
+  <script src="../lib/proj4js/defs/EPSG31370.js"></script>
+  <script src="../js/leaflet/leaflet-fms.js"></script>
 
   <!-- app -->
-  <script>var fms={};</script>
-  <script src="../js/leaflet/leaflet-fms.js"></script>
-  <script src="../js/leaflet/urbis-layers.js"></script>
+  <script>var fms = {};</script>
   <script src="../js/map-view.js"></script>
   <script src="../js/search-address-view.js"></script>
 
@@ -31,8 +58,11 @@
   </script>
 
   <!-- unit tests -->
-  <script src="test.maps.js"></script>
-  <script src="test.search.js"></script>
+  <!-- <script src="leaflet/test.urbis-layers.js"></script> -->
+  <!-- <script src="leaflet/test.map.js"></script> -->
+  <!-- <script src="leaflet/test.markers.js"></script> -->
+  <script src="leaflet/test.util.js"></script>
+  <!-- <script src="test.search.js"></script> -->
   <script>
     mocha.globals(['jQuery']);
     mocha.run();

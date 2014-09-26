@@ -52,6 +52,9 @@ test: $(BIN_PATH)/manage.py
 test-js:
 	testem ci -t django_fixmystreet/fixmystreet/static/tests/index.html
 
+test-js-tdd:
+	testem tdd -t django_fixmystreet/fixmystreet/static/tests/index.html
+
 lint:
 	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) || echo "lint errors"
 

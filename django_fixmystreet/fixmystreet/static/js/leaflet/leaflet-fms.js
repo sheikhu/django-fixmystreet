@@ -1,4 +1,6 @@
 /* @TODO
+- L.FixMyStreet.Util.urbisResultToAddress(): Retrieve it according to postal code.
+
 # Bugs & co
 - Weird behavior of auto panning, especially with open pop-ups.
     - L.FixMyStreet.centerOnMarker(): Check if popup is opened and adapt LatLng accordingly.
@@ -335,7 +337,7 @@ L.FixMyStreet.Map = L.Map.extend({
   addIncident: function (model, options) {  // (Object, [Object])
     var isNew = model.type === 'new';
     if (!isNew && !(model.type in this.incidents)) {
-      throw new Error('Invalid incident type (' + model.type + ').');
+      throw new TypeError('Invalid incident type (' + model.type + ').');
     }
     if (isNew && this.newIncidentMarker !== null) {
       throw new Error('New incident marker already present, remove it first.');
@@ -381,7 +383,9 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   toggleIncidentType: function (type, visibility) {  // (String, [Boolean])
-    if (!(type in this.incidents)) { throw new Error('Invalid incident type (' + type + ').'); }
+    if (!(type in this.incidents)) {
+      throw new TypeError('Invalid incident type (' + type + ').');
+    }
     var that = this;
     $.each(this.incidents[type], function (i, layer) {
       if (visibility) {
@@ -770,7 +774,9 @@ L.FixMyStreet.Map = L.Map.extend({
 
   getLeafletCorner: function (position) {  // (String)
     var corner = this._controlCorners[position];
-    if (corner === undefined) { throw new Error('Invalid position (' + position + ').'); }
+    if (corner === undefined) {
+      throw new TypeError('Invalid position (' + position + ').');
+    }
     return $(corner);
   },
 
@@ -813,7 +819,7 @@ L.FixMyStreet.Map = L.Map.extend({
       case 'other':
         marker = new L.FixMyStreet.OtherIncidentMarker(latlng, options, model);
         break;
-      default: throw new Error('Invalid marker type (' + model.type + ').');
+      default: throw new TypeError('Invalid marker type (' + model.type + ').');
     }
 
     return marker;
@@ -976,7 +982,9 @@ L.FixMyStreet.Marker = L.Marker.extend({
   },
 
   getMap: function() {
-    if (!this._map) { throw new Error('Marker is not visible on map, probably in a closed cluster.'); }
+    if (!this._map) {
+      throw new Error('Marker is not visible on map, probably in a closed cluster.');
+    }
     return this._map;
   },
 
@@ -1022,7 +1030,8 @@ L.FixMyStreet.Marker = L.Marker.extend({
   },
 
   openStreetView: function() {
-    L.FixMyStreet.Util.openStreetView(this.getLatLng());
+    var url = L.FixMyStreet.Util.getStreetViewUrl(this.getLatLng());
+    window.open(url, '_blank');
   },
 });
 
@@ -1370,7 +1379,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
     var that = this;
     var theseHandlers = {};
     theseHandlers['itshere'] = function (evt) {
-      var point = L.FixMyStreet.Util.toWMS(that._marker.getLatLng());
+      var point = L.FixMyStreet.Util.toUrbisCoords(that._marker.getLatLng());
       var url = that._marker.model.url + '?x=' + point.x + '&y=' + point.y;
       $(this).attr('href', url);
     };
@@ -1611,80 +1620,172 @@ L.FixMyStreet.Util = {
     }
   },
 
-  toLatLng: function (latlng) {  // (L.LatLng or L.Point or String or Object)
-    if (latlng === undefined || latlng instanceof L.LatLng) {
-      return latlng;
+  /**
+   * Converts a value into a `L.LatLng` object.
+   *
+   * @param {(L.LatLng|L.Point|string|object)} value - The value to convert.
+   * @returns {L.LatLng} The converted value.
+   * @throws {TypeError} If the value cannot be converted.
+   */
+  toLatLng: function (value) {
+    if (value instanceof L.LatLng || value === undefined || value === null) {
+      return value;
     }
 
-    if (latlng instanceof L.Point) {
-      return L.Projection.LonLat.unproject(latlng);
+    if (value instanceof L.Point) {
+      return L.Projection.LonLat.unproject(value);
     }
 
-    if (typeof latlng === 'string') {
-      var chunks = latlng.split(/,\s*/);
-      return new L.LatLng(parseFloat(chunks[0]), parseFloat(chunks[1]));
-    }
-
-    if (typeof latlng === 'object') {
-      if ('lat' in latlng && 'lng' in latlng) {
-        return new L.LatLng(latlng.lat, latlng.lng);
-      } else if ('x' in latlng && 'y' in latlng) {
-        return L.Projection.LonLat.unproject(L.point(latlng.x, latlng.y));
-      } else if (0 in latlng && 1 in latlng) {
-        return new L.LatLng(latlng[0], latlng[1]);
+    try {
+      if (typeof value === 'string') {
+        var chunks = value.split(/,\s*/);
+        return new L.LatLng(parseFloat(chunks[0]), parseFloat(chunks[1]));
       }
-    }
 
-    throw new Error('Invalid parameter. Expect L.LatLng or L.Point or String ("0.123,-45.678") or Object ({lat: 0.123, lng: -45.678} or [0.123, -45.678]).');
-  },
-
-  toPoint: function(point) {  // (L.Point or L.LatLng or String or Object)
-    if (point === undefined || point instanceof L.Point) {
-      return point;
-    }
-
-    if (point instanceof L.LatLng) {
-      return L.Projection.LonLat.project(point);
-    }
-
-    if (typeof point === 'object') {
-      if ('x' in point && 'y' in point) {
-        return L.point(point.x, point.y);
-      } else if (0 in point && 1 in point) {
-        return L.point(point[0], point[1]);
+      if (typeof value === 'object') {
+        if ('lat' in value && 'lng' in value) {
+          return new L.LatLng(parseFloat(value.lat), parseFloat(value.lng));
+        }
+        if ('x' in value && 'y' in value) {
+          return L.Projection.LonLat.unproject(this.toPoint({x: value.x, y: value.y}));
+        }
+        if (0 in value && 1 in value) {
+          return new L.LatLng(parseFloat(value[0]), parseFloat(value[1]));
+        }
       }
+    } catch (error) {
     }
 
-    throw new Error('Invalid parameter. Expect L.Point or L.LatLng or String ("123456.789,165432.987") or Object ({x: 123456.789, y: 165432.987} or [123456.789, 165432.987]).');
+    throw new TypeError('Invalid value (' + value + '). Expect L.LatLng or L.Point or String ("50.846,4.369") or Object ({lat: 50.846, lng: 4.369} or {x: 4.369, y: 50.846} or [50.846, 4.369]).');
   },
 
-  toXY: function (latlng) {  // (L.LatLng)
-    var point = L.Projection.LonLat.project(latlng);
-    return {x: point.x, y: point.y};  // {x: lng, y: lat}
+  /**
+   * Converts a value into a `L.Point` object.
+   *
+   * @param {(L.Point|L.LatLng|string|object)} value - The value to convert.
+   * @param {boolean=false} prefLatLng - Preference to LatLng format if value is index-based (i.e. "4.369,50.846" or [4.369, 50.846]).
+   * @returns {L.Point} The converted value.
+   * @throws {TypeError} If the value cannot be converted.
+   */
+  toPoint: function(value, prefLatLng) {
+    prefLatLng = prefLatLng === undefined ? false : prefLatLng === true;
+
+    if (value instanceof L.Point || value === undefined || value === null) {
+      return value;
+    }
+
+    if (value instanceof L.LatLng) {
+      return L.Projection.LonLat.project(value);
+    }
+
+    try {
+      var x, y;
+      if (typeof value === 'string') {
+        var chunks = value.split(/,\s*/);
+        if (prefLatLng) {
+          x = chunks[1];
+          y = chunks[0];
+        } else {
+          x = chunks[0];
+          y = chunks[1];
+        }
+      } else if (typeof value === 'object') {
+        if ('x' in value && 'y' in value) {
+          x = value.x;
+          y = value.y;
+        } else if ('lat' in value && 'lng' in value) {
+          return L.Projection.LonLat.project(this.toLatLng({lat: value.lat, lng: value.lng}));
+        } else if (0 in value && 1 in value) {
+          if (prefLatLng) {
+            x = value[1];
+            y = value[0];
+          } else {
+            x = value[0];
+            y = value[1];
+          }
+        }
+      }
+
+      x = parseFloat(x);
+      y = parseFloat(y);
+      if (typeof x === 'number' && !isNaN(x) && typeof y === 'number' && !isNaN(y)) {
+        return new L.Point(x, y);
+      }
+    } catch (error) {
+    }
+
+    throw new TypeError('Invalid value (' + value + '). Expect L.Point or L.LatLng or String ("4.369,50.846") or Object ({x: 4.369, y: 50.846} or {lat: 50.846, lng: 4.369} or [4.369, 50.846]).');
   },
 
-  fromWMS: function (value) {  // (L.Point)
+  /**
+   * Converts the coordinates system, from UrbIS (EPSG:31370) to Leaflet (EPSG:4326).
+   *
+   * @see {@link http://epsg.io/31370} -- EPSG:31370 (Belgium Lambert 72).
+   * @see {@link http://epsg.io/4326} -- EPSG:4326 (World Geodetic System 1984).
+   * @see {@link http://proj4js.org/} -- Library to transform coordinates from one coordinate system to another.
+   *
+   * @param {(L.Point|L.LatLng|string|object)} value - The value in EPSG:31370.
+   * @returns {L.Point} The value converted in EPSG:4326.
+   */
+  fromUrbisCoords: function (value) {
     this._initProj4js();
-    var point = this.toPoint(value);
+    var point = this._toProj4jsPoint(this.toPoint(value));
     Proj4js.transform(this.PROJ4JS_31370, this.PROJ4JS_4326, point);
-    return {x: point.x, y: point.y};
+    return this.toPoint(point);
   },
 
-  toWMS: function (latlng) {  // (L.LatLng or L.Point)
-    // EPSG:4326 to EPSG:31370 (Belgium Lambert 72)
-    // http://proj4js.org/  |  http://zoologie.umh.ac.be/tc/algorithms.aspx
-    // Avenue des Arts 21, 1000 Brussels: (50.8461603, 4.3691917) => (150030.9884557725, 170639.46667259652)
+  /**
+   * Converts the coordinates system, from Leaflet (EPSG:4326) to UrbIS (EPSG:31370).
+   *
+   * @see {@link http://epsg.io/4326} -- EPSG:4326 (World Geodetic System 1984).
+   * @see {@link http://epsg.io/31370} -- EPSG:31370 (Belgium Lambert 72).
+   * @see {@link http://proj4js.org/} -- Library to transform coordinates from one coordinate system to another.
+   *
+   * @param {(L.Point|L.LatLng|string|object)} value - The value in EPSG:4326.
+   * @returns {L.Point} The value converted in EPSG:31370.
+   */
+  toUrbisCoords: function (value) {
     this._initProj4js();
-    var point = latlng instanceof L.Point ? latlng : new Proj4js.Point(latlng.lng, latlng.lat);
+    var point = this._toProj4jsPoint(this.toPoint(value));
     Proj4js.transform(this.PROJ4JS_4326, this.PROJ4JS_31370, point);
-    return {x: point.x, y: point.y};
+    return this.toPoint(point);
   },
 
-  WMSToLatLng: function (value) {  // (L.Point)
-    return this.toLatLng(this.fromWMS(value));
+  /**
+   * Converts a Point from UrbIS (EPSG:31370) to a LatLng for Leaflet (EPSG:4326).
+   *
+   * @see {@link fromUrbisCoords}
+   * @see {@link toLatLng}
+   *
+   * @param {(L.Point|L.LatLng|string|object)} value - The value in EPSG:31370.
+   * @returns {L.LatLng} The value converted in EPSG:4326.
+   */
+  urbisCoordsToLatLng: function (value) {
+    return this.toLatLng(this.fromUrbisCoords(value));
   },
 
-  getAddressFromLatLng: function (latlng, success, error) {  // (L.LatLng or Object or String, Function, [Function])
+  /**
+   * Retrieves from UrbIS the address of a LatLng in EPSG:4326.
+   *
+   * @see {@link urbisResultToAddress}
+   * @see {@link http://gis.irisnet.be/urbis/} -- Demos of UrbIS geolocalization services. See section "Get address from x,y coordinates".
+   *
+   * @param {(L.LatLng|L.Point|string|object)} coords - The LatLng in EPSG:4326.
+   # @param {getAddressSuccessCallback} success - The callback that handles a successful response.
+   # @param {getAddressErrorCallback=} error - The callback that handles errors.
+   * @returns {object} The address (in our standard format).
+   * @throws {Error} If the request doesn't succeed and no error handler is given.
+   */
+  /**
+   * @callback getAddressSuccessCallback
+   # @param {object} The address (in our standard format).
+   * @see {@link urbisResultToAddress}
+   */
+  /**
+   * @callback getAddressErrorCallback
+   # @param {object} The response received from UrbIS.
+   */
+  getAddressFromLatLng: function (coords, success, error) {
     var that = this;
     $.ajax({
       url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
@@ -1693,7 +1794,7 @@ L.FixMyStreet.Util = {
       data: {
         json: JSON.stringify({
           language: LANGUAGE_CODE,
-          point: L.Projection.LonLat.project(this.toLatLng(latlng)),
+          point: this.toPoint(coords, true),  // Preference to LatLng format if value is index-based.
           spatialReference: '4326',
         }),
       },
@@ -1706,7 +1807,7 @@ L.FixMyStreet.Util = {
         if (error !== undefined) {
           error(response);
         } else if (response.status === 'error') {
-          throw new Error('Unable to locate this address');
+          throw new Error('Unable to locate the address at ' + this.coordsToString(latlng) + '.');
         } else {
           throw new Error('Error: ' + response.status);
         }
@@ -1714,34 +1815,75 @@ L.FixMyStreet.Util = {
     });
   },
 
-  urbisResultToAddress: function (result) {  // (Object)
+  /**
+   * Converts the result of a response from the UrbIS service to an object in our standard format.
+   *
+   # @param {object} result - The `response.result` from the UrbIS service.
+   * @returns {object} The address in our standard format: \{street, number, postalCode, city, [latlng]\}.
+   */
+  urbisResultToAddress: function (result) {
     var address = {
       street: result.address.street.name,
       number: result.address.number,
       postalCode: result.address.street.postCode,
-      city: gettext('Brussels'),
+      city: gettext('Brussels'),  // @TODO: Retrieve it according to postal code.
     };
     if (result.point !== undefined) {
-      address.latlng = L.FixMyStreet.Util.toLatLng(result.point);
+      address.latlng = this.toLatLng(result.point);
     }
     return address;
   },
 
-  openStreetView: function (latlng) {  // (L.LatLng or Object or String)
-    // See: https://developers.google.com/maps/documentation/streetview/#url_parameters
+  /**
+   * Returns the URL on Google Street View for given coordinates.
+   *
+   * @see: {@link https://developers.google.com/maps/documentation/streetview/#url_parameters}
+   # @param {(L.LatLng|L.Point|string|object)} coords - The coordinates.
+   * @returns {string} The URL on Google Street View.
+   */
+  getStreetViewUrl: function (coords) {
     // @TODO: Improve URL generation?
-      // Generated URL: https://maps.google.be/maps?q=50.84535101789271,4.351873397827148&layer=c&z=17&iwloc=A&sll=50.84535101789271,4.351873397827148&cbp=13,240.6,0,0,0&cbll=50.84535101789271,4.351873397827148
-      // Final URL: https://www.google.be/maps/@50.8452712,4.3519753,3a,75y,240.6h,90t/data=!3m5!1e1!3m3!1s2j5CXi5mCN_SzkuGhDGL0w!2e0!3e5
-    xy = this.toXY(this.toLatLng(latlng));
-    var url = 'https://maps.google.be/maps?q=%(y)s,%(x)s&layer=c&z=17&iwloc=A&sll=%(y)s,%(x)s&cbp=13,240.6,0,0,0&cbll=%(y)s,%(x)s';
-    url = url.replace(/%\(x\)s/g, xy.x).replace(/%\(y\)s/g, xy.y);
-    window.open(url, '_blank');
+    //   - Generated URL: https://maps.google.be/maps?q=50.84535101789271,4.351873397827148&layer=c&z=17&iwloc=A&sll=50.84535101789271,4.351873397827148&cbp=13,240.6,0,0,0&cbll=50.84535101789271,4.351873397827148
+    //   - Final URL: https://www.google.be/maps/@50.8452712,4.3519753,3a,75y,240.6h,90t/data=!3m5!1e1!3m3!1s2j5CXi5mCN_SzkuGhDGL0w!2e0!3e5
+    var latlng = this.toLatLng(coords);
+    var v = latlng.lat + ',' + latlng.lng;
+    return 'https://maps.google.be/maps?q=' + v + '&layer=c&z=17&iwloc=A&sll=' + v + '&cbp=13,240.6,0,0,0&cbll=' + v;
   },
 
+  /**
+   * Returns a string representation of coordinates.
+   *
+   * @param {(L.LatLng|L.Point)} coords - The coordinates.
+   * @returns {string} The address (street, number, postal code, city).
+   * @throws {TypeError} If the value cannot be handled.
+   */
+  coordsToString: function (coords) {
+    if (obj instanceof L.LatLng || ('lat' in obj && 'lng' in obj)) {
+      return '(' + obj.lat + ', ' + obj.lng + ')';
+    }
+    if (obj instanceof L.Point || ('x' in obj && 'y' in obj)) {
+      return '(' + obj.x + ', ' + obj.y + ')';
+    }
+    throw new TypeError('Invalid value (' + coords + ').');
+  },
+
+  /**
+   * Initializes Proj4js for coordinates transformations.
+   */
   _initProj4js: function () {
     if (this.PROJ4JS_4326 === undefined) {
       this.PROJ4JS_4326 = new Proj4js.Proj('EPSG:4326');
       this.PROJ4JS_31370 = new Proj4js.Proj('EPSG:31370');
     }
+  },
+
+  /**
+   * Converts a `L.Point` into a `Proj4js.Point`.
+   *
+   * @param {(L.Point|object)} point - The point (as `L.Point` or any object with 'x' and 'y' keys).
+   * @returns {Proj4js.Point} The point for Proj4js.
+   */
+  _toProj4jsPoint: function (point) {
+    return new Proj4js.Point(point.x, point.y);
   },
 };

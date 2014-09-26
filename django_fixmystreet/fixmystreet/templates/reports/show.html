@@ -24,7 +24,7 @@ var DETAILS_MODE = true;
 /******************************/
 $(function(){
     $("#divMarkAsDone").hide();
-    var latlng = L.FixMyStreet.Util.WMSToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
+    var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
     var marker = fms.map.addIncident({
         type: '{{ report.get_status_for_js_map }}',
         latlng: latlng,

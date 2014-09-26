@@ -295,7 +295,7 @@
                 var model = {
                     id: v[0],
                     type: v[v.length - 1],
-                    latlng: L.FixMyStreet.Util.WMSToLatLng({x: v[v.length - 3], y: v[v.length - 2]}),
+                    latlng: L.FixMyStreet.Util.urbisCoordsToLatLng({x: v[v.length - 3], y: v[v.length - 2]}),
                 };
                 fms.map.addIncident(model);
             });
