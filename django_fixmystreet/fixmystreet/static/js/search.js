@@ -277,7 +277,7 @@ var searchBtn = document.getElementById('widget-search-button');
 
 function enableSearch() {
     var enableSearchBtn = false;
-
+    console.log("up in here");
     if (streetKeywords.value || postalCode.value) {
         enableSearchBtn = true;
     }
@@ -295,6 +295,7 @@ function municipalityChange() {
 // Enable search button if one of fields contain a value
 streetKeywords.addEventListener('keyup', enableSearch);
 streetKeywords.addEventListener('change', enableSearch);
+streetKeywords.addEventListener('select', enableSearch);
 postalCode.addEventListener('change', enableSearch);
 
 
