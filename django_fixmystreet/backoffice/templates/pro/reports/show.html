@@ -191,7 +191,35 @@ $(document).ready(function() {
         $("#prio_result").html(parseInt($("#id_probability").val()) * parseInt($("#id_gravity").val()));
     });
 
+    $('#update_cat_form').submit(function(e){
+        if(validateCategories()==false) {
+            e.preventDefault();
+        }
+    });
+
 });
+
+function validateCategories() {
+    var valid = true;
+    var form =  $('#update_cat_form');
+    form.find('#main_cat_select, #sec_cat_select').each(function(ind, field) {
+        var value = true;
+        var field = $(field);
+        if(field.val() == 0){
+            valid = false;
+            field.addClass('invalid');
+        }else {
+            field.removeClass('invalid');
+        }
+    });
+
+    if(!valid) {
+        form.find('.invalid select').first().focus();
+        form.find('.required-error-msg').fadeIn();
+        form.addClass('required-invalid');
+    }
+    return valid;
+}
 
 window.onload = function() {
     // Handle 'I want to create a new report' checkbox
@@ -701,44 +729,41 @@ $(document).ready(function() {
 
                             <li class="dropdown-submenu">
                                 <a tabindex="-1" href="#">{% trans "Visibility" %}</a>
-                                    <ul class="dropdown-menu">
-                                        <li {% ifequal report.private False %}class="active"{% endifequal %}>
-                                            <a tabindex="-1" href="javascript:setPublic()">{% trans 'AllPersons' %}</a>
-                                        </li>
-                                        <li {% ifequal report.private True %}class="active"{% endifequal %}>
-                                            <a tabindex="-1" href="javascript:setPrivate()">{% trans 'Pro' %}</a>
-                                        </li>
-                                        <li>
-                                            <a tabindex="-1" href="{% url 'report_validate_all_pro' report.id %}">{% trans 'Publish All' %}</a>
-                                        </li>
-                                    </ul>
-                                </a>
+                                <ul class="dropdown-menu">
+                                    <li {% ifequal report.private False %}class="active"{% endifequal %}>
+                                        <a tabindex="-1" href="javascript:setPublic()">{% trans 'AllPersons' %}</a>
+                                    </li>
+                                    <li {% ifequal report.private True %}class="active"{% endifequal %}>
+                                        <a tabindex="-1" href="javascript:setPrivate()">{% trans 'Pro' %}</a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{% url 'report_validate_all_pro' report.id %}">{% trans 'Publish All' %}</a>
+                                    </li>
+                                </ul>
                             </li>
 
                             <li class="dropdown-submenu">
                                 <a tabindex="-1" href="#">{% trans "Pending" %}</a>
-                                    <ul class="dropdown-menu">
-                                        <li {% ifequal report.pending True %}class="active"{% endifequal %}>
-                                            <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}">{% trans 'Oui' %}</a>
-                                        </li>
-                                        <li {% ifequal report.pending False %}class="active"{% endifequal %}>
-                                            <a tabindex="-1" href="{% url 'report_notpending_pro' report.id %}">{% trans 'Non' %}</a>
-                                        </li>
-                                    </ul>
-                                </a>
+                                <ul class="dropdown-menu">
+                                    <li {% ifequal report.pending True %}class="active"{% endifequal %}>
+                                        <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}">{% trans 'Oui' %}</a>
+                                    </li>
+                                    <li {% ifequal report.pending False %}class="active"{% endifequal %}>
+                                        <a tabindex="-1" href="{% url 'report_notpending_pro' report.id %}">{% trans 'Non' %}</a>
+                                    </li>
+                                </ul>
                             </li>
                             <!-- Responsibility belongs to third party-->
                             <li class="dropdown-submenu">
                                 <a tabindex="-1" href="#">{% trans "ThirdPartyResponsibility" %}</a>
-                                    <ul class="dropdown-menu">
-                                        <li {% ifequal report.third_party_responsibility True %}class="active"{% endifequal %}>
-                                            <a tabindex="-1" href="javascript:setThirdPartyResponsibility(true)">{% trans 'Oui' %}</a>
-                                        </li>
-                                        <li {% ifequal report.third_party_responsibility False %}class="active"{% endifequal %}>
-                                            <a tabindex="-1" href="javascript:setThirdPartyResponsibility(false)">{% trans 'Non' %}</a>
-                                        </li>
-                                    </ul>
-                                </a>
+                                <ul class="dropdown-menu">
+                                    <li {% ifequal report.third_party_responsibility True %}class="active"{% endifequal %}>
+                                        <a tabindex="-1" href="javascript:setThirdPartyResponsibility(true)">{% trans 'Oui' %}</a>
+                                    </li>
+                                    <li {% ifequal report.third_party_responsibility False %}class="active"{% endifequal %}>
+                                        <a tabindex="-1" href="javascript:setThirdPartyResponsibility(false)">{% trans 'Non' %}</a>
+                                    </li>
+                                </ul>
                             </li>
                             <!--  Wrong address -->
                             <li>
@@ -871,7 +896,7 @@ $(document).ready(function() {
         </div>
 
         <div class="modal-body">
-            <form method="POST" action="{% url 'update_category_for_report' report.id %}">
+            <form id="update_cat_form" method="POST" action="{% url 'update_category_for_report' report.id %}">
                 <tr>
                     <td colspan="4">
                         <select id="main_cat_select" name="main_category">
