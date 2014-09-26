@@ -1,13 +1,13 @@
 {% extends 'emails/notifications/base.txt' %}
 
 {% block content_mail_fr %}
-Cet incident a été réouvert.
+Vous avez demandé la réouverture d'un  incident sur Fix My Street
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
 {% endblock %}
 
 {% block content_mail_nl %}
-Dit incident werd heropend.
+TO TRANSLATE NL: Vous avez demandé la réouverture d'un  incident sur Fix My Street
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 {% endblock %}

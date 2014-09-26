@@ -14,10 +14,11 @@ from django_fixmystreet.fixmystreet.models import (
     ZipCode, ReportMainCategoryClass, ReportAttachment)
 from django_fixmystreet.fixmystreet.forms import (
     CitizenReportForm, CitizenForm,
-    ReportCommentForm, ReportFileForm)
+    ReportCommentForm, ReportFileForm, ReportReopenReasonForm)
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -37,16 +38,16 @@ def new(request):
 
         # this checks update is_valid too
         if report_form.is_valid() \
-            and (not request.POST["comment-text"] or comment_form.is_valid()) \
-            and citizen_form.is_valid() \
-            and not fingerprint.is_duplicate():
+                and (not request.POST["comment-text"] or comment_form.is_valid()) \
+                and citizen_form.is_valid() \
+                and not fingerprint.is_duplicate():
 
             # this saves the update as part of the report.
             report = report_form.save(commit=False)
 
             # Use `hack_multi_file` instead of ``request.FILES``.
-            file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
-
+            file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files',
+                                             queryset=ReportFile.objects.none())
 
             if file_formset.is_valid():
                 fingerprint.save()
@@ -69,7 +70,7 @@ def new(request):
                 files = file_formset.save(commit=False)
                 for report_file in files:
                     report_file.created_by = citizen
-                    #report_file.report = report
+                    # report_file.report = report
                     report_file.save()
                 messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
                 return HttpResponseRedirect(report.get_absolute_url())
@@ -90,7 +91,8 @@ def new(request):
         "report": report,
         "available_zips": ZipCode.objects,
         "all_zips": ZipCode.objects.all(),
-        "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all().order_by('name_' + get_language()),
+        "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all().order_by(
+            'name_' + get_language()),
         "comment_form": comment_form,
         "file_formset": file_formset,
         "report_form": report_form,
@@ -121,7 +123,8 @@ def show(request, slug, report_id):
 
     return render_to_response("reports/show.html", {
         "report": report,
-        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report,
+                                                                                            subscriber=request.user).exists(),
         "author": user_to_show,
         'activity_list': report.activities.all(),
     }, context_instance=RequestContext(request))
@@ -137,10 +140,12 @@ def document(request, slug, report_id):
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
 
         # Use `hack_multi_file` instead of ``request.FILES``.
-        file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
+        file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files',
+                                         queryset=ReportFile.objects.none())
 
         # this checks update is_valid too
-        if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
+        if file_formset.is_valid() and (
+                    not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
             # this saves the update as part of the report.
             citizen = citizen_form.save()
 
@@ -157,7 +162,7 @@ def document(request, slug, report_id):
                 report_file.save()
 
             # if request.POST.get("citizen_subscription", False):
-            #     ReportSubscription(report=report, subscriber=report.created_by).save()
+            # ReportSubscription(report=report, subscriber=report.created_by).save()
 
             report.trigger_updates_added(files=files, comment=comment, user=citizen)
 
@@ -170,18 +175,21 @@ def document(request, slug, report_id):
 
     return render_to_response("reports/document.html", {
         "report": report,
-        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report, subscriber=request.user).exists(),
+        "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report,
+                                                                                            subscriber=request.user).exists(),
         "file_formset": file_formset,
         "comment_form": comment_form,
         "citizen_form": citizen_form,
     }, context_instance=RequestContext(request))
 
+
 def update(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
+    # TODO: It's the same that the function fixed in backoffice updates.py
     if 'is_fixed' in request.REQUEST and report.status != report.SOLVED and report.status != report.CREATED:
-        #Update the status of report
-        report.status   = Report.SOLVED
+        # Update the status of report
+        report.status = Report.SOLVED
         report.fixed_at = datetime.datetime.now()
         report.save()
 
@@ -198,7 +206,7 @@ def update(request, report_id):
                 comment_form.save(request.user, report)
 
         if request.POST['form-type'] == u"file-form":
-            #set default title if not given
+            # set default title if not given
             fileTitle = request.POST.get("title")
             if (fileTitle == ""):
                 request.POST.__setitem__("title", request.FILES.get('file').name)
@@ -235,6 +243,7 @@ def index(request):
         'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
     }, context_instance=RequestContext(request))
 
+
 def reopen_request(request, slug, report_id):
     try:
         report = get_object_or_404(Report, id=report_id, private=False)
@@ -242,34 +251,32 @@ def reopen_request(request, slug, report_id):
             messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
             return HttpResponseRedirect(report.get_absolute_url())
         elif request.method == "POST":
-            comment = None
-            reason = request.POST["reason"]
-            comment_form = ReportCommentForm(request.POST, prefix='comment')
+            reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
             citizen_form = CitizenForm(request.POST, prefix='citizen')
 
             # this checks update is_valid too
-            if citizen_form.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()) :
-
+            if citizen_form.is_valid() and (request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0
+                                            and request.POST["reopen-reason"] and reopen_form.is_valid()):
                 citizen = citizen_form.save()
+                reopen_reason = reopen_form.save(commit=False)
+                reopen_reason.text = request.POST["reopen-text"]
+                reopen_reason.report = report
+                reopen_reason.created_by = citizen
+                reopen_reason.type = ReportAttachment.REOPEN_REQUEST
+                reopen_reason.save()
 
-                if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                    comment = comment_form.save(commit=False)
-                    comment.report = report
-                    comment.created_by = citizen
-                    comment.type = ReportAttachment.REOPEN_REQUEST
-                    comment.save()
+                report.trigger_reopen_request(user=citizen, reopen_reason=reopen_reason)
 
-                report.trigger_reopen_request(user=citizen, comment=comment, reason=reason)
-
-                messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
+                messages.add_message(request, messages.SUCCESS,
+                                     _("A request to reopen this ticket was sent to the person in charge."))
                 return HttpResponseRedirect(report.get_absolute_url())
         else:
-            comment_form = ReportCommentForm(prefix='comment')
             citizen_form = CitizenForm(prefix='citizen')
+            reopen_form = ReportReopenReasonForm(prefix='reopen')
 
         return render_to_response("reports/reopen.html", {
             "report": report,
-            "comment_form": comment_form,
+            "reopen_form": reopen_form,
             "citizen_form": citizen_form,
         }, context_instance=RequestContext(request))
     except Http404:

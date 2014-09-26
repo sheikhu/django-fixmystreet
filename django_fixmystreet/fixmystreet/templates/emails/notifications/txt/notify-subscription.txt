@@ -5,10 +5,6 @@ Vous êtes abonné à un incident sur Fix My Street
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
 
-Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
-
-- {{display_url}}
-
 Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :
 
 - {{unsubscribe_url}}
@@ -18,10 +14,6 @@ Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant s
 Via Fix My Street heeft u zich geabonneerd op een probleem om de evolutie ervan op te volgen. 
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
-
-U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken: 
-
-- {{display_url}}
 
 Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:
 

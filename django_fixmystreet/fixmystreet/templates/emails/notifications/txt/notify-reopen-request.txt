@@ -5,15 +5,12 @@
 Une demande de réouverture d'un incident a été effectuée par {{updater}}.
 
 {% language 'fr' %}
-Raison : {% trans reason %}
+Raison : {{ reopen_reason }}
 {% endlanguage %}
 
-{{ comment }}
+{{ reopen_comment }}
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
-Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
-
-{{display_url}}
 
 {% endblock %}
 
@@ -22,15 +19,11 @@ Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
 Aanvraag tot heropening van de melding gedaan door {{updater}}.
 
 {% language 'nl' %}
-Reden : {% trans reason %}
+Reden : {{ reopen_reason }}
 {% endlanguage %}
 
-{{ comment }}
+{{ reopen_comment }}
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
-
-U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:
-
-{{display_url}}
 
 {% endblock %}

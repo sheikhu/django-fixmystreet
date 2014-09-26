@@ -2,26 +2,17 @@
 {% load i18n %}
 {% block content_mail_fr %}
 <p>Une demande de réouverture d'un incident a été effectuée par {{updater}}.</p>
-{% language 'fr' %}
-    <p> Raison : {% trans reopen_reason %} </p>
-{% endlanguage %}
+<p> Raison : {{ reopen_reason }} </p>
+
 <p>{{ reopen_comment }}</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
-<p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
-<ul>
-<li><a href="{{display_url}}">{{display_url}}</a></li>
-</ul>
 {% endblock %}
 
 {% block content_mail_nl %}
 <p>Aanvraag tot heropening van de melding uitgevoerd door {{updater}}.</p>
-{% language 'nl' %}
-    <p> Reden : {% trans reopen_reason %} </p>
-{% endlanguage %}
+
+<p> Reden : {{ reopen_reason }} </p>
+
 <p>{{ reopen_comment }}</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
-<p>U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken: </p>
-<ul>
-<li><a href="{{display_url}}">{{display_url}}</a></li>
-</ul>
 {% endblock %}

@@ -8,6 +8,10 @@
 <li><strong>Status</strong> {{status}}</li>
 <li><strong>Traité par</strong> {{responsible}}</li>
 </ul>
+<p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
+<ul>
+<li><a href="{{display_url}}">{{display_url}}</a></li>
+</ul>
 {% endblock %}
 {% endifequal %}
 {% ifequal lang "nl" %}
@@ -19,6 +23,10 @@
 <li><strong>Categorie</strong> {{category}}</li>
 <li><strong>Status</strong> {{status}}</li>
 <li><strong>Beheerder</strong> {{responsible}}</li>
+</ul>
+<p>U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:</p>
+<ul>
+<li><a href="{{display_url}}">{{display_url}}</a></li>
 </ul>
 {% endblock %}
 {% endifequal %}

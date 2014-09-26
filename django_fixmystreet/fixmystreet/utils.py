@@ -261,45 +261,51 @@ def transform_notification_template(template_mail, report, user, old_responsible
 
     data["report"] = report
     data["created_at"] = date_filter(report.created)
-    data["created_by"] = transform_notification_user_display(display_pro, report.citizen or report.created_by)
-    data["responsible"] = transform_notification_user_display(display_pro, report.responsible_department)
-    data["address"] = u"{street}, {num} ({code} {commune})".format(street=report.address, num=report.address_number, code=report.postalcode, commune=report.get_address_commune_name())
-    data["category"] = report.display_category()
+
+    #NOTE : the lambda functions below allows translation to be done in the proper language in the template
+    data["created_by"] = lambda: transform_notification_user_display(display_pro, report.citizen or report.created_by)
+    data["responsible"] = lambda: transform_notification_user_display(display_pro, report.responsible_department)
+    data["address"] = lambda: u"{street}, {num} ({code} {commune})".format(street=report.address, num=report.address_number, code=report.postalcode, commune=report.get_address_commune_name())
+    data["category"] = lambda: report.display_category()
 
     if display_pro:
-        data["status"] = report.get_status_display()
+        data["status"] = lambda: report.get_status_display()
     else:
-        data["status"] = report.get_public_status_display()
+        data["status"] = lambda: report.get_public_status_display()
 
     if display_pro:
-        data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
-        data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
+        data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
+        data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
     else:
-        data["display_url"] = "{0}{1}".format(SITE_URL, report.get_absolute_url())
-        data["pdf_url"] = "{0}{1}".format(SITE_URL, report.get_pdf_url())
+        data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url())
+        data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url())
 
     if display_pro:
-        data["reopen_request_url_fr"] = ""
-        data["reopen_request_url_nl"] = ""
+        data["reopen_request_url"] = ""
     else:
-        data["reopen_request_url_fr"] = ""
-        data["reopen_request_url_nl"] = ""
+        data["reopen_request_url"] = ""
 
     if display_pro:
-        data["unsubscribe_url"] = "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
+        data["unsubscribe_url"] = lambda: "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
     else:
-        data["unsubscribe_url"] = "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
+        data["unsubscribe_url"] = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
 
-    if template_mail == "mark_as_done":
-        data["done_motivation"] = report.mark_as_done_comment.text if report.mark_as_done_comment else None
-        data["resolver"] = transform_notification_user_display(display_pro, report.mark_as_done_comment.user if report.mark_as_done_comment else None)
+    if template_mail == "mark-as-done":
+
+
+        if updater and updater.is_pro():
+            from django_fixmystreet.fixmystreet.models import ReportAttachment, ReportComment
+            data["done_motivation"] = ReportComment.objects.filter(report=report, type=ReportAttachment.MARK_AS_DONE).latest('created').text
+            data["resolver"] = lambda: transform_notification_user_display(display_pro, updater)
+        else:
+            data["resolver"] = lambda: _("a citizen")
 
     if old_responsible:
-        data["old_responsible"] = transform_notification_user_display(display_pro, old_responsible)
+        data["old_responsible"] = lambda: transform_notification_user_display(display_pro, old_responsible)
 
     if comment is not None:  # can be ''
         data["comment"] = comment
-        data["updater"] = transform_notification_user_display(display_pro, updater)
+        data["updater"] = lambda: transform_notification_user_display(display_pro, updater)
 
     if date_planned:
         data["date_planned"] = date_planned
@@ -308,9 +314,9 @@ def transform_notification_template(template_mail, report, user, old_responsible
         data["merged_with"] = merged_with.id
 
     if reopen_reason:
-        # data["reopen_reason_fr"] = dict(ReportReopenReason.REASON_CHOICES).get(reopen_reason.reason)
+        data["reopen_reason"] = lambda: reopen_reason.get_reason_display()
         # data["reopen_reason_nl"] =
-        data["reopen_comment"] = reopen_reason.comment
+        data["reopen_comment"] = reopen_reason.text
 
     # Subject mail for each languages.
     # Don't forget to update mail_titles variable (above) to support translations in .po.

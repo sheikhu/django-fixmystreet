@@ -981,6 +981,12 @@ class Report(UserTrackedModel):
             related=self,
         ).save(updater=user, reopen_reason=reopen_reason)
 
+        ReportNotification(
+            content_template='acknowledge-reopen-request',
+            recipient_mail=user.email,
+            related=self,
+        ).save(updater=user, reopen_reason=reopen_reason)
+
         ReportEventLog(
             report=self,
             event_type=ReportEventLog.REOPEN_REQUEST,
@@ -1353,7 +1359,7 @@ def report_notify(sender, instance, **kwargs):
                     content_template='mark-as-done',
                     recipient_mail=report.responsible_department.email,
                     related=report,
-                ).save()
+                ).save(updater=event_log_user)
 
                 ReportEventLog(
                     report=report,

@@ -6,10 +6,6 @@
 > {{done_motivation}}
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
-
-Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
-
-- {{display_url}}
 {% endblock %}
 
 {% block content_mail_nl %}
@@ -18,8 +14,4 @@ Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
 > {{done_motivation}}
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
-
-U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:
-
-- {{display_url}}
 {% endblock %}

@@ -70,7 +70,7 @@ def fixed(request, report_id):
     comment_form = ReportCommentForm(request.POST)
 
     # TOFIX: Validate form
-    if comment_form.is_valid() and request.POST.get('text'):
+    if report.status != Report.SOLVED and comment_form.is_valid() and request.POST.get('text'):
         comment = comment_form.save(commit=False)
 
         # Save refusal motivation

@@ -303,13 +303,11 @@ def reopen_request(request, slug, report_id):
             messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
             return HttpResponseRedirect(report.get_absolute_url_pro())
         elif request.method == "POST":
-            reopen_reason = None
-            # comment_form = ReportCommentForm(request.POST, prefix='comment')
             reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
-            user = FMSUser.objects.get(pk=request.user.id)
             if (request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0
-                and request.POST["reopen-reason"] and reopen_form.is_valid()):
+                    and request.POST["reopen-reason"] and reopen_form.is_valid()):
 
+                user = FMSUser.objects.get(pk=request.user.id)
                 reopen_reason = reopen_form.save(commit=False)
                 reopen_reason.text = request.POST["reopen-text"]
                 reopen_reason.report = report
@@ -317,12 +315,11 @@ def reopen_request(request, slug, report_id):
                 reopen_reason.type = ReportAttachment.REOPEN_REQUEST
                 reopen_reason.save()
 
-            report.trigger_reopen_request(user=user, reopen_reason=reopen_reason)
+                report.trigger_reopen_request(user=user, reopen_reason=reopen_reason)
 
-            messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+                messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
+                return HttpResponseRedirect(report.get_absolute_url_pro())
         else:
-            comment_form = ReportCommentForm(prefix='comment')
             reopen_form = ReportReopenReasonForm(prefix='reopen')
 
         return render_to_response("reports/reopen.html", {

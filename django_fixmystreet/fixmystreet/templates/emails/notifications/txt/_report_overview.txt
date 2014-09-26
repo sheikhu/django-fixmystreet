@@ -6,6 +6,10 @@
 - Catégorie {{category}}
 - Status {{status}}
 - Traité par {{responsible}}
+
+Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
+
+- {{display_url}}
 {% endblock %}
 {% endifequal %}
 {% ifequal lang "nl" %}
@@ -16,5 +20,9 @@
 - Categorie {{category}}
 - Status {{status}}
 - Beheerder {{responsible}}
+
+U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:
+
+- {{display_url}}
 {% endblock %}
 {% endifequal %}

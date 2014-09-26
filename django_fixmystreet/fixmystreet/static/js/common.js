@@ -119,7 +119,6 @@ function validateForm(form) {
         } else {
             $field.removeClass('invalid');
         }
-        console.log($field[0].name, valid);
     });
 
     if(!valid) {

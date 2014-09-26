@@ -1,17 +1,11 @@
 {% extends 'emails/notifications/base.html' %}
 
 {% block content_mail_fr %}
-<p>{{resolver}} a signalé l’incident comme résolu.</p>
-<blockquote>
-<p>{{done_motivation}}</p>
-</blockquote>
+<p>Vous avez demandé la réouverture d'un  incident sur Fix My Street.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
 {% endblock %}
 
 {% block content_mail_nl %}
-<p>{{resolver}} heeft het probleem als opgelost gemeld.</p>
-<blockquote>
-<p>{{done_motivation}}</p>
-</blockquote>
+<p>TODO NL: Vous avez demandé la réouverture d'un  incident sur Fix My Street.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 {% endblock %}
