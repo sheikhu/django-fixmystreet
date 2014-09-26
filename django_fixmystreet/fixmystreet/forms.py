@@ -281,7 +281,7 @@ class ReportCommentForm(forms.ModelForm):
         model = ReportComment
         fields = ('text',)
 
-    text = forms.fields.CharField(label="", required=False, widget=forms.Textarea(attrs={'placeholder': _("Add a comment, please.")}))
+    text = forms.fields.CharField(label="", widget=forms.Textarea(attrs={'placeholder': _("Add a comment, please.")}))
 
 
 class ReportReopenReasonForm(ReportCommentForm):
