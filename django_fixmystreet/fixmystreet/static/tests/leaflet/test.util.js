@@ -2,15 +2,6 @@
 
 var expect = chai.expect;
 
-function async(done, fct) {
-  try {
-    fct();
-    done();
-  } catch (error) {
-    done(error);
-  }
-}
-
 
 describe('L.FixMyStreet.Util', function () {
   var LATLNG = new L.LatLng(50.8460974, 4.3694384000000355);
@@ -266,10 +257,8 @@ describe('L.FixMyStreet.Util', function () {
   describe('getAddressFromLatLng', function () {
     it('should convert correctly', function (done) {
       L.FixMyStreet.Util.getAddressFromLatLng(LATLNG, function (result) {
-        async(done, function () {
+        asyncExpect(done, function () {
           _expectOriginalAddress(result);
-        // }, function (response) {
-        //   done(response);
         });
       });
     });
