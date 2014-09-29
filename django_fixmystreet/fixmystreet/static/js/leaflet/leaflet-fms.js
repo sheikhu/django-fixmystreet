@@ -148,17 +148,44 @@ L.FixMyStreet.UrbisLayersSettings = {
 // TEMPLATE ====================================================================
 
 L.FixMyStreet.Template = {
+  /**
+    * Stores cached templates.
+    * @type {object}
+    * @memberOf L.FixMyStreet.Template
+    */
   _cache: {},
 
+  /**
+    * RegExp to identify partial templates (matched against the key).
+    * @type {RegExp}
+    * @memberOf L.FixMyStreet.Template
+    */
   partialTemplateRegex: /^_.*_$/,
 
-  _render: function(data, key, done) {  // ([Object], [String], [Function])
+  /**
+   * Renders a named template, that may include partials.
+   *
+   * @param {object} data - The data for the template.
+   * @param {string} [key=base] - The key identifying the template to render.
+   * @param {renderTemplateCallback} done - The callback that handles the rendered content.
+   */
+  /**
+   * @callback renderTemplateCallback
+   # @param {object} The error.
+   # @param {string} The rendered content.
+   */
+  _render: function (data, key, done) {
     if (!this.options.templates) { return; }
 
     data = data || {};
+    if (typeof key === 'function' && done === undefined) {
+      done = key;
+      key = null;
+    }
     key = key || 'base';
     var template = this.options.templates[key] || this.options.templates.base;
 
+    // Include the code of each partials in the main template.
     for (var k in this.options.templates) {
       if (this.partialTemplateRegex.test(k) === false) { continue; }
       template = template.replace(new RegExp('\\{' + k + '\\}', 'g'), this.options.templates[k]);
@@ -167,9 +194,17 @@ L.FixMyStreet.Template = {
     this._renderTemplate(template, data, done);
   },
 
-  _renderTemplate: function(html, options, done) {
-    // See: https://github.com/tunnckoCore/octet (+ added cache)
-    // Alternative: http://ejohn.org/blog/javascript-micro-templating/
+  /**
+   * Renders a template string.
+   *
+   * @see {@link https://github.com/tunnckoCore/octet}
+   * @ssee {@link http://ejohn.org/blog/javascript-micro-templating/}
+   *
+   * @param {string} html - The template code.
+   * @param {object} data - The data for the template.
+   * @param {renderTemplateCallback} done - The callback that handles the rendered content.
+   */
+  _renderTemplate: function (html, options, done) {
     if (!(html in L.FixMyStreet.Template._cache)) {
       var re = /<%([^%>]+)?%>/g;
       var reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g;
