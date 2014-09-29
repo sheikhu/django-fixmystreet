@@ -259,6 +259,7 @@ describe('L.FixMyStreet.Util', function () {
       L.FixMyStreet.Util.getAddressFromLatLng(LATLNG, function (result) {
         asyncExpect(done, function () {
           _expectOriginalAddress(result);
+          done();
         });
       });
     });

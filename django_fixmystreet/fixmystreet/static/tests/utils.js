@@ -5,6 +5,7 @@ function asyncExpect (done, fct) {
   // $.get('http://...', {data: 'value'}, function (data, textStatus, jqXHR) {
   //   asyncExpect(done, function () {
   //     expect(...);
+  //     done();
   //   });
   // );
 
@@ -21,6 +22,7 @@ function expectUrlWorks (url, done) {
     asyncExpect(done, function () {
       expect(jqXHR.status).to.be.equal(200);
       expect(data).to.not.be.empty;
+      done();
     });
   });
 }
