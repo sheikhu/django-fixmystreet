@@ -556,11 +556,11 @@ $(document).ready(function() {
                 </div>
 
                 <div class="span2 btn-group-vertical">
-                    {% if report.is_closed %}
-                         <a href="{% url 'report_reopen_request_pro' report.get_slug report.id %}" role="button" class="btn lk-subscribe">
-                                <i class="icon-subscribe"> </i>{% trans "Reopen request" %}
-                            </a>
-                    {% endif %}
+{#                    {% if report.is_closed %}#}
+{#                         <a href="{% url 'report_reopen_request_pro' report.get_slug report.id %}" role="button" class="btn lk-subscribe">#}
+{#                                <i class="icon-subscribe"> </i>{% trans "Reopen request" %}#}
+{#                            </a>#}
+{#                    {% endif %}#}
                     {% if report.is_in_progress %}
                         {% if report.status != report.SOLVED %}
                             <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
