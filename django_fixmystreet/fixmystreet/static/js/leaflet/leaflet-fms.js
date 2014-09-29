@@ -117,29 +117,31 @@ L.FixMyStreet.UrbisLayersSettings = {
     },
   },
 
-  'street-names': {  // @TODO: Not working well. Names not displayed at zoom > 16.
-    overlay: true,
-    title: 'Street names',
-    type: 'wms',
-    url: URBIS_URL + 'geoserver/wms',
-    options: {
-      layers: 'urbis:URB_A_MY_SA',
-      format: 'image/png',
-      transparent: true,
-    },
-  },
+  // @TODO: Not working well. Names not displayed at zoom > 16.
+  // 'street-names': {
+  //   overlay: true,
+  //   title: 'Street names',
+  //   type: 'wms',
+  //   url: URBIS_URL + 'geoserver/wms',
+  //   options: {
+  //     layers: 'urbis:URB_A_MY_SA',
+  //     format: 'image/png',
+  //     transparent: true,
+  //   },
+  // },
 
-  'street-numbers': {  // @TODO: Not working. Nothing visible.
-    overlay: true,
-    title: 'Street numbers',
-    type: 'wms',
-    url: URBIS_URL + 'geoserver/wms',
-    options: {
-      layers: 'urbis:URB_A_ADPT',
-      format: 'image/png',
-      transparent: true,
-    },
-  },
+  // @TODO: Not working. Nothing visible.
+  // 'street-numbers': {
+  //   overlay: true,
+  //   title: 'Street numbers',
+  //   type: 'wms',
+  //   url: URBIS_URL + 'geoserver/wms',
+  //   options: {
+  //     layers: 'urbis:URB_A_ADPT',
+  //     format: 'image/png',
+  //     transparent: true,
+  //   },
+  // },
 };
 
 
