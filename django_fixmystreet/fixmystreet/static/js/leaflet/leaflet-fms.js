@@ -1700,7 +1700,7 @@ L.FixMyStreet.Util = {
    * Converts a value into a `L.Point` object.
    *
    * @param {(L.Point|L.LatLng|string|object)} value - The value to convert.
-   * @param {boolean=false} prefLatLng - Preference to LatLng format if value is index-based (i.e. "4.369,50.846" or [4.369, 50.846]).
+   * @param {boolean} [prefLatLng=false] - Preference to LatLng format if value is index-based (i.e. "4.369,50.846" or [4.369, 50.846]).
    * @returns {L.Point} The converted value.
    * @throws {TypeError} If the value cannot be converted.
    */
@@ -1809,7 +1809,7 @@ L.FixMyStreet.Util = {
    *
    * @param {(L.LatLng|L.Point|string|object)} coords - The LatLng in EPSG:4326.
    # @param {getAddressSuccessCallback} success - The callback that handles a successful response.
-   # @param {getAddressErrorCallback=} error - The callback that handles errors.
+   # @param {getAddressErrorCallback} [error] - The callback that handles errors.
    * @returns {object} The address (in our standard format).
    * @throws {Error} If the request doesn't succeed and no error handler is given.
    */
