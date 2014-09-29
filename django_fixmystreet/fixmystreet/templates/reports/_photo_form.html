@@ -26,17 +26,22 @@
                 </div>
 
                 <div id="file-form-row-tpl" class="hidden">
-                    <div class="row-fluid">
-                        <div class="span3 thumb"></div>
-                        <div class="span8">
-                            {{ file_formset.empty_form.title }}
+                    <div class="row">
+                        <div>
+                            <div class="row-fluid">
+                                <div class="span4 thumb"></div>
+                                <div class="span7">
+                                    {{ file_formset.empty_form.title }}
+                                </div>
+
+                                <div class="span1">
+                                    <img class="removeThumbnail pull-right" src="{% static 'images/delete_documentation.png' %}" title="Remove"/>
+                                </div>
+                                {{ file_formset.empty_form.reportattachment_ptr }}
+                                {{ file_formset.empty_form.file_creation_date }}
+                                {# { file_formset.empty_form.file } #}
+                            </div>
                         </div>
-                        <div class="span1">
-                            <img class="removeThumbnail pull-right" src="{% static 'images/delete_documentation.png' %}" title="Remove"/>
-                        </div>
-                        {{ file_formset.empty_form.reportattachment_ptr }}
-                        {{ file_formset.empty_form.file_creation_date }}
-                        {# { file_formset.empty_form.file } #}
                     </div>
                 </div>
             </div>
