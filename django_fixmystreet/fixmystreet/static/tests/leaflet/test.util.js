@@ -106,7 +106,7 @@ describe('L.FixMyStreet.Util', function () {
 
 
   describe('toLatLng', function () {
-    var _expectLatLng = function (value) {
+    var _checkToLatLng = function (value) {
       var result = L.FixMyStreet.Util.toLatLng(value);
       _expectOriginalLatLng(result);
     };
@@ -130,53 +130,53 @@ describe('L.FixMyStreet.Util', function () {
     });
 
     it('should accept a L.Point', function () {
-      _expectLatLng(POINT);
+      _checkToLatLng(POINT);
     });
 
     it('should accept a string "Lat,Lng"', function () {
       var str = LATLNG.lat + ',' + LATLNG.lng;
       expect(str).to.be.a('string');
-      _expectLatLng(str);
+      _checkToLatLng(str);
     });
 
     it('should accept a string "Lat, Lng"', function () {
       var str = LATLNG.lat + ', ' + LATLNG.lng;
       expect(str).to.be.a('string');
-      _expectLatLng(str);
+      _checkToLatLng(str);
     });
 
     it('should accept a LatLng dictionary {lat: Lat, lng: Lng}', function () {
       var obj = {lat: LATLNG.lat, lng: LATLNG.lng};
-      _expectLatLng(obj);
+      _checkToLatLng(obj);
     });
 
     it('should accept a LatLng array [Lat, Lng]', function () {
       var obj = [LATLNG.lat, LATLNG.lng];
-      _expectLatLng(obj);
+      _checkToLatLng(obj);
     });
 
     it('should accept a Point dictionary {x: X, y: Y}', function () {
       var obj = {x: POINT.x, y: POINT.y};
-      _expectLatLng(obj);
+      _checkToLatLng(obj);
     });
 
     it('should throw an Error otherwise', function () {
-      _expectException('non-valid, value');
-      _expectException('non-valid-value');
+      _expectException('invalid, value');
+      _expectException('invalid-value');
 
-      _expectException({lat: 'non-valid-value', lng: 123});
-      _expectException({lat: 'non-valid-value', key: 123});
+      _expectException({lat: 'invalid-value', lng: 123});
+      _expectException({lat: 'invalid-value', key: 123});
 
-      _expectException(['non-valid-value', 123.45]);
+      _expectException(['invalid-value', 123.45]);
 
-      _expectException({x: 'non-valid-value', y: 123});
-      _expectException({x: 'non-valid-value', key: 123});
+      _expectException({x: 'invalid-value', y: 123});
+      _expectException({x: 'invalid-value', key: 123});
     });
   });
 
 
   describe('toPoint', function () {
-    var _expectPoint = function (value) {
+    var _checkToPoint = function (value) {
       var result = L.FixMyStreet.Util.toPoint(value);
       _expectOriginalPoint(result);
     };
@@ -200,41 +200,41 @@ describe('L.FixMyStreet.Util', function () {
     });
 
     it('should accept a L.LatLng', function () {
-      _expectPoint(LATLNG);
+      _checkToPoint(LATLNG);
     });
 
     it('should accept a string "X,Y"', function () {
       var str = POINT.x + ', ' + POINT.y;
       expect(str).to.be.a('string');
-      _expectPoint(str);
+      _checkToPoint(str);
     });
 
     it('should accept a Point dictionary {x: X, y: Y}', function () {
       var obj = {x: POINT.x, y: POINT.y};
-      _expectPoint(obj);
+      _checkToPoint(obj);
     });
 
     it('should accept a Point array [X, Y]', function () {
       var obj = [POINT.x, POINT.y];
-      _expectPoint(obj);
+      _checkToPoint(obj);
     });
 
     it('should accept a LatLng dictionary {lat: Lat, lng: Lng}', function () {
       var obj = {lat: LATLNG.lat, lng: LATLNG.lng};
-      _expectPoint(obj);
+      _checkToPoint(obj);
     });
 
     it('should throw an Error otherwise', function () {
-      _expectException('non-valid, value');
-      _expectException('non-valid-value');
+      _expectException('invalid, value');
+      _expectException('invalid-value');
 
-      _expectException({x: 'non-valid-value', y: 123});
-      _expectException({x: 'non-valid-value', key: 123});
+      _expectException({x: 'invalid-value', y: 123});
+      _expectException({x: 'invalid-value', key: 123});
 
-      _expectException(['non-valid-value', 123.45]);
+      _expectException(['invalid-value', 123.45]);
 
-      _expectException({lat: 'non-valid-value', lng: 123});
-      _expectException({lat: 'non-valid-value', key: 123});
+      _expectException({lat: 'invalid-value', lng: 123});
+      _expectException({lat: 'invalid-value', key: 123});
     });
   });
 
@@ -285,7 +285,7 @@ describe('L.FixMyStreet.Util', function () {
 
 
   describe('getStreetViewUrl', function () {
-    // @TODO
+    // @TODO: How to test that?
   });
 
 
