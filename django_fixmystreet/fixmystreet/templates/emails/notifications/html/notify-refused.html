@@ -3,7 +3,7 @@
 {% block content_mail_fr %}
 <p>{{responsible}} a invalidé l’incident que vous avez signalé pour le motif  suivant : </p>
 <blockquote>
-<p>{{report.refusal_motivation}}</p>
+<p>{{comment}}</p>
 </blockquote>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
 {% endblock %}
@@ -11,7 +11,7 @@
 {% block content_mail_nl %}
 <p>{{responsible}} heeft het probleem dat u gemeld heeft niet goedgekeurd omwille van de volgende reden : </p>
 <blockquote>
-<p>{{report.refusal_motivation}}</p>
+<p>{{comment}}</p>
 </blockquote>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 {% endblock %}
