@@ -35,39 +35,6 @@ describe('L.FixMyStreet.Util', function () {
   };
 
 
-  var _expectOriginalLatLng = function (result, delta) {
-    expect(result).to.be.instanceOf(L.LatLng);
-    if (delta === undefined || delta === 0) {
-      expect(result.lat).to.be.equal(LATLNG.lat);
-      expect(result.lng).to.be.equal(LATLNG.lng);
-    } else {
-      expect(result.lat).to.be.closeTo(LATLNG.lat, delta);
-      expect(result.lng).to.be.closeTo(LATLNG.lng, delta);
-    }
-  };
-
-  var _expectOriginalPoint = function (result, delta) {
-    expect(result).to.be.instanceOf(L.Point);
-    if (delta === undefined || delta === 0) {
-      expect(result.x).to.be.equal(POINT.x);
-      expect(result.y).to.be.equal(POINT.y);
-    } else {
-      expect(result.x).to.be.closeTo(POINT.x, delta);
-      expect(result.y).to.be.closeTo(POINT.y, delta);
-    }
-  };
-
-  var _expectOriginalPoint31370 = function (result, delta) {
-    expect(result).to.be.instanceOf(L.Point);
-    if (delta === undefined || delta === 0) {
-      expect(result.x).to.be.equal(POINT_31370.x);
-      expect(result.y).to.be.equal(POINT_31370.y);
-    } else {
-      expect(result.x).to.be.closeTo(POINT_31370.x, delta);
-      expect(result.y).to.be.closeTo(POINT_31370.y, delta);
-    }
-  };
-
   var _expectOriginalAddress = function (result) {
     expect(result.street.toLowerCase()).to.be.equal(ADDRESS.street.toLowerCase());
     expect(result.number.toLowerCase()).to.be.equal(ADDRESS.number.toLowerCase());
@@ -99,7 +66,7 @@ describe('L.FixMyStreet.Util', function () {
   describe('toLatLng', function () {
     var _checkToLatLng = function (value) {
       var result = L.FixMyStreet.Util.toLatLng(value);
-      _expectOriginalLatLng(result);
+      expectLatLngEqual(result, LATLNG);
     };
 
     var _expectException = function (value) {
@@ -169,7 +136,7 @@ describe('L.FixMyStreet.Util', function () {
   describe('toPoint', function () {
     var _checkToPoint = function (value) {
       var result = L.FixMyStreet.Util.toPoint(value);
-      _expectOriginalPoint(result);
+      expectPointEqual(result, POINT);
     };
 
     var _expectException = function (value) {
@@ -233,7 +200,7 @@ describe('L.FixMyStreet.Util', function () {
   describe('fromUrbisCoords', function () {
     it('should convert correctly', function () {
       var result = L.FixMyStreet.Util.fromUrbisCoords(POINT_31370);
-      _expectOriginalPoint(result, 0.0000008);  // Min: 0.00000065
+      expectPointEqual(result, POINT, 0.0000008);  // Min: 0.00000065
     });
   });
 
@@ -241,7 +208,7 @@ describe('L.FixMyStreet.Util', function () {
   describe('toUrbisCoords', function () {
     it('should convert correctly', function () {
       var result = L.FixMyStreet.Util.toUrbisCoords(POINT);
-      _expectOriginalPoint31370(result, 0.08);  // Min: 0.065
+      expectPointEqual(result, POINT_31370, 0.08);  // Min: 0.065
     });
   });
 
@@ -249,7 +216,7 @@ describe('L.FixMyStreet.Util', function () {
   describe('urbisCoordsToLatLng', function () {
     it('should convert correctly', function () {
       var result = L.FixMyStreet.Util.urbisCoordsToLatLng(POINT_31370);
-      _expectOriginalLatLng(result, 0.0000008);  // Min: 0.00000065
+      expectLatLngEqual(result, LATLNG, 0.0000008);  // Min: 0.00000065
     });
   });
 
