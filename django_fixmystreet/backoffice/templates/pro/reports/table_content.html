@@ -32,6 +32,7 @@
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
         <tr>
             <th>{% trans "Ticket" %}</th>
@@ -60,6 +61,7 @@
             <th>{% trans "Subscribed" %}</th>
             <th>{% trans "Pending" %}</th>
             <th>{% trans "ThirdPartyResponsibility" %}</th>
+            <th>{# get_slug() #}</th>
             <th>{# point.x #}</th>
             <th>{# point.y #}</th>
             <th>{# get_status_for_js_map() #}</th>
@@ -96,6 +98,7 @@
                 <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
                 <td class="s{{report.status}}">{{ report.pending|yesno:_("yes,no") }}</td>
                 <td class="s{{report.status}}">{{ report.third_party_responsibility|yesno:_("yes,no") }}</td>
+                <td>{{ report.get_slug }}</td>
                 <td>{{ report.point.x }}</td>
                 <td>{{ report.point.y }}</td>
                 <td>{{ report.get_status_for_js_map }}</td>

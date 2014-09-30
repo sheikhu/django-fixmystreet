@@ -14,6 +14,7 @@
 {% block js_vars %}
     {{ block.super }}
     var NEW_INCIDENT_URL = '{% url "report_verify_pro" %}';
+    var INCIDENT_DETAIL_URL = '{% url "report_show" "{slug}" "9999999999" %}';
 {% endblock %}
 
 {% block script %}
@@ -125,6 +126,7 @@
                 '{{ False|yesno:_("yes,no") }}'
             ]}, // ThirdPartyResponsibility
 
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // slug
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
@@ -296,10 +298,21 @@
             // Get all row according to filter
             var data = table._('tr', {"filter": "applied"});
             $.each(data, function (k, v) {
+                var index4 = v[4].lastIndexOf(', ');
+                var index5 = v[5].indexOf(' ');
                 var model = {
                     id: v[0],
                     type: v[v.length - 1],
                     latlng: L.FixMyStreet.Util.urbisCoordsToLatLng({x: v[v.length - 3], y: v[v.length - 2]}),
+                    address: {
+                        street: v[4].substring(0, index4),
+                        number: v[4].substring(index4 + 2, v[4].length),
+                        postalCode: v[5].substring(0, index5),
+                        city: v[5].substring(index5 + 1, v[5].length),
+                    },
+                    categories: v[3],
+                    photo: STATIC_URL.replace(/\/$/, '') + v[1],
+                    url: INCIDENT_DETAIL_URL.replace('9999999999', v[0]).replace('{slug}', v[v.length - 4]),
                 };
                 fms.map.addIncident(model);
             });
