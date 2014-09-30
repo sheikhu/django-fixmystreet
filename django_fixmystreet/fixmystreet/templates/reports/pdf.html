@@ -12,7 +12,6 @@
 <!-- ############################################################## -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{% static 'OpenLayers-2.11/OpenLayers.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/proj4js/engine/proj4js-compressed.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/proj4js/defs/EPSG31370.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/geolocation.js' %}"></script>
@@ -23,22 +22,21 @@
 <!-- #######################JQUERY INIT METHOD #################### -->
 <!-- ############################################################## -->
 {% block script %}
-{{ block.super }}
+    <script>
+        var mapOptions = {
+            zoomControl: false,
+            layersControl: false,
+        };
+    </script>
+    {{ block.super }}
     <script>
         $(document).ready(function() {
-            fms.currentMap = new fms.Map(
-                'map',
-                {apiLang:'nl',
-                    localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
-                    urbisUrl: WMS_SERVICE_URL,
-                    origin: {
-                    x:{{report.point.x}},
-                    y:{{report.point.y}}
-                    }
-                });
-            var markers = [];
-            markers.push(fms.currentMap.addReport({{ report.to_JSON|dict_to_json|safe }}, 1));
-            fms.currentMap.markersLayer.addFeatures(markers);
+            var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
+            var marker = fms.map.addIncident({
+                type: '{{ report.get_status_for_js_map }}',
+                latlng: latlng,
+            }, {popup: null});
+            fms.map.centerOnMarker(marker);
             var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
             document.getElementById("wgs84").innerHTML="L: " + res.x + " <br/>l: "+res.y;
         });
@@ -318,7 +316,6 @@
         <img id="banner-pro" src="{% static 'images/fixmystreet-pro.png' %}" alt="{% trans 'Fix My Street Pro' %}">
     {% endif %}
     <div id="map" class="pdf">
-        <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
     </div>
     <div id="right-side-map" class='pdf'>
     <!--

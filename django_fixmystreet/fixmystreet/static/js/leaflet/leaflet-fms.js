@@ -673,7 +673,9 @@ L.FixMyStreet.Map = L.Map.extend({
       this.attributionControl.setPosition(this.options.controlsPosition.attribution);
     }
 
-    this._initLayerControl();
+    if (this.options.layersControl !== false) {
+      this._initLayerControl();
+    }
   },
 
   _initLayerControl: function() {

@@ -1,7 +1,11 @@
 
+if (typeof mapOptions === 'undefined') {
+    var mapOptions;
+}
+mapOptions = mapOptions || {};
+
 $(function () {
     if ($('#map').length !== 0) {
-        var mapOptions = {};
         if (BACKOFFICE) {
             mapOptions.incidentTypes = {other: {filtering: true}};
         }
