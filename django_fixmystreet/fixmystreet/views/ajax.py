@@ -58,7 +58,7 @@ def get_report_popup_details(request):
 
 
 def filter_map(request):
-    reports = Report.objects.all().visible().public()
+    reports = Report.objects.all().related_fields().visible().public()
 
     features = []
     for report in reports:
