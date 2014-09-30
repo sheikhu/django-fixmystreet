@@ -766,7 +766,8 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   _streetViewButton_onClick: function (evt, latlng) {  // streetViewButton.click
-    L.FixMyStreet.Util.openStreetView(latlng);
+    var url = L.FixMyStreet.Util.getStreetViewUrl(latlng);
+    window.open(url, '_blank');
   },
 
   _sizeToggle_onClick: function (evt, $e, options) {  // sizeToggle.click
