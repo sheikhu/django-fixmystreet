@@ -687,8 +687,8 @@ L.FixMyStreet.Map = L.Map.extend({
     };
 
     $.each(this.options.myLayers, function (k, v) {
-      var title = v.controlTitle || v.title || v.settings.title;
-      if (v.overlay === true || (v.overlay === undefined && v.settings.overlay === true)) {
+      var title = that.getLayerTitleForControl(v);
+      if (that.isOverlayLayer(v)) {
         overlays[title] = v._layer;
       } else {
         baseLayers[title] = v._layer;
@@ -701,6 +701,14 @@ L.FixMyStreet.Map = L.Map.extend({
     }
 
     L.control.layers(baseLayers, overlays, options).addTo(this);
+  },
+
+  getLayerTitleForControl: function(layer) {
+    return layer.controlTitle || layer.title || layer.settings.title;
+  },
+
+  isOverlayLayer: function(layer) {
+    return layer.overlay === true || (layer.overlay === undefined && layer.settings.overlay === true);
   },
 
   _initOpacityControl: function (layer) {  // (L.ILayer)
