@@ -1,7 +1,7 @@
 import os
 import json
 
-#from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
@@ -68,22 +68,22 @@ def filter_map(request):
             "properties": {
                 "id": report.id,
                 "type": report.get_status_for_js_map(),
-                #"address": {
-                #    "street": report.address,
-                #    "number": report.address_number,
-                #    "postalCode": report.postalcode,
-                #    "city": report.get_address_commune_name(),
-                #},
-                #"categories": report.get_category_path(),
-                #"photo": report.thumbnail,
-                #"icons": {
-                #    "regionalRoads": report.is_regional(),
-                #    "pro": report.is_pro(),
-                #    "assigned": report.is_contractor_or_applicant_assigned(),
-                #    "priority": report.get_priority(),
-                #    "solved": report.is_solved(),
-                #},
-                #"url": reverse("report_show", args=[report.get_slug(), report.id]),
+                "address": {
+                    "street": report.address,
+                    "number": report.address_number,
+                    "postalCode": report.postalcode,
+                    "city": report.get_address_commune_name(),
+                },
+                "categories": report.get_category_path(),
+                "photo": report.thumbnail,
+                "icons": {
+                    "regionalRoads": report.is_regional(),
+                    "pro": report.is_pro(),
+                    "assigned": report.is_contractor_or_applicant_assigned(),
+                    "priority": report.get_priority(),
+                    "solved": report.is_solved(),
+                },
+                "url": reverse("report_show", args=[report.get_slug(), report.id]),
             },
             "geometry": {
                 "type": "Point",
