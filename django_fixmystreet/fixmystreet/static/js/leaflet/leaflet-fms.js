@@ -46,7 +46,7 @@ if (URBIS_URL === undefined) { var URBIS_URL = 'http://gis.irisnet.be/'; }
 
 L.FixMyStreet.UrbisLayersSettings = {
   'map-street-fr': {
-    title: 'Street',
+    title: gettext('Street'),
     type: 'wms',
     url: URBIS_URL + 'geoserver/gwc/service/wms',
     options: {
@@ -59,7 +59,7 @@ L.FixMyStreet.UrbisLayersSettings = {
   },
 
   'map-street-nl': {
-    title: 'Street',
+    title: gettext('Street'),
     type: 'wms',
     url: URBIS_URL + 'geoserver/gwc/service/wms',
     options: {
@@ -72,7 +72,7 @@ L.FixMyStreet.UrbisLayersSettings = {
   },
 
   'map-ortho': {
-    title: 'Orthographic',
+    title: gettext('Orthographic'),
     type: 'wms',
     url: URBIS_URL + 'geoserver/gwc/service/wms',
     options: {
@@ -86,7 +86,7 @@ L.FixMyStreet.UrbisLayersSettings = {
 
   'regional-roads': {
     overlay: true,
-    title: 'Regional roads',
+    title: gettext('Regional roads'),
     type: 'wms',
     url: URBIS_URL + 'geoserver/wms',
     options: {
@@ -106,7 +106,7 @@ L.FixMyStreet.UrbisLayersSettings = {
 
   'municipal-boundaries': {
     overlay: true,
-    title: 'Municipal boundaries',
+    title: gettext('Municipal boundaries'),
     type: 'wms',
     url: URBIS_URL + 'geoserver/wms',
     options: {
@@ -120,7 +120,7 @@ L.FixMyStreet.UrbisLayersSettings = {
   // @TODO: Not working well. Names not displayed at zoom > 16.
   // 'street-names': {
   //   overlay: true,
-  //   title: 'Street names',
+  //   title: gettext('Street names'),
   //   type: 'wms',
   //   url: URBIS_URL + 'geoserver/wms',
   //   options: {
@@ -133,7 +133,7 @@ L.FixMyStreet.UrbisLayersSettings = {
   // @TODO: Not working. Nothing visible.
   // 'street-numbers': {
   //   overlay: true,
-  //   title: 'Street numbers',
+  //   title: gettext('Street numbers'),
   //   type: 'wms',
   //   url: URBIS_URL + 'geoserver/wms',
   //   options: {
