@@ -20,8 +20,8 @@ def home(request, location=None, error_msg=None):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse("home_pro"))
 
-    if "street" in request.GET:
-        location = request.GET["street"]
+    if "location" in request.GET:
+        location = request.GET["location"]
     last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_CITIZEN)
 
     #wards = Ward.objects.all().order_by("name")
@@ -38,7 +38,7 @@ def home(request, location=None, error_msg=None):
         'search_error': error_msg,
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
-        'street': location,
+        'location': location,
         'zipcode': request.GET.get("ward"),
         'reports_created': qs.filter(status=Report.CREATED, created__gte=last_30_days)[:REPORTS_MAX_RESULTS],
         'reports_in_progress': qs.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, modified__gte=last_30_days)[:REPORTS_MAX_RESULTS],

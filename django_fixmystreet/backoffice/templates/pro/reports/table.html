@@ -6,404 +6,388 @@
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
-<link rel="stylesheet" href="{% static 'css/table.css' %}"></link>
-{{ block.super }}
+    <link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
+    <link rel="stylesheet" href="{% static 'css/table.css' %}"></link>
+    {{ block.super }}
+{% endblock %}
+
+{% block js_vars %}
+    {{ block.super }}
+    var NEW_INCIDENT_URL = '{% url "report_verify_pro" %}';
 {% endblock %}
 
 {% block script %}
-{{ block.super }}
-<script src="{% static 'js/search.js' %}"></script>
-<script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
-<script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
+    <script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
 
-{% block script-search %}
-  <script type="text/javascript">
-    var NEXT_PAGE_URL = '{% url "report_verify_pro" %}';
-    $(function(){
-      {% if popup_reports%}
-      $("#report_popup").modal();
-      {% endif %}
-    });
+    {% block script-search %}
+      <script type="text/javascript">
+        $(function(){
+            {% if popup_reports%}
+                $("#report_popup").modal();
+            {% endif %}
+        });
 
-    var zipcodes = new Object();
+        var zipcodes = new Object();
 
-    {% for zip in zipcodes %}
-        zipcodes[{{zip.code}}] = new Object();
-        zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-        zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-        zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-    {% endfor %}
-
-  </script>
-{% endblock %}
-
-<script>
-
-var table;
-
-
-jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "date-euro-pre": function ( a ) {
-        if ($.trim(a) != '') {
-            var datea = $.trim(a).split('/');
-            var x = parseInt(datea[2] + datea[1] + datea[0]);
-        } else {
-            var x = 0;
-        }
-
-        return x;
-    },
-
-    "date-euro-asc": function ( a, b ) {
-        return a - b;
-    },
-
-    "date-euro-desc": function ( a, b ) {
-        return b - a;
-    }
-});
-
-var columns = [
-    {type: "number"}, // incident number
-    {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
-
-    {type: "select"}, // categories
-
-    /*{type: "select", values: [
-        '{{ True|yesno:_("regional,communal") }}',
-        '{{ False|yesno:_("regional,communal") }}'
-    ]}, */// regional
-
-
-    {type: "select"}, // category path
-    //{type: "select"}, // sec categories
-    {type: "text"},   // addr
-    {type: "select"}, // postal code
-
-    {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
-    {sType: "date-euro", oSort:"date-eu"}, // date last update
-    {type: "select", values: [ // quality
-        {% for s in 'FMSUser'|model_field_choices:'quality' %}
-            "{{ s }}"{% if not forloop.last %},{% endif %}
+        {% for zip in zipcodes %}
+            zipcodes[{{zip.code}}] = new Object();
+            zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
+            zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
+            zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
         {% endfor %}
-    ]},
-    {type: "select", values: [
-        '{{ True|yesno:_("a pro,a citizen") }}',
-        '{{ False|yesno:_("a pro,a citizen") }}'
-    ]}, // Signaled by
-    {type: "select"}, // contractor
-    {type: "select"}, // resp manager
-    {type: "select"}, // resp entity
-    {sType: "date-euro", oSort:"date-eu"}, // date accepted/created
-    {sType: "date-euro", oSort:"date-eu"}, // date planned
-    {type: "number"}, // priority
-    {type: "select", values: [
-        '{{ True|yesno:_("planned,not planned") }}',
-        '{{ False|yesno:_("planned,not planned") }}'
-    ]}, // planned
-    {type: "select", values: [ // status
-        {% for s in 'Report'|model_field_choices:'status' %}
-            "{{ s }}"{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ]},
-    {type: "select", values: [//Visibility
-        '{{ True|yesno:_("private,public") }}',
-        '{{ False|yesno:_("private,public") }}'
-    ]},
-    {type: "select", values: [
-        '{{ True|yesno:_("subscribed,not subscribed") }}',
-        '{{ False|yesno:_("subscribed,not subscribed") }}'
-    ]}, // subscribed
-    {type: "select", values: [
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
-    ], selected: '{{ False|yesno:_("yes,no") }}'}, // pending
-    {type: "select", values: [
-        '{{ True|yesno:_("yes,no") }}',
-        '{{ False|yesno:_("yes,no") }}'
-    ]}, // ThirdPartyResponsibility
+      </script>
+    {% endblock %}
 
-    {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
-    {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
-    {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
-];
+    <script>
+        var table;
 
-var previousTableSelection;
-
-
-// Get table rendered by django
-function generateTableContent(selection) {
-    $('#table-container').html('<div id="table-loading" class="span12"><img src="{% static 'images/spinner.gif' %}" /></div>');
-    $("button").prop('disabled', true);
-    if (selection !== 'current') {
-        previousTableSelection = selection;
-    } else {
-        selection = previousTableSelection;
-    }
-    $(".refresh-table").removeClass('active');
-    $(".refresh-table[data-selection=" + selection + "]").addClass('active');
-    $.ajax({
-        url: "{% url 'report_table_content_pro' %}" + selection,
-        data: "",
-        dataType: "html",
-        success: function(data) {
-            $('#map-loading').hide();
-            $("button").prop('disabled', false);
-
-            //Retrieve the last used preferences
-            var sortPreferences = fms_store.getTablePreferedSortedColumn();
-            var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
-
-            document.getElementById('table-container').innerHTML = data;
-            // Init table
-            //Method table.oApi._fnColumnIndexToVisible could be useful to match the datacolumn to visible one about indexes
-            table = $('#result-table').dataTable({
-                sDom: '<"table-top"f><"table-content"rt><"table-bottom"ilp>',
-                aoColumns: columns,
-                aaSorting: [[ sortPreferences.idx, sortPreferences.order ]],
-                oLanguage: {
-                    oAria: {
-                        sSortAscending: "{% trans ': activate to sort column ascending' context 'table' %}",
-                        sSortDescending: "{% trans ': activate to sort column descending' context 'table' %}"
-                    },
-                    oPaginate: {
-                            sFirst: pgettext('table', 'Fist page'),
-                            sLast: pgettext('table', 'Last page'),
-                            sNext: pgettext('table', 'Next page'),
-                            sPrevious: pgettext('table', 'Previous page')
-                    },
-                    sEmptyTable: "{% trans 'No data available in table' context 'table' %}",
-                    sInfo: "{% trans 'Got a total of _TOTAL_ incidents to show (_START_ to _END_)' context 'table' %}",
-                    sInfo: "{% trans 'Showing _START_ to _END_ of _TOTAL_ incidents' context 'table' %}",
-                    sInfoEmpty: "{% trans 'Showing 0 to 0 of 0 incidents' context 'table' %}",
-                    sInfoFiltered: "{% trans '(filtered from _MAX_ total incidents)' context 'table' %}",
-                    sLengthMenu: "{% trans 'Show _MENU_ incidents' context 'table' %}",
-                    sLoadingRecords: "{% trans 'Loading...' context 'table' %}",
-                    sProcessing: "{% trans 'Processing...' context 'table' %}",
-                    sSearch: "{% trans 'Search:' context 'table' %}",
-                    sZeroRecords: "{% trans 'No matching incidents found' context 'table' %}"
-                },
-                "fnInitComplete": function(oSettings) {
-                    oSettings._iDisplayLength = fms_store.getTableMaxRows(10);
-                    $('#result-table_length select')
-                        .val(oSettings._iDisplayLength)
-                        .change(function(e) {
-                            fms_store.setTableMaxRows($(this).find(':selected').val());
-                        });
-                },
-                "fnDrawCallback": function() {
-                    fms_store.setTablePreferedSortedColumn(this.fnSettings().aaSorting.sort()[0][0], this.fnSettings().aaSorting.sort()[0][1]);
-                },
-                "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
-                    //If image then display using img tag
-                    if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image' && aData[1]) {
-                        var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
-                        $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
-                    }
-                    //Status icon
-                    if (this.fnSettings().aoColumns[6].bVisible === true && this.fnSettings().aoColumns[6].type === 'image' && aData[6]) {
-                        var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 6)
-                        $('td:eq('+imageIndex +')', nRow).html( '<a><img src="/static/' + aData[6] + '" /></a>' );
-                    }
-                    return nRow;
-                 }
-            });
-
-            //Generate filters FIRST
-            table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
-
-            //And THEN show/hide columns
-            var checkboxes = $('#column-visibility :checkbox');
-            //Show, Hide columns based on user selection
-            for (var index in sortPreferenceUnselectedColumns) {
-                selected = !sortPreferenceUnselectedColumns[index];
-                checkboxes.eq(index).prop('checked', selected);
-                table.fnSetColumnVis(index, selected);
-            }
-
-            // Bind event : refresh markers on map when table sort and filter
-            table.bind('filter', refreshMap);
-
-            table.delegate('tr', 'click', function () {
-                var href = $(this).data('href');
-                if(href) {
-                    window.open(href);
+        jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+            "date-euro-pre": function ( a ) {
+                if ($.trim(a) != '') {
+                    var datea = $.trim(a).split('/');
+                    var x = parseInt(datea[2] + datea[1] + datea[0]);
+                } else {
+                    var x = 0;
                 }
-            });
 
-            // Init map markers
-            refreshMap();
-        },
-        error: function () {
-            $('#map-loading').hide();
-            $("button").prop('disabled', false);
-            $('#table-container').html("<h1 class='text-error'>An error occurred...</h1>");
-        }
-    });
-}
+                return x;
+            },
 
-{% if request.fmsuser.manager %}
-generateTableContent('responsible');
-{% else %}
-generateTableContent('all');
-{% endif %}
+            "date-euro-asc": function ( a, b ) {
+                return a - b;
+            },
 
-$(document).ready(function() {
-    // Refresh table
-    $('.refresh-table').click(function() {
-        //Show loading icon
-        $('#map-loading').show();
-
-        if (table) {
-            // Destroy current table
-            table.fnDestroy(true);
-        }
-        // Regenerate table
-        generateTableContent($(this).data('selection'));
-    });
-    //Event implementation for checkbox value change
-    $('#column-visibility').delegate(':checkbox', 'change', function () {
-        //Store column selection
-        var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
-        var checked = $(this).prop('checked');
-        var index = $(this).closest('li').index(); // show column
-
-        //Remove Item
-        sortPreferenceUnselectedColumns[index] = !checked;
-        fms_store.setTableVisibleColumns(sortPreferenceUnselectedColumns);
-
-        table.fnSetColumnVis(index, checked);
-    });
-    $('#column-visibility input, #column-visibility label').click(function(e) {
-        e.stopPropagation();
-    });
-    $('#column-visibility .actions a.unselect').click(function(e) {
-        $('#column-visibility li input:checked').click();
-        e.stopPropagation();
-    });
-    $('#column-visibility .actions a.select').click(function(e) {
-        $('#column-visibility li input:not(:checked)').click();
-        e.stopPropagation();
-    });
-});
-
-// Refresh markers on map when table sorting/filtering
-function refreshMap() {
-    // Get all row according to filter
-    var data = table._('tr', {"filter": "applied"});
-
-    // For each row, build a report marker
-    var markers = [];
-    for (var i in data) {
-        report = data[i];
-        markers.push({
-            id: report[0],
-            status: parseInt(report[report.length - 1]),
-            point: {
-                x: report[report.length-3],
-                y: report[report.length-2]
+            "date-euro-desc": function ( a, b ) {
+                return b - a;
             }
         });
-    }
-    fms.currentMap.addReportCollection(markers);
-}
 
-// Load map
-(function() {
-    fms.currentMap = new fms.Map('map', {
-        apiLang:     LANGUAGE_CODE,
-        localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-        urbisUrl:    WMS_SERVICE_URL
-    });
+        var columns = [
+            {type: "number"}, // incident number
+            {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
 
-})(document);
+            {type: "select"}, // categories
 
-</script>
+            /*{type: "select", values: [
+                '{{ True|yesno:_("regional,communal") }}',
+                '{{ False|yesno:_("regional,communal") }}'
+            ]}, */// regional
+
+
+            {type: "select"}, // category path
+            //{type: "select"}, // sec categories
+            {type: "text"},   // addr
+            {type: "select"}, // postal code
+
+            {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
+            {sType: "date-euro", oSort:"date-eu"}, // date last update
+            {type: "select", values: [ // quality
+                {% for s in 'FMSUser'|model_field_choices:'quality' %}
+                    "{{ s }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]},
+            {type: "select", values: [
+                '{{ True|yesno:_("a pro,a citizen") }}',
+                '{{ False|yesno:_("a pro,a citizen") }}'
+            ]}, // Signaled by
+            {type: "select"}, // contractor
+            {type: "select"}, // resp manager
+            {type: "select"}, // resp entity
+            {sType: "date-euro", oSort:"date-eu"}, // date accepted/created
+            {sType: "date-euro", oSort:"date-eu"}, // date planned
+            {type: "number"}, // priority
+            {type: "select", values: [
+                '{{ True|yesno:_("planned,not planned") }}',
+                '{{ False|yesno:_("planned,not planned") }}'
+            ]}, // planned
+            {type: "select", values: [ // status
+                {% for s in 'Report'|model_field_choices:'status' %}
+                    "{{ s }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]},
+            {type: "select", values: [//private
+                '{{ True|yesno:_("private,public") }}',
+                '{{ False|yesno:_("private,public") }}'
+            ]},
+            {type: "select", values: [
+                '{{ True|yesno:_("subscribed,not subscribed") }}',
+                '{{ False|yesno:_("subscribed,not subscribed") }}'
+            ]}, // subscribed
+            {type: "select", values: [
+                '{{ True|yesno:_("yes,no") }}',
+                '{{ False|yesno:_("yes,no") }}'
+            ], selected: '{{ False|yesno:_("yes,no") }}'}, // pending
+            {type: "select", values: [
+                '{{ True|yesno:_("yes,no") }}',
+                '{{ False|yesno:_("yes,no") }}'
+            ]}, // ThirdPartyResponsibility
+
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
+        ];
+
+        var previousTableSelection;
+
+
+        // Get table rendered by django
+        function generateTableContent(selection) {
+            $('#table-container').html('<div id="table-loading" class="span12"><img src="{% static 'images/spinner.gif' %}" /></div>');
+            $("button").prop('disabled', true);
+            if (selection !== 'current') {
+                previousTableSelection = selection;
+            } else {
+                selection = previousTableSelection;
+            }
+            $(".refresh-table").removeClass('active');
+            $(".refresh-table[data-selection=" + selection + "]").addClass('active');
+            $.ajax({
+                url: "{% url 'report_table_content_pro' %}" + selection,
+                data: "",
+                dataType: "html",
+                success: function(data) {
+                    $('#map-loading').hide();
+                    $("button").prop('disabled', false);
+
+                    //Retrieve the last used preferences
+                    var sortPreferences = fms_store.getTablePreferedSortedColumn();
+                    var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
+
+                    document.getElementById('table-container').innerHTML = data;
+                    // Init table
+                    //Method table.oApi._fnColumnIndexToVisible could be useful to match the datacolumn to visible one about indexes
+                    table = $('#result-table').dataTable({
+                        sDom: '<"table-top"f><"table-content"rt><"table-bottom"ilp>',
+                        aoColumns: columns,
+                        aaSorting: [[ sortPreferences.idx, sortPreferences.order ]],
+                        oLanguage: {
+                            oAria: {
+                                sSortAscending: "{% trans ': activate to sort column ascending' context 'table' %}",
+                                sSortDescending: "{% trans ': activate to sort column descending' context 'table' %}"
+                            },
+                            oPaginate: {
+                                sFirst: pgettext('table', 'Fist page'),
+                                sLast: pgettext('table', 'Last page'),
+                                sNext: pgettext('table', 'Next page'),
+                                sPrevious: pgettext('table', 'Previous page')
+                            },
+                            sEmptyTable: "{% trans 'No data available in table' context 'table' %}",
+                            sInfo: "{% trans 'Got a total of _TOTAL_ incidents to show (_START_ to _END_)' context 'table' %}",
+                            sInfo: "{% trans 'Showing _START_ to _END_ of _TOTAL_ incidents' context 'table' %}",
+                            sInfoEmpty: "{% trans 'Showing 0 to 0 of 0 incidents' context 'table' %}",
+                            sInfoFiltered: "{% trans '(filtered from _MAX_ total incidents)' context 'table' %}",
+                            sLengthMenu: "{% trans 'Show _MENU_ incidents' context 'table' %}",
+                            sLoadingRecords: "{% trans 'Loading...' context 'table' %}",
+                            sProcessing: "{% trans 'Processing...' context 'table' %}",
+                            sSearch: "{% trans 'Search:' context 'table' %}",
+                            sZeroRecords: "{% trans 'No matching incidents found' context 'table' %}"
+                        },
+                        "fnInitComplete": function(oSettings) {
+                            oSettings._iDisplayLength = fms_store.getTableMaxRows(10);
+                            $('#result-table_length select')
+                                .val(oSettings._iDisplayLength)
+                                .change(function(e) {
+                                    fms_store.setTableMaxRows($(this).find(':selected').val());
+                                });
+                        },
+                        "fnDrawCallback": function() {
+                            fms_store.setTablePreferedSortedColumn(this.fnSettings().aaSorting.sort()[0][0], this.fnSettings().aaSorting.sort()[0][1]);
+                        },
+                        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+                            //If image then display using img tag
+                            if (this.fnSettings().aoColumns[1].bVisible === true && this.fnSettings().aoColumns[1].type === 'image' && aData[1]) {
+                                var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
+                                $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
+                            }
+                            //Status icon
+                            if (this.fnSettings().aoColumns[6].bVisible === true && this.fnSettings().aoColumns[6].type === 'image' && aData[6]) {
+                                var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 6)
+                                $('td:eq('+imageIndex +')', nRow).html( '<a><img src="/static/' + aData[6] + '" /></a>' );
+                            }
+                            return nRow;
+                         }
+                    });
+
+                    //Generate filters FIRST
+                    table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
+
+                    //And THEN show/hide columns
+                    var checkboxes = $('#column-visibility :checkbox');
+                    //Show, Hide columns based on user selection
+                    for (var index in sortPreferenceUnselectedColumns) {
+                        selected = !sortPreferenceUnselectedColumns[index];
+                        checkboxes.eq(index).prop('checked', selected);
+                        table.fnSetColumnVis(index, selected);
+                    }
+
+                    // Bind event : refresh markers on map when table sort and filter
+                    table.bind('filter', refreshMap);
+
+                    table.delegate('tr', 'click', function () {
+                        var href = $(this).data('href');
+                        if (href) {
+                            window.open(href);
+                        }
+                    });
+
+                    // Init map markers
+                    refreshMap();
+                },
+                error: function () {
+                    $('#map-loading').hide();
+                    $("button").prop('disabled', false);
+                    $('#table-container').html("<h1 class='text-error'>An error occurred...</h1>");
+                }
+            });
+        }
+
+        {% if request.fmsuser.manager %}
+            generateTableContent('responsible');
+        {% else %}
+            generateTableContent('all');
+        {% endif %}
+
+        $(document).ready(function() {
+            // Refresh table
+            $('.refresh-table').click(function() {
+                //Show loading icon
+                $('#map-loading').show();
+
+                if (table) {
+                    // Destroy current table
+                    table.fnDestroy(true);
+                }
+                // Regenerate table
+                generateTableContent($(this).data('selection'));
+            });
+            //Event implementation for checkbox value change
+            $('#column-visibility').delegate(':checkbox', 'change', function () {
+                //Store column selection
+                var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
+                var checked = $(this).prop('checked');
+                var index = $(this).closest('li').index(); // show column
+
+                //Remove Item
+                sortPreferenceUnselectedColumns[index] = !checked;
+                fms_store.setTableVisibleColumns(sortPreferenceUnselectedColumns);
+
+                table.fnSetColumnVis(index, checked);
+            });
+            $('#column-visibility input, #column-visibility label').click(function(e) {
+                e.stopPropagation();
+            });
+            $('#column-visibility .actions a.unselect').click(function(e) {
+                $('#column-visibility li input:checked').click();
+                e.stopPropagation();
+            });
+            $('#column-visibility .actions a.select').click(function(e) {
+                $('#column-visibility li input:not(:checked)').click();
+                e.stopPropagation();
+            });
+        });
+
+        // Refresh markers on map when table sorting/filtering
+        function refreshMap() {
+            fms.map.removeAllIncidents();
+
+            // Get all row according to filter
+            var data = table._('tr', {"filter": "applied"});
+            $.each(data, function (k, v) {
+                var model = {
+                    id: v[0],
+                    type: v[v.length - 1],
+                    latlng: L.FixMyStreet.Util.urbisCoordsToLatLng({x: v[v.length - 3], y: v[v.length - 2]}),
+                };
+                fms.map.addIncident(model);
+            });
+        }
+    </script>
 {% endblock %}
 
 
 <!-- ZONE DE CARTE -->
 {% block map %}
-<div class="row">
-    <div class="span12">
-        <p class="switch_verify btn-group">
-            <a href="#modalTable" id="tableSwitch" role="button" class="btn" data-toggle="modal">{% trans "Table" %}</a>
-            <a class="btn active" id="btn-map">{% trans "Map" %}</a>
-        </p>
+    <div class="row">
+        <div class="span12">
+            <p class="switch_verify btn-group">
+                <a href="#modalTable" id="tableSwitch" role="button" class="btn" data-toggle="modal">{% trans "Table" %}</a>
+                <a class="btn active" id="btn-map">{% trans "Map" %}</a>
+            </p>
+        </div>
     </div>
-</div>
 
-<div class="row">
-
-    {% include "_page_header.html" with map=True search_report=True search_address=True classes="map-big" loader=True %}
-</div>
+    <div class="row">
+        {% include "_page_header.html" with map=True search_report=True search_address=True classes="map-big" loader=True %}
+    </div>
 {% endblock %}
 
 
 <!-- FILTRE DES COLONNES -->
 {% block content %}
-<div id="modalTable" class="modal hide fade">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Table</h3>
-    </div>
-
-    <div class="modal-body">
-        <!-- Top BUTTONS -->
-        <div class="table-controls">
-            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                {% trans "Edit columns" %}
-                <span class="caret"></span>
-            </button>
-            <ul id="column-visibility" class="dropdown-menu">
-                <li>
-                    <div class="actions">
-                        <a class="unselect" href="#">{% trans "Unselect all" %}</a>
-                        - <a class="select" href="#">{% trans "Select all" %}</a>
-                    </div>
-                    <label><input type="checkbox" checked /> {% trans "Ticket" %}</label>
-                </li>
-                <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
-
-                <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
-
-                <!--li><label class="column"><input type="checkbox" checked /> {% trans "Road type" %}</label></li-->
-                <li><label><input type="checkbox" checked /> {% trans "Category path" %}</label></li>
-                {#<li><label class="column"><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>#}
-                <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
-
-                <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Visibility" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
-                <li><label><input type="checkbox" checked /> {% trans "ThirdPartyResponsibility" %}</label></li>
-            </ul>
-            <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
-            {% if request.fmsuser.manager %}
-            <button class="refresh-table btn" data-selection="responsible">{% trans "My incidents" %}</button>
-            {% endif %}
-            <button class="refresh-table btn" data-selection="subscribed">{% trans "My subscriptions" %}</button>
-            <button class="refresh-table btn" data-selection="creator">{% trans "My created" %}</button>
-            <button class="refresh-table btn" data-selection="all">{% trans "All incidents" %}</button>
+    <div id="modalTable" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Table</h3>
         </div>
-        <div id="table-container"></div>
-    </div>
 
-    <div class="modal-footer">
-        <input type="button" class="btn"  value="{% trans 'Close' context 'button' %}" data-dismiss="modal" aria-hidden="true"/>
+        <div class="modal-body">
+            <!-- Top BUTTONS -->
+            <div class="table-controls">
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    {% trans "Edit columns" %}
+                    <span class="caret"></span>
+                </button>
+                <ul id="column-visibility" class="dropdown-menu">
+                    <li>
+                        <div class="actions">
+                            <a class="unselect" href="#">{% trans "Unselect all" %}</a>
+                            - <a class="select" href="#">{% trans "Select all" %}</a>
+                        </div>
+                        <label><input type="checkbox" checked /> {% trans "Ticket" %}</label>
+                    </li>
+                    <li><label><input type="checkbox" checked /> {% trans "Thumbnail" %}</label></li>
+
+                    <li><label><input type="checkbox" checked /> {% trans "Category" %}</label></li>
+
+                    <!--li><label class="column"><input type="checkbox" checked /> {% trans "Road type" %}</label></li-->
+                    <li><label><input type="checkbox" checked /> {% trans "Category path" %}</label></li>
+                    {#<li><label class="column"><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>#}
+                    <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
+
+                    <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Planning date" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Priority" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Planning" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Visibility" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Subscribed" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "ThirdPartyResponsibility" %}</label></li>
+                </ul>
+                <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
+                {% if request.fmsuser.manager %}
+                <button class="refresh-table btn" data-selection="responsible">{% trans "My incidents" %}</button>
+                {% endif %}
+                <button class="refresh-table btn" data-selection="subscribed">{% trans "My subscriptions" %}</button>
+                <button class="refresh-table btn" data-selection="creator">{% trans "My created" %}</button>
+                <button class="refresh-table btn" data-selection="all">{% trans "All incidents" %}</button>
+            </div>
+            <div id="table-container"></div>
+        </div>
+
+        <div class="modal-footer">
+            <input type="button" class="btn"  value="{% trans 'Close' context 'button' %}" data-dismiss="modal" aria-hidden="true"/>
+        </div>
     </div>
-</div>
 {% endblock %}

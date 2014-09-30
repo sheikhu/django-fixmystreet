@@ -35,6 +35,7 @@ install: $(BIN_PATH)
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
 	$(BIN_PATH)/pip install -e .[dev]
+	sudo npm install -g testem
 	$(MAKE) migrate
 
 run: $(BIN_PATH)
@@ -46,6 +47,13 @@ schemamigration:
 
 test: $(BIN_PATH)/manage.py
 	$(BIN_PATH)/manage.py test $(APP_NAME)
+	$(MAKE) test-js
+
+test-js:
+	testem ci -t django_fixmystreet/fixmystreet/static/tests/index.html
+
+test-js-tdd:
+	testem tdd -t django_fixmystreet/fixmystreet/static/tests/index.html
 
 lint:
 	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) || echo "lint errors"

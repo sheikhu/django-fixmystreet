@@ -1,0 +1,44 @@
+.cf:before, .cf:after { content: " "; display: table; }
+.cf:after { clear: both; }
+.cf { *zoom: 1; }
+body, select {
+  font-family: Sans-Serif;
+}
+
+#map {
+  height: 280px;
+}
+
+#map.fmsmap-size-500x300 {
+  height: 300px;
+  width: 500px;
+}
+
+.actions {
+  margin-top: 10px;
+}
+.group {
+  background-color: #eee;
+  float: left;
+  padding: 3px 6px;
+}
+.group:not(:first-child) {
+  margin-left: 10px;
+}
+
+#load-geojson-url {
+  width: 350px;
+}
+#new-incident-latlng {
+  width: 150px;
+}
+
+.marker-in-black {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+.popup-yellow .leaflet-popup-content-wrapper,
+.popup-yellow .leaflet-popup-tip {
+  background-color: #ffb442;
+}

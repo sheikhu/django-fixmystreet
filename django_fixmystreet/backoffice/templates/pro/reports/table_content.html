@@ -60,9 +60,9 @@
             <th>{% trans "Subscribed" %}</th>
             <th>{% trans "Pending" %}</th>
             <th>{% trans "ThirdPartyResponsibility" %}</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>{# point.x #}</th>
+            <th>{# point.y #}</th>
+            <th>{# get_status_for_js_map() #}</th>
         </tr>
     </thead>
     <tbody>
@@ -98,7 +98,7 @@
                 <td class="s{{report.status}}">{{ report.third_party_responsibility|yesno:_("yes,no") }}</td>
                 <td>{{ report.point.x }}</td>
                 <td>{{ report.point.y }}</td>
-                <td>{{ report.status }}</td>
+                <td>{{ report.get_status_for_js_map }}</td>
             </tr>
         {% endfor %}
     </tbody>

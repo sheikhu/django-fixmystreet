@@ -96,11 +96,11 @@ fms.filterMapWithStatus = function(callback){
             type:'GET',
             datatype:"json",
             success: function(data){
-                if (fms.currentMap.markersLayer) {
-                    fms.currentMap.markersLayer.destroyFeatures();
-                }
-                fms.currentMap.addReportCollection(data);
-                fms.cachedElements = true;
+                // if (fms.currentMap.markersLayer) {
+                //     fms.currentMap.markersLayer.destroyFeatures();
+                // }
+                // fms.currentMap.addReportCollection(data);
+                // fms.cachedElements = true;
             },
             error: function(data) {
                 if(fms.currentMap.markersLayer){
@@ -374,15 +374,6 @@ fms.MunicipalityLimitsLayerShowControl = OpenLayers.Class(OpenLayers.Control, {
         );
         base.setZIndex(-100);
         this.map.addLayer(base);
-
-        var layerSwitcherDiv = OpenLayers.Util.getElement('layerswitcher');
-        if(layerSwitcherDiv) {
-            var layerSwitcher = new OpenLayers.Control.LayerSwitcher({
-                'div': layerSwitcherDiv
-            });
-            this.map.addControl(layerSwitcher);
-            layerSwitcher.dataLbl.innerHTML = gettext("Overlayers");
-        }
 
         if(x && y) {
             this.map.setCenter(new OpenLayers.LonLat(x,y));
