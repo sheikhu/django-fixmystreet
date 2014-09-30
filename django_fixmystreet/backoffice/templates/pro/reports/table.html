@@ -312,7 +312,7 @@
                     },
                     categories: v[3],
                     photo: STATIC_URL.replace(/\/$/, '') + v[1],
-                    url: INCIDENT_DETAIL_URL.replace('9999999999', v[0]).replace('{slug}', v[v.length - 4]),
+                    url: INCIDENT_DETAIL_URL.replace('9999999999', v[0]).replace('%7Bslug%7D', v[v.length - 4]),
                 };
                 fms.map.addIncident(model);
             });
