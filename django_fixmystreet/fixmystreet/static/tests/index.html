@@ -8,27 +8,31 @@
   <link rel="stylesheet" href="../lib/leaflet.opacitycontrols/control.opacity.css" />
   <link rel="stylesheet" href="../css/leaflet-fms.css" />
   <style>
+    #__testem_ui__ {
+      bottom: auto !important;
+      font-size: 10px;
+      left: 2px;
+      right: auto !important;
+      top: 2px;
+    }
     #map {
-      height: 400px;
-      position: fixed;
-      left: 0;
-      right: 0;
+      display: none;
+    }
+    body.map-visible #map {
       bottom: 0;
+      display: block;
+      height: 400px;
+      left: 0;
+      position: fixed;
+      right: 0;
       width: 100%;
     }
-    #__testem_ui__ {
-      top: 2px;
-      left: 2px;
-      bottom: auto !important;
-      right: auto !important;
-      font-size: 10px;
-    }
-    #mocha {
+    body.map-visible #mocha {
       margin-bottom: 450px;
     }
   </style>
 </head>
-<body>
+<body class="map-visible">
   <div id="mocha"></div>
 
   <!-- requirements -->
@@ -54,16 +58,16 @@
   <script src="mocha.js"></script>
   <script src="/testem.js"></script>
   <script>
-  mocha.setup('bdd');
+    mocha.setup('bdd');
   </script>
 
   <!-- unit tests -->
   <script src="utils.js"></script>
   <script src="leaflet/test.urbis-layers.js"></script>
   <script src="leaflet/test.template.js"></script>
-  <!-- <script src="leaflet/test.map.js"></script> -->
-  <!-- <script src="leaflet/test.markers.js"></script> -->
   <script src="leaflet/test.util.js"></script>
+  <script src="leaflet/test.map.js"></script>
+  <!-- <script src="leaflet/test.markers.js"></script> -->
   <!-- <script src="test.search.js"></script> -->
   <script>
     mocha.globals(['jQuery']);
