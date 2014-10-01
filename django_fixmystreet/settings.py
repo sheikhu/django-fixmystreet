@@ -14,6 +14,7 @@ else:
 
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     DEBUG = True
+    TEMPLATE_DEBUG = True
 else:
     DEBUG = False
 

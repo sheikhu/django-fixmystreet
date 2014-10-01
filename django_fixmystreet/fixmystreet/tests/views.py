@@ -676,6 +676,10 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
+
+        comment = ReportComment(report_id=report.id, text='test', type=3)
+        comment.save()
+
         report.status = Report.REFUSED
         report.save()
 
