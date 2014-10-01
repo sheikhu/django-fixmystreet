@@ -2027,6 +2027,10 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 	height: 100%;
 	clear: none;
 }
+.dataTables_wrapper{
+	position: relative;
+	z-index: 1055;
+}
 .table-content{
 	position: absolute;
 	top: 44px;
@@ -2038,6 +2042,7 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 .table-controls {
 	position: absolute;
 	top: 10px;
+	z-index: 1060;
 }
 .table-controls ul {
 	padding: 5px 16px;
