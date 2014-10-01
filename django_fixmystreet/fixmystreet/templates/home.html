@@ -44,7 +44,7 @@
     <div class="row">
         <article id="recent-reports" class="home_recent_reports span12">
             <!--h2>{% trans 'Last modified reports:' %}</h2-->
-                <form id="search-ticket-form" class="input-append form-inline pull-right">
+                <form id="search-ticket-form" class="input-append form-inline pull-right" action="{% url 'search_ticket' %}">
                     <!--h2>{% trans "Enter the report ticket:" %}</h2-->
                     <input id="input-ticket-search" class="input-medium" type="search" name="report_id" placeholder="{% trans 'Ticket number...' %}" />
                     <input id="widget-search-ticket-button" class="btn" type="submit" name="submit" value="">
