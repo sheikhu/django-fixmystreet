@@ -33,7 +33,6 @@ fms.AddressSearchView = Backbone.View.extend({
 
         this.$searchButton = this.$('#widget-search-button');
 
-        fms.map.addIncidentTypeControl();
         fms.map.addLocateOnMapButton();
 
         return this;
