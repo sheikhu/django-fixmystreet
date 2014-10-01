@@ -145,6 +145,34 @@ L.FixMyStreet.UrbisLayersSettings = {
 };
 
 
+// MUNICIPALITIES ==============================================================
+
+L.FixMyStreet.Municipalities = {
+  '1000': {name: 'Bruxelles-Ville/Stad Brussel', center: {x: 148605.543268095, y: 170874.91346381, lat: 50.84827529927194, lng: 4.348950689030607, zoom: 14}},
+  '1020': {name: 'Laeken/Laken', center: {x: 149092.31148122973, y: 175999.01813600562, lat: 50.89433911650043, lng: 4.355850716850341, zoom: 14}},
+  '1030': {name: 'Schaerbeek/Schaarbeek', center: {x: 151465.0174341536, y: 172366.8696672201, lat: 50.861686826263764, lng: 4.389560819958523, zoom: 14}},
+  '1040': {name: 'Etterbeek', center: {x: 151510.94104024282, y: 168866.99458462943, lat: 50.83022452230688, lng: 4.39019830923513, zoom: 14}},
+  '1050': {name: 'Ixelles/Elsene', center: {x: 149370.46474587804, y: 167732.65080223506, lat: 50.8200290552474, lng: 4.35981740198529, zoom: 14}},
+  '1060': {name: 'Saint-Gilles/Sint-Gillis', center: {x: 148283.92855584505, y: 168719.2256627849, lat: 50.82889583588704, lng: 4.344393587677765, zoom: 14}},
+  '1070': {name: 'Anderlecht', center: {x: 145367.6654217966, y: 168649.68734662264, lat: 50.828255044380676, lng: 4.303001135144718, zoom: 14}},
+  '1080': {name: 'Molenbeek-Saint-Jean/Sint-Jans-Molenbeek', center: {x: 146793.20090312013, y: 171522.48903306987, lat: 50.854089658783494, lng: 4.323210209467824, zoom: 14}},
+  '1081': {name: 'Koekelberg', center: {x: 146814.9316269208, y: 172639.4482364241, lat: 50.86413066091411, lng: 4.323509296558918, zoom: 14}},
+  '1082': {name: 'Berchem-Sainte-Agathe/Sint-Agatha-Berchem', center: {x: 144863.51262962123, y: 172813.29402682924, lat: 50.86567963543899, lng: 4.295787766247812, zoom: 14}},
+  '1083': {name: 'Ganshoren', center: {x: 145841.39520065105, y: 173778.13816357817, lat: 50.87436079363292, lng: 4.309667873478139, zoom: 14}},
+  '1090': {name: 'Jette', center: {x: 147375.58430097767, y: 174064.98371774668, lat: 50.87694820102598, lng: 4.331463158338711, zoom: 14}},
+  '1120': {name: 'Neder-over-Heembeek', center: {x: 151371.86440791885, y: 176103.325610249, lat: 50.895275683036665, lng: 4.388252100166883, zoom: 14}},
+  '1130': {name: 'Haren', center: {x: 153831.7823421533, y: 175129.78918397945, lat: 50.88651296334207, lng: 4.423207159322192, zoom: 14}},
+  '1140': {name: 'Evere', center: {x: 152629.7842298689, y: 173392.55983061116, lat: 50.8709030363853, lng: 4.406112471897067, zoom: 14}},
+  '1150': {name: 'Woluwe-Saint-Pierre/Sint-Pieters-Woluwe', center: {x: 154577.14616851608, y: 168788.76397894725, lat: 50.8295049777708, lng: 4.433720145106729, zoom: 14}},
+  '1160': {name: 'Auderghem/Oudergem', center: {x: 154046.91650777997, y: 167337.15162906327, lat: 50.8164595784076, lng: 4.426177869946805, zoom: 14}},
+  '1170': {name: 'Watermael-Boitsfort/Watermaal-Bosvoorde', center: {x: 153173.34141099357, y: 165011.96418239252, lat: 50.79556253369014, lng: 4.41376136197916, zoom: 14}},
+  '1180': {name: 'Uccle/Ukkel', center: {x: 149305.27257447632, y: 165224.92527563902, lat: 50.79748551901607, lng: 4.358896646300484, zoom: 14}},
+  '1190': {name: 'Forest/Vorst', center: {x: 147023.54657540703, y: 167176.34427293818, lat: 50.81502100888302, lng: 4.326516035949621, zoom: 14}},
+  '1200': {name: 'Woluwe-Saint-Lambert/Sint-Lambrechts-Woluwe', center: {x: 155011.7606445293, y: 170787.99056860784, lat: 50.84747347073475, lng: 4.439916575521155, zoom: 14}},
+  '1210': {name: 'Saint-Josse-ten-Noode/Sint-Joost-ten-Node', center: {x: 149842.02145235223, y: 171587.68120447194, lat: 50.85468427727045, lng: 4.366508235262725, zoom: 14}},
+};
+
+
 // TEMPLATE ====================================================================
 
 L.FixMyStreet.Template = {
@@ -807,6 +835,20 @@ L.FixMyStreet.Map = L.Map.extend({
   centerOnMarker: function (marker) {  // (Object)
     // @TODO: Check if popup is opened and adapt LatLng accordingly.
     this.panTo(marker.getLatLng());
+  },
+
+  centerOnMunicipality: function (postalCode) {  // (String)
+    if (L.FixMyStreet.Municipalities[postalCode] === undefined) {
+      throw new TypeError('Unknown municipality (' + postalCode + ').');
+    }
+    var center = L.FixMyStreet.Municipalities[postalCode].center;
+    var latlng = L.FixMyStreet.Util.toLatLng(center);
+    if (center.zoom === undefined) {
+      // @TODO: Check if popup is opened and adapt LatLng accordingly.
+      this.panTo(latlng);
+    } else {
+      this.setView(latlng, center.zoom, {animate: true});
+    }
   },
 
   setCssSize: function (cls) {  // (String)
