@@ -311,7 +311,7 @@
                         city: v[5].substring(index5 + 1, v[5].length),
                     },
                     categories: v[3],
-                    photo: STATIC_URL.replace(/\/$/, '') + v[1],
+                    photo: v[1] ? STATIC_URL.replace(/\/$/, '') + v[1] : null,
                     url: INCIDENT_DETAIL_URL.replace('9999999999', v[0]).replace('%7Bslug%7D', v[v.length - 4]),
                 };
                 fms.map.addIncident(model);
