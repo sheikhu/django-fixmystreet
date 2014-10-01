@@ -31,7 +31,7 @@ $(document).ready(function(){
     $("form").submit(function(evt) {
         var $this = $(this);
         if (validateForm($this)) {
-            $this.find(':submit').prop('disabled', true);
+            $this.find('[data-one-click]').prop('disabled', true);
         } else {
             evt.preventDefault();
             evt.stopImmediatePropagation();
