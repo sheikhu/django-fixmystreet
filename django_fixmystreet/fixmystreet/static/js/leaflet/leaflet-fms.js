@@ -882,6 +882,20 @@ L.FixMyStreet.Map = L.Map.extend({
     }
   },
 
+  disableInteractions: function () {
+      this.dragging.disable();
+      this.touchZoom.disable();
+      this.doubleClickZoom.disable();
+      this.scrollWheelZoom.disable();
+  },
+
+  enableInteractions: function () {
+      this.dragging.enable();
+      this.touchZoom.enable();
+      this.doubleClickZoom.enable();
+      this.scrollWheelZoom.enable();
+  },
+
   showSpinner: function () {
     this.$container.find('.leaflet-control-container').hide();
     this._initSpinner().show();
@@ -1680,16 +1694,10 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     this.renderContent({results: results});
 
     this.$container.mouseover(function (evt) {
-      map.dragging.disable();
-      map.touchZoom.disable();
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
+      map.disableInteractions();
     });
     this.$container.mouseout(function (evt) {
-      map.dragging.enable();
-      map.touchZoom.enable();
-      map.doubleClickZoom.enable();
-      map.scrollWheelZoom.enable();
+      map.enableInteractions();
     });
 
     this.$container.find('li[data-search-result]').each(function (i, e) {
