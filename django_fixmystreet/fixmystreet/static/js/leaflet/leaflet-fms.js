@@ -1431,7 +1431,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
         '<div class="fmsmap-popup new">' +
           '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
           '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
-          '<div class="fmsmap-popup-footer clearfix hidden">{_footer_}</div>' +
+          '<div class="fmsmap-popup-footer clearfix<% if (this._activated !== true) { %> hidden<% } %>">{_footer_}</div>' +
         '</div>',
       _header_:
         gettext('Place me at the exact position of the incident'),
@@ -1455,8 +1455,14 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
     this._activated = false;
   },
 
+  renderContent: function(data, key) {  // ([Object], [String])
+    L.FixMyStreet.Popup.prototype.renderContent.call(this, data, key);
+    if (this._activated === true) {
+      this.activate();
+    }
+  },
+
   activate: function () {
-    if (this._activated) { return; }
     this._activated = true;
     // @TODO: Not working. See L.FixMyStreet.NewIncidentMarker._onDragEnd()
     // this.on('popuprendered', function (data) {
