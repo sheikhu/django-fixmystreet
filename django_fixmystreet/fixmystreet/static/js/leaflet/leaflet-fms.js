@@ -1721,6 +1721,11 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     return this._container;
   },
 
+  remove: function() {
+    L.FixMyStreet.Panel.prototype.remove.call(this);
+    this._map.enableInteractions();
+  },
+
   _bindActions: function (handlers) {
     var that = this;
     var theseHandlers = {};
