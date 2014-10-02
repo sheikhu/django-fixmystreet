@@ -1,7 +1,7 @@
 Changelog of django-fixmystreet
 ===================================================
 
-3.0.12 (unreleased)
+3.0.12 (2014-10-02)
 -------------------
 
 - Nothing changed yet.
