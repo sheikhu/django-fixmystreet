@@ -1443,7 +1443,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
           '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
         '</div>' +
         '<div class="pull-right">' +
-          '<a class="button button-itshere" href="#" data-bind="itshere">' + gettext('It\'s here') + '</a>' +
+          '<a class="button button-itshere" href="#" data-bind="itshere">' + gettext('It is here') + '</a>' +
         '</div>',
     },
   },
