@@ -151,7 +151,6 @@
                 data: "",
                 dataType: "html",
                 success: function(data) {
-                    $('#map-loading').hide();
                     $("button").prop('disabled', false);
 
                     //Retrieve the last used preferences
@@ -237,9 +236,10 @@
 
                     // Init map markers
                     refreshMap();
+                    fms.map.hideSpinner();
                 },
                 error: function () {
-                    $('#map-loading').hide();
+                    fms.map.hideSpinner();
                     $("button").prop('disabled', false);
                     $('#table-container').html("<h1 class='text-error'>An error occurred...</h1>");
                 }
@@ -253,10 +253,11 @@
         {% endif %}
 
         $(document).ready(function() {
+            fms.map.showSpinner();
             // Refresh table
             $('.refresh-table').click(function() {
                 //Show loading icon
-                $('#map-loading').show();
+                fms.map.showSpinner();
 
                 if (table) {
                     // Destroy current table

@@ -7,6 +7,38 @@
   color: #7090b5;
 }
 
+#map .leaflet-map-pane {
+  z-index: 10;
+}
+#map .leaflet-control-container {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 20;
+}
+
+
+/* SPINNER */
+
+#map #fmsmap-spinner {
+  background-color: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 30;
+}
+#map #fmsmap-spinner:before {
+  content: url("../images/spinner.gif");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -40px 0 0 -40px;
+}
+
 
 /* MAP SIZES */
 

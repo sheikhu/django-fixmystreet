@@ -475,16 +475,19 @@ L.FixMyStreet.Map = L.Map.extend({
     };
 
     L.geoJson(geoJson, geoJsonOptions);
+    this.hideSpinner();
     next();
   },
 
   _addIncidentsFromGeoJsonUrl: function (url, baseOptions, next) {  // (String, [Object], [Function])
     var that = this;
+    this.showSpinner();
     if (DEBUG) { console.log('Loading GeoJSON from %s...', url); }
     $.get(url, function (geoJson) {
       if (DEBUG) { console.log('GeoJSON received from %s...', url); }
       that._addIncidentsFromGeoJson(geoJson, baseOptions, next);
     }).fail(function() {
+      that.hideSpinner();
       throw new Error('Failed to load GeoJSON from ' + url + ': ' + argument);
     });
   },
@@ -877,6 +880,23 @@ L.FixMyStreet.Map = L.Map.extend({
     } else {
       $container.append($e);
     }
+  },
+
+  showSpinner: function () {
+    this._initSpinner().show();
+  },
+
+  hideSpinner: function () {
+    this._initSpinner().hide();
+  },
+
+  _initSpinner: function() {
+    var $spinner = this.$container.find('#fmsmap-spinner');
+    if ($spinner.length === 0) {
+      $spinner = $('<div id="fmsmap-spinner" />');
+      this.$container.append($spinner);
+    }
+    return $spinner;
   },
 
   _layerFactory: function(settings) {  // (Object)
