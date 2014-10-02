@@ -476,7 +476,9 @@ L.FixMyStreet.Map = L.Map.extend({
 
     L.geoJson(geoJson, geoJsonOptions);
     this.hideSpinner();
-    next();
+    if (next !== undefined) {
+      next();
+    }
   },
 
   _addIncidentsFromGeoJsonUrl: function (url, baseOptions, next) {  // (String, [Object], [Function])
