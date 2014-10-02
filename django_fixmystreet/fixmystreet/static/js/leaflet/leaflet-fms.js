@@ -883,11 +883,13 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   showSpinner: function () {
+    this.$container.find('.leaflet-control-container').hide();
     this._initSpinner().show();
   },
 
   hideSpinner: function () {
     this._initSpinner().hide();
+    this.$container.find('.leaflet-control-container').show();
   },
 
   _initSpinner: function() {
