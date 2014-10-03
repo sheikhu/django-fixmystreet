@@ -189,101 +189,163 @@ L.FixMyStreet.MUNICIPALITIES = {
 
 // TEMPLATE ====================================================================
 
-L.FixMyStreet.Template = {
-  /**
-    * Stores cached templates.
-    * @type {object}
-    * @memberOf L.FixMyStreet.Template
-    */
+L.FixMyStreet.TEMPLATES = {
   _cache: {},
-
-  /**
-    * RegExp to identify partial templates (matched against the key).
-    * @type {RegExp}
-    * @memberOf L.FixMyStreet.Template
-    */
-  partialTemplateRegex: /^_.*_$/,
-
-  /**
-   * Renders a named template, that may include partials.
-   *
-   * @param {object} data - The data for the template.
-   * @param {string} [key=base] - The key identifying the template to render.
-   * @param {renderTemplateCallback} done - The callback that handles the rendered content.
-   */
-  /**
-   * @callback renderTemplateCallback
-   # @param {object} The error.
-   # @param {string} The rendered content.
-   */
-  _render: function (data, key, done) {
-    if (!this.options.templates) { return; }
-
-    data = data || {};
-    if (typeof key === 'function' && done === undefined) {
-      done = key;
-      key = null;
-    }
-    key = key || 'base';
-    var template = this.options.templates[key] || this.options.templates.base;
-
-    // Include the code of each partials in the main template.
-    for (var k in this.options.templates) {
-      if (this.partialTemplateRegex.test(k) === false) { continue; }
-      template = template.replace(new RegExp('\\{' + k + '\\}', 'g'), this.options.templates[k]);
-    }
-
-    this._renderTemplate(template, data, done);
-  },
-
-  /**
-   * Renders a template string.
-   *
-   * @see {@link https://github.com/tunnckoCore/octet}
-   * @ssee {@link http://ejohn.org/blog/javascript-micro-templating/}
-   *
-   * @param {string} html - The template code.
-   * @param {object} data - The data for the template.
-   * @param {renderTemplateCallback} done - The callback that handles the rendered content.
-   */
-  _renderTemplate: function (html, options, done) {
-    if (!(html in L.FixMyStreet.Template._cache)) {
-      var re = /<%([^%>]+)?%>/g;
-      var reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g;
-      var code = 'var r=[];\n';
-      var cursor = 0;
-      var add = function(line, js) {
-        if (js) {
-          code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n';
-        } else {
-          code += line ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '';
-        }
-        return add;
-      };
-      while ((match = re.exec(html))) {
-        add(html.slice(cursor, match.index))(match[1], true);
-        cursor = match.index + match[0].length;
-      }
-      add(html.substr(cursor, html.length - cursor));
-      code += 'return r.join("");';
-      L.FixMyStreet.Template._cache[html] = new Function(code.replace(/[\r\t\n]/g, ''));
-    }
-    try {
-      var result = L.FixMyStreet.Template._cache[html].apply(options, [options]);
-      if (typeof done === 'function') {
-        return done(null, result);
-      } else {
-        return {error: null, result: result};
-      }
-    } catch (error) {
-      if (typeof done === 'function') {
-        return done(error, null);
-      }
-      console.error("ERROR: '" + error.message + "'", " in \n\nCode:\n", code, "\n");
-      return {error: error, result: null};
-    }
-  },
 };
+
+_.templateSettings = {  // Django-style
+  interpolate: /\{\{(.+?)\}\}/g,
+  evaluate: /\{%(.+?)%\}/g,
+};
+
+function renderTemplate (html, data) {
+  if (!(html in L.FixMyStreet.TEMPLATES._cache)) {
+    L.FixMyStreet.TEMPLATES._cache[html] = _.template(html, {variable: 'data'});
+  }
+  var r = L.FixMyStreet.TEMPLATES._cache[html](data);
+console.log(r, data);
+  return r;
+}
+
+L.FixMyStreet.TEMPLATES.address =
+  '{% if (data.address) { %}' +
+    '{{ data.address.street }} {{ data.address.number }}<br />' +
+    '{{ data.address.postalCode }} {{ data.address.city }}' +
+  '{% } %}';
+
+L.FixMyStreet.TEMPLATES.basePopup =
+  '<div class="fmsmap-popup">' +
+    '<div class="fmsmap-popup-body"></div>' +
+  '</div>';
+
+L.FixMyStreet.TEMPLATES.incidentPopup =
+  '<div class="fmsmap-popup">' +
+    '<div class="fmsmap-popup-header clearfix">' +
+      gettext('Report #{{ data.id }}') +
+    '</div>' +
+    '<div class="fmsmap-popup-body clearfix">' +
+      '<div class="pull-left">' +
+        '{% if (data.address) { %}' +
+          '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
+        '{% } %}' +
+        '{% if (data.categories) { %}' +
+          '<p class="categories">{{ data.categories }}</p>' +
+        '{% } %}' +
+      '</div>' +
+      '{% if (data.photo) { %}' +
+        '<div class="pull-right">' +
+          '<img class="photo" src="{{ data.photo }}" alt="" />' +
+        '</div>' +
+      '{% } %}' +
+    '</div>' +
+    '<div class="fmsmap-popup-footer clearfix">' +
+      '{% if (data.icons) { %}' +
+        '<div class="pull-left">' +
+          '<ul class="icons inline">' +
+            '{% if (data.icons.regionalRoads === true) { %}' +
+              '<li><img src="' + STATIC_URL + 'images/regional_on.png" title="' + gettext('This incident is located on a regional zone') + '"></li>' +
+            '{% } %}' +
+            '{% if (data.icons.pro === true) { %}' +
+              '<li><img src="' + STATIC_URL + 'images/pro_on.png" title="' + gettext('This incident has been signaled by a pro') + '"></li>' +
+            '{% } %}' +
+            '{% if (data.icons.assigned === true) { %}' +
+              '<li><img src="' + STATIC_URL + 'images/contractorAssigned_on.png" title="' + gettext('This incident is assigned to') + '"></li>' +
+            '{% } %}' +
+            '{% if (data.icons.resolved === true) { %}' +
+              '<li><img src="' + STATIC_URL + 'images/is_resolved_on.png" title="' + gettext('This incident has been signaled as solved') + '"></li>' +
+            '{% } %}' +
+            '{% if (data.icons.priority) { %}' +
+              '<li>' +
+                '<img src="' + STATIC_URL + 'images/prior_on_{{ data.icons.priority }}.png" title="' +
+                  '{% if (data.icons.priority === 1) { %}' + gettext('This incident has a low priority') +
+                  '{% } else if (data.icons.priority === 2) { %}' + gettext('This incident has a medium priority') +
+                  '{% } else if (data.icons.priority === 3) { %}' + gettext('This incident has a serious priority') +
+                  '{% } %}' +
+                '">' +
+              '</li>' +
+            '{% } %}' +
+          '</ul>' +
+        '</div>' +
+      '{% } %}' +
+      '{% if (data.url) { %}' +
+        '<div class="pull-right">' +
+          '<a class="button" href="{{ data.url }}">' + gettext('Details') + '</a>' +
+        '</div>' +
+      '{% } %}' +
+    '</div>' +
+  '</div>';
+
+L.FixMyStreet.TEMPLATES.newIncidentPopup =
+  '<div class="fmsmap-popup new">' +
+    '<div class="fmsmap-popup-header clearfix">' +
+      gettext('Place me at the exact position of the incident') +
+    '</div>' +
+    '<div class="fmsmap-popup-body clearfix">' +
+      '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
+    '</div>' +
+    '<div class="fmsmap-popup-footer clearfix{% if (data._activated !== true) { %} hidden{% } %}">' +
+      '<div class="pull-left">' +
+        '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
+        '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
+      '</div>' +
+      '<div class="pull-right">' +
+        '<a class="button button-itshere" href="#" data-bind="itshere">' + gettext('It is here') + '</a>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+L.FixMyStreet.TEMPLATES.searchResultPopup =
+  '<div class="fmsmap-popup new">' +
+    '<div class="fmsmap-popup-header clearfix">' +
+      gettext('Search result {{ data.number }}') +
+    '</div>' +
+    '<div class="fmsmap-popup-body clearfix">' +
+      '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
+    '</div>' +
+    '<div class="fmsmap-popup-footer clearfix">' +
+      '<div class="pull-left">' +
+        '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
+        '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
+      '</div>' +
+      '<div class="pull-right">' +
+        '{% if (data.url) { %}' +
+          '<a class="button" href="{{ data.url }}">' + gettext('Go') + '</a>' +
+        '{% } else { %}' +
+          '<a class="button" href="#" data-bind="new-incident">' + gettext('New incident') + '</a>' +
+        '{% } %}' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+L.FixMyStreet.TEMPLATES.searchPanel =
+  '<div class="fmsmap-panel fmsmap-panel-search">' +
+    '<div class="fmsmap-panel-header clearfix">' +
+      '<button class="close" type="button" data-bind="close">&times;</button>' +
+      '{% if (data.results.length === 0) { %}' +
+        gettext('No results') +
+      '{% } else { %}' +
+        gettext('{{ data.results.length }} results') +
+      '{% } %}' +
+    '</div>' +
+    '<div class="fmsmap-panel-body clearfix">' +
+      '{% if (data.results.length === 0) { %}' +
+        '<p>' + gettext('No corresponding address has been found.') + '</p>' +
+        '<p>' + gettext('Please refine your search criteria.') + '</p>' +
+      '{% } else { %}' +
+        '<ul>' +
+          '{% _.each(data.results, function (result) { %}' +
+            '<li data-search-result="{{ result.number }}">' +
+              '<div class="number">{{ result.number }}</div>' +
+              '<p class="address">' +
+                '{{ result.address.street }} {{ result.address.number }}<br />' +
+                '{{ result.address.postalCode }} {{ result.address.city }}' +
+              '</p>' +
+            '</li>' +
+          '{% }) %}' +
+        '</ul>' +
+      '{% } %}' +
+    '</div>' +
+  '</div>';
 
 
 // MAP =========================================================================
@@ -1303,23 +1365,7 @@ L.FixMyStreet.OtherIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
 
 L.FixMyStreet.Popup = L.Popup.extend({
   options: {
-    partialTemplateRegex: /^_.*_$/,
-    templates: {
-      base:
-        '<div class="fmsmap-popup">' +
-          '{_header_}' +
-          '<div class="fmsmap-popup-body">{_body_}</div>' +
-          '{_footer_}' +
-        '</div>',
-      _header_: '',  // <div class="fmsmap-popup-header">...</div>
-      _footer_: '',  // <div class="fmsmap-popup-footer">...</div>
-      _body_: '',
-      _address_:
-        '<% if (this.address) { %>' +
-          '<% this.address.street %> <% this.address.number %><br />' +
-          '<% this.address.postalCode %> <% this.address.city %>' +
-        '<% } %>',
-    }
+    template: L.FixMyStreet.TEMPLATES.basePopup,
   },
 
   initialize: function (options, source) {  // ([Object], [L.ILayer])
@@ -1349,24 +1395,20 @@ L.FixMyStreet.Popup = L.Popup.extend({
     this._marker = null;
   },
 
-  renderContent: function(data, key) {  // ([Object], [String])
+  renderContent: function(data) {  // ([Object]
     var that = this;
-    this._render(data, key, function (error, html) {
-      if (!error) {
-        that.setContent(html);
-        that.saveDimensions();
-        that.fire('popuprendered', {popup: that});
-      }
+    this.on('contentupdate', function () {
+      that.saveDimensions();
+      that.fire('popuprendered', {popup: this});
     });
+
+    var html = renderTemplate(this.options.template, data);
+    this.setContent(html);
   },
 
   updateAddress: function (address) {
-    var that = this;
-    this._renderTemplate(this.options.templates._address_, {address: address}, function (error, html) {
-      if (!error) {
-        that.$container.find('.address').html(html);
-      }
-    });
+    var html = renderTemplate(L.FixMyStreet.TEMPLATES.address, {address: address});
+    this.$container.find('.address').html(html);
   },
 
   saveDimensions: function () {
@@ -1419,35 +1461,11 @@ L.FixMyStreet.Popup = L.Popup.extend({
     });
   },
 });
-L.FixMyStreet.Popup.include(L.FixMyStreet.Template);
 
 
 L.FixMyStreet.SearchResultPopup = L.FixMyStreet.Popup.extend({
   extendedOptions: {
-    templates: {
-      base:
-        '<div class="fmsmap-popup new">' +
-          '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
-          '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
-          '<div class="fmsmap-popup-footer clearfix">{_footer_}</div>' +
-        '</div>',
-      _header_:
-        gettext('Search result <% this.number %>'),
-      _body_:
-        '<p class="address">{_address_}</p>',
-      _footer_:
-        '<div class="pull-left">' +
-          '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
-          '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
-        '</div>' +
-        '<div class="pull-right">' +
-          '<% if (this.url) { %>' +
-            '<a class="button" href="<% this.url %>">' + gettext('Go') + '</a>' +
-          '<% } else { %>' +
-            '<a class="button" href="#" data-bind="new-incident">' + gettext('New incident') + '</a>' +
-          '<% } %>' +
-        '</div>',
-    },
+    template: L.FixMyStreet.TEMPLATES.searchResultPopup,
   },
 
   initialize: function (options, source) {  // ([Object], [L.ILayer])
@@ -1478,26 +1496,7 @@ L.FixMyStreet.SearchResultPopup = L.FixMyStreet.Popup.extend({
 
 L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
   extendedOptions: {
-    templates: {
-      base:
-        '<div class="fmsmap-popup new">' +
-          '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
-          '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
-          '<div class="fmsmap-popup-footer clearfix<% if (this._activated !== true) { %> hidden<% } %>">{_footer_}</div>' +
-        '</div>',
-      _header_:
-        gettext('Place me at the exact position of the incident'),
-      _body_:
-        '<p class="address">{_address_}</p>',
-      _footer_:
-        '<div class="pull-left">' +
-          '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
-          '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
-        '</div>' +
-        '<div class="pull-right">' +
-          '<a class="button button-itshere" href="#" data-bind="itshere">' + gettext('It is here') + '</a>' +
-        '</div>',
-    },
+    template: L.FixMyStreet.TEMPLATES.newIncidentPopup,
   },
 
   initialize: function (options, source) {  // ([Object], [L.ILayer])
@@ -1507,8 +1506,8 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
     this._activated = false;
   },
 
-  renderContent: function(data, key) {  // ([Object], [String])
-    L.FixMyStreet.Popup.prototype.renderContent.call(this, data, key);
+  renderContent: function(data) {  // ([Object]
+    L.FixMyStreet.Popup.prototype.renderContent.call(this, data);
     if (this._activated === true) {
       this.activate();
     }
@@ -1539,54 +1538,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
 
 L.FixMyStreet.IncidentPopup = L.FixMyStreet.Popup.extend({
   extendedOptions: {
-    templates: {
-      base:
-        '<div class="fmsmap-popup">' +
-          '<div class="fmsmap-popup-header clearfix">{_header_}</div>' +
-          '<div class="fmsmap-popup-body clearfix">{_body_}</div>' +
-          '<div class="fmsmap-popup-footer clearfix">{_footer_}</div>' +
-        '</div>',
-      _header_:
-        gettext('Report #<% this.id %>'),
-      _body_:
-        '<div class="pull-left">' +
-          '<% if (this.address) { %>' +
-            '<p class="address">{_address_}</p>' +
-          '<% } %>' +
-          '<% if (this.categories) { %>' +
-            '<p class="categories"><% this.categories %></p>' +
-          '<% } %>' +
-        '</div>' +
-        '<% if (this.photo) { %>' +
-          '<div class="pull-right">' +
-            '<img class="photo" src="<% this.photo %>" alt="" />' +
-          '</div>' +
-        '<% } %>',
-      _footer_:
-        '<% if (this.icons) { %>' +
-          '<div class="pull-left">' +
-            '<ul class="icons inline">' +
-              '<% if (this.icons.regionalRoads === true) { %><li><img src="' + STATIC_URL + '/images/regional_on.png" title="' + gettext('This incident is located on a regional zone') + '"></li><% } %>' +
-              '<% if (this.icons.pro === true) { %><li><img src="' + STATIC_URL + '/images/pro_on.png" title="' + gettext('This incident has been signaled by a pro') + '"></li><% } %>' +
-              '<% if (this.icons.assigned === true) { %><li><img src="' + STATIC_URL + '/images/contractorAssigned_on.png" title="' + gettext('This incident is assigned to') + '"></li><% } %>' +
-              '<% if (this.icons.resolved === true) { %><li><img src="' + STATIC_URL + '/images/is_resolved_on.png" title="' + gettext('This incident has been signaled as solved') + '"></li><% } %>' +
-              '<% if (this.icons.priority !== undefined && this.icons.priority !== null) { %>' +
-                '<li><img src="' + STATIC_URL + '/images/prior_on_<% this.icons.priority %>.png" title="' +
-                  '<% if (this.icons.priority === 0) { %>' + gettext('This incident has no defined priority') + '<% } %>' +
-                  '<% else if (this.icons.priority === 1) { %>' + gettext('This incident has a low priority') + '<% } %>' +
-                  '<% else if (this.icons.priority === 2) { %>' + gettext('This incident has a medium priority') + '<% } %>' +
-                  '<% else if (this.icons.priority === 3) { %>' + gettext('This incident has a serious priority') + '<% } %>' +
-                '"></li>' +
-              '<% } %>' +
-            '</ul>' +
-          '</div>' +
-        '<% } %>' +
-        '<% if (this.url) { %>' +
-          '<div class="pull-right">' +
-            '<a class="button" href="<% this.url %>">' + gettext('Details') + '</a>' +
-          '</div>' +
-        '<% } %>',
-    },
+    template: L.FixMyStreet.TEMPLATES.incidentPopup,
   },
 });
 
@@ -1614,13 +1566,9 @@ L.FixMyStreet.Panel = L.Control.extend({
     this._bindActions();
   },
 
-  renderContent: function(data, key) {  // ([Object], [String])
-    var that = this;
-    this._render(data, key, function (error, html) {
-      if (!error) {
-        that.setContent(html);
-      }
-    });
+  renderContent: function(data) {  // ([Object]
+    var html = renderTemplate(this.options.template, data);
+    this.setContent(html);
   },
 
   _bindActions: function (handlers) {
@@ -1652,39 +1600,7 @@ L.FixMyStreet.Panel = L.Control.extend({
 
 L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
   extendedOptions: {
-    templates: {
-      base:
-        '<div class="fmsmap-panel fmsmap-panel-search">' +
-          '<div class="fmsmap-panel-header clearfix">' +
-            '<button class="close" type="button" data-bind="close">&times;</button>' +
-            '{_header_}' +
-          '</div>' +
-          '<div class="fmsmap-panel-body clearfix">{_body_}</div>' +
-        '</div>',
-      _header_:
-        '<% if (this.results.length === 0) { %>' +
-          gettext('No results') +
-        '<% } else { %>' +
-          gettext('<% this.results.length %> results') +
-        '<% } %>',
-      _body_:
-        '<% if (this.results.length === 0) { %>' +
-          '<p>' + gettext('No corresponding address has been found.') + '</p>' +
-          '<p>' + gettext('Please refine your search criteria.') + '</p>' +
-        '<% } else { %>' +
-          '<ul>' +
-            '<% for (var i in this.results) { %>' +
-              '<li data-search-result="<% this.results[i].number %>">' +
-                '<div class="number"><% this.results[i].number %></div>' +
-                '<p class="address">' +
-                  '<% this.results[i].address.street %> <% this.results[i].address.number %><br />' +
-                  '<% this.results[i].address.postalCode %> <% this.results[i].address.city %>' +
-                '</p>' +
-              '</li>' +
-            '<% } %>' +
-          '</ul>' +
-        '<% } %>',
-    },
+    template: L.FixMyStreet.TEMPLATES.searchPanel,
   },
 
   initialize: function (options, source) {  // ([Object], [L.ILayer])
@@ -1753,8 +1669,6 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     L.FixMyStreet.Panel.prototype._bindActions.call(this, handlers);
   },
 });
-
-L.FixMyStreet.SearchPanel.include(L.FixMyStreet.Template);
 
 
 // UTILS =======================================================================
