@@ -476,7 +476,9 @@ L.FixMyStreet.Map = L.Map.extend({
 
     L.geoJson(geoJson, geoJsonOptions);
     this.hideSpinner();
-    next();
+    if (next !== undefined) {
+      next();
+    }
   },
 
   _addIncidentsFromGeoJsonUrl: function (url, baseOptions, next) {  // (String, [Object], [Function])
@@ -1550,12 +1552,12 @@ L.FixMyStreet.IncidentPopup = L.FixMyStreet.Popup.extend({
         '<% if (this.icons) { %>' +
           '<div class="pull-left">' +
             '<ul class="icons inline">' +
-              '<% if (this.icons.regionalRoads !== undefined) { %><li><img src="' + STATIC_URL + '/images/regional_<% (this.icons.regionalRoads ? "on" : "off") %>.png" title="' + gettext('This incident is located on a regional zone') + '"></li><% } %>' +
-              '<% if (this.icons.pro !== undefined) { %><li><img src="' + STATIC_URL + '/images/pro_<% (this.icons.pro ? "on" : "off") %>.png" title="' + gettext('This incident has been signaled by a pro') + '"></li><% } %>' +
-              '<% if (this.icons.assigned !== undefined) { %><li><img src="' + STATIC_URL + '/images/contractorAssigned_<% (this.icons.assigned ? "on" : "off") %>.png" title="' + gettext('This incident is assigned to') + '"></li><% } %>' +
-              '<% if (this.icons.resolved !== undefined) { %><li><img src="' + STATIC_URL + '/images/is_resolved_<% (this.icons.resolved ? "on" : "off") %>.png" title="' + gettext('This incident has been signaled as solved') + '"></li><% } %>' +
-              '<% if (this.icons.priority !== undefined) { %>' +
-                '<li><img src="' + STATIC_URL + '/images/prior_<% (this.icons.priority === 0 ? "off" : "on_" + this.icons.priority) %>.png" title="' +
+              '<% if (this.icons.regionalRoads === true) { %><li><img src="' + STATIC_URL + '/images/regional_on.png" title="' + gettext('This incident is located on a regional zone') + '"></li><% } %>' +
+              '<% if (this.icons.pro === true) { %><li><img src="' + STATIC_URL + '/images/pro_on.png" title="' + gettext('This incident has been signaled by a pro') + '"></li><% } %>' +
+              '<% if (this.icons.assigned === true) { %><li><img src="' + STATIC_URL + '/images/contractorAssigned_on.png" title="' + gettext('This incident is assigned to') + '"></li><% } %>' +
+              '<% if (this.icons.resolved === true) { %><li><img src="' + STATIC_URL + '/images/is_resolved_on.png" title="' + gettext('This incident has been signaled as solved') + '"></li><% } %>' +
+              '<% if (this.icons.priority !== undefined && this.icons.priority !== null) { %>' +
+                '<li><img src="' + STATIC_URL + '/images/prior_on_<% this.icons.priority %>.png" title="' +
                   '<% if (this.icons.priority === 0) { %>' + gettext('This incident has no defined priority') + '<% } %>' +
                   '<% else if (this.icons.priority === 1) { %>' + gettext('This incident has a low priority') + '<% } %>' +
                   '<% else if (this.icons.priority === 2) { %>' + gettext('This incident has a medium priority') + '<% } %>' +

@@ -76,13 +76,7 @@ def filter_map(request):
                 },
                 "categories": report.get_category_path(),
                 "photo": report.thumbnail,
-                "icons": {
-                    "regionalRoads": report.is_regional(),
-                    "pro": report.is_pro(),
-                    "assigned": report.is_contractor_or_applicant_assigned(),
-                    "priority": report.get_priority(),
-                    "solved": report.is_solved(),
-                },
+                "icons": report.get_icons_for_js_map(),
                 "url": reverse("report_show", args=[report.get_slug(), report.id]),
             },
             "geometry": {

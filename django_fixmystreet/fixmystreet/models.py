@@ -898,6 +898,15 @@ class Report(UserTrackedModel):
         else:
             return "other"
 
+    def get_icons_for_js_map(self):
+        return {
+            "regionalRoads": self.is_regional(),
+            "pro": self.is_pro(),
+            "assigned": self.is_contractor_or_applicant_assigned(),
+            "priority": self.get_priority(),
+            "solved": self.is_solved(),
+        }
+
     def get_date_planned(self):
         if self.date_planned:
             return self.date_planned.strftime('%m/%Y')

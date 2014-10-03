@@ -126,6 +126,7 @@
                 '{{ False|yesno:_("yes,no") }}'
             ]}, // ThirdPartyResponsibility
 
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // icons
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // slug
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
@@ -315,6 +316,7 @@
                     },
                     categories: v[3],
                     photo: v[1] ? STATIC_URL.replace(/\/$/, '') + v[1] : null,
+                    icons: JSON.parse(v[v.length - 5]),
                     url: INCIDENT_DETAIL_URL.replace('9999999999', v[0]).replace('%7Bslug%7D', v[v.length - 4]),
                 };
                 fms.map.addIncident(model);
