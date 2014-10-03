@@ -202,9 +202,7 @@ function renderTemplate (html, data) {
   if (!(html in L.FixMyStreet.TEMPLATES._cache)) {
     L.FixMyStreet.TEMPLATES._cache[html] = _.template(html, {variable: 'data'});
   }
-  var r = L.FixMyStreet.TEMPLATES._cache[html](data);
-console.log(r, data);
-  return r;
+  return L.FixMyStreet.TEMPLATES._cache[html](data);
 }
 
 L.FixMyStreet.TEMPLATES.address =
