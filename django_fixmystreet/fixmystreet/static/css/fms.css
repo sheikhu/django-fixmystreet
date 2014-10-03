@@ -2245,7 +2245,7 @@ table.dataTable thead th {
     display: block;
 }
 
-.required label.control-label::before {
+.required label.control-label::after {
 content: "*";
 }
 
