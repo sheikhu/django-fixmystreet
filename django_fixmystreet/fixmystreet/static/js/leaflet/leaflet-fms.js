@@ -41,6 +41,14 @@ L.FixMyStreet = L.FixMyStreet || {};
 if (NEW_INCIDENT_URL === undefined) { var NEW_INCIDENT_URL = ''; }
 if (URBIS_URL === undefined) { var URBIS_URL = 'http://gis.irisnet.be/'; }
 
+L.FixMyStreet.MAX_ZOOM = 21;
+L.CRS.EPSG31370 = new L.Proj.CRS(
+  'EPSG:31370',
+  '+proj=lcc +lat_1=51.16666723333334 +lat_2=49.83333389999999 +lat_0=90 +lon_0=4.367486666666666 ' +
+    '+x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-99.1,53.3,-112.5,0.419,-0.83,1.885,-1.0 ' +
+    '+units=m +no_defs'
+);
+
 
 // URBIS LAYERS ================================================================
 
@@ -48,12 +56,14 @@ L.FixMyStreet.UrbisLayersSettings = {
   'map-street-fr': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/gwc/service/wms',
+    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
     options: {
       layers: 'urbisFR',
       format: 'image/png',
       transparent: true,
-      crs: L.CRS.EPSG3857,  // L.CRS.EPSG31370
+      crs: L.CRS.EPSG31370,
+      maxZoom: L.FixMyStreet.MAX_ZOOM,
+      maxNativeZoom: L.FixMyStreet.MAX_ZOOM,
       attribution: 'Realized by means of Brussels UrbIS &copy; &reg;',
     },
   },
@@ -61,12 +71,14 @@ L.FixMyStreet.UrbisLayersSettings = {
   'map-street-nl': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/gwc/service/wms',
+    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
     options: {
       layers: 'urbisNL',
       format: 'image/png',
       transparent: true,
-      crs: L.CRS.EPSG3857,  // L.CRS.EPSG31370,
+      crs: L.CRS.EPSG31370,
+      maxZoom: L.FixMyStreet.MAX_ZOOM,
+      maxNativeZoom: L.FixMyStreet.MAX_ZOOM,
       attribution: 'Realized by means of Brussels UrbIS &copy; &reg;',
     },
   },
@@ -74,12 +86,14 @@ L.FixMyStreet.UrbisLayersSettings = {
   'map-ortho': {
     title: gettext('Orthographic'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/gwc/service/wms',
+    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
     options: {
       layers: 'urbisORTHO',
       format: 'image/png',
       transparent: true,
-      crs: L.CRS.EPSG3857,  // L.CRS.EPSG31370,
+      crs: L.CRS.EPSG31370,
+      maxZoom: L.FixMyStreet.MAX_ZOOM,
+      maxNativeZoom: L.FixMyStreet.MAX_ZOOM,
       attribution: 'Realized by means of Brussels UrbIS &copy; &reg;',
     },
   },
@@ -283,7 +297,7 @@ L.FixMyStreet.Map = L.Map.extend({
       [50.95323634832283, 4.7618865966796875],
       [50.736455137010665, 3.9420318603515625],
     ],
-    //maxZoom: 18,  // Auto-detected
+    maxZoom: L.FixMyStreet.MAX_ZOOM,
     zoom: 14,
 
     cssSizePrefix: 'fmsmap-size-',
