@@ -52,7 +52,7 @@ L.CRS.EPSG31370 = new L.Proj.CRS(
 
 // URBIS LAYERS ================================================================
 
-L.FixMyStreet.UrbisLayersSettings = {
+L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-fr': {
     title: gettext('Street'),
     type: 'wms',
@@ -161,7 +161,7 @@ L.FixMyStreet.UrbisLayersSettings = {
 
 // MUNICIPALITIES ==============================================================
 
-L.FixMyStreet.Municipalities = {
+L.FixMyStreet.MUNICIPALITIES = {
   '1000': {name: 'Bruxelles-Ville/Stad Brussel', center: {x: 148605.543268095, y: 170874.91346381, lat: 50.84827529927194, lng: 4.348950689030607, zoom: 14}},
   '1020': {name: 'Laeken/Laken', center: {x: 149092.31148122973, y: 175999.01813600562, lat: 50.89433911650043, lng: 4.355850716850341, zoom: 14}},
   '1030': {name: 'Schaerbeek/Schaarbeek', center: {x: 151465.0174341536, y: 172366.8696672201, lat: 50.861686826263764, lng: 4.389560819958523, zoom: 14}},
@@ -334,29 +334,29 @@ L.FixMyStreet.Map = L.Map.extend({
     myLayers: {  // @TODO: Rename variable.
       'map-street': {
         visible: true,
-        settings: L.FixMyStreet.UrbisLayersSettings['map-street-' + LANGUAGE_CODE],
+        settings: L.FixMyStreet.URBIS_LAYERS_SETTINGS['map-street-' + LANGUAGE_CODE],
       },
       'map-ortho': {
         visible: false,
         overlay: true,  // Make it an overlay...
         opacityControl: true,  // ... with an opacity slider
-        settings: L.FixMyStreet.UrbisLayersSettings['map-ortho'],
+        settings: L.FixMyStreet.URBIS_LAYERS_SETTINGS['map-ortho'],
       },
       'municipal-boundaries': {
         visible: false,
-        settings: L.FixMyStreet.UrbisLayersSettings['municipal-boundaries'],
+        settings: L.FixMyStreet.URBIS_LAYERS_SETTINGS['municipal-boundaries'],
       },
       'regional-roads': {
         visible: false,
-        settings: L.FixMyStreet.UrbisLayersSettings['regional-roads'],
+        settings: L.FixMyStreet.URBIS_LAYERS_SETTINGS['regional-roads'],
       },
       // 'street-names': {  // @TODO: Not working well.
       //   visible: false,
-      //   settings: L.FixMyStreet.UrbisLayersSettings['street-names'],
+      //   settings: L.FixMyStreet.URBIS_LAYERS_SETTINGS['street-names'],
       // },
       // 'street-numbers': {  // @TODO: Not working.
       //   visible: false,
-      //   settings: L.FixMyStreet.UrbisLayersSettings['street-numbers'],
+      //   settings: L.FixMyStreet.URBIS_LAYERS_SETTINGS['street-numbers'],
       // },
     },
 
@@ -857,10 +857,10 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   centerOnMunicipality: function (postalCode) {  // (String)
-    if (L.FixMyStreet.Municipalities[postalCode] === undefined) {
+    if (L.FixMyStreet.MUNICIPALITIES[postalCode] === undefined) {
       throw new TypeError('Unknown municipality (' + postalCode + ').');
     }
-    var center = L.FixMyStreet.Municipalities[postalCode].center;
+    var center = L.FixMyStreet.MUNICIPALITIES[postalCode].center;
     var latlng = L.FixMyStreet.Util.toLatLng(center);
     if (center.zoom === undefined) {
       // @TODO: Check if popup is opened and adapt LatLng accordingly.
