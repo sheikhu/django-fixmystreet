@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-version = '3.0.13'
+version = '3.0.14.dev0'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
