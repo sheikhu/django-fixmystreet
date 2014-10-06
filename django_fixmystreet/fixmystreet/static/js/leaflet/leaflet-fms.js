@@ -16,7 +16,6 @@
 - L.FixMyStreet.Map "controls": Refactor as L.FixMyStreet.*Control.
 - L.FixMyStreet._toggleLayer(): Refactor?
 - L.FixMyStreet.NewIncidentMarker.onAdd(): Workaround, otherwise LocateOnMap doesn't work.
-- L.FixMyStreet.NewIncidentMarker._onDragEnd() & L.FixMyStreet.NewIncidentPopup.activate(): Bug but workaround in place.
 - L.FixMyStreet.NewIncidentPopup.autoPanDisabled: Refactor? Isn't there a better way?
 - L.FixMyStreet.Util.mergeExtendedOptions(): Refactor? Isn't there a better way?
 - L.FixMyStreet.Util.openStreetView(): Refactor? Improve URL generation?
@@ -281,7 +280,7 @@ L.FixMyStreet.TEMPLATES.newIncidentPopup =
     '<div class="fmsmap-popup-body clearfix">' +
       '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
     '</div>' +
-    '<div class="fmsmap-popup-footer clearfix{% if (data._activated !== true) { %} hidden{% } %}">' +
+    '<div class="fmsmap-popup-footer clearfix hidden">' +
       '<div class="pull-left">' +
         '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
         '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
@@ -1217,11 +1216,9 @@ L.FixMyStreet.Marker = L.Marker.extend({
   },
 
   _onDragEnd: function (evt) {  // dragend
-    var marker = evt.target;
-    var latlng = marker.getLatLng();
-    marker.setLatLng(latlng);
-    if (marker._map) {
-      marker._map.panTo(latlng);
+    var that = evt.target;
+    if (that._map) {
+      that._map.panTo(that.getLatLng());
     }
   },
 
@@ -1284,7 +1281,7 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
 
   initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
     L.FixMyStreet.IncidentMarker.prototype.initialize.call(this, latlng, options, model);
-    this._dragged = false;
+    this._dragged = false;  // Whether it has been moved.
   },
 
   onAdd: function (map) {  // (L.Map)
@@ -1301,27 +1298,19 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
 
   _onDragEnd: function (evt) {  // dragend
     var that = evt.target;
-    var latlng = that.getLatLng();
-    // @TODO: Not working. See L.FixMyStreet.NewIncidentPopup.activate()
-    // if (that._dragged) {
-    //   that.getPopup().activate();
-    // }
-    that.setLatLng(latlng);
     if (that._map) {
-      that._map.panTo(latlng);
+      that._map.panTo(that.getLatLng());
     }
     that.openPopup();
     that.getPopup().autoPanDisabled = false;  // @TODO: Isn't there a better way?
-    if (that._dragged) {  // @TODO: Workaround, see above.
-      that.getPopup().activate();
-    }
-    this._updateAddress();
+    that._updateAddress();
   },
 
   _updateAddress: function() {
     var that = this;
     L.FixMyStreet.Util.getAddressFromLatLng(this.getLatLng(), function (address) {
-      that.getPopup().updateAddress(address);
+      that.model.address = address;
+      that.getPopup().updateAddress();
     });
   },
 
@@ -1404,9 +1393,11 @@ L.FixMyStreet.Popup = L.Popup.extend({
     this.setContent(html);
   },
 
-  updateAddress: function (address) {
-    var html = renderTemplate(L.FixMyStreet.TEMPLATES.address, {address: address});
-    this.$container.find('.address').html(html);
+  updateAddress: function () {
+    var html = renderTemplate(L.FixMyStreet.TEMPLATES.address, {address: this._marker.model.address});
+    var $content = $(this._content);
+    $content.find('.address').html(html);
+    this.setContent($content.html());
   },
 
   saveDimensions: function () {
@@ -1501,23 +1492,16 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
     L.FixMyStreet.Util.mergeExtendedOptions(this);
     L.setOptions(this, options);
     L.FixMyStreet.Popup.prototype.initialize.call(this, options, source);
-    this._activated = false;
   },
 
-  renderContent: function(data) {  // ([Object]
+  renderContent: function (data) {  // ([Object]
+    this.on('popuprendered', function (evt) {
+      var that = evt.popup;
+      var $content = $(that._content);
+      $content.find('.fmsmap-popup-footer').toggleClass('hidden', !that._marker._dragged);
+      that._content = $content.get(0);
+    });
     L.FixMyStreet.Popup.prototype.renderContent.call(this, data);
-    if (this._activated === true) {
-      this.activate();
-    }
-  },
-
-  activate: function () {
-    this._activated = true;
-    // @TODO: Not working. See L.FixMyStreet.NewIncidentMarker._onDragEnd()
-    // this.on('popuprendered', function (data) {
-    //   data.popup.$container.find('.button-itshere').removeClass('hidden');
-    // });
-    this.$container.find('.fmsmap-popup-footer').removeClass('hidden');  // @TODO: Workaround, see above.
   },
 
   _bindActions: function (handlers) {
