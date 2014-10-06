@@ -5,7 +5,8 @@ from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
     Report, OrganisationEntity, FMSUser, ReportCategory,
-    UserOrganisationMembership, OrganisationEntitySurface
+    UserOrganisationMembership, OrganisationEntitySurface,
+    GroupMailConfig
 )
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 
@@ -78,6 +79,7 @@ class ApiTest(SampleFilesTestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
         self.manager.categories.add(ReportCategory.objects.get(pk=1))
+
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -87,6 +89,11 @@ class ApiTest(SampleFilesTestCase):
             email="test@email.com"
             )
         self.group.save()
+
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
+
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
 

@@ -65,6 +65,8 @@ def new(request):
                     comment = comment_form.save(commit=False)
                     comment.created_by = citizen
                     comment.report = report
+                    # Used for comment post_save signal:
+                    comment.is_new_report = True
                     comment.save()
 
                 files = file_formset.save(commit=False)
@@ -164,8 +166,6 @@ def document(request, slug, report_id):
             # if request.POST.get("citizen_subscription", False):
             # ReportSubscription(report=report, subscriber=report.created_by).save()
 
-            report.trigger_updates_added(files=files, comment=comment, user=citizen)
-
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url())
     else:
@@ -248,12 +248,15 @@ def reopen_request(request, slug, report_id):
     try:
         report = get_object_or_404(Report, id=report_id, private=False)
         limit_date = datetime.datetime.now() - datetime.timedelta(90)
+
         if report.status != report.PROCESSED:
             messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
             return HttpResponseRedirect(report.get_absolute_url())
+
         elif report.close_date < limit_date:
             messages.add_message(request, messages.ERROR, _("You cannot request to reopen an incident closed more than 90 days ago."))
             return HttpResponseRedirect(report.get_absolute_url())
+
         elif request.method == "POST":
             reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
             citizen_form = CitizenForm(request.POST, prefix='citizen')
@@ -269,8 +272,6 @@ def reopen_request(request, slug, report_id):
                 reopen_reason.type = ReportAttachment.REOPEN_REQUEST
                 reopen_reason.save()
 
-                report.trigger_reopen_request(user=citizen, reopen_reason=reopen_reason)
-
                 messages.add_message(request, messages.SUCCESS,
                                      _("A request to reopen this ticket was sent to the person in charge."))
                 return HttpResponseRedirect(report.get_absolute_url())
@@ -283,6 +284,7 @@ def reopen_request(request, slug, report_id):
             "reopen_form": reopen_form,
             "citizen_form": citizen_form,
         }, context_instance=RequestContext(request))
+
     except Http404:
         messages.add_message(request, messages.ERROR, _("No incident found with this ticket number"))
         return HttpResponseRedirect(reverse('home'))

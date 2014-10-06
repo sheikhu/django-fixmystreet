@@ -4,7 +4,7 @@ from django.contrib.gis.geos import Polygon
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity,
     FMSUser, ReportFile, UserOrganisationMembership,
-    OrganisationEntitySurface
+    OrganisationEntitySurface, GroupMailConfig
 )
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
@@ -40,6 +40,10 @@ class ListTest(TestCase):
             email="test@email.com"
         )
         self.group.save()
+
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
 
         self.agent = FMSUser(
             is_active=True,

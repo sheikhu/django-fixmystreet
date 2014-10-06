@@ -10,6 +10,7 @@ from django.http import Http404
 
 from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import ReportCommentForm
+from django_fixmystreet.backoffice.forms import TransferForm
 
 import logging
 logger = logging.getLogger(__name__)
@@ -118,10 +119,7 @@ def reopen(request, report_id):
         report.status = Report.MANAGER_ASSIGNED
         report.save()
 
-    if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-        return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 def planned(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -182,10 +180,7 @@ def switchPrivacy(request, report_id):
 
     report.save()
 
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 
 def switchThirdPartyResponsibility(request, report_id):
@@ -209,28 +204,13 @@ def switchThirdPartyResponsibility(request, report_id):
 
 def changeManager(request, report_id):
     report = Report.objects.get(pk=report_id)
-    report.status = Report.MANAGER_ASSIGNED
 
-    # old_resp_man = report.responsible_manager
-    # report.previous_managers.add(old_resp_man)
-    manId = request.REQUEST.get("manId")
+    transfer_form = TransferForm(request.POST)
 
-    if manId.split("_")[0] == "department":
-        newRespMan = OrganisationEntity.objects.get(pk=int(manId.split("_")[1]))
-        report.responsible_department = newRespMan
-    elif manId.split("_")[0] == "entity":
-        orgId = int(manId.split("_")[1])
-        report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
-        report.responsible_department = None
-    else:
-        raise Exception('missing department or entity paramettre')
+    if transfer_form.is_valid():
+        transfer_form.save(report, request.user)
 
-    report.save()
-
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 
 def changeContractor(request, report_id):
@@ -289,10 +269,7 @@ def publish(request, report_id):
         f.security_level = ReportAttachment.PUBLIC
         f.save(publish_report=True)
 
-    if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-        return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 
 def validateAll(request, report_id):
@@ -313,13 +290,17 @@ def validateAll(request, report_id):
 
 def updateAttachment(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    security_level = request.REQUEST.get('updateType')
-    a = report.attachments.get(pk=request.REQUEST.get('attachmentId'))
-    a.security_level = int(security_level)
-    a.save()
+
+    # update modified_by
+    report.save()
+
+    security_level            = request.REQUEST.get('updateType')
+    attachment                = report.attachments.get(pk=request.REQUEST.get('attachmentId'))
+    attachment.security_level = int(security_level)
+    attachment.save()
 
     return render_to_response("reports/_visibility_control.html", {
-        "attachment": a
+        "attachment": attachment
     }, context_instance=RequestContext(request))
 
 

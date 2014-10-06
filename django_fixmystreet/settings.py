@@ -265,17 +265,6 @@ else:
     EMAIL_ADMIN = 'jsanchezpando@cirb.irisnet.be'
 ADMIN_EMAIL = EMAIL_ADMIN
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'fms_cache',
-    },
-    'staticfiles': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    }
-}
-CACHE_TIMEOUT = 36000;
-
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 if not DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'

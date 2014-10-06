@@ -4,7 +4,8 @@ from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    UserOrganisationMembership, OrganisationEntitySurface
+    UserOrganisationMembership, OrganisationEntitySurface,
+    GroupMailConfig
 )
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
@@ -31,6 +32,10 @@ class DispatchingTest(TestCase):
             email="test@email.com"
         )
         self.department.save()
+
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.department
+        self.group_mail_config.save()
 
         p1 = (148776, 171005)
         p2 = (150776, 171005)

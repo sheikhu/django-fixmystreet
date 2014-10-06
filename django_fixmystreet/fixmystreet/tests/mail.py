@@ -7,7 +7,8 @@ from django.core import mail
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, ReportAttachment,
-    FMSUser, OrganisationEntitySurface
+    FMSUser, OrganisationEntitySurface, GroupMailConfig,
+    UserOrganisationMembership
 )
 from django.contrib.gis.geos import Polygon
 
@@ -40,6 +41,20 @@ class MailTest(TestCase):
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
 
+        self.manager4 = FMSUser(
+            is_active=True,
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager4",
+            last_name="manager4",
+            email="manager4@a.com",
+            manager=True
+        )
+        self.manager4.set_password('test')
+        self.manager4.organisation = OrganisationEntity.objects.get(pk=14)
+        self.manager4.save()
+
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -50,7 +65,16 @@ class MailTest(TestCase):
             )
         self.group.save()
         self.group.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+
+        # Mail config: notify group and members in real time
+        self.group_mail_config                = GroupMailConfig()
+        self.group_mail_config.group          = self.group
+        self.group_mail_config.notify_group   = True
+        self.group_mail_config.notify_members = True
+        self.group_mail_config.save()
+
         self.manager.memberships.create(organisation=self.group, contact_user=True)
+        self.manager4.memberships.create(organisation=self.group, contact_user=True)
 
         self.client = Client()
 
@@ -79,6 +103,13 @@ class MailTest(TestCase):
         self.group2.save()
         self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=2))
         self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+
+        # Mail config: notify group and members in real time
+        self.group_mail_config2                = GroupMailConfig()
+        self.group_mail_config2.group          = self.group2
+        self.group_mail_config2.notify_group   = True
+        self.group_mail_config2.notify_members = True
+        self.group_mail_config2.save()
 
         p1 = (148776, 171005)
         p2 = (150776, 171005)
@@ -180,401 +211,328 @@ class MailTest(TestCase):
             'to': 'test@test.com,filip@test.com;test@filip.com'
         }
 
-    def testCreateReportMail(self):
-        #Send a post request filling in the form to create a report
+    def test_create_report_mail(self):
+        # Send a post request filling in the form to create a report
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
-        #2 mails must be sent, one to the creator and 1 to the responsible manager
-        self.assertEquals(len(mail.outbox), 2)
-        self.assertEquals(len(mail.outbox[0].to), 1)  # to the citizen for aknowledge of creation
-        self.assertEquals(len(mail.outbox[1].to), 1)  # to the responsible for creation notify
-        #Mail to creator and manager must be sent
-        self.assertTrue(self.citizen.email in mail.outbox[0].to or self.citizen.email in mail.outbox[1].to)
-        self.assertTrue(self.group.email in mail.outbox[0].to or self.group.email in mail.outbox[1].to)
 
-    def testCloseReportMail(self):
-        #Send a post request filling in the form to create a report
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members
+        expected_recipients = self.group_mail_config.get_manager_recipients()
+
+        # 1 more mail is sent to creator in real time
+        expected_recipients.append(self.citizen.email)
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_close_report_mail(self):
+        # Send a post request filling in the form to create a report
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
+        report = response.context['report']
 
-        # report_id = resolve(response.redirect_chain[-1][0]).kwargs['report_id']
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-        report = Report.objects.get(id=report_id)
-        self.assertEquals(report.subscriptions.all().count(), 2)
-        self.assertEquals(len(mail.outbox), 2)
-
-        #Login to access the pro page to create a user
-        self.client.login(username='manager@a.com', password='test')
-
-        #Accept the created report
-        response = self.client.get(reverse('report_accept_pro', args=[report.id]), follow=True)
-        #The status of the report must now be MANAGER_ASSIGNED
-        self.assertEquals(response.status_code, 200)
-
-        report = Report.objects.get(id=report.id)
-        self.assertEquals(report.status, Report.MANAGER_ASSIGNED)
-        #3 mails have been sent, 2 for the report creation + 1 notification to author for the report publishing
-        self.assertEquals(len(mail.outbox), 3)
-        #Close the report
-        response = self.client.get(reverse('report_close_pro', args=[report.id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-
-        report = Report.objects.get(id=report.id)
-        self.assertEquals(report.status, Report.PROCESSED)
-        #4 mails have been sent, 2 for the report creation, 1 for the report publishing and 1 for closing the report
-        self.assertEquals(len(mail.outbox), 4)
-        #The last one must be sent to the citizen (= the closing report mail)
-        self.assertIn(self.citizen.email, mail.outbox[3].to)
-
-    def testRefuseReportMail(self):
-        #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-        report = Report.objects.get(id=report_id)
-        self.assertEquals(report.subscriptions.all().count(), 2)
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-
-        #Login to access the pro page to create a user
-        self.client.login(username='manager@a.com', password='test')
-
-        #Refuse the created report
-        refused_url = reverse('report_refuse_pro', args=[report_id])
-        refused_params = {'text': 'more info'}
-        response = self.client.post(refused_url, refused_params, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 4)
-
-        #The status of the report must now be REFUSED
-        report = Report.objects.get(id=report_id)
-        self.assertEquals(report.status, Report.REFUSED)
-        #3 mails have been sent, 2 for the report creation and 1 for refusing the report
-        #The last one must be sent to the citizen (= the refusing report mail)
-        self.assertIn(self.citizen.email, mail.outbox[2].to)
-
-    def testSubscriptionForCitizenMail(self):
-        #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-
-        #Send a post request subscribing a citizen to the just created report
-        subscribe_url = reverse('subscribe', args=[report_id])
-        subscribe_params = {'citizen_email': 'post@test.com'}
-        response = self.client.post(subscribe_url, subscribe_params, follow=True)
-        self.assertEquals(response.status_code, 200)
-        #3 mails have been sent, 2 for the report creation and 1 for subscribing to the report
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertTrue('post@test.com' in mail.outbox[2].to)
-
-    def testMarkReportAsDoneMail(self):
-        #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-
-        self.assertEquals(len(mail.outbox),  2)  # one for creator subscription, one for manager
-
-        #Login to access the pro page
-        self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-
-        #Send a post request to mark the report as done
-        update_url = reverse('report_fix_pro', args=[report_id])
-        update_params = {'text':'My comment'}
-        response = self.client.post(update_url, update_params)
-        self.assertEquals(response.status_code, 302)
-
-        # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
-        #4 mails have been sent, 2 for the report creation and 1 for telling the responsible manager that the report is marked as done, and 1 for the report change to the citizen subscriber
-        #FLE is error it should only be send to the responsible
-        self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.group.email, mail.outbox[3].to)
-        #Send another post request to mark the report as done
-        response = self.client.post(update_url, update_params)
-        self.assertEquals(response.status_code, 302)
-        # self.assertIn('/en/report/trou-en-revetements-en-trottoir-en-saint-josse-ten-noode/1', response['Location'])
-        #Again 4 mails have been sent, the extra mark as done request will not send an extra email to the responsible manager
-        self.assertEquals(len(mail.outbox), 4)
-
-    def testAcceptReportMail(self):
-        #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-        report = Report.objects.get(id=report_id)
-
-        self.assertEquals(report.subscriptions.all().count(), 2)
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-
-        self.client.login(username='manager@a.com', password='test')
-
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-
-        #last one has to be the creator
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertIn(self.citizen.email, mail.outbox[2].to)
-
-    def testPublishReportMail(self):
-        #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-        report = Report.objects.get(id=report_id)
-
-        self.assertEquals(report.subscriptions.all().count(), 2)
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-
-        self.client.login(username='manager@a.com', password='test')
-
-        url = reverse('report_publish_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        #import pdb;
-        #pdb.set_trace()
-
-        self.assertEquals(len(mail.outbox), 3)
-
-    def testPlannedReportMail(self):
-        #Send a post request filling in the form to create a report
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-
-        report_id = response.context['report'].id
-
-        report = Report.objects.get(id=report_id)
+        report             = response.context['report']
         report.accepted_at = datetime.now()
         report.save()
 
-        self.assertEquals(report.subscriptions.all().count(), 2)
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        # Reset outbox
+        mail.outbox = []
+
+        # Close the report
+        self.client.login(username='manager@a.com', password='test')
+        response = self.client.get(reverse('report_close_pro', args=[report.id]), follow=True)
+
+        report = Report.objects.get(id=report.id);
+
+        self.assertEquals(report.status, Report.PROCESSED)
+
+        # One mail is sent in real time to the creator if citizen. All others are digest to subscribers.
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertIn(self.citizen.email, mail.outbox[0].to)
+
+    def test_refuse_report_mail(self):
+        # Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        report   = response.context['report']
+
+        # Reset outbox
+        mail.outbox = []
+
+        # Login to access the pro page to create a user
+        self.client.login(username='manager@a.com', password='test')
+
+        # Refuse the created report
+        refused_url    = reverse('report_refuse_pro', args=[report.id])
+        refused_params = {'text': 'more info'}
+        response       = self.client.post(refused_url, refused_params, follow=True)
+
+        report = Report.objects.get(id=report.id)
+
+        # The status of the report must now be REFUSED
+        self.assertEquals(report.status, Report.REFUSED)
+
+        # All mail are sent as digest to subscribers
+        self.assertEquals(len(mail.outbox), 0)
+
+    def test_subscription_for_citizen_mail(self):
+        # Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        report   = response.context['report']
+
+        # Reset outobox
+        mail.outbox = []
+
+        # Send a post request subscribing a citizen to the just created report
+        subscribe_url    = reverse('subscribe', args=[report.id])
+        subscribe_email  = 'post@test.com'
+        subscribe_params = {'citizen_email': subscribe_email}
+        response         = self.client.post(subscribe_url, subscribe_params, follow=True)
+
+        # 1 mail sent in real-time to subscriber
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertTrue(subscribe_email in mail.outbox[0].to)
+
+    def test_mark_report_as_done_mail(self):
+        # Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        report   = response.context['report']
+
+        # Login to access the pro page
+        self.client.login(username='manager@a.com', password='test')
+
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
+
+        # Reset outbox
+        mail.outbox = []
+
+        # Send a post request to mark the report as done
+        update_url    = reverse('report_fix_pro', args=[report.id])
+        update_params = {'text':'My comment'}
+        response      = self.client.post(update_url, update_params)
+
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members without the author
+        expected_recipients = self.group_mail_config.get_manager_recipients(self.manager)
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_accept_report_mail(self):
+        # Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        report   = response.context['report']
+
+        # Reset outbox
+        mail.outbox = []
+
+        self.client.login(username='manager@a.com', password='test')
+
+        url      = reverse('report_accept_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+
+        # All mails are sent to subscribers as digest
+        self.assertEquals(len(mail.outbox), 0)
+
+    def test_planned_report_mail(self):
+        # Send a post request filling in the form to create a report
+        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+
+        report             = response.context['report']
+        report.accepted_at = datetime.now()
+        report.save()
+
+        # Reset outbox
+        mail.outbox = []
 
         # Set as planned
         date_planned = (datetime.now() + timedelta(days=1)).strftime("%m/%Y")
-        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[report_id]), date_planned)
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[report.id]), date_planned)
 
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(url,   follow=True)
+        report = response.context['report']
 
-        self.assertEquals(len(mail.outbox), 3)
+        self.assertTrue(report.planned)
+        self.assertEqual(date_planned, report.date_planned.strftime("%m/%Y"))
+
+        # Only digest are sent to subscribers
+        self.assertEquals(len(mail.outbox), 0)
 
         # Planned another date
         date_planned = (datetime.now() + timedelta(days=40)).strftime("%m/%Y")
-        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[report_id]), date_planned)
+        url = '%s?date_planned=%s' % (reverse('report_planned_pro', args=[report.id]), date_planned)
 
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(url, follow=True)
+        report = response.context['report']
 
-        self.assertEquals(len(mail.outbox), 4)
+        self.assertTrue(report.planned)
+        self.assertEqual(date_planned, report.date_planned.strftime("%m/%Y"))
 
-    def testCreateReportAsProMail(self):
-        #creata a report
+        # Only digest are sent to subscribers
+        self.assertEquals(len(mail.outbox), 0)
+
+    def test_create_report_as_pro_mail(self):
+        # Create a report
         self.client.login(username='manager@a.com', password='test')
         response = self.client.post(reverse('report_new_pro') + '?x=150056.538&y=170907.56', self.sample_post_pro, follow=True)
-        self.assertEquals(response.status_code, 200)
-        #Should send mail only to responsible
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(len(mail.outbox[0].to), 1)
-        self.assertIn(self.group.email, mail.outbox[0].to)
 
-    def testReportResolvedAsProMail(self):
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members without the author
+        expected_recipients = self.group_mail_config.get_manager_recipients(self.manager)
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_report_resolved_as_pro_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
         report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-        self.assertIn(self.sample_post['citizen-email'], mail.outbox[0].to + mail.outbox[1].to)
-        self.assertIn(self.group.email, mail.outbox[0].to + mail.outbox[1].to)
 
-        #Login to access the pro page
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
+
+        # Publish the created report
         response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertIn(self.sample_post['citizen-email'], mail.outbox[2].to)
+
+        # Clear outbox
+        mail.outbox = []
 
         params = {
             'text' : 'Ceci est un commentaire'
         }
         response = self.client.post(reverse('report_fix_pro', args=[report_id]), params, follow=True)
-        self.assertEquals(response.status_code, 200)
 
-        #4 mails send 2 for creation, 1 for acceptance and 1 for resolving the issue. The last one should go to the responsible
+        self.assertEquals(response.status_code, 200)
         self.assertEquals(Report.objects.get(id=report_id).status, Report.SOLVED)
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.group.email, mail.outbox[3].to)
 
-    def testAssignToOtherMemberOfSameEntityMail(self):
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members without the author
+        expected_recipients = self.group_mail_config.get_manager_recipients(self.manager)
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_assign_to_other_member_of_same_entity_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        report   = response.context['report']
 
-        #Login to access the pro page
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
 
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=department_' + str(self.group2.id), {}, follow=True)
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
 
-        self.assertEquals(response.status_code, 200)
-        #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for resolving assigning the issue to other person
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.group2.email in mail.outbox[3].to)
+        # Restet outbox
+        mail.outbox = []
 
-    def testAssignToMemberOfOtherEntityMail(self):
+        # Change manager in the same entity
+        response = self.client.post(reverse('report_change_manager_pro', args=[report.id]), {'man_id' : 'department_' + str(self.group2.id), 'transfer':0}, follow=True)
+
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members
+        expected_recipients = self.group_mail_config2.get_manager_recipients()
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_assign_to_another_entity_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        # one for creator subscription, one for manager
-        self.assertEquals(len(mail.outbox), 2)
+        report   = response.context['report']
 
-        #Login to access the pro page
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        # Should be 6 mails: 2 for creation, 1 for acceptance and
-        self.assertEquals(len(mail.outbox), 3)
 
-        mail.outbox = []  # reset
-        response = self.client.get(reverse('report_change_manager_pro', args=[report_id]) + '?manId=entity_21', {}, follow=True)
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
 
-        self.assertEquals(response.status_code, 200)
-        # 1 for resolving assigning the issue to other entity,
-        # 3 to subcribers (manager1, manager2, user)
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.group2.email, mail.outbox[0].to)
-        self.assertIn(self.citizen.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
-        self.assertIn(self.manager2.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
-        self.assertIn(self.manager3.email, mail.outbox[1].to + mail.outbox[2].to + mail.outbox[3].to)
+        # Restet outbox
+        mail.outbox = []
 
-    def testAssignToImpetrantMail(self):
-        settings.CACHE_TIMEOUT = 0;
+        # Change to another entity
+        response = self.client.post(reverse('report_change_manager_pro', args=[report.id]), {"man_id": "entity_21", "transfer": 0}, follow=True)
 
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members
+        expected_recipients = self.group_mail_config2.get_manager_recipients()
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_assign_to_impetrant_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        report   = response.context['report']
 
         # Add a worker for this entity
         worker = FMSUser(email="worker@impetrant.be", telephone="0123456789")
         worker.save()
         worker.memberships.create(organisation=self.impetrant)
 
-        #Login to access the pro page
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
 
-        self.assertEquals(response.status_code, 200)
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
 
-        # Should be 6 mails: 2 for creation, 1 for acceptance and
-        # 1 for assigning the issue to impetrant,
-        # 1 to subcribers (user, not to manager because he comment)
-        self.assertEquals(len(mail.outbox), 5)
-        self.assertIn(self.impetrant.email, mail.outbox[3].to)
-        self.assertIn(self.citizen.email, mail.outbox[4].to)
-        #if the gestionnaire updates the report the impetrant should be informed by mail
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
-            'comment-text': 'new created comment',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0
-        }, follow=True)
-        # One notification should be sent to impetrant to inform him of new comment
-        # One notification should be sent to responsible demartment
-        self.assertEquals(len(mail.outbox), 7)
-        self.assertIn(self.impetrant.email, mail.outbox[5].to + mail.outbox[6].to)
-        self.assertIn(self.group.email, mail.outbox[5].to + mail.outbox[6].to)
+        # Reset outbox
+        mail.outbox = []
 
-    def testAssignToContractorMail(self):
-        settings.CACHE_TIMEOUT = 0;
+        # Assign to another impetrant
+        response = self.client.get(reverse('report_change_contractor_pro', args=[report.id]) + '?contractorId=' + str(self.impetrant.id), {}, follow=True)
 
+        # 1 mail sent in real time to impetrant
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertIn(self.impetrant.email, mail.outbox[0].to)
+
+    def test_assign_to_contractor_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+
+        report             = response.context['report']
+        report.accepted_at = datetime.now()
+        report.save()
 
         # Add a worker for this entity
         worker = FMSUser(email="worker@contractor.be", telephone="0123456789")
         worker.save()
         worker.memberships.create(organisation=self.contractor)
 
-        #Login to access the pro page
+        # Reset outbox
+        mail.outbox = []
+
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        response = self.client.get(reverse('report_change_contractor_pro', args=[report_id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
+        response = self.client.get(reverse('report_change_contractor_pro', args=[report.id]) + '?contractorId=' + str(self.contractor.id), {}, follow=True)
 
-        self.assertEquals(response.status_code, 200)
-        #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for assigning the issue to contractor
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.contractor.email, mail.outbox[3].to)
-        #If gestionaire adds comment the contractor should be notified
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
-            'comment-text': 'new created comment',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0
-        }, follow=True)
-        # One notification should be sent to contractor to inform him of new comment
-        # One notification should be sent to responsible department
-        self.assertEquals(len(mail.outbox), 6)
-        self.assertIn(self.contractor.email, mail.outbox[4].to)
-        self.assertIn(self.group.email, mail.outbox[5].to)
+        # 1 mail sent in real time to contractor
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertIn(self.contractor.email, mail.outbox[0].to)
 
-    def testCitizenUpdatesReportMail(self):
+    def test_citizen_updates_report_mail(self):
         response = self.client.post(
             reverse('report_new') + '?x=150056.538&y=170907.56',
             self.sample_post,
             follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
 
-        #Login to access the pro page
-        self.client.login(username='manager@a.com', password='test')
+        report             = response.context['report']
+        report.accepted_at = datetime.now()
+        report.save()
 
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        self.client.logout()
-        response = self.client.post(reverse('report_document', kwargs={'report_id': report_id, 'slug': 'hello'}), {
+        # Reset outbox
+        mail.outbox = []
+
+        # A citizen documents a report
+        response = self.client.post(reverse('report_document', kwargs={'report_id': report.id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'citizen-email': self.citizen.email,
             'citizen-quality': 1,
@@ -582,154 +540,138 @@ class MailTest(TestCase):
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
-        self.assertEqual(response.status_code, 200)
-        #Should be 4 mails: 2 for creation, 1 for acceptance and 1 for informing responsible about update
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.group.email, mail.outbox[3].to)
 
-    def testProUpdatesReportMail(self):
+        report = response.context['report']
+
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members
+        expected_recipients = self.group_mail_config.get_manager_recipients()
+
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
+
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_pro_updates_report_mail(self):
         response = self.client.post(
             reverse('report_new') + '?x=150056.538&y=170907.56',
             self.sample_post,
             follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
 
-        #Login to access the pro page
+        report = response.context['report']
+
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
+
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
+
+        # Reset outbox
+        mail.outbox = []
+
+        # Document report as pro
+        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report.id, 'slug': 'hello'}), {
             'comment-text': 'new created comment',
             'files-TOTAL_FORMS': 0,
             'files-INITIAL_FORMS': 0,
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
-        self.assertEqual(response.status_code, 200)
-        # Should be 4 mails:
-        # 2 for creation,
-        # 1 for acceptance
-        # 1 mail for update
-        self.assertEquals(len(mail.outbox), 4)
-        self.client.logout()
-        self.client.login(username='manager2@a.com', password='test2')
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
-            'comment-text': 'new created comment',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0
-        }, follow=True)
-        self.assertEqual(response.status_code, 200)
-        # Should be 5 mails:
-        # 2 for creation,
-        # 1 for acceptance,
-        # 1 mail for update
-        # 1 to responsable to notify change
-        self.assertEquals(len(mail.outbox), 5)
-        self.assertTrue(self.group.email in mail.outbox[4].to)
 
-    def testPublishCommentMail(self):
-        settings.CACHE_TIMEOUT = 0;
+        # Mails are sent to responsibles according to mail config of the group: 1 for group + members without the author
+        expected_recipients = self.group_mail_config.get_manager_recipients(self.manager)
 
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-        self.assertIn(self.group.email, mail.outbox[0].to + mail.outbox[1].to)
-        self.assertIn(self.sample_post['citizen-email'], mail.outbox[0].to + mail.outbox[1].to)
+        self.assertTrue(mail.outbox)
+        self.assertEquals(len(mail.outbox), len(expected_recipients))
 
-        #Login to access the pro page
+        for email in mail.outbox:
+            self.assertIn(email.to[0], expected_recipients)
+
+    def test_publish_comment_mail(self):
+        response  = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
+        report = response.context['report']
+
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        self.assertIn(self.sample_post['citizen-email'], mail.outbox[2].to)
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
-            'comment-text': 'new created comment',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0
-        }, follow=True)
-        self.assertEqual(response.status_code, 200)
-        # mail to responsible group
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertIn(self.group.email, mail.outbox[3].to)
-        report = Report.objects.get(id=report_id)
-        #Now make the comment public
+
+        # Accept and publish the created report
+        report.private     = False
+        report.accepted_at = datetime.now()
+        report.save()
+
+        # Assure that comment is private
+        self.assertEqual(ReportAttachment.PRIVATE, report.comments()[0].security_level)
+
+        # Reset outbox
+        mail.outbox = []
+
+        # Now make the comment public
         response = self.client.get(
-            reverse('report_update_attachment', args=[report_id]),
+            reverse('report_update_attachment', args=[report.id]),
             {
                 'updateType': 1,
-                'attachmentId': report.comments()[1].id
+                'attachmentId': report.comments()[0].id
             },
-            follow=True)
-        # Now there should be 5 mails: 2 for creation, 1 for acceptance, 1 to subscribers,
-        # 1 to inform about publish (citizen), Manager who did the update does not get an email
-        self.assertEquals(len(mail.outbox), 5)
-        self.assertIn(self.citizen.email, mail.outbox[4].to)
+        follow=True)
 
-        response = self.client.post(reverse('report_show_pro', kwargs={'report_id': report_id, 'slug': 'hello'}), {
-            'comment-text': 'new created comment',
-            'files-TOTAL_FORMS': 0,
-            'files-INITIAL_FORMS': 0,
-            'files-MAX_NUM_FORMS': 0
-        }, follow=True)
+        self.assertEqual(ReportAttachment.PUBLIC, report.comments()[0].security_level)
 
-        self.assertEquals(report.comments()[2].security_level, ReportAttachment.PRIVATE)
+        # All notifications are sent to subscribers as digest
+        self.assertEquals(len(mail.outbox), 0)
 
-        #Now make the comment public
-        response = self.client.get(
-            reverse('report_validate_all_pro', args=[report_id]),
-            follow=True)
-        self.assertEqual(response.status_code, 200)
-
-        self.assertEquals(report.comments()[2].security_level, ReportAttachment.PUBLIC)
-
-    def testSubscriptionForProMail(self):
+    def test_subscription_for_pro_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        report = response.context['report']
 
-        #Login to access the pro page
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
 
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
         self.client.logout()
-        self.client.login(username='manager2@a.com', password='test2')
-        response = self.client.get(reverse('subscribe_pro', args=[report_id]), {}, follow=True)
-        #Now there should be 4 mails: 2 for creation, 1 for acceptance, 1 to subscriber
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.manager2.email in mail.outbox[3].to)
 
-    def testMakeReportPrivate(self):
+        # Reset outbox
+        mail.outbox = []
+
+        self.client.login(username='manager2@a.com', password='test2')
+        response = self.client.get(reverse('subscribe_pro', args=[report.id]), {}, follow=True)
+
+        # 1 mail sent in real-time to subscriber
+        self.assertEquals(len(mail.outbox), 1)
+        self.assertTrue(self.manager2.email in mail.outbox[0].to)
+
+    def test_make_report_switch_privacy(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
-        #Login to access the pro page
+
+        # Assure that report is public
+        report = response.context['report']
+        self.assertFalse(report.private)
+
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        #Now make the report private
-        response = self.client.get(reverse('report_change_switch_privacy', args=[report_id]) + '?privacy=true', follow=True)
-        self.assertEquals(response.status_code, 200)
-        #one more mail added to subcribers to show that issue became private
-        self.assertEquals(len(mail.outbox), 4)
-        self.assertTrue(self.citizen.email in mail.outbox[3].to)
+
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
+
+        # Reset outbox
+        mail.outbox = []
+
+        # 1/ Now make the report private
+        response = self.client.get(reverse('report_change_switch_privacy', args=[report.id]) + '?privacy=true', follow=True)
+
+        report = Report.objects.get(id=report.id)
+        self.assertTrue(report.private)
+
+        # All mails sent to subscribers as digest
+        self.assertEquals(len(mail.outbox), 0)
+
+        # 2/ Now make the report public
+        response = self.client.get(reverse('report_change_switch_privacy', args=[report.id]) + '?privacy=false', follow=True)
+
+        report = Report.objects.get(id=report.id)
+        self.assertFalse(report.private)
+
+        # All mails sent to subscribers as digest
+        self.assertEquals(len(mail.outbox), 0)
 
     #def testMergeReportMail(self):
     #    #Login to access the pro page
@@ -772,41 +714,43 @@ class MailTest(TestCase):
         #A mail has been sent to the creator of the first report to notify him that his report has been merged
     #    self.assertEquals(len(mail.outbox), 5)
 
-    def testSendPDFProMail(self):
+    def test_send_PDF_to_pro_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
+        report   = response.context['report']
 
-        #Login to access the pro page
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(mail.outbox), 3)
-        #Now send Pro PDF
-        response = self.client.post(reverse('send_pdf', args=[report_id]), self.sample_post_mail_pdf_pro)
-        #Now 3 additional mails should be sent
-        self.assertEquals(len(mail.outbox), 6)
 
-    def testSendPDFCitizenMail(self):
+        # Publish the created report
+        response = self.client.post(reverse('report_accept_pro', args=[report.id]), follow=True)
+
+        # Reset outbox
+        mail.outbox = []
+
+        # Send Pro PDF
+        response = self.client.post(reverse('send_pdf', args=[report.id]), self.sample_post_mail_pdf_pro)
+
+        # 3 mails should be sent
+        self.assertEquals(len(mail.outbox), 3)
+
+    def test_send_PDF_to_citizen_mail(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertIn('report', response.context)
-        report_id = response.context['report'].id
-        self.assertEquals(len(mail.outbox), 2)  # one for creator subscription, one for manager
 
-        #Login to access the pro page
+        report             = response.context['report']
+        report.accepted_at = datetime.now()
+        report.save()
+
+        # Reset outbox
+        mail.outbox = []
+
+        # Login to access the pro page
         self.client.login(username='manager@a.com', password='test')
-        #Publish the created report
-        response = self.client.post(reverse('report_accept_pro', args=[report_id]), follow=True)
-        self.assertEquals(response.status_code, 200)
+
+        # Now send Pro PDF
+        response = self.client.post(reverse('send_pdf', args=[report.id]), self.sample_post_mail_pdf_citzen)
+
+        # 3 mails should be sent to citizens
         self.assertEquals(len(mail.outbox), 3)
-        #Now send Pro PDF
-        response = self.client.post(reverse('send_pdf', args=[report_id]), self.sample_post_mail_pdf_citzen)
-        #Now 3 additional mails should be sent
-        self.assertEquals(len(mail.outbox), 6)
 
     def test_reopen_report(self):
         # New report
@@ -824,8 +768,12 @@ class MailTest(TestCase):
         mail.outbox = []
 
         # Reopen reports
-        url = reverse('report_reopen_pro', args=[report.id])
-        response = self.client.get(url)
+        url      = reverse('report_reopen_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+        report   = response.context['report']
 
         # Assert
-        self.assertEquals(len(mail.outbox), 1)
+        self.assertEquals(Report.MANAGER_ASSIGNED, report.status)
+
+        # No mail sent in real-time
+        self.assertEquals(len(mail.outbox), 0)

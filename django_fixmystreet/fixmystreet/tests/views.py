@@ -8,7 +8,7 @@ from django.contrib.gis.geos import Polygon
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    OrganisationEntitySurface,
+    OrganisationEntitySurface, GroupMailConfig,
     ReportComment, ReportAttachment)
 
 
@@ -41,6 +41,10 @@ class ReportViewsTest(SampleFilesTestCase):
             email="test@email.com"
             )
         self.group.save()
+
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
 
         self.manager = FMSUser(
             is_active=True,
@@ -266,24 +270,6 @@ class ReportViewsTest(SampleFilesTestCase):
         comment = ReportComment.objects.get(report_id=report.id, type=ReportAttachment.REFUSED)
         self.assertEqual(comment.security_level, ReportComment.PUBLIC)
 
-    def test_publish_report(self):
-        """Tests publishing a report and test the view of it."""
-
-        url = "%s?x=148360&y=171177" % reverse('report_new')
-        response = self.client.post(url, self.sample_post, follow=True)
-        self.assertEqual(response.status_code, 200)
-
-        report = response.context['report']
-
-        self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_publish_pro', args=[report.id])
-        response = self.client.get(url, {}, follow=True)
-
-        report = response.context['report']
-
-        self.assertTrue(report.accepted_at is not None)
-        self.assertFalse(report.private)
-
     def test_add_comment(self):
         """Tests the update of a report."""
         url = "%s?x=148360&y=171177" % reverse('report_new')
@@ -371,18 +357,10 @@ class ReportViewsTest(SampleFilesTestCase):
         response = self.client.post(url, self.sample_post, follow=True)
         report = response.context['report']
 
-        # responsible manager has subscribed by default
-        self.assertTrue(report.subscriptions.filter(subscriber=self.manager).exists())
+        # responsible manager is NOT subscribed by default
+        self.assertFalse(report.subscriptions.filter(subscriber=self.manager).exists())
 
         self.client.login(username='manager@a.com', password='test')
-
-        #unsubscribe to the report
-        response = self.client.get(reverse('unsubscribe_pro', args=[report.id]), {}, follow=True)
-        self.assertRedirects(response, report.get_absolute_url_pro())
-        self.assertEqual(response.status_code, 200)
-
-        #current user is no more subscribed
-        self.assertFalse(report.subscriptions.filter(subscriber=self.manager).exists())
 
         # subscribe to the report
         response = self.client.get(reverse('subscribe_pro', args=[report.id]), {}, follow=True)

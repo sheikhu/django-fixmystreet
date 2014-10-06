@@ -43,12 +43,11 @@ need to apply this patch:
 
 https://code.djangoproject.com/ticket/16778
 
-After install, create the database and init the cache:
+After install, create the database:
 
 ```bash
 
 $ make createdb
-$ make initcache
 $ bin/django loaddata sample # if you want some sample data to work with
 $ cp local_settings_staging.py local_settings.py # and edit db connection settings
 ```

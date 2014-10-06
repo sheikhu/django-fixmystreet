@@ -19,7 +19,6 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.core.cache import cache
 
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
@@ -32,8 +31,6 @@ logger = logging.getLogger(__name__)
 
 
 class UserTrackedModel(TimeStampedModel):
-    # created = models.DateTimeField(auto_now_add=True, null=True, blank=True, editable=False)
-    # modified = models.DateTimeField(auto_now=True, null=True, blank=True, editable=False)
     created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
     modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
@@ -158,15 +155,6 @@ class FMSUser(User):
             " / " + self.category.name +
             " : " + self.secondary_category.name
         )
-
-    def get_ticket_number(self):
-        '''Return the report ticket as a usable string'''
-        report_ticket_id = str(self.id)
-        return report_ticket_id
-
-    def get_ticket_as_string(self):
-        '''Return the report ticket as a displayable component'''
-        return "#" + self.get_ticket_number()
 
     def get_display_name(self):
         if not self.first_name and not self.last_name:
@@ -316,6 +304,9 @@ class OrganisationEntity(UserTrackedModel):
     # def get_absolute_url(self):
     #     return reverse("report_commune_index", kwargs={'commune_id': self.id, 'slug': self.slug})
 
+    def get_mail_config(self):
+        return GroupMailConfig.objects.get(group=self)
+
     def __unicode__(self):
         return self.name
 
@@ -344,6 +335,42 @@ def organisationentity_delete(sender, instance, **kwargs):
     for membership in memberships:
         membership.delete()
 
+class GroupMailConfig(models.Model):
+
+    # Notifications can be sent to group, members or both
+    notify_group   = models.BooleanField(default=True)
+    notify_members = models.BooleanField(default=False)
+
+    # Digest if True (or real-time mail if False) for each status
+    digest_created    = models.BooleanField(default=False)
+    digest_inprogress = models.BooleanField(default=False)
+    digest_closed     = models.BooleanField(default=False)
+    digest_other      = models.BooleanField(default=False)
+
+    # This config is related to this group:
+    group = models.ForeignKey(OrganisationEntity, limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, unique=True)
+
+    def get_manager_recipients(self, author=None):
+        recipients = []
+
+        # If the config mail allow the group to be notified
+        if self.notify_group:
+            recipients = [self.group.email]
+
+        # If the config mail allow the members of the group to be notified
+        if self.notify_members:
+
+            # Not send the email twice if the group has the same email address than a member
+            exclude_mails=[self.group.email]
+
+            # Do not notify author if he is a PRO
+            if author and author.is_pro():
+                exclude_mails.append(author.email)
+
+            # Get members recipients of this organisation
+            recipients += UserOrganisationMembership.objects.filter(organisation=self.group).exclude(user__email__in=exclude_mails).values_list('user__email', flat=True)
+
+        return recipients
 
 class UserOrganisationMembership(UserTrackedModel):
     user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
@@ -372,6 +399,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def visible(self):
         limit_date = datetime.date.today() - datetime.timedelta(30)
+
         return self.filter(merged_with__isnull=True) \
             .exclude(status=Report.PROCESSED, fixed_at__lt=limit_date) \
             .exclude(status__in=Report.REPORT_STATUS_OFF)
@@ -552,15 +580,6 @@ class ReportQuerySet(models.query.GeoQuerySet):
             'citizen', 'created_by')
 
 
-# class BasicReportManager(models.GeoManager):
-
-#     def get_query_set(self):
-#         return ReportQuerySet(self.model) \
-#             .filter(merged_with__isnull=True) \
-#             .exclude(status=Report.DELETED) \
-#             .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30))
-
-
 class ReportManager(models.GeoManager):
 
     def one_week_ago(self):
@@ -585,15 +604,6 @@ class ReportManager(models.GeoManager):
         Args: origin must be a ``Point``.
         """
         return self.get_query_set().distance(origin)
-
-
-# class VisibleReportManager(ReportManager):
-
-#     def get_query_set(self):
-#         return super(VisibleReportManager, self).get_query_set() \
-#             .filter(merged_with__isnull=True) \
-#             .exclude(status=Report.PROCESSED, fixed_at__lt=datetime.date.today()-datetime.timedelta(30)) \
-#             .exclude(status__in=Report.REPORT_STATUS_OFF)
 
 
 class Report(UserTrackedModel):
@@ -733,10 +743,7 @@ class Report(UserTrackedModel):
 
     terms_of_use_validated = models.BooleanField(default=False)
 
-    # basic_objects = BasicReportManager()
-    # visibles = VisibleReportManager()
     objects = ReportManager()
-    # _base_manager = objects
     history = HistoricalRecords()
 
     false_address = models.TextField(null=True, blank=True)
@@ -784,9 +791,6 @@ class Report(UserTrackedModel):
     def get_address_commune_name(self):
         return self.territorial_entity().name
 
-    def get_number_of_subscription(self):
-        return self.subscriptions.all().__len__()
-
     def display_category(self):
         return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
 
@@ -800,10 +804,6 @@ class Report(UserTrackedModel):
             for i in range(6 - (report_ticket_id.__len__())):
                 report_ticket_id = "0" + report_ticket_id
         return report_ticket_id
-
-    def get_ticket_as_string(self):
-        '''Return the report ticket as a displayable component'''
-        return "#" + self.get_ticket_number()
 
     def get_slug(self):
         slug_sec_cat = self.secondary_category.slug
@@ -947,39 +947,20 @@ class Report(UserTrackedModel):
             subscription.notify_creation = False  # don't send notification for subscription
             self.subscriptions.add(subscription)
 
-        # if self.id:
-        #     self.create_subscriber(self.created_by or self.citizen)
-        # else:
-        #     # if not already created, waiting for post_save
-        #     self.subscribe_author = True
-
-    def create_subscriber(self, user):
-        if not self.subscriptions.filter(subscriber=user).exists():
-            self.subscriptions.add(ReportSubscription(subscriber=user))
-
-    def trigger_updates_added(self, user=None, files=None, comment=None):
-        if files or comment:
-            ReportNotification(
-                content_template='notify-updates',
-                recipient_mail=self.responsible_department.email,
-                related=self,
-            ).save(updater=user, files=files, comment=comment)
-
-            ReportEventLog(
-                report=self,
-                event_type=ReportEventLog.UPDATED,
-                user=user,
-            ).save()
-
-            self.save()  # set updated date and modified_by
-
     def trigger_reopen_request(self, user=None, reopen_reason=None):
 
-        ReportNotification(
-            content_template='notify-reopen-request',
-            recipient_mail=self.responsible_department.email,
-            related=self,
-        ).save(updater=user, reopen_reason=reopen_reason)
+        # Send notifications to group or members according to group configuration
+        mail_config = report.responsible_department.get_mail_config()
+
+        if not mail_config.digest_other:
+            recipients = mail_config.get_manager_recipients()
+
+            for email in recipients:
+                ReportNotification(
+                    content_template='notify-reopen-request',
+                    recipient_mail=self.responsible_department.email,
+                    related=self,
+                ).save(updater=user, reopen_reason=reopen_reason)
 
         ReportNotification(
             content_template='acknowledge-reopen-request',
@@ -1227,13 +1208,7 @@ def report_assign_responsible(sender, instance, **kwargs):
             type=OrganisationEntity.DEPARTMENT)
 
         # Get the responsible according to dispatching category
-        # TODO: Following lines are incorrect if 'get' not working. Use Try catch instead.
-        departement = departements.get(
-            dispatch_categories=instance.secondary_category)
-        if(departement):
-            instance.responsible_department = departement
-        else:
-            raise Exception("no responsible departement found ({0} - {1})".format(instance.secondary_category, instance.responsible_entity))
+        instance.responsible_department = departements.get(dispatch_categories=instance.secondary_category)
 
 
 @receiver(pre_save, sender=Report)
@@ -1252,114 +1227,94 @@ def check_planned(sender, instance, **kwargs):
         # instance.planned = False
         # instance.date_planned = None
 
-
 @receiver(post_save, sender=Report)
-def report_notify(sender, instance, **kwargs):
+def report_notify_created(sender, instance, **kwargs):
     """
-    signal on a report to notify author and manager that the status of the report has changed
+    signal on a report to notify author and manager that the report is created
     """
-    report = instance
-    event_log_user = None
-    if kwargs['created']:
+
+    if not kwargs['raw'] and kwargs['created']:
+        report = instance
+
         if report.citizen:
             event_log_user = report.citizen
         else:
             event_log_user = report.created_by
-    else:
-        event_log_user = report.modified_by
 
-    if not kwargs['raw']:
+        # Create an event in history
+        ReportEventLog(
+            report=report,
+            event_type=ReportEventLog.CREATED,
+            user=event_log_user,
+        ).save()
 
-        ### CREATED
-        if kwargs['created']:
-
-            if report.citizen:  # and report.subscriptions.filter(subscriber=report.citizen).exists(): subscription as not been already created
-                ReportNotification(
-                    content_template='acknowledge-creation',
-                    recipient=report.citizen,
-                    related=report,
-                ).save()
-
+        # Notifiy user that the creation is a success
+        if report.citizen:
             ReportNotification(
-                content_template='notify-creation',
-                recipient_mail=report.responsible_department.email,
+                content_template='acknowledge-creation',
+                recipient=report.citizen,
                 related=report,
             ).save()
 
-            ReportEventLog(
-                report=report,
-                event_type=ReportEventLog.CREATED,
-                user=event_log_user,
-            ).save()
-        ###
-        # Status changed
+        # Send notifications to group or members according to group configuration
+        mail_config = report.responsible_department.get_mail_config()
+
+        if not mail_config.digest_created:
+            recipients = mail_config.get_manager_recipients(event_log_user)
+
+            for email in recipients:
+                ReportNotification(
+                    content_template='notify-creation',
+                    recipient_mail=email,
+                    related=report,
+                ).save()
+
+@receiver(post_save, sender=Report)
+def report_notify_status_changed(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the status of the report has changed
+    """
+
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
+
         if report.__former['status'] != report.status:
 
-            ### REFUSED
+            # REFUSED
             if report.status == Report.REFUSED:
-                for subscription in report.subscriptions.all():
-                    if subscription.subscriber != event_log_user:
-                        ReportNotification(
-                            content_template='notify-refused',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_department.email,
-                        ).save()
-
-                ReportNotification(
-                    content_template='notify-refused',
-                    recipient=report.citizen or report.created_by,
-                    related=report,
-                    reply_to=report.responsible_department.email,
-                ).save()
-
-                ReportEventLog(
+                event = ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.REFUSE,
-                    user=event_log_user,
-                ).save()
-            ###
-            elif report.status == Report.PROCESSED:
-                for subscription in report.subscriptions.all():
-                    if subscription.subscriber != event_log_user:
-                        ReportNotification(
-                            content_template='announcement-processed',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_department.email,
-                        ).save()
+                    user=event_log_user)
+                event.save()
 
+            # PROCESSED
+            elif report.status == Report.PROCESSED:
                 ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.CLOSE,
                     user=event_log_user
                 ).save()
 
-            elif report.__former['status'] == Report.CREATED and report.status != Report.REFUSED:
-                # created => in progress: published by manager
-                # for subscription in report.subscriptions.all():
-                if report.subscriptions.filter(subscriber=report.created_by or report.citizen).exists():
-                    ReportNotification(
-                        content_template='notify-validation',
-                        recipient=report.created_by or report.citizen,
-                        # recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_department.email,
-                    ).save()
-
-                ReportEventLog(
-                    report=report,
-                    event_type=ReportEventLog.VALID,
-                    user=event_log_user
+                # Notify author that the report is solved
+                ReportNotification(
+                    content_template='announcement-processed',
+                    recipient=report.citizen or report.created_by,
+                    related=report,
+                    reply_to=report.responsible_department.email,
                 ).save()
 
-            ### SOLVED
+            # IN PROGRESS
+            elif report.__former['status'] == Report.CREATED and report.status != Report.REFUSED:
+                event = ReportEventLog(
+                    report=report,
+                    event_type=ReportEventLog.VALID,
+                    user=event_log_user)
+                event.save()
+
+            # SOLVED
             elif report.status == Report.SOLVED:
-                ReportNotification(
-                    content_template='mark-as-done',
-                    recipient_mail=report.responsible_department.email,
-                    related=report,
-                ).save(updater=event_log_user)
 
                 ReportEventLog(
                     report=report,
@@ -1367,30 +1322,49 @@ def report_notify(sender, instance, **kwargs):
                     user=event_log_user
                 ).save()
 
-            ### REOPEN
-            elif (report.__former['status'] in Report.REPORT_STATUS_CLOSED or report.__former['status'] == Report.REFUSED) and report.status == Report.MANAGER_ASSIGNED:
-                for subscription in report.subscriptions.all():
-                    if subscription.subscriber != event_log_user:
-                        ReportNotification(
-                            content_template='notify-reopen',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_department.email,
-                        ).save()
+                # Send notifications to group or members according to group configuration
+                mail_config = report.responsible_department.get_mail_config()
 
+                if not mail_config.digest_other:
+                    recipients = mail_config.get_manager_recipients(event_log_user)
+
+                    for email in recipients:
+                        ReportNotification(
+                            content_template='mark-as-done',
+                            recipient_mail=email,
+                            related=report,
+                        ).save(updater=event_log_user)
+
+            # REOPEN
+            elif (report.__former['status'] in Report.REPORT_STATUS_CLOSED or report.__former['status'] == Report.REFUSED) and report.status == Report.MANAGER_ASSIGNED:
                 ReportEventLog(
                     report=report,
                     event_type=ReportEventLog.REOPEN,
                     user=event_log_user
                 ).save()
-            ###
 
-        # Contractor changed
+@receiver(post_save, sender=Report)
+def report_notify_contractor_changed(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the contractor of the report has changed
+    """
+
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
+
+
         if report.__former['contractor'] != report.contractor:
-
             if report.contractor:
+                event = ReportEventLog(
+                    report=report,
+                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
+                    related_new=report.contractor,
+                    user=event_log_user)
+                event.save()
+
+                # Applicant responsible
                 if report.contractor.email:
-                    # Applicant responsible
                     ReportNotification(
                         content_template='notify-affectation',
                         recipient_mail=report.contractor.email,
@@ -1398,38 +1372,32 @@ def report_notify(sender, instance, **kwargs):
                         reply_to=report.responsible_department.email
                     ).save(old_responsible=report.__former['responsible_department'])
 
-                    if report.contractor.applicant:
-                        for subscription in report.subscriptions.all():
-                            if subscription.subscriber != event_log_user:
-                                ReportNotification(
-                                    content_template='announcement-affectation',
-                                    recipient=subscription.subscriber,
-                                    related=report,
-                                    reply_to=report.responsible_department.email,
-                                ).save(old_responsible=report.__former['responsible_department'])
+@receiver(post_save, sender=Report)
+def report_notify_responsible_changed(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the responsible of the report has changed
+    """
 
-                ReportEventLog(
-                    report=report,
-                    event_type=(ReportEventLog.APPLICANT_ASSIGNED if report.status == Report.APPLICANT_RESPONSIBLE else ReportEventLog.CONTRACTOR_ASSIGNED),
-                    related_new=report.contractor,
-                    user=event_log_user
-                ).save()
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
 
-        # Responsible manager changed
         if report.__former['responsible_department'] != report.responsible_department:
-            # automatic subscription for new responsible manager
-            for membership in report.responsible_department.memberships.all():
-                if not instance.subscriptions.filter(subscriber=membership.user).exists():
-                    subscription = ReportSubscription(report=instance, subscriber=membership.user)
-                    subscription.notify_creation = False  # don't send notification for subscription
-                    subscription.save()
 
             if report.status != Report.CREATED and report.status != Report.TEMP:
-                ReportNotification(
-                    content_template='notify-affectation',
-                    recipient_mail=report.responsible_department.email,
-                    related=report,
-                ).save(old_responsible=report.__former['responsible_department'])
+
+                # Send notifications to group or members according to group configuration
+                mail_config = report.responsible_department.get_mail_config()
+
+                if not mail_config.digest_inprogress:
+                    recipients = mail_config.get_manager_recipients(event_log_user)
+
+                    for email in recipients:
+                        ReportNotification(
+                            content_template='notify-affectation',
+                            recipient_mail=email,
+                            related=report,
+                        ).save(old_responsible=report.__former['responsible_department'])
 
                 ReportEventLog(
                     report=report,
@@ -1439,66 +1407,51 @@ def report_notify(sender, instance, **kwargs):
                 ).save()
 
                 if report.__former['responsible_entity'] != report.responsible_entity:
-                    for subscription in report.subscriptions.all():
-                        if subscription.subscriber != event_log_user:
-                            ReportNotification(
-                                content_template='announcement-affectation',
-                                recipient=subscription.subscriber,
-                                related=report,
-                                reply_to=report.responsible_department.email,
-                            ).save(old_responsible=report.__former['responsible_department'])
-
-                    ReportEventLog(
+                    event = ReportEventLog(
                         report=report,
                         event_type=ReportEventLog.ENTITY_ASSIGNED,
                         related_new=report.responsible_entity,
-                        user=event_log_user
-                    ).save()
+                        user=event_log_user)
+                    event.save()
 
-        # Report planned
+@receiver(post_save, sender=Report)
+def report_notify_report_planned(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the report has been planned
+    """
+
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
+
         if report.date_planned and report.__former['date_planned'] != report.date_planned:
-            for subscription in report.subscriptions.all():
-                if subscription.subscriber != event_log_user:
-                    ReportNotification(
-                        content_template='notify-planned',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_department.email,
-                    ).save(old_responsible=report.__former['responsible_department'], date_planned=report.get_date_planned())
-
-            ReportEventLog(
+            event = ReportEventLog(
                 report=report,
                 event_type=ReportEventLog.PLANNED,
-                user=event_log_user
-            ).save()
+                user=event_log_user)
+            event.save()
 
-        # Report merged
+@receiver(post_save, sender=Report)
+def report_notify_report_merged(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the report has been merged
+    """
+
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
+
         if report.merged_with and report.__former['merged_with'] != report.merged_with:
             creator = report.citizen or report.created_by
-            for subscription in report.subscriptions.all():
-                if subscription.subscriber != event_log_user:
-                    # if subscription.subscriber != creator:
-                    ReportNotification(
-                        content_template='notify-merged',
-                        recipient=subscription.subscriber,
-                        related=report,
-                        reply_to=report.responsible_department.email,
-                    ).save()
 
-            if creator != event_log_user and not report.subscriptions.filter(subscriber=creator).exists():
-                ReportNotification(
-                    content_template='notify-merged',
-                    recipient=creator,
-                    related=report,
-                    reply_to=report.responsible_department.email,
-                ).save()
-
+            # Create event merge
             ReportEventLog(
                 report=report,
                 event_type=ReportEventLog.MERGED,
                 user=event_log_user
             ).save()
 
+            # Create event merge with
             ReportEventLog(
                 report=report.merged_with,
                 event_type=ReportEventLog.MERGED,
@@ -1506,17 +1459,39 @@ def report_notify(sender, instance, **kwargs):
                 user=event_log_user
             ).save()
 
-        # Switched to private
+@receiver(post_save, sender=Report)
+def report_notify_report_private(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the status of the report has became private
+    """
+
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
+
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
-            # inform all subscribers
-            for subscription in report.subscriptions.all():
-                if not subscription.subscriber.is_pro():
-                        ReportNotification(
-                            content_template='notify-became-private',
-                            recipient=subscription.subscriber,
-                            related=report,
-                            reply_to=report.responsible_department.email,
-                        ).save()
+            event = ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.BECAME_PRIVATE,
+                user=event_log_user)
+            event.save()
+
+@receiver(post_save, sender=Report)
+def report_notify_report_public(sender, instance, **kwargs):
+    """
+    signal on a report to notify author and manager that the status of the report has became public
+    """
+
+    if not kwargs['raw']:
+        report = instance
+        event_log_user = report.modified_by
+
+        if (not kwargs['created'] and not report.private and (report.__former['private'])):
+            event = ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.BECAME_PUBLIC,
+                user=event_log_user)
+            event.save()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
@@ -1680,55 +1655,54 @@ def init_report_overview(sender, instance, **kwargs):
 
     instance.report.save()
 
-
 @receiver(post_save, sender=ReportAttachment)
-def report_attachment_notify(sender, instance, **kwargs):
-    report = instance.report
-
-    # To not spam users, check that mails are not send recently
-    if cache.get(report.id):
-        return
-
-    # Set cache
-    cache.set(report.id, True, settings.CACHE_TIMEOUT)
+def report_attachment_published(sender, instance, **kwargs):
 
     if not kwargs['created'] and instance.is_public() and instance.publish_update:
-        action_user = instance.created_by
 
-        # now create notification
+        # Create an event
         ReportEventLog(
-            report=report,
+            report=instance.report,
             event_type=ReportEventLog.UPDATE_PUBLISHED,
-            user=action_user
+            user=instance.created_by
         ).save()
-
-        for subscription in report.subscriptions.all().exclude(subscriber=action_user):
-            ReportNotification(
-                content_template='informations_published',
-                recipient=subscription.subscriber,
-                related=report,
-                reply_to=report.responsible_department.email,
-            ).save()
-
-    # if report is assigned to impetrant or executeur de travaux also inform them
-    if kwargs['created'] and report.contractor:
-        # for membership in report.contractor.memberships.all():
-        ReportNotification(
-            content_template='informations_published',
-            recipient_mail=report.contractor.email,
-            related=report,
-            reply_to=report.responsible_department.email,
-        ).save()
-
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
 
 
 @receiver(post_save, sender=ReportComment)
-def report_comment_notify(sender, instance, **kwargs):
-    report_attachment_notify(sender, instance, **kwargs)
+def report_comment_created(sender, instance, **kwargs):
 
+    # If the comment is created during the creation of a new report or if it's not a documentation, pass this signal
+    if instance.type != ReportAttachment.DOCUMENTATION or hasattr(instance, 'is_new_report') and instance.is_new_report:
+        return
+
+    report = instance.report
+    user   = instance.created_by
+
+    # Send notifications to group or members according to group configuration
+    mail_config = report.responsible_department.get_mail_config()
+
+    if not mail_config.digest_created and not mail_config.digest_inprogress:
+        recipients = mail_config.get_manager_recipients(user)
+
+        for email in recipients:
+            ReportNotification(
+                content_template='notify-updates',
+                recipient_mail=email,
+                related=report,
+            ).save(updater=user, comment=instance)
+
+    ReportEventLog(
+        report=report,
+        event_type=ReportEventLog.UPDATED,
+        user=user,
+    ).save()
+
+@receiver(post_save, sender=ReportComment)
+def report_comment_published(sender, instance, **kwargs):
+    report_attachment_published(sender, instance, **kwargs)
 
 class ReportFile(ReportAttachment):
     PDF = 1
@@ -1791,13 +1765,6 @@ class ReportFile(ReportAttachment):
     def is_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
-
-@receiver(post_save, sender=ReportFile)
-def report_file_notify(sender, instance, **kwargs):
-    report_attachment_notify(sender, instance, **kwargs)
-    init_report_overview(sender, instance, **kwargs)
-
-
 @receiver(pre_save, sender=ReportFile)
 def init_file_type(sender, instance, **kwargs):
     if instance.file_type or not instance.file:
@@ -1816,13 +1783,44 @@ def init_file_type(sender, instance, **kwargs):
     if instance.file_type == ReportFile.IMAGE:
         instance.image.save(instance.file.name.split('?')[0], instance.file, save=False)
 
+@receiver(post_save, sender=ReportFile)
+def report_file_created(sender, instance, **kwargs):
+    if not kwargs['created'] or kwargs['raw']:
+        return
+
+    report = instance.report
+    user   = instance.created_by
+
+    # Send notifications to group or members according to group configuration
+    mail_config = report.responsible_department.get_mail_config()
+
+    if not mail_config.digest_created and not mail_config.digest_inprogress:
+        recipients = mail_config.get_manager_recipients(user)
+
+        for email in recipients:
+            ReportNotification(
+                content_template='notify-updates',
+                recipient_mail=email,
+                related=report,
+            ).save(updater=user, files=[instance])
+
+    ReportEventLog(
+        report=report,
+        event_type=ReportEventLog.UPDATED,
+        user=user,
+    ).save()
+
+@receiver(post_save, sender=ReportFile)
+def report_file_published(sender, instance, **kwargs):
+    init_report_overview(sender, instance, **kwargs)
+    report_attachment_published(sender, instance, **kwargs)
 
 class ReportSubscription(models.Model):
     """
     Report Subscribers are notified when there's an update to an existing report.
     """
     report = models.ForeignKey(Report, related_name="subscriptions")
-    subscriber = models.ForeignKey(FMSUser, null=False)
+    subscriber = models.ForeignKey(FMSUser, related_name="subscriptions", null=False)
 
     def __unicode__(self):
         return self.subscriber.email
@@ -2035,14 +2033,41 @@ class ReportReopenReason(ReportComment):
     )
     reason = models.IntegerField(choices=REASON_CHOICES)
 
+@receiver(post_save, sender=ReportReopenReason)
+def report_reopen_reason_notify(sender, instance, **kwargs):
 
-# class ManagerCategories(UserTrackedModel):
-#     help_text="""
-#     Defines the relation of a user and a category
-#     """
-#     category = models.ForeignKey(ReportCategory)
-#     user = models.ForeignKey(FMSUser)
+    if not kwargs['created']:
+        return
 
+    report = instance.report
+    user   = instance.created_by
+
+    ReportEventLog(
+        report=report,
+        event_type=ReportEventLog.REOPEN_REQUEST,
+        user=user,
+    ).save()
+
+    # Send notifications to group or members according to group configuration
+    mail_config = report.responsible_department.get_mail_config()
+
+    if not mail_config.digest_other:
+        recipients = mail_config.get_manager_recipients(user)
+
+        for email in recipients:
+            ReportNotification(
+                content_template='notify-reopen-request',
+                recipient_mail=email,
+                related=report,
+            ).save(updater=user, reopen_reason=instance)
+
+    # Notify requester if not pro
+    if not user.is_pro():
+        ReportNotification(
+            content_template='acknowledge-reopen-request',
+            recipient_mail=user.email,
+            related=report,
+        ).save(updater=user, reopen_reason=instance)
 
 class ReportNotification(models.Model):
     recipient_mail = models.CharField(max_length=200, null=True)
@@ -2065,6 +2090,7 @@ class ReportNotification(models.Model):
         date_planned = None
         merged_with = None
         reopen_reason = None
+
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']
@@ -2165,6 +2191,9 @@ class ReportEventLog(models.Model):
     MERGED = 18
     REOPEN = 19
     REOPEN_REQUEST = 20
+    BECAME_PRIVATE = 21
+    BECAME_PUBLIC = 22
+
     EVENT_TYPE_CHOICES = (
         (REFUSE, _("Refuse")),
         (CLOSE, _("Close")),
@@ -2186,6 +2215,8 @@ class ReportEventLog(models.Model):
         (MERGED, _("Merged")),
         (REOPEN, _("Reopen")),
         (REOPEN_REQUEST, _("Reopen request")),
+        (BECAME_PRIVATE, _("Became private")),
+        (BECAME_PUBLIC, _("Became public")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -2208,10 +2239,12 @@ class ReportEventLog(models.Model):
         MERGED: _("Report merged with report #{merged_with_id}"),
         REOPEN: _("Report reopen by {user}"),
         REOPEN_REQUEST: _("Request to reopen report made by {user}"),
+        BECAME_PRIVATE: _("Report became private by {user}"),
+        BECAME_PUBLIC: _("Report became public by {user}"),
     }
     STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
-    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST]
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST, BECAME_PRIVATE, BECAME_PUBLIC]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
 
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
@@ -2302,24 +2335,6 @@ def eventlog_init_values(sender, instance, **kwargs):
 
         if hasattr(instance.report, '__former') and instance.report.merged_with != instance.report.__former["merged_with"]:
             instance.merged_with_id = instance.report.merged_with.id
-
-# class Zone(models.Model):
-    # __metaclass__ = TransMeta
-    #
-    # name=models.CharField(max_length=100)
-    # creation_date = models.DateTimeField(auto_now_add=True)
-    # update_date = models.DateTimeField(auto_now=True)
-    # commune = models.ForeignKey(Commune)
-    #
-    # class Meta:
-        # translate = ('name', )
-
-
-# class FMSUserZone(models.Model):
-    # user = models.ForeignKey(FMSUser)
-    # zone = models.ForeignKey(Zone)
-    # creation_date = models.DateTimeField(auto_now_add=True, blank=True,default=dt.now())
-    # update_date = models.DateTimeField(auto_now=True, blank=True,default=dt.now())
 
 
 class ZipCodeManager(models.Manager):
