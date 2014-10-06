@@ -30,9 +30,9 @@ $(document).ready(function(){
     // $(":input, :select, ").submit(function(evt) {});
     $("form").submit(function(evt) {
         var $this = $(this);
-        if (validateForm($this)) {
-            $this.find('[data-one-click]').prop('disabled', true);
-        } else {
+        var isValid = validateForm($this);
+        $this.find('[data-one-click]').prop('disabled', isValid && $('#coordonnees').is(':visible'));
+        if (!isValid) {
             evt.preventDefault();
             evt.stopImmediatePropagation();
         }
@@ -81,6 +81,8 @@ $(document).ready(function(){
                 coordonnees.show();
                 stepDescription.removeClass("on").addClass("off");
                 stepCoordonnees.removeClass("off").addClass("on");
+            } else {
+                coordonnees.find('[data-one-click]').prop('disabled', false);
             }
         });
         $('#previousStep').click(function (evt) {
@@ -89,6 +91,7 @@ $(document).ready(function(){
             description.show();
             stepDescription.removeClass("off").addClass("on");
             stepCoordonnees.removeClass("on").addClass("off");
+            coordonnees.find('[data-one-click]').prop('disabled', false);
         });
     }
 });
