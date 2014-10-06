@@ -81,7 +81,6 @@ def fixed(request, report_id):
 
         #Update the status of report
         report.status               = Report.SOLVED
-        report.mark_as_done_comment = comment
         report.fixed_at             = datetime.now()
         report.save()
 

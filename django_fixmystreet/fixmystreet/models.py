@@ -115,8 +115,6 @@ class FMSUser(User):
 
     logical_deleted = models.BooleanField(default=False)
 
-    ### deprecated to remove ###
-    categories = models.ManyToManyField('ReportCategory', related_name='type', blank=True)
     organisation = models.ForeignKey(
         'OrganisationEntity',
         related_name='team',
@@ -693,13 +691,6 @@ class Report(UserTrackedModel):
 
     citizen = models.ForeignKey(FMSUser, null=True, related_name='citizen_reports', blank=True)
 
-    mark_as_done_motivation = models.TextField(null=True, blank=True) # deprecated
-    mark_as_done_user = models.ForeignKey(FMSUser, related_name='reports_solved', null=True, blank=True) # deprecated
-    mark_as_done_comment = models.ForeignKey('ReportComment', related_name='report_mark_as_done', on_delete=models.SET_NULL, null=True, blank=True) # deprecated. NEED migration before delete
-
-    refusal_motivation = models.TextField(null=True, blank=True) # deprecated
-    refusal_comment = models.ForeignKey('ReportComment', related_name='report_refusal', on_delete=models.SET_NULL, null=True, blank=True) # deprecated. NEED migration before delete
-
     responsible_entity = models.ForeignKey(
         OrganisationEntity,
         related_name='reports_in_charge',
@@ -718,27 +709,17 @@ class Report(UserTrackedModel):
         }
     )
 
-    ### deprecated to remove ###
-    responsible_manager = models.ForeignKey(FMSUser, related_name='reports_in_charge', null=True, blank=True)
-    ### deprecated to remove ###
-    responsible_manager_validated = models.BooleanField(default=False)
-
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
     previous_managers = models.ManyToManyField('FMSUser', related_name='previous_reports', null=True, blank=True)
 
     merged_with = models.ForeignKey('Report', related_name='merged_reports', null=True, blank=True)
 
-    ### deprecated not used ###
-    valid = models.BooleanField(default=False)
-
     private = models.BooleanField(default=False)
     gravity = models.IntegerField(default=0, choices=GRAVITY_CHOICES)
     probability = models.IntegerField(default=0, choices=PROBABILITY_CHOICES)
-    # photo = FixStdImageField(upload_to="photos", blank=True, size=(380, 380), thumbnail_size=(66, 50))
     photo = models.FileField(upload_to="photos", blank=True)
     thumbnail = models.TextField(null=True, blank=True)
     thumbnail_pro = models.TextField(null=True, blank=True)
-    # photo = models.ForeignKey(ReportFile, related_name='thumbnail_report', null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 
     terms_of_use_validated = models.BooleanField(default=False)
@@ -1022,10 +1003,8 @@ class Report(UserTrackedModel):
             "citizen": self.citizen.email,
             "responsible_entity": self.responsible_entity.id,
             "contractor": self.contractor,
-            "responsible_manager": self.responsible_manager.username,
             "close_date": str(self.close_date),
             "private": self.private,
-            "valid": self.valid,
             "thumb": thumbValue
         }
 
@@ -1118,7 +1097,6 @@ class Report(UserTrackedModel):
             "close_date": close_date_as_string,
             "citizen": citizenValue,
             "private": self.private,
-            "valid": self.valid,
             "thumb": thumbValue
         }
 
@@ -1134,7 +1112,6 @@ class Report(UserTrackedModel):
         pr = private flag
         pro = pro report
         reg = regional report
-        v = valid flag
         c = main category id
         m_c = first category
         s_c = second category
@@ -1156,7 +1133,6 @@ class Report(UserTrackedModel):
             "pro": self.is_pro(),
             "reg": self.is_regional(),
             "a_d": self.address_regional,
-            "v": self.valid,
             "c": self.secondary_category.id,
             "m_c": self.secondary_category.category_class.id,
             "s_c": self.secondary_category.secondary_category_class.id
@@ -1585,24 +1561,6 @@ class ReportAttachment(UserTrackedModel):
     objects = ReportAttachmentManager()
 
     publish_update = True
-
-    # is_validated = models.BooleanField(default=False)
-    # is_visible = models.BooleanField(default=False)
-
-    # def is_deleted(self):
-    #     '''Returns true if the attachment is deleted'''
-    #     return self.logical_deleted
-
-    # DEPRECATED !!!
-    def is_confidential_visible(self):
-        '''visible when not confidential'''
-        current_user = get_current_user().fmsuser
-        # return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
-        return (
-            self.security_level != ReportAttachment.CONFIDENTIAL and
-            (current_user.contractor or current_user.applicant) or
-            (current_user.manager or current_user.leader)
-        )
 
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''

@@ -104,7 +104,7 @@ class NotificationTest(TestCase):
         self.citizen.save()
 
     def testReportFileType(self):
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode=1000, responsible_manager=self.manager_bxl)
+        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode=1000)
 
         reportFile = ReportFile(file_type=ReportFile.PDF, report=new_report)
         self.assertTrue(reportFile.is_pdf())
@@ -136,7 +136,6 @@ class NotificationTest(TestCase):
 
     def testReportResponsibleAssignment(self):
         '''Test the assignment of a responsible when creating a report'''
-        #When a responsible_manager is defined responsible_entity is not recomputed
         new_report = Report(
             status=Report.CREATED,
             secondary_category=self.secondary_category,
@@ -151,7 +150,6 @@ class NotificationTest(TestCase):
         new_report.save()
         # when created by pro report is under responsibility of etterbeek, not bxl
         self.assertEquals(new_report.responsible_entity, self.etterbeek)
-        #self.assertEquals(new_report.responsible_manager, self.manager_etterbeek)
 
         new_report = Report(
             status=Report.CREATED,
@@ -167,7 +165,6 @@ class NotificationTest(TestCase):
         new_report.save()
         # when created by citizen, postalcode used for resonsible
         self.assertEquals(new_report.responsible_entity, self.bxl)
-        #self.assertEquals(new_report.responsible_manager, self.manager_bxl)
 
 
 class PhotosTest(TestCase):
@@ -238,7 +235,7 @@ class ValueUpdate(TestCase):
     #        shutil.copyfile(path, os.path.join(settings.MEDIA_ROOT, 'tmp.jpg'))
     #
             #report = Report(ward=self.ward, category=self.category, title='Just a test', author=self.user)
-    #        report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000, responsible_manager=self.fmsuser)
+    #        report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode = 1000)
 
     #        report.photo = 'tmp.jpg'
     #        report.save()

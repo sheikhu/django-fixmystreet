@@ -55,20 +55,6 @@ def get_element_from_list(myList, index):
     return myList[index]
 
 
-# DEPRECATED
-@register.filter
-def hasAtLeastAManager(userId):
-    connectedUser = FMSUser.objects.get(id=userId)
-    organisation = connectedUser.organisation
-    if not organisation:
-        return False
-    #if the user is an executeur de travaux then user the dependent organisation id
-    if connectedUser.contractor and organisation.dependency:
-        organisation = organisation.dependency
-
-    return organisation.team.filter(manager=True).exists()
-
-
 @register.filter
 def classname(obj):
     return obj.__class__.__name__

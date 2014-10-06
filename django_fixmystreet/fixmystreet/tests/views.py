@@ -478,7 +478,6 @@ class ReportViewsTest(SampleFilesTestCase):
         self.assertEqual(1, len(response.context['reports_nearby']))
         self.assertEqual(report2.id, response.context['reports_nearby'][0].id)
 
-    @skip("mark as done is actually disabled for citizen")
     def test_mark_done_as_user(self):
         """Tests marking report as done."""
 
@@ -487,58 +486,41 @@ class ReportViewsTest(SampleFilesTestCase):
         report = response.context['report']
 
         self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report.id])
+        url      = reverse('report_accept_pro', args=[report.id])
         response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
+
+        # Mark as done as citizen
         self.client.logout()
-
-        self.assertFalse(report.mark_as_done_comment)
-        self.assertFalse(report.fixed_at)
-
-        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True', 'text': 'commentaire'}, follow=True)
+        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         report = response.context['report']
         self.assertTrue(report.fixed_at)
-        self.assertFalse(report.mark_as_done_comment)
         self.assertEqual(report.status, Report.SOLVED)
+        self.assertFalse(ReportComment.objects.filter(type=ReportAttachment.MARK_AS_DONE, report=report).exists())
 
-        self.client.login(username=self.manager.email, password='test')
-        response = self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = response.context['report']
-        self.assertTrue(report.fixed_at)
-        self.assertEqual(report.status, Report.PROCESSED)
 
     def test_mark_done_as_pro(self):
         """Tests marking report as done."""
 
-        url = "%s?x=148360&y=171177" % reverse('report_new')
+        url      = "%s?x=148360&y=171177" % reverse('report_new')
         response = self.client.post(url, self.sample_post, follow=True)
-        report = response.context['report']
-        self.assertFalse(report.mark_as_done_comment)
-        self.assertFalse(report.fixed_at)
+        report   = response.context['report']
 
         self.client.login(username='manager@a.com', password='test')
         url = reverse('report_accept_pro', args=[report.id])
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
 
+        # Mark as done as pro
         response = self.client.post(reverse('report_fix_pro', args=[report.id]), {'text': 'commentaire'}, follow=True)
         self.assertEquals(response.status_code, 200)
 
         report = response.context['report']
-        self.assertTrue(report.fixed_at)
-        self.assertTrue(report.mark_as_done_comment)
-        self.assertEquals(report.status, Report.SOLVED)
 
-        self.client.login(username=self.manager.email, password='test')
-        response = self.client.post(reverse('report_close_pro', args=[report.id]), follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = response.context['report']
         self.assertTrue(report.fixed_at)
-        self.assertTrue(report.close_date)
-        self.assertEquals(report.status, Report.PROCESSED)
+        self.assertTrue(ReportComment.objects.filter(type=ReportAttachment.MARK_AS_DONE, report=report).exists())
+        self.assertEquals(report.status, Report.SOLVED)
 
     def test_search_ticket(self):
         """Tests searching ticket."""

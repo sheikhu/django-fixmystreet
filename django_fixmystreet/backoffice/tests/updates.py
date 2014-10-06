@@ -64,7 +64,6 @@ class UpdatesTest(TestCase):
         self.manager.set_password('test')
         self.manager.organisation = self.organisation
         self.manager.save()
-        self.manager.categories.add(self.secondary_category)
 
         self.manager2 = FMSUser(
             is_active=True,
@@ -79,7 +78,6 @@ class UpdatesTest(TestCase):
         self.manager2.set_password('test')
         self.manager2.organisation = self.organisation
         self.manager2.save()
-        self.manager2.categories.add(self.secondary_category)
 
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()

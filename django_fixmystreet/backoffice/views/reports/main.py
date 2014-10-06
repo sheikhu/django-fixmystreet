@@ -141,7 +141,7 @@ def search_ticket_pro(request):
         return HttpResponseRedirect(reverse('home_pro'))
 
 def delete(request, slug, report_id):
-    report = get_object_or_404(Report, id=report_id, responsible_manager=request.fmsuser)
+    report = get_object_or_404(Report, id=report_id)
     report.status = Report.DELETED
     report.save()
     messages.add_message(request, messages.ERROR, _("Report successfully deleted"))

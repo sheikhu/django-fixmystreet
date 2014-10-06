@@ -165,7 +165,6 @@ class ListTest(TestCase):
         )
 
         new_report.contractor = self.stib
-        new_report.responsible_manager = self.manager
         new_report.responsible_department = self.group
         new_report.save()
 
@@ -180,7 +179,6 @@ class ListTest(TestCase):
             address_number='6',
             citizen=self.citizen
         )
-        new_report2.responsible_manager = self.contractor_manager
         new_report2.responsible_department = self.group
         new_report2.save()
 
@@ -202,7 +200,6 @@ class ListTest(TestCase):
             address_number='6h',
             citizen=self.citizen
         )
-        new_report.responsible_manager = self.manager
         new_report.responsible_department = self.group
         new_report.save()
 
@@ -210,7 +207,6 @@ class ListTest(TestCase):
         self.assertEquals(1, len(reports.entity_responsible(self.entity_manager)))
         self.assertEquals(1, len(reports.responsible(self.entity_manager)))
 
-        new_report.responsible_manager = self.entity_manager
         new_report.responsible_department = self.group
         new_report.save()
 

@@ -138,7 +138,6 @@ class ReportHandler(BaseHandler):
         'created',
         'created_by',
         'is_pro',
-        'responsible_manager',
         'contractor',
         'category',
         'secondary_category',

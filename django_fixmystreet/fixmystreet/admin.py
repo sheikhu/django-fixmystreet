@@ -246,13 +246,11 @@ class ReportAdmin(SimpleHistoryAdmin):
     list_filter = ('status',)
     ordering = ('-id', )
     exclude = (
-        # deprecated
-        'responsible_manager', 'valid', 'photo',
-        'responsible_manager_validated'
+        'photo',
     )
     readonly_fields = (
         'created', 'modified', 'created_by', 'modified_by', 'citizen',
-        'merged_with', 'mark_as_done_user'
+        'merged_with'
     )
     inlines = (
         AttachmentsInline,

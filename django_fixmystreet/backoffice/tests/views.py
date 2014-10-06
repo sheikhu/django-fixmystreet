@@ -35,7 +35,6 @@ class ReportProViewsTest(TestCase):
         self.manager.set_password('test')
         self.manager.organisation = OrganisationEntity.objects.get(pk=14)
         self.manager.save()
-        self.manager.categories.add(ReportCategory.objects.get(pk=1))
 
         self.super_user = FMSUser(
             is_active=True,

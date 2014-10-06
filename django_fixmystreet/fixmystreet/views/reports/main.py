@@ -198,28 +198,6 @@ def update(request, report_id):
         else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-    # ????? DEPRECATED ?????
-    if request.method == 'POST':
-        if request.POST['form-type'] == u"comment-form":
-            comment_form = ReportCommentForm(request.POST)
-            if comment_form.is_valid():
-                comment_form.save(request.user, report)
-
-        if request.POST['form-type'] == u"file-form":
-            # set default title if not given
-            fileTitle = request.POST.get("title")
-            if (fileTitle == ""):
-                request.POST.__setitem__("title", request.FILES.get('file').name)
-            file_form = ReportFileForm(request.POST, request.FILES)
-            if file_form.is_valid:
-                file_form.save(request.user, report)
-
-        if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-        else:
-            return HttpResponseRedirect(report.get_absolute_url())
-    raise Http404()
-
 
 def search_ticket(request):
     try:
