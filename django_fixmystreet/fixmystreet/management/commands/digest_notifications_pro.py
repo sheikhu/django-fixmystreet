@@ -27,7 +27,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Date of yesterday
-        YESTERDAY = datetime.date.today() - datetime.timedelta(days=0)
+        YESTERDAY = datetime.date.today() - datetime.timedelta(days=1)
 
         logger.info('DIGEST OF NOTIFICATIONS FOR ACTVITIES OF %s' % YESTERDAY)
 

@@ -40,7 +40,7 @@ class Command(BaseCommand):
         ]
 
         # Date of yesterday
-        YESTERDAY = datetime.date.today() - datetime.timedelta(days=0)
+        YESTERDAY = datetime.date.today() - datetime.timedelta(days=1)
 
         logger.info('DIGEST OF SUBSCRIPTIONS FOR ACTVITIES OF %s' % YESTERDAY)
 
