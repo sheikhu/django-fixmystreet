@@ -40,11 +40,10 @@ function setPublic() {
     window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=false';
 }
 
-function confirmTransfer(argUrl) {
-    var r=confirm("{% trans 'Are you sure you want to change the responsable manager? This action cannot be undone.' %}");
-    if (r==true){
-        window.location = argUrl
-    }
+function confirmTransfer(url, manId) {
+    $('#modalTransfer form').attr('action', url);
+    $('#modalTransfer form input[name="man_id"]').val(manId);
+    $('#modalTransfer').modal()
 }
 
 function confirmAssign(argUrl) {
@@ -544,7 +543,6 @@ $(document).ready(function() {
                             {# DISPLAY WHEN REPORT STATUS IS CREATED #}
                             {% if report.is_created %}
                                 <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
-                                <!--a href="{% url 'report_publish_pro' report.id %}" class="btn publish">{% trans 'Publish' %}</a-->
                                 <a class="btn reject" onclick="refuse();">{% trans 'Reject' %}</a>
                             {% endif %}
 
@@ -605,9 +603,15 @@ $(document).ready(function() {
                                         <ul class="dropdown-menu">
                                             {% for department in departments %}
                                                 <li>
-                                                    <a {% ifequal report.responsible_department.id department.id %}class="active"{% endifequal %}
-                                                    tabindex="-1" href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}?manId=department_{{department.id}}')">
-                                                        {{department.name}} ({{ department.dependency.name}})
+                                                    <a
+                                                        {% ifequal report.responsible_department.id department.id %}
+                                                            class="active"
+                                                        {% else %}
+                                                            href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}', 'department_{{department.id}}')"
+                                                        {% endifequal %}
+                                                        tabindex="-1"
+                                                        >
+                                                            {{department.name}} ({{ department.dependency.name}})
                                                     </a>
                                                 </li>
                                             {% endfor %}
@@ -618,7 +622,14 @@ $(document).ready(function() {
                                         <ul class="dropdown-menu">
                                             {% for entity in entities %}
                                                 <li>
-                                                    <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}?manId=entity_{{entity.id}}')">
+                                                    <a
+                                                        {% ifequal report.responsible_entity.id entity.id %}
+                                                            class="active"
+                                                        {% else %}
+                                                            href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}', 'entity_{{entity.id}}')"
+                                                        {% endifequal %}
+                                                        tabindex="-1"
+                                                    >
                                                         {{entity.name}}
                                                     </a>
                                                 </li>
@@ -630,7 +641,14 @@ $(document).ready(function() {
                                         <ul class="dropdown-menu">
                                             {% for institution in region_institution %}
                                                 <li>
-                                                    <a {% ifequal report.responsible_entity.id entity.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}?manId=entity_{{institution.id}}')">
+                                                    <a
+                                                        {% ifequal report.responsible_entity.id entity.id %}
+                                                            class="active"
+                                                        {% else %}
+                                                            href="javascript:confirmTransfer('{% url 'report_change_manager_pro' report.id %}', 'entity_{{institution.id}}')"
+                                                        {% endifequal %}
+                                                        tabindex="-1"
+                                                    >
                                                         {{institution.name}}
                                                     </a>
                                                 </li>
@@ -873,9 +891,29 @@ $(document).ready(function() {
             </div>
             <br/><br/>
             <p>
-                <input class="btn btn-primary pull-left" type="button" name="submit" value="{% trans "Accepter" %}" onclick="persistPriorityUpdate()">
-                <input class="btn pull-right" type="button" name="submit" value="{% trans "Annuler" %}" onclick="cancelPriorityUpdate()">
+                <input class="btn btn-primary pull-left" type="button" name="submit" value="{% trans 'Accepter' %}" onclick="persistPriorityUpdate()">
+                <input class="btn pull-right" type="button" name="submit" value="{% trans 'Annuler' %}" onclick="cancelPriorityUpdate()">
             </p>
+        </div>
+    </div>
+
+    <!-- SECTION ABOUT TRANSFER -->
+    <div id="modalTransfer" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Transfer" %}</h3>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="">
+                <div class="clearfix">
+                    {{ transfer_form.as_p }}
+                </div>
+
+                <p>
+                    <input class="btn btn-primary pull-left" type="submit" name="submit" value="{% trans 'Transfer' %}">
+                    <button class="btn pull-right" data-dismiss="modal">{% trans 'Annuler' %}</button>
+                </p>
+            </form>
         </div>
     </div>
 

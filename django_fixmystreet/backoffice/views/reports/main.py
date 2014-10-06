@@ -14,7 +14,7 @@ from django_fixmystreet.fixmystreet.models import ZipCode, Report, ReportSubscri
     ReportAttachment
 from django_fixmystreet.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
 from django_fixmystreet.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportReopenReasonForm, ReportMainCategoryClass
-from django_fixmystreet.backoffice.forms import PriorityForm
+from django_fixmystreet.backoffice.forms import PriorityForm, TransferForm
 
 
 DEFAULT_TIMEDELTA_PRO = {"days": -30}
@@ -54,6 +54,8 @@ def new(request):
                     comment = comment_form.save(commit=False)
                     comment.report = report
                     comment.created_by = user
+                    # Used for comment post_save signal:
+                    comment.is_new_report = True
                     comment.save()
 
                 files = file_formset.save()
@@ -172,8 +174,6 @@ def show(request, slug, report_id):
                 report_file.created_by = user
                 report_file.save()
 
-            report.trigger_updates_added(files=files, comment=comment, user=request.fmsuser)
-
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url_pro())
 
@@ -215,6 +215,7 @@ def show(request, slug, report_id):
         "applicants": applicants,
         "entities": entities,
         "refuse_form": ReportCommentForm(),
+        "transfer_form": TransferForm(),
         "mark_as_done_form": ReportCommentForm(),
         "priority_form": PriorityForm(instance=report),
         'activity_list': report.activities.all(),
@@ -264,8 +265,6 @@ def document(request, slug, report_id):
             for report_file in files:
                 report_file.created_by = user
                 report_file.save()
-
-            report.trigger_updates_added(files=files, comment=comment, user=request.fmsuser)
 
             messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
             return HttpResponseRedirect(report.get_absolute_url_pro())
@@ -318,8 +317,6 @@ def reopen_request(request, slug, report_id):
                 reopen_reason.created_by = user
                 reopen_reason.type = ReportAttachment.REOPEN_REQUEST
                 reopen_reason.save()
-
-                report.trigger_reopen_request(user=user, reopen_reason=reopen_reason)
 
                 messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
                 return HttpResponseRedirect(report.get_absolute_url_pro())

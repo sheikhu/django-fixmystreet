@@ -9,10 +9,10 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
+from django.forms.models import inlineformset_factory
 
-
-from django_fixmystreet.backoffice.forms import GroupForm
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser
+from django_fixmystreet.backoffice.forms import GroupForm, GroupMailConfigForm
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser, GroupMailConfig
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +51,7 @@ def create_group(request,):
     else:
         group_form = GroupForm()
 
+
     return render_to_response("pro/auth/group_create.html", {
         "group_form": group_form,
         "can_edit":  can_edit,
@@ -59,23 +60,30 @@ def create_group(request,):
 
 def edit_group(request, group_id):
     can_edit = request.fmsuser.leader
-
     instance = OrganisationEntity.objects.get(id=group_id)
-    if request.method == "POST" and can_edit:
-        group_form = GroupForm(request.POST, instance=instance)
 
-        if group_form.is_valid():
+    # Init formset object for mail config
+    GroupMailFormSet = inlineformset_factory(OrganisationEntity, GroupMailConfig, form=GroupMailConfigForm, can_delete=False)
+
+    if request.method == "POST" and can_edit:
+        group_form                = GroupForm(request.POST, instance=instance)
+        group_mail_config_formset = GroupMailFormSet(request.POST, instance=instance)
+
+        if group_form.is_valid() and group_mail_config_formset.is_valid():
             group_form.save()
+            group_mail_config_formset.save()
 
             messages.add_message(request, messages.SUCCESS, _("Group has been updated successfully"))
             return HttpResponseRedirect(reverse('list_groups'))
 
     else:
-        group_form = GroupForm(instance=instance)
+        group_form                = GroupForm(instance=instance)
+        group_mail_config_formset = GroupMailFormSet(instance=instance)
 
     return render_to_response("pro/auth/group_create.html", {
         "group": instance,
         "group_form": group_form,
+        "group_mail_config_formset": group_mail_config_formset,
         "memberships": UserOrganisationMembership.objects.filter(organisation=instance),
         "can_edit": can_edit
     }, context_instance=RequestContext(request))

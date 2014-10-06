@@ -1,7 +1,7 @@
 import json
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser, GroupMailConfig
 
 
 class GroupsTest(TestCase):
@@ -48,6 +48,10 @@ class GroupsTest(TestCase):
         )
         self.group1.save()
 
+        self.group_mail_config1       = GroupMailConfig()
+        self.group_mail_config1.group = self.group1
+        self.group_mail_config1.save()
+
         self.group2 = OrganisationEntity(
             name_fr="groupe2",
             name_nl="groep2",
@@ -58,12 +62,17 @@ class GroupsTest(TestCase):
         )
         self.group2.save()
 
+        self.group_mail_config2       = GroupMailConfig()
+        self.group_mail_config2.group = self.group2
+        self.group_mail_config2.save()
+
         self.creategroup_post = {
             'name_fr': 'groupe3',
             'name_nl': 'groep3',
             'phone': '0000000000',
             'email': 'group3@test.com',
-            'type': 'D'
+            'type': 'D',
+            'notify_group': True
         }
 
         self.creategroup_post2 = {
@@ -71,7 +80,8 @@ class GroupsTest(TestCase):
             'name_nl': 'groep4',
             'phone': '0000000000',
             'email': 'group4@test.com',
-            'type': 'S'
+            'type': 'S',
+            'notify_group': True
         }
 
         self.editgroup_post = {
@@ -79,14 +89,26 @@ class GroupsTest(TestCase):
             'name_nl': 'groep1nieuw',
             'phone': '111111',
             'email': 'group1new@test.com',
-            'type': 'D'
+            'type': 'D',
+
+            ### Mail Config ###
+            'groupmailconfig_set-TOTAL_FORMS'   : u'1',
+            'groupmailconfig_set-INITIAL_FORMS' : u'1',
+            'groupmailconfig_set-MAX_NUM_FORMS' : u'1',
+
+            'groupmailconfig_set-0-notify_group'      : True,
+            'groupmailconfig_set-0-notify_members'    : True,
+            'groupmailconfig_set-0-digest_created'    : True,
+            'groupmailconfig_set-0-digest_inprogress' : True,
+            'groupmailconfig_set-0-digest_closed'     : True,
+            'groupmailconfig_set-0-digest_other'      : True,
         }
         self.editgroup_post2 = {
             'name_fr': 'groupe2nouveau',
             'name_nl': 'groep2nieuw',
             'phone': '2222222',
             'email': 'group2new@test.com',
-            'type': 'S'
+            'type': 'S',
         }
 
     def testListGroups(self):
@@ -168,6 +190,10 @@ class GroupsTest(TestCase):
 
     def testEditGroups(self):
         self.client.login(username='leader@a.com', password='test')
+
+        self.editgroup_post['groupmailconfig_set-0-group'] = self.group1.id
+        self.editgroup_post['groupmailconfig_set-0-id']    = self.group_mail_config1.id
+
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post)
         self.assertEquals(response.status_code, 302)
         response = self.client.post(reverse('list_groups'), follow=True)
@@ -176,8 +202,10 @@ class GroupsTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTrue('groups' in response.context)
         self.assertTrue('can_create' in response.context)
+
         groups = response.context['groups']
         can_create = response.context['can_create']
+
         self.assertTrue(can_create)
         self.assertEquals(groups.count(), 1)
         self.assertEquals(groups[0].name_fr, 'groupe1nouveau')
@@ -190,6 +218,7 @@ class GroupsTest(TestCase):
         #now do the test with a non leader
         self.client.logout()
         self.client.login(username='manager@a.com', password='test')
+
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post2)
         self.assertEquals(response.status_code, 200)
         response = self.client.post(reverse('list_groups'), follow=True)

@@ -1,7 +1,7 @@
 {% extends 'emails/notifications/base.txt' %}
 
 {% block content_mail_fr %}
-Un incident est devenu privé.
+Un incident est devenu public .
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
 
@@ -11,7 +11,7 @@ Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant s
 {% endblock %}
 
 {% block content_mail_nl %}
-Een incident is prive geworden.
+Een incident is publiek geworden.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 

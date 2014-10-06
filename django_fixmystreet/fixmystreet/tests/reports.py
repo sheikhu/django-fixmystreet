@@ -6,7 +6,8 @@ from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity,
-    FMSUser, ReportFile, UserOrganisationMembership, OrganisationEntitySurface
+    FMSUser, ReportFile, UserOrganisationMembership, OrganisationEntitySurface,
+    GroupMailConfig
 )
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
@@ -62,6 +63,7 @@ class NotificationTest(TestCase):
             manager=True,
             organisation=self.bxl)
         self.manager_bxl.save()
+
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -71,8 +73,14 @@ class NotificationTest(TestCase):
             email="test@email.com"
             )
         self.group.save()
+
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
+
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager_bxl.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
+
         self.group2 = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -82,6 +90,11 @@ class NotificationTest(TestCase):
             email="test@email.com"
             )
         self.group2.save()
+
+        self.group_mail_config2       = GroupMailConfig()
+        self.group_mail_config2.group = self.group2
+        self.group_mail_config2.save()
+
         self.usergroupmembership2 = UserOrganisationMembership(user_id=self.manager_etterbeek.id, organisation_id=self.group2.id, contact_user=True)
         self.usergroupmembership2.save()
         self.citizen = FMSUser(

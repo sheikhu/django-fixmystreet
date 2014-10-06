@@ -2,7 +2,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
-from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report, ReportComment, ReportCategory, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report, ReportComment, ReportCategory, UserOrganisationMembership, GroupMailConfig
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
@@ -19,6 +19,7 @@ class ExportPDFTest(SampleFilesTestCase):
             organisation=self.bxl)
         self.manager_bxl.set_password('test')
         self.manager_bxl.save()
+
         self.group = OrganisationEntity(
             type="D",
             name_nl="Werken",
@@ -28,6 +29,11 @@ class ExportPDFTest(SampleFilesTestCase):
             email="test@email.com"
             )
         self.group.save()
+
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
+
         self.usergroupmembership = UserOrganisationMembership(user_id=self.manager_bxl.id, organisation_id=self.group.id, contact_user=True)
         self.usergroupmembership.save()
         self.citizen = FMSUser(email="citizen@fms.be", telephone="0123456789", last_used_language="fr")

@@ -1,16 +1,18 @@
+#-*- coding: utf-8 -*-
 
 import logging
 
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report, ReportComment
+from django_fixmystreet.fixmystreet.models import FMSUser, GroupMailConfig, OrganisationEntity, Report, ReportComment, ReportSubscription, UserOrganisationMembership
 
 #Increase username size
 AuthenticationForm.base_fields['username'].max_length = 150
@@ -31,6 +33,50 @@ class PriorityForm(forms.ModelForm):
         model = Report
         fields = ('gravity', 'probability',)
 
+class TransferForm(forms.Form):
+    NO_SUBSCRIPTION         = 0
+    SUBSCRIBE_ME            = 1
+    SUBSCRIBE_GROUP_MEMBERS = 2
+
+    TRANSFER_CHOICES=(
+        (NO_SUBSCRIPTION        , _("Sans abonnement")),
+        (SUBSCRIBE_ME           , _("Je m'abonne personnellement")),
+        (SUBSCRIBE_GROUP_MEMBERS, _("J'abonne tous les membres de mon groupe"))
+    )
+
+    transfer = forms.ChoiceField(widget=forms.RadioSelect, choices=TRANSFER_CHOICES, required=True, label=_("Are you sure you want to change the responsable manager? This action cannot be undone."), initial=NO_SUBSCRIPTION)
+    man_id = forms.CharField(widget=forms.widgets.HiddenInput)
+
+    def save(self, report, user):
+        # First manage subscriptions (before that report changes of responsible department)
+        subscriber = FMSUser.objects.get(id=user.id)
+
+        if self.SUBSCRIBE_ME == int(self.cleaned_data['transfer']):
+            ReportSubscription.objects.get_or_create(report=report, subscriber=subscriber)
+
+        elif self.SUBSCRIBE_GROUP_MEMBERS == int(self.cleaned_data['transfer']):
+            members_list = UserOrganisationMembership.objects.filter(organisation=report.responsible_department).values_list('user', flat=True)
+
+            for member in members_list:
+                subscriber = FMSUser.objects.get(id=member)
+                ReportSubscription.objects.get_or_create(report=report, subscriber=subscriber)
+
+        # Then, manage the transfer
+        man_id = self.cleaned_data['man_id']
+
+        if man_id.split("_")[0] == "department":
+            newRespMan = OrganisationEntity.objects.get(pk=int(man_id.split("_")[1]))
+            report.responsible_department = newRespMan
+        elif man_id.split("_")[0] == "entity":
+            orgId = int(man_id.split("_")[1])
+            report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
+            report.responsible_department = None
+        else:
+            raise Exception('missing department or entity paramettre')
+
+        # Fix the status
+        report.status = Report.MANAGER_ASSIGNED
+        report.save()
 
 class FmsUserForm(forms.ModelForm):
     required_css_class = 'required'
@@ -220,3 +266,27 @@ class GroupForm(forms.ModelForm):
             users_qs = users_qs.order_by('last_name', 'first_name')
 
             self.fields['users'] = forms.ModelChoiceField(required=False, queryset=users_qs)
+
+class GroupMailConfigForm(forms.ModelForm):
+
+    class Meta:
+        model = GroupMailConfig
+
+    DIGEST_CHOICES = (
+        (True, _('Once a day')),
+        (False, _('In real time'))
+    )
+    digest_created    = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
+    digest_inprogress = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
+    digest_closed     = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
+    digest_other      = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
+
+    def clean(self):
+        """
+        Require at least one of notify_group or notify_members (or both)
+        """
+
+        if not (self.cleaned_data.get('notify_group') or self.cleaned_data.get('notify_members')):
+            raise ValidationError("A notification configuration is required")
+
+        return self.cleaned_data

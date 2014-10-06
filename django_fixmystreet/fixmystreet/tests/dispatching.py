@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
-    OrganisationEntity, StreetSurface,
+    OrganisationEntity, StreetSurface, GroupMailConfig,
     OrganisationEntitySurface, ReportCategory, Report
 )
 from django_fixmystreet.fixmystreet.utils import dict_to_point
@@ -36,6 +36,10 @@ class GeographicDispatchingTest(TestCase):
         )
         self.region_group.save()
 
+        self.region_group_mail_config       = GroupMailConfig()
+        self.region_group_mail_config.group = self.region_group
+        self.region_group_mail_config.save()
+
         self.commune = OrganisationEntity(
             name_nl="Commune",
             name_fr="Commune",
@@ -52,6 +56,10 @@ class GeographicDispatchingTest(TestCase):
         )
         self.commune_group.save()
         self.commune_group.dispatch_categories.add(self.secondary_category)
+
+        self.commune_group_mail_config       = GroupMailConfig()
+        self.commune_group_mail_config.group = self.commune_group
+        self.commune_group_mail_config.save()
 
         p1 = (148776, 171005)
         p2 = (150776, 171005)

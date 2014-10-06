@@ -8,9 +8,11 @@ from django.contrib.gis.geos import Polygon
 
 from unittest import skip
 
+from datetime import datetime
+
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    ReportEventLog, OrganisationEntitySurface,
+    ReportEventLog, OrganisationEntitySurface, GroupMailConfig,
     ReportComment)
 
 
@@ -81,6 +83,10 @@ class HistoryTest(TestCase):
         self.group.dispatch_categories.add(ReportCategory.objects.get(pk=1))
         self.group.dispatch_categories.add(ReportCategory.objects.get(pk=2))
 
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
+
         self.manager.memberships.create(organisation=self.group, contact_user=True)
 
         self.manager2 = FMSUser(
@@ -123,6 +129,10 @@ class HistoryTest(TestCase):
             )
         self.group2.save()
         self.group2.dispatch_categories.add(ReportCategory.objects.get(pk=1))
+
+        self.group_mail_config2       = GroupMailConfig()
+        self.group_mail_config2.group = self.group2
+        self.group_mail_config2.save()
 
         self.manager3.memberships.create(organisation=self.group2)
 
@@ -519,140 +529,107 @@ class HistoryTest(TestCase):
         self.assertNotContains(response, self.calculatePrint(activities.all()[2]))
         self.assertNotContains(response, self.calculatePrintPro(activities.all()[2]))
 
-    def testCitizenSubscribesToReport(self):
+    def test_assign_to_other_member_of_same_entity(self):
         response = self.client.post(
             reverse('report_new') + '?x=150056.538&y=170907.56',
             self.sample_post_citizen,
             follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
 
-        response = self.client.get(
-            reverse('subscribe', args=[report_id]), {
-                'citizen_email': self.citizen2.email
-            },
-            follow=True)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(report.subscriptions.filter(subscriber=self.citizen).exists())
-        self.assertTrue(report.subscriptions.filter(subscriber=self.citizen2).exists())
-        self.assertFalse(report.subscriptions.filter(subscriber=self.citizen3).exists())
-        self.assertTrue(report.subscriptions.filter(subscriber=self.manager).exists())
-        self.assertTrue(report.subscriptions.filter(subscriber=self.manager2).exists())
-        self.assertFalse(report.subscriptions.filter(subscriber=self.manager3).exists())
-        self.assertEquals(report.subscriptions.all().count(), 4)
-        self.assertEquals(activities.all().count(), 1)
+        report             = response.context['report']
+        report.accepted_at = datetime.now()
+        report.status      = Report.MANAGER_ASSIGNED
+        report.save()
 
-    def testProSubscribesToReport(self):
-        response = self.client.post(
-            reverse('report_new') + '?x=150056.538&y=170907.56',
-            self.sample_post_citizen,
-            follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
+        # Reset events
+        report.activities.all().delete()
 
-        self.client.login(username='manager2@a.com', password='test2')
-        response = self.client.get(reverse('subscribe_pro', args=[report_id]), {}, follow=True)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertTrue(report.subscriptions.filter(subscriber=self.citizen).exists())
-        self.assertFalse(report.subscriptions.filter(subscriber=self.citizen2).exists())
-        self.assertFalse(report.subscriptions.filter(subscriber=self.citizen3).exists())
-        self.assertTrue(report.subscriptions.filter(subscriber=self.manager2).exists())
-        self.assertEquals(activities.all().count(), 1)
-
-    def testAssignToOtherMemberOfSameEntity(self):
-        response = self.client.post(
-            reverse('report_new') + '?x=150056.538&y=170907.56',
-            self.sample_post_citizen,
-            follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
-        report = Report.objects.get(id=report_id)
-        activities = report.activities
-        self.assertEquals(activities.all().count(), 1)
-
-         #first accept the report before citizen can update
+        # Change manager
         self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = response.context['report']
-        self.assertIsNotNone(report.accepted_at)
-        self.assertEquals(activities.all().count(), 2)
 
-        response = self.client.get(
-            reverse('report_change_manager_pro', args=[report_id]), {
-                'manId': 'department_' + str(self.group2.id)
+        response = self.client.post(
+            reverse('report_change_manager_pro', args=[report.id]), {
+                'man_id': 'department_' + str(self.group2.id),
+                'transfer': 0
             }, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(activities.all().count(), 3)
 
-        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
+        report     = Report.objects.get(id=report.id)
         activities = report.activities.all()
-        self.assertEquals(activities.all().count(), 3)
-        self.assertContains(response, self.calculatePrintPro(activities[2]))
 
-        #now check as citizen no status update should be visible
+        self.assertEquals(response.status_code, 200)
+
+        # 1 activity for changing manager group
+        self.assertEquals(activities.count(), 1)
+        self.assertEqual(activities[0].event_type, ReportEventLog.MANAGER_ASSIGNED)
+
+        # History for pro
+        url      = '%s?report_id=%s' % (reverse('search_ticket_pro'), report.id)
+        response = self.client.get(url, follow=True)
+
+        self.assertContains(response, self.calculatePrintPro(activities[0]))
+
+        # History for citizen
         self.client.logout()
-        #Check for citizen user
-        url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEqual(activities.all().count(), 3)
-        self.assertNotContains(response, self.calculatePrint(activities[2]))
-        self.assertNotContains(response, self.calculatePrintPro(activities[2]))
 
-    def testAssignToOtherEntity(self):
+        url      = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
+        response = self.client.get(url, follow=True)
+
+        self.assertNotContains(response, self.calculatePrint(activities[0]))
+        self.assertNotContains(response, self.calculatePrintPro(activities[0]))
+
+    def test_assign_to_other_entity(self):
         response = self.client.post(
             reverse('report_new') + '?x=150056.538&y=170907.56',
             self.sample_post_citizen,
             follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
-         #first accept the report before citizen can update
+
+        report             = response.context['report']
+        report.accepted_at = datetime.now()
+        report.status      = Report.MANAGER_ASSIGNED
+        report.save()
+
+        # Reset events
+        report.activities.all().delete()
+
+        # Change manager
         self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
-        self.client.login(username='manager@a.com', password='test')
-        response = self.client.get(
-            reverse('report_change_manager_pro', args=[report_id]) + '?', {
-                'manId': 'entity_21'
+
+        response = self.client.post(
+            reverse('report_change_manager_pro', args=[report.id]), {
+                'man_id'  : 'entity_21',
+                'transfer': 0
             },
             follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEquals(activities.all().count(), 4)
-        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertContains(response, self.calculatePrintPro(activities[2]))
 
-        #Now test to see that citizen sees the correct information
+        report     = Report.objects.get(id=report.id)
+        activities = report.activities.all()
+
+        self.assertEquals(response.status_code, 200)
+
+        # 1 activity for changing manager and 1 for entity change
+        self.assertEqual(activities.count(), 2)
+        self.assertEqual(activities[0].event_type, ReportEventLog.MANAGER_ASSIGNED)
+        self.assertEqual(activities[1].event_type, ReportEventLog.ENTITY_ASSIGNED)
+
+        # Test history of pro
+        url      = '%s?report_id=%s' % (reverse('search_ticket_pro'), report.id)
+        response = self.client.get(url, follow=True)
+
+        self.assertEquals(response.status_code, 200)
+
+        self.assertContains(response, self.calculatePrintPro(activities[0]))
+
+        # Test history of citizen
         self.client.logout()
-        url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
+
+        url      = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
         response = self.client.get(url, follow=True)
+
         self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
 
-        activities = report.activities.all()
-        self.assertEqual(activities.all().count(), 4)
+        self.assertNotContains(response, self.calculatePrint(activities[0]))
+        self.assertNotContains(response, self.calculatePrintPro(activities[0]))
 
-        self.assertEqual(activities[2].event_type, ReportEventLog.MANAGER_ASSIGNED)
-        self.assertEqual(activities[3].event_type, ReportEventLog.ENTITY_ASSIGNED)
-
-        self.assertNotContains(response, unicode(activities[2]))
-        self.assertContains(response, activities[3].get_public_activity_text())
+        self.assertContains(response, self.calculatePrint(activities[1]))
 
     def testMergeReports(self):
         #Send a post request filling in the form to create a report
@@ -772,23 +749,21 @@ class HistoryTest(TestCase):
         self.assertEqual(activities.all().count(), 3)
         self.assertContains(response, self.calculatePrint(activities[2]))
 
-    def testMakeCommentPublic(self):
-        settings.CACHE_TIMEOUT = 0;
-
+    def test_make_comment_public(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
-         #first accept the report before citizen can update
-        self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
+
         report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
-        #now add comment
+        report.accepted_at = datetime.now()
+        report.save()
+
+        # Reset event
+        report.activities.all().delete()
+
+        # Now add comment
+        self.client.login(username='manager@a.com', password='test')
         response = self.client.post(
             reverse('report_show_pro', kwargs={
-                'report_id': report_id,
+                'report_id': report.id,
                 'slug': 'hello'
             }), {
                 'comment-text': 'new created comment',
@@ -796,53 +771,52 @@ class HistoryTest(TestCase):
                 'files-INITIAL_FORMS': 0,
                 'files-MAX_NUM_FORMS': 0
             }, follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
+
+        report = response.context['report']
+
+        # 1 new comment and 1 activity
         self.assertEqual(report.comments().count(), 2)
-        #Now make the comment public
+        self.assertEqual(report.activities.all().count(), 1)
+
+        # Now make the comment public
         response = self.client.get(
-            reverse('report_update_attachment', args=[report_id]),
+            reverse('report_update_attachment', args=[report.id]),
             {
                 'updateType': '1',
                 'attachmentId': report.comments()[1].id
             }, follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        # A cache prevents to create too much log during publication if already sent
-        self.assertEqual(activities.all().count(), 4)  # still does not work as the message is not shown yet
-        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        self.assertContains(response, self.calculatePrintPro(activities[3]))
 
-        #now test for citizen
+        report     = Report.objects.get(id=report.id)
+        activities = report.activities.all()
+
+        # 1 new activity
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(activities.count(), 2)
+
+        # Test history for pro
+        url        = '%s?report_id=%s' % (reverse('search_ticket_pro'), report.id)
+        response   = self.client.get(url, follow=True)
+
+        self.assertEquals(response.status_code, 200)
+
+        # Pro see both update en published event
+        self.assertContains(response, self.calculatePrintPro(activities[0]))
+        self.assertContains(response, self.calculatePrintPro(activities[1]))
+
+        # Test history for citizen
         self.client.logout()
-        url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
+        url      = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
         response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEqual(activities.all().count(), 4)
-        self.assertContains(response, self.calculatePrint(activities[3]))
-        self.assertNotContains(response, self.calculatePrintPro(activities[3]))
 
-    def testPublish(self):
-        response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
-         #first accept the report before citizen can update
-        self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
-        report = response.context['report']
-        self.assertTrue(report.accepted_at is not None)
-        response = self.client.get(reverse('report_publish_pro', args=[report_id]), {}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
+
+        # Citizen cannot see the update event
+        self.assertNotContains(response, self.calculatePrint(activities[0]))
+        self.assertNotContains(response, self.calculatePrintPro(activities[0]))
+
+        # Citizen can see the published update event
+        self.assertContains(response, self.calculatePrint(activities[1]))
+        self.assertNotContains(response, self.calculatePrintPro(activities[1]))
 
     def test_reopen_report(self):
         # New report

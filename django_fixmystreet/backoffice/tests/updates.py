@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
-from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership, GroupMailConfig
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 from datetime import datetime, timedelta
@@ -33,6 +33,10 @@ class UpdatesTest(TestCase):
             )
         self.group.save()
 
+        self.group_mail_config       = GroupMailConfig()
+        self.group_mail_config.group = self.group
+        self.group_mail_config.save()
+
         self.group2 = OrganisationEntity(
             type="D",
             name_nl="Werken2",
@@ -42,6 +46,10 @@ class UpdatesTest(TestCase):
             email="test2@email.com"
             )
         self.group2.save()
+
+        self.group_mail_config2       = GroupMailConfig()
+        self.group_mail_config2.group = self.group2
+        self.group_mail_config2.save()
 
         self.manager = FMSUser(
             is_active=True,
