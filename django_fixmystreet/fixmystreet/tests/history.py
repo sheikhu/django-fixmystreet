@@ -12,8 +12,8 @@ from datetime import datetime
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
-    ReportEventLog, OrganisationEntitySurface, GroupMailConfig
-)
+    ReportEventLog, OrganisationEntitySurface, GroupMailConfig,
+    ReportComment)
 
 
 class HistoryTest(TestCase):
@@ -823,6 +823,9 @@ class HistoryTest(TestCase):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         report = response.context['report']
 
+
+        comment = ReportComment(report_id=report.id, text='test', type=3)
+        comment.save()
         # Set status to REFUSED
         report.status = Report.REFUSED
         report.save()

@@ -9,6 +9,10 @@ header{
 	margin: 42px 0 0 0;
 	clear: right;
 }
+header > .navbar {
+	position: relative;
+	z-index: 100;
+}
 nav ul{
 	/*background:#E0E0E0;*/
 	margin: 0;
@@ -210,14 +214,15 @@ footer .cirb-cibg img{
 #map{
 	position: relative;
 	height: 280px;
+	z-index: 10;
 }
 #map.pro{
 	position: relative;
 	height: 300px;
 }
-.map-big #map, #map.map-big{
+
+.map-size-big {
 	height: 610px !important;
-    transition: all 1s;
 }
 
 .map-button-section {
@@ -229,9 +234,6 @@ footer .cirb-cibg img{
 }
 #map img {
 	max-width: none;
-}
-#map {
-    transition: height 1s;
 }
 
 .olControlBtnCenterOnCursorItemActive {
@@ -258,9 +260,9 @@ footer .cirb-cibg img{
 
 #proposal-container {
     background-color: #FFFFFF;
-    bottom: -13px;
+    top: 6px;
     position: absolute;
-    right: 1px;
+    right: 6px;
     z-index: 1;
     margin:15px 0;
     padding: 0;
@@ -275,6 +277,7 @@ footer .cirb-cibg img{
 	border-radius: 4px;
 	border:1px solid #607C9D;
 }
+
 #proposal-container .numberResultsContainer {
     text-align: center;
     font-size: 1.2em;
@@ -296,7 +299,10 @@ footer .cirb-cibg img{
 	margin: 10px 15px 10px 15px;
     cursor:pointer;
 }
-#proposal img{
+#proposal li:last-child {
+    border-bottom: none;
+}
+#proposal img {
 	float:left;
 	margin-right:5px;
 	margin-top:5px;
@@ -310,11 +316,23 @@ footer .cirb-cibg img{
 #proposal li a{
     color:black;
 }
-#proposal-message{
-    margin: 0;
-    padding: 0 1em 1em;
-    color: #BCD4F1;
-    font-weight:bold;
+#proposal-message {
+	margin: 0px;
+	color: #BCD4F1;
+	font-weight: bold;
+	padding: .5em 1em .5em;
+	display: inline-block;
+	position: absolute;
+	z-index: 10000;
+	top: 5px;
+	left: 40px;
+	background-color: white;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	display: none;
+}
+#proposal-message > p {
+	margin: 0;
 }
 #proposal-container button{
 	background:#607C9D
@@ -563,17 +581,23 @@ footer .cirb-cibg img{
 	width: 25px;
 	height: 25px;
 }
-#btn-localizeviamap i{
+#btn-localizeviamap i, .icon-localizeviamap {
 	background: transparent url('../images/icon-localizeviamap.png') center center no-repeat;
 }
-#btn-streetview i{
+#btn-streetview i, .icon-streetview {
 	background: transparent url('../images/icon-streetview.png') center center no-repeat;
 }
-.pulldown-map i{
+.pulldown-map i, .icon-pulldown-map {
 	background:transparent url('../images/icon-pulldownmap.png') center center no-repeat;
 }
-.pullup-map i{
+.pullup-map i, .icon-pullup-map {
 	background:transparent url('../images/icon-pullupmap.png') center center no-repeat;
+}
+.icon-localizeviamap, .icon-streetview, .icon-pulldown-map, .icon-pullup-map {
+	background-position: 50% 50%;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
 }
 #btn-streetview{
 	-webkit-border-bottom-left-radius: 4px;
@@ -2003,6 +2027,10 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 	height: 100%;
 	clear: none;
 }
+.dataTables_wrapper{
+	position: relative;
+	z-index: 1055;
+}
 .table-content{
 	position: absolute;
 	top: 44px;
@@ -2014,6 +2042,7 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 .table-controls {
 	position: absolute;
 	top: 10px;
+	z-index: 1060;
 }
 .table-controls ul {
 	padding: 5px 16px;
@@ -2216,7 +2245,7 @@ table.dataTable thead th {
     display: block;
 }
 
-.required label.control-label::before {
+.required label.control-label::after {
 content: "*";
 }
 

@@ -14,6 +14,7 @@ else:
 
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     DEBUG = True
+    TEMPLATE_DEBUG = True
 else:
     DEBUG = False
 
@@ -53,6 +54,8 @@ POSTGIS_TEMPLATE = 'template_postgis'
 
 PROXY_URL = "http://gis.irisnet.be/"
 URBIS_URL = "/urbis/"
+if ENVIRONMENT == "local":
+    URBIS_URL = PROXY_URL
 
 TIME_ZONE = 'Europe/Brussels'
 

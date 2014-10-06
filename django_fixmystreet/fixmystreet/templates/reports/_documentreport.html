@@ -75,7 +75,7 @@
                 {% if not report_form %}
                     <p class="prevStep"><a href="{% url 'report_show_pro' report_id=report.id slug=report.get_slug %}">{% trans "Cancel" %}</a></p>
                 {% endif %}
-                <button id="validate_button" class="btn pull-right"> {% trans 'Send' %}</button>
+                <button id="validate_button" class="btn pull-right" data-one-click> {% trans 'Send' %}</button>
             </div>
         {% endif %}
     </div>
@@ -165,7 +165,7 @@
                     <p class="info_end_form" style="clear:both">{% trans "The report will be send to you by mail." %}</p>
                 {% endif %}
 
-                <button id="validate_button" class="btn pull-right"> {% trans 'Send' %}</button>
+                <button id="validate_button" class="btn pull-right" data-one-click> {% trans 'Send' %}</button>
             </div>
             <p class="prevStep"><button id="previousStep">{% trans 'Previous step' %}</button></p>
 

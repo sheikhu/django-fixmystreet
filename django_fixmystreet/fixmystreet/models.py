@@ -887,6 +887,26 @@ class Report(UserTrackedModel):
         else:
             return ugettext("Processed")
 
+    def get_status_for_js_map(self):
+        if self.is_created():
+            return "reported"
+        elif self.is_in_progress():
+            return "ongoing"
+        elif self.is_closed():
+            return "closed"
+        #elif self.is_refused() or self.is_temporary():
+        else:
+            return "other"
+
+    def get_icons_for_js_map(self):
+        return {
+            "regionalRoads": self.is_regional(),
+            "pro": self.is_pro(),
+            "assigned": self.is_contractor_or_applicant_assigned(),
+            "priority": self.get_priority(),
+            "solved": self.is_solved(),
+        }
+
     def get_date_planned(self):
         if self.date_planned:
             return self.date_planned.strftime('%m/%Y')
@@ -1573,11 +1593,16 @@ class ReportAttachment(UserTrackedModel):
     #     '''Returns true if the attachment is deleted'''
     #     return self.logical_deleted
 
+    # DEPRECATED !!!
     def is_confidential_visible(self):
         '''visible when not confidential'''
         current_user = get_current_user().fmsuser
         # return (self.is_visible and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
-        return (self.security_level != ReportAttachment.CONFIDENTIAL and (current_user.contractor or current_user.applicant) or (current_user.manager or current_user.leader))
+        return (
+            self.security_level != ReportAttachment.CONFIDENTIAL and
+            (current_user.contractor or current_user.applicant) or
+            (current_user.manager or current_user.leader)
+        )
 
     def is_citizen_visible(self):
         '''Visible when not confidential and public'''

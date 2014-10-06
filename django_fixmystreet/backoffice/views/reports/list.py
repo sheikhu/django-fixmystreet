@@ -18,7 +18,7 @@ def table(request):
     zipcodes = ZipCode.objects.filter(hide=False).order_by('name_'+get_language())
 
     return render_to_response("pro/reports/table.html", {
-        'street': request.GET.get("street"),
+        'location': request.GET.get("q"),
         'zipcode': request.GET.get("ward"),
         'zipcodes': zipcodes,
         'all_zipcodes': ZipCode.objects.all(),
@@ -78,4 +78,3 @@ def table_content(request, selection=""):
         "zipcodes": zipcodes,
         "reports": reports.related_fields(),
     }, context_instance=RequestContext(request))
-

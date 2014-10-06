@@ -11,14 +11,18 @@
         <script src="{% static 'lib/html5shiv.js' %}"></script>
         <![endif]-->
         {% block css %}
+        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.1/themes/flick/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap/css/bootstrap-responsive.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/leaflet/leaflet.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/leaflet.opacitycontrols/control.opacity.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.qtip.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/fms.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/leaflet-fms.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/ie_compat.css' %}" />
 
         <link rel="Shortcut Icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
-        <link href='//fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css' />
         {% endblock %}
 
         {% block meta %}{% endblock %}
@@ -267,32 +271,36 @@
             var URBIS_URL = '{{ URBIS_URL }}';
             var WMS_SERVICE_URL = '{{ WMS_SERVICE_URL }}';
             var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
-            if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') {
-                LANGUAGE_CODE = 'fr'
-            }
+            if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') { LANGUAGE_CODE = 'fr'; }
             var GEOSERVER_URL = '//{{ GEOSERVER }}';
             var STATIC_URL = '{{ STATIC_URL }}';
-            {% if request.GET.debug %}
-            var DEBUG =  true;
-            {% else %}
-            var DEBUG =  {{ DEBUG|yesno:"true,false" }};
-            {% endif %}
+            var DEBUG = {% if request.GET.debug %}true{% else %}{{ DEBUG|yesno:"true,false" }}{% endif %};
             var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
+            var fms = {};
+            {% block js_vars %}{% endblock %}
         </script>
+
         <script type="text/javascript" src="{% static 'lib/jquery-1.8.3.min.js' %}"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="{% static 'lib/qtip/jquery.qtip.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/UtilValidator.js' %}"></script>
 
-        {% block mapscript %}
+        <script type="text/javascript" src="{% static 'lib/underscore/underscore.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/backbone/backbone.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/leaflet/leaflet.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/leaflet.opacitycontrols/control.opacity.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/proj4leaflet/0.7.0/vendor/proj4-compressed.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/proj4leaflet/0.7.0/proj4leaflet.js' %}"></script>
         <script type="text/javascript" src="{% static 'lib/proj4js/engine/proj4js-compressed.js' %}"></script>
         <script type="text/javascript" src="{% static 'lib/proj4js/defs/EPSG31370.js' %}"></script>
-        <script type="text/javascript" src="{% static 'lib/OpenLayers-2.12/OpenLayers.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/geolocation.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/fixmystreetmap.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/fixmystreetstore.js' %}"></script>
-        {% endblock %}
 
+        <script type="text/javascript" src="{% static 'js/leaflet/leaflet-fms.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/geolocation.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'js/map-view.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/fixmystreetstore.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
 
         {% if messages %}

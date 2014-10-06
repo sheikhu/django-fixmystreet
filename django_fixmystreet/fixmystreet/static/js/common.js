@@ -29,7 +29,10 @@ $(document).ready(function(){
     /* form validation */
     // $(":input, :select, ").submit(function(evt) {});
     $("form").submit(function(evt) {
-        if (!validateForm($(this))) {
+        var $this = $(this);
+        if (validateForm($this)) {
+            $this.find('[data-one-click]').prop('disabled', true);
+        } else {
             evt.preventDefault();
             evt.stopImmediatePropagation();
         }

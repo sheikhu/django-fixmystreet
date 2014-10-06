@@ -8,8 +8,8 @@ from django.core import mail
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, ReportAttachment,
     FMSUser, OrganisationEntitySurface, GroupMailConfig,
-    UserOrganisationMembership
-)
+    ReportComment)
+
 from django.contrib.gis.geos import Polygon
 
 from datetime import datetime, timedelta
@@ -756,6 +756,9 @@ class MailTest(TestCase):
         # New report
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
         report = response.context['report']
+
+        comment = ReportComment(report_id=report.id, text='test', type=3)
+        comment.save()
 
         # Set status to REFUSED
         report.status = Report.REFUSED

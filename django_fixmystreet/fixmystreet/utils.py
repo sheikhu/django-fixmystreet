@@ -316,6 +316,10 @@ def transform_notification_template(template_mail, report, user, old_responsible
         data["reopen_reason"] = lambda: reopen_reason.get_reason_display()
         # data["reopen_reason_nl"] =
         data["reopen_comment"] = reopen_reason.text
+    if template_mail == "notify-refused":
+        from django_fixmystreet.fixmystreet.models import ReportAttachment, ReportComment
+        data["comment"] = ReportComment.objects.filter(report=report, type=ReportAttachment.REFUSED).latest('created').text
+
 
     # Subject mail for each languages.
     # Don't forget to update mail_titles variable (above) to support translations in .po.
