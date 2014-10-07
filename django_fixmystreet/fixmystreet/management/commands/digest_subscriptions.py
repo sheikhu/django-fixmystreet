@@ -49,8 +49,6 @@ class Command(BaseCommand):
 
             ReportEventLog.PLANNED, ReportEventLog.MERGED, ReportEventLog.UPDATE_PUBLISHED,
 
-            ReportEventLog.BECAME_PRIVATE, ReportEventLog.BECAME_PUBLIC,
-
             ReportEventLog.APPLICANT_ASSIGNED, ReportEventLog.CONTRACTOR_ASSIGNED,
 
             ReportEventLog.MANAGER_ASSIGNED,
