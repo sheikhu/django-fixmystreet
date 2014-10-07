@@ -23,11 +23,20 @@ class Command(BaseCommand):
             dest='send',
             default=False,
             help='Send digest by mails'),
+
+        make_option('--date',
+            action='store',
+            dest='date',
+            default=False,
+            help='Specify date of digest. Format: 30/12/2012')
         )
 
     def handle(self, *args, **options):
-        # Date of yesterday
-        YESTERDAY = datetime.date.today() - datetime.timedelta(days=1)
+        # Date of yesterday (or specific date)
+        if options['date']:
+            YESTERDAY = datetime.datetime.strptime(options['date'], "%d/%m/%Y").date()
+        else:
+            YESTERDAY = datetime.date.today() - datetime.timedelta(days=1)
 
         logger.info('DIGEST OF NOTIFICATIONS FOR ACTVITIES OF %s' % YESTERDAY)
 
