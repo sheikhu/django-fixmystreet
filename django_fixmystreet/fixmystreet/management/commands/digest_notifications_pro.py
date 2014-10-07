@@ -42,15 +42,15 @@ class Command(BaseCommand):
 
         # All group mail configurations with at least 1 digest config
         group_mail_configs = GroupMailConfig.objects.filter(group__type=OrganisationEntity.DEPARTMENT).filter(Q(digest_closed=True) | Q(digest_created=True) | Q(digest_inprogress=True) | Q(digest_other=True))
-        print 'group_mail_configs', group_mail_configs
+        logger.info('group_mail_configs %s' % group_mail_configs)
 
         # All group having digest config
         groups = group_mail_configs.values_list('group', flat=True)
-        print 'groups', groups
+        logger.info('groups %s' % groups)
 
         # All events of yesterday related to groups
         events_yesterday = ReportEventLog.objects.filter(event_at__contains=YESTERDAY, report__responsible_department__in=groups)
-        print 'events_yesterday', events_yesterday
+        logger.info('events_yesterday %s' % events_yesterday)
 
         for mail_config in group_mail_configs:
             group = mail_config.group
