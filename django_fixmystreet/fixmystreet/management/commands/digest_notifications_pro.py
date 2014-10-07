@@ -23,25 +23,34 @@ class Command(BaseCommand):
             dest='send',
             default=False,
             help='Send digest by mails'),
+
+        make_option('--date',
+            action='store',
+            dest='date',
+            default=False,
+            help='Specify date of digest. Format: 30/12/2012')
         )
 
     def handle(self, *args, **options):
-        # Date of yesterday
-        YESTERDAY = datetime.date.today() - datetime.timedelta(days=1)
+        # Date of yesterday (or specific date)
+        if options['date']:
+            YESTERDAY = datetime.datetime.strptime(options['date'], "%d/%m/%Y").date()
+        else:
+            YESTERDAY = datetime.date.today() - datetime.timedelta(days=1)
 
         logger.info('DIGEST OF NOTIFICATIONS FOR ACTVITIES OF %s' % YESTERDAY)
 
         # All group mail configurations with at least 1 digest config
         group_mail_configs = GroupMailConfig.objects.filter(group__type=OrganisationEntity.DEPARTMENT).filter(Q(digest_closed=True) | Q(digest_created=True) | Q(digest_inprogress=True) | Q(digest_other=True))
-        print 'group_mail_configs', group_mail_configs
+        logger.info('group_mail_configs %s' % group_mail_configs)
 
         # All group having digest config
         groups = group_mail_configs.values_list('group', flat=True)
-        print 'groups', groups
+        logger.info('groups %s' % groups)
 
         # All events of yesterday related to groups
         events_yesterday = ReportEventLog.objects.filter(event_at__contains=YESTERDAY, report__responsible_department__in=groups)
-        print 'events_yesterday', events_yesterday
+        logger.info('events_yesterday %s' % events_yesterday)
 
         for mail_config in group_mail_configs:
             group = mail_config.group

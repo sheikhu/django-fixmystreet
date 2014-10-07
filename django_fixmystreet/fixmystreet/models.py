@@ -1466,11 +1466,15 @@ def report_notify_report_private(sender, instance, **kwargs):
         event_log_user = report.modified_by
 
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
-            event = ReportEventLog(
-                report=report,
-                event_type=ReportEventLog.BECAME_PRIVATE,
-                user=event_log_user)
-            event.save()
+            # Inform all subscribers in real-time
+            for subscription in report.subscriptions.all():
+                if not subscription.subscriber.is_pro():
+                    ReportNotification(
+                    content_template='notify-became-private',
+                    recipient=subscription.subscriber,
+                    related=report,
+                    reply_to=report.responsible_department.email,
+                ).save()
 
 @receiver(post_save, sender=Report)
 def report_notify_report_public(sender, instance, **kwargs):
@@ -1483,11 +1487,15 @@ def report_notify_report_public(sender, instance, **kwargs):
         event_log_user = report.modified_by
 
         if (not kwargs['created'] and not report.private and (report.__former['private'])):
-            event = ReportEventLog(
-                report=report,
-                event_type=ReportEventLog.BECAME_PUBLIC,
-                user=event_log_user)
-            event.save()
+            # Inform all subscribers in real-time
+            for subscription in report.subscriptions.all():
+                if not subscription.subscriber.is_pro():
+                    ReportNotification(
+                    content_template='notify-became-public',
+                    recipient=subscription.subscriber,
+                    related=report,
+                    reply_to=report.responsible_department.email,
+                ).save()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):

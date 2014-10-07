@@ -661,8 +661,11 @@ class MailTest(TestCase):
         report = Report.objects.get(id=report.id)
         self.assertTrue(report.private)
 
-        # All mails sent to subscribers as digest
-        self.assertEquals(len(mail.outbox), 0)
+        # Mails are sent in real time
+        self.assertEquals(len(mail.outbox), 1)
+
+        # Reset outbox
+        mail.outbox = []
 
         # 2/ Now make the report public
         response = self.client.get(reverse('report_change_switch_privacy', args=[report.id]) + '?privacy=false', follow=True)
@@ -670,8 +673,8 @@ class MailTest(TestCase):
         report = Report.objects.get(id=report.id)
         self.assertFalse(report.private)
 
-        # All mails sent to subscribers as digest
-        self.assertEquals(len(mail.outbox), 0)
+        # Mails are sent in real time
+        self.assertEquals(len(mail.outbox), 1)
 
     #def testMergeReportMail(self):
     #    #Login to access the pro page
