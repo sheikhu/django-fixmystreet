@@ -58,11 +58,11 @@ def get_report_popup_details(request):
 
 
 def filter_map(request):
-    reports = Report.objects.all().related_fields().visible().public()
+    reports = Report.objects.all().related_fields().visible().public().transform(DEFAULT_SRID)
 
     features = []
     for report in reports:
-        report.point.transform(DEFAULT_SRID)
+        # report.point.transform(DEFAULT_SRID)
         features.append({
             "type": "Feature",
             "properties": {
