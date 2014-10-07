@@ -562,7 +562,7 @@ L.FixMyStreet.Map = L.Map.extend({
     $.get(url, function (geoJson) {
       if (DEBUG) { console.log('GeoJSON received from %s...', url); }
       that._addIncidentsFromGeoJson(geoJson, baseOptions, next);
-    }).fail(function() {
+    }).fail(function () {
       that.hideSpinner();
       throw new Error('Failed to load GeoJSON from ' + url + ': ' + argument);
     });
@@ -750,7 +750,7 @@ L.FixMyStreet.Map = L.Map.extend({
     this.searchResults = [];
   },
 
-  _initLayers: function() {
+  _initLayers: function () {
     var that = this;
     $.each(this.options.myLayers, function (k, v) {
       v._layer = that._layerFactory(v.settings);
@@ -775,7 +775,7 @@ L.FixMyStreet.Map = L.Map.extend({
     this._incidentLayer.addTo(this);
   },
 
-  _initControls: function() {
+  _initControls: function () {
     if (this.options.controlsPosition.attribution !== undefined) {
       this.attributionControl.setPosition(this.options.controlsPosition.attribution);
     }
@@ -785,7 +785,7 @@ L.FixMyStreet.Map = L.Map.extend({
     }
   },
 
-  _initLayerControl: function() {
+  _initLayerControl: function () {
     var that = this;
     var baseLayers = {};
     var baseLayersCount = 0;
@@ -812,11 +812,11 @@ L.FixMyStreet.Map = L.Map.extend({
     L.control.layers(baseLayers, overlays, options).addTo(this);
   },
 
-  getLayerTitleForControl: function(layer) {
+  getLayerTitleForControl: function (layer) {
     return layer.controlTitle || layer.title || layer.settings.title;
   },
 
-  isOverlayLayer: function(layer) {
+  isOverlayLayer: function (layer) {
     return layer.overlay === true || (layer.overlay === undefined && layer.settings.overlay === true);
   },
 
@@ -842,7 +842,7 @@ L.FixMyStreet.Map = L.Map.extend({
     });
   },
 
-  _initPopups: function() {
+  _initPopups: function () {
     var that = this;
     this.on('popupopen', function(evt) {
       window.setTimeout(function () {  // Use timeout to wait that any previous "pan" is finished.
@@ -982,7 +982,7 @@ L.FixMyStreet.Map = L.Map.extend({
     this.$container.find('.leaflet-control-container').show();
   },
 
-  _initSpinner: function() {
+  _initSpinner: function () {
     var $spinner = this.$container.find('#fmsmap-spinner');
     if ($spinner.length === 0) {
       $spinner = $('<div id="fmsmap-spinner" />');
@@ -991,14 +991,14 @@ L.FixMyStreet.Map = L.Map.extend({
     return $spinner;
   },
 
-  _layerFactory: function(settings) {  // (Object)
+  _layerFactory: function (settings) {  // (Object)
     switch (settings.type) {
       case 'wms': return L.tileLayer.wms(settings.url, settings.options);
       default: return L.tileLayer(settings.url, settings.options);
     }
   },
 
-  _markerFactory: function(model, options) {  // (Object, Object)
+  _markerFactory: function (model, options) {  // (Object, Object)
     var marker;
     var latlng = L.FixMyStreet.Util.toLatLng(model.latlng) || this.getCenter();
 
@@ -1183,7 +1183,7 @@ L.FixMyStreet.Marker = L.Marker.extend({
     });
   },
 
-  getMap: function() {
+  getMap: function () {
     if (!this._map) {
       throw new Error('Marker is not visible on map, probably in a closed cluster.');
     }
@@ -1226,11 +1226,11 @@ L.FixMyStreet.Marker = L.Marker.extend({
 
   // HELPERS -------------------------------------------------------------------
 
-  centerMap: function() {
+  centerMap: function () {
     this.getMap().centerOnMarker(this);
   },
 
-  openStreetView: function() {
+  openStreetView: function () {
     var url = L.FixMyStreet.Util.getStreetViewUrl(this.getLatLng());
     window.open(url, '_blank');
   },
@@ -1296,7 +1296,7 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.Marker.extend({
     that._updateAddress();
   },
 
-  _updateAddress: function() {
+  _updateAddress: function () {
     var that = this;
     L.FixMyStreet.Util.getAddressFromLatLng(this.getLatLng(), function (address) {
       that.model.address = address;
@@ -1304,7 +1304,7 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.Marker.extend({
     });
   },
 
-  _popupFactory: function(options) {  // ([Object])
+  _popupFactory: function (options) {  // ([Object])
     return new L.FixMyStreet.NewIncidentPopup(options, this);
   },
 });
@@ -1582,17 +1582,17 @@ L.FixMyStreet.Panel = L.Control.extend({
     return $e;
   },
 
-  remove: function() {
+  remove: function () {
     this.$container.remove();
   },
 
-  setContent: function(html) {  // (String)
+  setContent: function (html) {  // (String)
     this._container = $(html).get(0);
     this.$container = $(this._container);
     this._bindActions();
   },
 
-  renderContent: function(data) {  // ([Object]
+  renderContent: function (data) {  // ([Object]
     var html = renderTemplate(this.options.template, data);
     this.setContent(html);
   },
@@ -1679,7 +1679,7 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     return this._container;
   },
 
-  remove: function() {
+  remove: function () {
     L.FixMyStreet.Panel.prototype.remove.call(this);
     this._map.enableInteractions();
   },
@@ -1700,7 +1700,7 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
 // UTILS =======================================================================
 
 L.FixMyStreet.Util = {
-  mergeExtendedOptions: function(that) {  // @TODO: Isn't there a better way?
+  mergeExtendedOptions: function (that) {  // @TODO: Isn't there a better way?
     if (that.extendedOptions !== undefined) {
       $.extend(true, that.options, that.extendedOptions);
       delete that.extendedOptions;
@@ -1754,7 +1754,7 @@ L.FixMyStreet.Util = {
    * @returns {L.Point} The converted value.
    * @throws {TypeError} If the value cannot be converted.
    */
-  toPoint: function(value, prefLatLng) {
+  toPoint: function (value, prefLatLng) {
     prefLatLng = prefLatLng === undefined ? false : prefLatLng === true;
 
     if (value instanceof L.Point || value === undefined || value === null) {
