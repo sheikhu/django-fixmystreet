@@ -38,6 +38,7 @@ if (gettext === undefined) { function gettext(s) { return s; } }
 
 L.FixMyStreet = L.FixMyStreet || {};
 if (NEW_INCIDENT_URL === undefined) { var NEW_INCIDENT_URL = ''; }
+if (LOAD_INCIDENT_MODEL_URL === undefined) { var LOAD_INCIDENT_MODEL_URL = ''; }
 if (URBIS_URL === undefined) { var URBIS_URL = 'http://gis.irisnet.be/'; }
 
 L.FixMyStreet.MAX_ZOOM = 21;
@@ -1195,6 +1196,7 @@ L.FixMyStreet.Marker = L.Marker.extend({
 
   openPopup: function (latlng) {  // ([L.LatLng])
     if (!this._popup) { return; }
+    latlng = latlng || this.model.latlng;
     this._popup.renderContent(this.model);
     L.Marker.prototype.openPopup.call(this, latlng);
     return this;
@@ -1255,23 +1257,7 @@ L.FixMyStreet.SearchResultMarker = L.FixMyStreet.Marker.extend({
 });
 
 
-L.FixMyStreet.IncidentMarker = L.FixMyStreet.Marker.extend({
-  initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
-    options = options || {};
-    if (options.popup === undefined) {
-      options.popup = this._popupFactory(options.popupOptions);
-    }
-    L.setOptions(this, options);
-    L.FixMyStreet.Marker.prototype.initialize.call(this, latlng, options, model);
-  },
-
-  _popupFactory: function(options) {  // ([Object])
-      return new L.FixMyStreet.IncidentPopup(options, this);
-  },
-});
-
-
-L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
+L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.Marker.extend({
   options: {
     draggable: true,
     icon: new L.FixMyStreet.NewIncidentIcon({
@@ -1280,7 +1266,11 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
   },
 
   initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
-    L.FixMyStreet.IncidentMarker.prototype.initialize.call(this, latlng, options, model);
+    options = options || {};
+    if (options.popup === undefined) {
+      options.popup = this._popupFactory(options.popupOptions);
+    }
+    L.FixMyStreet.Marker.prototype.initialize.call(this, latlng, options, model);
     this._dragged = false;  // Whether it has been moved.
   },
 
@@ -1316,6 +1306,57 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.IncidentMarker.extend({
 
   _popupFactory: function(options) {  // ([Object])
     return new L.FixMyStreet.NewIncidentPopup(options, this);
+  },
+});
+
+
+L.FixMyStreet.IncidentMarker = L.FixMyStreet.Marker.extend({
+  initialize: function (latlng, options, model) {  // (L.LatLng, [Object], [Object])
+    options = options || {};
+    if (options.popup === undefined) {
+      options.popup = this._popupFactory(options.popupOptions);
+    }
+    L.FixMyStreet.Marker.prototype.initialize.call(this, latlng, options, model);
+    this._modelLoaded = false;
+  },
+
+  openPopup: function (latlng) {  // ([L.LatLng])
+    var that = this;
+    if (!this._popup) { return; }
+    if (this._modelLoaded === true) {
+      L.Marker.prototype.openPopup.call(this, latlng);
+    } else {
+      this.on('modelloaded', function () {
+        L.FixMyStreet.Marker.prototype.openPopup.call(that);
+      });
+      this.loadModel();
+    }
+    return this;
+  },
+
+  loadModel: function (id) {  // ([Integer])
+    if (!LOAD_INCIDENT_MODEL_URL) {
+      throw new Error('LOAD_INCIDENT_MODEL_URL is not defined.');
+    }
+    id = id || this.model.id;
+    var that = this;
+    var url = LOAD_INCIDENT_MODEL_URL;
+
+    if (DEBUG) { console.log('Loading Model GeoJSON from %s...', url); }
+    $.get(url, {id: id}, function (model) {
+      if (DEBUG) { console.log('Model GeoJSON received from %s...', url); }
+      model.latlng = L.FixMyStreet.Util.toLatLng(model.latlng);
+      that.model = model;
+      this._modelLoaded = true;
+      that.fire('modelloaded');
+    }).fail(function () {
+      that._modelLoaded = false;
+      throw new Error('Failed to load Model GeoJSON from ' + url + ': ' + argument);
+    });
+  },
+
+  _popupFactory: function (options) {  // ([Object])
+      return new L.FixMyStreet.IncidentPopup(options, this);
   },
 });
 

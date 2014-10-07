@@ -14,6 +14,7 @@
 {% block js_vars %}
     {{ block.super }}
     var NEW_INCIDENT_URL = '{% url "report_verify_pro" %}';
+    var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details_pro" %}';
     var INCIDENT_DETAIL_URL = '{% url "report_show_pro" "{slug}" "9999999999" %}';
 {% endblock %}
 

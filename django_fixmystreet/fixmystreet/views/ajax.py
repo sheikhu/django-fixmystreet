@@ -52,13 +52,28 @@ def uploadFile(request):
 
 
 def get_report_popup_details(request):
-    report_id = request.REQUEST.get("report_id")
-    report = Report.objects.all().visible().public().related_fields().get(id=report_id)
-    return HttpResponse(json.dumps(report.full_marker_detail_JSON()), mimetype="application/json")
+    report = Report.objects.all().related_fields().visible().public().transform(DEFAULT_SRID).get(id=request.REQUEST.get("id"))
+    response = {
+        "id": report.id,
+        "type": report.get_status_for_js_map(),
+        "latlng": [report.point.x, report.point.y],
+        "address": {
+            "street": report.address,
+            "number": report.address_number,
+            "postalCode": report.postalcode,
+            "city": report.get_address_commune_name(),
+        },
+        "categories": report.get_category_path(),
+        "photo": report.thumbnail,
+        "icons": report.get_icons_for_js_map(),
+        "url": reverse("report_show", args=[report.get_slug(), report.id]),
+    }
+    response_json = json.dumps(response)
+    return HttpResponse(response_json, mimetype="application/json")
 
 
-def filter_map(request):
-    reports = Report.objects.all().related_fields().visible().public().transform(DEFAULT_SRID)
+def filter_map(request):  # pylint: disable=W0613
+    reports = Report.objects.all().visible().public().transform(DEFAULT_SRID).values("id", "status", "point")
 
     features = []
     for report in reports:
@@ -66,22 +81,23 @@ def filter_map(request):
         features.append({
             "type": "Feature",
             "properties": {
-                "id": report.id,
-                "type": report.get_status_for_js_map(),
-                "address": {
-                    "street": report.address,
-                    "number": report.address_number,
-                    "postalCode": report.postalcode,
-                    "city": report.get_address_commune_name(),
-                },
-                "categories": report.get_category_path(),
-                "photo": report.thumbnail,
-                "icons": report.get_icons_for_js_map(),
-                "url": reverse("report_show", args=[report.get_slug(), report.id]),
+                "id": report["id"],
+                # "type": report.get_status_for_js_map(),
+                "type": Report.static_get_status_for_js_map(report["status"]),
+                # "address": {
+                #     "street": report.address,
+                #     "number": report.address_number,
+                #     "postalCode": report.postalcode,
+                #     "city": report.get_address_commune_name(),
+                # },
+                # "categories": report.get_category_path(),
+                # "photo": report.thumbnail,
+                # "icons": report.get_icons_for_js_map(),
+                # "url": reverse("report_show", args=[report.get_slug(), report.id]),
             },
             "geometry": {
                 "type": "Point",
-                "coordinates": [report.point.x, report.point.y]
+                "coordinates": [report["point"].x, report["point"].y]
             }
         })
 
@@ -89,4 +105,5 @@ def filter_map(request):
         "type": "FeatureCollection",
         "features": features
     }
-    return HttpResponse(json.dumps(geo), mimetype="application/json")
+    geo_json = json.dumps(geo)
+    return HttpResponse(geo_json, mimetype="application/json")

@@ -868,6 +868,17 @@ class Report(UserTrackedModel):
         else:
             return ugettext("Processed")
 
+    @classmethod
+    def static_get_status_for_js_map(cls, status):
+        if status == cls.CREATED:
+            return "reported"
+        elif status == cls.PROCESSED:
+            return "closed"
+        elif status in cls.REPORT_STATUS_IN_PROGRESS:
+            return "ongoing"
+        else:
+            return "other"
+
     def get_status_for_js_map(self):
         if self.is_created():
             return "reported"

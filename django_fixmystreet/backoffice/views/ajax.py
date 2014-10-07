@@ -20,6 +20,12 @@ from django_fixmystreet.fixmystreet.utils import get_current_user, transform_not
 from django_fixmystreet.fixmystreet.utils import generate_pdf, JsonHttpResponse
 
 
+SRID_SPHERICAL_MERCATOR = 3857
+SRID_EQUIRECTANGULAR = 4326
+SRID_ELLIPTICAL_MERCATOR = 3395
+DEFAULT_SRID = SRID_EQUIRECTANGULAR
+
+
 def saveCategoryConfiguration(request):
     categoriesList = request.REQUEST.getlist("category")
     groupsList = request.REQUEST.getlist("group")
@@ -40,9 +46,24 @@ def saveCategoryConfiguration(request):
 
 
 def get_report_popup_details(request):
-    report_id = request.REQUEST.get("report_id")
-    report = Report.objects.all().related_fields().get(id=report_id)
-    return HttpResponse(json.dumps(report.full_marker_detail_pro_JSON()), mimetype="application/json")
+    report = Report.objects.all().related_fields().visible().transform(DEFAULT_SRID).get(id=request.REQUEST.get("id"))
+    response = {
+        "id": report.id,
+        "type": report.get_status_for_js_map(),
+        "latlng": [report.point.x, report.point.y],
+        "address": {
+            "street": report.address,
+            "number": report.address_number,
+            "postalCode": report.postalcode,
+            "city": report.get_address_commune_name(),
+        },
+        "categories": report.get_category_path(),
+        "photo": report.thumbnail,
+        "icons": report.get_icons_for_js_map(),
+        "url": reverse("report_show", args=[report.get_slug(), report.id]),
+    }
+    response_json = json.dumps(response)
+    return HttpResponse(response_json, mimetype="application/json")
 
 
 def secondary_category_for_main_category(request):
