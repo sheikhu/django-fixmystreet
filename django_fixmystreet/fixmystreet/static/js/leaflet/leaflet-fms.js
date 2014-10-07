@@ -1367,11 +1367,14 @@ L.FixMyStreet.Popup = L.Popup.extend({
   },
 
   onAdd: function (map) {  // (L.Map)
+    var that = this;
     L.Popup.prototype.onAdd.call(this, map);
     if (this.$container === undefined && this._container) {
       this.$container = $(this._container);
     }
-    this._bindActions();
+    this.on('contentupdate', function () {
+      that._bindActions();
+    });
   },
 
   attachMarker: function (marker) {  // (L.Marker)
@@ -1382,7 +1385,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
     this._marker = null;
   },
 
-  renderContent: function(data) {  // ([Object]
+  renderContent: function (data) {  // ([Object]
     var that = this;
     this.on('contentupdate', function () {
       that.saveDimensions();
