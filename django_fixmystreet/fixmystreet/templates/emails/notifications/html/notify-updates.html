@@ -5,10 +5,6 @@
 <hr />
 <h2>{{comment}}</h2>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
-<p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
-<ul>
-<li><a href="{{display_url}}">{{display_url}}</a></li>
-</ul>
 <p>Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
@@ -20,10 +16,6 @@
 <hr />
 <h2>{{comment}}</h2>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
-<p>U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:</p>
-<ul>
-<li><a href="{{display_url}}">{{display_url}}</a></li>
-</ul>
 <p>Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
