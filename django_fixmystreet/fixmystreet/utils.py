@@ -486,3 +486,21 @@ def hack_multi_file(request):
     request_files.update(qd)
 
     return request_files
+
+# Decorator: only responsibles can do some action
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+
+def responsible_permission(func):
+
+    def wrapper(request, report_id):
+        from django_fixmystreet.fixmystreet.models import Report, UserOrganisationMembership
+
+        report = get_object_or_404(Report, id=report_id)
+
+        if not UserOrganisationMembership.objects.filter(organisation=report.responsible_department, user=request.user).exists():
+            return HttpResponseRedirect(report.get_absolute_url_pro())
+
+        return func(request, report_id)
+
+    return wrapper

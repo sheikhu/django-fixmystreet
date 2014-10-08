@@ -10,32 +10,31 @@ from django.http import Http404
 
 from django_fixmystreet.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from django_fixmystreet.fixmystreet.forms import ReportCommentForm
+from django_fixmystreet.fixmystreet.utils import responsible_permission
 from django_fixmystreet.backoffice.forms import TransferForm
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-# TODO move to backoffice/views/reports/main.py
-@transaction.commit_on_success
+@responsible_permission
 def accept(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    #Test if the report is created...
+
+    # Test if the report is created...
     if report.status == Report.CREATED:
-        #Update the status and persist to the database
+        # Update the status and persist to the database
         report.status = Report.MANAGER_ASSIGNED
         report.accepted_at = datetime.now()
-        #When validating a report created by a citizen set all attachments to public per default.
+
+        # When validating a report created by a citizen set all attachments to public per default.
         if (report.citizen):
             validateAll(request, report.id)
         report.save()
 
-    if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-        return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
-
+@responsible_permission
 def refuse(request, report_id):
     report       = get_object_or_404(Report, id=report_id)
     comment_form = ReportCommentForm(request.POST)
@@ -64,7 +63,7 @@ def refuse(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def fixed(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
@@ -86,7 +85,7 @@ def fixed(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-
+@responsible_permission
 def close(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     #Update the status and set the close date
@@ -102,6 +101,7 @@ def close(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+@responsible_permission
 def reopen(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
@@ -120,6 +120,7 @@ def reopen(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+@responsible_permission
 def planned(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
@@ -135,7 +136,7 @@ def planned(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def pending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.pending = True
@@ -147,7 +148,7 @@ def pending(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def notpending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.pending = False
@@ -159,7 +160,7 @@ def notpending(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def switchPrivacy(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     privacy = request.REQUEST.get("privacy")
@@ -178,7 +179,7 @@ def switchPrivacy(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-
+@responsible_permission
 def switchThirdPartyResponsibility(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     third_party_responsibility = request.REQUEST.get("thirdPartyResponsibility")
@@ -197,7 +198,7 @@ def switchThirdPartyResponsibility(request, report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def changeManager(request, report_id):
     report = Report.objects.get(pk=report_id)
 
@@ -208,7 +209,7 @@ def changeManager(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-
+@responsible_permission
 def changeContractor(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     contractorId = request.REQUEST.get("contractorId")
@@ -232,7 +233,7 @@ def changeContractor(request, report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def updatePriority(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     report.gravity = int(request.GET["gravity"])
@@ -244,7 +245,7 @@ def updatePriority(request, report_id):
     else:
             return HttpResponseRedirect(report.get_absolute_url())
 
-
+@responsible_permission
 def publish(request, report_id):
     # Accept first
     accept(request, report_id)
@@ -267,7 +268,7 @@ def publish(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-
+@responsible_permission
 def validateAll(request, report_id):
     '''Set all annexes to public'''
     switchPrivacy(request, report_id)
@@ -276,30 +277,32 @@ def validateAll(request, report_id):
 
     if not report.private:
         attachments = report.attachments.all()
-        attachments.update(security_level=ReportAttachment.PUBLIC)
 
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
+        # Loop to trigger signals using .save()
+        for attachment in attachments:
+            attachment.security_level = ReportAttachment.PUBLIC
+            attachment.is_new_report  = True
+            attachment.save()
 
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
+@responsible_permission
 def updateAttachment(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-
-    # update modified_by
-    report.save()
 
     security_level            = request.REQUEST.get('updateType')
     attachment                = report.attachments.get(pk=request.REQUEST.get('attachmentId'))
     attachment.security_level = int(security_level)
     attachment.save()
 
+    # update modified_by
+    report.save()
+
     return render_to_response("reports/_visibility_control.html", {
         "attachment": attachment
     }, context_instance=RequestContext(request))
 
-
+@responsible_permission
 def deleteAttachment(request, report_id):
     """delete a attachment (pro only)"""
     report = get_object_or_404(Report, id=report_id)
@@ -309,7 +312,7 @@ def deleteAttachment(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-
+@responsible_permission
 def do_merge(request, report_id):
     #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
