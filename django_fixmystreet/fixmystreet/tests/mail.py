@@ -143,22 +143,14 @@ class MailTest(TestCase):
         self.impetrant = OrganisationEntity(
             name_nl="MIVB",
             name_fr="STIB",
-            commune=False,
-            region=False,
-            subcontractor=False,
-            email="stib@mivb.be",
-            applicant=True)
+            email="stib@mivb.be")
 
         self.impetrant.save()
 
         self.contractor = OrganisationEntity(
             name_nl="Fabricom GDF",
             name_fr="Fabricom GDF",
-            email="contractor@email.com",
-            commune=False,
-            region=False,
-            subcontractor=True,
-            applicant=False)
+            email="contractor@email.com")
         self.contractor.save()
 
         self.sample_post = {

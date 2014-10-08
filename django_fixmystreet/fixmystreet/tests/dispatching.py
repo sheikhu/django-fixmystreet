@@ -21,9 +21,9 @@ class GeographicDispatchingTest(TestCase):
         self.category = self.secondary_category.category_class
 
         self.region = OrganisationEntity(
+            type=OrganisationEntity.REGION,
             name_nl="Region",
-            name_fr="Region",
-            region=True,
+            name_fr="Region"
         )
         self.region.save()
         self.region_group = OrganisationEntity(
@@ -43,7 +43,6 @@ class GeographicDispatchingTest(TestCase):
         self.commune = OrganisationEntity(
             name_nl="Commune",
             name_fr="Commune",
-            commune=True,
         )
         self.commune.save()
         self.commune_group = OrganisationEntity(

@@ -68,37 +68,3 @@ class ReportProViewsTest(TestCase):
             'citizen-quality':'1',
             'report-terms_of_use_validated': True
         }
-
-    #~ def test_list_contractor(self):
-        #~ """Tests list of contractors."""
-        #~ self.client.login(username='manager@a.com', password='test')
-#~
-        #~ self.organisation = OrganisationEntity(name="Dummy Organisation", commune=False, region=False, subcontractor=True, applicant=False, dependency=self.manager.organisation, feature_id = 5)
-        #~ self.organisation.save()
-#~
-        #~ response = self.client.get(reverse('list_contractors'))
-        #~ self.assertEquals(response.status_code, 200)
-#~
-        #~ contractors = response.context['contractors']
-        #~ self.assertTrue(len(contractors))
-#~
-    #~ def test_list_contractor_superuser(self):
-        #~ """Tests list of contractors if superuser."""
-        #~ self.client.login(username='superuser@a.com', password='test')
-#~
-        #~ self.organisation = OrganisationEntity(name="Dummy Organisation", commune=False, region=False, subcontractor=True, applicant=False)
-        #~ self.organisation.save()
-#~
-        #~ response = self.client.get(reverse('list_contractors'))
-        #~ self.assertEquals(response.status_code, 200)
-#~
-        #~ contractors = response.context['contractors']
-        #~ self.assertTrue(len(contractors))
-#~
-    #~ def test_list_contractor_unauth(self):
-        #~ """Tests list of contractors if unauth."""
-        #~ self.organisation = OrganisationEntity(name="Dummy Organisation", commune=False, region=False, subcontractor=True, applicant=False)
-        #~ self.organisation.save()
-#~
-        #~ response = self.client.get(reverse('list_contractors'))
-        #~ self.assertEquals(response.status_code, 302)

@@ -5,10 +5,6 @@
         "fields":{
             "name_fr":"Région Bruxelles-Capitale (Bruxelles Mobilité)",
             "name_nl":"Brussels Hoofdstedelijk Gewest (Mobiel Brussel)",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
             "dependency":null
         }
     },
@@ -18,10 +14,6 @@
         "fields":{
             "name_fr":"STIB",
             "name_nl":"MIVB",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
             "dependency":null
         }
     },
@@ -31,10 +23,6 @@
         "fields":{
             "name_fr":"IBGE",
             "name_nl":"BIM",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
             "dependency":null
         }
     },
@@ -44,10 +32,6 @@
         "fields":{
             "name_fr":"Bruxelles Proprete",
             "name_nl":"Net Brussel",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
             "dependency":null
         }
     },
@@ -57,10 +41,6 @@
         "fields":{
             "name_fr":"Port de Bruxelles",
             "name_nl":"Haven van Brussel",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
             "dependency":null
         }
     },
@@ -70,10 +50,6 @@
         "fields":{
             "name_fr":"Bruxelles Mobilité",
             "name_nl":"Mobiliteit Brussel",
-            "commune":false,
-            "region":true,
-            "subcontractor":false,
-            "applicant":false,
             "dependency":null
         }
     },
@@ -81,7 +57,6 @@
         "pk": 1,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Anderlecht",
             "name_nl": "Anderlecht",
@@ -94,7 +69,6 @@
         "pk": 2,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Auderghem",
             "name_nl": "Oudergem",
@@ -107,7 +81,6 @@
         "pk": 3,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Berchem-Sainte-Agathe",
             "name_nl": "Sint-Agatha-Berchem",
@@ -120,7 +93,6 @@
         "pk": 4,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Bruxelles-Ville",
             "name_nl": "Brussel-Stad",
@@ -133,7 +105,6 @@
         "pk": 5,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Etterbeek",
             "name_nl": "Etterbeek",
@@ -146,7 +117,6 @@
         "pk": 6,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Evere",
             "name_nl": "Evere",
@@ -159,7 +129,6 @@
         "pk": 7,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Forest",
             "name_nl": "Vorst",
@@ -172,7 +141,6 @@
         "pk": 8,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Ganshoren",
             "name_nl": "Ganshoren",
@@ -185,7 +153,6 @@
         "pk": 9,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Ixelles",
             "name_nl": "Elsene",
@@ -198,7 +165,6 @@
         "pk": 10,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Jette",
             "name_nl": "Jette",
@@ -211,7 +177,6 @@
         "pk": 11,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Koekelberg",
             "name_nl": "Koekelberg",
@@ -224,7 +189,6 @@
         "pk": 12,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Molenbeek-Saint-Jean",
             "name_nl": "Sint-Jans-Molenbeek",
@@ -237,7 +201,6 @@
         "pk": 13,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Saint-Gilles",
             "name_nl": "Sint-Gillis",
@@ -250,7 +213,6 @@
         "pk": 14,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Saint-Josse-ten-Noode",
             "name_nl": "Sint-Joost-ten-Node",
@@ -263,7 +225,6 @@
         "pk": 15,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Schaerbeek",
             "name_nl": "Schaarbeek",
@@ -276,7 +237,6 @@
         "pk": 16,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Uccle",
             "name_nl": "Ukkel",
@@ -289,7 +249,6 @@
         "pk": 17,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Watermael-Boitsfort",
             "name_nl": "Watermaal-Bosvoorde",
@@ -302,7 +261,6 @@
         "pk": 18,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Woluwe-Saint-Lambert",
             "name_nl": "Sint-Lambrechts-Woluwe",
@@ -315,7 +273,6 @@
         "pk": 19,
         "model": "fixmystreet.organisationentity",
         "fields": {
-            "commune": true,
             "dependency":20,
             "name_fr": "Woluwe-Saint-Pierre",
             "name_nl": "Sint-Pieters-Woluwe",

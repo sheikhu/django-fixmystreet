@@ -98,12 +98,10 @@ class FMSUser(User):
         (OTHER, _("Other"))
     )
 
-    # user = models.OneToOneField(User)
     objects = FMSUserManager()
 
     telephone = models.CharField(max_length=20, null=True)
     last_used_language = models.CharField(max_length=10, null=True, default="FR")
-    # hash_code = models.IntegerField(null=True)# used by external app for secure sync, must be random generated
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
 
     agent = models.BooleanField(default=False)
@@ -267,13 +265,6 @@ class OrganisationEntity(UserTrackedModel):
 
     active = models.BooleanField(default=False)
 
-    ### DEPRECATED use type instead ###
-    subcontractor = models.BooleanField(default=False)
-    department = models.BooleanField(default=False)
-    applicant = models.BooleanField(default=False)
-    commune = models.BooleanField(default=False)
-    region  = models.BooleanField(default=False)
-
     type = models.CharField(max_length=1, choices=ENTITY_TYPE, default='')
 
     dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
@@ -286,10 +277,6 @@ class OrganisationEntity(UserTrackedModel):
     class Meta:
         translate = ('name', 'slug')
         ordering = ['name_fr']
-
-    def accepted_user(self, user):
-        required_role = self.ENTITY_GROUP_REQUIRED_ROLE[self.type]
-        return getattr(user, required_role)
 
     def contact_user(self):
         memberships = self.memberships.filter(contact_user=True)
@@ -1717,19 +1704,6 @@ class ReportFile(ReportAttachment):
         (EXCEL, "excel"),
         (IMAGE, "image")
     )
-    # def _save_FIELD_file(self, field, filename, raw_contents, save=True):
-    #     import pdb
-    #     pdb.set_trace()
-    #     original_upload_to = field.upload_to
-    #     field.upload_to = '%s/%s' % (field.upload_to, self.user.username)
-    #     super(Patch, self)._save_FIELD_file(field, filename, raw_contents, save)
-    # field.upload_to = original_upload_to
-    # def generate_filename(instance, old_filename):
-    #     import pdb
-    #     pdb.set_trace()
-    #     extension = os.path.splitext(old_filename)[1]
-    #     filename = old_filename+'_'+str(time.time()) + extension
-    #     return 'files/' + filename
 
     def move_to(instance, filename):
         path = unicode("files/{0}/{1:02d}/{2:02d}/{3}").format(
@@ -1741,16 +1715,9 @@ class ReportFile(ReportAttachment):
 
     file = models.FileField(upload_to=move_to, blank=True)
     image = FixStdImageField(upload_to=move_to, blank=True, size=(1200, 800), thumbnail_size=(80, 120))
-    # file = models.FileField(upload_to=generate_filename)
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)
-
-    # def file(self):
-    #     if (self.attach == None):
-    #         return self.image
-    #     else:
-    #         return self.attach
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
@@ -2177,15 +2144,15 @@ class ReportEventLog(models.Model):
     CLOSE = 2
     SOLVE_REQUEST = 3
     MANAGER_ASSIGNED = 4
-    MANAGER_CHANGED = 5  # deprecated
+    #~ MANAGER_CHANGED = 5  # deprecated
     VALID = 6
     ENTITY_ASSIGNED = 7
-    ENTITY_CHANGED = 8  # deprecated
+    #~ ENTITY_CHANGED = 8  # deprecated
     CONTRACTOR_ASSIGNED = 9
     CONTRACTOR_CHANGED = 10
     APPLICANT_ASSIGNED = 11
     APPLICANT_CHANGED = 12
-    APPLICANT_CONTRACTOR_CHANGE = 13  # deprecated
+    #~ APPLICANT_CONTRACTOR_CHANGE = 13  # deprecated
     CREATED = 14
     UPDATED = 15
     UPDATE_PUBLISHED = 16
@@ -2209,7 +2176,7 @@ class ReportEventLog(models.Model):
         (CONTRACTOR_CHANGED, _('Contractor changed')),
         (APPLICANT_ASSIGNED, _('Applicant assigned')),
         (APPLICANT_CHANGED, _('Applicant changed')),
-        (APPLICANT_CONTRACTOR_CHANGE, _('Applicant contractor changed')),
+        # (APPLICANT_CONTRACTOR_CHANGE, _('Applicant contractor changed')),
         (CREATED, _("Created")),
         (UPDATED, _("Updated")),
         (UPDATE_PUBLISHED, _("Update published")),
@@ -2233,7 +2200,7 @@ class ReportEventLog(models.Model):
         APPLICANT_CHANGED: _('Applicant changed from {related_old} to {related_new}'),
         CONTRACTOR_ASSIGNED: _('Contractor {related_new} is assigned to the report'),
         CONTRACTOR_CHANGED: _('Contractor changed from {related_old} to {related_new}'),
-        APPLICANT_CONTRACTOR_CHANGE: _('Applicant contractor change from {related_old} to {related_new}'),
+        # APPLICANT_CONTRACTOR_CHANGE: _('Applicant contractor change from {related_old} to {related_new}'),
         CREATED: _("Report created by {user}"),
         UPDATED: _("Report updated by {user}"),
         UPDATE_PUBLISHED: _("Informations published by {user}"),
@@ -2246,7 +2213,7 @@ class ReportEventLog(models.Model):
     }
     STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
-    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, APPLICANT_CONTRACTOR_CHANGE, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST, BECAME_PRIVATE, BECAME_PUBLIC]
+    PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST, BECAME_PRIVATE, BECAME_PUBLIC]
     PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
 
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
