@@ -1645,23 +1645,10 @@ def init_report_overview(sender, instance, **kwargs):
     instance.report.save()
 
 @receiver(post_save, sender=ReportAttachment)
-def report_attachment_published(sender, instance, **kwargs):
+def report_attachment_created(sender, instance, **kwargs):
 
-    if not kwargs['created'] and instance.is_public() and instance.publish_update:
-
-        # Create an event
-        ReportEventLog(
-            report=instance.report,
-            event_type=ReportEventLog.UPDATE_PUBLISHED,
-            user=instance.created_by
-        ).save()
-
-class ReportComment(ReportAttachment):
-    text = models.TextField()
-
-
-@receiver(post_save, sender=ReportComment)
-def report_comment_created(sender, instance, **kwargs):
+    if kwargs['raw'] or not kwargs['created']:
+        return
 
     # If the comment is created during the creation of a new report or if it's not a documentation, pass this signal
     if instance.type != ReportAttachment.DOCUMENTATION or hasattr(instance, 'is_new_report') and instance.is_new_report:
@@ -1670,27 +1657,64 @@ def report_comment_created(sender, instance, **kwargs):
     report = instance.report
     user   = instance.created_by
 
-    # Send notifications to group or members according to group configuration
-    mail_config = report.responsible_department.get_mail_config()
+    # If the latest comment created is longer than 1 minute, create a new event
+    if not ReportEventLog.objects.filter(report=report, event_type=ReportEventLog.UPDATED, event_at__gt=datetime.datetime.now() - datetime.timedelta(minutes=0)).exists():
 
-    if not mail_config.digest_created and not mail_config.digest_inprogress:
-        recipients = mail_config.get_manager_recipients(user)
+        ReportEventLog(
+            report=report,
+            event_type=ReportEventLog.UPDATED,
+            user=user,
+        ).save()
 
-        for email in recipients:
-            ReportNotification(
-                content_template='notify-updates',
-                recipient_mail=email,
-                related=report,
-            ).save(updater=user, comment=instance)
+        # Send notifications to group or members according to group configuration
+        mail_config = report.responsible_department.get_mail_config()
 
-    ReportEventLog(
-        report=report,
-        event_type=ReportEventLog.UPDATED,
-        user=user,
-    ).save()
+        if not mail_config.digest_created and not mail_config.digest_inprogress:
+            # Check type of instance to pass correct arg to ReportNotification
+            instance_comment = None
+            instance_files   = []
+
+            if type(instance) is ReportFile:
+                instance_files = [instance]
+
+            if type(instance) is ReportComment:
+                instance_comment = instance
+
+            # Send notifications to correct recipients
+            recipients = mail_config.get_manager_recipients(user)
+
+            for email in recipients:
+                ReportNotification(
+                    content_template='notify-updates',
+                    recipient_mail=email,
+                    related=report,
+                ).save(updater=user, comment=instance_comment, files=instance_files)
+
+@receiver(post_save, sender=ReportAttachment)
+def report_attachment_published(sender, instance, **kwargs):
+
+    if kwargs['raw'] or kwargs['created']:
+        return
+
+    if instance.is_public() and instance.publish_update:
+
+        # If the latest published attachment is longer than 1 minute, create a new event
+        if not ReportEventLog.objects.filter(report=instance.report, event_type=ReportEventLog.UPDATE_PUBLISHED, event_at__gt=datetime.datetime.now() - datetime.timedelta(minutes=1)).exists():
+
+            # Create an event
+            ReportEventLog(
+                report=instance.report,
+                event_type=ReportEventLog.UPDATE_PUBLISHED,
+                user=instance.created_by
+            ).save()
+
+class ReportComment(ReportAttachment):
+    text = models.TextField()
+
 
 @receiver(post_save, sender=ReportComment)
-def report_comment_published(sender, instance, **kwargs):
+def report_comment_notify(sender, instance, **kwargs):
+    report_attachment_created(sender, instance, **kwargs)
     report_attachment_published(sender, instance, **kwargs)
 
 class ReportFile(ReportAttachment):
@@ -1753,35 +1777,9 @@ def init_file_type(sender, instance, **kwargs):
         instance.image.save(instance.file.name.split('?')[0], instance.file, save=False)
 
 @receiver(post_save, sender=ReportFile)
-def report_file_created(sender, instance, **kwargs):
-    if not kwargs['created'] or kwargs['raw']:
-        return
-
-    report = instance.report
-    user   = instance.created_by
-
-    # Send notifications to group or members according to group configuration
-    mail_config = report.responsible_department.get_mail_config()
-
-    if not mail_config.digest_created and not mail_config.digest_inprogress:
-        recipients = mail_config.get_manager_recipients(user)
-
-        for email in recipients:
-            ReportNotification(
-                content_template='notify-updates',
-                recipient_mail=email,
-                related=report,
-            ).save(updater=user, files=[instance])
-
-    ReportEventLog(
-        report=report,
-        event_type=ReportEventLog.UPDATED,
-        user=user,
-    ).save()
-
-@receiver(post_save, sender=ReportFile)
-def report_file_published(sender, instance, **kwargs):
+def report_file_notify(sender, instance, **kwargs):
     init_report_overview(sender, instance, **kwargs)
+    report_attachment_created(sender, instance, **kwargs)
     report_attachment_published(sender, instance, **kwargs)
 
 class ReportSubscription(models.Model):

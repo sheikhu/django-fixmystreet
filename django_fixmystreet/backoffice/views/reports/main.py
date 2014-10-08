@@ -62,6 +62,8 @@ def new(request):
 
                 for report_file in files:
                     report_file.created_by = user
+                    # Used for file post_save signal:
+                    report_file.is_new_report = True
                     report_file.save()
 
                 messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"), extra_tags="new_report")

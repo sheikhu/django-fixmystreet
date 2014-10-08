@@ -73,6 +73,8 @@ def new(request):
                 for report_file in files:
                     report_file.created_by = citizen
                     # report_file.report = report
+                    # Used for file post_save signal:
+                    report_file.is_new_report = True
                     report_file.save()
                 messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
                 return HttpResponseRedirect(report.get_absolute_url())
