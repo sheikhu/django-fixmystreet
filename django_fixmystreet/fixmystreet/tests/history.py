@@ -264,36 +264,40 @@ class HistoryTest(TestCase):
             reverse('report_new') + '?x=150056.538&y=170907.56',
             self.sample_post_citizen,
             follow=True)
-        self.assertEquals(response.status_code, 200)
-        report_id = response.context['report'].id
-
-        self.client.login(username='manager@a.com', password='test')
-        url = reverse('report_accept_pro', args=[report_id])
-        response = self.client.get(url, follow=True)
-        self.assertEqual(response.status_code, 200)
         report = response.context['report']
-        self.assertIsNotNone(report.accepted_at)
 
-        self.client.logout()
-        #check if the status is updated
-        url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
+        # Validate report
+        self.client.login(username='manager@a.com', password='test')
+
+        url      = reverse('report_accept_pro', args=[report.id])
         response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
+
+        report     = response.context['report']
         activities = report.activities.all()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(report.accepted_at)
+        self.assertEquals(activities.all().count(), 2)
+
+        # now check status as pro
+        self.client.login(username='manager@a.com', password='test')
+        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report.id)
+        response = self.client.get(url, follow=True)
+
+        self.assertContains(response, self.calculatePrintPro(activities[1]))
+
+        # check if the status as citizen
+        self.client.logout()
+
+        url      = '%s?report_id=%s' % (reverse('search_ticket'), report.id)
+        response = self.client.get(url, follow=True)
+
+        report   = Report.objects.get(id=report.id)
+        activities = report.activities.all()
+
         self.assertEquals(activities.all().count(), 2)
         self.assertContains(response, self.calculatePrint(activities[1]))
         self.assertNotContains(response, self.calculatePrintPro(activities[1]))
-
-        #now check status as pro
-        self.client.login(username='manager@a.com', password='test')
-        url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
-        response = self.client.get(url, follow=True)
-        self.assertEquals(response.status_code, 200)
-        report = Report.objects.get(id=report_id)
-        activities = report.activities.all()
-        self.assertEquals(activities.all().count(), 2)
-        self.assertContains(response, self.calculatePrintPro(activities[1]))
 
     def testInvalidateReport(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
@@ -823,9 +827,9 @@ class HistoryTest(TestCase):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
         report = response.context['report']
 
-
         comment = ReportComment(report_id=report.id, text='test', type=3)
         comment.save()
+
         # Set status to REFUSED
         report.status = Report.REFUSED
         report.save()

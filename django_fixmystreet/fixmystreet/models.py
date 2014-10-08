@@ -1701,17 +1701,19 @@ def report_attachment_published(sender, instance, **kwargs):
     if kwargs['raw'] or kwargs['created']:
         return
 
-    if instance.is_public() and instance.publish_update:
+    # If instance is not public or not published or is related to a new report, do nothing
+    if not instance.is_public() or not instance.publish_update or hasattr(instance, 'is_new_report') and instance.is_new_report:
+        return
 
-        # If the latest published attachment is longer than 1 minute, create a new event
-        if not ReportEventLog.objects.filter(report=instance.report, event_type=ReportEventLog.UPDATE_PUBLISHED, event_at__gt=datetime.datetime.now() - datetime.timedelta(minutes=1)).exists():
+    # If the latest published attachment is longer than 1 minute, create a new event
+    if not ReportEventLog.objects.filter(report=instance.report, event_type=ReportEventLog.UPDATE_PUBLISHED, event_at__gt=datetime.datetime.now() - datetime.timedelta(minutes=1)).exists():
 
-            # Create an event
-            ReportEventLog(
-                report=instance.report,
-                event_type=ReportEventLog.UPDATE_PUBLISHED,
-                user=instance.created_by
-            ).save()
+        # Create an event
+        ReportEventLog(
+            report=instance.report,
+            event_type=ReportEventLog.UPDATE_PUBLISHED,
+            user=instance.created_by
+        ).save()
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
