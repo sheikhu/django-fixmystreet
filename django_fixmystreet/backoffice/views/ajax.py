@@ -60,7 +60,7 @@ def get_report_popup_details(request):
         "categories": report.get_category_path(),
         "photo": report.thumbnail,
         "icons": report.get_icons_for_js_map(),
-        "url": reverse("report_show", args=[report.get_slug(), report.id]),
+        "url": reverse("report_show_pro", args=[report.get_slug(), report.id]),
     }
     response_json = json.dumps(response)
     return HttpResponse(response_json, mimetype="application/json")
