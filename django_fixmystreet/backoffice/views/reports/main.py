@@ -20,7 +20,9 @@ from django_fixmystreet.backoffice.forms import PriorityForm, TransferForm
 DEFAULT_TIMEDELTA_PRO = {"days": -30}
 DEFAULT_SQL_INTERVAL_PRO = "30 days"
 REPORTS_MAX_RESULTS = 4
-
+ERROR_MSG_REOPEN_REQUEST_90_DAYS = "You cannot request to reopen an incident closed more than 90 days ago."
+ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED = "You can only request to reopen a closed incident."
+SUCCESS_MSG_REOPEN_REQUEST_CONFIRM = "A request to reopen this ticket was sent to the person in charge."
 
 def new(request):
     pnt = dict_to_point(request.REQUEST)
@@ -302,10 +304,10 @@ def reopen_request(request, slug, report_id):
         report = get_object_or_404(Report, id=report_id)
         limit_date = datetime.datetime.now() - datetime.timedelta(days=90)
         if report.status != Report.PROCESSED:
-            messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
+            messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
             return HttpResponseRedirect(report.get_absolute_url_pro())
         elif report.close_date < limit_date:
-            messages.add_message(request, messages.ERROR, _("You cannot request to reopen an incident closed more than 90 days ago."))
+            messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
             return HttpResponseRedirect(report.get_absolute_url_pro())
         elif request.method == "POST":
             reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
@@ -320,7 +322,7 @@ def reopen_request(request, slug, report_id):
                 reopen_reason.type = ReportAttachment.REOPEN_REQUEST
                 reopen_reason.save()
 
-                messages.add_message(request, messages.SUCCESS, _("A request to reopen this ticket was sent to the person in charge."))
+                messages.add_message(request, messages.SUCCESS, _(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
                 return HttpResponseRedirect(report.get_absolute_url_pro())
         else:
             reopen_form = ReportReopenReasonForm(prefix='reopen')

@@ -1,10 +1,12 @@
+
+
 from django.core.files.storage import default_storage
 from django.test import TestCase
 
 
 class SampleFilesTestCase(TestCase):
 
-    fixtures = ["bootstrap","list_items"]
+    fixtures = ["bootstrap", "list_items"]
 
     @classmethod
     def setUpClass(cls):
@@ -18,3 +20,4 @@ from django_fixmystreet.fixmystreet.tests.users import *
 from django_fixmystreet.fixmystreet.tests.mail import *
 from django_fixmystreet.fixmystreet.tests.history import *
 from django_fixmystreet.fixmystreet.tests.export_pdf import *
+from django_fixmystreet.fixmystreet.tests.reopen_request import *

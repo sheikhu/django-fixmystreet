@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.utils.translation import get_language
+from django_fixmystreet.backoffice.views.reports.main import ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED, \
+    ERROR_MSG_REOPEN_REQUEST_90_DAYS, SUCCESS_MSG_REOPEN_REQUEST_CONFIRM
 
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportFile, ReportSubscription,
@@ -229,14 +231,14 @@ def index(request):
 def reopen_request(request, slug, report_id):
     try:
         report = get_object_or_404(Report, id=report_id, private=False)
-        limit_date = datetime.datetime.now() - datetime.timedelta(90)
-
+        limit_date = datetime.datetime.now() - datetime.timedelta(days=90)
+        
         if report.status != report.PROCESSED:
-            messages.add_message(request, messages.ERROR, _("You can only request to reopen a closed incident."))
+            messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
             return HttpResponseRedirect(report.get_absolute_url())
 
         elif report.close_date < limit_date:
-            messages.add_message(request, messages.ERROR, _("You cannot request to reopen an incident closed more than 90 days ago."))
+            messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
             return HttpResponseRedirect(report.get_absolute_url())
 
         elif request.method == "POST":
@@ -255,7 +257,7 @@ def reopen_request(request, slug, report_id):
                 reopen_reason.save()
 
                 messages.add_message(request, messages.SUCCESS,
-                                     _("A request to reopen this ticket was sent to the person in charge."))
+                                     _(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
                 return HttpResponseRedirect(report.get_absolute_url())
         else:
             citizen_form = CitizenForm(prefix='citizen')

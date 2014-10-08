@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 
 
 class MailTest(TestCase):
+
     fixtures = ["bootstrap", "list_items"]
 
     def setUp(self):
@@ -235,7 +236,7 @@ class MailTest(TestCase):
         self.client.login(username='manager@a.com', password='test')
         response = self.client.get(reverse('report_close_pro', args=[report.id]), follow=True)
 
-        report = Report.objects.get(id=report.id);
+        report = Report.objects.get(id=report.id)
 
         self.assertEquals(report.status, Report.PROCESSED)
 
