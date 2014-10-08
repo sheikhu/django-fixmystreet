@@ -75,7 +75,7 @@ class Command(BaseCommand):
             if not activities_list:
                 continue
 
-            logger.info('Digest of %s (%s)' % (user, user.email))
+            logger.info('Digest of %s (%s)' % (unicode(user), user.email))
             logger.info('   Number of activities: %s' % activities_list.count())
 
             for activity in activities_list:
