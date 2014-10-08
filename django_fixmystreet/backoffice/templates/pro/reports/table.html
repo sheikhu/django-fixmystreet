@@ -306,6 +306,7 @@
                 var index4 = v[4].lastIndexOf(', ');
                 var index5 = v[5].indexOf(' ');
                 var model = {
+                    _loaded: true,
                     id: v[0],
                     type: v[v.length - 1],
                     latlng: L.FixMyStreet.Util.urbisCoordsToLatLng({x: v[v.length - 3], y: v[v.length - 2]}),

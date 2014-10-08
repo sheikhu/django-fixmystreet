@@ -1316,15 +1316,16 @@ L.FixMyStreet.IncidentMarker = L.FixMyStreet.Marker.extend({
     if (options.popup === undefined) {
       options.popup = this._popupFactory(options.popupOptions);
     }
+    model = model || {};
+    model._loaded = model._loaded === true;
     L.FixMyStreet.Marker.prototype.initialize.call(this, latlng, options, model);
-    this._modelLoaded = false;
   },
 
   openPopup: function (latlng) {  // ([L.LatLng])
     var that = this;
     if (!this._popup) { return; }
-    if (this._modelLoaded === true) {
-      L.Marker.prototype.openPopup.call(this, latlng);
+    if (this.model._loaded === true) {
+      L.FixMyStreet.Marker.prototype.openPopup.call(this, latlng);
     } else {
       this.on('modelloaded', function () {
         L.FixMyStreet.Marker.prototype.openPopup.call(that);
@@ -1347,10 +1348,10 @@ L.FixMyStreet.IncidentMarker = L.FixMyStreet.Marker.extend({
       if (DEBUG) { console.log('Model GeoJSON received from %s...', url); }
       model.latlng = L.FixMyStreet.Util.toLatLng(model.latlng);
       that.model = model;
-      this._modelLoaded = true;
+      that.model._loaded = true;
       that.fire('modelloaded');
     }).fail(function () {
-      that._modelLoaded = false;
+      that.model._loaded = false;
       throw new Error('Failed to load Model GeoJSON from ' + url + ': ' + argument);
     });
   },
