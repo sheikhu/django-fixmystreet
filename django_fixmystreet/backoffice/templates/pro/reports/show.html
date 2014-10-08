@@ -708,7 +708,7 @@ $(document).ready(function() {
                             <!-- Dates possible de planification -->
                                 <ul class="dropdown-menu">
 
-                                    {% if not report.planned %}
+                                    {% if not report.is_planned %}
                                         <li class="active">
                                             <a tabindex="-1" href="#">{% trans "Not planned" %}</a>
                                         </li>

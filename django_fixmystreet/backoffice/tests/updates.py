@@ -133,7 +133,7 @@ class UpdatesTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertTrue(report.planned)
+        self.assertTrue(report.is_planned())
         self.assertTrue(report.date_planned)
 
     def test_update_planned_max_date(self):
@@ -147,7 +147,7 @@ class UpdatesTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertFalse(report.planned)
+        self.assertFalse(report.is_planned())
         self.assertFalse(report.date_planned)
 
     def test_update_planned_min_date(self):
@@ -161,7 +161,7 @@ class UpdatesTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertFalse(report.planned)
+        self.assertFalse(report.is_planned())
         self.assertFalse(report.date_planned)
 
     def test_update_planned_not_accepted(self):
@@ -178,7 +178,7 @@ class UpdatesTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertFalse(report.planned)
+        self.assertFalse(report.is_planned())
         self.assertFalse(report.date_planned)
 
     def test_update_planned_no_date_planned(self):
@@ -194,7 +194,7 @@ class UpdatesTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertFalse(report.planned)
+        self.assertFalse(report.is_planned())
         self.assertFalse(report.date_planned)
 
     def test_update_planned_change(self):
@@ -202,7 +202,6 @@ class UpdatesTest(TestCase):
 
         first_date_planned = datetime.now()
 
-        self.report.planned = True
         self.report.date_planned = first_date_planned
         self.report.save()
 
@@ -214,7 +213,7 @@ class UpdatesTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertTrue(report.planned)
+        self.assertTrue(report.is_planned())
         self.assertEqual(date_planned.strftime("%m/%Y"), report.date_planned.strftime("%m/%Y"))
         self.assertNotEqual(first_date_planned, report.date_planned)
 

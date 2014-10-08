@@ -670,7 +670,6 @@ class Report(UserTrackedModel):
     fixed_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
 
-    planned = models.BooleanField(default=False)
     date_planned = models.DateTimeField(null=True, blank=True)
     pending = models.BooleanField(default=False)
 
@@ -842,6 +841,9 @@ class Report(UserTrackedModel):
 
     def is_merged(self):
         return self.merged_with is not None
+
+    def is_planned(self):
+        return self.date_planned is not None
 
     def get_public_status_display(self):
         if self.is_created():
@@ -1214,11 +1216,9 @@ def check_planned(sender, instance, **kwargs):
         date_too_small = instance.date_planned.strftime('%Y%m') < old_report.accepted_at.strftime('%Y%m') if dates_exists else False
         date_too_big = instance.date_planned > (old_report.accepted_at + timedelta(days=365)) if dates_exists else False
 
-        if (not dates_exists or date_too_small or date_too_big):
-            instance.planned = old_report.planned
+        if not dates_exists or date_too_small or date_too_big:
             instance.date_planned = old_report.date_planned
     # else:
-        # instance.planned = False
         # instance.date_planned = None
 
 @receiver(post_save, sender=Report)

@@ -94,7 +94,7 @@
                 <td class="s{{report.status}}">{{ report.accepted_at|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.date_planned|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.get_priority }}</td>
-                <td class="s{{report.status}}">{{ report.planned|yesno:_("planned,not planned") }}</td>
+                <td class="s{{report.status}}">{{ report.is_planned|yesno:_("planned,not planned") }}</td>
                 <td class="s{{report.status}}">{{ report.get_status_display }}</td>
                 <td class="s{{report.status}}">{{ report.private|yesno:_("private,public") }}</td>
                 <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>

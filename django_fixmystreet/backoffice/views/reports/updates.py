@@ -125,11 +125,8 @@ def planned(request, report_id):
 
     #Update the status and set the planned
     date_planned = request.GET.get("date_planned", False)
-    if (date_planned):
-        date_planned = datetime.strptime(date_planned, "%m/%Y")
-
-        report.planned = True
-        report.date_planned = date_planned
+    if date_planned:
+        report.date_planned = datetime.strptime(date_planned, "%m/%Y")
         report.save()
 
     #Redirect to the report show page

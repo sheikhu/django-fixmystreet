@@ -349,7 +349,7 @@ class MailTest(TestCase):
         response = self.client.get(url,   follow=True)
         report = response.context['report']
 
-        self.assertTrue(report.planned)
+        self.assertTrue(report.is_planned())
         self.assertEqual(date_planned, report.date_planned.strftime("%m/%Y"))
 
         # Only digest are sent to subscribers
@@ -363,7 +363,7 @@ class MailTest(TestCase):
         response = self.client.get(url, follow=True)
         report = response.context['report']
 
-        self.assertTrue(report.planned)
+        self.assertTrue(report.is_planned())
         self.assertEqual(date_planned, report.date_planned.strftime("%m/%Y"))
 
         # Only digest are sent to subscribers
