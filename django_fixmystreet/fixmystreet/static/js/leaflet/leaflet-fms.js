@@ -249,8 +249,8 @@ L.FixMyStreet.TEMPLATES.incidentPopup =
             '{% if (data.icons.assigned === true) { %}' +
               '<li><img src="' + STATIC_URL + 'images/contractorAssigned_on.png" title="' + gettext('This incident is assigned to') + '"></li>' +
             '{% } %}' +
-            '{% if (data.icons.resolved === true) { %}' +
-              '<li><img src="' + STATIC_URL + 'images/is_resolved_on.png" title="' + gettext('This incident has been signaled as solved') + '"></li>' +
+            '{% if (data.icons.planned === true) { %}' +
+              '<li><img src="' + STATIC_URL + 'images/planned_on.png" title="' + gettext('This incident is planned') + '"></li>' +
             '{% } %}' +
             '{% if (data.icons.priority) { %}' +
               '<li>' +
@@ -261,6 +261,9 @@ L.FixMyStreet.TEMPLATES.incidentPopup =
                   '{% } %}' +
                 '">' +
               '</li>' +
+            '{% } %}' +
+            '{% if (data.icons.solved === true) { %}' +
+              '<li><img src="' + STATIC_URL + 'images/is_resolved_on.png" title="' + gettext('This incident has been signaled as solved') + '"></li>' +
             '{% } %}' +
           '</ul>' +
         '</div>' +
