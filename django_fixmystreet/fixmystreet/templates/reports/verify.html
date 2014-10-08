@@ -73,7 +73,11 @@
                                             {{ report.display_category }}
                                         </span><br />
                                     <!-- Button "it's the same" -->
-                                    <a href="{{ report.get_absolute_url }}{% if BACKOFFICE %}?page=1{% endif %}" class="btn_same_incident report{% if active %} active{% endif %}">{% trans "This is the same incident" %}</a>
+                                    <a
+                                        href="{% if BACKOFFICE %}{{ report.get_absolute_url_pro }}{% else %}{{ report.get_absolute_url }}{% endif %}"
+                                        class="btn_same_incident report{% if active %} active{% endif %}">
+                                            {% trans "This is the same incident" %}
+                                    </a>
                                     </div>
                                     <!-- Photos -->
                                     <div class="span4 picture">
