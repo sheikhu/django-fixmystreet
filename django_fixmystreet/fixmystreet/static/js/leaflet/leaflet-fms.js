@@ -853,13 +853,13 @@ L.FixMyStreet.Map = L.Map.extend({
     this.on('popupopen', function(evt) {
       window.setTimeout(function () {  // Use timeout to wait that any previous "pan" is finished.
         evt.popup.saveDimensions();
-        that.panBy([0, -(evt.popup._dimensions.height / 2)]);
+        //that.panBy([0, -(evt.popup._dimensions.height / 2)]);
       }, 500);
     });
     this.on('popupclose', function(evt) {
       window.setTimeout(function () {  // Use timeout to wait that any previous "pan" is finished.
         if (evt.popup.autoPanDisabled === true) { return; }
-        that.panBy([0, (evt.popup._dimensions.height / 2)]);
+        //that.panBy([0, (evt.popup._dimensions.height / 2)]);
       }, 500);
     });
   },
