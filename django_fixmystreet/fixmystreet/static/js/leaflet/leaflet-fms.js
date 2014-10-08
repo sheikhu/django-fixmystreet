@@ -222,19 +222,21 @@ L.FixMyStreet.TEMPLATES.incidentPopup =
       gettext('Report #{{ data.id }}') +
     '</div>' +
     '<div class="fmsmap-popup-body clearfix">' +
-      '<div class="pull-left">' +
-        '{% if (data.address) { %}' +
-          '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
-        '{% } %}' +
-        '{% if (data.categories) { %}' +
-          '<p class="categories">{{ data.categories }}</p>' +
+      '{% if (data.categories) { %}' +
+        '<p class="categories">{{ data.categories }}</p>' +
+      '{% } %}' +
+      '<div class="clearfix">' +
+        '<div class="pull-left">' +
+          '{% if (data.address) { %}' +
+            '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
+          '{% } %}' +
+        '</div>' +
+        '{% if (data.photo) { %}' +
+          '<div class="pull-right">' +
+            '<img class="photo" src="{{ data.photo }}" alt="" />' +
+          '</div>' +
         '{% } %}' +
       '</div>' +
-      '{% if (data.photo) { %}' +
-        '<div class="pull-right">' +
-          '<img class="photo" src="{{ data.photo }}" alt="" />' +
-        '</div>' +
-      '{% } %}' +
     '</div>' +
     '<div class="fmsmap-popup-footer clearfix">' +
       '{% if (data.icons) { %}' +
@@ -270,6 +272,7 @@ L.FixMyStreet.TEMPLATES.incidentPopup =
       '{% } %}' +
       '{% if (data.url) { %}' +
         '<div class="pull-right">' +
+          '<a class="icon" href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
           '<a class="button" href="{{ data.url }}">' + gettext('Details') + '</a>' +
         '</div>' +
       '{% } %}' +

@@ -271,21 +271,29 @@
 }
 .fmsmap-popup-footer .button {
   background: #ffdb00 url('../images/icon-circle-right-arrow.png') 5px 50% no-repeat;
-  border: 1px solid #607c9d;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  border: 1px solid #607c9d;
   color: #607c9d;
   display: inline-block;
   font-family: 'Dosis', sans-serif;
   padding: 4px 12px 4px 27px;
   text-transform: uppercase;
+  vertical-align: middle;
 }
 .fmsmap-popup-footer .button:hover,
 .fmsmap-popup-footer .button:focus {
   background-color: #ffd000;
   color: #405c7d;
   border-color: #405c7d;
+}
+.fmsmap-popup-footer i[class*="icon-"] {
+  vertical-align: middle;
+}
+.fmsmap-popup-footer .icon + .icon,
+.fmsmap-popup-footer .icon + .button {
+  margin-left: 10px;
 }
 .fmsmap-popup-body {
   padding: 10px;
