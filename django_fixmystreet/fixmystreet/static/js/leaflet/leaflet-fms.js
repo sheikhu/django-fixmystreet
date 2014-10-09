@@ -1297,6 +1297,7 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.Marker.extend({
     that.openPopup();
     that.getPopup().autoPanDisabled = false;  // @TODO: Isn't there a better way?
     that._updateAddress();
+    that.getMap().removeSearchResults();
   },
 
   _updateAddress: function () {
