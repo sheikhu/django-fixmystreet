@@ -1410,6 +1410,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
       this.$container = $(this._container);
     }
     this._marker = null;
+    this._bindActionsDone = false;
   },
 
   onAdd: function (map) {  // (L.Map)
@@ -1456,9 +1457,11 @@ L.FixMyStreet.Popup = L.Popup.extend({
   },
 
   _bindActions: function (handlers) {
+    if (this._bindActionsDone === true) { return; }
     if (!this._marker) { return; }
     if (!this._container) { return; }
     var that = this;
+    this._bindActionsDone = true;
 
     $(this._container).delegate('[data-bind]', 'click', function (evt) {
       var $this = $(this);
@@ -1505,6 +1508,7 @@ L.FixMyStreet.SearchResultPopup = L.FixMyStreet.Popup.extend({
   },
 
   _bindActions: function (handlers) {
+    if (this._bindActionsDone === true) { return; }
     var that = this;
     var theseHandlers = {};
     theseHandlers['new-incident'] = function (evt) {
@@ -1546,6 +1550,7 @@ L.FixMyStreet.NewIncidentPopup = L.FixMyStreet.Popup.extend({
   },
 
   _bindActions: function (handlers) {
+    if (this._bindActionsDone === true) { return; }
     var that = this;
     var theseHandlers = {};
     theseHandlers['itshere'] = function (evt) {
@@ -1570,6 +1575,11 @@ L.FixMyStreet.IncidentPopup = L.FixMyStreet.Popup.extend({
 // @TODO: Look for existing plugins.
 
 L.FixMyStreet.Panel = L.Control.extend({
+  initialize: function (options, source) {  // ([Object], [L.ILayer])
+    L.Control.prototype.initialize.call(this, options, source);
+    this._bindActionsDone = false;
+  },
+
   onAdd: function () {
     this._container = L.DomUtil.create('div', 'fmsmap-panel');
     this.$container = $(this._container);
@@ -1600,7 +1610,9 @@ L.FixMyStreet.Panel = L.Control.extend({
   },
 
   _bindActions: function (handlers) {
+    if (this._bindActionsDone === true) { return; }
     var that = this;
+    this._bindActionsDone = true;
 
     this.$container.delegate('[data-bind]', 'click', function (evt) {
       var $this = $(this);
@@ -1660,6 +1672,7 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
   },
 
   _bindActions: function (handlers) {
+    if (this._bindActionsDone === true) { return; }
     var that = this;
 
     this.$container.mouseover(function (evt) {
