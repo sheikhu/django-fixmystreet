@@ -1418,9 +1418,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
     if (this.$container === undefined && this._container) {
       this.$container = $(this._container);
     }
-    this.on('contentupdate', function () {
-      that._bindActions();
-    });
+    this._bindActions();
   },
 
   attachMarker: function (marker) {  // (L.Marker)
@@ -1462,34 +1460,28 @@ L.FixMyStreet.Popup = L.Popup.extend({
     if (!this._container) { return; }
     var that = this;
 
-    $(this._container).find('[data-bind]').each(function (i, e) {
+    $(this._container).delegate('[data-bind]', 'click', function (evt) {
       var $this = $(this);
       var action = $this.data('bind');
 
       if (handlers !== undefined && handlers[action]) {
-        $this.click(handlers[action]);
+        handlers[action].call(this, evt);
       } else {
         switch (action) {
           case 'center-map':
-            $this.click(function (evt) {
-              evt.preventDefault();
-              that._marker.centerMap();
-            });
+            evt.preventDefault();
+            that._marker.centerMap();
             break;
           case 'street-view':
-            $this.click(function (evt) {
-              evt.preventDefault();
-              that._marker.openStreetView();
-            });
+            evt.preventDefault();
+            that._marker.openStreetView();
             break;
           case 'new-incident':
-            $this.click(function (evt) {
-              evt.preventDefault();
-              that.removeNewIncident();
-              that.addIncident({
-                type: 'new',
-                latlng: that._marker.getLatLng(),
-              });
+            evt.preventDefault();
+            that.removeNewIncident();
+            that.addIncident({
+              type: 'new',
+              latlng: that._marker.getLatLng(),
             });
             break;
           default:
