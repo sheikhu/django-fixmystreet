@@ -1,10 +1,6 @@
 /* @TODO
 - L.FixMyStreet.Util.urbisResultToAddress(): Retrieve it according to postal code.
 
-# Bugs & co
-- Weird behavior of auto panning, especially with open pop-ups.
-    - L.FixMyStreet.centerOnMarker(): Check if popup is opened and adapt LatLng accordingly.
-
 # Improvements
 - L.FixMyStreet.Map.options.myLayers: Rename variable.
 - Document library (inline?)
@@ -322,33 +318,31 @@ L.FixMyStreet.TEMPLATES.searchResultPopup =
   '</div>';
 
 L.FixMyStreet.TEMPLATES.searchPanel =
-  '<div class="fmsmap-panel fmsmap-panel-search">' +
-    '<div class="fmsmap-panel-header clearfix">' +
-      '<button class="close" type="button" data-bind="close">&times;</button>' +
-      '{% if (data.results.length === 0) { %}' +
-        gettext('No results') +
-      '{% } else { %}' +
-        gettext('{{ data.results.length }} results') +
-      '{% } %}' +
-    '</div>' +
-    '<div class="fmsmap-panel-body clearfix">' +
-      '{% if (data.results.length === 0) { %}' +
-        '<p>' + gettext('No corresponding address has been found.') + '</p>' +
-        '<p>' + gettext('Please refine your search criteria.') + '</p>' +
-      '{% } else { %}' +
-        '<ul>' +
-          '{% _.each(data.results, function (result) { %}' +
-            '<li data-search-result="{{ result.number }}">' +
-              '<div class="number">{{ result.number }}</div>' +
-              '<p class="address">' +
-                '{{ result.address.street }} {{ result.address.number }}<br />' +
-                '{{ result.address.postalCode }} {{ result.address.city }}' +
-              '</p>' +
-            '</li>' +
-          '{% }) %}' +
-        '</ul>' +
-      '{% } %}' +
-    '</div>' +
+  '<div class="fmsmap-panel-header clearfix">' +
+    '<button class="close" type="button" data-bind="close">&times;</button>' +
+    '{% if (data.results.length === 0) { %}' +
+      gettext('No results') +
+    '{% } else { %}' +
+      gettext('{{ data.results.length }} results') +
+    '{% } %}' +
+  '</div>' +
+  '<div class="fmsmap-panel-body clearfix">' +
+    '{% if (data.results.length === 0) { %}' +
+      '<p>' + gettext('No corresponding address has been found.') + '</p>' +
+      '<p>' + gettext('Please refine your search criteria.') + '</p>' +
+    '{% } else { %}' +
+      '<ul>' +
+        '{% _.each(data.results, function (result, index) { %}' +
+          '<li data-search-result="{{ index }}" data-latlng="{{ result.latlng.lat }},{{ result.latlng.lng }}">' +
+            '<div class="number">{{ result.number }}</div>' +
+            '<p class="address">' +
+              '{{ result.address.street }} {{ result.address.number }}<br />' +
+              '{{ result.address.postalCode }} {{ result.address.city }}' +
+            '</p>' +
+          '</li>' +
+        '{% }) %}' +
+      '</ul>' +
+    '{% } %}' +
   '</div>';
 
 
@@ -587,6 +581,7 @@ L.FixMyStreet.Map = L.Map.extend({
     var that = this;
     this.initSearchLayer();
     $.each(models, function (i, model) {
+      model.index = i;
       that.addSearchResult(model, options);
     });
     this.fitToMarkers(this._searchLayer);
@@ -1146,7 +1141,7 @@ L.FixMyStreet.SearchResultIcon = L.FixMyStreet.NumberedIcon.extend({
   createIcon: function () {
     var div = L.FixMyStreet.NumberedIcon.prototype.createIcon.call(this);
     var $div = $(div);
-    $div.attr('data-search-result', this.options.number);  // Doesn't work with .data('search-result')
+    $div.attr('data-search-result', this.options.index);  // Doesn't work with .data('search-result')
     $div.mouseover(function (evt) {
       $('.fmsmap-panel-search').find('[data-search-result="' + $(this).data('search-result') + '"]').addClass('hover');
     });
@@ -1253,6 +1248,7 @@ L.FixMyStreet.SearchResultMarker = L.FixMyStreet.Marker.extend({
     model = model || {};
     if (model.number !== undefined) {
       this.options.iconOptions = this.options.iconOptions || {};
+      this.options.iconOptions.index = model.index;
       this.options.iconOptions.number = model.number;
     }
     options = options || {};
@@ -1581,7 +1577,27 @@ L.FixMyStreet.IncidentPopup = L.FixMyStreet.Popup.extend({
 // @TODO: Look for existing plugins.
 
 L.FixMyStreet.Panel = L.Control.extend({
-  _getContainer: function (map) {
+  onAdd: function () {
+    this._container = L.DomUtil.create('div', 'fmsmap-panel');
+    this.$container = $(this._container);
+    this._bindActions();
+    return this._container;
+  },
+
+  setContent: function (html) {  // (String)
+    this.$container.html(html);
+  },
+
+  renderContent: function (data) {  // ([Object]
+    var html = renderTemplate(this.options.template, data);
+    this.setContent(html);
+  },
+
+  remove: function () {
+    this.$container.remove();
+  },
+
+  _getPanelContainer: function (map) {
     var $e = map.$container.find('.fmsmap-panel-container');
     if ($e.length === 0) {
       $e = $('<div/>').addClass('fmsmap-panel-container');
@@ -1590,38 +1606,20 @@ L.FixMyStreet.Panel = L.Control.extend({
     return $e;
   },
 
-  remove: function () {
-    this.$container.remove();
-  },
-
-  setContent: function (html) {  // (String)
-    this._container = $(html).get(0);
-    this.$container = $(this._container);
-    this._bindActions();
-  },
-
-  renderContent: function (data) {  // ([Object]
-    var html = renderTemplate(this.options.template, data);
-    this.setContent(html);
-  },
-
   _bindActions: function (handlers) {
-    if (!this._container) { return; }
     var that = this;
 
-    $(this._container).find('[data-bind]').each(function (i, e) {
+    this.$container.delegate('[data-bind]', 'click', function (evt) {
       var $this = $(this);
       var action = $this.data('bind');
 
       if (handlers !== undefined && handlers[action]) {
-        $this.click(handlers[action]);
+        handlers[action].call(this, evt);
       } else {
         switch (action) {
           case 'close':
-            $this.click(function (evt) {
-              evt.preventDefault();
-              that.remove();
-            });
+            evt.preventDefault();
+            that.remove();
             break;
           default:
             console.error('ERROR: Unknown bind type (%s).', $this.data('bind'));
@@ -1640,49 +1638,25 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
   initialize: function (options, source) {  // ([Object], [L.ILayer])
     L.FixMyStreet.Util.mergeExtendedOptions(this);
     L.setOptions(this, options);
-    L.Control.prototype.initialize.call(this, options, source);
+    L.FixMyStreet.Panel.prototype.initialize.call(this, options, source);
   },
 
   addTo: function (map) {  // (L.Map)
     this._map = map;
-    this.onAdd(map);
-    $panelContainer = this._getContainer(map);
+    this.onAdd();
+    var $panelContainer = this._getPanelContainer(map);
     $panelContainer.append(this.$container);
   },
 
-  onAdd: function (map) {  // (L.Map)
-    var that = this;
+  onAdd: function () {  // (L.Map)
+    L.FixMyStreet.Panel.prototype.onAdd.call(this);
+    this.$container.addClass('fmsmap-panel-search');
 
     var results = [];
-    $.each(map.searchResults, function (i, marker) {
+    $.each(this._map.searchResults, function (i, marker) {
       results.push(marker.model);
     });
     this.renderContent({results: results});
-
-    this.$container.mouseover(function (evt) {
-      map.disableInteractions();
-    });
-    this.$container.mouseout(function (evt) {
-      map.enableInteractions();
-    });
-
-    this.$container.find('li[data-search-result]').each(function (i, e) {
-      var $e = $(e);
-      $e.mouseover(function (evt) {
-        $('.fmsmap-search-result-icon[data-search-result="' + $e.data('search-result') + '"]').addClass('hover');
-      });
-      $e.mouseout(function (evt) {
-        $('.fmsmap-search-result-icon[data-search-result="' + $e.data('search-result') + '"]').removeClass('hover');
-      });
-      $e.click(function (evt) {
-        that._map.removeNewIncident();
-        that._map.addIncident({
-          type: 'new',
-          latlng: results[i].latlng,
-          address: results[i].address,
-        });
-      });
-    });
 
     return this._container;
   },
@@ -1694,6 +1668,30 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
 
   _bindActions: function (handlers) {
     var that = this;
+
+    this.$container.mouseover(function (evt) {
+      that._map.disableInteractions();
+    });
+    this.$container.mouseout(function (evt) {
+      that._map.enableInteractions();
+    });
+
+    this.$container.delegate('li[data-search-result]', 'mouseover', function (evt) {
+      $('.fmsmap-search-result-icon[data-search-result="' + $(this).data('search-result') + '"]').addClass('hover');
+    });
+    this.$container.delegate('li[data-search-result]', 'mouseout', function (evt) {
+      $('.fmsmap-search-result-icon[data-search-result="' + $(this).data('search-result') + '"]').removeClass('hover');
+    });
+    this.$container.delegate('li[data-search-result]', 'click', function (evt) {
+      var model = that._map.searchResults[$(this).data('search-result')].model;
+      that._map.removeNewIncident();
+      that._map.addIncident({
+        type: 'new',
+        latlng: model.latlng,
+        address: model.address,
+      });
+    });
+
     var theseHandlers = {};
     theseHandlers['close'] = function (evt) {
       evt.preventDefault();
