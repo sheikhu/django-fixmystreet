@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
+import json
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.http import Http404
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import get_language, activate
 
@@ -58,12 +59,22 @@ def page(request):
 
 
 def update_current_language(request):
-    activate(request.REQUEST.get("language"))
+    url = request.REQUEST.get("from")
+    language = request.REQUEST.get("language")
+    resolve_match = resolve(url)
+    args = resolve_match.args
+    kwargs = resolve_match.kwargs
+
+    activate(language)
+
+    if 'slug' in kwargs:
+        report = get_object_or_404(Report, id=kwargs['report_id'])
+        kwargs['slug'] = report.get_slug()
 
     if request.user.is_authenticated():
         fms_user = request.user.fmsuser
         fms_user.last_used_language = request.REQUEST.get("language").upper()
         fms_user.save()
-        return HttpResponseRedirect(reverse("home_pro"))
+        return HttpResponseRedirect(reverse(resolve_match.url_name, args=args, kwargs=kwargs))
 
-    return HttpResponseRedirect(reverse("home"))
+    return HttpResponseRedirect(reverse(url.url_name, args=args, kwargs=kwargs))

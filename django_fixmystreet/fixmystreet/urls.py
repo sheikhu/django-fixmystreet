@@ -13,7 +13,7 @@ urlpatterns = patterns(
     url(_(r'^faq/$'), 'page', name='faq'),
     url(_(r'^help/$'), 'page', name='help'),
     url(_(r'^terms-of-use/$'), 'page', name='terms_of_use'),
-    url(r'^update-language/', 'update_current_language', name="update_current_language"),
+    url(r'^update-language/$', 'update_current_language', name="update_current_language"),
 )
 
 
