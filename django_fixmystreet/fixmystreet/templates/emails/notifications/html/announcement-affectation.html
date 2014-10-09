@@ -1,7 +1,7 @@
 {% extends 'emails/notifications/base.html' %}
 
 {% block content_mail_fr %}
-<p>{{old_responsible}} a assigné l’incident a {{responsible}} pour traitement.</p>
+<p>{{old_responsible}} a assigné l’incident à {{responsible}} pour traitement.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
 <p>Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :</p>
 <ul>
@@ -17,3 +17,4 @@
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
 </ul>
 {% endblock %}
+
