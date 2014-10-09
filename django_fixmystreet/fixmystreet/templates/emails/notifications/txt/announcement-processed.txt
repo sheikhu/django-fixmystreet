@@ -9,6 +9,9 @@ Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouve
 
 - {{reopen_request_url}}
 
+Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :
+
+- {{unsubscribe_url}}
 {% endblock %}
 
 {% block content_mail_nl %}
@@ -20,4 +23,7 @@ TO translate NL : Si vous n’êtes pas satisfait, vous pouvez demander au gesti
 
 - {{reopen_request_url}}
 
+Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:
+
+- {{unsubscribe_url}}
 {% endblock %}
