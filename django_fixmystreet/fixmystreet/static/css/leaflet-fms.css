@@ -197,8 +197,8 @@
   position: absolute;
   top: 6px;
   bottom: 14px;
-  left: 6px;
-  right: 4px;
+  left: 5px;
+  right: 5px;
 }
 .fmsmap-search-result-icon .number,
 .fmsmap-panel-search .number {
@@ -444,7 +444,7 @@
 .fmsmap-panel-search .number {
   display: block;
   float: left;
-  padding: 6px 4px 14px 6px;
+  padding: 6px 5px 14px 5px;
   width: 20px;
   margin-right: 10px;
   background: transparent url('../images/pin-blue-XS.png') scroll 50% 50% no-repeat;
