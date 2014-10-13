@@ -77,4 +77,4 @@ def update_current_language(request):
         fms_user.save()
         return HttpResponseRedirect(reverse(resolve_match.url_name, args=args, kwargs=kwargs))
 
-    return HttpResponseRedirect(reverse(url.url_name, args=args, kwargs=kwargs))
+    return HttpResponseRedirect(reverse(resolve_match.url_name, args=args, kwargs=kwargs))
