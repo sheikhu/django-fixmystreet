@@ -1,0 +1,120 @@
+{% extends 'emails/notifications/base.html' %}
+
+{% load i18n %}
+
+    <style type="text/css">
+        table {
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+        table td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+
+{% block content_mail_fr %}
+
+    <p>{% trans "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements sur Fix My Street." %}</p>
+
+    <p>{% trans "Date" %} : {{ date_digest|date:"d/m/Y" }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans "Time" %}</th>
+                <th>#ID</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "Category" %}</th>
+                <th>{% trans "Adresse" %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for activity in activities_list %}
+            <tr>
+                <td>{{ activity.event_at|date:"H:i" }}</td>
+                <td>
+                    <a href="{{ display_url }}">
+                        #{{ activity.report.id }}
+                    </a>
+                </td>
+                <td>{{ activity.get_status }}</td>
+                <td>{{ activity.report.display_category }}</td>
+                <td>{{ activity.report.display_address }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <p>{% trans "Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous" %} :</p>
+
+    <ul>
+        <li>
+            <a href="{{ unsubscribe_url }}">{{ unsubscribe_url }}</a>
+        </li>
+    </ul>
+
+{% endblock %}
+
+{% block content_mail_nl %}
+
+    <p>{% trans "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements sur Fix My Street." %}</p>
+
+    <p>{% trans "Date" %} : {{ date_digest|date:"d/m/Y" }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans "Time" %}</th>
+                <th>#ID</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "Category" %}</th>
+                <th>{% trans "Adress" %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for activity in activities_list %}
+            <tr>
+                <td>{{ activity.event_at|date:"H:i" }}</td>
+                <td>
+                    <a href="{{ display_url }}">
+                        #{{ activity.report.id }}
+                    </a>
+                </td>
+                <td>{{ activity.get_status }}</td>
+                <td>{{ activity.report.display_category }}</td>
+                <td>{{ activity.report.display_address }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <p>{% trans "Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous" %} :</p>
+
+    <ul>
+        <li>
+            <a href="{{ unsubscribe_url }}">{{ unsubscribe_url }}</a>
+        </li>
+    </ul>
+
+{% endblock %}

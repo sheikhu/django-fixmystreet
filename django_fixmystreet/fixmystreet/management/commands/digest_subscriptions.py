@@ -1,11 +1,8 @@
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand, CommandError
-from django.template.loader import render_to_string
 
 from optparse import make_option
 
-from django_fixmystreet.fixmystreet.models import ReportEventLog, ReportSubscription
+from django_fixmystreet.fixmystreet.utils import send_digest
 
 import datetime
 import logging
@@ -30,6 +27,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        from django_fixmystreet.fixmystreet.models import ReportEventLog, ReportSubscription
+
         # Events related to subscriptions
         SUBSCRIPTION_EVENTS = [
             ReportEventLog.REFUSE, ReportEventLog.CLOSE,
@@ -85,10 +84,5 @@ class Command(BaseCommand):
             if not options['send']:
                 continue
 
-            # Render digest mail
-            digests_subscriptions = render_to_string("emails/digest.txt", {'activities_list': activities_list})
-
-            logger.info('Sending digest to %s' % user.email)
-
-            msg = EmailMultiAlternatives("Digest of your subscriptions", digests_subscriptions, settings.DEFAULT_FROM_EMAIL, (user.email,))
-            msg.send()
+            # Render and send the digest by mail
+            send_digest(user, activity, activities_list, YESTERDAY)
