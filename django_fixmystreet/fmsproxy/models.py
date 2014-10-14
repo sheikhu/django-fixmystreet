@@ -30,9 +30,8 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
         logger.info('Contact FMSProxy %s' % instance.contractor.fmsproxy)
 
         # Prepare json data
-        string_json = render_to_string('assign.json', {'report':instance})
+        data_json = render_to_string('assign.json', {'report':instance})
 
-        data_json = json.dumps(string_json)
         logger.info('data_json %s ' % data_json)
 
         # Send data
