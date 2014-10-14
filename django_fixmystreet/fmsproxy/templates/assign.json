@@ -1,17 +1,24 @@
 {
-    "fmsproxy":"{{ report.contractor.fmsproxy.name }}",
+    "application": "{{ report.contractor.fmsproxy.name }}",
 
     "report":{
-        "id":"{{ report.id }}",
-        "category":"{{ report.display_category }}",
-        "date":"{{ report.created|date:"U" }}",
-        "address":"{{ report.display_address }}"
+        "id": "{{ report.id }}",
+        "created_at": "{{ report.created|date:"U" }}",
+        "modified_at": "{{ report.modified|date:"U" }}",
+        "category": "{{ report.display_category }}",
+        "pdf_url": "{% url 'report_pdf_pro' report.id %}",
+        "address": "{{ report.address }}",
+        "address_number": "{{ report.address_number }}",
+        "postal_code": "{{ report.postalcode }}",
+        "municipality": "{{ report.display_address }}",
+        "comment": "{{ report.comment }}"
     },
 
     "creator":{
-        "last_name":"{{ report.get_creator.last_name }}",
-        "first_name":"{{ report.get_creator.first_name }}",
-        "phone":"{{ report.get_creator.phone }}",
-        "email":"{{ report.get_creator.email }}"
+        "type": "{% if report.is_pro %}pro{% else %}citizen{% endif %}",
+        "first_name": "{{ report.get_creator.first_name }}",
+        "last_name": "{{ report.get_creator.last_name }}",
+        "phone": "{{ report.get_creator.phone }}",
+        "email": "{{ report.get_creator.email }}"
     }
 }
