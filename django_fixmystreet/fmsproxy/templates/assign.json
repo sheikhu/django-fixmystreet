@@ -1,0 +1,17 @@
+{
+    "fmsproxy":"{{ report.contractor.fmsproxy.name }}",
+
+    "report":{
+        "id":"{{ report.id }}",
+        "category":"{{ report.display_category }}",
+        "date":"{{ report.created|date:"U" }}",
+        "address":"{{ report.display_address }}"
+    },
+
+    "creator":{
+        "last_name":"{{ report.get_creator.last_name }}",
+        "first_name":"{{ report.get_creator.first_name }}",
+        "phone":"{{ report.get_creator.phone }}",
+        "email":"{{ report.get_creator.email }}"
+    }
+}

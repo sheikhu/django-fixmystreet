@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
+    'django_fixmystreet.fmsproxy',
     'django_fixmystreet.monitoring',
     'mobileserverstatus',
     'piston',
@@ -243,7 +244,6 @@ elif ENVIRONMENT == "production":
     SITE_ID = 1
     ALLOWED_HOSTS = ("fixmystreet.irisnet.be", )
 
-
 try:
     from local_settings import * # flake8: noqa
 except ImportError:
@@ -271,3 +271,6 @@ ADMIN_EMAIL = EMAIL_ADMIN
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 if not DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+if 'FMSPROXY_URL' in os.environ:
+    FMSPROXY_URL = os.environ['FMSPROXY_URL']

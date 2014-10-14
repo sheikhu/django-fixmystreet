@@ -32,7 +32,9 @@ install_requires = [
     'gunicorn==18.0',
     'setproctitle==1.1.8',
 
-    'mobileserverstatus'
+    'mobileserverstatus',
+
+    'requests'
 ]
 
 dev_require = [

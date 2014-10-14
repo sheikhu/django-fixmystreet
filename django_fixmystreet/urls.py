@@ -27,6 +27,7 @@ urlpatterns += patterns(
     (r'^ckeditor/', include('ckeditor.urls')),
     (r'^monitoring/', include('django_fixmystreet.monitoring.urls')),
     (r'^status/', include('mobileserverstatus.urls')),
+    url(r'^fmsproxy/', include('django_fixmystreet.fmsproxy.urls')),
 )
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'

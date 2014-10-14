@@ -274,6 +274,8 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    fmsproxy = models.ForeignKey('fmsproxy.FMSProxy', null=True, blank=True)
+
     class Meta:
         translate = ('name', 'slug')
         ordering = ['name_fr']
