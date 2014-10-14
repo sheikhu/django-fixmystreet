@@ -1,13 +1,10 @@
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand, CommandError
-from django.template.loader import render_to_string
 
 from optparse import make_option
 
 from django.db.models import Q
 
-from django_fixmystreet.fixmystreet.models import GroupMailConfig, OrganisationEntity, ReportEventLog, UserOrganisationMembership
+from django_fixmystreet.fixmystreet.utils import send_digest
 
 import datetime
 import logging
@@ -32,6 +29,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        from django_fixmystreet.fixmystreet.models import GroupMailConfig, OrganisationEntity, ReportEventLog, UserOrganisationMembership
+
         # Date of yesterday (or specific date)
         if options['date']:
             YESTERDAY = datetime.datetime.strptime(options['date'], "%d/%m/%Y").date()
@@ -74,10 +73,5 @@ class Command(BaseCommand):
             if not options['send']:
                 continue
 
-            # Render digest mail
-            digests_notifications = render_to_string("emails/digest.txt", {'activities_list': activities_list})
-
-            logger.info('Sending digest to %s' % recipients)
-            msg = EmailMultiAlternatives("Digest of your notifications", digests_notifications, settings.DEFAULT_FROM_EMAIL, recipients)
-
-            msg.send()
+            # Render and send the digest by mail
+            send_digest(user, activity, activities_list, YESTERDAY)

@@ -26,6 +26,9 @@ from south.modelsinspector import add_introspection_rules
 import transmeta
 from stdimage import StdImageField
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class JsonHttpResponse(HttpResponse):
     data = {}
@@ -504,3 +507,27 @@ def responsible_permission(func):
         return func(request, report_id)
 
     return wrapper
+
+from django.core.mail import EmailMultiAlternatives
+def send_digest(user, activity, activities_list, date_digest):
+    # Render digest mail
+    SITE_URL = "https://{0}".format(Site.objects.get_current().domain)
+
+    # Activate the last language used by the user
+    activate(user.last_used_language)
+
+    if user.is_pro():
+        display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url_pro())
+        unsubscribe_url = lambda: "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[activity.report.id]))
+    else:
+        display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url())
+        unsubscribe_url = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[activity.report.id]), user.email)
+
+    digests_subscriptions = render_to_string("emails/digest.html", {'activities_list': activities_list, 'display_url': display_url, 'unsubscribe_url': unsubscribe_url, 'date_digest': date_digest})
+
+    logger.info('Sending digest to %s' % user.email)
+
+    msg = EmailMultiAlternatives(_("Digest of the day on Fix My Street"), digests_subscriptions, settings.DEFAULT_FROM_EMAIL, (user.email,))
+    msg.send()
+
+    deactivate()

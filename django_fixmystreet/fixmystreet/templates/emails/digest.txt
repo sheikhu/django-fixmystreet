@@ -1,7 +1,0 @@
-{% for activity in activities_list %}
-    {% ifchanged activity.report %}
-        Report #{{ activity.report.id }}
-    {% endifchanged %}
-
-    {{ activity.event_at }} {{ activity.report.id }} {{ activity }}
-{% endfor %}
