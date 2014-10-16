@@ -3,6 +3,7 @@ from exceptions import Exception
 import logging
 import re
 import datetime
+import requests
 
 from datetime import timedelta
 
@@ -1501,6 +1502,36 @@ def report_notify_report_public(sender, instance, **kwargs):
                     related=report,
                     reply_to=report.responsible_department.email,
                 ).save()
+
+from django_fixmystreet.fmsproxy.models import get_assign_payload
+@receiver(post_save, sender=Report)
+def report_notify_fmsproxy(sender, instance, **kwargs):
+
+    if kwargs['raw']:
+        return
+
+    # If contractor changes and is linked to a remote partner (fmsproxy)
+    if instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy:
+        logger.info('Contact FMSProxy %s' % instance.contractor.fmsproxy)
+
+        # Prepare json data
+        payload = get_assign_payload(instance)
+        logger.info('payload %s ' % payload)
+
+        # Send data
+        logger.info('FMSPROXY_URL %s' % settings.FMSPROXY_URL)
+        url     = settings.FMSPROXY_URL
+        headers = {'Content-Type': 'application/json'}
+
+        response = requests.post(url, data=simplejson.dumps(payload), headers=headers)
+
+        if response.status_code != 200:
+            message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.contractor.fmsproxy, instance.id)
+
+            logger.error(message)
+            raise Exception(message)
+
+        logger.info('FMSProxy assignation success')
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
