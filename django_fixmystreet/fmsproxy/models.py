@@ -40,7 +40,7 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
         url     = settings.FMSPROXY_URL
         headers = {'Content-Type': 'application/json'}
 
-        response = requests.post(url, data=data_json, headers=headers)
+        response = requests.post(url, data=json.dumps(data_json), headers=headers)
 
         if response.status_code != 200:
             message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.contractor.fmsproxy, instance.id)
