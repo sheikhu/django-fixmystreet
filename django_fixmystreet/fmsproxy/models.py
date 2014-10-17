@@ -31,18 +31,16 @@ def get_assign_payload(report):
                 "phone": creator.telephone,
                 "email": creator.email,
             },
-            "comments": None,
+            "comments": [],
         },
     }
 
-    comments = report.active_comments()
-    if comments:
-        payload["report"]["comments"] = []
-        for comment in comments:
-            payload["report"]["comments"].append({
-                "created_at": comment.created.isoformat(),
-                "name": comment.get_display_name(),
-                "text": comment.text,
-            })
+    comments = report.active_attachments_pro()
+    for comment in comments:
+        payload["report"]["comments"].append({
+            "created_at": comment.created.isoformat(),
+            "name": comment.get_display_name(),
+            "text": comment.text,
+        })
 
     return payload
