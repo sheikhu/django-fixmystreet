@@ -1512,7 +1512,7 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
 
     # If contractor changes and is linked to a remote partner (fmsproxy)
     if instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy:
-        logger.info('Contact FMSProxy %s' % instance.contractor.fmsproxy)
+        logger.info('Contact FMSProxy %s' % instance.contractor.fmsproxy.slug)
 
         # Prepare json data
         payload = get_assign_payload(instance)
