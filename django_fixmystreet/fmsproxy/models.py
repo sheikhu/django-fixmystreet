@@ -1,14 +1,21 @@
 from django.db import models
+from django.utils.text import slugify
 
 import logging
 logger = logging.getLogger(__name__)
 
 class FMSProxy(models.Model):
 
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20)
+    slug = models.SlugField(max_length=20)
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(FMSProxy, self).save(*args, **kwargs)
+
 
 def get_assign_payload(report):
     creator = report.get_creator()
