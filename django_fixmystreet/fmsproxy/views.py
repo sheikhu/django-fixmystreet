@@ -23,6 +23,10 @@ def reject(request, report_id):
     comment = ReportComment(report_id=report.id, text='belgacom comment reject', type=ReportAttachment.DOCUMENTATION)
     comment.save()
 
+    report.contractor = None
+    report.status = Report.MANAGER_ASSIGNED
+    report.save()
+
     return HttpResponse('reject ok')
 
 def close(request, report_id):
@@ -34,14 +38,18 @@ def close(request, report_id):
     comment = ReportComment(report_id=report.id, text='belgacom comment close', type=ReportAttachment.DOCUMENTATION)
     comment.save()
 
+    report.contractor = None
+    report.status = Report.MANAGER_ASSIGNED
+    report.save()
+
     return HttpResponse('close ok')
 
 # It's an example of view decoding json data in fmsproxy. It's not used by FMS.
 def test_assign(request):
 
     if request.method == 'POST':
-        import  json
-        decoded_data = json.loads(request.raw_post_data)
+        import json
+        decoded_data = json.loads(request.body)
         data = json.loads(decoded_data)
 
         fmsproxy = data['fmsproxy']
