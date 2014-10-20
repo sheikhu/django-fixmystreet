@@ -1,4 +1,5 @@
 from datetime import datetime
+from urllib3.exceptions import MaxRetryError
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db import transaction
@@ -227,7 +228,14 @@ def changeContractor(request, report_id):
         else:
             report.status = Report.APPLICANT_RESPONSIBLE
 
-    report.save()
+    try:
+        report.save()
+    except MaxRetryError as e:
+        messages.add_message(request, messages.ERROR, _("contractor assign : Max retry error"))
+    except Exception as e:
+        messages.add_message(request, messages.ERROR, _("contractor assign : Generic error"))
+
+
     if "pro" in request.path:
             return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
