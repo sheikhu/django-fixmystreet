@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import url, patterns, include
+from django.conf.urls import url, patterns, include
 
 urlpatterns = patterns('django_fixmystreet.fmsproxy.views',
     (r'^accept/(?P<report_id>\d+)/$', 'accept'),

@@ -1,0 +1,5 @@
+{{ intro  }} {{ contractor_name }}.
+{# following line must be on one line or it becomes messed up when called by render_to_string before saving the comment(too many carriage return #}
+{% if reference_id and fms_proxy_id %}{% if fms_proxy_id == 1 %}iCare: {{ reference_id }}{% elif fms_proxy_id == 2 %} Osiris ID: {{ reference_id }}{% endif %}{% endif %}
+
+{{ comment|safe }}

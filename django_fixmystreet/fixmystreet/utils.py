@@ -502,7 +502,8 @@ def responsible_permission(func):
 
         report = get_object_or_404(Report, id=report_id)
 
-        if not UserOrganisationMembership.objects.filter(organisation=report.responsible_department, user=request.user).exists():
+        if (not UserOrganisationMembership.objects.filter(organisation=report.responsible_department, user=request.user).exists()):
+                # or (report.contractor is not None and report.contractor.fmsproxy is not None):
             return HttpResponseRedirect(report.get_absolute_url_pro())
 
         return func(request, report_id)

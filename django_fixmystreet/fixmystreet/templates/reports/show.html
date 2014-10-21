@@ -215,6 +215,13 @@ $(function(event) {
                                 {{ report.get_public_status_display }}
                                 {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
                                     {{report.contractor.name}}
+                                    {% if report.waiting_for_contractor %}
+                                        <strong id="danger-risk">
+                                            <a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'In progress with a contractor' %}" title="{% trans 'In progress with a contractor' %}" class="myTooltip">
+                                                <i class="icon-danger-red"></i>
+                                            </a>
+                                        </strong>
+                                    {% endif %}
                                 {% endif %}
                             </p>
                             <!-- ROW CIT 4 -->
@@ -237,7 +244,7 @@ $(function(event) {
 {#                            {% endif %}#}
 
                             {% if report.is_in_progress %}
-                                {% if report.status != report.SOLVED %}
+                                {% if report.status != report.SOLVED and not report.waiting_for_contractor %}
                                     <a href="#divMarkAsDone" class="btn" data-toggle="modal">
                                         {% trans "Report as solved" %}
                                         <i class="icon-isresolved"> </i>

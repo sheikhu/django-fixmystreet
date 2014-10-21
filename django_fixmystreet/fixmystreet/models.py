@@ -1,3 +1,4 @@
+import json
 from django.utils import simplejson
 from exceptions import Exception
 import logging
@@ -956,34 +957,34 @@ class Report(UserTrackedModel):
             subscription.notify_creation = False  # don't send notification for subscription
             self.subscriptions.add(subscription)
 
-    def trigger_reopen_request(self, user=None, reopen_reason=None):
-
-        # Send notifications to group or members according to group configuration
-        mail_config = report.responsible_department.get_mail_config()
-
-        if not mail_config.digest_other:
-            recipients = mail_config.get_manager_recipients()
-
-            for email in recipients:
-                ReportNotification(
-                    content_template='notify-reopen-request',
-                    recipient_mail=self.responsible_department.email,
-                    related=self,
-                ).save(updater=user, reopen_reason=reopen_reason)
-
-        ReportNotification(
-            content_template='acknowledge-reopen-request',
-            recipient_mail=user.email,
-            related=self,
-        ).save(updater=user, reopen_reason=reopen_reason)
-
-        ReportEventLog(
-            report=self,
-            event_type=ReportEventLog.REOPEN_REQUEST,
-            user=user,
-        ).save()
-
-        self.save()  # set updated date and modified_by
+    # def trigger_reopen_request(self, user=None, reopen_reason=None):
+    #
+    #     # Send notifications to group or members according to group configuration
+    #     mail_config = report.responsible_department.get_mail_config()
+    #
+    #     if not mail_config.digest_other:
+    #         recipients = mail_config.get_manager_recipients()
+    #
+    #         for email in recipients:
+    #             ReportNotification(
+    #                 content_template='notify-reopen-request',
+    #                 recipient_mail=self.responsible_department.email,
+    #                 related=self,
+    #             ).save(updater=user, reopen_reason=reopen_reason)
+    #
+    #     ReportNotification(
+    #         content_template='acknowledge-reopen-request',
+    #         recipient_mail=user.email,
+    #         related=self,
+    #     ).save(updater=user, reopen_reason=reopen_reason)
+    #
+    #     ReportEventLog(
+    #         report=self,
+    #         event_type=ReportEventLog.REOPEN_REQUEST,
+    #         user=user,
+    #     ).save()
+    #
+    #     self.save()  # set updated date and modified_by
 
     def to_full_JSON(self):
         """
@@ -1145,6 +1146,11 @@ class Report(UserTrackedModel):
             "m_c": self.secondary_category.category_class.id,
             "s_c": self.secondary_category.secondary_category_class.id
         }
+
+    def waiting_for_contractor(self):
+        if self.contractor and self.contractor.fmsproxy:
+            return True
+        return False
 
     class Meta:
         translate = ('address',)
@@ -1523,7 +1529,7 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
         url     = settings.FMSPROXY_URL
         headers = {'Content-Type': 'application/json'}
 
-        response = requests.post(url, data=simplejson.dumps(payload), headers=headers)
+        response = requests.post(url, data=json.dumps(payload), headers=headers)
 
         if response.status_code != 200:
             message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.contractor.fmsproxy, instance.id)
