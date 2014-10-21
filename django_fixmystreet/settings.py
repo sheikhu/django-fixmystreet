@@ -274,3 +274,6 @@ if not DEBUG:
 
 if 'FMSPROXY_URL' in os.environ:
     FMSPROXY_URL = os.environ['FMSPROXY_URL']
+
+if 'FMSPROXY_REQUEST_SIGNATURE_KEY' in os.environ:
+    FMSPROXY_REQUEST_SIGNATURE_KEY = os.environ['FMSPROXY_REQUEST_SIGNATURE_KEY']

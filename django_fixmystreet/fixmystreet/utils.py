@@ -3,6 +3,7 @@ import csv
 import tempfile
 import datetime
 import hashlib
+import hmac
 import os
 import re
 import logging
@@ -531,3 +532,9 @@ def send_digest(user, activity, activities_list, date_digest):
     msg.send()
 
     deactivate()
+
+
+def sign_message(key, message):
+    """Compute a signature for a given message, using a secret key."""
+    hashed = hmac.new(key.encode("utf-8"), message.encode("utf-8"), hashlib.sha1)
+    return hashed.digest().encode("base64").rstrip("\n")
