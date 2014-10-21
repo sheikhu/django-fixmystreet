@@ -1,3 +1,4 @@
+from django.contrib.sites.models import Site
 from django.db import models
 from django.utils.text import slugify
 
@@ -19,6 +20,8 @@ class FMSProxy(models.Model):
 
 def get_assign_payload(report):
     creator = report.get_creator()
+    site = Site.objects.get_current()
+    base_url = "http://{}".format(site.domain)
     payload = {
         "application": report.contractor.fmsproxy.slug,
         "report":{
@@ -26,7 +29,7 @@ def get_assign_payload(report):
             "created_at": report.created.isoformat(),
             "modified_at": report.modified.isoformat(),
             "category": report.display_category(),
-            "pdf_url": report.get_pdf_url_pro(),
+            "pdf_url": "{}/{}".format(base_url.rstrip("/"), report.get_pdf_url_pro().lstrip("/")),  # @TODO: Add auto-auth token.
             "address": report.address,
             "address_number": report.address_number,
             "postal_code": report.postalcode,
