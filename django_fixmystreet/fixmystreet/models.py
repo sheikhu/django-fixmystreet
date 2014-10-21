@@ -1510,7 +1510,7 @@ def report_notify_report_public(sender, instance, **kwargs):
                 ).save()
 
 from django_fixmystreet.fmsproxy.models import get_assign_payload
-@receiver(post_save, sender=Report)
+@receiver(pre_save, sender=Report)
 def report_notify_fmsproxy(sender, instance, **kwargs):
 
     if kwargs['raw']:
