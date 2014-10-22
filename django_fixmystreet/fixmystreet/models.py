@@ -797,10 +797,10 @@ class Report(UserTrackedModel):
         return reverse("report_show_pro", kwargs={'report_id': self.id, 'slug': self.get_slug()})
 
     def get_pdf_url(self):
-        return reverse('report_pdf', args=[self.id, 0])
+        return reverse('report_pdf', args=[self.id])
 
     def get_pdf_url_pro(self):
-        return reverse('report_pdf', args=[self.id, 1])
+        return reverse('report_pdf_pro', args=[self.id])
 
     def get_pdf_url_pro_with_auth_token(self):
         site = Site.objects.get_current()
