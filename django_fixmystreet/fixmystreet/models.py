@@ -22,6 +22,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.utils.http import urlencode
 
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
@@ -805,8 +806,9 @@ class Report(UserTrackedModel):
     def get_pdf_url_pro_with_auth_token(self):
         site = Site.objects.get_current()
         base_url = "http://{}".format(site.domain.rstrip("/"))
-        token = self.get_pdf_pro_auth_token()
-        return "{}/{}?auth={}".format(base_url, self.get_pdf_url_pro().lstrip("/"), token)
+        url = reverse("report_pdf_pro_token", args=[self.id]).lstrip("/")
+        querystring = urlencode({"auth": self.get_pdf_pro_auth_token()})
+        return "{}/{}?{}".format(base_url, url, querystring)
 
     def get_pdf_pro_auth_token(self):
         key = settings.PDF_PRO_TOKEN_KEY
