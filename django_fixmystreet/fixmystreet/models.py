@@ -810,7 +810,7 @@ class Report(UserTrackedModel):
 
     def get_pdf_pro_auth_token(self):
         key = settings.PDF_PRO_TOKEN_KEY
-        message = u"{} {}".format(self.id, self.created_at.iso_format())
+        message = u"{} {}".format(self.id, self.created.isoformat())
         return sign_message(key, message)
 
     def has_pdf_pro_access(self, request):
