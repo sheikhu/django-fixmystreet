@@ -45,7 +45,7 @@ def get_assign_payload(report):
         },
     }
 
-    comments = report.active_attachments_pro()
+    comments = report.comments()
     for comment in comments:
         payload["report"]["comments"].append({
             "created_at": comment.created.isoformat(),
