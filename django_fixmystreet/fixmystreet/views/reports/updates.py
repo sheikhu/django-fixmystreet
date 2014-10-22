@@ -9,7 +9,8 @@ def report_pdf(request, report_id, pro_version=False):
     '''reportPdf is called from report details page to generate the pdf with report story. When pro_version == 0 then filter pdf content'''
     report = get_object_or_404(Report, id=report_id)
 
-    if pro_version and not (request.user.is_authenticated() and request.fmsuser.is_pro()):
+    is_pro_user = request.user.is_authenticated() and request.fmsuser.is_pro()
+    if pro_version and not (is_pro_user or report.has_pdf_pro_access(request)):
         raise PermissionDenied
 
     return render_to_pdf("reports/pdf.html", {

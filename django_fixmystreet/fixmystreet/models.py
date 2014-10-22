@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext, string_concat
 from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models import Q
@@ -27,7 +28,7 @@ from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
 from ckeditor.fields import RichTextField
 
-from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template
+from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template, sign_message
 
 logger = logging.getLogger(__name__)
 
@@ -800,6 +801,21 @@ class Report(UserTrackedModel):
 
     def get_pdf_url_pro(self):
         return reverse('report_pdf', args=[self.id, 1])
+
+    def get_pdf_url_pro_with_auth_token(self):
+        site = Site.objects.get_current()
+        base_url = "http://{}".format(site.domain.rstrip("/"))
+        token = self.get_pdf_pro_auth_token()
+        return "{}/{}?auth={}".format(base_url, self.get_pdf_url_pro().lstrip("/"), token)
+
+    def get_pdf_pro_auth_token(self):
+        key = settings.PDF_PRO_TOKEN_KEY
+        message = u"{} {}".format(self.id, self.created_at.iso_format())
+        return sign_message(key, message)
+
+    def has_pdf_pro_access(self, request):
+        token = request.POST.get("auth", request.GET.get("auth"))
+        return token == self.get_pdf_pro_auth_token()
 
     def get_priority(self):
         return self.gravity * self.probability

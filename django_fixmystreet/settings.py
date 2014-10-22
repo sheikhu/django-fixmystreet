@@ -277,3 +277,6 @@ if 'FMSPROXY_URL' in os.environ:
 
 if 'FMSPROXY_REQUEST_SIGNATURE_KEY' in os.environ:
     FMSPROXY_REQUEST_SIGNATURE_KEY = os.environ['FMSPROXY_REQUEST_SIGNATURE_KEY']
+
+if 'PDF_PRO_TOKEN_KEY' in os.environ:
+    PDF_PRO_TOKEN_KEY = os.environ['PDF_PRO_TOKEN_KEY']
