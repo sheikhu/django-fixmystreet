@@ -244,7 +244,7 @@ $(function(event) {
 {#                            {% endif %}#}
 
                             {% if report.is_in_progress %}
-                                {% if report.status != report.SOLVED and not report.waiting_for_contractor %}
+                                {% if report.status != report.SOLVED %}
                                     <a href="#divMarkAsDone" class="btn" data-toggle="modal">
                                         {% trans "Report as solved" %}
                                         <i class="icon-isresolved"> </i>
