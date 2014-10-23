@@ -530,6 +530,7 @@ def send_digest(user, activity, activities_list, date_digest):
     logger.info('Sending digest to %s' % user.email)
 
     msg = EmailMultiAlternatives(_("Digest of the day on Fix My Street"), digests_subscriptions, settings.DEFAULT_FROM_EMAIL, (user.email,))
+    msg.attach_alternative(digests_subscriptions, "text/html")
     msg.send()
 
     deactivate()
