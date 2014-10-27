@@ -232,7 +232,8 @@ def changeContractor(request, report_id):
     # except MaxRetryError as e:
     #     messages.add_message(request, messages.ERROR, _("contractor assign : Max retry error"))
     except Exception as e:
-        messages.add_message(request, messages.ERROR, _("contractor assign : Generic error"))
+        logger.exception("organisation entity assign :" + e.message)
+        messages.add_message(request, messages.ERROR, _("organisation entity assign : Generic error"))
 
 
     if "pro" in request.path:
