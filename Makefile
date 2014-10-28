@@ -25,6 +25,10 @@ $(BIN_PATH):
 collectstatic:
 	$(BIN_PATH)/manage.py collectstatic --noinput
 
+django_fixmystreet/local_settings.py:
+	cp django_fixmystreet/local_settings_staging.py django_fixmystreet/local_settings.py
+	edit django_fixmystreet/local_settings.py
+
 migrate:
 	$(BIN_PATH)/manage.py syncdb --migrate
 
@@ -32,7 +36,7 @@ install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install
 	$(MAKE) migrate collectstatic
 
-develop: $(BIN_PATH)
+develop: $(BIN_PATH) django_fixmystreet/local_settings.py
 	$(BIN_PATH)/python setup.py develop
 	$(BIN_PATH)/pip install -e .[dev]
 	sudo npm install -g testem

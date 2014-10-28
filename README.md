@@ -25,6 +25,12 @@ $ make run
 $ env/bin/manage.py shell
 ```
 
+On fresh Ubuntu install:
+
+```
+sudo apt-get install python-dev python-virtualenv postgresql-server-dev-9.4 libgeos-3.4.2 libgdal1h git make gcc nodejs npm vim
+```
+
 Ensure libxml2-dev, psycopg2 and GeoDjango are installed.
 
 You need a Postgis server, for GeoDjango installation:
