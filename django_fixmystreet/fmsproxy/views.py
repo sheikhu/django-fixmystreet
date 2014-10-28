@@ -6,33 +6,41 @@ from django.utils.translation import string_concat, ugettext_lazy as _
 from django_fixmystreet.fixmystreet.models import Report, ReportAttachment, ReportComment
 from django_fixmystreet.fmsproxy.utils import fms_proxy_signature_is_valid
 
+ACTION_ACCEPT = "Accept"
+ACTION_REJECT = "Reject"
+ACTION_CLOSE = "Close"
+ACTION_UPDATE = "Update"
+ACTION_REASSIGN_TO_MANAGER = (ACTION_REJECT, ACTION_CLOSE)
 
-def accept(request, report_id):
+
+def treat_request(request, report_id, action):
     try:
         if not request.method == 'POST':
-            payload = {"message": "Accept error. Bad request method"}
+            payload = {"message": "{0} error. Bad request method".format(action)}
             return HttpResponseBadRequest(json.dumps(payload), mimetype="application/json")
 
-        if not fms_proxy_signature_is_valid(request):
-            payload = {"message": "Accept error. Invalid signature"}
-            return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+        # if not fms_proxy_signature_is_valid(request):
+        #     payload = {"message": "{0} error. Invalid signature"}
+        #     return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
 
         report = get_object_or_404(Report, id=report_id)
 
         data = json.loads(request.body)
 
-        application = data['application']
-        comment_text = data['comment']
-        reference_id = data['reference_id']
+        application = data.get('application')
+        comment_text = data.get('comment')
+        reference_id = data.get('reference_id')
 
-        if not report.contractor or not application == report.contractor.fmsproxy.slug:
-            payload = {"message": "Accept error. Cannot accept report with id " + report_id}
+        org_entity = report.get_organisation_entity_with_fms_proxy()
+
+        if not (report.waiting_for_organisation_entity() and org_entity.fmsproxy.slug == application):
+            payload = {"message": "{0} error. Cannot {0} report with id : ".format(action) + report_id}
             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
 
         params = {
-            'intro': _("Incident was accepted by"),
-            'contractor_name': report.contractor.name,
-            'fms_proxy_id': report.contractor.fmsproxy.id,
+            'action_msg': get_action_msg(action),
+            'contractor_name': org_entity.name,
+            'fms_proxy_id': org_entity.fmsproxy.id,
             'reference_id': reference_id,
             'comment': comment_text,
         }
@@ -41,98 +49,172 @@ def accept(request, report_id):
         comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
         comment.save()
 
-        payload = {"message": "accept ok"}
+        if action in ACTION_REASSIGN_TO_MANAGER:
+            report.contractor = None
+            report.status = Report.MANAGER_ASSIGNED
+            report.save()
+
+
+        payload = {"message": "{0} ok".format(action)}
         return HttpResponse(json.dumps(payload), mimetype="application/json")
     except:
-        payload = {"message": "Reject error. Internal server error"}
+        payload = {"message": "{0} error. Internal server error".format(action)}
         return HttpResponse(json.dumps(payload), mimetype="application/json", status=500)
+
+
+def get_action_msg(action):
+    if action == ACTION_ACCEPT:
+        return _("Incident was accepted by")
+    if action == ACTION_REJECT:
+        return _("Incident was rejected by")
+    if action == ACTION_CLOSE:
+        return _("Incident was closed by")
+    if action == ACTION_UPDATE:
+        return _("Incident was updated by")
+    return ""
+
+
+def accept(request, report_id):
+    return treat_request(request, report_id, ACTION_ACCEPT)
 
 
 def reject(request, report_id):
-    try:
-        if not request.method == 'POST':
-            payload = {"message": "Reject error. Bad request method"}
-            return HttpResponseBadRequest(json.dumps(payload), mimetype="application/json")
-
-        if not fms_proxy_signature_is_valid(request):
-            payload = {"message": "Reject error. Invalid signature"}
-            return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
-
-        report = get_object_or_404(Report, id=report_id)
-
-        data = json.loads(request.body)
-
-        application = data['application']
-        comment_text = data['comment']
-
-        if not report.contractor or not application == report.contractor.fmsproxy.slug:
-            payload = {"message": "Reject error. Cannot reject report with id " + report_id}
-            return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
-
-        params = {
-            'intro': _("Incident was rejected by"),
-            'contractor_name': report.contractor.name,
-            'comment': comment_text,
-        }
-        formatted_comment = render_to_string('formatted_comment.txt', params)
-
-        comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
-        comment.save()
-
-        report.contractor = None
-        report.status = Report.MANAGER_ASSIGNED
-        report.save()
-
-        payload = {"message": "Reject ok"}
-        return HttpResponse(json.dumps(payload), mimetype="application/json")
-    except:
-        payload = {"message": "Reject error. Internal server error"}
-        return HttpResponse(json.dumps(payload), mimetype="application/json", status=500)
+    return treat_request(request, report_id, ACTION_REJECT)
 
 
 def close(request, report_id):
-    try:
-        if not request.method == 'POST':
-            payload = {"message": "Close error. Bad request method"}
-            return HttpResponseBadRequest(json.dumps(payload), mimetype="application/json")
+    return treat_request(request, report_id, ACTION_CLOSE)
 
-        if not fms_proxy_signature_is_valid(request):
-            payload = {"message": "Close error. Invalid signature"}
-            return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+def update(request, report_id):
+    return treat_request(request, report_id, ACTION_UPDATE)
 
-        report = get_object_or_404(Report, id=report_id)
-
-        data = json.loads(request.body)
-
-        application = data['application']
-        comment_text = data['comment']
-        reference_id = data['reference_id']
-
-        if not report.contractor or not application == report.contractor.fmsproxy.slug:
-            payload = {"message": "Close error. Cannot close report with id " + report_id}
-            return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
-
-        params = {
-            'intro': _("Incident was closed by"),
-            'contractor_name': report.contractor.name,
-            'fms_proxy_id': report.contractor.fmsproxy.id,
-            'reference_id': reference_id,
-            'comment': comment_text,
-        }
-        formatted_comment = render_to_string('formatted_comment.txt', params)
-
-        comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
-        comment.save()
-
-        report.contractor = None
-        report.status = Report.MANAGER_ASSIGNED
-        report.save()
-
-        payload = {"message": "close ok"}
-        return HttpResponse(json.dumps(payload), mimetype="application/json")
-    except:
-        payload = {"message": "Close error. Internal server error"}
-        return HttpResponse(json.dumps(payload), mimetype="application/json", status=500)
+# def accept(request, report_id):
+#     # treat_request(request, report_id, action="Accept")
+#     try:
+#         if not request.method == 'POST':
+#             payload = {"message": "Accept error. Bad request method"}
+#             return HttpResponseBadRequest(json.dumps(payload), mimetype="application/json")
+#
+#         if not fms_proxy_signature_is_valid(request):
+#             payload = {"message": "Accept error. Invalid signature"}
+#             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+#
+#         report = get_object_or_404(Report, id=report_id)
+#
+#         data = json.loads(request.body)
+#
+#         application = data['application']
+#         comment_text = data['comment']
+#         reference_id = data['reference_id']
+#
+#         if not report.contractor or not application == report.contractor.fmsproxy.slug:
+#             payload = {"message": "Accept error. Cannot accept report with id " + report_id}
+#             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+#
+#         params = {
+#             'intro': _("Incident was accepted by"),
+#             'contractor_name': report.contractor.name,
+#             'fms_proxy_id': report.contractor.fmsproxy.id,
+#             'reference_id': reference_id,
+#             'comment': comment_text,
+#         }
+#         formatted_comment = render_to_string('formatted_comment.txt', params)
+#
+#         comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
+#         comment.save()
+#
+#         payload = {"message": "accept ok"}
+#         return HttpResponse(json.dumps(payload), mimetype="application/json")
+#     except:
+#         payload = {"message": "Reject error. Internal server error"}
+#         return HttpResponse(json.dumps(payload), mimetype="application/json", status=500)
+#
+#
+# def reject(request, report_id):
+#     try:
+#         if not request.method == 'POST':
+#             payload = {"message": "Reject error. Bad request method"}
+#             return HttpResponseBadRequest(json.dumps(payload), mimetype="application/json")
+#
+#         if not fms_proxy_signature_is_valid(request):
+#             payload = {"message": "Reject error. Invalid signature"}
+#             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+#
+#         report = get_object_or_404(Report, id=report_id)
+#
+#         data = json.loads(request.body)
+#
+#         application = data['application']
+#         comment_text = data['comment']
+#
+#         if not report.contractor or not application == report.contractor.fmsproxy.slug:
+#             payload = {"message": "Reject error. Cannot reject report with id " + report_id}
+#             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+#
+#         params = {
+#             'intro': _("Incident was rejected by"),
+#             'contractor_name': report.contractor.name,
+#             'comment': comment_text,
+#         }
+#         formatted_comment = render_to_string('formatted_comment.txt', params)
+#
+#         comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
+#         comment.save()
+#
+#         report.contractor = None
+#         report.status = Report.MANAGER_ASSIGNED
+#         report.save()
+#
+#         payload = {"message": "Reject ok"}
+#         return HttpResponse(json.dumps(payload), mimetype="application/json")
+#     except:
+#         payload = {"message": "Reject error. Internal server error"}
+#         return HttpResponse(json.dumps(payload), mimetype="application/json", status=500)
+#
+#
+# def close(request, report_id):
+#     try:
+#         if not request.method == 'POST':
+#             payload = {"message": "Close error. Bad request method"}
+#             return HttpResponseBadRequest(json.dumps(payload), mimetype="application/json")
+#
+#         if not fms_proxy_signature_is_valid(request):
+#             payload = {"message": "Close error. Invalid signature"}
+#             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+#
+#         report = get_object_or_404(Report, id=report_id)
+#
+#         data = json.loads(request.body)
+#
+#         application = data['application']
+#         comment_text = data['comment']
+#         reference_id = data['reference_id']
+#
+#         if not report.contractor or not application == report.contractor.fmsproxy.slug:
+#             payload = {"message": "Close error. Cannot close report with id " + report_id}
+#             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
+#
+#         params = {
+#             'intro': _("Incident was closed by"),
+#             'contractor_name': report.contractor.name,
+#             'fms_proxy_id': report.contractor.fmsproxy.id,
+#             'reference_id': reference_id,
+#             'comment': comment_text,
+#         }
+#         formatted_comment = render_to_string('formatted_comment.txt', params)
+#
+#         comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
+#         comment.save()
+#
+#         report.contractor = None
+#         report.status = Report.MANAGER_ASSIGNED
+#         report.save()
+#
+#         payload = {"message": "close ok"}
+#         return HttpResponse(json.dumps(payload), mimetype="application/json")
+#     except:
+#         payload = {"message": "Close error. Internal server error"}
+#         return HttpResponse(json.dumps(payload), mimetype="application/json", status=500)
 
 # It's an example of view decoding json data in fmsproxy. It's not used by FMS.
 def test_assign(request):

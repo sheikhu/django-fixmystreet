@@ -393,7 +393,8 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
         return self.filter(merged_with__isnull=True) \
             .exclude(status=Report.PROCESSED, fixed_at__lt=limit_date) \
-            .exclude(status__in=Report.REPORT_STATUS_OFF)
+            .exclude(status__in=Report.REPORT_STATUS_OFF) \
+            .exclude(status=Report.REFUSED)
 
     def near(self, origin, distance):
         return self.distance(origin).filter(point__distance_lte=(origin, distance)).order_by('distance')
@@ -1165,8 +1166,20 @@ class Report(UserTrackedModel):
             "s_c": self.secondary_category.secondary_category_class.id
         }
 
-    def waiting_for_contractor(self):
+    #returns the fms proxy entity such as Belgacom, Osiris, etc if there is one (None otherwise)
+    def get_organisation_entity_with_fms_proxy(self):
         if self.contractor and self.contractor.fmsproxy:
+            return self.contractor
+        elif self.responsible_department and self.responsible_department.fmsproxy:
+            return self.responsible_department
+        elif self.responsible_entity and self.responsible_entity.fmsproxy:
+            return self.responsible_entity
+        else:
+            return None
+
+    #returns if the report is at the moment associated to a fms proxy entity (Belgacom, osiris, etc)
+    def waiting_for_organisation_entity(self):
+        if self.is_contractor_or_applicant_assigned() and self.get_organisation_entity_with_fms_proxy():
             return True
         return False
 

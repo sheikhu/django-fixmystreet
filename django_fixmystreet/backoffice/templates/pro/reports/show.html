@@ -520,7 +520,7 @@ $(document).ready(function() {
                                 {% if report.contractor.phone %}
                                     ({{report.contractor.phone}})
                                 {% endif %}
-                                {% if report.waiting_for_contractor %}
+                                {% if report.waiting_for_organisation_entity %}
                                     <strong id="danger-risk">
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'In progress with a contractor' %}" title="{% trans 'In progress with a contractor' %}" class="myTooltip">
                                             <i class="icon-danger-red"></i>
