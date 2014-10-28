@@ -13,14 +13,13 @@ long_description = '\n\n'.join([
 
 install_requires = [
     'django==1.5.11',
-    'django-transmeta',
-    'django-stdimage',
+    'django-transmeta==0.6.9',
+    'django-stdimage==0.2.2',
     'south==0.7.6',
-    'django-extensions',
-    'docutils',
-    'markdown',
+    'django-extensions==1.0.1',
+    'docutils==0.11',
     'simplejson==1.9.3',
-    'transifex-client',
+    'transifex-client==0.11.1.beta',
 
     'django-extensions==1.0.1',
     'django-stdimage==0.2.2',
@@ -32,20 +31,20 @@ install_requires = [
     'gunicorn==18.0',
     'setproctitle==1.1.8',
 
-    'mobileserverstatus',
+    'mobileserverstatus==1.0',
 
-    'requests'
+    'requests==2.4.3',
 ]
 
 dev_require = [
-    'django-debug-toolbar==0.9.4',
+    'django-debug-toolbar',
     'ipython',
     'zest.releaser==3.50',
     # 'django-pdb'
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
     'django-jenkins==0.15.0',
-    'coverage==3.6',
-    'flake8==2.1.0',
+    'coverage',
+    'flake8',
 
     # this following package depend on system requirements,
     # must be installed on system for prod
