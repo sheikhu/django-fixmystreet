@@ -30,6 +30,10 @@ urlpatterns += patterns(
     (r'^status/', include('mobileserverstatus.urls')),
     url(r'^fms-proxy/', include('django_fixmystreet.fmsproxy.urls')),
 )
+urlpatterns += patterns(
+    '',
+    url(r'^api/', include('django_fixmystreet.api.urls', namespace='api'))
+)
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'
     urlpatterns += patterns(

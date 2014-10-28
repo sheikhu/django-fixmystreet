@@ -34,7 +34,8 @@ install_requires = [
 
     'mobileserverstatus',
 
-    'requests'
+    'requests',
+    'djangorestframework==2.4.3',
 ]
 
 dev_require = [

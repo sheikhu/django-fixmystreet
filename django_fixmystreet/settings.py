@@ -148,8 +148,10 @@ INSTALLED_APPS = (
     'django_fixmystreet.backoffice',
     'django_fixmystreet.fmsproxy',
     'django_fixmystreet.monitoring',
+    'django_fixmystreet.api',
     'mobileserverstatus',
     'piston',
+    'rest_framework',
 )
 
 TEMPLATE_LOADERS = (
