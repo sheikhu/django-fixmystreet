@@ -46,7 +46,7 @@ def get_assign_payload(report):
     for comment in comments:
         payload["report"]["comments"].append({
             "created_at": comment.created.isoformat(),
-            "name": comment.created_by.get_display_name(),
+            "name": comment.created_by.get_display_name() if comment.created_by else "",
             "text": comment.reportcomment.text,
         })
 
