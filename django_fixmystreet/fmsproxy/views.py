@@ -13,7 +13,7 @@ ACTION_UPDATE = "Update"
 ACTION_REASSIGN_TO_MANAGER = (ACTION_REJECT, ACTION_CLOSE)
 
 
-def treat_request(request, report_id, action):
+def handle_request(request, report_id, action):
     try:
         if not request.method == 'POST':
             payload = {"message": "{0} error. Bad request method".format(action)}
@@ -75,18 +75,18 @@ def get_action_msg(action):
 
 
 def accept(request, report_id):
-    return treat_request(request, report_id, ACTION_ACCEPT)
+    return handle_request(request, report_id, ACTION_ACCEPT)
 
 
 def reject(request, report_id):
-    return treat_request(request, report_id, ACTION_REJECT)
+    return handle_request(request, report_id, ACTION_REJECT)
 
 
 def close(request, report_id):
-    return treat_request(request, report_id, ACTION_CLOSE)
+    return handle_request(request, report_id, ACTION_CLOSE)
 
 def update(request, report_id):
-    return treat_request(request, report_id, ACTION_UPDATE)
+    return handle_request(request, report_id, ACTION_UPDATE)
 
 # def accept(request, report_id):
 #     # treat_request(request, report_id, action="Accept")
