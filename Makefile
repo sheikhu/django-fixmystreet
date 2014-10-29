@@ -36,7 +36,7 @@ install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py install
 	$(MAKE) migrate collectstatic
 
-develop: $(BIN_PATH) django_fixmystreet/local_settings.py
+develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop
 	$(BIN_PATH)/pip install -e .[dev]
 	sudo npm install -g testem
