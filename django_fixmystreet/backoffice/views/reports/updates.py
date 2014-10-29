@@ -130,11 +130,8 @@ def planned(request, report_id):
         report.date_planned = datetime.strptime(date_planned, "%m/%Y")
         report.save()
 
-    #Redirect to the report show page
-    if "pro" in request.path:
-        return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-        return HttpResponseRedirect(report.get_absolute_url())
+    # Redirect to the report show page
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 @responsible_permission
 def pending(request, report_id):
