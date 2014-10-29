@@ -37,7 +37,7 @@ install_requires = [
 ]
 
 dev_require = [
-    'django-debug-toolbar',
+    'django-debug-toolbar==0.9.4',
     'ipython',
     'zest.releaser==3.50',
     # 'django-pdb'
