@@ -73,6 +73,11 @@ class MembershipsInline(admin.TabularInline):
     fields = ("contact_user", "organisation")
     extra = 0
 
+class UserOrganisationMembershipAdmin(SimpleHistoryAdmin):
+    list_display = ("organisation", "user")
+    list_filter = ("organisation",)
+
+admin.site.register(UserOrganisationMembership, UserOrganisationMembershipAdmin)
 
 class FMSUserAdmin(SimpleHistoryAdmin):
     list_display = ("id", "get_full_name", "username", "organisation", "leader", "manager", "agent", "applicant", "contractor")
@@ -279,8 +284,6 @@ class ReportCategoryAdmin(admin.ModelAdmin):
     list_filter  = ('secondary_category_class',)
 
 admin.site.register(ReportCategory, ReportCategoryAdmin)
-
-admin.site.register(UserOrganisationMembership)
 
 
 class PageAdmin(SimpleHistoryAdmin):
