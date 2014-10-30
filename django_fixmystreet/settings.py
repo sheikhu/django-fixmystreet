@@ -152,6 +152,7 @@ INSTALLED_APPS = (
     'mobileserverstatus',
     'piston',
     'rest_framework',
+    'rest_framework.authtoken',
 )
 
 TEMPLATE_LOADERS = (
@@ -282,3 +283,22 @@ if 'FMSPROXY_REQUEST_SIGNATURE_KEY' in os.environ:
 
 if 'PDF_PRO_TOKEN_KEY' in os.environ:
     PDF_PRO_TOKEN_KEY = os.environ['PDF_PRO_TOKEN_KEY']
+
+# API
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    ),
+    'DATETIME_FORMAT': 'iso-8601',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'TEST_REQUEST_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+    ),
+}

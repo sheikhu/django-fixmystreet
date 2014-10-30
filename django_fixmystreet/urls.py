@@ -32,7 +32,7 @@ urlpatterns += patterns(
 )
 urlpatterns += patterns(
     '',
-    url(r'^api/', include('django_fixmystreet.api.urls', namespace='api'))
+    url(r'^api/v1/', include('django_fixmystreet.api.urls', namespace='api'))
 )
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'

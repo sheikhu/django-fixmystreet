@@ -15,7 +15,7 @@ install_requires = [
     'django==1.5.11',
     'django-transmeta',
     'django-stdimage',
-    'south==0.7.6',
+    'south==1.0.1',
     'django-extensions',
     'docutils',
     'markdown',
@@ -36,6 +36,7 @@ install_requires = [
 
     'requests',
     'djangorestframework==2.4.3',
+    'djangorestframework-camel-case==0.2.0',
 ]
 
 dev_require = [
