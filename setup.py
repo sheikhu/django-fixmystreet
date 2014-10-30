@@ -34,6 +34,8 @@ install_requires = [
     'mobileserverstatus==1.0',
 
     'requests==2.4.3',
+    'djangorestframework==2.4.3',
+    'djangorestframework-camel-case==0.2.0',
 ]
 
 dev_require = [
