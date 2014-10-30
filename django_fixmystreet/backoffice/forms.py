@@ -74,6 +74,8 @@ class TransferForm(forms.Form):
         else:
             raise Exception('missing department or entity paramettre')
 
+        # Contractor reset when transfering from one entity to another.
+        report.contractor = None
         # Fix the status
         report.status = Report.MANAGER_ASSIGNED
         report.save()

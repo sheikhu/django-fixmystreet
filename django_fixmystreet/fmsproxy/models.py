@@ -20,7 +20,7 @@ class FMSProxy(models.Model):
 def get_assign_payload(report):
     creator = report.get_creator()
     payload = {
-        "application": report.contractor.fmsproxy.slug,
+        "application": report.get_organisation_entity_with_fms_proxy().fmsproxy.slug,
         "report":{
             "id": report.id,
             "created_at": report.created.isoformat(),

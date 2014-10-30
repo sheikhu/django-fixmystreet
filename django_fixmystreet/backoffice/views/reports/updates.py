@@ -88,12 +88,7 @@ def fixed(request, report_id):
 @responsible_permission
 def close(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    #Update the status and set the close date
-    report.status = Report.PROCESSED
-    report.close_date = datetime.now()
-    if not report.fixed_at:
-        report.fixed_at = report.close_date
-    report.save()
+    report.close()
 
     #Redirect to the report show page
     if "pro" in request.path:

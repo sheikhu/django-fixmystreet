@@ -3,14 +3,13 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.utils.translation import string_concat, ugettext_lazy as _
-from django_fixmystreet.fixmystreet.models import Report, ReportAttachment, ReportComment
+from django_fixmystreet.fixmystreet.models import Report, ReportAttachment, ReportComment, ReportEventLog
 from django_fixmystreet.fmsproxy.utils import fms_proxy_signature_is_valid
 
 ACTION_ACCEPT = "Accept"
 ACTION_REJECT = "Reject"
 ACTION_CLOSE = "Close"
 ACTION_UPDATE = "Update"
-ACTION_REASSIGN_TO_MANAGER = (ACTION_REJECT, ACTION_CLOSE)
 
 
 def handle_request(request, report_id, action):
@@ -33,7 +32,7 @@ def handle_request(request, report_id, action):
 
         org_entity = report.get_organisation_entity_with_fms_proxy()
 
-        if not (report.waiting_for_organisation_entity() and org_entity.fmsproxy.slug == application):
+        if not (report.waiting_for_organisation_entity() and org_entity.fmsproxy.slug.lower() == application.lower()):
             payload = {"message": "{0} error. Cannot {0} report with id : ".format(action) + report_id}
             return HttpResponseForbidden(json.dumps(payload), mimetype="application/json")
 
@@ -49,11 +48,17 @@ def handle_request(request, report_id, action):
         comment = ReportComment(report_id=report.id, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)
         comment.save()
 
-        if action in ACTION_REASSIGN_TO_MANAGER:
-            report.contractor = None
+        if action == ACTION_REJECT and not report.contractor:
+            report.responsible_department = ReportEventLog.objects.filter(report=report_id,
+                   organisation=report.responsible_entity,
+                   event_type=ReportEventLog.MANAGER_ASSIGNED).latest("event_at").related_old
+
+            report.responsible_entity = report.responsible_department.dependency
             report.status = Report.MANAGER_ASSIGNED
             report.save()
 
+        elif action == ACTION_CLOSE and not report.contractor:
+            report.close()
 
         payload = {"message": "{0} ok".format(action)}
         return HttpResponse(json.dumps(payload), mimetype="application/json")
