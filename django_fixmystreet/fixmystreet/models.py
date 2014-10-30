@@ -1179,9 +1179,17 @@ class Report(UserTrackedModel):
 
     #returns if the report is at the moment associated to a fms proxy entity (Belgacom, osiris, etc)
     def waiting_for_organisation_entity(self):
-        if self.is_contractor_or_applicant_assigned() and self.get_organisation_entity_with_fms_proxy():
+        if self.is_in_progress() and self.get_organisation_entity_with_fms_proxy():
             return True
         return False
+
+    def close(self):
+        #Update the status and set the close date
+        self.status = Report.PROCESSED
+        self.close_date = datetime.datetime.now()
+        if not self.fixed_at:
+            self.fixed_at = self.close_date
+        self.save()
 
     class Meta:
         translate = ('address',)
@@ -1285,6 +1293,7 @@ def report_notify_created(sender, instance, **kwargs):
             report=report,
             event_type=ReportEventLog.CREATED,
             user=event_log_user,
+            related_new=report.responsible_department
         ).save()
 
         # Notifiy user that the creation is a success
@@ -1442,6 +1451,7 @@ def report_notify_responsible_changed(sender, instance, **kwargs):
                     report=report,
                     event_type=ReportEventLog.MANAGER_ASSIGNED,
                     related_new=report.responsible_department,
+                    related_old=report.__former['responsible_department'],
                     user=event_log_user
                 ).save()
 
@@ -1548,8 +1558,11 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
         return
 
     # If contractor changes and is linked to a remote partner (fmsproxy)
-    if instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy:
-        logger.info('Contact FMSProxy %s' % instance.contractor.fmsproxy.slug)
+    if instance.is_in_progress() \
+        and ((instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy)
+            or (instance.__former['responsible_department'] != instance.responsible_department and instance.responsible_department.fmsproxy)
+            or (instance.__former['responsible_entity'] != instance.responsible_entity and instance.responsible_entity.fmsproxy)):
+        logger.info('Contact FMSProxy %s' % instance.get_organisation_entity_with_fms_proxy().fmsproxy.slug)
 
         # Prepare json data
         payload = get_assign_payload(instance)
@@ -1563,7 +1576,7 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
         response = requests.post(url, data=json.dumps(payload), headers=headers)
 
         if response.status_code != 200:
-            message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.contractor.fmsproxy, instance.id)
+            message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.id)
 
             logger.error(message)
             raise Exception(message)
