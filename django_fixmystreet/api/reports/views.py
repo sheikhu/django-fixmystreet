@@ -19,7 +19,10 @@ class ReportAssignmentAcceptView(AbstractReportAssignmentView):
     def post(self, request, pk=None, format=None):
         serializer = serializers.ReportAssignmentAcceptSerializer(data=request.DATA)  # pylint: disable=C0103,E1120,E1123
         if serializer.is_valid():
-            return Response(serializer.data)
+            response_data = {
+                "message": "Request successfully processed.",
+            }
+            return Response(response_data)
 
         return self._get_bad_request(serializer)
 
@@ -29,7 +32,10 @@ class ReportAssignmentRejectView(AbstractReportAssignmentView):
     def post(self, request, pk=None, format=None):
         serializer = serializers.ReportAssignmentRejectSerializer(data=request.DATA)  # pylint: disable=C0103,E1120,E1123
         if serializer.is_valid():
-            return Response(serializer.data)
+            response_data = {
+                "message": "Request successfully processed.",
+            }
+            return Response(response_data)
 
         return self._get_bad_request(serializer)
 
@@ -39,6 +45,9 @@ class ReportAssignmentCloseView(AbstractReportAssignmentView):
     def post(self, request, pk=None, format=None):
         serializer = serializers.ReportAssignmentCloseSerializer(data=request.DATA)  # pylint: disable=C0103,E1120,E1123
         if serializer.is_valid():
-            return Response(serializer.data)
+            response_data = {
+                "message": "Request successfully processed.",
+            }
+            return Response(response_data)
 
         return self._get_bad_request(serializer)
