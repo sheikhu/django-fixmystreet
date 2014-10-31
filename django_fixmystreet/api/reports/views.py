@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django_fixmystreet.fmsproxy.models import AssignmentHandler
 from . import serializers
 from ..views import FmsPrivateViewMixin
 
@@ -19,6 +20,8 @@ class ReportAssignmentAcceptView(AbstractReportAssignmentView):
     def post(self, request, pk=None, format=None):
         serializer = serializers.ReportAssignmentAcceptSerializer(data=request.DATA)  # pylint: disable=C0103,E1120,E1123
         if serializer.is_valid():
+            assignment = AssignmentHandler(pk, request.user)
+            assignment.accept(serializer.data)
             response_data = {
                 "message": "Request successfully processed.",
             }
@@ -32,6 +35,8 @@ class ReportAssignmentRejectView(AbstractReportAssignmentView):
     def post(self, request, pk=None, format=None):
         serializer = serializers.ReportAssignmentRejectSerializer(data=request.DATA)  # pylint: disable=C0103,E1120,E1123
         if serializer.is_valid():
+            assignment = AssignmentHandler(pk, request.user)
+            assignment.reject(serializer.data)
             response_data = {
                 "message": "Request successfully processed.",
             }
@@ -45,6 +50,8 @@ class ReportAssignmentCloseView(AbstractReportAssignmentView):
     def post(self, request, pk=None, format=None):
         serializer = serializers.ReportAssignmentCloseSerializer(data=request.DATA)  # pylint: disable=C0103,E1120,E1123
         if serializer.is_valid():
+            assignment = AssignmentHandler(pk, request.user)
+            assignment.close(serializer.data)
             response_data = {
                 "message": "Request successfully processed.",
             }
