@@ -34,10 +34,11 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
         WHEN (r.responsible_entity_id IS NULL) THEN -1
         ELSE r.responsible_entity_id
     END as responsible_entity_id,
-    CASE
-        WHEN (r.responsible_department_id IS NOT NULL) THEN r.responsible_department_id
-        ELSE 100000 + r.responsible_manager_id
-    END as responsible_manager_id,
+    r.responsible_department_id as responsible_manager_id,
+    -- CASE
+    --     WHEN (r.responsible_department_id IS NOT NULL) THEN r.responsible_department_id
+    --     ELSE 100000 + r.responsible_manager_id
+    -- END as responsible_manager_id,
     CASE
         WHEN (r.contractor_id IS NULL) THEN 0
         ELSE r.contractor_id
@@ -99,18 +100,6 @@ FROM fixmystreet_fmsuser fmsuser
 
 
 CREATE OR REPLACE VIEW ods_dim_manager AS SELECT
-    100000 + ID as ID,
-    CASE WHEN (first_name != '')
-        THEN first_name || ' ' || last_name
-        ELSE last_name
-    END as user_name,
-    agent as agent_flag,
-    manager as manager_flag,
-    leader as entity_flag
-FROM fixmystreet_fmsuser fmsuser
-    LEFT JOIN auth_user u ON user_ptr_id=u.id
-    WHERE manager
-UNION SELECT
     ID,
     name_fr || ' / ' || name_nl as user_name,
     FALSE as agent_flag,
@@ -133,23 +122,23 @@ CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
     id,
     name_fr,
     name_nl,
-    commune,
-    region,
+    type='C' as commune,
+    type='R' as region,
     slug_fr,
     slug_nl
 FROM fixmystreet_organisationentity
-WHERE commune OR region;
+WHERE type='C' OR type='R';
 
 CREATE OR REPLACE VIEW ods_dim_entity_contractor AS SELECT
     id,
     name_fr,
     name_nl,
-    subcontractor,
-    applicant,
+    type='S' as subcontractor,
+    type='A' as applicant,
     slug_fr,
     slug_nl
 FROM fixmystreet_organisationentity
-    WHERE subcontractor OR applicant;
+    WHERE type='S' OR type='A';
 
 
 CREATE OR REPLACE VIEW ods_dim_category AS SELECT
