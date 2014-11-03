@@ -83,7 +83,7 @@ class AssignmentHandler(object):
 
     def _add_comment(self, context):
         context["action_msg"] = context["action_msg"].format(contractor=self._org_entity.name)
-        formatted_comment = render_to_string("fmsproxy_comment.html", context)
+        formatted_comment = render_to_string("fmsproxy_comment.txt", context)
         comment = ReportComment(report=self._report, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)  # pylint: disable=E1123
         comment.save()
 
