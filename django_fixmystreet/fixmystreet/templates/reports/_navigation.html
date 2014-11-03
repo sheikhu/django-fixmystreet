@@ -1,15 +1,48 @@
 {% load i18n %}
 {% load static from staticfiles %}
 
-<a href="{{ url }}" class="span3 report{% if active %} active{% endif %}">
-    <div>
-        {% if BACKOFFICE and report.thumbnail_pro %}
-            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail" />
-        {% elif report.thumbnail %}
-            <img src="{{ report.thumbnail }}" class="report-preview thumbnail" />
-        {% else %}
-            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
-        {% endif %}
+<a href="{{ url }}" class="{% if active %} active{% endif %}">
+
+    <div style="float:left; width:48%; margin:0px; margin-left:15px; margin-bottom:10px">
+        <div id="containerIconCircle">
+            <div id="iconCircle" class="icon2-list_created"></div>
+        </div>
+        <div id="lineBorderHome"></div>
+        <div id="containerHomeText">
+            <span class="incidentNumberText">N°{{ report.get_ticket_number }}</span><br/>
+             <div id="adress">
+                <span >{{ report.address }}, {{ report.address_number }} à {{ report.postalcode }} {{ report.territorial_entity.name }}<br/></span>
+            </div>
+            <div id="type">        
+               <span>{{ report.display_category }}</span>
+            </div>     
+        </div>
+        <div id="containerHomePhotoIncident">
+            <div class="homeWrappingPicture" align="right">
+                {% if BACKOFFICE and report.thumbnail_pro %}
+                    <img class="defectPic" src="{{ report.thumbnail_pro }}"/>
+                {% elif report.thumbnail %}
+                    <img class="defectPic" src="{{ report.thumbnail }}"/>
+                {% else %}
+                    <img class="defectPic" src="{% static 'images/no-pix.png' %}" />
+                {% endif %}
+            </div>
+        </div>
+    </div>     
+
+
+
+
+
+
+</a>
+
+
+
+<!--
+
+        <div>
+
     </div>
     <div class="loc_desc">
         <img src="{% static report.get_marker %}" class="report-counter"/>
@@ -24,4 +57,5 @@
     </div>
 
     {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
-</a>
+
+    -->
