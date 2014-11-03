@@ -1550,7 +1550,7 @@ def report_notify_report_public(sender, instance, **kwargs):
                     reply_to=report.responsible_department.email,
                 ).save()
 
-from django_fixmystreet.fmsproxy.models import get_assign_payload
+
 @receiver(pre_save, sender=Report)
 def report_notify_fmsproxy(sender, instance, **kwargs):
 
@@ -1565,6 +1565,7 @@ def report_notify_fmsproxy(sender, instance, **kwargs):
         logger.info('Contact FMSProxy %s' % instance.get_organisation_entity_with_fms_proxy().fmsproxy.slug)
 
         # Prepare json data
+        from django_fixmystreet.fmsproxy.models import get_assign_payload
         payload = get_assign_payload(instance)
         logger.info('payload %s ' % payload)
 
