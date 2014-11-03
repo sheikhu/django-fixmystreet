@@ -47,23 +47,16 @@ class AssignmentHandler(object):
 
     def accept(self, data):
         context = {
-            'action': 'accept',
-            'action_msg': _("Incident was accepted by"),
-            'contractor_name': self._org_entity.name,
-            'fms_proxy_id': self._org_entity.fmsproxy.id,
-            'reference_id': data["reference_id"],
-            'comment': data["comment"],
+            "action_msg": _("Incident was accepted by {contractor}."),
+            "reference_id": data["reference_id"],
+            "comment": data["comment"],
         }
         self._add_comment(context)
 
     def reject(self, data):
         context = {
-            'action': 'reject',
-            'action_msg': _("Incident was rejected by"),
-            'contractor_name': self._org_entity.name,
-            'fms_proxy_id': self._org_entity.fmsproxy.id,
-            'reference_id': data["reference_id"],
-            'comment': data["comment"],
+            "action_msg": _("Incident was rejected by {contractor}."),
+            "comment": data["comment"],
         }
         self._add_comment(context)
 
@@ -79,12 +72,9 @@ class AssignmentHandler(object):
 
     def close(self, data):
         context = {
-            'action': 'close',
-            'action_msg': _("Incident was closed by"),
-            'contractor_name': self._org_entity.name,
-            'fms_proxy_id': self._org_entity.fmsproxy.id,
-            'reference_id': data["reference_id"],
-            'comment': data["comment"],
+            "action_msg": _("Incident was closed by {contractor}."),
+            "reference_id": data["reference_id"],
+            "comment": data["comment"],
         }
         self._add_comment(context)
 
@@ -92,7 +82,8 @@ class AssignmentHandler(object):
             self._report.close()
 
     def _add_comment(self, context):
-        formatted_comment = render_to_string('formatted_comment.txt', context)
+        context["action_msg"] = context["action_msg"].format(contractor=self._org_entity.name)
+        formatted_comment = render_to_string("formatted_comment.txt", context)
         comment = ReportComment(report=self._report, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)  # pylint: disable=E1123
         comment.save()
 
