@@ -55,19 +55,25 @@
                     <h2 class="brand">{% trans 'Last 30 days' %}</h2>
                 </li>
                 <li>
-                    <a href="#list_created" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_new }}</span><br />{% trans "Report Created" %}</a>
+                    <a href="#list_created" data-toggle="tab">
+                            <img src="{% static 'images/attention1.png' %}" style="float:left;"/>
+                        <span class="num_reports" style="color:#e74c3c;">{{ report_counts.recent_new }}</span>
+                        <br />{% trans "Report Created" %}
+                    </a>
                 </li>
                 <li class="active">
-                    <a href="#list_in_progress" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
+                    <a href="#list_in_progress" data-toggle="tab">                            <img src="{% static 'images/worker5.png' %}" style="float:left;"/>
+<span class="num_reports" style="color:#e67e22;">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
                 </li>
-                <li>
-                    <a href="#list_closed" data-toggle="tab"><span class="num_reports">{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
+                <li >
+                    <a href="#list_closed" data-toggle="tab">                            <img src="{% static 'images/approved.png' %}" style="float:left;"/>
+<span class="num_reports"  style="color:#2ecc71;" >{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
                 </li>
             </ul>
             <div class="container tab-content">
                 <div class="row-fluid">
                     <div id="search_results" class="search_results_home tab-content">
-                        <div id="list_created" class="tab-pane clearfix">
+                        <div id="list_created" class="tab-pane clearfix" style="padding-left:15px">
                             {% for report in reports_created %}
                                 {% if not BACKOFFICE %}
                                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
@@ -77,7 +83,7 @@
                             {% endfor %}
                             <div class="clearfloat"></div>
                         </div>
-                        <div id="list_in_progress" class="tab-pane clearfix active">
+                        <div id="list_in_progress" class="tab-pane clearfix active" style="padding-left:15px">
                             {% for report in reports_in_progress %}
                                 {% if not BACKOFFICE %}
                                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}
@@ -86,7 +92,7 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <div id="list_closed" class="tab-pane clearfix">
+                        <div id="list_closed" class="tab-pane clearfix" style="padding-left:15px">
                             {% for report in reports_closed %}
                                 {% if not BACKOFFICE %}
                                     {% include "reports/_navigation.html" with url=report.get_absolute_url %}

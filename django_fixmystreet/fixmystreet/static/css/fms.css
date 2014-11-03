@@ -18,8 +18,22 @@ nav ul{
 	margin: 0;
 	padding: 0;
 	font-family: 'Dosis', sans-serif;
-	text-transform: uppercase;
 }
+
+            
+.alertBrowserSupport{
+                padding:0;
+            }
+.alertBrowserSupport .close{
+                right:21px;
+            }
+.inAlert{
+                padding:20px 20px 0 20px;
+            }
+.alertBrowserSupport ul li{
+                display:inline;
+                margin-right:60px;
+            }
 
 .invisible {
 	visibility: hidden;
@@ -30,11 +44,13 @@ nav ul{
 }
 
 .navbar .nav li a{
-	padding: 10px 20px;
-	height: 20px;
+	padding: 15px 20px 5px 20px;
+	height: 30px;
 	min-width: 55px;
 	text-align: center;
 	text-shadow: none;
+	font-size: 20pt;
+	margin-top: -10px
 }
 @media (max-width: 979px){
 	.navbar .nav {
@@ -55,32 +71,45 @@ nav ul{
 		margin-right: 0;
 	}
 	.navbar .nav .nav-group a:first-child{
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
+		border-bottom-left-radius: 8px;
+		border-bottom-right-radius: 8px;
+		width: 240px;
 	}
 	.navbar .nav .nav-group a:last-child{
-		border-top-right-radius: 4px;
-		border-bottom-right-radius: 4px;
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
+		border-bottom-left-radius: 8px;
+		border-bottom-right-radius: 8px;
+		width: 240px;
+
 	}
 }
 .navbar .nav li a:link, .navbar .nav li a:visited{
-	border: 1px solid #E0E0E0;
-	border-left: 1px solid #FFF;
-	background: #E0E0E0;
+	border: 1px solid #CBCCCD;
+	background: #CBCCCD;
 	text-decoration: none;
-	color: #495E77;
+	color: white;
+	margin-right: 10px;
+	white-space: nowrap;
+	
 }
 .navbar .nav li a:hover, .navbar .nav li a:active, .navbar .nav li a:focus{
-	border: 1px solid #BCD4F1;
-	background: #BCD4F1;
+	border: 1px solid #b3b3b3;
+	background: #b3b3b3;
 	text-decoration: none;
-	color: #495E77;
+	color: white;
+	white-space: nowrap;
+
+
 }
 .navbar .nav li a.active{
-	border: 1px solid #607C9D;
-	background: #607C9D;
+	border: 1px solid #2980B9;
+	background: #2980B9;
 	text-decoration: none;
 	color: #FFF;
+	white-space: nowrap;
 }
 .consult.pro{
 	margin-left:3px;
@@ -215,6 +244,9 @@ footer .cirb-cibg img{
 	position: relative;
 	height: 280px;
 	z-index: 10;
+	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
 }
 #map.pro{
 	position: relative;
@@ -642,14 +674,20 @@ footer .cirb-cibg img{
 }
 .lead-container{
 	color: #FFF;
-	padding: 10px 15px;
+	padding: 10px 20px;
+	padding-bottom:10px;
 	-webkit-border-radius: 4px 4px 0 0;
 	-moz-border-radius: 4px 4px 0 0;
 	border-radius: 4px 4px 0 0;
-	background-color: #607C9D;
+	background-color: #3498DB;
+	line-height: 5px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	-webkit-box-shadow: -0px 5px 20px rgba(0,0,0, 0.4);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.4);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.4);	
+
 }
 .lead-container form{
 	margin: 10px 0;
@@ -762,7 +800,7 @@ footer .cirb-cibg img{
 	list-style-type: none;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
-	padding: 0 0 0 30px;
+	padding: 0px 0px 0px 30px;
 	height: 22px;
 	width: 33.33%;
 	box-sizing: border-box;
@@ -774,28 +812,51 @@ footer .cirb-cibg img{
 	margin: 0;
 }
 .instructions ol .stepOne.on{
-	background: transparent url('../images/stepOne_on.png') top left no-repeat;
+	background: url('../images/stepOne_on.png'), url('../images/steplineon.png');
+	background-position: top left, top right;
+	background-repeat: no-repeat;
 	color: #FFF;
+	font-size:21px;
 }
 .instructions ol .stepOne.off{
-	background: transparent url('../images/stepOne_off.png') top left no-repeat;
+	background: url('../images/stepOne_off.png'), url('../images/steplineoff.png');
+	background-position: top left, top right;
+	background-repeat: no-repeat;	
 	color: #BCD4F1;
+	font-size:21px;
+
 }
 .instructions ol .stepTwo.on{
-	background: transparent url('../images/stepTwo_on.png') top left no-repeat;
+	background: url('../images/stepTwo_on.png'), url('../images/steplineon.png');
+	background-position: top left, top right;
+	background-repeat: no-repeat;	
 	color: #FFF;
+	font-size:21px;
+
 }
 .instructions ol .stepTwo.off{
-	background: transparent url('../images/stepTwo_off.png') top left no-repeat;
+	background: url('../images/stepTwo_off.png'), url('../images/steplineoff.png');
+	background-position: top left, top right;
+	background-repeat: no-repeat;	
 	color: #BCD4F1;
+	font-size:21px;
+
 }
 .instructions ol .stepThree.on{
-	background: transparent url('../images/stepThree_on.png') top left no-repeat;
+	background: url('../images/stepThree_on.png');
+	background-position: top left;
+	background-repeat: no-repeat;	
 	color: #FFF;
+	font-size:21px;
+
 }
 .instructions ol .stepThree.off{
-	background: transparent url('../images/stepThree_off.png') top left no-repeat;
+	background: url('../images/stepThree_off.png');
+	background-position: top left;
+	background-repeat: no-repeat;	
 	color: #BCD4F1;
+	font-size:21px;
+
 }
 .icon-danger{
 	background: transparent url('../images/icon-danger.png') top left no-repeat;
@@ -807,6 +868,12 @@ footer .cirb-cibg img{
 	float: right;
 	margin: -4px 10px 0 0;
 	color: #FFF;
+	font-family: 'Dosis', sans-serif;
+
+}
+.riskittext {
+	font-size:16px;
+	line-height:25px;
 }
 #danger-risk .icon-danger-red{
 	background: transparent url('../images/icon-danger-red.png') top left no-repeat;
@@ -822,11 +889,12 @@ footer .cirb-cibg img{
 	font-size:13px;
 }
 #widget-search-button{
-	background: #FFDB00 url('../images/icon-circle-right-arrow.png') 10px 50% no-repeat;
-	padding: 4px 12px 4px 30px;
+	padding: 4px 0px 4px 0px;
 	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
-	color: #607C9D;
+	color: #484851;
+	width:100%;
+	font-size:18px;
 }
 #recent-reports{
 	margin-top:30px;
@@ -873,18 +941,21 @@ footer .cirb-cibg img{
 	font-family:'Dosis', sans-serif;
 	font-size:14px;
 	text-transform:uppercase;
-	padding:4px 20px;
-	text-align:center;
-	color:#607C9D;
+	color:#8c9899;
+	border-bottom:0;
+	text-align: left;
+
+
 }
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover,
 .nav-tabs > li > a:hover,
 .nav-tabs > .active > a:focus {
-	background:#BCD3F2;
+	background:white;
 	border:1px solid #5F7C9C;
 	border-bottom:0;
-	color:#495E77;
+	color: #34495e;
+	text-align: left;
 }
 .last_reports {
 	line-height: 50px;
@@ -894,11 +965,12 @@ footer .cirb-cibg img{
 	display: inline-block;
 	line-height: 17px;
 	/*max-width:180px;*/
-	font-size: 14px;
+	font-size: 16px;
 	text-transform: uppercase;
-	color:#607C9D;
+	color:#2c3e50;
+	font-family: 'Dosis', sans-serif;
 	margin: 0;
-	padding: 5px 10px;
+	padding: 15px 10px;
 }
 @media (max-width: 1200px) {
 	.last_reports {
@@ -918,9 +990,11 @@ footer .cirb-cibg img{
 }
 .num_reports{
 	font-size: 19px;
-}
+	white-space: nowrap;
+	}
+
 #search_results{
-	background:#BCD3F2;
+	background:white;
 }
 .report{
 	background:#FFF;
@@ -943,9 +1017,10 @@ footer .cirb-cibg img{
 .tab-pane{
     padding: 20px;
 	border:1px solid #5F7C9C;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+
+	border-left: 0;
+	border-bottom: 0;
+	border-right: 0;
 }
 #widget-search-ticket-button{
 	background:transparent url('../images/btn_search_tickets.png') top left no-repeat;
@@ -2360,4 +2435,112 @@ content: "*";
 }
 #reason-reopen-request ul{
 	margin:0;
+}
+
+.linexs{
+	width:41%;
+	background-color: white;
+	height:1px;
+	display:inline;
+	margin:17px 2px 0 2px;
+	float:left;
+	min-width:2px;
+}
+
+
+
+
+
+
+#containerIconCircle  {
+    float:left;
+    padding-left:15px;
+    margin-top:14px;"
+}
+
+#containerIconCircle #iconCircle {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color:white;
+    border: 1px solid #fff;
+}
+
+
+#lineBorderHome {
+    float:left;
+    margin-left:17px;
+    border-right: 2px solid #cacacd;
+    position:relative;
+    height:51px;
+}
+
+#containerHomeText {
+	float:left;
+	padding-left:15px;
+	width:345px; 
+	font-family: 'Dosis', sans-serif;
+}
+
+#containerHomeText .incidentNumberText {
+    font-size:14px;
+    color:#7f7f7f;
+}
+
+
+.icon2-list_created {
+    box-shadow: 0 0 0 4px #e74c3c;
+    -webkit-box-shadow: 0 0 0 4px #e74c3c;
+    -moz-box-shadow: 0 0 0 4px #e74c3c;
+}
+
+.icon2-list_closed {
+    box-shadow: 0 0 0 4px #2ecc71;
+    -webkit-box-shadow: 0 0 0 4px #2ecc71;
+    -moz-box-shadow: 0 0 0 4px #2ecc71;
+}
+
+.icon2-list_in_progress  {
+    box-shadow: 0 0 0 4px #e67e22;
+    -webkit-box-shadow: 0 0 0 4x #e67e22;
+    -moz-box-shadow: 0 0 0 4px #e67e22;
+}
+
+#containerHomePhotoIncident  {
+    float:right; 
+    padding-left:25px;
+    padding-right:15px;
+
+}
+
+#containerHomePhotoIncident .homeWrappingPicture {
+    width:80px;
+    height:55px;
+}
+
+#containerHomePhotoIncident .homeWrappingPicture .defectPic {
+    max-height: 100%;
+    max-width:100%;
+    width: auto;
+}
+
+#containerHomeText #adress span {
+    display:inline-block;
+    width:375px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+    font-size:16px;
+    color:#000000;
+}
+
+#containerHomeText #type span {
+    display:inline-block;
+    width:400px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+    font-size:12px;
+    color:#7f7f7f;
+    margin-top:-10px;
 }
