@@ -27,8 +27,7 @@
 if (LANGUAGE_CODE === undefined) { var LANGUAGE_CODE = 'fr'; }
 if (STATIC_URL === undefined) { var STATIC_URL = '/static/'; }
 if (DEBUG === undefined) { var DEBUG = false; }
-if (gettext === undefined) { function gettext(s) { return s; } }
-
+    if (gettext === undefined) { var gettext = function (s) { return s; } }
 
 // INIT
 
@@ -297,7 +296,7 @@ L.FixMyStreet.TEMPLATES.newIncidentPopup =
 L.FixMyStreet.TEMPLATES.searchResultPopup =
   '<div class="fmsmap-popup new">' +
     '<div class="fmsmap-popup-header clearfix">' +
-      gettext('Search result {{ data.number }}') +
+      gettext('Choice {{ data.number }}') +
     '</div>' +
     '<div class="fmsmap-popup-body clearfix">' +
       '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
