@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 12:49+0100\n"
-"PO-Revision-Date: 2014-11-04 11:49+0000\n"
+"POT-Creation-Date: 2014-11-04 17:22+0100\n"
+"PO-Revision-Date: 2014-11-04 16:22+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -995,7 +995,7 @@ msgstr "envoyer le PDF par mail"
 #: backoffice/templates/pro/reports/show.html:464
 msgctxt "pro"
 msgid "send report pdf"
-msgstr ""
+msgstr "Envoyer le rapport pdf"
 
 #: backoffice/templates/pro/reports/show.html:473
 #: backoffice/templates/pro/reports/show.html:491
@@ -1005,7 +1005,7 @@ msgstr "Adresse email"
 #: backoffice/templates/pro/reports/show.html:475
 #: backoffice/templates/pro/reports/show.html:493
 msgid "Type one or more email addresses, separated by a comma (,)."
-msgstr ""
+msgstr "Veuillez introduire une ou plusieurs adresses séparées par une virgule (,)."
 
 #: backoffice/templates/pro/reports/show.html:476
 #: backoffice/templates/pro/reports/show.html:494
@@ -1019,7 +1019,7 @@ msgstr "Envoyer le PDF"
 
 #: backoffice/templates/pro/reports/show.html:483
 msgid "send report pdf pro"
-msgstr ""
+msgstr "Envoyer le rapport pdf pro"
 
 #: backoffice/templates/pro/reports/show.html:506
 #: fixmystreet/templates/admin/fixmystreet/fmsuser/change_form.html:9
@@ -1095,9 +1095,10 @@ msgid ": activate to sort column descending"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:180
+#: backoffice/templates/pro/reports/table.html:183
 msgctxt "table"
-msgid "No data available in table"
-msgstr ""
+msgid "No incident to display"
+msgstr "Aucun incident à afficher"
 
 #: backoffice/templates/pro/reports/table.html:181
 msgctxt "table"
@@ -1107,42 +1108,37 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:182
 msgctxt "table"
 msgid "Showing _START_ to _END_ of _TOTAL_ incidents"
-msgstr ""
-
-#: backoffice/templates/pro/reports/table.html:183
-msgctxt "table"
-msgid "Showing 0 to 0 of 0 incidents"
-msgstr ""
+msgstr "Incidents _START_ à _END_ sur _TOTAL_ affichés"
 
 #: backoffice/templates/pro/reports/table.html:184
 msgctxt "table"
 msgid "(filtered from _MAX_ total incidents)"
-msgstr ""
+msgstr "(filtrés sur un total de _MAX_ incidents)"
 
 #: backoffice/templates/pro/reports/table.html:185
 msgctxt "table"
 msgid "Show _MENU_ incidents"
-msgstr ""
+msgstr "Afficher _MENU_ incidents"
 
 #: backoffice/templates/pro/reports/table.html:186
 msgctxt "table"
 msgid "Loading..."
-msgstr ""
+msgstr "Chargement en cours..."
 
 #: backoffice/templates/pro/reports/table.html:187
 msgctxt "table"
 msgid "Processing..."
-msgstr ""
+msgstr "En traitement..."
 
 #: backoffice/templates/pro/reports/table.html:188
 msgctxt "table"
 msgid "Search:"
-msgstr ""
+msgstr "Recherche:"
 
 #: backoffice/templates/pro/reports/table.html:189
 msgctxt "table"
 msgid "No matching incidents found"
-msgstr ""
+msgstr "Aucun incident correspondant trouvé"
 
 #: backoffice/templates/pro/reports/table.html:336
 msgid "Table"
@@ -1154,11 +1150,11 @@ msgstr "Colonnes"
 
 #: backoffice/templates/pro/reports/table.html:366
 msgid "Unselect all"
-msgstr ""
+msgstr "Tout déselectionner"
 
 #: backoffice/templates/pro/reports/table.html:367
 msgid "Select all"
-msgstr ""
+msgstr "Tout sélectionner"
 
 #: backoffice/templates/pro/reports/table.html:369
 #: backoffice/templates/pro/reports/table_content.html:39
@@ -1178,7 +1174,7 @@ msgstr "Voirie"
 #: backoffice/templates/pro/reports/table.html:376
 #: backoffice/templates/pro/reports/table_content.html:44
 msgid "Category path"
-msgstr ""
+msgstr "Catégorie complète"
 
 #: backoffice/templates/pro/reports/table.html:379
 #: backoffice/templates/pro/reports/table_content.html:47
@@ -1390,25 +1386,25 @@ msgstr "Entité responsable"
 
 #: backoffice/views/ajax.py:84
 msgid "Cannot set a private category to a public report"
-msgstr ""
+msgstr "Impossible d'attribuer une catégorie privée à un incident public"
 
 #: backoffice/views/ajax.py:130
 #, python-brace-format
 msgid "'{email}' is not a valid email address."
-msgstr ""
+msgstr "'{email}' n'est pas une adresse mail valide."
 
 #: backoffice/views/ajax.py:144
 #, python-brace-format
 msgid "Successfully sent to '{email}'."
-msgstr ""
+msgstr "Envoyé avec succès à '{email}'."
 
 #: backoffice/views/ajax.py:147
 msgid "PDF sent by email."
-msgstr ""
+msgstr "PDF envoyé par mail."
 
 #: backoffice/views/ajax.py:149
 msgid "There were errors."
-msgstr ""
+msgstr "Il y a eu des erreurs."
 
 #: backoffice/views/groups.py:48
 msgid "Group has been created successfully"
@@ -1453,7 +1449,7 @@ msgstr "L'utilisateur à été créé."
 
 #: backoffice/views/users.py:120
 msgid "An error occurred during the email sending"
-msgstr ""
+msgstr "Une erreur s'est produite lors de l'envoi du mail."
 
 #: backoffice/views/users.py:143
 msgid "User deleted successfully"
@@ -1493,7 +1489,7 @@ msgstr "Vous n'étiez pas inscris"
 msgid ""
 "Cannot turn incident public. The category of this incident may not be shown "
 "to the citizens."
-msgstr ""
+msgstr "Impossible de rendre cet incident public car sa catégorie ne peut être affichée aux citoyens."
 
 #: backoffice/views/reports/updates.py:228
 msgid "organisation entity assign : Generic error"
@@ -1617,7 +1613,7 @@ msgstr "Maison de quartier"
 #: fixmystreet/models.py:266 fixmystreet/models.py:1919
 #: fixmystreet/models.py:1953 fixmystreet/models.py:1986
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: fixmystreet/models.py:626 fixmystreet/models.py:627
 #: fixmystreet/models.py:882 fixmystreet/models.py:2278
@@ -1703,7 +1699,7 @@ msgstr "Localisation"
 
 #: fixmystreet/models.py:669
 msgid "Address Number"
-msgstr ""
+msgstr "Numéro"
 
 #: fixmystreet/models.py:672
 msgid "Postal Code"
@@ -1711,7 +1707,7 @@ msgstr "Code postal"
 
 #: fixmystreet/models.py:886
 msgid "Temporary"
-msgstr ""
+msgstr "Temporaire"
 
 #: fixmystreet/models.py:1647
 #: fixmystreet/templates/reports/_visibility_control.html:5
@@ -1733,7 +1729,7 @@ msgstr "Mes collègues"
 
 #: fixmystreet/models.py:1653
 msgid "Documentation"
-msgstr ""
+msgstr "Documentation"
 
 #: fixmystreet/models.py:1654
 msgid "Closing message"
@@ -1795,7 +1791,7 @@ msgstr "Un gestionnaire est responsable"
 
 #: fixmystreet/models.py:2270
 msgid "Valid"
-msgstr ""
+msgstr "Valide"
 
 #: fixmystreet/models.py:2271
 msgid "Organisation assigned"
@@ -1823,7 +1819,7 @@ msgstr "Mis à jour"
 
 #: fixmystreet/models.py:2280
 msgid "Update published"
-msgstr ""
+msgstr "Mise à jour publiée"
 
 #: fixmystreet/models.py:2281
 msgid "Planned"
@@ -1835,11 +1831,11 @@ msgstr "Fusionné"
 
 #: fixmystreet/models.py:2285
 msgid "Became private"
-msgstr ""
+msgstr "Mis à privé"
 
 #: fixmystreet/models.py:2286
 msgid "Became public"
-msgstr ""
+msgstr "Mis à public"
 
 #: fixmystreet/models.py:2289
 #, python-brace-format
@@ -1918,7 +1914,7 @@ msgstr "Incident fusionné avec l'incident : #{merged_with_id}"
 #: fixmystreet/models.py:2307
 #, python-brace-format
 msgid "Report reopen by {user}"
-msgstr ""
+msgstr "Incident réouvert par {user}"
 
 #: fixmystreet/models.py:2308
 #, python-brace-format
@@ -1928,12 +1924,12 @@ msgstr "Demande de réouverture de l’incident par {user}"
 #: fixmystreet/models.py:2309
 #, python-brace-format
 msgid "Report became private by {user}"
-msgstr ""
+msgstr "Incident mis à privé par {user}"
 
 #: fixmystreet/models.py:2310
 #, python-brace-format
 msgid "Report became public by {user}"
-msgstr ""
+msgstr "Incident mis à public par {user}"
 
 #: fixmystreet/models.py:2435
 msgid "Question"

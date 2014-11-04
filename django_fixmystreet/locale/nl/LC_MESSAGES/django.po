@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 12:47+0100\n"
-"PO-Revision-Date: 2014-11-04 11:47+0000\n"
+"POT-Creation-Date: 2014-11-04 17:22+0100\n"
+"PO-Revision-Date: 2014-11-04 16:19+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1093,8 +1093,9 @@ msgid ": activate to sort column descending"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:180
+#: backoffice/templates/pro/reports/table.html:183
 msgctxt "table"
-msgid "No data available in table"
+msgid "No incident to display"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:181
@@ -1105,11 +1106,6 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:182
 msgctxt "table"
 msgid "Showing _START_ to _END_ of _TOTAL_ incidents"
-msgstr ""
-
-#: backoffice/templates/pro/reports/table.html:183
-msgctxt "table"
-msgid "Showing 0 to 0 of 0 incidents"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:184
@@ -1450,7 +1446,7 @@ msgid "User has been created successfully"
 msgstr ""
 
 #: backoffice/views/users.py:120
-msgid "An error occured during the email sending"
+msgid "An error occurred during the email sending"
 msgstr ""
 
 #: backoffice/views/users.py:143
@@ -1615,7 +1611,7 @@ msgstr ""
 #: fixmystreet/models.py:266 fixmystreet/models.py:1919
 #: fixmystreet/models.py:1953 fixmystreet/models.py:1986
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: fixmystreet/models.py:626 fixmystreet/models.py:627
 #: fixmystreet/models.py:882 fixmystreet/models.py:2278

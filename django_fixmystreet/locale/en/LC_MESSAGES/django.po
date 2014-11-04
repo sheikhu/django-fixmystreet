@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 12:49+0100\n"
+"POT-Creation-Date: 2014-11-04 17:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1089,8 +1089,9 @@ msgid ": activate to sort column descending"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:180
+#: backoffice/templates/pro/reports/table.html:183
 msgctxt "table"
-msgid "No data available in table"
+msgid "No incident to display"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:181
@@ -1101,11 +1102,6 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:182
 msgctxt "table"
 msgid "Showing _START_ to _END_ of _TOTAL_ incidents"
-msgstr ""
-
-#: backoffice/templates/pro/reports/table.html:183
-msgctxt "table"
-msgid "Showing 0 to 0 of 0 incidents"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:184
