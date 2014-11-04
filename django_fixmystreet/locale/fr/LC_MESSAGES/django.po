@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 12:06+0100\n"
-"PO-Revision-Date: 2014-11-04 11:07+0000\n"
+"POT-Creation-Date: 2014-11-04 12:49+0100\n"
+"PO-Revision-Date: 2014-11-04 11:49+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -713,7 +713,7 @@ msgstr "N° de l'incident..."
 
 #: backoffice/templates/pro/reports/merge.html:211
 msgid "Clear search"
-msgstr ""
+msgstr "Effacer la recherche"
 
 #: backoffice/templates/pro/reports/merge.html:218
 #: fixmystreet/templates/reports/verify.html:43
@@ -728,15 +728,15 @@ msgstr "Carte"
 
 #: backoffice/templates/pro/reports/merge.html:236
 msgid "Previous page"
-msgstr ""
+msgstr "Page précédente"
 
 #: backoffice/templates/pro/reports/merge.html:237
 msgid "Next page"
-msgstr ""
+msgstr "Page suivante"
 
 #: backoffice/templates/pro/reports/merge.html:241
 msgid "No report"
-msgstr ""
+msgstr "Pas d’incident"
 
 #: backoffice/templates/pro/reports/merge.html:252
 #: fixmystreet/templates/reports/verify.html:65
@@ -750,15 +750,15 @@ msgstr "Voulez-vous fusionner ces incidents ?"
 
 #: backoffice/templates/pro/reports/merge.html:320
 msgid "Report"
-msgstr ""
+msgstr "Incident"
 
 #: backoffice/templates/pro/reports/merge.html:334
 msgid "Will be merged with the report"
-msgstr ""
+msgstr "Va être fusionné avec l'incident"
 
 #: backoffice/templates/pro/reports/merge.html:347
 msgid "The result of the merge will be visible to"
-msgstr ""
+msgstr "Le résultat de la fusion sera visible aux"
 
 #: backoffice/templates/pro/reports/merge.html:351
 msgid "private"
@@ -788,7 +788,7 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:133
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: backoffice/templates/pro/reports/show.html:218
 #: fixmystreet/templates/reports/pdf.html:347
@@ -850,18 +850,18 @@ msgstr "Pros,Tous"
 
 #: backoffice/templates/pro/reports/show.html:273
 msgid "Posted by"
-msgstr ""
+msgstr "Posté par"
 
 #: backoffice/templates/pro/reports/show.html:274
 #: backoffice/templates/pro/reports/show.html:298
 msgctxt "date"
 msgid "on"
-msgstr ""
+msgstr "le"
 
 #: backoffice/templates/pro/reports/show.html:275
 msgctxt "source/origin"
 msgid "via"
-msgstr ""
+msgstr "via"
 
 #: backoffice/templates/pro/reports/show.html:279
 #: backoffice/templates/pro/reports/show.html:290
@@ -874,7 +874,7 @@ msgstr ""
 #: fixmystreet/templates/reports/show.html:209
 msgctxt "telephone abbreviation"
 msgid "Phone"
-msgstr ""
+msgstr "Tél"
 
 #: backoffice/templates/pro/reports/show.html:284
 #: fixmystreet/templates/reports/pdf.html:446
@@ -917,7 +917,7 @@ msgstr "Accepter"
 
 #: backoffice/templates/pro/reports/show.html:342 fixmystreet/models.py:2283
 msgid "Reopen"
-msgstr ""
+msgstr "Réouvrir"
 
 #: backoffice/templates/pro/reports/show.html:350 fixmystreet/models.py:2284
 #: fixmystreet/templates/reports/reopen.html:6
@@ -954,7 +954,7 @@ msgstr "Historique"
 
 #: backoffice/templates/pro/reports/show.html:400
 msgid "potential duplicates"
-msgstr ""
+msgstr "doublon(s) potentiel(s)"
 
 #: backoffice/templates/pro/reports/show.html:415
 #: fixmystreet/templates/reports/show.html:308
@@ -1412,11 +1412,11 @@ msgstr ""
 
 #: backoffice/views/groups.py:48
 msgid "Group has been created successfully"
-msgstr ""
+msgstr "Le groupe a été créé."
 
 #: backoffice/views/groups.py:76
 msgid "Group has been updated successfully"
-msgstr ""
+msgstr "Le groupe a été mis à jour."
 
 #: backoffice/views/groups.py:99
 msgid ""
@@ -1428,11 +1428,11 @@ msgstr ""
 
 #: backoffice/views/groups.py:109
 msgid "Group has been deleted successfully"
-msgstr ""
+msgstr "Le groupe a été effacé."
 
 #: backoffice/views/reporting.py:40
 msgid "Reporting currently unavailable"
-msgstr ""
+msgstr "Le reporting est indisponible pour le moment"
 
 #: backoffice/views/reporting.py:71
 #, python-format
@@ -1445,23 +1445,23 @@ msgstr "Mot de passe correctement modifié"
 
 #: backoffice/views/users.py:94
 msgid "User has been updated successfully"
-msgstr ""
+msgstr "L'utilisateur à été mis à jour."
 
 #: backoffice/views/users.py:116
 msgid "User has been created successfully"
-msgstr ""
+msgstr "L'utilisateur à été créé."
 
 #: backoffice/views/users.py:120
-msgid "An error occurd during the email sending"
+msgid "An error occurred during the email sending"
 msgstr ""
 
 #: backoffice/views/users.py:143
 msgid "User deleted successfully"
-msgstr ""
+msgstr "L'utilisateur a été effacé"
 
 #: backoffice/views/users.py:145
 msgid "You can not delete this user"
-msgstr ""
+msgstr "Vous ne pouvez pas effacer cet utilisateur"
 
 #: backoffice/views/reports/main.py:71 fixmystreet/views/reports/main.py:81
 msgid "Newly created report successfull"
@@ -1483,11 +1483,11 @@ msgstr "Vos attachements ont été envoyés"
 
 #: backoffice/views/reports/subscribers.py:24
 msgid "You have unsubscribed successfully"
-msgstr ""
+msgstr "Vous êtes désinscris"
 
 #: backoffice/views/reports/subscribers.py:26
 msgid "You were not subscribed."
-msgstr ""
+msgstr "Vous n'étiez pas inscris"
 
 #: backoffice/views/reports/updates.py:168
 msgid ""

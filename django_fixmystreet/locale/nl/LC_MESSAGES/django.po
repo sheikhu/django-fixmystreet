@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 12:06+0100\n"
-"PO-Revision-Date: 2014-11-04 11:07+0000\n"
+"POT-Creation-Date: 2014-11-04 12:47+0100\n"
+"PO-Revision-Date: 2014-11-04 11:47+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1450,7 +1450,7 @@ msgid "User has been created successfully"
 msgstr ""
 
 #: backoffice/views/users.py:120
-msgid "An error occurd during the email sending"
+msgid "An error occured during the email sending"
 msgstr ""
 
 #: backoffice/views/users.py:143
