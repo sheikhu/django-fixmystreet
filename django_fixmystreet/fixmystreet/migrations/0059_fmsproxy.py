@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("fmsproxy", "0001_initial"),
+    )
+
     def forwards(self, orm):
         # Adding field 'HistoricalOrganisationEntity.fmsproxy_id'
         db.add_column(u'fixmystreet_historicalorganisationentity', u'fmsproxy_id',
