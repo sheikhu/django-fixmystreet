@@ -37,7 +37,7 @@ install: $(BIN_PATH)
 	$(MAKE) migrate collectstatic
 
 develop: $(BIN_PATH)
-	$(BIN_PATH)/python setup.py develop
+	$(BIN_PATH)/python setup.py develop -Z
 	$(BIN_PATH)/pip install -e .[dev]
 	sudo npm install -g testem
 	$(MAKE) migrate
