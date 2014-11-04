@@ -731,8 +731,7 @@ class Report(UserTrackedModel):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 
     def get_marker(self):
-        # user = get_current_user()
-        marker_color = "green"  # default color
+        marker_color = "green"
 
         if self.is_in_progress():
             marker_color = "orange"
@@ -742,6 +741,16 @@ class Report(UserTrackedModel):
             marker_color = "gray"
 
         return "images/marker-" + marker_color + "-xxs.png"
+
+    def get_marker_flat(self):
+        marker_color = "icon2-list_closed"
+
+        if self.is_in_progress():
+            marker_color = "icon2-list_in_progress"
+        elif self.is_created():
+            marker_color = "icon2-list_created"
+
+        return marker_color
 
     def is_contractor_or_applicant_assigned(self):
         return self.status == Report.APPLICANT_RESPONSIBLE or self.status == Report.CONTRACTOR_ASSIGNED

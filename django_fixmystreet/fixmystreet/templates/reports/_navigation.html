@@ -5,17 +5,17 @@
 
     <div style="float:left; width:48%; margin:0px; margin-left:15px; margin-bottom:10px">
         <div id="containerIconCircle">
-            <div id="iconCircle" class="icon2-list_created"></div>
+            <div id="iconCircle" class="{{ report.get_marker_flat }}"></div>
         </div>
         <div id="lineBorderHome"></div>
         <div id="containerHomeText">
             <span class="incidentNumberText">N°{{ report.get_ticket_number }}</span><br/>
-             <div id="adress">
+            <div id="adress">
                 <span >{{ report.address }}, {{ report.address_number }} à {{ report.postalcode }} {{ report.territorial_entity.name }}<br/></span>
             </div>
-            <div id="type">        
+            <div id="type">
                <span>{{ report.display_category }}</span>
-            </div>     
+            </div>
         </div>
         <div id="containerHomePhotoIncident">
             <div class="homeWrappingPicture" align="right">
@@ -28,7 +28,7 @@
                 {% endif %}
             </div>
         </div>
-    </div>     
+    </div>
 
 
 
