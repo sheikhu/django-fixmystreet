@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 17:22+0100\n"
-"PO-Revision-Date: 2014-11-04 16:22+0000\n"
+"POT-Creation-Date: 2014-11-05 10:23+0100\n"
+"PO-Revision-Date: 2014-11-05 09:23+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -577,6 +577,8 @@ msgstr "Responsabilité d'un tiers"
 #: backoffice/templates/pro/reports/_actions.html:553
 #: backoffice/templates/pro/reports/table.html:378
 #: backoffice/templates/pro/reports/table_content.html:46
+#: fixmystreet/templates/emails/digest.html:43
+#: fixmystreet/templates/emails/digest.html:89
 msgid "Address"
 msgstr "Adresse"
 
@@ -1103,7 +1105,7 @@ msgstr "Aucun incident à afficher"
 #: backoffice/templates/pro/reports/table.html:181
 msgctxt "table"
 msgid "Got a total of _TOTAL_ incidents to show (_START_ to _END_)"
-msgstr ""
+msgstr "Il y a un total de _TOTAL_ incidents à afficher (_START à _END_)"
 
 #: backoffice/templates/pro/reports/table.html:182
 msgctxt "table"
@@ -2181,7 +2183,7 @@ msgstr "A propos de Fix My Street"
 
 #: fixmystreet/templates/home.html:7
 msgid "Meta description for home page"
-msgstr ""
+msgstr "Description meta pour la page d'acceuil"
 
 #: fixmystreet/templates/home.html:35
 msgid "Report an incident"
@@ -2237,7 +2239,7 @@ msgstr "Votre mot de passe a été réinitialisé"
 
 #: fixmystreet/templates/admin/registration/password_reset_complete.html:17
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
+msgstr "Votre mot de passe a été validé. Vous pouvez désormais vous connecter."
 
 #: fixmystreet/templates/admin/registration/password_reset_complete.html:19
 msgid "Log in"
@@ -2255,7 +2257,7 @@ msgstr "Entrer un nouveau met de passe"
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
-msgstr ""
+msgstr "Veuillez introduire votre mot de passe deux fois afin que l'on puisse vérifier qu'il ait été introduit correctement."
 
 #: fixmystreet/templates/admin/registration/password_reset_confirm.html:23
 msgid "New password:"
@@ -2277,20 +2279,20 @@ msgstr "Votre mot de passe n'a pas été réinitialisé"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr ""
+msgstr "Le lien de réinitialisation du mot de passe est invalide car il a déjà été utilisé. Veuillez faire une nouvelle demande de réinitialisation de mot de passe."
 
 #: fixmystreet/templates/admin/registration/password_reset_done.html:17
 msgid ""
 "We've emailed you instructions for setting your password to the email "
 "address you submitted. You should be receiving it shortly."
-msgstr ""
+msgstr "Nous vous avons envoyé par mail les instructions nécessaires pour choisir un mot de passe pour l'adresse mail que vous avez introduite."
 
 #: fixmystreet/templates/admin/registration/password_reset_email.html:2
 #, python-format
 msgid ""
 "You're receiving this email because you requested a password reset for your "
 "user account at %(site_name)s."
-msgstr ""
+msgstr "Vous recevez cet email parce que vous avez demandé une réinitialisation de votre mot de passe pour votre compte sur le site %(site_name)s."
 
 #: fixmystreet/templates/admin/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
@@ -2373,32 +2375,24 @@ msgstr "L'équipe Fix My Street"
 msgid ""
 "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements "
 "sur Fix My Street."
-msgstr ""
+msgstr "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements sur Fix My Street."
 
 #: fixmystreet/templates/emails/digest.html:34
 #: fixmystreet/templates/emails/digest.html:80
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #: fixmystreet/templates/emails/digest.html:39
 #: fixmystreet/templates/emails/digest.html:85
 msgid "Time"
-msgstr ""
-
-#: fixmystreet/templates/emails/digest.html:43
-msgid "Adresse"
-msgstr ""
+msgstr "Heure"
 
 #: fixmystreet/templates/emails/digest.html:66
 #: fixmystreet/templates/emails/digest.html:112
 msgid ""
 "Vous pouvez vous désinscrire et ne plus recevoir de notifications en "
 "cliquant sur le lien ci-dessous"
-msgstr ""
-
-#: fixmystreet/templates/emails/digest.html:89
-msgid "Adress"
-msgstr ""
+msgstr "Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous"
 
 #: fixmystreet/templates/emails/send_created_to_user/message.html:9
 #: fixmystreet/templates/emails/send_created_to_user/message.html:20
@@ -2480,7 +2474,7 @@ msgstr "Commentaire"
 #: fixmystreet/templates/reports/_attachments_form.html:50
 msgctxt "citizen"
 msgid "Informations"
-msgstr ""
+msgstr "Informations"
 
 #: fixmystreet/templates/reports/_attachments_form.html:65
 #: fixmystreet/templates/reports/_photo_form.html:60
@@ -2562,7 +2556,7 @@ msgstr "abonné(s)"
 #: fixmystreet/templates/reports/new.html:9
 #: fixmystreet/templates/reports/newmap.html:9
 msgid ""
-"Signalez tout type d incident. Sur fix my street qui identifiera alors le "
+"Signalez tout type d incident sur Fix My Street qui identifiera alors le "
 "service public en charge de le traiter."
 msgstr ""
 
@@ -2602,7 +2596,7 @@ msgstr "Tous les incidents"
 
 #: fixmystreet/templates/reports/index.html:8
 msgid "Meta description for index page"
-msgstr ""
+msgstr "Description meta pour la page d'index"
 
 #: fixmystreet/templates/reports/index.html:36
 msgid "Reports by wards"
@@ -2660,7 +2654,7 @@ msgstr "Incidents à"
 
 #: fixmystreet/templates/reports/reports_map.html:12
 msgid "Meta description for list page"
-msgstr ""
+msgstr "Description meta pour la page de liste"
 
 #: fixmystreet/templates/reports/show.html:5
 #: fixmystreet/templates/reports/show.html:9
@@ -2670,13 +2664,13 @@ msgstr "dans"
 
 #: fixmystreet/templates/reports/show.html:10
 msgid "Signalez tout type d incident :"
-msgstr ""
+msgstr "Signalez tout type d incident :"
 
 #: fixmystreet/templates/reports/show.html:10
 msgid ""
 "sur FixMyStreet qui identifiera alors le service public en charge de le "
 "traiter. "
-msgstr ""
+msgstr "sur FixMyStreet qui identifiera alors le service public en charge de le traiter. "
 
 #: fixmystreet/templates/reports/show.html:72
 msgid ""
@@ -2690,11 +2684,11 @@ msgstr "Cet incident n'est pas sur une voirie régionale"
 
 #: fixmystreet/templates/reports/show.html:185
 msgid "This incident is not assigned"
-msgstr ""
+msgstr "Cet incident n'a pas été assigné"
 
 #: fixmystreet/templates/reports/show.html:191
 msgid "There is no planification for this incident"
-msgstr ""
+msgstr "Il n'y a pas de planification pour cet incident"
 
 #: fixmystreet/templates/reports/show.html:318
 msgid "Your email"
@@ -2702,7 +2696,7 @@ msgstr "Votre email"
 
 #: fixmystreet/templates/reports/verify.html:5
 msgid "Incidents signalés dans le même secteur"
-msgstr ""
+msgstr "Incidents signalés dans le même secteur"
 
 #: fixmystreet/templates/reports/verify.html:39
 msgid "thanks verify"
@@ -2736,34 +2730,34 @@ msgstr "Vous n'êtes plus abonné aux notifications concernant cet incident"
 #: fmsproxy/models.py:50
 #, python-brace-format
 msgid "Incident was accepted by {contractor}."
-msgstr ""
+msgstr "L'incident a été accepté par {contractor}"
 
 #: fmsproxy/models.py:58
 #, python-brace-format
 msgid "Incident was rejected by {contractor}."
-msgstr ""
+msgstr "L'incident a été rejeté par {contractor}"
 
 #: fmsproxy/models.py:75
 #, python-brace-format
 msgid "Incident was closed by {contractor}."
-msgstr ""
+msgstr "L'incident a été clôturé par {contractor}"
 
 #: fmsproxy/views.py:72
 msgid "Incident was accepted by"
-msgstr ""
+msgstr "L'incident a été accepté par"
 
 #: fmsproxy/views.py:74
 msgid "Incident was rejected by"
-msgstr ""
+msgstr "L'incident a été rejeté par"
 
 #: fmsproxy/views.py:76
 msgid "Incident was closed by"
-msgstr ""
+msgstr "L'incident a été clôturé par"
 
 #: fmsproxy/views.py:78
 msgid "Incident was updated by"
-msgstr ""
+msgstr "L'incident a été mis à jour par"
 
 #: fmsproxy/templates/fmsproxy_comment.txt:2
 msgid "External reference"
-msgstr ""
+msgstr "Référence externe"

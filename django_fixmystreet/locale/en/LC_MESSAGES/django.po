@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 17:22+0100\n"
+"POT-Creation-Date: 2014-11-05 10:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -570,6 +570,8 @@ msgstr ""
 #: backoffice/templates/pro/reports/_actions.html:553
 #: backoffice/templates/pro/reports/table.html:378
 #: backoffice/templates/pro/reports/table_content.html:46
+#: fixmystreet/templates/emails/digest.html:43
+#: fixmystreet/templates/emails/digest.html:89
 msgid "Address"
 msgstr ""
 
@@ -2382,19 +2384,11 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: fixmystreet/templates/emails/digest.html:43
-msgid "Adresse"
-msgstr ""
-
 #: fixmystreet/templates/emails/digest.html:66
 #: fixmystreet/templates/emails/digest.html:112
 msgid ""
 "Vous pouvez vous désinscrire et ne plus recevoir de notifications en "
 "cliquant sur le lien ci-dessous"
-msgstr ""
-
-#: fixmystreet/templates/emails/digest.html:89
-msgid "Adress"
 msgstr ""
 
 #: fixmystreet/templates/emails/send_created_to_user/message.html:9
@@ -2559,7 +2553,7 @@ msgstr ""
 #: fixmystreet/templates/reports/new.html:9
 #: fixmystreet/templates/reports/newmap.html:9
 msgid ""
-"Signalez tout type d incident. Sur fix my street qui identifiera alors le "
+"Signalez tout type d incident sur Fix My Street qui identifiera alors le "
 "service public en charge de le traiter."
 msgstr ""
 
