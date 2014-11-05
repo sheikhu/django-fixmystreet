@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-05 16:36+0100\n"
-"PO-Revision-Date: 2014-11-05 15:36+0000\n"
+"POT-Creation-Date: 2014-11-05 16:42+0100\n"
+"PO-Revision-Date: 2014-11-05 15:42+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -98,8 +98,8 @@ msgid "Unpublished"
 msgstr "Incidents signalés"
 
 #: backoffice/forms.py:233 backoffice/templates/pro/home.html:59
-#: fixmystreet/models.py:631 fixmystreet/models.py:632
-#: fixmystreet/models.py:888
+#: fixmystreet/models.py:632 fixmystreet/models.py:633
+#: fixmystreet/models.py:889
 msgid "In progress"
 msgstr "En traitement"
 
@@ -363,8 +363,8 @@ msgstr "Groupes administration"
 #: backoffice/templates/pro/auth/groups_list.html:44
 #: backoffice/templates/pro/auth/users_list.html:40
 #: backoffice/templates/pro/auth/users_list.html:46 fixmystreet/forms.py:215
-#: fixmystreet/models.py:265 fixmystreet/models.py:1918
-#: fixmystreet/models.py:1952 fixmystreet/models.py:1985
+#: fixmystreet/models.py:265 fixmystreet/models.py:1919
+#: fixmystreet/models.py:1953 fixmystreet/models.py:1986
 #: fixmystreet/templates/reports/_documentreport.html:92
 #: fixmystreet/templates/reports/reopen.html:178
 msgid "Name"
@@ -525,7 +525,7 @@ msgstr "Priorité"
 #: backoffice/templates/pro/reports/_actions.html:519
 #: backoffice/templates/pro/reports/table.html:373
 #: backoffice/templates/pro/reports/table_content.html:41
-#: fixmystreet/models.py:674 fixmystreet/models.py:675
+#: fixmystreet/models.py:675 fixmystreet/models.py:676
 #: fixmystreet/templates/emails/digest.html:42
 #: fixmystreet/templates/emails/digest.html:88
 msgid "Category"
@@ -588,7 +588,7 @@ msgid "Reject"
 msgstr "Sans suite"
 
 #: backoffice/templates/pro/reports/_actions.html:437
-#: fixmystreet/models.py:2266
+#: fixmystreet/models.py:2267
 msgid "Close"
 msgstr "Clôturer"
 
@@ -922,11 +922,11 @@ msgstr "avec l'incident"
 msgid "Accept"
 msgstr "Accepter"
 
-#: backoffice/templates/pro/reports/show.html:335 fixmystreet/models.py:2283
+#: backoffice/templates/pro/reports/show.html:335 fixmystreet/models.py:2284
 msgid "Reopen"
 msgstr "Réouvrir"
 
-#: backoffice/templates/pro/reports/show.html:343 fixmystreet/models.py:2284
+#: backoffice/templates/pro/reports/show.html:343 fixmystreet/models.py:2285
 #: fixmystreet/templates/reports/reopen.html:6
 #: fixmystreet/templates/reports/reopen.html:73
 msgid "Reopen request"
@@ -1488,7 +1488,7 @@ msgstr "Vous ne pouvez pas effacer cet utilisateur"
 msgid "Newly created report successfull"
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné.\nUn mail contenant les informations du rapport vous a été envoyé"
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:335
+#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:339
 #: fixmystreet/views/reports/main.py:219 fixmystreet/views/reports/main.py:273
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
@@ -1607,7 +1607,7 @@ msgstr "Syndic d'immeuble"
 msgid "Association"
 msgstr "Association"
 
-#: fixmystreet/models.py:102 fixmystreet/models.py:2099
+#: fixmystreet/models.py:102 fixmystreet/models.py:2100
 msgid "Other"
 msgstr "Autre"
 
@@ -1635,149 +1635,149 @@ msgstr "Gestionnaire"
 msgid "Neighbour house"
 msgstr "Maison de quartier"
 
-#: fixmystreet/models.py:266 fixmystreet/models.py:1919
-#: fixmystreet/models.py:1953 fixmystreet/models.py:1986
+#: fixmystreet/models.py:266 fixmystreet/models.py:1920
+#: fixmystreet/models.py:1954 fixmystreet/models.py:1987
 msgid "Slug"
 msgstr "Slug"
 
-#: fixmystreet/models.py:626 fixmystreet/models.py:627
-#: fixmystreet/models.py:882 fixmystreet/models.py:2278
+#: fixmystreet/models.py:627 fixmystreet/models.py:628
+#: fixmystreet/models.py:883 fixmystreet/models.py:2279
 msgid "Created"
 msgstr "Signalé"
 
-#: fixmystreet/models.py:628 fixmystreet/models.py:884
+#: fixmystreet/models.py:629 fixmystreet/models.py:885
 msgid "Refused"
 msgstr "Sans suite"
 
-#: fixmystreet/models.py:629
+#: fixmystreet/models.py:630
 msgid "Temp"
 msgstr "Temporaire"
 
-#: fixmystreet/models.py:633
+#: fixmystreet/models.py:634
 msgid "Manager is assigned"
 msgstr "Un gestionnaire est responsable"
 
-#: fixmystreet/models.py:634
+#: fixmystreet/models.py:635
 msgid "Applicant is responsible"
 msgstr "Un impétrant est assigné"
 
-#: fixmystreet/models.py:635
+#: fixmystreet/models.py:636
 msgid "Contractor is assigned"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: fixmystreet/models.py:636
+#: fixmystreet/models.py:637
 msgid "Solved"
 msgstr "Résolu"
 
-#: fixmystreet/models.py:638 fixmystreet/models.py:639
-#: fixmystreet/models.py:890
+#: fixmystreet/models.py:639 fixmystreet/models.py:640
+#: fixmystreet/models.py:891
 msgid "Processed"
 msgstr "Clôturé"
 
-#: fixmystreet/models.py:640
+#: fixmystreet/models.py:641
 msgid "Deleted"
 msgstr "Effacé"
 
-#: fixmystreet/models.py:646
+#: fixmystreet/models.py:647
 msgctxt "probability"
 msgid "Unlikely"
 msgstr "Improbable"
 
-#: fixmystreet/models.py:647
+#: fixmystreet/models.py:648
 msgctxt "probability"
 msgid "Rare"
 msgstr "Rare"
 
-#: fixmystreet/models.py:648
+#: fixmystreet/models.py:649
 msgctxt "probability"
 msgid "Possible"
 msgstr "Possible"
 
-#: fixmystreet/models.py:649
+#: fixmystreet/models.py:650
 msgctxt "probability"
 msgid "Occasionnel"
 msgstr "Occasionnel"
 
-#: fixmystreet/models.py:654
+#: fixmystreet/models.py:655
 msgctxt "gravity"
 msgid "Moderate"
 msgstr "Modéré"
 
-#: fixmystreet/models.py:655
+#: fixmystreet/models.py:656
 msgctxt "gravity"
 msgid "Serious"
 msgstr "Sérieux"
 
-#: fixmystreet/models.py:656
+#: fixmystreet/models.py:657
 msgctxt "gravity"
 msgid "Grave"
 msgstr "Grave"
 
-#: fixmystreet/models.py:657
+#: fixmystreet/models.py:658
 msgctxt "gravity"
 msgid "Major"
 msgstr "Majeur"
 
-#: fixmystreet/models.py:668
+#: fixmystreet/models.py:669
 msgid "Location"
 msgstr "Localisation"
 
-#: fixmystreet/models.py:669
+#: fixmystreet/models.py:670
 msgid "Address Number"
 msgstr "Numéro"
 
-#: fixmystreet/models.py:672
+#: fixmystreet/models.py:673
 msgid "Postal Code"
 msgstr "Code postal"
 
-#: fixmystreet/models.py:886
+#: fixmystreet/models.py:887
 msgid "Temporary"
 msgstr "Temporaire"
 
-#: fixmystreet/models.py:1647
+#: fixmystreet/models.py:1648
 #: fixmystreet/templates/reports/_visibility_control.html:5
 #: fixmystreet/templates/reports/_visibility_control.html:24
 msgid "Public"
 msgstr "Tous"
 
-#: fixmystreet/models.py:1648
+#: fixmystreet/models.py:1649
 #: fixmystreet/templates/reports/_visibility_control.html:10
 #: fixmystreet/templates/reports/_visibility_control.html:32
 msgid "Private"
 msgstr "Pro"
 
-#: fixmystreet/models.py:1649
+#: fixmystreet/models.py:1650
 #: fixmystreet/templates/reports/_visibility_control.html:15
 #: fixmystreet/templates/reports/_visibility_control.html:40
 msgid "Confidential"
 msgstr "Mes collègues"
 
-#: fixmystreet/models.py:1653
+#: fixmystreet/models.py:1654
 msgid "Documentation"
 msgstr "Documentation"
 
-#: fixmystreet/models.py:1654
+#: fixmystreet/models.py:1655
 msgid "Closing message"
 msgstr "Message de clôture : "
 
-#: fixmystreet/models.py:1655
+#: fixmystreet/models.py:1656
 msgid "Refusing message"
 msgstr "Raison de classement sans suite : "
 
-#: fixmystreet/models.py:1656
+#: fixmystreet/models.py:1657
 msgid "Mark as done message"
 msgstr "Signalé comme résolu : "
 
-#: fixmystreet/models.py:1657
+#: fixmystreet/models.py:1658
 msgid "Reopen request message"
 msgstr "Demande de réouverture"
 
-#: fixmystreet/models.py:1688 fixmystreet/models.py:1701
+#: fixmystreet/models.py:1689 fixmystreet/models.py:1702
 msgid "ANONYMOUS"
 msgstr "Anonyme"
 
-#: fixmystreet/models.py:1695 fixmystreet/models.py:2226
-#: fixmystreet/models.py:2345 fixmystreet/utils.py:206
+#: fixmystreet/models.py:1696 fixmystreet/models.py:2227
+#: fixmystreet/models.py:2346 fixmystreet/utils.py:206
 #: fixmystreet/utils.py:225 fixmystreet/utils.py:304
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:120
@@ -1786,189 +1786,189 @@ msgstr "Anonyme"
 msgid "a citizen"
 msgstr "un citoyen"
 
-#: fixmystreet/models.py:1988 fixmystreet/models.py:1989
+#: fixmystreet/models.py:1989 fixmystreet/models.py:1990
 msgid "Category group"
 msgstr "Groupe categorie"
 
-#: fixmystreet/models.py:2086 fixmystreet/models.py:2478
+#: fixmystreet/models.py:2087 fixmystreet/models.py:2479
 msgid "Label"
 msgstr "Label"
 
-#: fixmystreet/models.py:2097
+#: fixmystreet/models.py:2098
 msgid "Not repaired"
 msgstr "Pas réparé"
 
-#: fixmystreet/models.py:2098
+#: fixmystreet/models.py:2099
 msgid "Badly repaired"
 msgstr "Mal réparé"
 
-#: fixmystreet/models.py:2265
+#: fixmystreet/models.py:2266
 msgid "Refuse"
 msgstr "Déclaré sans suite"
 
-#: fixmystreet/models.py:2267
+#: fixmystreet/models.py:2268
 msgid "Mark as Done"
 msgstr "Marquer comme résolu"
 
-#: fixmystreet/models.py:2268
+#: fixmystreet/models.py:2269
 msgid "Manager assigned"
 msgstr "Un gestionnaire est responsable"
 
-#: fixmystreet/models.py:2270
+#: fixmystreet/models.py:2271
 msgid "Valid"
 msgstr "Valide"
 
-#: fixmystreet/models.py:2271
+#: fixmystreet/models.py:2272
 msgid "Organisation assigned"
 msgstr "Une organisation est assignée"
 
-#: fixmystreet/models.py:2273
+#: fixmystreet/models.py:2274
 msgid "Contractor assigned"
 msgstr "Un exécuteur de travaux est assigné"
 
-#: fixmystreet/models.py:2274
+#: fixmystreet/models.py:2275
 msgid "Contractor changed"
 msgstr "L'exécuteur de travaux est modifié"
 
-#: fixmystreet/models.py:2275
+#: fixmystreet/models.py:2276
 msgid "Applicant assigned"
 msgstr "Un impétrant est assigné"
 
-#: fixmystreet/models.py:2276
+#: fixmystreet/models.py:2277
 msgid "Applicant changed"
 msgstr "Impétrant modifié"
 
-#: fixmystreet/models.py:2279
+#: fixmystreet/models.py:2280
 msgid "Updated"
 msgstr "Mis à jour"
 
-#: fixmystreet/models.py:2280
+#: fixmystreet/models.py:2281
 msgid "Update published"
 msgstr "Mise à jour publiée"
 
-#: fixmystreet/models.py:2281
+#: fixmystreet/models.py:2282
 msgid "Planned"
 msgstr "Planifié"
 
-#: fixmystreet/models.py:2282
+#: fixmystreet/models.py:2283
 msgid "Merged"
 msgstr "Fusionné"
 
-#: fixmystreet/models.py:2285
+#: fixmystreet/models.py:2286
 msgid "Became private"
 msgstr "Mis à privé"
 
-#: fixmystreet/models.py:2286
+#: fixmystreet/models.py:2287
 msgid "Became public"
 msgstr "Mis à public"
 
-#: fixmystreet/models.py:2289
+#: fixmystreet/models.py:2290
 #, python-brace-format
 msgid "Report refused by {user}"
 msgstr "Incident invalidé par {user}"
 
-#: fixmystreet/models.py:2290
+#: fixmystreet/models.py:2291
 #, python-brace-format
 msgid "Report closed by {user}"
 msgstr "Incident clôturé par {user}"
 
-#: fixmystreet/models.py:2291
+#: fixmystreet/models.py:2292
 msgid "Report pointed as solved"
 msgstr "Incident signalé comme résolu par {user}"
 
-#: fixmystreet/models.py:2292
+#: fixmystreet/models.py:2293
 #, python-brace-format
 msgid "Report as been assigned to {related_new}"
 msgstr "Incident assigné à {related_new}"
 
-#: fixmystreet/models.py:2294
+#: fixmystreet/models.py:2295
 #, python-brace-format
 msgid "Report has been approved by {user}"
 msgstr "Incident validé par {user}"
 
-#: fixmystreet/models.py:2295
+#: fixmystreet/models.py:2296
 #, python-brace-format
 msgid "{related_new} is responsible for the report"
 msgstr "Incident assigné à {related_new}"
 
-#: fixmystreet/models.py:2297
+#: fixmystreet/models.py:2298
 #, python-brace-format
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Incident assigné à {related_new}"
 
-#: fixmystreet/models.py:2298
+#: fixmystreet/models.py:2299
 #, python-brace-format
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Incident de {related_old} assigné à {related_new}"
 
-#: fixmystreet/models.py:2299
+#: fixmystreet/models.py:2300
 #, python-brace-format
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Incident assigné à l'éxécuteur de travaux : {related_new}"
 
-#: fixmystreet/models.py:2300
+#: fixmystreet/models.py:2301
 #, python-brace-format
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Incident de {related_old} assigné à l'éxécuteur de travaux : {related_new}"
 
-#: fixmystreet/models.py:2302
+#: fixmystreet/models.py:2303
 #, python-brace-format
 msgid "Report created by {user}"
 msgstr "Incident signalé par {user}"
 
-#: fixmystreet/models.py:2303
+#: fixmystreet/models.py:2304
 #, python-brace-format
 msgid "Report updated by {user}"
 msgstr "Incident mis à jour par {user}"
 
-#: fixmystreet/models.py:2304
+#: fixmystreet/models.py:2305
 #, python-brace-format
 msgid "Informations published by {user}"
 msgstr "Informations publiées par {user}"
 
-#: fixmystreet/models.py:2305
+#: fixmystreet/models.py:2306
 #, python-brace-format
 msgid "Report planned to {date_planned}"
 msgstr "Planifié pour le {date_planned}"
 
-#: fixmystreet/models.py:2306
+#: fixmystreet/models.py:2307
 #, python-brace-format
 msgid "Report merged with report #{merged_with_id}"
 msgstr "Incident fusionné avec l'incident : #{merged_with_id}"
 
-#: fixmystreet/models.py:2307
+#: fixmystreet/models.py:2308
 #, python-brace-format
 msgid "Report reopen by {user}"
 msgstr "Incident réouvert par {user}"
 
-#: fixmystreet/models.py:2308
+#: fixmystreet/models.py:2309
 #, python-brace-format
 msgid "Request to reopen report made by {user}"
 msgstr "Demande de réouverture de l’incident par {user}"
 
-#: fixmystreet/models.py:2309
+#: fixmystreet/models.py:2310
 #, python-brace-format
 msgid "Report became private by {user}"
 msgstr "Incident mis à privé par {user}"
 
-#: fixmystreet/models.py:2310
+#: fixmystreet/models.py:2311
 #, python-brace-format
 msgid "Report became public by {user}"
 msgstr "Incident mis à public par {user}"
 
-#: fixmystreet/models.py:2435
+#: fixmystreet/models.py:2436
 msgid "Question"
 msgstr "Question"
 
-#: fixmystreet/models.py:2436
+#: fixmystreet/models.py:2437
 msgid "Answere"
 msgstr "Réponse"
 
-#: fixmystreet/models.py:2479
+#: fixmystreet/models.py:2480
 msgid "Related model class name"
 msgstr ""
 
-#: fixmystreet/models.py:2480
+#: fixmystreet/models.py:2481
 msgid "Related model field"
 msgstr ""
 
@@ -2647,7 +2647,7 @@ msgstr "Lambert 72 Belgique"
 
 #: fixmystreet/templates/reports/pdf.html:438
 msgid "Posted by:"
-msgstr "Posté par:"
+msgstr "Posté par :"
 
 #: fixmystreet/templates/reports/pdf.html:460
 msgid "on"
