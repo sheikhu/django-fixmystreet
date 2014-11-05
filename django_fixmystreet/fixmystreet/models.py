@@ -411,9 +411,10 @@ class ReportQuerySet(models.query.GeoQuerySet):
             'created' : False,
             'closed'  : False,
 
+            'ignore_distance': kwds['ignore_distance'] if 'ignore_distance' in kwds else False,
+
             # For /debug/rank, we have to avoid visible filters
-            'debug'   : True if 'debug' in kwds else False,
-            'ignore_distance': True if 'ignore_distance' in kwds and 'ignore_distance' is True else False
+            'debug'   : kwds['debug'] if 'debug' in kwds else False,
         }
 
         # Prepare data according to params

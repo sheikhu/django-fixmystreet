@@ -289,7 +289,11 @@ def merge(request, slug, report_id):
     ticketNumber = request.GET.get('ticketNumber', '')
 
     if ticketNumber:
-        reports_nearby = Report.objects.with_distance(report.point).filter(id=ticketNumber).visible().related_fields().exclude(id=report.id).rank(report, ignore_distance=True)
+        try:
+            reports_nearby = Report.objects.with_distance(report.point).filter(id=ticketNumber).visible().related_fields().exclude(id=report.id).rank(report, ignore_distance=True)
+        except ValueError:
+            # Due to invalid ticketNumber value (for example a string)
+            reports_nearby = []
     else:
         reports_nearby = Report.objects.all().rank(report)
 

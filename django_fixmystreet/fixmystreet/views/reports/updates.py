@@ -20,5 +20,5 @@ def report_pdf(request, report_id, pro_version=False):
         'comments': report.comments() if pro_version else report.active_comments(),
         'activity_list' : report.activities.all(),
         'privacy' : 'private'  if pro_version else 'public',
-        'base_url': settings.get('RENDER_PDF_BASE_URL'),
+        'base_url': getattr(settings, 'RENDER_PDF_BASE_URL', None),
     }, context_instance=RequestContext(request))
