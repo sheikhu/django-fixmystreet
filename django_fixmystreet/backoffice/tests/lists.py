@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
@@ -6,12 +5,11 @@ from django_fixmystreet.fixmystreet.models import (
     FMSUser, ReportFile, UserOrganisationMembership,
     OrganisationEntitySurface, GroupMailConfig
 )
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
-class ListTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class ListTest(FMSTestCase):
 
     def setUp(self):
         self.secondary_category = ReportCategory.objects.all()[0]

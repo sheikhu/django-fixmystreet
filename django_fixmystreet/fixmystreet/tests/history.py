@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.test.client import Client
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -14,11 +13,9 @@ from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
     ReportEventLog, OrganisationEntitySurface, GroupMailConfig,
     ReportComment)
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
-
-class HistoryTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class HistoryTest(FMSTestCase):
 
     def setUp(self):
         self.citizen = FMSUser(

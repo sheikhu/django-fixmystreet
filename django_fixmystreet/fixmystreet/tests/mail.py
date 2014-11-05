@@ -1,5 +1,3 @@
-
-from django.test import TestCase
 from django.test.client import Client
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -9,15 +7,14 @@ from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, ReportAttachment,
     FMSUser, OrganisationEntitySurface, GroupMailConfig,
     ReportComment)
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
 from django.contrib.gis.geos import Polygon
 
 from datetime import datetime, timedelta
 
 
-class MailTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class MailTest(FMSTestCase):
 
     def setUp(self):
         self.citizen = FMSUser(

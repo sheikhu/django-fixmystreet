@@ -5,16 +5,14 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
 
-from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
     OrganisationEntitySurface, GroupMailConfig,
     ReportComment, ReportAttachment)
 
 
-class ReportViewsTest(SampleFilesTestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class ReportViewsTest(FMSTestCase):
 
     def setUp(self):
 

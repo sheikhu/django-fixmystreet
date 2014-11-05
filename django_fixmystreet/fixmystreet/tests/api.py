@@ -8,14 +8,12 @@ from django_fixmystreet.fixmystreet.models import (
     UserOrganisationMembership, OrganisationEntitySurface,
     GroupMailConfig
 )
-from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
 from django.core.exceptions import ObjectDoesNotExist
 
 
-class ApiTest(SampleFilesTestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class ApiTest(FMSTestCase):
 
     def setUp(self):
 

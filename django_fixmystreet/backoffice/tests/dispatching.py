@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.test.client import Client
 from django.contrib.gis.geos import Polygon
 
@@ -7,14 +6,13 @@ from django_fixmystreet.fixmystreet.models import (
     UserOrganisationMembership, OrganisationEntitySurface,
     GroupMailConfig
 )
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 from datetime import datetime
 
 
-class DispatchingTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class DispatchingTest(FMSTestCase):
 
     def setUp(self):
         self.client = Client()

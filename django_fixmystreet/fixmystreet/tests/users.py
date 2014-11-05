@@ -1,12 +1,9 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
 
 from django_fixmystreet.fixmystreet.models import ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
-
-class FMSUserTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class FMSUserTest(FMSTestCase):
 
     def setUp(self):
         self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
