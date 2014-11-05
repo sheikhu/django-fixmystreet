@@ -33,7 +33,7 @@ migrate:
 	$(BIN_PATH)/manage.py syncdb --migrate
 
 install: $(BIN_PATH)
-	$(BIN_PATH)/python setup.py install
+	$(BIN_PATH)/python setup.py develop -Z
 	$(MAKE) migrate collectstatic
 
 develop: $(BIN_PATH)

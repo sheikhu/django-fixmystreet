@@ -432,14 +432,15 @@
 
             <!-- ROW PRO 2 -->
             <li>
-                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
-                    <strong>Posted by</strong> {{by}} on {{on}}
-               {% endblocktrans %}
+{#                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}#}
+{#                    <strong>Posted by</strong> {{by}} on {{on}}#}
+{#                {% endblocktrans %}#}
+                <strong>{% trans "Posted by" %}</strong> {{ report.get_creator.get_full_name }} {% trans "on" context "date" %} {{report.created|date:"d/m/Y"}}
 
-               {% if not report.is_pro %}
+                {% if not report.is_pro %}
                     - {{ report.citizen.get_quality_display }}
                     ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
-               {% endif %}
+                {% endif %}
             </li>
             <!-- ROW PRO 3 -->
             <li>

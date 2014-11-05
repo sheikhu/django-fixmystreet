@@ -445,7 +445,7 @@ $('.dropdown-toggle').click(function(e) {
 {% if report.is_in_progress %}
     {% if report.status != report.SOLVED %}
         <div id="divMarkAsDone" class="modal hide fade">
-            <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_fix_pro' report.id %}" method="post" >
+            <form id="dialogMarkAsDone" title="{% trans "Please enter more information about marking the report as done" %}" action="{% url 'report_fix_pro' report.id %}" method="post" >
                 {% csrf_token %}
 
                 <div class="modal-header">
@@ -574,7 +574,7 @@ $('.dropdown-toggle').click(function(e) {
 <div id="divRefuse" class="modal hide fade" role="dialog">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <form id="dialog" title="Please enter more information about rejecting the report" action="{% url 'report_refuse_pro' report.id %}" method="post">
+        <form id="dialog" title="{% trans "Please enter more information about rejecting the report" %}" action="{% url 'report_refuse_pro' report.id %}" method="post">
             <!-- sel_refuse is managed in report_refused.js. Currently commented. Waiting for real data (see issue FMS-275)-->
             <select name="sel_refuse" class="span5">
                 <option value="opt_refuse_0" selected="selected">{% trans "Select a pre-formatted reason" %}</option>

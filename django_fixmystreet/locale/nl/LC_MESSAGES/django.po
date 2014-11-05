@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 12:06+0100\n"
-"PO-Revision-Date: 2014-11-04 11:07+0000\n"
+"POT-Creation-Date: 2014-11-05 11:49+0100\n"
+"PO-Revision-Date: 2014-11-05 10:49+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -575,6 +575,8 @@ msgstr "Verantwoordelijkheid van een derde"
 #: backoffice/templates/pro/reports/_actions.html:553
 #: backoffice/templates/pro/reports/table.html:378
 #: backoffice/templates/pro/reports/table_content.html:46
+#: fixmystreet/templates/emails/digest.html:43
+#: fixmystreet/templates/emails/digest.html:89
 msgid "Address"
 msgstr "Adres:"
 
@@ -587,6 +589,11 @@ msgstr "Afkeuren"
 #: fixmystreet/models.py:2266
 msgid "Close"
 msgstr "Afsluiten"
+
+#: backoffice/templates/pro/reports/_actions.html:448
+#: fixmystreet/templates/reports/show.html:284
+msgid "Please enter more information about marking the report as done"
+msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:453
 #: fixmystreet/templates/reports/show.html:289
@@ -649,6 +656,10 @@ msgstr ""
 #: backoffice/templates/pro/reports/_actions.html:566
 msgid "Signal wrong address"
 msgstr "Meld foutief adres"
+
+#: backoffice/templates/pro/reports/_actions.html:577
+msgid "Please enter more information about rejecting the report"
+msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:580
 msgid "Select a pre-formatted reason"
@@ -847,11 +858,13 @@ msgid "pro,public"
 msgstr "Pro,Iedereen"
 
 #: backoffice/templates/pro/reports/show.html:273
+#: fixmystreet/templates/reports/pdf.html:438
 msgid "Posted by"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:274
 #: backoffice/templates/pro/reports/show.html:298
+#: fixmystreet/templates/reports/pdf.html:438
 msgctxt "date"
 msgid "on"
 msgstr ""
@@ -865,9 +878,9 @@ msgstr ""
 #: backoffice/templates/pro/reports/show.html:290
 #: fixmystreet/templates/reports/_attachment.html:55
 #: fixmystreet/templates/reports/_attachment.html:133
-#: fixmystreet/templates/reports/pdf.html:441
-#: fixmystreet/templates/reports/pdf.html:452
-#: fixmystreet/templates/reports/pdf.html:497
+#: fixmystreet/templates/reports/pdf.html:442
+#: fixmystreet/templates/reports/pdf.html:453
+#: fixmystreet/templates/reports/pdf.html:498
 #: fixmystreet/templates/reports/reopen.html:123
 #: fixmystreet/templates/reports/show.html:209
 msgctxt "telephone abbreviation"
@@ -875,16 +888,16 @@ msgid "Phone"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:284
-#: fixmystreet/templates/reports/pdf.html:446
-#: fixmystreet/templates/reports/pdf.html:492
+#: fixmystreet/templates/reports/pdf.html:447
+#: fixmystreet/templates/reports/pdf.html:493
 #: fixmystreet/templates/reports/reopen.html:118
 #: fixmystreet/templates/reports/show.html:204
 msgid "Responsible:"
 msgstr "Behandeld door:"
 
 #: backoffice/templates/pro/reports/show.html:295
-#: fixmystreet/templates/reports/pdf.html:457
-#: fixmystreet/templates/reports/pdf.html:502
+#: fixmystreet/templates/reports/pdf.html:458
+#: fixmystreet/templates/reports/pdf.html:503
 #: fixmystreet/templates/reports/reopen.html:128
 #: fixmystreet/templates/reports/show.html:214
 msgid "Status:"
@@ -896,15 +909,15 @@ msgid "In progress with a contractor"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:320
-#: fixmystreet/templates/reports/pdf.html:473
-#: fixmystreet/templates/reports/pdf.html:511
+#: fixmystreet/templates/reports/pdf.html:474
+#: fixmystreet/templates/reports/pdf.html:512
 #: fixmystreet/templates/reports/show.html:230
 msgid "Merged on"
 msgstr "Samengevoegd op"
 
 #: backoffice/templates/pro/reports/show.html:323
-#: fixmystreet/templates/reports/pdf.html:476
-#: fixmystreet/templates/reports/pdf.html:513
+#: fixmystreet/templates/reports/pdf.html:477
+#: fixmystreet/templates/reports/pdf.html:514
 #: fixmystreet/templates/reports/show.html:232
 msgid "with incident"
 msgstr "met incident"
@@ -1021,7 +1034,7 @@ msgstr "Pro PDF rapport verzenden"
 
 #: backoffice/templates/pro/reports/show.html:506
 #: fixmystreet/templates/admin/fixmystreet/fmsuser/change_form.html:9
-#: fixmystreet/templates/reports/pdf.html:545
+#: fixmystreet/templates/reports/pdf.html:546
 #: fixmystreet/templates/reports/show.html:334
 msgid "History"
 msgstr "Geschiedenis"
@@ -1093,8 +1106,9 @@ msgid ": activate to sort column descending"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:180
+#: backoffice/templates/pro/reports/table.html:183
 msgctxt "table"
-msgid "No data available in table"
+msgid "No incident to display"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:181
@@ -1105,11 +1119,6 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:182
 msgctxt "table"
 msgid "Showing _START_ to _END_ of _TOTAL_ incidents"
-msgstr ""
-
-#: backoffice/templates/pro/reports/table.html:183
-msgctxt "table"
-msgid "Showing 0 to 0 of 0 incidents"
 msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:184
@@ -1408,23 +1417,21 @@ msgstr ""
 msgid "There were errors."
 msgstr ""
 
-#: backoffice/views/groups.py:48
+#: backoffice/views/groups.py:49
 msgid "Group has been created successfully"
 msgstr ""
 
-#: backoffice/views/groups.py:76
+#: backoffice/views/groups.py:77
 msgid "Group has been updated successfully"
 msgstr ""
 
-#: backoffice/views/groups.py:99
+#: backoffice/views/groups.py:100
 msgid ""
-"\n"
-"        Group has some reports or categories associeted,\n"
-"        remove them first and then try again\n"
-"        "
+"Group has some reports or categories associated, remove them first and then "
+"try again"
 msgstr ""
 
-#: backoffice/views/groups.py:109
+#: backoffice/views/groups.py:107
 msgid "Group has been deleted successfully"
 msgstr ""
 
@@ -1450,7 +1457,7 @@ msgid "User has been created successfully"
 msgstr ""
 
 #: backoffice/views/users.py:120
-msgid "An error occurd during the email sending"
+msgid "An error occurred during the email sending"
 msgstr ""
 
 #: backoffice/views/users.py:143
@@ -1615,7 +1622,7 @@ msgstr ""
 #: fixmystreet/models.py:266 fixmystreet/models.py:1919
 #: fixmystreet/models.py:1953 fixmystreet/models.py:1986
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: fixmystreet/models.py:626 fixmystreet/models.py:627
 #: fixmystreet/models.py:882 fixmystreet/models.py:2278
@@ -1758,8 +1765,8 @@ msgstr "ANONIEM"
 #: fixmystreet/utils.py:225 fixmystreet/utils.py:304
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:120
-#: fixmystreet/tests/history.py:852 fixmystreet/tests/history.py:856
-#: fixmystreet/tests/history.py:869
+#: fixmystreet/tests/history.py:849 fixmystreet/tests/history.py:853
+#: fixmystreet/tests/history.py:866
 msgid "a citizen"
 msgstr "een burger"
 
@@ -1975,7 +1982,7 @@ msgstr "^over-ons/$"
 
 #: fixmystreet/urls.py:13
 msgid "^faq/$"
-msgstr ""
+msgstr "^faq/$"
 
 #: fixmystreet/urls.py:14
 msgid "^help/$"
@@ -2387,19 +2394,11 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: fixmystreet/templates/emails/digest.html:43
-msgid "Adresse"
-msgstr ""
-
 #: fixmystreet/templates/emails/digest.html:66
 #: fixmystreet/templates/emails/digest.html:112
 msgid ""
 "Vous pouvez vous désinscrire et ne plus recevoir de notifications en "
 "cliquant sur le lien ci-dessous"
-msgstr ""
-
-#: fixmystreet/templates/emails/digest.html:89
-msgid "Adress"
 msgstr ""
 
 #: fixmystreet/templates/emails/send_created_to_user/message.html:9
@@ -2564,7 +2563,7 @@ msgstr "Volger(s)"
 #: fixmystreet/templates/reports/new.html:9
 #: fixmystreet/templates/reports/newmap.html:9
 msgid ""
-"Signalez tout type d incident. Sur fix my street qui identifiera alors le "
+"Signalez tout type d incident sur Fix My Street qui identifiera alors le "
 "service public en charge de le traiter."
 msgstr ""
 
@@ -2630,25 +2629,17 @@ msgstr ""
 msgid "Lambert 72 Belgium"
 msgstr ""
 
-#: fixmystreet/templates/reports/pdf.html:435
-#, python-format
-msgid ""
-"\n"
-"                    <strong>Posted by</strong> %(by)s on %(on)s\n"
-"               "
-msgstr ""
-
-#: fixmystreet/templates/reports/pdf.html:459
+#: fixmystreet/templates/reports/pdf.html:460
 msgid "on"
 msgstr "om"
 
-#: fixmystreet/templates/reports/pdf.html:487
+#: fixmystreet/templates/reports/pdf.html:488
 #: fixmystreet/templates/reports/reopen.html:113
 #: fixmystreet/templates/reports/show.html:199
 msgid "Posted on"
 msgstr "Gemeld op"
 
-#: fixmystreet/templates/reports/pdf.html:529
+#: fixmystreet/templates/reports/pdf.html:530
 msgid "Comments and pictures"
 msgstr "Commentaren en Foto's"
 

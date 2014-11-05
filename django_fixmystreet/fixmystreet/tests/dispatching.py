@@ -1,16 +1,14 @@
-from django.test import TestCase
 from django.contrib.gis.geos import Polygon
 
 from django_fixmystreet.fixmystreet.models import (
     OrganisationEntity, StreetSurface, GroupMailConfig,
     OrganisationEntitySurface, ReportCategory, Report
 )
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
-class GeographicDispatchingTest(TestCase):
-
-    fixtures = ["bootstrap"]
+class GeographicDispatchingTest(FMSTestCase):
 
     def setUp(self):
         '''

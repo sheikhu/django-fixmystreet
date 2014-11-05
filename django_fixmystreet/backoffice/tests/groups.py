@@ -1,12 +1,9 @@
 import json
-from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django_fixmystreet.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser, GroupMailConfig
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
-
-class GroupsTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class GroupsTest(FMSTestCase):
 
     def setUp(self):
         self.manager = FMSUser(
