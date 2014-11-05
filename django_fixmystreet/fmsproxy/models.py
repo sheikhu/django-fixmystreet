@@ -6,7 +6,6 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
-from ..fixmystreet.models import Report, ReportAttachment, ReportComment, ReportEventLog
 
 
 logger = logging.getLogger(__name__)
@@ -33,6 +32,8 @@ class FMSProxy(models.Model):
 class AssignmentHandler(object):
 
     def __init__(self, report_id, user):
+        from ..fixmystreet.models import Report
+
         self._report = Report.objects.get(pk=report_id)
         self._user = user
 
@@ -54,6 +55,8 @@ class AssignmentHandler(object):
         self._add_comment(context)
 
     def reject(self, data):
+        from ..fixmystreet.models import Report, ReportEventLog
+
         context = {
             "action_msg": _("Incident was rejected by {contractor}."),
             "comment": data["comment"],
@@ -82,6 +85,8 @@ class AssignmentHandler(object):
             self._report.close()
 
     def _add_comment(self, context):
+        from ..fixmystreet.models import ReportAttachment
+
         context["action_msg"] = context["action_msg"].format(contractor=self._org_entity.name)
         formatted_comment = render_to_string("fmsproxy_comment.txt", context)
         comment = ReportComment(report=self._report, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)  # pylint: disable=E1123
