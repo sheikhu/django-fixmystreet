@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-05 10:23+0100\n"
-"PO-Revision-Date: 2014-11-05 09:23+0000\n"
+"POT-Creation-Date: 2014-11-05 11:02+0100\n"
+"PO-Revision-Date: 2014-11-05 10:02+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -849,11 +849,13 @@ msgid "pro,public"
 msgstr "Pro,Iedereen"
 
 #: backoffice/templates/pro/reports/show.html:273
+#: fixmystreet/templates/reports/pdf.html:438
 msgid "Posted by"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:274
 #: backoffice/templates/pro/reports/show.html:298
+#: fixmystreet/templates/reports/pdf.html:438
 msgctxt "date"
 msgid "on"
 msgstr ""
@@ -867,9 +869,9 @@ msgstr ""
 #: backoffice/templates/pro/reports/show.html:290
 #: fixmystreet/templates/reports/_attachment.html:55
 #: fixmystreet/templates/reports/_attachment.html:133
-#: fixmystreet/templates/reports/pdf.html:441
-#: fixmystreet/templates/reports/pdf.html:452
-#: fixmystreet/templates/reports/pdf.html:497
+#: fixmystreet/templates/reports/pdf.html:442
+#: fixmystreet/templates/reports/pdf.html:453
+#: fixmystreet/templates/reports/pdf.html:498
 #: fixmystreet/templates/reports/reopen.html:123
 #: fixmystreet/templates/reports/show.html:209
 msgctxt "telephone abbreviation"
@@ -877,16 +879,16 @@ msgid "Phone"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:284
-#: fixmystreet/templates/reports/pdf.html:446
-#: fixmystreet/templates/reports/pdf.html:492
+#: fixmystreet/templates/reports/pdf.html:447
+#: fixmystreet/templates/reports/pdf.html:493
 #: fixmystreet/templates/reports/reopen.html:118
 #: fixmystreet/templates/reports/show.html:204
 msgid "Responsible:"
 msgstr "Behandeld door:"
 
 #: backoffice/templates/pro/reports/show.html:295
-#: fixmystreet/templates/reports/pdf.html:457
-#: fixmystreet/templates/reports/pdf.html:502
+#: fixmystreet/templates/reports/pdf.html:458
+#: fixmystreet/templates/reports/pdf.html:503
 #: fixmystreet/templates/reports/reopen.html:128
 #: fixmystreet/templates/reports/show.html:214
 msgid "Status:"
@@ -898,15 +900,15 @@ msgid "In progress with a contractor"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:320
-#: fixmystreet/templates/reports/pdf.html:473
-#: fixmystreet/templates/reports/pdf.html:511
+#: fixmystreet/templates/reports/pdf.html:474
+#: fixmystreet/templates/reports/pdf.html:512
 #: fixmystreet/templates/reports/show.html:230
 msgid "Merged on"
 msgstr "Samengevoegd op"
 
 #: backoffice/templates/pro/reports/show.html:323
-#: fixmystreet/templates/reports/pdf.html:476
-#: fixmystreet/templates/reports/pdf.html:513
+#: fixmystreet/templates/reports/pdf.html:477
+#: fixmystreet/templates/reports/pdf.html:514
 #: fixmystreet/templates/reports/show.html:232
 msgid "with incident"
 msgstr "met incident"
@@ -1023,7 +1025,7 @@ msgstr "Pro PDF rapport verzenden"
 
 #: backoffice/templates/pro/reports/show.html:506
 #: fixmystreet/templates/admin/fixmystreet/fmsuser/change_form.html:9
-#: fixmystreet/templates/reports/pdf.html:545
+#: fixmystreet/templates/reports/pdf.html:546
 #: fixmystreet/templates/reports/show.html:334
 msgid "History"
 msgstr "Geschiedenis"
@@ -2620,25 +2622,17 @@ msgstr ""
 msgid "Lambert 72 Belgium"
 msgstr ""
 
-#: fixmystreet/templates/reports/pdf.html:435
-#, python-format
-msgid ""
-"\n"
-"                    <strong>Posted by</strong> %(by)s on %(on)s\n"
-"               "
-msgstr ""
-
-#: fixmystreet/templates/reports/pdf.html:459
+#: fixmystreet/templates/reports/pdf.html:460
 msgid "on"
 msgstr "om"
 
-#: fixmystreet/templates/reports/pdf.html:487
+#: fixmystreet/templates/reports/pdf.html:488
 #: fixmystreet/templates/reports/reopen.html:113
 #: fixmystreet/templates/reports/show.html:199
 msgid "Posted on"
 msgstr "Gemeld op"
 
-#: fixmystreet/templates/reports/pdf.html:529
+#: fixmystreet/templates/reports/pdf.html:530
 msgid "Comments and pictures"
 msgstr "Commentaren en Foto's"
 
