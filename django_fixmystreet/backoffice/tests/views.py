@@ -1,13 +1,11 @@
-from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
-class ReportProViewsTest(TestCase):
-
-    fixtures = ["bootstrap","list_items"]
+class ReportProViewsTest(FMSTestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='test1', email='test1@fixmystreet.irisnet.be', password='test')

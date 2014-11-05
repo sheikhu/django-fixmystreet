@@ -15,7 +15,7 @@ install_requires = [
     'django==1.5.11',
     'django-transmeta==0.6.9',
     'django-stdimage==0.2.2',
-    'south==1.0',
+    'south==1.0.1',
     'django-extensions==1.0.1',
     'docutils==0.11',
     'simplejson==1.9.3',
