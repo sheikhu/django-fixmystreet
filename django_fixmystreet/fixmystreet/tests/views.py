@@ -1,5 +1,6 @@
 from unittest import skip
 from datetime import datetime
+from django.utils.safestring import mark_safe
 
 from django.test.client import Client
 from django.core.urlresolvers import reverse
@@ -10,8 +11,8 @@ from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
     OrganisationEntitySurface, GroupMailConfig,
     ReportComment, ReportAttachment)
-from django.utils.translation import ugettext_lazy as _
-
+from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.html import escape
 
 class ReportViewsTest(FMSTestCase):
 
@@ -563,7 +564,9 @@ class ReportViewsTest(FMSTestCase):
         response = self.client.post(reverse('login'), params)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _('Please enter a correct username and password. Note that both fields are case-sensitive.'))
+
+        escaped = escape(ugettext('Please enter a correct username and password. Note that both fields are case-sensitive.'))
+        self.assertContains(response, escaped)
 
     def test_logout_user(self):
         params = {
