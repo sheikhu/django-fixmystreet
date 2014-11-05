@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-05 11:09+0100\n"
+"POT-Creation-Date: 2014-11-05 11:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -585,6 +585,11 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: backoffice/templates/pro/reports/_actions.html:448
+#: fixmystreet/templates/reports/show.html:284
+msgid "Please enter more information about marking the report as done"
+msgstr ""
+
 #: backoffice/templates/pro/reports/_actions.html:453
 #: fixmystreet/templates/reports/show.html:289
 msgid "You think this incident is close. Indicate it!"
@@ -645,6 +650,10 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:566
 msgid "Signal wrong address"
+msgstr ""
+
+#: backoffice/templates/pro/reports/_actions.html:577
+msgid "Please enter more information about rejecting the report"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:580
@@ -1404,23 +1413,21 @@ msgstr ""
 msgid "There were errors."
 msgstr ""
 
-#: backoffice/views/groups.py:48
+#: backoffice/views/groups.py:49
 msgid "Group has been created successfully"
 msgstr ""
 
-#: backoffice/views/groups.py:76
+#: backoffice/views/groups.py:77
 msgid "Group has been updated successfully"
 msgstr ""
 
-#: backoffice/views/groups.py:99
+#: backoffice/views/groups.py:100
 msgid ""
-"\n"
-"        Group has some reports or categories associeted,\n"
-"        remove them first and then try again\n"
-"        "
+"Group has some reports or categories associated, remove them first and then "
+"try again"
 msgstr ""
 
-#: backoffice/views/groups.py:109
+#: backoffice/views/groups.py:107
 msgid "Group has been deleted successfully"
 msgstr ""
 
@@ -1754,8 +1761,8 @@ msgstr ""
 #: fixmystreet/utils.py:225 fixmystreet/utils.py:304
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:120
-#: fixmystreet/tests/history.py:852 fixmystreet/tests/history.py:856
-#: fixmystreet/tests/history.py:869
+#: fixmystreet/tests/history.py:849 fixmystreet/tests/history.py:853
+#: fixmystreet/tests/history.py:866
 msgid "a citizen"
 msgstr ""
 

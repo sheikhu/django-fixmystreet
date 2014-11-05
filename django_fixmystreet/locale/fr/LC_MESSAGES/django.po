@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-05 11:09+0100\n"
-"PO-Revision-Date: 2014-11-05 10:08+0000\n"
+"POT-Creation-Date: 2014-11-05 11:49+0100\n"
+"PO-Revision-Date: 2014-11-05 10:49+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -592,6 +592,11 @@ msgstr "Sans suite"
 msgid "Close"
 msgstr "Clôturer"
 
+#: backoffice/templates/pro/reports/_actions.html:448
+#: fixmystreet/templates/reports/show.html:284
+msgid "Please enter more information about marking the report as done"
+msgstr ""
+
 #: backoffice/templates/pro/reports/_actions.html:453
 #: fixmystreet/templates/reports/show.html:289
 msgid "You think this incident is close. Indicate it!"
@@ -652,6 +657,10 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:566
 msgid "Signal wrong address"
+msgstr ""
+
+#: backoffice/templates/pro/reports/_actions.html:577
+msgid "Please enter more information about rejecting the report"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:580
@@ -1058,7 +1067,7 @@ msgstr "Régionale,Communale"
 #: backoffice/templates/pro/reports/table.html:96
 #: backoffice/templates/pro/reports/table_content.html:89
 msgid "a pro,a citizen"
-msgstr ""
+msgstr "Un pro, Un citoyen"
 
 #: backoffice/templates/pro/reports/table.html:105
 #: backoffice/templates/pro/reports/table.html:106
@@ -1410,23 +1419,21 @@ msgstr "PDF envoyé par mail."
 msgid "There were errors."
 msgstr "Il y a eu des erreurs."
 
-#: backoffice/views/groups.py:48
+#: backoffice/views/groups.py:49
 msgid "Group has been created successfully"
 msgstr "Le groupe a été créé."
 
-#: backoffice/views/groups.py:76
+#: backoffice/views/groups.py:77
 msgid "Group has been updated successfully"
 msgstr "Le groupe a été mis à jour."
 
-#: backoffice/views/groups.py:99
+#: backoffice/views/groups.py:100
 msgid ""
-"\n"
-"        Group has some reports or categories associeted,\n"
-"        remove them first and then try again\n"
-"        "
-msgstr ""
+"Group has some reports or categories associated, remove them first and then "
+"try again"
+msgstr "Il reste des incidents et/ou catégories associés à ce groupe, veuillez les retirer et recommencer."
 
-#: backoffice/views/groups.py:109
+#: backoffice/views/groups.py:107
 msgid "Group has been deleted successfully"
 msgstr "Le groupe a été effacé."
 
@@ -1558,13 +1565,13 @@ msgstr "Mot de passe"
 msgid ""
 "Please enter a correct username and password. Note that both fields are "
 "case-sensitive."
-msgstr ""
+msgstr "Veuillez introduire un nom d'utilisateur et un mot de passe correct. Attention les champs sont sensibles aux minuscules et majuscules."
 
 #: fixmystreet/forms.py:305
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
-msgstr ""
+msgstr "Votre navigateur web n'a pas l'air d'accepter les cookies. Vous devez activer la gestion des cookies pour pouvoir vous connecter."
 
 #: fixmystreet/forms.py:307
 msgid "This account is inactive."
@@ -1760,8 +1767,8 @@ msgstr "Anonyme"
 #: fixmystreet/utils.py:225 fixmystreet/utils.py:304
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:120
-#: fixmystreet/tests/history.py:852 fixmystreet/tests/history.py:856
-#: fixmystreet/tests/history.py:869
+#: fixmystreet/tests/history.py:849 fixmystreet/tests/history.py:853
+#: fixmystreet/tests/history.py:866
 msgid "a citizen"
 msgstr "un citoyen"
 
@@ -1977,7 +1984,7 @@ msgstr "^a-propos/$"
 
 #: fixmystreet/urls.py:13
 msgid "^faq/$"
-msgstr ""
+msgstr "^faq/$"
 
 #: fixmystreet/urls.py:14
 msgid "^help/$"

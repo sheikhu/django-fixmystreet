@@ -281,7 +281,7 @@ $(function(event) {
 <!-- Modal -->
 {% if report.status != report.SOLVED and report.status != report.CREATED %}
     <div id="divMarkAsDone" class="modal hide fade">
-        <form id="dialogMarkAsDone" title="Please enter more information about marking the report as done" action="{% url 'report_update' report.id %}?is_fixed=True" method="post" >
+        <form id="dialogMarkAsDone" title="{% trans "Please enter more information about marking the report as done" %}" action="{% url 'report_update' report.id %}?is_fixed=True" method="post" >
             {% csrf_token %}
 
             <div class="modal-header">
