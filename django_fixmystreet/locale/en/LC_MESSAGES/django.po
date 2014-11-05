@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-05 16:08+0100\n"
+"POT-Creation-Date: 2014-11-05 16:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1095,6 +1095,26 @@ msgctxt "table"
 msgid ": activate to sort column descending"
 msgstr ""
 
+#: backoffice/templates/pro/reports/table.html:175
+msgctxt "table"
+msgid "First page"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:176
+msgctxt "table"
+msgid "Last page"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:177
+msgctxt "table"
+msgid "Next page"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:178
+msgctxt "table"
+msgid "Previous page"
+msgstr ""
+
 #: backoffice/templates/pro/reports/table.html:180
 #: backoffice/templates/pro/reports/table.html:183
 msgctxt "table"
@@ -1389,21 +1409,21 @@ msgstr ""
 msgid "Cannot set a private category to a public report"
 msgstr ""
 
-#: backoffice/views/ajax.py:130
+#: backoffice/views/ajax.py:131
 #, python-brace-format
 msgid "'{email}' is not a valid email address."
 msgstr ""
 
-#: backoffice/views/ajax.py:144
+#: backoffice/views/ajax.py:145
 #, python-brace-format
 msgid "Successfully sent to '{email}'."
 msgstr ""
 
-#: backoffice/views/ajax.py:147
+#: backoffice/views/ajax.py:148
 msgid "PDF sent by email."
 msgstr ""
 
-#: backoffice/views/ajax.py:149
+#: backoffice/views/ajax.py:150
 msgid "There were errors."
 msgstr ""
 

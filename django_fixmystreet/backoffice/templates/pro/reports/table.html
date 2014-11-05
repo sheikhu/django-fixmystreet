@@ -172,10 +172,10 @@
                                 sSortDescending: "{% trans ': activate to sort column descending' context 'table' %}"
                             },
                             oPaginate: {
-                                sFirst: pgettext('table', 'Fist page'),
-                                sLast: pgettext('table', 'Last page'),
-                                sNext: pgettext('table', 'Next page'),
-                                sPrevious: pgettext('table', 'Previous page')
+                                sFirst: "{% trans 'First page' context 'table' %}",
+                                sLast: "{% trans 'Last page' context 'table' %}",
+                                sNext: "{% trans 'Next page' context 'table' %}",
+                                sPrevious: "{% trans 'Previous page' context 'table' %}"
                             },
                             sEmptyTable: "{% trans 'No incident to display' context 'table' %}",
                             sInfo: "{% trans 'Got a total of _TOTAL_ incidents to show (_START_ to _END_)' context 'table' %}",
