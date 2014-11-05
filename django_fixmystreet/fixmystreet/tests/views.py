@@ -10,6 +10,7 @@ from django_fixmystreet.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
     OrganisationEntitySurface, GroupMailConfig,
     ReportComment, ReportAttachment)
+from django.utils.translation import ugettext_lazy as _
 
 
 class ReportViewsTest(FMSTestCase):
@@ -562,7 +563,7 @@ class ReportViewsTest(FMSTestCase):
         response = self.client.post(reverse('login'), params)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Please enter a correct username and password. Note that both fields are case-sensitive.')
+        self.assertContains(response, _('Please enter a correct username and password. Note that both fields are case-sensitive.'))
 
     def test_logout_user(self):
         params = {
