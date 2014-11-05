@@ -43,7 +43,7 @@ class AssignmentHandler(object):
         self._org_entity = self._report.get_organisation_entity_with_fms_proxy()
         if self._org_entity is None:
             raise NotAssignedToThirdPartyError("Report not assigned to a third-party.")
-        #if user != self._org_entity.fmsproxy:  # @TODO: .
+        #if user != self._org_entity.fmsproxy:  # @TODO: Create `Auth.User` for third-parties and link it to `_org_entity.fmsproxy`.
         #    raise NotAuthorizedToThirdPartyError("No authorization for this report.")
 
     def accept(self, data):

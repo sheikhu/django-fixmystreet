@@ -4,7 +4,7 @@
 {% load static from staticfiles %}
 
 {% block base %}
-<base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
+<base href="{% if base_url %}{{ base_url }}{% else %}{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{% endif %}" target="_blank"/>
 {% endblock %}
 
 <!-- ############################################################## -->
