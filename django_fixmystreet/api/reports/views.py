@@ -18,19 +18,6 @@ class AbstractReportAssignmentView(FmsPrivateViewMixin, APIView):
         except (NotWaitingForThirdPartyError, NotAssignedToThirdPartyError, NotAuthorizedToThirdPartyError):
             return self._get_response_403()
 
-    def _get_response_200(self, context=None):
-        if not context:
-            context = {"message": "Request successfully processed."}
-        return Response(context)
-
-    def _get_response_400(self, errors):
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def _get_response_403(self, context=None):
-        if not context:
-            context = {"detail": "Access or action forbidden."}
-        return Response(context, status=status.HTTP_403_FORBIDDEN)
-
 
 class ReportAssignmentAcceptView(AbstractReportAssignmentView):
 
