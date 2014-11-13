@@ -30,6 +30,8 @@ from simple_history.models import HistoricalRecords
 from ckeditor.fields import RichTextField
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template, sign_message
+from django_fixmystreet.webhooks import outbound as outbound_webhooks
+
 
 logger = logging.getLogger(__name__)
 
@@ -1560,39 +1562,36 @@ def report_notify_report_public(sender, instance, **kwargs):
                     reply_to=report.responsible_department.email,
                 ).save()
 
-
 @receiver(pre_save, sender=Report)
-def report_notify_fmsproxy(sender, instance, **kwargs):
+def webhook_assignment(sender, instance, **kwargs):
+    """
+    Checks whether the report has been assigned to someone else.
 
-    if kwargs['raw']:
+    This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
+    """
+    assignment_changed = (instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy) \
+        or (instance.__former['responsible_department'] != instance.responsible_department and instance.responsible_department.fmsproxy) \
+        or (instance.__former['responsible_entity'] != instance.responsible_entity and instance.responsible_entity.fmsproxy)
+
+    if kwargs['raw'] or not instance.is_in_progress() or not assignment_changed:
         return
 
-    # If contractor changes and is linked to a remote partner (fmsproxy)
-    if instance.is_in_progress() \
-        and ((instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy)
-            or (instance.__former['responsible_department'] != instance.responsible_department and instance.responsible_department.fmsproxy)
-            or (instance.__former['responsible_entity'] != instance.responsible_entity and instance.responsible_entity.fmsproxy)):
-        logger.info('Contact FMSProxy %s' % instance.get_organisation_entity_with_fms_proxy().fmsproxy.slug)
+    webhook = outbound_webhooks.ReportAssignmentRequestWebhook(instance, third_party=instance.organization)
+    webhook.fire()
 
-        # Prepare json data
-        from django_fixmystreet.fmsproxy.models import get_assign_payload
-        payload = get_assign_payload(instance)
-        logger.info('payload %s ' % payload)
+@receiver(pre_save, sender=Report)
+def webhook_transfer(sender, instance, **kwargs):
+    """
+    Checks whether the report is being transferred to someone else.
 
-        # Send data
-        logger.info('FMSPROXY_URL %s' % settings.FMSPROXY_URL)
-        url     = settings.FMSPROXY_URL
-        headers = {'Content-Type': 'application/json'}
+    This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
+    """
+    is_transferred = "??? transferred to ???" == False  # @TODO: How to check if being transferred?
+    if kwargs['raw'] or not is_transferred:
+        return
 
-        response = requests.post(url, data=json.dumps(payload), headers=headers)
-
-        if response.status_code != 200:
-            message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.id)
-
-            logger.error(message)
-            raise Exception(message)
-
-        logger.info('FMSProxy assignation success')
+    webhook = outbound_webhooks.ReportTransferRequestWebhook(instance)
+    webhook.fire()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
