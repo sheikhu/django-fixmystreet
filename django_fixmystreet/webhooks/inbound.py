@@ -30,7 +30,7 @@ class AbstractBaseInWebhook(object):
         raise NotImplementedError()
 
 
-class AbstractReportInWebhook(AbstractBaseInWebhook):
+class AbstractReportInWebhook(AbstractBaseInWebhook):  # pylint: disable=W0223
     """Abstract inbound webhook handler for resource ``report``."""
 
     def __init__(self, meta, data, user=None):
@@ -45,19 +45,20 @@ class AbstractReportInWebhook(AbstractBaseInWebhook):
         comment.save()
 
 
-class AbstractReportAssignmentInWebhook(AbstractReportInWebhook):
+class AbstractReportAssignmentInWebhook(AbstractReportInWebhook):  # pylint: disable=W0223
 
     def _validate(self):
         if self._third_party is None:
             raise NotLinkedWithThirdPartyError("Report not linked with a third-party.")
 
-        if self._third_party != self._user:  # @TODO: Create `Auth.User` for third-parties and link it to `_third_party.fmsproxy`.
+        if self._third_party != self._user:  # @TODO: Create `Auth.User` for third-parties and link them to `third_party`.
             raise ThirdPartyNotAuthorizedError("No authorization for this report.")
 
         # @TODO: Really needed? If assigned
         #if not self._report.waiting_for_organisation_entity():
         #    raise NotWaitingForThirdPartyError("Report not waiting for a third-party.")
 
+        # Required fields.
         if not self._meta.get("id"):
             raise BadRequestError(u"'meta.id' is required.")
 
@@ -78,6 +79,7 @@ class ReportAssignmentAcceptInWebhook(AbstractReportAssignmentInWebhook):
     def _validate(self):
         super(ReportAssignmentAcceptInWebhook, self)._validate()
 
+        # Required fields.
         if not self._data.get("reference_id"):
             raise BadRequestError(u"'data.referenceId' is required.")
 
@@ -107,6 +109,7 @@ class ReportAssignmentRejectInWebhook(AbstractReportAssignmentInWebhook):
     def _validate(self):
         super(ReportAssignmentRejectInWebhook, self)._validate()
 
+        # Required fields.
         if not self._data.get("comment"):
             raise BadRequestError(u"'data.comment' is required.")
 
@@ -130,5 +133,6 @@ class ReportAssignmentCloseInWebhook(AbstractReportAssignmentInWebhook):
     def _validate(self):
         super(ReportAssignmentCloseInWebhook, self)._validate()
 
+        # Required fields.
         if not self._data.get("reference_id"):
             raise BadRequestError(u"'data.referenceId' is required.")
