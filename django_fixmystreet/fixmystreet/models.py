@@ -1565,15 +1565,12 @@ def report_notify_report_public(sender, instance, **kwargs):
 @receiver(pre_save, sender=Report)
 def webhook_assignment(sender, instance, **kwargs):
     """
-    Checks whether the report has been assigned to someone else.
+    Checks whether the report is being assigned to someone else.
 
     This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
     """
-    assignment_changed = (instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy) \
-        or (instance.__former['responsible_department'] != instance.responsible_department and instance.responsible_department.fmsproxy) \
-        or (instance.__former['responsible_entity'] != instance.responsible_entity and instance.responsible_entity.fmsproxy)
-
-    if kwargs['raw'] or not instance.is_in_progress() or not assignment_changed:
+    assignment_is_changed = instance.contractor and instance.__former['contractor'] != instance.contractor
+    if kwargs['raw'] or not assignment_is_changed or not instance.is_in_progress():
         return
 
     webhook = outbound_webhooks.ReportAssignmentRequestWebhook(instance, third_party=instance.organization)
@@ -1586,8 +1583,8 @@ def webhook_transfer(sender, instance, **kwargs):
 
     This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
     """
-    is_transferred = "??? transferred to ???" == False  # @TODO: How to check if being transferred?
-    if kwargs['raw'] or not is_transferred:
+    is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
+    if kwargs['raw'] or not is_transferred or not instance.is_in_progress():
         return
 
     webhook = outbound_webhooks.ReportTransferRequestWebhook(instance)
