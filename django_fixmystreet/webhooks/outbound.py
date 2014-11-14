@@ -7,7 +7,7 @@ import requests
 from datetime import datetime
 
 from .models import WebhookConfig
-from ..api.utils import dict_walk_python_to_json, dict_walk_json_to_python
+from ..api.utils.conversion import dict_walk_python_to_json, dict_walk_json_to_python
 from ..fixmystreet.utils import sign_message
 
 
