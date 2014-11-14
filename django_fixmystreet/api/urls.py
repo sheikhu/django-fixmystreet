@@ -6,5 +6,5 @@ from .hooks.views import HooksView
 
 
 urlpatterns = patterns("",
-    url(r"^hooks$", HooksView.as_view(), namespace="hooks")),
+    url(r"^hooks$", HooksView.as_view(), name="hooks"),
 )
