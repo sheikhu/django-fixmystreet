@@ -297,11 +297,11 @@ if 'PDF_PRO_TOKEN_KEY' in os.environ:
 # API
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'django_fixmystreet.api.utils.renderers.PythonToJSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_PARSER_CLASSES': (
-        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'django_fixmystreet.api.utils.parsers.JSONToPythonParser',
     ),
     'DATETIME_FORMAT': 'iso-8601',
     'DEFAULT_AUTHENTICATION_CLASSES': (
