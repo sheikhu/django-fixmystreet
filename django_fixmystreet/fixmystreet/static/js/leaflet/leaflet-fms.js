@@ -1921,7 +1921,7 @@ L.FixMyStreet.Util = {
    */
   urbisResultToAddress: function (result) {
     if (result.error === true) {
-      throw new Error('Error: ' + response.status);
+      throw new Error('Error: ' + result.status);
     }
     var address = {
       street: result.address.street.name,
