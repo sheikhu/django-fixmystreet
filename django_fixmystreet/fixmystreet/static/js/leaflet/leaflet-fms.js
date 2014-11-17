@@ -1920,6 +1920,9 @@ L.FixMyStreet.Util = {
    * @returns {object} The address in our standard format: \{street, number, postalCode, city, [latlng]\}.
    */
   urbisResultToAddress: function (result) {
+    if (result.error === true) {
+      throw new Error('Error: ' + response.status);
+    }
     var address = {
       street: result.address.street.name,
       number: result.address.number,
