@@ -1264,7 +1264,7 @@ def report_assign_responsible(sender, instance, **kwargs):
 
     if not instance.responsible_department:
         # Detect who is the responsible Manager for the given type
-        # Search the right responsible for the current organization.
+        # Search the right responsible for the current organisation.
         departements = instance.responsible_entity.associates.filter(
             type=OrganisationEntity.DEPARTMENT)
 
@@ -1573,7 +1573,7 @@ def webhook_assignment(sender, instance, **kwargs):
     if kwargs['raw'] or not assignment_is_changed or not instance.is_in_progress():
         return
 
-    webhook = outbound_webhooks.ReportAssignmentRequestWebhook(instance, third_party=instance.organization)
+    webhook = outbound_webhooks.ReportAssignmentRequestWebhook(instance, third_party=instance.organisation)
     webhook.fire()
 
 @receiver(pre_save, sender=Report)
