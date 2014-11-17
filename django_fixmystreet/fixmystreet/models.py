@@ -1,5 +1,4 @@
 import json
-from django.utils import simplejson
 from exceptions import Exception
 import logging
 import re
@@ -217,7 +216,7 @@ class FMSUser(User):
         d['email'] = getattr(self, 'email')
         d['last_used_language'] = getattr(self, 'last_used_language')
         d['organisation'] = getattr(self.get_organisation(), 'id', None)
-        return simplejson.dumps(d)
+        return json.dumps(d)
 
     def get_absolute_url(self):
         return reverse("edit_user", kwargs={'user_id': self.id})
@@ -1930,7 +1929,7 @@ class ReportMainCategoryClass(UserTrackedModel):
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
+        return json.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -1962,7 +1961,7 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
+        return json.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -2068,7 +2067,7 @@ class ReportCategory(UserTrackedModel):
                 d['s_c_n_nl'] = s_c_n_nl_value
 
             list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
+        return json.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category"
