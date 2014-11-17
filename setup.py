@@ -35,7 +35,7 @@ install_requires = [
 
     'requests==2.4.3',
     'djangorestframework==2.4.4',
-    'djangorestframework-camel-case==0.2.0',
+    'python-dateutil==1.5',
 ]
 
 dev_require = [
