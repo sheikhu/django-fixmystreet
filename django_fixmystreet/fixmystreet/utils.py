@@ -497,11 +497,13 @@ from django.shortcuts import get_object_or_404
 
 
 def check_responsible_permission(user, report):
+    from django_fixmystreet.fixmystreet.models import UserOrganisationMembership
     return report.responsible_department is not None \
         and UserOrganisationMembership.objects.filter(organisation=report.responsible_department, user=user).exists()
 
 
 def check_contractor_permission(user, report):
+    from django_fixmystreet.fixmystreet.models import UserOrganisationMembership
     return report.contractor is not None \
         and UserOrganisationMembership.objects.filter(organisation=report.contractor, user=user).exists()
 
@@ -509,7 +511,7 @@ def check_contractor_permission(user, report):
 def responsible_permission(func):
 
     def wrapper(request, report_id):
-        from django_fixmystreet.fixmystreet.models import Report, UserOrganisationMembership
+        from django_fixmystreet.fixmystreet.models import Report
 
         report = get_object_or_404(Report, id=report_id)
 
