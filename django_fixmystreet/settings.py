@@ -153,6 +153,7 @@ INSTALLED_APPS = (
     'django_fixmystreet.fmsproxy',
     'django_fixmystreet.monitoring',
     'django_fixmystreet.api',
+    'django_fixmystreet.webhooks',
     'mobileserverstatus',
     'piston',
     'rest_framework',

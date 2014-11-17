@@ -29,7 +29,6 @@ from simple_history.models import HistoricalRecords
 from ckeditor.fields import RichTextField
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template, sign_message
-from django_fixmystreet.webhooks import outbound as outbound_webhooks
 
 
 logger = logging.getLogger(__name__)
@@ -279,7 +278,7 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
-    fmsproxy = models.ForeignKey('fmsproxy.FMSProxy', null=True, blank=True)
+    fmsproxy = models.ForeignKey('fmsproxy.FMSProxy', null=True, blank=True)  # @TODO: Still needed?
 
     class Meta:
         translate = ('name', 'slug')
@@ -1568,11 +1567,12 @@ def webhook_assignment(sender, instance, **kwargs):
 
     This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
     """
+    from django_fixmystreet.webhooks import outbound
     assignment_is_changed = instance.contractor and instance.__former['contractor'] != instance.contractor
     if kwargs['raw'] or not assignment_is_changed or not instance.is_in_progress():
         return
 
-    webhook = outbound_webhooks.ReportAssignmentRequestWebhook(instance, third_party=instance.organisation)
+    webhook = outbound.ReportAssignmentRequestOutWebhook(instance, third_party=instance.contractor)
     webhook.fire()
 
 @receiver(pre_save, sender=Report)
@@ -1582,11 +1582,12 @@ def webhook_transfer(sender, instance, **kwargs):
 
     This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
     """
+    from django_fixmystreet.webhooks import outbound
     is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
     if kwargs['raw'] or not is_transferred or not instance.is_in_progress():
         return
 
-    webhook = outbound_webhooks.ReportTransferRequestWebhook(instance)
+    webhook = outbound.ReportTransferRequestWebhook(instance, third_party=instance.responsible_department)
     webhook.fire()
 
 

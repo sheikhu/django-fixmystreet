@@ -8,7 +8,8 @@ from datetime import datetime
 
 from .models import WebhookConfig
 from ..api.utils.conversion import dict_walk_python_to_json, dict_walk_json_to_python
-from ..fixmystreet.utils import sign_message
+from django_fixmystreet.fixmystreet.models import OrganisationEntity
+from django_fixmystreet.fixmystreet.utils import sign_message
 
 
 class AbstractBaseOutWebhook(object):
@@ -21,7 +22,7 @@ class AbstractBaseOutWebhook(object):
     resource_slug = None
     hook_slug = None
     action_slug = None
-    third_party = None
+    third_party = None  # ``OrganisationEntity`` object.
 
     def fire(self):
         """Sends the request to all registered endpoints."""
@@ -111,6 +112,14 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
 
     resource_slug = "report"
 
+    def __init__(self, report, third_party=None):
+        if third_party is not None and not isinstance(third_party, OrganisationEntity):
+            raise TypeError("'third_party' must be a 'auth.User' object.")
+
+        super(AbstractReportOutWebhook, self).__init__()
+        self.report = report
+        self.third_party = third_party
+
     def get_payload(self):
         payload = super(AbstractReportOutWebhook, self).get_payload()
         creator = self.report.get_creator()
@@ -152,6 +161,9 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
 class AbstractReportAssignmentOutWebhook(AbstractReportOutWebhook):
     hook_slug = "assignment"
 
+    def __init__(self, report, third_party):
+        super(AbstractReportAssignmentOutWebhook, self).__init__(report, third_party=third_party)
+
 
 class ReportAssignmentRequestOutWebhook(AbstractReportAssignmentOutWebhook):
     action_slug = "request"
@@ -159,6 +171,9 @@ class ReportAssignmentRequestOutWebhook(AbstractReportAssignmentOutWebhook):
 
 class AbstractReportTransferOutWebhook(AbstractReportOutWebhook):
     hook_slug = "transfer"
+
+    def __init__(self, report, third_party):
+        super(AbstractReportTransferOutWebhook, self).__init__(report, third_party=third_party)
 
 
 class ReportTransferRequestOutWebhook(AbstractReportTransferOutWebhook):
