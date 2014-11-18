@@ -579,11 +579,13 @@ L.FixMyStreet.Map = L.Map.extend({
   addSearchResults: function (models, options) {  // (Object, [Object])
     var that = this;
     this.initSearchLayer();
-    $.each(models, function (i, model) {
-      model.index = i;
-      that.addSearchResult(model, options);
-    });
-    this.fitToMarkers(this._searchLayer);
+    if (models && models.length > 0) {
+      $.each(models, function (i, model) {
+        model.index = i;
+        that.addSearchResult(model, options);
+      });
+      this.fitToMarkers(this._searchLayer);
+    }
 
     options = $.extend(true, {
       position: this.options.controlsPosition.panels,
@@ -593,7 +595,7 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   removeSearchResults: function () {
-    if (this._searchLayer === undefined) { return; }
+    if (this._searchLayer === undefined || this.searchPanel === undefined) { return; }
     this._searchLayer.clearLayers();
     this.searchPanel.remove();
     while (this.searchResults.length > 0) {  // See http://stackoverflow.com/a/1232046/101831
