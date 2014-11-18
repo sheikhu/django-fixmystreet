@@ -310,6 +310,6 @@ REST_FRAMEWORK = {
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'django_fixmystreet.api.utils.renderers.PythonToJSONRenderer',
     ),
 }
