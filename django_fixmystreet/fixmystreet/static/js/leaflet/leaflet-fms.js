@@ -1892,8 +1892,8 @@ L.FixMyStreet.Util = {
       data: {
         json: JSON.stringify({
           language: LANGUAGE_CODE,
-          point: this.toPoint(coords, true),  // Preference to LatLng format if value is index-based.
-          spatialReference: '4326',
+          point: this.toUrbisCoords(coords),
+          spatialReference: '31370',
         }),
       },
 
