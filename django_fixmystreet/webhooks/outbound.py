@@ -26,10 +26,14 @@ class AbstractBaseOutWebhook(object):
 
     def fire(self):
         """Sends the request to all registered endpoints."""
+        endpoints = self.get_endpoints()
+        if not endpoints:
+            return
+
         payload = self.get_payload()
 
         # Send the request to all registered endpoints.
-        for endpoint in self.get_endpoints():
+        for endpoint in endpoints:
             try:
                 response = self._send_request(endpoint, payload)
                 if response.status_code != 200:
@@ -145,14 +149,13 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
                 "email": creator.email,
             },
             "comments": [],
-        },
+        }
 
-        comments = self.report.comments()
-        for comment in comments:
+        for comment in self.report.comments():
             payload["data"]["report"]["comments"].append({
                 "created_at": comment.created,
                 "name": comment.created_by.get_display_name() if comment.created_by else "",
-                "text": comment.self.reportcomment.text,
+                "text": comment.reportcomment.text,
             })
 
         return payload
