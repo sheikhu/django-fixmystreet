@@ -5,7 +5,7 @@ import re
 
 
 RE_ISO8601_DATETIME = re.compile(
-    r"(^\d{4}(-\d{2}){0,2})?((^|T)\d{2}(:\d{2}(:\d{2}(\.\d+)?)?)?(Z|[\+|-]\d{2}:\d{2})?)?$"
+    r"(^\d{4}-\d{2}-\d{2})?((^|T)\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+|-]\d{2}:\d{2})?)?$"
 )
 RE_PREFIX_UNDERSCORES = re.compile(r"^(_+)")
 RE_SUFFIX_UNDERSCORES = re.compile(r"(_+)$")
@@ -57,19 +57,19 @@ def dict_walk(data, key_callbacks=None, value_callbacks=None):
 
 def dict_walk_python_to_json(data):
     """Converts a dictionary from Python to JSON conventions."""
-    key_callbacks = [to_snake_case]
+    key_callbacks = [to_camel_case]
     value_callbacks = [datetime_to_isoformat]
     return dict_walk(data, key_callbacks=key_callbacks, value_callbacks=value_callbacks)
 
 
 def dict_walk_json_to_python(data):
     """Converts a dictionary from JSON to Python conventions."""
-    key_callbacks = [to_camel_case]
-    value_callbacks = [datetime_to_python]
+    key_callbacks = [to_snake_case]
+    value_callbacks = [isoformat_to_datetime]
     return dict_walk(data, key_callbacks=key_callbacks, value_callbacks=value_callbacks)
 
 
-def datetime_to_python(value):
+def isoformat_to_datetime(value):
     """Converts a string representing a date (and/or) time to a Python datetime."""
     if not is_iso8601_datetime(value):
         return value
