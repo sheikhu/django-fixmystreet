@@ -1,0 +1,3 @@
+{% load i18n %}{{ action_msg  }}
+{% if reference_id %}{% trans "External reference" %}: {{ reference_id }}{% endif %}
+{% if comment %}{{ comment|safe }}{% endif %}

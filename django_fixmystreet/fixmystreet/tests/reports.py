@@ -1,5 +1,3 @@
-
-from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.contrib.gis.geos import Polygon
@@ -9,12 +7,11 @@ from django_fixmystreet.fixmystreet.models import (
     FMSUser, ReportFile, UserOrganisationMembership, OrganisationEntitySurface,
     GroupMailConfig
 )
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
-class NotificationTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class NotificationTest(FMSTestCase):
 
     def setUp(self):
         self.secondary_category = ReportCategory.objects.all()[0]
@@ -167,9 +164,7 @@ class NotificationTest(TestCase):
         self.assertEquals(new_report.responsible_entity, self.bxl)
 
 
-class PhotosTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class PhotosTest(FMSTestCase):
 
     def setUp(self):
         self.user = User.objects.create_user('test', 'test@fixmystreet.irisnet.be', 'pwd')
@@ -181,9 +176,7 @@ class PhotosTest(TestCase):
         #self.ward = Ward.objects.all()[0]
 
 
-class ValueUpdate(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class ValueUpdate(FMSTestCase):
 
     def setUp(self):
         self.secondary_category = ReportCategory.objects.all()[0]

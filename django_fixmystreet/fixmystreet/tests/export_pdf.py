@@ -1,12 +1,12 @@
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
-from django_fixmystreet.fixmystreet.tests import SampleFilesTestCase
 from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity, Report, ReportComment, ReportCategory, UserOrganisationMembership, GroupMailConfig
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 
-class ExportPDFTest(SampleFilesTestCase):
+class ExportPDFTest(FMSTestCase):
 
     def setUp(self):
         self.bxl = OrganisationEntity.objects.get(id=4)

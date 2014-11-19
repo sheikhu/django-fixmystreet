@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-version = '3.0.20.dev0'
+version = '3.0.22.dev0'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,7 +15,7 @@ install_requires = [
     'django==1.5.11',
     'django-transmeta==0.6.9',
     'django-stdimage==0.2.2',
-    'south==0.7.6',
+    'south==1.0.1',
     'django-extensions==1.0.1',
     'docutils==0.11',
     'simplejson==1.9.3',
@@ -34,8 +34,8 @@ install_requires = [
     'mobileserverstatus==1.0',
 
     'requests==2.4.3',
-    'djangorestframework==2.4.3',
-    'djangorestframework-camel-case==0.2.0',
+    'djangorestframework==2.4.4',
+    'python-dateutil==1.5',
 ]
 
 dev_require = [

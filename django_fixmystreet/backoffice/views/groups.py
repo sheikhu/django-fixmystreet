@@ -44,6 +44,7 @@ def create_group(request,):
             group = group_form.save(commit=False)
             group.dependency = request.fmsuser.organisation
             group.save()
+            group.save()
 
             messages.add_message(request, messages.SUCCESS, _("Group has been created successfully"))
             return HttpResponseRedirect(reverse('list_groups'))
@@ -96,10 +97,7 @@ def delete_group(request, group_id):
     if (instance.dispatch_categories.count() or
             instance.reports_in_department.count() or
             instance.assigned_reports.count()):
-        messages.add_message(request, messages.ERROR, _("""
-        Group has some reports or categories associeted,
-        remove them first and then try again
-        """))
+        messages.add_message(request, messages.ERROR, _("Group has some reports or categories associated, remove them first and then try again"))
         return HttpResponseRedirect(reverse('edit_group', args=(instance.id,)))
 
     if request.method == "GET" and can_edit:

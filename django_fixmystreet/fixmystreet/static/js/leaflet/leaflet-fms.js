@@ -27,8 +27,7 @@
 if (LANGUAGE_CODE === undefined) { var LANGUAGE_CODE = 'fr'; }
 if (STATIC_URL === undefined) { var STATIC_URL = '/static/'; }
 if (DEBUG === undefined) { var DEBUG = false; }
-if (gettext === undefined) { function gettext(s) { return s; } }
-
+    if (gettext === undefined) { var gettext = function (s) { return s; } }
 
 // INIT
 
@@ -297,7 +296,7 @@ L.FixMyStreet.TEMPLATES.newIncidentPopup =
 L.FixMyStreet.TEMPLATES.searchResultPopup =
   '<div class="fmsmap-popup new">' +
     '<div class="fmsmap-popup-header clearfix">' +
-      gettext('Search result {{ data.number }}') +
+      gettext('Choice {{ data.number }}') +
     '</div>' +
     '<div class="fmsmap-popup-body clearfix">' +
       '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
@@ -580,11 +579,13 @@ L.FixMyStreet.Map = L.Map.extend({
   addSearchResults: function (models, options) {  // (Object, [Object])
     var that = this;
     this.initSearchLayer();
-    $.each(models, function (i, model) {
-      model.index = i;
-      that.addSearchResult(model, options);
-    });
-    this.fitToMarkers(this._searchLayer);
+    if (models && models.length > 0) {
+      $.each(models, function (i, model) {
+        model.index = i;
+        that.addSearchResult(model, options);
+      });
+      this.fitToMarkers(this._searchLayer);
+    }
 
     options = $.extend(true, {
       position: this.options.controlsPosition.panels,
@@ -594,7 +595,7 @@ L.FixMyStreet.Map = L.Map.extend({
   },
 
   removeSearchResults: function () {
-    if (this._searchLayer === undefined) { return; }
+    if (this._searchLayer === undefined || this.searchPanel === undefined) { return; }
     this._searchLayer.clearLayers();
     this.searchPanel.remove();
     while (this.searchResults.length > 0) {  // See http://stackoverflow.com/a/1232046/101831
@@ -1893,8 +1894,8 @@ L.FixMyStreet.Util = {
       data: {
         json: JSON.stringify({
           language: LANGUAGE_CODE,
-          point: this.toPoint(coords, true),  // Preference to LatLng format if value is index-based.
-          spatialReference: '4326',
+          point: this.toUrbisCoords(coords),
+          spatialReference: '31370',
         }),
       },
 
@@ -1921,6 +1922,9 @@ L.FixMyStreet.Util = {
    * @returns {object} The address in our standard format: \{street, number, postalCode, city, [latlng]\}.
    */
   urbisResultToAddress: function (result) {
+    if (result.error === true) {
+      throw new Error('Error: ' + result.status);
+    }
     var address = {
       street: result.address.street.name,
       number: result.address.number,

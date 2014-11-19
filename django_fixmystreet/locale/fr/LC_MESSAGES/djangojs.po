@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# dfranklin <DFranklin@cirb.irisnet.be>, 2014
 # lafif <lafif@cirb.irisnet.be>, 2014
 # tdesany2 <transifex@desany.eu>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-12 16:59+0200\n"
-"PO-Revision-Date: 2014-08-12 14:59+0000\n"
+"POT-Creation-Date: 2014-11-17 12:29+0100\n"
+"PO-Revision-Date: 2014-11-17 11:27+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -19,84 +20,26 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: fixmystreet/static/js/attachmentForms.js:180
+#: fixmystreet/static/js/attachmentForms.js:108
 msgid "Filesize must be greater than 0"
-msgstr ""
+msgstr "La taille du fichier ne peut être nulle."
 
-#: fixmystreet/static/js/fixmystreetmap.js:47
-msgid "This incident is located on a regional zone"
-msgstr "Sur une voirie régionale"
+#: fixmystreet/static/js/map-view.js:161 fixmystreet/static/js/search.js:169
+msgid "Non-participating municipality"
+msgstr "Commune non participante."
 
-#: fixmystreet/static/js/fixmystreetmap.js:48
-msgid "This incident has been signaled by a pro"
-msgstr "Signalé par un professionnel"
-
-#: fixmystreet/static/js/fixmystreetmap.js:49
-msgid "This incident is assigned to"
-msgstr "Assigné à"
-
-#: fixmystreet/static/js/fixmystreetmap.js:50
-msgid "Date planned"
-msgstr "Date de planification"
-
-#: fixmystreet/static/js/fixmystreetmap.js:51
-msgid "This incident has been signaled as solved"
-msgstr "Incident signalé comme résolu"
-
-#: fixmystreet/static/js/fixmystreetmap.js:52
-msgid "This incident has no defined priority"
-msgstr "Aucune priorité attribuée"
-
-#: fixmystreet/static/js/fixmystreetmap.js:53
-msgid "This incident has a low priority"
-msgstr "Priorité basse"
-
-#: fixmystreet/static/js/fixmystreetmap.js:54
-msgid "This incident has a medium priority"
-msgstr "Priorité moyenne"
-
-#: fixmystreet/static/js/fixmystreetmap.js:55
-msgid "This incident has a serious priority"
-msgstr "Priorité haute"
-
-#: fixmystreet/static/js/fixmystreetmap.js:333
-msgid "regional_limits"
-msgstr "Voiries régionales"
-
-#: fixmystreet/static/js/fixmystreetmap.js:334
-msgid "municipality_limits"
-msgstr "Limites communales"
-
-#: fixmystreet/static/js/fixmystreetmap.js:384
-msgid "Overlayers"
-msgstr "Affichage"
-
-#: fixmystreet/static/js/fixmystreetmap.js:603
-#: fixmystreet/static/js/search.js:469
-msgid "Unexpected error"
-msgstr ""
-
-#: fixmystreet/static/js/fixmystreetmap.js:806
-#: fixmystreet/static/js/fixmystreetmap.js:888
-msgid "Report"
-msgstr ""
-
-#: fixmystreet/static/js/fixmystreetmap.js:809
-msgid "Details"
-msgstr ""
-
-#: fixmystreet/static/js/fixmystreetmap.js:886
-msgid "Reports at this location"
-msgstr ""
+#: fixmystreet/static/js/map-view.js:162 fixmystreet/static/js/search.js:170
+msgid "Please contact the municipality"
+msgstr "Veuillez prendre contact avec la commune"
 
 #: fixmystreet/static/js/new_report.js:164
 #: fixmystreet/static/js/new_report.js:232
 msgid "Unable to locate this address"
-msgstr ""
+msgstr "Impossible de localiser cette adresse"
 
 #: fixmystreet/static/js/new_report.js:230
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: fixmystreet/static/js/reports_show_pro.js:39
 msgid ""
@@ -104,15 +47,23 @@ msgid ""
 " gestionnaire. He can be edited as needed."
 msgstr ""
 
+#: fixmystreet/static/js/search-address-view.js:86
+#: fixmystreet/static/js/search.js:470
+msgid "Unexpected error"
+msgstr "Erreur inattendue"
+
+#: fixmystreet/static/js/search-address-view.js:141
 #: fixmystreet/static/js/search.js:59
 msgid "This street is not listed in this municipality."
-msgstr ""
+msgstr "Ce nom de rue n'appartient pas à cette commune."
 
+#: fixmystreet/static/js/search-address-view.js:144
 #: fixmystreet/static/js/search.js:61
 msgid "This street exists in several municipalities, please be more specific."
-msgstr ""
+msgstr "Ce nom de rue existe dans plusieurs commune. Veuillez être plus précis."
 
 #: fixmystreet/static/js/search.js:160 fixmystreet/static/js/search.js.c:230
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:291
 msgid "It is here"
 msgstr "C'est ici !"
 
@@ -120,14 +71,150 @@ msgstr "C'est ici !"
 msgid "Move the cursor"
 msgstr "Positionnez-moi à l'endroit exact de l'incident"
 
-#: fixmystreet/static/js/search.js:169
-msgid "Non-participating municipality"
-msgstr ""
-
-#: fixmystreet/static/js/search.js:170
-msgid "Please contact the municipality"
-msgstr ""
-
-#: fixmystreet/static/js/search.js:458
+#: fixmystreet/static/js/search.js:459
 msgid "No corresponding address has been found"
+msgstr "Aucune adresse correspondante a été trouvée."
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:52
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:67
+msgid "Street"
+msgstr "Rue"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:82
+msgid "Orthographic"
+msgstr "Orthographique"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:98
+msgid "Regional roads"
+msgstr "Routes régionales"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:118
+msgid "Municipal boundaries"
+msgstr "Limites communales"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:217
+msgid "Report #{{ data.id }}"
+msgstr "Incident #{{ data.id }}"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:241
+msgid "This incident is located on a regional zone"
+msgstr "Sur une voirie régionale"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:244
+msgid "This incident has been signaled by a pro"
+msgstr "Signalé par un professionnel"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:247
+msgid "This incident is assigned to"
+msgstr "Assigné à"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:250
+msgid "This incident is planned"
+msgstr "Cet incident est planifié"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:255
+msgid "This incident has a low priority"
+msgstr "Priorité basse"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:256
+msgid "This incident has a medium priority"
+msgstr "Priorité moyenne"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:257
+msgid "This incident has a serious priority"
+msgstr "Priorité haute"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:263
+msgid "This incident has been signaled as solved"
+msgstr "Incident signalé comme résolu"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:270
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:287
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:306
+msgid "Open Street View"
+msgstr "Ouvrir Street View"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:271
+msgid "Details"
+msgstr "Détails"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:280
+msgid "Place me at the exact position of the incident"
+msgstr "Placez moi à l'endroit exact de l'incident."
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:288
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:307
+msgid "Center map"
+msgstr "Centrer la carte"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:299
+msgid "Choice {{ data.number }}"
+msgstr "Choix {{ data.number }}"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:311
+msgid "Go"
 msgstr ""
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:313
+msgid "New incident"
+msgstr "Nouvel incident"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:323
+msgid "No results"
+msgstr "Pas de résultats"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:325
+msgid "{{ data.results.length }} results"
+msgstr "{{ data.results.length }} résultats"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:330
+msgid "No corresponding address has been found."
+msgstr "Aucune adresse correspondante n'a été trouvée."
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:331
+msgid "Please refine your search criteria."
+msgstr "Veuillez mieux définir vos critères de recherche."
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:384
+msgid "Locate on map"
+msgstr "Localiser sur la carte"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:386
+msgid "Expand"
+msgstr "Agrandir"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:387
+msgid "Reduce"
+msgstr "Réduire"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:424
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:426
+msgid "Created"
+msgstr "Signalé"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:429
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:431
+msgid "In progress"
+msgstr "En traitement"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:434
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:436
+msgid "Closed"
+msgstr "Cloturé"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:439
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:441
+msgid "Other"
+msgstr "Autre"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:712
+msgid "Incident filter"
+msgstr "Filtres"
+
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:1927
+msgid "Brussels"
+msgstr "Bruxelles"
+
+#: fixmystreet/static/tests/leaflet/test.template.js:15
+msgid "Test #<% this.number %>"
+msgstr "Test #<% this.number %>"

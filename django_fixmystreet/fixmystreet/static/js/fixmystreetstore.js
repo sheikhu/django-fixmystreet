@@ -74,7 +74,7 @@ fms_store.setTableMaxRows = function(argMaxRows) {
  */
 fms_store.getTableMaxRows = function(argMaxRows) {
     if (localStorage) {
-        return localStorage.getItem(this.KEY_DATA_TABLE_MAX_ROWS) || argMaxRows;
+        return Number(localStorage.getItem(this.KEY_DATA_TABLE_MAX_ROWS)) || argMaxRows;
     }
     return argMaxRows;
 };

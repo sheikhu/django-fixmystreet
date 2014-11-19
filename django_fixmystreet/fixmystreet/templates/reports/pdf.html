@@ -4,7 +4,7 @@
 {% load static from staticfiles %}
 
 {% block base %}
-<base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/>
+<base href="{% if base_url %}{{ base_url }}{% else %}{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}{% endif %}" target="_blank"/>
 {% endblock %}
 
 <!-- ############################################################## -->
@@ -432,14 +432,15 @@
 
             <!-- ROW PRO 2 -->
             <li>
-                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}
-                    <strong>Posted by</strong> {{by}} on {{on}}
-               {% endblocktrans %}
+{#                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}#}
+{#                    <strong>Posted by</strong> {{by}} on {{on}}#}
+{#                {% endblocktrans %}#}
+                <strong>{% trans "Posted by:" %}</strong> {{ report.get_creator.get_full_name }} {% trans "on" context "date" %} {{report.created|date:"d/m/Y"}}
 
-               {% if not report.is_pro %}
+                {% if not report.is_pro %}
                     - {{ report.citizen.get_quality_display }}
                     ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
-               {% endif %}
+                {% endif %}
             </li>
             <!-- ROW PRO 3 -->
             <li>

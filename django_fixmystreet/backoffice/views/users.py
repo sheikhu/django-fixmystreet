@@ -117,7 +117,7 @@ def create_user(request):
                     return HttpResponseRedirect(reverse('list_users'))
             except SMTPException as e:
                 logger.error("email not sent successfully: {0}".format(e))
-                messages.add_message(request, messages.ERROR, _("An error occurd during the email sending"))
+                messages.add_message(request, messages.ERROR, _("An error occurred during the email sending"))
 
     else:
         user_form = FmsUserCreateForm()

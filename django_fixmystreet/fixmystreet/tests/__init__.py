@@ -1,16 +1,10 @@
-
-
-from django.core.files.storage import default_storage
 from django.test import TestCase
 
+class FMSTestCase(TestCase):
 
-class SampleFilesTestCase(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
-
-    @classmethod
-    def setUpClass(cls):
-        default_storage.location = 'media/' # force using source media folder to avoid real data erasing
+    # Include initial_data due to regression in 1.0 <= South < 1.0.2
+    # https://bitbucket.org/andrewgodwin/south/pull-request/157/fix-loading-initial_data-for-unit-tests/diff
+    fixtures = ["initial_data", "bootstrap", "list_items"]
 
 from django_fixmystreet.fixmystreet.tests.api import *
 from django_fixmystreet.fixmystreet.tests.views import *

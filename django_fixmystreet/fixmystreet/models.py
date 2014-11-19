@@ -1,5 +1,4 @@
 import json
-from django.utils import simplejson
 from exceptions import Exception
 import logging
 import re
@@ -30,6 +29,7 @@ from simple_history.models import HistoricalRecords
 from ckeditor.fields import RichTextField
 
 from django_fixmystreet.fixmystreet.utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template, sign_message
+
 
 logger = logging.getLogger(__name__)
 
@@ -215,7 +215,7 @@ class FMSUser(User):
         d['email'] = getattr(self, 'email')
         d['last_used_language'] = getattr(self, 'last_used_language')
         d['organisation'] = getattr(self.get_organisation(), 'id', None)
-        return simplejson.dumps(d)
+        return json.dumps(d)
 
     def get_absolute_url(self):
         return reverse("edit_user", kwargs={'user_id': self.id})
@@ -278,7 +278,7 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
-    fmsproxy = models.ForeignKey('fmsproxy.FMSProxy', null=True, blank=True)
+    fmsproxy = models.ForeignKey('fmsproxy.FMSProxy', null=True, blank=True)  # @TODO: Still needed?
 
     class Meta:
         translate = ('name', 'slug')
@@ -411,9 +411,10 @@ class ReportQuerySet(models.query.GeoQuerySet):
             'created' : False,
             'closed'  : False,
 
+            'ignore_distance': kwds['ignore_distance'] if 'ignore_distance' in kwds else False,
+
             # For /debug/rank, we have to avoid visible filters
-            'debug'   : True if 'debug' in kwds else False,
-            'ignore_distance': True if 'ignore_distance' in kwds and 'ignore_distance' is True else False
+            'debug'   : kwds['debug'] if 'debug' in kwds else False,
         }
 
         # Prepare data according to params
@@ -731,8 +732,7 @@ class Report(UserTrackedModel):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 
     def get_marker(self):
-        # user = get_current_user()
-        marker_color = "green"  # default color
+        marker_color = "green"
 
         if self.is_in_progress():
             marker_color = "orange"
@@ -742,6 +742,16 @@ class Report(UserTrackedModel):
             marker_color = "gray"
 
         return "images/marker-" + marker_color + "-xxs.png"
+
+    def get_marker_flat(self):
+        marker_color = "icon2-list_closed"
+
+        if self.is_in_progress():
+            marker_color = "icon2-list_in_progress"
+        elif self.is_created():
+            marker_color = "icon2-list_created"
+
+        return marker_color
 
     def is_contractor_or_applicant_assigned(self):
         return self.status == Report.APPLICANT_RESPONSIBLE or self.status == Report.CONTRACTOR_ASSIGNED
@@ -1252,7 +1262,7 @@ def report_assign_responsible(sender, instance, **kwargs):
 
     if not instance.responsible_department:
         # Detect who is the responsible Manager for the given type
-        # Search the right responsible for the current organization.
+        # Search the right responsible for the current organisation.
         departements = instance.responsible_entity.associates.filter(
             type=OrganisationEntity.DEPARTMENT)
 
@@ -1550,39 +1560,35 @@ def report_notify_report_public(sender, instance, **kwargs):
                     reply_to=report.responsible_department.email,
                 ).save()
 
-
 @receiver(pre_save, sender=Report)
-def report_notify_fmsproxy(sender, instance, **kwargs):
+def webhook_assignment(sender, instance, **kwargs):
+    """
+    Checks whether the report is being assigned to someone else.
 
-    if kwargs['raw']:
+    This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
+    """
+    from django_fixmystreet.webhooks import outbound
+    assignment_is_changed = instance.contractor and instance.__former['contractor'] != instance.contractor
+    if kwargs['raw'] or not assignment_is_changed or not instance.is_in_progress():
         return
 
-    # If contractor changes and is linked to a remote partner (fmsproxy)
-    if instance.is_in_progress() \
-        and ((instance.contractor and instance.__former['contractor'] != instance.contractor and instance.contractor.fmsproxy)
-            or (instance.__former['responsible_department'] != instance.responsible_department and instance.responsible_department.fmsproxy)
-            or (instance.__former['responsible_entity'] != instance.responsible_entity and instance.responsible_entity.fmsproxy)):
-        logger.info('Contact FMSProxy %s' % instance.get_organisation_entity_with_fms_proxy().fmsproxy.slug)
+    webhook = outbound.ReportAssignmentRequestOutWebhook(instance, third_party=instance.contractor)
+    webhook.fire()
 
-        # Prepare json data
-        from django_fixmystreet.fmsproxy.models import get_assign_payload
-        payload = get_assign_payload(instance)
-        logger.info('payload %s ' % payload)
+@receiver(pre_save, sender=Report)
+def webhook_transfer(sender, instance, **kwargs):
+    """
+    Checks whether the report is being transferred to someone else.
 
-        # Send data
-        logger.info('FMSPROXY_URL %s' % settings.FMSPROXY_URL)
-        url     = settings.FMSPROXY_URL
-        headers = {'Content-Type': 'application/json'}
+    This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
+    """
+    from django_fixmystreet.webhooks import outbound
+    is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
+    if kwargs['raw'] or not is_transferred or not instance.is_in_progress():
+        return
 
-        response = requests.post(url, data=json.dumps(payload), headers=headers)
-
-        if response.status_code != 200:
-            message = 'FMSProxy assignation failed (status code %s): %s on report %s' % (response.status_code, instance.id)
-
-            logger.error(message)
-            raise Exception(message)
-
-        logger.info('FMSProxy assignation success')
+    webhook = outbound.ReportTransferRequestOutWebhook(instance, third_party=instance.responsible_department)
+    webhook.fire()
 
 
 class ReportAttachmentQuerySet(models.query.QuerySet):
@@ -1924,7 +1930,7 @@ class ReportMainCategoryClass(UserTrackedModel):
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
+        return json.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -1956,7 +1962,7 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
+        return json.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category group"
@@ -2062,7 +2068,7 @@ class ReportCategory(UserTrackedModel):
                 d['s_c_n_nl'] = s_c_n_nl_value
 
             list_of_elements_as_json.append(d)
-        return simplejson.dumps(list_of_elements_as_json)
+        return json.dumps(list_of_elements_as_json)
 
     class Meta:
         verbose_name = "category"

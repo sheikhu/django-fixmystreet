@@ -22,6 +22,10 @@ if ENVIRONMENT != "production":
     #disable mail in non-production environment
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+if ENVIRONMENT == "staging":
+    EMAIL_BACKEND = 'middleware.smtpforward.EmailBackend'
+    TO_LIST = 'django.dev@cirb.irisnet.be'
+
 
 LOGIN_REQUIRED_URL = '^/(.*)/pro/'
 
@@ -149,6 +153,7 @@ INSTALLED_APPS = (
     'django_fixmystreet.fmsproxy',
     'django_fixmystreet.monitoring',
     'django_fixmystreet.api',
+    'django_fixmystreet.webhooks',
     'mobileserverstatus',
     'piston',
     'rest_framework',
@@ -251,6 +256,12 @@ try:
     from local_settings import * # flake8: noqa
 except ImportError:
     pass
+
+if ENVIRONMENT != "production" and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+    #disable mail in non-production environment
+    raise Exception('Are you a fool ???? Do not send email as if you were in prod!!!')
+
+
 if not 'DATABASES' in locals():
     DATABASES = {
         'default': {
@@ -287,11 +298,11 @@ if 'PDF_PRO_TOKEN_KEY' in os.environ:
 # API
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'django_fixmystreet.api.utils.renderers.PythonToJSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_PARSER_CLASSES': (
-        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'django_fixmystreet.api.utils.parsers.JSONToPythonParser',
     ),
     'DATETIME_FORMAT': 'iso-8601',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -299,6 +310,6 @@ REST_FRAMEWORK = {
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'TEST_REQUEST_RENDERER_CLASSES': (
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'django_fixmystreet.api.utils.renderers.PythonToJSONRenderer',
     ),
 }

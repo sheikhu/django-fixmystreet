@@ -113,7 +113,8 @@ def send_pdf(request, report_id):
         'comments': report.comments() if pro_version else report.active_comments(),
         'activity_list': report.activities.all(),
         'privacy': 'private' if pro_version else 'public',
-        'BACKOFFICE': pro_version
+        'BACKOFFICE': pro_version,
+        'base_url': getattr(settings, 'RENDER_PDF_BASE_URL', None),
     }, context_instance=RequestContext(request))
 
     subject, html, text = transform_notification_template("mail-pdf", report, user, comment=comments)

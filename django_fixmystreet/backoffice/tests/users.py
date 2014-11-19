@@ -1,12 +1,11 @@
-from django.test import TestCase
-from django.core.urlresolvers import reverse
-from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
-from django.utils import unittest
 from django.core import mail
+from django.core.urlresolvers import reverse
+from django.utils import unittest
 
-class UsersTest(TestCase):
+from django_fixmystreet.fixmystreet.models import OrganisationEntity, FMSUser
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 
-    fixtures = ["bootstrap", "list_items"]
+class UsersTest(FMSTestCase):
 
     def setUp(self):
         self.manager = FMSUser(

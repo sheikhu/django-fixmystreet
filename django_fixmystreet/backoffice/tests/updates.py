@@ -1,18 +1,16 @@
 
 from unittest import skip
-from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
 from django_fixmystreet.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser, UserOrganisationMembership, GroupMailConfig
+from django_fixmystreet.fixmystreet.tests import FMSTestCase
 from django_fixmystreet.fixmystreet.utils import dict_to_point
 
 from datetime import datetime, timedelta
 
 
-class UpdatesTest(TestCase):
-
-    fixtures = ["bootstrap", "list_items"]
+class UpdatesTest(FMSTestCase):
 
     def setUp(self):
         self.client = Client()

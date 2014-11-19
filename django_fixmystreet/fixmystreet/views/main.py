@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import json
+from urlparse import urlparse
 
 from django.core.urlresolvers import reverse, resolve
 from django.http import Http404
@@ -61,10 +62,10 @@ def page(request):
 def update_current_language(request):
     url = request.REQUEST.get("from")
     language = request.REQUEST.get("language")
-    resolve_match = resolve(url)
+    resolve_match = resolve(urlparse(url).path)
     args = resolve_match.args
     kwargs = resolve_match.kwargs
-
+    params = urlparse(url).query
     activate(language)
 
     if 'slug' in kwargs:
@@ -75,6 +76,9 @@ def update_current_language(request):
         fms_user = request.user.fmsuser
         fms_user.last_used_language = request.REQUEST.get("language").upper()
         fms_user.save()
-        return HttpResponseRedirect(reverse(resolve_match.url_name, args=args, kwargs=kwargs))
 
-    return HttpResponseRedirect(reverse(resolve_match.url_name, args=args, kwargs=kwargs))
+    return HttpResponseRedirect("{0}?{1}".format(reverse(resolve_match.url_name, args=args, kwargs=kwargs), params))
+#u'/nl/pro/report/verify?x=151930.34510683542&y=166832.57901434973'
+
+#u'/fr/pro/rapport/verification?x=151953.0338021693&y=166821.27587279677'
+#u'/fr/pro/rapport/nouveau?x=151930.34510683542&y=166832.57901434973'
