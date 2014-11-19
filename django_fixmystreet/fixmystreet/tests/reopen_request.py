@@ -2,7 +2,7 @@ from django.test.client import Client
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core import mail
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, gettext, ugettext
 from django_fixmystreet.backoffice.views.reports.main import ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED, \
     ERROR_MSG_REOPEN_REQUEST_90_DAYS, SUCCESS_MSG_REOPEN_REQUEST_CONFIRM
 
@@ -196,8 +196,8 @@ class ReopenRequestTest(FMSTestCase):
         self.assertRedirects(response, url_redirect, status_code=302, target_status_code=200)
 
         #test there is a message
-        success_msg = _(str(list(response.context["messages"])[0]))
-        self.assertEqual(success_msg, _(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
+        success_msg = str(list(response.context["messages"])[0])
+        self.assertEqual(success_msg, gettext(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
 
         # Fetch activities
         activities = report.activities.all()
@@ -223,8 +223,8 @@ class ReopenRequestTest(FMSTestCase):
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
         #test there is a message
-        success_msg = _(str(list(response.context["messages"])[0]))
-        self.assertEqual(success_msg, _(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
+        success_msg = str(list(response.context["messages"])[0])
+        self.assertEqual(success_msg, gettext(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
 
         # Fetch activities
         activities = report.activities.all()
@@ -254,8 +254,8 @@ class ReopenRequestTest(FMSTestCase):
         url = reverse('report_show', args=[report.get_slug(), report.id])
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
-        error_msg = _(str(list(response.context["messages"])[0]))
-        self.assertEqual(error_msg, _(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
+        error_msg = str(list(response.context["messages"])[0])
+        self.assertEqual(error_msg, gettext(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
 
         # Fetch activities
         activities = report.activities.all()
@@ -281,8 +281,8 @@ class ReopenRequestTest(FMSTestCase):
         url = reverse('report_show', args=[report.get_slug(), report.id])
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
-        error_msg = _(str(list(response.context["messages"])[0]))
-        self.assertEqual(error_msg, _(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
+        error_msg = str(list(response.context["messages"])[0])
+        self.assertEqual(error_msg, gettext(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
 
         # Fetch activities
         activities = report.activities.all()

@@ -20,9 +20,9 @@ from django_fixmystreet.backoffice.forms import PriorityForm, TransferForm
 DEFAULT_TIMEDELTA_PRO = {"days": -30}
 DEFAULT_SQL_INTERVAL_PRO = "30 days"
 REPORTS_MAX_RESULTS = 4
-ERROR_MSG_REOPEN_REQUEST_90_DAYS = _("You cannot request to reopen an incident closed more than 90 days ago.")
-ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED = _("You can only request to reopen a closed incident.")
-SUCCESS_MSG_REOPEN_REQUEST_CONFIRM = _("A request to reopen this ticket was sent to the person in charge.")
+ERROR_MSG_REOPEN_REQUEST_90_DAYS = u"You cannot request to reopen an incident closed more than 90 days ago."
+ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED = u"You can only request to reopen a closed incident."
+SUCCESS_MSG_REOPEN_REQUEST_CONFIRM = u"A request to reopen this ticket was sent to the person in charge."
 
 def new(request):
     pnt = dict_to_point(request.REQUEST)
