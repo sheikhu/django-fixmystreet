@@ -3,13 +3,14 @@
 Outbound webhook handlers.
 """
 import json
-import requests
 from datetime import datetime
 
-from .models import WebhookConfig
+import requests
+
 from ..api.utils.conversion import dict_walk_python_to_json, dict_walk_json_to_python
-from django_fixmystreet.fixmystreet.models import OrganisationEntity
-from django_fixmystreet.fixmystreet.utils import sign_message
+from ..fixmystreet.models import OrganisationEntity
+from ..fixmystreet.utils import sign_message
+from .models import WebhookConfig
 
 
 class AbstractBaseOutWebhook(object):
@@ -116,9 +117,9 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
 
     resource_slug = "report"
 
-    def __init__(self, report, third_party=None):
-        if third_party is not None and not isinstance(third_party, OrganisationEntity):
-            raise TypeError("'third_party' must be a 'auth.User' object.")
+    def __init__(self, report, third_party):
+        if not isinstance(third_party, OrganisationEntity):
+            raise TypeError("'third_party' must be an 'OrganisationEntity' object.")
 
         super(AbstractReportOutWebhook, self).__init__()
         self.report = report
@@ -164,9 +165,6 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
 class AbstractReportAssignmentOutWebhook(AbstractReportOutWebhook):
     hook_slug = "assignment"
 
-    def __init__(self, report, third_party):
-        super(AbstractReportAssignmentOutWebhook, self).__init__(report, third_party=third_party)
-
 
 class ReportAssignmentRequestOutWebhook(AbstractReportAssignmentOutWebhook):
     action_slug = "request"
@@ -174,9 +172,6 @@ class ReportAssignmentRequestOutWebhook(AbstractReportAssignmentOutWebhook):
 
 class AbstractReportTransferOutWebhook(AbstractReportOutWebhook):
     hook_slug = "transfer"
-
-    def __init__(self, report, third_party):
-        super(AbstractReportTransferOutWebhook, self).__init__(report, third_party=third_party)
 
 
 class ReportTransferRequestOutWebhook(AbstractReportTransferOutWebhook):

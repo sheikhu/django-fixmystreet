@@ -58,6 +58,7 @@ class ReportRejectInWebhookMixin(object):
         if not self._data.get("comment"):
             raise BadRequestError(u"'data.comment' is required.")
 
+
 class ReportCloseInWebhookMixin(object):
 
     ACTION_MESSAGE = u""
